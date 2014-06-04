@@ -25,7 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$database = JFactory::getDBO();
+$database  = JFactory::getDBO();
+$useBlocks = $this->config->get('curation', 0);
+
 ?>
 <div class="supportingdocs">
 <h3>
@@ -34,7 +36,31 @@ $database = JFactory::getDBO();
 </h3>
 
 <?php
-if($this->docs) {
+if ($useBlocks)
+{
+	// Get primary elements
+	$elements = $this->publication->_curationModel->getElements(2);	
+	
+	// Get attachment type model
+	$attModel = new PublicationsModelAttachments($database);
+	
+	if ($elements)
+	{
+		foreach ($elements as $element)
+		{
+			// Draw button
+			$launcher = $attModel->drawLauncher(
+				$element->manifest->params->type,
+				$this->publication, 
+				$element,
+				$this->authorized
+			);
+			
+			echo $launcher;
+		}
+	}
+}
+elseif ($this->docs) {
 	$dls = '';
 	$dls .= '<ul>'."\n";
 	foreach($this->docs as $child) {

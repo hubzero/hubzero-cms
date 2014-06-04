@@ -39,10 +39,11 @@
 	.supportingdocs ul li a {
 		background: none;
 		color: #CC9666;
+		border: none;
 		}
 	.supportingdocs ul li a:hover {
 		color: #f60;
-		border-bottom: 1px solid #f60;
+		border: none;
 		}
 	.supportingdocs small,
 	.supportingdocs span {
@@ -67,6 +68,11 @@
 		right: 0;
 		border: none;
 		}
+	.extras {
+		float: right;
+		color: #CCC;
+		font-size: 85%;
+	}
 
 
 /* IE 7 hacks */

@@ -90,7 +90,8 @@ class plgPublicationsSupportingDocs extends JPlugin
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
 	 */	
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
+	public function onPublication( $publication, $option, $areas, $rtrn='all', 
+		$version = 'default', $extended = true, $authorized = true )
 	{
 		$arr = array(
 			'html'=>'',
@@ -151,12 +152,13 @@ class plgPublicationsSupportingDocs extends JPlugin
 		$view->path = $helper->buildPath($publication->id, $publication->version_id, $base_path, $publication->secret, $root = 1);
 
 		// Pass the view some info
-		$view->option = $option;
-		$view->publication = $publication;
-		$view->helper = $helper;
-		$view->config = $config;
-		$view->version = $version;
-		$view->live_site = $jconfig->getValue('config.live_site') . DS;
+		$view->option 		= $option;
+		$view->publication 	= $publication;
+		$view->helper 		= $helper;
+		$view->config 		= $config;
+		$view->version 		= $version;
+		$view->live_site 	= $jconfig->getValue('config.live_site') . DS;
+		$view->authorized	= $authorized;
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
