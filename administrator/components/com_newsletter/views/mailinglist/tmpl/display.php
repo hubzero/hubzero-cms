@@ -29,10 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');                              
+defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Mailing List\'s' ) . '</a>', 'list.png');
+JToolBarHelper::title(JText::_( 'Newsletter Mailing List\'s' ), 'list.png');
 
 //add buttons to toolbar
 JToolBarHelper::addNew();

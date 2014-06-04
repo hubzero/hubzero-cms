@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter Mailing List') . ': <small><small>[ ' . $text . ' ]</small></small>', 'list.png');
+JToolBarHelper::title(JText::_('Newsletter Mailing List') . ': ' . $text, 'list.png');
 
 //add toolbar buttons
 JToolBarHelper::save();

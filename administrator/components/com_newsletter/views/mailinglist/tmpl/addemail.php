@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Mailing List <small>[' . $this->list->name .']</small>' ) . '</a>', 'list.png');
+JToolBarHelper::title(JText::_( 'Newsletter Mailing List [' . $this->list->name .']' ), 'list.png');
 
 //add toolbar buttons
 JToolBarHelper::custom('doaddemail', 'save', '', 'Submit', false);
