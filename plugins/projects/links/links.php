@@ -131,7 +131,7 @@ class plgProjectsLinks extends JPlugin
 			}
 		}
 		
-		$tasks = array('browser', 'parseurl', 'parsedoi', 'addcitation', 'deletecitation');
+		$tasks = array('browser', 'select' , 'parseurl', 'parsedoi', 'addcitation', 'deletecitation');
 						
 		// Publishing?
 		if ( in_array($this->_task, $tasks) )
@@ -172,7 +172,12 @@ class plgProjectsLinks extends JPlugin
 					
 				case 'deletecitation':
 					$html = $this->deleteCitation();
-					break;				
+					break;	
+					
+				case 'select':
+					$html = $this->select(); 
+					break;
+							
 			}
 			
 			$arr = array(
@@ -278,6 +283,7 @@ class plgProjectsLinks extends JPlugin
 	{
 		// Incoming
 		$url 		= JRequest::getVar('citation-doi', '');
+		$url		= $url ? $url : urldecode(JRequest::getVar('url'));
 		$vid 		= JRequest::getInt('versionid', 0);
 		$version 	= JRequest::getVar('version', 'dev');
 		$pid 		= JRequest::getInt('pid', 0);
@@ -397,6 +403,128 @@ class plgProjectsLinks extends JPlugin
 		$this->_referer = $url;
 		return;
 	}
+	
+	/**
+	 * Browser within publications NEW
+	 * 
+	 * @return     string
+	 */
+	public function select() 
+	{
+		// Incoming
+		$props  = JRequest::getVar( 'p', '' );
+		$ajax   = JRequest::getInt( 'ajax', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+		$filter = urldecode(JRequest::getVar( 'filter', '' ));
+		
+		// Parse props for curation
+		$parts   = explode('-', $props);
+		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'content';
+		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
+		
+		// Provisioned project?
+		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
+				
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'links',
+				'name'		=>'selector'
+			)
+		);
+		
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+				
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+		
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id, 
+			$view->version->version_number, $this->_project->id);
+			
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+			
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+		
+		// Load master type
+		$mt   				= new PublicationMasterType( $this->_database );
+		$view->publication->_type   	= $mt->getType($view->publication->base);
+		$view->publication->_project 	= $this->_project;
+		
+		// Get attachments
+		$pContent = new PublicationAttachment( $this->_database );
+		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
+
+		// Get curation model
+		$view->publication->_curationModel = new PublicationsCuration($this->_database,
+		 	$view->publication->_type->curation);
+		
+		// Make sure block exists, else use default
+		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		{
+			$block = 'content';
+			$step  = 1;
+		}
+				
+		// Set pub assoc and load curation
+		$view->publication->_curationModel->setPubAssoc($view->publication);
+				
+		if (!$ajax)
+		{				
+			$document = JFactory::getDocument();
+			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' 
+				. DS . 'css' . DS . 'selector.css');	
+		}
+		
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->ajax			= $ajax;
+		$view->task			= $this->_task;
+		$view->element		= $element;
+		$view->block		= $block;
+		$view->step 		= $step;
+		$view->props		= $props;
+		$view->filter		= $filter;
+		
+		// Get messages	and errors	
+		$view->msg = $this->_msg;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();		
+	}
 		
 	/**
 	 * Browser for within publications
@@ -481,8 +609,8 @@ class plgProjectsLinks extends JPlugin
 	public function parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa') 
 	{		
 		// Incoming
-		$url 			= $url ? $url : JRequest::getVar('url', $url);
-		$output 		= array('rtype' => 'url');
+		$url 			= $url ? $url : urldecode(JRequest::getVar('url', $url));
+		$output 		= array('rtype' => 'url', 'message' => '');
 		
 		if (!$url)
 		{
@@ -515,6 +643,12 @@ class plgProjectsLinks extends JPlugin
 			}			
 		}
 		
+		if (!$doi && filter_var($url, FILTER_VALIDATE_URL) == false)
+		{
+			$output['error'] = JText::_('Please enter a valid URL starting with http:// or https://');
+			return json_encode($output);
+		}
+		
 		// DOI metadata
 		if ($data)
 		{
@@ -542,10 +676,10 @@ class plgProjectsLinks extends JPlugin
 			    CURLOPT_HEADER         => false,    // don't return headers
 			    CURLOPT_FOLLOWLOCATION => true,     // follow redirects
 			    CURLOPT_ENCODING       => "",       // handle all encodings
-			    CURLOPT_USERAGENT      => "spider", // who am i
+			    CURLOPT_USERAGENT      => "", 		// who am i
 			    CURLOPT_AUTOREFERER    => true,     // set referer on redirect
-			    CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
-			    CURLOPT_TIMEOUT        => 120,      // timeout on response
+			    CURLOPT_CONNECTTIMEOUT => 5,      // timeout on connect
+			    CURLOPT_TIMEOUT        => 5,      // timeout on response
 			    CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
 			);
 
@@ -560,7 +694,7 @@ class plgProjectsLinks extends JPlugin
 
 			if (!$finalUrl || !$content)
 			{
-				$output['error'] = JText::_('PLG_PROJECTS_LINKS_INVALID_URL');
+				$output['message'] = JText::_('PLG_PROJECTS_LINKS_NO_PREVIEW');
 				return json_encode($output);
 			}
 			else
@@ -586,6 +720,7 @@ class plgProjectsLinks extends JPlugin
 				//Get all images found on this page
 			   	$jpgs = $html->find('img[src$=jpg],img[src$=png]');
 				$images = array();
+
 				if ($jpgs)
 				{
 					foreach ($jpgs as $jpg) 
@@ -595,9 +730,9 @@ class plgProjectsLinks extends JPlugin
 						
 						$pathCounter 	= substr_count($src, "../");
 						$src 			= self::getImgSrc($src);
-						
+												
 						// Must be larger than 25px
-						if ($width && $width <= 25)
+						if ($width && $width <= 100)
 						{
 							continue;
 						}
@@ -625,19 +760,39 @@ class plgProjectsLinks extends JPlugin
 				{
 					$out .= '<div id="link-image"><img src="' . $images[0] . '" alt="" /></div>';
 				}
-
-				// Set description if desc meta tag found else grab a little plain text of the page
-			    if ($html->find('meta[name="description"]',0)) 
+				
+				$description = NULL;
+				
+				// Get description from paragraphs
+				$pars = $html->find('body div p');
+				if ($pars)
 				{
-			        $description = $html->find('meta[name="description"]',0)->content;
-			    } 
-				else 
+					foreach ($pars as $p)
+					{
+						if (strlen($p->plaintext) > 200)
+						{
+							$description = $p->plaintext;
+							break;
+						}
+					}
+				}
+				
+				if (!$description)
 				{
-			        $description = $html->find('body',0)->plaintext;
-			    }
+					// Set description if desc meta tag found else grab a little plain text of the page
+				    if ($html->find('meta[name="description"]',0)) 
+					{
+				        $description = $html->find('meta[name="description"]',0)->content;
+				    } 
+					else 
+					{
+				        $description = $html->find('body',0)->plaintext;
+				    }
+				}
 
-				$out .= $description ? stripslashes('<p>' . ProjectsHtml::shortenText(addslashes($description), 300) . '</p>')
-						: '<p>' . ProjectsHtml::shortenText($finalUrl, 300) . '</p>';
+				$out .= $description ? stripslashes('<p>' 
+						. \Hubzero\Utility\String::truncate(addslashes($description), 200) . '</p>')
+						: '<p>' . \Hubzero\Utility\String::truncate(addslashes($finalUrl), 200) . '</p>'; 
 				
 				if ($images)
 				{

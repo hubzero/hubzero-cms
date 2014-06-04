@@ -275,7 +275,6 @@ HUB.ProjectLinks = {
 			}
 		}
 	}
-	
 }
 	
 jQuery(document).ready(function($){
