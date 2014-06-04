@@ -1,0 +1,303 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+	-- -- -- -- -- -- --
+	Project files selector CSS
+	-- -- -- -- -- -- --
+*/
+	.select-form ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 110%;
+	}
+	.select-form {
+		margin: 0;
+		padding: 0 1em 0 1em;
+	}
+	.select-form fieldset {
+		padding: 0;
+		margin: 0;
+	}
+	.level-1 {
+		margin-left: 2em;
+	}
+	.level-2 {
+		margin-left: 4em;
+	}
+	.level-3 {
+		margin-left: 6em;
+	}
+	.level-4 {
+		margin-left: 8em;
+	}
+	.level-5 {
+		margin-left: 10em;
+	}
+	.level-6,
+	.level-7,
+	.level-8,
+	.level-9,
+	.level-10 {
+		margin-left: 12em;
+	}
+	li.type-file,
+	li.type-folder {
+		padding-left: 2em;
+	}
+	.collapsor {
+		position: relative;
+		margin-left: -1.5em;
+		margin-right: -1.5em;
+		cursor: pointer;
+		padding: 0.5em;
+	}
+	li.type-folder .collapsor:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #c4d2d6;
+		margin-right: 0.3em;
+		content: "\f0d7";
+	}
+	li.type-folder .collapsor:hover:before {
+		color: #9aa8ac;
+	}
+	li.collapsed .collapsor:before {
+		content: "\f0da";
+	}
+	.flatlist .collapsor {
+		display: none;
+	}
+	.file-selector li {
+		margin: 0 1em;
+		padding: 0.2em 0;
+	}
+	.file-selector li.even {
+		background: #f7f7fa;			
+	}
+	ul.file-selector {
+		max-height: 300px;
+		overflow: auto;
+	}
+	.content-selector {
+		margin: 1em 0;
+		border-bottom: 4px solid #f7f7fa;
+		border-top: 4px solid #f7f7fa;
+	}
+	#abox-content .quick-upload label {
+		margin: 0;
+		padding: 0;
+		background: none;
+		float: right;
+		max-width: 200px;
+		overflow: hidden;
+	}
+	.quick-upload p {
+		margin: 0;
+		padding: 0 1em;
+		color: #708b94;
+		font-size: 85%;
+	}
+	#abox-content .quick-upload input {
+		background: none;
+		margin: 0;
+		padding: 0;	
+	}
+	#abox-content input.upload-file {
+		float: right;
+		margin: 0 1em;
+		background: white;
+		padding: 0.5em 0.91em 0.5em 0.91em;
+		outline: 0;
+		font-size: 0.8em;
+		line-height: 1;
+		font-weight: normal;
+		white-space: nowrap;
+		word-wrap: normal;
+		border: 1px solid #CCC;
+		border-color: #CCC #CCC #AAA #AAA;
+		color: #555;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	.quick-upload {
+		background: #eef8fb;
+		min-height: 30px;
+	}
+	.save-selection {
+		float: right;
+		margin: 0;
+		padding: 0;
+	}
+	.abox-controls {
+		float: right;
+	}
+	.abox-controls a {
+		font-size: 55%;
+	}
+	#b-filesave.disabled, 
+	#b-filesave.disabled:hover,
+	#upload-file.disabled,
+	#upload-file.disabled:hover {
+		background: #CCC;
+		cursor: default;
+	}
+	.item-info {
+		float: right;
+		color: #CCC;
+		margin-right: 0.5em;
+	}
+	.requirement {
+		padding: 0 1em;
+		margin: 0;
+		/*color: #ef7f08;*/
+		width: 70%;
+	}
+	#req.success {
+		color: green;
+	}
+	#req.success:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		content: "\2714";
+		color: green;
+		margin-left: -1.2em;
+		position: absolute;
+	}
+	.search-filter {
+		float: right;
+		width: 180px;
+		margin: 0;
+	}
+	.search-filter label {		
+		margin: 0.5em;
+		position: absolute;
+	}
+	.search-filter label input {
+		border-radius: 8px;
+		-moz-border-radius: 8px;
+		padding: 0.2em 0.5em;
+		font-size: 90%;
+		color: #666;
+		padding-left: 2em;
+	}
+	.search-filter label:before {
+		content: "\f002";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #c4d2d6;
+		margin-right: 0.2em;
+		position: absolute;
+		margin-left: 0.5em;
+	}
+	#status-box {
+		text-align: right;
+		height: 25px;
+		margin-right: 2em;
+		line-height: 0.8em;
+		width: auto;
+	}
+	#status-box p {
+		margin: 0;
+		padding: 0.2em 1em;
+		line-height: 0.8em;
+		color: #666;
+		font-size: 90%;
+		width: auto;
+		display: inline;
+	}
+	#status-box .status-error {
+		color: red;
+		background: #fae6e5;
+	}
+	#status-box .status-success {
+		color: green;
+		background: #f2fcee;
+	}
+	#status-box .status-loading {
+		color: orange;
+	}
+	.asset-uploader h5 {
+		margin: 0 1em 1em 1em;
+	}
+	#upload-submit {
+		text-align: center;
+		margin: 1em 0;
+		width: 100%;
+	}
+
+/* Selectable
+---------------------------- */
+
+/*
+	#file-selector .ui-selecting { background: #FECA40; }
+  	#file-selector .ui-selected { background: #F39814; color: white; }
+*/
+	#file-selector .selectedfilter,
+	.file-selector .selectedfilter, .file-selector .selectedfilter:hover {
+		background: #ddf4fd;
+		cursor: pointer;
+	}
+	.file-selector .item-info:after,
+	.file-selector .selectedfilter .item-info:after, 
+	.file-selector .selectedfilter:hover .item-info:after {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		content: "\f058";
+		color: green;
+		float: right;
+		margin-left: 1em;
+		position: relative;
+	}
+	.file-selector .item-info:after {
+		content: "";
+	}
+	.file-selector .notallowed {
+		color: #bebebe;
+	}
+	.file-selector .notallowed img {
+		opacity: 0.5;
+	}
+	.file-selector .allowed:hover {
+		cursor: pointer;
+	}
+	.file-selector .notallowed:hover,
+	.file-selector .freeze:hover {
+		cursor: default !important;
+	}
+	.file-selector li.allowed:hover {
+		background: #bbe3f3;
+	}	
+	.content-loader {
+		text-align: center;
+		padding: 3em 0;
+	}
+	#file-selector li.preselected {
+		background: #ebfcec;
+	}
+	
+/* Provisioned projects
+---------------------------- */
+	#abox-content {
+		text-align: left;
+	}
+	
+	
