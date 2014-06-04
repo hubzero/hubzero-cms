@@ -136,10 +136,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->view->filters['limit']
 		);
 
-		// Get some needed styles
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller . '.js');
-
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -279,10 +275,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		// Get some needed styles
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
-
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
 		{
@@ -365,10 +357,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Create a Tool Version object
 		$objV = new ToolVersion($this->database);
 		$objV->getToolVersions($this->_toolid, $versions, '');
-
-		// add the CSS and JS
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the page title
 		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
@@ -484,10 +472,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		/// add the CSS to the template and set the page title
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
-
 		// Set the page title
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
 		$document = JFactory::getDocument();
@@ -588,10 +572,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// get default license text
 		$toolhelper = new ContribtoolHelper();
 		$this->view->licenses = $toolhelper->getLicenses($this->database);
-		
-		/// add the CSS to the template and set the page title
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
 
 		// Set the page title
 		$this->view->title  = JText::_(strtoupper($this->_option)) . ': ';
@@ -715,7 +695,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				{
 					$this->finalizeTask();
 				}
-				return;				
+				return;
 			}
 		}
 		
@@ -750,17 +730,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->licenseTask();
 		}
 	}
-	
+
 	/**
 	 * Write sync status to file
 	 * 
 	 * @return   void
 	 */
 	protected function _writeToFile($content = '', $file = '', $append = false ) 
-	{		
+	{
 		$place   = $append == true ? 'a' : 'w';
 		$content = $append ? $content . "\n" : $content; 
-		
+
 		$handle  = fopen($file, $place);
 		fwrite($handle, $content);
 		fclose($handle);
@@ -796,10 +776,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' .  JText::_('COM_TOOLS_TASK_CREATE_NEW_TOOL');
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
-
-		// Get some needed styles
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
 
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
@@ -883,10 +859,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_('COM_TOOLS_TASK_EDIT_TOOL');
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
-
-		// Get some needed styles
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		$this->_getScripts('assets/js/' . $this->_controller);
 
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0) 
@@ -1271,7 +1243,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$hzg->update();
 		$hzt->update();
 		$hztv->update(); // @FIXME: look
-	
+
 		$status = $hztv->toArray();
 		$status['toolstate']    = $hzt->state;
 		$status['membergroups'] = $tool['membergroups'];
@@ -1469,7 +1441,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if ($action != 'confirm') 
 		{
-			$this->_msg = JText::_('COM_TOOLS_Release notes saved.');
+			$this->_msg = JText::_('Release notes saved.');
 			//$this->_task = 'status';
 			$this->statusTask();
 			return;

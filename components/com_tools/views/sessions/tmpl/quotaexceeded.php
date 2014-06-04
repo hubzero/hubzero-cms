@@ -32,6 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
+
+$this->css('tools.css');
 ?>
 <header id="content-header">
 	<h2><?php echo JText::_('COM_TOOLS_QUOTAEXCEEDED'); ?></h2>

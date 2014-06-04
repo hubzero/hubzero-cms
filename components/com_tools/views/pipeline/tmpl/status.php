@@ -35,14 +35,17 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 // get status name
 ToolsHelperHtml::getStatusName($this->status['state'], $state);
 ToolsHelperHtml::getStatusClass($this->status['state'], $this->statusClass);
+
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?> - <span class="state_hed"><?php echo $state; ?></span></h2>
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
-			<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS'); ?></a></li>
+			<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

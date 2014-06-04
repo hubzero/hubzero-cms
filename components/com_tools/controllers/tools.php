@@ -137,10 +137,6 @@ class ToolsControllerTools extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles($this->_option, 'tools.css');
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

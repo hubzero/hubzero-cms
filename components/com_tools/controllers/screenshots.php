@@ -829,8 +829,6 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->version = $version;
 		$this->view->rid = $rid;
 
-		$this->_getStyles($this->_option, 'assets/css/component.css');
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

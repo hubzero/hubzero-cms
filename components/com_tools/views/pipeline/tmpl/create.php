@@ -47,6 +47,8 @@ $wikiChoices[''] = JText::_('COM_TOOLS_SELECT_TOP');
 $wikiChoices['@OPEN'] = ucfirst(JText::_('COM_TOOLS_ACCESS_OPEN'));
 $wikiChoices['@DEV'] = ucfirst(JText::_('COM_TOOLS_ACCESS_RESTRICTED'));
 
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>

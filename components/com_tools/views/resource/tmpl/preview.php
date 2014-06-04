@@ -53,6 +53,9 @@ $attribs = new $paramsClass($this->resource->attribs);
 // Get the resource's children
 $helper = new ResourcesHelper($this->resource->id, $database);
 
+$this->css('resource.css')
+     ->css('resources', 'com_resources')
+     ->js('resource.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

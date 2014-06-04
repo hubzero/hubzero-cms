@@ -31,6 +31,9 @@ $toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->statu
 $codeaccess = ToolsHelperHtml::getCodeAccess($this->status['code']);
 // get wiki access text
 $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
+
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>
@@ -47,7 +50,7 @@ $wikiaccess = ToolsHelperHtml::getWikiAccess($this->status['wiki']);
 	<?php ToolsHelperHtml::writeApproval('Approve'); ?>
 
 	<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
 
 	<h4><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FINAL_REVIEW'); ?>:</h4>

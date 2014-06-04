@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css('component.css');
+
 $this->versionlabel = ($this->version == 'current') ? JText::_('COM_TOOLS_CURRENTLY_PUBLISHED') : JText::_('COM_TOOLS_DEVELOPMENT');
 if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -160,10 +162,10 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title']: JText::_('COM_TOOLS_SCREENSHOT').' #'.$k;
 			$els .= '<li>';
 				$els .= '<span class="dev_ss">';
-					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="edit_ss popup" rel="external">'.JText::_('COM_TOOLS_EDIT').'</a>';
-					$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="delete_ss">'.JText::_('COM_TOOLS_DELETE').'</a>';
+					$els .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="edit_ss popup" rel="external">'.JText::_('COM_TOOLS_EDIT').'</a>';
+					$els .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="delete_ss">'.JText::_('COM_TOOLS_DELETE').'</a>';
 				$els .= '</span>';
-				$els .= '<a href="/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="popup" title="'.$title.'">';
+				$els .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="popup" title="'.$title.'">';
 					$els .= '<img src="'.$this->wpath.DS.$tn.'" alt="'.$title.'" id="ss_'.$i.'" />';
 				$els .= '</a>';
 			$els .= '</li>'."\n";
@@ -172,8 +174,8 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		if ($i != ($n-1)) 
 		{
 			$els .= '<li style="width:20px;top:40px;">';
-				$els .= '<a href="/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component">';
-					$els .= '<img src="components'.DS.$this->option.DS.'assets/img/contribute/reorder.gif" alt="" />';
+				$els .= '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component">';
+					$els .= '<img src="' . JURI::base(true) . '/components'.DS.$this->option.DS.'assets/img/contribute/reorder.gif" alt="" />';
 				$els .= '</a>';
 			$els .= '</li>'."\n";
 		}

@@ -51,8 +51,8 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 			<input type="hidden" name="pid" id="pid" value="<?php echo $this->pid; ?>" />
 			<input type="hidden" name="path" id="path" value="<?php echo $this->upath; ?>" />
-            <input type="hidden" name="filename" id="filename" value="<?php echo $this->file; ?>" />
-            <input type="hidden" name="vid" id="vid" value="<?php echo $this->vid; ?>" />
+			<input type="hidden" name="filename" id="filename" value="<?php echo $this->file; ?>" />
+			<input type="hidden" name="vid" id="vid" value="<?php echo $this->vid; ?>" />
 			<input type="hidden" name="task" value="save" />
 			<fieldset class="uploading">
 				<label class="ss_title" for="ss_title">

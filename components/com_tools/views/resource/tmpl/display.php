@@ -41,6 +41,9 @@ if ($this->version == 'dev') {
 else {
 	$v = $this->status['version'];
 }
+
+$this->css('resource.css')
+     ->js('resource.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>

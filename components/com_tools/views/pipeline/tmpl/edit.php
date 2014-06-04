@@ -53,6 +53,8 @@ if (!is_array($this->defaults['developers']))
 	$this->defaults['developers'] = array_map('trim', $this->defaults['developers']);
 }
 
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->escape($this->title); ?></h2>

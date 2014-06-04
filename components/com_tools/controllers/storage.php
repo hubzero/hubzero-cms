@@ -51,7 +51,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-		
+
 		// Get the task
 		$this->_task = JRequest::getVar('task', '');
 
@@ -124,7 +124,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
 	}
@@ -162,9 +162,6 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/storage.css');
 
 		// Get their disk space usage
 		$this->percent = 0;
@@ -564,9 +561,6 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			ksort($folders);
 			ksort($docs);
 		}
-
-		// Push some styles to the template
-		$this->_getStyles($this->_option, 'assets/css/storage.css');
 
 		// Instantiate a view
 		$this->view->dirtree = $dirtree;

@@ -436,8 +436,6 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 
 		$this->view->roles = $rt->getRolesForType($resource->type);
 
-		$this->_getStyles($this->_option, 'assets/css/component.css');
-
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

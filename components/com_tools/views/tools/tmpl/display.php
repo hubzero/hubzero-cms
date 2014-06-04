@@ -27,6 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $jconfig = JFactory::getConfig();
 $juri = JURI::getInstance();
+
+$this->css('introduction.css', 'system')
+     ->css();
 ?>
 
 <header id="content-header">

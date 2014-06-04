@@ -48,14 +48,17 @@ if ($this->licenses)
 		}
 	}
 }
+
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
-			<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>" class="add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-status status btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=status&app='.$this->status['toolname']); ?>"><?php echo JText::_('TOOL_STATUS'); ?></a></li>
+			<li class="last"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=create'); ?>" class="icon-add btn add"><?php echo JText::_('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

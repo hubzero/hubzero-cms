@@ -351,11 +351,6 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		}
 		$tags = implode(', ', $mytagarray);
 
-		// Push CSS to the document
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-		// Push some scripts to the document
-		$this->_getScripts('assets/js/' . $this->_controller);
-
 		// Set the document title
 		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
 		$document = JFactory::getDocument();
@@ -593,13 +588,6 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		{
 			$this->setError(JText::_('COM_TOOLS_Failed to load language file'));
 		}
-
-		// Push CSS to the document
-		$this->_getStyles($this->_option, 'assets/css/' . $this->_controller . '.css');
-
-		// Push some scripts to the document
-		$this->_getScripts('assets/js/' . $this->_controller);
-		$this->_getStyles('com_resources');
 
 		// Set the document title
 		$this->view->title = JText::_(strtoupper($this->_name)) . ': ' . JText::_('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';

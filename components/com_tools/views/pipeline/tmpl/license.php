@@ -25,9 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$open 					= ($this->code == '@OPEN') ? 1 : 0 ;
-$this->codeaccess 		= ($this->code == '@OPEN') ? 'open' : 'closed';
-$newstate   			= ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
+$open             = ($this->code == '@OPEN') ? 1 : 0 ;
+$this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
+$newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
 
 $codeChoices = array(
 	'@OPEN' => JText::_('COM_TOOLS_OPEN_SOURCE'),
@@ -48,6 +48,9 @@ if ($this->licenses)
 		}
 	}
 }
+
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -65,7 +68,8 @@ if ($this->licenses)
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 	<?php
-		if ($this->action == 'confirm') {
+		if ($this->action == 'confirm')
+		{
 			ToolsHelperHtml::writeApproval('Confirm license');
 		}
 		//$license = ($this->status['license'] && !$open) ? $this->status['license'] : '' ;

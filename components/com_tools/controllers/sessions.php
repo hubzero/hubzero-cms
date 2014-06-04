@@ -152,7 +152,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
 	}
@@ -171,8 +171,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		$this->_getStyles($this->_option, 'assets/css/tools.css');
 
 		// Instantiate the view
 		$this->view->title = $this->_title;
@@ -202,8 +200,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
-
-		$this->_getStyles($this->_option, 'assets/css/tools.css');
 
 		// Instantiate the view
 		$this->view->title = $this->_title;
@@ -246,8 +242,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Set the page title
 		$document = JFactory::getDocument();
 		$document->setTitle($title);
-
-		$this->_getStyles($this->_option, 'assets/css/tools.css');
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
@@ -293,7 +287,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$this->view->display();
 	}
 
-	function normalize_path($path, $isFile = false) 
+	private function normalize_path($path, $isFile = false) 
 	{
 		if (!isset($path[0]) || $path[0] != '/')
 			return false;
@@ -326,7 +320,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		return "/" . implode('/', $result) . ($isFile ? '' : '/');
-
 	}
 
 	/**
@@ -1164,18 +1157,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess
 			);
 		}
-		
+
 		//get users groups
 		$this->view->mygroups = \Hubzero\User\Helper::getGroups( $this->juser->get('id'), 'members', 1 );
-
-		// Push styles to the document
-		$this->_getStyles($this->_option, 'assets/css/tools.css');
-
-		// Push scripts to the document
-		//$this->_getScripts('assets/js/' . $this->_controller);
-		
-		//add editable plugin
-		//\Hubzero\Document\Assets::addSystemScript('jquery.editable.min');
 
 		$this->view->app      = $app;
 		$this->view->config   = $this->config;

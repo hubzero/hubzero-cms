@@ -28,8 +28,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
 $live_site = rtrim(JURI::base(),'/');
 $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
-$project_path 	= $this->config->get('project_path', '/tools/');
-$dev_suffix 	= $this->config->get('dev_suffix', '_dev');
+$project_path  = $this->config->get('project_path', '/tools/');
+$dev_suffix    = $this->config->get('dev_suffix', '_dev');
+
+$this->css('pipeline.css')
+     ->js('pipeline.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -219,7 +222,7 @@ $dev_suffix 	= $this->config->get('dev_suffix', '_dev');
 			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 			$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-			
+
 			echo $this->pageNav->getListFooter();
 			?>
 		</div><!-- / .container -->

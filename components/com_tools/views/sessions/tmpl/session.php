@@ -48,6 +48,8 @@ foreach($this->shares as $share)
 
 JPluginHelper::importPlugin('mw');
 $dispatcher = JDispatcher::getInstance();
+
+$this->css('tools.css');
 ?>
 <div id="session">
 <?php

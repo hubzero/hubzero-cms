@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('component.css')
+     ->js('create.js');
+
 if (!$this->allowupload) { ?>
 	<p class="warning">
 		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?>

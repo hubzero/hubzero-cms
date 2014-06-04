@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css('tools.css');
 ?>
 <div id="error-wrap">
 	<div id="error-box" class="code-403">
@@ -38,7 +40,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<p class="error-reasons"><?php echo $this->getError(); ?></p>
 <?php } ?>
 		<p>The custom parameters specified in this tool invocation URL are invalid.</p>
-		<pre><?php echo htmlentities($this->badparams,ENT_COMPAT,'UTF-8');?></pre>
+		<pre><?php echo $this->escape($this->badparams); ?></pre>
 		<p>If you feel that these parameters are correct, please <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a>.</p>
 	</div><!-- / #error-box -->
 </div><!-- / #error-wrap -->

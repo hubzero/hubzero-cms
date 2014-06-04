@@ -429,11 +429,6 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->path = '';
 		$this->view->children = $helper->children;
 
-		$this->_getStyles($this->_option, 'assets/css/component.css');
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/create');
-
 		// Set errors to view
 		if ($this->getError())
 		{
