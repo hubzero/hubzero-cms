@@ -180,14 +180,15 @@ class plgProjectsTeam extends JPlugin
 						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
 						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
 						$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
-						$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css');
+						$document->addStyleSheet('plugins' . DS . 'hubzero' . DS . 'autocompleter' 
+							. DS . 'autocompleter.css');
 					}
 								
 					$arr['html'] = $this->view( 1 ); 
 					break;
 				
 				case 'invite': 
-				case 'sendinvite': 
+				case 'sendinvite':
 					$arr['html'] = $this->invite(); 
 					break;
 				
@@ -216,6 +217,11 @@ class plgProjectsTeam extends JPlugin
 				case 'view': 
 				default: 
 					$arr['html'] = $this->view(); 
+					break;
+					
+				case 'select':
+				case 'newauthor':
+					$arr['html'] 	= $this->select(); 
 					break;	
 				
 				case 'editauthors': 
@@ -307,6 +313,146 @@ class plgProjectsTeam extends JPlugin
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();		
+	}
+	
+	/**
+	 * Browser within publications NEW
+	 * 
+	 * @return     string
+	 */
+	public function select() 
+	{
+		// Incoming
+		$props  = JRequest::getVar( 'p', '' );
+		$ajax   = JRequest::getInt( 'ajax', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+		
+		// Parse props for curation
+		$parts   = explode('-', $props);
+		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'authors';
+		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		
+		// Provisioned project?
+		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
+		
+		$layout = $this->_task == 'newauthor' || $prov ? 'newauthor' : 'default';
+		
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'team',
+				'name'		=>'selector',
+				'layout'	=> $layout
+			)
+		);
+		
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+		
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+		
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id, 
+			$view->version->version_number, $this->_project->id);
+			
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+			
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+		
+		// Load master type
+		$mt   				= new PublicationMasterType( $this->_database );
+		$view->publication->_type   	= $mt->getType($view->publication->base);
+		$view->publication->_project 	= $this->_project;
+		
+		// Get curation model
+		$view->publication->_curationModel = new PublicationsCuration($this->_database,
+		 	$view->publication->_type->curation);
+		
+		// Make sure block exists, else use default
+		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		{
+			$block = 'authors';
+		}
+		
+		// Set pub assoc and load curation
+		$view->publication->_curationModel->setPubAssoc($view->publication);
+		
+		// Get css
+		if (!$ajax)
+		{				
+			$document = JFactory::getDocument();
+			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'team' . DS . 'css' . DS . 'selector.css');	
+		}
+		
+		// Instantiate project owner
+		$objO = new ProjectOwner($this->_database);
+		$view->filters['limit']    		=  0;
+		$view->filters['start']    		= JRequest::getInt( 't_limitstart', 0);
+		$view->filters['sortby']   		= JRequest::getVar( 't_sortby', 'name');
+		$view->filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$view->filters['status']   		= 'active';
+		$view->filters['pub_versionid'] = $vid;
+		
+		// Get all active team members
+		$view->team = $objO->getOwners($this->_project->id, $view->filters);
+		
+		// Get current authors
+		$pa = new PublicationAuthor($this->_database);
+		$view->authors = $pa->getAuthors($vid);
+							
+		// Exclude any owners?
+		$view->exclude = array();	
+		
+		JPluginHelper::importPlugin( 'hubzero' );
+		$view->dispatcher = JDispatcher::getInstance();	
+		$view->mc = $view->dispatcher->trigger( 'onGetSingleEntry', array(array('members', 'uid', 'uid')) );
+		
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->ajax			= $ajax;
+		$view->task			= $this->_task;
+		$view->block		= $block;
+		$view->step 		= $step;
+		$view->props		= $props;
+		
+		// Get messages	and errors	
+		$view->msg = $this->_msg;
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+		
 	}
 	
 	/**
@@ -919,8 +1065,9 @@ class plgProjectsTeam extends JPlugin
 	 *
 	 * @return boolean True on success
 	 */			
-	public function sendInviteEmail( $uid = 0, $email = '', $code = '', $role = 0, $project = '' ) 
+	public function sendInviteEmail( $uid = 0, $email = '', $code = '', $role = 0, $project = '', $option = '' ) 
 	{		
+		
 		if ($uid && !$email) 
 		{
 			$user = JUser::getInstance( $uid );
@@ -932,10 +1079,10 @@ class plgProjectsTeam extends JPlugin
 			return false;
 		}
 		
-		if (!$project)
-		{
-			$project = $this->_project;
-		}
+		$project = $project ? $project : $this->_project;
+		$option  = $option ? $option : $this->_option;
+		
+		$database = JFactory::getDBO();
 		
 		// Validate email
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/'; 
@@ -947,19 +1094,20 @@ class plgProjectsTeam extends JPlugin
 		// Set up email config
 		$jconfig = JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_option));
+		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($option));
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 				
 		// Email message subject
-		if ($this->_project->provisioned == 1)
+		if ($project->provisioned == 1)
 		{
-			$objPub 	= new Publication($this->_database);
-			$pub 		= $objPub->getProvPublication($this->_project->id);
+			$objPub 	= new Publication($database);
+			$pub 		= $objPub->getProvPublication($project->id);
 			
 			if (!$pub || !$pub->id)
 			{
 				return false;
 			}
+			
 			$subject 	= $uid 
 						? JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED_PROV')
 						: JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE_PROV');	
@@ -967,10 +1115,10 @@ class plgProjectsTeam extends JPlugin
 		else 
 		{
 			$subject = $uid 
-					? JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED').' '.$this->_project->alias
-					: JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE').' '.$this->_project->alias;
+					? JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $project->alias
+					: JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $project->alias;
 		}
-		
+				
 		// Message body for HUB user
 		$eview = new \Hubzero\Plugin\View(
 			array(
@@ -982,18 +1130,16 @@ class plgProjectsTeam extends JPlugin
 		);	
 		
 		// Get profile of author group
-		if ($this->_project->owned_by_group) 
+		if ($project->owned_by_group) 
 		{			
-			$eview->nativegroup = \Hubzero\User\Group::getInstance( $this->_project->owned_by_group);
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group);
 		}
 		
-		$eview->option 			= $this->_option;
+		$eview->option 			= $option;
 		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
-		$eview->by 				= $this->_uid;
-		$actor 					= JUser::getInstance( $this->_uid );
-		$eview->actor 			= $actor;
+		$eview->actor 			= JFactory::getUser();
 		$eview->uid 			= $uid;		
-		$eview->project 		= $this->_project;
+		$eview->project 		= $project;
 		$eview->code 			= $code;
 		$eview->email 			= $email;
 		$eview->role 			= $role;
@@ -1015,14 +1161,14 @@ class plgProjectsTeam extends JPlugin
 			$dispatcher = JDispatcher::getInstance();
 			if ($dispatcher->trigger( 'onSendMessage', array( 'projects_member_added', 
 				$subject, $message, $from, 
-				array($uid), $this->_option ))) {
+				array($uid), $option ))) {
 				return true;
 			}
 		}
 		else 
 		{			
 			if (ProjectsHtml::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from)) 
-			{
+			{								
 				return true;
 			}
 		}
