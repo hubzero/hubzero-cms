@@ -29,10 +29,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');                              
+defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Mailing List <small>[' . $this->list->name .']</small>' ) . '</a>', 'list.png');
+JToolBarHelper::title(JText::_( 'Newsletter Mailing List [' . $this->list->name .']' ), 'list.png');
 
 //add buttons to toolbar
 JToolBarHelper::addNew('addemail', 'Add Emails');
@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label>Status: 
 			<select name="status">
