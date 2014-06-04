@@ -599,8 +599,13 @@ class ProjectsHtml
 			case 'sql':
 				$icon = 'page_white_sql';
 				break;
+			case 'm':
+				$icon = 'page_white_matlab';
+				break;
 			case 'dmg':
 			case 'exe':
+			case 'va':
+			case 'ini':
 				$icon = 'page_white_gear';
 				break;
 			case 'eps':
@@ -716,7 +721,7 @@ class ProjectsHtml
 	<?php
 		if ($image) {
 		?>		
-			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" /></a>	
+			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" />	
 	<?php 
  		}
 		else
