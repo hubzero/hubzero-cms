@@ -199,9 +199,10 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$properties = get_object_vars($this->_tbl);
 		foreach ($properties as $k => $v)
 		{
-			if (array_key_exists(substr($k, 2), self::$_aux_tablekeys))
+			$kname = substr($k, 2);
+			if (!empty($kname) && array_key_exists($kname, self::$_aux_tablekeys))
 			{
-				$key = substr($k, 2);
+				$key = $kname;
 				$key = str_replace('_', ' ', $key);
 				$key = ucwords($key);
 				$key = str_replace(' ', '', $key);
@@ -211,7 +212,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 				if ($v == 'delete')
 				{
 					$aux = array();
-					foreach (self::$_aux_tablekeys[substr($k, 2)] as $item)
+					foreach (self::$_aux_tablekeys[$kname] as $item)
 					{
 						$k = $item;
 						if ($item == 'id')

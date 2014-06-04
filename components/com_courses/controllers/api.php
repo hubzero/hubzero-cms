@@ -1705,11 +1705,13 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Get the course id
 		$this->course_id      = JRequest::getInt('course_id', 0);
 		$this->offering_alias = JRequest::getCmd('offering', '');
+		$this->section_id     = JRequest::getInt('section_id', '');
 
 		// Load the course page
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 		$course = CoursesModelCourse::getInstance($this->course_id);
 		$offering = $course->offering($this->offering_alias);
+		$course->offering()->section($this->section_id);
 		$this->course = $course;
 
 		if ($course->access('manage'))

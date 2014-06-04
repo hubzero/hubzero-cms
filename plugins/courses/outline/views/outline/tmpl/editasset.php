@@ -36,6 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Get our asset model
 $asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+$asset->set('section_id', $this->course->offering()->section()->get('id'));
 
 // Get the asset groups
 $assetgroups = array();
@@ -120,6 +121,12 @@ $tool_path = $config->get('tool_path');
 			<input type="hidden" name="edit_graded" value="1" />
 		</p>
 
+		<p>
+			<label for="progress_factors">Include this item in the progress calculation?</label>
+			<input name="progress_factors" type="checkbox" value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
+			<input type="hidden" name="edit_progress_factors" value="1" />
+		</p>
+
 		<?php if ($tool_path
 				&& $tools
 				&& count($tools) > 0
@@ -155,6 +162,7 @@ $tool_path = $config->get('tool_path');
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+		<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id'); ?>" />
 		<input type="hidden" name="id" value="<?= $asset->get('id') ?>" />
 
 		<input type="button" value="Cancel" class="cancel" />

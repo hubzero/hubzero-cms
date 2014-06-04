@@ -57,43 +57,49 @@ class ContentAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
+		require_once JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 
 		// Create our asset table object
-		$assetObj = new CoursesTableAsset($this->db);
+		$asset = new CoursesModelAsset();
 
 		// Grab the incoming content
 		$content = JRequest::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : substr($content, 0, 25);
-		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
-		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
-		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;
-		$this->asset['created']    = JFactory::getDate()->toSql();
-		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
-		$this->asset['course_id']  = JRequest::getInt('course_id', 0);
+		$asset->set('title',      ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
+		$asset->set('type',       ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
+		$asset->set('subtype',    ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
+		$asset->set('content',    ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
+		$asset->set('created',    JFactory::getDate()->toSql());
+		$asset->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
+		$asset->set('course_id',  JRequest::getInt('course_id', 0));
 
 		// Check whether asset should be graded
 		if ($graded = JRequest::getInt('graded', false))
 		{
-			$this->asset['graded']       = $graded;
-			$this->asset['grade_weight'] = 'homework';
+			$asset->set('graded', $graded);
+			$asset->set('grade_weight', 'homework');
 		}
 
 		// Save the asset
-		if (!$assetObj->save($this->asset))
+		if (!$asset->store())
 		{
 			return array('error' => 'Asset save failed');
+		}
+
+		// If we're saving progress calculation var
+		if ($progress = JRequest::getInt('progress_factors', false))
+		{
+			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>JRequest::getInt('section_id', 0)));
+			$asset->store();
 		}
 
 		// Create asset assoc object
 		$assocObj = new CoursesTableAssetAssociation($this->db);
 
-		$this->assoc['asset_id'] = $assetObj->get('id');
+		$this->assoc['asset_id'] = $asset->get('id');
 		$this->assoc['scope']    = JRequest::getCmd('scope', 'asset_group');
 		$this->assoc['scope_id'] = JRequest::getInt('scope_id', 0);
 
@@ -107,18 +113,30 @@ class ContentAssetHandler extends AssetHandler
 		$course_id      = JRequest::getInt('course_id', 0);
 		$offering_alias = JRequest::getCmd('offering', '');
 		$course         = new CoursesModelCourse($course_id);
+		$course->offering($offering_alias);
 
-		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
+		$url = JRoute::_($course->offering()->link() . '&asset=' . $asset->get('id'));
+
+		$files = array(
+			'asset_id'       => $asset->get('id'),
+			'asset_title'    => $asset->get('title'),
+			'asset_type'     => $asset->get('type'),
+			'asset_subtype'  => $asset->get('subtype'),
+			'asset_url'      => $url,
+			'asset_state'    => $asset->get('state'),
+			'scope_id'       => $this->assoc['scope_id']
+		);
 
 		$return_info = array(
-			'asset_id'       => $this->assoc['asset_id'],
-			'asset_title'    => $this->asset['title'],
-			'asset_type'     => $this->asset['type'],
-			'asset_subtype'  => $this->asset['subtype'],
+			'asset_id'       => $asset->get('id'),
+			'asset_title'    => $asset->get('title'),
+			'asset_type'     => $asset->get('type'),
+			'asset_subtype'  => $asset->get('subtype'),
 			'asset_url'      => $url,
-			'course_id'      => $this->asset['course_id'],
-			'offering_alias' => JRequest::getCmd('offering', ''),
-			'scope_id'       => $this->assoc['scope_id']
+			'course_id'      => $asset->get('course_id'),
+			'offering_alias' => $offering_alias,
+			'scope_id'       => $this->assoc['scope_id'],
+			'files'          => array($files)
 		);
 
 		// Return info
@@ -134,51 +152,55 @@ class ContentAssetHandler extends AssetHandler
 	public function save()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
-		// Create our asset table object
-		$assetObj = new CoursesTableAsset($this->db);
-		$assetObj->load(JRequest::getInt('id'));
+		// Create our asset object
+		$id    = JRequest::getInt('id', null);
+		$asset = new CoursesModelAsset($id);
 
 		// Grab the incoming content
 		$content = JRequest::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$this->asset['title']      = (!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25));
-		$this->asset['type']       = (!empty($this->asset['type']))    ? $this->asset['type']    : 'text';
-		$this->asset['subtype']    = (!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content';
-		$this->asset['content']    = (!empty($this->asset['content'])) ? $this->asset['content'] : $content;
-		$this->asset['created']    = $assetObj->created;
-		$this->asset['created_by'] = $assetObj->created_by;
-		$this->asset['course_id']  = $assetObj->course_id;
-		$this->asset['state']      = $assetObj->state;
+		$asset->set('title',   ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
+		$asset->set('type',    ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
+		$asset->set('subtype', ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
+		$asset->set('content', ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
 
 		// If we have a state coming in as an int
 		if ($graded = JRequest::getInt('graded', false))
 		{
-			$this->asset['graded'] = $graded;
+			$asset->set('graded', $graded);
 			// By default, weight asset as a 'homework' type
-			$grade_weight = $assetObj->grade_weight;
+			$grade_weight = $asset->get('grade_weight');
 			if (empty($grade_weight))
 			{
-				$this->asset['grade_weight'] = 'homework';
+				$asset->set('grade_weight', 'homework');
 			}
 			else
 			{
-				$this->asset['grade_weight'] = $grade_weight;
+				$asset->set('grade_weight', $grade_weight);
 			}
 		}
 		elseif ($graded = JRequest::getInt('edit_graded', false))
 		{
-			$this->asset['graded'] = 0;
-			$this->asset['grade_weight'] = $assetObj->grade_weight;
+			$asset->set('graded', 0);
+		}
+
+		// If we're saving progress calculation var
+		if ($progress = JRequest::getInt('progress_factors', false))
+		{
+			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>JRequest::getInt('section_id', 0)));
+		}
+		elseif (JRequest::getInt('edit_progress_factors', false))
+		{
+			$asset->set('section_id', JRequest::getInt('section_id', 0));
+			$asset->set('progress_factors', 'delete');
 		}
 
 		// Save the asset
-		if (!$assetObj->save($this->asset))
+		if (!$asset->store())
 		{
 			return array('error' => 'Asset save failed');
 		}
@@ -191,18 +213,16 @@ class ContentAssetHandler extends AssetHandler
 		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 		{
 			// Create asset assoc object
-			$assocObj = new CoursesTableAssetAssociation($this->db);
+			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+			$assoc = new CoursesTableAssetAssociation($this->db);
 
-			if (!$assocObj->loadByAssetScope($assetObj->id, $original_scope_id, $scope))
+			if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))
 			{
 				return array('error' => 'Failed to load asset association');
 			}
 
-			// Set new scope id
-			$row->scope_id  = $scope_id;
-
 			// Save the asset association
-			if (!$assocObj->save($row))
+			if (!$assoc->save(array('scope_id'=>$scope_id)))
 			{
 				return array('error' => 'Asset association save failed');
 			}
@@ -212,18 +232,30 @@ class ContentAssetHandler extends AssetHandler
 		$course_id      = JRequest::getInt('course_id', 0);
 		$offering_alias = JRequest::getCmd('offering', '');
 		$course         = new CoursesModelCourse($course_id);
+		$course->offering($offering_alias);
 
-		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
+		$url = JRoute::_($course->offering()->link() . '&asset=' . $asset->get('id'));
+
+		$files = array(
+			'asset_id'       => $asset->get('id'),
+			'asset_title'    => $asset->get('title'),
+			'asset_type'     => $asset->get('type'),
+			'asset_subtype'  => $asset->get('subtype'),
+			'asset_url'      => $url,
+			'asset_state'    => $asset->get('state'),
+			'scope_id'       => $scope_id,
+		);
 
 		$return_info = array(
-			'asset_id'       => (int) $this->assoc['asset_id'],
-			'asset_title'    => $this->asset['title'],
-			'asset_type'     => $this->asset['type'],
-			'asset_subtype'  => $this->asset['subtype'],
+			'asset_id'       => $asset->get('id'),
+			'asset_title'    => $asset->get('title'),
+			'asset_type'     => $asset->get('type'),
+			'asset_subtype'  => $asset->get('subtype'),
 			'asset_url'      => $url,
-			'course_id'      => $this->asset['course_id'],
+			'course_id'      => $asset->get('course_id'),
 			'offering_alias' => $offering_alias,
-			'scope_id'       => $this->assoc['scope_id']
+			'scope_id'       => $scope_id,
+			'files'          => array($files)
 		);
 
 		// Return info

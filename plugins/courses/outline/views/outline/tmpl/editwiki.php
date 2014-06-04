@@ -34,6 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Load asset if applicable
 $id     = JRequest::getInt('asset_id', null);
 $asset  = new CoursesModelAsset($id);
+$asset->set('section_id', $this->course->offering()->section()->get('id'));
 $assets = array();
 
 ?>
@@ -134,26 +135,35 @@ $assets = array();
 			<input type="hidden" name="edit_graded" value="1" />
 		</p>
 
-		<div class="prerequisites">
-			<?php
-				usort($assets, function($a, $b) {
-					return strnatcasecmp($a->get('title'), $b->get('title'));
-				});
+		<p>
+			<label for="progress_factors">Include this item in the progress calculation?</label>
+			<input name="progress_factors" type="checkbox" value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
+			<input type="hidden" name="edit_progress_factors" value="1" />
+		</p>
 
-				$this->view('_prerequisites')
-				     ->set('scope', 'asset')
-				     ->set('scope_id', $asset->get('id'))
-				     ->set('section_id', $this->course->offering()->section()->get('id'))
-				     ->set('items', $assets)
-				     ->set('includeForm', false)
-				     ->display();
-			?>
-		</div>
+		<?php if ($asset->get('id')) : ?>
+			<div class="prerequisites">
+				<?php
+					usort($assets, function($a, $b) {
+						return strnatcasecmp($a->get('title'), $b->get('title'));
+					});
+
+					$this->view('_prerequisites')
+					     ->set('scope', 'asset')
+					     ->set('scope_id', $asset->get('id'))
+					     ->set('section_id', $this->course->offering()->section()->get('id'))
+					     ->set('items', $assets)
+					     ->set('includeForm', false)
+					     ->display();
+				?>
+			</div>
+		<?php endif; ?>
 
 
 		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
 		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
 		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
+		<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id'); ?>" />
 		<input type="hidden" name="id" id="asset_id" value="<?= $id ?>" />
 		<input type="hidden" name="type" value="wiki" />
 
