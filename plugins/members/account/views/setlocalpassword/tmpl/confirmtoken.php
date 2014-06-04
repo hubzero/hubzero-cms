@@ -30,11 +30,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+     ->css('providers.css', 'com_users')
+     ->js()
+     ->js('jquery.hoverIntent', 'system');
 ?>
 
-<h3 class="section-header"><a name="account"></a><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></h3>
+<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ENTER_CONFIRMATION_TOKEN'); ?></h3>
 
-<?php if(isset($this->notifications) && count($this->notifications) > 0) {
+<?php if (isset($this->notifications) && count($this->notifications) > 0) {
 	foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } // close foreach

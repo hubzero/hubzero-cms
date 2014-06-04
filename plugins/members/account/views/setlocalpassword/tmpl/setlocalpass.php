@@ -30,17 +30,22 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+     ->css('providers.css', 'com_users')
+     ->js()
+     ->js('jquery.hoverIntent', 'system');
 ?>
 
-<h3 class="section-header"><a name="account"></a><?php echo JText::_('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></h3>
+<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></h3>
 
-<?php if(isset($this->notifications) && count($this->notifications) > 0) {
+<?php if (isset($this->notifications) && count($this->notifications) > 0) {
 	foreach ($this->notifications as $notification) { ?>
 	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } // close foreach
 } // close if count ?>
 
-<?php if($this->getError()) : ?>
+<?php if ($this->getError()) : ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
@@ -70,7 +75,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 
 			<?php
-				if (count($this->password_rules) > 0) {
+				if (count($this->password_rules) > 0)
+				{
 					echo '<div id="passrules-container" class="setlocal">';
 					echo '<div id="passrules-subcontainer">';
 					echo '<h5>Password Rules</h5>';
@@ -79,19 +85,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 					{
 						if (!empty($rule))
 						{
-							if (!empty($this->change) && is_array($this->change)) {
+							if (!empty($this->change) && is_array($this->change))
+							{
 								$err = in_array($rule, $this->change);
-							} else {
+							}
+							else
+							{
 								$err = '';
 							}
 							$mclass = ($err)  ? ' class="error"' : ' class="empty"';
 							echo "<li $mclass>".$rule."</li>";
 						}
 					}
-					if (!empty($this->change) && is_array($this->change)) {
+					if (!empty($this->change) && is_array($this->change))
+					{
 						foreach ($this->change as $msg)
 						{
-							if (!in_array($msg, $this->password_rules)) {
+							if (!in_array($msg, $this->password_rules))
+							{
 								echo '<li class="error">'.$msg."</li>";
 							}
 						}

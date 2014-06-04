@@ -83,7 +83,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		/*
 		// Is the user logged in?
-		if (!$authorized) {
+		if (!$authorized)
+		{
 			return $arr;
 		}
 		*/

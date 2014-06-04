@@ -31,6 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
+$this->css();
 ?>
 <h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_PROJECTS'); ?></h3>
 <div class="aside">
@@ -61,27 +62,20 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	</div>
 	<div id="project-updates">
 		<div id="latest_activity" class="infofeed">
-		<?php 
+			<?php 
 			// Display item list
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'members',
-					'element'=>'projects',
-					'name'=>'activity'
-				)
-			);
-			$view->option = $this->option;
-			$view->activities = $this->activities;
-			$view->limit = $this->limit;
-			$view->total = $this->total;
-			$view->filters = $this->filters;
-			$view->uid = $this->uid;
-			$view->database = $this->database;
-			$view->config = $this->config;
-			echo $view->loadTemplate();
+			$this->view('default', 'activity')
+			     ->set('option', $this->option)
+			     ->set('activities', $this->activities)
+			     ->set('limit', $this->limit)
+			     ->set('total', $this->total)
+			     ->set('filters', $this->filters)
+			     ->set('uid', $this->uid)
+			     ->set('database', $this->database)
+			     ->set('config', $this->config)
+			     ->display();
 			?>
 		</div> <!-- / .infofeed -->
-		
 	</div>
 </div><!-- / .subject -->
 <div class="clear"></div>

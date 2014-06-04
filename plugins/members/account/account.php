@@ -113,22 +113,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 				die('insecure connection and redirection failed');
 			}
 
-			// Add stylesheet
-			\Hubzero\Document\Assets::addPluginStylesheet('members', 'account');
-			\Hubzero\Document\Assets::addPluginScript('members', 'account');
-			\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-
-			// Add providers stylesheet
-			$doc = JFactory::getDocument();
-			if (version_compare(JVERSION, '2.5', 'ge'))
-			{
-				$doc->addStylesheet(DS . 'components' . DS . 'com_users' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
-			}
-			else
-			{
-				$doc->addStylesheet(DS . 'components' . DS . 'com_user' . DS . 'assets' . DS . 'css' . DS . 'providers.css');
-			}
-
 			// Initialize variables (just needed for views)
 			$action       = JRequest::getWord('action', 'view');
 			$this->user   = $user;
@@ -155,23 +139,23 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML for the account metadat portion
-		if($returnmeta)
+		if ($returnmeta)
 		{
 			// Make sure only I can see this
-			if($member->get('uidNumber') == $user->get("id"))
+			if ($member->get('uidNumber') == $user->get("id"))
 			{
 				// Make sure a password is set and information has been found about it
-				if($passinfo = $this->getPassInfo())
+				if ($passinfo = $this->getPassInfo())
 				{
 					// If that password is within the warning or expiration period...
-					if($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
+					if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
 					{
 						$title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
 						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
-					else if($passinfo['diff'] < 0)
+					else if ($passinfo['diff'] < 0)
 					{
 						$title = 'Your password has expired!';
 						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
@@ -212,10 +196,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Put the used domains into an array with details available from the providers (if applicable)
 		$view->domains_used = array();
 		$view->domain_names = array();
-		if($view->hzalaccounts)
+		if ($view->hzalaccounts)
 		{
 			$i = 0;
-			foreach($view->hzalaccounts as $authenticators)
+			foreach ($view->hzalaccounts as $authenticators)
 			{
 				JPluginHelper::importPlugin('authentication');
 
@@ -250,9 +234,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get unused domains
 		$view->domains_unused = array();
-		foreach($view->domains_avail as $domain)
+		foreach ($view->domains_avail as $domain)
 		{
-			if($domain->name != 'hubzero' && !in_array($domain->name, $view->domain_names))
+			if ($domain->name != 'hubzero' && !in_array($domain->name, $view->domain_names))
 			{
 				$view->domains_unused[] = $domain;
 			}
@@ -260,10 +244,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Determine what type of password change the user needs
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
-		if(!empty($hzup->passhash))
+		if (!empty($hzup->passhash))
 		{
 			// A password has already been set, now check if they're logged in with a linked account
-			if(array_key_exists('auth_link_id', $this->user))
+			if (array_key_exists('auth_link_id', $this->user))
 			{
 				// Logged in with linked account
 				$view->passtype = 'changelocal';
@@ -291,7 +275,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
-		foreach($password_rules as $rule)
+		foreach ($password_rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{
@@ -336,7 +320,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' .
+				JRoute::_('index.php?option=com_users&view=login&return=' .
 					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken'))),
 				JText::_('You must be a logged in to access this area.'),
 				'warning'
@@ -346,7 +330,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Make sure this is an auth link account (i.e. no password set)
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
-		if(!empty($hzup->passhash))
+		if (!empty($hzup->passhash))
 		{
 			JError::raiseError(404, JText::_('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
 			return;
@@ -387,7 +371,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' .
+				JRoute::_('index.php?option=com_users&view=login&return=' .
 					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
 				JText::_('You must be a logged in to access this area.'),
 				'warning'
@@ -412,7 +396,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->id     = $this->user->get('id');
 
 		// Blank form request (no data submitted)
-		if(empty($change))
+		if (empty($change))
 		{
 			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
 			return $view->loadTemplate();
@@ -422,7 +406,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Make sure the token is the proper length
-		if(strlen($token) != 32)
+		if (strlen($token) != 32)
 		{
 			// Oops, token wasn't the correct length (probably a copy/paste error)
 			$this->addPluginMessage(JText::_('Invalid token length, please re-input token'), 'error');
@@ -489,7 +473,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' .
+				JRoute::_('index.php?option=com_users&view=login&return=' .
 					base64_encode(JRoute::_('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
 				JText::_('You must be a logged in to access this area.'),
 				'warning'
@@ -536,7 +520,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Get the password rule descriptions
 		$view->password_rules = array();
-		foreach($password_rules as $rule)
+		foreach ($password_rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{
@@ -580,15 +564,15 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$passrules = false;
 		if (!$password1 || !$password2) // must enter password twice
 		{
-			$this->setError( JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE') );
-		} 
+			$this->setError(JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
+		}
 		elseif ($password1 != $password2) // passwords don't match
 		{
-			$this->setError( JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH') );
-		} 
+			$this->setError(JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
+		}
 		elseif (!empty($msg)) // password doesn't meet site requirements
 		{
-			$this->setError( JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed.') );
+			$this->setError(JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed.'));
 			$passrules = true;
 		}
 
@@ -598,12 +582,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			$change = array();
 			$change['_missing']['password'] = $this->getError();
 
-			if(!empty($msg) && $passrules)
+			if (!empty($msg) && $passrules)
 			{
 				//$change = $msg;
 			}
 
-			if(JRequest::getInt("no_html", 0))
+			if (JRequest::getInt('no_html', 0))
 			{
 				echo json_encode($change);
 				exit();
@@ -673,7 +657,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Determine what type of password change the user needs
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
-		if(empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
+		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
@@ -683,7 +667,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Delete the auth_link
-		if(!$hzal->delete())
+		if (!$hzal->delete())
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_UNLINK_FAILED'));
 			return;
@@ -707,7 +691,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('uidNumber'));
 
 		// Check to see if password expiration is even enforced
-		if(empty($hzup->passhash) || $hzup->shadowMax === NULL)
+		if (empty($hzup->passhash) || $hzup->shadowMax === NULL)
 		{
 			return false;
 		}
@@ -716,11 +700,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$chgtime = intval($chgtime / 86400);
 		$diff    = ($hzup->shadowLastChange + $hzup->shadowMax) - $chgtime;
 
-		if($diff > $hzup->shadowWarning)
+		if ($diff > $hzup->shadowWarning)
 		{
 			$message_style = 'info';
 		}
-		else if($diff <= $hzup->shadowWarning && $diff > 0)
+		else if ($diff <= $hzup->shadowWarning && $diff > 0)
 		{
 			$message_style = 'warning';
 		}
@@ -729,7 +713,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			$message_style = 'error';
 		}
 
-		return array("diff" => $diff, "warning" => $hzup->shadowWarning, "max" => $hzup->shadowMax, "message_style" => $message_style);
+		return array(
+			'diff'          => $diff,
+			'warning'       => $hzup->shadowWarning,
+			'max'           => $hzup->shadowMax,
+			'message_style' => $message_style
+		);
 	}
 
 	/**
@@ -753,12 +742,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$homeDir = $this->member->get('homeDirectory');
 
 		// First, make sure webdav is there and that the necessary folders are there
-		if(!JFolder::exists($base))
+		if (!JFolder::exists($base))
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
 			return;
 		}
-		if(!JFolder::exists($homeDir))
+		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
 			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
@@ -769,10 +758,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
-		if(!JFolder::exists($base.$user.$ssh))
+		if (!JFolder::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if(!JFolder::create($base.$user.$ssh, 0700))
+			if (!JFolder::create($base . $user . $ssh, 0700))
 			{
 				JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_CREATE_FOLDER_FAILED'));
 				return;
@@ -783,14 +772,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$content = JRequest::getVar('keytext', '');
 
 		// Write to the file
-		if(!JFile::write($base.$user.$ssh.$auth, $content) && $content != '')
+		if (!JFile::write($base . $user . $ssh . $auth, $content) && $content != '')
 		{
 			JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
 			return;
 		}
 
 		// Set correct permissions on authorized_keys file
-		JPath::setPermissions($base.$user.$ssh.$auth, '0600');
+		JPath::setPermissions($base . $user . $ssh . $auth, '0600');
 
 		// Set the redirect
 		$this->setRedirect(
@@ -823,12 +812,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$key = '';
 
 		// First, make sure webdav is there and that the necessary folders are there
-		if(!JFolder::exists($base))
+		if (!JFolder::exists($base))
 		{
 			// Not sure what to do here
 			return $key = false;
 		}
-		if(!JFolder::exists($homeDir))
+		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
 			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
@@ -838,34 +827,34 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 				return $key = false;
 			}
 		}
-		if(!JFolder::exists($base.$user.$ssh))
+		if (!JFolder::exists($base . $user . $ssh))
 		{
 			// User doesn't have an ssh directory, so try to create one (with appropriate permissions)
-			if (!JFolder::create($base.$user.$ssh, 0700))
+			if (!JFolder::create($base . $user . $ssh, 0700))
 			{
 				return $key = false;
 			}
 		}
-		if(!JFile::exists($base.$user.$ssh.$auth))
+		if (!JFile::exists($base . $user . $ssh . $auth))
 		{
 			// Try to create their authorized keys file
 			$content = ''; // J25 passes param by reference so couldn't use constant below
-			JFile::write($base.$user.$ssh.$auth, $content);
-			if (!JFile::exists($base.$user.$ssh.$auth))
+			JFile::write($base . $user . $ssh . $auth, $content);
+			if (!JFile::exists($base . $user . $ssh . $auth))
 			{
 				return $key = false;
 			}
 			else
 			{
 				// Set correct permissions on authorized_keys file
-				JPath::setPermissions($base.$user.$ssh.$auth, '0600');
+				JPath::setPermissions($base . $user . $ssh . $auth, '0600');
 
 				return $key;
 			}
 		}
 
 		// Read the file contents
-		$key = JFile::read($base.$user.$ssh.$auth);
+		$key = JFile::read($base . $user . $ssh . $auth);
 
 		return $key;
 	}
@@ -920,7 +909,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 	{
 		// Create database object and check that token matches that of the user stored in the db
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT id, activation FROM #__users WHERE block = 0 AND username = '.$db->Quote($this->user->get('username')));
+		$db->setQuery('SELECT id, activation FROM `#__users` WHERE block = 0 AND username = ' . $db->Quote($this->user->get('username')));
 
 		return $db->loadObject();
 	}
@@ -970,7 +959,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$pw_rules = array();
 
 		// Get the password rule descriptions
-		foreach($password_rules as $rule)
+		foreach ($password_rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{
@@ -992,24 +981,30 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Iterate through the rules and add the appropriate classes (passed/error)
-		if (count($pw_rules) > 0) {
+		if (count($pw_rules) > 0)
+		{
 			foreach ($pw_rules as $rule)
 			{
 				if (!empty($rule))
 				{
-					if (!empty($msg) && is_array($msg)) {
+					if (!empty($msg) && is_array($msg))
+					{
 						$err = in_array($rule, $msg);
-					} else {
+					}
+					else
+					{
 						$err = '';
 					}
 					$mclass = ($err)  ? ' class="error"' : 'class="passed"';
 					echo "<li $mclass>".$rule."</li>";
 				}
 			}
-			if (!empty($msg) && is_array($msg)) {
+			if (!empty($msg) && is_array($msg))
+			{
 				foreach ($msg as $message)
 				{
-					if (!in_array($message, $pw_rules)) {
+					if (!in_array($message, $pw_rules))
+					{
 						echo '<li class="error">'.$message."</li>";
 					}
 				}

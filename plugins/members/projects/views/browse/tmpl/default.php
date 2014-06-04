@@ -31,19 +31,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 $juser = $this->juser;
+
+$this->css();
 ?>
 <h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_PROJECTS'); ?></h3>
+
 <div class="aside">
 	<div class="container">
 		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE'); ?></h3>
 		<p><?php echo JText::_('PLG_MEMBERS_PROJECTS_CREATE_EXPLANATION'); ?></p>
-		<p><a class="icon-add" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
+		<p><a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_ADD'); ?></a></p>
 	</div>
 	<div class="container">
 		<h3><?php echo JText::_('PLG_MEMBERS_PROJECTS_EXPLORE'); ?></h3>
 		<p><?php echo JText::sprintf('PLG_MEMBERS_PROJECTS_EXPLORE_EXPLANATION', JRoute::_('index.php?option=com_projects&task=browse'), JRoute::_('index.php?option=com_projects&task=features')); ?></p>
 	</div>
 </div><!-- / .aside -->
+
 <div class="subject" id="s-projects">
 	<div class="entries-filters">
 		<ul class="entries-menu">
@@ -61,42 +65,28 @@ $juser = $this->juser;
 	</div>
 	<div id="myprojects">
 	<?php 
-		if ($this->which == 'all') 
-		{ 
+		if ($this->which == 'all')
+		{
 			// Show owned projects first
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'members',
-					'element'=>'projects',
-					'name'=>'browse',
-					'layout'=>'list'
-				)
-			);
-			$view->option  = $this->option;
-			$view->rows    = $this->owned;
-			$view->which   = 'owned';
-			$view->config  = $this->config;
-			$view->juser   = $this->juser;
-			$view->filters = $this->filters;
-			echo $view->loadTemplate();
+			$this->view('list')
+			     ->set('option', $this->option)
+			     ->set('rows', $this->owned)
+			     ->set('which', 'owned')
+			     ->set('config', $this->config)
+			     ->set('juser', $this->juser)
+			     ->set('filters', $this->filters)
+			     ->display();
 		}
 
 		// Show rows
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'members',
-				'element'=>'projects',
-				'name'=>'browse',
-				'layout'=>'list'
-			)
-		);
-		$view->option  = $this->option;
-		$view->rows    = $this->rows;
-		$view->config  = $this->config;
-		$view->juser   = $this->juser;
-		$view->which   = $this->filters['which'];
-		$view->filters = $this->filters;
-		echo $view->loadTemplate();
+		$this->view('list')
+		     ->set('option', $this->option)
+		     ->set('rows', $this->rows)
+		     ->set('config', $this->config)
+		     ->set('juser', $this->juser)
+		     ->set('which', $this->filters['which'])
+		     ->set('filters', $this->filters)
+		     ->display();
 	?>
 	</div>
 </div><!-- / .subject -->

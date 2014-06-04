@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/members/groups/groups.css
+ * @file        plugins/members/projects/projects.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -64,12 +64,16 @@
 	}
 	#s-projects .entries-menu a:hover {
 		color: #fff;
-	    background-color: #333;
+		background-color: #333;
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
 		text-decoration: none;
 	}
-	#s-projects .entries-menu .active { color: #ffffff; text-shadow: 0 1px 1px rgba(0,0,0,.3); background-color: #999; }		
-	
+	#s-projects .entries-menu .active {
+		color: #ffffff;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		background-color: #999;
+	}
+
 /* Listings
 --------------------------------------------- */
 	table.listing {
@@ -178,7 +182,7 @@
 	table.listing th.activesort a {
 		color: #000;
 	}
-		
+
 /*Browse Projects - project thumbnail 
 --------------------------------------------- */
 	.th_image {
@@ -215,7 +219,7 @@
 		*background: transparent url("/components/com_projects/assets/img/icons/lock.png") 0 3px no-repeat;	
 		*padding: 5px 8px;
 	}
-	
+
 /* News feed 
 --------------------------------------------- */
 	#project-updates {
@@ -301,7 +305,7 @@
 		margin: 0;
 		border: none;
 		background: #f2f2f2;
-		*background: #f2f2f2 url("/components/com_projects/assets/img/icons/quotes.gif") 6px 6px no-repeat !important;		
+		*background: #f2f2f2 url("/components/com_projects/assets/img/icons/quotes.gif") 6px 6px no-repeat !important;
 		color: #444;
 		border-bottom: 1px solid #FFF;
 		margin-right: 0;
@@ -324,7 +328,6 @@
 		font-size: 85%;
 	}
 	.project-name a {
-		/*color: #888*/
 		border-bottom: 1px dotted #CCC !important;
 	}
 	.urgency {
@@ -337,11 +340,11 @@
 	.p-ima a {
 		border: none;
 	}
-	
+
 /* Prev/next paging
 --------------------------------------------- */
 	.nav_pager {
-	 	text-align: center;	
+		text-align: center;
 		margin: 0;
 		padding: 0;
 		font-size: 85%;
@@ -375,22 +378,23 @@
 	.infofeed .quote {
 		*background: url("/components/com_projects/assets/img/icons/quotes.gif") 0 0.2em no-repeat;
 	}
-	.infofeed .project, .project {
+	.infofeed .project,
+	.project {
 		*background: url("/components/com_projects/assets/img/icons/plane.gif") 0 0.2em no-repeat;
 	}
-	.infofeed .todo {		
+	.infofeed .todo {
 		*background: url("/components/com_projects/assets/img/icons/pin.gif") 0 0.2em no-repeat;
 	}
-	.infofeed .activity {		
+	.infofeed .activity {
 		*background: url("/components/com_projects/assets/img/icons/activity.gif") 0 0.2em no-repeat;
 	}
-	.infofeed .publication {		
+	.infofeed .publication {
 		*background: url("/components/com_projects/assets/img/icons/publication.gif") 0 0.2em no-repeat;
 	}
 	.infofeed .notes {
 		*background: url("/components/com_projects/assets/img/icons/feather.gif") 0 0.2em no-repeat;
 	}
-	.buzz, .infofeed .blog {		
+	.buzz, .infofeed .blog {
 		*background: url("/components/com_projects/assets/img/icons/talker.gif") 0 0.2em no-repeat;
 	}
 	.infofeed div {
@@ -407,7 +411,7 @@
 		font-family: 'Fontcons';
 		color: #aaa;
 		margin-right: 0.3em;
-		vertical-align: middle;	
+		vertical-align: middle;
 		position: absolute;
 		margin-left: -20px;
 	}
@@ -422,12 +426,11 @@
 		content: "\f042";
 	}
 	.infofeed .newsupdate:before {
-		content: "\f053"; 
+		content: "\f053";
 		color: #6897a4;
 	}
 	.infofeed .files:before {
-		content: "\f016"; 
-	/*	content: "\f07c"; */
+		content: "\f016";
 		color: #6897a4;
 	}
 	.infofeed .project:before {
@@ -457,7 +460,8 @@
 		content: "\f075";
 		color: #c6a68d;
 	}
-	.infofeed .publications:before, .infofeed .publication:before {
+	.infofeed .publications:before,
+	.infofeed .publication:before {
 		content: "\f058";
 		color: #52ad4b;
 	}
@@ -487,4 +491,4 @@
 		border-top: 1px solid #ace4e1;
 		border-bottom: 1px solid #ace4e1;
 		font-size: 90%;
-	}	
+	}

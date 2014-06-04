@@ -34,7 +34,7 @@
 		filter: alpha(opacity=10);
 		opacity: 0.1;
 		cursor: pointer;
-	}	
+	}
 	#profile li .section-content {
 		width: 95%;
 		float: left;
@@ -75,10 +75,10 @@
 	}
 	#profile li .section-edit a.open:hover {
 		border: none;
-	} 	
+	}
 	#profile .section-edit-container {
 		display: none;
-	}	                             
+	}
 	#profile .section-edit-content {
 		padding: 10px;
 		margin: 20px 0 10px 25%;
@@ -136,7 +136,7 @@
 		border: 1px solid #0441b0; 
 		padding: 5px 20px;
 		font-size: 13px;
-	}	
+	}
 	.section-edit-cancel {
 		font-size: 11px;
 		background: #efefef;
@@ -146,7 +146,7 @@
 	.section-edit-submit:hover,
 	.section-edit-cancel:hover {
 		cursor: pointer;
-	}	
+	}
 	.section-edit-submit:disabled {
 		background: #81adfc;
 		border: 1px solid #6389d0;
@@ -166,12 +166,12 @@
 	#profile .section-edit-content .sub-sub,
 	#profile .section-edit-content label.indent { 
 		margin: 0 0 10px 20px;
-	} 
+	}
 	#profile .section-edit-content .hint {
 		color: #999;
 		font-size: 90%;
 		font-weight: normal;
-	}   
+	}
 	#profile .section-edit-content .token-input-list-act li p {
 		font-weight: normal;
 	}
@@ -193,8 +193,8 @@
 	/* Active Section */
 	#profile li.section.active {
 		background: #efefef;
-	}	
-	/* Hidden Section */	
+	}
+	/* Hidden Section */
 	#profile li.section.hidden {
 	}
 	#profile li.section.hidden .key {
@@ -206,7 +206,7 @@
 		color:rgba(0,0,0,0.3);
 		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
 		filter: alpha(opacity=40);
-	}		
+	}
 	#profile li.section.hidden .key:before {
 		content: "\f070";
 		position: absolute;
@@ -218,13 +218,13 @@
 		font-family: 'Fontcons';
 		color: #b2b2b2;
 	}
-	/* Private Section */	
+	/* Private Section */
 	#profile li.section.private {
 		background:none;
 		background:#efefef url("/components/com_members/assets/img/light-stripes.png") repeat 0 0; 
 	}
 	#profile li.section.private .key {
-	}	
+	}
 	#profile li.section.private .key:before {
 		content: "\f023";
 		position: absolute;
@@ -235,8 +235,8 @@
 		font-size: 14px;
 		font-family: 'Fontcons';
 		color: #999999;
-	} 
-	/* Profile Bio Section */  
+	}
+	/* Profile Bio Section */
 	#profile li.profile-bio p:first-child {
 		margin-top:0;
 	}
@@ -284,14 +284,14 @@
 		filter: alpha(opacity=70);
 		opacity:0.7;
 		border-radius:3px;
-	} 		
+	}
 	#member-profile-completeness #meter-percent:after {
 		content:attr(data-percent) '%';
 		position:absolute;
 		top:0;
 		right:0;
 		color:#444;
-	} 
+	}
 	#member-profile-completeness #completeness-info {
 		display:block;
 		text-align:right;
@@ -303,7 +303,7 @@
 	#member-profile-completeness #completeness-info:hover {
 		cursor:pointer;
 		color:#444;
-	} 
+	}
 
 /* Member Picture Upload */
 	#ajax-upload-container {
@@ -324,11 +324,11 @@
 		float: left;
 		width: 50%;
 		margin-left: 5%;
-	}	
+	}
 	#ajax-upload-actions {
 		text-align: right;
 		margin: 20px 0 0 0;
-	} 
+	}
 	#ajax-upload-left img {
 		border-radius: 3px;
 		box-shadow: 0 0 2px black;
@@ -367,7 +367,7 @@
 		background-image: -o-linear-gradient(top, #222, #444);
 		background-image: -ms-linear-gradient(top, #222, #444);
 		background-image: linear-gradient(top, #222, #444);
-	}	
+	}
 	#ajax-upload-right .qq-upload-button:before {
 		content: "\f01b";
 		position: absolute;
@@ -390,7 +390,7 @@
 	}
 	#ajax-upload-right table tr:last-child td {
 		border:none;
-	}	
+	}
 	#ajax-upload-right table tr td.key {
 		font-weight:bold;
 		color:#333;
@@ -493,7 +493,7 @@
 		width:100%;
 		height:300px;
 		overflow-y:scroll;
-	}	
+	}
 	#usage-agreement-buttons {
 		text-align:center;
 		margin:10px 0 0 0;
@@ -563,36 +563,34 @@
 		background: url('/components/com_store/assets/img/coin.gif') no-repeat 0 4px;
 		line-height: 40px;
 	}
-	
-/*
-Member Address
-*/
-.member-address-form {
-}
-.member-address-form fieldset legend {
-	padding: 0.5em 2% !important;
-	width: 96% !important;
-}
-.member-address-form fieldset p {
-	margin: 0 !important;
-	padding: 1em !important;
-}
-.locate:before {
-	content: "\f041";
-}
-.section .address-links {
-	display: none;
-}
-.section.active .address-links {
-	display: block;
-}
-.profile-address .grid {
-	padding: 20px 0 0 0;
-	margin: 20px 0 0 0;
-	border-top: 1px solid #efefef;
-}
-.profile-address .grid:first-child {
-	margin: 0;
-	padding: 0;
-	border-top: none;
-}
+
+/* Member Address */
+	.member-address-form {
+	}
+	.member-address-form fieldset legend {
+		padding: 0.5em 2% !important;
+		width: 96% !important;
+	}
+	.member-address-form fieldset p {
+		margin: 0 !important;
+		padding: 1em !important;
+	}
+	.locate:before {
+		content: "\f041";
+	}
+	.section .address-links {
+		display: none;
+	}
+	.section.active .address-links {
+		display: block;
+	}
+	.profile-address .grid {
+		padding: 20px 0 0 0;
+		margin: 20px 0 0 0;
+		border-top: 1px solid #efefef;
+	}
+	.profile-address .grid:first-child {
+		margin: 0;
+		padding: 0;
+		border-top: none;
+	}

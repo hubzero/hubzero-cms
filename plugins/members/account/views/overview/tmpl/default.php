@@ -30,108 +30,104 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+     ->css('providers.css', 'com_users')
+     ->js()
+     ->js('jquery.hoverIntent', 'system');
+
+$paramsClass = 'JRegistry';
+$com_user    = 'com_users';
 ?>
 
-<h3 class="section-header"><a name="account"></a><?php echo JText::_('PLG_MEMBERS_ACCOUNT'); ?></h3>
-<?php if(isset($this->notifications) && count($this->notifications) > 0) {
+<h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT'); ?></h3>
+
+<?php if (isset($this->notifications) && count($this->notifications) > 0) {
 	foreach ($this->notifications as $notification) { ?>
-	<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 	<?php } // close foreach
 } // close if count ?>
+
 <div id="members-account-section">
 
-<?php if(count($this->domains_unused) > 0 || !empty($this->hzalaccounts[0])) { ?>
+<?php if (count($this->domains_unused) > 0 || !empty($this->hzalaccounts[0])) { ?>
 	<div class="sub-section">
 		<h4><?php echo JText::_('PLG_MEMBERS_LINKED_ACCOUNTS'); ?></h4>
 		<div class="clear"></div>
 		<div class="sub-section-content auth">
-<?php 
-		if($this->hzalaccounts)
-		{
-			echo "<h5>" . JText::_('PLG_MEMBERS_ACCOUNT_ACTIVE_PROVIDERS') . ":</h5>";
-			foreach($this->hzalaccounts as $hzala)
+			<?php 
+			if ($this->hzalaccounts)
 			{
-				// Get the display name for the current plugin being used
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
+				echo "<h5>" . JText::_('PLG_MEMBERS_ACCOUNT_ACTIVE_PROVIDERS') . ":</h5>";
+				foreach ($this->hzalaccounts as $hzala)
 				{
-					$paramsClass = 'JRegistry';
-				}
-				$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
-				$pparams      = new $paramsClass($plugin->params);
-				$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
-?>
-				<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
-					<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
-						echo JRoute::_('index.php?option=' .
-							$this->option . '&id=' .
-							$this->member->get('uidNumber') .
-							'&active=account&action=unlink&hzal_id=' .
-							$hzala['id']); ?>">x</a></div>
-					<div class="account-info">
-						<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
-					</div>
-				</div>
-<?php
-			}
-		}
-
-		echo '<div class="clear"></div>';
-
-		if($this->domains_unused)
-		{
-			echo '<h5>' . JText::_('PLG_MEMBERS_ACCOUNT_AVAILABLE_PROVIDERS') . ':</h5>';
-			foreach($this->domains_unused as $domain)
-			{
-				// Get the display name for the current plugin being used
-				$paramsClass = 'JParameter';
-				$com_user    = 'com_user';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-					$com_user    = 'com_users';
-				}
-				$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
-				$pparams      = new $paramsClass($plugin->params);
-				$display_name = $pparams->get('display_name', ucfirst($domain->name));
-?>
-				<a href="<?php echo JRoute::_('index.php?option=' . $com_user . '&view=login&authenticator=' . $domain->name); ?>">
-					<div class="account inactive <?php echo $domain->name; ?>">
+					// Get the display name for the current plugin being used
+					$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
+					$pparams      = new $paramsClass($plugin->params);
+					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
+					?>
+					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
+						<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
+							echo JRoute::_('index.php?option=' .
+								$this->option . '&id=' .
+								$this->member->get('uidNumber') .
+								'&active=account&action=unlink&hzal_id=' .
+								$hzala['id']); ?>">x</a></div>
 						<div class="account-info">
 							<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
 						</div>
 					</div>
-				</a>
-<?php
+					<?php
+				}
 			}
-		}
-?>
+
+			echo '<div class="clear"></div>';
+
+			if ($this->domains_unused)
+			{
+				echo '<h5>' . JText::_('PLG_MEMBERS_ACCOUNT_AVAILABLE_PROVIDERS') . ':</h5>';
+				foreach ($this->domains_unused as $domain)
+				{
+					// Get the display name for the current plugin being used
+					$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
+					$pparams      = new $paramsClass($plugin->params);
+					$display_name = $pparams->get('display_name', ucfirst($domain->name));
+					?>
+					<a href="<?php echo JRoute::_('index.php?option=' . $com_user . '&view=login&authenticator=' . $domain->name); ?>">
+						<div class="account inactive <?php echo $domain->name; ?>">
+							<div class="account-info">
+								<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+							</div>
+						</div>
+					</a>
+					<?php
+				}
+			}
+			?>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
 <?php } // close linked accounts subsection check ?>
-	<a name="password"></a>
+
 	<div class="sub-section">
 		<h4><?php 
-			if($this->passtype == 'changelocal')
+			if ($this->passtype == 'changelocal')
 			{
 				echo JText::_('PLG_MEMBERS_CHANGE_LOCAL_PASSWORD');
 			}
-			else if($this->passtype == 'changehub')
+			else if ($this->passtype == 'changehub')
 			{
 				echo JText::_('PLG_MEMBERS_CHANGE_HUB_PASSWORD');
 			}
-			else if($this->passtype == 'set')
+			else if ($this->passtype == 'set')
 			{
 				echo JText::_('PLG_MEMBERS_SET_LOCAL_PASSWORD');
 			}
 		?></h4>
 		<div class="clear"></div>
 		<div class="sub-section-content">
-<?php if($this->passtype == 'changelocal' || $this->passtype == 'changehub')
-{
-?>
+		<?php if ($this->passtype == 'changelocal' || $this->passtype == 'changehub') { ?>
 			<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
-				<?php if(is_array($this->passinfo)) { ?>
+				<?php if (is_array($this->passinfo)) { ?>
 					<p class="<?php echo $this->passinfo['message_style']; ?>">
 						<?php echo JText::sprintf('PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION', $this->passinfo['diff'], $this->passinfo['max']); ?>
 					</p>
@@ -162,19 +158,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 						{
 							if (!empty($rule))
 							{
-								if (!empty($this->change) && is_array($this->change)) {
+								if (!empty($this->change) && is_array($this->change))
+								{
 									$err = in_array($rule, $this->change);
-								} else {
+								}
+								else
+								{
 									$err = '';
 								}
 								$mclass = ($err)  ? ' class="error"' : ' class="empty"';
 								echo "<li $mclass>".$rule."</li>";
 							}
 						}
-						if (!empty($this->change) && is_array($this->change)) {
+						if (!empty($this->change) && is_array($this->change))
+						{
 							foreach ($this->change as $msg)
 							{
-								if (!in_array($msg, $this->password_rules)) {
+								if (!in_array($msg, $this->password_rules))
+								{
 									echo '<li class="error">'.$msg."</li>";
 								}
 							}
@@ -191,7 +192,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="task" value="changepassword" />
 				<input type="hidden" name="no_html" id="pass_no_html" value="0" />
 			</form>
-<?php } else { ?>
+		<?php } else { ?>
 			<p><?php echo JText::_('PLG_MEMBERS_ACCOUNT_LOCAL_PASS_EXPLANATION'); ?></p>
 			<a href="<?php echo JRoute::_('index.php?option=' . $this->option .
 												'&id=' . $this->member->get('uidNumber') .
@@ -199,7 +200,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 												'&task=sendtoken'); ?>">
 				<div id="token-button"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_REQUEST_TOKEN'); ?></div>
 			</a>
-<?php } ?>
+		<?php } ?>
 		</div><!-- / .sub-section-content -->
 	</div><!-- / .sub-section -->
 
