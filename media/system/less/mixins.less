@@ -609,3 +609,16 @@
 			*width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%);
 		}
 	}
+	
+	// Breaking the grid
+	// Full-width spanning column when broken down
+	.basicColumn {
+		float: none !important;
+		width: 100% !important;
+		margin-right: 0;	
+		margin-bottom: @gridColCollapseMargin;	
+		
+		&:nth-last-child(1) {
+			margin-bottom: 0;	
+		}
+	}

@@ -43,43 +43,45 @@ $this->css()
 </header>
 
 <section class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<form action="<?php echo JRoute::_($this->entry->link('delete')); ?>" method="post" id="hubForm">
-		<div class="explaination">
-		<?php if ($this->config->get('access-create-entry')) { ?>
-			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?></a>
+	<div class="section-inner">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php } ?>
+		<form action="<?php echo JRoute::_($this->entry->link('delete')); ?>" method="post" id="hubForm">
+			<div class="explaination">
+			<?php if ($this->config->get('access-create-entry')) { ?>
+				<p>
+					<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?></a>
+				</p>
+			<?php } ?>
+			</div>
+			<fieldset>
+				<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
+	
+				<p class="warning">
+					<?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
+				</p>
+	
+				<label for="confirmdel">
+					<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
+					<?php echo JText::_('COM_BLOG_DELETE_CONFIRM'); ?>
+				</label>
+			</fieldset>
+			<div class="clear"></div>
+	
+			<input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
+			<input type="hidden" name="task" value="delete" />
+			<input type="hidden" name="process" value="1" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	
+			<?php echo JHTML::_('form.token'); ?>
+	
+			<p class="submit">
+				<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_BLOG_DELETE'); ?>" />
+				<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">
+					<?php echo JText::_('COM_BLOG_CANCEL'); ?>
+				</a>
 			</p>
-		<?php } ?>
-		</div>
-		<fieldset>
-			<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
-
-			<p class="warning">
-				<?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
-			</p>
-
-			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
-				<?php echo JText::_('COM_BLOG_DELETE_CONFIRM'); ?>
-			</label>
-		</fieldset>
-		<div class="clear"></div>
-
-		<input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
-		<input type="hidden" name="task" value="delete" />
-		<input type="hidden" name="process" value="1" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-
-		<?php echo JHTML::_('form.token'); ?>
-
-		<p class="submit">
-			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_BLOG_DELETE'); ?>" />
-			<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">
-				<?php echo JText::_('COM_BLOG_CANCEL'); ?>
-			</a>
-		</p>
-	</form>
+		</form>
+	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
