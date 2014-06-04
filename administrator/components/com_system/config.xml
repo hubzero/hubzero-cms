@@ -48,6 +48,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses" />
 	</params>
 	<fieldset name="basic">
 		<field name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
@@ -69,6 +71,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses" />
 	</fieldset>
 </config>
 
