@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');                              
 
 //set title
-JToolBarHelper::title('<a href="index.php?option='.$this->option.'">' . JText::_( 'Newsletter Mailings' ) . '</a>', 'mailing.png');
+JToolBarHelper::title(JText::_( 'Newsletter Mailings' ), 'mailing.png');
 
 //add buttons to toolbar
 //JToolBarHelper::custom('process', 'options', '', 'Process', false);
