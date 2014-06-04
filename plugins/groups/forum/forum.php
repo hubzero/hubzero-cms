@@ -1304,7 +1304,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
 		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
-		$forum_message = $prependtext . "\r\n\r\n" . $model->comment;
+		$forum_message = $prependtext . "\r\n\r\n" . html_entity_decode(strip_tags($model->comment), ENT_COMPAT, 'UTF-8');
 
 		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
