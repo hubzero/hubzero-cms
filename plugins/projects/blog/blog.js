@@ -16,210 +16,194 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
 //----------------------------------------------------------
 // Project Micro Blog JS
 //----------------------------------------------------------
-
-HUB.ProjectMicroblog = {
-
-	initialize: function() {
-		// Infofeed - Comments
-		var default_comment = 'Write your comment';
-		var default_blog = 'Got an update?';
-		var addcomment = $$('.addcomment');
-		var showc = $$('.showc');
-		
-		if(addcomment.length > 0) {
-			addcomment.each(function(i) {
-				if(!i.hasClass('hidden')) {	
-					i.addClass('hidden');
-				}	
-			});
-		}
-		
-		// Showing comment area
-		if(showc.length > 0) {
-			showc.each(function(item) {
-				item.addEvent('click', function(e) {
-					new Event(e).stop();
-					var id = item.getProperty('id').replace('addc_','');
-					var acid = 'commentform_' + id;
-				
-					if($(acid) && $(acid).hasClass('hidden')) {
-						$(acid).removeClass('hidden');		
-						var coord = $(acid).getCoordinates();			
-						var myFx = new Fx.Scroll(window).scrollTo(coord['left'], (coord['top'] - 200));
-					}
-					else if($(acid) && !$(acid).hasClass('hidden')) {
-						$(acid).addClass('hidden');
-					}
-				});	
-			});
-		}
-		
-		// Comment form
-		var commentarea = $$('.commentarea');
-		if(commentarea.length > 0) {			
-			commentarea.each(function(item) {	
-				$(item).addEvent('keyup', function(e) {					
-					HUB.ProjectMicroblog.setCounter($(item) );
-				});
-					
-				if(item.value=='') {
-					item.value = default_comment;
-					item.setStyle('color', '#999');
-					item.setStyle('height', '20px');
-					item.setStyle('font-size', '100%');
-				}
-				item.addEvent('focus', function(e) {
-					// Clear default value
-					if(item.value == default_comment)	 {
-						item.value = '';
-						item.setStyle('color', '#000');
-						item.setStyle('height', '70px');
-					}				
-				});	
-			});
-		}
-		
-		// Blog entry form
-		if($('blogentry')) {	
-			if($('blogentry').value=='') {
-				$('blogentry').value = default_blog;
-				$('blogentry').setStyle('color', '#999');
-				$('blogentry').setStyle('height', '20px');
-				$('blogentry').setStyle('font-size', '100%');
-				$('blog-submit').addClass('hidden');
-				$('blog-submitarea').setStyle('height', '0');
-			}
-			
-			$('blogentry').addEvent('focus', function(e) {
-				// Clear default value
-				if($('blogentry').value == default_blog)	 {
-					$('blogentry').value = '';
-					$('blogentry').setStyle('color', '#000');
-					$('blogentry').setStyle('height', '60px');
-					$('blog-submit').removeClass('hidden');
-					$('blog-submitarea').setStyle('height', '20px');
-				}										   
-			});	
-			
-			$('blogentry').addEvent('keyup', function(e) {					
-				HUB.ProjectMicroblog.setCounter($('blogentry'), $('counter_number_blog') );
-			});	
-			
-			// On click outside
-			if($('blog-submitarea')) {
-				$('blog-submitarea').addEvent('click', function(e) {
-					// Clear default value
-					if($('blogentry').value == default_blog || $('blogentry').value == '')	 {
-						new Event(e).stop();
-						$('blogentry').value = default_blog;
-						$('blogentry').setStyle('color', '#999');
-						$('blogentry').setStyle('height', '20px');
-						$('blog-submit').addClass('hidden');
-						$('blog-submitarea').setStyle('height', '0');
-					}
-				});	
-			}
-		}
-		
-		// Do not allow to post default values		
-		if($('blog-submit')) {	
-			$('blog-submit').addEvent('click', function(e){		
-				if($('blogentry').value == '' || $('blogentry').value == default_blog) {
-					new Event(e).stop();
-					$('blogentry').value = default_blog;
-					$('blogentry').setStyle('color', '#999');
-					$('blogentry').setStyle('height', '20px');
-					$('blog-submit').addClass('hidden');
-					$('blog-submitarea').setStyle('height', '0');
-				}
-			});	
-		}
-		if($$('.c-submit').length > 0) {	
-			$$('.c-submit').each(function(item) {				
-				item.addEvent('click', function(e){	
-					cid = item.getProperty('id').replace('cs_','');
-					caid = 'ca_' + cid;
-					if($(caid)) {
-						if($(caid).value == '' || $(caid).value == default_comment) {
-							new Event(e).stop();
-						}
-					}					
-				});
-			});
-		}
-
-		// Confirm delete
-		var delit = $$('.delit');
-		if(delit.length > 0)
-		{
-			delit.each(function(i) {
-				var link =   i.getElement('a');
-				link.addEvent('click', function(e) {	
-					new Event(e).stop();
-					if(HUB.Projects)
-					{
-						HUB.Projects.addConfirm (link, 'Permanently delete this entry?', 'yes, delete', 'cancel');
-						if($('confirm-box'))
-						{
-							$('confirm-box').setStyles({'margin-left': '-100px' });		
-						}
-					}		
-				});
-			});		
-		}
-		
-		// Show more updates
-		if($('more-updates') && $('pid')) {	
-			$('more-updates').addEvent('click', function(e) {
-				new Event(e).stop();
-				var link = $('more-updates').getElement('a');
-				var url = link.getProperty('href');
-				url = url + '&no_html=1&ajax=1&action=update';
-				new Ajax(url,{
-						'method' : 'get',
-						'update' : $('latest_activity'),
-						onComplete: function(response) { 
-						  HUB.ProjectMicroblog.initialize();
-						}
-				}).request();
-				
-			});	
-		}
-		
-	},
-	
-	setCounter: function(el, numel ) {		
-		var maxchars = 250;			
-		var current_length = el.value.length;
-		var remaining_chars = maxchars-current_length;
-		if(remaining_chars < 0) {
-			remaining_chars = 0;
-		}
-		
-		if(numel) {
-			if(remaining_chars <= 10){
-				numel.innerHTML = remaining_chars + ' chars remaining';
-				$(numel.parentNode).setStyle('color', '#ff0000');			
-			} else {
-				$(numel.parentNode).setStyle('color', '#999999');
-				numel.innerHTML = '';
-			}
-		}
-		
-		if (remaining_chars == 0) {
-			el.setProperty('value', el.getProperty('value').substr(0,maxchars));
-		}			
-	}
+if (!jq) {
+	var jq = $;
 }
+
+jQuery(document).ready(function(jq){
+	var $ = jq;
+
+	// Showing comment area
+	$('.showc').each(function(i, item) 
+	{
+		$(item).on('click', function(e) 
+		{
+			e.preventDefault();
+			var id = $(item).attr('id').replace('addc_', '');
+			var acid = '#commentform_' + id;
+
+			if ($(acid) && $(acid).hasClass('hidden')) 
+			{
+				$(acid).removeClass('hidden');
+				var coord = $(acid).position();
+				$('html, body').animate({
+					scrollTop: $(acid).offset().top
+				}, 2000);
+			} 
+			else if ($(acid) && !$(acid).hasClass('hidden')) 
+			{
+				$(acid).addClass('hidden');
+			}
+		});	
+	});
 	
-window.addEvent('domready', HUB.ProjectMicroblog.initialize);
+	// Show more
+	$('.more-content').each(function(i, el)
+	{
+		$(el).on('click', function(e) 
+		{
+			e.preventDefault();
+			var shortBody = $(el).parent().parent().find("span.body");
+			var longBody  = $(el).parent().parent().find("span.fullbody");
+							
+			$(shortBody).addClass('hidden');
+			$(longBody).removeClass('hidden');
+		});
+	});
+	
+	// Comment form
+	$('.commentarea').each(function(i, item) 
+	{
+		// Submit comments on enter
+		$(item).bind("enterKey",function(e)
+		{
+			var form = $(item).parent().parent().parent().parent().find("form");
+
+			// Submit if not empty
+			if ($(item).val() != '')
+			{
+				$(form).submit();
+			}
+		});
+
+		$(item).on('keypress', function(e) 
+		{
+			if (e.keyCode == 13)
+			{
+				e.preventDefault(); 
+			}
+		});
+
+		$(item).on('keyup', function(e) 
+		{
+			if (e.keyCode == 13)
+			{
+				$(this).trigger("enterKey");
+			}
+		});
+
+		if ($(item).val() == '') 
+		{
+			$(item)
+				.css('color', '#999')
+				.css('height', '20px')
+				.css('font-size', '100%');
+		}
+		$(item).on('focus', function(e) 
+		{
+			$(this).css('color', '#000')
+				   .css('height', '50px');
+		});
+	});
+
+	// Blog entry form
+	if ($('#blogentry')) 
+	{
+		if ($('#blogentry').val() == '') 
+		{
+			$('#blogentry')
+				.css('color', '#999')
+				.css('height', '20px')
+				.css('font-size', '100%');
+			$('#blog-submit').addClass('hidden');
+			$('#blog-submitarea').css('height', '0');
+		}
+
+		$('#blogentry').on('focus', function(e) 
+		{
+			$('#blogentry')
+				.css('color', '#000')
+				.css('height', '60px');
+			$('#blog-submit').removeClass('hidden');
+			$('#blog-submitarea').css('height', '20px');
+		});
+
+		/*
+		$('#blogentry').on('keyup', function(e) {
+			HUB.Projects.setCounter('#blogentry', '#counter_number_blog');
+		});	
+		*/
+
+		// On click outside
+		if ($('#blog-submitarea')) {
+			$('#blog-submitarea').on('click', function(e) {
+
+					$('#blogentry')
+						.css('color', '#999')
+						.css('height', '20px');
+					$('#blog-submit').addClass('hidden');
+					$('#blog-submitarea').css('height', '0');
+			});	
+		}
+	}
+	
+	// Do not allow to post empty values
+	if ($('#blog-submit')) {
+		$('#blog-submit').on('click', function(e){
+			if ($('#blogentry').val() == '') {
+				e.preventDefault();
+				$('#blogentry')
+					.css('color', '#999')
+					.css('height', '20px');
+				$('#blog-submit').addClass('hidden');
+				$('#blog-submitarea').css('height', '0');
+			}
+		});	
+	}
+	$('.c-submit').each(function(index, item) {
+		$(item).on('click', function(e){
+			
+			var cid = $(this).attr('id').replace('cs_', '');
+			var caid = '#ca_' + cid;
+			var acid = '#commentform_' + cid;
+			if ($(caid)) {
+				if ($(caid).val() == '') {
+					e.preventDefault();
+					$(acid).addClass('hidden');
+				}
+			}
+		});
+	});
+
+	// Confirm delete
+	$('.delit').each(function(i, el) {
+		var link = $(el).find("a");
+		$(link).on('click', function(e) {
+			e.preventDefault();
+			if (HUB.Projects) {
+				HUB.Projects.addConfirm($(link), 'Permanently delete this entry?', 'yes, delete', 'cancel');
+				if ($('#confirm-box')) {
+					$('#confirm-box').css('margin-left', '-100px');
+				}
+			}
+		});
+	});
+
+	// Show more updates
+	if ($('#more-updates') && $('#pid')) {
+		$('#more-updates').on('click', function(e) {
+			e.preventDefault();
+
+			var link = $('#more-updates').find("a");
+			var url = link.attr('href') + '&no_html=1&ajax=1&action=update';
+
+			$.get(url, {}, function(data) {
+				$('#latest_activity').html(data);
+				HUB.ProjectMicroblog.initialize();
+			});
+		});
+	}
+});

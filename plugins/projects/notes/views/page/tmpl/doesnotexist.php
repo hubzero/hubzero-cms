@@ -34,9 +34,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $scope   = JRequest::getVar('scope', '');
 
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-</div><!-- /#content-header -->
+</header><!-- /#content-header -->
 
 <?php
 	$view = new JView(array(
@@ -53,7 +53,7 @@ $scope   = JRequest::getVar('scope', '');
 	$view->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 	<p class="warning">
 		This page does not exist. Would you like to <a href="<?php echo JRoute::_($this->page->link().'&action=new'); ?>">create it?</a>
 	</p>
@@ -71,5 +71,4 @@ $scope   = JRequest::getVar('scope', '');
 	<?php } ?>
 	</ul>
 <?php } ?>
-	<div class="clear"></div>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

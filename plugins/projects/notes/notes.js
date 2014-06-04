@@ -27,87 +27,77 @@ if (!HUB) {
 // Project Notes JS
 //----------------------------------------------------------
 
-HUB.ProjectNotes = {
+if (!jq) {
+	var jq = $;
+}
 
-	initialize: function() {
-		var frm = $('hubForm');
-		var notetitle = $('title');
-		var default_title = 'New Note';		
-		var default_temp_title = 'Template: New';	
+HUB.ProjectNotes = {
+	jQuery: jq,
+	
+	initialize: function() 
+	{
+		var $ = this.jQuery;
+		var frm = $('#hubForm');
+		var notetitle = $('#title');
+		var default_title = 'New Note';
+		var default_temp_title = 'Template: New';
 		
-		if(notetitle) {
+		// Check that title is there
+		if (notetitle) {
 			HUB.ProjectNotes.checkTitle(notetitle, default_title, default_temp_title);
-			notetitle.addEvent('keyup', function(e) {
+			notetitle.on('keyup', function(e) {
 				HUB.ProjectNotes.checkTitle(notetitle, default_title, default_temp_title);
 			});
 		}
 		
-		if(frm && notetitle) {
-			frm.addEvent('submit', function(e) {
-				if(notetitle.value == '' || notetitle.value == default_title || notetitle.value == default_temp_title ) {
-					new Event(e).stop();
+		// Prevent form submission if no title
+		if ($('#hubForm') && notetitle && $('#page-submit')) {
+			$('#page-submit').on('click', function(e) {
+				if (notetitle.val() == '' || notetitle.val() == default_title || notetitle.val() == default_temp_title ) {
+					// can't submit
+					e.preventDefault();
 				}
 			});
 		}
 		
 		// Remove file uploader button
-		if ($('file-uploader'))
+		if ($('#file-uploader').length > 0)
 		{
-			$('file-uploader').remove();	
+			$('#file-uploader').addClass('hidden');	
 		}
-		if ($('file-uploader-list'))
+		if ($('#file-uploader-list').length > 0)
 		{
-			$('file-uploader-list').remove();	
-		}
-		
-		// Hide delete/new page menu
-		if($('section-useroptions')) {
-			if(frm) {
-				var last = $('section-useroptions').getLast();
-				if(last) {
-					last.remove();
-				}
-			} else {
-				$('section-useroptions').innerHTML = '';
-			}
-			
-			// Add subpage link
-			if($('add-subpage') && !$('clone-subpage')) {
-				var clone = new Element('li', {
-					'id': 'clone-subpage'
-				}).inject($('section-useroptions'), 'bottom');
-				clone.innerHTML = $('add-subpage').innerHTML;
-			}
-		}
+			$('#file-uploader-list').remove();	
+		}		
 	},
 	
-	checkTitle: function(title, default_title, default_temp_title) {
-		var stopit = $('stopit');
-		value = title.value;
-		if((value == '' || value == default_title || value == default_temp_title) && !title.hasClass('wrongvalue') ) {
+	checkTitle: function(title, default_title, default_temp_title) 
+	{
+		var $ = this.jQuery;
+		value = title.val();
+		
+		if ((value == '' || value == default_title || value == default_temp_title)) {
 			title.addClass('wrongvalue');
-			
-				var stoptext = 'Please provide a new or different page title before saving this note.';
-				if(value == default_temp_title) {
-					stoptext = 'Please provide a new or different template page title (starting with Template:) before saving this note.';
-				}
-				
-				if(!stopit) {
-					var stop = new Element('p', {
-						'id': 'stopit',
-						'class': 'witherror'
-					}).inject($('hubForm'), 'bottom');
-					stop.innerHTML = stoptext;
-				}
-				
-		}
-		else {
-			title.removeClass('wrongvalue');
-			if(stopit) {
-				stopit.remove();
+			var stoptext = 'Please provide a new or different page title before saving this note.';
+			if (value == default_temp_title) {
+				stoptext = 'Please provide a new or different template page title (starting with Template:) before saving this note.';
 			}
-		}		
+			
+			if (!$('#stopit').length) 
+			{
+				$('#hubForm').append('<p id="stopit" class="witherror"></p>');
+				$('#stopit').html(stoptext);
+			}
+
+		} else if (title.hasClass('wrongvalue')) {
+			title.removeClass('wrongvalue');
+			if ($('#stopit').length) {
+				$('#stopit').remove();
+			}
+		}
 	}
 }
-	
-window.addEvent('domready', HUB.ProjectNotes.initialize);
+
+jQuery(document).ready(function($){
+	HUB.ProjectNotes.initialize();
+});

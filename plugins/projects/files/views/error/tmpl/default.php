@@ -26,14 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<?php if($this->title) { ?>
-<div id="content-header" class="full">
+<?php if ($this->title) { ?>
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div>
+</header>
 <?php } ?>
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-</div><!-- / .section -->
+</section><!-- / .section -->

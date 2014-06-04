@@ -35,9 +35,9 @@ $this->page->pagename = $this->page->stripNamespace();
 
 $juser = JFactory::getUser();
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->page->stripNamespace($this->page->getTitle()); ?></h2>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 	<?php if (!$juser->get('guest') && $this->config->get('access-create')) { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
@@ -74,7 +74,7 @@ $juser = JFactory::getUser();
 	$view->display();
 ?>
 
-	<div class="main section">
+	<section class="main section">
 
 <?php
 	$view = new JView(array(
@@ -92,4 +92,4 @@ $juser = JFactory::getUser();
 	$view->display()
 ?>
 
-	</div><!-- / .main section -->
+	</section><!-- / .main section -->

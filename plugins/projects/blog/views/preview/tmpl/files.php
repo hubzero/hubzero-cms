@@ -25,19 +25,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js();
+
 $body   	= '';
 $selected 	= $this->selected;
 
-// Display images if available		
+// Display images if available
 if (count($selected) > 0)
 {
 	// Randomize
 	shuffle($selected);
-	
+
 	$class = count($selected) == 1 ? 'net-single' : 'net-multi';
 	$class = count($selected) == 2 ? 'net-double' : $class;
 	$class = count($selected) == 3 ? 'net-triple' : $class;
-	
+
 	$body  = '<div class="previewnet">';
 	$i = 1;
 	foreach ($selected as $item)
@@ -45,11 +48,10 @@ if (count($selected) > 0)
 		if ($item['image'])
 		{
 			$body .= '<span class="img-container"><img class="' . $class . '" src="' . $item['image'] . '" alt="" /></span>';
-		}				
+		}
 		$i++;
-	}	
-	$body .= '</div>';		
+	}
+	$body .= '</div>';
 }
 
-echo $body;	
-?>
+echo $body;

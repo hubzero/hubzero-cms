@@ -36,7 +36,7 @@ $scope   = JRequest::getVar('scope', '');
 $app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
 $project = JRequest::getVar( 'project', '', 'request', 'object' );	
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
 		<?php
 		if (!$this->page->isStatic()) 
@@ -50,7 +50,7 @@ $project = JRequest::getVar( 'project', '', 'request', 'object' );
 			$view->display();
 		}
 		?>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -74,7 +74,7 @@ $project = JRequest::getVar( 'project', '', 'request', 'object' );
 	$view->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 <?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
 	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } else { ?>
@@ -100,5 +100,4 @@ $project = JRequest::getVar( 'project', '', 'request', 'object' );
 		<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>
 	</form>
 <?php } ?>
-</div><!-- / .main section -->
-<div class="clear"></div>
+</section><!-- / .main section -->

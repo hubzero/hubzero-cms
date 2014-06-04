@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
 		if (!$this->page->isStatic()) 
@@ -45,7 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$view->display();
 		}
 		?>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$view->display();
 ?>
 
-<div class="main section">
+<section class="main section">
 	<div class="grid">
 		<div class="col span-half">
 			<p>Versions are listed in reverse-chronological order (newest to oldest). For any version listed below, click on its date to view it. For more help, see <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:PageHistory'); ?>">Help:Page history</a>.</p> 
@@ -221,4 +221,4 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 		<input type="hidden" name="task" value="compare" />
 	<?php } ?>
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

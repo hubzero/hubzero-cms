@@ -42,9 +42,9 @@ $html = projectsHelper::parseProjectFileRefs($this->page, $this->revision->get('
 $html = projectsHelper::wikiFixImages($this->page, $this->revision->get('pagetext'), $project->id, $project->alias, NULL, $html, true);
 
 ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
-	</div><!-- /#content-header -->
+	</header><!-- /#content-header -->
 
 <?php echo $this->page->event->afterDisplayTitle; ?>
 
@@ -82,7 +82,7 @@ if (!$this->page->isStatic()) {
 	$view->sub    = $this->sub;
 	$view->display();
 ?>
-<div class="main section">
+<section class="main section">
 		<div class="wikipage">
 			<?php echo $html; ?>
 		</div>
@@ -100,7 +100,7 @@ if (!$this->page->isStatic()) {
 			<?php echo $tags; ?>
 		</div>
 		<?php } ?>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
 <?php
 } else {
 	echo $this->revision->get('pagehtml');

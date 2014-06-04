@@ -23,53 +23,45 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );		
-?>
-	<div id="plg-header">
-		<h3 class="newsupdate"><?php echo $this->title; ?></h3>
-	</div>
+defined('_JEXEC') or die( 'Restricted access' );
 
-	<?php
-		// New update form
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'blog',
-				'name'=>'addupdate'
-			)
-		);
-		$view->option = $this->option;
-		$view->project = $this->project;
-		$view->goto = 'alias=' . $this->project->alias;
-		echo $view->loadTemplate();	
-	?>
-	<h4 class="sumup"><?php echo JText::_('COM_PROJECTS_LATEST_ACTIVITY'); ?></h4>
-	<div id="latest_activity" class="infofeed">
-	<?php 
+$this->css()
+     ->js();
+?>
+<div id="plg-header">
+	<h3 class="newsupdate"><?php echo $this->title; ?></h3>
+</div>
+
+<?php
+	// New update form
+	$this->view('default', 'addupdate')
+	     ->set('option', $this->option)
+	     ->set('project', $this->project)
+	     ->set('goto', 'alias=' . $this->project->alias)
+	     ->display();
+?>
+
+<h4 class="sumup"><?php echo JText::_('COM_PROJECTS_LATEST_ACTIVITY'); ?></h4>
+<div id="latest_activity" class="infofeed">
+		<?php 
 		// Display item list
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'blog',
-				'name'=>'activity'
-			)
-		);
-		$view->option = $this->option;
-		$view->project = $this->project;
-		$view->activities = $this->activities;
-		$view->goto = 'alias=' . $this->project->alias;
-		$view->limit = $this->limit;
-		$view->total = $this->total;
-		$view->filters = $this->filters;
-		$view->uid = $this->uid;
-		$view->database = $this->database;
-		echo $view->loadTemplate();
+		$this->view('default', 'activity')
+		     ->set('option', $this->option)
+		     ->set('project', $this->project)
+		     ->set('activities', $this->activities)
+		     ->set('goto', 'alias=' . $this->project->alias)
+		     ->set('limit', $this->limit)
+		     ->set('total', $this->total)
+		     ->set('filters', $this->filters)
+		     ->set('uid', $this->uid)
+		     ->set('database', $this->database)
+		     ->display();
 		?>
-<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias) . '/?active=feed'; ?>">
- <div>
-	<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
-	<input type="hidden" name="task" value="view" />
-	<input type="hidden" name="action" value="" />
- </div>
-</form>
+	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias) . '/?active=feed'; ?>">
+		<div>
+			<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
+			<input type="hidden" name="task" value="view" />
+			<input type="hidden" name="action" value="" />
+		</div>
+	</form>
 </div>

@@ -48,11 +48,11 @@ $project = JRequest::getVar( 'project', '', 'request', 'object' );
 $canDelete = JRequest::getVar('candelete', 0);
 
 ?>
-<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 <?php 
 ?>
-</div><!-- /#content-header -->
+</header><!-- /#content-header -->
 
 <?php 
 if ($this->page->get('id')) {
@@ -70,7 +70,7 @@ if ($this->page->get('id')) {
 } 
 ?>
 
-<div class="main section">
+<section class="main section">
 <?php
 if ($this->page->exists() && !$this->page->access('modify')) {
 	if ($this->page->param('allow_changes') == 1) { ?>
@@ -91,13 +91,13 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 <?php if ($this->preview) { ?>
 	<div id="preview">
-		<div class="main section">
+		<section class="section">
 			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->get('pagehtml'); ?>
 			</div>
-		</div><!-- / .section -->
+		</section><!-- / .section -->
 	</div><div class="clear"></div>
 <?php } ?>
 <?php //if ($tool && $tool->id) { ?>
@@ -232,7 +232,7 @@ if ($this->page->access('edit')) {
 			margin: 200px auto 100px auto;
 		}
 	</style>
-</div><!-- / .main section -->
+</section><!-- / .main section -->
 	
 	<?php if ($this->page->exists() && strtolower($this->page->get('namespace')) != 'special' && $canDelete) { ?>
 		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename').'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
