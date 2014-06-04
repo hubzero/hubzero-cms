@@ -26,34 +26,45 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Renders a textarea element
+ * Publication handler model class
  */
-class PublicationsElementTextarea extends PublicationsElement
+class PublicationsModelHandler extends JObject
 {
 	/**
-	* Element name
+	* Handler name
 	*
-	* @var		string
+	* This has to be set in the final
+	* renderer classes.
+	*
+	* @var string
 	*/
-	protected	$_name = 'Textarea';
+	protected $_name = null;
 
 	/**
-	 * Return any options this element may have
-	 *
-	 * @param   string  $name          Name of the field
-	 * @param   string  $value         Value to check against
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @return  string  HTML
-	 */
-	public function fetchElement($name, $value, &$element, $control_name)
-	{
-		$rows = isset($element->rows) ? $element->rows : 6;
-		$cols = isset($element->cols) ? $element->cols : 50;
-		$class = isset($element->class) ? 'class="'.$element->class.'"' : 'class="text_area"';
-		// convert <br /> tags so they are not visible when editing
-		$value = str_replace('<br />', "\n", $value);
+	* Reference to the object that instantiated the element
+	*
+	* @var object
+	*/
+	protected $_parent = null;
 
-		return '<span class="field-wrap"><textarea id="' . $control_name.'-'.$name . '" name="' . $control_name.'['.$name.']' . '" rows="' . $rows . '" cols="' . $cols . '">' . $value . '</textarea></span>';
+	/**
+	 * Constructor
+	 *
+	 * @access protected
+	 */
+	public function __construct($parent = null) 
+	{
+		$this->_parent = $parent;
+	}
+
+	/**
+	* Get the element name
+	*
+	* @access public
+	* @return string type of the parameter
+	*/
+	public function getName() 
+	{
+		return $this->_name;
 	}
 }

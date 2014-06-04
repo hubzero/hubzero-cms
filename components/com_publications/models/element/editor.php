@@ -26,16 +26,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Renders a textarea element
+ * Renders an editor element
  */
-class PublicationsElementTextarea extends PublicationsElement
+class PublicationsElementEditor extends PublicationsElement
 {
 	/**
 	* Element name
 	*
 	* @var		string
 	*/
-	protected	$_name = 'Textarea';
+	protected	$_name = 'Editor';
 
 	/**
 	 * Return any options this element may have
@@ -54,6 +54,6 @@ class PublicationsElementTextarea extends PublicationsElement
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<span class="field-wrap"><textarea id="' . $control_name.'-'.$name . '" name="' . $control_name.'['.$name.']' . '" rows="' . $rows . '" cols="' . $cols . '">' . $value . '</textarea></span>';
+		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => 'minimal no-footer')) . '</span>';
 	}
 }

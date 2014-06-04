@@ -26,34 +26,71 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Renders a textarea element
+ * Publications block base class
  */
-class PublicationsElementTextarea extends PublicationsElement
+class PublicationsModelBlock extends JObject
 {
 	/**
 	* Element name
 	*
-	* @var		string
+	* This has to be set in the final
+	* renderer classes.
+	*
+	* @var string
 	*/
-	protected	$_name = 'Textarea';
+	protected $_name = null;
+	
+	/**
+	* Block manifest
+	*
+	* This has to be set in the final
+	* renderer classes.
+	*
+	* @var string
+	*/
+	protected $_manifest = null;
 
 	/**
-	 * Return any options this element may have
+	* Reference to the object that instantiated the element
+	*
+	* @var object
+	*/
+	protected $_parent = null;
+	
+	/**
+	 * Constructor
 	 *
-	 * @param   string  $name          Name of the field
-	 * @param   string  $value         Value to check against
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @return  string  HTML
+	 * @access protected
 	 */
-	public function fetchElement($name, $value, &$element, $control_name)
+	public function __construct($parent = null) 
 	{
-		$rows = isset($element->rows) ? $element->rows : 6;
-		$cols = isset($element->cols) ? $element->cols : 50;
-		$class = isset($element->class) ? 'class="'.$element->class.'"' : 'class="text_area"';
-		// convert <br /> tags so they are not visible when editing
-		$value = str_replace('<br />', "\n", $value);
+		$this->_parent = $parent;
+	}
 
-		return '<span class="field-wrap"><textarea id="' . $control_name.'-'.$name . '" name="' . $control_name.'['.$name.']' . '" rows="' . $rows . '" cols="' . $cols . '">' . $value . '</textarea></span>';
+	/**
+	* Get the block name
+	*
+	* @access public
+	* @return string type of the parameter
+	*/
+	public function getName() 
+	{
+		return $this->_name;
+	}
+	
+	/**
+	* Get property
+	*
+	* @access public
+	* @return string type of the parameter
+	*/
+	public function getProperty( $name ) 
+	{
+		if (isset($this->$name))
+		{
+			return $this->$name;
+		}
+		
+		return false;
 	}
 }

@@ -1,0 +1,405 @@
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Shawn Rice <zooley@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+// Check to ensure this file is within the rest of the framework
+defined('_JEXEC') or die('Restricted access');
+
+jimport('joomla.filesystem.file');
+jimport('joomla.filesystem.folder');
+
+/**
+ * Image Viewer Handler
+ */
+class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
+{
+	/**
+	* Handler type name
+	*
+	* @var		string
+	*/
+	protected	$_name 		= 'imageviewer';
+	
+	/**
+	* Configs
+	*
+	* @var	
+	*/
+	protected	$_config 	= NULL;
+	
+	/**
+	* Image Helper
+	*
+	* @var	
+	*/
+	protected	$_imgHelper = NULL;
+	
+	/**
+	 * Get default params for the handler
+	 *
+	 * @return  void
+	 */
+	public function getConfig()
+	{
+		// Load config from db
+		$obj = new PublicationHanlder($this->_parent->_db);
+		
+		$this->_config = $obj->getConfig($this->_name);
+		
+		// Fall back
+		if (!$this->_config)
+		{
+			$configs = array(
+				'name' 			=> 'imageviewer',
+				'label' 		=> 'Image Gallery',
+				'title' 		=> 'Viewer for image files',
+				'about'			=> 'Selected images will be viewed together in a slideshow',
+				'params'	=> array( 
+					'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'), 
+					'required_ext' 		=> array(), 
+					'min_allowed' 		=> 1,
+					'max_allowed' 		=> 1000,
+					'thumbSuffix' 		=> '-thumb',
+					'thumbFormat' 		=> 'png',
+					'thumbWidth' 		=> '100',
+					'thumbHeight' 		=> '60',
+					'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif'
+				)
+			);
+
+			$this->_config = json_decode(json_encode($configs), FALSE);
+		}
+		
+		return $this->_config;
+	}
+	
+	/**
+	 * Clean-up related files
+	 *
+	 * @return  void
+	 */
+	public function cleanup( $path )
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+		
+		// Get settings
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+				? $this->_config->params->thumbSuffix : '-tn';
+
+		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
+				? $this->_config->params->thumbFormat : 'png';
+		
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+		
+		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
+		$thumbPath = dirname($path) . DS . $thumbName;
+		
+		if (is_file($thumbPath))
+		{
+			JFile::delete($thumbPath);
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Make image default for publication
+	 *
+	 * @return  void
+	 */
+	public function makeDefault( $row, $pub, $configs)
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+		
+		// Get settings
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+				? $this->_config->params->thumbSuffix : '-tn';
+
+		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
+				? $this->_config->params->thumbFormat : 'png';
+				
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+		
+		if ($configs->dirHierarchy)
+		{			
+			$path = $configs->pubPath . DS . $row->path;
+		}
+		else
+		{
+			// Attach record number to file name
+			$name 	= ProjectsHtml::fixFileName(basename($row->path), '-' . $row->id);			
+			$path = $configs->pubPath . DS . $name;
+		}
+		
+		$copyTo = $configs->pubBase . DS . 'thumb.gif';
+		
+		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
+		$thumbPath = dirname($path) . DS . $thumbName;
+		
+		// Copy to thumb.gif
+		if (is_file($thumbPath))
+		{
+			JFile::copy($thumbPath, $copyTo);
+		}
+		else
+		{
+			return false;
+		}
+		
+		// Get current default
+		$currentDefault = new PublicationAttachment( $this->_parent->_db );
+		$currentDefault->getDefault($row->publication_version_id);
+		
+		if ($currentDefault->id)
+		{
+			$currentDefault->saveParam($currentDefault, 'pubThumb', '');
+		}
+		
+		// Mark this as default
+		$currentDefault->saveParam($row, 'pubThumb', '1');
+		
+		return true;
+		
+	}
+	
+	/**
+	 * Show attachments in an image band (gallery)
+	 *
+	 * @return  void
+	 */
+	public function showImageBand($pub)
+	{
+		// Get element manifest to deliver content as intended
+		$elements = $pub->_curationModel->getElements(3);
+		
+		if (empty($elements))
+		{
+			return false;
+		}
+		
+		// Show first element
+		$element = $elements[0];
+				
+		// Get settings
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+				? $this->_config->params->thumbSuffix : '-tn';
+
+		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
+				? $this->_config->params->thumbFormat : 'png';
+				
+		$manifest 		= $element->manifest;
+		$params   		= $manifest->params->typeParams;
+		$dirHierarchy 	= isset($params->dirHierarchy) ? $params->dirHierarchy : 1;
+			
+		// Do we have attachments?
+		$attachments = isset($pub->_attachments['elements'][$element->id]) 
+					? $pub->_attachments['elements'][$element->id] : NULL;
+					
+		if (!$attachments)
+		{
+			return false;
+		}
+		
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+				
+		$html 	= '';
+		$els 	= '';
+		$i 		= 0;
+		$k 		= 0;
+		$g 		= 0;
+				
+		// Get files directory
+		$directory = isset($params->directory) && $params->directory 
+							? $params->directory : $pub->secret; 
+		$pubPath = $pub->_helpers->pubHelper->buildPath($pub->id, $pub->version_id, '', $directory, 0);
+		
+		$i = 0;
+		
+		$els .=  '<div class="showcase-pane">'."\n";
+		foreach ($attachments as $attach)
+		{
+			if ($dirHierarchy)
+			{
+				$fpath = $pubPath . DS . trim($attach->path, DS);
+			}
+			else
+			{
+				// Attach record number to file name
+				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);			
+				$fpath  = $pubPath . DS . $name;
+			}
+			
+			$thumbName = $this->_imgHelper->createThumbName(basename($fpath), $suffix, $format);
+			$thumbPath = dirname($fpath) . DS . $thumbName;
+			
+			if (is_file(JPATH_ROOT . DS . $fpath) && is_file(JPATH_ROOT . DS . $thumbPath))
+			{
+				// Get extentsion
+				$ext = explode('.', basename($fpath));
+				$ext = strtolower(end($ext));
+				
+				$title = $attach->title ? $attach->title : basename($attach->path);
+				if ($ext == 'swf' || $ext == 'mov') 
+				{
+					$g++;					
+					$els .= ' <a class="video"  href="' . $fpath . '" title="' . $title . '">';
+					$els .= '<img src="' . $thumbPath . '" alt="' . $title . '" /></a>';
+				} 
+				else 
+				{
+					$k++;
+					$els .= ' <a rel="lightbox" href="' . $fpath . '" title="' . $title . '">';
+					$els .= '<img src="' . $thumbPath . '" alt="' . $title . '" class="thumbima" /></a>';
+				}
+				$i++;
+			}
+		}
+		$els .=  '</div>'."\n";
+		
+		if ($i > 0) 
+		{
+			$html .= '<div id="showcase">'."\n" ;
+			$html .= '<div id="showcase-prev" ></div>'."\n";
+			$html .= '  <div id="showcase-window">'."\n";							
+			$html .= $els;
+			$html .= '  </div>'."\n";
+			$html .= '  <div id="showcase-next" ></div>'."\n";	
+			$html .= '</div>'."\n";	
+		}
+		
+		return $html;
+	
+	}
+	
+	/**
+	 * Side controls for handler
+	 *
+	 * @return  void
+	 */
+	public function drawControls($pub, $elementid, $attachments)
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+		
+		$html = '<div class="' . $this->_name . '">';
+		$html.= '<h5>' . $this->_config->label . '</h5>';
+		$html.= '<p>' . $this->_config->title . '</p>';
+		$html.= '<p class="hint">' . $this->_config->about . '</p>';
+		
+		$html.= '</div>';
+		
+		return $html;
+	}
+	
+	/**
+	 * Side controls for handler
+	 *
+	 * @return  void
+	 */
+	public function drawSelectedHandler($pub, $elementid, $attachments)
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+				
+		$html = '<div class="handler-' . $this->_name . '">';
+		$html.= '<h3>' . JText::_('Presentation') . ': ' . $this->_config->label . '</h3>';
+		$html.= '<p>' . $this->_config->about . '</p>';		
+		$html.= '</div>';
+		
+		return $html;
+	}
+	
+	/**
+	 * Draw attachment
+	 *
+	 * @return  void
+	 */
+	public function drawAttachment($data, $params)
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+		
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+		
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'publications',
+				'name'		=>'attachments',
+				'layout'	=>'image'
+			)
+		);
+		$view->data    		= $data;
+		$view->config  		= $this->_config;
+		$view->ih	   		= $this->_imgHelper;
+		$view->params 		= $params;
+		
+		if ($this->getError()) 
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+	}
+}

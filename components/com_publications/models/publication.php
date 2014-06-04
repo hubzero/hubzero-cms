@@ -287,6 +287,114 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 		}
 		return $content;
 	}
+	
+	/**
+	 * Get the content of nbtag in metadata field
+	 *
+	 * @return     mixed String or Integer
+	 */
+	public function getNbtag ($aliasmap = '')
+	{
+		$data = array();
+		
+		// Parse data
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
+		if (count($matches) > 0) 
+		{
+			foreach ($matches as $match)
+			{
+				$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
+			}
+		}
+		
+		$value = isset($data[$aliasmap]) ? $data[$aliasmap] : NULL;
+		
+		return $value;		
+	}
+	
+	/**
+	 * Get the content of the record. 
+	 * Optional argument to determine how content should be handled
+	 *
+	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
+	 * clean  - parses content and then strips tags
+	 * raw    - as is, no parsing
+	 * 
+	 * @param      string  $as      Format to return content in [parsed, clean, raw]
+	 * @param      integer $shorten Number of characters to shorten text to
+	 * @return     mixed String or Integer
+	 */
+	public function parse($aliasmap = '', $field = '', $as='parsed', $shorten=0)
+	{
+		$as = strtolower($as);
+		$options = array();
+		
+		if (!$this->get($field, ''))
+		{
+			return false;
+		}
+				
+		switch ($as)
+		{
+			case 'parsed':
+				$content = $this->get($field . '.parsed', null);
+
+				if ($content === null)
+				{
+					$config = array(
+						'option'   => 'com_publications',
+						'scope'    => '',
+						'pagename' => 'publications',
+						'pageid'   => '',
+						'filepath' => '',
+						'domain'   => ''
+					);
+
+					$content = (string) stripslashes($this->get($field, ''));
+					if ($field == 'metadata')
+					{
+						$content = (string) stripslashes($this->getNbtag($aliasmap));
+					}
+					
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						'com_publications.publication.' . $field,
+						&$this,
+						&$config
+					));
+					
+					$parsed = (string) stripslashes($this->get($field, ''));
+					
+					if ($field == 'metadata')
+					{
+						$parsed = (string) stripslashes($this->getNbtag($aliasmap));
+					}
+
+					$this->set($field . '.parsed', $parsed);
+					$this->set($field, $content);
+
+					return $this->parse($aliasmap, $field, $as, $shorten);
+				}
+
+				$options['html'] = true;
+			break;
+
+			case 'clean':
+				$content = strip_tags($this->parse($aliasmap, $field, 'parsed'));
+			break;
+
+			case 'raw':
+			default:
+				$content = stripslashes($this->get($field));
+				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
+			break;
+		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
+	}
 
 	/**
 	 * Store changes to this database entry
