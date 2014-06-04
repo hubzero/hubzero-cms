@@ -43,7 +43,8 @@ function dv_auth()
 	}
 	
 	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !$juser->get('guest')) {
-		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
+		ximport('Hubzero_User_Helper');
+		$groups = Hubzero_User_Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {
 			foreach ($groups as $g) {
 				if (in_array($g->cn, $dv_conf['acl']['allowed_groups'])) {
