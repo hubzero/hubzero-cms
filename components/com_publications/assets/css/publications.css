@@ -301,7 +301,8 @@
 	p.pending,
 	p.archived,
 	p.unpublished,
-	p.ready {
+	p.ready,
+	p.wip {
 		font-size: 85%;
 		color: #333333;
 		margin-top: -1em;
@@ -321,7 +322,7 @@
 		padding: 0.2em;
 		padding-left: 0.5em;
 	}
-	p.pending {
+	p.pending, p.wip {
 		border: 1px dashed #dc8043;
 		padding: 0.2em;
 		padding-left: 0.5em;
@@ -593,23 +594,13 @@
 	}
 
 /* Tabbed view containers */
-	.com_publications .upperpane {
-		padding-top: 2em;
-		}
-	.upperpane .subject {
-		margin-right: 250px;
-		margin-bottom: 1em !important;
-		}
-	.upperpane .rankarea, 
-	.section .extracontent, 
-	.upperpane .launcharea {
-		margin-top: 0 !important;
-		padding-top: 0 !important;
-		}
+	.upperpane {
+		padding: 2em;
+	}
 	.overviewcontainer {
 		width: 60%; 
 		float: left;
-		margin-right: -3em;
+		/*margin-right: -3em;*/
 		}
 	.tabbed {
 		padding-top:0 !important;
@@ -624,81 +615,6 @@
 		}
 	.tabbed .abouttab {
 	 	margin-right: 0;
-		}
-/* Primary Resource file */	
-	#primary-document {
-		margin: 1em 0 1.5em 0;
-		text-align: center;
-		}
-	#primary-document a {
-		margin: 0;
-		padding: 6px 0 0 10px;
-		display: block;
-		width: 208px;
-		height: 27px;
-		border: none;
-		color: #fff;
-		font-weight: bold;
-		background: url("../img/primary.gif") 0 0 no-repeat;
-		}
-	#primary-document a:hover { 
-		background-position: 0 -33px;
-		color: #fff;
-		border: none;
-		}
-	#primary-document .link_disabled {
-		margin: 0;
-		padding: 6px 0 0 10px;
-		display: block;
-		width: 208px;
-		height: 27px;
-		border: none;
-		color: #fff;
-		font-weight: bold;
-		background: url("../img/primary_disabled.gif") 0 0 no-repeat;
-		cursor: pointer;
-		}
-	#primary-document_pop {
-		display: none;
-		position: absolute;
-		top: 90px;
-		right: 260px;
-		width: 222px;
-		font-size: 90%;
-		margin: 0;
-		padding: 0;
-		}
-	#primary-document_pop div {
-		padding: 0;
-		display: block;
-		position: relative;
-		}
-	#primary-document_pop p {
-		margin-top: 0;
-		}
-	#primary-document .caption {
-		font-size: 80%;
-		font-weight: normal;
-		color: #CCCCCC;
-		}
-/* Versioning */
-	.toolpublished {
-		background: url("../img/check.gif") 0 0 no-repeat;
-		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
-		text-indent: -555em;
-		padding: 0;
-		}
-	.toolunpublished {
-		background: url("../img/minus.gif") 0 0 no-repeat;
-		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
-		padding: 0;
-		text-indent: -555em;
 		}
 /* Intro */
 
@@ -1199,7 +1115,7 @@
 		}
 	.section .section {
 		padding: 0;
-		}
+	}
 	.section .section .subject {
 		background: #F7F7F7;
 		border-top: 1px solid #E3E3E3;

@@ -44,81 +44,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	
 	$juser = JFactory::getUser();
 
-	$html  = '<section class="main section upperpane">'."\n";
-	$html .= '<div class="subject">'."\n";
-	$html .= ' <div class="overviewcontainer">'."\n";
-	$html .= PublicationsHtml::title( $option, $publication );
-
-	// Display authors
-	if ($params->get('show_authors')) {
-		if ($authors) {
-			$html .= '<div id="authorslist">'."\n";
-			$html .= $helper->showContributors( $authors, true, false )."\n";
-			$html .= '</div>'."\n";
-		}
-	}
-	
-	// Display mini abstract
-	$html .= '<p class="ataglance">';
-	$html .= $publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
-	$html .= '</p>'."\n";
-	
-	// Show published date and category
-	$html .= PublicationsHtml::showSubInfo( $publication, $option );
-	
-	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
-	$html .= ' <div class="aside launcharea">'."\n";
-	$feeds = '';
-	
-	// Sort out primary files and draw a launch button
-	if($content['primary'] && count($content['primary']) > 0 && $tab != 'play') 
-	{
-		$primaryParams = new JParameter( $content['primary'][0]->params );
-		$serveas = $primaryParams->get('serveas');
-		$html .=  PublicationsHtml::drawPrimaryButton( $option, $publication, $version, $content, $this->path, $serveas, $restricted, $authorized );
-	}
-	else if($tab != 'play' && $publication->state != 0) {
-		$html .= '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
-	}
-
-	// Sort out supporting docs
-	$html .= $tab != 'play' && $publication->state != 0
-		   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath ) 
-		   : '';
-
-	// Show version information
-	$html .=  $tab != 'play' ? PublicationsHtml::showVersionInfo( $publication, $version, $option, $config, $this->lastPubRelease ) : '';
-	
-	// Show license information
-	$html .= $tab != 'play' && $this->license && $this->license->name != 'standard' 
-			? PublicationsHtml::showLicense( $publication, $version, $option, $this->license, 'play' ) : '';
-
-	$html .= ' </div><!-- / .aside launcharea -->'."\n";
-	$html .= '<div class="clear"></div>'."\n";
-	$editurl = JRoute::_('index.php?option=com_projects&alias='.$publication->project_alias.'&active=publications&pid='.$publication->id);
-	$editurl.= '?version='.$version;
-	
-	// Build pub url
-	$route = $publication->project_provisioned == 1
-				? 'index.php?option=com_publications&task=submit'
-				: 'index.php?option=com_projects&alias=' . $publication->project_alias . '&active=publications';
-	$editurl = JRoute::_($route . '&pid=' . $publication->id).'?version='.$version;
-	
-	// Show status for authorized users
-	if($this->contributable)
-	{
-		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );	
-	}
-	
-	$html .= '</div><!-- / .subject -->'."\n";
-
+	$html  = '<section class="main upperpane">'."\n";	
 	$html .= '<div class="aside rankarea">'."\n";
 
 	// Show stats
 	$statshtml = '';
 	$helper->getCitations();
 	$helper->getLastCitationDate();
-	$stats = new AndmoreStats($database, $publication->id, $publication->master_rating, count($helper->citations), $helper->lastCitationDate);
+	$stats = new AndmoreStats($database, $publication->id, 
+		$publication->master_rating, count($helper->citations), $helper->lastCitationDate);
 	$statshtml = $stats->display();
 	
 	$xtra = '';
@@ -157,7 +91,102 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$html .= PublicationsHtml::metadata($option, $params, $publication, $statshtml, $sections, $version, $xtra, $this->lastPubRelease);
 	$html .= '</div><!-- / .aside -->'."\n";
+	$html .= '<div class="subject">'."\n";
+	$html .= ' <div class="overviewcontainer">'."\n";
+	$html .= PublicationsHtml::title( $option, $publication );
 
+	// Display authors
+	if ($params->get('show_authors')) {
+		if ($authors) {
+			$html .= '<div id="authorslist">'."\n";
+			$html .= $helper->showContributors( $authors, true, false )."\n";
+			$html .= '</div>'."\n";
+		}
+	}
+	
+	// Display mini abstract
+	$html .= '<p class="ataglance">';
+	$html .= $publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
+	$html .= '</p>'."\n";
+	
+	// Show published date and category
+	$html .= PublicationsHtml::showSubInfo( $publication, $option );
+	
+	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
+	$html .= ' <div class="aside launcharea">'."\n";
+	$feeds = '';
+	
+	$useBlocks = $this->config->get('curation', 0);
+		
+	// Sort out primary files and draw a launch button
+	if ($useBlocks && $tab != 'play')
+	{		
+		// Get primary elements
+		$elements = $this->publication->_curationModel->getElements(1);
+		
+		// Get attachment type model
+		$attModel = new PublicationsModelAttachments($this->database);
+		
+		$authorized = ($restricted && !$authorized) ? false : true;
+				
+		if ($elements)
+		{
+			foreach ($elements as $element)
+			{
+				// Draw button
+				$launcher = $attModel->drawLauncher(
+					$element->manifest->params->type,
+					$this->publication, 
+					$element,
+					$authorized
+				);
+				
+				$html .= $launcher;
+			}
+		}
+	}
+	elseif ($content['primary'] && count($content['primary']) > 0 && $tab != 'play') 
+	{	
+		$primaryParams 	 = new JParameter( $content['primary'][0]->params );
+		$serveas 		 = $primaryParams->get('serveas');
+		$html 			.=  PublicationsHtml::drawPrimaryButton( $option, $publication, $version, $content, $this->path, $serveas, $restricted, $authorized );
+	}
+	elseif ($tab != 'play' && $publication->state != 0) 
+	{
+		$html .= '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
+	}
+
+	// Sort out supporting docs
+	$html .= $tab != 'play' && $publication->state != 0
+		   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath ) 
+		   : '';
+
+	// Show version information
+	$html .=  $tab != 'play' ? PublicationsHtml::showVersionInfo( $publication, $version, $option, $config, $this->lastPubRelease ) : '';
+	
+	// Show license information
+	$html .= $tab != 'play' && $this->license && $this->license->name != 'standard' 
+			? PublicationsHtml::showLicense( $publication, $version, $option, $this->license, 'play' ) : '';
+
+	$html .= ' </div><!-- / .aside launcharea -->'."\n";
+	$html .= '<div class="clear"></div>'."\n";
+	$editurl = JRoute::_('index.php?option=com_projects&alias='
+		. $publication->project_alias . '&active=publications&pid=' . $publication->id);
+	$editurl.= '?version='.$version;
+	
+	// Build pub url
+	$route = $publication->project_provisioned == 1
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $publication->project_alias . '&active=publications';
+	$editurl = JRoute::_($route . '&pid=' . $publication->id).'?version='.$version;
+	
+	// Show status for authorized users
+	if($this->contributable)
+	{
+		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );	
+	}
+	
+	$html .= '</div><!-- / .subject -->'."\n";
 	if ($publication->access == 2 && (!$authorized && $restricted)) {
 		// show nothing else
 		$html .= '</section><!-- / .main section -->'."\n";		

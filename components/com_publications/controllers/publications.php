@@ -74,10 +74,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 		
 		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
-		{
-		    $this->_resourceMap();
+        {
+            $this->_resourceMap();
 			return;
-		}
+        }
 		if (($this->_id || $this->_alias) && !$this->_task) 
 		{
 			$this->_task = 'view';
@@ -492,19 +492,40 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	public function viewTask()
 	{
 		// Incoming
-		$id       = JRequest::getInt( 'id', 0 );            // Resource ID (primary method of identifying a resource)
-		$alias    = JRequest::getVar( 'alias', '' );        // Alternate method of identifying a resource
-		$fsize    = JRequest::getVar( 'fsize', '' );        // A parameter to see file size without formatting
-		$version  = JRequest::getVar( 'v', '' );            // Get version number of a publication
-		$tab      = JRequest::getVar( 'active', '' );       // The active tab (section)
-		$pass     = JRequest::getVar( 'in', '' );  			// Version-unique identifier, to grant access to 'posted' resource
-		$no_html  = JRequest::getInt( 'no_html', 0 );		// No-html display?
+		$fsize    = JRequest::getVar( 'fsize', '' );    // A parameter to see file size without formatting
+		$version  = JRequest::getVar( 'v', '' );        // Get version number of a publication
+		$tab      = JRequest::getVar( 'active', '' );   // The active tab (section)
+		$pass     = JRequest::getVar( 'in', '' );  	    // Version-unique identifier, to grant access to 'posted' resource
+		$no_html  = JRequest::getInt( 'no_html', 0 );   // No-html display?
 		
+		$id 	= $this->_id;
+		$alias 	= $this->_alias;
+				
+		$objP   = new Publication( $this->database );
+
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias) 
 		{
 			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
 			return;
+		}
+				
+		// Curation?
+		$useBlocks = $this->config->get('curation', 0);		
+		if ($useBlocks)
+		{
+			// We need our curation model to parse elements
+			if (JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+				. DS . 'models' . DS . 'curation.php')
+			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+					. DS . 'models' . DS . 'curation.php');
+			}
+			else
+			{
+				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY') );
+				return;
+			}
 		}
 								
 		// Check that version number exists
@@ -512,7 +533,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = $objV->checkVersion($id, $version) ? $version : 'default';
 		
 		// Get publication
-		$objP 		 = new Publication( $this->database );
 		$publication = $objP->getPublication($id, $version, NULL, $alias);
 
 		// Make sure we got a result from the database
@@ -619,6 +639,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->introTask();
 			return;
 		}
+		
+		// Load publication project
+		$publication->_project = new Project($this->database);
+		$publication->_project->load($publication->project_id);
 
 		// Whew! Finally passed all the checks
 		// Let's get down to business...
@@ -655,13 +679,51 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$publication->_mastertype = new PublicationMasterType( $this->database );
 		$publication->_mastertype->load($publication->master_type);
 		$publication->_mastertype->_params = new JParameter( $publication->_mastertype->params );
-				
-		// Load publication project
-		$publication->project = new Project($this->database);
-		$publication->project->load($publication->project_id);
-		
+						
 		// Get pub type helper
-		$publication->pubTypeHelper = new PublicationTypesHelper($this->database, $publication->project);
+		$publication->pubTypeHelper = new PublicationTypesHelper($this->database, $publication->_project);
+		
+		// Get attachments
+		$pContent = new PublicationAttachment( $this->database );
+		$publication->_attachments = $pContent->sortAttachments ( $publication->version_id );
+		
+		// Get content
+		$pContent = new PublicationAttachment($this->database);
+		$content = array();
+		$content['primary']   = isset($publication->_attachments[1]) ? $publication->_attachments[1] : NULL;
+		$content['secondary'] = isset($publication->_attachments[2]) ? $publication->_attachments[2] : NULL;
+				
+		// For curation we need somewhat different vars
+		// TBD - streamline
+		if ($useBlocks)
+		{
+			$publication->_submitter = $publication->submitter;
+			$publication->version	 = $version;
+			$publication->_type  	 = $publication->_mastertype;
+			
+			// Initialize helpers
+			$publication->_helpers->pubHelper 		= new PublicationHelper(
+				$this->database, 
+				$publication->version_id, 
+				$publication->id
+			);		
+			$publication->_helpers->htmlHelper	  	= new PublicationsHtml();
+			$publication->_helpers->projectsHelper 	= new ProjectsHelper( $this->database );
+			
+			// Get manifest from either version record (published) or master type
+			$manifest = $publication->curation 
+						? $publication->curation 
+						: $publication->_type->curation;
+
+			// Get curation model
+			$this->publication->_curationModel = new PublicationsCuration(
+				$this->database, 
+				$manifest
+			);
+
+			// Set pub assoc and load curation
+			$publication->_curationModel->setPubAssoc($publication);			
+		}
 				
 		// Build publication path (to access attachments)
 		$base_path = $this->config->get('webpath');
@@ -708,13 +770,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Merge params
 		$params->merge( $publication->_mastertype->_params );
 		$params->merge( $rparams );
-		
-		// Get content
-		$pContent = new PublicationAttachment($this->database);
-		$content = array();
-		$content['primary']   = $pContent->getAttachments ( $publication->version_id,  $filters = array('role' => '1') );
-		$content['secondary'] = $pContent->getAttachments ( $publication->version_id,  $filters = array('role' => '0') );
-				
+						
 		// Get license info
 		$pLicense = new PublicationLicense($this->database);
 		$license = $pLicense->getLicense($publication->license_type);		
@@ -823,6 +879,122 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		
 		// Insert .rdf link in the header
         ResourceMapGenerator::putRDF($id);
+	}
+	
+	/**
+	 * Use handlers to deliver attachments
+	 * 
+	 * @return     void
+	 */	
+	protected function _handleContent()
+	{
+		// Incoming	
+		$aid	  = JRequest::getInt( 'a', 0 );             // Attachment id 
+		$element  = JRequest::getInt( 'el', 0 );            // Element id 
+
+		if (!$this->publication)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			return;
+		}
+		
+		// We need our curation model to parse elements
+		if (JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+			. DS . 'models' . DS . 'curation.php')
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+				. DS . 'models' . DS . 'curation.php');
+		}
+		else
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			return;
+		}
+										
+		// Load master type
+		$mt = new PublicationMasterType( $this->database );
+		$this->publication->_type = $mt->getType($this->publication->base);		
+		$this->publication->version = $this->version;
+		
+		// Load publication project
+		$this->publication->_project = new Project($this->database);
+		$this->publication->_project->load($this->publication->project_id);
+				
+		// Get attachments
+		$pContent = new PublicationAttachment( $this->database );
+		$this->publication->_attachments = $pContent->sortAttachments ( $this->publication->version_id );
+				
+		// We do need attachments
+		if (!isset($this->publication->_attachments['elements'][$element]) 
+			|| empty($this->publication->_attachments['elements'][$element]))
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}
+		
+		// Initialize helpers
+		$this->publication->_helpers->pubHelper = new PublicationHelper(
+			$this->database, 
+			$this->publication->version_id, 
+			$this->publication->id
+		);		
+		$this->publication->_helpers->htmlHelper = new PublicationsHtml();
+		
+		// Get manifest from either version record (published) or master type
+		$manifest = $this->publication->curation 
+					? $this->publication->curation 
+					: $this->publication->_type->curation;
+		
+		// Get curation model
+		$this->publication->_curationModel = new PublicationsCuration(
+			$this->database, 
+			$manifest
+		);
+										
+		// Set pub assoc and load curation
+		$this->publication->_curationModel->setPubAssoc($this->publication);
+		
+		// Get element manifest to deliver content as intended
+		$curation = $this->publication->_curationModel->getElementManifest($element);
+		
+		// We do need manifest!
+		if (!$curation || !$curation->element)
+		{
+			return false;
+		}
+								
+		// Get attachment type model
+		$attModel = new PublicationsModelAttachments($this->database);
+		
+		// Serve content
+		$content = $attModel->serve(
+			$curation->element->params->type, 
+			$curation->element, 
+			$element, 
+			$this->publication, 
+			$curation->block->params,
+			$aid
+		);
+		
+		// No content served
+		if ($content === NULL || $content == false)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			return;
+		}
+		else
+		{
+			// Do we need to redirect to content?
+			if ($attModel->get('redirect'))
+			{
+				$this->_redirect = $attModel->get('redirect');
+				return;
+			}
+			
+			return $content;
+		}
+			
+		return;		
 	}
 	
 	/**
@@ -953,6 +1125,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Incoming	
 		$version  = JRequest::getVar( 'v', '' );            // Get version number of a publication
 		$aid	  = JRequest::getInt( 'a', 0 );             // Attachment id 
+		$element  = JRequest::getInt( 'el', 0 );            // Element id 
 		$render	  = JRequest::getVar( 'render', '' );
 		$disp	  = JRequest::getVar( 'disposition', 'attachment' );
 		$disp	  = $disp == 'inline' ? $disp : 'attachment';
@@ -960,14 +1133,13 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		
 		// In dataview
 		$vid   = JRequest::getInt( 'vid', '' ); 
-		$file  = JRequest::getVar( 'file', '' );
-		
+		$file  = JRequest::getVar( 'file', '' );		
 		if ($vid && $file)
 		{
 			$this->_serveData();
 			return;
 		}
-		
+				
 		$downloadable = array();
 		
 		// Make sure render type is available
@@ -979,6 +1151,19 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 			return;
+		}
+		
+		// Load version by ID
+		$objPV 	  = new PublicationVersion( $this->database );
+		if ($vid  && !$objPV->load($vid))
+		{
+			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			$this->introTask();
+			return;
+		}
+		elseif ($vid)
+		{
+			$version = $objPV->version_number;
 		}
 				
 		// Which version is requested? 
@@ -1004,7 +1189,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 		
-		// For breadcrumbs
+		// Save loaded objects
 		$this->publication = $publication;
 		$this->version     = $version;
 		
@@ -1031,9 +1216,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$juser = JFactory::getUser();
 		}
-		
+				
 		// Check if user has access to content
 		$this->_checkRestrictions($publication, $version);
+		
+		// Serve attachments by element, with handler support (NEW)
+		if ($element)
+		{
+			$this->_handleContent();
+			return;
+		}
 		
 		// Get publication helper
 		$helper = new PublicationHelper($this->database);
@@ -1096,7 +1288,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$v = "/^(http|https|ftp|nanohub):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i";
 			
 			// Invoke tool
-			$this->_redirect = (preg_match($v, $pPath) || preg_match("/index.php/", $pPath)) ? $pPath : DS . trim($pPath, DS);
+			$this->_redirect = (preg_match($v, $pPath) || preg_match("/index.php/", $pPath)) 
+							? $pPath : DS . trim($pPath, DS);
 			return;
 		}
 		elseif ($render == 'archive' || ($publication->base == 'files' && count($attachments) > 1 
@@ -1133,7 +1326,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			if ($pType == 'file')
 			{
 				// Play resource inside special viewer
-				if ($render == 'inline' || ($serveas == 'inlineview' && $this->_task != 'download' && $render != 'download'))
+				if ($render == 'inline' || ($serveas == 'inlineview' 
+					&& $this->_task != 'download' && $render != 'download'))
 				{					
 					// Instantiate a new view
 					$view 				= new JView( array('name'=>'view', 'layout'=>'inline') );
@@ -2227,6 +2421,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'autocomplete.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS 
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
+			
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
 		
 		$lang = JFactory::getLanguage();
 		$lang->load('com_projects');
@@ -2242,7 +2439,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
 		\Hubzero\Document\Assets::addComponentScript('com_projects', 'assets/js/projects');
-
+		
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'jquery.fileuploader.js');
+		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'jquery.queueuploader.js');
+		
 		// Set page title
 		$this->_task_title = JText::_('COM_PUBLICATIONS_SUBMIT');
 		$this->_buildTitle();
@@ -2455,7 +2657,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 		
 		// Dev version/pending/posted/dark archive resource? Must be project owner
-		if (($version == 'dev' || $publication->state == 4 || $publication->state == 5 || $publication->state == 6) && !$authorized) 
+		if (($version == 'dev' || $publication->state == 4 
+			|| $publication->state == 5 || $publication->state == 6) && !$authorized) 
 		{
 			$this->_blockAccess($publication);
 			return false;
@@ -2516,7 +2719,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 * @param      integer $project_id
 	 * @return     mixed False if no access, string if has access
 	 */
-	protected function _authorize( $project_id = 0 ) 
+	protected function _authorize( $project_id = 0, $curatorgroup = NULL ) 
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest')) 
@@ -2530,6 +2733,27 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($this->juser->authorize($this->_option, 'manage')) 
 		{
 			$authorized = 'admin';
+		}
+		
+		// Check if they are curator
+		$curatorgroup = $curatorgroup ? $curatorgroup : $this->config->get('curatorgroup', '');
+		if ($curatorgroup && $this->config->get('curation', 0))
+		{
+			if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
+			{
+				// Check if they're a member of this group
+				$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+				if ($ugs && count($ugs) > 0) 
+				{
+					foreach ($ugs as $ug)
+					{
+						if ($group && $ug->cn == $group->get('cn')) 
+						{
+							$authorized = 'curator';
+						}
+					}
+				}
+			}
 		}
 		
 		// Check if they're the project owner

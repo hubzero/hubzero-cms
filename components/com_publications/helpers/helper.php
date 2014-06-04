@@ -786,9 +786,8 @@ class PublicationHelper extends JObject
 			case 5: 
 				$class  = 'pending';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
-				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->submitted, $dateFormat, $tz);
 				break;
 					
 			case 6: 
@@ -798,6 +797,13 @@ class PublicationHelper extends JObject
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
 					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
 				break;	
+			
+			case 7: 
+				$class  = 'wip';
+				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_WIP');
+				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
+					.' ' . JHTML::_('date', $row->submitted, $dateFormat, $tz);
+				break;
 		}
 		
 		switch ($get) 

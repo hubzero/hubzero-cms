@@ -155,7 +155,7 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
 		if (!$image) 
 		{
@@ -854,7 +854,7 @@ class PublicationsHtml
 		{
 			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option=' 
 				. $option . '&id=' . $publication->id . a . 'active=supportingdocs') . '">' 
-				. JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL') . ' (' . $docs .')</a></p>'."\n";
+				. JText::_('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL') . '</a></p>'."\n";
 		}
 		
 		$supln .= '</ul>'."\n";
@@ -1207,21 +1207,21 @@ class PublicationsHtml
 		$xtra 		= '';
 		$title  	= 'Access publication';
 		$pop    	= '';
-		$class  	= '';
+		$class  	= 'btn btn-primary icon-next ';
 		$disabled 	= 0;
 		$msg		= 'Access Publication';
 		
 		// Is content available?
 		if ($publication->state == 0) 
 		{
-			$class = 'link_disabled';
-			$pop = JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
-			$disabled = 1;
+			$class     .= 'link_disabled';
+			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$disabled   = 1;
 		}
 		elseif ($restricted && !$authorized) 
 		{
-			$class = 'link_disabled';
-			$pop = $publication->access == 1 
+			$class 		.= 'link_disabled';
+			$pop 		= $publication->access == 1 
 			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP') 
 			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
@@ -1255,13 +1255,13 @@ class PublicationsHtml
 				
 				if (!$disabled) 
 				{
-					$class = 'play';
+					$class .= 'play';
 				}
 				break;
 				
 			case 'invoke':
-				$msg   = JText::_('Launch tool');
-				$class = 'launchtool';
+				$msg    = JText::_('Launch tool');
+				$class .= 'launchtool';
 				break;
 				
 			case 'external':

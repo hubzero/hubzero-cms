@@ -41,6 +41,11 @@ function PublicationsBuildRoute(&$query)
 {
     $segments = array();
 
+	if (!empty($query['controller'])) 
+	{
+		$segments[] = $query['controller'];
+		unset($query['controller']);
+	}
     if (!empty($query['id'])) 
 	{
 		$segments[] = $query['id'];
@@ -99,12 +104,34 @@ function PublicationsBuildRoute(&$query)
 function PublicationsParseRoute($segments)
 {
 	$vars = array();
+	$vars['controller'] = 'publications';
 	
 	// Valid tasks not requiring id
-	$tasks = array(	'browse', 'start', 'submit', 'edit');
+	$tasks = array(	'browse', 'start', 'submit', 'edit', 'publication');
 
 	if (empty($segments[0]))
 	{
+		return $vars;	
+	}
+	
+	if (!empty($segments[0]) && $segments[0] == 'curation')
+	{
+		$vars['controller'] = 'curation';
+		
+		if (!empty($segments[1]) && is_numeric($segments[1])) 
+		{
+			$vars['id']   = $segments[1];
+			
+			if (!empty($segments[2]))
+			{
+				$vars['task'] = $segments[2];
+			}
+			else
+			{
+				$vars['task'] = 'view';	
+			}
+		}
+		
 		return $vars;	
 	}
 		

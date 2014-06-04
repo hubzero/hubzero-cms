@@ -1,9 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-<header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
-</header><!-- / #content-header -->
+<header id="content-header"><h2><?php echo $this->title; ?></h2></header><!-- / #content-header -->
 
 <?php if ($this->pid && $this->project && $this->project->created_by_user == $this->uid) { ?>
 	<p class="contrib-options">
@@ -11,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 		<a href="<?php echo JRoute::_('index.php?option=com_projects&alias='.$this->project->alias).'&action=activate'; ?>">
 		<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a>
 	</p>
-<?php } ?>å
+<?php } ?>
 
 <secton id="contrib-section" class="section">
 	<div class="status-msg" id="status-msg">

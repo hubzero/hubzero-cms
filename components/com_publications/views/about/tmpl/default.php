@@ -1,6 +1,8 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+$useBlocks = $this->config->get('curation', 0);
+
 $yearFormat = "%Y";
 $tz = null;
 
@@ -36,15 +38,29 @@ $gallery_path = $this->helper->buildPath($this->publication->id, $this->publicat
 // Show gallery images
 if ($this->params->get('show_gallery'))
 {
-	$pScreenshot = new PublicationScreenshot($this->database);
-	$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );	
-	$shots = PublicationsHtml::showGallery($gallery, $gallery_path);
-	if ($shots) 
+	if ($useBlocks)
 	{
-		$html .= ' <div class="sscontainer">'."\n";					
-		$html .= $shots;
-		$html .= ' </div><!-- / .sscontainer -->'."\n";
-	}		
+		// Get handler model
+		$modelHandler = new PublicationsModelHandlers($this->database);
+		
+		// Load image handler
+		if ($handler = $modelHandler->ini('imageviewer'))
+		{
+			echo $handler->showImageBand($this->publication);
+		}				
+	}
+	else
+	{
+		$pScreenshot = new PublicationScreenshot($this->database);
+		$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );	
+		$shots = PublicationsHtml::showGallery($gallery, $gallery_path);
+		if ($shots) 
+		{
+			$html .= ' <div class="sscontainer">'."\n";					
+			$html .= $shots;
+			$html .= ' </div><!-- / .sscontainer -->'."\n";
+		}
+	}
 }
 
 // Show description and metadata
@@ -120,7 +136,8 @@ if ($this->params->get('show_tags'))
 // Show version notes
 if ($this->params->get('show_notes') && $this->publication->release_notes) 
 {
-	$description = $model->notes('parsed');
+	$notes = $model->notes('parsed');
+	$html .= PublicationsHtml::tableRow( JText::_('COM_PUBLICATIONS_NOTES'), $notes );
 }
 
 // Page end
