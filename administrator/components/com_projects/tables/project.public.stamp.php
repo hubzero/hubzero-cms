@@ -222,64 +222,53 @@ class ProjectPubStamp extends JTable
 		}
 		
 		$now = JFactory::getDate()->toSql();
-		$new = 0;
+		
+		$obj = new ProjectPubStamp($this->_db);
 		
 		// Load record
-		if ($this->checkStamp( $projectid, $reference, $type ))
+		if ($obj->checkStamp( $projectid, $reference, $type ))
 		{			
-			if ($this->expires && $this->expires < $now)
+			if ($obj->expires && $obj->expires < $now)
 			{
-				// Expired - need new entry
-				$new = 1;
+				// Expired
+				$obj->delete();
+				return $this->registerStamp( $projectid, $reference, $type, $listed, $expires);
 			}
 			else
 			{
 				if ($listed === NULL && $expires === NULL)
 				{
-					return true;
+					return $obj->stamp;
 				}
 
 				// These values may be updated
-				$this->listed	= $listed === NULL ? $this->listed : $listed;	
-				$this->expires	= $expires === NULL ? $this->expires : $expires;
-
-				if ($this->store())
-				{
-					return true;
-				}
+				$obj->listed	= $listed === NULL ? $obj->listed : $listed;	
+				$obj->expires	= $expires === NULL ? $obj->expires : $expires;
+				$obj->store();
+				
+				return $obj->stamp;
 			}
 		}
-		else
+		
+		// Make new entry
+		$created = JFactory::getDate()->toSql();		
+		$juser = JFactory::getUser();
+		$created_by	= $juser->get('id');
+		
+		// Generate stamp
+		require_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
+		$stamp 		= ProjectsHtml::generateCode(20, 20, 0, 1, 1);
+		
+		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by) 
+				 VALUES ('$stamp', $projectid, $listed, '$type', '$reference', '$expires' , '$created', '$created_by' )";
+		
+		$this->_db->setQuery( $query );
+		if (!$this->_db->query()) 
 		{
-			$new = 1;
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
 		}
 		
-		if ($new)
-		{
-			$this->projectid 	= $projectid;
-			$this->reference 	= $reference;
-			$this->type			= $type;
-			$this->created 		= JFactory::getDate()->toSql();
-			
-			$juser = JFactory::getUser();
-			$this->created_by	= $juser->get('id');
-			
-			$this->listed		= $listed;	
-			$this->expires		= $expires;
-			
-			require_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
-			
-			// Generate stamp
-			$stamp = ProjectsHtml::generateCode (20, 20, 0, 1, 1);
-			
-			$this->stamp 		= $stamp;
-			
-			if ($this->store())
-			{
-				return true;
-			}			
-		}
-		
-		return false;		
+		return $stamp;		
 	}
 }
