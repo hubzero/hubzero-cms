@@ -1,0 +1,234 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+	-- -- -- -- -- -- --
+	Project team selector CSS
+	-- -- -- -- -- -- --
+*/
+	.select-form ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.select-form {
+		margin: 0;
+		padding: 1em;
+	}
+	.select-form fieldset {
+		padding: 0;
+		margin: 0;
+	}
+	.team-selector li {
+		margin: 0;
+		padding: 0;
+		min-height: 34px;
+	}
+	.team-selector li.even {
+		background: #f7f7fa;			
+	}
+	ul.team-selector {
+		max-height: 300px;
+		overflow: auto;
+	}
+	.content-selector {
+		margin: 1em 0;
+		border-bottom: 4px solid #f7f7fa;
+		border-top: 4px solid #f7f7fa;
+	}
+	.save-selection {
+		float: right;
+		margin: 0;
+		padding: 0;
+	}
+	.abox-controls {
+		float: right;
+	}
+	#b-save.disabled, #b-save.disabled:hover {
+		background: #CCC;
+		cursor: default;
+	}
+	.item-info {
+		float: right;
+		color: #CCC;
+		margin-right: 3em;
+	}
+	#status-box {
+		text-align: center;
+		margin: 0;
+		height: 25px;
+		margin-right: 2em;
+		line-height: 0.8em;
+		width: auto;
+	}
+	#status-box p {
+		margin: 0;
+		padding: 0.2em 1em;
+		line-height: 0.8em;
+		color: #666;
+		font-size: 90%;
+		width: auto;
+		display: inline;
+	}
+	#status-box .status-error {
+		color: red;
+		background: #fae6e5;
+	}
+	#status-box .status-success {
+		color: green;
+		background: #f2fcee;
+	}
+	#status-box .status-loading {
+		color: orange;
+	}
+	.requirement {
+		padding: 0;
+		margin: 0 0 1em 0;
+		font-weight: bold;
+	}
+	.requirement .btn {
+		font-weight: normal;
+	}
+	.a-username {
+		margin-left: 0.2em;
+		color: #999;
+	}
+	.choice-divider {
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 1.5em;
+		color: green;
+	}
+
+/* Add author form
+---------------------------- */
+	.newauthor-question {
+		padding: 1em;
+		font-size: 90%;
+		height: 40px;
+		border-top: 1px dotted #CCC;
+	}	
+	.newauthor-question span {
+		float: right;
+	}
+	#abox-content form.add-author {
+		margin: 0 1em;
+	}
+	#abox-content form.add-author fieldset {
+		padding: 0;
+		margin: 0;
+	}
+	.quick-add {
+		background: #eef8fb;
+		display: block;
+		margin: 0;
+		margin-bottom: 1em;
+		padding: 1em;
+	}
+	.quick-add .required {
+		font-size: 0.6em;
+	}
+	.formlabel {
+		color: #999;
+		text-align: right;
+	}
+	.inlineblock {
+		display: inline-block;
+		width: 48%;
+		margin: 0;
+		text-align: right;
+	}
+	#abox-content form.add-author label {
+		width: 100%;
+	}
+	.add-author .requirement {
+		width: 70%;
+	}
+	#abox-content form.add-author .block {
+		margin: 0.5em 0;
+	}
+	.block-liner {
+		margin-right: 1.5em;
+		text-align: right;
+	}
+	.block-liner input {
+		width: 76%;
+	}
+	.invite-question {
+		padding: 1em 3em;
+		font-weight: bold;
+	}
+	.add-author .token-input-list-acm {
+		
+	}
+	.autoc {
+		display: block;
+		margin: 0 2em 2em 10em;
+		height: 50px;
+	}
+	.autoc .formlabel {
+		display: block;
+		text-align: left;
+	}
+
+/* Selectable
+---------------------------- */
+
+	#team-selector .selectedfilter,
+	.team-selector .selectedfilter, .team-selector .selectedfilter:hover {
+		background: #ddf4fd;
+		cursor: pointer;
+	}
+	.team-selector .selectedfilter .item-info:after, 
+	.team-selector .selectedfilter:hover .item-info:after {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		content: "\f058";
+		color: green;
+		float: right;
+		margin-left: 1em;
+		position: absolute;
+	}
+	.team-selector .notallowed {
+		color: #bebebe;
+	}
+	.team-selector .notallowed img {
+		opacity: 0.5;
+	}
+	.team-selector .allowed:hover {
+		cursor: pointer;
+	}
+	.team-selector .notallowed:hover,
+	.team-selector .freeze:hover {
+		cursor: default !important;
+	}
+	.team-selector li.allowed:hover {
+		background: #bbe3f3;
+	}	
+	.content-loader {
+		text-align: center;
+		padding: 3em 0;
+	}
+	#team-selector li.preselected {
+		background: #ebfcec;
+	}
+	.add-author .optional {
+		float: right;
+		text-transform: uppercase;
+	}
+	
+/* Provisioned projects
+---------------------------- */
+	#abox-content {
+		text-align: left;
+	}
+	
+	
