@@ -57,17 +57,17 @@ tooltip: true,
 
 ?>
 
-<script src="/media/system/js/flot/jquery.flot.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.pie.min.js"></script>
-<script src="/media/system/js/flot/jquery.flot.resize.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.min.js"></script>
+<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
+<script src="<?php echo JURI::base(true); ?>/media/system/js/flot/jquery.flot.resize.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo JURI::base(true); ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
-<div id="content-header" class="reports">
+<header id="content-header" class="reports">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
+</header><!-- / #content-header -->
 
-<div class="main section" id="project-stats">
+<section class="main section" id="project-stats">
 	<div class="status-msg">
 	<?php 
 		// Display error or success message
@@ -548,4 +548,4 @@ tooltip: true,
 	</table>
 	<?php } ?>
 	<?php if (isset($this->stats['updated'])) { echo '<p>*Last updated ' . $this->stats['updated'] . '</p>'; } ?>
-</div>
+</section>

@@ -37,20 +37,22 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $html  = '';
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 ?>
-<div id="content-header">
+<header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-</div><!-- / #content-header -->
-<div id="content-header-extra">
-    <ul id="useroptions">
-    	<li><a class="btn icon-add" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
-	</ul>
-</div><!-- / #content-header-extra -->
-<div class="main section">
+
+	<div id="content-header-extra">
+		<ul id="useroptions">
+			<li><a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>
+		</ul>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
+
+<section class="main section">
 <?php
 	$html .= t.'<form method="get" action="'.JRoute::_('index.php?option='.$this->option.a.'task=browse').'">'.n;
 	// show how many
 	$totalnote = JText::_('COM_PROJECTS_NOTICE_DISPLAYING').' ';
-	if($this->filters['start'] == 0) {
+	if ($this->filters['start'] == 0) {
 		$totalnote .= ($this->pageNav->total > count($this->rows)) ? ' '.JText::_('COM_PROJECTS_NOTICE_TOP').' '.count($this->rows).' '.JText::_('COM_PROJECTS_NOTICE_OUT_OF').' '.$this->pageNav->total : JText::_('COM_PROJECTS_NOTICE_ALL').' '.count($this->rows) ;
 	}
 	else {
@@ -67,20 +69,20 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 	// Loop through results
 	$html .= '<div class="list-editing"><p>'.JText::_('COM_PROJECTS_SHOWING');
-	if($this->total <= count($this->rows)) {
+	if ($this->total <= count($this->rows)) {
 		$html .= ' '.JText::_('COM_PROJECTS_ALL').' <span class="prominent">'.$this->total.'</span> ';
 	}
 	else {
 		$html .= ' <span class="prominent">'.count($this->rows).'</span> '.JText::_('COM_PROJECTS_OUT_OF').' '.$this->total;	
 	}
 	$html .= ' '.strtolower(JText::_('COM_PROJECTS_PROJECTS')).'</p></div>';
-	if(count($this->rows) > 0) {		
+	if (count($this->rows) > 0) {		
 		$html .= t.t.'<table class="listing" id="projectlist">'.n;
 		$html .= t.t.t.'<thead>'.n;
 		$html .= t.t.t.'<tr>'.n;
 		$html .='<th class="th_image" colspan="2"></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if($this->filters['sortby'] == 'title') { 
+		if ($this->filters['sortby'] == 'title') { 
 			$html .= ' class="activesort"'; 
 		} 
 		$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=title'
@@ -88,7 +90,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_TITLE') . '">';
 		$html .= JText::_('COM_PROJECTS_TITLE').'</a></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if($this->filters['sortby'] == 'owner') { 
+		if ($this->filters['sortby'] == 'owner') { 
 			$html .= ' class="activesort"'; 
 		} 
 		$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse')
@@ -97,8 +99,8 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= JText::_('COM_PROJECTS_OWNER').'</a></th>'.n;
 		
 		$html .= t.t.t.t.'<th';
-		if(!$this->guest) {
-			if($this->filters['sortby'] == 'status') { 
+		if (!$this->guest) {
+			if ($this->filters['sortby'] == 'status') { 
 				$html .= ' class="activesort"';
 			}
 				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=status'
@@ -111,8 +113,8 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		}
 		$html .='</th>'.n;
 		$html .= t.t.t.t.'<th';
-		if(!$this->guest) {
-			if($this->filters['sortby'] == 'role') { 
+		if (!$this->guest) {
+			if ($this->filters['sortby'] == 'role') { 
 				$html .= ' class="activesort"';
 			}
 				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=role'
@@ -127,11 +129,11 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= t.t.t.'</tr>'.n;
 		$html .= t.t.t.'</thead>'.n;
 		$html .= t.t.t.'<tbody>'.n;
-		foreach($this->rows as $row) {	
-			if($row->owned_by_group && !$row->groupcn) {
+		foreach ($this->rows as $row) {
+			if ($row->owned_by_group && !$row->groupcn) {
 				continue; // owner group has been deleted
 			}
-			$goto  = 'alias=' . $row->alias;				
+			$goto  = 'alias=' . $row->alias;
 			$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_image">';
@@ -147,23 +149,23 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= '</td>'.n;
 
 			$html .= t.t.t.t.'<td class="mini faded">';
-			if($row->owner && $row->confirmed == 1) {
-				if($row->state == 1 && $row->setup_stage >= $setup_complete) {
+			if ($row->owner && $row->confirmed == 1) {
+				if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
 					$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 				}
 				else if ($row->setup_stage < $setup_complete) {
 						$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
 				}
-				else if($row->state == 0) {
+				else if ($row->state == 0) {
 					$html .= '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
 				}
-				else if($row->state == 5) {
+				else if ($row->state == 5) {
 					$html .= '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 				}
 			}
 			$html .= '</td>'.n;
 			$html .= t.t.t.t.'<td class="mini faded">';
-			if($row->owner && $row->confirmed == 1) {
+			if ($row->owner && $row->confirmed == 1) {
 				$html .= $row->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR') ;
 			}
 			$html .= '</td>'.n;
@@ -174,7 +176,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	}
 	else {
 		$html .= t.t.t.'<p class="noresults">';
-		if($this->guest) {
+		if ($this->guest) {
 			$html .= JText::_('COM_PROJECTS_NO_PROJECTS_FOUND').' '.JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=browse').'?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS');
 		}
 		else {
@@ -184,7 +186,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	}
 	
 	// Insert page navigation
-	if(count($this->rows) > 0) {	
+	if (count($this->rows) > 0) {	
 		$pagenavhtml = $this->pageNav->getListFooter();
 		$pagenavhtml = str_replace('projects/?','projects/browse/?',$pagenavhtml);
 		$html .= t.t.'<fieldset>'.n;
@@ -195,4 +197,4 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	echo $html;
 ?>
 	<div class="clear"></div>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

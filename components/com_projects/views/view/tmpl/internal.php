@@ -30,7 +30,7 @@ $html  = '';
 $document = JFactory::getDocument();
 $title = $this->project->counts['newactivity'] > 0 
 	&& $this->active == 'feed' 
-	? $this->title.' (' . $this->project->counts['newactivity'].')' 
+	? $this->title . ' (' . $this->project->counts['newactivity'] . ')' 
 	: $this->title;
 $document->setTitle( $title );
 
@@ -55,16 +55,16 @@ $a = 0;
 ?>
 <div id="project-wrap">	
 	<div id="project-innerwrap">
-			<div class="main-menu">
-				<?php echo ProjectsHtml::embedProjectImage($this); ?>	
+		<div class="main-menu">
+			<?php echo ProjectsHtml::embedProjectImage($this); ?>
 			<ul class="projecttools">
-				<li<?php if($this->active == 'feed') { echo ' class="active"'; }?>>
-					<a class="newsupdate" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=feed'); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo JText::_('COM_PROJECTS_TAB_FEED'); ?></span>
-					<span id="c-new" class="mini highlight <?php if($this->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $this->project->counts['newactivity'];?></span></span></a>
-				</li>				
-				<li<?php if($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=info'); ?>" class="inform" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_INFO')); ?>">
+				<li<?php if ($this->active == 'feed') { echo ' class="active"'; }?>>
+					<a class="newsupdate" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=feed'); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo JText::_('COM_PROJECTS_TAB_FEED'); ?></span>
+					<span id="c-new" class="mini highlight <?php if ($this->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $this->project->counts['newactivity'];?></span></span></a>
+				</li>
+				<li<?php if ($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=info'); ?>" class="inform" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_INFO')); ?>">
 					<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
-				</li>					
+				</li>
 <?php if ($this->tabs) {
 	foreach ($this->tabs as $tab) 
 	{ 
@@ -72,7 +72,7 @@ $a = 0;
 		{
 			continue;
 		}
-		
+
 		if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
 		{
 			$a++; // counter for asset tabs
@@ -81,67 +81,66 @@ $a = 0;
 			if ($a == 1)
 			{
 				?>
-			<li class="assets">
-				<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
-			</li>
-		</ul>
-		<ul class="projecttools assetlist">
-		<?php
+				<li class="assets">
+					<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
+				</li>
+			</ul>
+			<ul class="projecttools assetlist">
+			<?php
 			foreach ($assetTabs as $aTab)
 			{
 				?>
-				<li<?php if($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
-					<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
+				<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
+					<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
 						<span><?php echo $aTab['title']; ?></span> 
-<?php if (isset($this->project->counts[$aTab['name']]) 
-&& $this->project->counts[$aTab['name']] != 0) { ?>
+					<?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
 						<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
-<?php } ?>
+					<?php } ?>
 					</a>
 				</li>
-	<?php 	} ?>
-		</ul>
-		<ul class="projecttools">
-	<?php } continue; }
-		
+			<?php } ?>
+			</ul>
+			<ul class="projecttools">
+		<?php
+		}
+		continue;
+	}
 ?>
-				<li<?php if($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
-					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . $goto . a . 'active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
+				<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
+					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
 						<span><?php echo $tab['title']; ?></span> 
-<?php if (isset($this->project->counts[$tab['name']]) 
-&& $this->project->counts[$tab['name']] != 0) { ?>
+					<?php if (isset($this->project->counts[$tab['name']]) && $this->project->counts[$tab['name']] != 0) { ?>
 						<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $this->project->counts[$tab['name']]; ?></span></span>
-<?php } ?>
+					<?php } ?>
 					</a>
 				</li>
 <?php }
- } ?>
-		</ul>				
-			</div><!-- / .main-menu -->
-			<div class="main-content">
-				<?php echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); ?>	
-				<?php echo ProjectsHtml::writeMemberOptions($this); ?>		
-				<div class="status-msg" id="status-msg">
-<?php 
-// Display error or success message
-if ($this->getError()) { 
-	echo ('<p class="witherror">' . $this->getError().'</p>');
-}
-else if($this->msg) {
-	echo ('<p>' . $this->msg . '</p>');
 } ?>
-				</div>		
+			</ul>
+		</div><!-- / .main-menu -->
+		<div class="main-content">
+			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); ?>
+			<?php echo ProjectsHtml::writeMemberOptions($this); ?>
+			<div class="status-msg" id="status-msg">
+				<?php 
+				// Display error or success message
+				if ($this->getError()) { 
+					echo ('<p class="witherror">' . $this->getError().'</p>');
+				}
+				else if ($this->msg) {
+					echo ('<p>' . $this->msg . '</p>');
+				} ?>
+			</div>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
-			<?php if($this->notification) { echo $this->notification; } ?>
-<?php if($this->side_modules) { ?> 
+			<?php if ($this->notification) { echo $this->notification; } ?>
+			<?php if ($this->side_modules) { ?> 
 				<div class="aside">
 					<?php echo $this->side_modules; ?>
 				</div>
 				<div class="subject">
-<?php } ?>
-<?php if($this->content) { echo $this->content; } ?>
-			<?php if($this->active == 'info') 
-			{ 
+			<?php } ?>
+			<?php if ($this->content) { echo $this->content; } ?>
+			<?php if ($this->active == 'info') { 
 					// Display project info
 					$view = new JView(
 						array(
@@ -152,10 +151,10 @@ else if($this->msg) {
 					$view->goto = $goto;
 					echo $view->loadTemplate();
 			 } ?>
-<?php if($this->side_modules) { ?> 
+			<?php if ($this->side_modules) { ?> 
 				</div> <!-- / .subject -->
-<?php } ?>
-			<div class="clear"></div>
+			<?php } ?>
+				<div class="clear"></div>
 			</div><!-- / plg-content -->
 		</div><!-- / .main-content -->
 	</div>

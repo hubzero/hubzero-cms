@@ -32,22 +32,29 @@ $this->project->about = ProjectsHtml::cleanText($this->project->about);
 
 $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
 ?>
-<div id="content-header">
-	<h2><?php echo $title; ?> <?php if($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
-</div><!-- / #content-header -->
-<div class="main section" id="setup">
-<div class="clear"></div>
+<header id="content-header">
+	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
+</header><!-- / #content-header -->
+
+<section class="main section" id="setup">
+	<div class="clear"></div>
+
 	<div class="status-msg">
-	<?php 
+		<?php 
 		// Display error or success message
-		if ($this->getError()) { 
+		if ($this->getError())
+		{
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
-		else if($this->msg) {
+		else if ($this->msg)
+		{
 			echo ('<p>' . $this->msg . '</p>');
-		} ?>
+		}
+		?>
 	</div>
+
 	<div class="clear"></div>
+
 	<form id="hubForm" method="post" action="index.php">
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_UPFRONT_WHY'); ?></h4>
@@ -77,5 +84,5 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
 		</fieldset>
 	</form>
-</div>
+</section>
 <div class="clear"></div>

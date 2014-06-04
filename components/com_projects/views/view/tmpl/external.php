@@ -46,14 +46,14 @@ $this->project->about = $project->about('parsed');
 $privacy = $this->project->private ? JText::_('COM_PROJECTS_PROJECT_PRIVATE_SEARCH') : JText::_('COM_PROJECTS_PROJECT_PUBLIC_SEARCH');
 $typetitle = $this->project->projecttype;
 
-if($this->project->state == 1)
+if ($this->project->state == 1)
 {
 	$class = 'active';
 	$note  = '<span class="' . $class . '" >' 
 	. JText::_('COM_PROJECTS_ACTIVE') . '</span> ' . JText::_('COM_PROJECTS_SINCE') . ' '
 	. JHTML::_('date', $this->project->created, $dateFormat, $tz);
 }
-else if($this->project->state == 5)
+else if ($this->project->state == 5)
 {
 	$class = 'pending';
 	$note  = '<span class="' . $class . '" >' 
@@ -68,135 +68,132 @@ else
 
 ?>
 
-   <?php if(!$this->reviewer) { ?>
+<?php if(!$this->reviewer) { ?>
 <div id="content-header-extra">
 	<ul id="useroptions">
-	  	<li><a class="browse" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>	
-		<li><a class="add" href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>		
+		<li><a class="browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
+		<li><a class="add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <?php } ?>
+
 <div id="project-wrap">
- <div class="main section">
-	<?php if(($this->authorized or $this->project->owner) && !$this->reviewer) {
-		// Public preview for authorized users
-	?>
-		<div id="project-preview">
-			<p><?php echo JText::_('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
-		</div>
-	<?php 	
-	} else if($this->reviewer) { ?>
-		<div id="project-preview">
-			<p><?php echo JText::_('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=browse').'?reviewer='. $this->reviewer; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
-		</div>	
-	<?php } ?>
-  <div class="aside">
-	
-	<div class="clear"></div>
-	<div class="external">
-		<ul class="statusbox">
-			<li class="pstatus <?php echo $class; ?>"><?php echo $note; ?></li>
-			<?php if($this->guest) { ?>
-			<li class="expanded"><?php echo JText::_('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <span class="block"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias='.$this->project->alias .a .'task=view') . '?action=login'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_LOGIN')).'</a> '.JText::_('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></span></li>
+	<section class="main section">
+		<div class="subject">
+			<?php if (($this->authorized or $this->project->owner) && !$this->reviewer) { // Public preview for authorized users ?>
+				<div id="project-preview">
+					<p><?php echo JText::_('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
+				</div>
+			<?php } else if ($this->reviewer) { ?>
+				<div id="project-preview">
+					<p><?php echo JText::_('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse') . '?reviewer=' . $this->reviewer; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
+				</div>
 			<?php } ?>
-		</ul>
-	</div>
-  </div><!-- / .aside -->
-  <div class="subject">	
-	<?php echo ProjectsHtml::writeProjectHeader($this, 0, 0, 2); ?>	
-	<div id="basic_info">
-		<table id="infotbl">
-			<tbody>
-				<tr>
-					<td class="htd"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></td>
-					<td><?php echo $this->project->title; ?></td>
-						<?php if($this->reviewer && $this->config->get('grantinfo', 0)) { ?>				
-							<td <?php if($this->project->about) { echo 'rowspan="2"'; } ?> class="grantinfo">
-								<h4><?php echo JText::_('COM_PROJECTS_INFO_GRANTINFO'); ?></h4>
-								<p>
-									<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:</span> <?php echo $this->params->get( 'grant_title'); ?></span>
-									<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:</span> <?php echo $this->params->get( 'grant_PI', 'N/A'); ?></span>
-									<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:</span> <?php echo $this->params->get( 'grant_agency', 'N/A'); ?></span>
-									<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:</span> <?php echo $this->params->get( 'grant_budget', 'N/A'); ?></span>
-									<?php if($this->project->role == 1) { ?>
-										<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=edit'.a.$goto).'/?edit=settings'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_THIS'); ?></a>
-									<?php } ?>
-								</p>
-							</td>
+
+			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 0, 2); ?>	
+			<div id="basic_info">
+				<table id="infotbl">
+					<tbody>
+						<tr>
+							<td class="htd"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></td>
+							<td><?php echo $this->project->title; ?></td>
+								<?php if($this->reviewer && $this->config->get('grantinfo', 0)) { ?>
+									<td <?php if($this->project->about) { echo 'rowspan="2"'; } ?> class="grantinfo">
+										<h4><?php echo JText::_('COM_PROJECTS_INFO_GRANTINFO'); ?></h4>
+										<p>
+											<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:</span> <?php echo $this->params->get( 'grant_title'); ?></span>
+											<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:</span> <?php echo $this->params->get( 'grant_PI', 'N/A'); ?></span>
+											<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:</span> <?php echo $this->params->get( 'grant_agency', 'N/A'); ?></span>
+											<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:</span> <?php echo $this->params->get( 'grant_budget', 'N/A'); ?></span>
+											<?php if($this->project->role == 1) { ?>
+												<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&' . $goto) . '/?edit=settings'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_THIS'); ?></a>
+											<?php } ?>
+										</p>
+									</td>
+								<?php } ?>
+						</tr>
+						<?php if($this->project->about) { ?>
+						<tr>
+							<td class="htd"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></td>
+							<td><?php echo $this->project->about; ?></td>
+						</tr>
 						<?php } ?>
-				</tr>
-				<?php if($this->project->about) { ?>
-				<tr>
-					<td class="htd"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></td>
-					<td><?php echo $this->project->about; ?></td>
-				</tr>
-				<?php } ?>
-			</tbody>
-		</table>
-	</div>
-	
-	<?php if ($this->params->get('publications_public', 0)) 
-	{ 
-		// Show team		
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'publications',
-				'name'=>'publist'
-			)
-		);
-		$view->option 	= $this->option;
-		$view->project 	= $this->project;
-		echo $view->loadTemplate();
-	 } ?>
-	
-	<?php if ($this->params->get('files_public', 0)) 
-	{ 
-		// Show team	
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'publist'
-			)
-		);
-		$view->option 	= $this->option;
-		$view->project 	= $this->project;
-		echo $view->loadTemplate();
-	 } ?>
-	
-	<?php if ($this->params->get('notes_public', 0)) 
-	{ 
-		// Show team	
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'notes',
-				'name'=>'publist'
-			)
-		);
-		$view->option 	= $this->option;
-		$view->project 	= $this->project;
-		echo $view->loadTemplate();
-	 } ?>
-	
-	<?php if ($this->params->get('team_public', 0)) 
-	{ 
-		// Show team	
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'team',
-				'name'=>'view',
-				'layout'=>'horizontal'
-			)
-		);
-		$view->option 	= $this->option;
-		$view->project 	= $this->project;
-		$view->goto 	= 'alias='.$this->project->alias;
-		$view->team 	= $this->team;
-		echo $view->loadTemplate();
-	 } ?>
-  </div><!-- / .subject -->
- </div><!-- / .main section -->
+					</tbody>
+				</table>
+			</div>
+
+			<?php if ($this->params->get('publications_public', 0)) 
+			{ 
+				// Show team		
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'=>'projects',
+						'element'=>'publications',
+						'name'=>'publist'
+					)
+				);
+				$view->option 	= $this->option;
+				$view->project 	= $this->project;
+				echo $view->loadTemplate();
+			 } ?>
+			
+			<?php if ($this->params->get('files_public', 0)) 
+			{ 
+				// Show team	
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'=>'projects',
+						'element'=>'files',
+						'name'=>'publist'
+					)
+				);
+				$view->option 	= $this->option;
+				$view->project 	= $this->project;
+				echo $view->loadTemplate();
+			 } ?>
+			
+			<?php if ($this->params->get('notes_public', 0)) 
+			{ 
+				// Show team	
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'=>'projects',
+						'element'=>'notes',
+						'name'=>'publist'
+					)
+				);
+				$view->option 	= $this->option;
+				$view->project 	= $this->project;
+				echo $view->loadTemplate();
+			 } ?>
+			
+			<?php if ($this->params->get('team_public', 0)) 
+			{ 
+				// Show team	
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'=>'projects',
+						'element'=>'team',
+						'name'=>'view',
+						'layout'=>'horizontal'
+					)
+				);
+				$view->option 	= $this->option;
+				$view->project 	= $this->project;
+				$view->goto 	= 'alias='.$this->project->alias;
+				$view->team 	= $this->team;
+				echo $view->loadTemplate();
+			 } ?>
+		</div><!-- / .subject -->
+		<aside class="aside">
+			<div class="external">
+				<ul class="statusbox">
+					<li class="pstatus <?php echo $class; ?>"><?php echo $note; ?></li>
+					<?php if($this->guest) { ?>
+					<li class="expanded"><?php echo JText::_('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <span class="block"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_LOGIN')).'</a> '.JText::_('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></span></li>
+					<?php } ?>
+				</ul>
+			</div>
+		</aside><!-- / .aside -->
+	</section><!-- / .main section -->
 </div>

@@ -29,8 +29,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 ?>
 <div id="project-wrap">
- <div class="main section">
-	<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>	
+	<section class="main section">
+		<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
 		<p class="warning"><?php echo JText::_('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
- </div><!-- / .main section -->
+	</section><!-- / .main section -->
 </div>

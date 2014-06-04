@@ -38,23 +38,25 @@ $rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->o
 
 ?>
 <div id="project-wrap">
- <div class="main section">
-	<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
-	<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>	
-	<div id="confirm-invite" class="invitation">	
-		<div class="columns two first">
-			<p><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. JText::_('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
-			</p>
+	<section class="main section">
+		<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
+		<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>
+		<div id="confirm-invite" class="invitation">
+			<div class="grid">
+				<div class="col span6">
+					<p>
+						<?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. JText::_('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
+					</p>
+				</div>
+				<div class="col span6 omega">
+					<p>
+						<?php echo JText::_('COM_PROJECTS_INVITED_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_LOGIN') . '</a>'; ?>
+					</p>
+					<p>
+						<?php echo JText::_('COM_PROJECTS_INVITED_DO_NOT_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_members&controller=register&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_REGISTER') . '</a>'; ?>
+					</p>
+				</div>
+			</div>
 		</div>
-		<div class="columns two second">
-			<p>
-			<?php echo JText::_('COM_PROJECTS_INVITED_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_LOGIN') . '</a>'; ?>
-			</p>
-			<p>
-			<?php echo JText::_('COM_PROJECTS_INVITED_DO_NOT_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_members&controller=register&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_REGISTER') . '</a>'; ?>
-			</p>
-		</div>
-		<div class="clear"></div>
-	</div>
- </div><!-- / .main section -->
+	</section><!-- / .main section -->
 </div>
