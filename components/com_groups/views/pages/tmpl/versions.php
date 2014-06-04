@@ -33,6 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id');
 
+// add styles & scripts
+$this->css()
+	 ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo JText::sprintf('Page Versions: %s', $this->page->get('title')); ?></h2>

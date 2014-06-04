@@ -89,13 +89,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// build pathway
 		$this->_buildPathway();
 		
-		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true);
-		$this->_getStyles();
-		
-		// Push some scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
 		//vars
 		$mytags = '';
 		$this->view->mygroups = array(
@@ -164,9 +157,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// build pathway
 		$this->_buildPathway();
-		
-		// Push some styles to the template
-		$this->_getStyles();
 		
 		// Get site configuration
 		$jconfig = JFactory::getConfig();
@@ -352,12 +342,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// build pathway
 		$this->_buildPathway( $pages );
 		
-		// Push some styles to the template
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
 		//set some vars for view
 		$this->view->title         = $this->_title;
 		$this->view->juser         = $this->juser;
@@ -371,6 +355,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			//use group template file if we have it
 			JRequest::setVar('tmpl', 'group');
 			
+			// must call here cause otherwise doesnt load template
+			$this->view->css()->js();
+
 			// load super group template
 			// parse & render
 			$superGroupTemplate = new GroupsHelperTemplate();
@@ -773,13 +760,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// build pathway
 		$this->_buildPathway();
 		
-		// push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		\Hubzero\Document\Assets::addSystemScript('jquery.cycle2');
-		
 		$this->view->task = $this->_task;
 		
 		// get view notifications
@@ -1162,12 +1142,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// build pathway
 		$this->_buildPathway();
-		
-		// Push some styles to the template
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();

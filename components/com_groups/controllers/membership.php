@@ -107,9 +107,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			return;
 		}
 		
-		// push styles
-		$this->_getStyles();
-		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		

@@ -31,6 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// add styles & scripts
+$this->css()
+     ->js()
+     ->css('jquery.colpick.css', 'system')
+     ->js('jquery.colpick', 'system');
+
 $title = 'Add Page Category';
 if ($this->category->get('id'))
 {

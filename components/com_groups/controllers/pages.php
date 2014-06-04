@@ -124,16 +124,6 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		//build title
 		$this->_buildTitle();
 		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
-		// add fancy select for page categories
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
-		
 		//set view vars
 		$this->view->title  = 'Manage Group Pages: ' . $this->group->get('description');
 		
@@ -229,20 +219,6 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// build pathway
 		$this->_buildPathway();
-		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
-		// add fancy select for select boxes
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
-		
-		// add color picker
-		\Hubzero\Document\Assets::addSystemScript('jquery.colpick');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.colpick.css');
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -443,12 +419,6 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// build pathway
 		$this->_buildPathway();
-		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
 		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();

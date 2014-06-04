@@ -136,17 +136,6 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$this->view->folderTree = '<ul><li><a class="tree-folder-toggle" href="javascript:void(0);"></a><a data-folder="/" href="javascript:void(0);" class="tree-folder">/ (root)</a>'.$this->view->folderTree.'</li></ul>';
 		}
 		
-		// push styles
-		$this->_getStyles();
-		$this->_getStyles('com_groups', 'media.css');
-		
-		// push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		$this->_getScripts('assets/js/groups.mediabrowser.jquery');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fileuploader');
-		\Hubzero\Document\Assets::addSystemScript('jquery.contextMenu');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.contextMenu.css');
-		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group         = $this->group;
@@ -307,18 +296,6 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			$this->view->folders = array_values($folders);
 			$this->view->files   = array_values($files);
 		}
-		
-		// push styles
-		$this->_getStyles();
-		$this->_getStyles('com_groups', 'media.css');
-		
-		// push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		$this->_getScripts('assets/js/groups.medialist.jquery');
-		
-		//add jquery context menu plugin
-		\Hubzero\Document\Assets::addSystemScript('jquery.contextMenu');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.contextMenu.css');
 		
 		// pass vars to view
 		//$this->view->config = $this->config;

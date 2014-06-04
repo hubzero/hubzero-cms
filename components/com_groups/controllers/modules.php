@@ -148,16 +148,6 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// build pathway
 		$this->_buildPathway();
 		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		
-		// add fancy select for page categories
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
-		\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
-		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group = $this->group;

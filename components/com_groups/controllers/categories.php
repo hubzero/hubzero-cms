@@ -128,14 +128,6 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		// build pathway
 		$this->_buildPathway();
 		
-		//push styles
-		$this->_getStyles();
-		
-		//push scripts
-		$this->_getScripts('assets/js/' . $this->_name);
-		\Hubzero\Document\Assets::addSystemScript('jquery.colpick');
-		\Hubzero\Document\Assets::addSystemStylesheet('jquery.colpick.css');
-		
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group = $this->group;

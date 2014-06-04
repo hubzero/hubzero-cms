@@ -30,6 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+// add styles & scripts
+$this->css()
+	 ->js()
+     ->css('jquery.fancyselect.css', 'system')
+     ->js('jquery.fancyselect', 'system');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

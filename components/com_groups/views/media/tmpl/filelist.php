@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// push scripts and styles
+$this->css()
+     ->css('media.css')
+     ->js()
+     ->js('groups.medialist')
+     ->js('jquery.fileuploader', 'system')
+     ->js('jquery.contextMenu', 'system')
+     ->css('jquery.contextMenu.css', 'system');
+
 // define base URI
 $baseURI  = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
 $baseURI .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn');

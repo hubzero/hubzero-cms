@@ -31,6 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// add styles & scripts
+$this->css()
+	 ->js()
+     ->css('jquery.fancyselect.css', 'system')
+     ->js('jquery.fancyselect', 'system');
+
 // define base link
 $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages#modules';
 

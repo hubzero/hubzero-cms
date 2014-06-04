@@ -31,6 +31,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+// push scripts and styles
+$this->css()
+     ->css('media.css')
+     ->js()
+     ->js('groups.mediabrowser')
+     ->js('jquery.fileuploader', 'system')
+     ->js('jquery.contextMenu', 'system')
+     ->css('jquery.contextMenu.css', 'system');
+
 //get request vars
 $type          = JRequest::getWord('type', '', 'get');
 $ckeditor      = JRequest::getVar('CKEditor', '', 'get');
