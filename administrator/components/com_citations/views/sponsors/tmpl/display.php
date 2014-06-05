@@ -37,6 +37,8 @@ if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('sponsors');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

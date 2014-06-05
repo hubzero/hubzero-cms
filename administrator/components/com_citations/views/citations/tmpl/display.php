@@ -49,6 +49,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('citations');
 
 //set the escape callback
 $this->setEscape("htmlentities");

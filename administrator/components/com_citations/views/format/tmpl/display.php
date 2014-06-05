@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 //add title and save button to toolbar
 JToolBarHelper::title(JText::_('Citation Format'), 'citation.png');
 JToolBarHelper::save();
+JToolBarHelper::spacer();
+JToolBarHelper::help('format');
 
 // include citations format class
 // new citations format object

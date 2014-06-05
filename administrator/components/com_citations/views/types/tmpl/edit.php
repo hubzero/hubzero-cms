@@ -40,6 +40,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('type');
 
 $id     = NULL;
 $type   = NULL;

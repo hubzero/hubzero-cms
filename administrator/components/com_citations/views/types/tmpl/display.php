@@ -46,6 +46,8 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::spacer();
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('types');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
