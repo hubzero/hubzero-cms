@@ -94,7 +94,7 @@ class plgCronNewsletter extends JPlugin
 		$database = JFactory::getDBO();
 		
 		//get all queued mailing recipients
-		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.body, nm.headers, nm.args, nm.tracking
+		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking
 				FROM `#__newsletter_mailings` AS nm, `#__newsletter_mailing_recipients` AS nmr
 				WHERE nm.id=nmr.mid
 				AND nmr.status='queued'
@@ -114,7 +114,7 @@ class plgCronNewsletter extends JPlugin
 			//if tracking is on add it to email
 			if ($queuedEmail->tracking)
 			{
-				$queuedEmail->body = Hubzero_Newsletter_Helper::addTrackingToEmailMessage( $queuedEmail->body, $emailToken );
+				$queuedEmail->html_body = Hubzero_Newsletter_Helper::addTrackingToEmailMessage( $queuedEmail->html_body, $emailToken );
 			}
 			
 			//create unsubscribe link
@@ -122,15 +122,31 @@ class plgCronNewsletter extends JPlugin
 			$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . $queuedEmail->email . '&t=' . $emailToken;
 			
 			//add unsubscribe link - placeholder & in header (must do after adding tracking!!)
-			$queuedEmail->body     = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->body);
-			$queuedEmail->headers  = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
-			$queuedEmail->headers  = str_replace("{{UNSUBSCRIBE_MAILTO_LINK}}", $unsubscribeMailtoLink, $queuedEmail->headers);
+			$queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);
+			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
+			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_MAILTO_LINK}}", $unsubscribeMailtoLink, $queuedEmail->headers);
 			
 			//add mailing id to header
 			$queuedEmail->headers  = str_replace("{{CAMPAIGN_MAILING_ID}}", $queuedEmail->mailingid, $queuedEmail->headers);
 			
+			// create new message
+			$message = new Hubzero_Mail_Message();
+			
+			// add headers
+			foreach (explode("\r\n", $queuedEmail->headers) as $header)
+			{
+				$parts = array_map("trim", explode(':', $header));
+				$message->addHeader($parts[0], $parts[1]);
+			}
+
+			// build message object and send
+			$message->setSubject($queuedEmail->subject)
+					->setTo($queuedEmail->email)
+					->setBody($queuedEmail->plain_body, 'text/plain')
+					->addPart($queuedEmail->html_body, 'text/html');
+
 			//mail message
-			if (mail($queuedEmail->email, $queuedEmail->subject, $queuedEmail->body, $queuedEmail->headers, $queuedEmail->args))
+			if ($message->send())
 			{
 				//add to process email array
 				$processed[] = $queuedEmail->email;

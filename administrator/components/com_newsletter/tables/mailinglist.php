@@ -188,7 +188,12 @@ class NewsletterMailinglist extends JTable
 		//are we loading default list
 		if ($mailinglistId == '-1')
 		{
-			return $this->_getHubMailingList();
+			$list = $this->_getHubMailingList();
+			if (isset($filters['select']))
+			{
+				return array_keys($list);
+			}
+			return $list;
 		}
 
 		// default select

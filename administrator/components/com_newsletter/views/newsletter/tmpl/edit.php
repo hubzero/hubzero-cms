@@ -289,8 +289,14 @@ function submitbutton(pressbutton)
 						<tbody>
 							<tr>
 								<td>
-									<strong><?php echo JText::_('Content:'); ?></strong> (<span class="hint"><?php echo JText::_('You may use HTML tags if Email Type is \'HTML\' above.'); ?></span>)
-									<textarea name="newsletter[content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->content ); ?></textarea>
+									<strong><?php echo JText::_('HTML Content:'); ?></strong> (<span class="hint"><?php echo JText::_('You may use HTML tags if Email Type is \'HTML\' above.'); ?></span>)
+									<textarea name="newsletter[html_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->html_content ); ?></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<strong><?php echo JText::_('Plain Text Content:'); ?></strong> (<span class="hint"><?php echo JText::_('Line breaks are preserved'); ?></span>)
+									<textarea name="newsletter[plain_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->plain_content ); ?></textarea>
 								</td>
 							</tr>
 						</tbody>

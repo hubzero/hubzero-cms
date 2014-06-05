@@ -94,7 +94,14 @@ class NewsletterNewsletter extends JTable
 	 * 
 	 * @var text
 	 */
-	var $content			= NULL;
+	var $html_content    	= NULL;
+
+	/**
+	 * Campaign Plain Text Content
+	 * 
+	 * @var text
+	 */
+	var $plain_content	    = NULL;
 	
 	/**
 	 * Campaign Tracking
@@ -327,7 +334,7 @@ class NewsletterNewsletter extends JTable
 		//are we overriding content with template vs using stories?
 		if ($campaign->template == '-1')
 		{
-			$campaignTemplate = $campaign->content;
+			$campaignTemplate = $campaign->html_content;
 			$campaignPrimaryStories = '';
 			$campaignSecondaryStories = '';
 		}
@@ -426,5 +433,86 @@ class NewsletterNewsletter extends JTable
 		}
 		
 		return $campaignParsed;
+	}
+
+	/**
+	 * Build Newsletter Content, Plain Text Part
+	 * 
+	 * @param 	$campaign				Campaign Object
+	 * @return 	Campaign text
+	 */
+	public function buildNewsletterPlainTextPart( $campaign )
+	{
+		if ($campaign->plain_content != '')
+		{
+			return $campaign->plain_content;
+		}
+
+		// add campaign name 
+		$title  = str_repeat('==', 40) . "\r\n\r\n";
+		$title .= $campaign->name . "\r\n\r\n"; 
+		$title .= str_repeat('==', 40);
+		$title .= "\r\n\r\n\r\n";
+
+		// vars to hold story content
+		$primary   = array();
+		$secondary = array();
+
+		// add story divider
+		$storySeparator  = "\r\n\r\n\r\n";
+		$storySeparator .= str_repeat('--', 40);
+		$storySeparator .= "\r\n\r\n\r\n";
+
+		// add section divider
+		$sectionSeparator  = "\r\n\r\n\r\n\r\n";
+		$sectionSeparator .= str_repeat('+++', 40);
+		$sectionSeparator .= "\r\n\r\n\r\n\r\n";
+
+		// instantiate primary & secondary store objects
+		$newsletterPrimaryStory   = new NewsletterPrimaryStory( $this->_db );
+		$newsletterSecondaryStory = new NewsletterSecondaryStory( $this->_db );
+		
+		// get primary & secondary stories by campaign
+		$primaryStories   = $newsletterPrimaryStory->getStories( $campaign->id ); 
+		$secondaryStories = $newsletterSecondaryStory->getStories( $campaign->id );
+		
+		// add primary stories
+		foreach ($primaryStories as $primaryStory)
+		{
+			// create story
+			$story  = strtoupper($primaryStory->title) . "\r\n\r\n";
+			$story .= trim(preg_replace('/<br[^>]*>/', "\r\n", $primaryStory->story));
+
+			//do we have a readmore link
+			if ($primaryStory->readmore_link)
+			{
+				$story .= "\r\n" . $primaryStory->readmore_link;
+			}
+
+			// add to the primary stories
+			$primary[] = strip_tags($story);
+		}
+
+		// add secondary stories
+		foreach ($secondaryStories as $secondaryStory)
+		{
+			// create story
+			$story  = strtoupper($secondaryStory->title) . "\r\n\r\n";
+			$story .= trim(preg_replace('/<br[^>]*>/', "\r\n", $secondaryStory->story));
+
+			//do we have a readmore link
+			if ($secondaryStory->readmore_link)
+			{
+				$story .= "\r\n" . $secondaryStory->readmore_link;
+			}
+
+			// add to the primary stories
+			$secondary[] = strip_tags($story);
+		}
+
+		// put it all together
+		$plainText = $title . implode($storySeparator, $primary) . $sectionSeparator . implode($storySeparator, $secondary);
+
+		return $plainText;
 	}
 }
