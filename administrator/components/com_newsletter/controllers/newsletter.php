@@ -840,7 +840,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 				// build message object and send
 				$message->setSubject('[SENDING TEST] - '.$mailSubject)
 						->setTo($contact)
-						->addPart($mailBody, 'text/html')
+						->addPart($mailHtmlBody, 'text/html')
+						->addPart($mailPlainBody, 'text/plain')
 						->send();
 			}
 			
