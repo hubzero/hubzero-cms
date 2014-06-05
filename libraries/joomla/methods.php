@@ -419,3 +419,55 @@ class JText
 		return self::$strings;
 	}
 }
+
+if (!function_exists('with'))
+{
+	/**
+	 * Return the given object. Useful for chaining.
+	 *
+	 * @param  mixed  $object
+	 * @return mixed
+	 */
+	function with($object)
+	{
+		return $object;
+	}
+}
+
+if (!function_exists('txt'))
+{
+	/**
+	 * Translates a string into the current language.
+	 *
+	 * @param  string $string
+	 * @return string
+	 */
+	function txt($string)
+	{
+		$args = func_get_args();
+		if (count($args) > 1)
+		{
+			return call_user_func_array(array('JText', 'sprintf'), $args);
+		}
+		return JText::_($string);
+	}
+}
+
+if (!function_exists('url'))
+{
+	/**
+	 * Translates an internal URL to a humanly readible URL.
+	 *
+	 * @param   string   $url    Absolute or Relative URI to Joomla resource.
+	 * @param   boolean  $xhtml  Replace & by &amp; for XML compilance.
+	 * @param   integer  $ssl    Secure state for the resolved URI.
+	 *                             1: Make URI secure using global secure site URI.
+	 *                             0: Leave URI in the same secure state as it was passed to the function.
+	 *                            -1: Make URI unsecure using the global unsecure site URI.
+	 * @return  The translated humanly readible URL.
+	 */
+	function url($url, $xhtml = true, $ssl = null)
+	{
+		return JRoute::_($url, $xhtml, $ssl);
+	}
+}
