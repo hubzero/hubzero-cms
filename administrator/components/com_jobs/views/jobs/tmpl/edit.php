@@ -40,6 +40,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('job');
 
 $now = JFactory::getDate()->toSql();
 

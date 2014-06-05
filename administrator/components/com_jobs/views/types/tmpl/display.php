@@ -46,6 +46,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('types');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

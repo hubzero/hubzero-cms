@@ -51,6 +51,8 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('jobs');
 
 $this->css();
 
@@ -187,7 +189,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<span <?php echo $adminclass; ?>>
-						<span>&nbsp;</span>
+						<span><?php echo ($admin ? JText::_('Admin') : ''); ?></span>
 					</span>
 				</td>
 				<td>

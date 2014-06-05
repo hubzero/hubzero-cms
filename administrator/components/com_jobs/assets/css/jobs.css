@@ -1,0 +1,58 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/components/com_jobs/assets/css/jobs.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+    - - - - - - - - -
+    com_jobs
+    - - - - - - - - -
+*/
+	.adminpost {
+		background: orange;
+		display: inline-block;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		padding : 0em 0.5em;
+		font-size: 0.85em;
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		color: #fff;
+	}
+	.post_pending,
+	p.warning {
+		color: #FF0000 !important;
+	}
+	.post_draft {
+		color: #4565be;
+	}
+	.post_inactive {
+		color: #FF6600;
+	}
+	.post_active {
+		color: #009900;
+	}
+
+	#author-list { 
+		list-style: none;
+		margin: 0.5em;
+		padding-left: 0;
+	}
+	#author-list li {
+		border: 1px solid #ddd;
+		background: #efefef;
+		margin: 0 0 3px 0;
+		padding: 3px;
+		position: relative;
+	}
+	#author-list li .handle {
+		cursor:move;
+		float: right;
+		font-weight: bold;
+		color: #999;
+	}
