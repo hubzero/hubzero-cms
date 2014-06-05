@@ -43,6 +43,8 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
 JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'delete');
+JToolBarHelper::spacer();
+JToolBarHelper::help('billboards');
 
 $juser = JFactory::getUser();
 ?>

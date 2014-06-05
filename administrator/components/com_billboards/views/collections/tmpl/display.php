@@ -36,6 +36,8 @@ JToolBarHelper::addNew('newcollection');
 JToolBarHelper::editList('editcollection');
 JToolBarHelper::spacer();
 JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollection');
+JToolBarHelper::spacer();
+JToolBarHelper::help('collections');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">

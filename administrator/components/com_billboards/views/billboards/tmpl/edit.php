@@ -44,6 +44,8 @@ $bar->appendButton('Popup', 'upload', JText::_('BILLBOARD_IMAGES'), 'index.php?o
 
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('billboard');
 ?>
 
 <script type="text/javascript">

@@ -35,7 +35,8 @@ $text = ($this->task == 'editcollection' ? JText::_('BILLBOARDS_COLLECTION_EDIT'
 JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
 JToolBarHelper::save('savecollection');
 JToolBarHelper::cancel('cancelcollection');
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('collection');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
