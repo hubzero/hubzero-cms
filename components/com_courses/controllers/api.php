@@ -1380,7 +1380,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get course info...this seems a little wonky
-		preg_match('/\/courses\/([[:alnum:]]*)\/([[:alnum:]\:]*)/', $referer, $matches);
+		preg_match('/\/courses\/([[:alnum:]\-\_]*)\/([[:alnum:]\:\-\_]*)/', $referer, $matches);
 
 		$course_alias   = $matches[1];
 		$offering_alias = $matches[2];
