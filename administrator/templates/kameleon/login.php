@@ -93,7 +93,7 @@ $browser = new \Hubzero\Browser\Detector();
 		<div id="wrap">
 			<section id="component-content">
 				<div id="toolbar-box">
-					<h2><?php echo JText::_('Administration Login') ?></h2>
+					<h2><?php echo JText::_('TPL_KAMELEON_ADMIN_LOGIN'); ?></h2>
 				</div>
 
 				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">

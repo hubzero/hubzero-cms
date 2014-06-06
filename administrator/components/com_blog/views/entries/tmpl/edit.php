@@ -32,8 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = BlogHelper::getActions('entry');
 
-$text = ($this->task == 'edit' ? JText::_('Edit entry') : JText::_('New entry'));
-JToolBarHelper::title(JText::_('Blog Manager') . ': ' . $text, 'blog.png');
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+JToolBarHelper::title(JText::_('COM_BLOG_TITLE') . ': ' . $text, 'blog.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -56,9 +56,9 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if ($('#field-title').val() == ''){
-		alert("<?php echo JText::_('Error! You must fill in a title!'); ?>");
+		alert("<?php echo JText::_('COM_BLOG_ERROR_MISSING_TITLE'); ?>");
 	} else if ($('#field-content').val() == ''){
-		alert("<?php echo JText::_('Error! You must add content!'); ?>");
+		alert("<?php echo JText::_('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
 		submitform(pressbutton);
 	}
@@ -68,11 +68,11 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="col width-50 fltlft">
-				<div class="input-wrap" data-hint="<?php echo JText::_('Choose the type of blog this post is being made to.'); ?>">
-					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_BLOG_FIELD_SCOPE_HINT'); ?>">
+					<label for="field-scope"><?php echo JText::_('COM_BLOG_FIELD_SCOPE'); ?>:</label><br />
 					<select name="fields[scope]" id="field-scope">
 						<option value="site"<?php if ($this->row->get('scope') == 'site' || $this->row->get('scope') == '') { echo ' selected="selected"'; } ?>>site</option>
 						<option value="member"<?php if ($this->row->get('scope') == 'member') { echo ' selected="selected"'; } ?>>member</option>
@@ -82,22 +82,22 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="field-group_id"><?php echo JText::_('Group'); ?>:</label><br />
+					<label for="field-group_id"><?php echo JText::_('COM_BLOG_FIELD_GROUP'); ?>:</label><br />
 					<?php
 					$filters = array();
 					$filters['authorized'] = 'admin';
-					$filters['fields'] = array('cn','description','published','gidNumber','type');
-					$filters['type'] = array(1,3);
-					$filters['sortby'] = 'description';
+					$filters['fields']     = array('cn','description','published','gidNumber','type');
+					$filters['type']       = array(1, 3);
+					$filters['sortby']     = 'description';
 					$groups = \Hubzero\User\Group::find($filters);
-					
+
 					$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
 					$html .= '<option value="0"';
 					if ($this->row->get('group_id') == 0) 
 					{
 						$html .= ' selected="selected"';
 					}
-					$html .= '>'.JText::_('None').'</option>'."\n";
+					$html .= '>'.JText::_('JNONE').'</option>'."\n";
 					if ($groups) 
 					{
 						foreach ($groups as $group)
@@ -117,23 +117,25 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+				<label for="field-title"><?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric, dashes and unsercores. If none provided, an alias will be generated from the title.'); ?>">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_BLOG_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_BLOG_FIELD_ALIAS'); ?>:</label><br />
+				<input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-content"><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-content"><?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?>">
+				<label for="field-tags"><?php echo JText::_('COM_BLOG_FIELD_TAGS'); ?>:</label><br />
 				<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+				<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -141,7 +143,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('Created By'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_BLOG_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->get('created_by'));
@@ -151,14 +153,14 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created Date'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_BLOG_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('created'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Hits'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_BLOG_FIELD_HITS'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('hits'); ?>
 						<input type="hidden" name="fields[hits]" id="field-hits" value="<?php echo $this->escape($this->row->get('hits')); ?>" />
@@ -168,30 +170,30 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input class="option" type="checkbox" name="fields[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->row->get('allow_comments')) { echo ' checked="checked"'; } ?> />
-				<label for="field-allow_comments"><?php echo JText::_('Allow comments'); ?></label>
+				<label for="field-allow_comments"><?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?></label>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<label for="field-state"><?php echo JText::_('COM_BLOG_FIELD_STATE'); ?>:</label><br />
 				<select name="fields[state]" id="field-state">
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see)'); ?></option>
-					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered members'); ?></option>
-					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see)'); ?></option>
-					<option value="-1"<?php if ($this->row->get('state') == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+					<option value="-1"<?php if ($this->row->get('state') == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-publish_up"><?php echo JText::_('Publish up'); ?>:</label><br />
+				<label for="field-publish_up"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_up')), 'fields[publish_up]', 'field-publish_up'); ?>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-publish_down"><?php echo JText::_('Publish down'); ?>:</label><br />
+				<label for="field-publish_down"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_down')), 'fields[publish_down]', 'field-publish_down'); ?>
 			</div>
 		</fieldset>

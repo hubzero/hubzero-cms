@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = BlogHelper::getActions('entry');
 
-JToolBarHelper::title(JText::_('Blog Manager'), 'blog.png');
+JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -77,43 +77,43 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-<?php if ($this->filters['scope'] == 'group') { ?>
-		<?php
-		$filters = array();
-		$filters['authorized'] = 'admin';
-		$filters['fields'] = array('cn','description','published','gidNumber','type');
-		$filters['type'] = array(1,3);
-		$filters['sortby'] = 'description';
-		$groups = \Hubzero\User\Group::find($filters);
-		
-		$html  = '<label for="filter_group_id">' . JText::_('Group') . ':</label> '."\n";
-		$html .= '<select name="group_id" id="filter_group_id">'."\n";
-		$html .= '<option value="0"';
-		if ($this->filters['group_id'] == 0) 
-		{
-			$html .= ' selected="selected"';
-		}
-		$html .= '>'.JText::_('None').'</option>'."\n";
-		if ($groups) 
-		{
-			foreach ($groups as $group)
-			{
-				$html .= ' <option value="'.$group->gidNumber.'"';
-				if ($this->filters['group_id'] == $group->gidNumber) 
+		<?php if ($this->filters['scope'] == 'group') { ?>
+				<?php
+				$filters = array();
+				$filters['authorized'] = 'admin';
+				$filters['fields'] = array('cn','description','published','gidNumber','type');
+				$filters['type'] = array(1,3);
+				$filters['sortby'] = 'description';
+				$groups = \Hubzero\User\Group::find($filters);
+				
+				$html  = '<label for="filter_group_id">' . JText::_('COM_BLOG_SCOPE_GROUP') . ':</label> '."\n";
+				$html .= '<select name="group_id" id="filter_group_id">'."\n";
+				$html .= '<option value="0"';
+				if ($this->filters['group_id'] == 0) 
 				{
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>'."\n";
-			}
-		}
-		$html .= '</select>'."\n";
-		echo $html;
-		?>
-<?php } ?>
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+				$html .= '>'.JText::_('JNONE').'</option>'."\n";
+				if ($groups) 
+				{
+					foreach ($groups as $group)
+					{
+						$html .= ' <option value="'.$group->gidNumber.'"';
+						if ($this->filters['group_id'] == $group->gidNumber) 
+						{
+							$html .= ' selected="selected"';
+						}
+						$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>'."\n";
+					}
+				}
+				$html .= '</select>'."\n";
+				echo $html;
+				?>
+		<?php } ?>
+		<input type="submit" value="<?php echo JText::_('COM_BLOG_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
@@ -122,14 +122,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Author', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'Comments', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php if ($this->filters['scope'] == 'group') { ?>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'group_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php } ?>
 			</tr>
 		</thead>
@@ -157,31 +157,31 @@ foreach ($this->rows as $row)
 
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1) 
 	{
-		$alt  = JText::_('Published');
+		$alt  = JText::_('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1) 
 	{
-		$alt  = JText::_('Published');
+		$alt  = JText::_('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1) 
 	{
-		$alt  = JText::_('Expired');
+		$alt  = JText::_('JLIB_HTML_PUBLISHED_EXPIRED_ITEM');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	} 
 	else if ($row->get('state') == 0) 
 	{
-		$alt  = JText::_('Unpublished');
+		$alt  = JText::_('JUNPUBLISHED');
 		$task = 'publish';
 		$cls  = 'unpublish';
 	} 
 	else if ($row->get('state') == -1) 
 	{
-		$alt  = JText::_('Archived');
+		$alt  = JText::_('JTRASHED');
 		$task = 'publish';
 		$cls  = 'trash';
 	}
@@ -191,34 +191,34 @@ foreach ($this->rows as $row)
 	{
 		if ($row->get('publish_up') == $nullDate) 
 		{
-			$times .= JText::_('Start: Always');
+			$times .= JText::_('COM_BLOG_START') . ': ' . JText::_('COM_BLOG_ALWAYS');
 		} 
 		else 
 		{
-			$times .= JText::_('Start') . ': '. $publish_up->toSql();
+			$times .= JText::_('COM_BLOG_START') . ': ' . $publish_up->toSql();
 		}
 	}
 	if ($row->get('publish_down')) 
 	{
 		if ($row->get('publish_down') == $nullDate) 
 		{
-			$times .= '<br />' . JText::_('Finish: No Expiry');
+			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . JText::_('COM_BLOG_NO_EXPIRY');
 		} 
 		else 
 		{
-			$times .= '<br />' . JText::_('Finish') . ': '. $publish_down->toSql();
+			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . $publish_down->toSql();
 		}
 	}
 
 	if ($row->get('allow_comments') == 0) 
 	{
-		$calt = JText::_('Off');
+		$calt = JText::_('JOFF');
 		$cls2 = 'off';
 		$state = 1;
 	} 
 	else 
 	{
-		$calt = JText::_('On');
+		$calt = JText::_('JON');
 		$cls2 = 'on';
 		$state = 0;
 	}
@@ -245,7 +245,7 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
+					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
 					<?php if ($canDo->get('core.edit.state')) { ?>
 						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 							<span><?php echo $alt; ?></span>
@@ -270,11 +270,11 @@ foreach ($this->rows as $row)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;entry_id=<?php echo $row->get('id'); ?>">
-						<?php echo $row->get('comments') . ' ' . JText::_('comment(s)'); ?>
+						<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
 					</a>
 				<?php } else { ?>
 					<span class="comment">
-						<?php echo $row->get('comments') . ' ' . JText::_('comment(s)'); ?>
+						<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
 					</span>
 				<?php } ?>
 				</td>
@@ -301,6 +301,6 @@ foreach ($this->rows as $row)
 	<input type="hidden" name="scope" value="<?php echo $this->filters['scope']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

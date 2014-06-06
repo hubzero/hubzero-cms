@@ -45,17 +45,17 @@ $scope = JRequest::getCmd('scope', 'site');
 $controllerName = JRequest::getCmd('controller', 'entries');
 
 JSubMenuHelper::addEntry(
-	JText::_('Site'),
+	JText::_('COM_BLOG_SCOPE_SITE'),
 	'index.php?option=' . $option. '&controller=entries&scope=site',
 	($controllerName == 'entries' && $scope == 'site')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Member'),
+	JText::_('COM_BLOG_SCOPE_MEMBER'),
 	'index.php?option=' . $option. '&controller=entries&scope=member',
 	($controllerName == 'entries' && $scope == 'member')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Group'),
+	JText::_('COM_BLOG_SCOPE_GROUP'),
 	'index.php?option=' . $option. '&controller=entries&scope=group',
 	($controllerName == 'entries' && $scope == 'group')
 );

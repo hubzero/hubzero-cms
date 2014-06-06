@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = BlogHelper::getActions('entry');
 
-$text = ($this->task == 'edit' ? JText::_('Edit comment') : JText::_('New comment'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Blog Manager') . ': ' . $text, 'blog.png');
+JToolBarHelper::title(JText::_('COM_BLOG_TITLE') . ': ' . JText::_('COM_BLOG_COL_COMMENTS') . ': ' . $text, 'blog.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if ($('field-content').value == ''){
-		alert("<?php echo JText::_('Error! You must fill in a comment!'); ?>");
+		alert("<?php echo JText::_('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
 		submitform(pressbutton);
 	}
@@ -67,15 +67,15 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('When marked anonymous a commenter\'s name and picture are hidden. No specific identifying information should be accessible by other users.'); ?>">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_BLOG_FIELD_ANONYMOUS_HINT'); ?>">
 				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) { echo ' checked="checked"'; } ?> />
-				<label for="field-anonymous"><?php echo JText::_('Anonymous (commenter\'s name and picture are hidden)'); ?></label>
+				<label for="field-anonymous"><?php echo JText::_('COM_BLOG_FIELD_ANONYMOUS'); ?></label>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-content"><?php echo JText::_('Content'); ?> <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-content"><?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->content('raw'))); ?></textarea>
 			</div>
 		</fieldset>
@@ -84,7 +84,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Created By'); ?>:</th>
+					<th><?php echo JText::_('COM_BLOG_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->get('created_by'));
@@ -94,14 +94,14 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created Date'); ?>:</th>
+					<th><?php echo JText::_('COM_BLOG_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('created'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Entry #'); ?>:</th>
+					<th><?php echo JText::_('COM_BLOG_FIELD_ENTRY'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('entry_id'); ?>
 						<input type="hidden" name="fields[entry_id]" id="field-entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />

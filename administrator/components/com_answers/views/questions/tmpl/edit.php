@@ -32,9 +32,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $canDo = AnswersHelper::getActions('question');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Question') . ': ' . $text, 'answers.png');
+JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -69,34 +69,34 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span>Details</span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
 					<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> 
-					<label for="anonymous">Anonymous</label>
+					<label for="anonymous"><?php echo JText::_('COM_ANSWERS_FIELD_ANONYMOUS'); ?></label>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
 					<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> 
-					<label for="email">Notify of responses</label>
+					<label for="email"><?php echo JText::_('COM_ANSWERS_FIELD_NOTIFY'); ?></label>
 				</div>
 			</div>
 			<div class="clr"></div>
 
 			<div class="input-wrap">
-				<label for="q_subject">Subject: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="q_subject"><?php echo JText::_('COM_ANSWERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="question[subject]" id="q_subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->subject('raw')); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-question">Question:</label><br />
+				<label for="field-question"><?php echo JText::_('COM_ANSWERS_FIELD_QUESTION'); ?>:</label><br />
 				<?php echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-question', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<div class="input-wrap">
-				<label for="q_tags">Tags: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="q_tags"><?php echo JText::_('COM_ANSWERS_FIELD_TAGS'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="question[tags]" id="q_tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 			</div>
 		</fieldset>
@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th>ID:</th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('id', 0); ?>
 						<input type="hidden" name="question[id]" value="<?php echo $this->row->get('id'); ?>" />
@@ -113,11 +113,11 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php if ($this->row->get('id')) { ?>
 				<tr>
-					<th>Created:</th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_CREATED'); ?>:</th>
 					<td><?php echo $this->row->get('created'); ?></td>
 				</tr>
 				<tr>
-					<th>Created by:</th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
 					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
 			<?php } ?>
@@ -125,23 +125,23 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span>Parameters</span></legend>
+			<legend><span><?php echo JText::_('COM_ANSWERS_PARAMETERS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="created_by">Change Creator:</label><br />
+				<label for="created_by"><?php echo JText::_('COM_ANSWERS_FIELD_CREATOR'); ?>:</label><br />
 				<input type="text" name="question[created_by]" id="created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="created">Created Date:</label><br />
+				<label for="created"><?php echo JText::_('COM_ANSWERS_FIELD_CREATED'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
 			</div>
 
 			<div class="input-wrap">
-				<label for="state">State:</label><br />
+				<label for="state"><?php echo JText::_('COM_ANSWERS_FIELD_STATE'); ?>:</label><br />
 				<select name="question[state]" id="state">
-					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>>Open</option>
-					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>>Closed</option>
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_ANSWERS_STATE_OPEN'); ?></option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_ANSWERS_STATE_CLOSED'); ?></option>
 				</select>
 			</div>
 		</fieldset>

@@ -296,7 +296,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'],
-				JText::_('Comment saved!')
+				JText::_('COM_BLOG_COMMENT_SAVED')
 			);
 			return;
 		}
@@ -334,7 +334,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0),
-			JText::_('Comments deleted!')
+			JText::_('COM_BLOG_COMMENT_DELETED')
 		);
 	}
 

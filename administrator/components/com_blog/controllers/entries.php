@@ -233,7 +233,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Entry saved!')
+				JText::_('COM_BLOG_ENTRY_SAVED')
 			);
 			return;
 		}
@@ -271,7 +271,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Entries deleted!')
+			JText::_('COM_BLOG_ENTRIES_DELETED')
 		);
 	}
 
@@ -314,7 +314,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('Select an entry to %s', $this->_task),
+				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
 				'error'
 			);
 			return;
@@ -340,13 +340,13 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		switch ($this->_task)
 		{
 			case 'publish':
-				$message = JText::sprintf('%s Item(s) successfully Published', $success);
+				$message = JText::sprintf('COM_BLOG_ITEMS_PUBLISHED', $success);
 			break;
 			case 'unpublish':
-				$message = JText::sprintf('%s Item(s) successfully Unpublished', $success);
+				$message = JText::sprintf('COM_BLOG_ITEMS_UNPUBLISHED', $success);
 			break;
 			case 'archive':
-				$message = JText::sprintf('%s Item(s) successfully Archived', $success);
+				$message = JText::sprintf('COM_BLOG_ITEMS_ARCHIVED', $success);
 			break;
 		}
 
@@ -376,7 +376,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('Select an entry to %s comments', $this->_task),
+				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
 				'error'
 			);
 			return;
@@ -404,11 +404,11 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		switch ($state)
 		{
 			case 1:
-				$message = JText::sprintf('%s Item(s) successfully turned on Comments', count($ids));
+				$message = JText::sprintf('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
 			break;
 			case 0:
 			default:
-				$message = JText::sprintf('%s Item(s) successfully turned off Comments', count($ids));
+				$message = JText::sprintf('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
 			break;
 		}
 
