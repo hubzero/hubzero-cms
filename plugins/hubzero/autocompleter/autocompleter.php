@@ -133,7 +133,6 @@ class plgHubzeroAutocompleter extends JPlugin
 				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
 				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
 			}*/
-			$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
 
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 			//$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
@@ -151,6 +150,7 @@ class plgHubzeroAutocompleter extends JPlugin
 			}
 
 			$scripts .= '";</script>' . "\n";
+			$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
 			//$scripts .= '" />';
 
 			$this->_pushscripts = false;
