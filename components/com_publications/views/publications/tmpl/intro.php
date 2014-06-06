@@ -28,7 +28,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<div id="introbody">
 	<?php if ($this->contributable) { ?>
 		<div class="grid">
-			<div class="col span6">
+			<div class="col span4">
 	<?php } ?>
 				<h3><?php echo JText::_('COM_PUBLICATIONS_BROWSE_PUBLICATIONS'); ?></h3>
 				<ul class="extracontent">
@@ -42,7 +42,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 	<?php if ($this->contributable) { ?>
 			</div>
-			<div class="col span6 omega">
+			<div class="col span8 omega">
 				<h3><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
 				<p><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
 				<p><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'); ?>"><?php echo JText::_('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>

@@ -107,6 +107,10 @@
 	#introbody li {
 		background: none;
 	}
+	#introbody .omega {
+		padding-right: 260px;
+		background: transparent url("../img/intro.png") top right no-repeat;
+	}
 	
 /* Screenshot slider */
 
