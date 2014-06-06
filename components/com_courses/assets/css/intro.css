@@ -20,6 +20,9 @@
 	}
 
 /* Course Listings */
+	.course a p {
+		color: #666;
+	}
 	.course-details h3 {
 		margin-bottom: 0;
 	}

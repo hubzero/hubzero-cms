@@ -40,35 +40,34 @@ switch ($this->count)
 ?>
 <div class="col <?php echo $cls; ?>">
 	<div class="course">
-		<div class="course-details">
-			<div class="course-identity">
-				<a href="<?php echo JRoute::_($this->course->link()); ?>">
-				<?php if ($logo = $this->course->logo()) { ?>
-					<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
-				<?php } else { ?>
-					<span></span>
-				<?php } ?>
-				</a>
-				<?php if ($this->course->get('rating', 0) > 4) { ?>
-				<div>
-					<strong>Top rated course!</strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+		<a href="<?php echo JRoute::_($this->course->link()); ?>">
+			<div class="course-details">
+				<div class="course-identity">
+					<?php if ($logo = $this->course->logo()) { ?>
+						<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+					<?php } else { ?>
+						<span></span>
+					<?php } ?>
+					
+					<?php if ($this->course->get('rating', 0) > 4) { ?>
+					<div>
+						<strong>Top rated course!</strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+					</div>
+					<?php } else if ($this->course->get('popularity', 0) > 7) { ?>
+					<div>
+						<strong>Most popular course!</strong> <span class="popularity">&#xf091;</span>
+					</div>
+					<?php } ?>
 				</div>
-				<?php } else if ($this->course->get('popularity', 0) > 7) { ?>
-				<div>
-					<strong>Most popular course!</strong> <span class="popularity">&#xf091;</span>
-				</div>
-				<?php } ?>
-			</div>
-			<h3 class="course-title">
-				<a href="<?php echo JRoute::_($this->course->link()); ?>">
+				<h3 class="course-title">
 					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-				</a>
-			</h3>
-		<?php if ($this->course->get('blurb')) { ?>
-			<p class="course-description">
-				<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($this->course->get('blurb'))), 130); ?>
-			</p>
-		<?php } ?>
-		</div>
+				</h3>
+			<?php if ($this->course->get('blurb')) { ?>
+				<p class="course-description">
+					<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($this->course->get('blurb'))), 130); ?>
+				</p>
+			<?php } ?>
+			</div>
+		</a>
 	</div>
 </div>
