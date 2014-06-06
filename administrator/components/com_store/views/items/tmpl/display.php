@@ -43,6 +43,8 @@ if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('items');
 
 ?>
 <script type="text/javascript">

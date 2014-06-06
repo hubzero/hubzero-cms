@@ -39,6 +39,8 @@ if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences('com_store', '550');
 }
+JToolBarHelper::spacer();
+JToolBarHelper::help('orders');
 
 ?>
 <script type="text/javascript">
