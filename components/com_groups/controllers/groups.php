@@ -1328,8 +1328,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option) );
 		return;
 	}
-	
-	
+
 	/**
 	 * View to Suggest User to Create Group
 	 * 
@@ -1345,18 +1344,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			JText::_('This group does not seem to exist. Would you like to <a href="' . JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn)) . '">create it</a>?'),
 			'warning'
 		);
-		
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-		
+
 		//set some vars for view
 		$this->view->title = "Groups";
-		
+
 		//display view
 		$this->view->display();
 	}
-	
-	
+
 	/**
 	 * Group is Unapproved
 	 * 
@@ -1366,10 +1364,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	{
 		// set the neeced layout
 		$this->view->setLayout('unapproved');
-		
-		// push styles
-		$this->_getStyles();
-		
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		
@@ -1380,8 +1375,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		//display view
 		$this->view->display();
 	}
-	
-	
+
 	/**
 	 * Return data for the autocompleter
 	 * 
@@ -1393,7 +1387,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = trim(JRequest::getString('value', ''));
-		
+
 		$query = "SELECT t.gidNumber, t.cn, t.description 
 					FROM #__xgroups AS t 
 					WHERE (t.type=1 OR t.type=3) AND (LOWER(t.cn) LIKE '%" . $filters['search'] . "%' OR LOWER(t.description) LIKE '%" . $filters['search'] . "%')
@@ -1422,8 +1416,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		echo json_encode($json); //'[' . implode(',',$json) . ']';
 	}
-	
-	
+
 	/**
 	 * Get a list of members
 	 * 

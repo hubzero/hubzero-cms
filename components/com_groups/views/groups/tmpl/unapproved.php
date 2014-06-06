@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -46,6 +48,6 @@ defined('_JEXEC') or die('Restricted access');
 		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
 		<hr />
 	<?php endif; ?>
-	
+
 	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="<?php echo JRout::_('index.php?option=com_members&task=myaccount&active=groups'); ?>">Go to My Groups &rsaquo;</a>
 </div>
