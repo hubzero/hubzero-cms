@@ -100,7 +100,7 @@ class Base
 		{
 			$conf = Ini::parse($secrets);
 			$user = 'root';
-			$pw   = $conf['MYSQL-ROOT'];
+			$pw   = (isset($conf['MYSQL-ROOT'])) ? $conf['MYSQL-ROOT'] : false;
 
 			if ($user && $pw)
 			{
@@ -111,8 +111,8 @@ class Base
 		if (file_exists($conf_file))
 		{
 			$conf = Ini::parse($conf_file, true);
-			$user = $conf['client']['user'];
-			$pw   = $conf['client']['password'];
+			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
+			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
 			if ($user && $pw)
 			{
@@ -123,8 +123,8 @@ class Base
 		if (is_file($hub_maint) && is_readable($hub_maint))
 		{
 			$conf = Ini::parse($hub_maint, true);
-			$user = $conf['client']['user'];
-			$pw   = $conf['client']['password'];
+			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
+			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
 			if ($user && $pw)
 			{

@@ -71,7 +71,7 @@ class Ini
 		}
 		else if (is_string($config))
 		{
-			$this->raw = $content;
+			$this->raw = $config;
 		}
 	}
 
