@@ -30,6 +30,7 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $this->project->about = ProjectsHtml::cleanText($this->project->about);
 
 $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
+
 ?>
 <header id="content-header">
 	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
@@ -60,7 +61,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	<?php
 	$html  = '';
 	$html .= t.' <form id="hubForm" method="post" action="index.php">'.n;
-	$html .= t.'<div class="aside">'.n;
+	$html .= t.'<div class="explaination">'.n;
 	$html .= t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT').'</h4>'.n;
 	$html .= t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_NAME_PROJECT').'</p>'.n;
 	$html .= t.'</div>'.n;	
@@ -107,7 +108,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.'</fieldset>'.n;
 	$html .= t.t.'<div class="clear"></div>'.n;
 	$html .= t.t.'<div id="describearea">'.n;
-	$html .= t.t.'<div class="aside">'.n;
+	$html .= t.t.'<div class="explaination">'.n;
 	$html .= t.t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_DESC').'</h4>'.n;
 	$html .= t.t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_DESC_PROJECT').'</p>'.n;
 	$html .= t.t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_THUMB').'</h4>'.n;

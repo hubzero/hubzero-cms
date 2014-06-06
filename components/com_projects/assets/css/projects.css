@@ -695,9 +695,10 @@
 	#introduction .second ul {
 		padding-left: 0;
 		margin-left: 0.5em;
+		border: none;
 	}
 	#introduction .second li {
-		padding-left: 2em;
+		border: none;
 	}
 	.myprojects {
 		margin-bottom: 3em;
@@ -948,6 +949,7 @@
 	}
 	#setup #hubForm {
 		min-width: 850px;
+		margin-top: 1.5em;
 	}
 	.stopaction {
 		border: 4px solid #f4bfbf;
@@ -982,8 +984,9 @@
 	#setup div {
 		border: none !important;
 	}
-	#setup .aside p {
+	#setup .explaination p {
 		margin: 0;
+		font-size: 85%;
 	}
 	#hubForm fieldset {
 		color: #777;
@@ -1013,6 +1016,10 @@
 		display: block;
 		height: 100px;
 		padding-top: 25px;
+	}
+	#verificationarea, 
+	#verificationarea_title {
+		white-space: nowrap;
 	}
 	.verify_passed {
 		color: #17ae1b;
@@ -1932,7 +1939,7 @@
 			
 /* Edit project - tips
 --------------------------------------------- */
-	#edit-project-content.withleft .tips {
+	.withleft .tips {
 		padding: 1em;
 		border: 1px solid #CCC;
 		margin: 3em 2em 1em 1em;
@@ -1940,34 +1947,34 @@
 		width: 70%;
 		font-size: 85%;
 	}
-	#edit-project-content.withleft .tips h3 {
+	.withleft .tips h3 {
 		color: #CCC;
 		margin: 0 0 0.5em 0;
 		padding: 0;
 		font-size: 150%;
 	}
-	#edit-project-content.withleft .tips h4 {
+	.withleft .tips h4 {
 		padding: 0;
 		margin: 0;
 		color: #666;
 		border-bottom: 2px solid #CCC;
 		margin-bottom: 1em;
 	}	
-	#edit-project-content.withleft .tips p {
+	.withleft .tips p {
 		margin-top: 0;
 	}
-	#edit-project-content.withleft .tips table {
+	.withleft .tips table {
 		background: #FFFFFF;
 		color: #333;
 	}
-	#edit-project-content.withleft .tips ul {
+	.withleft .tips ul {
 		color: #666;
 		margin: 0 0 1em 0;
 		padding: 0;
 		border: none;
 		background: transparent;
 	}
-	#edit-project-content.withleft .tips ul li {
+	.withleft .tips ul li {
 		border: none;
 		list-style: circle !important;
 		margin-left: 1.5em;
@@ -2346,8 +2353,7 @@
 	}
 	#spsinfo td {
 		width: 50%;
-	}
-	
+	}	
 	#reviewer-list {
 		margin-bottom: 3em;
 	}
@@ -2459,7 +2465,7 @@
 		background: #6d8a9b;	
 	}
 	
-/* Status bar: setup & publication steps 
+/* Status bar - project setup
 --------------------------------------------- */
 	ul#status-bar {
 		padding: 0;
@@ -2561,6 +2567,7 @@
 	
 /* Result message
 --------------------------------------------- */
+
 	.status-msg {
 		width: 100%;
 		position: relative;
@@ -2952,7 +2959,6 @@
 		color: #6699ce;
 		cursor: pointer;
 	}
-
 	
 /* Back-end 
 --------------------------------------------- */
@@ -3359,71 +3365,9 @@
 		*height: 240px !important;
 	}
 
-/* Icon font fixes IE7
+/* Overwrites to system styles 
 --------------------------------------------- */
-	.team {
-		*background: url("../img/icons/group.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.inform {
-		*background: url("../img/icons/inform.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.newsupdate {		
-		*background: url("../img/icons/news.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.assets, .files {		
-		*background: url("../img/icons/doc.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.project {
-		*background: url("../img/icons/plane.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.publications {
-		*background: url("../img/icons/publication.gif") 0 0 no-repeat;
-		*padding-left: 20px;
-	}
-	.content-feed .admin {
-		*background: url("../img/icons/admin.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}	
-	.quote {
-		*background: url("../img/icons/quotes.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.apps, .tools {
-		*background: url("../img/icons/app.gif") 0 0 no-repeat;
-		*padding-left: 20px;
-	}
-	.todo {		
-		*background: url("../img/icons/pin.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.blog {		
-		*background: url("../img/icons/talker.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.notes {
-		*background: url("../img/icons/feather.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	.private {
-		*background: transparent url("../img/icons/lock.png") 0 0 no-repeat;	
-		*padding: 2px 8px;
-		*padding-left: 20px;
-	}
-	.databases {		
-		*background: url("../img/icons/database.gif") 0 center no-repeat;
-		*padding-left: 20px;
-	}
-	
-	#introduction li {
-		*margin: 0.3em 0;
-		*padding: 0 0 0 20px;
-		*background: transparent url("../img/icons/checker.gif") 0 0 no-repeat; 
-	}
+
 	.aside:before,
 	.subject small.subject-before,
 	.aside small.aside-after,

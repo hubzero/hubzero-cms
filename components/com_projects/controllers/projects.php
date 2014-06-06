@@ -1293,7 +1293,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->pub 	   = isset($pub) ? $pub : '';
 			$this->view->team 	   = $objO->getOwnerNames($this->_identifier);
 			$this->view->suggested = $this->_suggestAlias($pub->title);
-			$this->view->verified  = $this->_verify(0, $this->view->suggested, $pid);
+			$this->view->verified  = $this->verifyTask(0, $this->view->suggested, $pid);
 			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
 		}
 		
@@ -1844,7 +1844,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				$name = strtolower($name);
 				
 				// Check incoming data
-				if (!$this->_verify(0) && $setup) 
+				if (!$this->verifyTask(0) && $setup) 
 				{
 					$this->setError( JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 					return false;
@@ -2314,7 +2314,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$name = strtolower($name);
 						
 		// Check incoming data
-		if (!$this->_verify(0, $name, $project->id)) 
+		if (!$this->verifyTask(0, $name, $project->id)) 
 		{
 			$this->setError( JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 		}
@@ -2346,7 +2346,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->pub 		 	= isset($pub) ? $pub : '';
 			$this->view->team 	 		= $objO->getOwnerNames($this->_identifier);
 			$this->view->suggested 		= $name;
-			$this->view->verified  		= $this->_verify(0, $this->view->suggested, $project->id);
+			$this->view->verified  		= $this->verifyTask(0, $this->view->suggested, $project->id);
 			$this->view->suggested 		= $this->view->verified ? $this->view->suggested : '';
 			$this->view->title  		= $this->title;
 			$this->view->active 		= $this->active;
@@ -3004,10 +3004,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			return $count; 
 		}
 	}
-
-	//----------------------------------------------------------
-	// Private Functions
-	//----------------------------------------------------------
+	
 	/**
 	 * Verify project/tool name (AJAX)
 	 * 
@@ -3016,7 +3013,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 * @param  int $pid
 	 * @return     void
 	 */
-	protected function _verify( $ajax = 0, $name = '', $pid = 0 )
+	public function verifyTask( $ajax = 0, $name = '', $pid = 0 )
 	{
 		// Incoming
 		$name 	= $name ? $name : trim(JRequest::getVar( 'name', '' ));
@@ -3117,6 +3114,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		if (!$ajax) { return true; }
 		echo $class . '::' . $result . '::' . $name;
 	}
+
+	//----------------------------------------------------------
+	// Private Functions
+	//----------------------------------------------------------
 	
 	/**
 	 * Suggest alias name from title
