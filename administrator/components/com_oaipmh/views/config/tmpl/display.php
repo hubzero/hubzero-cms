@@ -24,13 +24,15 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  */
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'OAI-PMH Settings' ), 'generic.png' );
-JToolBarHelper::preferences('com_oaipmh',500);
+JToolBarHelper::title(JText::_('OAI-PMH Settings'), 'generic.png');
+JToolBarHelper::preferences('com_oaipmh', 500);
 JToolBarHelper::spacer();
-JToolBarHelper::save( 'save', 'Save Settings' );
+JToolBarHelper::save('save', 'Save Settings');
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('oaipmh');
 
 //$this->last;
 
@@ -38,8 +40,8 @@ $document =  JFactory::getDocument();
 ?>
 
 <script type="text/javascript">
-jQuery(document).ready(function(){  
-    jQuery("#tabs").tabs();  
+jQuery(document).ready(function(){ 
+	jQuery("#tabs").tabs();
 }); 
 
 function addGroup() {
@@ -65,8 +67,8 @@ function removeGroup(id) {
 		<thead>
 			<tr>
 				<th>Dublin Core Table Specifications</th>
-				<td class="button" id="toolbar-new">
-					<span><a href="#" onclick="javascript:addGroup()" class="toolbar">Add Group</a></span>
+				<td id="toolbar-new">
+					<span><a class="button" href="#" onclick="javascript:addGroup()">Add Group</a></span>
 				</td>
 			</tr>
 		</thead>
