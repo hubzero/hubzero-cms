@@ -49,15 +49,9 @@ switch ($num)
 <h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
 <?php } ?>
 </div>
-<?php if($this->project->provisioned == 1 ) { ?>
-	<div class="aside">
-		<div id="start-projectnote">
-			<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
-		</div>
-	</div><!-- / .aside -->
-	<div class="subject">
+<?php if ($this->project->provisioned == 1 ) { ?>
+<div class="grid">
+	<div class="col span9">
 <?php } ?>
 <div class="welcome">
 	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
@@ -80,7 +74,14 @@ switch ($num)
 		<div class="clear"></div>
 	</div>
 </div>
-<?php if($this->project->provisioned == 1 ) { ?>
-		<div class="clear"></div>
+<?php if ($this->project->provisioned == 1 ) { ?>
 	</div><!-- / .subject -->
+	<div class="col span3 omega">
+		<div id="start-projectnote">
+			<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
+			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
+			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
+		</div>
+	</div><!-- / .aside -->
+</div>
 <?php } ?>

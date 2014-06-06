@@ -50,14 +50,8 @@ switch ($num)
 <?php } ?>
 </div>
 <?php if($this->project->provisioned == 1 ) { ?>
-	<div class="aside">
-		<div id="start-projectnote">
-			<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
-		</div>
-	</div><!-- / .aside -->
-	<div class="subject">
+<div class="grid">
+	<div class="col span9">
 <?php } ?>
 <div class="welcome">
 	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
@@ -76,6 +70,13 @@ switch ($num)
 	</div>
 </div>
 <?php if($this->project->provisioned == 1 ) { ?>
-		<div class="clear"></div>
 	</div><!-- / .subject -->
+	<div class="col span3 omega">
+		<div id="start-projectnote">
+			<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
+			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
+			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
+		</div>
+	</div><!-- / .aside -->
+</div>
 <?php } ?>

@@ -223,6 +223,9 @@
 	}
 	.welcome  {
 		height: auto;
+	}
+	#contrib-section .omega p {
+		font-size: 85%;
 	}	
 	
 /* Status bar publication version
