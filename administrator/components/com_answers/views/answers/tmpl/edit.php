@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = AnswersHelper::getActions('answer');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Response') . ': ' . $text, 'answers.png');
+JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton =='resethelpful') {
-		if (confirm('Are you sure you want to reset the Helpful counts to zero? \nAny unsaved changes to this content will be lost.')){
+		if (confirm('<?php echo JText::_("COM_ANSWERS_CONFIRM_RESET"); ?>')){
 			submitform( pressbutton );
 			return;
 		} else {
@@ -65,29 +65,25 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	/*if (form.answer.value == ''){
-		alert( 'Answer must have a response' );
-	} else {*/
-		submitform( pressbutton );
-	//}
+	submitform( pressbutton );
 }
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input type="checkbox" name="answer[anonymous]" id="field-anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> />
-				<label for="field-anonymous"><?php echo JText::_('Anonymous'); ?></label>
+				<label for="field-anonymous"><?php echo JText::_('COM_ANSWERS_FIELD_ANONYMOUS'); ?></label>
 			</div>
 			<div class="input-wrap">
-				<label for="field-question"><?php echo JText::_('Question'); ?></label><br />
+				<label for="field-question"><?php echo JText::_('COM_ANSWERS_FIELD_QUESTION'); ?></label><br />
 				<input type="text" id="field-question" disabled="disabled" readonly="readonly" value="<?php echo $this->escape($this->question->subject('clean')); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-answer"><?php echo JText::_('Answer'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-answer"><?php echo JText::_('COM_ANSWERS_FIELD_ANSWER'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php echo JFactory::getEditor()->display('answer[answer]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-answer'); ?>
 			</div>
 		</fieldset>
@@ -96,46 +92,46 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID:'); ?></th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_ID'); ?>:</th>
 					<td><?php echo $this->row->get('id'); ?></td>
 				</tr>
 			<?php if ($this->row->get('id')) { ?>
 				<tr>
-					<th><?php echo JText::_('Created:'); ?></th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_CREATED'); ?>:</th>
 					<td><?php echo $this->row->get('created'); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Creator:'); ?></th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
 					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
 			<?php } ?>
 				<tr>
-					<th><?php echo JText::_('Helpful:'); ?></th>
+					<th><?php echo JText::_('COM_ANSWERS_FIELD_HELPFUL'); ?>:</th>
 					<td>
 						<span class="votes up">+<?php echo $this->row->get('helpful'); ?></span> 
 						<span class="votes down">-<?php echo $this->row->get('nothelpful'); ?></span> 
 						<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
-							<input type="button" name="reset_helpful" value="Reset Helpful" onclick="submitbutton('reset');" />
+							<input type="button" name="reset_helpful" value="<?php echo JText::_('COM_ANSWERS_FIELD_RESET'); ?>" onclick="submitbutton('reset');" />
 						<?php } ?>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Parameters'); ?></span></legend>
+			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('Accept'); ?></label><br />
-				<input type="checkbox" name="answer[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->get('state') == 1) ? 'Accepted answer' : 'Unaccepted'; ?>)
+				<label for="field-state"><?php echo JText::_('COM_ANSWERS_FIELD_ACCEPT'); ?></label><br />
+				<input type="checkbox" name="answer[state]" id="field-state" value="1" <?php echo $this->row->get('state') ? 'checked="checked"' : ''; ?> /> (<?php echo ($this->row->get('state') == 1) ? JText::_('COM_ANSWERS_STATE_ACCEPTED') : JText::_('COM_ANSWERS_STATE_UNACCEPTED'); ?>)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-created_by"><?php echo JText::_('Change Creator'); ?></label><br />
+				<label for="field-created_by"><?php echo JText::_('COM_ANSWERS_FIELD_CREATOR'); ?></label><br />
 				<input type="text" name="answer[created_by]" id="field-created_by" size="25" maxlength="50" value="<?php echo $this->escape($this->row->get('created_by', JFactory::getUser()->get('id'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-created"><?php echo JText::_('Created Date'); ?></label><br />
+				<label for="field-created"><?php echo JText::_('COM_ANSWERS_FIELD_CREATED'); ?></label><br />
 				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'answer[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?>
 			</div>
 		</fieldset>

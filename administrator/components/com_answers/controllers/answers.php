@@ -241,7 +241,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Answer Successfully Saved')
+				JText::_('COM_ANSWERS_ANSWER_SAVED')
 			);
 		}
 
@@ -320,7 +320,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select an answer to ' . $action),
+				JText::sprintf('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action),
 				'error'
 			);
 			return;
@@ -329,7 +329,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('A question can only have one accepted answer'),
+				JText::_('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'),
 				'error'
 			);
 			return;
@@ -350,11 +350,11 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		// Set message
 		if ($publish == '1')
 		{
-			$message = JText::_('Item successfully Accepted');
+			$message = JText::_('COM_ANSWERS_ANSWER_ACCEPTED');
 		}
 		else if ($publish == '0')
 		{
-			$message = JText::_('Item successfully Rejected');
+			$message = JText::_('COM_ANSWERS_ANSWER_REJECTED');
 		}
 
 		$this->setRedirect(
@@ -400,7 +400,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Vote log has been reset.')
+			JText::_('COM_ANSWERS_VOTE_LOG_RESET')
 		);
 	}
 }

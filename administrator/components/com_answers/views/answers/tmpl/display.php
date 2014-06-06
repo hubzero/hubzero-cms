@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = AnswersHelper::getActions('answer');
 
-JToolBarHelper::title(JText::_('Answers Manager') . ': ' . JText::_('Responses'), 'answers.png');
+JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_RESPONSES'), 'answers.png');
 if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
@@ -66,11 +66,11 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filterby">Filter by:</label> 
-		<select name="filterby" id="filterby" onchange="document.adminForm.submit( );">
-			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>>All Responses</option>
-			<option value="accepted"<?php if ($this->filters['filterby'] == 'accepted') { echo ' selected="selected"'; } ?>>Accepted Response</option>
-			<option value="rejected"<?php if ($this->filters['filterby'] == 'rejected') { echo ' selected="selected"'; } ?>>Unaccepted Responses</option>
+		<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label> 
+		<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
+			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
+			<option value="accepted"<?php if ($this->filters['filterby'] == 'accepted') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
+			<option value="rejected"<?php if ($this->filters['filterby'] == 'rejected') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -81,21 +81,21 @@ function submitbutton(pressbutton)
 				<th colspan="6">
 				<?php if ($this->question->exists()) { ?>
 					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> - 
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->question->get('id'); ?>" title="Edit this question">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->question->get('id'); ?>">
 						<?php echo $this->escape($this->question->subject('clean')); ?>
 					</a>
 				<?php } else { ?>
-					<?php echo JText::_('Responses to all questions'); ?>
+					<?php echo JText::_('COM_ANSWERS_RESPONSES_TO_ALL'); ?>
 				<?php } ?>
 				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Answer', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Accepted', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created by', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Helpful', 'helpful', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_ANSWERS_COL_ANSWER', 'answer', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_ANSWERS_COL_ACCEPTED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_ANSWERS_COL_VOTES', 'helpful', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -114,12 +114,12 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 	{
 		case 1:
 			$task = 'reject';
-			$alt = JText::_('Accepted');
+			$alt = JText::_('COM_ANSWERS_STATE_ACCEPTED');
 			$cls = 'published';
 		break;
 		case 0:
 			$task = 'accept';
-			$alt = JText::_('Unaccepted');
+			$alt = JText::_('COM_ANSWERS_STATE_UNACCEPTED');
 			$cls = 'unpublished';
 		break;
 	}
@@ -129,12 +129,12 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>" title="Edit this Answer">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>">
 						<span><?php echo $row->content('clean', 75); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -146,7 +146,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 						<span><?php echo $this->escape(stripslashes($row->creator('name'))).' ('.$row->creator('id').')'; ?></span>
 					</a>
 				<?php if ($row->get('anonymous')) { ?>
-					<br /><span>(anonymous)</span>
+					<br /><span>(<?php echo JText::_('COM_ANSWERS_ANONYMOUS'); ?>)</span>
 				<?php } ?>
 				</td>
 				<td>

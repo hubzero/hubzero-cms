@@ -229,7 +229,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Ensure we have at least one tag
 		if (!isset($fields['tags']) || !$fields['tags'])
 		{
-			$this->addComponentMessage(JText::_('Question must have at least 1 tag'), 'error');
+			$this->addComponentMessage(JText::_('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -253,7 +253,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 			// Redirect back to the full questions list
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Question Successfully Saved')
+				JText::_('COM_ANSWERS_QUESTION_SAVED')
 			);
 		}
 
@@ -306,7 +306,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Question deleted')
+			JText::_('COM_ANSWERS_QUESTION_DELETED')
 		);
 	}
 
@@ -348,11 +348,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($publish == 1) ? JText::_('close') : JText::_('open');
+			$action = ($publish == 1) ? JText::_('COM_ANSWERS_SET_STATE_CLOSE') : JText::_('COM_ANSWERS_SET_STATE_OPEN');
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select a question to ' . $action),
+				JText::sprintf('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
 				'error'
 			);
 			return;
@@ -393,11 +393,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// set message
 		if ($publish == 1)
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully Closed');
+			$message = JText::sprintf('COM_ANSWERS_QUESTIONS_CLOSED', count($ids));
 		}
 		else if ($publish == 0)
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully Opened');
+			$message = JText::sprintf('COM_ANSWERS_QUESTIONS_OPENED', count($ids));
 		}
 
 		$this->setRedirect(
