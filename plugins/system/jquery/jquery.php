@@ -20,18 +20,6 @@ jimport('joomla.plugin.plugin');
 class plgSystemJquery extends JPlugin 
 {
 	/**
-	 * Constructor
-	 *
-	 * @param  object $subject The object to observe
-	 * @param  object $params  The object that holds the plugin parameters
-	 * @return void
-	 */
-	public function __construct(&$subject, $params)
-	{
-		parent::__construct($subject, $params);
-	}
-
-	/**
 	 * Hook for after routing application
 	 * 
 	 * @return     void
@@ -58,7 +46,7 @@ class plgSystemJquery extends JPlugin
 		if ($value = $this->params->get('jquery')) 
 		{
 			$version = $this->params->get('jqueryVersion', '1.7.2');
-			
+
 			switch ($value)
 			{
 				case 5:
@@ -75,7 +63,9 @@ class plgSystemJquery extends JPlugin
 				break;
 				case 1:
 				default:
-					$document->addScript($root . '/media/system/js/jquery.js');
+					//$document->addScript($root . '/media/system/js/jquery.js');
+					//$document->addScript($root . '/media/system/js/jquery.migrate.js');
+					JHTML::_('behavior.framework');
 				break;
 			}
 		}

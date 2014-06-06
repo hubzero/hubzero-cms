@@ -65,16 +65,23 @@ abstract class JHtmlBehavior
 		if ($type == 'core')
 		{
 			$document = JFactory::getDocument();
-			$data = $document->getHeadData();
-			$scripts = $data['scripts'];
-			$data['scripts'] = array();
-			$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery' . ($type != 'core' ? '.' . $type : '') . '.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
-
-			$document->setHeadData($data);
-			JHtml::_('script', 'system/core.js', false, true);
-			foreach ($scripts as $key => $foo)
+			if ($document instanceof JDocumentHTML)
 			{
-				$document->addScript($key);
+				$data = $document->getHeadData();
+				$scripts = $data['scripts'];
+				$data['scripts'] = array();
+				$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
+				$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery.migrate.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
+
+				$document->setHeadData($data);
+				if (JFactory::getApplication()->isAdmin())
+				{
+					JHtml::_('script', 'system/core.js', false, true);
+				}
+				foreach ($scripts as $key => $foo)
+				{
+					$document->addScript($key);
+				}
 			}
 		}
 		else
