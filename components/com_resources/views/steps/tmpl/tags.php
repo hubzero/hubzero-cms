@@ -31,12 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (JPluginHelper::isEnabled('system', 'jquery')) 
-{
-	$doc = JFactory::getDocument();
-	$doc->addScript('/components/com_resources/assets/js/tags.js');
-}
-
 if (!function_exists('stem')) {
 	function stem($str) {
 		return preg_replace('/^(?:a[bdcfglnpst]?|ant[ei]?|be|co[mlnr]?|de|di[as]?|e[nmxf]|extra|hemi|hyper|hypo|over|peri|post|pr[eo]|re|semi|su[bcfgprs]|sy[nm]|trans|ultra|un|under)+/', '', preg_replace('/(?:e[dr]|ing|e?s|or|ator|able|ible|acious|ary|ate|ation|cy|eer|or|escent|fic|fy|iferous|ile?|ism|ist|ity|ive|ise|ize|oid|ose|osis|ous|tude)+$/', '', $str));
@@ -229,7 +223,9 @@ class RecommendedTags
 	}
 }
 
-$this->css('create.css');
+$this->css('create.css')
+     ->js('create.js')
+     ->js('tags.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

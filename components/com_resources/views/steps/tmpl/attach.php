@@ -33,7 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
-$this->css('create.css');
+$this->css('create.css')
+     ->js('create.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>

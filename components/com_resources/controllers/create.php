@@ -72,9 +72,6 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			JRequest::setVar('task', 'login');
 		}
 
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/create');
-
 		$row = new ResourcesResource($this->database);
 		if ($id = JRequest::getInt('id', 0))
 		{

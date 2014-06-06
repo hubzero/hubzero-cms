@@ -54,7 +54,8 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'model
 $elements = new ResourcesElements($data, $type->customFields);
 $fields = $elements->render();
 
-$this->css('create.css');
+$this->css('create.css')
+     ->js('create.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
