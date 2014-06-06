@@ -90,22 +90,25 @@ class WishlistModelPlan extends WishlistModelAbstract
 				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
 			}
 
-			if (is_numeric($oid) || is_string($oid))
+			if ($oid)
 			{
-				// Make sure $oid isn't empty
-				// This saves a database call
-				if ($oid)
+				if (is_numeric($oid) || is_string($oid))
 				{
+					// Make sure $oid isn't empty
+					// This saves a database call
 					$this->_tbl->load($oid);
 				}
-			}
-			else if (is_object($oid) || is_array($oid))
-			{
-				$this->bind($oid);
+				else if (is_object($oid) || is_array($oid))
+				{
+					$this->bind($oid);
+				}
 			}
 			else if ($wish)
 			{
-				$this->_tbl->getPlan($wish);
+				if ($plans = $this->_tbl->getPlan($wish))
+				{
+					$this->bind($plans[0]);
+				}
 			}
 		}
 	}
@@ -155,7 +158,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 	 *
 	 * @return     mixed
 	 */
-	public function proposer($property=null)
+	public function creator($property=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{

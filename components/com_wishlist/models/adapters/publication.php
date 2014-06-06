@@ -32,11 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(__DIR__ . DS . 'abstract.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 
 /**
  * Adapter class for a forum post link for group forum
  */
-class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
+class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 {
 	/**
 	 * URL segments
@@ -44,7 +45,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 	 * @var string
 	 */
 	protected $_segments = array(
-		'option' => 'com_wishlist',
+		'option' => 'com_publications',
 	);
 
 	/**
@@ -56,12 +57,14 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 	public function __construct($referenceid=0)
 	{
 		$this->set('referenceid', $referenceid)
-		     ->set('category', 'group')
+		     ->set('category', 'publication')
 		     ->set('option', $this->_segments['option']);
 
-		$this->_item = \Hubzero\User\Group::getInstance($referenceid);
+		$database = JFactory::getDBO();
+		$objP = new Publication($database);
+		$this->_item = $objP->getPublication($referenceid, 'default');
 
-		$this->_segments['cn']     = $this->_item->get('cn');
+		$this->_segments['id']     = $this->_item->get('id');
 		$this->_segments['active'] = 'wishlist';
 	}
 
@@ -72,36 +75,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 	 */
 	public function title()
 	{
-		return $this->_item->get('cn') . ' ' . JText::_('COM_WISHLIST_NAME_GROUP');
-	}
-
-	/**
-	 * Retrieve a property from the internal item object
-	 * 
-	 * @param      string $key Property to retrieve
-	 * @return     string
-	 */
-	public function item($key)
-	{
-		switch (strtolower($key))
-		{
-			case 'title':
-				$key = 'description';
-			break;
-
-			case 'alias':
-				$key = 'cn';
-			break;
-
-			case 'id':
-				$key = 'gidNumber';
-			break;
-
-			default:
-			break;
-		}
-
-		return parent::item($key);
+		return $this->_item->get('title');
 	}
 
 	/**
@@ -212,16 +186,16 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_('Groups'), 
+				JText::_('Resources'), 
 				'index.php?option=' . $this->get('option')
 			);
 			$pathway->addItem(
 				stripslashes($this->_item->title),
-				'index.php?option=' . $this->get('option') . '&cn=' . $this->_segments['cn']
+				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
 				JText::_('Wishlist'), 
-				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+				'index.php?option=' . $this->get('option') . '&task=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
 			);
 		}
 		else

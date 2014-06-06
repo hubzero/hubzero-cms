@@ -31,95 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) 
-{
-	/**
-	 * Shortcut constant for tabs
-	 */
-	define('t', "\t");
-
-	/**
-	 * Shortcut constant for new lines
-	 */
-	define('n', "\n");
-
-	/**
-	 * Shortcut constant for line returns
-	 */
-	define('r', "\r");
-
-	/**
-	 * Shortcut constant for break tags
-	 */
-	define('br', '<br />');
-
-	/**
-	 * Shortcut constant for space character
-	 */
-	define('sp', '&#160;');
-
-	/**
-	 * Shortcut constant for ampersand
-	 */
-	define('a', '&amp;');
-}
-
 /**
  * Wishlist helper class for misc. HTML
  */
 class WishlistHtml
 {
-	/**
-	 * Remove paragraph tags and break tags
-	 * 
-	 * @param      string $pee Text to unparagraph
-	 * @return     string
-	 */
-	public static function txt_unpee($pee)
-	{
-		$pee = str_replace("\t", '', $pee);
-		$pee = str_replace('</p><p>', '', $pee);
-		$pee = str_replace('<p>', '', $pee);
-		$pee = str_replace('</p>', "\n", $pee);
-		$pee = str_replace('<br />', '', $pee);
-		$pee = trim($pee);
-		return $pee;
-	}
-
-	/**
-	 * Clean text of potential XSS and other unwanted items such as
-	 * HTML comments and javascrip"\t". Also shortens tex"\t".
-	 * 
-	 * @param      string  $text    Text to clean
-	 * @param      integer $desclen Length to shorten to
-	 * @return     string
-	 */
-	public static function cleanText($text, $desclen=300)
-	{
-		$elipse = false;
-
-		$text = preg_replace("'<script[^>]*>.*?</script>'si", "", $text);
-		$text = str_replace('{mosimage}', '', $text);
-		$text = str_replace("\n", ' ', $text);
-		$text = str_replace("\r", ' ', $text);
-		$text = preg_replace('/<a\s+.*href=["\']([^"\']+)["\'][^>]*>([^<]*)<\/a>/i','\\2', $text);
-		$text = preg_replace('/<!--.+?-->/', '', $text);
-		$text = preg_replace('/{.+?}/', '', $text);
-		$text = strip_tags($text);
-		if (strlen($text) > $desclen) 
-		{
-			$elipse = true;
-		}
-		$text = substr($text, 0, $desclen);
-		if ($elipse) 
-		{
-			$text .= '...';
-		}
-		$text = trim($text);
-
-		return $text;
-	}
-
 	/**
 	 * Generate a select form
 	 * 
@@ -142,25 +58,6 @@ class WishlistHtml
 		}
 		$out .= '</select>' . "\n";
 		return $out;
-	}
-
-	/**
-	 * Draw a table row
-	 * 
-	 * @param      string $h Header cell
-	 * @param      string $c Cell content
-	 * @return     string HTML
-	 */
-	public static function tableRow($h,$c='')
-	{
-		$html  = '  <tr>' . "\n";
-		$html .= '   <th>' . $h . '</th>' . "\n";
-		$html .= '   <td>';
-		$html .= ($c) ? $c : '&nbsp;';
-		$html .= '</td>' . "\n";
-		$html .= '  </tr>' . "\n";
-
-		return $html;
 	}
 
 	/**
@@ -202,136 +99,6 @@ class WishlistHtml
 		}
 
 		return $output;
-	}
-
-	/**
-	 * Display a form for setting the ranking of a wish
-	 * 
-	 * @param      string  $option   Component name
-	 * @param      object  $wishlist Current wishlist
-	 * @param      string  $task     Component task
-	 * @param      object  $myvote   User's ote
-	 * @param      integer $admin    User is admin?
-	 * @return     string HTML
-	 */
-	public static function rankingForm($option, $wishlist, $task, $myvote, $admin)
-	{
-		$importance = array(
-			''    => JText::_('SELECT_IMP'),
-			'0.0' => '0 -' . JText::_('RUBBISH'),
-			'1'   => '1 - ' . JText::_('MAYBE'),
-			'2'   => '2 - ' . JText::_('INTERESTING'),
-			'3'   => '3 - ' . JText::_('GOODIDEA'), 
-			'4'   => '4 - ' . JText::_('IMPORTANT'), 
-			'5'   => '5 - ' . JText::_('CRITICAL')
-		);
-		$effort = array(
-			''    => JText::_('SELECT_EFFORT'),
-			'5'   => JText::_('FOURHOURS'),
-			'4'   => JText::_('ONEDAY'),
-			'3'   => JText::_('TWODAYS'),
-			'2'   => JText::_('ONEWEEK'),
-			'1'   => JText::_('TWOWEEKS'),
-			'0.0' => JText::_('TWOMONTHS'), 
-			'6'   => JText::_('don\'t know')
-		);
-
-		$html  = '<form method="post" action="index.php?option=' . $option . '" class="rankingform" id="rankForm">' . "\n";
-		$html .= "\t".'<fieldset>' . "\n";
-		$html .= "\t\t".'<label>' . "\n";
-		$html .= "\t\t\t".WishlistHtml::formSelect('importance', $importance, $myvote->myvote_imp, 'rankchoices');
-		$html .= "\t\t".'</label>' . "\n";
-		if ($admin == 2) 
-		{
-			$html .= "\t\t".'<label>' . "\n";
-			$html .= "\t\t\t".WishlistHtml::formSelect('effort', $effort, $myvote->myvote_effort, 'rankchoices');
-			$html .= "\t\t".'</label>' . "\n";
-		} 
-		else 
-		{
-			$html .= "\t\t".'<input type="hidden" name="effort" value="6" />' . "\n";
-		}
-		$html .= "\t\t".'<input type="hidden" name="task" value="' . $task . '" />' . "\n";
-		$html .= "\t\t".'<input type="hidden" name="category" value="' . $wishlist->category . '" />' . "\n";
-		$html .= "\t\t".'<input type="hidden" name="rid" value="' . $wishlist->referenceid . '" />' . "\n";
-		$html .= "\t\t".'<input type="hidden" name="wishid" value="' . $myvote->id . '" />' . "\n";
-		$html .= "\t\t".'<input type="submit"  value="' . JText::_('SAVE') . '" />';
-		$html .= "\t".'</fieldset>' . "\n";
-		$html .= '</form>' . "\n";
-
-		return $html;
-	}
-
-	/**
-	 * Display a form for browsing wishes
-	 * 
-	 * @param      string  $option   Component name
-	 * @param      array   $filters  Search filters
-	 * @param      integer $admin    User is admin?
-	 * @param      integer $id       An... id? @NOTE: What is the purpose of this?
-	 * @param      integer $total    Record total
-	 * @param      object  $wishlist Current wishlist
-	 * @param      object  $pageNav  Pagination
-	 * @return     string HTML
-	 */
-	public static function browseForm($option, $filters, $admin, $id, $total, $wishlist, $pageNav)
-	{
-		$sortbys = array();
-		if ($admin) 
-		{
-			$sortbys['ranking']=JText::_('RANKING');
-		}
-		$sortbys['date'] = JText::_('DATE');
-		$sortbys['feedback'] = JText::_('FEEDBACK');
-
-		if ($wishlist->banking) 
-		{
-			$sortbys['bonus'] = JText::_('BONUS_AND_POPULARITY');
-		}
-		$filterbys = array(
-			'all'      => JText::_('ALL_WISHES_ON_THIS_LIST'),
-			'open'     => JText::_('ACTIVE'),
-			'granted'  => JText::_('GRANTED'), 
-			'accepted' => JText::_('WISH_STATUS_ACCEPTED'), 
-			'rejected' => JText::_('WISH_STATUS_REJECTED')
-		);
-
-		if ($admin == 1 or $admin == 2) 
-		{ // a few extra options
-			$filterbys['private'] = JText::_('PRIVATE');
-			$filterbys['public'] = JText::_('PUBLIC');
-			if ($admin == 2) 
-			{
-				$filterbys['mine'] = JText::_('MSG_ASSIGNED_TO_ME');
-			}
-		}
-		$html  = '<fieldset>' . "\n";
-		$html .= "\t" . '<label class="tagdisplay">' . JText::_('WISH_FIND_BY_TAGS') . ': ' . "\n";
-
-		JPluginHelper::importPlugin('hubzero');
-		$dispatcher = JDispatcher::getInstance();
-		$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $filters['tag'])));
-
-		if (count($tf) > 0) 
-		{
-			$html .= $tf[0];
-		} 
-		else 
-		{
-			$html .= "\t\t" . '<input type="text" name="tags" id="tags-men" value="' . $filters['tag'] . '" />' . "\n";
-		}
-		$html .= "\t" . '</label>' . "\n";
-		$html .= "\t" . '<label>' . JText::_('SHOW') . ': ' . "\n";
-		$html .= WishlistHtml::formSelect('filterby', $filterbys, $filters['filterby'], '', '');
-		$html .= "\t" . '</label>' . "\n";
-		$html .= "\t" . ' &nbsp; <label> ' . JText::_('SORTBY') . ':' . "\n";
-		$html .= WishlistHtml::formSelect('sortby', $sortbys, $filters['sortby'], '', '');
-		$html .= "\t" . '</label>' . "\n";
-		$html .= "\t" . '<input type="hidden" name="newsearch" value="1" />' . "\n";
-		$html .= "\t" . '<input type="submit" value="' . JText::_('GO') . '" />' . "\n";
-		$html .= '</fieldset>' . "\n";
-
-		return $html;
 	}
 
 	/**

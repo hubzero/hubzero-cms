@@ -31,17 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b, %Y';
-$timeFormat = '%I:%M %p';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$timeFormat = 'h:i A';
-	$tz = null;
-}
-
+$this->css();
 ?>
 	<h3 class="section-header">
 		<a name="wishlist"></a>
@@ -103,48 +93,47 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<span class="entry-id"><?php echo $item->id; ?></span>
 					</th>
 					<td>
-<?php 			if (!$item->reports) { ?>
+					<?php if (!$item->reports) { ?>
 						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
 							<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
-							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $timeFormat, $tz); ?></time></span> <?php echo JText::_('COM_WISHLIST_on'); ?> 
-							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, $dateFormat, $tz); ?></time></span>
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('COM_WISHLIST_on'); ?> 
+							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
 						</span>
-<?php 			} else { ?>
+					<?php } else { ?>
 						<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
-<?php 			} ?>
+					<?php } ?>
 					</td>
-<?php 			if ($this->config->get('banking')) { ?>
+				<?php if ($this->config->get('banking')) { ?>
 					<td class="reward">
 						<span class="entry-reward">
-<?php 					if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
+						<?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status==0 or $item->status==6)) { ?>
 							<a class="bonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' ::'.$item->bonusgivenby.' '.JText::_('COM_WISHLIST_MULTIPLE_USERS').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$item->bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
-<?php 					} else if ($item->status == 0 || $item->status == 6) { ?>
+						<?php } else if ($item->status == 0 || $item->status == 6) { ?>
 							<a class="nobonus tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&action=addbonus&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#action'); ?>" title="<?php echo JText::_('COM_WISHLIST_WISH_ADD_BONUS').' :: '.JText::_('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>"><?php echo $item->bonus; ?> <span><?php echo JText::_('COM_WISHLIST_POINTS'); ?></span></a>
-<?php 					} else { ?>
+						<?php } else { ?>
 							<span class="inactive" title="<?php echo JText::_('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
-<?php 					} ?>
+						<?php } ?>
 						</span>
 					</td>
-<?php 			} ?>
-<?php 			if (!$item->reports) { ?>
+				<?php } ?>
+				<?php if (!$item->reports) { ?>
 					<td class="voting">
-<?php
-						$view = new \Hubzero\Component\View( array('name'=>'rateitem', 'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option) );
-						$view->option = $this->option;
-						$view->item = $item;
-						$view->listid = $this->wishlist->id;
-						$view->plugin = 0;
-						$view->admin = 0;
-						$view->page = 'wishlist';
-						$view->filters = $this->filters;
-						$view->display();
-?>
+					<?php
+						$view->set('option', 'com_wishlist')
+						     ->set('item',  new WishlistModelWish($item))
+						     ->set('listid', $this->wishlist->id)
+						     ->set('plugin', 0)
+						     ->set('admin', 0)
+						     ->set('page', 'wishlist')
+						     ->set('filters', $this->filters)
+						     ->display();
+					?>
 					</td>
 					<td class="ranking">
-<?php 						/*if ($this->admin 
+					<?php /*if ($this->admin 
 						|| $item->status == 1 
 						|| ($item->status == 0 && $item->accepted == 1) 
 						|| $item->status == 3 
@@ -184,7 +173,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						echo $html;
 					//} ?>
 					</td>
-<?php 			} ?>
+				<?php } ?>
 				</tr>
 <?php
 		} // end foreach

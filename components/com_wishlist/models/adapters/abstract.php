@@ -138,4 +138,34 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 		}
 		return implode('&', $bits);
 	}
+
+	/**
+	 * Append an item to the breadcrumb trail.
+	 * If no item is provided, it will build the trail up to the list
+	 * 
+	 * @param      string $title Breadcrumb title
+	 * @param      string $url   Breadcrumb URL
+	 * @return     string
+	 */
+	public function pathway($title=null, $url=null)
+	{
+		$pathway = JFactory::getApplication()->getPathway();
+
+		if (!$title)
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->get('option'))), 
+				'index.php?option=' . $this->get('option')
+			);
+		}
+		else
+		{
+			$pathway->addItem(
+				$title, 
+				$url
+			);
+		}
+
+		return $this;
+	}
 }

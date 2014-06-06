@@ -167,22 +167,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			$this->action = $action;
 
 			//include com_wishlist files
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.group.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' 
-				. DS . 'controllers' . DS . 'wishlist.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
 			//set some more vars
 			$gid = $this->group->get('gidNumber');
@@ -191,9 +177,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			$admin = 0;
 
 			// Configure controller
-			$controller = new WishlistController();
-			$controller->setVar('_option', 'com_wishlist');
-			$controller->setVar('banking', $this->config->get('banking'));
+			$controller = new WishlistControllerWishlist();
 
 			// Get filters
 			$filters = $controller->getFilters(0);
@@ -272,9 +256,6 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 					'name'    => 'browse'
 				)
 			);
-
-			//push the stylesheet to the view
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wishlist');
 
 			// Pass the view some info
 			$view->option = $option;

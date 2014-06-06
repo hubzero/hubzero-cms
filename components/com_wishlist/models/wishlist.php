@@ -212,6 +212,19 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
+	 * Append an item to the breadcrumb trail.
+	 * If no item is provided, it will build the trail up to the list
+	 * 
+	 * @param      string $title Breadcrumb title
+	 * @param      string $url   Breadcrumb URL
+	 * @return     string
+	 */
+	public function pathway($title=null, $pathway=null)
+	{
+		return $this->_adapter()->pathway($title, $pathway);
+	}
+
+	/**
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
 	 * 
@@ -398,6 +411,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		//if (!($this->_cache['owners.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 		if (!is_array($this->_cache['owners.list' . $native]))
 		{
+			$category = $this->get('category');
+			$this->_tbl->$category = $this->_adapter()->item();
 			if ($data = $tbl->get_owners($this->get('id'), $this->config('group', 'hubadmin'), $this->_tbl, $native))
 			{
 				$results = array();
@@ -597,7 +612,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			return $user;
 		}
 
-		$this->_db->setQuery("SELECT `id` FROM #__users WHERE `username`=" . $this->_db->Quote($user));
+		$this->_db->setQuery("SELECT `id` FROM `#__users` WHERE `username`=" . $this->_db->Quote($user));
 
 		if (($result = $this->_db->loadResult()))
 		{
@@ -620,7 +635,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			return $group;
 		}
 
-		$this->_db->setQuery("SELECT `gidNumber` FROM #__xgroups WHERE `cn`=" . $this->_db->Quote($group));
+		$this->_db->setQuery("SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->_db->Quote($group));
 
 		if (($result = $this->_db->loadResult()))
 		{
@@ -640,7 +655,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 */
 	public function access($action='view', $assetType='list', $assetId=null)
 	{
-		if (!$this->config()->get('access-check-done', false))
+		if (!$this->config()->get('access-check-list-done', false))
 		{
 			$juser = JFactory::getUser();
 
@@ -656,55 +671,32 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$this->config()->set('access-edit-own-' . $assetType, true);
 				}
 
-				if (version_compare(JVERSION, '1.6', 'ge'))
+				$asset  = 'com_wishlist';
+				if ($assetId)
 				{
-					$asset  = 'com_wishlist';
-					if ($assetId)
-					{
-						$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-						$asset .= ($assetId) ? '.' . $assetId : '';
-					}
-
-					$at = '';
-					if ($assetType != 'component')
-					{
-						$at .= '.' . $assetType;
-					}
-
-					// Admin
-					$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-					$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
-					if ($this->config()->get('access-manage-' . $assetType))
-					{
-						$this->set('admin', 1);
-					}
-					// Permissions
-					//$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
-					$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-					$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-					$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-					//$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
+					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+					$asset .= ($assetId) ? '.' . $assetId : '';
 				}
-				else 
+
+				$at = '';
+				if ($assetType != 'component')
 				{
-					/*if ($assetType == 'wish')
-					{
-						$this->config()->set('access-create-' . $assetType, true);
-						//$this->config()->set('access-edit-' . $assetType, true);
-						//$this->config()->set('access-delete-' . $assetType, true);
-					}*/
-					if ($juser->authorize($this->_option, 'manage'))
-					{
-						$this->config()->set('access-manage-' . $assetType, true);
-						$this->config()->set('access-admin-' . $assetType, true);
-						//$this->config()->set('access-create-' . $assetType, true);
-						$this->config()->set('access-delete-' . $assetType, true);
-						$this->config()->set('access-edit-' . $assetType, true);
-						$this->config()->set('access-edit-state-' . $assetType, true);
-
-						$this->set('admin', 1);
-					}
+					$at .= '.' . $assetType;
 				}
+
+				// Admin
+				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
+				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				if ($this->config()->get('access-manage-' . $assetType))
+				{
+					$this->set('admin', 1);
+				}
+				// Permissions
+				//$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
+				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
+				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
+				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
+				//$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 
 				if ($this->exists())
 				{
@@ -736,7 +728,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				}
 			}
 
-			$this->config()->set('access-check-done', true);
+			$this->config()->set('access-check-list-done', true);
 		}
 
 		return $this->config()->get('access-' . $action . '-' . $assetType);
@@ -774,7 +766,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				$ranking = 0;
 
 				// first consider votes by list owners
-				if ($item->votes()->total() > 0) 
+				if ($item->rankings()->total() > 0) 
 				{
 					$imp     = 0;
 					$eff     = 0;
@@ -782,7 +774,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$skipped = 0; // how many times effort selection was skipped
 					$divisor = 0;
 
-					foreach ($item->votes() as $vote) 
+					foreach ($item->rankings() as $vote) 
 					{
 						if (in_array($vote->get('userid'), $voters)) 
 						{

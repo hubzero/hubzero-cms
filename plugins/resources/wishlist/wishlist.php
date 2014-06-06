@@ -111,19 +111,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		$html   = '';
 
 		// Include some classes & scripts
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.plan.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.group.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.rank.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.attachment.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'wishlist.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php');
 
 		// Configure controller
-		$controller = new WishlistController();
-		$controller->setVar('_option', $option);
-		$controller->setVar('banking', $this->config->get('banking'));
+		$controller = new WishlistControllerWishlist();
 
 		// Get filters
 		$filters = $controller->getFilters(0);
@@ -179,7 +171,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 			} 
 			else if (!$wishlist->public && $rtrn != 'metadata') 
 			{
-				// not authorized
+				// not authorizedå
 				JError::raiseError(403, JText::_('ALERTNOTAUTH'));
 				return;
 			}
@@ -188,9 +180,6 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 			if ($rtrn != 'metadata') 
 			{
-				// Add the CSS to the template
-				\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wishlist');
-
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 

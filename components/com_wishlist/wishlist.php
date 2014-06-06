@@ -31,24 +31,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.plan.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.group.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.rank.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.attachment.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.plan.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.group.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.rank.php');
+//include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.attachment.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'wishlist.php');
+//require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+//require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'wishlist.php');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'wish.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'wishlist.php');
+//require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'wishlist'));
+if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'wishlist';
+}
+require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'WishlistController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
-$controller = new WishlistController();
-$controller->mainframe = JFactory::getApplication();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
 

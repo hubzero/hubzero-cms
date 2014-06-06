@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $title = ($this->admin) ? JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 
 if (count($this->wishlist->items) > 0 && $this->items > $this->filters['limit']) 
@@ -165,11 +167,12 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 						<td class="voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(
-									'name'      => 'rateitem', 
-									'base_path' => JPATH_ROOT.DS.'components'.DS.'com_wishlist'
+									'name'      => 'wishlist', 
+									'layout'    => '_vote',
+									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wishlist'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item ', $item)
+								     ->set('item',  new WishlistModelWish($item))
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)

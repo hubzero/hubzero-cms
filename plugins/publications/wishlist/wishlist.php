@@ -120,44 +120,36 @@ class plgPublicationsWishlist extends JPlugin
 				}
 			}
 		}
-				
+
 		$database = JFactory::getDBO();
 		$juser 	  = JFactory::getUser();
-		
+
 		$option = 'com_wishlist';
 		$cat 	= 'publication';
 		$refid  = $publication->id;
 		$items  = 0;
 		$admin  = 0;
-		$html	= '';		
-		
+		$html	= '';
+
 		// Include some classes & scripts
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.plan.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wishlist.owner.group.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.rank.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'wish.attachment.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'wishlist.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php' );
-		
+
 		// Configure controller
-		$controller = new WishlistController();
-		$controller->setVar('_option', $option);
-		$controller->setVar('banking', $this->config->get('banking'));
-		
+		$controller = new WishlistControllerController();
+
 		// Get filters
-		$filters = WishlistController::getFilters(0);
+		$filters = $controller->getFilters(0);
 		$filters['limit'] = $this->_params->get('limit');
-		
+
 		// Load some objects
 		$obj = new Wishlist( $database );
 		$objWish = new Wish( $database );
 		$objOwner = new WishlistOwner( $database );
-		
+
 		// Get wishlist id
 		$id = $obj->get_wishlistID($refid, $cat);
-		
+
 		// Create a new list if necessary
 		if (!$id) 
 		{
@@ -167,12 +159,12 @@ class plgPublicationsWishlist extends JPlugin
 				? JText::_('COM_WISHLIST_NAME_RESOURCE').' '.$publication->alias 
 				: JText::_('COM_WISHLIST_NAME_PUB_ID').' '.$publication->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $publication->title);
-			}				
+			}
 		}
-		
+
 		// get wishlist data
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
-		
+
 		if (!$wishlist) 
 		{
 			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUND') . '</p>';
@@ -181,7 +173,7 @@ class plgPublicationsWishlist extends JPlugin
 		{
 			// Get list owners
 			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
-			
+	
 			// Authorize admins & list owners
 			if (!$juser->get('guest')) 
 			{
@@ -229,20 +221,20 @@ class plgPublicationsWishlist extends JPlugin
 				// Instantiate a view
 				$view = new \Hubzero\Plugin\View(
 					array(
-						'folder'=>'publications',
-						'element'=>'wishlist',
-						'name'=>'browse'
+						'folder'  => 'publications',
+						'element' => 'wishlist',
+						'name'    => 'browse'
 					)
 				);
 
 				// Pass the view some info
-				$view->option = $option;
+				$view->option      = $option;
 				$view->publication = $publication;
-				$view->title = $title;
-				$view->wishlist = $wishlist;
-				$view->filters = $filters;
-				$view->admin = $admin;
-				$view->config = $this->config;
+				$view->title       = $title;
+				$view->wishlist    = $wishlist;
+				$view->filters     = $filters;
+				$view->admin       = $admin;
+				$view->config      = $this->config;
 				if ($this->getError()) 
 				{
 					$view->setError( $this->getError() );
@@ -265,9 +257,9 @@ class plgPublicationsWishlist extends JPlugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->publication   = $publication;
-			$view->items      	 = $items;
-			$view->wishlistid 	 = $id;
+			$view->publication = $publication;
+			$view->items       = $items;
+			$view->wishlistid  = $id;
 
 			$metadata = $view->loadTemplate();
 		}

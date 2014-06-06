@@ -938,7 +938,7 @@ class WishlistModelWish extends WishlistModelAbstract
 					$this->_cache['votes.count'] = $tbl->find('count', $filters);
 				}
 				return $this->_cache['votes.count'];*/
-				return $this->votes('list')->total();
+				return $this->rankings('list')->total();
 			break;
 
 			case 'list':
@@ -965,6 +965,25 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
+	 * Get a ranking
+	 * 
+	 * @param      string  $rtrn    Data format to return
+	 * @return     mixed
+	 */
+	public function ranking($rtrn='importance')
+	{
+		if (!$this->get('myranking', null))
+		{
+			$tbl = new WishRank($this->_db);
+			$tbl->load_vote(JFactory::getUser()->get('id'), $this->get('id'));
+
+			$this->set('myranking', $tbl);
+		}
+
+		return $this->get('myranking')->$rtrn;
+	}
+
+	/**
 	 * Check a user's authorization
 	 * 
 	 * @param      string  $action    Action to check
@@ -977,11 +996,12 @@ class WishlistModelWish extends WishlistModelAbstract
 		if (!$this->config()->get('access-check-list-done', false) 
 		 || !$this->config()->get('access-check-wish-done', false))
 		{
+
 			// Has the list access check been performed?
 			if (!$this->config()->get('access-check-list-done', false))
 			{
 				$wishlist = WishlistModelWishlist::getInstance($this->get('wishlist'));
-				$wishlist->get('access-' . $action . '-' . $assetType);
+				$wishlist->access($action, 'list');
 			}
 
 			// Has the wish access check been performed?
@@ -989,6 +1009,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			{
 				// Set wish NOT viewable by default
 				$this->config()->set('access-view-wish', false);
+
 				// Can they see the list?
 				if ($this->config()->get('access-view-list'))
 				{

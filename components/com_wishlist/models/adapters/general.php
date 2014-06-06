@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'adapters' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'abstract.php');
 
 /**
  * Adapter class for a forum post link for the site-wide forum
@@ -66,7 +66,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
-	public function item($key)
+	public function item($key='')
 	{
 		switch (strtolower($key))
 		{
@@ -82,7 +82,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 			break;
 		}
 
-		return '';
+		return $this->_item;
 	}
 
 	/**
@@ -297,5 +297,35 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 		$segments = array_merge($segments, (array) $params);
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+	}
+
+	/**
+	 * Append an item to the breadcrumb trail.
+	 * If no item is provided, it will build the trail up to the list
+	 * 
+	 * @param      string $title Breadcrumb title
+	 * @param      string $url   Breadcrumb URL
+	 * @return     string
+	 */
+	public function pathway($title=null, $url=null)
+	{
+		$pathway = JFactory::getApplication()->getPathway();
+
+		if (!$title)
+		{
+			$pathway->addItem(
+				JText::_('Wishlists'), 
+				'index.php?option=' . $this->get('option')
+			);
+		}
+		else
+		{
+			$pathway->addItem(
+				$title, 
+				$url
+			);
+		}
+
+		return $this;
 	}
 }

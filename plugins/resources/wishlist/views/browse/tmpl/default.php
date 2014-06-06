@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css();
 ?>
 	<h3 class="section-header">
 		<?php echo JText::_('PLG_RESOURCES_WISHLIST'); ?>
@@ -131,17 +133,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<td class="voting">
 					<?php
 						$view = new \Hubzero\Component\View(array(
-							'name'=>'rateitem',
-							'base_path' => JPATH_ROOT.DS.'components'.DS.$this->option
+							'name'      =>'wishlist',
+							'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->option,
+							'layout'    => '_vote'
 						));
-						$view->option = $this->option;
-						$view->item = $item;
-						$view->listid = $this->wishlist->id;
-						$view->plugin = 0;
-						$view->admin = 0;
-						$view->page = 'wishlist';
-						$view->filters = $this->filters;
-						$view->display();
+						$view->set('option', 'com_wishlist')
+						     ->set('item',  new WishlistModelWish($item))
+						     ->set('listid', $this->wishlist->id)
+						     ->set('plugin', 0)
+						     ->set('admin', 0)
+						     ->set('page', 'wishlist')
+						     ->set('filters', $this->filters)
+						     ->display();
 						?>
 					</td>
 					<td class="ranking">

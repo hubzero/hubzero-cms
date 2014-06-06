@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'adapters' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 /**
@@ -60,7 +60,10 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 		     ->set('category', 'resource')
 		     ->set('option', $this->_segments['option']);
 
-		$this->_item = new ResourcesResource($this->get('referenceid'));
+		//$this->_item = new ResourcesResource($this->get('referenceid'));
+		$database = JFactory::getDBO();
+		$this->_item = new ResourcesResource($database);
+		$this->_item->load($this->get('referenceid'));
 
 		if ($this->_item->standalone != 1 || $this->_item->published != 1)
 		{
@@ -174,5 +177,43 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 		$segments = array_merge($segments, (array) $params);
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+	}
+
+	/**
+	 * Append an item to the breadcrumb trail.
+	 * If no item is provided, it will build the trail up to the list
+	 * 
+	 * @param      string $title Breadcrumb title
+	 * @param      string $url   Breadcrumb URL
+	 * @return     string
+	 */
+	public function pathway($title=null, $url=null)
+	{
+		$pathway = JFactory::getApplication()->getPathway();
+
+		if (!$title)
+		{
+			$pathway->addItem(
+				JText::_('Resources'), 
+				'index.php?option=' . $this->get('option')
+			);
+			$pathway->addItem(
+				stripslashes($this->_item->title),
+				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
+			);
+			$pathway->addItem(
+				JText::_('Wishlist'), 
+				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+			);
+		}
+		else
+		{
+			$pathway->addItem(
+				$title, 
+				$url
+			);
+		}
+
+		return $this;
 	}
 }

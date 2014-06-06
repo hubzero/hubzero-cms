@@ -39,29 +39,14 @@ if (isset($this->comments))// && $this->comments instanceof \Hubzero\Base\ItemLi
 
 	foreach ($this->comments as $comment) 
 	{
-		if (!($comment instanceof WishlistModelComment))
-		{
-			$comment = new WishlistModelComment($comment);
-		}
-
-		$view = new JView(
-			array(
-				'name'    => 'wish',
-				'layout'  => '_comment'
-			)
-		);
-		$view->option     = $this->option;
-		$view->comment    = $comment;
-		$view->config     = $this->config;
-		$view->depth      = $this->depth;
-		$view->wish       = $this->wish;
-		$view->cls        = $cls;
-		$view->base       = $this->base;
-		$view->listid     = $this->listid;
-		$view->wishid     = $this->wishid;
-		$view->listcategory = $this->listcategory;
-		$view->listreference = $this->listreference;
-		$view->display();
+		$this->view('_comment')
+		     ->set('option', $this->option)
+		     ->set('comment', $comment)
+		     ->set('depth', $this->depth)
+		     ->set('cls', $cls)
+		     ->set('wish', $this->wish)
+		     ->set('wishlist', $this->wishlist)
+		     ->display();
 	}
 } 
 ?>
