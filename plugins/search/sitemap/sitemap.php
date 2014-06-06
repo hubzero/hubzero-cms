@@ -106,8 +106,8 @@ class plgSearchSiteMap extends SearchPlugin
 		}
 
 		$html = array();
-		$html[] = '<p>The site search is aimed at accessing content, not structure. So, queries look for certain parts of the site may not work as well as one might hope, instead turning up tangentially related pieces of content. By encoding the site structure as content here the search has a better chance of doing the right thing.</p>';
-		$html[] = '<form action="" method="post">';
+		//$html[] = '<p>The site search is aimed at accessing content, not structure. So, queries look for certain parts of the site may not work as well as one might hope, instead turning up tangentially related pieces of content. By encoding the site structure as content here the search has a better chance of doing the right thing.</p>';
+		$html[] = '<form action="index.php?option=com_search" method="post">';
 		$html[] = '<input type="hidden" name="search-task" value="SiteMap' . ($edit ? 'SaveEdit' : 'Edit') . '" />';
 		$html[] = '<table class="adminlist">';
 		$html[] = '<thead>';
@@ -119,8 +119,8 @@ class plgSearchSiteMap extends SearchPlugin
 			$html[] = '<tr>';
 			if ($edit == $item['id'])
 			{
-				$html[] = '<td><input name="sm-title" value="' . htmlentities(array_key_exists('sm-title', $_POST) ? $_POST['sm-title'] : $item['title']) . '" /></td>';
-				$html[] = '<td><input name="sm-link" value="' . htmlentities(array_key_exists('sm-link', $_POST) ? $_POST['sm-link'] : $item['link']) . '" /></td>';
+				$html[] = '<td><input type="text" name="sm-title" value="' . htmlentities(array_key_exists('sm-title', $_POST) ? $_POST['sm-title'] : $item['title']) . '" /></td>';
+				$html[] = '<td><input type="text" name="sm-link" value="' . htmlentities(array_key_exists('sm-link', $_POST) ? $_POST['sm-link'] : $item['link']) . '" /></td>';
 				$html[] = '<td><textarea cols="60" rows="3" name="sm-description">' . htmlentities(array_key_exists('sm-description', $_POST) ? $_POST['sm-description'] : $item['description']) . '</textarea></td>';
 				$html[] = '<td><input type="hidden" name="sm-id" value="' . $item['id'] . '" /><input type="submit" name="save" value="Save" /><input type="submit" name="cancel" value="Cancel" /></td>';
 			}
@@ -143,8 +143,8 @@ class plgSearchSiteMap extends SearchPlugin
 		if (!$edit)
 		{
 			$html[] = '<tr>';
-			$html[] = '<td><input name="new-sm-title" value="' . htmlentities(array_key_exists('new-sm-title', $_POST) ? $_POST['new-sm-title'] : '') . '" /></td>';
-			$html[] = '<td><input name="new-sm-link" value="' . htmlentities(array_key_exists('new-sm-link', $_POST) ? $_POST['new-sm-link'] : '') . '" /></td>';
+			$html[] = '<td><input type="text" name="new-sm-title" value="' . htmlentities(array_key_exists('new-sm-title', $_POST) ? $_POST['new-sm-title'] : '') . '" /></td>';
+			$html[] = '<td><input type="text" name="new-sm-link" value="' . htmlentities(array_key_exists('new-sm-link', $_POST) ? $_POST['new-sm-link'] : '') . '" /></td>';
 			$html[] = '<td><textarea cols="60" rows="3" name="new-sm-description">' . htmlentities(array_key_exists('new-sm-description', $_POST) ? $_POST['new-sm-description'] : '') . '</textarea></td>';
 			$html[] = '<td><input type="submit" name="add" value="Add" /></td>';
 			$html[] = '</tr>';

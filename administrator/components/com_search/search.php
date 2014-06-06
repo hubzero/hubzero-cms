@@ -38,6 +38,8 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
+JHTML::_('behavior.framework');
+
 if (!function_exists('stem'))
 {
 	/**
@@ -77,13 +79,14 @@ if (array_key_exists('search-task', $_POST))
 	}
 }
 
-JToolBarHelper::title(JText::_('Search'), 'search.png');
+JToolBarHelper::title(JText::_('Search') . ': ' . JText::_('Site Map'), 'search.png');
+JToolBarHelper::help('search');
 
 $app = JFactory::getApplication();
 foreach ($app->triggerEvent('onSearchAdministrate', array($context)) as $plugin)
 {
 	list($name, $html) = $plugin;
-	echo '<h3>' . $name . '</h3>';
+	//echo '<h3>' . $name . '</h3>';
 	echo $html;
 }
 
