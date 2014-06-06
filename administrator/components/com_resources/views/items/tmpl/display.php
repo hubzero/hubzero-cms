@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('Search'); ?>: </label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" />
-	
+
 		<label for="status"><?php echo JText::_('Status'); ?>:</label>
 		<select name="status" id="status">
 			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all ]'); ?></option>
@@ -96,16 +96,15 @@ function submitbutton(pressbutton)
 			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
 			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Deleted'); ?></option>
 		</select>
-		
-	
+
 		<label for="type"><?php echo JText::_('Type'); ?>:</label>
 		<?php echo ResourcesHtml::selectType($this->types, 'type', $this->filters['type'], '[ all types ]', '', '', ''); ?>
-	
+
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('A list of resources and their types, published status, access levels, and other relevant data'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo ($this->rows) ? count( $this->rows ) : 0;?>);" /></th>
@@ -123,6 +122,21 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
+			<tr>
+				<td colspan="9">
+					<p><?php echo JText::_('Published status: (click icon above to toggle state)'); ?></p>
+					<ul class="key">
+						<li class="draftinternal"><span>draft (internal)</span> = <?php echo JText::_('Draft (internal production)'); ?></li>
+						<li class="draftexternal"><span>draft (external)</span> = <?php echo JText::_('Draft (user created)'); ?></li>
+						<li class="submitted"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
+						<li class="pending"><span>pending</span> = <?php echo JText::_('Published, but is Coming'); ?></li>
+						<li class="published"><span>current</span> = <?php echo JText::_('Published and is Current'); ?></li>
+						<li class="expired"><span>finished</span> = <?php echo JText::_('Published, but has Finished'); ?></li>
+						<li class="unpublished"><span>unpublished</span> = <?php echo JText::_('Unpublished'); ?></li>
+						<li class="deleted"><span>deleted</span> = <?php echo JText::_('Delete/Removed'); ?></li>
+					</ul>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -208,27 +222,27 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	switch ($row->access)
 	{
 		case 0:
-			$color_access = 'style="color: green;"';
+			$color_access = 'public';
 			$task_access  = 'accessregistered';
 			$row->groupname = 'Public';
 			break;
 		case 1:
-			$color_access = 'style="color: red;"';
+			$color_access = 'registered';
 			$task_access  = 'accessspecial';
 			$row->groupname = 'Registered';
 			break;
 		case 2:
-			$color_access = 'style="color: black;"';
+			$color_access = 'special';
 			$task_access  = 'accessprotected';
 			$row->groupname = 'Special';
 			break;
 		case 3:
-			$color_access = 'style="color: blue;"';
+			$color_access = 'protected';
 			$task_access  = 'accessprivate';
 			$row->groupname = 'Protected';
 			break;
 		case 4:
-			$color_access = 'style="color: red;"';
+			$color_access = 'private';
 			$task_access  = 'accesspublic';
 			$row->groupname = 'Private';
 			break;
@@ -284,7 +298,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td>
-					<a class="access" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="Change Access">
+					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Change Access">
 						<span><?php echo $this->escape($row->groupname); ?></span>
 					</a>
 				</td>
@@ -331,24 +345,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<p><?php echo JText::_('Published status: (click icon above to toggle state)'); ?></p>
-	<ul class="key">
-		<li class="draftinternal"><span>draft (internal)</span> = <?php echo JText::_('Draft (internal production)'); ?></li>
-		<li class="draftexternal"><span>draft (external)</span> = <?php echo JText::_('Draft (user created)'); ?></li>
-		<li class="submitted"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
-		<li class="pending"><span>pending</span> = <?php echo JText::_('Published, but is Coming'); ?></li>
-		<li class="published"><span>current</span> = <?php echo JText::_('Published and is Current'); ?></li>
-		<li class="expired"><span>finished</span> = <?php echo JText::_('Published, but has Finished'); ?></li>
-		<li class="unpublished"><span>unpublished</span> = <?php echo JText::_('Unpublished'); ?></li>
-		<li class="deleted"><span>deleted</span> = <?php echo JText::_('Delete/Removed'); ?></li>
-	</ul>
-
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
