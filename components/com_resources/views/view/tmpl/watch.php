@@ -157,7 +157,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="/resources/<?php echo $rr->id; ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
+	<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $rr->id); ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
 		<span>powered by</span> <?php echo JFactory::getConfig()->get('sitename'); ?>
 	</a>
 	
@@ -311,7 +311,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 						<?php endif; ?>
 					</video>
 				<?php else : ?>
-					<audio id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">          
+					<audio id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
 						<?php foreach($presentation->media as $source): ?>
 							<?php
 								switch( $source->type )

@@ -1254,12 +1254,6 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Whew! Finally passed all the checks
 		// Let's get down to business...
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
-
 		// Get contribtool params
 		$tconfig = JComponentHelper::getParams('com_tools');
 

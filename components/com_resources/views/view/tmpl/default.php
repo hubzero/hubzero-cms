@@ -30,6 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $txt = '';
 $mode = strtolower(JRequest::getWord('mode', ''));
 
