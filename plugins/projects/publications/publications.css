@@ -239,6 +239,7 @@
 		font-weight: bold;
 		padding: 0.2em 1em;
 		position: absolute;
+		width: auto;
 	}
 	p#version-label a {
 		color: #000000;

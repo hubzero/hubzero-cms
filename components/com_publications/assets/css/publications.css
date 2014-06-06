@@ -1209,7 +1209,7 @@
 	}
 	h3.prov-header, #mypub h3, #abox-content h3.prov-header {
 		background: #f9f6ec;
-		padding: 0.2em;
+		padding: 0.2em 0.5em;
 		margin: 0;
 		width: 100%;
 		border: none;
@@ -1221,7 +1221,6 @@
 	#mypub {
 		min-height: 3em;
 		margin: 1em 0 2em 0;
-		padding: 0 30px;
 	}
 	ul.mypubs {
 		list-style: none;
@@ -1318,7 +1317,7 @@
 	.contrib-options {
 		float: right;
 		font-size: 85%;
-		margin-top: -3em;
+		margin-top: -5em;
 		margin-right: 1em;
 		width: 25%;
 		color: #999;

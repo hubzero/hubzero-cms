@@ -21,6 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 		echo ('<p>' . $this->msg . '</p>');
 	} ?>
 </div>
-<secton id="contrib-section" class="section">
+<section id="contrib-section" class="section">
 	<?php echo $this->content; ?>
 </section><!-- / .section -->

@@ -844,14 +844,8 @@
 		width: 100%;
 		margin-top: 3em;
 	}
-	#activate-intro .second {
-		background: #fdfdfb url("../img/bigarrow.gif") left 6em no-repeat;
-		min-height: 300px;
-		margin-left: -4px;	
-	}
 	#activate-intro .first {
 		background: #fbf8ea;
-		margin-right: -4px;	
 	}
 	#activate-form label {
 		margin: 1em 0;

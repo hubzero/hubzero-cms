@@ -50,7 +50,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 
 		<div id="activate-intro">
 			<div class="grid">
-				<div class="col span6">
+				<div class="col span6 first">
 					<h3><?php echo JText::_('COM_PROJECTS_ACTIVATE_WHAT_YOU_GET'); ?></h3>
 					<ul id="activate-features">
 						<li id="feature-files">
@@ -106,7 +106,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 								<div id="verify-alias"></div>
 
 								<p class="submitarea">
-									<input type="submit" id="b-continue" value="<?php echo JText::_('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT'); ?>" />
+									<input type="submit" id="b-continue" class="btn btn-primary active" value="<?php echo JText::_('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT'); ?>" />
 									<span class="btn btncancel"><a href="<?php echo $url; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 								</p>
 							</fieldset>	
