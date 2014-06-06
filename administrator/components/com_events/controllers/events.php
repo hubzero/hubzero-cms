@@ -76,21 +76,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Push scripts to the document head
-	 * 
-	 * @return     void
-	 */
-	protected function _getScripts($script = '', $option = '', $system = false)
-	{
-		$document = JFactory::getDocument();
-		if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'js' . DS . $this->_name . '.js')) 
-		{
-			$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . 'calendar.rc4.js');
-			$document->addScript('components' . DS . $this->_option . DS . 'js' . DS . $this->_name . '.js');
-		}
-	}
-
-	/**
 	 * Display a list of entries
 	 * 
 	 * @return     void
