@@ -4942,13 +4942,19 @@ class plgProjectsPublications extends JPlugin
 			)
 		);
 		
-		// Check if selections are the same as in another publication
-		$view->used = $this->_pubTypeHelper->dispatch($base, 'checkDuplicate', 
-			$data = array('pid' => $pid, 'selections' => $selections));
-			
-		// Check if selections are of the right status to publish
-		$view->cStatus = $this->_pubTypeHelper->dispatch($base, 'checkContentStatus', 
-			$data = array('pid' => $pid, 'selections' => $selections));	
+		$view->used = NULL;
+		$view->cStatus = NULL;
+		
+		if (!$this->_project->provisioned)
+		{
+			// Check if selections are the same as in another publication
+			$view->used = $this->_pubTypeHelper->dispatch($base, 'checkDuplicate', 
+				$data = array('pid' => $pid, 'selections' => $selections));
+
+			// Check if selections are of the right status to publish
+			$view->cStatus = $this->_pubTypeHelper->dispatch($base, 'checkContentStatus', 
+				$data = array('pid' => $pid, 'selections' => $selections));	
+		}
 		
 		$view->duplicateV = NULL;			
 		$view->original_serveas = '';
