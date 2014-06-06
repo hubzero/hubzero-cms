@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 // Menu
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . JText::_('BILLBOARDS'), 'addedit.png');
+JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '200', '500');
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
@@ -42,7 +42,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'delete');
+JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'), 'delete');
 JToolBarHelper::spacer();
 JToolBarHelper::help('billboards');
 
@@ -54,11 +54,11 @@ $juser = JFactory::getUser();
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('BILLBOARD_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('BILLBOARD_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('BILLBOARD_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
-				<th scope="col"><?php echo JText::_('PUBLISHED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -89,7 +89,7 @@ $juser = JFactory::getUser();
 
 		$task  = $row->published ? 'unpublish' : 'publish';
 		$class = $row->published ? 'publish' : 'unpublish';
-		$alt   = $row->published ? JText::_('PUBLISHED') : JText::_('UNPUBLISHED');
+		$alt   = $row->published ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -99,7 +99,7 @@ $juser = JFactory::getUser();
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>" title="Edit this slide"><?php echo $row->name; ?></a>
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;cid[]=<? echo $row->id; ?>"><?php echo $row->name; ?></a>
 				</td>
 				<td>
 					<?php echo $row->bcollection; ?>
@@ -108,7 +108,7 @@ $juser = JFactory::getUser();
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
 				</td>
 				<td>
-					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;cid[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_BILLBOARDS_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>

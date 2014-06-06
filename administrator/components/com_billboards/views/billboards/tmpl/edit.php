@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.html.editor');
 
 // Change title depending on whether or not we're editing or creating a new billboard
-$text = ($this->task == 'edit' ? JText::_('BILLBOARDS_MANAGER_EDIT') : JText::_('BILLBOARDS_MANAGER_NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 // Menu items
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
 
 $bar = JToolBar::getInstance('toolbar');
 // Add an upload button.
-$bar->appendButton('Popup', 'upload', JText::_('BILLBOARD_IMAGES'), 'index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path, 640, 520);
+$bar->appendButton('Popup', 'upload', JText::_('COM_BILLBOARDS_IMAGES'), 'index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path, 640, 520);
 
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -59,7 +59,7 @@ function submitbutton(pressbutton) {
 	// Do field validation: 
 	// Make sure there's a billboard name and that there's a css class if there's CSS
 	if ($('billboardname').value == "") {
-		alert("<?php echo JText::_('BILLBOARD_MUST_HAVE_A_NAME', true); ?>");
+		alert("<?php echo JText::_('COM_BILLBOARDS_MUST_HAVE_A_NAME', true); ?>");
 	} else {
 		submitform(pressbutton);
 	}
@@ -81,32 +81,32 @@ jQuery(document).ready(function($){
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('BILLBOARD_CONTENT'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_BILLBOARDS_CONTENT'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="billboardname"><?php echo JText::_('BILLBOARD_NAME'); ?>:</label><br />
+				<label for="billboardname"><?php echo JText::_('COM_BILLBOARDS_FIELD_NAME'); ?>:</label><br />
 				<input type="text" name="billboard[name]" id="billboardname" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardcollection"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>:</label><br />
+				<label for="billboardcollection"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION'); ?>:</label><br />
 				<?php echo $this->clist; ?>
 			</div>
 			<div class="input-wrap">
-				<label for="ordering"><?php echo JText::_('BILLBOARD_ORDER'); ?>:</label><br />
+				<label for="ordering"><?php echo JText::_('COM_BILLBOARDS_FIELD_ORDERING'); ?>:</label><br />
 				<?php echo $this->row->ordering; ?>
 			</div>
 			<div class="input-wrap">
-				<label for="billboardheader"><?php echo JText::_('BILLBOARD_HEADER'); ?>:</label><br />
+				<label for="billboardheader"><?php echo JText::_('COM_BILLBOARDS_FIELD_HEADER'); ?>:</label><br />
 				<input type="text" name="billboard[header]" id="billboardheader" value="<?php echo $this->escape(stripslashes($this->row->header)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardbackgroundimg"><?php echo JText::_('BILLBOARD_BACKGROUND_IMG'); ?>:</label><br />
+				<label for="billboardbackgroundimg"><?php echo JText::_('COM_BILLBOARDS_FIELD_BACKGROUND_IMG'); ?>:</label><br />
 				<?php echo $this->image_location; ?>
 				<input type="text" name="billboard[background_img]" id="billboardbackgroundimg" value="<?php echo $this->escape(stripslashes($this->row->background_img)); ?>" size="25" />
-				<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path); ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}">Upload an image</a>
+				<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path); ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}"><?php echo JText::_('COM_BILLBOARDS_UPLOAD_IMAGE'); ?></a>
 			</div>
 			<div class="input-wrap">
-				<label for="billboard[text]"><?php echo JText::_('BILLBOARD_TEXT'); ?>:</label><br />
+				<label for="billboard[text]"><?php echo JText::_('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
 				<?php
 					$editorText =  JEditor::getInstance();
 					echo $editorText->display('billboard[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 13, false);
@@ -116,40 +116,40 @@ jQuery(document).ready(function($){
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('BILLBOARD_LEARN_MORE'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_BILLBOARDS_LEARN_MORE'); ?></span></legend>
 			<div class="input-wrap">
-				<label for="billboardlearnmoretext"><?php echo JText::_('BILLBOARD_LEARN_MORE_TEXT'); ?>:</label><br />
+				<label for="billboardlearnmoretext"><?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_TEXT'); ?>:</label><br />
 				<input type="text" name="billboard[learn_more_text]" id="billboardlearnmoretext" value="<?php echo $this->escape(stripslashes($this->row->learn_more_text)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardlearnmoretarget"><?php echo JText::_('BILLBOARD_LEARN_MORE_TARGET'); ?>:</label><br />
+				<label for="billboardlearnmoretarget"><?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_TARGET'); ?>:</label><br />
 				<input type="text" name="billboard[learn_more_target]" id="billboardlearnmoretarget" value="<?php echo $this->escape(stripslashes($this->row->learn_more_target)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardlearnmoreclass"><?php echo JText::_('BILLBOARD_LEARN_MORE_CLASS'); ?>:</label><br />
+				<label for="billboardlearnmoreclass"><?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_CLASS'); ?>:</label><br />
 				<input type="text" name="billboard[learn_more_class]" id="billboardlearnmoreclass" value="<?php echo $this->escape(stripslashes($this->row->learn_more_class)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardlearnmorelocation"><?php echo JText::_('BILLBOARD_LEARN_MORE_LOCATION'); ?>:</label><br />
+				<label for="billboardlearnmorelocation"><?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION'); ?>:</label><br />
 				<?php echo $this->learnmorelocation; ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
 			<!-- @TODO: remove inline styles -->
-			<legend id="styling" style="cursor:pointer;"><?php echo JText::_('BILLBOARD_STYLING'); ?></legend>
+			<legend id="styling" style="cursor:pointer;"><?php echo JText::_('COM_BILLBOARDS_STYLING'); ?></legend>
 			<br style="clear:both;" />
 
 			<div id="styling_table">
 				<div class="input-wrap">
-					<label for="billboardalias"><?php echo JText::_('BILLBOARD_ALIAS'); ?>:</label><br />
+					<label for="billboardalias"><?php echo JText::_('COM_BILLBOARDS_FIELD_ALIAS'); ?>:</label><br />
 					<input type="text" name="billboard[alias]" id="billboardalias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" size="50" />
 				</div>
 				<div class="input-wrap">
-					<label for="billboardpadding"><?php echo JText::_('BILLBOARD_PADDING'); ?>:</label><br />
+					<label for="billboardpadding"><?php echo JText::_('COM_BILLBOARDS_FIELD_PADDING'); ?>:</label><br />
 					<input type="text" name="billboard[padding]" id="billboardpadding" value="<?php echo $this->escape(stripslashes($this->row->padding)); ?>" size="50" />
 				</div>
 				<div class="input-wrap">
-					<label for="billboard[css]"><?php echo JText::_('BILLBOARD_CSS'); ?>:</label><br />
+					<label for="billboard[css]"><?php echo JText::_('COM_BILLBOARDS_FIELD_CSS'); ?>:</label><br />
 					<?php
 						$editorCSS =  JEditor::getInstance();
 						echo $editorCSS->display('billboard[css]', $this->escape(stripslashes($this->row->css)), '', '', 45, 13, false);

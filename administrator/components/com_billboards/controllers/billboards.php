@@ -118,7 +118,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('BILLBOARDS_ERROR_CHECKED_OUT')
+				JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
 			);
 			return;
 		}
@@ -227,7 +227,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
+			JText::_('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
 		);
 	}
 
@@ -276,7 +276,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
+			JText::_('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
 		);
 	}
 
@@ -309,7 +309,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 				{
 					$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						JText::_('BILLBOARDS_ERROR_CANT_DELETE')
+						JText::_('COM_BILLBOARDS_ERROR_CANT_DELETE')
 					);
 					return;
 				}
@@ -319,7 +319,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
+			JText::sprintf('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 
@@ -364,7 +364,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('BILLBOARDS_ERROR_CHECKED_OUT')
+					JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
 				);
 				return;
 			}

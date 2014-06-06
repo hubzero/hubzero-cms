@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'editcollection' ? JText::_('BILLBOARDS_COLLECTION_EDIT') : JText::_('BILLBOARDS_COLLECTION_NEW'));
+$text = ($this->task == 'editcollection' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
 JToolBarHelper::save('savecollection');
 JToolBarHelper::cancel('cancelcollection');
 JToolBarHelper::spacer();
@@ -50,7 +50,7 @@ function submitbutton(pressbutton)
 	
 	// form field validation
 	if ($('name').value == '') {
-		alert('<?php echo JText::_('BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
+		alert('<?php echo JText::_('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -59,10 +59,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="name"><?php echo JText::_('BILLBOARD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+			<label for="name"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" name="collection[name]" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>

@@ -156,7 +156,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
+			JText::_('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
 		);
 	}
 
@@ -189,7 +189,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
+			JText::sprintf('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 

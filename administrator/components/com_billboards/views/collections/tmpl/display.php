@@ -31,11 +31,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Add the toolbar items
-JToolBarHelper::title(JText::_('BILLBOARDS_MANAGER') . ': ' . JText::_('BILLBOARDS_COLLECTIONS'), 'addedit.png');
+JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
 JToolBarHelper::addNew('newcollection');
 JToolBarHelper::editList('editcollection');
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('BILLBOARDS_CONFIRM_DELETE'), 'deletecollection');
+JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'), 'deletecollection');
 JToolBarHelper::spacer();
 JToolBarHelper::help('collections');
 ?>
@@ -45,8 +45,8 @@ JToolBarHelper::help('collections');
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('BILLBOARDS_ID'); ?></th>
-				<th><?php echo JText::_('BILLBOARDS_COLLECTION_NAME'); ?></th>
+				<th><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
