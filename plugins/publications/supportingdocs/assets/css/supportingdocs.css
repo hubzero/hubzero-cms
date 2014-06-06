@@ -1,13 +1,9 @@
 /*
-
 	-- -- -- -- -- -- --
-	Resources Supporting Docs plugin CSS
+	Publications Supporting Docs plugin CSS
 	-- -- -- -- -- -- --
-
 */
 
-
-/* Resource's Supporting Documents list */
 	.supportingdocs { 
 		margin: 0 0 1em 0;
 		}
@@ -73,8 +69,3 @@
 		color: #CCC;
 		font-size: 85%;
 	}
-
-
-/* IE 7 hacks */
-
-/* IE 6 hacks */

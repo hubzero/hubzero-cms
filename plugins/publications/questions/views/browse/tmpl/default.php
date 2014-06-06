@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 	<p class="section-options">
 		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
-	<table class="questions entries" summary="Questions submitted by the community">
+	<table class="questions entries">
 		<caption>
 			<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_RECENT_QUESTIONS'); ?> 
 			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
@@ -131,7 +131,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 <?php } else { ?>
 			<tr class="noresults">
-				<td colspan="<?php echo ($this->banking) ? '4' : '3'; ?>">
+				<td>
 					<?php echo JText::_('PLG_PUBLICATION_QUESTIONS_NO_QUESTIONS_FOUND'); ?>
 				</td>
 			</tr>

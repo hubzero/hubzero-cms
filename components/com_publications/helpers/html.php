@@ -1035,11 +1035,14 @@ class PublicationsHtml
 		// Show message to publication owners		
 		elseif ($authorized) 
 		{
+			if ($project && $publication->project_status != 3) {
+				$msg .= ' <span class="fromproject">'.$project.'</span>';
+			}
 			$class= 'info';
 			switch ($publication->state) 
 			{
 				case 1:  
-					$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED').' '; 
+					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED').' '; 
 					switch ($publication->access) 
 					{
 						case 0:  
@@ -1058,31 +1061,31 @@ class PublicationsHtml
 					
 					if ($publication->published_up > $now) 
 					{
-						$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') 
+						$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_PUBLISHED_EMBARGO') 
 							. ' ' . JHTML::_('date', $publication->published_up, $dateFormat, $tz) ; 
 					}
 					
 					break;
 				case 4:  
-					$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_POSTED');          
+					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_POSTED');          
 					break;
 				case 3: 
-					$msg = $publication->versions 
+					$msg .= $publication->versions 
 					     ? JText::_('COM_PUBLICATIONS_STATUS_MSG_DRAFT_VERSION') 
 					     : JText::_('COM_PUBLICATIONS_STATUS_MSG_DRAFT');          
 					break;	
 				case 0: 
-					$msg = $publication->default_version_status == 0 
+					$msg .= $publication->default_version_status == 0 
 						 ? JText::_('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED')
 						 : JText::_('COM_PUBLICATIONS_STATUS_MSG_UNPUBLISHED_VERSION');         
 					break;	
 				case 5: 
-					$msg = $publication->versions 
+					$msg .= $publication->versions 
 						 ? JText::_('COM_PUBLICATIONS_STATUS_MSG_PENDING')
 						 : JText::_('COM_PUBLICATIONS_STATUS_MSG_PENDING_VERSION');          
 					break;	
 				case 6: 
-					$msg = JText::_('COM_PUBLICATIONS_STATUS_MSG_DARK_ARCHIVE');          
+					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_DARK_ARCHIVE');          
 					break;
 			}
 			if ($authorized == 3)
@@ -1091,9 +1094,6 @@ class PublicationsHtml
 			}
 			if ($editlink && ($authorized == 1 || $authorized == 2 || $authorized == 4)) {
 				$msg .= ' <a href="'.$editlink.'">'.JText::_('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION').'</a>.';
-			}
-			if ($project && $publication->project_status != 3) {
-				$msg .= ' <span class="fromproject">'.$project.'</span>';
 			}
 		}
 		if ($msg) 

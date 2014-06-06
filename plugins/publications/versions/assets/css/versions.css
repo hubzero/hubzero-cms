@@ -1,0 +1,21 @@
+/*
+	-- -- -- -- -- -- --
+	Publications Versions plugin CSS
+	-- -- -- -- -- -- --
+*/
+	.resource-versions {
+		margin-top: 1em;
+	}
+	.resource-versions .active {
+		padding-left: 1em;
+		font-weight: bold;
+	}
+	.resource-versions .active:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: blue;
+		content: "\25B6";
+		margin-right: 0.5em;
+	}

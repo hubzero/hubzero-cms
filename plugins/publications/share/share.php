@@ -115,8 +115,12 @@ class plgPublicationsShare extends JPlugin
 			return;
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'share');
-		\Hubzero\Document\Assets::addPluginScript('publications', 'share');
+		// Add stylesheet and js
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+			. 'share' . DS . 'assets' . DS . 'css' . DS . 'share.css');
+		$document->addScript('plugins' . DS . 'publications' . DS 
+			. 'share' . DS . 'assets' . DS . 'js' . DS . 'share.js');		
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata') 
@@ -131,11 +135,11 @@ class plgPublicationsShare extends JPlugin
 			);
 
 			// Pass the view some info
-			$view->option = $option;
-			$view->publication = $publication;
-			$view->version = $version;
-			$view->_params = $this->_params;
-			$view->url = $url;
+			$view->option 		= $option;
+			$view->publication 	= $publication;
+			$view->version 		= $version;
+			$view->_params 		= $this->_params;
+			$view->url 			= $url;
 			if ($this->getError()) 
 			{
 				$view->setError( $this->getError() );

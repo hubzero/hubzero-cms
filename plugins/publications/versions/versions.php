@@ -76,7 +76,7 @@ class plgPublicationsVersions extends JPlugin
 	}
 
 	/**
-	 * Return data on a resource view (this will be some form of HTML)
+	 * Return data on a publication view (this will be some form of HTML)
 	 * 
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
@@ -87,7 +87,8 @@ class plgPublicationsVersions extends JPlugin
 	 * @param      string 	$authorized 	
 	 * @return     array
 	 */	
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true, $authorized = false )
+	public function onPublication( $publication, $option, $areas, $rtrn='all', 
+		$version = 'default', $extended = true, $authorized = false )
 	{
 		$arr = array(
 			'html'=>'',
@@ -127,11 +128,11 @@ class plgPublicationsVersions extends JPlugin
 			$view->contributable = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 			// Pass the view some info
-			$view->option = $option;
-			$view->publication = $publication;
-			$view->versions = $versions;
-			$view->config = $config;
-			$view->authorized = $authorized;
+			$view->option 		= $option;
+			$view->publication 	= $publication;
+			$view->versions 	= $versions;
+			$view->config 		= $config;
+			$view->authorized 	= $authorized;
 			if ($this->getError()) 
 			{
 				$view->setError( $this->getError() );

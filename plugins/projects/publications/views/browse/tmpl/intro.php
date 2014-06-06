@@ -32,7 +32,7 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 {
 	?>
 	<div class="mysubmissions">
-<?php	if($this->juser->get('guest'))
+<?php	if ($this->juser->get('guest'))
 	{
 		// Have user log in
 		echo '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' . 
@@ -143,12 +143,12 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 		</div>
 <?php } ?>
 	</div>
-	<?php if($this->pubconfig->get('documentation')) { ?>
-	<p class="rightfloat mini"><a href="<?php echo $this->pubconfig->get('documentation'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></p>
-	<?php } ?>
 <?php } ?>
 <div id="pubintro">
-	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?></h3>
+	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pubconfig->get('documentation')) { ?>
+	<span class="learnmore"><a href="<?php echo $this->pubconfig->get('documentation'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
+	<?php } ?></h3>
+	
 	<div class="columns three first">
 		<h4><span class="num">1</span> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE'); ?></h4>
 		<p><?php echo $outside 

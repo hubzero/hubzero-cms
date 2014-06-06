@@ -24,6 +24,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+// Add stylesheet
+$document = JFactory::getDocument();
+$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+	. 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
+
 ?>
 <div id="whatsrelated">
 	<h3><?php echo JText::_('PLG_PUBLICATION_RELATED_HEADER'); ?></h3>

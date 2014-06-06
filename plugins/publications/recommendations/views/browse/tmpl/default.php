@@ -24,6 +24,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+// Add stylesheet
+$document = JFactory::getDocument();
+$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+	. 'recommendations' . DS . 'assets' . DS . 'css' . DS . 'recommendations.css');
+	
 ?>
 <h3><a name="recommendations"></a><?php echo JText::_('PLG_PUBLICATION_RECOMMENDATIONS_HEADER'); ?></h3>
 <div class="aside">

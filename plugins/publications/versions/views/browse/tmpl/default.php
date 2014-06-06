@@ -34,11 +34,16 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-	// Build pub url
-	$route = $this->publication->project_provisioned == 1 
-		? 'index.php?option=com_publications' . a . 'task=submit'
-		: 'index.php?option=com_projects' . a . 'alias=' . $this->publication->project_alias . a . 'active=publications';
-	$url = JRoute::_($route . a . 'pid=' . $this->publication->id);
+// Add stylesheet
+$document = JFactory::getDocument();
+$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+	. 'versions' . DS . 'assets' . DS . 'css' . DS . 'versions.css');
+
+// Build pub url
+$route = $this->publication->project_provisioned == 1 
+	? 'index.php?option=com_publications' . a . 'task=submit'
+	: 'index.php?option=com_projects' . a . 'alias=' . $this->publication->project_alias . a . 'active=publications';
+$url = JRoute::_($route . a . 'pid=' . $this->publication->id);
 
 ?>
 <h3>

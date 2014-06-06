@@ -115,14 +115,6 @@ class plgPublicationsSupportingDocs extends JPlugin
 			}
 		}
 		
-		// Only applicable to latest published version
-		/*if (!$extended) 
-		{
-			return $arr;
-		}*/
-				
-		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
-		
 		$database = JFactory::getDBO();
 		
 		// Initiate a publication helper class
@@ -134,9 +126,9 @@ class plgPublicationsSupportingDocs extends JPlugin
 		// Instantiate a view
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'publications',
-				'element'=>'supportingdocs',
-				'name'=>'browse'
+				'folder'	=>'publications',
+				'element'	=>'supportingdocs',
+				'name'		=>'browse'
 			)
 		);
 		
@@ -148,8 +140,14 @@ class plgPublicationsSupportingDocs extends JPlugin
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 		
 		// Build publication path 
-		$base_path = $config->get('webpath');
-		$view->path = $helper->buildPath($publication->id, $publication->version_id, $base_path, $publication->secret, $root = 1);
+		$base_path 	= $config->get('webpath');
+		$view->path = $helper->buildPath(
+			$publication->id, 
+			$publication->version_id, 
+			$base_path, 
+			$publication->secret, 
+			$root = 1
+		);
 
 		// Pass the view some info
 		$view->option 		= $option;

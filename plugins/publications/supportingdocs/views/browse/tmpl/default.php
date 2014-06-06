@@ -28,6 +28,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 $database  = JFactory::getDBO();
 $useBlocks = $this->config->get('curation', 0);
 
+// Add stylesheet
+$document = JFactory::getDocument();
+$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+	. 'supportingdocs' . DS . 'assets' . DS . 'css' . DS . 'supportingdocs.css');
+
 ?>
 <div class="supportingdocs">
 <h3>

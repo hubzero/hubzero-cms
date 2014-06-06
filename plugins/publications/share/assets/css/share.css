@@ -14,7 +14,7 @@
 */
 
 	.metadata .share {
-		background: url("images/arrowpointer.gif") 0 50% no-repeat;
+		background: url("../img/arrowpointer.gif") 0 50% no-repeat;
 		margin: 15px 0 0.2em 0;	
 		font-size: 90%;
 		color:#999999;
@@ -23,49 +23,48 @@
 		position: relative;
 		overflow: visible;
 		}
-
-	.share_facebook {
-		background: url("images/facebook.gif") 0 0 no-repeat; 
+	.aside li a.share_facebook, .share_facebook {
+		background: url("../img/facebook.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_twitter {
-		background: url("images/twitter.gif") 0 0 no-repeat; 
+	.aside li a.share_twitter, .share_twitter {
+		background: url("../img/twitter.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_google {
-		background: url("images/google.gif") 0 0 no-repeat; 
+	.aside li a.share_google, .share_google {
+		background: url("../img/google.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_digg {
-		background: url("images/digg.gif") 0 0 no-repeat; 
+	.aside li a.share_digg, .share_digg {
+		background: url("../img/digg.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_technorati {
-		background: url("images/technorati.gif") 0 0 no-repeat; 
+	.aside li a.share_technorati, .share_technorati {
+		background: url("../img/technorati.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_delicious {
-		background: url("images/delicious.gif") 0 0 no-repeat; 
+	.aside li a.share_delicious, .share_delicious {
+		background: url("../img/delicious.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_email {
-		background: url("images/envelope.gif") 0 0 no-repeat; 
+	.aside li a.share_email, .share_email {
+		background: url("../img/envelope.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 16px;
 		}
-	.share_print {
-		background: url("images/printer.gif") 0 0 no-repeat; 
+	.aside li a.share_print, .share_print {
+		background: url("../img/printer.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
-	.share_reddit {
-		background: url("images/reddit.gif") 0 0 no-repeat; 
+	.aside li a.share_reddit, .share_reddit {
+		background: url("../img/reddit.gif") 0 0 no-repeat; 
 		padding-top: 0.1em; 
 		padding-left: 14px;
 		}
@@ -131,12 +130,12 @@
 		padding: 20px 30px 10px 20px;
 		color: #666;
 		text-transform: uppercase;
-		background: url("images/share_popup.png") left top no-repeat;
+		background: url("../img/share_popup.png") left top no-repeat;
 		}
 	.shareinfo dd div {
 		position: relative;
 		overflow: visible;
-		background: url("images/share_popup.png") left bottom no-repeat;
+		background: url("../img/share_popup.png") left bottom no-repeat;
 		padding: 10px 30px 15px 20px;
 		}
 	.shareinfo dd div.clear {
@@ -154,7 +153,7 @@
 		left: -266px;
 		}
 	html>body .shareinfo.active dd  {
-		background: url("images/clear.gif");
+		background: url("../img/clear.gif");
 		}
 	.shareinfo dt {
 		margin: 0;
@@ -167,27 +166,39 @@
 		color: #999;
 		position: relative;
 		}
+	.aside .sharelinks li {
+		border: none;
+		margin: 0;
+		padding: 0;
+	}
+	.aside .sharelinks li a:before {
+		display: none;
+	}
 	.sharelinks {
 		padding: 0 0 1em 0; 
 		margin: -1em 0 0 0; 
 		list-style: none;
 		z-index: 9999; 
 		}
-	.sharelinks li a, 
-	.sharelinks li a:hover {
+	.aside .sharelinks li a, 
+	.aside .sharelinks li a:hover {
 		border: none;
-		}
-	.sharelinks li.odd {		
+		display: inline;
+		background-position: 0 -18px;
+	}
+	.aside .sharelinks li a:hover {
+		color: blue;
+	}
+	.aside .sharelinks li.odd {		
 		margin: 0.5em;
 		display: block;
 		}
-	.sharelinks li.even {
+	.aside .sharelinks li.even {
 		display: inline;
 		margin: -2em 0.5em 0.5em 0.5em;
 		position: absolute;
 		left: 120px;
-		}
-		
+		}		
 	.metadata .share {
 		z-index: 1;
 		}

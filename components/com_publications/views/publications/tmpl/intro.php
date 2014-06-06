@@ -30,7 +30,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<div class="grid">
 			<div class="col span6">
 	<?php } ?>
-
 				<h3><?php echo JText::_('COM_PUBLICATIONS_BROWSE_PUBLICATIONS'); ?></h3>
 				<ul class="extracontent">
 				<?php foreach ($this->categories as $cat) { 
