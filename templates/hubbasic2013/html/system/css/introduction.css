@@ -115,7 +115,7 @@
 	#introduction {
 		padding: 25px 15px 25px 120px;
 		position: relative;
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		background: #e1e1e1 url("../../../images/layout/noise-lite.png");
 		border: none;
 		color: #666;
 		margin: -1px 0px 3em 0px;
@@ -213,7 +213,7 @@
 		bottom: -25px;
 		width: 30px;
 		left: -150px;
-		background: #e1e1e1 url("../images/layout/noise-lite.png");
+		background: #e1e1e1 url("../../../images/layout/noise-lite.png");
 		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
