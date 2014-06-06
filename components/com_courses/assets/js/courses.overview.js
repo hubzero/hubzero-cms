@@ -90,7 +90,7 @@ console.log(data);
 			$(this).attr('href', $(this).attr('href').nohtml());
 		},
 		afterShow: function() {
-			HUB.Plugins.Autocomplete.initialize();
+			//HUB.Plugins.Autocomplete.initialize();
 
 			var fbox = $('div.fancybox-inner');
 
