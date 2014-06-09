@@ -106,7 +106,7 @@ class plgContentFormatwiki extends JPlugin
 		else
 		{
 			// Force apply a format?
-			if ($this->params->get('applyFormat') && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', trim($content)))
+			if ($this->params->get('applyFormat') && $this->_isWiki($content))
 			{
 				// Are we converting the format?
 				// Only apply the wiki format if not. Saves us an extra DB call.
@@ -125,7 +125,7 @@ class plgContentFormatwiki extends JPlugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content);
 
-		if (trim($content) && !preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', trim($content)))
+		if (trim($content) && $this->_isWiki($content))
 		{
 			$dispatcher = JDispatcher::getInstance();
 			JPluginHelper::importPlugin('wiki');
@@ -153,6 +153,41 @@ class plgContentFormatwiki extends JPlugin
 		}
 
 		$article->set($key, $content);
+	}
+
+	/**
+	 * Try to determine if a string is wiki syntax
+	 *
+	 * @param   string $content Content to check
+	 * @return  string
+	 */
+	private function _isWiki($content)
+	{
+		$content = trim($content);
+
+		// First, remove <pre> tags
+		//   This is in case the content is HTML but contains a block of 
+		//   sample wiki markup.
+		$content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
+
+		// If wiki <pre> syntax is found
+		if ((strstr($content, '{{{') && strstr($content, '}}}')) || strstr($content, '#!html'))
+		{
+			return true;
+		}
+
+		// If wiki bold syntax is found (highly unlikely HTML content will contain this string)
+		if (preg_match('/\'\'\'(.*?)\'\'\'/i', $content) || preg_match('/===(.*?)===/i', $content))
+		{
+			return true;
+		}
+
+		// If no HTML tags found ...
+		if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
