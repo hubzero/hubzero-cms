@@ -29,90 +29,51 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
+		<field name="title" type="text" menu="hide" default="" label="COM_BLOG_CONFIG_TITLE_LABEL" description="COM_BLOG_CONFIG_TITLE_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="uploadpath" type="text" menu="hide" default="/site/blog" label="Upload path" description="File path for uploads" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/blog" label="COM_BLOG_CONFIG_UPLOADS_LABEL" description="COM_BLOG_CONFIG_UPLOADS_DESC" />
 	</fieldset>
 	<fieldset name="archive">
-		<field name="show_from" type="list" default="site" label="Included Posts From" description="Where the posts are pulled from.">
-			<option value="site">Site Blog</option>
-			<option value="member">Member Blog</option>
-			<option value="group">Group Blog</option>
-			<option value="both">Site, Member, and Group Blogs</option>
+		<field name="show_from" type="list" default="site" label="COM_BLOG_CONFIG_DATA_SRC_LABEL" description="COM_BLOG_CONFIG_DATA_SRC_DESC">
+			<option value="site">COM_BLOG_CONFIG_DATA_SRC_SITE</option>
+			<option value="member">COM_BLOG_CONFIG_DATA_SRC_MEMBER</option>
+			<option value="group">COM_BLOG_CONFIG_DATA_SRC_GROUP</option>
+			<option value="both">COM_BLOG_CONFIG_DATA_SRC_BOTH</option>
 		</field>
-		<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="cleanintro" type="list" default="1" label="COM_BLOG_CONFIG_CLEANINTRO_LABEL" description="COM_BLOG_CONFIG_CLEANINTRO_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
+		<field name="introlength" type="text" default="300" label="COM_BLOG_CONFIG_INTROLENGTH_LABEL" description="COM_BLOG_CONFIG_INTROLENGTH_DESC" />
 	</fieldset>
 	<fieldset name="entry">
-		<field name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_authors" type="list" default="1" label="COM_BLOG_CONFIG_SHOWAUTHORS_LABEL" description="COM_BLOG_CONFIG_SHOWAUTHORS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="allow_comments" type="list" default="1" label="Comments" description="Allow/Disallow comments on entries">
-			<option value="0">Disallow</option>
-			<option value="1">Allow</option>
+		<field name="allow_comments" type="list" default="1" label="COM_BLOG_CONFIG_ALLOW_COMMENTS_LABEL" description="COM_BLOG_CONFIG_ALLOW_COMMENTS_DESC">
+			<option value="0">COM_BLOG_CONFIG_DISALLOW</option>
+			<option value="1">COM_BLOG_CONFIG_ALLOW</option>
 		</field>
-		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the entry date">
-			<option value="0">Hide</option>
+		<field name="show_date" type="list" default="3" label="COM_BLOG_CONFIG_SHOWDATE_LABEL" description="COM_BLOG_CONFIG_SHOWDATE_DESC">
+			<option value="0">JHIDE</option>
 			<option value="1">Created</option>
 			<option value="2">Modified</option>
 			<option value="3">Published</option>
 		</field>
 	</fieldset>
 	<fieldset name="feeds">
-		<field name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
-			<option value="0">Disabled</option>
-			<option value="1">Enabled</option>
+		<field name="feeds_enabled" type="list" default="1" label="COM_BLOG_CONFIG_FEEDS_ENABLED_LABEL" description="COM_BLOG_CONFIG_FEEDS_ENABLED_DESC">
+			<option value="0">JDISABLED</option>
+			<option value="1">JENABLED</option>
 		</field>
-		<field name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
-			<option value="full">Full</option>
-			<option value="partial">Partial</option>
+		<field name="feed_entries" type="list" default="partial" label="COM_BLOG_CONFIG_FEED_ENTRIES_LABEL" description="COM_BLOG_CONFIG_FEED_ENTRIES_DESC">
+			<option value="full">COM_BLOG_CONFIG_FULL</option>
+			<option value="partial">COM_BLOG_CONFIG_PARTIAL</option>
 		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_blog" section="component" />
 	</fieldset>
-	<params>
-		<param name="title" type="text" menu="hide" default="" label="Blog Title" description="A Title for your blog" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show_from" type="list" default="site" label="Included Posts From" description="Where the posts are pulled from.">
-			<option value="site">Site Blog</option>
-			<option value="member">Member Blog</option>
-			<option value="group">Group Blog</option>
-			<option value="both">Site, Member, and Group Blogs</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="uploadpath" type="text" menu="hide" default="/site/blog" label="Upload path" description="File path for uploads" />
-		<param name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
-		<param name="show_authors" type="list" default="1" label="Authors" description="Show/Hide the authors of posts">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="allow_comments" type="list" default="1" label="Comments" description="Allow/Disallow comments on entries">
-			<option value="0">Disallow</option>
-			<option value="1">Allow</option>
-		</param>
-		<param name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
-			<option value="0">Disabled</option>
-			<option value="1">Enabled</option>
-		</param>
-		<param name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
-			<option value="full">Full</option>
-			<option value="partial">Partial</option>
-		</param>
-		<param name="show_date" type="list" default="3" label="Date" description="Show/Hide the entry date">
-			<option value="0">Hide</option>
-			<option value="1">Created</option>
-			<option value="2">Modified</option>
-			<option value="3">Published</option>
-		</param>
-	</params>
 </config>
 
