@@ -184,12 +184,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$query = "SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = "SELECT p.* FROM `#__plugins` AS p WHERE p.folder='cron' AND published=1 ORDER BY p.ordering";
-		}
-		$this->database->setQuery($query);
+		$this->database->setQuery("SELECT p.* FROM `#__extensions` AS p WHERE p.type='plugin' AND p.folder='cron' AND enabled=1 ORDER BY p.ordering");
 		$this->view->plugins = $this->database->loadObjectList();
 		if ($this->view->plugins)
 		{
@@ -278,16 +273,8 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			$row->set('next_run', $row->nextRun());
 		}
 
-		$paramsClass = 'JParameter';
-		$mthd = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-			$mthd = 'loadArray';
-		}
-
-		$p = new $paramsClass('');
-		$p->$mthd(JRequest::getVar('params', '', 'post'));
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', '', 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -304,7 +291,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Item Successfully Saved')
+				JText::_('COM_CRON_ITEM_SAVED')
 			);
 			return;
 		}
@@ -330,7 +317,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No entry selected'),
+				JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
@@ -415,7 +402,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No entry selected'),
+				JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
@@ -435,7 +422,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Item(s) Successfully Removed')
+			JText::_('COM_CRON_ITEMS_DELETED')
 		);
 	}
 
@@ -476,11 +463,11 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
-			$action = ($state == 1) ? JText::_('unpublish') : JText::_('publish');
+			$action = ($state == 1) ? JText::_('COM_CRON_STATE_UNPUBLISH') : JText::_('COM_CRON_STATE_PUBLISH');
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('Select an entry to %s', $action),
+				JText::sprintf('COM_CRON_ERROR_SELECT_ITEMS', $action),
 				'error'
 			);
 			return;
@@ -500,11 +487,11 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		// set message
 		if ($state == 1) 
 		{
-			$message = JText::sprintf('%s Item(s) successfully published', count($ids));
+			$message = JText::sprintf('COM_CRON_ITEMS_PUBLISHED', count($ids));
 		} 
 		else
 		{
-			$message = JText::sprintf('%s Item(s) successfully unpublished', count($ids));
+			$message = JText::sprintf('COM_CRON_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		$this->setRedirect(

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CronHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('Cron'), 'cron.png');
+JToolBarHelper::title(JText::_('COM_CRON') . ': ' . JText::_('COM_CRON_RUN'), 'cron.png');
 
 function prettyPrint($json)
 {

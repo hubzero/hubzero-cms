@@ -30,13 +30,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CronHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('Cron'), 'cron.png');
+JToolBarHelper::title(JText::_('COM_CRON'), 'cron.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-JToolBarHelper::custom('run', 'purge', '', JText::_('Run'), false);
+JToolBarHelper::custom('run', 'purge', '', JText::_('COM_CRON_RUN'), false);
 JToolBarHelper::spacer();
 if ($canDo->get('core.edit.state')) 
 {
@@ -74,15 +74,15 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Starts'), 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Ends'), 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Active', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Last Run', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Next Run', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('Recurrence'); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JText::_('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
@@ -103,18 +103,18 @@ if ($this->results)
 		{
 			case '2': // Deleted
 				$task = 'publish';
-				$alt = JText::_('Trashed');
+				$alt = JText::_('JTRASHED');
 				$cls = 'trash';
 			break;
 			case '1': // Published
 				$task = 'unpublish';
-				$alt = JText::_('Published');
+				$alt = JText::_('JPUBLISHED');
 				$cls = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
 				$task = 'publish';
-				$alt = JText::_('Unpublished');
+				$alt = JText::_('JUNPUBLISHED');
 				$cls = 'unpublish';
 			break;
 		}
@@ -122,12 +122,12 @@ if ($this->results)
 		switch ($row->get('active')) 
 		{
 			case '1': // Published
-				$alt2 = JText::_('Active');
+				$alt2 = JText::_('COM_CRON_ACTIVE');
 				$cls2 = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
-				$alt2 = JText::_('Inactive');
+				$alt2 = JText::_('COM_CRON_INACTIVE');
 				$cls2 = 'unpublish';
 			break;
 		}
@@ -152,7 +152,7 @@ if ($this->results)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -163,12 +163,12 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('(no date set)'); ?></time>
+						<time><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_CRON_NO_DATE_SET'); ?></time>
 					</span>
 				</td>
 				<td>
 					<span class="datetime">
-						<time><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?></time>
+						<time><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_CRON_NONE'); ?></time>
 					</span>
 				</td>
 				<td>
@@ -206,6 +206,6 @@ if ($this->results)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>
