@@ -292,9 +292,9 @@ class plgEditorCkeditor extends JPlugin
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
 		$config->toolbarCanCollapse            = true;
-		$config->extraPlugins                  = 'tableresize,iframedialog,hubzeroautogrow,hubzeroequation,hubzerogrid,hubzeromacro,hubzerohighlight';
-		$config->removePlugins                 = 'resize';
-		$config->resize_enabled                = false;
+		$config->extraPlugins                  = 'tableresize,iframedialog,hubzeroequation,hubzerogrid,hubzeromacro,hubzerohighlight';
+		$config->removePlugins                 = '';
+		$config->resize_enabled                = true;
 		$config->emailProtection               = 'encode';
 		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g', '/{xhub:([^}]*)}/gi');
 		$config->extraAllowedContent           = 'mark(*)[*]; *(*)[*]';
@@ -321,7 +321,8 @@ class plgEditorCkeditor extends JPlugin
 			'/',
 			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
 			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			array('HubzeroAutoGrow', 'HubzeroMacro')
+			//array('HubzeroAutoGrow', 'HubzeroMacro')
+			array('HubzeroMacro')
 		);
 
 		// if minimal toolbar
@@ -333,7 +334,8 @@ class plgEditorCkeditor extends JPlugin
 				array('NumberedList', 'BulletedList')
 			);
 			$config->toolbarCanCollapse = false;
-			$config->hubzeroAutogrow_autoStart = false;
+			$config->resize_enabled     = false;
+			//$config->hubzeroAutogrow_autoStart = false;
 		}
 
 		// macros popup
@@ -367,23 +369,23 @@ class plgEditorCkeditor extends JPlugin
 			$config->extraPlugins .= ',codemirror';
 		}
 
-		// autogrow auto-start
-		if (is_bool($this->params->get('autoGrowAutoStart')))
-		{
-			$config->hubzeroAutogrow_autoStart = $this->params->get('autoGrowAutoStart');
-		}
+		// // autogrow auto-start
+		// if (is_bool($this->params->get('autoGrowAutoStart')))
+		// {
+		// 	$config->hubzeroAutogrow_autoStart = $this->params->get('autoGrowAutoStart');
+		// }
 
-		// auto grow min height
-		if (is_numeric($this->params->get('autoGrowMinHeight')))
-		{
-			$config->hubzeroAutogrow_minHeight = $this->params->get('autoGrowMinHeight');
-		}
+		// // auto grow min height
+		// if (is_numeric($this->params->get('autoGrowMinHeight')))
+		// {
+		// 	$config->hubzeroAutogrow_minHeight = $this->params->get('autoGrowMinHeight');
+		// }
 
-		// autogrow max height
-		if (is_numeric($this->params->get('autoGrowMaxHeight')))
-		{
-			$config->hubzeroAutogrow_maxHeight = $this->params->get('autoGrowMaxHeight');
-		}
+		// // autogrow max height
+		// if (is_numeric($this->params->get('autoGrowMaxHeight')))
+		// {
+		// 	$config->hubzeroAutogrow_maxHeight = $this->params->get('autoGrowMaxHeight');
+		// }
 
 		// auto start spell check
 		if (is_bool($this->params->get('spellCheckAutoStart')))
