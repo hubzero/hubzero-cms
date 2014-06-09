@@ -36,7 +36,7 @@ function pagination_list_footer($list)
 	$html[] = '<ul class="list-footer">';
 
 	$html[] = '<li class="counter">' . $list['pagescounter'] . '</li>';
-	$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('Display Num') . '</label> ' . $list['limitfield'] . '</li>';
+	$html[] = '<li class="limit"><label for="' . $list['prefix'] . 'limit">' . JText::_('JGLOBAL_DISPLAY_NUM') . '</label> ' . $list['limitfield'] . '</li>';
 	$html[] = $list['pageslinks'];
 
 	$html[] = '</ul>';

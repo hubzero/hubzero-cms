@@ -121,7 +121,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
 						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
 						// Print the logout link.
-						$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="'.$logoutLink.'">').JText::_('Log out').($hideLinks ? '</span></li>' : '</a></li>');
+						$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="'.$logoutLink.'">').JText::_('TPL_HUBBASICADMIN_LOGOUT').($hideLinks ? '</span></li>' : '</a></li>');
 						// Reverse rendering order for rtl display.
 						if ($this->direction == "rtl") :
 							$output = array_reverse($output);
@@ -175,10 +175,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . JURI::root() . '">'. $app->getCfg('sitename') . '</a>', date("Y")); ?>
 				</p>
 				<p class="promotion">
-					Powered by <a rel="external" href="http://hubzero.org">HUBzero&reg; CMS</a>, version <?php echo \Hubzero\Version\Version::VERSION; ?>
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->
