@@ -1155,8 +1155,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					$mt = new \Hubzero\Content\Mimetypes();
 							
 					$view->mimetype 	= $mt->getMimeType(JPATH_ROOT . $path . DS . $pPath);
-					$view->type 		= strtolower(array_shift(explode('/', $view->mimetype)));
-					$view->ext 			= strtolower(array_pop(explode('.', $pPath)));
+					$mParts 			= explode('/', $view->mimetype);
+					$view->type 		= strtolower(array_shift($mParts));
+					$eParts				= explode('.', $pPath);
+					$view->ext 			= strtolower(array_pop($eParts));
 					$view->url 			= $path . DS . $pPath;
 
 					// Output HTML
