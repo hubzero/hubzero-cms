@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'quotes.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'selectedquotes.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'feedback'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

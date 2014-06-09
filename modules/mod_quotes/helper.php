@@ -44,21 +44,23 @@ class modQuotes extends \Hubzero\Module\Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php');
 
 		$this->database = JFactory::getDBO();
 
 		//Get the admin configured settings
-		$filters = array();
-		$filters['limit'] = trim($this->params->get('maxquotes'));
-		$filters['id'] = JRequest::getInt('quoteid', 0);
-		$filters['notable_quotes'] = 1;
-
-		$this->filters = $filters;
+		$this->filters = array(
+			'limit' => trim($this->params->get('maxquotes')),
+			'id'    => JRequest::getInt('quoteid', 0),
+			'notable_quote' => 1
+		);
 
 		// Get quotes
-		$sq = new SelectedQuotes($this->database);
-		$this->quotes = $sq->getResults($filters);
+		$sq = new FeedbackQuotes($this->database);
+		$this->quotes = $sq->getResults($this->filters);
+
+		$feedbackConfig = JComponentHelper::getParams('com_feedback');
+		$this->path = trim($feedbackConfig->get('uploadpath', '/site/quotes'), DS) . DS;
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
@@ -71,7 +73,8 @@ class modQuotes extends \Hubzero\Module\Module
 	public function display()
 	{
 		// Push the module CSS to the template
-		$this->css();
+		$this->css()
+		     ->js();
 
 		$debug = (defined('JDEBUG') && JDEBUG ? true : false);
 

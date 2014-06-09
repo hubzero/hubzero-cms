@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = FeedbackHelper::getActions('quote');
 
-JToolBarHelper::title(JText::_('Success Story Manager'), 'feedback.png');
+JToolBarHelper::title(JText::_('COM_FEEDBACK'), 'feedback.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -67,10 +67,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('FEEDBACK_SEARCH'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
-	
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_FEEDBACK_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+
+		<input type="submit" value="<?php echo JText::_('COM_FEEDBACK_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -79,23 +79,17 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col">#</th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_SUBMITTED'), 'date', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_AUTHOR'), 'fullname', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('FEEDBACK_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
-				<th scope="col"><?php echo JText::_('FEEDBACK_COL_QUOTE'); ?></th>
-				<!--<th scope="col"><?php //echo JText::_('FEEDBACK_COL_PICTURE'); ?></th>-->
-				<?php 
-				if ($this->type == 'regular') {
-					echo ('<th>' . JText::_('FEEDBACK_COL_PUBLISH_CONSENT') . '</th><th>' . JText::_('FEEDBACK_COL_UID') . '</th>');
-				} else {
-					echo ('<th>' . JText::_('FEEDBACK_COL_QUOTES') . '</th><th>' . JText::_('FEEDBACK_COL_ROTATION') . '</th>');
-				}
-				?>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_SUBMITTED', 'date', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_AUTHOR', 'fullname', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_FEEDBACK_COL_QUOTE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_FEEDBACK_COL_QUOTES'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_FEEDBACK_COL_OK_PUBLISH'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -104,20 +98,13 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-
-	//cut quote at 100 characters
-	$quotepreview = stripslashes($row->quote);
-	$quotepreview = substr($quotepreview, 0, 100);
-	if (strlen ($quotepreview)>=99) {
-		$quotepreview = $quotepreview.'...';
-	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $i; ?>
 				</td>
 				<td>
-					<input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onClick="isChecked(this.checked);" />
+					<input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onClick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, JText::_('DATE_FORMAT_HZ1')); ?></time>
@@ -138,7 +125,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;type=<?php echo $this->type ?>&amp;id=<?php echo $row->id; ?>">
-						<?php echo $this->escape($quotepreview); ?>
+						<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->quote), 100)); ?>
 					</a>
 				<?php } else { ?>
 					<span>
@@ -146,26 +133,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				<?php } ?>
 				</td>
-				<!--
 				<td>
-					<?php //echo ($row->picture != NULL) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '<span></span>' : ''; ?>
-				</td>
-				-->
-				<td>
-					<?php if ($this->type == 'regular') {
-						echo ($row->publish_ok == 1) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '</span></span>' : '';
-					} else {
-						echo ($row->notable_quotes == 1) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '</span></span>' : '';
-					} ?>
+					<?php echo ($row->notable_quote == 1) ? '<span class="state yes"><span>' . JText::_('JYES') . '</span></span>' : ''; ?>
+
 				</td>
 				<td>
-					<?php if ($this->type == 'regular') {
-						echo $row->userid;
-					} else {
-						echo ($row->flash_rotation == 1) ? '<span class="state yes"><span>' . JText::_('FEEDBACK_YES') . '</span></span>' : '';
-					} ?>
+					<?php echo ($row->publish_ok == 1) ? '<span class="state yes"><span>' . JText::_('JYES') . '</span></span>' : ''; ?>
 				</td>
-		  </tr>
+			</tr>
 <?php
 	$k = 1 - $k;
 }
@@ -175,7 +150,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />

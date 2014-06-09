@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->css();
+$this->css()
+     ->js();
 
 $jconfig = JFactory::getConfig();
 ?>
@@ -67,19 +68,25 @@ $jconfig = JFactory::getConfig();
 
 			<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
 
-			<input type="hidden" name="fields[picture]" id="picture" value="" />
+			<!-- <input type="hidden" name="fields[picture]" id="picture" value="" />
 			<div class="field-wrap">
 				<iframe width="100%" height="130" scrolling="no" name="filer" frameborder="0" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->user->get('uidNumber'); ?>"></iframe>
-			</div>
-			
+			</div> -->
+
 			<label for="fullname">
 				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 				<input type="text" name="fields[fullname]" id="fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" id="fullname" />
 			</label>
 
 			<label for="org">
-				<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>	
+				<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
 				<input type="text" name="fields[org]" id="org" value="<?php echo $this->escape($this->row->org); ?>" size="30" id="org" />
+			</label>
+
+			<label for="field-files">
+				<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
+				<input id="imgInp" type="file" name="files[]" id="field-files" multiple="multiple" />
+				<div id="uploadImages"></div>
 			</label>
 
 			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="quote">
@@ -99,8 +106,8 @@ $jconfig = JFactory::getConfig();
 				<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
 			</label>
-
 		</fieldset><div class="clear"></div>
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" />
 

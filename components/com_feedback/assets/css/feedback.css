@@ -17,57 +17,57 @@
 	#introduction:after {
 		content: "\f075";
 	}
+	/* [!] IE 7 */
 	#introduction {
-		*background-image: url("/components/com_feedback/assets/img/feedback-large.gif");
-		*background-position: 30px 25px;
-		*background-repeat: no-repeat;
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf075;</small>');
 	}
-	.two div {
+
+	.col div {
 		position: relative;
-		padding-left: 30px;
+		padding-left: 2em;
 	}
-	.two span.fontcon-before,
-	.two span.fontcon-after,
-	.two div:before,
-	.two div:after {
+	.col span.fontcon-before,
+	.col span.fontcon-after,
+	.col div:before,
+	.col div:after {
 		content: "";
 		display: block;
 		position: absolute;
 		left: 0;
 		top: 0;
-		width: 20px;
-		height: 20px;
-		font-size: 20px;
+		width: 1em;
+		height: 1em;
+		font-size: 1.5em;
 		line-height: 1;
 		font-family: 'Fontcons';
 		color: #aaa;
 	}
-	.two div.story:before {
+	.col div.story:before {
 		content: "\275D";
 	}
-	.two div.story {
+	.col div.story {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#x275D;&nbsp;</span>' + this.innerHTML);
 	}
-	.two div.wish:before {
+	.col div.wish:before {
 		content: "\f078";
 	}
-	.two div.wish {
+	.col div.wish {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf078;&nbsp;</span>' + this.innerHTML);
 	}
-	.two div.poll:before {
+	.col div.poll:before {
 		content: "\f080";
 	}
-	.two div.poll {
+	.col div.poll {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf080;&nbsp;</span>' + this.innerHTML);
 	}
-	.two div.report:before {
+	.col div.report:before {
 		content: "\f01f";
 	}
-	.two div.report {
+	.col div.report {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="fontcon-before">&#xf01f;&nbsp;</span>' + this.innerHTML);
 	}
-	.two span.fontcon-before,
-	.two span.fontcon-after {
+	.col span.fontcon-before,
+	.col span.fontcon-after {
 		*top: 1.2em;
 	}
 /* Iframe */
@@ -93,5 +93,20 @@
 		list-style: none;
 	}
 	.introtext {
-		margin-top:5px;
+		margin-top: 5px;
+	}
+
+	#uploadImages {
+		margin: 25.6px;
+	}
+	#uploadImages img {
+		margin-right: 15px;
+	}
+
+	.quote .cite {
+		text-align: center;
+	}
+	.quote {
+		border-bottom: 1px solid #ddd;
+		padding: 1em;
 	}

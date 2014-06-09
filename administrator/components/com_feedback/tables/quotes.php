@@ -40,49 +40,42 @@ class FeedbackQuotes extends JTable
 	 * 
 	 * @var integer
 	 */
-	var $id         = NULL;
+	var $id = NULL;
 
 	/**
 	 * int(11)
 	 * 
 	 * @var integer
 	 */
-	var $userid	    = NULL;
+	var $user_id = NULL;
 
 	/**
 	 * varchar(100)
 	 * 
 	 * @var string
 	 */
-	var $fullname   = NULL;
+	var $fullname = NULL;
 
 	/**
 	 * varchar(100)
 	 * 
 	 * @var string
 	 */
-	var $org	    = NULL;
+	var $org = NULL;
 
 	/**
 	 * text
 	 * 
 	 * @var string
 	 */
-	var $quote      = NULL;
-
-	/**
-	 * varchar(250)
-	 * 
-	 * @var string
-	 */
-	var $picture    = NULL;
+	var $quote = NULL;
 
 	/**
 	 * datetime
 	 * 
 	 * @var string
 	 */
-	var $date	    = NULL;
+	var $date = NULL;
 
 	/**
 	 * int(1)
@@ -103,7 +96,35 @@ class FeedbackQuotes extends JTable
 	 * 
 	 * @var string
 	 */
-	var $notes 		= NULL;
+	var $notes = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $short_quote = NULL;
+
+	/**
+	 * text
+	 * 
+	 * @var string
+	 */
+	var $miniquote = NULL;
+
+	/**
+	* int(1)
+	* 
+	* @var integer
+	*/
+	var $admin_rating = NULL;
+
+	/**
+	* int(1)
+	* 
+	* @var integer
+	*/
+	var $notable_quote  = NULL;
 
 	/**
 	 * Constructor
@@ -123,11 +144,13 @@ class FeedbackQuotes extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->quote) == '') 
+		$this->quote = trim($this->quote);
+		if ($this->quote == '') 
 		{
 			$this->setError(JText::_('Quote must contain text.'));
 			return false;
 		}
+		$this->quote = str_replace('<br>', '<br />', $this->quote);
 
 		return true;
 	}
@@ -138,33 +161,47 @@ class FeedbackQuotes extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters)
+	protected function _buildQuery($filters)
 	{
 		$query = "FROM $this->_tbl ";
-		if ((isset($filters['search']) && $filters['search'] != '')
-		 || (isset($filters['id']) && $filters['id'] != 0)) 
+
+		$where = array();
+
+		if (isset($filters['notable_quote']) && $filters['notable_quote'] >= 0)
 		{
-			$query .= "WHERE";
+			$where[] = "notable_quote=" . $this->_db->Quote($filters['notable_quote']);
 		}
+
 		if (isset($filters['search']) && $filters['search'] != '') 
 		{
 			$words = explode(' ', $filters['search']);
 			$sqlsearch = array();
+
 			foreach ($words as $word)
 			{
 				$sqlsearch[] = "(LOWER(fullname) LIKE '%" . $this->_db->getEscaped(strtolower($word)) . "%')";
 			}
-			$query .= implode(" OR ", $sqlsearch);
+
+			$where[] = "(" . implode(" OR ", $sqlsearch) . ")";
 		}
+
 		if (isset($filters['id']) && $filters['id'] != 0) 
 		{
-			$query .= " AND id=" . $this->_db->Quote($filters['id']);
+			$where[] = "id=" . $this->_db->Quote($filters['id']);
 		}
+
+		if (count($where))
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
 		if (empty($filters['sortby'])) 
 		{
 			$filters['sortby'] = 'date';
 		}
+
 		$query .= " ORDER BY " . $filters['sortby'] . " DESC";
+
 		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0) 
 		{
 			if (!isset($filters['start'])) 
@@ -173,6 +210,7 @@ class FeedbackQuotes extends JTable
 			}
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
+
 		return $query;
 	}
 
@@ -185,8 +223,8 @@ class FeedbackQuotes extends JTable
 	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
-		
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
+
+		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -200,59 +238,55 @@ class FeedbackQuotes extends JTable
 	 */
 	public function getResults($filters=array())
 	{
-		$query  = "SELECT * " . $this->buildQuery($filters);
+		$query  = "SELECT * " . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Delete a picture associated with a record
-	 * 
-	 * @param      object $config JParameter
-	 * @return     boolean True on success
+	 * Method to delete a row from the database table by primary key value.
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 * @return  boolean  True on success.
 	 */
-	public function deletePicture($config=null)
+	public function delete($pk = null)
 	{
-		// Load the component config
-		if (!$config) 
-		{
-			$config = JComponentHelper::getParams('com_feedback');
-		}
+		// Initialise variables.
+		$k = $this->_tbl_key;
+		$pk = (is_null($pk)) ? $this->$k : $pk;
 
-		// Incoming member ID
-		if (!$this->id) 
+		// If no primary key is given, return false.
+		if ($pk === null)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_ID'));
+			$e = new JException(JText::_('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
+			$this->setError($e);
 			return false;
 		}
 
-		// Incoming file
-		if (!$this->picture) 
-		{
-			return true;
-		}
+		$config = JComponentHelper::getParams('com_feedback');
 
-		// Build the file path
-		$dir  = \Hubzero\Utility\String::pad($this->id);
-		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
+		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/quotes'), DS) . DS . $pk;
+		$this->_delTree($path);
 
-		if (!file_exists($path . DS . $this->picture) or !$this->picture) 
+		return parent::delete($pk);
+	}
+
+	/**
+	 * Recursively remove files and directories
+	 *
+	 * @param   string $dir Directory to remove
+	 * @return  void
+	 */
+	private function _delTree($dir)
+	{
+		$files = array_diff(scandir($dir), array('.', '..'));
+
+		foreach ($files as $file)
 		{
-			return true;
+			(is_dir("$dir/$file")) ? $this->_delTree("$dir/$file") : unlink("$dir/$file"); 
 		} 
-		else 
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $this->picture)) 
-			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-				return false;
-			}
-		}
-
-		return true;
+		rmdir($dir); 
 	}
 }
 

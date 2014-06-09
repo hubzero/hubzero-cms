@@ -123,6 +123,27 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * Show a list of quotes
+	 * 
+	 * @return     void
+	 */
+	public function quotesTask()
+	{
+		// Get quotes
+		$filters = array(
+			'notable_quote' => 1
+		);
+
+		$sq = new FeedbackQuotes($this->database);
+		$this->view->quotes = $sq->getResults($filters);
+
+		$this->view->path = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
+		$this->view->quoteId = JRequest::getInt('quoteid', null);
+
+		$this->view->display();
+	}
+
+	/**
 	 * Show a form for sending a success story
 	 * 
 	 * @return     void
@@ -226,6 +247,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
+		$dir = \Hubzero\Utility\String::pad($fields['user_id']);
+		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
+
 		// Initiate class and bind posted items to database fields
 		$row = new FeedbackQuotes($this->database);
 		if (!$row->bind($fields)) 
@@ -247,7 +271,6 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$row->quote = \Hubzero\Utility\Sanitize::stripAll($row->quote);
 		$row->quote = str_replace('<br>', '<br />', $row->quote);
 		$row->date  = JFactory::getDate()->toSql();
-		$row->picture = basename($row->picture);
 
 		// Check content
 		if (!$row->check()) 
@@ -264,6 +287,33 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			$this->storyTask($row);
 			return;
 		}
+
+		$files = $_FILES;
+		$addedPictures = array();
+
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
+		if (!is_dir($path)) 
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path)) 
+			{
+				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
+			}
+		}
+
+		foreach ($files['files']['name'] as $fileIndex => $file)
+		{
+			if (empty($file) === true)
+			{
+				continue;
+			}
+			JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
+			array_push($addedPictures, $files['files']['name'][$fileIndex]);
+		}
+
+		// Output HTML
+		$this->view->addedPictures = $addedPictures;
+		$this->view->path = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 
 		// Output HTML
 		$this->view->setLayout('thanks');

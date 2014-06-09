@@ -28,18 +28,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="uploadpath" type="text" menu="hide" default="/site/quotes" label="Upload path" description="File path for pictures" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
-	</params>
 	<fieldset name="basic">
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="Default picture" description="Default placeholder image for user pictures" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_feedback/assets/img/contributor.gif" label="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_LABEL" description="COM_FEEDBACK_CONFIG_DEFAULT_PICTURE_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="uploadpath" type="text" menu="hide" default="/site/quotes" label="Upload path" description="File path for pictures" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/quotes" label="COM_FEEDBACK_CONFIG_UPLOAD_PATH_LABEL" description="COM_FEEDBACK_CONFIG_UPLOAD_PATH_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_FEEDBACK_CONFIG_UPLOAD_MAX_LABEL" description="COM_FEEDBACK_CONFIG_UPLOAD_MAX_DESC" />
+		<field name="file_ext" type="text" menu="hide" label="COM_FEEDBACK_CONFIG_UPLOAD_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="COM_FEEDBACK_CONFIG_UPLOAD_EXT_DESC" />
 	</fieldset>
 </config>

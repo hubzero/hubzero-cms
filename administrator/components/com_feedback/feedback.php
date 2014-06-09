@@ -39,21 +39,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'quotes.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'selectedquotes.php');
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'feedback.php');
-
-$type = JRequest::getVar('type', 'regular');
-
-JSubMenuHelper::addEntry(
-	JText::_('Submitted'),
-	'index.php?option=com_feedback&controller=quotes&type=regular',
-	$type == 'regular'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Selected'),
-	'index.php?option=com_feedback&controller=quotes&type=selected',
-	$type == 'selected'
-);
 
 $controllerName = JRequest::getCmd('controller', 'quotes');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

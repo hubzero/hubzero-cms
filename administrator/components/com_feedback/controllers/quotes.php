@@ -37,30 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Execute a task
-	 * 
-	 * @return     void
-	 */
-	public function execute()
-	{
-		$app = JFactory::getApplication();
-		$this->type = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.type',
-			'type',
-			'regular'
-		));
-		/*$this->type = JRequest::getVar('type', '', 'post');
-
-		if (!$this->type)
-		{
-			$this->type = JRequest::getVar('type', 'regular', 'get');
-		}
-		$this->type = ($this->type == 'regular') ? $this->type : 'selected';*/
-
-		parent::execute();
-	}
-
-	/**
 	 * Display a list of quotes
 	 * 
 	 * @return     void
@@ -72,8 +48,6 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			// Check for request forgeries
 			JRequest::checkToken() or jexit('Invalid Token');
 		}
-
-		$this->view->type = $this->type;
 
 		// Get site configuration
 		$app = JFactory::getApplication();
@@ -113,16 +87,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			'int'
 		);
 
-		if ($this->type == 'regular')
-		{
-			$className = 'FeedbackQuotes';
-		}
-		else
-		{
-			$className = 'SelectedQuotes';
-		}
-		
-		$obj = new $className($this->database);
+		$obj = new FeedbackQuotes($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters);
@@ -178,21 +143,24 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			JRequest::checkToken() or jexit('Invalid Token');
 		}
 
-		$this->view->type = $this->type;
-
 		// Incoming ID
 		$id = JRequest::getInt('id', 0);
 
 		// Initiate database class and load info
-		if ($this->type == 'regular')
-		{
-			$this->view->row = new FeedbackQuotes($this->database);
-		}
-		else
-		{
-			$this->view->row = new SelectedQuotes($this->database);
-		}
+		$this->view->row = new FeedbackQuotes($this->database);
 		$this->view->row->load($id);
+
+		$this->view->id = $id;
+
+		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
+		$path = JPATH_ROOT . $this->view->path . $id . DS;
+		if (is_dir($path))
+		{
+			$pictures = scandir($path);
+			array_shift($pictures);
+			array_shift($pictures);
+			$this->view->pictures = $pictures;
+		}
 
 		$username = trim(JRequest::getVar('username', ''));
 		if ($username)
@@ -202,18 +170,12 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 			$this->view->row->fullname = $profile->get('name');
 			$this->view->row->org      = $profile->get('organization');
-			$this->view->row->userid   = $profile->get('uidNumber');
+			$this->view->row->user_id  = $profile->get('uidNumber');
 		}
 
 		if (!$id)
 		{
 			$this->view->row->date = JFactory::getDate()->toSql();
-		}
-
-		if ($this->type == 'regular')
-		{
-			$this->view->row->notable_quotes = 0;
-			$this->view->row->flash_rotation = 0;
 		}
 
 		// Set any errors
@@ -239,105 +201,71 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		// Incoming
-		$replacequote   = JRequest::getInt('replacequote', 0);
-		$notable_quotes = JRequest::getInt('notable_quotes', 0);
-		$flash_rotation = JRequest::getInt('flash_rotation', 0);
 
-		if ($replacequote)
+		// Initiate class and bind posted items to database fields
+		$row = new FeedbackQuotes($this->database);
+		$row->notable_quote = JRequest::getInt('notable_quotes', 0);
+
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
+
+		$existingPictures = scandir(JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id . DS);
+		array_shift($existingPictures);
+		array_shift($existingPictures);
+
+		foreach ($existingPictures as $existingPicture)
 		{
-			// Replace original quote
-
-			// Initiate class and bind posted items to database fields
-			$row = new FeedbackQuotes($this->database);
-			if (!$row->bind($_POST))
+			if (!isset($_POST['existingPictures']) or in_array($existingPicture, $_POST['existingPictures']) === false)
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				if (!JFile::delete($path . DS . $existingPicture))
+				{
+					$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+					return;
+				}
 			}
 
-			// Code cleaner for xhtml transitional compliance
-			$row->quote = str_replace('<br>', '<br />', $row->quote);
-
-			$row->picture = basename($row->picture);
-
-			// Check new content
-			if (!$row->check())
+			if (count(scandir($path)) === 2)
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				rmdir($path);
 			}
-
-			// Store new content
-			if (!$row->store())
-			{
-				JError::raiseError(500, $row->getError());
-				return;
-			}
-
-			$msg = JText::sprintf('FEEDBACK_QUOTE_SAVED',  $row->fullname);
 		}
 
-		if ($this->type == 'selected' || $notable_quotes || $flash_rotation)
+		$files = $_FILES;
+
+		if ($files['files']['name'][0] !== '')
 		{
-			// Initiate class and bind posted items to database fields
-			$rowselected = new SelectedQuotes($this->database);
-			if (!$rowselected->bind($_POST))
+			if (is_dir($path) === false)
 			{
-				JError::raiseError(500, $rowselected->getError());
-				return;
+				mkdir($path);
 			}
-
-			$rowselected->notable_quotes = $notable_quotes;
-			$rowselected->flash_rotation = $flash_rotation;
-
-			// Use new id if already exists under selected quotes
-			if ($this->type == 'regular')
+			foreach ($files['files']['name'] as $fileIndex => $file)
 			{
-				$rowselected->id = 0;
+				JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
 			}
-
-			// Code cleaner for xhtml transitional compliance
-			$rowselected->quote = str_replace('<br>', '<br />', $rowselected->quote);
-
-			$rowselected->picture = basename($rowselected->picture);
-
-			// Trim the text to create a short quote
-			$rowselected->short_quote = ($rowselected->short_quote) ? $rowselected->short_quote : substr($rowselected->quote, 0, 270);
-			if (strlen($rowselected->short_quote) >= 271)
-			{
-				$rowselected->short_quote .= '...';
-			}
-
-			// Trim the text to create a mini quote
-			$rowselected->miniquote = ($rowselected->miniquote) ? $rowselected->miniquote : substr($rowselected->short_quote, 0, 150);
-			if (strlen($rowselected->miniquote) >= 147)
-			{
-				$rowselected->miniquote .= '...';
-			}
-
-			// Store new content
-			if (!$rowselected->store())
-			{
-				JError::raiseError(500, $rowselected->getError());
-				return;
-			}
-
-			$msg = '';
 		}
 
-		if ($flash_rotation)
+		if (!$row->bind($_POST))
 		{
-			$msg .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_ROTATION');
+			JError::raiseError(500, $row->getError());
+			return;
 		}
-		if ($notable_quotes)
+
+		// Check new content
+		if (!$row->check())
 		{
-			$msg .= JText::_('FEEDBACK_QUOTE_SELECTED_FOR_QUOTES');
+			JError::raiseError(500, $row->getError());
+			return;
+		}
+
+		// Store new content
+		if (!$row->store())
+		{
+			JError::raiseError(500, $row->getError());
+			return;
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $this->type,
-			$msg
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('COM_FEEDBACK_QUOTE_SAVED',  $row->fullname)
 		);
 	}
 
@@ -352,36 +280,34 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$ids = JRequest::getVar('id', array(0));
 
 		// Check for an ID
-		if (!$id)
+		if (!count($ids))
 		{
-			JError::raiseError(500, JText::_('FEEDBACK_SELECT_QUOTE_TO_DELETE'));
+			JError::raiseError(500, JText::_('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
 			return;
 		}
 
-		// Load the quote
-		if ($this->type == 'regular')
+		foreach ($ids as $id)
 		{
+			$id = intval($id);
+
+			// Load the quote
 			$row = new FeedbackQuotes($this->database);
-		}
-		else
-		{
-			$row = new SelectedQuotes($this->database);
-		}
-		$row->load($id);
+			$row->load($id);
 
-		// Delete associated files
-		$row->deletePicture($this->config);
+			// Delete associated files
+			$row->deletePicture($this->config);
 
-		// Delete the quote
-		$row->delete();
+			// Delete the quote
+			$row->delete();
+		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&type=' . $this->type,
-			JText::_('FEEDBACK_REMOVED')
+			JText::_('COM_FEEDBACK_REMOVED')
 		);
 	}
 

@@ -13,6 +13,9 @@
 
 */
 
+	#quotes-container {
+		margin: 1em;
+	}
 	.quote {
-		
+		padding: 1em;
 	}

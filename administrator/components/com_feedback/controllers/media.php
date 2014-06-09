@@ -111,14 +111,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			if ($this->type == 'regular')
-			{
-				$row = new FeedbackQuotes($this->database);
-			}
-			else
-			{
-				$row = new SelectedQuotes($this->database);
-			}
+			$row = new FeedbackQuotes($this->database);
 			$row->load($qid);
 
 			// Do we have an old file we're replacing?
@@ -172,14 +165,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 
 		$qid = JRequest::getInt('qid', 0);
 
-		if ($this->type == 'regular')
-		{
-			$row = new FeedbackQuotes($this->database);
-		}
-		else
-		{
-			$row = new SelectedQuotes($this->database);
-		}
+		$row = new FeedbackQuotes($this->database);
 		$row->load($qid);
 
 		// Incoming file

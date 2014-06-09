@@ -44,7 +44,7 @@ class modRandomQuote extends \Hubzero\Module\Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'selectedquotes.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php');
 
 		$database = JFactory::getDBO();
 
@@ -57,15 +57,15 @@ class modRandomQuote extends \Hubzero\Module\Module
 		$quotesrc = $this->params->get('quotesrc', 'miniquote');
 
 		$pool = trim($this->params->get('quotepool'));
-		$filters['notable_quotes'] = ($pool == 'notable_quotes') ?  1 : 0;
-		$filters['flash_rotation'] = ($pool == 'flash_rotation') ?  1 : 0;
+		$filters['notable_quote'] = ($pool == 'notable_quotes') ?  1 : 0;
+		//$filters['flash_rotation'] = ($pool == 'flash_rotation') ?  1 : 0;
 		$filters['miniquote'] = ($quotesrc == 'miniquote') ?  1 : 0;
 		$filters['sortby'] = 'RAND()';
 
 		$this->filters = $filters;
 
 		// Get quotes
-		$sq = new SelectedQuotes($database);
+		$sq = new FeedbackQuotes($database);
 		$quotes = $sq->getResults($filters);
 		$quote = ($quotes) ? $quotes[0] : '';
 
