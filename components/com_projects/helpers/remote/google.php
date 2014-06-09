@@ -526,7 +526,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
+			self::setError('Failed to retrieve remote content');
 		}
 		
 		return $newChangeID;
@@ -823,7 +823,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
+			self::setError('Failed to retrieve remote content');
 			return false;
 		}
 		
@@ -1009,9 +1009,8 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			ProjectsGoogleHelper::setError('Failed to retrieve remote content');
+			self::setError('Failed to retrieve remote content');
 			return $remotes;
-			return false;
 		}
 		
 		return $remotes;
