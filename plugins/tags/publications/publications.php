@@ -370,7 +370,7 @@ class plgTagsPublications extends JPlugin
 	 * 
 	 * @return     void
 	 */
-	public function documents()
+	public static function documents()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
