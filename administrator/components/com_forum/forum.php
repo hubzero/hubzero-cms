@@ -47,27 +47,23 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 {
 	$controllerName = 'sections';
 }
-switch ($controllerName)
-{
-	case 'sections':
-		JSubMenuHelper::addEntry(JText::_('Sections'), 'index.php?option=' .  $option . '&controller=sections', true);
-		JSubMenuHelper::addEntry(JText::_('Categories'), 'index.php?option=' .  $option . '&controller=categories&section_id=-1');
-		JSubMenuHelper::addEntry(JText::_('Threads'), 'index.php?option=' .  $option . '&controller=threads&category_id=-1');
-	break;
-	
-	case 'categories':
-		JSubMenuHelper::addEntry(JText::_('Sections'), 'index.php?option=' .  $option . '&controller=sections');
-		JSubMenuHelper::addEntry(JText::_('Categories'), 'index.php?option=' .  $option . '&controller=categories&section_id=-1', true);
-		JSubMenuHelper::addEntry(JText::_('Threads'), 'index.php?option=' .  $option . '&controller=threads&category_id=-1');
-	break;
-	
-	case 'threads':
-	default:
-		JSubMenuHelper::addEntry(JText::_('Sections'), 'index.php?option=' .  $option . '&controller=sections');
-		JSubMenuHelper::addEntry(JText::_('Categories'), 'index.php?option=' .  $option . '&controller=categories&section_id=-1');
-		JSubMenuHelper::addEntry(JText::_('Threads'), 'index.php?option=' .  $option . '&controller=threads&category_id=-1', true);
-	break;
-}
+
+JSubMenuHelper::addEntry(
+	JText::_('COM_FORUM_SECTIONS'),
+	'index.php?option=' .  $option . '&controller=sections',
+	($controllerName == 'sections')
+);
+JSubMenuHelper::addEntry(
+	JText::_('COM_FORUM_CATEGORIES'),
+	'index.php?option=' .  $option . '&controller=categories&section_id=-1',
+	($controllerName == 'categories')
+);
+JSubMenuHelper::addEntry(
+	JText::_('COM_FORUM_THREADS'),
+	'index.php?option=' .  $option . '&controller=threads&category_id=-1',
+	($controllerName == 'threads')
+);
+
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ForumController' . ucfirst($controllerName);
 

@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('thread');
 
-JToolBarHelper::title(JText::_('Forums') . ': ' . JText::_('Threads'), 'forum.png');
+JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_THREADS'), 'forum.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -67,9 +67,9 @@ function submitbutton(pressbutton) {
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="field-category_id"><?php echo JText::_('Category:'); ?></label> 
+		<label for="field-category_id"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label> 
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
-			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+			<option value="-1"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY_SELECT'); ?></option>
 		<?php foreach ($this->sections as $scope => $sections) { ?>
 			<optgroup label="<?php echo $this->escape(stripslashes($scope)); ?>">
 			<?php foreach ($sections as $section) { ?>
@@ -99,14 +99,14 @@ function submitbutton(pressbutton) {
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Sticky', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Access', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Scope', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Creator', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Created', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_STICKY', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -126,65 +126,65 @@ if ($this->results)
 		{
 			case 2:
 				$task = 'publish';
-				$alt = JText::_('Trashed');
+				$alt = JText::_('JTRASHED');
 				$cls = 'trash';
 			break;
 			case 1:
 				$task = 'unpublish';
-				$alt = JText::_('Published');
+				$alt = JText::_('JPUBLISHED');
 				$cls = 'publish';
 			break;
 			case 0:
 			default:
 				$task = 'publish';
-				$alt = JText::_('Unpublished');
+				$alt = JText::_('JUNPUBLISHED');
 				$cls = 'unpublish';
 			break;
 		}
-		
+
 		switch ($row->sticky) 
 		{
 			case '1':
 				$stickyTask = '0';
-				$stickyAlt = JText::_('Sticky');
-				$stickyTitle = JText::_('not sticky');
+				$stickyAlt = JText::_('COM_FORUM_STICKY');
+				$stickyTitle = JText::_('COM_FORUM_NOT_STICKY');
 				$scls = 'publish';
 			break;
 			case '0':
 			default:
 				$stickyTask = '1';
-				$stickyAlt = JText::_('Not sticky');
-				$stickyTitle = JText::_('sticky');
+				$stickyAlt = JText::_('COM_FORUM_NOT_STICKY');
+				$stickyTitle = JText::_('COM_FORUM_STICKY');
 				$scls = 'unpublish';
 			break;
 		}
-		
+
 		switch ($row->access)
 		{
 			case 0:
 				$color_access = 'public';
 				$task_access  = '1';
-				$row->groupname = JText::_('Public');
+				$row->groupname = JText::_('COM_FORUM_ACCESS_PUBLIC');
 				break;
 			case 1:
 				$color_access = 'registered';
 				$task_access  = '2';
-				$row->groupname = JText::_('Registered');
+				$row->groupname = JText::_('COM_FORUM_ACCESS_REGISTERED');
 				break;
 			case 2:
 				$color_access = 'special';
 				$task_access  = '3';
-				$row->groupname = JText::_('Special');
+				$row->groupname = JText::_('COM_FORUM_ACCESS_SPECIAL');
 				break;
 			case 3:
 				$color_access = 'protected';
 				$task_access  = '4';
-				$row->groupname = JText::_('Protected');
+				$row->groupname = JText::_('COM_FORUM_ACCESS_PROTECTED');
 				break;
 			case 4:
 				$color_access = 'private';
 				$task_access  = '0';
-				$row->groupname = JText::_('Private');
+				$row->groupname = JText::_('COM_FORUM_ACCESS_PRIVATE');
 				break;
 		}
 ?>
@@ -202,7 +202,7 @@ if ($this->results)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -213,7 +213,7 @@ if ($this->results)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $stickyTitle;?>">
+					<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $stickyTitle); ?>">
 						<span><?php echo $stickyAlt; ?></span>
 					</a>
 				<?php } else { ?>

@@ -30,12 +30,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ForumHelper::getActions('thread');
 
-$text = ($this->task == 'edit' ? JText::_('Edit Thread') : JText::_('New Thread'));
-if ($this->row->parent) 
-{
-	$text = ($this->task == 'edit' ? JText::_('Edit Post') : JText::_('New Post'));
-}
-JToolBarHelper::title(JText::_('Forums') . ': ' . $text, 'forum.png');
+$text = ($this->row->parent ? JText::_('COM_FORUM_THREADS') : JText::_('COM_FORUM_POSTS')) . ': ';
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . $text, 'forum.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -65,7 +63,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (document.getElementById('field-comment').value == ''){
-		alert( 'Entry must have a comment' );
+		alert( '<?php echo JText::_('COM_FORUM_ERROR_MISSING_COMMENT'); ?>' );
 	} else {
 		submitform( pressbutton );
 	}
@@ -75,24 +73,24 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="field-scope"><?php echo JText::_('Scope'); ?>:</label><br />
+					<label for="field-scope"><?php echo JText::_('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
 					<input type="text" name="fields[scope]" id="field-scope" maxlength="150" value="<?php echo $this->escape($this->row->scope); ?>" />
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="field-scope_id"><?php echo JText::_('Scope ID'); ?>:</label><br />
+					<label for="field-scope_id"><?php echo JText::_('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
 					<input type="text" name="fields[scope_id]" id="field-scope_id" maxlength="11" value="<?php echo $this->escape($this->row->scope_id); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
 			<div class="input-wrap">
-				<label for="field-object_id"><?php echo JText::_('Object ID'); ?>:</label><br />
+				<label for="field-object_id"><?php echo JText::_('COM_FORUM_FIELD_OBJECT_ID'); ?>:</label><br />
 				<input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->object_id); ?>" />
 			</div>
 
@@ -164,7 +162,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('Creator'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->created_by);
@@ -174,7 +172,7 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->row->created; ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created; ?>" />
@@ -182,7 +180,7 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php if ($this->row->modified_by) { ?>
 				<tr>
-					<th class="key"><?php echo JText::_('Modifier'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_MODIFIER'); ?>:</th>
 					<td>
 						<?php 
 						$modifier = JUser::getInstance($this->row->modified_by);
@@ -192,7 +190,7 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Modified'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_MODIFIED'); ?>:</th>
 					<td>
 						<?php echo $this->row->modified; ?>
 						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->modified; ?>" />
@@ -203,7 +201,7 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->anonymous) { echo ' checked="checked"'; } ?> />
@@ -218,22 +216,22 @@ function submitbutton(pressbutton)
 			<?php } ?>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<label for="field-state"><?php echo JText::_('COM_FORUM_FIELD_STATE'); ?>:</label><br />
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Unpublished'); ?></option>
-					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Published'); ?></option>
-					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-access"><?php echo JText::_('Access'); ?>:</label><br />
+				<label for="field-access"><?php echo JText::_('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
 				<select name="fields[access]" id="field-access">
-					<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-					<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Registered'); ?></option>
-					<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Special'); ?></option>
-					<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Protected'); ?></option>
-					<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Private'); ?></option>
+					<option value="0"<?php echo ($this->row->access == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_FORUM_ACCESS_PUBLIC'); ?></option>
+					<option value="1"<?php echo ($this->row->access == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_FORUM_ACCESS_REGISTERED'); ?></option>
+					<option value="2"<?php echo ($this->row->access == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_FORUM_ACCESS_SPECIAL'); ?></option>
+					<option value="3"<?php echo ($this->row->access == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_FORUM_ACCESS_PROTECTED'); ?></option>
+					<option value="4"<?php echo ($this->row->access == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_FORUM_ACCESS_PRIVATE'); ?></option>
 				</select>
 			</div>
 		</fieldset>

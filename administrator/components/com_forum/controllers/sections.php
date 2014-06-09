@@ -156,11 +156,8 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new ForumModelAdminSection();
-			$this->view->form = $m->getForm();
-		}
+		$m = new ForumModelAdminSection();
+		$this->view->form = $m->getForm();
 
 		// Set any errors
 		if ($this->getError()) 
@@ -218,7 +215,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Section Successfully Saved'),
+				JText::_('COM_FORUM_SECTION_SAVED'),
 				'message'
 			);
 		}
@@ -284,7 +281,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . JRequest::getInt('section_id', 0),
-			JText::_('Sections Successfully Removed')
+			JText::_('COM_FORUM_SECTIONS_DELETED')
 		);
 	}
 
@@ -325,11 +322,11 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
-			$action = ($state == 1) ? JText::_('unpublish') : JText::_('publish');
+			$action = ($state == 1) ? JText::_('COM_FORUM_UNPUBLISH') : JText::_('COM_FORUM_PUBLISH');
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select an entry to ' . $action),
+				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
 			return;
@@ -355,11 +352,11 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// set message
 		if ($state == 1) 
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully published');
+			$message = JText::sprintf('COM_FORUM_ITEMS_PUBLISHED', count($ids));
 		} 
 		else
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully unpublished');
+			$message = JText::sprintf('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		$this->setRedirect(
@@ -388,7 +385,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Select an entry to change access'),
+				JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
 			);
 			return;
@@ -414,7 +411,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// set message
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_(count($ids) . ' Item(s) successfully changed access')
+			JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
 	}
 
