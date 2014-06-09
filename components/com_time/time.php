@@ -34,6 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'time.php');
 
 // Instantiate controller
-$controller = new TimeController();
+$controller = new TimeControllerTime();
 $controller->execute();
 $controller->redirect();

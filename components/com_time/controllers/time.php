@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class TimeController extends \Hubzero\Component\SiteController
+class TimeControllerTime extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute function
@@ -43,24 +43,16 @@ class TimeController extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		// Get the task
-		$this->_task  = JRequest::getVar('task', 'view');
-
 		// Get the current/active tab
 		$this->active_tab = JRequest::getVar('active', 'overview');
 
 		// Get the action (if applicable)
 		$this->action = JRequest::getVar('action', 'view');
 
-		// Execute the task
-		switch ($this->_task)
-		{
-			// Core component functions
-			case 'ajax':      $this->ajax();   break;
-			case 'view':      $this->view();   break;
+		$this->registerTask('__default', 'view');
 
-			default:          $this->view();   break;
-		}
+		// Execute the task
+		parent::execute();
 	}
 
 	/**
@@ -100,75 +92,6 @@ class TimeController extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Get CSS for the component
-	 * 
-	 * @return void
-	 */
-	protected function _getTimeStyles()
-	{
-		$doc       = JFactory::getDocument();
-		$mainframe = JFactory::getApplication();
-		$template  = $mainframe->getTemplate();
-		$task      = $this->_task;
-
-		$template_css  = "/templates".DS.$template.DS."html".DS."com_time".DS."time.css";
-		$component_css = "/components".DS."com_time".DS."time.css";
-
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$doc->addStyleSheet(DS.'plugins'.DS.'system'.DS.'jquery'.DS.'css'.DS.'jquery-ui-1.8.6.custom.css');
-		}
-
-		if (file_exists(JPATH_ROOT.$template_css))
-		{
-			$doc->addStyleSheet($template_css);
-		}
-		elseif (file_exists(JPATH_ROOT.$component_css))
-		{
-			$doc->addStyleSheet($component_css);
-		}
-		else
-		{
-			$this->_getStyles();
-		}
-	}
-
-	/**
-	 * Get scripts for this component
-	 * 
-	 * @return void
-	 */
-	protected function _getTimeScripts()
-	{
-		$doc = JFactory::getDocument();
-
-		$component_js = "/components".DS."com_time".DS."time.js";
-		$hover_intent = DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.hoverIntent.js';
-
-		if(!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$doc->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js');
-			$doc->addScript('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js');
-		}
-
-		if(file_exists(JPATH_ROOT.$hover_intent))
-		{
-			$doc->addScript($hover_intent);
-		}
-
-		if(file_exists(JPATH_ROOT.$component_js))
-		{
-			$doc->addScript($component_js);
-		}
-		else
-		{
-			$this->_getScripts();
-		}
-
-		\Hubzero\Document\Assets::addSystemScript('jquery.infinitescroll');
-	}
-
-	/**
 	 * Build the "trail"
 	 * 
 	 * @return void
@@ -183,20 +106,20 @@ class TimeController extends \Hubzero\Component\SiteController
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
-				'index.php?option='.$this->_option
+				'index.php?option=' . $this->_option
 			);
 			if ($this->active_tab)
 			{
 				$pathway->addItem(
-					JText::_('PLG_TIME_'.strtoupper($this->active_tab)),
-					'index.php?option='.$this->_option.'&active='.$this->active_tab
+					JText::_('PLG_TIME_' . strtoupper($this->active_tab)),
+					'index.php?option=' . $this->_option . '&active=' . $this->active_tab
 				);
 			}
 			if ($this->action != 'view')
 			{
 				$pathway->addItem(
-					JText::_('PLG_TIME_'.strtoupper($this->active_tab).'_'.strtoupper($this->action)),
-					'index.php?option='.$this->_option.'&active='.$this->active_tab
+					JText::_('PLG_TIME_' . strtoupper($this->active_tab) . '_' . strtoupper($this->action)),
+					'index.php?option=' . $this->_option . '&active=' . $this->active_tab
 				);
 			}
 		}
@@ -226,7 +149,7 @@ class TimeController extends \Hubzero\Component\SiteController
 	 * 
 	 * @return void
 	 */
-	protected function view()
+	public function viewTask()
 	{
 		// Force login if user isn't already
 		if ($this->juser->get('guest'))
@@ -237,23 +160,19 @@ class TimeController extends \Hubzero\Component\SiteController
 
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . $active . $action))),
-				JText::_('You must be a logged in to access this area.'),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . $active . $action))),
+				JText::_('COM_TIME_ERROR_LOGIN_REQUIRED'),
 				'warning'
 			);
 			return;
 		}
 
 		// Check access
-		if(!$this->_authorize())
+		if (!$this->_authorize())
 		{
-			JError::raiseError(401, 'You\'re not authorized to use this component');
+			JError::raiseError(401, JText::_('COM_TIME_ERROR_NOT_AUTHORIZED'));
 			return;
 		}
-
-		// Push some styles and scripts to the template
-		$this->_getTimeStyles();
-		$this->_getTimeScripts();
 
 		// Get time plugins
 		JPluginHelper::importPlugin('time');
@@ -272,14 +191,14 @@ class TimeController extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output the HTML
-		$view                = new \Hubzero\Component\View(array('name'=>'view'));
-		$view->option        = $this->_option;
-		$view->title         = $this->_title;
-		$view->active_tab    = $this->active_tab;
-		$view->time_plugins  = $time_plugins;
-		$view->sections      = $sections;
-		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-		$view->display();
+		$this->view->title         = $this->_title;
+		$this->view->active_tab    = $this->active_tab;
+		$this->view->time_plugins  = $time_plugins;
+		$this->view->sections      = $sections;
+		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
+		$this->view->setName('view')
+				->setLayout('default')
+				->display();
 	}
 
 	/**
@@ -287,7 +206,7 @@ class TimeController extends \Hubzero\Component\SiteController
 	 * 
 	 * @return void
 	 */
-	protected function ajax()
+	public function ajaxTask()
 	{
 		// Get time plugins
 		JPluginHelper::importPlugin('time');
@@ -301,24 +220,6 @@ class TimeController extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Simple login function
-	 * 
-	 * @param  string $title - page title
-	 * @return void
-	 */
-	protected function login($title = "")
-	{
-		// Set the page title
-		$title = ($title) ? $title : JText::_(strtoupper($this->_name));
-
-		// Output HTML
-		$view                = new \Hubzero\Component\View(array('name'=>'login'));
-		$view->title         = $title;
-		$view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
-		$view->display();
-	}
-
-	/**
 	 * Authorize current user
 	 * 
 	 * @return true or false
@@ -326,7 +227,7 @@ class TimeController extends \Hubzero\Component\SiteController
 	protected function _authorize()
 	{
 		// @FIXME: add parameter for group access
-		$accessgroup = isset($this->config->parameters['accessgroup']) ? trim($this->config->parameters['accessgroup']) : 'time';
+		$accessgroup = isset($this->config->parameters['accessgroup']) ? trim($this->config->parameters['accessgroup']) : 'jla';
 
 		// Check if they're a member of admin group
 		$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));

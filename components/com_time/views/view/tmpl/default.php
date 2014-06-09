@@ -30,21 +30,26 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css() //->css('jquery-ui-1.8.6.custom.css', 'system')
+     ->js('jquery.hoverIntent.js', 'system')
+     ->js('jquery.infinitescroll.js', 'system')
+     ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo JText::_('PLG_TIME_'.strtoupper($this->active_tab)); ?></h2>
+	<h2><?php echo JText::_('PLG_TIME_' . strtoupper($this->active_tab)); ?></h2>
 </header>
 <div id="time_container">
 	<div id="time_sidebar">
 		<ul id="time_menu">
 			<?php 
-				foreach($this->time_plugins as $plugin) 
+				foreach ($this->time_plugins as $plugin) 
 				{
-					if($plugin['return'] == 'html')
+					if ($plugin['return'] == 'html')
 					{
 						$cls = ($this->active_tab == $plugin['name']) ? 'active' : '';
 
-						$link = JRoute::_('index.php?option='.$this->option.'&active='.$plugin['name']);
+						$link = JRoute::_('index.php?option=' . $this->option . '&active=' . $plugin['name']);
 
 						echo "<li><a class=\"{$cls}\" href=\"{$link}\">{$plugin['title']}</a></li>";
 					}
@@ -55,17 +60,17 @@ defined('_JEXEC') or die('Restricted access');
 			<h4><?php echo JText::_('COM_TIME_QUICK_LINKS'); ?></h4>
 			<ul>
 				<li>
-					<a id="new-record" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=records&action=new'); ?>">
+					<a id="new-record" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&active=records&action=new'); ?>">
 						<?php echo JText::_('COM_TIME_NEW_RECORD'); ?>
 					</a>
 				</li>
 				<li>
-					<a id="new-task" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=tasks&action=new'); ?>">
+					<a id="new-task" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&active=tasks&action=new'); ?>">
 						<?php echo JText::_('COM_TIME_NEW_TASK'); ?>
 					</a>
 				</li>
 				<li>
-					<a id="new-hub" href="<?php echo JRoute::_('index.php?option='.$this->option.'&active=hubs&action=new'); ?>">
+					<a id="new-hub" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&active=hubs&action=new'); ?>">
 						<?php echo JText::_('COM_TIME_NEW_HUB'); ?>
 					</a>
 				</li>
@@ -75,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="time_main">
 		<div id="time_notifications">
 			<?php
-				foreach($this->notifications as $notification)
+				foreach ($this->notifications as $notification)
 				{
 					echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 				}
@@ -85,18 +90,22 @@ defined('_JEXEC') or die('Restricted access');
 			<?php
 				if (count($this->sections) > 1)
 				{
-					for($i=0;$i < count($this->time_plugins); $i++)
+					for ($i=0;$i < count($this->time_plugins); $i++)
 					{
-						if($this->active_tab == $this->time_plugins[$i]['name'])
+						if ($this->active_tab == $this->time_plugins[$i]['name'])
 						{
 							echo $this->sections[$i]['html'];
 							break;
 						}
 					}
 				}
-				else
+				else if (count($this->sections) > 0)
 				{
 					echo $this->sections[0]['html'];
+				}
+				else
+				{
+					echo '<p class="warning">' . JText::_('COM_TIME_ERROR_NO_PLUGINS') . '</p>';
 				}
 			?>
 		</div>
