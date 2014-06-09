@@ -55,12 +55,12 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controll
 $controllerName = 'WikiController' . ucfirst($controllerName);
 
 JSubMenuHelper::addEntry(
-	JText::_('Wiki Pages'),
+	JText::_('COM_WIKI_PAGES'),
 	'index.php?option=com_wiki',
 	true
 );
 JSubMenuHelper::addEntry(
-	JText::_('Plugins'),
+	JText::_('COM_WIKI_PLUGINS'),
 	'index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'
 );
 

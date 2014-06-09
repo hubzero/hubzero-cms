@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('page');
 
-JToolBarHelper::title(JText::_('Wiki'), 'wiki.png');
+JToolBarHelper::title(JText::_('COM_WIKI'), 'wiki.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -69,16 +69,16 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
-			<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-60 fltrt">
-			<label for="filter_group"><?php echo JText::_('Group'); ?>:</label>
+			<label for="filter_group"><?php echo JText::_('COM_WIKI_FILTER_GROUP'); ?>:</label>
 			<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
-				<option value=""><?php echo JText::_('- Group -'); ?></option>
+				<option value=""><?php echo JText::_('COM_WIKI_FILTER_GROUP_SELECT'); ?></option>
 				<?php 
 				if ($this->groups) {
 					foreach ($this->groups as $group) {
@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 				?>
 			</select>
 
-			<label for="filter_namespace"><?php echo JText::_('Namespace'); ?>:</label>
+			<label for="filter_namespace"><?php echo JText::_('COM_WIKI_FILTER_NAMESPACE'); ?>:</label>
 			<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
 				<option value="">- Namespace -</option>
 				<option value="Help">Help</option>
@@ -104,13 +104,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('Mode'); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Group', 'group', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Revisions', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Comments', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_WIKI_COL_MODE'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_GROUP', 'group', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_REVISIONS', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -122,33 +122,31 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $i = 0;
-//for ($i=0, $n=count($this->rows); $i < $n; $i++)
+
 foreach ($this->rows as $row)
 {
-	//$row = new WikiModelPage($this->rows[$i]);
-
 	switch ($row->get('state'))
 	{
 		case 2:
-			$color_access = 'style="color: #000;"';
+			$color_access = 'trashed';
 			$class = 'trash';
 			$task = '0';
-			$alt = JText::_('Trashed');
+			$alt = JText::_('COM_WIKI_STATE_TRASHED');
 		break;
 
 		case 1:
-			$color_access = 'style="color: red;"';
+			$color_access = 'private';
 			$class = 'locked';
 			$task = '0';
-			$alt = JText::_('Locked');
+			$alt = JText::_('COM_WIKI_STATE_LOCKED');
 		break;
 
 		case 0:
 		default:
-			$color_access = 'style="color: green;"';
+			$color_access = 'public';
 			$class = 'open';
 			$task = '1';
-			$alt = JText::_('Open');
+			$alt = JText::_('COM_WIKI_STATE_OPEN');
 		break;
 	}
 ?>
@@ -161,7 +159,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Edit Page'); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -176,11 +174,11 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1" <?php echo $color_access; ?> title="<?php echo JText::_('Change State'); ?>">
+					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<?php echo $alt; ?>
 					</a>
 				<?php } else { ?>
-					<span <?php echo $color_access; ?>>
+					<span class="access <?php echo $color_access; ?>">
 						<?php echo $alt; ?>
 					</span>
 				<?php } ?>
@@ -192,8 +190,8 @@ foreach ($this->rows as $row)
 				</td>
 			<?php if ($row->get('revisions') > 0) { ?>
 				<td>
-					<a class="revisions" href="index.php?option=<?php echo $this->option ?>&amp;controller=revisions&amp;pageid=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('VIEW_ARTICLES_FOR_CATEGORY'); ?>">
-						<span><?php echo $this->escape($row->get('revisions')) . ' ' . JText::_('revisions'); ?></span>
+					<a class="revisions" href="index.php?option=<?php echo $this->option ?>&amp;controller=revisions&amp;pageid=<?php echo $row->get('id'); ?>">
+						<span><?php echo JText::sprintf('COM_WIKI_NUM_REVISIONS', $this->escape($row->get('revisions'))); ?></span>
 					</a>
 				</td>
 			<?php } else { ?>
@@ -211,11 +209,11 @@ foreach ($this->rows as $row)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;pageid=<?php echo $row->get('id'); ?>">
-						<?php echo $row->comments('count') . ' ' . JText::_('comment(s)'); //$comment->getEntriesCount(array('pageid' => $row->id)) ?>
+						<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
 					</a>
 				<?php } else { ?>
 					<span class="comment">
-						<?php echo $row->comments('count') . ' ' . JText::_('comment(s)'); ?>
+						<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
 					</span>
 				<?php } ?>
 				</td>

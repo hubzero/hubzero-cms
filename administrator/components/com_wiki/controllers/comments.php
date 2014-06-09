@@ -316,7 +316,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $fields['pageid'],
-				JText::_('Comment saved!')
+				JText::_('COM_WIKI_COMMENT_SAVED')
 			);
 		}
 
@@ -353,7 +353,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0),
-			JText::_('Comments deleted!')
+			JText::sprintf('COM_WIKI_COMMENTS_DELETED', count($ids))
 		);
 	}
 
@@ -395,11 +395,11 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
-			$action = ($state == 1) ? JText::_('unpublish') : JText::_('publish');
+			$action = ($state == 1) ? JText::_('COM_WIKI_UNPUBLISH') : JText::_('COM_WIKI_PUBLISH');
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
-				JText::_('Select an entry to ' . $action),
+				JText::sprintf('COM_WIKI_ERROR_SELECT_TO', $action),
 				'error'
 			);
 			return;
@@ -419,11 +419,11 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		// Set message
 		if ($state == 1) 
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully published');
+			$message = JText::sprintf('COM_WIKI_ITEMS_PUBLISHED', count($ids));
 		} 
 		else
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully unpublished');
+			$message = JText::sprintf('COM_WIKI_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		// Set redirect

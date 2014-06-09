@@ -259,7 +259,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Page successfully saved')
+				JText::_('COM_WIKI_PAGE_SAVED')
 			);
 		}
 
@@ -281,7 +281,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
@@ -321,7 +321,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 					// Instantiate a new view
 					$this->view->ids = $ids;
 
-					$this->addComponentMessage(JText::_('Please confirm removal'), 'error');
+					$this->addComponentMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
 
 					// Output the HTML
 					$this->view->display();
@@ -343,7 +343,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_(count($ids).' page(s) successfully removed')
+					JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids))
 				);
 			break;
 		}
@@ -397,7 +397,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
@@ -441,7 +441,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
@@ -485,7 +485,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;

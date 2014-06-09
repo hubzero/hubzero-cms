@@ -19,42 +19,24 @@
 -->
 
 <config>
-	<params>
-		<param name="subpage_separator" type="text" menu="hide" default="/" label="Subpage Separator" description="Subpage Separator" />
-		<param name="homepage" type="text" menu="hide" default="MainPage" label="Default Main Page name" description="Default Main Page name" />
-		<param name="max_pagename_length" type="text" menu="hide" default="100" label="Maximum Pagename Length" description="Maximum Pagename Length" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="filepath" type="text" menu="hide" default="/site/wiki" label="Upload path" description="File path for attachments" />
-		<param name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="Math upload path" description="File path for math images" />
-		<param name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="Temp upload path" description="File path for temp files" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<param name="img_ext" type="text" menu="hide" label="Image Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed image types" />
-		<param name="file_ext" type="text" menu="hide" label="File Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the contents of wiki pages">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the wiki page is recached" />
-	</params>
 	<fieldset name="basic">
-		<field name="subpage_separator" type="text" menu="hide" default="/" label="Subpage Separator" description="Subpage Separator" />
-		<field name="homepage" type="text" menu="hide" default="MainPage" label="Default Main Page name" description="Default Main Page name" />
-		<field name="max_pagename_length" type="text" menu="hide" default="100" label="Maximum Pagename Length" description="Maximum Pagename Length" />
+		<field name="subpage_separator" type="text" menu="hide" default="/" label="COM_WIKI_CONFIG_SEPARATOR_LABEL" description="COM_WIKI_CONFIG_SEPARATOR_DESC" />
+		<field name="homepage" type="text" menu="hide" default="MainPage" label="COM_WIKI_CONFIG_MAIN_PAGE_LABEL" description="COM_WIKI_CONFIG_MAIN_PAGE_DESC" />
+		<field name="max_pagename_length" type="text" menu="hide" default="100" label="COM_WIKI_CONFIG_PAGENAME_LENGTH_LABEL" description="COM_WIKI_CONFIG_PAGENAME_LENGTH_DESC" />
 	</fieldset>
 	<fieldset name="files">
-		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="Upload path" description="File path for attachments" />
-		<field name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="Math upload path" description="File path for math images" />
-		<field name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="Temp upload path" description="File path for temp files" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="img_ext" type="text" menu="hide" label="Image Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed image types" />
-		<field name="file_ext" type="text" menu="hide" label="File Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="COM_WIKI_CONFIG_FILE_UPLOAD_LABEL" description="COM_WIKI_CONFIG_FILE_UPLOAD_DESC" />
+		<field name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="COM_WIKI_CONFIG_MATH_UPLOAD_LABEL" description="COM_WIKI_CONFIG_MATH_UPLOAD_DESC" />
+		<field name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="COM_WIKI_CONFIG_TEMP_UPLOAD_LABEL" description="COM_WIKI_CONFIG_TEMP_UPLOAD_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_WIKI_CONFIG_FILE_SIZE_LABEL" description="COM_WIKI_CONFIG_FILE_SIZE_DESC" />
+		<field name="img_ext" type="text" menu="hide" label="COM_WIKI_CONFIG_IMG_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="COM_WIKI_CONFIG_IMG_EXT_DESC" />
+		<field name="file_ext" type="text" menu="hide" label="COM_WIKI_CONFIG_FILE_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_WIKI_CONFIG_FILE_EXT_DESC" />
 	</fieldset>
 	<fieldset name="cache">
-		<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the contents of wiki pages">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="cache" type="radio" default="0" label="COM_WIKI_CONFIG_CACHE_LABEL" description="COM_WIKI_CONFIG_CACHE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the wiki page is recached" />
+		<field name="cache_time" type="text" default="15" label="COM_WIKI_CONFIG_CACHE_TIME_LABEL" description="COM_WIKI_CONFIG_CACHE_TIME_DESC" />
 	</fieldset>
 </config>

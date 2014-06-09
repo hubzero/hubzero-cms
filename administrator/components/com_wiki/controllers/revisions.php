@@ -162,7 +162,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Missing page ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -286,7 +286,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'),
-			JText::_('Revision saved')
+			JText::_('COM_WIKI_REVISION_SAVED')
 		);
 	}
 
@@ -303,7 +303,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
-				JText::_('No ID'),
+				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
@@ -344,7 +344,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 					// Instantiate a new view
 					$this->view->ids = $ids;
 
-					$this->addComponentMessage(JText::_('Please confirm removal'), 'error');
+					$this->addComponentMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
 
 					// Output the HTML
 					$this->view->display();
@@ -367,7 +367,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 						{
 							$this->setRedirect(
 								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
-								JText::_('Can not remove only available revision'),
+								JText::_('COM_WIKI_ERROR_CANNOT_REMOVE_REVISION'),
 								'error'
 							);
 							return;
@@ -388,7 +388,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 						}*/
 					}
 
-					$msg = JText::_(count($ids).' revision(s) successfully removed');
+					$msg = JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids));
 				}
 
 				// Set the redirect

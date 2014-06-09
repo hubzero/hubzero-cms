@@ -4,9 +4,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WikiHelper::getActions('page');
 
-$text = ($this->task == 'editpage' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'editpage' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Wiki') . ': ' . JText::_('Page').': ' . $text, 'wiki.png');
+JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -24,7 +24,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton =='resethits') {
-		if (confirm(<?php echo JText::_('RESET_HITS_WARNING'); ?>)){
+		if (confirm(<?php echo JText::_('COM_WIKI_WARNING_RESET_HITS'); ?>)){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -39,9 +39,9 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if ($('pagetitle').value == '') {
-		alert(<?php echo JText::_('ERROR_MISSING_TITLE'); ?>);
+		alert(<?php echo JText::_('COM_WIKI_ERROR_MISSING_TITLE'); ?>);
 	} else if ($('pagename').value == '') {
-		alert(<?php echo JText::_('ERROR_MISSING_PAGENAME'); ?>);
+		alert(<?php echo JText::_('COM_WIKI_ERROR_MISSING_PAGENAME'); ?>);
 	} else {
 		submitform(pressbutton);
 	}
@@ -51,40 +51,43 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="pagetitle"><?php echo JText::_('Title'); ?>:</label><br />
+				<label for="pagetitle"><?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:</label><br />
 				<input type="text" name="page[title]" id="pagetitle" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Pagenames may only contain letters, numbers, and colons. Anything preceding the colon will be the namespace.'); ?>">
-				<label for="pagename"><?php echo JText::_('Pagename'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?>">
+				<label for="pagename"><?php echo JText::_('COM_WIKI_FIELD_PAGENAME'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
 				<input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('pagename'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
 			</div>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="pagescope"><?php echo JText::_('Scope'); ?>:</label><br />
+					<label for="pagescope"><?php echo JText::_('COM_WIKI_FIELD_SCOPE'); ?>:</label><br />
 					<input type="text" name="page[scope]" id="pagescope" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="pagegroup"><?php echo JText::_('Group'); ?>:</label><br />
+					<label for="pagegroup"><?php echo JText::_('COM_WIKI_FIELD_GROUP'); ?>:</label><br />
 					<input type="text" name="page[group_cn]" id="pagegroup" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('group_cn'))); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Enter a comma-separated list of usernames.'); ?>">
-				<label for="authors"><?php echo JText::_('Authors'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_AUTHORS_HINT'); ?>">
+				<label for="authors"><?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:</label><br />
 				<textarea name="page[authors]" id="pageauthors" col="35" rows="3"><?php echo $this->escape($this->row->authors('string')); ?></textarea>
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_AUTHORS_HINT'); ?></span>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Enter a comma-separated list of keywords or phrases.'); ?>">
-				<label for="field-tags"><?php echo JText::_('Tags'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?>">
+				<label for="field-tags"><?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:</label><br />
 				<textarea name="page[tags]" id="field-tags" col="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -92,26 +95,26 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_WIKI_FIELD_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created by'); ?></th>
+					<th><?php echo JText::_('COM_WIKI_FIELD_CREATED'); ?></th>
 					<td><?php echo $this->escape(stripslashes($this->row->creator('name'))); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Hits'); ?></th>
+					<th><?php echo JText::_('COM_WIKI_FIELD_HITS'); ?></th>
 					<td><?php echo $this->escape($this->row->get('hits')); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Revisions'); ?></th>
+					<th><?php echo JText::_('COM_WIKI_FIELD_REVISIONS'); ?></th>
 					<td><?php echo $this->row->revisions('count'); ?></td>
 				</tr>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PARAMETERS'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_WIKI_FIELDSET_PARAMETERS'); ?></span></legend>
 
 			<div class="input-wrap">
 			<?php 
@@ -121,20 +124,20 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="state"><?php echo JText::_('State'); ?>:</label><br />
+				<label for="state"><?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>:</label><br />
 				<select name="page[state]" id="pagestate">
-					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Public'); ?></option>
-					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Locked'); ?></option>
-					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Trashed'); ?></option>
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WIKI_STATE_OPEN'); ?></option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WIKI_STATE_LOCKED'); ?></option>
+					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WIKI_STATE_TRASHED'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-access"><?php echo JText::_('Access Level'); ?>:</label><br />
+				<label for="field-access"><?php echo JText::_('COM_WIKI_FIELD_ACCESS'); ?>:</label><br />
 				<select name="page[access]" id="field-access">
-					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-					<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_ACCESS_PUBLIC'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_ACCESS_REGISTERED'); ?></option>
+					<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_ACCESS_PRIVATE'); ?></option>
 				</select>
 			</div>
 		</fieldset>

@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_('Wiki').': '.JText::_('Delete page(s)'), 'wiki.png' );
+JToolBarHelper::title(JText::_('COM_WIKI').': '.JText::_('COM_WIKI_REVISION') . ': ' . JText::_('COM_WIKI_DELETE'), 'wiki.png');
 JToolBarHelper::cancel();
 
 ?>
@@ -21,8 +21,8 @@ function submitbutton(pressbutton)
 	<table class="adminform">
 		<tbody>
 			<tr>
-				<td><input type="radio" name="confirm" id="confirm" value="1" /> <label for="confirm"><?php echo JText::_('Confirm delete'); ?></label></td>
-				<td><input type="submit" name="Submit" value="<?php echo JText::_('NEXT'); ?>" /></td>
+				<td><input type="radio" name="confirm" id="confirm" value="1" /> <label for="confirm"><?php echo JText::_('COM_WIKI_CONFIRM_DELETE'); ?></label></td>
+				<td><input type="submit" name="Submit" value="<?php echo JText::_('COM_WIKI_NEXT'); ?>" /></td>
 			</tr>
 		</tbody>
 	</table>
