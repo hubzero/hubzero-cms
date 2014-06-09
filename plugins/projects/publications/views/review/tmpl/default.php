@@ -248,7 +248,8 @@ else if ($this->authorized == 3)
 		if ($this->authorized != 3) 
 		{
 			// Draw status bar
-			PublicationContribHelper::drawStatusBar($this, NULL, false, 1);	
+			$contribHelper  = new PublicationContribHelper();
+			$contribHelper->drawStatusBar($this, NULL, false, 1);	
 		}
 		
 		$model = new PublicationsModelPublication($this->pub);
