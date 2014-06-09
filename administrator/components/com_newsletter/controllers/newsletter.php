@@ -785,8 +785,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$mailPlainBody  = $newsletterPlainContent;
 		
 		//set mail headers
-		$mailHeaders  = "MIME-Version: 1.0" . "\r\n";
-		$mailHeaders .= "Content-type: text/" . $newsletter->type ."; charset=iso-8859-1" . "\r\n";
+		//$mailHeaders  = "MIME-Version: 1.0" . "\r\n";
+		$mailHeaders .= "Content-type: text/html; charset=\"UTF-8\"" . "\r\n";
 		$mailHeaders .= "From: {$mailFrom}" . "\r\n";
 		$mailHeaders .= "Reply-To: {$mailReplyTo}" . "\r\n";
 		
