@@ -202,7 +202,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Collection saved!')
+				JText::_('COM_COLLECTIONS_COLLECTION_SAVED')
 			);
 			return;
 		}
@@ -240,7 +240,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Entries deleted!')
+			JText::_('COM_COLLECTIONS_ITEMS_DELETED')
 		);
 	}
 
@@ -300,7 +300,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COLLECTIONS_NO_ID'),
+				JText::_('COM_COLLECTIONS_ERROR_SELECT_ITEMS'),
 				'error'
 			);
 			return;
@@ -366,7 +366,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('Select an entry to %s', $this->_task),
+				JText::sprintf('COM_COLLECTIONS_ERROR_SELECT_TO', $this->_task),
 				'error'
 			);
 			return;
@@ -392,13 +392,13 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		switch ($this->_task)
 		{
 			case 'publish':
-				$message = JText::sprintf('%s Item(s) successfully Published', $success);
+				$message = JText::sprintf('COM_COLLECTIONS_ITEMS_PUBLISHED', $success);
 			break;
 			case 'unpublish':
-				$message = JText::sprintf('%s Item(s) successfully Unpublished', $success);
+				$message = JText::sprintf('COM_COLLECTIONS_ITEMS_UNPUBLISHED', $success);
 			break;
 			case 'archive':
-				$message = JText::sprintf('%s Item(s) successfully Archived', $success);
+				$message = JText::sprintf('COM_COLLECTIONS_ITEMS_TRASHED', $success);
 			break;
 		}
 

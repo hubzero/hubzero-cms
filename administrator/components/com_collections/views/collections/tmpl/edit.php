@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CollectionsHelperPermissions::getActions('collection');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . $text, 'collection.png');
 if ($canDo->get('core.edit')) 
@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.greeting.value == ''){
-		alert(<?php echo JText::_('Error! You must fill in a title!'); ?>);
+		alert(<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'); ?>);
 	} else {
 		submitform(pressbutton);
 	}
@@ -67,38 +67,39 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="field-object_type"><?php echo JText::_('Owner type'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+					<label for="field-object_type"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 					<select name="fields[object_type]" id="field-object_type">
-						<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>>site</option>
-						<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>>member</option>
-						<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>>group</option>
+						<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option>
+						<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER'); ?></option>
+						<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP'); ?></option>
 					</select>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="field-title"><?php echo JText::_('Owner ID'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+					<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Only letters, numbers, and dashes allowed. If no alias is provided one will be created from the title.'); ?>">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('Description'); ?></label><br />
+				<label for="field-description"><?php echo JText::_('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
 				<textarea name="fields[description]" id="field-description" cols="35" rows="10"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
 			</div>
 		</fieldset>
@@ -107,7 +108,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('Creator'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
 						$editor = JUser::getInstance($this->row->get('created_by'));
@@ -117,27 +118,27 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('created'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Likes'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_LIKES'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('positive', 0); ?>
 						<input type="hidden" name="fields[positive]" id="field-positive" value="<?php echo $this->escape($this->row->get('positive', 0)); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Posts'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_POSTS'); ?>:</th>
 					<td>
 						<?php echo $this->row->count('post'); ?>
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Followers'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>:</th>
 					<td>
 						<?php echo $this->row->count('followers'); ?>
 					</td>
@@ -146,23 +147,23 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('State'); ?>:</label><br />
+				<label for="field-state"><?php echo JText::_('COM_COLLECTIONS_FIELD_STATE'); ?>:</label><br />
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Archived'); ?></option>
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-access"><?php echo JText::_('Access'); ?>:</label><br />
+				<label for="field-access"><?php echo JText::_('COM_COLLECTIONS_FIELD_ACCESS'); ?>:</label><br />
 				<select name="fields[access]" id="field-access">
-					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-					<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_ACCESS_PUBLIC'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_ACCESS_REGISTERED'); ?></option>
+					<option value="4"<?php if ($this->row->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_ACCESS_PRIVATE'); ?></option>
 				</select>
 			</div>
 		</fieldset>

@@ -210,7 +210,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Post saved!')
+				JText::_('COM_COLLECTIONS_POST_SAVED')
 			);
 			return;
 		}
@@ -248,7 +248,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Entries deleted!')
+			JText::_('COM_COLLECTIONS_ITEMS_DELETED')
 		);
 	}
 

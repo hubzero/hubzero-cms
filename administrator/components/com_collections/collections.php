@@ -49,12 +49,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Collections'),
+	JText::_('COM_COLLECTIONS_COLLECTIONS'),
 	'index.php?option=com_collections',
 	$controllerName == 'collections'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Posts'),
+	JText::_('COM_COLLECTIONS_POSTS'),
 	'index.php?option=com_collections&controller=posts',
 	$controllerName == 'posts'
 );

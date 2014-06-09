@@ -62,10 +62,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 
 		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
@@ -76,10 +76,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->total(); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_POSTED'), 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_POSTEDBY'), 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_COLLECTIONS_ORIGINAL'), 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_POSTED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_POSTEDBY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_ORIGINAL', 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -106,13 +106,13 @@ foreach ($this->rows as $row)
 	switch ($row->get('original'))
 	{
 		case 1:
-			$class = 'publish';
+			$class = 'yes';
 			$task = 'unoriginal';
 			$alt = JText::_('COM_COLLECTIONS_IS_ORIGINAL');
 		break;
 
 		case 0:
-			$class = 'unpublish';
+			$class = 'no';
 			$task = 'original';
 			$alt = JText::_('COM_COLLECTIONS_IS_NOT_ORIGINAL');
 		break;
@@ -120,7 +120,7 @@ foreach ($this->rows as $row)
 
 	if (!($content = $row->item()->description('clean', 75)))
 	{
-		$content = JText::_('-- none --');
+		$content = JText::_('COM_COLLECTIONS_NONE');
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">

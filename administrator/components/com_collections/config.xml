@@ -28,12 +28,8 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="filepath" type="text" menu="hide" default="/site/collections" label="Upload path" description="File path for uploads" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max File Size" description="The maximum file size for uploads" />
-	</params>
 	<fieldset name="component">
-		<field name="filepath" type="text" menu="hide" default="/site/collections" label="Upload path" description="File path for uploads" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max File Size (in bytes)" description="The maximum file size for uploads" />
+		<field name="filepath" type="text" menu="hide" default="/site/collections" label="COM_COLLECTIONS_CONFIG_FILEPATH_LABEL" description="COM_COLLECTIONS_CONFIG_FILEPATH_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_COLLECTIONS_CONFIG_FILESIZE_LABEL" description="COM_COLLECTIONS_CONFIG_FILESIZE_DESC" />
 	</fieldset>
 </config>
