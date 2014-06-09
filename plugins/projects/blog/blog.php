@@ -483,11 +483,16 @@ class plgProjectsBlog extends JPlugin
 				{				
 					// Get comment
 					$c = $objC->getComments(NULL, NULL, $a->id, $this->_project->lastvisit);
+					
+					if (!$c)
+					{
+						continue;
+					}
 
 					// Bring up commented item
-					$needle = array('id' => $c->parent_activity);
-					$key = ProjectsHtml::myArraySearch($needle, $activities);
-					$shown[] = $a->id;
+					$needle 	= array('id' => $c->parent_activity);
+					$key 		= ProjectsHtml::myArraySearch($needle, $activities);
+					$shown[] 	= $a->id;
 					if (!$key) 
 					{
 						// get and add parent activity
