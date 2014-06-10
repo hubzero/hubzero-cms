@@ -292,7 +292,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 
 		if (isset($_GET['term']))
 		{
-			$this->database->setQuery('SELECT raw_tag FROM #__tags WHERE MATCH(raw_tag) AGAINST (\'*' . $this->database->getEscaped($_GET['term']) . '*\' IN BOOLEAN MODE)');
+			$this->database->setQuery('SELECT raw_tag FROM #__tags WHERE raw_tag LIKE \'%' . $this->database->getEscaped($_GET['term']) . '%\'');
 			$later = array();
 			foreach ($this->database->loadResultArray() as $tag)
 			{
