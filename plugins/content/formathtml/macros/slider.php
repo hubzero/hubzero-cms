@@ -76,10 +76,10 @@ class Slider extends Macro
 		$id = uniqid();
 
 		//get the group
-		$gid = \JRequest::getVar('gid');
+		$cn = \JRequest::getVar('cn');
 
 		//get the group object based on gid
-		$group = Group::getInstance($gid);
+		$group = Group::getInstance($cn);
 
 		//check to make sure we have a valid group
 		if (!is_object($group)) 
@@ -88,7 +88,7 @@ class Slider extends Macro
 		}
 
 		//define a base url
-		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . 'uploads';
 
 		//seperate image list into array of images
 		$slides = explode(',', $content);
@@ -132,7 +132,7 @@ class Slider extends Macro
 		$html .= '</div>';
 
 		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins/content/formthtml/macros/macro-assets/slider/slider.css');
+		$document->addStyleSheet('plugins/content/formathtml/macros/macro-assets/slider/slider.css');
 		if (!\JPluginHelper::isEnabled('system', 'jquery')) 
 		{
 			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js');
