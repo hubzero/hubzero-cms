@@ -1512,7 +1512,7 @@ class WikiParser
 			$matches[1] = strtolower($matches[1]);
 			$macroname = ucfirst($matches[1]) . 'Macro';
 
-			if (!$this->get('macros', true)) 
+			if (!$this->get('macros', true) && strtolower($matches[1]) != 'div') 
 			{
 				return $this->_dataPush(array(
 					$matches[1],
