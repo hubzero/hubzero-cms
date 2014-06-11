@@ -1125,7 +1125,9 @@ class ProjectsGitHelper extends JObject
 					$revision['content'] = $this->filterASCII($content, false, false, 10000);
 				}				
 
-				$versions[] = $revision;
+				$versions[] 	= $revision;
+				$timestamps[]	= strtotime($date);
+				
 				$h++;
 			}
 		}
