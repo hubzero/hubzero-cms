@@ -176,7 +176,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// get request vars
 		$module = JRequest::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 		$menu   = JRequest::getVar('menu', array(), 'post');
-		
+
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
 		
@@ -252,15 +252,25 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// set modified 
 		$this->module->set('modified', JFactory::getDate()->toSql());
 		$this->module->set('modified_by', JFactory::getUser()->get('id'));
-		
-		// save version settings
-		if (!$this->module->store(true, $this->group->isSuperGroup()))
+
+
+		// check module again (because were not on store() method)
+		if (!$this->module->check())
 		{
 			$this->setNotification($this->module->getError(), 'error');
 			$this->editTask();
 			return;
 		}
 		
+		// save version settings
+		// dont run check on module store, skips onContentBeforeSave in Html format hadler
+		if (!$this->module->store(false, $this->group->isSuperGroup()))
+		{
+			$this->setNotification($this->module->getError(), 'error');
+			$this->editTask();
+			return;
+		}
+
 		// create module menu
 		if (!$this->module->buildMenu($menu))
 		{
