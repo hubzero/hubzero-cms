@@ -1,0 +1,36 @@
+
+	#certificate {
+		margin: 0 auto;
+		padding: 0;
+		border: 1px solid #333;
+		border: 1px solid rgba(0, 0, 0, 0.8);
+		position: relative;
+		/*min-width: 100%;*/
+		text-align: center;
+		width: 900px;
+		height: 694px;
+	}
+	#certificate img {
+		margin: 0;
+		padding: 0;
+		border: none;
+		/*width: 100%;
+		min-width: 85px;
+		min-height: 110px;*/
+	}
+
+	.placeholders {
+		border: 1px solid #ccc;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		background: #fff;
+		padding: 0.5em;
+	}
+	.placeholders .fltrt {
+		text-align: right;
+	}
+
+	#secondLayer {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}

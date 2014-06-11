@@ -171,7 +171,7 @@ foreach ($this->rows as $row)
 <?php } ?>
 				</td>
 				<td>
-					<?php if ($params->get('certificate', '')) { ?>
+					<?php if ($row->certificate()->exists() && $row->certificate()->hasFile()) { ?>
 					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=certificates&amp;course=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('Certificate set'); ?>">
 						<span class="state yes">
 							<span class="text"><?php echo JText::_('Certificate set'); ?></span>

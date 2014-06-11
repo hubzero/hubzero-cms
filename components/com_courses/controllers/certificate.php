@@ -52,7 +52,9 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		if (!$course->exists() || !$offering->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
+				JText::_('Specified course and/or course offering not found.'),
+				'error'
 			);
 			return;
 		}
@@ -63,7 +65,20 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		if (!$student->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
+				JText::_('Student record not found'),
+				'error'
+			);
+			return;
+		}
+
+		$certificate = $course->certificate();
+		if (!$certificate->exists() || !$certificate->hasFile())
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
+				JText::_('No certificate found for this course.'),
+				'error'
 			);
 			return;
 		}
@@ -99,21 +114,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 				}
 			}
 
-			// Build the render URL
-			$juri = JURI::getInstance();
-			$url  = rtrim(str_replace('http:', 'https:', $juri->base()), DS) . DS;
-			$url .= 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=render&no_html=1';
-			// Course / Offering / Student
-			$url .= '&course=' . $course->get('id') . '&offering=' . $offering->get('alias') . ':' . $offering->section()->get('alias') . '&u=' . $this->juser->get('id');
-			// Validation key (lock on a screen door)
-			$url .= '&key='. JUtility::getHash($course->get('id') . $offering->get('id') . $this->juser->get('id'));
-
-			// Script execution
-			$cmd = JPATH_ROOT . '/vendor/bin/phantomjs_64 ';
-			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-			$finalCommand = $cmd . ' ' . $rasterizeFile . ' "' . $url . '" ' . $file . ' 11in*8.5in'; //65
-
-			exec($finalCommand, $output);
+			$certificate->render($this->juser, $file);
 		}
 
 		// If file exists
@@ -129,48 +130,6 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		}
 
 		// Output failure message
-		$this->view->display();
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function renderTask()
-	{
-		// Get the course
-		$this->view->course   = CoursesModelCourse::getInstance(JRequest::getVar('course', ''));
-		$this->view->offering = $this->view->course->offering(JRequest::getVar('offering', ''));
-
-		// Ensure the course exists
-		if (!$this->view->course->exists() || !$this->view->offering->exists())
-		{
-			JError::raiseError(404, JText::_('Course does not exist.'));
-			return;
-		}
-
-		// Ensure specified user is enrolled in the course
-		//$this->view->student = $this->view->offering->member(JRequest::getInt('u', 0));
-		$this->view->student = CoursesModelMember::getInstance(JRequest::getInt('u', 0), $this->view->course->get('id'), $this->view->offering->get('id'), null, 1);
-		if (!$this->view->student->exists())
-		{
-			JError::raiseError(404, JText::_('User is not a student of specified course.'));
-			return;
-		}
-
-		// Load the JUser object for name, etc.
-		$this->view->juser = JUser::getInstance(JRequest::getInt('u', 0));
-
-		// Check the hash
-		$hash = JUtility::getHash($this->view->course->get('id') . $this->view->offering->get('id') . $this->view->juser->get('id'));
-		if ($hash != JRequest::getVar('key'))
-		{
-			JError::raiseError(403, JText::_('Access denied.'));
-			return;
-		}
-
-		// Display
 		$this->view->display();
 	}
 }

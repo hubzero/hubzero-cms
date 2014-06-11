@@ -130,6 +130,13 @@ class CoursesModelCourse extends CoursesModelAbstract
 	private $_base = NULL;
 
 	/**
+	 * Certificate
+	 * 
+	 * @var string
+	 */
+	private $_certificate = NULL;
+
+	/**
 	 * Constructor
 	 * 
 	 * @param      integer $id Course ID or alias
@@ -946,6 +953,23 @@ class CoursesModelCourse extends CoursesModelAbstract
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get a course logo
+	 *
+	 * @return     string
+	 */
+	public function certificate()
+	{
+		if (!$this->_certificate)
+		{
+			include_once(__DIR__ . DS . 'certificate.php');
+
+			$this->_certificate = CoursesModelCertificate::getInstance(0, $this->get('id'));
+		}
+
+		return $this->_certificate;
 	}
 }
 
