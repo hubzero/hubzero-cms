@@ -297,7 +297,7 @@ class ProjectsGitHelper extends JObject
 		switch ( $return ) 
 		{
 			case 'combined':
-				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae" --name-only ';
+				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%s" --name-only ';
 				break;
 			
 			case 'date':
@@ -384,6 +384,7 @@ class ProjectsGitHelper extends JObject
 			$entry['num'] 		= count($out);
 			$entry['author'] 	= $data[1];
 			$entry['email'] 	= $data[2];
+			$entry['message'] 	= $data[3];
 			return $entry;
 		}
 				
@@ -648,69 +649,73 @@ class ProjectsGitHelper extends JObject
 	public function listDeleted ($path = '') 
 	{
 		$out = array();
-		
-		$call = 'log --diff-filter=D --pretty=format:%H ';
-		
+
+		$call = 'log --diff-filter=D --pretty=format:">>>%ct||%an||%ae||%H||%s" --name-only ';
+
 		chdir($this->_prefix . $path);
 		exec($this->_gitpath . ' ' . $call . '  2>&1', $out);
-		
+
 		$files = array();
-		
+
 		if (count($out) == 0)
 		{
 			return $files;
 		}
 		
-		// Go through hashes and get file names
-		foreach ($out as $hash)
-		{
-			// Get filename and change
-			$fileinfo = $this->callGit( $path, 'diff --name-status ' . $hash . '^ ' . $hash );
-			
-			$time     = $this->gitLog($path, '', $hash, 'timestamp');
-			$author   = $this->gitLog($path, '', $hash, 'author');
-			
-			// Go through files
-			foreach ($fileinfo as $line) 
+		$collector = array();
+		foreach ($out as $line)
+		{	
+			if (substr($line, 0, 3) == '>>>')
 			{
-				$n = substr($line, 0, 1);
+				$line = str_replace('>>>', '', $line);
+				$data = explode("||", $line);
 
-				if ($n == 'f')
-				{
-					break;
-				}
-				else
-				{
-					$filename = trim(substr($line, 1));	
-					$size 	  = $this->gitLog($path, $filename, $hash . '^', 'size');
-					$message  = $this->gitLog($path, $filename, $hash , 'message');
-					
-					// File is still there - skip
-					if (is_file( $path . DS . $filename))
-					{
-						continue;
-					}
-					
-					if (basename($filename) == '.gitignore')
-					{
-						continue;
-					}
-					
-					// File renamed/moved - skip
-					if (strstr(strtolower($message), 'moved file ') || strstr(strtolower($message), 'moved folder '))
-					{
-						continue;
-					}
-										
-					$files[$filename] = array(
-						'hash'			=> $hash,
-						'author'		=> $author,
-						'date'			=> date('c', $time),
-						'size'			=> $size,
-						'message'		=> $message
-					);	
-				}
+				$entry = array();
+				$entry['date']  	= $data[0];
+				$entry['author'] 	= $data[1];
+				$entry['email'] 	= $data[2];	
+				$entry['hash'] 		= $data[3];	
+				$entry['message']	= $data[4];			
 			}
+			elseif ($line != '' && !isset($collector[$line]))
+			{
+				$collector[$line] = $entry;
+			}
+		}
+		
+		if (empty($collector))
+		{
+			return false;
+		}
+		
+		// Go through hashes and get file names
+		foreach ($collector as $filename => $gitData)
+		{
+			// File is still there - skip
+			if (is_file( $path . DS . $filename))
+			{
+				continue;
+			}
+
+			if (basename($filename) == '.gitignore')
+			{
+				continue;
+			}
+						
+			// File renamed/moved - skip
+			if (strstr(strtolower($gitData['message']), 'moved file ') 
+				|| strstr(strtolower($gitData['message']), 'moved folder '))
+			{
+				continue;
+			}
+
+			$files[$filename] = array(
+				'hash'			=> $gitData['hash'],
+				'author'		=> $gitData['author'],
+				'date'			=> date('c', $gitData['date']),
+				'size'			=> NULL,
+				'message'		=> NULL
+			);
 		}
 
 		return $files;
@@ -1046,49 +1051,49 @@ class ProjectsGitHelper extends JObject
 	{
 		// Get local file history
 		$hashes = $this->getLocalFileHistory($path, $local_path, '--');
-		
+
 		// Binary
 		$binary = $this->isBinary($this->_prefix . $path . DS . $local_path);
-																		
+
 		// Get info for each commit
 		if (!empty($hashes)) 
 		{
 			$h = 1;
-			
+
 			// Get all names for this file
 			$renames 		= $this->gitLog($path, $local_path, '', 'rename');
 			$currentName	= $local_path;
 			$rename			= 0;
-									
+
 			foreach ($hashes as $hash) 
-			{						
-				$timestamp  	= $this->gitLog($path, '', $hash, 'timestamp');
-				$timestamps[]	= $timestamp;
-				$date 			= date('Y-m-d H:i:s', $timestamp);
-				
-				$order 			= $h == 1 ? 'first' : '';
-				$order 			= $h == count($hashes) ? 'last' : $order;
-				
+			{										
+				$order 	= $h == 1 ? 'first' : '';
+				$order 	= $h == count($hashes) ? 'last' : $order;
+
 				// Dealing with renames
 				$abbr = substr($hash, 0, 7);
 				$name = isset($renames[$abbr]) ? $renames[$abbr] : $local_path;
-				
+
 				$parts = explode('/', $name);
 				$serveas = trim(end($parts));
-				
+
 				if ($name != $currentName)
 				{
 					$rename = 1;
 					$currentName = $name;
 				}
-				
-				$content		= $binary ? NULL : $this->gitLog($path, $name, $hash, 'content');
-				$message		= $this->gitLog($path, '', $hash, 'message');
-																
+
+				$gitData 	= $this->gitLog($path, $name, $hash, 'combined');				
+				$date		= isset($gitData['date']) ? $gitData['date'] : NULL;
+				$author 	= isset($gitData['author']) ? $gitData['author'] : NULL;
+				$email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
+				$message 	= isset($gitData['message']) ? $gitData['message'] : NULL;
+				$content	= $binary ? NULL : $this->gitLog($path, $name, $hash, 'content');
+
 				$revision = array(
 					'date' 			=> $date,
-					'author' 		=> $this->gitLog($path, '', $hash, 'author'),
-					'email'			=> $this->gitLog($path, '', $hash, 'email'),
+					'author' 		=> $author,
+					'email'			=> $email,
 					'hash' 			=> $hash,
 					'file' 			=> $serveas,
 					'base' 			=> $local_path,
@@ -1108,7 +1113,7 @@ class ProjectsGitHelper extends JObject
 					'count'			=> count($hashes),
 					'commitStatus'	=> $this->gitLog($path, $name, $hash, 'namestatus')
 				);
-				
+
 				if (in_array($revision['commitStatus'], array('A', 'M')))
 				{
 					$revision['size'] = ProjectsHtml::formatSize($this->gitLog($path, $name, $hash, 'size'));
@@ -1119,7 +1124,7 @@ class ProjectsGitHelper extends JObject
 				{
 					$revision['content'] = $this->filterASCII($content, false, false, 10000);
 				}				
-										
+
 				$versions[] = $revision;
 				$h++;
 			}
