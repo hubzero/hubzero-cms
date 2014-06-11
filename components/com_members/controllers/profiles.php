@@ -1238,6 +1238,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$registration->Reason          = $this->_registrationField('registrationReason', 'HHHH', $this->_task);
 		$registration->OptIn           = $this->_registrationField('registrationOptIn', 'HHHH', $this->_task);
 		$registration->TOU             = $this->_registrationField('registrationTOU', 'HHHH', $this->_task);
+		$registration->ORCID           = $this->_registrationField('registrationORCID', 'OOOO', $this->_task);
 
 		// Ouput HTML
 		$this->view->profile = $profile;
@@ -1466,6 +1467,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (!is_null($xregistration->_registration['usageAgreement']))
 		{
 			$profile->set('usageAgreement', $xregistration->_registration['usageAgreement']);
+		}
+
+		if (!is_null($xregistration->_registration['orcid']))
+		{
+			$profile->set('orcid', $xregistration->_registration['orcid']);
 		}
 		
 		$field_to_check = JRequest::getVar("field_to_check", array());

@@ -13,6 +13,10 @@
 
 */
 
+	#orcid-fetch {
+		margin-top: 3.5em;
+	}
+
 /* Password strength checker */
 	#meter-container {
 		position: relative; /* IE is dumb */

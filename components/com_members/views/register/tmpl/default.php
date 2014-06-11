@@ -317,19 +317,19 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 						<div class="col span4">
 							<label<?php echo $fieldclass; ?>>
 								<?php echo JText::_('COM_MEMBERS_REGISTER_FIRST_NAME'); ?>: <?php echo $required; ?>
-								<input type="text" name="name[first]" value="<?php echo $this->escape(trim($givenName)); ?>" />
+								<input type="text" name="name[first]" id="first-name" value="<?php echo $this->escape(trim($givenName)); ?>" />
 							</label>
 						</div>
 						<div class="col span4">
 							<label>
 								<?php echo JText::_('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>:
-								<input type="text" name="name[middle]" value="<?php echo $this->escape(trim($middleName)); ?>" />
+								<input type="text" name="name[middle]" id="middle-name" value="<?php echo $this->escape(trim($middleName)); ?>" />
 							</label>
 						</div>
 						<div class="col span4 omega">
 							<label<?php echo $fieldclass; ?>>
 								<?php echo JText::_('COM_MEMBERS_REGISTER_LAST_NAME'); ?>:
-								<input type="text" name="name[last]" value="<?php echo $this->escape(trim($surname)); ?>" />
+								<input type="text" name="name[last]" id="last-name" value="<?php echo $this->escape(trim($surname)); ?>" />
 							</label>
 						</div>
 					</div>
@@ -378,6 +378,22 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 							<p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\String::obfuscate($this->jconfig->getValue('config.mailfrom')); ?> in order to re-activate your account.</p>
 						<?php } ?>
 					<?php } ?>
+				<?php } ?>
+
+				<?php if ($this->registrationORCID != REG_HIDE) { ?>
+					<div class="grid">
+						<div class="col span9">
+							<label<?php echo (!empty($this->xregistration->_invalid['orcid']) ? ' class="fieldWithErrors"' : ''); ?>>
+								<?php echo JText::_('ORCID'); ?>: <?php echo ($this->registrationORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+								<input name="orcid" id="orcid" type="text" value="<?php echo $this->escape($this->registration['orcid']); ?>" />
+								<?php echo (!empty($this->xregistration->_invalid['orcid'])) ? '<span class="error">' . $this->xregistration->_invalid['orcid'] . '</span>' : ''; ?>
+							</label>
+						</div>
+						<div class="col span3 omega">
+							<a class="btn icon-search" id="orcid-fetch" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=orcid'); ?>"><?php echo JText::_('Find your ID'); ?></a>
+						</div>
+					</div>
+					<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and supports automated linkages between you and your professional activities ensuring that your work is recognized. <a rel="external" href="http://orcid.org">Find out more.</a></p>
 				<?php } ?>
 
 				<?php if ($this->registrationURL != REG_HIDE) { ?>

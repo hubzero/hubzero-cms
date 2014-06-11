@@ -184,6 +184,7 @@ class MembersModelRegistration
 		$this->_registration['captcha'] = null;
 		$this->_registration['interests'] = null;
 		$this->_registration['address'] = null;
+		$this->_registration['orcid'] = null;
 	}
 
 	/**
@@ -413,7 +414,8 @@ class MembersModelRegistration
 		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
 		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
 		$this->_registration['interests'] = JRequest::getVar('interests',null,'post');
-		
+		$this->_registration['orcid'] = JRequest::getVar('orcid', null, 'post');
+
 		if ($this->_registration['sex'] !== null)
 		{
 			if ($this->_registration['sex'] == 'unspecified')
@@ -421,12 +423,12 @@ class MembersModelRegistration
 				$this->_registration['sex'] = '';
 			}
 		}
-		
+
 		if ($this->_registration['usageAgreement'] !== null)
 		{
 			$this->_registration['usageAgreement'] = ($this->_registration['usageAgreement'] === 'unset') ? false : true;
 		}
-		
+
 		$this->_checked = false;
 	}
 
@@ -486,6 +488,7 @@ class MembersModelRegistration
 		$this->set('mailPreferenceOption', $xprofile->get('mailPreferenceOption'));
 		$this->set('interests', $tag_string);
 		$this->set('address', $addresses);
+		$this->set('orcid', $xprofile->get('orcid'));
 
 		$this->_checked = false;
 	}
@@ -686,6 +689,7 @@ class MembersModelRegistration
 		$registrationCAPTCHA = $this->registrationField('registrationCAPTCHA','HHHH',$task);
 		$registrationTOU = $this->registrationField('registrationTOU','HHHH',$task);
 		$registrationAddress = $this->registrationField('registrationAddress','OOOO',$task);
+		$registrationORCID = $this->registrationField('registrationORCID','OOOO',$task);
 
 		if ($task == 'update')
 		{
@@ -857,9 +861,9 @@ class MembersModelRegistration
 		}
 
 		if ($registrationEmail != REG_HIDE)
-		{   
+		{
 			if (empty($email))
-			{   
+			{
 				$this->_missing['email'] = 'Valid Email';
 			}
 			elseif(!MembersHelperUtility::validemail($email))
@@ -912,13 +916,30 @@ class MembersModelRegistration
 		}
 
 		if ($registrationURL != REG_HIDE)
-		{   
+		{
 			if (!empty($registration['web']) && !MembersHelperUtility::validurl($registration['web']))
 			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
 			}
 		}
-		
+
+		if ($registrationORCID == REG_REQUIRED)
+		{
+			if (empty($registration['orcid']))
+			{
+				$this->_missing['orcid'] = 'ORCID';
+				$this->_invalid['orcid'] = 'Please provide a valid ORCID';
+			}
+		}
+
+		if ($registrationORCID != REG_HIDE)
+		{
+			if (!empty($registration['orcid']) && !MembersHelperUtility::validorcid($registration['orcid']))
+			{
+				$this->_invalid['orcid'] = 'Invalid ORCID. It should be in the form of XXXX-XXXX-XXXX-XXXX.';
+			}
+		}
+
 		if ($registrationPhone == REG_REQUIRED)
 		{
 			if (empty($registration['phone']))
@@ -1157,7 +1178,7 @@ class MembersModelRegistration
 			if (!empty($registration['usageAgreement']))
 				$this->_invalid['usageAgreement'] = 'Usage Agreement has not been Read and Accepted';
 		*/
-		
+
 		if ($registrationAddress == REG_REQUIRED)
 		{
 			if (count($registration['address']) == 0)
@@ -1166,27 +1187,27 @@ class MembersModelRegistration
 				$this->_invalid['address'] = 'Member Address';
 			}
 		}
-		
-		if(!empty($field_to_check))
-		{   
-			foreach($field_to_check as $f)
+
+		if (!empty($field_to_check))
+		{
+			foreach ($field_to_check as $f)
 			{
-				if($this->_missing)
+				if ($this->_missing)
 				{
-					foreach($this->_missing as $k => $v)
+					foreach ($this->_missing as $k => $v)
 					{
-						if($k != $f)
+						if ($k != $f)
 						{
 							unset($this->_missing[$k]);
 						}
 					}
 				}
-				
-				if($this->_invalid)
+
+				if ($this->_invalid)
 				{
-					foreach($this->_invalid as $k => $v)
+					foreach ($this->_invalid as $k => $v)
 					{
-						if($k != $f)
+						if ($k != $f)
 						{
 							unset($this->_invalid[$k]);
 						}
@@ -1214,32 +1235,41 @@ class MembersModelRegistration
 	{
 		$score = 0;
 
-		if ($username) {
-			if (strtolower($password) == strtolower($username)) {
+		if ($username)
+		{
+			if (strtolower($password) == strtolower($username))
+			{
 				return $score;
 			}
 		}
 
 		$seen = array();
 
-		for ( $i = 0 ; $i < strlen($password) ; $i++ )
+		for ($i = 0; $i < strlen($password); $i++)
 		{
 			$char = substr($password, $i, 1);
 
-			if (!isset($seen[$char])) {
+			if (!isset($seen[$char]))
+			{
 				$seen[$char] = 1;
-			} else {
+			}
+			else
+			{
 				$seen[$char]++;
 			}
 
-			if (is_numeric($char)) {
+			if (is_numeric($char))
+			{
 				$s = 16;
-			} else {
+			}
+			else
+			{
 				$s = 8;
 			}
 
-			if ($seen[$char] != 1) {
-				for ( $k = 1 ; $k < $seen[$char] ; $k++ )
+			if ($seen[$char] != 1)
+			{
+				for ($k = 1; $k < $seen[$char]; $k++)
 				{
 					$s = $s / 2;
 				}
@@ -1251,7 +1281,7 @@ class MembersModelRegistration
 
 		return $score;
 	}
-	
+
 	/**
 	 * Checks if username already exists
 	 *
@@ -1263,37 +1293,37 @@ class MembersModelRegistration
 		$ret['status'] = 'error';
 		if (empty($username)) 
 		{
-			$ret['message'] = 'Please enter a username.';	
+			$ret['message'] = 'Please enter a username.';
 			return $ret;
 		}
-		
+
 		// check the general validity
 		if (!MembersHelperUtility::validlogin($username)) 
 		{
-			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';	
+			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';
 			return $ret;
 		}
-				
+
 		// Initialize database
 		$db =  JFactory::getDBO();
 
 		$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
 		$db->setQuery($query);
 		$db->query();
-		
+
 		$num_rows = $db->getNumRows();
-		
-		if($num_rows > 0) 
+
+		if ($num_rows > 0) 
 		{
 			$ret['message'] = 'User login name is not available. Please select another one.';
 			return $ret;
 		}
-		
+
 		$ret['status'] = 'ok';
-		$ret['message'] = 'User login name is available';		
+		$ret['message'] = 'User login name is available';
 		return $ret;
 	}
-	
+
 	/**
 	 * Generates new available username based on email address
 	 *
@@ -1346,7 +1376,7 @@ class MembersModelRegistration
 		{
 			// Make sure login username is no longer than max allowed by DB
 			$numberLen = strlen($i);
-			
+
 			$login = substr($local, 0, $loginMaxLen - $numberLen) . $i;
 			$logincheck = self::checkusername($login);
 			if (MembersHelperUtility::validlogin($login) && $logincheck['status'] == 'ok')

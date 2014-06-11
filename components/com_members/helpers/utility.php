@@ -38,12 +38,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 class MembersHelperUtility
 {
 	/**
-	 * Short description for 'validateOrgType'
+	 * Validate organization type
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $org Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      string $org
+	 * @return     boolean 1 = valid, 0 = invalid
 	 */
 	public static function validateOrgType($org)
 	{
@@ -68,7 +66,7 @@ class MembersHelperUtility
 	{
 		$firstCharClass = ($allowNumericFirstCharacter) ? 'a-z0-9' : 'a-z';
 
-		if (preg_match("/^[".$firstCharClass."][_.a-z0-9]{1,31}$/", $login))
+		if (preg_match("/^[" . $firstCharClass . "][_.a-z0-9]{1,31}$/", $login))
 		{
 			if (self::is_positiveint($login))
 			{
@@ -86,12 +84,10 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'is_positiveint'
+	 * Check if an integer is positive
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      integer $x
+	 * @return     boolean 1 = valid, 0 = invalid
 	 */
 	public static function is_positiveint($x)
 	{
@@ -103,12 +99,10 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'validpassword'
+	 * Validate a password
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $password Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      unknown $password
+	 * @return     boolean 1 = valid, 0 = invalid
 	 */
 	public static function validpassword($password)
 	{
@@ -120,12 +114,10 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'validemail'
+	 * Validate an email address
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $email Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param      unknown $email
+	 * @return     boolean 1 = valid, 0 = invalid
 	 */
 	public static function validemail($email)
 	{
@@ -137,12 +129,10 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'validurl'
+	 * Validate a URL
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $url Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $url
+	 * @return     integer 1 = valid, 0 = invalid
 	 */
 	public static function validurl($url)
 	{
@@ -155,12 +145,10 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'validphone'
+	 * Validate a phone number
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $phone Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $phone
+	 * @return     integer 1 = valid, 0 = invalid
 	 */
 	public static function validphone($phone)
 	{
@@ -172,16 +160,29 @@ class MembersHelperUtility
 	}
 
 	/**
-	 * Short description for 'validtext'
+	 * Validate text
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param      string $text Text to validate
+	 * @return     integer 1 = valid, 0 = invalid
 	 */
 	public static function validtext($text)
 	{
 		if (!strchr($text, "	")) 
+		{
+			return(1);
+		}
+		return(0);
+	}
+
+	/**
+	 * Validate ORCID
+	 * 
+	 * @param      string $orcid ORCID
+	 * @return     integer 1 = valid, 0 = invalid
+	 */
+	public static function validorcid($orcid)
+	{
+		if (preg_match("/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/", $orcid))
 		{
 			return(1);
 		}

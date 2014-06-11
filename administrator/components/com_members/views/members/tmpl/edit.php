@@ -179,6 +179,10 @@ function submitbutton(pressbutton)
 				<input type="text" name="profile[organization]" id="field-organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" />
 			</div>
 			<div class="input-wrap">
+				<label for="field-url"><?php echo JText::_('ORCID'); ?>:</label><br />
+				<input type="text" name="profile[orcid]" id="field-orcid" value="<?php echo $this->escape(stripslashes($this->profile->get('orcid'))); ?>" />
+			</div>
+			<div class="input-wrap">
 				<label for="field-url"><?php echo JText::_('WEBSITE'); ?>:</label><br />
 				<input type="text" name="profile[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->profile->get('url'))); ?>" />
 			</div>

@@ -49,6 +49,7 @@ HUB.Members.Profile = {
 		//profile address section
 		HUB.Members.Profile.addresses();
 		HUB.Members.Profile.locateMe();
+		HUB.Members.Profile.fetchOrcid();
 	},
 	
 	//-------------------------------------------------------------
@@ -176,6 +177,7 @@ HUB.Members.Profile = {
 			data: form.serialize(),
 			success: function(data, status, xhr)
 			{
+				console.log(data);
 				//console.log(data); // Dump the raw data to see what's being returned
 				//parse the returned json data
 				var returned = jQuery.parseJSON(data);
@@ -770,18 +772,121 @@ HUB.Members.Profile = {
 			$('.member-address-form').find('#addressLongitude').val(longitude);
 		});
 	},
-	
+
 	locateMeGotError: function( error )
 	{
 		var $ = HUB.Members.Profile.jQuery;
-		
+
 		alert('Geo Location Error: ' + error.message);
+	},
+
+	fetchOrcidRecords: function()
+	{
+		var $ = this.jQuery;
+
+		var firstName = $('#first-name').val();
+		var lastName  = $('#last-name').val();
+		var email     = $('#email').val();
+
+		if (!firstName && !lastName) {
+			alert('Please fill at least one of the fields.');
+			return;
+		}
+
+		// return param: 1 means return ORCID to use to finish registration, assumes registration page
+		// return param: 0 means do not return ORCID, assumes profile page
+		var url = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&email=' + email + '&return=0';
+
+		$.ajax({
+			url: url,
+			type: 'GET',
+			success: function(data, status, jqXHR)
+			{
+				$('#section-orcid-results').html(jQuery.parseJSON(data));
+			}
+		});
+	},
+
+	fetchOrcid: function()
+	{
+		var $ = this.jQuery;
+
+		$('body').on('click', '#get-orcid-results', function(event) {
+			event.preventDefault();
+
+			HUB.Members.Profile.fetchOrcidRecords();
+		});
+	},
+
+	associateOrcid: function(parentField, orcid)
+	{
+		var url = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=associate&no_html=1&orcid=' + orcid;
+
+		$.ajax({
+			url: url,
+			type: 'GET',
+			success: function(data, status, jqXHR) {
+				var status =jQuery.parseJSON(data);
+
+				if (status) {
+					parent.jQuery.fancybox.close();
+				}
+			}
+		});
+	},
+
+	createOrcid: function(fname, lname, email)
+	{
+		var url = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email;
+
+		$.ajax({
+			url: url,
+			type: 'GET',
+			success: function(data, status, jqXHR) {
+				var orcid =jQuery.parseJSON(data);
+
+				if (orcid) {
+					alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
+					parent.jQuery.fancybox.close();
+				} else {
+					alert('Failed to create a new ORCID. Possible existence of an ORCID with the same email.');
+				}
+			}
+		});
 	}
-	
 };
 
 //-------------------------------------------------------------
 
 jQuery(document).ready(function($){
 	HUB.Members.Profile.initialize();
+
+	// Iframe method
+	$('#orcid-fetch').fancybox({
+		type: 'iframe',   // change this to 'ajax' if you want to use AJAX
+		width: 700,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		closeClick: false,
+		helpers: { 
+			overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
+		},
+		tpl: {
+			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+		},
+		beforeLoad: function() {
+			href = $(this).attr('href');
+			if (href.indexOf('?') == -1) {
+					href += '?tmpl=component';    // Change to no_html=1 if using AJAX
+			} else {
+					href += '&tmpl=component';    // Change to no_html=1 if using AJAX
+			}
+			$(this).attr('href', href);
+		},
+		afterClose: function() {
+			HUB.Members.Profile.editReloadSections();
+		}
+	});
 });

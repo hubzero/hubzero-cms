@@ -1,0 +1,65 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_members/assets/css/orcid.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_members ORCID CSS
+	-- -- -- -- -- -- --
+
+*/
+
+#component-body h3 {
+	margin: 0 0 1em 0;
+	padding: 0 0 0.2em 0;
+	border-bottom: 2px solid #ccc;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1)
+}
+#component-body fieldset {
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	padding: 1em;
+}
+#component-body fieldset legend {
+	margin: 0;
+	padding: 0 1em;
+}
+#component-body fieldset p {
+	margin-top: 0;
+	padding-top: 0;
+}
+#component-body fieldset label input {
+	width: 100%;
+}
+
+#component-body ul {
+	margin: 1em 0 1em 1.5em;
+}
+#component-body li {
+	margin: 0 0 1em 0;
+}
+
+/*#section-orcid-results {
+	border-top: 1px solid #ccc;
+	border-top: 1px solid rgba(0, 0, 0, 0.2);
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}*/
+
+.results {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.results li {
+	margin: 1em 0;
+}
+
+#component-body h4 {
+	font-weight: bold;
+	margin-top: 2em;
+}

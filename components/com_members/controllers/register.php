@@ -1018,6 +1018,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->view->registrationOptIn = $this->_registrationField('registrationOptIn','HHHH',$task);
 		$this->view->registrationCAPTCHA = $this->_registrationField('registrationCAPTCHA','HHHH',$task);
 		$this->view->registrationTOU = $this->_registrationField('registrationTOU','HHHH',$task);
+		$this->view->registrationORCID = $this->_registrationField('registrationORCID','OOOO',$task);
 
 		if ($this->view->task == 'update') 
 		{

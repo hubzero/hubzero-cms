@@ -496,11 +496,20 @@ HUB.Register = {
 				var timer = setTimeout('HUB.Register.checkLogin()',200);
 			});
 		}
+
+		if ($('#orcid').length > 0) {
+			$('#orcid-fetch').on('click', function(e) {
+				HUB.Register.showOrcid(this);
+				return false;
+			});
+		}
+
+		HUB.Register.fetchOrcid();
 	},
 
 	checkPass: function() {
 		var $ = HUB.Register.jQuery;
-		
+
 		if ($('#userlogin')) {
 			usernm = $('#userlogin').val();
 		}
@@ -510,21 +519,110 @@ HUB.Register = {
 			$('#meter-container').html(data);
 		});
 	},
-	
+
 	checkLogin: function() {
 		var $ = HUB.Register.jQuery;
-		var username = $('#userlogin').val();
-		var submitTo = $('#base_uri').val() + '/members/register/checkusername?userlogin=' + username;
+		var submitTo = $('#base_uri').val() + '/members/register/checkusername?userlogin=' + $('#userlogin').val();
 		var usernameStatus = $('#usernameStatus');
 
 		$.getJSON(submitTo, function(data) {
 			usernameStatus.html(data.message);
 			usernameStatus.removeClass('ok');
 			usernameStatus.removeClass('notok');
-			if(data.status == 'ok') {
+			if (data.status == 'ok') {
 				usernameStatus.addClass('ok');
 			} else {
 				usernameStatus.addClass('notok');
+			}
+		});
+	},
+
+	showOrcid: function(currentForm) {
+		var $ = this.jQuery;
+
+		$.fancybox({
+			type: 'iframe',   // change this to 'ajax' if you want to use AJAX
+			width: 700,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			closeClick: false,
+			helpers: { 
+				overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
+			},
+			tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				//href = $(this).attr('href');
+				href = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&return=1&fname=' + $('#first-name').val() + '&lname=' + $('#last-name').val()  + '&email=' + $('#email').val();
+				if (href.indexOf('?') == -1) {
+					href += '?tmpl=component';    // Change to no_html=1 if using AJAX
+				} else {
+					href += '&tmpl=component';    // Change to no_html=1 if using AJAX
+				}
+				$(this).attr('href', href);
+			}/*,
+			afterClose: function() {
+				currentForm.submit();
+			}*/
+		});
+	},
+	
+	fetchOrcidRecords: function() {
+		var $ = this.jQuery;
+
+		var firstName = $('#first-name').val();
+		var lastName = $('#last-name').val();
+		var email = $('#email').val();
+
+		if (!firstName && !lastName) {
+			alert('Please fill at least one of the fields.');
+			return;
+		}
+
+		// return param: 1 means return ORCID to use to finish registration, assumes registration page
+		// return param: 0 means do not return ORCID, assumes profile page
+		$.ajax({
+			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&email=' + email + '&return=1',
+			type: 'GET',
+			success: function(data, status, jqXHR) {
+				$('#section-orcid-results').html(jQuery.parseJSON(data));
+			}
+		});
+	},
+
+	fetchOrcid: function() {
+		var $ = this.jQuery;
+
+		$('body').on('click', '#get-orcid-results', function(event) {
+			event.preventDefault();
+
+			HUB.Register.fetchOrcidRecords();
+		});
+	},
+
+	associateOrcid: function(parentField, orcid) {
+		window.top.document.getElementById('orcid').value = orcid;
+
+		parent.jQuery.fancybox.close();
+	},
+
+	createOrcid: function(fname, lname, email) {
+		$.ajax({
+			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email,
+			type: 'GET',
+			success: function(data, status, jqXHR) {
+				var orcid =jQuery.parseJSON(data);
+
+				if (orcid) {
+					alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
+					window.parent.document.getElementById('orcid').value = orcid;
+					parent.jQuery.fancybox.close();
+				} else {
+					alert('Failed to create a new ORCID. Possible existence of an ORCID with the same email.');
+				}
 			}
 		});
 	}

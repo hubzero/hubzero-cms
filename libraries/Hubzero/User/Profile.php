@@ -307,9 +307,15 @@ class Profile extends Object
 	 * @var unknown
 	 */
 	private $note = null;
-	
+
+	/**
+	 * Description for 'orcid'
+	 *
+	 * @var object
+	 */
+	private $orcid = null;
+
 	// multi-value properties stored in auxilliary tables
-	
 
 	/**
 	 * Description for '_auxs_bio'
@@ -559,7 +565,7 @@ class Profile extends Object
 	 */
 	private function _xregistration_load($registration)
 	{
-		static $_propertyregmap = array('username'=>'login', 'name'=>'name', 'email'=>'email', 'orgtype'=>'orgtype', 'organization'=>'org', 'countryresident'=>'countryresident', 'countryorigin'=>'countryorigin', 'gender'=>'sex', 'url'=>'web', 'reason'=>'reason', 'mailPreferenceOption'=>'mailPreferenceOption', 'usageAgreement'=>'usageAgreement', 'nativeTribe'=>'nativeTribe', 'phone'=>'phone', 'disability'=>'disability', 'hispanic'=>'hispanic', 'race'=>'race', 'admin'=>'admin', 'host'=>'host', 'edulevel'=>'edulevel', 'role'=>'role', 'givenName'=>'givenName', 'middleName'=>'middleName', 'surname'=>'surname');
+		static $_propertyregmap = array('username'=>'login', 'name'=>'name', 'email'=>'email', 'orcid'=>'orcid', 'orgtype'=>'orgtype', 'organization'=>'org', 'countryresident'=>'countryresident', 'countryorigin'=>'countryorigin', 'gender'=>'sex', 'url'=>'web', 'reason'=>'reason', 'mailPreferenceOption'=>'mailPreferenceOption', 'usageAgreement'=>'usageAgreement', 'nativeTribe'=>'nativeTribe', 'phone'=>'phone', 'disability'=>'disability', 'hispanic'=>'hispanic', 'race'=>'race', 'admin'=>'admin', 'host'=>'host', 'edulevel'=>'edulevel', 'role'=>'role', 'givenName'=>'givenName', 'middleName'=>'middleName', 'surname'=>'surname');
 		
 		if (!is_object($registration))
 		{
@@ -595,7 +601,7 @@ class Profile extends Object
 			return false;
 		}
 		
-		$keys = array('email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName');
+		$keys = array('email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName', 'orcid');
 		
 		foreach ($keys as $key)
 		{

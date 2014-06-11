@@ -141,6 +141,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$registration->Reason       = $this->_registrationField('registrationReason','HHHH','edit');
 		$registration->OptIn        = $this->_registrationField('registrationOptIn','HHHH','edit');
 		$registration->address      = $this->_registrationField('registrationAddress','OOOO','edit');
+		$registration->ORCID        = $this->_registrationField('registrationORCID','OOOO','edit');
 
 		//get member params
 		$rparams = new JRegistry($this->member->get('params'));
@@ -281,7 +282,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			'Race'			=> 'race',
 			'Bio'			=> 'bio',
 			'Interests' 	=> 'tags',
-			'OptIn' 		=> 'mailPreferenceOption'
+			'OptIn' 		=> 'mailPreferenceOption',
+			'ORCID'			=> 'orcid'
 		);
 
 		//unset errors from the fields object

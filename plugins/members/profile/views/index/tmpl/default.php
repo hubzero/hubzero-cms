@@ -433,10 +433,75 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			<?php endif; ?>
 		<?php endif; ?>
 
+		<?php if ($this->registration->ORCID != REG_HIDE) : ?>
+			<?php if ($this->params->get('access_orcid') == 0 
+			 		|| ($this->params->get('access_orcid') == 1 && $loggedin) 
+			 		|| ($this->params->get('access_orcid') == 2 && $isUser)
+				) : ?>
+					<?php
+						$cls = '';
+						if ($this->params->get('access_orcid') == 2) 
+						{
+							$cls .= 'private';
+						}
+						if ($this->profile->get('orcid') == '' || is_null($this->profile->get('orcid')))
+						{
+							$cls .= ($isUser) ? ' hidden' : ' hide';
+						}
+						if (isset($update_missing) && in_array('orcid', array_keys($update_missing))) 
+						{
+							$cls = str_replace(' hide', '', $cls);
+							$cls .= ' missing';
+						}
+					?>
+				<li class="profile-web section <?php echo $cls; ?>">
+					<div class="section-content">
+						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_ORCID'); ?></div>
+						<?php
+							$url = ($this->profile->get('orcid')) ? '<a class="orcid" rel="external" href="http://orcid.org/' . $this->profile->get('orcid') . '">' . $this->profile->get('orcid') . '</a>' : JText::_('PLG_MEMBERS_PROFILE_ORCID_ENTER');
+						?>
+						<div class="value"><?php echo $url; ?></div>
+						<br class="clear" />
+						<?php
+							$this->view('default', 'edit')
+							     ->set('registration_field', 'orcid')
+							     ->set('profile_field', 'orcid')
+							     ->set('registration', $this->registration->ORCID)
+							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ORCID'))
+							     ->set('profile', $this->profile)
+							     ->set('isUser', $isUser)
+							     ->set('inputs', '<div class="grid">
+				<div class="col span9">
+					<label>
+						' . JText::_('PLG_MEMBERS_PROFILE_ORCID') . '
+						<input type="text" class="input-text" name="orcid" id="orcid" value="'. $this->escape($this->profile->get('orcid')) .'" />
+						<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(JURI::base(true), '/') . '" />
+					</label>
+				</div>
+				<div class="col span3 omega">
+					<a class="btn icon-search" id="orcid-fetch" href="' . JRoute::_('index.php?option=com_members&controller=orcid') . '">' . JText::_('PLG_MEMBERS_PROFILE_ORCID_FIND') . '</a>
+				</div>
+			</div>
+			<p>' . JText::_('PLG_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>')
+							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[orcid]', $this->params->get('access_orcid'),'input-select') . '</label>')
+							     ->display();
+						?>
+					</div>
+					<?php if ($isUser) : ?>
+						<div class="section-edit">
+							<a class="edit-profile-section" href="#">
+								<?php echo JText::_('PLG_MEMBERS_PROFILE_EDIT'); ?>
+							</a>
+						</div>
+					<?php endif; ?>
+				</li>
+			<?php endif; ?>
+		<?php endif; ?>
+
 		<?php if ($this->registration->URL != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_url') == 0 
-			 		|| ($this->params->get('access_url') == 1 && $loggedin) 
-			 		|| ($this->params->get('access_url') == 2 && $isUser)
+					|| ($this->params->get('access_url') == 1 && $loggedin) 
+					|| ($this->params->get('access_url') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';

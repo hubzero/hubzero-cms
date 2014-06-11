@@ -176,6 +176,26 @@ if ($this->registration->Email != REG_HIDE
 	}
 }
 
+if ($this->registration->ORCID != REG_HIDE) {
+	$required = ($this->registration->ORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
+	$message = (!empty($this->xregistration->_invalid['orcid'])) ? '<p class="error">' . $this->xregistration->_invalid['orcid']) . '</p>' : '';
+	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
+
+	$html .= '<div class="grid">
+				<div class="col span9">
+					<label'.$fieldclass.'>' . 
+						JText::_('ORCID').': '.$required. '
+						<input type="text" name="orcid" value="'. $this->escape(stripslashes($this->profile->get('orcid'))) .'" />
+						' . $message . '
+					</label>
+				</div>
+				<div class="col span3 omega">
+					<a class="btn icon-search" id="orcid-fetch" href="' . JRoute::_('index.php?option=' . $this->option . '&controller=orcid') . '">' . JText::_('Find your ID') . '</a>
+				</div>
+			</div>
+			<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and supports automated linkages between you and your professional activities ensuring that your work is recognized. <a rel="external" href="http://orcid.org">Find out more.</a></p>'."\n";
+}
+
 if ($this->registration->URL != REG_HIDE) {
 	$required = ($this->registration->URL == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
 	$message = (!empty($this->xregistration->_invalid['web'])) ? '<p class="error">' . $this->xregistration->_invalid['web'] . '</p>' : '';
@@ -183,7 +203,7 @@ if ($this->registration->URL != REG_HIDE) {
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".JText::_('WEBSITE').': '.$required."\n";
-	$html .= "\t\t\t".'<input type="text" name="web" value="'. stripslashes($this->profile->get('url')) .'" /></td>'."\n";
+	$html .= "\t\t\t".'<input type="text" name="web" value="'. $this->escape(stripslashes($this->profile->get('url'))) .'" />'."\n";
 	$html .= $message;
 	$html .= "\t\t".'</label>'."\n";
 }
@@ -195,7 +215,7 @@ if ($this->registration->Phone != REG_HIDE) {
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".JText::_('Phone').': '.$required."\n";
-	$html .= "\t\t\t".'<input type="text" name="phone" value="'. stripslashes($this->profile->get('phone')) .'" /></td>'."\n";
+	$html .= "\t\t\t".'<input type="text" name="phone" value="'. $this->escape(stripslashes($this->profile->get('phone'))) .'" />'."\n";
 	$html .= $message;
 	$html .= "\t\t".'</label>'."\n";
 }

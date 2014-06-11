@@ -362,6 +362,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		{
 			$profile->set('vip',0);
 		}
+		$profile->set('orcid', trim($p['orcid']));
 		$profile->set('url', trim($p['url']));
 		$profile->set('phone', trim($p['phone']));
 		$profile->set('orgtype', trim($p['orgtype']));

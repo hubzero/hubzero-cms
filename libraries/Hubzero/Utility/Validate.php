@@ -234,6 +234,21 @@ class Validate
 	}
 
 	/**
+	 * Validate ORCID
+	 * 
+	 * @param      string $orcid ORCID to validate
+	 * @return     boolean True if valid, false if invalid
+	 */
+	public static function orcid($orcid)
+	{
+		if (preg_match('#^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$#i', $orcid)) 
+		{
+			return true;
+		} 
+		return false;
+	}
+
+	/**
 	 * Check if a username is valid.
 	 * 
 	 * - Check if the username contains any invalid characters
