@@ -359,6 +359,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			}
 
 			// save version settings
+			// dont run check on version store, skips onContentBeforeSave in Html format hadler
 			if (!$this->version->store(false, $this->group->isSuperGroup()))
 			{
 				$this->setNotification($this->version->getError(), 'error');
