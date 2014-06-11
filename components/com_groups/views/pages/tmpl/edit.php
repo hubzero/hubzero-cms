@@ -129,7 +129,8 @@ if ($this->page->get('id'))
 								'startupMode'                 => $startupMode,
 								'sourceViewButton'            => $showSourceBtn,
 								'contentCss'                  => $this->stylesheets,
-								'autoGrowMinHeight'           => 500,
+								//'autoGrowMinHeight'           => 500,
+								'height'                      => '500px',
 								'fileBrowserWindowWidth'      => 1200,
 								'fileBrowserBrowseUrl'        => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
 								'fileBrowserImageBrowseUrl'   => JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component'),
@@ -148,7 +149,7 @@ if ($this->page->get('id'))
 							// display with ckeditor
 							jimport( 'joomla.html.editor' );
 							$editor = new JEditor( 'ckeditor' );
-							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '100px', 0, 0, false, 'pagecontent', null, null, $config);
+							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
 						
 					</label>

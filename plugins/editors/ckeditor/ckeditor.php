@@ -306,6 +306,7 @@ class plgEditorCkeditor extends JPlugin
 		$config                                = new stdClass;
 		$config->startupMode                   = 'wysiwyg';
 		$config->tabSpaces                     = 4;
+		$config->height                        = '200px';
 		$config->hubzeroAutogrow_autoStart     = true;
 		$config->hubzeroAutogrow_minHeight     = 200;
 		$config->hubzeroAutogrow_maxHeight     = 1000;
@@ -385,6 +386,12 @@ class plgEditorCkeditor extends JPlugin
 		{
 			array_unshift($config->toolbar[0], 'Source', '-');
 			$config->extraPlugins .= ',codemirror';
+		}
+
+		// height
+		if ($this->params->get('height'))
+		{
+			$config->height = $this->params->get('height', '200px');
 		}
 
 		// // autogrow auto-start
