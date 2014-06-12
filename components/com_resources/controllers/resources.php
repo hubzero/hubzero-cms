@@ -1165,14 +1165,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Make sure they have access to view this resource
 		if ($this->checkGroupAccess($this->model->resource)) 
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
-			return;
-		}
-
-		// Make sure they have access to view this resource
-		if ($this->checkGroupAccess($this->model->resource)) 
-		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			JError::raiseError(403, JText::sprintf('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
 			return;
 		}
 
