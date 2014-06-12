@@ -30,7 +30,7 @@
 		margin: 1em 0;
 		border: 1px solid #CCC;
 		padding: 1em;
-		background: #FFFFFF;
+		background: #f5fbfc;
 		border: 1px solid #dae6ec;
 	}
 	#link-preview h5 {
@@ -109,4 +109,8 @@
 		display: block;
 		padding: 1em 0;
 		text-align: center;
+	}
+	.link-preview p {
+		font-style: italic;
+		font-size: 1em;
 	}

@@ -38,7 +38,55 @@ HUB.ProjectLinksSelect = {
 				
 		// Enable save button
 		HUB.ProjectLinksSelect.enableButton();
-		HUB.ProjectLinksSelect.enableSave();				
+		HUB.ProjectLinksSelect.enableSave();
+		
+		// Link to add citation manually
+		HUB.ProjectLinksSelect.newCite();	
+		
+		// Enable adding new citation
+		HUB.ProjectLinksSelect.enableAdd();	
+		
+		if ($('#cancel-action')) {
+			$('#cancel-action').on('click', function(e) {
+				$.fancybox.close();
+			});
+		}		
+	},
+	
+	newCite: function()
+	{
+		var $ = this.jQuery;
+		
+		var link = $('#newcite-question');
+		var abox = $('#abox-content-wrap');
+		
+		if (!link.length)
+		{
+			return false;
+		}
+		
+		var url = link.attr('href');
+		var url = url + '&ajax=1&no_html=1';
+		
+		link.on('click', function(e) 
+		{
+			e.preventDefault();
+			
+			// Ajax call to get current status of a block
+			$.post(url, {}, 
+			function (response) 
+			{
+				if (response)
+				{
+					$(abox).html(response);
+				}
+
+				// Re-enable js
+				jQuery(document).trigger('ajaxLoad');
+
+			});
+			
+		});		
 	},
 
 	enableSave: function()
@@ -201,7 +249,7 @@ HUB.ProjectLinksSelect = {
 		{
 			$(preview).after('<div id="link-loading" class="notice"></div>'); 
 			$(preview).before('<div id="link-content">' + $(input).val() + '</div>');
-			$('#link-loading').after('<div id="link-preview"></div>'); 
+			$('#link-loading').after('<div id="link-preview" class="link-preview"></div>'); 
 			
 			HUB.ProjectLinksSelect.showElement($('#link-loading'), 'hide');			
 		}
@@ -224,11 +272,12 @@ HUB.ProjectLinksSelect = {
 		}
 		
 		var projectid = $('#projectid').length ? $('#projectid').val() : 0;
-				
+		var parseUrl  = $('#parseurl').length ? $('#parseurl').val() : "/projects/" + projectid + "/links/";
+
 		// Show selected link
 		if ($(input).val())
 		{									
-			$.post("/projects/" + projectid + "/links/?action=" + action + "&no_html=1&ajax=1&url="+escape($(input).val()), {}, 
+			$.post(parseUrl + "?active=links&action=" + action + "&no_html=1&ajax=1&url="+escape($(input).val()), {}, 
 				function (response) {
 					
 				response = $.parseJSON(response);
@@ -355,6 +404,61 @@ HUB.ProjectLinksSelect = {
 		{
 			con.addClass('disabled');
 		}
+	},
+	
+	enableAdd: function()
+	{
+		var $ = this.jQuery;
+		var btn  		= $('#b-add');
+		var form 		= $('#add-cite');
+		var statusBox 	= $('#status-box');
+		
+		if (!btn.length || !form.length)
+		{
+			return false;
+		}
+		
+		// Send data
+		btn.on('click', function(e) 
+		{
+			e.preventDefault();
+
+			var passed = HUB.ProjectLinksSelect.checkRequired();
+				
+			if (passed == false)
+			{
+				statusBox.html('<p class="status-error">Please make sure all fields are filled</p>');
+				HUB.ProjectLinksSelect.fadeMessage();
+			}
+			else
+			{
+				form.submit();
+			}
+			
+		});		
+	},
+	
+	checkRequired: function () 
+	{	
+		var $ = this.jQuery;
+		var success = true;
+		
+		var fields = $('.inputrequired');
+		
+		if (fields.length == 0)
+		{
+			return true;
+		}
+		
+		fields.each(function(i, item)  
+		{
+			if (!$(item).val() || $(item).val() == '')
+			{
+				success = false;
+			}
+		});
+
+		return success;
 	},
 	
 	showElement: function(area, action)

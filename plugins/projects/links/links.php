@@ -131,7 +131,8 @@ class plgProjectsLinks extends JPlugin
 			}
 		}
 		
-		$tasks = array('browser', 'select' , 'parseurl', 'parsedoi', 'addcitation', 'deletecitation');
+		$tasks = array('browser', 'select' , 'parseurl', 
+			'parsedoi', 'addcitation', 'deletecitation', 'newcite');
 						
 		// Publishing?
 		if ( in_array($this->_task, $tasks) )
@@ -175,6 +176,7 @@ class plgProjectsLinks extends JPlugin
 					break;	
 					
 				case 'select':
+				case 'newcite':
 					$html = $this->select(); 
 					break;
 							
@@ -220,37 +222,12 @@ class plgProjectsLinks extends JPlugin
 				
 		// Remove citation
 		if (!$this->getError())
-		{
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-				. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
-				. DS . 'helpers' . DS . 'format.php' );	
-				
-			$c 		= new CitationsCitation( $this->_database );
-			$assoc 	= new CitationsAssociation($this->_database);
-			
-			// Fetch all associations
-			$aPubs = $assoc->getRecords(array('cid' => $cid));
-			
-			// Remove citation if only one association
-			if (count($aPubs) == 1)
+		{	
+			// Unattach citation
+			if ($this->unattachCitation($pid, $cid ))
 			{
-				// Delete the citation
-				$c->delete($cid);
+				$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_DELETED');
 			}
-			
-			// Remove association
-			foreach ($aPubs as $aPub)
-			{
-				if ($aPub->oid == $pid && $aPub->tbl = 'publication')
-				{
-					$assoc->delete($aPub->id);	
-				}
-			}
-			
-			$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_DELETED');
 		}
 		
 		// Pass success or error message
@@ -297,28 +274,152 @@ class plgProjectsLinks extends JPlugin
 		$doi   		= count($parts) > 1 ? $parts[1] : $url;
 		$format		= $this->_pubconfig->get('citation_format', 'apa');
 		
+		// Attach citation
+		if ($this->attachCitation($pid, $doi, $format, $this->_uid ))
+		{
+			$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_SAVED');
+		}
+		
+		// Pass success or error message
+		if ($this->getError()) 
+		{
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+		}
+		elseif (isset($this->_msg) && $this->_msg) 
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
+		
+		// Build pub url
+		$route = $this->_project->provisioned 
+			? 'index.php?option=com_publications' . a . 'task=submit'
+			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias 
+				. a . 'active=publications';
+		$url = JRoute::_($route . a . 'pid=' . $pid).'/?version=' . $version . '&section=citations';
+
+		$this->_referer = $url;
+		return;
+	}
+	
+	/**
+	 * Remove citation
+	 * 
+	 * @return   boolean
+	 */
+	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false) 
+	{
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
 			. DS . 'helpers' . DS . 'format.php' );
+			
+		if (!$cid || !$pid)
+		{
+			$this->setError( JText::_('PLG_PROJECTS_LINKS_NO_DOI') );
+			
+			if ($returnStatus)
+			{
+				$out['error'] = $this->getError();
+				return $out;
+			}
+			return false;
+		}
+		
+		$database = JFactory::getDBO();
+		$c 		  = new CitationsCitation( $database );		
+		$assoc 	  = new CitationsAssociation($database);
+		
+		// Fetch all associations
+		$aPubs = $assoc->getRecords(array('cid' => $cid));
+		
+		// Remove citation if only one association
+		if (count($aPubs) == 1)
+		{
+			// Delete the citation
+			$c->delete($cid);
+		}
+		
+		// Remove association
+		foreach ($aPubs as $aPub)
+		{
+			if ($aPub->oid == $pid && $aPub->tbl = 'publication')
+			{
+				$assoc->delete($aPub->id);	
+			}
+		}
+		
+		if ($returnStatus)
+		{
+			$out['success'] = true;
+			return $out;
+		}
 				
-		$c 		= new CitationsCitation( $this->_database );
+		return true;		
+	}
+	
+	/**
+	 * Attach citation
+	 * 
+	 * @return   boolean
+	 */
+	public function attachCitation($pid = 0, $doi = NULL, $format = 'apa', 
+		$actor = 0, $returnStatus = false) 
+	{
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
+			. DS . 'helpers' . DS . 'format.php' );
+		
+		$out = array('error' => NULL, 'success' => NULL );
+			
+		if (!$doi || !$pid)
+		{
+			$this->setError( JText::_('PLG_PROJECTS_LINKS_NO_DOI') );
+			
+			if ($returnStatus)
+			{
+				$out['error'] = $this->getError();
+				return $out;
+			}
+			return false;
+		}
+		
+		$database = JFactory::getDBO();
+		$c 		  = new CitationsCitation( $database );
 		
 		if ($c->loadPubCitation($doi, $pid)) 
 		{
 			$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED') );
+			
+			if ($returnStatus)
+			{
+				$out['error'] = $this->getError();
+				return $out;
+			}
+			
+			return false;
 		}
 		else
 		{	
 			// Get DOI preview
-			$output = $this->parseUrl($doi, true, true, $format);
+			$output = self::parseUrl($doi, true, true, $format);
 			$output = json_decode($output);
 			
 			if (isset($output->error) && $output->error)
 			{
 				$this->setError( $output->error );
+				
+				if ($returnStatus)
+				{
+					$out['error'] = $this->getError();
+					return $out;
+				}
+				
+				return false;
 			}
 			elseif (isset($output->preview) && $output->preview)
 			{								
@@ -327,7 +428,7 @@ class plgProjectsLinks extends JPlugin
 				{
 					$c->created 	= JFactory::getDate()->toSql();
 					$c->title   	= $doi;
-					$c->uid			= $this->_uid;
+					$c->uid			= $actor;
 					$c->affiliated 	= 1;
 				}
 				$c->formatted 		= $output->preview;
@@ -356,12 +457,20 @@ class plgProjectsLinks extends JPlugin
 				if (!$c->store())
 				{
 					$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_ERROR_SAVE') );
+					
+					if ($returnStatus)
+					{
+						$out['error'] = $this->getError();
+						return $out;
+					}
+					
+					return false;
 				}
 				
 				// Create association
 				if ($c->id)
 				{
-					$assoc 		 = new CitationsAssociation($this->_database);
+					$assoc 		 = new CitationsAssociation($database);
 					$assoc->oid  = $pid;
 					$assoc->tbl  = 'publication';
 					$assoc->type = 'owner';
@@ -370,38 +479,38 @@ class plgProjectsLinks extends JPlugin
 					// Store new content
 					if (!$assoc->store()) 
 					{
-						JError::raiseError(500, $assoc->getError());
-						return;
+						$this->setError($assoc->getError());
+						if ($returnStatus)
+						{
+							$out['error'] = $this->getError();
+							return $out;
+						}
+						
+						return false;
 					}							
-				}
-								
-				$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_SAVED');								
+				}								
 			}
 			else
 			{
 				$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_COULD_NOT_LOAD') );
-			}			
-		}	
 				
-		// Pass success or error message
-		if ($this->getError()) 
-		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg) 
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+				if ($returnStatus)
+				{
+					$out['error'] = $this->getError();
+					return $out;
+				}
+				
+				return false;
+			}			
 		}
 		
-		// Build pub url
-		$route = $this->_project->provisioned 
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias 
-				. a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid).'/?version=' . $version . '&section=citations';
-
-		$this->_referer = $url;
-		return;
+		if ($returnStatus)
+		{
+			$out['success'] = true;
+			return $out;
+		}
+				
+		return true;		
 	}
 	
 	/**
@@ -420,19 +529,22 @@ class plgProjectsLinks extends JPlugin
 		
 		// Parse props for curation
 		$parts   = explode('-', $props);
-		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'content';
+		$block   = isset($parts[0]) ? $parts[0] : 'content';
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 		
 		// Provisioned project?
 		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
+		
+		$layout = $this->_task == 'newcite' ? 'edit' : 'default';
 				
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'links',
-				'name'		=>'selector'
+				'name'		=>'selector',
+				'layout'	=> $layout
 			)
 		);
 		
@@ -502,6 +614,25 @@ class plgProjectsLinks extends JPlugin
 			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' 
 				. DS . 'css' . DS . 'selector.css');	
+		}
+		
+		if ($this->_task == 'newcite')
+		{			
+			// Incoming
+			$cid    = JRequest::getInt( 'cid', 0 );
+			
+			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
+			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+			
+			// Load the object
+			$view->row = new CitationsCitation($this->_database);
+			$view->row->load($cid);
+						
+			// get the citation types
+			$ct = new CitationsType($this->_database);
+			$view->types = $ct->getType();
 		}
 		
 		$view->option 		= $this->_option;

@@ -180,7 +180,7 @@ HUB.ProjectLinks = {
 					}
 					else if ( type == 'citations')
 					{
-						$('#link-preview').after('<p class="submit-citation" id="submit-citation"><input type="submit" value="Add citation" /></p>'); 
+						$('#link-preview').after('<p class="submit-citation" id="submit-citation"><input type="submit" class="btn" value="Add citation" /></p>'); 
 					}																	
 				}
 				else
