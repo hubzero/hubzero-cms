@@ -255,6 +255,8 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	{				
 		$cite = JRequest::getVar('cite', array(), 'post', 'none', 2);
 		
+		$new  = $cite['id'] ? false : true;
+		
 		if (!$cite['type'] || !$cite['title'])
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
@@ -268,8 +270,9 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			return false;
 		}
 		
-		$citation->created 	= JFactory::getDate()->toSql();
-		$citation->uid		= $actor;
+		$citation->created 		= $new ? JFactory::getDate()->toSql() : $citation->created;
+		$citation->uid			= $new ? $actor : $citation->uid;
+		$citation->published	= 1;
 		
 		if (!$citation->store(true)) 
 		{
@@ -279,7 +282,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		}
 		
 		// Create association
-		if ($citation->id)
+		if ($new == true && $citation->id)
 		{
 			$assoc 		 = new CitationsAssociation( $this->_parent->_db );
 			$assoc->oid  = $pub->id;

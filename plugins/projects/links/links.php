@@ -178,8 +178,7 @@ class plgProjectsLinks extends JPlugin
 				case 'select':
 				case 'newcite':
 					$html = $this->select(); 
-					break;
-							
+					break;							
 			}
 			
 			$arr = array(
@@ -371,6 +370,8 @@ class plgProjectsLinks extends JPlugin
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
 			. DS . 'helpers' . DS . 'format.php' );
 		
@@ -452,6 +453,44 @@ class plgProjectsLinks extends JPlugin
 					
 					// Some extra mapping hacks
 					$c->pages = $data->page;
+					
+					// Get type ID					
+					$ct = new CitationsType($database);
+					$types = $ct->getType();
+					$dType = isset($data->type) ? $data->type : 'article';
+					
+					// Hub types don't match library types
+					// Trying to match the best we can 
+					$validTypes = array();
+					foreach ($types as $type)
+					{
+						if ($type['type'] == $dType)
+						{
+							$c->type = $type['id'];
+						}
+						elseif ($type['type'] == 'article' )
+						{
+							$validTypes['journal-article'] = $type['id'];
+						}
+						elseif ($type['type'] == 'chapter')
+						{
+							$validTypes['book-chapter'] = $type['id'];
+						}
+						elseif ($type['type'] == 'inproceedings')
+						{
+							$validTypes['proceedings'] = $type['id'];
+						}
+					}	
+					
+					if (isset($validTypes[$dType]))
+					{
+						$c->type = $validTypes[$dType];
+					}
+					elseif (!intval($c->type))
+					{
+						// Default to article
+						$c->type = $validTypes['journal-article'];
+					}			
 				}
 				
 				if (!$c->store())
@@ -987,7 +1026,7 @@ class plgProjectsLinks extends JPlugin
 		$status 		= curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$contenttype 	= curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 		curl_close($ch);
-
+		
 		// Error
 		if ( $status != 200 ) 
 		{
@@ -996,8 +1035,9 @@ class plgProjectsLinks extends JPlugin
 		}
 
 		// Error - redirected instead of printing metadata
-		if ($contenttype == "text/html; charset=utf-8")
+		if (strpos($contenttype, 'text/html;') !== false)
 		{
+			$this->setError(JText::_('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
 			return;
 		}
 		

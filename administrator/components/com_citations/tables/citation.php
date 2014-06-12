@@ -405,14 +405,14 @@ class CitationsCitation extends JTable
 	 * 
 	 * @var unknown
 	 */
-	var $badges				= NULL;
+//	var $badges				= NULL;
 
 	/**
 	 * Description for 'tags'
 	 * 
 	 * @var unknown
 	 */
-	var $tags				= NULL;
+//	var $tags				= NULL;
 	
 	/**
 	 * Description for 'params'
