@@ -211,7 +211,7 @@ jQuery(document).ready(function($){
 			<div class="input-wrap">
 				<label for="field-event"><?php echo JText::_('COM_CRON_FIELD_EVENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<select name="fields[event]" id="field-event">
-					<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Select...'); ?></option>
+					<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_SELECT'); ?></option>
 					<?php
 						if ($this->plugins)
 						{

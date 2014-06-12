@@ -155,114 +155,114 @@ HUBzero is a registered trademark of Purdue University.
 		</fields>
 	</config>
 	<params group="ticketpending">
-		<param name="support_ticketpending_new" type="list" default="0" label="Has status: New" description="Ticket is open and new (no action taken yet).">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketpending_new" type="list" default="0" label="PLG_CRON_SUPPORT_TICKETPENDING_NEW_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_NEW_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketpending_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketpending_waiting" type="list" default="1" label="PLG_CRON_SUPPORT_TICKETPENDING_WAITING_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_WAITING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketpending_accepted" type="list" default="0" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketpending_accepted" type="list" default="0" label="PLG_CRON_SUPPORT_TICKETPENDING_ACCEPTED_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_ACCEPTED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketpending_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-			<option value="all">All</option>
-			<option value="critical,major">High</option>
-			<option value="normal">Normal</option>
-			<option value="minor,trivial">Low</option>
+		<param name="support_ticketpending_severity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETPENDING_SEVERITY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_SEVERITY_DESC">
+			<option value="all">PLG_CRON_SUPPORT_ALL</option>
+			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 		</param>
-		<param name="support_ticketpending_activity" type="list" default="-2week" label="Last activity" description="When the last activity on the ticket was.">
+		<param name="support_ticketpending_activity" type="list" default="-2week" label="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_ACTIVITY_DESC">
 			<option value="all">--</option>
-			<option value="-day">Older than 1 day</option>
-			<option value="-week">Older than 1 week</option>
-			<option value="-2week">Older than 2 weeks</option>
-			<option value="-3week">Older than 3 weeks</option>
-			<option value="-month">Older than 1 month</option>
-			<option value="-6month">Older than 6 months</option>
-			<option value="-year">Older than 1 year</option>
+			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+			<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+			<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+			<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+			<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+			<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+			<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
 		</param>
-		<param name="support_ticketpending_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
-		<param name="support_ticketpending_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
-			<option value="0">all</option>
-			<option value="1">no</option>
-			<option value="2">yes</option>
+		<param name="support_ticketpending_group" type="text" menu="hide" label="PLG_CRON_SUPPORT_TICKETPENDING_GROUP_LABEL" default="" description="PLG_CRON_SUPPORT_TICKETPENDING_GROUP_DESC" />
+		<param name="support_ticketpending_owned" type="list" default="0" label="PLG_CRON_SUPPORT_TICKETPENDING_OWNED_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_OWNED_DESC">
+			<option value="0">PLG_CRON_SUPPORT_ALL</option>
+			<option value="1">JNO</option>
+			<option value="2">JYES</option>
 		</param>
-		<param name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
-		<param name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
-		<param name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
-		<param name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
-		<param name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="pendingreview" label="Include tickets tagged with" description="A comma-separated list of tags." />
+		<param name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_OWNERS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_OWNERS_DESC" />
+		<param name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_SUBMITTERS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_SUBMITTERS_DESC" />
+		<param name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_DESC" />
+		<param name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_DESC" />
+		<param name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="pendingreview" label="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_DESC" />
 	</params>
 	<params group="ticketreminder">
-		<param name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-			<option value="all">All</option>
-			<option value="critical,major">High</option>
-			<option value="normal">Normal</option>
-			<option value="minor,trivial">Low</option>
+		<param name="support_ticketreminder_severity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_LABEL" description="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_DESC">
+			<option value="all">PLG_CRON_SUPPORT_ALL</option>
+			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 		</param>
-		<param name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
+		<param name="support_ticketreminder_group" type="text" menu="hide" label="PLG_CRON_SUPPORT_TICKETREMINDER_GROUP_LABEL" default="" description="PLG_CRON_SUPPORT_TICKETREMINDER_GROUP_DESC" />
 	</params>
 	<params group="ticketlist">
-		<param name="support_ticketlist_open" type="list" default="1" label="Open/Closed" description="Ticket is open or closed.">
-			<option value="1">Open</option>
-			<option value="0">Closed</option>
+		<param name="support_ticketlist_open" type="list" default="1" label="PLG_CRON_SUPPORT_TICKETLIST_OPEN_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_OPEN_DESC">
+			<option value="1">PLG_CRON_SUPPORT_OPEN</option>
+			<option value="0">PLG_CRON_SUPPORT_CLOSED</option>
 		</param>
-		<param name="support_ticketlist_new" type="list" default="1" label="Has status: New" description="Ticket is open and new (no action taken yet).">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketlist_new" type="list" default="1" label="PLG_CRON_SUPPORT_TICKETLIST_NEW_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_NEW_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketlist_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketlist_waiting" type="list" default="1" label="PLG_CRON_SUPPORT_TICKETLIST_WAITING_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_WAITING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketlist_accepted" type="list" default="1" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
-			<option value="0">no</option>
-			<option value="1">yes</option>
+		<param name="support_ticketlist_accepted" type="list" default="1" label="PLG_CRON_SUPPORT_TICKETLIST_ACCEPTED_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_ACCEPTED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</param>
-		<param name="support_ticketlist_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-			<option value="all">All</option>
-			<option value="critical,major">High</option>
-			<option value="normal">Normal</option>
-			<option value="minor,trivial">Low</option>
+		<param name="support_ticketlist_severity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETLIST_SEVERITY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_SEVERITY_DESC">
+			<option value="all">PLG_CRON_SUPPORT_ALL</option>
+			<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+			<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+			<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 		</param>
-		<param name="support_ticketlist_created" type="list" default="+week" label="Created" description="Ticket creation time.">
-			<option value="-day">Older than 1 day</option>
-			<option value="-week">Older than 1 week</option>
-			<option value="-2week">Older than 2 weeks</option>
-			<option value="-3week">Older than 3 weeks</option>
-			<option value="-month">Older than 1 month</option>
-			<option value="-6month">Older than 6 months</option>
-			<option value="-year">Older than 1 year</option>
-			<option value="+day">Created in the past day</option>
-			<option value="+week">Created in the past week</option>
-			<option value="+2week">Created in the past 2 weeks</option>
-			<option value="+3week">Created in the past 3 weeks</option>
-			<option value="+month">Created in the past month</option>
-			<option value="+6month">Created in the past 6 months</option>
-			<option value="+year">Created in the past year</option>
+		<param name="support_ticketlist_created" type="list" default="+week" label="PLG_CRON_SUPPORT_TICKETLIST_CREATED_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_CREATED_DESC">
+			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+			<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+			<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+			<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+			<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+			<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+			<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
+			<option value="+day">PLG_CRON_SUPPORT_CREATED_PAST_DAY</option>
+			<option value="+week">PLG_CRON_SUPPORT_CREATED_PAST_WEEK</option>
+			<option value="+2week">PLG_CRON_SUPPORT_CREATED_PAST_TWO_WEEKS</option>
+			<option value="+3week">PLG_CRON_SUPPORT_CREATED_PAST_THREE_WEEKS</option>
+			<option value="+month">PLG_CRON_SUPPORT_CREATED_PAST_MONTH</option>
+			<option value="+6month">PLG_CRON_SUPPORT_CREATED_PAST_SIX_MONTHS</option>
+			<option value="+year">PLG_CRON_SUPPORT_CREATED_PAST_YEAR</option>
 		</param>
-		<param name="support_ticketlist_activity" type="list" default="all" label="Last activity" description="When the last activity on the ticket was.">
+		<param name="support_ticketlist_activity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETLIST_ACTIVITY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_ACTIVITY_DESC">
 			<option value="all">--</option>
-			<option value="-day">Older than 1 day</option>
-			<option value="-week">Older than 1 week</option>
-			<option value="-2week">Older than 2 weeks</option>
-			<option value="-3week">Older than 3 weeks</option>
-			<option value="-month">Older than 1 month</option>
-			<option value="-6month">Older than 6 months</option>
-			<option value="-year">Older than 1 year</option>
+			<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+			<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+			<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+			<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+			<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+			<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+			<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
 		</param>
-		<param name="support_ticketlist_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
-		<param name="support_ticketlist_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
-			<option value="0">all</option>
-			<option value="1">no</option>
-			<option value="2">yes</option>
+		<param name="support_ticketlist_group" type="text" menu="hide" label="PLG_CRON_SUPPORT_TICKETLIST_GROUP_LABEL" default="" description="PLG_CRON_SUPPORT_TICKETLIST_GROUP_DESC" />
+		<param name="support_ticketlist_owned" type="list" default="0" label="PLG_CRON_SUPPORT_TICKETLIST_OWNED_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_OWNED_DESC">
+			<option value="0">PLG_CRON_SUPPORT_ALL</option>
+			<option value="1">JNO</option>
+			<option value="2">JYES</option>
 		</param>
-		<param name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
-		<param name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
-		<param name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
-		<param name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
-		<param name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="Include tickets tagged with" description="A comma-separated list of tags." />
+		<param name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_OWNERS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_OWNERS_DESC" />
+		<param name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_SUBMITTERS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_SUBMITTERS_DESC" />
+		<param name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_DESC" />
+		<param name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_DESC" />
+		<param name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_DESC" />
 	</params>
 </extension>

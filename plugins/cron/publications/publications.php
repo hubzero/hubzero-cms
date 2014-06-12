@@ -45,74 +45,72 @@ class plgCronPublications extends JPlugin
 	 */
 	public function onCronEvents()
 	{
+		$this->loadLanguage();
+
 		$obj = new stdClass();
 		$obj->plugin = 'publications';
 
 		$obj->events = array(
 			array(
 				'name'   => 'sendAuthorStats',
-				'label'  => JText::_('Email monthly publication stats to authors'),
+				'label'  => JText::_('PLG_CRON_PUBLICATIONS_SEND_STATS'),
 				'params' => 'authorstats'
 			),
 			array(
 				'name'   => 'rollUserStats',
-				'label'  => JText::_('Compute unique user stats from text logs'),
+				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
 				'params' => ''
 			)
 		);
 		
 		return $obj;
 	}
-	
+
 	/**
 	 * Send emails to authors with the monthly stats
 	 * 
 	 * @return     boolean
 	 */
-	public function sendAuthorStats( $params = null )
+	public function sendAuthorStats($params = null)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
-						
+
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_publications');
-				
+
 		// Get some params
 		$limit 	 = $pconfig->get('limitStats', 5);
 		$image 	 = $pconfig->get('email_image', '');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_publications', JPATH_BASE);
-		
+
 		// Is logging enabled?
-		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_publications' . DS . 'tables' . DS . 'logs.php'))
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 		}
 		else
 		{
 			$this->setError('Publication logs not present on this hub, cannot email stats to authors');
 			return false;
 		}
-		
+
 		// Helpers
-		require_once( JPATH_ROOT . DS . 'components'. DS
-				.'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-				
-		require_once( JPATH_ROOT . DS . 'components'. DS
-				.'com_publications' . DS . 'helpers' . DS . 'helper.php');	
-				
+		require_once( JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+
+		require_once( JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'helper.php');
+
 		// Get publication helper
-		$helper = new PublicationHelper($database);		
-				
+		$helper = new PublicationHelper($database);
+
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";
 		$query .= " FROM #__publication_authors as A ";
 		$query .= " JOIN #__xprofiles as P ON A.user_id = P.uidNumber ";
 		$query .= " WHERE P.mailPreferenceOption != 0 "; // either 1 (set to YES) or -1 (never set)
-		$query .= " AND A.user_id > 0 AND A.status=1 ";					
+		$query .= " AND A.user_id > 0 AND A.status=1 ";
 
 		// If we need to restrict to selected authors
 		if (is_object($params) && $params->get('userids'))
@@ -129,23 +127,23 @@ class plgCronPublications extends JPlugin
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$query .= $tquery . ") ";
 		}
-				
+
 		$query .= " GROUP BY A.user_id ";
-						
+
 		$database->setQuery( $query );
 		if (!($authors = $database->loadObjectList()))
 		{
 			return true;
 		}
-		
+
 		// Set email config
 		$from = array();
 		$from['name']      = $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications');
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 		$from['multipart'] = md5(date('U'));
 
-		$subject = JText::_('Monthly Publication Usage Report');
-		
+		$subject = JText::_('PLG_CRON_PUBLICATIONS_MONTHLY_REPORT');
+
 		$i = 0;
 		foreach ($authors as $author)
 		{
@@ -156,17 +154,17 @@ class plgCronPublications extends JPlugin
 				// Skip if not registered
 				continue;
 			}
-						
+
 			// Get pub stats for each author			
 			$pubLog = new PublicationLog($database);
 			$pubstats = $pubLog->getAuthorStats($author->user_id);
-			
+
 			if (!$pubstats || !count($pubstats))
 			{
 				// Nothing to send
 				continue;
 			}
-						
+
 			// Plain text
 			$eview = new \Hubzero\Plugin\View(
 				array(
@@ -189,13 +187,13 @@ class plgCronPublications extends JPlugin
 
 			$plain = $eview->loadTemplate();
 			$plain = str_replace("\n", "\r\n", $plain);
-			
+
 			// HTML
 			$eview->setLayout('stats_html');
 
 			$html = $eview->loadTemplate();
 			$html = str_replace("\n", "\r\n", $html);
-			
+
 			// Build message
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
@@ -210,63 +208,56 @@ class plgCronPublications extends JPlugin
 			// Send mail
 			if (!$message->send())
 			{
-				$this->setError('Failed to mail %s', $juser->get('email'));
+				$this->setError(JText::sprintf('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
 			}
-			$mailed[] = $juser->get('email');	
+			$mailed[] = $juser->get('email');
 
 		}
 		print_r($mailed);
 		return true;
 	}
-	
+
 	/**
 	 * Compute unique user stats from text logs
 	 * 
 	 * @return     boolean
 	 */
-	public function rollUserStats( $params = null )
+	public function rollUserStats($params = null)
 	{
-		$database = JFactory::getDBO();		
+		$database = JFactory::getDBO();
 		$pconfig = JComponentHelper::getParams('com_publications');
-		
+
 		$numMonths = 3;
 		$includeCurrent = true;
-		
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php');
-		
-		require_once( JPATH_ROOT . DS . 'components'.DS
-			. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			.'com_publications' . DS . 'tables' . DS . 'version.php');
-		
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			.'com_publications' . DS . 'tables' . DS . 'logs.php');
-			
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+
 		// Get publication helper
-		$helper = new PublicationHelper($database);		
-		
+		$helper = new PublicationHelper($database);
+
 		$filters = array();
-		$filters['sortby'] 		= 'date';
-		$filters['limit']  		= 0;
-		$filters['start']  		= 0;
-		
+		$filters['sortby'] = 'date';
+		$filters['limit']  = 0;
+		$filters['start']  = 0;
+
 		// Instantiate a publication object
-		$rr = new Publication( $database );
-		
+		$rr = new Publication($database);
+
 		// Get publications
-		$pubs = $rr->getRecords( $filters );
-				
+		$pubs = $rr->getRecords($filters);
+
 		// Compute and store stats for each publication
 		foreach ($pubs as $publication)
 		{
 			$views 	   = $helper->getUserLogs($publication->id, $pconfig,'view', $numMonths, $includeCurrent);
-			
-			$downloads = $helper->getUserLogs($publication->id, $pconfig,'primary', $numMonths, $includeCurrent);			
+
+			$downloads = $helper->getUserLogs($publication->id, $pconfig,'primary', $numMonths, $includeCurrent);
 		}
-		
-		return true;		
+
+		return true;
 	}
 }
 
