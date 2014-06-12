@@ -32,6 +32,40 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$database = JFactory::getDBO();
+$juser = JFactory::getUser();
+
+// Instantiate a helper object
+$helper = new ResourcesHelper($this->line->id, $database);
+$helper->getContributors();
+$helper->getContributorIDs();
+
+/*
+// Determine if they have access to edit
+if (!$juser->get('guest')) 
+{
+	if ((!$this->show_edit && $this->line->created_by == $juser->get('id'))
+	 || in_array($juser->get('id'), $helper->contributorIDs)) 
+	{
+		$this->show_edit = 2;
+	}
+}
+*/
+
+// Get parameters
+$params = clone($this->config);
+$rparams = new JRegistry($this->line->params);
+$params->merge($rparams);
+
+// Set the display date
+switch ($params->get('show_date'))
+{
+	case 0: $thedate = ''; break;
+	case 1: $thedate = JHTML::_('date', $this->line->created, JText::_('DATE_FORMAT_HZ1'));    break;
+	case 2: $thedate = JHTML::_('date', $this->line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
+	case 3: $thedate = JHTML::_('date', $this->line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
+}
+
 switch ($this->line->access)
 {
 	case 1: $cls = 'registered'; break;
@@ -60,16 +94,16 @@ switch ($this->line->access)
 		}*/ ?>
 	</p>
 
-<?php if ($this->params->get('show_ranking')) { ?>
+<?php if ($params->get('show_ranking')) { ?>
 	<div class="metadata">
 		<dl class="rankinfo">
 			<dt class="ranking">
 				<?php
-				$database = JFactory::getDBO();
+				//$database = JFactory::getDBO();
 
 				// Get statistics info
-				$this->helper->getCitationsCount();
-				$this->helper->getLastCitationDate();
+				$helper->getCitationsCount();
+				$helper->getLastCitationDate();
 
 				$this->line->ranking = round($this->line->ranking, 1);
 
@@ -86,11 +120,11 @@ switch ($this->line->access)
 					<?php 
 					if ($this->line->type == 7) 
 					{
-						$stats = new ToolStats($database, $this->line->id, $this->line->type, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
+						$stats = new ToolStats($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
 					}
 					else
 					{
-						$stats = new AndmoreStats($database, $this->line->id, $this->line->type, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
+						$stats = new AndmoreStats($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
 					}
 					echo $stats->display();
 					?>
@@ -98,7 +132,7 @@ switch ($this->line->access)
 			</dd>
 		</dl>
 	</div>
-<?php } elseif ($this->params->get('show_rating')) { ?>
+<?php } elseif ($params->get('show_rating')) { ?>
 	<?php
 	switch ($this->line->rating)
 	{
@@ -127,17 +161,17 @@ switch ($this->line->access)
 	<p class="details">
 		<?php 
 		$info = array();
-		if ($this->thedate) 
+		if ($thedate) 
 		{
-			$info[] = $this->thedate;
+			$info[] = $thedate;
 		}
-		if (($this->line->type && $this->params->get('show_type')) || $this->line->standalone == 1) 
+		if (($this->line->type && $params->get('show_type')) || $this->line->standalone == 1) 
 		{
 			$info[] = stripslashes($this->line->typetitle);
 		}
-		if ($this->helper->contributors && $this->params->get('show_authors')) 
+		if ($helper->contributors && $params->get('show_authors')) 
 		{
-			$info[] = JText::_('COM_RESOURCES_CONTRIBUTORS') . ': ' . $this->helper->contributors;
+			$info[] = JText::_('COM_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
 		}
 		echo implode(' <span>|</span> ', $info);
 		?>

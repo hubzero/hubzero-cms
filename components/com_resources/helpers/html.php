@@ -63,29 +63,6 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Extract content wrapped in <nb: tags
-	 * 
-	 * @param      string $text Text t extract from
-	 * @param      string $tag  Tag to extract <nb:tag></nb:tag>
-	 * @return     string 
-	 */
-	public static function parseTag($text, $tag)
-	{
-		preg_match("#<nb:" . $tag . ">(.*?)</nb:" . $tag . ">#s", $text, $matches);
-		if (count($matches) > 0) 
-		{
-			$match = $matches[0];
-			$match = str_replace('<nb:' . $tag . '>', '', $match);
-			$match = str_replace('</nb:' . $tag . '>', '', $match);
-		} 
-		else 
-		{
-			$match = '';
-		}
-		return $match;
-	}
-
-	/**
 	 * Format an ID by prefixing 0s.
 	 * This is used for directory naming
 	 * 
@@ -166,7 +143,7 @@ class ResourcesHtml
 						? stripslashes($child->logicaltitle)
 						: stripslashes($child->title);
 						
-				$params = new JParameter( $child->params );
+				$params = new JRegistry( $child->params );
 				
 				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
@@ -184,8 +161,8 @@ class ResourcesHtml
 					 && !in_array($item, $shown)) 
 					{
 						$class = str_replace(' ', '', strtolower($item));
-						$childParams  = new JParameter($child->params);
-						$childAttribs = new JParameter($child->attribs);
+						$childParams  = new JRegistry($child->params);
+						$childAttribs = new JRegistry($child->attribs);
 						$linkAction = $childParams->get('link_action', 0);
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
@@ -238,7 +215,7 @@ class ResourcesHtml
 		
 		$supln .= '</ul>'."\n";
 		$html .= $sdocs ? $supln : '';
-		return $html;			
+		return $html;
 	}
 
 	/**
@@ -251,163 +228,6 @@ class ResourcesHtml
 	{
 		jimport('joomla.filesystem.file');
 		return JFile::stripExt($pic) . '-tn.gif';
-	}
-
-	/**
-	 * Display a list of skill levels
-	 * 
-	 * @param      array   $levels List of levels
-	 * @param      integer $sel    Selected level
-	 * @return     string HTML
-	 */
-	public static function skillLevelCircle($levels = array(), $sel = 0)
-	{
-		$html = '<ul class="audiencelevel">' . "\n";
-		foreach ($levels as $key => $value)
-		{
-			$class = ($key != $sel) ? ' isoff' : '';
-			$class = ($key != $sel && $key == 'level0') ? '_isoff' : $class;
-			$html .= "\t".' <li class="' . $key . $class . '"><span>&nbsp;</span></li>' . "\n";
-		}
-		$html .= '</ul>' . "\n";
-		return $html;
-	}
-
-	/**
-	 * Display a table of skill levels
-	 * 
-	 * @param      array  $labels       Skill levels
-	 * @param      string $audiencelink Link to learn more about skill levels
-	 * @return     string HTML
-	 */
-	public static function skillLevelTable($labels = array(), $audiencelink)
-	{
-		$html  = '<table class="skillset">' . "\n";
-		$html .= "\t".'<thead>' . "\n";
-		$html .= "\t\t".'<tr>' . "\n";
-		$html .= "\t\t".'<td colspan = "2" class="combtd">' . JText::_('Difficulty Level') . '</td>' . "\n";
-		$html .= "\t\t".'<td>' . JText::_('Target Audience') . '</td>' . "\n";
-		$html .= "\t\t".'</tr>' . "\n";
-		$html .= "\t".'</thead>' . "\n";
-		$html .= "\t". '<tbody>' . "\n";
-		foreach ($labels as $key => $label)
-		{
-			$ul = self::skillLevelCircle($labels, $key);
-
-			$html .= '  <tr>' . "\n";
-			$html .= '   <th>' . $ul . '</th>' . "\n";
-			$html .= '   <td>' . $label['title'] . '</td>' . "\n";
-			$html .= '   <td class="secondcol">' . $label['desc'] . '</td>' . "\n";
-			$html .= '  </tr>' . "\n";
-		}
-		$html .= "\t" . '</tbody>' . "\n";
-		$html .= '</table>' . "\n";
-		$html .= '<p class="learnmore"><a href="' . $audiencelink . '">'.JText::_('Learn more') . ' &rsaquo;</a></p>' . "\n";
-		return $html;
-	}
-
-	/**
-	 * Show skill levels
-	 * 
-	 * @param      array   $audience     Audiences
-	 * @param      integer $showtips     Show tips?
-	 * @param      integer $numlevels    Number of levels to dipslay
-	 * @param      string  $audiencelink Link to learn more about skill levels
-	 * @return     string HTML
-	 */
-	public static function showSkillLevel($audience, $showtips = 1, $numlevels = 4, $audiencelink = '')
-	{
-		$html     = '';
-		$levels   = array();
-		$labels   = array();
-		$selected = array();
-		$txtlabel = '';
-
-		if ($audience && count($audience) > 0) 
-		{
-			$audience = $audience[0];
-			$html .= "\t\t" . '<div class="showscale">' . "\n";
-
-			for ($i = 0, $n = $numlevels; $i <= $n; $i++)
-			{
-				$lb = 'label' . $i;
-				$lv = 'level' . $i;
-				$ds = 'desc' . $i;
-				$levels[$lv] = $audience->$lv;
-				$labels[$lv]['title'] = $audience->$lb;
-				$labels[$lv]['desc']  = $audience->$ds;
-				if ($audience->$lv) 
-				{
-					$selected[] = $lv;
-				}
-			}
-
-			$html.= '<ul class="audiencelevel">' . "\n";
-
-			// colored circles
-			foreach ($levels as $key => $value)
-			{
-				$class = (!$value) ? ' isoff' : '';
-				$class = (!$value && $key == 'level0') ? '_isoff' : $class;
-				$html .= ' <li class="' . $key . $class . '"><span>&nbsp;</span></li>' . "\n";
-			}
-
-			// figure out text label
-			if (count($selected) == 1) 
-			{
-				$txtlabel = $labels[$selected[0]]['title'];
-			} 
-			else if (count($selected) > 1) 
-			{
-				$first 	    = array_shift($selected);
-				$first		= $labels[$first]['title'];
-				$firstbits  = explode("-", $first);
-				$first 	    = array_shift($firstbits);
-
-				$last     = end($selected);
-				$last     = $labels[$last]['title'];
-				$lastbits = explode("-", $last);
-				$last     = end($lastbits);
-
-				$txtlabel = $first . '-' . $last;
-			} 
-			else 
-			{
-				$txtlabel = JText::_('Tool Audience Unrated');
-			}
-
-			$html .= ' <li class="txtlabel">' . $txtlabel . '</li>' . "\n";
-			$html .= '</ul>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-
-			// pop-up with explanation
-			if ($showtips) 
-			{
-				$html .= "\t\t" . '<div class="explainscale">' . "\n";
-				$html .= self::skillLevelTable($labels, $audiencelink);
-				$html .= "\t\t" . '</div>' . "\n";
-			}
-
-			return '<div class="usagescale">' . $html . '</div>';
-		}
-
-		return $html;
-	}
-
-	/**
-	 * ===MARKED FOR DEPRECATION===
-	 *
-	 * Write a header and container for supporting documents
-	 * 
-	 * @param      string $content Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public static function supportingDocuments($content)
-	{
-		$html  = '<h3>' . JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS') . '</h3>' . "\n";
-		$html .= $content;
-
-		return '<div class="supportingdocs">' . $html . '</div>';
 	}
 
 	/**
@@ -545,78 +365,6 @@ class ResourcesHtml
 		$html .= "\t".'</ul>' . "\n";
 
 		return $html;
-	}
-
-	/**
-	 * Generate resource title
-	 * 
-	 * @param      string  $option      Component name
-	 * @param      object  $resource    ResourcesResource
-	 * @param      object  $params      Resource config
-	 * @param      integer $show_edit   Show edit controls?
-	 * @param      object  $config      Component config
-	 * @param      integer $show_posted Show published date
-	 * @return     string HTML
-	 */
-	public static function title($option, $resource, $params, $show_edit, $config=null, $show_posted=1)
-	{
-		$mode = JRequest::getWord('mode', '');
-
-		$txt = '';
-
-		if ($mode != 'preview')
-		{
-			switch ($resource->published)
-			{
-				case 1: $txt .= ''; break;
-				case 2: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_EXTERNAL') . ']</span> '; break;
-				case 3: $txt .= '<span>[' . JText::_('COM_RESOURCES_PENDING') . ']</span> ';        break;
-				case 4: $txt .= '<span>[' . JText::_('COM_RESOURCES_DELETED') . ']</span> ';        break;
-				case 5: $txt .= '<span>[' . JText::_('COM_RESOURCES_DRAFT_INTERNAL') . ']</span> '; break;
-				case 0; $txt .= '<span>[' . JText::_('COM_RESOURCES_UNPUBLISHED') . ']</span> ';    break;
-			}
-		}
-
-		$txt .= stripslashes($resource->title);
-		if ($mode != 'preview')
-		{
-			if ($resource->published && $show_edit) 
-			{
-				if ($resource->type == '7') 
-				{
-					$link = 'index.php?option=com_tools&task=resource&step=1&app=' . $resource->alias;
-				} 
-				else 
-				{
-					$link = JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $resource->id);
-				}
-
-				$txt .= ' <a class="edit button" href="' . $link . '" title="' . JText::_('COM_RESOURCES_EDIT') . '">' . JText::_('COM_RESOURCES_EDIT') . '</a>';
-			}
-		}
-		
-		$html  = '<h2>' . $txt . '</h2>' . "\n";
-
-		if ($show_posted) 
-		{
-			switch ($params->get('show_date'))
-			{
-				case 0: $thedate = ''; break;
-				case 1: $thedate = $resource->created; break;
-				case 2: $thedate = $resource->modified; break;
-				case 3: $thedate = $resource->publish_up; break;
-			}
-
-			$typenorm = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($resource->getTypeTitle()));
-
-			$html .= '<p>' . JText::_('COM_RESOURCES_POSTED') . ' ';
-			$html .= ($thedate) ? JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')) . ' ' : '';
-			$html .= JText::_('COM_RESOURCES_IN') . ' <a href="' . JRoute::_('index.php?option=' . $option . '&type=' . $typenorm) . '">' . $resource->getTypeTitle() . '</a></p>' . "\n";
-		}
-
-		$html .= '<input type="hidden" name="rid" id="rid" value="' . $resource->id . '" />' . "\n";
-
-		return '<header id="content-header">' . $html . '</header>';
 	}
 
 	/**
@@ -783,207 +531,6 @@ class ResourcesHtml
 	}
 
 	/**
-	 * Short description for 'writeChildren'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $config Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @param      unknown $resource Parameter description (if any) ...
-	 * @param      array $children Parameter description (if any) ...
-	 * @param      unknown $live_site Parameter description (if any) ...
-	 * @param      integer $id Parameter description (if any) ...
-	 * @param      integer $active Parameter description (if any) ...
-	 * @param      integer $pid Parameter description (if any) ...
-	 * @param      integer $fsize Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public static function writeChildren($config, $option, $database, $resource, $children, $live_site, $id=0, $active=0, $pid=0, $fsize=0)
-	{
-	    $juser = JFactory::getUser();
-		$out   = '';
-		$blorp = '';
-		if ($children != NULL) 
-		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
-			$linkAction = 0;
-			$out .= '<ul>' . "\n";
-			$base = $config->get('uploadpath');
-			foreach ($children as $child)
-			{
-				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) 
-				{
-					jimport('joomla.filesystem.file');
-					$ftype = JFile::getExt($child->path);
-
-					//$url = self::processPath($option, $child, $pid);
-
-					$class = '';
-					$action = '';
-					if ($child->standalone == 1) 
-					{
-						$liclass = ' class="html"';
-						$title = stripslashes($child->title);
-					} 
-					else 
-					{
-						//$rt = new ResourcesType($database);
-						//$rt->load($child->type);
-						$rt = ResourcesType::getRecordInstance($child->type);
-						$tparams = new $paramsClass($rt->params);
-
-						//$lt = new ResourcesType($database);
-						//$lt->load($child->logicaltype);
-						$lt = ResourcesType::getRecordInstance($child->logicaltype);
-						$ltparams = new $paramsClass($lt->params);
-
-						// Check the link action by child's type
-						if ($child->logicaltype) 
-						{
-							$rtLinkAction = $ltparams->get('linkAction', 'extension');
-						} 
-						else 
-						{
-							$rtLinkAction = $tparams->get('linkAction', 'extension');
-						}
-
-						switch ($rtLinkAction)
-						{
-							case 'download':
-								$class = 'download';
-								$linkAction = 3;
-							break;
-
-							case 'lightbox':
-								$class = 'play';
-								$linkAction = 2;
-							break;
-
-							case 'newwindow':
-								$action = 'rel="external"';
-								$linkAction = 1;
-							break;
-
-							case 'extension':
-							default:
-								$linkAction = 0;
-
-								//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
-								$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
-								//$downtypes = array('60','59','57','55');
-								$downtypes = array('thesis','handout','manual','software_download');
-
-								if (in_array($lt->alias, $downtypes)) {
-									$class = 'download';
-								} elseif (in_array($rt->alias, $mediatypes)) {
-									$mediatypes = array('flash_paper','breeze','32','26');
-									if (in_array($child->type, $mediatypes)) {
-										$class = 'play';
-									}
-								} else {
-									$class = 'download';
-								}
-							break;
-						}
-
-						// Check for any link action overrides on the child itself
-						$childParams = new $paramsClass($child->params);
-						$linkAction = intval($childParams->get('link_action', $linkAction));
-						switch ($linkAction)
-						{
-							case 3:
-								$class = 'download';
-							break;
-
-							case 2:
-								$class = 'play';
-							break;
-
-							case 1:
-								$action = 'rel="external"';
-							break;
-
-							case 0:
-							default:
-								// Do nothing
-							break;
-						}
-
-						switch ($rt->alias)
-						{
-							case 'user_guide':
-								$liclass = ' class="guide"';
-								break;
-							case 'ilink':
-								$liclass = ' class="html"';
-								break;
-							case 'breeze':
-								$liclass = ' class="swf"';
-								//$class = ' class="play"';
-								break;
-
-							case 'hubpresenter':
-							 	$liclass = ' class="presentation"';
-								$class = 'hubpresenter';
-								break;
-							default:
-								$liclass = ' class="'.strtolower($ftype).'"';
-								break;
-						}
-
-						$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
-					}
-
-					$url = self::processPath($option, $child, $pid, $linkAction);
-
-					$child->title = str_replace('"', '&quot;', $child->title);
-					$child->title = str_replace('&amp;', '&', $child->title);
-					$child->title = str_replace('&', '&amp;', $child->title);
-					$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
-
-					// width & height
-					$attribs = new $paramsClass($child->attribs);
-					$width  = intval($attribs->get('width', 640));
-					$height = intval($attribs->get('height', 360));
-					if ($width > 0 && $height > 0) 
-					{
-						$class .= ' ' . $width . 'x' . $height;
-					}
-
-					// user guide 
-					//$guide = 0;
-					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) 
-					{
-						$liclass = ' class="guide"';
-						//$guide = 1;
-					}
-
-					$out .= "\t" . '<li' . $liclass . '>' . "\n";
-					$out .= "\t\t" . self::getFileAttribs($child->path, $base, $fsize) . "\n";
-					$out .= "\t\t" . '<a';
-					$out .= ($class) ? ' class="' . $class . '"' : '';
-					$out .= ' href="' . $url . '"';
-					$out .= ($action)  ? ' ' . $action : '';
-					$out .= ' title="' . stripslashes($child->title) . '">' . $title . '</a>' . "\n";
-					$out .= "\t" . '</li>' . "\n";
-				}
-			}
-			$out .= '</ul>' . "\n";
-		} 
-		else 
-		{
-			$out .= '<p>[ none ]</p>';
-		}
-		return $out;
-	}
-
-	/**
 	 * Get the extension of a file
 	 * 
 	 * @param      string $url File path/name
@@ -1082,8 +629,7 @@ class ResourcesHtml
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
-	    $juser = JFactory::getUser();
-
+		$juser    = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		$html = '';
@@ -1091,19 +637,7 @@ class ResourcesHtml
 		switch ($resource->type)
 		{
 			case 7:
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					$jacl = JFactory::getACL();
-					$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-					$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-					$jacl->addACL('com_tools', 'manage', 'users', 'manager');
-
-					$authorized = $juser->authorize('com_tools', 'manage');
-				}
-				else
-				{
-					$authorized = $juser->authorise('core.manage', 'com_tools.' . $resource->id);
-				}
+				$authorized = $juser->authorise('core.manage', 'com_tools.' . $resource->id);
 
 				$juser = JFactory::getUser();
 
@@ -1117,7 +651,7 @@ class ResourcesHtml
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
 					return $html;
 				}
-				
+
 				//are we on the iPad
 				$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 				
@@ -1455,36 +989,21 @@ class ResourcesHtml
 	 */
 	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='', $disabled=false, $pop = '')
 	{
-		$out = '';
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'view',
+			'layout' => '_primary'
+		));
+		$view->option   = 'com_resources';
+		$view->disabled = $disabled;
+		$view->class    = $class;
+		$view->href     = $href;
+		$view->title    = $title;
+		$view->action   = $action;
+		$view->xtra     = $xtra;
+		$view->pop      = $pop;
+		$view->msg      = $msg;
 
-		if ($disabled)
-		{
-			$out .= "\t" . '<p id="primary-document">' . "\n";
-			$out .= "\t\t" . '<span class="btn disabled ' . $class . '">' . $msg . '</span>' . "\n";
-			$out .= "\t" . '</p>' . "\n";
-		}
-		else
-		{
-			$title = htmlentities($title, ENT_QUOTES);
-
-			$out .= "\t" . '<p id="primary-document">' . "\n";
-			$out .= "\t\t" . '<a class="btn btn-primary';
-			$out .= ($class)  ? ' ' . $class . '"' : '"';
-			$out .= ($href)   ? ' href="' . $href . '"'   : '';
-			$out .= ($title)  ? ' title="' . $title . '"' : '';
-			$out .= ($action) ? ' ' . $action             : '';
-			$out .= '>' . $msg . '</a>' . "\n";
-			$out .= "\t" . '</p>' . "\n";
-		}
-
-		if ($pop)
-		{
-			$out .= "\t" . '<div id="primary-document_pop">' . "\n";
-			$out .= "\t\t" . '<div>' . $pop . '</div>' . "\n";
-			$out .= "\t" . '</div>' . "\n";
-		}
-
-		return $out;
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -1515,7 +1034,8 @@ class ResourcesHtml
 			$fs = '';
 		}
 		// Check if the path has the extension (e.g. Databases don't)
-		elseif(strrpos($path, '.') === false) {
+		elseif (strrpos($path, '.') === false)
+		{
 			// no caption
 			return '';
 		}
@@ -1586,81 +1106,5 @@ class ResourcesHtml
 	public static function formatsize($file_size)
 	{
 		return \Hubzero\Utility\Number::formatBytes($file_size, 2);
-	}
-
-	/**
-	 * Write a list of database results
-	 * 
-	 * @param      object &$database  JDatabase
-	 * @param      array  &$lines     Database results
-	 * @param      integer $show_edit Show edit controls?
-	 * @param      integer $show_date Date to display
-	 * @return     string HTML
-	 */
-	public static function writeResults(&$database, &$lines, $show_edit=0, $show_date=3)
-	{
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$juser = JFactory::getUser();
-
-		$config = JComponentHelper::getParams('com_resources');
-
-		$html  = '<ol class="resources results">' . "\n";
-		if (is_array($lines))
-		{
-			foreach ($lines as $line)
-			{
-				// Instantiate a helper object
-				$helper = new ResourcesHelper($line->id, $database);
-				$helper->getContributors();
-				$helper->getContributorIDs();
-
-				// Determine if they have access to edit
-				if (!$juser->get('guest')) 
-				{
-					if ((!$show_edit && $line->created_by == $juser->get('id'))
-					 || in_array($juser->get('id'), $helper->contributorIDs)) 
-					{
-						$show_edit = 2;
-					}
-				}
-
-				// Get parameters
-				$params = clone($config);
-				$rparams = new $paramsClass($line->params);
-				$params->merge($rparams);
-
-				// Instantiate a new view
-				$view = new JView(array(
-					'name'   => 'browse',
-					'layout' => 'item'
-				));
-				$view->option = 'com_resources';
-				$view->config = $config;
-				$view->params = $params;
-				$view->juser  = $juser;
-				$view->helper = $helper;
-				$view->line   = $line;
-				$view->show_edit = $show_edit;
-
-				// Set the display date
-				switch ($params->get('show_date'))
-				{
-					case 0: $view->thedate = ''; break;
-					case 1: $view->thedate = JHTML::_('date', $line->created, JText::_('DATE_FORMAT_HZ1'));    break;
-					case 2: $view->thedate = JHTML::_('date', $line->modified, JText::_('DATE_FORMAT_HZ1'));   break;
-					case 3: $view->thedate = JHTML::_('date', $line->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
-				}
-
-				$html .= $view->loadTemplate();
-			}
-		}
-		$html .= '</ol>' . "\n";
-
-		return $html;
 	}
 }

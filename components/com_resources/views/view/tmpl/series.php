@@ -68,13 +68,10 @@ $juser = JFactory::getUser();
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
 						<?php
-						$view = new JView(array(
-							'name'   => 'view',
-							'layout' => '_contributors',
-						));
-						$view->option = $this->option;
-						$view->contributors = $this->model->contributors('!submitter');
-						$view->display();
+						$this->view('_contributors')
+						     ->set('option', $this->option)
+						     ->set('contributors', $this->model->contributors('!submitter'))
+						     ->display();
 						?>
 					</div><!-- / #authorslist -->
 				<?php } ?>
@@ -195,14 +192,11 @@ $juser = JFactory::getUser();
 		// Show metadata
 		if ($this->model->params->get('show_metadata', 1)) 
 		{
-			$view = new JView(array(
-				'name'   => 'view',
-				'layout' => '_metadata',
-			));
-			$view->option   = $this->option;
-			$view->sections = $this->sections;
-			$view->model    = $this->model;
-			$view->display();
+			$this->view('_metadata')
+			     ->set('option', $this->option)
+			     ->set('sections', $this->sections)
+			     ->set('model', $this->model)
+			     ->display();
 		}
 		?>
 	</aside><!-- / .aside -->
@@ -282,7 +276,13 @@ $juser = JFactory::getUser();
 						<?php echo JText::_('In This Series'); ?>
 					</h3>
 
-					<?php echo ResourcesHtml::writeResults($this->database, $children, $this->model->access('edit')); ?>
+					<?php 
+					$this->view('_list', 'browse')
+					     ->set('lines', $children)
+					     ->set('show_edit', $this->model->access('edit'))
+					     ->display();
+					?>
+
 					<div class="clear"></div><!-- / .clear -->
 
 					<?php 

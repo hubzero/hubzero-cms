@@ -85,13 +85,10 @@ if ($mode != 'preview')
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
 						<?php
-						$view = new JView(array(
-							'name'   => 'view',
-							'layout' => '_contributors',
-						));
-						$view->option = $this->option;
-						$view->contributors = $this->model->contributors('tool');
-						$view->display();
+						$this->view('_contributors')
+						     ->set('option', $this->option)
+						     ->set('contributors', $this->model->contributors('tool'))
+						     ->display();
 						?>
 					</div>
 				<?php } ?>
@@ -228,14 +225,11 @@ if ($mode != 'preview')
 		{
 			if ($this->model->params->get('show_metadata', 1)) 
 			{
-				$view = new JView(array(
-					'name'   => 'view',
-					'layout' => '_metadata',
-				));
-				$view->option   = $this->option;
-				$view->sections = $this->sections;
-				$view->model    = $this->model;
-				$view->display();
+				$this->view('_metadata')
+				     ->set('option', $this->option)
+				     ->set('sections', $this->sections)
+				     ->set('model', $this->model)
+				     ->display();
 			}
 		} 
 		else if ($revision == 'dev' or !$this->model->resource->toolpublished) 

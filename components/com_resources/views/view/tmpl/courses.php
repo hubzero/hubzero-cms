@@ -77,13 +77,10 @@ $juser = JFactory::getUser();
 				<?php if ($this->model->params->get('show_authors', 1)) { ?>
 					<div id="authorslist">
 						<?php
-						$view = new JView(array(
-							'name'   => 'view',
-							'layout' => '_contributors',
-						));
-						$view->option = $this->option;
-						$view->contributors = $this->model->contributors('!submitter');
-						$view->display();
+						$this->view('_contributors')
+						     ->set('option', $this->option)
+						     ->set('contributors', $this->model->contributors('!submitter'))
+						     ->display();
 						?>
 					</div><!-- / #authorslist -->
 				<?php } ?>
@@ -146,14 +143,11 @@ $juser = JFactory::getUser();
 		// Show metadata
 		if ($this->model->params->get('show_metadata', 1)) 
 		{
-			$view = new JView(array(
-				'name'   => 'view',
-				'layout' => '_metadata',
-			));
-			$view->option   = $this->option;
-			$view->sections = $this->sections;
-			$view->model    = $this->model;
-			$view->display();
+			$this->view('_metadata')
+			     ->set('option', $this->option)
+			     ->set('sections', $this->sections)
+			     ->set('model', $this->model)
+			     ->display();
 		}
 		?>
 	</aside><!-- / .aside -->
@@ -201,7 +195,6 @@ $juser = JFactory::getUser();
 		$schildren = $this->model->children('standalone');
 		if ($schildren) 
 		{
-			//$html .= ResourcesHtml::writeResultsTable( $this->database, $this->model->resource, $schildren, $this->option );
 			$o = 'even';
 	?>
 	<section class="section">
@@ -296,8 +289,8 @@ $juser = JFactory::getUser();
 									} elseif ($grandchild->logicaltype == 51) {
 										$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
 									} else {
-										$grandchildParams  = new JParameter($grandchild->params);
-										$grandchildAttribs = new JParameter($grandchild->attribs);
+										$grandchildParams  = new JRegistry($grandchild->params);
+										$grandchildAttribs = new JRegistry($grandchild->attribs);
 										$linkAction = $grandchildParams->get( 'link_action', 0 );
 										$width      = $grandchildAttribs->get('width', 640) + 20;
 										$height     = $grandchildAttribs->get('height', 360) + 60;

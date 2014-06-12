@@ -139,7 +139,12 @@ $this->css()
 	<?php if ($this->results) { ?>
 		<div class="subject">
 			<h3><?php echo JText::_('COM_RESOURCES_TOP_RATED'); ?></h3>
-			<?php echo ResourcesHtml::writeResults( $database, $this->results, $this->authorized ); ?>
+			<?php 
+			$this->view('_list', 'browse')
+			     ->set('lines', $this->results)
+			     ->set('show_edit', $this->authorized)
+			     ->display();
+			?>
 		</div><!-- / .subject -->
 	<?php } ?>
 		<aside class="aside">
