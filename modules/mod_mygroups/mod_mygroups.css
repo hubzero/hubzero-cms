@@ -14,7 +14,7 @@
 */
 	div.draggable .compactlist li.group {
 		background-position: 0.7em 0.7em;
-		padding-right:5em;
+		padding-right: 5em;
 	}
 	div.draggable .compactlist li.group a {
 	}
@@ -33,16 +33,17 @@
 		color: #aaaaaa;
 	}
 	div.draggable .compactlist li span.pending-approval {
-		background-color:#FF9900;
-		color:#FFF;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		-khtml-border-radius: 3px;	
-		border-radius: 3px;
-		margin:0;
-		padding:3px 5px;
-		font-weight:bold;
-		font-size:0.9em;
+		background-color: #FF9900;
+		color: #FFF;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		margin: 0;
+		padding: 0.25em 0.5em;
+		font-weight: bold;
+		font-size: 0.9em;
 	}
 	div.draggable .compactlist li.group .actions {
 		text-align: left;
@@ -56,10 +57,11 @@
 		padding: 0.2em 0.5em;
 		background-color: #777;
 		color: #fff;
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		-khtml-border-radius: 5px;	
-		border-radius: 5px;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
 		margin: 0;
 	}
 	div.draggable .compactlist li.group .actions a:hover {
@@ -88,6 +90,6 @@
 		color: #999;
 	}
 	ul.mygroups {
-		max-height:350px;
-		overflow-y:scroll;
+		max-height: 350px;
+		overflow-y: scroll;
 	}

@@ -36,48 +36,49 @@ $groups = $this->groups;
 $total = count($this->groups);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-<?php if ($groups && $total > 0) { ?>
-	<ul class="compactlist mygroups">
-<?php
-	$i = 0;
-	foreach ($groups as $group)
-	{
-		if ($group->published && $i < $this->limit) {
-			$status = $this->getStatus($group);
-?>
-		<li class="group">
-			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
-			<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
-			<?php if (!$group->approved): ?>
-				<br />
-				<span class="status pending-approval"><?php echo JText::_('MOD_MYGROUPS_GROUP_STATUS_PENDING'); ?></span>
-			<?php endif; ?>
-			<?php if ($group->regconfirmed && !$group->registered) : ?>
-				<span class="actions">
-					<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
-						<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
-					</a>
-				</span>
-			<?php endif; ?>
-		</li>
-<?php
-			$i++;
-		}
-	}
-?>
-	</ul>
-<?php } else { ?>
-	<p><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></p>
-<?php } ?>
-
-<?php if ($total > $this->limit) { ?>
-	<p><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, ($total - $this->limit)); ?></p>
-<?php } ?>
-
 	<ul class="module-nav">
 		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?> (<?php echo $total; ?>)</a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
 	</ul>
+
+	<?php if ($groups && $total > 0) { ?>
+		<ul class="compactlist mygroups">
+			<?php
+			$i = 0;
+			foreach ($groups as $group)
+			{
+				if ($group->published && $i < $this->limit)
+				{
+					$status = $this->getStatus($group);
+					?>
+					<li class="group">
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
+						<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
+						<?php if (!$group->approved): ?>
+							<br />
+							<span class="status pending-approval"><?php echo JText::_('MOD_MYGROUPS_GROUP_STATUS_PENDING'); ?></span>
+						<?php endif; ?>
+						<?php if ($group->regconfirmed && !$group->registered) : ?>
+							<span class="actions">
+								<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
+									<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
+								</a>
+							</span>
+						<?php endif; ?>
+					</li>
+					<?php
+					$i++;
+				}
+			}
+			?>
+		</ul>
+	<?php } else { ?>
+		<p><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></p>
+	<?php } ?>
+
+	<?php if ($total > $this->limit) { ?>
+		<p><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, ($total - $this->limit)); ?></p>
+	<?php } ?>
 </div>
 
