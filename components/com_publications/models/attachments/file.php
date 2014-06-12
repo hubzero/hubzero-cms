@@ -632,14 +632,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$i++;
 			}
 		}
-		
+					
 		// Success
 		if ($i > 0 && $i == $a)
 		{
 			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
 			$this->set('_message', $message);
-		}	
-						
+		}
+								
 		return true;
 	}
 	
@@ -893,23 +893,25 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		
 		// Copy file from project repo into publication directory
 		if ($objPA->store()) 
-		{
-			// Make default image
+		{	
+			// Copy file over to where to belongs
+			if (!$this->publishAttachment($objPA, $pub, $configs, $update))
+			{
+				return false;
+			}
+			
+			// Make default image (if applicable)
 			if ($configs->handler  && $configs->handler->getName() == 'imageviewer')
 			{
 				$currentDefault = new PublicationAttachment( $this->_parent->_db );
-								
+
 				if (!$currentDefault->getDefault($pub->version_id))
 				{
-					$configs->handler->makeDefault($objPA, $pub, $configs);
+					$configs->handler->makeDefault($objPA, $pub, $configs);	
 				}
 			}
-			
-			// Copy file over to where to belongs
-			if ($this->publishAttachment($objPA, $pub, $configs, $update))
-			{
-				return true;
-			}
+							
+			return true;
 		}
 		
 		return false;			
@@ -933,6 +935,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			if (!JFolder::create( $configs->pubPath )) 
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				return false;
 			}
 		}
 		

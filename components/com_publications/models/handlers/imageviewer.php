@@ -83,6 +83,8 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 					'thumbFormat' 		=> 'png',
 					'thumbWidth' 		=> '100',
 					'thumbHeight' 		=> '60',
+					'masterWidth' 		=> '600',
+					'masterHeight' 		=> '400',
 					'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif'
 				)
 			);
@@ -151,6 +153,10 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
+		
+		// TBD - to come from component configs		
+		$defaultMasterName  = 'master.png';
+		$defaultThumbName 	= 'thumb.gif';
 				
 		// Get image helper
 		if (!$this->_imgHelper)
@@ -171,15 +177,26 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$path = $configs->pubPath . DS . $name;
 		}
 		
-		$copyTo = $configs->pubBase . DS . 'thumb.gif';
-		
+		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
+		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
+				
 		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
 		$thumbPath = dirname($path) . DS . $thumbName;
-		
-		// Copy to thumb.gif
+				
+		// Copy to thumb
 		if (is_file($thumbPath))
 		{
-			JFile::copy($thumbPath, $copyTo);
+			JFile::copy($thumbPath, $copyToThumb);
+		}
+		else
+		{
+			return false;
+		}
+		
+		// Copy to master
+		if (is_file($path))
+		{
+			JFile::copy($path, $copyToMaster);
 		}
 		else
 		{
@@ -190,12 +207,13 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$currentDefault = new PublicationAttachment( $this->_parent->_db );
 		$currentDefault->getDefault($row->publication_version_id);
 		
+		// Unmark as default
 		if ($currentDefault->id)
 		{
 			$currentDefault->saveParam($currentDefault, 'pubThumb', '');
 		}
 		
-		// Mark this as default
+		// Mark this image as default
 		$currentDefault->saveParam($row, 'pubThumb', '1');
 		
 		return true;

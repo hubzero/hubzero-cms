@@ -161,15 +161,6 @@
 		float: left;
 		margin-left: 90px; 
 	}
-	@media all and (max-width: 1024px) {
-		.block-aside {
-			display: none;
-		}
-		.block-subject,
-		.submit-area  {
-			margin-right: 40px;
-		}
-	}
 	.moving li:last-child {
 		padding-right: 1.5em !important;
 	}
@@ -241,7 +232,7 @@
 		border-top: 1px solid #E2E2E2;
 	}	
 	ul.itemlist li {
-		padding: 1em 1em;
+		padding: 1em;
 		border-bottom: 1px solid #dae6ec;
 		margin: 0;
 		min-height: 40px;		
@@ -298,11 +289,13 @@
 	}
 	.item-title {
 		padding-right: 6em;
+		margin-left: 0;
+		display: block;
+		padding-left: 0;
 	}
 	.item-title img {
 		float: left;
 		margin-right: 0.3em;
-		margin-bottom: 2.5em;
 	}
 	.citation-formatted p {
 		font-size: 85%;
@@ -326,9 +319,12 @@
 		margin-left: -1.2em;
 		margin-right: 0.2em;
 	}
+	.item-title .item-details {
+		margin-left: 1em;
+	}
 	.item-details {
 		display: block;
-		margin-left: 20px;
+		margin-left: 0;
 		color: #999;
 		font-size: 0.8em;
 		padding-right: 3em;
@@ -1019,4 +1015,15 @@
 		display: block;
 		text-align: right;
 		margin: 0.5em 0;
+	}
+	
+	@media all and (max-width: 1024px) {
+		.block-aside,
+		.handler-aside {
+			display: none;
+		}
+		.block-subject,
+		.submit-area  {
+			margin-right: 40px;
+		}
 	}
