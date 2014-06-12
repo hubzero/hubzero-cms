@@ -116,24 +116,16 @@ class WishlistModelTags extends TagsModelCloud
 			default:
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
-					//if (isset($filters['filters']))
-					//{
-						$view = new JView(array(
-							'base_path' => JPATH_ROOT . '/components/com_wishlist',
-							'name'      => 'wishlist',
-							'layout'    => '_tags'
-						));
-						if (isset($filters['filters']))
-						{
-							$view->base  = $filters['base'];
-							$view->filters = $filters['filters'];
-						}
-					/*}
-					$view = new JView(array(
-						'base_path' => JPATH_ROOT . '/components/com_tags',
-						'name'      => 'tags',
-						'layout'    => '_cloud'
-					));*/
+					$view = new \Hubzero\Component\View(array(
+						'base_path' => JPATH_ROOT . '/components/com_wishlist',
+						'name'      => 'wishlist',
+						'layout'    => '_tags'
+					));
+					if (isset($filters['filters']))
+					{
+						$view->base    = $filters['base'];
+						$view->filters = $filters['filters'];
+					}
 					$view->config = $this->_config;
 					$view->tags   = $this->tags('list', $filters, $clear);
 
