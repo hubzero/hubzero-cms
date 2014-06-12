@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class for managing membership and course info
@@ -227,7 +226,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COURSES_SAVED')
+				JText::_('COM_COURSES_ITEM_SAVED')
 			);
 			return;
 		}
@@ -240,7 +239,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	 *
 	 * @return	void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -277,7 +276,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$course->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete course'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -288,7 +287,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COURSES_REMOVED')
+			JText::_('COM_COURSES_ITEM_REMOVED')
 		);
 	}
 
@@ -363,7 +362,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 				$course->set('state', $state);
 				if (!$course->store())
 				{
-					$this->setError(JText::_('Unable to set state for course #' . $id . '.'));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_SET_STATE', $id));
 					continue;
 				}
 
@@ -387,7 +386,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+				($state ? JText::sprintf('COM_COURSES_ITEMS_PUBLISHED', $num) : JText::sprintf('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
 	}

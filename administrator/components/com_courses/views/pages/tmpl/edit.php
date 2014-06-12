@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-$text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text, 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_PAGES') . ': ' . $text, 'courses.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
@@ -42,6 +42,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('page');
 ?>
 
 <?php foreach ($this->notifications as $notification) { ?>
@@ -51,7 +53,7 @@ JToolBarHelper::cancel();
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Page details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -63,15 +65,16 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>:</label><br />
+				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
-			<div class="input-wrap">
-				<label for="field-url"><?php echo JText::_('URL'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-url"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
+				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-content"><?php echo JText::_('Content'); ?>:</label><br />
+				<label for="field-content"><?php echo JText::_('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
 				<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
 			</div>
 		</fieldset>
@@ -80,53 +83,53 @@ JToolBarHelper::cancel();
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Type'); ?></th>
+					<th><?php echo JText::_('COM_COURSES_FIELD_TYPE'); ?></th>
 				<?php if ($this->row->get('course_id')) { ?>
 					<?php if ($this->row->get('offering_id')) { ?>
-						<td><?php echo JText::_('Offering page'); ?></td>
+						<td><?php echo JText::_('COM_COURSES_PAGES_OFFERING'); ?></td>
 					<?php } else { ?>
-						<td><?php echo JText::_('Course overview page'); ?></td>
+						<td><?php echo JText::_('COM_COURSES_PAGES_COURSE'); ?></td>
 					<?php } ?>
 				<?php } else { ?>
-					<td><?php echo JText::_('User Guide'); ?></td>
+					<td><?php echo JText::_('COM_COURSES_PAGES_USER_GUIDE'); ?></td>
 				<?php } ?>
 				</tr>
 			<?php if ($this->row->get('course_id')) { ?>
 				<tr>
-					<th><?php echo JText::_('Course ID'); ?></th>
+					<th><?php echo JText::_('COM_COURSES_FIELD_COURSE_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 				</tr>
 			<?php } ?>
 			<?php if ($this->row->get('offering_id')) { ?>
 				<tr>
-					<th><?php echo JText::_('Offering ID'); ?></th>
+					<th><?php echo JText::_('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('offering_id')); ?></td>
 				</tr>
 			<?php } ?>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_COURSES_FIELD_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Publishing'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-active"><?php echo JText::_('Active'); ?>:</label><br />
+				<label for="field-active"><?php echo JText::_('COM_COURSES_FIELD_ACTIVE'); ?>:</label><br />
 				<select name="fields[active]" id="field-active">
-					<option value="1" <?php if ($this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('Yes'); ?></option>
-					<option value="0" <?php if (!$this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('No'); ?></option>
+					<option value="1" <?php if ($this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('JYES'); ?></option>
+					<option value="0" <?php if (!$this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('JNO'); ?></option>
 				</select>
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<?php if (!$this->row->get('id')) { ?>
-			<p><?php echo JText::_('A new page must be saved first before uploading files.'); ?></p>
+				<p><?php echo JText::_('COM_COURSES_UPLOAD_ADDED_LATER'); ?></p>
 			<?php } else { ?>
-			<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;task=files&amp;tmpl=component&amp;listdir=<?php echo $this->row->get('offering_id'); ?>&amp;course=<?php echo $this->course->get('id'); ?>"></iframe>
+				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;task=files&amp;tmpl=component&amp;listdir=<?php echo $this->row->get('offering_id'); ?>&amp;course=<?php echo $this->course->get('id'); ?>"></iframe>
 			<?php } ?>
 		</fieldset>
 	</div>

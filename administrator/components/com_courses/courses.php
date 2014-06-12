@@ -49,27 +49,27 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Courses'), 
+	JText::_('COM_COURSES_COURSES'), 
 	'index.php?option=' .  $option . '&controller=courses', 
 	(!in_array($controllerName, array('students', 'roles', 'pages')))
 );
 JSubMenuHelper::addEntry(
-	JText::_('Pages'), 
+	JText::_('COM_COURSES_PAGES'), 
 	'index.php?option=' .  $option . '&controller=pages&course=0', 
 	$controllerName == 'pages'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Students'), 
+	JText::_('COM_COURSES_STUDENTS'), 
 	'index.php?option=' .  $option . '&controller=students&offering=0&section=0', 
 	$controllerName == 'students'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Roles'), 
+	JText::_('COM_COURSES_ROLES'), 
 	'index.php?option=' .  $option . '&controller=roles', 
 	$controllerName == 'roles'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Plugins'),
+	JText::_('COM_COURSES_PLUGINS'),
 	'index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses'
 );
 
