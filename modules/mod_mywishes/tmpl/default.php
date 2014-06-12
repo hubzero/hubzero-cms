@@ -33,84 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
-	<h4><?php echo JText::_('MOD_MYWISHES_SUBMITTED'); ?></h4>
-<?php if (count($this->rows1) <= 0) { ?>
-	<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
-<?php } else { ?>
-	<ul class="expandedlist">
-		<?php
-		foreach ($this->rows1 as $row) 
-		{
-			$when = JHTML::_('date.relative', $row->proposed);
-		?>
-		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
-				#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
-			</a>
-			<span>
-				<span class="<?php 
-				echo ($row->status==3) ? 'rejected' : ''; 
-				if ($row->status==0) { 
-					echo ($row->accepted==1) ? 'accepted' : 'pending';
-				}
-				?>">
-					<?php
-					echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
-					if ($row->status==0) { 
-						echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
-					}
-					?>
-				</span>
-				<span>
-					<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
-				</span>
-			</span>
-		</li>
-		<?php
-		}
-		?>
-	</ul>
-<?php } ?>
-
-	<h4><?php echo JText::_('MOD_MYWISHES_ASSIGNED'); ?></h4>
-<?php if (count($this->rows2) <= 0) { ?>
-	<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
-<?php } else { ?>
-	<ul class="expandedlist">
-		<?php
-		foreach ($this->rows2 as $row) 
-		{
-			$when = JHTML::_('date.relative', $row->proposed);
-		?>
-		<li class="wishlist">
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
-				#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
-			</a>
-			<span>
-				<span class="<?php 
-				echo ($row->status==3) ? 'rejected' : ''; 
-				if ($row->status==0) { 
-					echo ($row->accepted==1) ? 'accepted' : 'pending';
-				}
-				?>">
-					<?php
-					echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
-					if ($row->status==0) { 
-						echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
-					}
-					?>
-				</span>
-				<span>
-					<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
-				</span>
-			</span>
-		</li>
-		<?php
-		}
-		?>
-	</ul>
-<?php } ?>
-
 	<ul class="module-nav">
 		<li>
 			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1'); ?>">
@@ -118,4 +40,82 @@ defined('_JEXEC') or die('Restricted access');
 			</a>
 		</li>
 	</ul>
+
+	<h4><?php echo JText::_('MOD_MYWISHES_SUBMITTED'); ?></h4>
+	<?php if (count($this->rows1) <= 0) { ?>
+		<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
+	<?php } else { ?>
+		<ul class="expandedlist">
+			<?php
+			foreach ($this->rows1 as $row) 
+			{
+				$when = JHTML::_('date.relative', $row->proposed);
+			?>
+			<li class="wishlist">
+				<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(strip_tags($row->about)), 160); ?>">
+					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
+				</a>
+				<span>
+					<span class="<?php 
+					echo ($row->status==3) ? 'rejected' : ''; 
+					if ($row->status==0) { 
+						echo ($row->accepted==1) ? 'accepted' : 'pending';
+					}
+					?>">
+						<?php
+						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
+						if ($row->status==0) { 
+							echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
+						}
+						?>
+					</span>
+					<span>
+						<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
+					</span>
+				</span>
+			</li>
+			<?php
+			}
+			?>
+		</ul>
+	<?php } ?>
+
+	<h4><?php echo JText::_('MOD_MYWISHES_ASSIGNED'); ?></h4>
+	<?php if (count($this->rows2) <= 0) { ?>
+		<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
+	<?php } else { ?>
+		<ul class="expandedlist">
+			<?php
+			foreach ($this->rows2 as $row) 
+			{
+				$when = JHTML::_('date.relative', $row->proposed);
+			?>
+			<li class="wishlist">
+				<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id); ?>" class="tooltips" title="<?php echo $this->escape(stripslashes($row->subject)) . ' :: ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->about)), 160); ?>">
+					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
+				</a>
+				<span>
+					<span class="<?php 
+					echo ($row->status==3) ? 'rejected' : ''; 
+					if ($row->status==0) { 
+						echo ($row->accepted==1) ? 'accepted' : 'pending';
+					}
+					?>">
+						<?php
+						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
+						if ($row->status==0) { 
+							echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
+						}
+						?>
+					</span>
+					<span>
+						<?php echo JText::_('MOD_MYWISHES_WISHLIST') . ': ' . $this->escape(stripslashes($row->listtitle)); ?>
+					</span>
+				</span>
+			</li>
+			<?php
+			}
+			?>
+		</ul>
+	<?php } ?>
 </div>
