@@ -331,9 +331,10 @@ HUB.Projects = {
 		// Move close to item
 		var coord = $($(link).parent()).position();
 		
+		/*
 		$('html, body').animate({
 			scrollTop: $(link).offset().top
-		}, 2000);
+		}, 2000); */
 		
 		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
 	},
