@@ -81,8 +81,7 @@ if (count($this->authors) > 0)
 							<?php 								
 								if (count($this->mc) > 0) {
 									echo $this->mc[0];
-								?>
-					<script>HUB.Plugins.Autocomplete.initialize();</script>
+								?>					
 					<script>
 						if($('.autocomplete').length)
 						{

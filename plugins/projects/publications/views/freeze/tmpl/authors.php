@@ -35,17 +35,6 @@ $name	  = $block->name;
 
 $props = $name . '-' . $this->step;
 
-// Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
-		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov 
-		? JRoute::_( $route) . '?active=team&action=select'
-		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid=' 
-		. $this->pub->id . '&vid=' . $this->pub->version_id;
-		
-$editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
-
 // Are we in draft flow?
 $move = JRequest::getVar( 'move', '' );
 $move = $move ? '&move=continue' : '';
@@ -82,5 +71,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 		<?php	$i++; } ?>
 		</ul>
 	</div>
-	<?php }  ?>		
+	<?php } else {
+		echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+	}  ?>		
 </div>

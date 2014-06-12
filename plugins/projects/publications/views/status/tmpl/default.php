@@ -86,6 +86,10 @@ $pubRoute = $this->pub->id ? $this->route . '&pid=' . $this->pub->id : $this->ro
 $showCitations  = $this->pub->_category->_params->get('show_citations', 1);	
 $allowUnpublish = $this->pub->_category->_params->get('option_unpublish', 0);
 
+// We also need a citations block
+$blockActive   = $this->pub->_curationModel->blockExists('citations');
+$showCitations = $blockActive ? $showCitations : 0;
+
 // Check if publication is within grace period (published status)
 
 $editsAllowed = $this->pubconfig->get('graceperiod', 0);

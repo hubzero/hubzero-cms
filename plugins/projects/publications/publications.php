@@ -1290,7 +1290,7 @@ class plgProjectsPublications extends JPlugin
 										
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
-				
+						
 		// Go to last incomplete section
 		if ($this->_task == 'continue')
 		{

@@ -267,7 +267,7 @@
 	.el-complete .chosenitem, .el-complete .list-wrapper {
 		border: 4px solid #d8f1d0;
 	}
-	.el-failed .chosenitem, .el-incomplete .list-wrapper {
+	.el-failed .chosenitem, .el-required.el-incomplete .list-wrapper {
 		border: 4px solid #ecd8cf;
 	}
 	.list-wrapper ul {
@@ -303,6 +303,13 @@
 		float: left;
 		margin-right: 0.3em;
 		margin-bottom: 2.5em;
+	}
+	.citation-formatted p {
+		font-size: 85%;
+		font-style: italic;
+		width: 80%;
+		padding: 0;
+		margin: 0;
 	}
 	.link-type {
 		padding-left: 20px;
@@ -871,6 +878,35 @@
 		width: 25px;
 		height: 25px;
 		font-size: 25px;
+	}
+	
+/* Citations edit
+----------------------------- */
+	.cite-wrap, .formatted-cite {
+		padding: 2em;
+		height: 250px;
+		overflow: scroll;
+		background: #f0efe4;
+		margin: 0 2em;
+	}
+	.formatted-cite {
+		height: auto;
+		background: #FFF;
+		overflow: auto;
+	}
+	#abox-content .cite-wrap label {
+		display: block;
+		margin: 1em 0;
+	}
+	#abox-content .cite-wrap input[type="text"],
+	#abox-content .formatted-cite textarea,
+	#abox-content .cite-wrap textarea {
+		width: 100%;
+		display: block;
+	}
+	.citation-edit .requirement {
+		width: 100%;
+		font-size: 85%;
 	}
 	
 /* Author edit */

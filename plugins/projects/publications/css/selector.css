@@ -311,11 +311,23 @@
 	#abox-content #import-link {
 		margin: 1em 2em;
 		padding: 2em;
-		min-height: 300px;
 	}
 	#import-link input {
 		display: block;
-	}	
+	}
+	.url-select	{
+		min-height: 400px;
+	}
 
-	
-	
+/* Common styles
+---------------------------- */	
+	.formlabel {
+		color: #999;
+		text-align: right;
+	}
+	.inlineblock {
+		display: inline-block;
+		width: 48%;
+		margin: 0;
+		text-align: right;
+	}

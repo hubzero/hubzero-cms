@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Project Publications Tags Section Layout">
+	<layout title="Project Publications Citations Section Layout">
 		<message>
-			<![CDATA[PROJECT PUBLICATIONS TAGS SECTION LAYOUT DESC]]>
+			<![CDATA[PROJECT PUBLICATIONS CITATIONS SECTION LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Project Publications Tags Section Layout</name>
-		<description>PROJECT PUBLICATIONS TAGS SECTION LAYOUT DESC</description>
+		<name>Project Publications Citations Section Layout</name>
+		<description>PROJECT PUBLICATIONS CITATIONS SECTION LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>
