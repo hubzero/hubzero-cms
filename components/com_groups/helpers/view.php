@@ -230,7 +230,7 @@ class GroupsHelperView
 			'gidNumber' => $group->get('gidNumber'),
 			'state'     => array(1),
 			'orderby'   => 'ordering ASC'
-		));
+		), true);
 		
 		// pass vars to view
 		$view->group           = $group;
