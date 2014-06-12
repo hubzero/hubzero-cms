@@ -33,64 +33,65 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
-	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>
-<?php if (count($this->rows1) <= 0) { ?>
-	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
-<?php } else { ?>
-	<ul class="expandedlist">
-	<?php
-	foreach ($this->rows1 as $row)
-	{
-		?>
-		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
-		</li>
-		<?php
-	}
-	?>
-	</ul>
-<?php } ?>
-
-	<h4><?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?></h4>
-<?php if (count($this->rows2) <= 0) { ?>
-	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
-<?php } else { ?>
-	<ul class="expandedlist">
-	<?php
-	foreach ($this->rows2 as $row)
-	{
-		?>
-		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
-		</li>
-		<?php
-	}
-	?>
-	</ul>
-<?php } ?>
-
-<h4><?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?></h4>
-<?php if (count($this->rows3) <= 0) { ?>
-	<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
-<?php } else { ?>
-	<ul class="expandedlist">
-	<?php
-	foreach ($this->rows3 as $row)
-	{
-		?>
-		<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-			<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-			<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
-		</li>
-		<?php
-	}
-	?>
-	</ul>
-<?php } ?>
 	<ul class="module-nav">
 		<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo JText::_('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
 	</ul>
+
+	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>
+	<?php if (count($this->rows1) <= 0) { ?>
+		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+	<?php } else { ?>
+		<ul class="expandedlist">
+		<?php
+		foreach ($this->rows1 as $row)
+		{
+			?>
+			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			</li>
+			<?php
+		}
+		?>
+		</ul>
+	<?php } ?>
+
+	<h4><?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?></h4>
+	<?php if (count($this->rows2) <= 0) { ?>
+		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+	<?php } else { ?>
+		<ul class="expandedlist">
+		<?php
+		foreach ($this->rows2 as $row)
+		{
+			?>
+			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			</li>
+			<?php
+		}
+		?>
+		</ul>
+	<?php } ?>
+
+	<h4><?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?></h4>
+	<?php if (count($this->rows3) <= 0) { ?>
+		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+	<?php } else { ?>
+		<ul class="expandedlist">
+		<?php
+		foreach ($this->rows3 as $row)
+		{
+			?>
+			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
+				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+			</li>
+			<?php
+		}
+		?>
+		</ul>
+	<?php } ?>
 </div>
