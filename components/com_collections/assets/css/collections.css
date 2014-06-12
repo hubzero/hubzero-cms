@@ -17,7 +17,7 @@
 	#page_menu li .postboard:before {
 		content: "\f08d";
 	}
-	
+
 	#content-header-extra .about:before {
 		content: "\f05a";
 		font-family: "Fontcons";
@@ -26,7 +26,7 @@
 	#content-header-extra li {
 		list-style: none;
 	}
-	
+
 	#infscr-loading {
 		position: absolute;
 		bottom: 0;
@@ -35,6 +35,7 @@
 		width: 100%;
 	}
 
+/* About page */
 	.com_collections .tagline {
 		font-size: 2em;
 		margin: 30px 0 50px 0;
@@ -42,7 +43,8 @@
 		text-align: center;
 	}
 	.com_collections .about-odd {
-		background: #e9e9e9; /*#e1e1e1;*/
+		background: #e9e9e9;
+		background: rgba(0, 0, 0, 0.05);
 		border: none;
 		color: #666;
 		text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
@@ -59,7 +61,6 @@
 		margin: 0 -30px;
 		font-size: 1.2em;
 	}
-	/*.com_collections .about:before,*/
 	.com_collections .about-odd:after,
 	.com_collections .about-even:after {
 		content: "";
@@ -68,26 +69,13 @@
 		padding: 0;
 		position: absolute;
 		top: 30px;
-		/*left: 30px;*/
 		z-index: 100;
 	}
-	/*.com_collections .about:before {
-		width: 69px;
-		height: 69px;
-		border: 3px solid #ccc;
-		-webkit-border-radius: 0.5em;
-		-moz-border-radius: 0.5em;
-		-ms-border-radius: 0.5em;
-		-o-border-radius: 0.5em;
-		border-radius: 0.5em;
-	}*/
 	.com_collections .about-odd:after,
 	.com_collections .about-even:after {
 		font-family: 'Fontcons';
 		font-size: 150px;
 		line-height: 1;
-		/*top: 43px;
-		left: 45px;*/
 		left: 17.5%;
 		color: #bbb;
 		content: "";
@@ -112,6 +100,7 @@
 		content: "\f056";
 	}
 
+/* Filter bar */
 	fieldset.filters ul {
 		list-style: none;
 		margin: 0;
@@ -127,9 +116,9 @@
 		display: block;
 		padding: 1em 1em;
 		border: none;
-		border-left: 1px solid #e1e1e1; /*#faf7f7;*/
-		border-right: 1px solid #e1e1e1; /*#faf7f7;*/
-		border-top: 1px solid #e1e1e1; /*#faf7f7;*/
+		border-left: 1px solid #e1e1e1;
+		border-right: 1px solid #e1e1e1;
+		border-top: 1px solid #e1e1e1;
 		line-height: 1;
 		color: #666666;
 	}
@@ -167,13 +156,6 @@
 		margin: 1em 0 0 0;
 		padding: 0;
 	}
-	
-	/*#collections fieldset,
-	#collection fieldset {
-		background: #e1e1e1;
-		padding: 1em 20px;
-		margin: 0;
-	}*/
 	fieldset.filters,
 	fieldset.overview {
 		overflow: hidden;
@@ -185,7 +167,6 @@
 		background: #e1e1e1;
 		padding: 0 30px;
 		margin: 0px 0px 20px 0px;
-		/*background: #f7f7f7;*/
 		-webkit-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
 		-moz-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
 		-ms-box-shadow: 0 1px 3px rgba(34,25,25,0.4);
@@ -265,7 +246,6 @@
 			padding: 0.25em 0.41em;
 		}
 	}
-	
 	fieldset.filters p label span {
 		display: none;
 	}
@@ -274,7 +254,16 @@
 		font-size: 1.2em;
 		line-height: 2em;
 	}
+	fieldset.filters a,
+	fieldset.filters a {
+		float: right;
+	}
+	fieldset.filters .count strong {
+		font-size: 1.2em;
+		line-height: 2em;
+	}
 
+/* Bulletins */
 	.main {
 		padding: 0px 30px 30px 30px;
 	}
@@ -283,19 +272,6 @@
 		padding: 0;
 		margin: 0 -10px;
 	}
-	
-	fieldset.filters a,
-	fieldset.filters a {
-		float: right;
-	}
-	/*fieldset.filters .count {
-		margin-right: 1em;
-	}*/
-	fieldset.filters .count strong {
-		font-size: 1.2em;
-		line-height: 2em;
-	}
-/* Bulletins */
 	.post {
 		/*position: absolute;
 		width: 192px;
@@ -316,8 +292,6 @@
 		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 		/*width: 28.5em;*/
 		margin: 0 10px 20px;
-		
-		width: 272px;
 		width: 288px;
 	}
 	@-moz-document url-prefix() {
@@ -334,15 +308,19 @@
 	html.opera .post {
 		width: 282px;
 	}
-	/*.board {
-		float: left;
-	}*/
-	.full {
+
+	.list .post {
 		width: auto;
 	}
+	.list .post .holder {
+		width: 288px;
+	}
+
+	/*.full {
+		width: auto;
+	}*/
 
 	.post.collection {
-		/*float: left;*/
 		z-index: 1;
 		background: #fff;
 	}
@@ -401,20 +379,15 @@
 		color: #9c9c9c;
 		text-shadow: 0 1px 1px #fff;
 	}
-	/*.default .content:after {
-		position: absolute;
-		bottom: 0.7em;
-		right: 1.4em;
+	.post .private:before {
+		content: "\f023";
 		font-family: "Fontcons";
-		content: "\2605";
-		color: #9c9c9c;
-		text-shadow: 0 1px 1px #fff;
-	}*/
-	
+		color: #666;
+		margin-right: 0.2em;
+	}
 	.post .meta {
 		position: relative;
 	}
-
 	.post .stats {
 		overflow: hidden;
 		border-bottom: 1px solid #d4d4d4;
@@ -435,7 +408,6 @@
 		margin: 0;
 		padding: 1em 1.2em 0em 1.2em;
 		font-size: 1.2em;
-		/*border-bottom: 1px solid #f0f0f0;*/
 	}
 	.post .holder {
 		padding: 1em 1.4em 1em 1.4em;
@@ -621,48 +593,6 @@
 	.post table span.collection:before {
 		content: "\f005";
 	}
-	
-	.post .private:before {
-		content: "\f023";
-		font-family: "Fontcons";
-		color: #666;
-		margin-right: 0.2em;
-	}
-	/*.post .access.private:before {
-		color: #fff;
-	}
-	.post .access {
-		font-weight: 700;
-		font-size: 0.85em;
-		
-		background: #999;
-		padding: .382em 1em;
-		color: white;
-		position: absolute;
-		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		border-radius: 0.27em;
-		top: 1em;
-		right: -0.27em;
-		
-		-webkit-transition: all ease-in-out 0.2s;
-		-moz-transition: all ease-in-out 0.2s;
-		-o-transition: all ease-in-out 0.2s;
-		transition: all ease-in-out 0.2s;
-		-webkit-animation: pulse 1s infinite;
-		overflow: hidden;
-		width: 1em;
-		height: 1em;
-		line-height: 1;
-		white-space: nowrap;
-		padding: .5em;
-	}
-	.post .access.private {
-		background: #504545;
-		-webkit-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
-		-moz-box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
-		box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.1),inset 0 0 0 4px rgba(255, 255, 255, 0.2),inset 0 0 0 2px #333;
-	}*/
 	/* Comments */
 	.convo {
 		margin: 0 -15px;
@@ -859,7 +789,6 @@
 	.colormuted a {
 		color: #4d4d4d;
 	}
-
 	.post .link {
 		margin: 0;
 		padding: 1em 1.2em 1em 1.2em;
@@ -880,34 +809,8 @@
 		content: "\f03e";
 	}
 	.collection .content:after {
-		/*position: absolute;
-		bottom: 1em;
-		right: 1.4em;
-		color: #9c9c9c;
-		padding: 0.2em 0.5em;
-		display: block;
-		text-shadow: 0 1px 1px #fff;
-		font-weight: normal;
-
-		color: #fff;
-		background: #666;*/
-		content: "\f005"; /*"\f00a";*/
+		content: "\f005";
 	}
-	/*.collection .content:after {
-		background-color: #a00;
-		overflow: hidden;
-		position: absolute;
-		left: -3em;
-		top: 2.5em;
-		-moz-transform: rotate(-45deg);
-		-webkit-transform: rotate(-45deg);
-		transform: rotate(-45deg);
-		-moz-box-shadow: 0 0 1em #888;
-		-webkit-box-shadow: 0 0 1em #888;
-		box-shadow: 0 0 1em #888;
-		content: "collection";
-	}*/
-	
 	.deleted .content:after {
 		content: "\f014";
 	}
@@ -971,86 +874,6 @@
 	#collection-introduction ol {
 		list-style: decimal;
 	}
-
-	/*#hubForm ul.post-type,
-	ul.post-type {
-		margin: 0;
-		padding: 0.5em 0;
-		list-style: none;
-		text-align: center;
-		font-size: 3em;
-		line-height: 1;
-		background-color: #f0f0f0;
-	}*/
-	
-	/*#hubForm ul.post-type li,
-	ul.post-type li {
-		display: inline-block;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-	}
-	ul.post-type li a {
-		display: block;
-		width: 2em;
-		height: 2em;
-		
-		border: none;
-		margin: 0;
-		color: #666;
-		padding: 0;
-		position: relative;
-		overflow: hidden;
-		text-indent: 555em;
-		background: transparent;
-		border: 3px dashed #ddd;
-		border-radius: 0.25em;
-		text-shadow: 0 1px 1px #fff;
-	}
-	ul.post-type li a:before {
-		top: 50%;
-		margin-top: -0.5em;
-	}
-	ul.post-type li a:hover {
-		border: 3px solid #333;
-	}
-	ul.post-type li a:hover:before {
-		color: #333;
-	}
-	
-	#hubForm ul.post-type {
-		font-size: 2em;
-	}
-	ul.post-type li a.active {
-		background: #fff;
-		border: 3px solid #333;
-	}
-	ul.post-type li a.active:before {
-		color: #333;
-	}
-	ul.post-type li a:before {
-		position: absolute;
-		display: block;
-		top: 0.1em;
-		left: 50%;
-		margin-left: -0.5em;
-		font-family: "Fontcons";
-		text-indent: 0;
-		line-height: 2.8em;
-	}
-	ul.post-type li.post-text a:before {
-		content: "\f036";
-	}
-	ul.post-type li.post-link a:before {
-		content: "\26D3";
-	}
-	ul.post-type li.post-image a:before {
-		content: "\f03e";
-	}
-	ul.post-type li.post-file a:before {
-		content: "\f016";
-		margin-left: -0.3em;
-	}*/
 
 /* Forms */
 	#hubForm label.hide {
@@ -1173,9 +996,6 @@
 		border-radius: 3px;
 		font-size: 1.5em;
 	}
-	/*.asset-uploader:hover {
-		border: 3px solid #333;
-	}*/
 	.asset-uploader .columns {
 		margin-top: 0;
 		padding-top: 0;
@@ -1198,13 +1018,9 @@
 		display: block;
 		position: absolute;
 		top: -0.2em;
-		left: -1.1em;
-		left: -0.2em;
 		font-family: "Fontcons";
-		content: "\f08c"; /*"\f046";*/
 		font-size: 1.5em;
 		line-height: 1;
-		
 		content: "\f016";
 		left: 0;
 	}
@@ -1217,7 +1033,6 @@
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,
 	.qq-upload-drop-area-active {
-		/*background: #fdfce4;*/
 		border: 3px solid #333;
 		color: #333;
 		cursor: pointer;
@@ -1231,7 +1046,8 @@
 	.qq-upload-list {
 		display: none;
 	}
-	
+
+/* Modal */
 	#sbox-content #hubForm.full fieldset {
 		margin: 0;
 	}

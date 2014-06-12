@@ -28,10 +28,12 @@ jQuery(document).ready(function(jq){
 			// Set overlays for lightboxed elements
 			$('a.img-link').fancybox();
 
-			// Masonry
-			container.masonry({
-				itemSelector: '.post'
-			});
+			if (container.hasClass('grid')) {
+				// Masonry
+				container.masonry({
+					itemSelector: '.post'
+				});
+			}
 
 			// Infinite scroll
 			container.infinitescroll({

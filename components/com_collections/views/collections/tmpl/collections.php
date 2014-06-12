@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$mode = JRequest::getWord('mode', 'grid');
 $this->css()
      ->js('jquery.masonry')
      ->js('jquery.infinitescroll')
@@ -92,7 +93,7 @@ $base = 'index.php?option=' . $this->option;
 	</fieldset>
 
 	<section class="main section">
-		<div id="posts" data-base="<?php echo JURI::base(true); ?>">
+		<div id="posts" data-base="<?php echo JURI::base(true); ?>" class="view-as <?php echo $mode; ?>">
 <?php 
 if ($this->rows->total() > 0) 
 {
