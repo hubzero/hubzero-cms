@@ -58,17 +58,12 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		</div><!-- / .attribution -->
 
 		<?php
-		$view = new JView(
-			array(
-				'name'    => $this->controller,
-				'layout'  => 'display_' . $item->type()
-			)
-		);
-		$view->actual     = true;
-		$view->option     = $this->option;
-		$view->params     = $this->config;
-		$view->row        = $this->post;
-		$view->display();
+		$this->view('display_' . $item->type(), 'posts')
+		     ->set('actual', true)
+		     ->set('option', $this->option)
+		     ->set('params', $this->config)
+		     ->set('row', $this->post)
+		     ->display();
 		?>
 
 	<?php if (count($item->tags()) > 0) { ?>
