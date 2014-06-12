@@ -49,7 +49,8 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 
 		switch ($this->segments[0]) 
 		{
-			case 'overview':           $this->overviewTask();           break;
+			case 'info':               $this->infoTask();               break;
+			case 'overview':           $this->infoTask();               break;
 			case 'getSessionLifetime': $this->getSessionLifetimeTask(); break;
 			default:
 				$this->serviceTask();
@@ -68,9 +69,14 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$response = new stdClass();
 		$response->component = 'system';
 		$response->tasks = array(
-			'overview' => array(
+			'info' => array(
 				'description' => JText::_('Get an overview of a hub\'s status.'),
-				'parameters'  => array(),
+				'parameters'  => array(
+					'values'      => JText::_('The verbosity of information returned.'),
+					'type'        => 'string',
+					'default'     => 'all',
+					'accepts'     => array('all', 'short', 'comma-separated list of keys [cms, php, dbversion, dbcollation, phpversion, server, last_commit]')
+				),
 			),
 		);
 
@@ -83,9 +89,11 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return    void
 	 */
-	private function overviewTask()
+	private function infoTask()
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
+
+		$values = JRequest::getVar('values', 'all');
 
 		$response = new stdClass;
 
@@ -121,9 +129,25 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'last_commit' => $commit
 		);
 
-		JPluginHelper::importPlugin('hubzero');
-		$dispatcher = JDispatcher::getInstance();
-		$response->overview = $dispatcher->trigger('onSystemOverview');
+		if (strstr($values, ',') || ($values != 'all' && $values != 'short'))
+		{
+			$keys = explode(',', $values);
+			$keys = array_map('trim', $keys);
+			$keys = array_map('strtolower', $keys);
+			$data = array();
+			foreach ($keys as $key)
+			{
+				$data[$key] = $response->system[$key];
+			}
+			$response->system = $data;
+		}
+
+		if ($values == 'all')
+		{
+			JPluginHelper::importPlugin('hubzero');
+			$dispatcher = JDispatcher::getInstance();
+			$response->overview = $dispatcher->trigger('onSystemOverview');
+		}
 
 		$this->setMessage($response);
 	}
