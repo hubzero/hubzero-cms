@@ -1730,7 +1730,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					{
 						$this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
 					}
-					if($content[0]['html'])
+					if ($content[0]['html'])
 					{
 						$this->view->content = $content[0]['html'];	
 					}

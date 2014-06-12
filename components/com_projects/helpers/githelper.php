@@ -249,7 +249,7 @@ class ProjectsGitHelper extends JObject
 	public function gitLogAll ($path = '', $subdir = '') 
 	{
 		chdir($this->_prefix . $path);
-		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae" --name-only ' . $subdir;
+		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H" --name-only ' . $subdir;
 		
 		// Exec command
 		exec($this->_gitpath . ' '. $exec . ' 2>&1', $out1);
@@ -267,7 +267,8 @@ class ProjectsGitHelper extends JObject
 				$entry = array();
 				$entry['date']  	= $data[0];
 				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];				
+				$entry['email'] 	= $data[2];
+				$entry['hash'] 		= $data[3];				
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
