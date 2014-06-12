@@ -62,9 +62,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$lang->load('com_publications_curation');
 		$lang->load('plg_projects_publications');
 		
-		// Check authorization
-		// TBD
-		
 		//continue with parent execute method
 		parent::execute();
 	}

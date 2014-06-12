@@ -433,7 +433,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				'com_projects'
 			);
 
-			// Rename file in repository
+			// Send invite
 			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);				
 			$result = json_decode($output[0]);
 		}

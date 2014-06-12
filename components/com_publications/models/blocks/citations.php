@@ -25,6 +25,13 @@
 // Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
+include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+	. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+	. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
+	. DS . 'helpers' . DS . 'format.php' );
+
 /**
  * Citations block
  */
@@ -126,7 +133,24 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 				'layout'	=> 'citations'
 			)
 		);
-							
+		
+		// Get selector styles
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS 
+			. 'css' . DS . 'selector.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
+		
+		if (!isset($pub->_citations))
+		{
+			$config = JComponentHelper::getParams( 'com_publications' );
+			$pub->_citationFormat = $config->get('citation_format', 'apa');
+
+			// Get citations for this publication
+			$c = new CitationsCitation( $this->_parent->_db );
+			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+		}
+									
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
@@ -165,11 +189,173 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			return false;
 		}
-				
-		// Reflect the update in curation record
-		$this->_parent->set('_update', 1);
+		
+		if (!isset($pub->_citations))
+		{
+			$config = JComponentHelper::getParams( 'com_publications' );
+			$pub->_citationFormat = $config->get('citation_format', 'apa');
+
+			// Get citations for this publication
+			$c = new CitationsCitation( $this->_parent->_db );
+			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+		}
+		
+		// Incoming
+		$url = JRequest::getVar('citation-doi', '');
+		
+		$parts 	= explode("doi:", $url);
+		$doi   	= count($parts) > 1 ? $parts[1] : $url;
+		
+		// Get links plugin
+		JPluginHelper::importPlugin( 'projects', 'links' );
+		$dispatcher = JDispatcher::getInstance();
+		
+		// Plugin params
+		$plugin_params = array(
+			$pub->id,
+			$doi,
+			$pub->_citationFormat,
+			$actor,
+			true
+		);
+		
+		// Attach citation
+		$output = $dispatcher->trigger( 'attachCitation', $plugin_params);						
+		
+		if (isset($output[0]))
+		{
+			if ($output[0]['success'])
+			{
+				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_SAVED'));
+
+				// Reflect the update in curation record
+				$this->_parent->set('_update', 1);			
+			}
+			else
+			{
+				$this->setError($output[0]['error']);				
+				return false;
+			}
+		}
+		else
+		{
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
+			return false;
+		}		
 		
 		return true;		
+	}
+	
+	/**
+	 * Add new citation
+	 *
+	 * @return  void
+	 */
+	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	{				
+		$cite = JRequest::getVar('cite', array(), 'post', 'none', 2);
+		
+		if (!$cite['type'] || !$cite['title'])
+		{
+			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+			return false;
+		}
+		
+		$citation = new CitationsCitation( $this->_parent->_db );
+		if (!$citation->bind($cite))
+		{
+			$this->setError($citation->getError());
+			return false;
+		}
+		
+		$citation->created 	= JFactory::getDate()->toSql();
+		$citation->uid		= $actor;
+		
+		if (!$citation->store(true)) 
+		{
+			// This really shouldn't happen.
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+			return false;
+		}
+		
+		// Create association
+		if ($citation->id)
+		{
+			$assoc 		 = new CitationsAssociation( $this->_parent->_db );
+			$assoc->oid  = $pub->id;
+			$assoc->tbl  = 'publication';
+			$assoc->type = 'owner';
+			$assoc->cid  = $citation->id;
+			
+			// Store new content
+			if (!$assoc->store()) 
+			{
+				$this->setError($assoc->getError());				
+				return false;
+			}							
+		}
+		
+		$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
+		return true;		
+	}
+	
+	/**
+	 * Update citation record
+	 *
+	 * @return  void
+	 */
+	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	{				
+		$this->addItem($manifest, $sequence, $pub, $actor, $elementId, $cid);
+		return;
+	}
+	
+	/**
+	 * Delete citation
+	 *
+	 * @return  void
+	 */
+	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
+	{				
+		$cid = $cid ? $cid : JRequest::getInt( 'cid', 0 );
+		
+		// Get links plugin
+		JPluginHelper::importPlugin( 'projects', 'links' );
+		$dispatcher = JDispatcher::getInstance();
+		
+		// Plugin params
+		$plugin_params = array(
+			$pub->id,
+			$cid,
+			true
+		);
+		
+		// Attach citation
+		$output = $dispatcher->trigger( 'unattachCitation', $plugin_params);
+		
+		if (isset($output[0]))
+		{
+			if ($output[0]['success'])
+			{
+				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_DELETED'));
+
+				// Reflect the update in curation record
+				$this->_parent->set('_update', 1);			
+			}
+			else
+			{
+				$this->setError($output[0]['error']);				
+				return false;
+			}
+		}
+		else
+		{
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
+			return false;
+		}		
+		
+		return true;
+		
 	}
 	
 	/**
@@ -180,9 +366,22 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{								
 		$status 	 = new PublicationsModelStatus();
-
-		$status->status = 0;	
 		
+		if (!isset($pub->_citations))
+		{
+			$config = JComponentHelper::getParams( 'com_publications' );
+			$pub->_citationFormat = $config->get('citation_format', 'apa');
+
+			// Get citations for this publication
+			$c = new CitationsCitation( $this->_parent->_db );
+			$pub->_citations = $c->getCitations( 'publication', $pub->id );
+		}
+		
+		if ($pub->_citations)
+		{
+			$status->status = 1;
+		}
+
 		return $status;
 	}
 	

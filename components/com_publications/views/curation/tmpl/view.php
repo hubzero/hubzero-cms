@@ -75,6 +75,7 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 		<strong class="block"><?php echo $this->pub->reviewed ? JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED') : JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . JHTML::_('date', $this->pub->submitted, 'M d, Y') . $by; ?></strong>
 	<?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>
 	<span class="legend">
+		<span class="legend-checker-none"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LEGEND_NONE'); ?></span>
 		<span class="legend-checker-pass"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LEGEND_PASS'); ?></span>
 		<span class="legend-checker-fail"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LEGEND_FAIL'); ?></span>
 		<span class="legend-checker-update"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE'); ?></span>

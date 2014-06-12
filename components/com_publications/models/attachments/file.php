@@ -1056,6 +1056,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$required	= $element->required;		
 		$counter 	= count($attachments);
 		
+		// Run outside script to check file content?
+		$scanFile   = isset($params->scanScript) && $params->scanScript ? $params->scanScript : false;
+		
 		if (!$required)
 		{
 			$status->status = $counter ? 1 : 2;
@@ -1100,14 +1103,31 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}		
 		// Check required formats
 		elseif (!self::checkRequired($attachments, $params->allowed_ext))
-		{
-			
+		{			
 			$status->setError( JText::_('Missing a file of required format') );
+		}
+		
+		// Scan file
+		if ($scanFile && !self::scanFile($attachments, $scanFile))
+		{
+			$status->setError( $this->getError() );
 		}
 		
 		$status->status = $status->getError() ? 0 : 1;
 			
 		return $status;
+	}
+	
+	/**
+	 * Run script to check for required file content
+	 *
+	 * @return  object
+	 */
+	public function scanFile( $attachments, $script = NULL )
+	{
+		// TBD
+		
+		return true;
 	}
 	
 	/**

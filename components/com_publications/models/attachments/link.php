@@ -324,11 +324,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$desc  = isset($desc[$i]) ? $desc[$i] : NULL;
 			
 			if ($this->addAttachment($identifier, $title, $pub, $configs, $uid, $elementId, $element, $ordering))
-			{
-				$i++;
-				
+			{				
 				// Do we also set draft title and metadata from the link?
-				if ($title && $element->role == 1 && $pub->title == $defaultTitle)
+				if ($i == 0 && $title && $element->role == 1 
+					&& stripos($pub->title, $defaultTitle) !== false )
 				{
 					// Load publication version
 					$row = new PublicationVersion( $this->_parent->_db );
@@ -341,8 +340,11 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 					$row->title    		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($title));
 					$description	   	= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($desc));
 					$row->description 	= $description;
-					$row->abstract		= \Hubzero\Utility\String::truncate($description, 100);
+					$row->abstract		= \Hubzero\Utility\String::truncate($description, 255);
+					$row->store();
 				}
+				
+				$i++;
 			}
 		}
 		
@@ -379,7 +381,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			// Link already attached
 			$this->setError(JText::_('The link is already attached'));
-			return;
+			return true;
 		}
 		else
 		{

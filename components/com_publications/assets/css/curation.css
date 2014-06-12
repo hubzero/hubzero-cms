@@ -373,13 +373,14 @@
 	}
 	.legend-checker-pass:before,
 	.legend-checker-fail:before,
-	.legend-checker-update:before {
+	.legend-checker-update:before,
+	.legend-checker-none:before {
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
 		border: none;
-		content: "\26AB";
+		content: "\2588";
 		margin-right: 0.2em;
 	}
 	.legend-checker-pass:before {
@@ -387,6 +388,9 @@
 	}
 	.legend-checker-fail:before {
 		color: red;
+	}
+	.legend-checker-none:before {
+		color: #E2E2E2;
 	}
 	.legend-checker-update:before {
 		color: orange;

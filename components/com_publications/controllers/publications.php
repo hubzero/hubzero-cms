@@ -2453,7 +2453,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_buildPathway();
 		
 		// What plugin requested?
-		$allowed = array('team', 'files', 'notes', 'publications');
+		$allowed = array('team', 'files', 'notes', 'publications', 'links');
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 		
 		// Get output from plugin

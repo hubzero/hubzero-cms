@@ -702,6 +702,31 @@ class PublicationsCuration extends JObject
 	}
 	
 	/**
+	 * Check if block is in manifest
+	 *
+	 * @return  void
+	 */
+	public function blockExists( $name = NULL )
+	{
+		if (!$this->_blocks || $name === NULL)
+		{
+			return false;
+		}
+		
+		// Check status for each
+		foreach ($this->_blocks as $sequence => $block)
+		{
+			if ($block->name == $name)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+		
+	}
+	
+	/**
 	 * Set curation progress
 	 *
 	 * @return  void
