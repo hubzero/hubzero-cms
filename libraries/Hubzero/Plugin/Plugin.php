@@ -116,7 +116,7 @@ class Plugin extends \JPlugin
 				$session = \JFactory::getSession();
 				$session->set('plugin.message.queue', $this->pluginMessageQueue);
 			}
-			
+
 			$app = \JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
 		}
@@ -209,18 +209,18 @@ class Plugin extends \JPlugin
 	/**
 	 * Create a plugin view and return it
 	 *
-	 * @param   string $name   View name
 	 * @param   string $layout View layout
+	 * @param   string $name   View name
 	 * @return	object
 	 */
-	/*public function view($name, $layout='default')
+	/*public function view($layout, $name='')
 	{
 		$view = new View(
 			array(
 				'folder'  => $this->_type,
 				'element' => $this->_name,
-				'name'    => $name,
-				'layout'  => $layout
+				'name'    => ($name ?: $this->_name),
+				'layout'  => ($layout ?: 'default')
 			)
 		);
 		return $view;
