@@ -72,9 +72,9 @@ function submitbutton(pressbutton)
 	
 	// form field validation
 	if (form.fullname.value == '') {
-		alert('<?php echo JText::_('COM_COM_FEEDBACK_AUTHOR_MUST_HAVE_NAME'); ?>');
+		alert('<?php echo JText::_('COM_FEEDBACK_AUTHOR_MUST_HAVE_NAME'); ?>');
 	} else if (form.org.value == '') {
-		alert('<?php echo JText::_('COM_COM_FEEDBACK_AUTHOR_MUST_HAVE_AFFILIATION'); ?>');
+		alert('<?php echo JText::_('COM_FEEDBACK_AUTHOR_MUST_HAVE_AFFILIATION'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
