@@ -2339,4 +2339,49 @@
 	}
 	.com_publications #pick-authors .result {
 		margin-top: -1.5em;
-		le
+		left: 5em;
+		min-width: 40%;
+	}
+
+/* Display messages
+--------------------------------------------- */	
+	#confirm-box {
+		padding: 0.5em 0.8em 0.5em 0.8em;
+		text-align: center;
+		font-size: 0.8em;
+		margin: 0;
+		margin-top: -180px;
+		min-width: 200px;
+	}
+	#confirm-box p {
+		font-size: 110%;
+		padding: 0.5em 0;
+		margin: 0;
+	}
+	#confirm-box strong {
+		color: red;
+	}
+	#loading-content, .loading-content {
+		text-align: center;
+	}
+
+/* 	@media rules
+--------------------------------------------- */
+	@media all and (max-width: 1100px) {
+		p#version-label {
+			margin-top: 2.5em;
+		}		
+		li#sub-bar {
+			/*display: none !important;*/
+			margin-left: 5em !important;
+		}
+		span.g-title {
+			display: none;
+		}
+	}
+
+	@media all and (max-width: 1024px) {
+		#mypub {
+			min-width: 800px;
+		}
+	}
