@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelperPermissions::getActions('resource');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') . ' #' . $this->row->id : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') . ' #' . $this->row->id : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('Resource') . ': ' . $text, 'resources.png');
 if ($canDo->get('core.edit')) 
@@ -42,7 +42,8 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 
-if ($this->row->standalone == 1) {
+if ($this->row->standalone == 1)
+{
 	$database = JFactory::getDBO();
 
 	$type = new ResourcesType($database);

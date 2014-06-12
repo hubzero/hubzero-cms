@@ -102,6 +102,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="2">Auto Generated</option>
 			<option value="3">Manually Inputed</option>
 		</param>
+		<param name="sort_children" type="list" default="1" label="Sort Children" description="Determine the default sort value for children">
+			<option value="date">Date</option>
+			<option value="ordering">Ordering</option>
+			<option value="title">Title</option>
+			<option value="author">Author</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">
 			<option value="0">Hide</option>
@@ -186,6 +192,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">Manual And Auto</option>
 			<option value="2">Auto Generated</option>
 			<option value="3">Manually Inputed</option>
+		</field>
+		<field name="sort_children" type="list" default="1" label="Sort Children" description="Determine the default sort value for children">
+			<option value="date">Date</option>
+			<option value="ordering">Ordering</option>
+			<option value="title">Title</option>
+			<option value="author">Author</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">

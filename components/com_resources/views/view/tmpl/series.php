@@ -251,7 +251,7 @@ $juser = JFactory::getUser();
 			$sortbys['ranking'] = JText::_('Ranking');
 		}
 
-		$defaultsort = 'ordering';
+		$defaultsort = $this->model->params->get('sort_children', 'ordering');
 		$defaultsort = ($this->model->params->get('show_ranking')) ? 'ranking' : $defaultsort;
 
 		$filters = array(

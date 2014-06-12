@@ -167,6 +167,13 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="2">Auto Generated</option>
 			<option value="3">Manually Inputed</option>
 		</param>
+		<param name="sort_children" type="list" default="1" label="Sort Children" description="Determine the default sort value for children">
+			<option value="">Use Global</option>
+			<option value="date">Date</option>
+			<option value="ordering">Ordering</option>
+			<option value="title">Title</option>
+			<option value="author">Author</option>
+		</param>
 	</params>
 </install>
 

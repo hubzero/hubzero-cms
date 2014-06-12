@@ -238,7 +238,7 @@ $juser = JFactory::getUser();
 	if ($this->tab == 'about' && $ccount > 0)
 	{
 		$filters = array(
-			'sortby' => JRequest::getVar('sortby', 'ordering'),
+			'sortby' => JRequest::getVar('sortby', $this->model->params->get('sort_children', 'ordering')),
 			'limit'  => JRequest::getInt('limit', 0),
 			'start'  => JRequest::getInt('limitstart', 0),
 			'id'     => $this->model->resource->id
