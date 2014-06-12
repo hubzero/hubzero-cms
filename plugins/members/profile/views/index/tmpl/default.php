@@ -837,9 +837,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$citizenship = '';
-							if (is_file(JPATH_ROOT.DS.'components'.DS.$this->option.DS.'images' . DS . 'flags'.DS.strtolower($this->profile->get('countryorigin')).'.gif'))
+							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryorigin')) . '.gif'))
 							{
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/'.$this->option.'/images/flags/'.strtolower($this->profile->get('countryorigin')).'.gif" alt="'.$this->escape($this->profile->get('countryorigin')).' '.JText::_('PLG_MEMBERS_PROFILE_FLAG').'" /> ';
+								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryorigin')) . '.gif" alt="' . $this->escape($this->profile->get('countryorigin')) . ' ' . JText::_('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
 
 							// get the country name
@@ -938,12 +938,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							$img = '';
 							$residence = '';
-							if (is_file(JPATH_ROOT.DS.'components'.DS.$this->option.DS.'images' . DS . 'flags'.DS.strtolower($this->profile->get('countryresident')).'.gif')) {
-								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/'.$this->option.'/images/flags/'.strtolower($this->profile->get('countryresident')).'.gif" alt="'.$this->profile->get('countryresident').' '.JText::_('PLG_MEMBERS_PROFILE_FLAG').'" /> ';
+							if (is_file(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'assets' . DS . 'img' . DS . 'flags' . DS . strtolower($this->profile->get('countryresident')) . '.gif'))
+							{
+								$img = '<img src="' . rtrim(JURI::getInstance()->base(true), '/') . '/components/' . $this->option . '/assets/img/flags/' . strtolower($this->profile->get('countryresident')) . '.gif" alt="' . $this->escape($this->profile->get('countryresident')) . ' ' . JText::_('PLG_MEMBERS_PROFILE_FLAG') . '" /> ';
 							}
-							
+
 							// get the country name
-							foreach($co as $c)
+							foreach ($co as $c)
 							{
 								if ($c->code == strtoupper($this->profile->get('countryresident')))
 								{
@@ -959,7 +960,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						<?php
 							$countries = '<select name="cresident" id="cresident" class="input-select">';
-							$countries .= '<option value="">'.JText::_('PLG_MEMBERS_PROFILE_SELECT').'</option>';
+							$countries .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT') . '</option>';
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
@@ -971,18 +972,19 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							}
 							$countries .= '</select>';
 
-							$yes = ""; $no = "";
-							if (strcasecmp($this->profile->get('countryresident'),'US') == 0)
+							$yes = '';
+							$no  = '';
+							if (strcasecmp($this->profile->get('countryresident'), 'US') == 0)
 							{
 								$yes = 'checked="checked"';
 							}
-							elseif ($this->profile->get('countryresident') != "" && (strcasecmp($this->profile->get('countryresident'),'US') != 0) ) 
+							elseif ($this->profile->get('countryresident') != '' && (strcasecmp($this->profile->get('countryresident'), 'US') != 0)) 
 							{
 								$no = 'checked="checked"';
 							}
 
-							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" '.$yes.' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
-							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" '.$no.' /> ' . JText::_('PLG_MEMBERS_PROFILE_NO') . ' ';
+							$citizenship  = '<br /><input type="radio" name="cresident_us" id="cresident_usyes" value="yes" ' . $yes . ' /> ' . JText::_('PLG_MEMBERS_PROFILE_YES') . ' &nbsp;&nbsp;&nbsp;';
+							$citizenship .= '<input type="radio" name="cresident_us" id="cresident_usno" value="no" ' . $no . ' /> ' . JText::_('PLG_MEMBERS_PROFILE_NO') . ' ';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'countryresident')
@@ -991,9 +993,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', JText::_('Residence'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label class="side-by-side" for="456">' . JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship.'</label>'
-												. '<label class="side-by-side no-padding-right">'.JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN').$countries.'</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryresident]',$this->params->get('access_countryresident'),'input-select') . '</label>')
+							     ->set('inputs', '<label class="side-by-side" for="456">' . JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_IN_USA') . $citizenship . '</label>'
+												. '<label class="side-by-side no-padding-right">' . JText::_('PLG_MEMBERS_PROFILE_RESIDENCE_CURRENTLY_LIVING_IN') . $countries . '</label>')
+							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[countryresident]', $this->params->get('access_countryresident'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>
