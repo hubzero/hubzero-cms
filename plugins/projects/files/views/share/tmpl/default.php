@@ -64,7 +64,7 @@ if (!$this->getError()) {
 				     ->set('remote', $this->remote)
 				     ->set('type', 'file')
 				     ->set('action', 'share')
-				     ->set('multi', 'multi');
+				     ->set('multi', 'multi')
 				     ->display();
 			?>
 		</ul>

@@ -94,7 +94,7 @@ if (!$this->getError()) {
 			     ->set('remote', $remote)
 			     ->set('type', $type)
 			     ->set('action', 'delete')
-			     ->set('multi', 'multi');
+			     ->set('multi', 'multi')
 			     ->display();
 		} ?>
 		</ul>

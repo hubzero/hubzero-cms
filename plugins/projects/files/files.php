@@ -7222,7 +7222,7 @@ class plgProjectsFiles extends JPlugin
 		$obj->author 		= isset($gitData['author']) ? $gitData['author'] : NULL;
 		$obj->email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
 		$obj->md5hash		= hash_file('md5', $fullPath);
-		$obj->commitHash 	= $hash ? $hash : $this->_git->gitLog($this->path, $obj->localPath, '', 'hash');
+		$obj->commitHash 	= $hash ? $hash : $gitData['hash'];
 		
 		// Get public link
 		if ($this->_audience == 'external')

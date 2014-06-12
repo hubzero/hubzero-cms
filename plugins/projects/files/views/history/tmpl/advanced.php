@@ -100,7 +100,7 @@ if ($this->getError()) {
 			<ul class="sample">
 				<?php
 					// Display list item with file data
-					$view = $this->view('selected', 'default');
+					$view = $this->view('default', 'selected');
 					$view->skip 		= false;
 					$view->item 		= $this->file;
 					$view->subdir 		= $this->subdir;
