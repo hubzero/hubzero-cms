@@ -98,7 +98,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$response = new stdClass;
 
 		$ip = JRequest::ip();
-		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1,128.46.19.56,128.46.19.59'));
+		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
 		$ips = array_map('trim', $ips);
 		if (!in_array($ip, $ips))
 		{
