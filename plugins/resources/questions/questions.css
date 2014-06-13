@@ -24,34 +24,35 @@
 	.entry-state {
 		text-transform: uppercase;
 	}
-	.entry-comments {
-		padding-right: 16px;
-		background: url("/components/com_answers/assets/img/bullets_small.png") no-repeat right -428px;
+	.entry-comments a:before {
+		content: "\f0e6";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		color: #999;
 	}
 	.entries .reward {
 		text-align: right;
 	}
-	
-	.entries .entry-id {
-		display: none;
+
+	.entries .entry-id:before {
+		content: "\f0e5";
+		font-family: "Fontcons";
 	}
-	.questions tbody th {
-		background: url("/components/com_answers/assets/img/question.png") right 15px no-repeat;
+	.entries .answered .entry-id:before {
+		content: "\f086";
+		color: #a284db;
 	}
-	.questions tbody tr.answered th {
-		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	.entries .answered {
+		background: #fcf9ff;
 	}
-	.questions tbody tr.flagged th {
-		background: url("/components/com_answers/assets/img/question_answered.png") right 15px no-repeat;
+	.entries .flagged .entry-id:before {
+		content: "\2691";
 	}
-	.questions tbody tr.answered {
-		background: #fcf9ff url("/components/com_answers/assets/img/light-stripes.png");
+	.entries .mine {
+		background: #ffe;
 	}
-	.questions tbody tr.mine {
-		background: #ffe url("/components/com_answers/assets/img/light-stripes.png");
-	}
-	.questions tbody tr.flagged {
-		background: #FFF2EF url("/components/com_answers/assets/img/light-stripes.png");
+	.entries .mine .entry-id:before {
+		color: #cea638;
 	}
 
 	.container-block .entry-details {
@@ -65,16 +66,17 @@
 	.entry-reward {
 		white-space: nowrap;
 		color: #999;
-		font-size: 85%;
 	}
 	.entry-reward a {
-		background: url("images/coin.gif") 0 0 no-repeat;
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
 		display: inline-block;
 		overflow: hidden;
-		text-indent: 55em;
+		white-space: nowrap;
 	}
-
-/* IE 7 hacks */
-
+	.entry-reward a:before {
+		content: "\f006";
+		font-family: "Fontcons";
+		margin-right: 1em;
+		font-size: 16px;
+	}
