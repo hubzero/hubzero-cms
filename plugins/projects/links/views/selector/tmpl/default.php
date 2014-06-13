@@ -43,7 +43,7 @@ $typeParams   	= $element->params->typeParams;
 $label  	= isset($typeParams->addLabel) ? $typeParams->addLabel : JText::_('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
 $action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl';
 $btnLabel 	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
-$placeHolder= 'http:// OR doi:';
+$placeHolder= 'http://';
 
 $title = $block == 'citations' 
 	? JText::_('PLG_PROJECTS_LINKS_SELECTOR_DOI') 
