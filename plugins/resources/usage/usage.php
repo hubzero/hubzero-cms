@@ -29,26 +29,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-	
 /**
  * Resources Plugin class for usage
  */
-class plgResourcesUsage extends JPlugin
+class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -58,17 +49,14 @@ class plgResourcesUsage extends JPlugin
 	 */
 	public function &onResourcesAreas($model) 
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_' . $this->_name) && $model->isTool()) 
 		{
 			// Only show tab for tools
-			$areas = array(
-				'usage' => JText::_('PLG_RESOURCES_USAGE')
-			);
+			$areas['usage'] = JText::_('PLG_RESOURCES_USAGE');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -116,14 +104,7 @@ class plgResourcesUsage extends JPlugin
 		$tables = $database->getTableList();
 		$table  = $database->getPrefix() . 'resource_stats_tools';
 
-		if ($model->resource->alias) 
-		{
-			$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=usage');
-		} 
-		else 
-		{
-			$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=usage');
-		}
+		$url = JRoute::_('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name);
 
 		if (!in_array($table, $tables)) 
 		{
@@ -164,13 +145,12 @@ class plgResourcesUsage extends JPlugin
 				$this->getValues($model->resource->id, JRequest::getInt('period', 13));
 				return;
 			}
-			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
 
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'usage',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'browse'
 				)
 			);
@@ -201,15 +181,15 @@ class plgResourcesUsage extends JPlugin
 			}
 			if ($model->isTool()) 
 			{
-				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</a></p>';
+				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $stats->users) . '</a></p>';
 			} 
 			else 
 			{
-				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s users', $stats->users) . '</p>';
+				$arr['metadata'] = '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
 			}
 			if ($clusters->users && $clusters->classes) 
 			{
-				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('%s users', $clusters->users) . ' in ' . JText::sprintf('%s classes', $clusters->classes) . '</p>';
+				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
 			}
 		}
 
@@ -226,19 +206,19 @@ class plgResourcesUsage extends JPlugin
 	{
 		if ($time < 60) 
 		{
-			$data = round($time, 2) . ' ' . JText::_('PLG_RESOURCES_USAGE_SECONDS');
+			$data = JText::sprintf('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
 		} 
 		else if ($time > 60 && $time < 3600) 
 		{
-			$data = round(($time/60), 2) . ' ' . JText::_('PLG_RESOURCES_USAGE_MINUTES');
+			$data = JText::sprintf('PLG_RESOURCES_USAGE_MINUTES', round(($time/60), 2));
 		} 
 		else if ($time >= 3600 && $time < 86400) 
 		{
-			$data = round(($time/3600), 2) . ' ' . JText::_('PLG_RESOURCES_USAGE_HOURS');
+			$data = JText::sprintf('PLG_RESOURCES_USAGE_HOURS', round(($time/3600), 2));
 		} 
 		else if ($time >= 86400) 
 		{
-			$data = round(($time/86400), 2) . ' ' . JText::_('PLG_RESOURCES_USAGE_DAYS');
+			$data = JText::sprintf('PLG_RESOURCES_USAGE_DAYS', round(($time/86400), 2));
 		}
 
 		return $data;
@@ -255,7 +235,7 @@ class plgResourcesUsage extends JPlugin
 		$database = JFactory::getDBO();
 
 		$sql = "SELECT * 
-				FROM #__resource_stats_tools 
+				FROM `#__resource_stats_tools` 
 				WHERE resid = '$id' 
 				AND period = '$period'
 				ORDER BY `datetime` ASC";
@@ -282,8 +262,8 @@ class plgResourcesUsage extends JPlugin
 		}
 
 		$sql = "SELECT v.*, t.datetime, t.`processed_on` 
-				FROM #__resource_stats_tools AS t
-				LEFT JOIN #__resource_stats_tools_topvals AS v ON v.id=t.id
+				FROM `#__resource_stats_tools` AS t
+				LEFT JOIN `#__resource_stats_tools_topvals` AS v ON v.id=t.id
 				WHERE t.resid = '$id' 
 				AND t.period = '$prd'
 				AND t.datetime = '" . $datetime . "-00 00:00:00'
@@ -307,7 +287,7 @@ class plgResourcesUsage extends JPlugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = "SELECT t.id FROM #__resource_stats_tools AS t WHERE t.resid = '$id' AND t.period = '" . $period . "' AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
+		$sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = " . $database->quote($id) . " AND t.period = " . $database->quote($period) . " AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
 		return $database->loadResult();
 	}
@@ -323,23 +303,23 @@ class plgResourcesUsage extends JPlugin
 	public function getValues($id, $period)
 	{
 		$results = $this->getOverview($id, $period);
-		
+
 		$users = array();
 		//$interactive = array();
 		//$sessions = array();
 		$runs = array();
-		
+
 		$data = new stdClass;
 		$data->points = array();
 		//$data->runs = array();
-		
+
 		foreach ($results as $result)
 		{
 			//$point = new stdClass;
 			$result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . ' 00:00:00';
 			//$point->users = $result->users;
 			//$point->users = $result->users;
-	
+
 			//$data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->users . "]";
 			//$interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
 			//$sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
@@ -349,12 +329,7 @@ class plgResourcesUsage extends JPlugin
 			//$usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
 			//$runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
 		}
-		
-		/*$data = 'data = {
-			users: [' . implode(',', $users) . '],
-			runs: [' . implode(',', $runs) . ']
-		}';*/
-		
+
 		ob_clean();
 
 		echo json_encode($data);

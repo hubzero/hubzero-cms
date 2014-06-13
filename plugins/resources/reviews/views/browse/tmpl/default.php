@@ -53,11 +53,11 @@ $juser = JFactory::getUser();
 
 <p class="section-options">
 	<?php if ($juser->get('guest')) { ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'))); ?>">
 			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 		</a>
 	<?php } else { ?>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>" class="icon-add add btn">
+		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#reviewform'); ?>">
 			<?php echo JText::_('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
 		</a>
 	<?php } ?>
@@ -83,14 +83,13 @@ if ($this->reviews->total() > 0)
 }
 else
 {
-	echo '<p>'.JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND').'</p>'."\n";
+	echo '<p>' . JText::_('PLG_RESOURCES_REVIEWS_NO_REVIEWS_FOUND') . '</p>' . "\n";
 }
 
 // Display the review form if needed
 if (!$juser->get('guest')) 
 {
-	$myreview = $this->h->myreview;
-	if (is_object($myreview)) 
+	if (isset($this->h->myreview) && is_object($this->h->myreview)) 
 	{
 		$this->view('default', 'review')
 		     ->set('option', $this->option)

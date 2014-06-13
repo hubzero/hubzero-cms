@@ -59,25 +59,18 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id')) { ?>
 			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'resources',
-						'element' => 'reviews',
-						'name'    => 'browse',
-						'layout'  => '_rateitem'
-					)
-				);
-				$view->option = $this->option;
-				$view->item   = $this->comment;
-				$view->type   = 'review';
-				$view->vote   = '';
-				$view->id     = '';
+				$view = $this->view('_rateitem')
+							->set('option', $this->option)
+							->set('item', $this->comment)
+							->set('type', 'review')
+							->set('vote', '')
+							->set('id', '');
 				if (!$juser->get('guest')) 
 				{
 					if ($this->comment->get('created_by') == $juser->get('username')) 
 					{
-						$view->vote = $this->comment->get('vote');
-						$view->id   = $this->comment->get('id');
+						$view->set('vote', $this->comment->get('vote'));
+						$view->set('id', $this->comment->get('id'));
 					}
 				}
 				$view->display();
@@ -174,7 +167,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
-					<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->base, false, true))) . '">' . JText::_('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>'); ?>
+					<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base, false, true))) . '">' . JText::_('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">

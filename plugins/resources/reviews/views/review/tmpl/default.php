@@ -120,15 +120,15 @@ else
 			</label>
 
 			<p class="submit">
-				<input type="submit" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_SUBMIT'); ?>" />
+				<input type="submit" class="btn btn-success" value="<?php echo JText::_('PLG_RESOURCES_REVIEWS_SUBMIT'); ?>" />
 			</p>
 
 			<div class="sidenote">
 				<p>
-					<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+					<strong><?php echo JText::_('PLG_RESOURCES_REVIEWS_KEEP_POLITE'); ?></strong>
 				</p>
 				<p>
-					URLs (starting with http://) or email addresses will automatically be linked.
+					<?php echo JText::_('PLG_RESOURCES_REVIEWS_CONTENT_FORMATTING_NOTES'); ?>
 				</p>
 			</div>
 		</fieldset>

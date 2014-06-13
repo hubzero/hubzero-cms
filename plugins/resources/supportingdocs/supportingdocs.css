@@ -19,53 +19,62 @@
 	.aside .supportingdocs h3 {
 		margin: 0;
 		padding: 0.4em 1em;
-		color: #fff;
 		font-size: 1em;
-		background: #d6ccc4; 
-		display: block;
 	}
 	.supportingdocs ul {
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		background: #F7F4F2;
-		border-top: 1px solid #E7DFD8;
-		border-bottom: 1px solid #E7DFD8;
+		border-bottom: 1px solid #e1e1e1;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
 	.supportingdocs ul li {
-		margin: 0 1px;
-		padding: 0.6em 1em;
+		margin: 0;
+		padding: 0.6em 0 0.6em 2.5em;
 		border: none;
-		border-top: 1px solid #fff;
-		padding-left: 35px;
-		background-position: 1em 0.5em;
 		position: relative;
 		list-style: none;
+		border-top: 1px solid #e1e1e1;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	.supportingdocs ul li a {
-		background: none;
-		color: #CC9666;
+	.supportingdocs ul li:before {
+		content: "\f016"; /* \f092 */
+		font-family: "Fontcons";
+		font-size: 2em;
+		display: block;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		position: absolute;
+		top: 0.6em;
+		left: 0;
+		color: #ccc;
+		color: rgba(0, 0, 0, 0.2);
+		text-align: center;
 	}
-	.supportingdocs ul li a:hover {
-		color: #f60;
-		border-bottom: 1px solid #f60;
+	.supportingdocs ul li.html:before {
+		content: "\26D3";
 	}
-	.supportingdocs small,
-	.supportingdocs span {
+	.supportingdocs .caption {
 		color: #999;
 		display: block;
+		font-size: 0.85em;
 	}
 	.supportingdocs .help {
-		background: url("/plugins/resources/supportingdocs/images/help.gif") 0 0 no-repeat;
 		margin: 0;
 		padding: 0;
 		display: block;
-		width: 20px;
-		height: 20px;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
 		overflow: hidden;
-		text-indent: -20em;
 		position: absolute; 
 		top: 0.6em; 
 		right: 0;
 		border: none;
+	}
+	.supportingdocs .help:before {
+		content: "\f059";
+		font-family: "Fontcons";
+		margin-right: 5em;
 	}

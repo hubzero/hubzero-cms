@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
@@ -59,6 +61,10 @@ else
 				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) 
 				{
 					$ftype = JFile::getExt($child->path);
+					if (substr($child->path, 0, 4) == 'http')
+					{
+						$ftype = 'html';
+					}
 
 					$class = '';
 					$action = '';
@@ -210,6 +216,6 @@ else
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('[ none ]'); ?></p>
+		<p><?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS_NONE'); ?></p>
 	<?php } ?>
 </div><!-- / .supportingdocs -->

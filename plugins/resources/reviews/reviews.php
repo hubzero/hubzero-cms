@@ -31,13 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for review
  */
-class plgResourcesReviews extends JPlugin
+class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Constructor
 	 * 
@@ -48,8 +53,6 @@ class plgResourcesReviews extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
 
 		$this->infolink = '/kb/points/';
 		$upconfig = JComponentHelper::getParams('com_members');
@@ -64,16 +67,13 @@ class plgResourcesReviews extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_reviews')) 
 		{
-			$areas = array(
-				'reviews' => JText::_('PLG_RESOURCES_REVIEWS')
-			);
+			$areas['reviews'] = JText::_('PLG_RESOURCES_REVIEWS');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -88,8 +88,8 @@ class plgResourcesReviews extends JPlugin
 		$id = JRequest::getInt('rid', 0);
 
 		$arr = array(
-			'area' => 'reviews',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -118,8 +118,8 @@ class plgResourcesReviews extends JPlugin
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'reviews',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -143,7 +143,7 @@ class plgResourcesReviews extends JPlugin
 			$rtrn = '';
 		}
 
-		include_once(__DIR__ . '/models/review.php');
+		include_once(__DIR__ . DS . 'models' . DS . 'review.php');
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgResourcesReviewsHelper();
@@ -169,17 +169,18 @@ class plgResourcesReviews extends JPlugin
 			if (!$h->loggedin) 
 			{
 				// Instantiate a view
-				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews', false, true), 'server');
-				//$this->_redirect = JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn));
-				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)));
+				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=' . $this->_name, false, true), 'server');
+				JFactory::getApplication()->redirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+				);
 				return;
 			} 
 
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'reviews',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'browse'
 				)
 			);
@@ -213,25 +214,17 @@ class plgResourcesReviews extends JPlugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'resources',
-					'element'=>'reviews',
-					'name'=>'metadata'
+					'folder'  => $this->_type,
+					'element' => $this->_name,
+					'name'    => 'metadata'
 				)
 			);
-			if ($model->resource->alias) 
-			{
-				$url = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=reviews');
-				$url2 = JRoute::_('index.php?option=' . $option . '&alias=' . $model->resource->alias . '&active=reviews&action=addreview#reviewform');
-			} 
-			else 
-			{
-				$url = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews');
-				$url2 = JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=reviews&action=addreview#reviewform');
-			}
+
+			$url  = 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name;
 
 			$view->reviews = $reviews;
-			$view->url = $url;
-			$view->url2 = $url2;
+			$view->url     = JRoute::_($url);
+			$view->url2    = JRoute::_($url . '&action=addreview#reviewform');
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
@@ -294,41 +287,8 @@ class plgResourcesReviews extends JPlugin
 /**
  * Helper class for reviews
  */
-class PlgResourcesReviewsHelper extends JObject
+class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 {
-	/**
-	 * Container for data
-	 * 
-	 * @var array
-	 */
-	private $_data  = array();
-
-	/**
-	 * Set a property
-	 * 
-	 * @param      string $property Property name
-	 * @param      mixed  $value    Property value
-	 * @return     void
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get a property
-	 * 
-	 * @param      unknown $property Property to set
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_data[$property])) 
-		{
-			return $this->_data[$property];
-		}
-	}
-
 	/**
 	 * Redirect page
 	 * 
@@ -373,9 +333,9 @@ class PlgResourcesReviewsHelper extends JObject
 			case 'editreview':   $this->editreview();   break;
 			case 'savereview':   $this->savereview();   break;
 			case 'deletereview': $this->deletereview(); break;
-			case 'savereply': 	 $this->savereply(); 	break;
+			case 'savereply':    $this->savereply();    break;
 			case 'deletereply':  $this->deletereply();  break;
-			case 'rateitem':   	 $this->rateitem();  	break;
+			case 'rateitem':     $this->rateitem();     break;
 		}
 	}
 
@@ -473,7 +433,11 @@ class PlgResourcesReviewsHelper extends JObject
 		// Delete the review
 		$reply = new \Hubzero\Item\Comment($database);
 
-		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $resource->id));
+		$comments = $reply->find(array(
+			'parent'    => $replyid,
+			'item_type' => 'review',
+			'item_id'   => $resource->id
+		));
 		if (count($comments) > 0) 
 		{
 			foreach ($comments as $comment)
@@ -560,11 +524,9 @@ class PlgResourcesReviewsHelper extends JObject
 
 			$view->display();
 			exit();
-		} 
-		else 
-		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
 		}
+
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $rid . '&active=reviews');
 	}
 
 	/**

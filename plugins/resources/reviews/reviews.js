@@ -15,7 +15,7 @@ String.prototype.nohtml = function () {
 
 jQuery(document).ready(function(jq){
 	var $ = jq;
-		
+
 	// Reply to review or comment
 	$('a.reply').on('click', function (e) {
 		e.preventDefault();

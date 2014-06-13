@@ -42,32 +42,32 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="fields">
 			<fieldset name="basic">
-				<field name="period" type="text" size="5" default="14" label="Time period" description="Time period to pull data for"/>
-				<field name="pie_chart_path" type="text" size="25" default="/site/usage/pie_chart_resources/" label="Chart path" description="Path to the directory where charts are stored"/>
+				<field name="period" type="text" size="5" default="14" label="PLG_RESOURCES_USAGE_TIME_PERIOD" description="PLG_RESOURCES_USAGE_TIME_PERIOD_DESC"/>
+				<field name="pie_chart_path" type="text" size="25" default="/site/usage/pie_chart_resources/" label="PLG_RESOURCES_USAGE_CHART_PATH_LABEL" description="PLG_RESOURCES_USAGE_CHART_PATH_DESC"/>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="defaultDataset" type="radio" default="cumulative" label="Default dataset" description="Determines the default dataset to display">
-					<option value="cumulative">cumulative</option>
-					<option value="yearly">yearly</option>
-					<option value="monthly">monthly</option>
+				<field name="defaultDataset" type="radio" default="cumulative" label="PLG_RESOURCES_USAGE_DEFAULT_LABEL" description="PLG_RESOURCES_USAGE_DEFAULT_DESC">
+					<option value="cumulative">PLG_RESOURCES_USAGE_CUMULATIVE</option>
+					<option value="yearly">PLG_RESOURCES_USAGE_YEARLY</option>
+					<option value="monthly">PLG_RESOURCES_USAGE_MONTHLY</option>
 				</field>
-				<field name="mapZoom" type="text" size="5" default="2" label="Map Zoom" description="Map Zoom level for Google Maps"/>
-				<field name="mapLng" type="text" size="5" default="20" label="Map Longitude" description="Map Longitude for Google Maps"/>
-				<field name="mapLat" type="text" size="5" default="0" label="Map Latitude" description="Map Latitude for Google Maps"/>
-				<field name="map_path" type="text" size="25" default="/site/stats/resource_maps/" label="Map path" description="Path to the directory where map images are stored"/>
+				<field name="mapZoom" type="text" size="5" default="2" label="PLG_RESOURCES_USAGE_MAP_ZOOM_LABEL" description="PLG_RESOURCES_USAGE_MAP_ZOOM_DESC"/>
+				<field name="mapLng" type="text" size="5" default="20" label="PLG_RESOURCES_USAGE_MAP_LONGITUDE_LABEL" description="PLG_RESOURCES_USAGE_MAP_LONGITUDE_DESC"/>
+				<field name="mapLat" type="text" size="5" default="0" label="PLG_RESOURCES_USAGE_MAP_LATITUDE_LABEL" description="PLG_RESOURCES_USAGE_MAP_LATITUDE_DESC"/>
+				<field name="map_path" type="text" size="25" default="/site/stats/resource_maps/" label="PLG_RESOURCES_USAGE_MAP_PATH_LABEL" description="PLG_RESOURCES_USAGE_MAP_PATH_DESC"/>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="chart_color_line" type="text" size="15" default="#656565" label="Chart line color" description="Chart line color"/>
-				<field name="chart_color_fill" type="text" size="15" default="rgba(0, 0, 0, 0.15)" label="Chart fill color" description="Chart fill color"/>
-				<field name="chart_color_selection" type="text" size="15" default="#656565" label="Chart select color" description="Chart selection color"/>
-				<field name="pie_chart_color1" type="text" size="15" default="#7c7c7c" label="Pie Color 1" description="Chart colors"/>
-				<field name="pie_chart_color2" type="text" size="15" default="#515151" label="Pie Color 2" description="Chart colors"/>
-				<field name="pie_chart_color3" type="text" size="15" default="#d9d9d9" label="Pie Color 3" description="Chart colors"/>
-				<field name="pie_chart_color4" type="text" size="15" default="#3d3d3d" label="Pie Color 4" description="Chart colors"/>
-				<field name="pie_chart_color5" type="text" size="15" default="#797979" label="Pie Color 5" description="Chart colors"/>
-				<field name="pie_chart_color6" type="text" size="15" default="#595959" label="Pie Color 6" description="Chart colors"/>
-				<field name="pie_chart_color7" type="text" size="15" default="#e5e5e5" label="Pie Color 7" description="Chart colors"/>
-				<field name="pie_chart_color8" type="text" size="15" default="#828282" label="Pie Color 8" description="Chart colors"/>
-				<field name="pie_chart_color9" type="text" size="15" default="#404040" label="Pie Color 9" description="Chart colors"/>
-				<field name="pie_chart_color10" type="text" size="15" default="#3a3a3a" label="Pie Color 10" description="Chart colors"/>
+				<field name="chart_color_line" type="text" size="15" default="#656565" label="PLG_RESOURCES_USAGE_CHART_LINECOLOR_LABEL" description="PLG_RESOURCES_USAGE_CHART_LINECOLOR_DESC"/>
+				<field name="chart_color_fill" type="text" size="15" default="rgba(0, 0, 0, 0.15)" label="PLG_RESOURCES_USAGE_CHART_FILLCOLOR_LABEL" description="PLG_RESOURCES_USAGE_CHART_FILLCOLOR_DESC"/>
+				<field name="chart_color_selection" type="text" size="15" default="#656565" label="PLG_RESOURCES_USAGE_CHART_SELECTCOLOR_LABEL" description="PLG_RESOURCES_USAGE_CHART_SELECTCOLOR_DESC"/>
+				<field name="pie_chart_color1" type="text" size="15" default="#7c7c7c" label="PLG_RESOURCES_USAGE_PIE1_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color2" type="text" size="15" default="#515151" label="PLG_RESOURCES_USAGE_PIE2_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color3" type="text" size="15" default="#d9d9d9" label="PLG_RESOURCES_USAGE_PIE3_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color4" type="text" size="15" default="#3d3d3d" label="PLG_RESOURCES_USAGE_PIE4_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color5" type="text" size="15" default="#797979" label="PLG_RESOURCES_USAGE_PIE5_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color6" type="text" size="15" default="#595959" label="PLG_RESOURCES_USAGE_PIE6_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color7" type="text" size="15" default="#e5e5e5" label="PLG_RESOURCES_USAGE_PIE7_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color8" type="text" size="15" default="#828282" label="PLG_RESOURCES_USAGE_PIE8_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color9" type="text" size="15" default="#404040" label="PLG_RESOURCES_USAGE_PIE9_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
+				<field name="pie_chart_color10" type="text" size="15" default="#3a3a3a" label="PLG_RESOURCES_USAGE_PIE10_LABEL" description="PLG_RESOURCES_USAGE_PIE_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

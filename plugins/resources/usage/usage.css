@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_usage/usage.css
+ * @file        plugins/resources/usage/usage.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -16,10 +16,8 @@
 /* Sections */
 	#sub-menu {
 		margin-bottom: -1px;
-		}
-	/*.com_usage .main {
-		border: none;
-		}*/
+	}
+
 /* Data tables */
 	#usage-section table {
 		border-collapse: collapse;
@@ -28,19 +26,19 @@
 		border-top: none;
 		border-bottom: none;
 		font-size: 90%;
-		}
+	}
 	#usage-section th {
 		font-weight: bold;
-		}
+	}
 	#usage-section caption {
 		text-align: left;
 		margin-bottom: 1em;
 		padding-bottom: 0;
-		}
+	}
 	#usage-section thead {
 		border-top: none;
 		border-bottom: 1px solid #ccc;
-		}
+	}
 	#usage-section thead th,
 	#usage-section thead td { 
 		padding: 0.5em 1em;
@@ -48,78 +46,47 @@
 		border-top: none;
 		white-space: normal;
 		background-color: #f6f6f6;
-		}
+	}
 	#usage-section .group {
 		background-image: none;
-		}
+	}
 	#usage-section tbody th,
 	#usage-section tbody td { 
 		padding: 0.5em 1em 0.5em 1em;
 		border-bottom: 1px solid #eee;
-		}
+	}
 	#usage-section tbody th {
 		text-align: left;
-		}
+	}
 	#usage-section tbody td {
 		text-align: right;
-		}
+	}
 	#usage-section .textual-data {
 		text-align: left;
-		}
+	}
 	#usage-section .numerical-data {
 		text-align: right;
-		}
+	}
 	#usage-section .centered {
 		text-align: center;
-		}	
-	/*#usage-section .odd {
-		background-color: #f6f6f1;
-		}
-	#usage-section .odd .highlight {
-		background-color: #e1eae8;
-		}
-	#usage-section .odd .group {
-		background-color: #eeeee9;
-		background-image: none;
-		}
-	#usage-section .odd .increase {
-		background-color: #e1eddc;
-		}
-	#usage-section .odd .decrease {
-		background-color: #ede2dc;
-		}
-	#usage-section .even {
-		}
-	#usage-section .even .highlight {
-		background-color: #edf3f1;
-		}
-	#usage-section .even .group {
-		background-color: #f7f7f7;
-		background-image: none;
-		}
-	#usage-section .even .increase {
-		background-color: #e9f5e8;
-		}
-	#usage-section .even .decrease {
-		background-color: #f5eae8;
-		}*/
+	}
 	#usage-section .summary {
 		background-color: #edf3f1;
 		border-top: 2px solid #ccc;
-		}
+	}
 	#usage-section .summary .highlight {
 		background-color: #d1dedc;
-		}
+	}
 	#usage-section .summary .group {
 		background-color: #e1eae8;
 		background-image: none;
-		}
+	}
 	#usage-section .summary .increase {
 		background-color: #dce6d3;
-		}
+	}
 	#usage-section .summary .decrease {
 		background-color: #e8dbd3;
-		}
+	}
 	
 	#usage-section .usage-wrap {
 		border-top: 1px solid #ddd;
@@ -133,30 +100,30 @@
 		list-style: none;
 		border: none;
 		border-bottom: 1px solid #ddd;
-		}
+	}
 	#sub-sub-menu li {
 		margin: 0 0 0 20px;
 		padding: 0;
 		border: none;
 		display: inline;
-		}
+	}
 	#sub-sub-menu .active a {
 		color: #333;
 		border: none;
-		}
+	}
 /* Sparklines */
 	.sparkline { 
 		float: left; 
 		height: 1.2em;
 		margin: 0.2em 0 0 0;
 		color: #888;
-		}
+	}
 	.sparkline .index { 
 		position: relative;
 		float: left; 
 		width: 3px; 
 		height: 100%; 
-		}
+	}
 	.sparkline .index .count { 
 		display: block; 
 		position: absolute; 
@@ -167,47 +134,11 @@
 		background: #888;
 		overflow: hidden; 
 		text-indent: -9999px;
-		}
+	}
 /* Sparkline lists */
 	.sparklist li { 
 		padding: 0.4em 0; 
 	}
-	
-	/*#usage-section .usage-stats-overview {
-		border-top: 1px solid #dfdfdf;
-		border-bottom: none;
-		margin: 1em 0;
-		width: 100%;
-		text-align: left;
-		font-size: 1em;
-		border-collapse: collapse;
-		background: #fff;
-	}
-	#usage-section .usage-stats-overview thead th {
-		color: #aaa;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		border-bottom: none;
-		padding: 5px 10px;
-	}
-	#usage-section .usage-stats-overview tbody td {
-		padding: 5px 10px 15px 10px;
-		font-size: 2.5em;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		color: #777;
-		border-bottom: 1px solid #dfdfdf;
-		text-align: left;
-	}
-	#usage-section .usage-stats-overview tbody td.block {
-		padding-bottom: 10px;
-	}
-	#usage-section .usage-stats-overview tbody td.block,
-	#usage-section .usage-stats-overview tbody td.block a {
-		color: #999;
-	}*/
 
 	#usage-section .pie-chart th span {
 		display: inline-block; 
@@ -242,7 +173,6 @@
 		padding: 1.618em;
 		border-top: 4px solid #f3f3f3;
 		border: 4px solid #f3f3f3;
-		/*background-color: #f7f7f7;*/
 	}
 	#usage-section .legend table {
 		width: auto;
@@ -282,35 +212,7 @@
 		padding: 0;
 		display: block;
 	}
-	/*#choices .container {
-		margin: 1.618em 0;
-		background-color: transparent;
-		border: 2px solid #f7f7f7;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		border-radius: 0.25em;
-		padding: 1.618em;
-		position: relative;
-		cursor: pointer;
-	}
-	#choices .container.selected {
-		background-color: #f3f3f3;
-	}
-	#choices .container.selected:after {
-		content: "";
-		position: absolute;
-		left: 50%;
-		bottom: -1.818em;
-		height: 2em;
-		width: 6px;
-		background: #f3f3f3;
-	}
-	#choices .container strong {
-		font-weight: normal;
-		font-size: 2em;
-		line-height: 1;
-		color: #999;
-	}*/
+
 	.sparkline { 
 		float: left; 
 		height: 2em;
@@ -462,24 +364,3 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9bbcde, endColorstr=#c9dbfd)";
 		color: #333;
 	}
-	/*#set-selection {
-		color: #999;
-		text-align: right;
-		margin: -1.5em 0 0 0;
-	}
-	#set-selection a {
-		font-size: 85%;
-		display: inline-block;
-		padding: 0.1em 0.5em;
-		margin: 0 0.3em;
-		border: 1px solid #efefef;
-	}
-	#set-selection a.selected {
-		background: #f3f3f3;
-		color: #999;
-	}
-	#u-instructions {
-		color: #999;
-		font-size: 85%;
-		margin: 1em 0 0 0;
-	}*/

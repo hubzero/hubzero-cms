@@ -52,13 +52,16 @@ else
 	$this->item->set('vote', null);
 }
 
-if (!$juser->get('guest')) {
-	$like_title = 'Vote this up :: '.$this->item->get('helpful', 0).' people liked this';
-	$dislike_title = 'Vote this down :: '.$this->item->get('nothelpful', 0).' people did not like this';
+if (!$juser->get('guest'))
+{
+	$like_title    = JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_UP', $this->item->get('helpful', 0));
+	$dislike_title = JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_DOWN', $this->item->get('nothelpful', 0));
 	$cls = ' tooltips';
-} else {
-	$like_title = 'Vote this up :: Please login to vote.';
-	$dislike_title = 'Vote this down :: Please login to vote.';
+}
+else
+{
+	$like_title    = JText::_('PLG_RESOURCES_REVIEWS_VOTE_UP_LOGIN');
+	$dislike_title = JText::_('PLG_RESOURCES_REVIEWS_VOTE_DOWN_LOGIN');
 	$cls = ' tooltips';
 }
 ?>
@@ -66,23 +69,23 @@ if (!$juser->get('guest')) {
 	<?php if ($juser->get('guest')) { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
 			</span>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
 			</span>
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->item->get('resource_id').'&active=reviews&action=rateitem&refid='.$this->item->get('id').'&vote=yes'); ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
 			</a>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
 			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->item->get('resource_id').'&active=reviews&action=rateitem&refid='.$this->item->get('id').'&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
 			</a>
 		</span>
 	<?php } ?>
@@ -90,23 +93,23 @@ if (!$juser->get('guest')) {
 	<?php if (trim($lcls) == 'chosen') { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
 			</span>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
 			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->item->get('resource_id').'&active=reviews&action=rateitem&refid='.$this->item->get('id').'&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
 			</a>
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->item->get('resource_id').'&active=reviews&action=rateitem&refid='.$this->item->get('id').'&vote=yes'); ?>" title="<?php echo $like_title; ?>">
-				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
 			</a>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
+				<?php echo JText::sprintf('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
 			</span>
 		</span>
 	<?php } ?>

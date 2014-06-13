@@ -51,6 +51,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if (isset($model->resource->toolpublished) || isset($model->resource->revision))
 		{
 			if (isset($model->resource->thistool) 
@@ -62,14 +64,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 		if ($model->type->params->get('plg_questions')) 
 		{
-			$areas = array(
-				'questions' => JText::_('PLG_RESOURCES_QUESTIONS')
-			);
+			$areas['questions'] = JText::_('PLG_RESOURCES_QUESTIONS');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -115,13 +112,14 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Get all the questions for this tool
 		$this->a = new AnswersTableQuestion($this->database);
 
-		$this->filters = array();
-		$this->filters['limit']    = JRequest::getInt('limit', 0);
-		$this->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->filters['tag']      = $this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id;
-		$this->filters['q']        = JRequest::getVar('q', '');
-		$this->filters['filterby'] = JRequest::getVar('filterby', '');
-		$this->filters['sortby']   = JRequest::getVar('sortby', 'withinplugin');
+		$this->filters = array(
+			'limit'    => JRequest::getInt('limit', 0),
+			'start'    => JRequest::getInt('limitstart', 0),
+			'tag'      => ($this->model->isTool() ? 'tool:' . $this->model->resource->alias : 'resource:' . $this->model->resource->id),
+			'q'        => JRequest::getVar('q', ''),
+			'filterby' => JRequest::getVar('filterby', ''),
+			'sortby'   => JRequest::getVar('sortby', 'withinplugin')
+		);
 
 		$this->count = $this->a->getCount($this->filters);
 
@@ -150,13 +148,14 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'metadata'
 				)
 			);
 			$view->resource = $this->model->resource;
 			$view->count    = $this->count;
+
 			$arr['metadata'] = $view->loadTemplate();
 		}
 
@@ -171,12 +170,10 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	 */
 	private function _browse()
 	{
-		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
-
 		// Instantiate a view
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'resources',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse'
 			)
@@ -220,9 +217,10 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Login required
 		if ($this->juser->get('guest')) 
 		{
-			$app = JFactory::getApplication();
-			$app->redirect(
-				'/login?return=' . base64_encode($_SERVER['REQUEST_URI']),
+			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name, false, true), 'server');
+
+			JFactory::getApplication()->redirect(
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);
@@ -232,11 +230,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$lang = JFactory::getLanguage();
 		$lang->load('com_answers');
 
-		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
-
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'resources',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'question',
 				'layout'  => 'new'
@@ -432,8 +428,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
-				'name'   => 'emails',
-				'layout' => 'question_plaintext'
+				'name'      => 'emails',
+				'layout'    => 'question_plaintext'
 			));
 			$eview->option   = 'com_answers';
 			$eview->jconfig  = $jconfig;
@@ -462,7 +458,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		// Redirect to the question
 		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=questions')
+			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name)
 		);
 	}
 }

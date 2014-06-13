@@ -34,23 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
 // Push scripts to document
-\Hubzero\Document\Assets::addPluginStylesheet('resources', 'usage');
-$document = JFactory::getDocument();
-if (!JPluginHelper::isEnabled('system', 'jquery'))
-{
-	$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.min.js');
-}
-$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.min.js');
-$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.selection.js');
-$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.resize.min.js');
-$document->addScript($base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'flot' . DS . 'jquery.flot.crosshair.min.js');
+$this->css()
+     ->js('flot/jquery.flot.min.js', 'system')
+     ->js('flot/jquery.flot.selection.js', 'system')
+     ->js('flot/jquery.flot.resize.min.js', 'system')
+     ->js('flot/jquery.flot.crosshair.min.js', 'system');
 
 // Set the base URL
-if ($this->resource->alias) {
-	$url = 'index.php?option=' . $this->option . '&alias=' . $this->resource->alias . '&active=usage';
-} else {
-	$url = 'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=usage';
-}
+$url = 'index.php?option=' . $option . '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id) . '&active=usage';
 
 $img1 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Users.gif';
 $img2 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Jobs.gif';
@@ -63,8 +54,8 @@ $topvals = new ResourcesStatsToolsTopvals($database);
 
 switch ($this->params->get('defaultDataset', 'cumulative'))
 {
-	case 'yearly': $prd = 12; break;
-	case 'monthly': $prd = 1; break;
+	case 'yearly':  $prd = 12; break;
+	case 'monthly': $prd = 1;  break;
 	case 'cumulative': 
 	default: $prd = 14; break;
 }
@@ -119,11 +110,10 @@ if ($results)
 }
 
 ?>
-	<h3 id="plg-usage-header">
-		<a name="usage"></a>
-		<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
-	</h3>
-	<form method="get" action="<?php echo JRoute::_($url); ?>">
+<h3 id="plg-usage-header">
+	<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
+</h3>
+<form method="get" action="<?php echo JRoute::_($url); ?>">
 	<?php
 	$tool_map = '/site/stats/resource_maps/' . $this->resource->id;
 	if (file_exists(JPATH_ROOT . $tool_map . '.gif')) { ?>
@@ -149,17 +139,17 @@ if ($results)
 			<ul class="dataset-controls" id="set-data">
 				<li>
 					<a id="monthly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'monthly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
-						Monthly
+						<?php echo JText::_('PLG_RESOURCES_USAGE_MONTHLY'); ?>
 					</a>
 				</li>
 				<li>
 					<a id="yearly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'yearly') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
-						Yearly
+						<?php echo JText::_('PLG_RESOURCES_USAGE_YEARLY'); ?>
 					</a>
 				</li>
 				<li>
 					<a id="cumulative" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'cumulative') { echo ' active'; } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
-						Cumulative
+						<?php echo JText::_('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
 					</a>
 				</li>
 			</ul>
@@ -168,15 +158,15 @@ if ($results)
 				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
 				<p class="total">
 					<strong id="users-overview-total"><?php echo number_format($current->users); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
+					<span><?php echo JText::_('PLG_RESOURCES_USAGE_IN'); ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
 				</p>
 			</div><!-- / .col span3 -->
 			<div class="col span9 omega">
 				<p class="zoom-controls" id="set-selection-users">
-					<?php echo JText::_('Zoom'); ?>
-					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('1y'); ?></a>
-					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('6 months'); ?>"><?php echo JText::_('6m'); ?></a>
-					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('3 months'); ?>"><?php echo JText::_('3m'); ?></a>
+					<?php echo JText::_('PLG_RESOURCES_USAGE_ZOOM'); ?>
+					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo JText::_('1y'); ?></a>
+					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo JText::_('6m'); ?></a>
+					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo JText::_('3m'); ?></a>
 				</p>
 				<div id="users-overview" style="min-width:400px;height:250px;">
 				<?php
@@ -212,300 +202,75 @@ if ($results)
 				</div>
 
 				<div class="grid">
-				<div class="col span-half">
-				<table id="pie-org-data" class="pie-chart">
-					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
-					<thead>
-						<tr>
-							<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
-							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
-							<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php 
-				$colors = array(
-					$this->params->get('pie_chart_color1', '#7c7c7c'),
-					$this->params->get('pie_chart_color2', '#515151'),
-					$this->params->get('pie_chart_color3', '#d9d9d9'),
-					$this->params->get('pie_chart_color4', '#3d3d3d'),
-					$this->params->get('pie_chart_color5', '#797979'),
-					$this->params->get('pie_chart_color6', '#595959'),
-					$this->params->get('pie_chart_color7', '#e5e5e5'),
-					$this->params->get('pie_chart_color8', '#828282'),
-					$this->params->get('pie_chart_color9', '#404040'),
-					$this->params->get('pie_chart_color10', '#6a6a6a'),
-					$this->params->get('pie_chart_color1', '#bcbcbc'),
-					$this->params->get('pie_chart_color2', '#515151'),
-					$this->params->get('pie_chart_color3', '#d9d9d9'),
-					$this->params->get('pie_chart_color4', '#3d3d3d'),
-					$this->params->get('pie_chart_color5', '#797979'),
-					$this->params->get('pie_chart_color6', '#595959'),
-					$this->params->get('pie_chart_color7', '#e5e5e5'),
-					$this->params->get('pie_chart_color8', '#828282'),
-					$this->params->get('pie_chart_color9', '#404040'),
-					$this->params->get('pie_chart_color10', '#3a3a3a'),
-				);
+					<div class="col span-half">
+					<table id="pie-org-data" class="pie-chart">
+						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_2_CAPTION'); ?></caption>
+						<thead>
+							<tr>
+								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
+								<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php 
+					$colors = array(
+						$this->params->get('pie_chart_color1', '#7c7c7c'),
+						$this->params->get('pie_chart_color2', '#515151'),
+						$this->params->get('pie_chart_color3', '#d9d9d9'),
+						$this->params->get('pie_chart_color4', '#3d3d3d'),
+						$this->params->get('pie_chart_color5', '#797979'),
+						$this->params->get('pie_chart_color6', '#595959'),
+						$this->params->get('pie_chart_color7', '#e5e5e5'),
+						$this->params->get('pie_chart_color8', '#828282'),
+						$this->params->get('pie_chart_color9', '#404040'),
+						$this->params->get('pie_chart_color10', '#6a6a6a'),
+						$this->params->get('pie_chart_color1', '#bcbcbc'),
+						$this->params->get('pie_chart_color2', '#515151'),
+						$this->params->get('pie_chart_color3', '#d9d9d9'),
+						$this->params->get('pie_chart_color4', '#3d3d3d'),
+						$this->params->get('pie_chart_color5', '#797979'),
+						$this->params->get('pie_chart_color6', '#595959'),
+						$this->params->get('pie_chart_color7', '#e5e5e5'),
+						$this->params->get('pie_chart_color8', '#828282'),
+						$this->params->get('pie_chart_color9', '#404040'),
+						$this->params->get('pie_chart_color10', '#3a3a3a'),
+					);
 
-				$datetime = str_replace('-00 00:00:00', '', $current->datetime);
+					$datetime = str_replace('-00 00:00:00', '', $current->datetime);
 
-				$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
+					$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
 
 
-				if (intval($this->params->get('cache', 1)))
-				{
-					$cache = JFactory::getCache('callback');
-					$cache->setCaching(1);
-					$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-					$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
-				}
-				else 
-				{
-					$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
+					if (intval($this->params->get('cache', 1)))
+					{
+						$cache = JFactory::getCache('callback');
+						$cache->setCaching(1);
+						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+						$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
+					}
+					else 
+					{
+						$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
 
-				}
-				//$data = array();
-				$r = array();
-				//$results = null;
-				$total = 0;
-				$cls = 'even';
-				//$tot = '';
-				//$pieOrg = array();
-				//$toporgs = null;
-				if ($dataset)
-				{
-					$i = 0;
+					}
 					//$data = array();
 					$r = array();
-
-					foreach ($dataset as $row)
-					{
-						$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-
-						//if (!isset($data[$ky]))
-						if (!isset($r[$ky]))
-						{
-							$i = 0;
-							//$data[$ky] = array();
-							$r[$ky] = array();
-						}
-
-						//$data[$ky][] = $row;
-
-						if (!isset($colors[$i]))
-						{
-							$i = 0;
-						}
-						$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
-
-						if ($row->rank != '0') 
-						{
-							$total += $row->value;
-						}
-
-						$i++;
-					}
-
-					$i = 0;
-					$total = ($total) ? $total : 1;
-					foreach ($dataset as $row)
-					{
-						if ($row->rank == '0') 
-						{
-							continue;
-						}
-
-						if ($row->name == '?') 
-						{
-							$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
-						}
-
-						$cls = ($cls == 'even') ? 'odd' : 'even';
-						?>
-						<tr rel="<?php echo $row->name; ?>">
-							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
-							<td class="textual-data"><?php echo $row->name; ?></td>
-							<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>)</span></span></td>
-							<!-- <td><?php echo round((($row->value/$total)*100),2); ?></td> -->
-						</tr>
-						<?php
-						$i++;
-					}
-				}
-				else 
-				{
-				?>
-						<tr>
-							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
-						</tr>
-				<?php
-				}
-				?>
-					</tbody>
-				</table>
-				<script type="text/javascript">
-					var orgData = {
-						<?php
-						$z = array();
-						foreach ($r as $k => $d)
-						{
-							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
-						}
-						echo implode(',', $z);
-						?>
-					};
-				</script>
-			</div>
-			<div class="col span-half omega">
-				<table id="pie-country-data" class="pie-chart">
-					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
-					<thead>
-						<tr>
-							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
-							<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php 
-					if (intval($this->params->get('cache', 1)))
-					{
-						$cache = JFactory::getCache('callback');
-						$cache->setCaching(1);
-						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-						$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
-					}
-					else 
-					{
-						$dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
-					}
-
+					//$results = null;
 					$total = 0;
-					$i = 0;
+					$cls = 'even';
+					//$tot = '';
+					//$pieOrg = array();
+					//$toporgs = null;
 					if ($dataset)
 					{
-						//$data = array();
-						$r = array();
-						$names = array();
-						foreach ($dataset as $row)
-						{
-							$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-							//if (!isset($data[$ky]))
-							if (!isset($r[$ky]))
-							{
-								$i = 0;
-								//$data[$ky] = array();
-								$r[$ky] = array();
-							}
-							//$data[$ky][] = $row;
-							if (!isset($colors[$i]))
-							{
-								$i = 0;
-							}
-
-							$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
-
-							if ($row->rank != '0') 
-							{
-								$total += $row->value;
-							}
-
-							$names[] = $row->name;
-
-							$i++;
-						}
-
-						$codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
-
-						$cls = 'even';
-						//$pie = array();
 						$i = 0;
-						$total = ($total) ? $total : 1;
+						//$data = array();
+						$r = array();
 
 						foreach ($dataset as $row)
 						{
-							if ($row->rank == '0') 
-							{
-								continue;
-							}
-
-							if ($row->name == '?') 
-							{
-								$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
-							}
-
-							$cls = ($cls == 'even') ? 'odd' : 'even';
-							?>
-						<tr rel="<?php echo $row->name; ?>">
-							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
-							<td class="textual-data"><?php 
-							if (isset($codes[$row->name])) { ?>
-								<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" /> 
-							<?php }
-							echo $row->name; ?></td>
-							<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
-							<!-- <td><?php echo round((($row->value/$total)*100),2); ?>%</td> -->
-						</tr>
-							<?php
-							$i++;
-						}
-					}
-					else 
-					{
-					?>
-						<tr>
-							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
-						</tr>
-					<?php
-					}
-					?>
-					</tbody>
-				</table>
-				<script type="text/javascript">
-					var countryData = {
-						<?php
-						$z = array();
-						foreach ($r as $k => $d)
-						{
-							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
-						}
-						echo implode(',', $z);
-						?>
-					};
-				</script>
-				</div>
-				<?php /*<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?>" id="pie-domains-data" class="pie-chart">
-					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
-					<thead>
-						<tr>
-							<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
-							<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
-							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-							<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php 
-					if (intval($this->params->get('cache', 1)))
-					{
-						$cache = JFactory::getCache('callback');
-						$cache->setCaching(1);
-						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
-						$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
-					}
-					else 
-					{
-						$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
-					}
-
-					$total = 0;
-					$i = 0;
-					if ($results)
-					{
-						//$data = array();
-						$r = array();
-						foreach ($results as $row)
-						{
 							$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+
 							//if (!isset($data[$ky]))
 							if (!isset($r[$ky]))
 							{
@@ -513,7 +278,9 @@ if ($results)
 								//$data[$ky] = array();
 								$r[$ky] = array();
 							}
+
 							//$data[$ky][] = $row;
+
 							if (!isset($colors[$i]))
 							{
 								$i = 0;
@@ -528,11 +295,9 @@ if ($results)
 							$i++;
 						}
 
-						$cls = 'even';
-						$tot = '';
-
 						$i = 0;
-						foreach ($results as $row)
+						$total = ($total) ? $total : 1;
+						foreach ($dataset as $row)
 						{
 							if ($row->rank == '0') 
 							{
@@ -546,139 +311,362 @@ if ($results)
 
 							$cls = ($cls == 'even') ? 'odd' : 'even';
 							?>
-						<tr rel="<?php echo $row->name; ?>">
-							<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
-							<td class="textual-data"><?php echo $row->name; ?></td>
-							<td><?php echo number_format($row->value); ?></td>
-							<td><?php echo round((($row->value/$total)*100),2); ?></td>
-						</tr>
+							<tr rel="<?php echo $row->name; ?>">
+								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+								<td class="textual-data"><?php echo $row->name; ?></td>
+								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>)</span></span></td>
+								<!-- <td><?php echo round((($row->value/$total)*100),2); ?></td> -->
+							</tr>
 							<?php
 							$i++;
 						}
 					}
 					else 
 					{
-				?>
-						<tr>
-							<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
-						</tr>
-				<?php
+					?>
+							<tr>
+								<td colspan="3" class="textual-data"><?php echo JText::sprintf('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+							</tr>
+					<?php
 					}
-				?>
-					</tbody>
-				</table>
-				<script type="text/javascript">
-					var domainData = {
-						<?php
-						$z = array();
-						foreach ($r as $k => $d)
+					?>
+						</tbody>
+					</table>
+					<script type="text/javascript">
+						var orgData = {
+							<?php
+							$z = array();
+							foreach ($r as $k => $d)
+							{
+								$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+							}
+							echo implode(',', $z);
+							?>
+						};
+					</script>
+				</div>
+				<div class="col span-half omega">
+					<table id="pie-country-data" class="pie-chart">
+						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_3_CAPTION'); ?></caption>
+						<thead>
+							<tr>
+								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
+								<th scope="col" colspan="2" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php 
+						if (intval($this->params->get('cache', 1)))
 						{
-							$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+							$cache = JFactory::getCache('callback');
+							$cache->setCaching(1);
+							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+							$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
 						}
-						echo implode(',', $z);
+						else 
+						{
+							$dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
+						}
+
+						$total = 0;
+						$i = 0;
+						if ($dataset)
+						{
+							//$data = array();
+							$r = array();
+							$names = array();
+							foreach ($dataset as $row)
+							{
+								$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+								//if (!isset($data[$ky]))
+								if (!isset($r[$ky]))
+								{
+									$i = 0;
+									//$data[$ky] = array();
+									$r[$ky] = array();
+								}
+								//$data[$ky][] = $row;
+								if (!isset($colors[$i]))
+								{
+									$i = 0;
+								}
+
+								$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
+
+								if ($row->rank != '0') 
+								{
+									$total += $row->value;
+								}
+
+								$names[] = $row->name;
+
+								$i++;
+							}
+
+							$codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
+
+							$cls = 'even';
+							//$pie = array();
+							$i = 0;
+							$total = ($total) ? $total : 1;
+
+							foreach ($dataset as $row)
+							{
+								if ($row->rank == '0') 
+								{
+									continue;
+								}
+
+								if ($row->name == '?') 
+								{
+									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+								}
+
+								$cls = ($cls == 'even') ? 'odd' : 'even';
+								?>
+							<tr rel="<?php echo $row->name; ?>">
+								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+								<td class="textual-data"><?php 
+								if (isset($codes[$row->name])) { ?>
+									<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" /> 
+								<?php }
+								echo $row->name; ?></td>
+								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
+								<!-- <td><?php echo round((($row->value/$total)*100),2); ?>%</td> -->
+							</tr>
+								<?php
+								$i++;
+							}
+						}
+						else 
+						{
 						?>
-					};
-				</script>*/ ?>
-				</div><!-- / .grid -->
-			</div><!-- / .col span9 omega -->
+							<tr>
+								<td colspan="3" class="textual-data"><?php echo JText::sprintf('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+							</tr>
+						<?php
+						}
+						?>
+						</tbody>
+					</table>
+					<script type="text/javascript">
+						var countryData = {
+							<?php
+							$z = array();
+							foreach ($r as $k => $d)
+							{
+								$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+							}
+							echo implode(',', $z);
+							?>
+						};
+					</script>
+					</div>
+					<?php /*<table id="pie-domains-data" class="pie-chart">
+						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
+						<thead>
+							<tr>
+								<!-- <th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
+								<th scope="col"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php 
+						if (intval($this->params->get('cache', 1)))
+						{
+							$cache = JFactory::getCache('callback');
+							$cache->setCaching(1);
+							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+							$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
+						}
+						else 
+						{
+							$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
+						}
+
+						$total = 0;
+						$i = 0;
+						if ($results)
+						{
+							//$data = array();
+							$r = array();
+							foreach ($results as $row)
+							{
+								$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
+								//if (!isset($data[$ky]))
+								if (!isset($r[$ky]))
+								{
+									$i = 0;
+									//$data[$ky] = array();
+									$r[$ky] = array();
+								}
+								//$data[$ky][] = $row;
+								if (!isset($colors[$i]))
+								{
+									$i = 0;
+								}
+								$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
+
+								if ($row->rank != '0') 
+								{
+									$total += $row->value;
+								}
+
+								$i++;
+							}
+
+							$cls = 'even';
+							$tot = '';
+
+							$i = 0;
+							foreach ($results as $row)
+							{
+								if ($row->rank == '0') 
+								{
+									continue;
+								}
+
+								if ($row->name == '?') 
+								{
+									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
+								}
+
+								$cls = ($cls == 'even') ? 'odd' : 'even';
+								?>
+							<tr rel="<?php echo $row->name; ?>">
+								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
+								<td class="textual-data"><?php echo $row->name; ?></td>
+								<td><?php echo number_format($row->value); ?></td>
+								<td><?php echo round((($row->value/$total)*100),2); ?></td>
+							</tr>
+								<?php
+								$i++;
+							}
+						}
+						else 
+						{
+					?>
+							<tr>
+								<td colspan="3" class="textual-data"><?php echo JText::sprintf('No data found for the month of %s', $datetime); ?></td>
+							</tr>
+					<?php
+						}
+					?>
+						</tbody>
+					</table>
+					<script type="text/javascript">
+						var domainData = {
+							<?php
+							$z = array();
+							foreach ($r as $k => $d)
+							{
+								$z[] = "\t'$k': [" . implode(',', $d) . "]" . "\n";
+							}
+							echo implode(',', $z);
+							?>
+						};
+					</script>*/ ?>
+					</div><!-- / .grid -->
+				</div><!-- / .col span9 omega -->
 			</div><!-- / .grid -->
 		</div><!-- / #user-overview-wrap -->
 
 		<div id="runs-overview-wrap" class="usage-wrap">
 			<div class="grid">
-			<div class="col span3">
-				<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
-				<p class="total">
-					<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
-					<span><?php echo JText::_('in'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
-				</p>
-			</div><!-- / .col span3 -->
-			<div class="col span9 omega">
-				<p class="zoom-controls" id="set-selection-runs">
-					<?php echo JText::_('Zoom'); ?>
-					<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('Year to date'); ?>"><?php echo JText::_('1y'); ?></a>
-					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('6 months'); ?>"><?php echo JText::_('6m'); ?></a>
-					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('3 months'); ?>"><?php echo JText::_('3m'); ?></a>
-				</p>
-				<div id="runs-overview" style="min-width:400px;height:250px;">
-				<?php
-					// Find the highest value
-					$vals = array();
-					foreach ($results as $result)
-					{
-						$vals[] = $result->jobs;
-					}
-					asort($vals);
+				<div class="col span3">
+					<h4><?php echo JText::_('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
+					<p class="total">
+						<strong id="runs-overview-total"><?php echo number_format($current->jobs); ?></strong>
+						<span><?php echo JText::_('PLG_RESOURCES_USAGE_IN'); ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo JHTML::_('date', $current->datetime, JText::_('DATE_FORMAT_HZ1')); ?></time></span></span>
+					</p>
+				</div><!-- / .col span3 -->
+				<div class="col span9 omega">
+					<p class="zoom-controls" id="set-selection-runs">
+						<?php echo JText::_('Zoom'); ?>
+						<a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo JText::_('1y'); ?></a>
+						<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo JText::_('6m'); ?></a>
+						<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo JRoute::_($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo JText::_('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo JText::_('3m'); ?></a>
+					</p>
+					<div id="runs-overview" style="min-width:400px;height:250px;">
+					<?php
+						// Find the highest value
+						$vals = array();
+						foreach ($results as $result)
+						{
+							$vals[] = $result->jobs;
+						}
+						asort($vals);
 
-					$highest = array_pop($vals);
+						$highest = array_pop($vals);
 
-					$sparkline  = '<span class="sparkline">' . "\n";
-					foreach ($results as $result)
-					{
-						$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
-						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
-						$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
-						$sparkline .= '</span> ';
+						$sparkline  = '<span class="sparkline">' . "\n";
+						foreach ($results as $result)
+						{
+							$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
+							$sparkline .= "\t" . '<span class="index">';
+							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . JHTML::_('date', $result->datetime, JText::_('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
+							$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
+							$sparkline .= '</span> ';
+							$sparkline .= '</span>' . "\n";
+						}
 						$sparkline .= '</span>' . "\n";
-					}
-					$sparkline .= '</span>' . "\n";
-					echo $sparkline;
-				?>
-				</div>
-				<div id="runs-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
-					<!-- blank -->
-				</div>
-				
-				<table summary="<?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?>" id="pie-runs-data" class="pie-chart">
-					<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
-					<thead>
-						<tr>
-							<th scope="col" class="numerical-data"></th>
-							<th scope="col" class="numerical-data"><?php echo JText::_('Average'); ?></th>
-							<th scope="col" class="numerical-data"><?php echo JText::_('Total'); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th>
-								<?php echo JText::_('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
-							</th>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->avg_wall); ?>
-							</td>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->tot_wall); ?>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<?php echo JText::_('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
-							</th>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->avg_cpu); ?>
-							</td>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->tot_cpu); ?>
-							</td>
-						</tr>
-						<tr>
-							<th>
-								<?php echo JText::_('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
-							</th>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->avg_view); ?>
-							</td>
-							<td>
-								<?php echo plgResourcesUsage::timeUnits($current->tot_view); ?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div><!-- / .col span9 omega -->
+						echo $sparkline;
+					?>
+					</div>
+					<div id="runs-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
+						<!-- blank -->
+					</div>
+
+					<table id="pie-runs-data" class="pie-chart">
+						<caption><?php echo JText::_('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
+						<thead>
+							<tr>
+								<th scope="col" class="numerical-data"></th>
+								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
+								<th scope="col" class="numerical-data"><?php echo JText::_('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>
+									<?php echo JText::_('PLG_RESOURCES_USAGE_WALL_TIME'); ?>
+								</th>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->avg_wall); ?>
+								</td>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->tot_wall); ?>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<?php echo JText::_('PLG_RESOURCES_USAGE_CPU_TIME'); ?>
+								</th>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->avg_cpu); ?>
+								</td>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->tot_cpu); ?>
+								</td>
+							</tr>
+							<tr>
+								<th>
+									<?php echo JText::_('PLG_RESOURCES_USAGE_INTERACTION_TIME'); ?>
+								</th>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->avg_view); ?>
+								</td>
+								<td>
+									<?php echo plgResourcesUsage::timeUnits($current->tot_view); ?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- / .col span9 omega -->
 			</div>
 		</div><!-- / #runs-overview-wrap -->
-		
 		<script type="text/javascript">
 			if (!jq) {
 				var jq = $;
@@ -690,7 +678,7 @@ if ($results)
 
 				var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-				dataurl = '/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
+				dataurl = '<?php echo base; ?>/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
 
 				function updateTables(yyyy, mm) {
 					var dt = yyyy + '/' + mm + '/01';
@@ -1089,7 +1077,7 @@ if ($results)
 		</script>
 	<?php } else { ?>
 		<div id="no-usage">
-			<p class="warning"><?php echo JText::_('No usage data was found.'); ?></p>
+			<p class="warning"><?php echo JText::_('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></p>
 		</div>
 	<?php } ?>
-	</form>
+</form>

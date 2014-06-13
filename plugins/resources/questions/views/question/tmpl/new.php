@@ -30,6 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css();
 ?>
 <h3 class="section-header">
 	<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
@@ -97,6 +99,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php } ?>
 		</fieldset>
 
-		<p class="submit"><input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" /></p>
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" />
+		</p>
 	</form>
 </div><!-- / .section -->
