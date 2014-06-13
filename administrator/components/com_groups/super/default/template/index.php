@@ -12,6 +12,9 @@
 // define base path (without doc root)
 $base = rtrim(str_replace(JPATH_ROOT, '', __DIR__), DS);
 
+// define base url for links
+$baseLink = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
+
 // check to see if were supposed to no display html (template frame)
 $no_html = JRequest::getInt('no_html', 0);
 
