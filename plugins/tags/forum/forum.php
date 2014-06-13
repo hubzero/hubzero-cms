@@ -34,8 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Tags plugin class for forum entries
  */
-class plgTagsForum extends JPlugin
+class plgTagsForum extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
 	 * 
@@ -44,30 +50,15 @@ class plgTagsForum extends JPlugin
 	private $_total = null;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * Return the name of the area this plugin retrieves records for
 	 * 
 	 * @return     array
 	 */
 	public function onTagAreas()
 	{
-		$areas = array(
+		return array(
 			'forum' => JText::_('PLG_TAGS_FORUM')
 		);
-		return $areas;
 	}
 
 	/**
@@ -122,47 +113,25 @@ class plgTagsForum extends JPlugin
 
 		$addtl_where = array();
 		$juser = JFactory::getUser();
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		$gids = $this->_getGroupIds($juser->get('id'));
+		if (!$juser->authorise('core.view', 'com_forum'))
 		{
-			$gids = $this->_getGroupIds($juser->get('id'));
-			if (!$juser->authorise('core.view', 'com_forum'))
-			{
-				$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
-			}
-			else 
-			{
-				$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
-
-				if ($gids)
-				{
-					$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
-				}
-				else 
-				{
-					$addtl_where[] = '(e.access IN (' . $viewlevels . '))';
-				}
-			}
+			$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 		}
 		else 
 		{
-			if ($juser->get('guest'))
+			$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
+
+			if ($gids)
 			{
-				$addtl_where[] = '(e.access = 0)';
+				$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
 			}
-			elseif ($juser->usertype != 'Super Administrator')
+			else 
 			{
-				$groups = $this->_getGroupIds($juser->get('id'));
-				if ($groups)
-				{
-					$addtl_where[] = '(e.access = 0 OR e.access = 1 OR ((e.access = 3 OR e.access = 4) AND e.scope_id IN (0,' . join(',', $groups) . ')))';
-				}
-				else
-				{
-					$addtl_where[] = '(e.access = 0 OR e.access = 1)';
-				}
+				$addtl_where[] = '(e.access IN (' . $viewlevels . '))';
 			}
 		}
-		
+
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down, 

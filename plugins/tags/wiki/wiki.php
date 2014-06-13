@@ -31,13 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Tags plugin class for wiki pages
  */
-class plgTagsWiki extends JPlugin
+class plgTagsWiki extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
 	 * 
@@ -46,30 +50,15 @@ class plgTagsWiki extends JPlugin
 	private $_total = null;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * Return the name of the area this plugin retrieves records for
 	 * 
 	 * @return     array
 	 */
 	public function onTagAreas()
 	{
-		$areas = array(
+		return array(
 			'wiki' => JText::_('PLG_TAGS_WIKI')
 		);
-		return $areas;
 	}
 
 	/**

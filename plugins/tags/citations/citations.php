@@ -31,13 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Tags plugin class for citations
  */
-class plgTagsCitations extends JPlugin
+class plgTagsCitations extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
 	 * 
@@ -46,30 +50,15 @@ class plgTagsCitations extends JPlugin
 	private $_total = null;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * Return the name of the area this plugin retrieves records for
 	 * 
 	 * @return     array
 	 */
 	public function onTagAreas()
 	{
-		$areas = array(
+		return array(
 			'citations' => JText::_('PLG_TAGS_CITATIONS')
 		);
-		return $areas;
 	}
 
 	/**
@@ -235,7 +224,7 @@ class plgTagsCitations extends JPlugin
 		// Start building the HTML
 		$html  = "\t" . '<li class="citation-entry">' . "\n";
 		$html .= "\t\t" . '<p class="title">';
-		
+
 		//are we trying wanting to direct to single citaiton view
 		$citationSingleView = $config->get('citation_single_view', 1);
 		if ($citationSingleView)
@@ -266,12 +255,12 @@ class plgTagsCitations extends JPlugin
 			$html .= ' <span>|</span> ' . $type;
 		}
 		$html .= '</p>';
-		
+
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 		$db = JFactory::getDBO();
 		$cc = new CitationsCitation($db);
 		$cc->load($row->id);
-		
+
 		$html .= '<p>' . $formatter->formatCitation($cc, null, $config->get("citation_coins", 1), $config) . '</p>';
 		$html .= "\t" . '</li>'."\n";
 

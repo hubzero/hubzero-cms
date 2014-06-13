@@ -36,8 +36,15 @@ jimport('joomla.plugin.plugin');
 /**
  * Tags plugin class for publications
  */
-class plgTagsPublications extends JPlugin
+class plgTagsPublications extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Publication areas
 	 * 
@@ -70,12 +77,8 @@ class plgTagsPublications extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage();
-
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-			. DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-			. DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 	}
 
 	/**
@@ -373,8 +376,7 @@ class plgTagsPublications extends JPlugin
 	public function documents()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-			. DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 	}
 
 	/**
@@ -401,7 +403,7 @@ class plgTagsPublications extends JPlugin
 		$row->category = $row->data1;
 		$row->area     = $row->data2;
 		$row->ranking  = $row->data3;
-	
+
 		// Set the display date
 		switch ($config->get('show_date'))
 		{
@@ -434,7 +436,7 @@ class plgTagsPublications extends JPlugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		} 
-	
+
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href . '/?v=' . $row->alias, DS) . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";
 

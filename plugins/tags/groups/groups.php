@@ -31,13 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Tags plugin class for groups
  */
-class plgTagsGroups extends JPlugin
+class plgTagsGroups extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
 	 * 
@@ -46,30 +50,15 @@ class plgTagsGroups extends JPlugin
 	private $_total = null;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * Return the name of the area this plugin retrieves records for
 	 * 
 	 * @return     array
 	 */
 	public function onTagAreas()
 	{
-		$areas = array(
+		return array(
 			'groups' => JText::_('PLG_TAGS_GROUPS')
 		);
-		return $areas;
 	}
 
 	/**
@@ -107,15 +96,13 @@ class plgTagsGroups extends JPlugin
 			$ids[] = $tag->get('id');
 		}
 		$ids = implode(',', $ids);
-		
+
 		$from = '';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+
+		$juser = JFactory::getUser();
+		if (!$juser->authorise('core.view', 'com_groups'))
 		{
-			$juser = JFactory::getUser();
-			if (!$juser->authorise('core.view', 'com_groups'))
-			{
-				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
-			}
+			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
 		}
 
 		// Build the query
