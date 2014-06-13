@@ -485,7 +485,13 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// get URI path
 		$path = JURI::getInstance()->getPath();
 		$path = trim(str_replace('groups'.DS.$group->get('cn'), '', $path), DS);
-		
+
+		// make sure we have a path. if no path means were attempting to access the home page
+		if ($path == '')
+		{
+			$path = 'overview';
+		}
+
 		// get group upload path
 		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
 		
