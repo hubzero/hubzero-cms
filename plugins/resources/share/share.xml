@@ -41,42 +41,42 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="icons_limit" type="text" size="5" default="7" label="Limit of Icons" description="Number of share links to display"/>
-				<field name="share_facebook" type="radio" default="1" label="Show Facebook icon" description="Allow to share with Facebook">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="icons_limit" type="text" size="5" default="7" label="PLG_RESOURCES_SHARE_LIMIT_LABEL" description="PLG_RESOURCES_SHARE_LIMIT_DESC"/>
+				<field name="share_facebook" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_FACEBOOK_LABEL" description="PLG_RESOURCES_SHARE_SHOW_FACEBOOK_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_twitter" type="radio" default="1" label="Show Twitter icon" description="Allow to share on Twitter">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_twitter" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_TWITTER_LABEL" description="PLG_RESOURCES_SHARE_SHOW_TWITTER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_google" type="radio" default="1" label="Show Google icon" description="Allow to add a Google bookmark">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_google" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_GOOGLE_LABEL" description="PLG_RESOURCES_SHARE_SHOW_GOOGLE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_digg" type="radio" default="1" label="Show Digg icon" description="Allow to share on Digg">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_digg" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_DIGG_LABEL" description="PLG_RESOURCES_SHARE_SHOW_DIGG_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_technorati" type="radio" default="1" label="Show Technorati icon" description="Allow to share on Technorati">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_technorati" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_TECHNORATI_LABEL" description="PLG_RESOURCES_SHARE_SHOW_TECHNORATI_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_delicious" type="radio" default="1" label="Show Delicious icon" description="Allow to share on Delicious">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_delicious" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_DELICIOUS_LABEL" description="PLG_RESOURCES_SHARE_SHOW_DELICIOUS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_reddit" type="radio" default="1" label="Show Reddit icon" description="Allow to share on Reddit">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_reddit" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_REDDIT_LABEL" description="PLG_RESOURCES_SHARE_SHOW_REDDIT_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_email" type="radio" default="1" label="Show email icon" description="Allow to email">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_email" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_EMAIL_LABEL" description="PLG_RESOURCES_SHARE_SHOW_EMAIL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="share_print" type="radio" default="1" label="Show print icon" description="Allow to print">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="share_print" type="radio" default="1" label="PLG_RESOURCES_SHARE_SHOW_PRINT_LABEL" description="PLG_RESOURCES_SHARE_SHOW_PRINT_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 			</fieldset>
 		</fields>

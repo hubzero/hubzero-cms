@@ -28,15 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Related Resource Mini Layout">
+	<layout title="Resource Sponsor Mini Layout">
 		<message>
-			<![CDATA[STANDARD RELATED RESOURCE MINI LAYOUT DESC]]>
+			<![CDATA[Resource Sponsor Mini Layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Related Resource Mini Layout</name>
-		<description>STANDARD RELATED RESOURCE MINI LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Resource Sponsor Mini Layout</name>
+		<description>Resource Sponsor Mini Layout</description>
 	</state>
 </metadata>

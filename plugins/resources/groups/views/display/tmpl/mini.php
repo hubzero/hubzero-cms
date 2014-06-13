@@ -31,20 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $logo = $this->group->getLogo();
 ?>
 <div id="group-owner" class="container">
 	<h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
 	<div class="group-content">
-<?php if ($logo) { ?>
+	<?php if ($logo) { ?>
 		<p class="group-img">
 			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">
-				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo $this->escape(stripslashes($this->group->get('description'))); ?> group image" />
+				<img src="<?php echo $logo; ?>" width="50" alt="<?php echo JText::sprintf('PLG_RESOURCES_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
 			</a>
 		</p>
-		<p class="group-description group-withlogo"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
-<?php } else { ?>
-		<p class="group-description"><?php echo JText::sprintf('This resource belongs to the %s group.', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
-<?php } ?>
+		<p class="group-description group-withlogo"><?php echo JText::sprintf('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+	<?php } else { ?>
+		<p class="group-description"><?php echo JText::sprintf('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+	<?php } ?>
 	</div>
 </div>

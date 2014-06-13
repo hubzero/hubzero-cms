@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Resources') . '</a>: <small><small>[ '.JText::_('Sponsor').': ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('PLG_RESOURCES') . ': '.JText::_('PLG_RESOURCES_SPONSOR').': ' . $text, 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -47,7 +47,7 @@ function submitbutton(pressbutton)
 	
 	// form field validation
 	if ($('title').value == '') {
-		alert( 'Sponsor must have a title' );
+		alert( '<?php echo JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'); ?>' );
 	} else {
 		submitform( pressbutton );
 	}
@@ -57,30 +57,23 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Sponsor Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="title"><?php echo JText::_('Title'); ?>: <span class="required">*</span></label></td>
-						<td><input type="text" name="fields[title]" id="title" size="30" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="alias"><?php echo JText::_('Alias'); ?>:</label></td>
-						<td>
-							<input type="text" name="fields[alias]" id="alias" size="30" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" /><br />
-							<span class="hint"><?php echo JText::_('If no alias provided, one will be generated from the title.'); ?></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><label><?php echo JText::_('Description'); ?>:</label></td>
-						<td><?php 
-							$editor = JFactory::getEditor();
-							echo $editor->display('fields[description]', stripslashes($this->row->description), '', '', '45', '10', false);
-						?></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="title"><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[title]" id="title" size="30" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" />
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_ALIAS_HINT'); ?>">
+				<label for="alias"><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_ALIAS'); ?>:</label>
+				<input type="text" name="fields[alias]" id="alias" size="30" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" /><br />
+				<span class="hint"><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_ALIAS_HINT'); ?></span>
+			</div>
+
+			<div class="input-wrap">
+				<label><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_DESCRIPTION'); ?>:</label></td>
+				<?php echo JFactory::getEditor()->display('fields[description]', stripslashes($this->row->description), '', '', '45', '10', false); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -88,30 +81,30 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo JText::_('ID'); ?></th>
+						<th><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_ID'); ?></th>
 						<td><?php echo $this->row->id; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Created'); ?></th>
+						<th><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_CREATED'); ?></th>
 						<td><?php echo $this->row->created; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Creator'); ?></th>
+						<th><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_CREATOR'); ?></th>
 						<td><?php echo $this->row->created_by; ?></td>
 					</tr>
-<?php if ($this->row->modified) { ?>
+				<?php if ($this->row->modified) { ?>
 					<tr>
-						<th><?php echo JText::_('Modified'); ?></th>
+						<th><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_MODIFIED'); ?></th>
 						<td><?php echo $this->row->modified; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Modifier'); ?></th>
+						<th><?php echo JText::_('PLG_RESOURCES_SPONSORS_FIELD_MODIFIER'); ?></th>
 						<td><?php echo $this->row->modified_by; ?></td>
 					</tr>
-<?php } ?>
+				<?php } ?>
 				</tbody>
 			</table>
-			
+
 			<p><?php echo JText::_('RESOURCES_REQUIRED_EXPLANATION'); ?></p>
 		</fieldset>
 	</div>

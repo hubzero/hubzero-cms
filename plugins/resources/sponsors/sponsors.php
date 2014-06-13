@@ -68,8 +68,8 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
-			'area' => 'sponsors',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -79,8 +79,8 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// Instantiate a view
 		$this->view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'resources',
-				'element' => 'sponsors',
+				'folder'  => $this->_type,
+				'element' => $this->_name,
 				'name'    => 'display',
 				'layout'  => 'mini'
 			)
@@ -97,7 +97,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$this->view->params   = $this->params;
 		$this->view->data     = '';
 
-		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'sponsors' . DS . 'tables' . DS . 'sponsor.php');
+		require_once(JPATH_ROOT . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . 'tables' . DS . 'sponsor.php');
 
 		$this->sponsors = array();
 
@@ -162,7 +162,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	{
 		$task = ($task) ?  $task : 'default';
 
-		require_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'sponsors' . DS . 'tables' . DS . 'sponsor.php');
+		require_once(JPATH_ROOT . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . 'tables' . DS . 'sponsor.php');
 
 		$this->_option     = $option;
 		$this->_controller = $controller;
@@ -184,8 +184,8 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// Instantiate a view
 		$this->view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'resources',
-				'element' => 'sponsors',
+				'folder'  => $this->_type,
+				'element' => $this->_name,
 				'name'    => 'admin',
 				'layout'  => 'default'
 			)
@@ -266,8 +266,8 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 	{
 		$this->view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'resources',
-				'element' => 'sponsors',
+				'folder'  => $this->_type,
+				'element' => $this->_name,
 				'name'    => 'admin',
 				'layout'  => 'edit'
 			)
@@ -353,7 +353,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors',
-			JText::_('Sponsor successfully saved')
+			JText::_('PLG_RESOURCES_SPONSORS_ITEM_SAVED')
 		);
 	}
 
@@ -376,7 +376,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			// Redirect with error message
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors',
-				JText::_('No sponsor selected'),
+				JText::_('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -393,7 +393,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors',
-			JText::_('Type successfully saved')
+			JText::_('PLG_RESOURCES_SPONSORS_ITEM_REMOVED')
 		);
 	}
 
@@ -434,11 +434,11 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// Check for an ID
 		if (count($ids) < 1) 
 		{
-			$action = ($state == 1) ? JText::_('unpublish') : JText::_('publish');
+			$action = ($state == 1) ? JText::_('PLG_RESOURCES_SPONSORS_UNPUBLISH') : JText::_('PLG_RESOURCES_SPONSORS_PUBLISH');
 
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors',
-				JText::_('Select an entry to ' . $action),
+				JText::sprintf('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
 				'error'
 			);
 			return;
@@ -460,11 +460,11 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		// set message
 		if ($state == 1) 
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully published');
+			$message = JText::sprintf('PLG_RESOURCES_SPONSORS_ITEMS_PUBLISHED', count($ids));
 		} 
 		else
 		{
-			$message = JText::_(count($ids) . ' Item(s) successfully unpublished');
+			$message = JText::sprintf('PLG_RESOURCES_SPONSORS_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		$this->setRedirect(

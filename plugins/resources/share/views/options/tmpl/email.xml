@@ -28,15 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Share Resource Email Layout">
+	<layout title="Share Resource Email Layout">
 		<message>
-			<![CDATA[STANDARD SHARE RESOURCE EMAIL LAYOUT DESC]]>
+			<![CDATA[Share Resource Email Layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Share Resource Email Layout</name>
-		<description>STANDARD SHARE RESOURCE EMAIL LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Share Resource Email Layout</name>
+		<description>Share Resource Email Layout</description>
 	</state>
 </metadata>

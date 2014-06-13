@@ -119,19 +119,19 @@ class ResourcesSponsor extends JTable
 	{
 		$this->title = trim($this->title);
 		$this->description = trim($this->description);
-		
+
 		if (!$this->title) 
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
 			return false;
 		}
-		
+
 		if (!$this->alias)
 		{
 			$this->alias = strtolower($this->title);
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
-		
+
 		$juser = JFactory::getUser();
 		if (!$this->id) 
 		{
@@ -143,10 +143,10 @@ class ResourcesSponsor extends JTable
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Load a record by the alias
 	 * 
@@ -159,7 +159,7 @@ class ResourcesSponsor extends JTable
 		{
 			return false;
 		}
-		
+
 		if (is_numeric($keys))
 		{
 			return parent::load($keys);
@@ -213,7 +213,7 @@ class ResourcesSponsor extends JTable
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl";
 		if (isset($filters['state']))
 		{

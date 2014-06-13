@@ -34,16 +34,16 @@ JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors" method="post" name="adminForm" id="adminForm">
-	
-	<table class="adminlist" summary="<?php echo JText::_('A list of resource sponsors'); ?>">
-		<caption><?php echo JText::_('Sponsors'); ?></caption>
+
+	<table class="adminlist">
+		<caption><?php echo JText::_('PLG_RESOURCES_SPONSORS'); ?></caption>
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('Title'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('Alias'), 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('State'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><?php echo JHTML::_('grid.sort', 'PLG_RESOURCES_SPONSORS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'PLG_RESOURCES_SPONSORS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'PLG_RESOURCES_SPONSORS_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'PLG_RESOURCES_SPONSORS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -54,29 +54,26 @@ JToolBarHelper::deleteList();
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	switch ($row->state) 
 	{
 		case '2':
 			$task = 'publish';
-			$img = 'disabled.png';
-			$alt = JText::_('Trashed');
+			$alt = JText::_('JTRASHED');
 			$cls = 'trashed';
 		break;
 		case '1':
 			$task = 'unpublish';
-			$img = 'publish_g.png';
-			$alt = JText::_('Published');
+			$alt = JText::_('JPUBLISHED');
 			$cls = 'publish';
 		break;
 		case '0':
 		default:
 			$task = 'publish';
-			$img = 'publish_x.png';
-			$alt = JText::_('Unpublished');
+			$alt = JText::_('JUNPUBLISHED');
 			$cls = 'unpublish';
 		break;
 	}
@@ -97,8 +94,8 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $this->escape($row->alias); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors&amp;action=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
-						<img src="images/<?php echo $img;?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" />
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=sponsors&amp;action=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('PLG_RESOURCES_SPONSORS_SET_TO', $task); ?>">
+						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
 			</tr>
@@ -117,6 +114,6 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="sort" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="sort_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -1,32 +1,24 @@
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/recommendations/recommendations.js
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-//----------------------------------------------------------
-// Resource Ranking pop-ups
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
-jQuery(document).ready(function($){
-	var recoms = $('#recommendations-section');
-	if (recoms.length) {
-		var sbjt = $('#recommendations-subject');
-		if (sbjt.length) {
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		sbjt = $('#recommendations-subject');
 
-			var rid = $('#rid');
-			if (rid.length) {
-				$.get('/index.php?option=com_resources&task=plugin&trigger=onResourcesRecoms&no_html=1&rid='+rid.val(), {}, function(data) {
-					$(sbjt).html(data);
-				});
-			}
+	if (sbjt.length) {
+		var rid = $('#rid');
+		if (rid.length) {
+			$.get(sbjt.attr('data-src') + '/index.php?option=com_resources&task=plugin&trigger=onResourcesRecoms&no_html=1&rid=' + rid.val(), {}, function(data) {
+				$(sbjt).html(data);
+			});
 		}
 	}
 });

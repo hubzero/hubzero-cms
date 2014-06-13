@@ -68,8 +68,8 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
-			'area' => $this->_name,
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -78,25 +78,21 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		// Get recommendations
-		$this->database = JFactory::getDBO();
-
-		// Instantiate a view
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'resources',
-				'element' => $this->_name,
-				'name'    => 'display'
-			)
-		);
-
 		$group = \Hubzero\User\Group::getInstance($resource->group_owner);
 		if (!$group || !$group->get('gidNumber'))
 		{
 			return $arr;
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
+		// Get recommendations
+		$this->database = JFactory::getDBO();
+
+		// Instantiate a view
+		$this->view = new \Hubzero\Plugin\View(array(
+			'folder'  => $this->_type,
+			'element' => $this->_name,
+			'name'    => 'display'
+		));
 
 		if ($miniview) 
 		{

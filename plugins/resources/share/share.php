@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for showing social sharing options
  */
-class plgResourcesShare extends JPlugin
+class plgResourcesShare extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -87,8 +78,8 @@ class plgResourcesShare extends JPlugin
 		}
 
 		$arr = array(
-			'area' => 'share',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -104,27 +95,24 @@ class plgResourcesShare extends JPlugin
 			return;
 		}
 
-		\Hubzero\Document\Assets::addPluginStylesheet('resources', 'share');
-		\Hubzero\Document\Assets::addPluginScript('resources', 'share');
-
 		// Email form
 		if ($sharewith == 'email') 
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'share',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'options',
 					'layout'  => 'email'
 				)
 			);
 
 			// Pass the view some info
-			$view->option = $option;
+			$view->option   = $option;
 			$view->resource = $model->resource;
-			$view->_params = $this->params;
-			$view->url = $url;
+			$view->_params  = $this->params;
+			$view->url      = $url;
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)
@@ -144,17 +132,17 @@ class plgResourcesShare extends JPlugin
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'share',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'options'
 				)
 			);
 
 			// Pass the view some info
-			$view->option = $option;
+			$view->option   = $option;
 			$view->resource = $model->resource;
-			$view->_params = $this->params;
-			$view->url = $url;
+			$view->_params  = $this->params;
+			$view->url      = $url;
 			if ($this->getError()) 
 			{
 				foreach ($this->getErrors() as $error)

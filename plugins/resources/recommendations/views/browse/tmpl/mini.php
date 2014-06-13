@@ -33,25 +33,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="container" id="recommendations">
 	<h3><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_HEADER'); ?></h3>
-<?php if ($this->results) { ?>
-	<ul>
-<?php
-	foreach ($this->results as $line)
-	{
-		// Get the SEF for the resource
-		if ($line->alias) {
-			$sef = JRoute::_('index.php?option='.$this->option.'&alias='.$line->alias.'&rec_ref='.$this->resource->id);
-		} else {
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='.$line->id.'&rec_ref='.$this->resource->id);
-		}
-?>
-		<li>
-			<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
-		</li>
-<?php } ?>
-	</ul>
-<?php } else { ?>
-	<p><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
-<?php } ?>
-	<p id="credits"><a href="/about/hubzero#recommendations"><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
+
+	<?php if ($this->results) { ?>
+		<ul>
+		<?php foreach ($this->results as $line) { ?>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($line->alias ? 'alias=' . $line->alias : 'id=' . $line->id) . '&rec_ref=' . $this->resource->id); ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
+			</li>
+		<?php } ?>
+		</ul>
+	<?php } else { ?>
+		<p><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
+	<?php } ?>
+
+	<p id="credits">
+		<a href="<?php echo JURI::base(true); ?>/about/hubzero#recommendations"><?php echo JText::_('PLG_RESOURCES_RECOMMENDATIONS_POWERED_BY'); ?></a>
+	</p>
 </div>

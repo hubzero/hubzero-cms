@@ -14,14 +14,18 @@
 */
 
 	.metadata .share {
-		background: url("images/arrowpointer.gif") 0 50% no-repeat;
-		margin: 15px 0 0.2em 0;
+		margin: 1em 0 0.2em 0;
+		padding: 0.5em 0 0 0;
 		font-size: 90%;
-		color:#999999;
-		padding: 5px 0 0 20px;
+		color: #999;
 		border-top: 1px dashed #cccccc;
 		position: relative;
 		overflow: visible;
+	}
+	.metadata .share:before {
+		content: "\2192";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
 	}
 	.shareinfo {
 		position: relative;
@@ -33,38 +37,55 @@
 		overflow: visible;
 		left: -999em;
 		margin: -37px 0 0 0;
-		padding: 0;
+		padding: 15px;
 		border: none;
-		width: 250px;
+		width: 210px;
 		color: #f4f4f4;
+		background: #e9e9e9;
+		background: rgba(245, 245, 245, 0.9);
+		border: 1px solid #ccc;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
+	.shareinfo dd:before,
+	.shareinfo dd:after {
+		content: "";
+		position: absolute;
+		top: 2em;
+		border: 8px solid transparent;
+	}
+	.shareinfo dd:before {
+		right: -17px;
+		border-color: transparent transparent transparent #ccc;
+	}
+	.shareinfo dd:after {
+		right: -16px;
+		border-color: transparent transparent transparent rgba(245, 245, 245, 0.9);
 	}
 	.metadata .shareinfo dd p,
 	.shareinfo dd p {
 		margin: 0;
-		padding: 20px 30px 10px 20px;
+		padding: 0 0 1em 0;
 		color: #666;
 		text-transform: uppercase;
-		background: url("images/share_popup.png") left top no-repeat;
-	}
-	.shareinfo dd div {
-		position: relative;
-		overflow: visible;
-		background: url("images/share_popup.png") left bottom no-repeat;
-		padding: 10px 30px 15px 20px;
 	}
 	.shareinfo dd div.clear {
 		background: none;
 		padding:0;
 	}
-	.shareinfo dd a { 
-	}
-	.shareinfo dd a:hover { 
-	}
 	.shareinfo.active dt {
 		background-color: #fff;
 	}
 	.shareinfo.active dd {
-		left: -266px;
+		left: -250px;
 	}
 
 	.shareinfo dt {
@@ -179,6 +200,3 @@
 	html>body .shareinfo.active dd  {
 		*background: url("images/clear.gif");
 	}
-
-/* IE 6 hacks */
-

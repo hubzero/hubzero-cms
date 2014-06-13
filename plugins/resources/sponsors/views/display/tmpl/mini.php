@@ -32,10 +32,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->data) { ?>
-<div id="sponsors" class="container">
-	<h3><?php echo JText::_('PLG_RESOURCES_SPONSORS_HEADER'); ?></h3>
-	<div class="plg-content" style="text-align: center;">
-<?php echo $this->data; ?>
+	<div id="sponsors" class="container">
+		<h3><?php echo JText::_('PLG_RESOURCES_SPONSORS_HEADER'); ?></h3>
+		<div class="plg-content" style="text-align: center;">
+			<?php echo $this->data; ?>
+		</div>
 	</div>
-</div>
 <?php } ?>

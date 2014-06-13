@@ -40,9 +40,9 @@ $app = JFactory::getApplication();
 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo JURI::base(true); ?>/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
 
-		<script type="text/javascript" src="/media/system/js/mootools.js"></script>
+		<script type="text/javascript" src="<?php echo JURI::base(true); ?>/media/system/js/jquery.js"></script>
 	</head>
 	<body id="small-page">
 	</body>

@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for related resources
  */
-class plgResourcesRelated extends JPlugin
+class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -77,19 +68,20 @@ class plgResourcesRelated extends JPlugin
 	public function onResourcesSub($resource, $option, $miniview=0)
 	{
 		$arr = array(
-			'area' => 'related',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
 		$database = JFactory::getDBO();
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn`  
-				FROM #__wiki_page AS w 
-				JOIN #__wiki_version AS v ON w.id=v.pageid
-				JOIN #__wiki_page_links AS wl ON wl.page_id=w.id
-				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=". $database->Quote($resource->id);
+		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, 
+					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn` 
+				FROM `#__wiki_page` AS w 
+				JOIN `#__wiki_version` AS v ON w.id=v.pageid
+				JOIN `#__wiki_page_links` AS wl ON wl.page_id=w.id
+				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->Quote($resource->id);
 
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
@@ -123,11 +115,11 @@ class plgResourcesRelated extends JPlugin
 
 		// Build the query that checks resource parents
 		$sql2 = "SELECT DISTINCT r.id, NULL AS pageid, NULL AS version, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up, "
-			 . "\n NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section, NULL AS `group` "
-			 . "\n FROM #__resource_types AS rt, #__resources AS r"
-			 . "\n JOIN #__resource_assoc AS a ON r.id=a.parent_id"
-			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
-			 . "\n WHERE r.published=1 AND a.child_id=" . $resource->id . " AND r.type=rt.id AND r.type!=8 ";
+			 . " NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section, NULL AS `group` "
+			 . " FROM #__resource_types AS rt, #__resources AS r"
+			 . " JOIN #__resource_assoc AS a ON r.id=a.parent_id"
+			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
+			 . " WHERE r.published=1 AND a.child_id=" . $resource->id . " AND r.type=rt.id AND r.type!=8 ";
 		if (!$juser->get('guest')) 
 		{
 			if ($juser->authorize('com_resources', 'manage') 
@@ -144,7 +136,6 @@ class plgResourcesRelated extends JPlugin
 		{
 			$sql2 .= "AND r.access=0 ";
 		}
-		//echo '<!-- '.$sql2.' -->';
 		$sql2 .= "ORDER BY r.ranking LIMIT 10";
 
 		// Build the final query
@@ -152,35 +143,23 @@ class plgResourcesRelated extends JPlugin
 
 		// Execute the query
 		$database->setQuery($query);
-		$related = $database->loadObjectList();
+
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => $this->_type,
+			'element' => $this->_name,
+			'name'    => 'browse'
+		));
 
 		// Instantiate a view
 		if ($miniview) 
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'resources',
-					'element' => 'related',
-					'name'    => 'browse',
-					'layout'  => 'mini'
-				)
-			);
+			$view->setLayout('mini');
 		} 
-		else 
-		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'resources',
-					'element' => 'related',
-					'name'    => 'browse'
-				)
-			);
-		}
 
 		// Pass the view some info
 		$view->option   = $option;
 		$view->resource = $resource;
-		$view->related  = $related;
+		$view->related  = $database->loadObjectList();
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)

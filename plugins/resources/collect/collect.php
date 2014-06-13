@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for favoriting a resource
  */
-class plgResourcesCollect extends JPlugin
+class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -96,13 +87,9 @@ class plgResourcesCollect extends JPlugin
 		{
 			if ($rtrn == 'all' || $rtrn == 'metadata') 
 			{
-				// Push some scripts to the template
-				\Hubzero\Document\Assets::addPluginScript('resources', $this->_name);
-				\Hubzero\Document\Assets::addPluginStylesheet('resources', $this->_name);
-
 				$view = new \Hubzero\Plugin\View(
 					array(
-						'folder'  => 'resources',
+						'folder'  => $this->_type,
 						'element' => $this->_name,
 						'name'    => 'metadata'
 					)

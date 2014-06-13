@@ -36,7 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class ResourcesRecommendation extends JTable
 {
-
 	/**
 	 * Description for 'fromID'
 	 * 
@@ -99,7 +98,7 @@ class ResourcesRecommendation extends JTable
 	{
 		if (!$this->toID) 
 		{
-			$this->setError(JText::_('Please provide an ID'));
+			$this->setError(JText::_('PLG_RESOURCES_RECOMMENDATIONS_ERROR_NO_ID'));
 			return false;
 		}
 		return true;
