@@ -310,6 +310,10 @@ class Helper
 		if ($cat == 1) {
 			$g .= "(g.type='".$cat."' OR g.type='3') AND";
 		}
+		else
+		{
+			$g .= "g.type=" . $db->quote($cat) . " AND ";
+		}
 
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
