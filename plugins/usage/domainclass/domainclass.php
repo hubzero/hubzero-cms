@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Usage plugin class for domain class
  */
-class plgUsageDomainclass extends JPlugin
+class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
@@ -59,10 +50,9 @@ class plgUsageDomainclass extends JPlugin
 	 */
 	public function onUsageAreas()
 	{
-		$areas = array(
+		return array(
 			'domainclass' => JText::_('PLG_USAGE_DOMAINCLASS')
 		);
-		return $areas;
 	}
 
 	/**
@@ -209,7 +199,7 @@ class plgUsageDomainclass extends JPlugin
 			$cls = 'even';
 
 			// Print class list table...
-			$html .= '<table summary="' . $classname . '">' . "\n";
+			$html .= '<table>' . "\n";
 			$html .= "\t" . '<caption>Table ' . $t . ': ' . $classname . '</caption>' . "\n";
 			$html .= "\t" . '<thead>' . "\n";
 			$html .= "\t\t" . '<tr>' . "\n";

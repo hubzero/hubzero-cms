@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Usage plugin class for regions
  */
-class plgUsageRegion extends JPlugin
+class plgUsageRegion extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function plgUsageRegion(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
@@ -59,10 +50,9 @@ class plgUsageRegion extends JPlugin
 	 */
 	public function onUsageAreas()
 	{
-		$areas = array(
+		return array(
 			'region' => JText::_('PLG_USAGE_REGION')
 		);
-		return $areas;
 	}
 
 	/**

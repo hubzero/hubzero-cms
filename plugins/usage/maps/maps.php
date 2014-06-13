@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Usage plugin class for overview
  */
-class plgUsageMaps extends JPlugin
+class plgUsageMaps extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
@@ -59,10 +50,9 @@ class plgUsageMaps extends JPlugin
 	 */
 	public function onUsageAreas()
 	{
-		$areas = array(
+		return array(
 			'maps' => JText::_('PLG_USAGE_MAPS')
 		);
-		return $areas;
 	}
 
 	/**
@@ -74,7 +64,7 @@ class plgUsageMaps extends JPlugin
 	 */
 	private function get_hosts(&$db, $location)
 	{
-		$query = "SELECT DISTINCT(domain) FROM #__xsession WHERE ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "'";
+		$query = "SELECT DISTINCT(domain) FROM `#__xsession` WHERE ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "'";
 
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
@@ -327,7 +317,7 @@ class plgUsageMaps extends JPlugin
 				}
 				else
 				{
-					JError::raiseError(500, JText::sprintf('Type "%s" does nto exist.', $type));
+					JError::raiseError(500, JText::sprintf('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
 					return;
 				}
 
@@ -340,7 +330,7 @@ class plgUsageMaps extends JPlugin
 		$pathway->addItem(JText::_('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
 
 		$html  = '<h3>' . JText::_('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
-		$html .= '<p><a class="map" href="' . JRoute::_('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . JText::_('Reset map') . '</a></p>';
+		$html .= '<p><a class="map" href="' . JRoute::_('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . JText::_('PLG_USAGE_MAPS_RESET') . '</a></p>';
 		$html .= '<iframe src="' . JRoute::_('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0"></iframe>' . "\n";
 
 		return $html;
