@@ -190,12 +190,20 @@ return array(
 
 <h3>Components</h3>
 <p>Super groups now have the ability to have their own components. They are setup the <u>exact</u> same as a regular component except for their file location.</p>
+<p>For more information regarding developing components see: <a target="_blank" href="https://hubzero.org/documentation/1.2.2/webdevs">https://hubzero.org/documentation/1.2.2/webdevs</a></p>
 
 <h6>Component Directory</h6>
 <pre>/site/groups/{groupid}/components/com_{component}/</pre>
 
 <h6>Component Language File Directory</h6>
 <pre>/site/groups/{groupid}/language/en-GB/en-GB.com_{component}.ini</pre>
+
+<h6>Component Paths</h6>
+<p>As a helper for super group component developers the path to the component directory is defined in a constant.</p>
+<pre>JPATH_GROUPCOMPONENT</pre>
+
+<p>So as an example, if your creating the component "com_drwho", the JPATH_GROUPCOMPONENT constant equals:</p>
+<pre>/{web_root}/site/groups/{groupid}/components/com_drwho/</pre>
 
 <p class="warning">Note: You should be able to move the component to the main components folder and and have it work without any changes.</p>
 
