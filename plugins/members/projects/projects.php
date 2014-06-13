@@ -29,13 +29,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Members Plugin class for projects
  */
-class plgMembersProjects extends JPlugin
+class plgMembersProjects extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Constructor
 	 * 
@@ -47,17 +52,7 @@ class plgMembersProjects extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage();
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('members', 'projects');
-		$this->_params = new $paramsClass($this->_plugin->params);
 		$this->_config = JComponentHelper::getParams('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
