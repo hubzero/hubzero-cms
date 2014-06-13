@@ -180,6 +180,7 @@ $pubHelper = new PublicationHelper ($this->database);
 			     ->set('option', $this->option)
 			     ->set('project', $this->project)
 			     ->set('choices', $this->choices)
+			     ->set('pubconfig', $this->pubconfig)
 			     ->set('goto', '&alias=' . $this->project->alias)
 			     ->display();
 	} ?>

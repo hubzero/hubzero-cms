@@ -2003,6 +2003,11 @@
 		font-size: 90%;
 		margin-left: 100px;
 	}
+	#pubintro h3 .learnmore {
+		float: right;
+		font-size: 0.7em;
+		margin-right: 0.5em;
+	}
 		
 /* Display messages
 --------------------------------------------- */
