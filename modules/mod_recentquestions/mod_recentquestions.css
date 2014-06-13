@@ -18,38 +18,44 @@
 		margin: 1em 0;
 	}
 	ul.questions li {
-		padding: 0 0 0 17px;
+		padding: 0 0 0 2em;
 		margin: 0.3em 0 1em 0;
-		background: url("/components/com_answers/images/bullets_medium.gif") no-repeat 0px -133px;
+		position: relative;
+	}
+	ul.questions li:before {
+		position: absolute;
+		top: 0.5em;
+		left: 0;
+		font-size: 1.2em;
+		content: "\f0e5";
+		font-family: "Fontcons";
 	}
 	ul.questions li h4 {
+		margin: 0;
+		padding: 0;
 	}
 	ul.questions li .entry-tags {
 		display: none;
 	}
-	ul.questions li .tags {
-		padding: 0 0 0 2px;
-		background: url("/components/com_answers/images/tag_orange.png") no-repeat 0 0.5em;
-	}	
 	ul.questions li .tags li {
 		background: none;
 		margin-bottom:10px;
 	}
-	.entry-details {
+	ul.questions .entry-details {
 		margin: 0.5em 0;
 		padding: 0;
 		font-size: 85%;
 		color: #999;
 	}
-	.entry-details a {
+	ul.questions .entry-details a {
 		color: #666;
 		border-bottom: 1px dotted #999;
 	}
-	.entry-details a:hover {
+	ul.questions .entry-details a:hover {
 		color: #ff6600;
 		border-bottom: 1px solid #ff6600;
 	}
-	.entry-details-divider {
+	ul.questions .entry-details-divider {
 		margin-left: 0.5em;
 		margin-right: 0.5em;
 	}
