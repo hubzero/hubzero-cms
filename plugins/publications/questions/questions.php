@@ -129,7 +129,7 @@ class plgPublicationsQuestions extends JPlugin
 		$this->filters['start']    	= JRequest::getInt( 'limitstart', 0 );
 		$identifier 		 		= $this->publication->alias ? $this->publication->alias : $this->publication->id;
 		$this->filters['tag']      	= $this->publication->cat_alias == 'tool' 
-									?  'tool' . $identifier : 'publication' . $identifier;
+									?  'tool:' . $identifier : 'publication:' . $identifier;
 		$this->filters['rawtag']   	= $this->publication->cat_alias == 'tool' 
 									?  'tool:' . $identifier : 'publication:' . $identifier;
 		$this->filters['q']        	= JRequest::getVar( 'q', '' );
