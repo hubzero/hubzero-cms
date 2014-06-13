@@ -42,6 +42,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
+
 	/**
 	 * Record count
 	 * 
