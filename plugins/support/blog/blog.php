@@ -31,13 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for com_blog entries
  */
-class plgSupportBlog extends JPlugin
+class plgSupportBlog extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Retrieves a row from the database
 	 * 
@@ -101,7 +106,7 @@ class plgSupportBlog extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+		$msg = JText::_('PLG_SUPPORT_BLOG_NOTICE');
 
 		$comment = new BlogTableComment($database);
 		$comment->load($refid);

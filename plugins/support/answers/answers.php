@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for com_answers entries
  */
-class plgSupportAnswers extends JPlugin
+class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieves a row from the database
@@ -129,28 +120,6 @@ class plgSupportAnswers extends JPlugin
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
-		/*if ($category == 'answer') 
-		{
-			$pdata    = $this->parent($parentid);
-			$category = $pdata->get('item_type');
-			$refid    = $pdata->get('item_id');
-
-			if ($pdata->get('item_type') == 'answer') 
-			{
-				// Yet another level?
-				$pdata    = $this->parent($pdata->get('parent'));
-				$category = $pdata->get('item_type');
-				$refid    = $pdata->get('item_id');
-
-				if ($pdata->get('item_type') == 'answer') 
-				{
-					// Yet another level?
-					$pdata    = $this->parent($pdata->get('parent'));
-					$category = $pdata->get('item_type');
-					$refid    = $pdata->get('item_id');
-				}
-			}
-		}*/
 		if ($category == 'answercomment') 
 		{
 			$database->setQuery("SELECT item_id FROM `#__item_comments` WHERE id=" . $refid);
@@ -247,7 +216,7 @@ class plgSupportAnswers extends JPlugin
 					return false;
 				}
 
-				$message .= JText::sprintf('This is to notify you that your answer to question #%s was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_ANSWER_REMOVED', $parentid);
 			break;
 
 			case 'question':
@@ -304,17 +273,16 @@ class plgSupportAnswers extends JPlugin
 									$jconfig = JFactory::getConfig();
 
 									$admin_email = $jconfig->getValue('config.mailfrom');
-									$sub  = $jconfig->getValue('config.sitename') . ' Answers, Question #' . $referenceid . ' was removed';
-									$from = $jconfig->getValue('config.sitename') . ' Answers';
+									$sub  = JText::sprintf('PLG_SUPPORT_ANSWERS_SUBJECT', $jconfig->getValue('config.sitename'), $referenceid);
+									$from = JText::sprintf('PLG_SUPPORT_ANSWERS_TITLE', $jconfig->getValue('config.sitename'));
 									$hub  = array(
 										'email' => $admin_email, 
 										'name'  => $from
 									);
 
-									$mes  = 'You are receiving this email because you responded to a question, which has been removed by the site administrator. ';
-									$mes .= 'As a result, no points for this question will be awarded. We appologize for inconvenience.' . "\r\n";
+									$mes  = JText::_('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
 									$mes .= '----------------------------' . "\r\n\r\n";
-									$mes .= 'QUESTION: ' . $referenceid . "\r\n";
+									$mes .= JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
 									SupportUtilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
 							 	}
@@ -354,7 +322,7 @@ class plgSupportAnswers extends JPlugin
 					}
 				}
 
-				$message .= JText::sprintf('This is to notify you that your question #%s was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_QUESTION_REMOVED', $parentid);
 			break;
 
 			case 'answercomment':
@@ -367,7 +335,7 @@ class plgSupportAnswers extends JPlugin
 					return false;
 				}
 
-				$message .= JText::sprintf('This is to notify you that your comment on an answer to question #%s was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_COMMENT_REMOVED', $parentid);
 			break;
 		}
 
