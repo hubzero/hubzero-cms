@@ -14,21 +14,23 @@
 */
 
 /* Versioning */
-	.toolpublished {
-		background: url("/components/com_resources/assets/img/check.gif") 0 0 no-repeat;
+	.version-state {
 		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
-		text-indent: -555em;
-		padding: 0;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
+		overflow: hidden;
+		white-space: nowrap;
+		line-height: 1;
 	}
-	.toolunpublished {
-		background: url("/components/com_resources/assets/img/minus.gif") 0 0 no-repeat;
-		display: block;
-		width: 15px;
-		height: 15px;
-		margin: 0 0 0 2em;
-		padding: 0;
-		text-indent: -555em;
+	.toolpublished:before {
+		content: "\f058";
+		font-family: "Fontcons";
+		margin-right: 2em;
+		color: green;
+	}
+	.toolunpublished:before {
+		content: "\2296";
+		font-family: "Fontcons";
+		margin-right: 2em;
 	}

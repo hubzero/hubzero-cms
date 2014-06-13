@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/resources/wishlist/views/browse/tmpl/default.xml
+@file           plugins/resources/recommendations.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,14 +27,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<metadata>
-	<layout title="Resource Wishes">
-		<message>
-			<![CDATA[Resource Wishes]]>
-		</message>
-	</layout>
-	<state>
-		<name>Resource Wishes</name>
-		<description>Resource Wishes</description>
-	</state>
-</metadata>
+<extension version="1.7" type="plugin" group="resources">
+	<name>Resource - Classrooms</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>Resources Plugin class for classroom cluster visualization</description>
+	<files>
+		<filename plugin="classrooms">classrooms.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_resources_classrooms.ini</language>
+	</languages>
+	<config>
+	</config>
+</extension>

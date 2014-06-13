@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Resources Plugin class for versions
  */
-class plgResourcesVersions extends JPlugin
+class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -60,16 +51,13 @@ class plgResourcesVersions extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->isTool() && $model->type->params->get('plg_versions')) 
 		{
-			$areas = array(
-				'versions' => JText::_('PLG_RESOURCES_VERSIONS')
-			);
+			$areas['versions'] = JText::_('PLG_RESOURCES_VERSIONS');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -85,8 +73,8 @@ class plgResourcesVersions extends JPlugin
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'versions',
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -113,13 +101,11 @@ class plgResourcesVersions extends JPlugin
 			$tv = new ToolVersion($database);
 			$rows = $tv->getVersions($model->resource->alias);
 
-			\Hubzero\Document\Assets::addPluginStylesheet('resources', 'versions');
-
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'versions',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'browse'
 				)
 			);

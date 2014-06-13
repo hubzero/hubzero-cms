@@ -30,64 +30,62 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$cls = 'even';
+
+$this->css();
 ?>
 <h3 class="section-header">
-	<a name="versions"></a>
 	<?php echo JText::_('PLG_RESOURCES_VERSIONS'); ?> 
 </h3>
-<?php
-if ($this->rows) {
-	$cls = 'even';
-?>
-<table class="resource-versions" summary="<?php echo JText::_('PLG_RESOURCES_VERSIONS_TBL_SUMMARY'); ?>">
-	<thead>
-		<tr>
-			<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_VERSION'); ?></th>
-			<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_RELEASED'); ?></th>
-			<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_DOI_HANDLE'); ?></th>
-			<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_PUBLISHED'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-<?php
-	foreach ($this->rows as $v)
-	{
-		$handle = '';
-		
-		if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder'))
+<?php if ($this->rows) { ?>
+	<table class="resource-versions">
+		<thead>
+			<tr>
+				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_VERSION'); ?></th>
+				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_RELEASED'); ?></th>
+				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_DOI_HANDLE'); ?></th>
+				<th><?php echo JText::_('PLG_RESOURCES_VERSIONS_PUBLISHED'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach ($this->rows as $v)
 		{
-			$handle = 'doi:' . $this->tconfig->get('doi_shoulder') . DS . strtoupper($v->doi);
-			$handle = '<a href="'.$this->tconfig->get('doi_resolve', 'http://dx.doi.org/') . $handle . '">'.$handle.'</a>';
-		}
-		else if (isset($v->doi_label) && $v->doi_label)
-		{
-			$handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
-			$handle = '<a href="http://hdl.handle.net/'.$handle.'">'.$handle.'</a>';
-		}
+			$handle = '';
 
-		$cls = (($cls == 'even') ? 'odd' : 'even');
-?>
-		<tr class="<?php echo $cls; ?>">
-			<td>
-				<?php echo ($v->version) ? '<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->resource->id).'?rev='.$v->revision.'">'.$v->version.'</a>' : 'N/A'; ?>
-			</td>
-			<td>
-				<?php echo ($v->released && $v->released!='0000-00-00 00:00:00') ? JHTML::_('date', $v->released, JText::_('DATE_FORMAT_HZ1')) : 'N/A'; ?>
-			</td>
-			<td>
-				<?php echo ($handle) ? $handle : 'N/A'; ?>
-			</td>
-			<td>
-				<span class="<?php echo ($v->state=='1') ? 'toolpublished' : 'toolunpublished'; ?>">
-					<?php echo ($v->state=='1') ? JText::_('PLG_RESOURCES_VERSIONS_YES') : JText::_('PLG_RESOURCES_VERSIONS_NO'); ?>
-				</span>
-			</td>
-		</tr>
-<?php
-	}
-?>
-	</tbody>
-</table>
+			if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder'))
+			{
+				$handle = 'doi:' . $this->tconfig->get('doi_shoulder') . DS . strtoupper($v->doi);
+				$handle = '<a href="' . $this->tconfig->get('doi_resolve', 'http://dx.doi.org/') . $handle . '">' . $handle . '</a>';
+			}
+			else if (isset($v->doi_label) && $v->doi_label)
+			{
+				$handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
+				$handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
+			}
+
+			$cls = (($cls == 'even') ? 'odd' : 'even');
+		?>
+			<tr class="<?php echo $cls; ?>">
+				<td>
+					<?php echo ($v->version) ? '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A'; ?>
+				</td>
+				<td>
+					<?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? JHTML::_('date', $v->released, JText::_('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+				</td>
+				<td>
+					<?php echo ($handle) ? $handle : 'N/A'; ?>
+				</td>
+				<td>
+					<span class="version-state <?php echo ($v->state=='1') ? 'toolpublished' : 'toolunpublished'; ?>">
+						<?php echo ($v->state=='1') ? JText::_('PLG_RESOURCES_VERSIONS_YES') : JText::_('PLG_RESOURCES_VERSIONS_NO'); ?>
+					</span>
+				</td>
+			</tr>
+		<?php } ?>
+		</tbody>
+	</table>
 <?php } else { ?>
 	<p><?php echo JText::_('PLG_RESOURCES_VERSIONS_NO_VERIONS_FOUND'); ?></p>
 <?php } ?>

@@ -51,16 +51,13 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_about', 0)) 
 		{
-			$areas = array(
-				'about' => JText::_('PLG_RESOURCES_ABOUT')
-			);
+			$areas['about'] = JText::_('PLG_RESOURCES_ABOUT');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -99,12 +96,10 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			\Hubzero\Document\Assets::addPluginStyleSheet('resources', $this->_name);
-
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'index'
 				)

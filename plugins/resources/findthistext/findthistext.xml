@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="format" type="text" size="20" default="{journal}@{publisher}" label="Format" description="Tag format to use to link sponsor data"/>
+				<field name="format" type="text" size="20" default="{journal}@{publisher}" label="PLG_RESOURCES_FINDTHISTEXT_FORMAT_LABEL" description="PLG_RESOURCES_FINDTHISTEXT_FORMAT_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

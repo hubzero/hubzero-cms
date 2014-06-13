@@ -51,16 +51,13 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_' . $this->_name)) 
 		{
-			$areas = array(
-				'wishlist' => JText::_('Wishlist')
-			);
+			$areas['wishlist'] = JText::_('PLG_RESOURCES_WISHLIST');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -186,22 +183,22 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit']) 
 				{
-					$title.= ' (<a href="' . JRoute::_('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('view all') . ' ' . $items . '</a>)';
+					$title.= ' (<a href="' . JRoute::_('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('PLG_RESOURCES_WISHLIST_VIEW_ALL') . ' ' . $items . '</a>)';
 				} 
 				else 
 				{
 					$title .= ' (' . $items . ')';
 				}
+
 				// HTML output
 				// Instantiate a view
 				$view = new \Hubzero\Plugin\View(
 					array(
-						'folder'  => 'resources',
-						'element' => 'wishlist',
+						'folder'  => $this->_type,
+						'element' => $this->_name,
 						'name'    => 'browse'
 					)
 				);
-
 				// Pass the view some info
 				$view->option   = $option;
 				$view->resource = $model->resource;
@@ -228,8 +225,8 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'wishlist',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'metadata'
 				)
 			);

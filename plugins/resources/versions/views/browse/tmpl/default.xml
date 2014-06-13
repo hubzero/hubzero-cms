@@ -28,15 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Resource Versions Layout">
+	<layout title="Resource Versions Layout">
 		<message>
-			<![CDATA[STANDARD RESOURCE VERSIONS LAYOUT DESC]]>
+			<![CDATA[Resource Versions Layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Resource Versions Layout</name>
-		<description>STANDARD RESOURCE VERSIONS LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Resource Versions Layout</name>
+		<description>Resource Versions Layout</description>
 	</state>
 </metadata>

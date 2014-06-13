@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id);
 
 // Set the display date
@@ -79,140 +81,145 @@ $maintext = $this->model->description('parsed');
 ?>
 <div class="subject abouttab">
 	<div class="resource">
-<?php if ($thedate) { ?>
-		<div class="grid">
-		<div class="col span-half">
-<?php } ?>
-			<h4><?php echo JText::_('Category'); ?></h4>
-			<p class="resource-content">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
-					<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
-				</a>
-			</p>
-<?php if ($thedate) { ?>
-		</div>
-		<div class="col span-half omega">
-			<h4><?php echo JText::_('Published on'); ?></h4>
-			<p class="resource-content">
-				<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
-			</p>
-		</div>
-		</div>
-<?php } ?>
-<?php
-// Check how much we can display
-if (!$this->model->access('view-all')) {
-	// Protected - only show the introtext
-?>
-		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
-		<div class="resource-content">
-			<?php echo $this->escape($this->model->resource->introtext); ?>
-		</div>
-<?php
-} else {
-	if (trim($maintext)) {
-?>
-		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
-		<div class="resource-content">
-			<?php echo $maintext; ?>
-		</div>
-<?php
-	}
-
-	$citations = '';
-	if (!isset($schema->fields) || !is_array($schema->fields))
-	{
-		$schema->fields = array();
-	}
-	foreach ($schema->fields as $field)
-	{
-		if (isset($data[$field->name])) {
-			if ($field->name == 'citations') {
-				$citations = $data[$field->name];
-			} else if ($value = $elements->display($field->type, $data[$field->name])) {
-?>
-			<h4><?php echo $field->label; ?></h4>
-			<div class="resource-content">
-				<?php echo $value; ?>
+		<?php if ($thedate) { ?>
+			<div class="grid">
+				<div class="col span-half">
+		<?php } ?>
+					<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
+					<p class="resource-content">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
+							<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
+						</a>
+					</p>
+		<?php if ($thedate) { ?>
+				</div>
+				<div class="col span-half omega">
+					<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
+					<p class="resource-content">
+						<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
+					</p>
+				</div>
 			</div>
-<?php
-			}
-		}
-	}
+		<?php } ?>
 
-	if ($this->model->params->get('show_citation')) {
-		if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2) {
-			// Citation instructions
-			//$this->helper->getUnlinkedContributors();
+		<?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+			<div class="resource-content">
+				<?php echo $this->escape($this->model->resource->introtext); ?>
+			</div>
+		<?php } else { ?>
+			<?php if (trim($maintext)) { ?>
+				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
+				<div class="resource-content">
+					<?php echo $maintext; ?>
+				</div>
+			<?php } ?>
 
-			// Build our citation object
-			$juri = JURI::getInstance();
-			
-			$cite = new stdClass();
-			$cite->title = $this->model->resource->title;
-			$cite->year = JHTML::_('date', $thedate, 'Y');
-			$cite->location = $juri->base() . ltrim($sef, DS);
-			$cite->date = JFactory::getDate()->toSql();
-			$cite->url = '';
-			$cite->type = '';
-			$authors = array();
-			$contributors = $this->model->contributors('!submitter');
-			if ($contributors)
+			<?php
+			$citations = '';
+			if (!isset($schema->fields) || !is_array($schema->fields))
 			{
-				foreach ($contributors as $contributor)
-				{
-					$authors[] = $contributor->name ? $contributor->name : $contributor->xname;
+				$schema->fields = array();
+			}
+			foreach ($schema->fields as $field)
+			{
+				if (isset($data[$field->name])) {
+					if ($field->name == 'citations') {
+						$citations = $data[$field->name];
+					} else if ($value = $elements->display($field->type, $data[$field->name])) {
+					?>
+					<h4><?php echo $field->label; ?></h4>
+					<div class="resource-content">
+						<?php echo $value; ?>
+					</div>
+					<?php
+					}
 				}
 			}
-			$cite->author = implode(';', $authors); //$this->helper->ul_contributors;
-			
-			if ($this->model->params->get('show_citation') == 2) {
-				$citations = '';
-			}
-		} else {
-			$cite = null;
-		}
+			?>
 
-		$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, 0);
-		$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
-?>
-			<h4><a name="citethis"></a><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
-			<div class="resource-content">
-				<?php echo $citeinstruct; ?>
-			</div>
-<?php
-	}
-}
-// If the resource had a specific event date/time
-if ($this->model->attribs->get('timeof', '')) {
-	if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
-		$exp = JText::_('DATE_FORMAT_HZ1'); //'%B %d %Y';
-	} else {
-		$exp = JText::_('TIME_FORMAT_HZ1') . ', ' . JText::_('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
-	}
-	if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
-		$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
-					  ? JHTML::_('date', $this->model->attribs->get('timeof', ''), $exp)
-					  : '';
-	} else {
-		$seminarTime = $this->model->attribs->get('timeof', '');
-	}
-?>
+			<?php if ($this->model->params->get('show_citation')) { ?>
+				<?php
+				if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2)
+				{
+					// Citation instructions
+					//$this->helper->getUnlinkedContributors();
+
+					// Build our citation object
+					$juri = JURI::getInstance();
+
+					$cite = new stdClass();
+					$cite->title = $this->model->resource->title;
+					$cite->year = JHTML::_('date', $thedate, 'Y');
+					$cite->location = $juri->base() . ltrim($sef, DS);
+					$cite->date = JFactory::getDate()->toSql();
+					$cite->url = '';
+					$cite->type = '';
+					$authors = array();
+					$contributors = $this->model->contributors('!submitter');
+					if ($contributors)
+					{
+						foreach ($contributors as $contributor)
+						{
+							$authors[] = $contributor->name ? $contributor->name : $contributor->xname;
+						}
+					}
+					$cite->author = implode(';', $authors); //$this->helper->ul_contributors;
+
+					if ($this->model->params->get('show_citation') == 2)
+					{
+						$citations = '';
+					}
+				}
+				else
+				{
+					$cite = null;
+				}
+
+				$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, 0);
+				$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
+				?>
+				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
+				<div class="resource-content">
+					<?php echo $citeinstruct; ?>
+				</div>
+			<?php } ?>
+		<?php } ?>
+
+		<?php if ($this->model->attribs->get('timeof', '')) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
-			<p class="resource-content"><time><?php echo $this->escape($seminarTime); ?></time></p>
-<?php
-}
-// If the resource had a specific location
-if ($this->model->attribs->get('location', '')) {
-?>
+			<p class="resource-content"><time><?php 
+				// If the resource had a specific event date/time
+				if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00')
+				{
+					$exp = JText::_('DATE_FORMAT_HZ1'); //'%B %d %Y';
+				}
+				else
+				{
+					$exp = JText::_('TIME_FORMAT_HZ1') . ', ' . JText::_('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
+				}
+				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
+				{
+					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
+								  ? JHTML::_('date', $this->model->attribs->get('timeof', ''), $exp)
+								  : '';
+				}
+				else
+				{
+					$seminarTime = $this->model->attribs->get('timeof', '');
+				}
+
+				echo $this->escape($seminarTime); 
+				?></time></p>
+		<?php } ?>
+
+		<?php if ($this->model->attribs->get('location', '')) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_LOCATION'); ?></h4>
 			<p class="resource-content"><?php echo $this->escape($this->model->attribs->get('location', '')); ?></p>
-<?php
-}
+		<?php } ?>
 
-	if ($this->model->contributors('submitter')) {
-	?>
-			<h4><?php echo JText::_('Submitter'); ?></h4>
+		<?php if ($this->model->contributors('submitter')) { ?>
+			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h4>
 			<div class="resource-content">
 				<span id="submitterlist">
 					<?php 
@@ -221,32 +228,27 @@ if ($this->model->attribs->get('location', '')) {
 						'name'   => 'view',
 						'layout' => '_submitters',
 					));
-					$view->option = $this->option;
+					$view->option       = $this->option;
 					$view->contributors = $this->model->contributors('submitter');
-					$view->badges = $this->plugin->get('badges', 0);
-					$view->showorgs = 1;
+					$view->badges       = $this->plugin->get('badges', 0);
+					$view->showorgs     = 1;
 					$view->display();
 					?>
 				</span>
 			</div>
-	<?php
-	}
+		<?php } ?>
 
-// Tags
-if ($this->model->params->get('show_assocs')) {
-	$tags = $this->model->tags();
-	//$tagCloud = $this->helper->getTagCloud($this->authorized);
-	if ($tags) {
-		$tagger = new ResourcesTags($this->database);
-?>
-			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
-			<div class="resource-content">
-				<?php echo $tagger->buildCloud($tags); ?>
-			</div>
-<?php
-	}
-}
-?>
+		<?php if ($this->model->params->get('show_assocs')) { ?>
+			<?php if ($tags = $this->model->tags()) { ?>
+				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
+				<div class="resource-content">
+					<?php 
+					$tagger = new ResourcesTags($this->database);
+					echo $tagger->buildCloud($tags);
+					?>
+				</div>
+			<?php } ?>
+		<?php } ?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->
 <div class="clear"></div>

@@ -51,16 +51,13 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_findthistext', 0)) 
 		{
-			$areas = array(
-				'findthistext' => JText::_('PLG_RESOURCES_FINDTHISTEXT')
-			);
-		} 
-		else 
-		{
-			$areas = array();
+			$areas['findthistext'] = JText::_('PLG_RESOURCES_FINDTHISTEXT');
 		}
+
 		return $areas;
 	}
 
@@ -79,7 +76,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			'html'     => '',
 			'metadata' => ''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas)) 
 		{
@@ -89,15 +86,13 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 				$rtrn = '';
 			}
 		}
-		
+
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			\Hubzero\Document\Assets::addPluginStyleSheet('resources', $this->_name);
-
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'index'
 				)
@@ -108,14 +103,14 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$view->juser    = JFactory::getUser();
 			$view->plugin   = $this->params;
 			$view->openurl  = $this->getOpenUrl();
-			
+
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
-		
+
 		return $arr;
 	}
-	
+
 	/**
 	 * Get Open URL
 	 * 
@@ -128,18 +123,18 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 
 		//get the users id to make lookup
 		$userIp = JRequest::ip();
-		
+
 		//get the param for ip regex to use machine ip
 		$ipRegex = array(
 			'10.\d{2,5}.\d{2,5}.\d{2,5}',
 			'192.\d{1,5}.\d{1,5}.\d{1,5}'
 		); 
-		
+
 		// do we use the machine ip?
 		$useMachineIp = false;
 		foreach ($ipRegex as $ipr)
 		{
-			$match = preg_match('/'.$ipr.'/i', $userIp);
+			$match = preg_match('/' . $ipr . '/i', $userIp);
 			if ($match)
 			{
 				$useMachineIp = true;
@@ -180,7 +175,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 			$openUrl->text = $resolver->linkText;
 			$openUrl->icon = $resolver->linkIcon;
 		}
-		
+
 		// return open url
 		return $openUrl;
 	}

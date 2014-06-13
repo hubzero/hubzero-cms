@@ -51,16 +51,13 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
+		$areas = array();
+
 		if ($model->type->params->get('plg_abouttool', 0)) 
 		{
-			$areas = array(
-				'about' => JText::_('PLG_RESOURCES_ABOUT')
-			);
+			$areas['about'] = JText::_('PLG_RESOURCES_ABOUT');
 		} 
-		else 
-		{
-			$areas = array();
-		}
+
 		return $areas;
 	}
 
@@ -76,8 +73,8 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area' => 'about',
-			'html' => '',
+			'area'     => 'about',
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -91,51 +88,26 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		$ar = $this->onResourcesAreas($model);
+		if (empty($ar)) 
+		{
+			$rtrn = '';
+		}
+
 		if ($rtrn == 'all' || $rtrn == 'html') 
 		{
-			\Hubzero\Document\Assets::addPluginStyleSheet('resources', 'abouttool');
-
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
-					'element' => 'abouttool',
+					'folder'  => $this->_type,
+					'element' => $this->_name,
 					'name'    => 'index'
 				)
 			);
-			$view->option     = $option;
-			$view->model      = $model;
-			//$view->authorized = $resource->authorized;
-			$view->database   = JFactory::getDBO();
-			$view->juser      = JFactory::getUser();
-
-			/*if (!$view->juser->get('guest')) 
-			{
-				$xgroups = \Hubzero\User\Helper::getGroups($view->juser->get('id'), 'all');
-				// Get the groups the user has access to
-				$view->usersgroups = $this->_getUsersGroups($xgroups);
-			} 
-			else 
-			{
-				$view->usersgroups = array();
-			}
-
-			$paramsClass = 'JRegistry';
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$paramsClass = 'JParameter';
-			}
-
-			$view->attribs = new $paramsClass($resource->attribs);
-			$view->config  = JComponentHelper::getParams($option);
-
-			$rparams = new $paramsClass($resource->params);
-			$params = $view->config;
-			$params->merge($rparams);
-
-			$view->params   = $params;
-			$view->plugin   = $this->params;
-			$view->helper   = new ResourcesHelper($resource->id, $view->database);*/
+			$view->option   = $option;
+			$view->model    = $model;
+			$view->database = JFactory::getDBO();
+			$view->juser    = JFactory::getUser();
 			$view->thistool = $model->thistool;
 			$view->curtool  = $model->curtool;
 			$view->alltools = $model->alltools;
@@ -146,28 +118,6 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		return $arr;
-	}
-
-	/**
-	 * Create an array of just group aliases
-	 * 
-	 * @param      array $groups A list of groups
-	 * @return     array
-	 */
-	private function _getUsersGroups($groups)
-	{
-		$arr = array();
-		if (!empty($groups)) 
-		{
-			foreach ($groups as $group)
-			{
-				if ($group->regconfirmed) 
-				{
-					$arr[] = $group->cn;
-				}
-			}
-		}
 		return $arr;
 	}
 }

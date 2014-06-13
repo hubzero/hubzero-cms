@@ -1,3 +1,18 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/findthistext/findthistext.css
+ * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources Find This Text plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
 table.find th {
 	text-align: right;
 	color: #999;

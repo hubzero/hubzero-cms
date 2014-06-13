@@ -31,11 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->model->resource->alias) {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->model->resource->alias);
-} else {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id);
-}
+$this->css();
+
+$sef = JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id));
 
 // Set the display date
 switch ($this->model->params->get('show_date'))
@@ -111,7 +109,7 @@ $maintext = $this->model->description('parsed');
 		<div class="grid">
 			<div class="col span-half">
 	<?php } ?>
-				<h4><?php echo JText::_('Category'); ?></h4>
+				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
 				<p class="resource-content">
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->model->type->alias); ?>">
 						<?php echo $this->escape(stripslashes($this->model->type->type)); ?>
@@ -120,7 +118,7 @@ $maintext = $this->model->description('parsed');
 	<?php if ($thedate) { ?>
 		</div>
 			<div class="col span-half omega">
-				<h4><?php echo JText::_('Published on'); ?></h4>
+				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
 				<p class="resource-content">
 					<time datetime="<?php echo $thedate; ?>"><?php echo JHTML::_('date', $thedate, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</p>
@@ -177,7 +175,7 @@ $maintext = $this->model->description('parsed');
 
 				// Build our citation object
 				$juri = JURI::getInstance();
-				
+
 				$cite = new stdClass();
 				$cite->title = $this->model->resource->title;
 				$cite->year = JHTML::_('date', $thedate, 'Y');
@@ -246,13 +244,13 @@ $maintext = $this->model->description('parsed');
 				<?php 
 				$view = new \Hubzero\Component\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
-					'name'   => 'view',
-					'layout' => '_submitters',
+					'name'      => 'view',
+					'layout'    => '_submitters',
 				));
-				$view->option = $this->option;
+				$view->option       = $this->option;
 				$view->contributors = $this->model->contributors('submitter');
-				$view->badges = $this->params->get('badges', 0);
-				$view->showorgs = 1;
+				$view->badges       = $this->params->get('badges', 0);
+				$view->showorgs     = 1;
 				$view->display();
 				?>
 			</span>
