@@ -42,8 +42,8 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="textarea" name="custom_tags" label="Custom Tags" description="Custom tags in key => value pair format that are extra beyond standard Endnote tags." rows="10" cols="30" />
-				<field type="text" name="title_match_percent" label="% Title Match (Import)" description="" size="30" default="90" />
+				<field type="textarea" name="custom_tags" label="PLG_CITATION_ENDNOTE_TAGS_LABEL" description="PLG_CITATION_ENDNOTE_TAGS_DESC" rows="10" cols="30" />
+				<field type="text" name="title_match_percent" label="PLG_CITATION_ENDNOTE_TITLE_MATCH_LABEL" description="PLG_CITATION_ENDNOTE_TITLE_MATCH_DESC" size="30" default="90" />
 			</fieldset>
 		</fields>
 	</config>

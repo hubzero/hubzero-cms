@@ -31,27 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
 jimport('joomla.filesystem.file');
 
 /**
  * Citations plugin class for bibtex
  */
-class plgCitationDefault extends JPlugin
+class plgCitationDefault extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return file type
@@ -60,7 +52,7 @@ class plgCitationDefault extends JPlugin
 	 */
 	public function onImportAcceptedFiles()
 	{
-		return '.txt <small>(Text File)</small>';
+		return '.txt <small>(' . JText::_('PLG_CITATION_DEFAULT_FILE') . ')</small>';
 	}
 
 	/**

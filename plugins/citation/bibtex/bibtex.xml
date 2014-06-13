@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="text" name="title_match_percent" label="% Title Match (Import)" description="" size="30" default="90%" />
+				<field type="text" name="title_match_percent" label="PLG_CITATION_BIBTEX_TITLE_MATCH_LABEL" description="PLG_CITATION_BIBTEX_TITLE_MATCH_DESC" size="30" default="90%" />
 			</fieldset>
 		</fields>
 	</config>
