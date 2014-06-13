@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * What's New Plugin class for com_content articles
  */
-class plgWhatsnewContent extends JPlugin
+class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -59,10 +50,9 @@ class plgWhatsnewContent extends JPlugin
 	 */
 	public function onWhatsnewAreas()
 	{
-		$areas = array(
+		return array(
 			'content' => JText::_('PLG_WHATSNEW_CONTENT')
 		);
-		return $areas;
 	}
 
 	/**
@@ -96,29 +86,14 @@ class plgWhatsnewContent extends JPlugin
 
 		// Build the query
 		$c_count = " SELECT count(DISTINCT c.id)";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$c_fields = " SELECT "
-				. " c.id,"
-				. " c.title, c.alias, c.created, "
-				. " CONCAT(c.introtext, c.fulltext) AS text,"
-				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, u.alias AS fsection, b.alias AS category,"
-				. " 'content' AS section, NULL AS subsection";
-			$c_from = " FROM #__content AS c"
-				. " INNER JOIN #__categories AS b ON b.id=c.catid"
-				. " INNER JOIN #__sections AS u ON u.id=c.sectionid";
-		}
-		else 
-		{
-			$c_fields = " SELECT "
-				. " c.id,"
-				. " c.title, c.alias, c.created, "
-				. " CONCAT(c.introtext, c.fulltext) AS text,"
-				. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category,"
-				. " 'content' AS section, NULL AS subsection";
-			$c_from = " FROM #__content AS c"
-				. " INNER JOIN #__categories AS b ON b.id=c.catid";
-		}
+		$c_fields = " SELECT "
+			. " c.id,"
+			. " c.title, c.alias, c.created, "
+			. " CONCAT(c.introtext, c.fulltext) AS text,"
+			. " CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category,"
+			. " 'content' AS section, NULL AS subsection";
+		$c_from = " FROM #__content AS c"
+			. " INNER JOIN #__categories AS b ON b.id=c.catid";
 
 		$c_where = "c.publish_up > " . $database->quote($period->cStartDate) . " AND c.publish_up < " . $database->quote($period->cEndDate) . " AND c.state='1'";
 
@@ -137,7 +112,7 @@ class plgWhatsnewContent extends JPlugin
 				{
 					if (version_compare(JVERSION, '1.6', 'lt'))
 					{
-						$database->setQuery("SELECT alias, parent FROM #__menu WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
+						$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
 						$menuitem = $database->loadRow();
 						if ($menuitem[1]) 
 						{
@@ -200,7 +175,7 @@ class plgWhatsnewContent extends JPlugin
 	 * Find the menu item alias for a page
 	 * 
 	 * @param      integer $id       Menu item ID
-	 * @param      boolean $startnew Parameter description (if any) ...
+	 * @param      boolean $startnew Reset the array?
 	 * @return     array
 	 */
 	private function _recursiveMenuLookup($id, $startnew=true)
@@ -213,7 +188,7 @@ class plgWhatsnewContent extends JPlugin
 		}
 
 		$database = JFactory::getDBO();
-		$database->setQuery("SELECT alias, parent FROM #__menu WHERE id=" . $database->quote($id) . " LIMIT 1");
+		$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1");
 		$level = $database->loadRow();
 
 		$aliases[] = $level[0];

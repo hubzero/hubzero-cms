@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * What's New Plugin class for com_events
  */
-class plgWhatsnewEvents extends JPlugin
+class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -59,10 +50,9 @@ class plgWhatsnewEvents extends JPlugin
 	 */
 	public function onWhatsnewAreas()
 	{
-		$areas = array(
+		return array(
 			'events' => JText::_('PLG_WHATSNEW_EVENTS')
 		);
-		return $areas;
 	}
 
 	/**
@@ -96,13 +86,6 @@ class plgWhatsnewEvents extends JPlugin
 
 		// Build the query
 		$e_count = "SELECT count(DISTINCT e.id)";
-		/*$e_fields = "SELECT "
-				. " e.id,"
-				. " e.title, "
-				. " e.content AS text,"
-				. " CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href,"
-				. " e.publish_up AS publish_up,"
-				. " 'events' AS section, NULL AS subsection";*/
 		$e_fields = "SELECT e.id, e.title, NULL AS alias, e.content AS itext, NULL AS ftext, e.state, e.created, e.modified, e.publish_up, NULL AS params, 
 					CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, 'events' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking ";
 		$e_from = " FROM #__events AS e";

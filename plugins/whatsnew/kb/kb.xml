@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="whatsnew">
 	<name>Whatsnew - Knowledge Base</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Allows Searching of Knowledge Base Component</description>
@@ -40,10 +40,5 @@ HUBzero is a registered trademark of Purdue University.
 		<language tag="en-GB">en-GB.plg_whatsnew_kb.ini</language>
 	</languages>
 	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="search_limit" type="text" size="5" default="50" label="Search Limit" description="Number of Search items to return"/>
-			</fieldset>
-		</fields>
 	</config>
 </extension>

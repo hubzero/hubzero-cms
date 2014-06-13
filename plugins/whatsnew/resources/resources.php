@@ -31,13 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * What's New Plugin class for com_resources entries
  */
-class plgWhatsnewResources extends JPlugin
+class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Resource types and "all" category
@@ -71,8 +75,6 @@ class plgWhatsnewResources extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-		$this->loadLanguage();
-
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 	}
@@ -100,13 +102,9 @@ class plgWhatsnewResources extends JPlugin
 
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
-		//$normalized_valid_chars = 'a-zA-Z0-9';
 		$cats = array();
 		for ($i = 0; $i < count($this->_cats); $i++)
 		{
-			//$normalized = preg_replace("/[^$normalized_valid_chars]/", '', $categories[$i]->type);
-			//$normalized = strtolower($normalized);
-
 			$cats[$this->_cats[$i]->alias] = $this->_cats[$i]->type;
 		}
 
@@ -175,12 +173,8 @@ class plgWhatsnewResources extends JPlugin
 		// Normalize the category names
 		// e.g., "Oneline Presentations" -> "onlinepresentations"
 		$cats = array();
-		//$normalized_valid_chars = 'a-zA-Z0-9';
 		for ($i = 0; $i < count($categories); $i++)
 		{
-			//$normalized = preg_replace("/[^$normalized_valid_chars]/", "", $categories[$i]->type);
-			//$normalized = strtolower($normalized);
-
 			$cats[$categories[$i]->alias] = array();
 			$cats[$categories[$i]->alias]['id'] = $categories[$i]->id;
 		}
@@ -278,10 +272,6 @@ class plgWhatsnewResources extends JPlugin
 	 */
 	public static function documents()
 	{
-		// Push some CSS and JS to the tmeplate that may be needed
-	 	$document = JFactory::getDocument();
-		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
-
 		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 		\Hubzero\Document\Assets::addComponentScript('com_resources');
 
