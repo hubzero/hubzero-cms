@@ -177,6 +177,9 @@
 	.icon-apply:before    { 
 		content: "\2714";		
 	}
+	.icon-revert:before    { 
+		content: "\2714";		
+	}
 	ul#status-bar li a {
 		font-size: 1.1em;
 	}
@@ -946,6 +949,21 @@
 	#pub-editor.pane-desc .c-inner input[type="checkbox"] {
 		width: auto;
 		display: inline;
+	}
+
+/* Status page
+--------------------------------------------- */
+	
+	.revert-options {
+		display: block;
+		margin: 1em 0;
+	}
+	.revert-options .btn {
+		width: 100%;
+	}
+	.revert-options .and_or {
+		text-align: center;
+		margin: 0.5em 0;
 	}
 	
 /* Handler controls

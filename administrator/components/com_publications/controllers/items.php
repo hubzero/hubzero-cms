@@ -610,12 +610,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params))
 		{
-			$txt = array();
 			foreach ($params as $k => $v)
 			{
-				$txt[] = "$k=$v";
+				$row->saveParam($row->id, $k, $v);
 			}
-			$row->params = implode("\n", $txt);
 		}
 		
 		// Email config

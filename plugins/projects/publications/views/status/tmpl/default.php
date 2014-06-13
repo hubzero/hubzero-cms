@@ -91,14 +91,13 @@ $blockActive   = $this->pub->_curationModel->blockExists('citations');
 $showCitations = $blockActive ? $showCitations : 0;
 
 // Check if publication is within grace period (published status)
-
-$editsAllowed = $this->pubconfig->get('graceperiod', 0);
-if ($editsAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00')
+$revertAllowed = $this->pubconfig->get('graceperiod', 0);
+if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00')
 {
 	$monthFrom = JFactory::getDate($this->pub->accepted . '+1 month')->toSql();
 	if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
 	{
-		$editsAllowed = 0;
+		$revertAllowed = 0;
 	}
 }
 ?>
@@ -288,10 +287,21 @@ if ($editsAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-00
 							.$this->pub->dev_version_label.'</strong>)  <span class="block"><a href="'
 							. $this->url .'/?version=dev">' 
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE').'</a></span>';  ?></p></li>
-							<?php } else if (!$this->pub->dev_version_label) { ?>
-							<li id="next-newversion"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED')
-							.' <a href="' . $this->url .'/?action=newversion" class="showinbox">'
-							.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ';  ?></p></li>
+							<?php } else if (!$this->pub->dev_version_label) { 
+							?>
+							<li id="next-edit">
+								<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CHANGES_NEEDED_OPTION'); if ($revertAllowed) { echo ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_GRACE_PERIOD'); } ?>
+								<span class="revert-options">
+								<?php if ($revertAllowed)
+								{
+									echo ' <a href="' . $this->url .'/?action=revert&version=' . $this->pub->version .'" class="btn icon-revert" id="action-revert">'
+								. JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_REVERT')
+								. '</a> <span class="block and_or">' . JText::_('PLG_PROJECTS_PUBLICATIONS_OR') . '</span>';
+								}
+								echo ' <a href="' . $this->url .'/?action=newversion" class="showinbox btn icon-add">'
+							.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION').'</a> ' ;  ?>
+								</span>
+								</p></li>
 							<?php } ?>
 						<?php 
 						break;

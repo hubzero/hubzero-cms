@@ -58,8 +58,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			$this->_task = 'view';
 		}
 		
+		// Get language
 		$lang = JFactory::getLanguage();
-		$lang->load('com_publications_curation');
 		$lang->load('plg_projects_publications');
 		
 		//continue with parent execute method

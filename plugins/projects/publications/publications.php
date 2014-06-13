@@ -3764,7 +3764,7 @@ class plgProjectsPublications extends JPlugin
 		
 		// Is draft complete?
 		$complete = $pub->_curationModel->_progress->complete;		
-		if (!$complete)
+		if (!$complete && !$revertAllowed)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
 		}
@@ -3791,7 +3791,19 @@ class plgProjectsPublications extends JPlugin
 		$main = $this->_task == 'republish' ? $row->main : 1;
 		$main_vid = $row->getMainVersionId($pid); // current default version
 		
+		// Save version before changes
 		$originalStatus = $row->state;
+		
+		// Is revert allowed?
+		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
+		if ($revertAllowed && $row->state == 1 && $row->accepted && $row->accepted != '0000-00-00 00:00:00')
+		{
+			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
+			if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
+			{
+				$revertAllowed = 0;
+			}
+		}
 		
 		// Checks
 		if ($this->_task == 'republish' && $row->state != 0) 
@@ -3799,7 +3811,7 @@ class plgProjectsPublications extends JPlugin
 			// Can only re-publish unpublished version
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
 		}
-		elseif ($this->_task == 'revert' &&  $row->state != 5) 
+		elseif ($this->_task == 'revert' && $row->state != 5 && !$revertAllowed) 
 		{
 			// Can only revert a pending resource
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );

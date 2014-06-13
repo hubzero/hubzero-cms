@@ -101,10 +101,10 @@ $pubHelper = new PublicationHelper ($this->database);
 						<td>v.<?php echo $row->version_label; ?></td>
 						<td><span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?></td>
 						<td>
+							<span class="block"><?php echo $submitted; ?></span>
 							<?php if ($row->reviewed && $row->state == 5 ) { ?>
 								<span class="item-updated"></span>
 							<?php } ?>
-							<span class="block"><?php echo $submitted; ?></span>
 						</td>
 						<td><span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? JText::_('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : JText::_('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span></td>
 						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>

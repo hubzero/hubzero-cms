@@ -62,6 +62,7 @@ HUB.ProjectPublicationsDraft = {
 		
 		// Confirm item deletion
 		HUB.ProjectPublicationsDraft.confirmDelete();
+		HUB.ProjectPublicationsDraft.confirmStatusChange();
 		
 		// Enable disputes
 		HUB.ProjectPublicationsDraft.allowDispute();
@@ -156,7 +157,26 @@ HUB.ProjectPublicationsDraft = {
 				$(form).submit();
 			}
 		});
-
+	},
+	
+	confirmStatusChange: function()
+	{
+		// Confirm revert
+		if ($("#action-revert").length)
+		{
+			$("#action-revert").on('click', function(e) 
+			{					
+				if (HUB.Projects) 
+				{
+					e.preventDefault();
+					HUB.Projects.addConfirm($("#action-revert"), 'Are you sure you want to revert this to draft?', 'yes, revert', 'cancel');
+					if ($('#confirm-box')) {
+						$('#confirm-box').css('margin-left', '-100px');
+						$('#confirm-box').css('font-size', '100%');
+					}
+				}
+			});
+		}
 	},
 	
 	confirmDelete: function()

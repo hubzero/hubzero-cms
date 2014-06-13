@@ -403,8 +403,7 @@
 		margin-right: 0.5em;
 	}
 	.item-updated {
-		float: right;
-		margin-right: 50px;
+		margin: 0.5em 1em 1em 0;
 	}
 	.item-updated:before {
 		width: auto;

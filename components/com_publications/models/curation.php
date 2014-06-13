@@ -50,6 +50,10 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 	. DS . 'helpers' . DS . 'html.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
 	. DS . 'helpers' . DS . 'helper.php');
+	
+// Get language file
+$lang = JFactory::getLanguage();
+$lang->load('com_publications_curation');
 
 /**
  * Publications curation class
@@ -1256,7 +1260,12 @@ class PublicationsCuration extends JObject
 			case 1:
 				// Submitted
 				$changelog .= 'approved and published';
-			break;			
+			break;	
+			
+			case 4:
+				// Saved or reverted
+				$changelog .= $oldStatus == 1 ? 'reverted to draft' : 'saved draft for internal review';
+			break;		
 		}
 		
 		// Add details
@@ -1288,6 +1297,11 @@ class PublicationsCuration extends JObject
 	{				
 		// Collect details
 		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);
+		
+		if (!$changelog)
+		{
+			return false;
+		}
 				
 		$obj = new PublicationCurationHistory($this->_db);
 		
