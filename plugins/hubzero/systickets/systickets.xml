@@ -20,7 +20,7 @@
 
 <extension version="1.7" type="plugin" group="hubzero">
 	<name>HUBzero - [system] Ttickets Info</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Return stats for support tickets</description>

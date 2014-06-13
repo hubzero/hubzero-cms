@@ -20,7 +20,7 @@
 
 <extension version="1.5" type="plugin" group="hubzero">
 	<name>HUBzero - Image CAPTCHA</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Generates an image based CAPTCHA</description>
@@ -39,11 +39,11 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="bgColor" type="text" size="25" default="#2c8007" label="Background Color" description="Enter color(6 letter hex value )" />
-				<field name="textColor" type="text" size="25" default="#ffffff" label="Text Color" description="Enter color(6 letter hex value)" />
-				<field name="imageFunction" type="list" default="Adv" label="Select Image Function" description="Select wether you want to show distorted letters or plane letters">
-					<option value="Plain">Plain letters</option>
-					<option value="Adv">Distorted letters</option>
+				<field name="bgColor" type="text" size="25" default="#2c8007" label="PLG_HUBZERO_IMAGECAPTCHA_BACKGROUND_LABEL" description="PLG_HUBZERO_IMAGECAPTCHA_BACKGROUND_DESC" />
+				<field name="textColor" type="text" size="25" default="#ffffff" label="PLG_HUBZERO_IMAGECAPTCHA_TEXT_LABEL" description="PLG_HUBZERO_IMAGECAPTCHA_TEXT_DESC" />
+				<field name="imageFunction" type="list" default="Adv" label="PLG_HUBZERO_IMAGECAPTCHA_FUNCTION_LABEL" description="PLG_HUBZERO_IMAGECAPTCHA_FUNCTION_DESC">
+					<option value="Plain">PLG_HUBZERO_IMAGECAPTCHA_FUNCTION_PLAIN</option>
+					<option value="Adv">PLG_HUBZERO_IMAGECAPTCHA_FUNCTION_DISTORTED</option>
 				</field>
 			</fieldset>
 		</fields>

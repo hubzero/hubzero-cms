@@ -38,10 +38,12 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 }
 
 $controller = JRequest::getCmd('controller', '');
+
+$this->css();
 ?>
 
 <div class="captcha-block">
-	<table summary="<?php echo JText::_('PLG_HUBZERO_IMAGECAPTCHA'); ?>">
+	<table>
 		<tbody>
 			<tr>
 				<td>

@@ -66,12 +66,12 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		include_once __DIR__ . '/comment.php';
+		include_once __DIR__ . DS . 'comment.php';
 
 		$this->view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'hubzero',
-				'element' => 'comments',
+				'folder'  => $this->_type,
+				'element' => $this->_name,
 				'name'    => 'view',
 				'layout'  => 'default'
 			)
@@ -408,7 +408,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
 				JText::_('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -440,7 +440,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($row->exists() && !$this->params->get('access-edit-comment')) 
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
 				JText::_('PLG_HUBZERO_COMMENTS_NOTAUTH'),
 				'warning'
 			);
@@ -481,7 +481,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($this->juser->get('guest')) 
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
 				JText::_('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -550,37 +550,39 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Load the category object
 		$section = new KbCategory($this->database);
 		$section->load($entry->section);
-		
+
 		// Load the category object
 		$category = new KbCategory($this->database);
-		if ($entry->category) {
+		if ($entry->category)
+		{
 			$category->load($entry->category);
 		}
-		
+
 		// Load the comments
 		$bc = new KbComment($this->database);
 		$rows = $bc->getAllComments($entry->id);
-		
+
 		//$year = JRequest::getInt('year', date("Y"));
 		//$month = JRequest::getInt('month', 0);
 
 		// Build some basic RSS document information
 		$jconfig = JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename').' - '.JText::_(strtoupper($this->_option));
-		//$doc->title .= ($year) ? ': '.$year : '';
-		//$doc->title .= ($month) ? ': '.sprintf("%02d",$month) : '';
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		//$doc->title .= ($year) ? ': ' . $year : '';
+		//$doc->title .= ($month) ? ': ' . sprintf("%02d",$month) : '';
 		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
-		$doc->title .= ': '.JText::_('Comments');
+		$doc->title .= ': ' . JText::_('Comments');
 		
 		$doc->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($entry->title));
-		$doc->copyright = JText::sprintf('COM_KB_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->copyright   = JText::sprintf('COM_KB_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
 
 		// Start outputing results if any found
-		if (count($rows) > 0) {
+		if (count($rows) > 0)
+		{
 			JPluginHelper::importPlugin('hubzero');
 			$dispatcher = JDispatcher::getInstance();
-			
+
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => '',
@@ -589,32 +591,37 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				'filepath' => '',
 				'domain'   => '' 
 			);
-			
+
 			$result = $dispatcher->trigger('onGetWikiParser', array($wikiconfig, true));
 			$p = (is_array($result) && !empty($result)) ? $result[0] : null;
-			
+
 			foreach ($rows as $row)
 			{
 				// URL link to article
-				$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$row->id);
+				$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
 
 				$author = JText::_('COM_KB_ANONYMOUS');
-				if (!$row->anonymous) {
-					$cuser = JUser::getInstance($row->created_by);
+				if (!$row->anonymous)
+				{
+					$cuser  = JUser::getInstance($row->created_by);
 					$author = $cuser->get('name');
 				}
-				
+
 				// Prepare the title
-				$title = JText::sprintf('Comment by %s', $author).' @ '.JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')).' on '.JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
-				
+				$title = JText::sprintf('Comment by %s', $author) . ' @ ' . JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
+
 				// Strip html from feed item description text
-				if ($row->reports) {
+				if ($row->reports)
+				{
 					$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-				} else {
+				}
+				else
+				{
 					$description = (is_object($p)) ? $p->parse(stripslashes($row->content)) : nl2br(stripslashes($row->content));
 				}
 				$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-				/*if ($this->params->get('feed_entries') == 'partial') {
+				/*if ($this->params->get('feed_entries') == 'partial')
+				{
 					$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 				}*/
 
@@ -637,25 +644,30 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					foreach ($row->replies as $reply) 
 					{
 						// URL link to article
-						$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$reply->id);
+						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
 
 						$author = JText::_('COM_KB_ANONYMOUS');
-						if (!$reply->anonymous) {
-							$cuser = JUser::getInstance($reply->created_by);
+						if (!$reply->anonymous)
+						{
+							$cuser  = JUser::getInstance($reply->created_by);
 							$author = $cuser->get('name');
 						}
 
 						// Prepare the title
-						$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author).' @ '.JHTML::_('date',$reply->created, JText::_('TIME_FORMAT_HZ1')).' on '.JHTML::_('date',$reply->created, JText::_('DATE_FORMAT_HZ1'));
+						$title = JText::sprintf('Reply to comment #%s by %s', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1'));
 
 						// Strip html from feed item description text
-						if ($reply->reports) {
+						if ($reply->reports)
+						{
 							$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-						} else {
+						}
+						else
+						{
 							$description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
 						}
 						$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-						/*if ($this->params->get('feed_entries') == 'partial') {
+						/*if ($this->params->get('feed_entries') == 'partial')
+						{
 							$description = \Hubzero\Utility\String::truncate($description, 300);
 						}*/
 
@@ -672,31 +684,36 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 						// Loads item info into rss array
 						$doc->addItem($item);
-						
+
 						if ($reply->replies) 
 						{
 							foreach ($reply->replies as $response) 
 							{
 								// URL link to article
-								$link = JRoute::_('index.php?option='.$this->_option.'&section='.$section->alias.'&category='.$category->alias.'&alias='.$entry->alias.'#c'.$response->id);
+								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
 
 								$author = JText::_('COM_KB_ANONYMOUS');
-								if (!$response->anonymous) {
-									$cuser = JUser::getInstance($response->created_by);
+								if (!$response->anonymous)
+								{
+									$cuser  = JUser::getInstance($response->created_by);
 									$author = $cuser->get('name');
 								}
 
 								// Prepare the title
-								$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author).' @ '.JHTML::_('date',$response->created, JText::_('TIME_FORMAT_HZ1')).' on '.JHTML::_('date',$response->created, JText::_('DATE_FORMAT_HZ1'));
+								$title = JText::sprintf('Reply to comment #%s by %s', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date',$response->created, JText::_('DATE_FORMAT_HZ1'));
 
 								// Strip html from feed item description text
-								if ($response->reports) {
+								if ($response->reports)
+								{
 									$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-								} else {
+								}
+								else
+								{
 									$description = (is_object($p)) ? $p->parse(stripslashes($response->content)) : nl2br(stripslashes($response->content));
 								}
 								$description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
-								/*if ($this->params->get('feed_entries') == 'partial') {
+								/*if ($this->params->get('feed_entries') == 'partial')
+								{
 									$description = \Hubzero\Utility\String::truncate($description, 300, 0);
 								}*/
 
@@ -710,7 +727,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 								$item->date        = $date;
 								$item->category    = '';
 								$item->author      = $author;
-								
+
 								// Loads item info into rss array
 								$doc->addItem($item);
 							}
@@ -719,7 +736,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		
+
 		// Output the feed
 		echo $doc->render();
 	}

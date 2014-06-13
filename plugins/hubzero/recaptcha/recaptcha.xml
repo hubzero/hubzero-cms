@@ -34,24 +34,24 @@
 		<filename>recaptcha/api.php</filename>
 	</files>
 	<languages folder="lang">
-        	<language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
+		<language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="text" name="public" default='' label="HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
-				<field type="text" name="private" default='' label="HUBZERO_RECAPTCHA_PRIVATE_KEY" description="HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
+				<field type="text" name="public" default='' label="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
+				<field type="text" name="private" default='' label="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY" description="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
 				<field name="@spacer" type="spacer" />
-				<field name="@spacer2" type="spacer" default="HUBZERO_RECAPTCHA_CUSTOMISATION"/>
-				<field type="radio" name="ajax" default="1" label="HUBZERO_RECAPTCHA_TYPE" description="HUBZERO_RECAPTCHA_TYPE_DESC">
-					<option value="0">HUBZERO_RECAPTCHA_IFRAME</option>
-					<option value="1">HUBZERO_RECAPTCHA_AJAX</option>
+				<field name="@spacer2" type="spacer" default="PLG_HUBZERO_RECAPTCHA_CUSTOMISATION"/>
+				<field type="radio" name="ajax" default="1" label="PLG_HUBZERO_RECAPTCHA_TYPE" description="PLG_HUBZERO_RECAPTCHA_TYPE_DESC">
+					<option value="0">PLG_HUBZERO_RECAPTCHA_IFRAME</option>
+					<option value="1">PLG_HUBZERO_RECAPTCHA_AJAX</option>
 				</field>
-				<field type="list" name="template" default="clean" label="HUBZERO_RECAPTCHA_TEMPLATE" description="HUBZERO_RECAPTCHA_TEMPLATE_DESC">
-					<option value="red">HUBZERO_RECAPTCHA_RED</option>
-					<option value="white">HUBZERO_RECAPTCHA_WHITE</option>
-					<option value="blackglass">HUBZERO_RECAPTCHA_BLACKGLASS</option>
-					<option value="clean">HUBZERO_RECAPTCHA_CLEAN</option>
+				<field type="list" name="template" default="clean" label="PLG_HUBZERO_RECAPTCHA_TEMPLATE" description="PLG_HUBZERO_RECAPTCHA_TEMPLATE_DESC">
+					<option value="red">PLG_HUBZERO_RECAPTCHA_RED</option>
+					<option value="white">PLG_HUBZERO_RECAPTCHA_WHITE</option>
+					<option value="blackglass">PLG_HUBZERO_RECAPTCHA_BLACKGLASS</option>
+					<option value="clean">PLG_HUBZERO_RECAPTCHA_CLEAN</option>
 				</field>
 			</fieldset>
 		</fields>

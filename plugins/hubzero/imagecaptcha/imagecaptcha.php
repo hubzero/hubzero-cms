@@ -31,13 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * HUBzero plugin class for displaying image CAPTCHAs
  */
-class plgHubzeroImagecaptcha extends JPlugin
+class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
 	/**
 	 * Image background color
 	 * @var	string
@@ -49,20 +54,6 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 * @var	string
 	 */
 	private $_textColor = '#ff0000';
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
 
 	/**
 	 * Displays either a CAPTCHA image or form field
@@ -106,11 +97,12 @@ class plgHubzeroImagecaptcha extends JPlugin
 
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
-		if ($word == $securiy_code  &&  ($word != '')) {
-		   return true;
-		} else {
-		   return false;
+		if ($word == $securiy_code  &&  ($word != ''))
+		{
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
@@ -120,11 +112,11 @@ class plgHubzeroImagecaptcha extends JPlugin
 	 */
 	public function onValidateCaptcha()
 	{
-		$imgCatchaTxt = strtolower(JRequest::getVar('imgCatchaTxt', ''));
+		$imgCatchaTxt     = strtolower(JRequest::getVar('imgCatchaTxt', ''));
 		$imgCatchaTxtInst = JRequest::getVar('imgCatchaTxtInst', '');
 
 		$option = JRequest::getVar('option');
-		$task = JRequest::getVar('task');
+		$task   = JRequest::getVar('task');
 
 		if ($imgCatchaTxtInst == '' || $imgCatchaTxt == '')
 		{
@@ -155,19 +147,13 @@ class plgHubzeroImagecaptcha extends JPlugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		\Hubzero\Document\Assets::addPluginStyleSheet('hubzero', 'imagecaptcha');
-		//$document = JFactory::getDocument();
-		//$document->addScript(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.js');
-		//$document->addStyleSheet(DS . 'plugins' . DS . 'hubzero' . DS . 'imagecaptcha' . DS . 'imagecaptcha.css');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'hubzero',
-				'element' => 'imagecaptcha',
+				'folder'  => $this->_type,
+				'element' => $this->_name,
 				'name'    => 'display'
 			)
 		);
-
 		$view->task = JRequest::getVar('task', '');
 		$view->option = JRequest::getVar('option', '');
 		$view->total = $GLOBALS['totalCaptchas'];

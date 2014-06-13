@@ -33,36 +33,36 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<field name="comments_depth" type="text" size="3" default="3" label="Depth" description="The number of levels comments can be nested. 1 level would be just comments, no replies to comments."/>
-			<field name="comments_limit" type="text" size="5" default="25" label="Limit" description="The number of records to display at a time."/>
-			<field name="comments_viewable" type="list" default="0" label="Viewable by" description="Set the view access type.">
+			<field name="comments_depth" type="text" size="3" default="3" label="PLG_HUBZERO_COMMENTS_DEPTH_LABEL" description="PLG_HUBZERO_COMMENTS_DEPTH_DESC"/>
+			<field name="comments_limit" type="text" size="5" default="25" label="PLG_HUBZERO_COMMENTS_LIMIT_LABEL" description="PLG_HUBZERO_COMMENTS_LIMIT_DESC"/>
+			<field name="comments_viewable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_VIEWABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VIEWABLE_DESC">
 				<option value="0">Anyone</option>
 				<option value="1">Logged-in users</option>
 			</field>
-			<field name="comments_editable" type="list" default="1" label="Can edit" description="Users can edit their comments.">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
+			<field name="comments_editable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_EDITABLE_LABEL" description="PLG_HUBZERO_COMMENTS_EDITABLE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
-			<field name="comments_deletable" type="list" default="0" label="Can delete" description="Users can delete their comments.">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
+			<field name="comments_deletable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_DELETABLE_LABEL" description="PLG_HUBZERO_COMMENTS_DELETABLE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
-			<field name="comments_votable" type="list" default="1" label="Can vote" description="Users can cote comments up or down.">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
+			<field name="comments_votable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_VOTABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VOTABLE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
-			<field name="comments_close" type="list" default="year" label="Close Comments" description="Auto-close comments on entries from the date">
-				<option value="never">Never</option>
-				<option value="now">Immediately</option>
-				<option value="day">After 1 day</option>
-				<option value="week">After 1 week</option>
-				<option value="month">After 1 month</option>
-				<option value="6months">After 6 months</option>
-				<option value="year">After 1 year</option>
+			<field name="comments_close" type="list" default="year" label="PLG_HUBZERO_COMMENTS_CLOSE_LABEL" description="PLG_HUBZERO_COMMENTS_CLOSE_DESC">
+				<option value="never">PLG_HUBZERO_COMMENTS_CLOSE_NEVER</option>
+				<option value="now">PLG_HUBZERO_COMMENTS_CLOSE_NOW</option>
+				<option value="day">PLG_HUBZERO_COMMENTS_CLOSE_DAY</option>
+				<option value="week">PLG_HUBZERO_COMMENTS_CLOSE_WEEK</option>
+				<option value="month">PLG_HUBZERO_COMMENTS_CLOSE_MONTH</option>
+				<option value="6months">PLG_HUBZERO_COMMENTS_CLOSE_6MONTHS</option>
+				<option value="year">PLG_HUBZERO_COMMENTS_CLOSE_YEAR</option>
 			</field>
-			<field name="comments_feed" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
-				<option value="0">Disabled</option>
-				<option value="1">Enabled</option>
+			<field name="comments_feed" type="list" default="1" label="PLG_HUBZERO_COMMENTS_FEED_LABEL" description="PLG_HUBZERO_COMMENTS_FEED_DESC">
+				<option value="0">PLG_HUBZERO_COMMENTS_DISABLED</option>
+				<option value="1">PLG_HUBZERO_COMMENTS_ENABLED</option>
 			</field>
 		</fields>
 	</config>

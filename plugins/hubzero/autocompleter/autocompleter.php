@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * HUBzero plugin class for autocompletion
  */
-class plgHubzeroAutocompleter extends JPlugin
+class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
@@ -44,20 +42,6 @@ class plgHubzeroAutocompleter extends JPlugin
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
 
 	/**
 	 * Display the autocompleter. Defaults to multi-entry for tags
@@ -92,50 +76,7 @@ class plgHubzeroAutocompleter extends JPlugin
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts) 
 		{
-			/*$jq = false;
-			// Is jQuery enabled?
-			if (JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				// Are we on the admin side?
-				if (JFactory::getApplication()->isAdmin())
-				{
-					$datascript = $base . '/administrator/index.php';
-					// Check if jquery is enabled for the admin side
-					$plg = JPluginHelper::getPlugin('system', 'jquery');
-					if ($plg->params)
-					{
-						$paramsClass = 'JRegistry';
-						if (version_compare(JVERSION, '1.6', 'lt'))
-						{
-							$paramsClass = 'JParameter';
-						}
-						$plg->params = new JParameter($plg->params);
-						if ($plg->params->get('noconflictAdmin', 0))
-						{
-							$js = true;
-						}
-					}
-				}
-				else 
-				{
-					$jq = true;
-				}
-			}
-			$document = JFactory::getDocument();
-			//if (JPluginHelper::isEnabled('system', 'jquery'))
-			if ($jq)
-			{
-				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.jquery.js"></script>' . "\n";
-			}
-			else 
-			{
-				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js"></script>' . "\n";
-				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js"></script>' . "\n";
-				$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js"></script>' . "\n";
-			}*/
-
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
-			//$scripts .= '<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="';
 
 			$app = JFactory::getApplication();
 			$templatecss = DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
@@ -151,7 +92,6 @@ class plgHubzeroAutocompleter extends JPlugin
 
 			$scripts .= '";</script>' . "\n";
 			$scripts .= '<script type="text/javascript" src="' . $base . DS . 'plugins' . DS . $this->_type . DS . $this->_name . DS . $this->_name . '.js"></script>' . "\n";
-			//$scripts .= '" />';
 
 			$this->_pushscripts = false;
 		}

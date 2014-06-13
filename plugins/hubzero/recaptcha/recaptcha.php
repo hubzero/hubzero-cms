@@ -31,15 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 $recaptcha_ajax_instances = 0;
 
 /**
  * HUBzero plugin class for displaying image CAPTCHAs
  */
-class plgHubzeroRecaptcha extends JPlugin
+class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 	/**
 	 * API server
 	 * @var    string
@@ -59,20 +63,6 @@ class plgHubzeroRecaptcha extends JPlugin
 	public $apiVerifyServer = 'www.google.com';
 
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
 	 * Displays either a CAPTCHA image or form field
 	 *
 	 * @return string
@@ -81,7 +71,7 @@ class plgHubzeroRecaptcha extends JPlugin
 	{
 		if (!$this->params->get('public')) 
 		{
-			return JText::_('To use reCAPTCHA you must get an API key from <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>');
+			return JText::_('PLG_HUBZERO_RECAPTCHA_API_NEEDED');
 		}
 
 		$use_ssl = true;
@@ -195,13 +185,13 @@ class plgHubzeroRecaptcha extends JPlugin
 	{
 		if ($privkey == null || $privkey == '') 
 		{
-			$this->setError('To use reCAPTCHA you must get an API key from <a href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a>');
+			$this->setError('PLG_HUBZERO_RECAPTCHA_API_NEEDED');
 			return;
 		}
 
 		if ($remoteip == null || $remoteip == '') 
 		{
-			$this->setError('For security reasons, you must pass the remote ip to reCAPTCHA');
+			$this->setError('PLG_HUBZERO_RECAPTCHA_REMOTE_IP_NEEDED');
 			return;
 		}
 
@@ -283,7 +273,7 @@ class plgHubzeroRecaptcha extends JPlugin
 		$response = '';
 		if (false == ($fs = @fsockopen($host, $port, $errno, $errstr, 10))) 
 		{
-			$this->setError('Could not open socket');
+			$this->setError('PLG_HUBZERO_RECAPTCHA_COULD_NOT_OPEN_SOCKET');
 			return $response;
 		}
 
