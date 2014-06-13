@@ -31,24 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.event.plugin');
-
 /**
  * XMessage plugin class for handling message routing
  */
-class plgXMessageHandler extends JPlugin
+class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Marks action items as completed
@@ -198,20 +191,6 @@ class plgXMessageHandler extends JPlugin
 		{
 			$xmessage->message = $message;
 		}
-		// Does this message require an action?
-		/* [zooley] Phasing out action items
-		$action = new \Hubzero\Message\Action($database);
-		if ($element || $description) 
-		{
-			$action->class   = $component;
-			$action->element = $element;
-			$action->description = $description;
-			
-			if (!$action->store()) 
-			{
-				return $action->getError();
-			}
-		}*/
 
 		// Do we have any recipients?
 		if (count($to) > 0) 
@@ -238,7 +217,7 @@ class plgXMessageHandler extends JPlugin
 					}
 				}
 			}
-			
+
 			// Loop through each recipient
 			foreach ($to as $uid)
 			{
@@ -304,7 +283,7 @@ class plgXMessageHandler extends JPlugin
 						{
 							if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action))) 
 							{
-								$this->setError(JText::sprintf('Unable to message user %s with method %s', $uid, $action));
+								$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
 							}
 						}
 					}
@@ -318,12 +297,7 @@ class plgXMessageHandler extends JPlugin
 					{
 						// Load the default method
 						$p = JPluginHelper::getPlugin('members', 'messages');
-						$paramClass = 'JParameter';
-						if (version_compare(JVERSION, '1.6', 'ge'))
-						{
-							$paramClass = 'JRegistry';
-						}
-						$pp = new $paramClass($p->params);
+						$pp = new JRegistry($p->params);
 
 						$d = $pp->get('default_method');
 						$d = ($d) ? $d : 'email';
@@ -336,7 +310,7 @@ class plgXMessageHandler extends JPlugin
 						// Use the Default in the case the user has no methods
 						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d))) 
 						{
-							$this->setError(JText::sprintf('Unable to message user %s with method %s', $uid, $d));
+							$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
 						}
 					}
 				}

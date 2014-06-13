@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/xmessage/handler.xml
+@file           plugins/xmessage/handler/handler.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -29,6 +29,9 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="xmessage">
 	<name>XMessage - Handler</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Enables system messages</description>
 	<files>
 		<filename plugin="handler">handler.php</filename>
@@ -36,8 +39,8 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="time_limit" type="text" size="15" default="30" label="Time Limit (seconds)" description="The waiting period, in seconds, between non-system messages"/>
-				<field name="daily_limit" type="text" size="10" default="100" label="Daily Limit" description="The daily limit that non-system messages can be sent"/>
+				<field name="time_limit" type="text" size="15" default="30" label="PLG_XMESSAGE_HANDLER_TIME_LABEL" description="PLG_XMESSAGE_HANDLER_TIME_DESC"/>
+				<field name="daily_limit" type="text" size="10" default="100" label="PLG_XMESSAGE_HANDLER_DAILY_LABEL" description="PLG_XMESSAGE_HANDLER_DAILY_DESC"/>
 			</fieldset>
 		</fields>
 	</config>

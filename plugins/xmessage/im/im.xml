@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="xmessage">
 	<name>XMessage - Instant Message</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Allows an XMessage to be sent via Instant Message</description>
@@ -39,8 +39,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 	</languages>
 	<config>
-		<fields name="params">
-		</fields>
 	</config>
 </extension>
 

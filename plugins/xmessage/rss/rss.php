@@ -31,28 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * XMessage plugin class for RSS
  */
-class plgXMessageRss extends JPlugin
+class plgXMessageRss extends \Hubzero\Plugin\Plugin
 {
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
 	/**
 	 * Return this messaging type
 	 * 
