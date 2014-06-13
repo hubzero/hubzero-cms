@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
  */
-class plgWikiEditortoolbar extends JPlugin
+class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
@@ -44,18 +42,6 @@ class plgWikiEditortoolbar extends JPlugin
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject The object to observe
-	 * @param      array  $config   An optional associative array of configuration settings.
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
 
 	/**
 	 * Initiate the editor. Push scripts to document if needed

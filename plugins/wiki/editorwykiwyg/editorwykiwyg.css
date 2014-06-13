@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.css
+ * @file        plugins/wiki/editorwykiwyg/editorwykiwyg.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -228,14 +228,14 @@
 	#wykiwyg-editor .six.sixth:before,
 	#wykiwyg-editor .six.sixth:after {
 		content: "";
-	    display: table;
+		display: table;
 	}
 	#wykiwyg-editor .two.second:after,
 	#wykiwyg-editor .three.third:after,
 	#wykiwyg-editor .four.fourth:after,
 	#wykiwyg-editor .five.fifth:after,
 	#wykiwyg-editor .six.sixth:after {
-	    clear: both;
+		clear: both;
 	}
 	/* For IE 6/7 (trigger hasLayout) */
 	#wykiwyg-editor .two.second,
@@ -243,7 +243,7 @@
 	#wykiwyg-editor .four.fourth,
 	#wykiwyg-editor .five.fifth
 	#wykiwyg-editor .six.sixth {
-	    zoom: 1;
+		zoom: 1;
 	}
 	#wykiwyg-editor .clear {
 		clear: left;

@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
- * Resources Plugin class for favoriting a wiki page
+ * Wiki Plugin class for favoriting a wiki page
  */
-class plgWikiCollect extends JPlugin
+class plgWikiCollect extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
-	 * 
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * After display content method
@@ -75,8 +66,8 @@ class plgWikiCollect extends JPlugin
 		}
 
 		$arr = array(
-			'area' => $this->_name,
-			'html' => '',
+			'area'     => $this->_name,
+			'html'     => '',
 			'metadata' => ''
 		);
 
@@ -84,19 +75,16 @@ class plgWikiCollect extends JPlugin
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest')) 
 		{
-			// Push some scripts to the template
-			\Hubzero\Document\Assets::addPluginScript('wiki', $this->_name);
-			\Hubzero\Document\Assets::addPluginStylesheet('wiki', $this->_name);
-
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'wiki',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'metadata'
 				)
 			);
 			$view->option = JRequest::getCmd('option', 'com_wiki');
 			$view->page = $page;
+
 			return $view->loadTemplate();
 		}
 
@@ -155,7 +143,7 @@ class plgWikiCollect extends JPlugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'wiki',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'metadata',
 					'layout'  => 'collect'

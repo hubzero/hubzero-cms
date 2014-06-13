@@ -28,16 +28,16 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5" type="plugin" group="hubzero">
-	<name>HUBzero - Wiki Editor Toolbar</name>
-	<author>Shawn Rice</author>
+	<name>Wiki - Editor Toolbar</name>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Creates a textarea with an editing toolbar for wiki syntax shortcuts</description>
 	<files>
-		<filename plugin="wikieditortoolbar">wikieditortoolbar.php</filename>
+		<filename plugin="editortoolbar">editortoolbar.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_hubzero_wikieditortoolbar.ini</language>
+		<language tag="en-GB">en-GB.plg_wiki_editortoolbar.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
