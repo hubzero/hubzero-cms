@@ -34,12 +34,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css();
 ?>
 	<h3 class="section-header">
-		<a name="wishlist"></a>
-		<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid); ?>" class="add"><?php echo JText::_('COM_WISHLIST_ADD_NEW_WISH'); ?></a></span>
-		<?php echo JText::_('COM_WISHLIST_WISHLIST'); ?>
+		<?php echo JText::_('PLG_PUBLICATIONS_WISHLIST'); ?>
 	</h3>
 	<div class="container">
-		<table class="ideas entries" summary="<?php echo JText::_('COM_WISHLIST_Ideas submitted by the community'); ?>">
+		<p class="section-options">
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=add&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid); ?>">
+				<?php echo JText::_('PLG_PUBLICATIONS_WISHLIST_ADD_NEW_WISH'); ?>
+			</a>
+		</p>
+		<table class="ideas entries">
 			<caption>
 				<?php echo $this->title; ?>
 			</caption>

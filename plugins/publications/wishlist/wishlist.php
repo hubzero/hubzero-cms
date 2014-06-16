@@ -200,10 +200,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			$items = $objWish->get_count ($id, $filters, $admin);
 			
 			if ($rtrn != 'metadata') 
-			{
-				// Add the CSS to the template
-				\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wishlist');
-				
+			{				
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
 				
