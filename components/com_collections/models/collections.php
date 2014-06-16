@@ -467,16 +467,25 @@ class CollectionsModel extends \Hubzero\Base\Object
 						));
 						if ($groups)
 						{
+							if (!isset($usergroup->params) || !is_object($usergroup->params))
+							{
+								$p = new \Hubzero\Plugin\Params($this->_db);
+								$usergroup->params = $p->getCustomParams($usergroup->gidNumber, 'groups', 'collections');
+							}
 							foreach ($groups as $s)
 							{
 								if (!isset($collections[$s->group_alias]))
 								{
 									$collections[$s->group_alias] = array();
 								}
-								if ($s->access == 4 && !$usergroup->manager)
+								if ($usergroup->params->get('create_post', 0) && !$usergroup->manager)
 								{
 									continue;
 								}
+								/*if ($s->access == 4 && !$usergroup->manager)
+								{
+									continue;
+								}*/
 								$collections[$s->group_alias][] = $s;
 								asort($collections[$s->group_alias]);
 							}
