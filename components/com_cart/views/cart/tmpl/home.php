@@ -41,7 +41,7 @@ $this->css()
 	<h2><?php echo  JText::_('COM_CART'); ?></h2>
 </header>
 
-<section class="main">
+<section class="main section">
 	<div class="section-inner">
 		<?php
 		$errors = $this->getError();

@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2>Thank you!</h2>
 </header>
 
-<section class="main section">
+<section class="main section">	
 	<div class="section-inner">
 		<p>Thank you for your order.</p> 
 		<p>You will receive an email confirmation shortly the the email address associated with your account. Your transaction is now complete.</p>

@@ -40,7 +40,7 @@ $this->css();
 	<h2>Review your order</h2>
 </header>
 
-<section class="main">
+<section class="main section">
 	<div class="section-inner">
 		<?php
 		$errors = $this->getError();
