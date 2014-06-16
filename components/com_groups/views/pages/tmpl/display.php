@@ -43,6 +43,9 @@ $this->css()
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
+				<a class="icon-group group btn popup 1200x600" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&path=/uploads'); ?>">
+					<?php echo JText::_('Upload Images/Files'); ?>
+				</a>
 				<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
 					<?php echo JText::_('Back to Group'); ?>
 				</a>
