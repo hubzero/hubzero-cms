@@ -213,16 +213,23 @@ HUB.Groups = {
 				
 				$("#logo_picked").html(logo)
 			});
-			
-			//reload group logo selector when a new image is uploaded
-			$(document).on('onGroupImageUploaded',function(event) {
-				var currentIndex = $("#group_logo").prop("selectedIndex");
-				
-				//load a refreshed version of the logo list
-				//reset option previously selected by user
-				$("#group-logo-label").load(window.location.href + ' #group-logo-label > select', function() {
-					$("#group_logo").prop("selectedIndex", currentIndex);
-				});
+		}
+	},
+
+	//-----
+
+	imagesUploaded: function()
+	{
+		var $ = this.jQuery;
+	
+		if ($("#group_logo").length)
+		{
+			var current = $("#group_logo").val();
+
+			//load a refreshed version of the logo list
+			//reset option previously selected by user
+			$("#group-logo-label").load(window.location.href + ' #group-logo-label > select', function() {
+				$("#group_logo").val(current);
 			});
 		}
 	},
