@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install type="template" version="1.5">
+	<name>Baselayer</name>
+	<creationDate>2013</creationDate>
+	<author>HUBzero</author>
+	<copyright>GNU/GPL</copyright>
+	<authorEmail>info@hubzero.org</authorEmail>
+	<authorUrl>http://www.hubzero.org/</authorUrl>
+	<version>1.0</version>
+	<description>Light responsive hub template</description>
+	<files>
+		
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_baselayer.ini</language>
+	</languages>
+	<administration>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.tpl_baselayer.ini</language>
+		</languages>
+	</administration>
+	<positions>
+		<position>footer</position>
+		<position>banner</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<params>
+	</params>
+</install>

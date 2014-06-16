@@ -1,0 +1,49 @@
+// Inherit core reset styles
+@import "../../../media/system/less/comments.less";
+
+/* Wiki Reference */
+table.wiki-reference {
+	border: none;
+	font-size: 1em;
+	margin: 0;
+
+	caption {
+		font-weight: normal;
+	}
+	tbody td {
+		border-top: 1px solid #efefef;
+		border-bottom: 1px solid #efefef;
+		font-size: 0.8em;
+	}
+}
+
+#commentform p.comment-member-photo, .entry p.entry-member-photo, ol.comments p.comment-member-photo {
+    .border-radius(50%);
+    .box-shadow(none);
+}
+
+#commentform .submit {
+	border-top: none;
+}
+
+@media only screen and (max-width: @break2) {
+
+#commentform p.comment-member-photo {
+	display: none;
+}
+
+#commentform fieldset:before, #commentform fieldset:after {
+	display: none;
+}
+
+#commentform fieldset {
+	border: none;
+	padding: 0;
+	.box-shadow(none);
+}
+
+#commentform .sidenote {
+	margin: 0;	
+}
+
+}

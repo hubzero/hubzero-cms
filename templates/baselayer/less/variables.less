@@ -1,0 +1,80 @@
+//
+// @package     hubzero-cms
+// @file       templates/hublight/less/variables.less
+// @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+// @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+//
+
+//
+// Variables
+// --------------------------------------------------
+
+// Inherit core grid styles
+@import "../../../media/system/less/variables.less";
+
+
+// Global values
+// --------------------------------------------------
+
+@globalMaxWidth:		1200px;
+
+// Theme colors
+@themeMain:				#0397a7;
+@themeDark:				#0392a2;
+
+
+// Grays
+// -------------------------
+@black:                 #000;
+@grayDarker:            #222;
+@grayDark:              #333;
+@gray:                  #555;
+@grayLight:             #999;
+@grayLighter:           #eee;
+@white:                 #fff;
+
+
+// Accent colors
+// -------------------------
+@blue:                  #049cdb;
+@blueDark:              #0064cd;
+@green:                 #46a546;
+@red:                   #9d261d;
+@yellow:                #ffc40d;
+@orange:                #f89406;
+@pink:                  #c3325f;
+@purple:                #7a43b6;
+
+
+// Scaffolding
+// -------------------------
+@pathTemplate:          "/templates/hublight";
+@bodyBackground:        #ececec url("@{pathTemplate}/images/layout/noise-lite.png");
+@contentBackground:     #fff;
+@contentPadding:        0;
+@contentMargin:         0 30px;
+@textColor:             @grayDark;
+
+
+// Links
+// -------------------------
+@linkColor:             #178bc1;
+@linkColorHover:        darken(@linkColor, 15%);
+
+
+// Typography
+// -------------------------
+@sansFontFamily:        "OpenSansRegular", Helvetica, Arial, sans-serif;
+@sansLightFontFamily:   "OpenSansLight", Helvetica, Arial, sans-serif;
+@serifBoldFontFamily:   'merriweatherbold', Arial, Helvetica, sans-serif;
+@serifFontFamily:       'merriweatherregular', Arial, Helvetica, sans-serif;
+@monoFontFamily:        Monaco, Menlo, Consolas, "Courier New", monospace;
+
+@baseFontSize:          12px;
+@baseFontFamily:        @sansFontFamily;
+@baseLineHeight:        20px;
+@altFontFamily:         @serifFontFamily;
+
+@headingsFontFamily:    inherit; // empty to use BS default, @baseFontFamily
+@headingsFontWeight:    bold;    // instead of browser default, bold
+@headingsColor:         inherit; // empty to use BS default, @textColor

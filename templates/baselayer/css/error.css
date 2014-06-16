@@ -1,0 +1,33 @@
+/*
+
+	-- -- -- -- -- -- --
+	error CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	#trail {
+		margin-bottom: 2em;
+	}
+
+	.error-code {
+		position: relative;
+		font-size: 18em;
+		text-align: left;
+		color: #ddd;
+		margin: 0;
+		padding: 0;
+		line-height: 1em;
+		font-weight: normal;
+	}
+	
+	#content {
+		padding-top: 0;	
+		padding-left: 0;
+		padding-right: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;	
+		background: none;
+	}

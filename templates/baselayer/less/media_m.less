@@ -1,0 +1,296 @@
+@media only screen and (max-width: @break6) {
+	
+#main-navigation {
+	max-height: 0;
+}
+
+.show-m {
+	display: block;
+}
+
+.hide-m {
+	display: none;
+}
+
+nav#main-navigation ul.menu {
+    float: none;
+}
+
+header#page-header .top-wrapper {
+    padding-bottom: 0;
+}
+
+#search-box {
+	width: auto;
+	float: none;
+	max-height: 0;
+	margin: 0 -20px;
+}
+
+header#page-header .search input {
+	margin-top: 0;	
+}
+
+header#page-header .search:before {
+    top: 0.65em;
+}
+
+header#page-header form {
+	background: #EFEFEF;
+	margin: 0;
+    padding: 20px;
+}
+
+header#page-header .search {
+	float: none;
+	width: auto;
+}
+
+header#page-header #top {
+	float: none;
+	margin-bottom: 1em;
+}
+
+header#page-header .logo {
+	float: left;
+	padding-left: 55px;
+	min-height: inherit;
+	background-size: 50px auto;
+}
+
+header#page-header .logo p {
+	font-size: 22px;
+	line-height: 40px;
+}
+
+// Mobile nav
+
+#mobile-nav {
+	float: right;	
+}
+
+#mobile-nav ul li {
+	list-style: none;
+	display: inline-block;
+	height: 40px;
+}
+
+#mobile-nav ul li a {
+	display: block;
+	height: 40px;
+	cursor: pointer;
+	line-height: 1em;
+	color: #777676;
+}
+
+#mobile-nav ul li a:hover {
+	color: #0397A7;	
+}
+
+#mobile-nav ul li a span {
+	display: none;
+}
+
+#mobile-nav ul li a:before {
+	font-family: "Fontcons";
+	font-size: 25px;
+	line-height: 40px;
+}
+
+#mobile-menu {
+	margin-right: 10px;
+}
+
+#mobile-menu:before {
+	content: "\f039";
+}
+
+#mobile-search:before {
+	content: "\f002";
+}
+
+// End mobile nav
+
+
+/* ------------------ Main navigation ------------------------- */
+
+header#page-header nav#main-navigation {
+	border-top: none;
+	overflow: hidden;
+}
+
+header#page-header nav#main-navigation .wrapper {
+	border-top: 1px solid #f4f4f4;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+nav#main-navigation ul.menu ul {
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
+	column-count: 2;
+}
+
+nav#main-navigation ul.menu li {
+	display: block;
+    border-top: 1px solid #ededed;
+    margin-top: -1px;
+	padding: 15px 0;
+}
+
+nav#main-navigation ul.menu #current {
+	margin-top: 0;
+	border-top: 1px solid #ededed;
+}
+
+nav#main-navigation ul.menu li:first-of-type {
+	border-top: 0 !important;
+}
+
+nav#main-navigation ul.menu a {
+	padding: 0 0 0 20px;
+	border-top: 0;
+	display: inline;
+}
+
+nav#main-navigation ul.menu ul {
+	visibility: visible;
+	opacity: 1;
+	position: static;
+	margin-top: 5px;
+}
+
+// Visual reset
+nav#main-navigation ul.menu ul {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+
+nav#main-navigation ul.menu ul li {
+	padding: 0 0 0 20px;
+}
+
+nav#main-navigation ul.menu ul li a {
+	padding: 0 0 0 20px;
+	border: 0;
+}
+
+nav#main-navigation ul.menu span.separator {
+	display: none;
+}
+
+// Main link hover and focus
+nav#main-navigation ul.menu li:hover > a,
+nav#main-navigation ul.menu li:focus > a { 
+	background: none;
+}
+
+// All links hover
+nav#main-navigation ul.menu li.active li a:hover,
+nav#main-navigation ul.menu li.active li a:focus,
+nav#main-navigation ul.menu a:hover,
+nav#main-navigation ul.menu a:focus { 
+	background: none;
+}
+
+/* ------------------ End main navigation ------------------------- */
+
+// ------------------ Account
+
+nav#main-navigation #account {
+	float: none;
+	position: static;
+	background: #efefef;
+    margin: 0;
+    padding: 0 20px;
+}
+
+nav#main-navigation #account #account-info {
+	position: static;
+}
+
+nav#main-navigation #account #account-info img {
+	display: none;
+}
+
+nav#main-navigation #account .account-details {
+    padding: 0;
+	float: left;	
+}
+
+nav#main-navigation #account .account-logout {
+	display: block;
+	float: right;
+}
+
+nav#main-navigation #account .account-logout a {
+	padding: 0.6em 0;
+	font-size: 1em;
+	line-height: 1.2em;
+}
+
+nav#main-navigation #account .account-details:before {
+    font-family: "Fontcons";
+	content: "\f007";
+	color: #777676;
+	margin-right: 0.3em;
+}
+
+nav#main-navigation #account .account-details span {
+    display: inline;
+	position: relative;
+	padding-left: 0.8em;
+}
+
+nav#main-navigation #account .account-details span:before {
+	content: "\203A";
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+nav#main-navigation #account ul.menu li {
+	display: inline-block;
+}
+
+nav#main-navigation #account ul.menu ul {
+	display: none;
+}
+
+nav#main-navigation #account ul.menu.loggedin li {
+	width: 100%;
+}
+
+// ------------------ End account
+
+
+// ------------------ Section
+
+section.section {
+	display: block;
+	width: auto;
+}
+
+// ------------------ End Section
+
+
+// ------------------ Subject/Aside
+
+section.section .subject, section.section .aside {
+	display: block;
+	float: none;
+	width: 100%;
+	margin-right: 0;
+	padding: 0;
+}
+
+section.section .aside {
+	margin-top: 20px;
+}
+
+// ------------------ End subject/aside
+
+}

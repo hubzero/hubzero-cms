@@ -1,0 +1,32 @@
+// Inherit core reset styles
+@import "../../../media/system/less/layout.less";
+
+aside * + .container {
+	margin-top: 2em;
+}
+
+aside .container {
+	padding: 0;
+	background: none;
+}
+
+@media only screen and (max-width: 900px) {
+	
+.container .entries-menu {
+	li {
+		float: none;
+		display: inline-block;
+	}
+	a:hover {
+		background-color: @themeMain;
+	}
+}
+
+.container .filter-options {
+	li {
+		float: none;
+		display: inline-block;
+	}
+}
+
+}

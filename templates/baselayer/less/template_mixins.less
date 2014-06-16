@@ -1,0 +1,51 @@
+.centered-block (@sidePadding: 20px) {
+	max-width: @globalMaxWidth;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: @sidePadding;
+	padding-right: @sidePadding;
+}
+
+.icon-link(@char: 203A, @size: 1.2em) {
+	background: none;
+	border: none;
+	text-shadow: none;
+	box-shadow: none;
+	color: #0397A7;
+	text-align: left;
+	font-weight: normal;
+	position: relative;
+	font-size: @size;
+	line-height: 2.1em;
+	padding: 0 0 0 2.5em;
+	margin: 0;
+	
+	&:hover {
+		background: none;
+		border: none;
+		text-shadow: none;
+		box-shadow: none;
+		text-align: left;
+		color: #666;	
+	}
+	
+	&:before {
+		.fontcons(@char);	
+		position: absolute;
+		top: 50%;
+		margin-top: -1em;
+		left: 0;
+		font-size: 1em;
+		height: 2em;
+		width: 2em;	
+		border: 0.15em solid #0397A7;
+		.border-radius(2em);
+		line-height: 1.8em;
+		text-align: center;
+	}
+	
+	&:hover:before {
+		color: #0397A7;
+		border: 0.15em solid #0397A7;
+	}
+}
