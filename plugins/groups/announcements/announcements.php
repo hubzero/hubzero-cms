@@ -72,7 +72,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//creat view object
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'groups',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse',
 				'layout'  => 'sticky'
@@ -247,7 +247,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Note: this needs to happen *after* any potential actions ar performed above
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'groups',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse'
 			)
@@ -305,7 +305,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//create view object
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'groups',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'edit'
 			)
@@ -411,8 +411,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//attempt to save
 		if (!$announcement->save($fields))
 		{
-			$this->setError( $announcement->getError() );
-			return $this->_edit( $fields );
+			$this->setError($announcement->getError());
+			return $this->_edit($fields);
 		}
 
 		// does user want to email and should we email yet?
@@ -457,7 +457,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$announcement->load( $id );
 
 		//load created by user profile
-		$profile = \Hubzero\User\Profile::getInstance( $announcement->created_by );
+		$profile = \Hubzero\User\Profile::getInstance($announcement->created_by);
 
 		//make sure we are the one who created it
 		if ($announcement->created_by != $this->juser->get('id'))
@@ -470,7 +470,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$announcement->archive();
 
 		//attempt to delete announcement
-		if (!$announcement->save( $announcement ))
+		if (!$announcement->save($announcement))
 		{
 			$this->setError(JText::_('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
 			return $this->_list();

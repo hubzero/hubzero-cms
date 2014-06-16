@@ -63,9 +63,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
-<?php if (!$this->no_html) { ?>
-			<a href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('Cancel'); ?></a>
-<?php } ?>
+			<input type="submit" class="btn btn-danger" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
+
+			<?php if (!$this->no_html) { ?>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+			<?php } ?>
 		</p>
 	</form>

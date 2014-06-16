@@ -29,40 +29,25 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.plugin.plugin' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'plgGroupsMemberOptions'
- * 
- * Long description (if any) ...
+ * Groups plugin class for Member Options
  */
-class plgGroupsMemberOptions extends JPlugin
+class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 {
 
 	/**
-	 * Short description for 'plgGroupsMemberOptions'
-	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
 	 */
-	public function plgGroupsMemberOptions(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
-	 * Short description for 'onGroupAreas'
+	 * Return the alias and name for this category of content
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     array Return description (if any) ...
+	 * @return     array
 	 */
 	public function &onGroupAreas()
 	{
@@ -76,28 +61,25 @@ class plgGroupsMemberOptions extends JPlugin
 
 		return $area;
 	}
-	//-----------
 
 	/**
-	 * Short description for 'onGroup'
+	 * Return data on a group view (this will be some form of HTML)
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown $group Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @param      integer $limitstart Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      unknown $access Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      object  $group      Current group
+	 * @param      string  $option     Name of the component
+	 * @param      string  $authorized User's authorization level
+	 * @param      integer $limit      Number of records to pull
+	 * @param      integer $limitstart Start of records to pull
+	 * @param      string  $action     Action to perform
+	 * @param      array   $access     What can be accessed
+	 * @param      array   $areas      Active area(s)
+	 * @return     array
 	 */
 	public function onGroup( $group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		// The output array we're returning
 		$arr = array(
-			'html'=>''
+			'html' => ''
 		);
 
 		$user = JFactory::getUser();
@@ -108,19 +90,21 @@ class plgGroupsMemberOptions extends JPlugin
 		$recvEmailOptionID = JRequest::getInt('memberoptionid', 0);
 		$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
 
-		include_once(JPATH_ROOT.DS.'plugins'.DS.'groups'.DS.'memberoptions'.DS.'memberoption.class.php');
+		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
 		switch ($action)
 		{
 			case 'editmemberoptions':
 				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
+			break;
+
 			case 'savememberoptions':
 				$arr['html'] .= $this->save($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
+			break;
+
 			default:
 				$arr['html'] .= $this->edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
+			break;
 		}
 
 		return $arr;
@@ -128,15 +112,13 @@ class plgGroupsMemberOptions extends JPlugin
 	}
 
 	/**
-	 * Short description for 'edit'
+	 * Edit settings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $group Parameter description (if any) ...
-	 * @param      object $user Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param      object  $group
+	 * @param      object  $user
+	 * @param      integer $recvEmailOptionID
+	 * @param      integer $recvEmailOptionValue
+	 * @return     void
 	 */
 	protected function edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
@@ -144,21 +126,20 @@ class plgGroupsMemberOptions extends JPlugin
 		// Instantiate a view
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'groups',
-				'element'=>'memberoptions',
-				'name'=>'browse'
+				'folder'  => $this->_type,
+				'element' => $this->_name,
+				'name'    => 'browse'
 			)
 		);
 
 		// Load the options
-		/* @var $recvEmailOption XGroups_MemberOption */
 		$database = JFactory::getDBO();
-		$recvEmailOption = new XGroups_MemberOption($database);
+		$recvEmailOption = new GroupsTableMemberoption($database);
 		$recvEmailOption->loadRecord( $group->get('gidNumber'), $user->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
-		if($recvEmailOption->id)
+		if ($recvEmailOption->id)
 		{
-			$view->recvEmailOptionID = $recvEmailOption->id;
+			$view->recvEmailOptionID    = $recvEmailOption->id;
 			$view->recvEmailOptionValue = $recvEmailOption->optionvalue;
 		}
 		else
@@ -169,7 +150,7 @@ class plgGroupsMemberOptions extends JPlugin
 
 		// Pass the view some info
 		$view->option = $this->option;
-		$view->group = $this->group;
+		$view->group  = $this->group;
 
 		// Return the output
 		return $view->loadTemplate();
@@ -177,97 +158,109 @@ class plgGroupsMemberOptions extends JPlugin
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save settings
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      object $group Parameter description (if any) ...
-	 * @param      object $user Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      object  $group
+	 * @param      object  $user
+	 * @param      integer $recvEmailOptionID
+	 * @param      integer $recvEmailOptionValue
+	 * @return     void
 	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		/* @var $group \Hubzero\User\Group */
-
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
-		
+
 		//instantaite database object
 		$database = JFactory::getDBO();
 
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
-		/* @var $row XForum */
-		$row = new XGroups_MemberOption($database);
+		$row = new GroupsTableMemberoption($database);
 
 		//bind the data
-		$rowdata = array( 'id' => $recvEmailOptionID,
-				'userid' => $user->id,
-				'gidNumber' => $group->get('gidNumber'),
-				'optionname' => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
-				'optionvalue' => $recvEmailOptionValue );
+		$rowdata = array(
+			'id'          => $recvEmailOptionID,
+			'userid'      => $user->id,
+			'gidNumber'   => $group->get('gidNumber'),
+			'optionname'  => GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
+			'optionvalue' => $recvEmailOptionValue
+		);
 
 		$row->bind($rowdata);
 
 		// Check content
-		if (!$row->check()) {
-			$this->setError( $row->getError() );
+		if (!$row->check())
+		{
+			$this->setError($row->getError());
 			return;
 		}
 
 		// Store content
-		if (!$row->store()) {
-			$this->setError( $row->getError() );
-			return $this->edittopic();
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+			return $this->edit();
 		}
 
-		$app = JFactory::getApplication();
-		$app->enqueueMessage('You have successfully updated your email settings','Message');
-		
-		if(!$postSaveRedirect)
-			$app->redirect( JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit' ) );
+		if (!$postSaveRedirect)
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit'),
+				JText::_('You have successfully updated your email settings')
+			);
+		}
 		else
-			$app->redirect( $postSaveRedirect );
-
+		{
+			$this->redirect(
+				$postSaveRedirect,
+				JText::_('You have successfully updated your email settings')
+			);
+		}
 	}
-	
+
+	/**
+	 * Subscribe a person to emails on enrollment
+	 * 
+	 * @param      integer $gidNumber
+	 * @param      integer $userid
+	 * @return     void
+	 */
 	public function onGroupUserEnrollment($gidNumber, $userid)
 	{
-		//get database
+		// get database
 		$database = JFactory::getDBO();
-		
-		//get hubzero logger
-		$logger =  JFactory::getLogger();
-		
-		//get group
-		$group = \Hubzero\User\Group::getInstance( $gidNumber );
-		
-		//is auto-subscribe on for discussion forum
+
+		// get hubzero logger
+		$logger = JFactory::getLogger();
+
+		// get group
+		$group = \Hubzero\User\Group::getInstance($gidNumber);
+
+		// is auto-subscribe on for discussion forum
 		$discussion_email_autosubscribe = $group->get('discussion_email_autosubscribe');
-		
-		//log variable
+
+		// log variable
 		$logger->debug('$discussion_email_autosubscribe' . $discussion_email_autosubscribe);
-		
-		//if were not auto-subscribed then stop
+
+		// if were not auto-subscribed then stop
 		if (!$discussion_email_autosubscribe)
 		{
 			return;
 		}
-		
+
 		// see if they've already got something, they shouldn't, but you never know
-		$query = "SELECT COUNT(userid) FROM #__xgroups_memberoption WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";   
-		$database->setQuery( $query );
+		$query = "SELECT COUNT(userid) FROM #__xgroups_memberoption WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
+		$database->setQuery($query);
 		$count = $database->loadResult();
 		if ($count)
 		{
-			$query = "UPDATE #__xgroups_memberoption SET optionvalue = 1 WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";   
+			$query = "UPDATE #__xgroups_memberoption SET optionvalue = 1 WHERE gidNumber=" . $gidNumber . " AND userid=" . $userid . " AND optionname='receive-forum-email'";
 			$database->setQuery($query);
 			$database->query();
 		}
 		else
 		{
 			$query = "INSERT INTO #__xgroups_memberoption(gidNumber, userid, optionname, optionvalue) VALUES('" . $gidNumber . "', '" . $userid . "', 'receive-forum-email', '1')";
-			$database->setQuery( $query );
+			$database->setQuery($query);
 			$database->query();
 		}
 	}

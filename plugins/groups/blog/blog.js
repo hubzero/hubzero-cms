@@ -21,31 +21,31 @@ jQuery(document).ready(function (jq) {
 	}
 
 	$('#content')
-			// Toggle text and classes when clicking reply
-			.on('click', 'a.reply', function (e) {
+		// Toggle text and classes when clicking reply
+		.on('click', 'a.reply', function (e) {
+			e.preventDefault();
+
+			var frm = $('#' + $(this).attr('rel'));
+
+			if (frm.hasClass('hide')) {
+				frm.removeClass('hide');
+
+				$(this)
+					.addClass('active')
+					.text($(this).attr('data-txt-active'));
+			} else {
+				frm.addClass('hide');
+				$(this)
+					.removeClass('active')
+					.text($(this).attr('data-txt-inactive'));
+			}
+		})
+		// Add confirm dialog to delete links
+		.on('click', 'a.delete', function (e) {
+			var res = confirm('Are you sure you wish to delete this item?');
+			if (!res) {
 				e.preventDefault();
-
-				var frm = $('#' + $(this).attr('rel'));
-
-				if (frm.hasClass('hide')) {
-					frm.removeClass('hide');
-
-					$(this)
-						.addClass('active')
-						.text($(this).attr('data-txt-active'));
-				} else {
-					frm.addClass('hide');
-					$(this)
-						.removeClass('active')
-						.text($(this).attr('data-txt-inactive'));
-				}
-			})
-			// Add confirm dialog to delete links
-			.on('click', 'a.delete', function (e) {
-				var res = confirm('Are you sure you wish to delete this item?');
-				if (!res) {
-					e.preventDefault();
-				}
-				return res;
-			});
+			}
+			return res;
+		});
 });

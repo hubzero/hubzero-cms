@@ -29,98 +29,92 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Description for '"GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION"'
  */
-define("GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION", "receive-forum-email");
+define('GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION', 'receive-forum-email');
 
 /**
- * Short description for 'XGroups_MemberOption'
- * 
- * Long description (if any) ...
+ * Groups member options table class
  */
-class XGroups_MemberOption extends JTable
+class GroupsTableMemberoption extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $id				= NULL;		// int
+	var $id = NULL;
 
 	/**
-	 * Description for 'gidNumber'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $gidNumber		= NULL;		// int
+	var $gidNumber = NULL;
 
 	/**
-	 * Description for 'userid'
+	 * int(11)
 	 * 
-	 * @var unknown
+	 * @var integer
 	 */
-	var $userid			= NULL;		// int		
+	var $userid = NULL;
 
 	/**
-	 * Description for 'optionname'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $optionname		= NULL;		// varchar(100)
+	var $optionname = NULL;
 
 	/**
-	 * Description for 'optionvalue'
+	 * varchar(100)
 	 * 
-	 * @var unknown
+	 * @var string
 	 */
-	var $optionvalue	= NULL;		// varchar(100)
-
-	//-----------
+	var $optionvalue = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @param      unknown &$db Parameter description (if any) ...
+	 * @param      object &$db Database
 	 * @return     void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__xgroups_memberoption', 'id', $db );
+		parent::__construct('#__xgroups_memberoption', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 * 
-	 * Long description (if any) ...
-	 * 
-	 * @return     boolean Return description (if any) ...
+	 * @return     boolean True if data is valid, False if not
 	 */
 	public function check()
 	{
-
-		if (trim( $this->gidNumber ) == ''){
-			$this->setError( JText::_('Please provide a gidNumber') );
+		if (trim($this->gidNumber) == '')
+		{
+			$this->setError(JText::_('Please provide a gidNumber'));
 			return false;
 		}
 
-		if (trim( $this->userid ) == ''){
-			$this->setError( JText::_('Please provide a userid') );
+		if (trim($this->userid) == '')
+		{
+			$this->setError(JText::_('Please provide a userid'));
 			return false;
 		}
 
-		if (trim( $this->optionname ) == ''){
-			$this->setError( JText::_('Please provide an optionname') );
+		if (trim($this->optionname) == '')
+		{
+			$this->setError(JText::_('Please provide an optionname'));
 			return false;
 		}
 
-		if (trim( $this->optionvalue ) == ''){
-			$this->setError( JText::_('Please provide an optionvalue') );
+		if (trim($this->optionvalue) == '')
+		{
+			$this->setError(JText::_('Please provide an optionvalue'));
 			return false;
 		}
 
@@ -128,9 +122,7 @@ class XGroups_MemberOption extends JTable
 	}
 
 	/**
-	 * Short description for 'loadRecord'
-	 * 
-	 * Long description (if any) ...
+	 * Load a record and bind to $this
 	 * 
 	 * @param      unknown $gidNumber Parameter description (if any) ...
 	 * @param      unknown $userid Parameter description (if any) ...
@@ -139,36 +131,39 @@ class XGroups_MemberOption extends JTable
 	 */
 	public function loadRecord($gidNumber=NULL, $userid=NULL, $optionname=NULL)
 	{
-
 		if (!$gidNumber)
+		{
 			$gidNumber = $this->gidNumber;
+		}
 
 		if (!$userid)
+		{
 			$usuerid = $this->userid;
+		}
 
 		if (!$optionname)
+		{
 			$optionname = $this->optionname;
+		}
 
 		if (!$gidNumber || !$userid || !$optionname)
+		{
 			return false;
+		}
 
 		$sql = "SELECT * FROM $this->_tbl WHERE userid='$userid' AND gidNumber='$gidNumber' and optionname='$optionname'";
 
-//		echo ($sql);
-//		exit;
 
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-
 	}
-
 }
 

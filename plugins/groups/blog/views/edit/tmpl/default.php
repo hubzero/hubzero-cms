@@ -44,6 +44,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=blog';
 
 $this->css()
+     ->css('jquery.datepicker.css', 'system')
+     ->css('jquery.timepicker.css', 'system')
+     ->js('jquery.timepicker', 'system')
      ->js();
 ?>
 <ul id="page_options">
@@ -148,7 +151,7 @@ $this->css()
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="blog" />
 	<input type="hidden" name="action" value="save" />
-		
+
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
 

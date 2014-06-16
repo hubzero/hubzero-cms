@@ -230,7 +230,7 @@ $this->css()
 			<?php } ?>
 
 			<h3 class="below_heading">
-				<?php echo JText::_('Post a comment'); ?>
+				<?php echo JText::_('PLG_GROUPS_BLOG_POST_COMMENT'); ?>
 			</h3>
 
 			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">

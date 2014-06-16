@@ -494,7 +494,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// email settings data
 		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
-		$recvEmailOption = new XGroups_MemberOption($this->database);
+		$recvEmailOption = new GroupsTableMemberoption($this->database);
 		$recvEmailOption->loadRecord($this->group->get('gidNumber'), $this->juser->id, GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
 		if ($recvEmailOption->id) 
@@ -1324,7 +1324,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
 
 					// Find the user's group settings, do they want to get email (0 or 1)?
-					$groupMemberOption = new XGroups_MemberOption($this->database);
+					$groupMemberOption = new GroupsTableMemberoption($this->database);
 					$groupMemberOption->loadRecord(
 						$this->group->get('gidNumber'), 
 						$user->id, 

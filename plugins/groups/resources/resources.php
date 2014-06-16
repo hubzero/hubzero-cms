@@ -142,9 +142,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
 			{
 				$area = JRequest::getWord('area', 'resource');
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active.'&area='.$area);
-				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
-				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
+
+				$this->redirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					'warning'
+				);
 				return;
 			}
 
@@ -157,13 +161,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
-			require_once JPATH_BASE.'/components/com_hubgraph/client.php';
+			require_once JPATH_BASE . '/components/com_hubgraph/client.php';
+
 			$hgConf = HubgraphConfiguration::instance();
-			if ($hgConf->isOptionEnabled('com_groups')) {
+			if ($hgConf->isOptionEnabled('com_groups'))
+			{
 				$view = new \Hubzero\Plugin\View(
 					array(
-						'folder'   => 'groups',
-						'element'  => 'resources',
+						'folder'   => $this->_type,
+						'element'  => $this->_name,
 						'name'     => 'results'
 					)
 				);
@@ -173,13 +179,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				// Pass the view some info
 				$view->option = $option;
 				$view->group = $group;
-			
+
 				ob_start();
 				$_GET['group'] = $group->gidNumber;
 				define('HG_INLINE', 1);
-				require JPATH_BASE.'/components/com_hubgraph/hubgraph.php';
+				require JPATH_BASE . '/components/com_hubgraph/hubgraph.php';
 				$view->hubgraphResponse = ob_get_clean();
-				return array('html' => $view->loadTemplate('hubgraph'));
+				return array(
+					'html' => $view->loadTemplate('hubgraph')
+				);
 			}
 		}
 
@@ -312,14 +320,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				// Instantiate a vew
 				$view = new \Hubzero\Plugin\View(
 					array(
-						'folder'  => 'groups',
-						'element' => 'resources',
+						'folder'  => $this->_type,
+						'element' => $this->_name,
 						'name'    => 'results'
 					)
 				);
-
-				//push the stylesheet to the view
-				\Hubzero\Document\Assets::addPluginStylesheet('groups', 'resources');
 
 				// Pass the view some info
 				$view->option = $option;
@@ -663,16 +668,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Get the component params and merge with resource params
 		$config = JComponentHelper::getParams('com_resources');
-		$paramClass = 'JParameter';
-		$dformat = '%d %b %Y';
-		$tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-			$dformat = 'd M Y';
-			$tz = true;
-		}
-		$rparams = new $paramClass($row->params);
+
+		$rparams = new JRegistry($row->params);
 		$params = $config;
 		$params->merge($rparams);
 
@@ -680,9 +677,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		switch ($params->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, $dformat, $tz);    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, $dformat, $tz);   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, $dformat, $tz); break;
+			case 1: $thedate = JHTML::_('date', $row->created,'d M Y');    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, 'd M Y');   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, 'd M Y'); break;
 		}
 
 		if (strstr($row->href, 'index.php')) 
