@@ -108,21 +108,21 @@ $document->setHeadData($data);
 									</a>
 									
 									<p class="account-logout">
-										<a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('TPL_BASELAYER_LOGOUT'); ?></span></a>
 									</p>
 								</div>
 								<ul>
 									<li id="account-dashboard">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_BASELAYER_ACCOUNT_DASHBOARD'); ?></span></a>
 									</li>
 									<li id="account-profile">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_BASELAYER_ACCOUNT_PROFILE'); ?></span></a>
 									</li>
 									<li id="account-messages">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_BASELAYER_ACCOUNT_MESSAGES'); ?></span></a>
 									</li>
 									<li id="account-logout">
-										<a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('TPL_BASELAYER_LOGOUT'); ?></span></a>
 									</li>
 								</ul>
 							</li>
@@ -131,10 +131,10 @@ $document->setHeadData($data);
 						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 							<li id="account-login">
 								<?php $login_route = (version_compare(JVERSION, '2.5', 'ge')) ? 'index.php?option=com_users&view=login' : 'index.php?option=com_user&view=login'; ?>
-								<a href="<?php echo JRoute::_($login_route); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
+								<a href="<?php echo JRoute::_($login_route); ?>" title="<?php echo JText::_('TPL_BASELAYER_LOGIN'); ?>"><?php echo JText::_('TPL_BASELAYER_LOGIN'); ?></a>
 							</li>
 							<li id="account-register">
-								<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
+								<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_BASELAYER_SIGN_UP'); ?>"><?php echo JText::_('TPL_BASELAYER_REGISTER'); ?></a>
 							</li>
 						</ul>
 						<?php /* <jdoc:include type="modules" name="account" /> */ ?>
