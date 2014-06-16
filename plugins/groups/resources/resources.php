@@ -75,11 +75,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	public function &onGroupAreas()
 	{
 		$area = array(
-			'name' => 'resources',
-			'title' => JText::_('PLG_GROUPS_RESOURCES'),
-			'default_access' => $this->params->get('plugin_access', 'members'),
+			'name'             => 'resources',
+			'title'            => JText::_('PLG_GROUPS_RESOURCES'),
+			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon' => 'f02d'
+			'icon'             => 'f02d'
 		);
 		return $area;
 	}
@@ -118,7 +118,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$return = 'metadata';
 			}
 		}
-		
+
 		//set group members plugin access level
 		$group_plugin_acl = $access[$active];
 
@@ -127,7 +127,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		//get the group members
 		$members = $group->get('members');
-		
+
 		if ($return == 'html')
 		{
 			//if set to nobody make sure cant access
@@ -173,12 +173,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 						'name'     => 'results'
 					)
 				);
-
-				\Hubzero\Document\Assets::addPluginStylesheet('groups', 'resources');
-
 				// Pass the view some info
 				$view->option = $option;
-				$view->group = $group;
+				$view->group  = $group;
 
 				ob_start();
 				$_GET['group'] = $group->gidNumber;
@@ -633,154 +630,6 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$this->_total = $counts;
 			return $counts;
 		}
-	}
-
-	/**
-	 * Include needed libraries and push scripts and CSS to the document
-	 * 
-	 * @return     void
-	 */
-	public static function documents()
-	{
-		// Push some CSS and JS to the tmeplate that may be needed
-		$document = JFactory::getDocument();
-		$document->addScript('components' . DS . 'com_resources' . DS . 'assets' . DS . 'css' . DS . 'resources.js');
-
-		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
-
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
-	}
-
-	/**
-	 * Static method for formatting results
-	 * 
-	 * @param      object $row Database row
-	 * @return     string HTML
-	 */
-	public static function out($row, $authorized=false)
-	{
-		$database = JFactory::getDBO();
-
-		// Instantiate a helper object
-		$RE = new ResourcesHelper($row->id, $database);
-		$RE->getContributors();
-
-		// Get the component params and merge with resource params
-		$config = JComponentHelper::getParams('com_resources');
-
-		$rparams = new JRegistry($row->params);
-		$params = $config;
-		$params->merge($rparams);
-
-		// Set the display date
-		switch ($params->get('show_date'))
-		{
-			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created,'d M Y');    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, 'd M Y');   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, 'd M Y'); break;
-		}
-
-		if (strstr($row->href, 'index.php')) 
-		{
-			$row->href = JRoute::_($row->href);
-		}
-		$juri = JURI::getInstance();
-
-		$html  = "\t" . '<li class="';
-		switch ($row->access)
-		{
-			case 1: $html .= 'registered'; break;
-			case 2: $html .= 'special';    break;
-			case 3: $html .= 'protected';  break;
-			case 4: $html .= 'private';    break;
-			case 0:
-			default: $html .= 'public'; break;
-		}
-		$html .= ' resource">' . "\n";
-		$html .= "\t\t" . '<p class="';
-		/*if ($row->access == 4) {
-			$html .= 'private ';
-		} elseif ($row->access == 3) {
-			$html .= 'protected ';
-		}*/
-		$html .= 'title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-
-		if ($params->get('show_ranking')) 
-		{
-			$RE->getCitationsCount();
-			$RE->getLastCitationDate();
-
-			if ($row->category == 7) 
-			{
-				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $RE->citationsCount, $RE->lastCitationDate);
-			} 
-			else 
-			{
-				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $RE->citationsCount, $RE->lastCitationDate);
-			}
-			$statshtml = $stats->display();
-
-			$row->ranking = round($row->ranking, 1);
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$r = (10*$row->ranking);
-			if (intval($r) < 10) 
-			{
-				$r = '0' . $r;
-			}
-			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_GROUPS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_GROUPS_RESOURCES_RANKING') . '</dt>' . "\n";
-			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . JText::_('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
-			$html .= "\t\t\t\t\t" . '<div>' . "\n";
-			$html .= $statshtml;
-			$html .= "\t\t\t\t\t" . '</div>' . "\n";
-			$html .= "\t\t\t\t" . '</dd>' . "\n";
-			$html .= "\t\t\t" . '</dl>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		} 
-		elseif ($params->get('show_rating')) 
-		{
-			switch ($row->rating)
-			{
-				case 0.5: $class = ' half-stars';      break;
-				case 1:   $class = ' one-stars';       break;
-				case 1.5: $class = ' onehalf-stars';   break;
-				case 2:   $class = ' two-stars';       break;
-				case 2.5: $class = ' twohalf-stars';   break;
-				case 3:   $class = ' three-stars';     break;
-				case 3.5: $class = ' threehalf-stars'; break;
-				case 4:   $class = ' four-stars';      break;
-				case 4.5: $class = ' fourhalf-stars';  break;
-				case 5:   $class = ' five-stars';      break;
-				case 0:
-				default:  $class = ' no-stars';      break;
-			}
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . JText::sprintf('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-
-		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->area);
-		if ($RE->contributors) 
-		{
-			$html .= ' <span>|</span> '.JText::_('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $RE->contributors;
-		}
-		$html .= '</p>' . "\n";
-		if ($row->itext) 
-		{
-			$html .= "\t\t".\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->itext)), 200) . "\n";
-		} 
-		else if ($row->ftext) 
-		{
-			$html .= "\t\t".\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
-		}
-		$html .= "\t\t" . '<p class="href">'.$juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
-		$html .= "\t" . '</li>' . "\n";
-		return $html;
 	}
 }
 

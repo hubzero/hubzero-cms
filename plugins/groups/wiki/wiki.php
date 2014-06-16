@@ -140,8 +140,12 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				{
 					$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 				}
-				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
-				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+
+				$this->redirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					'warning'
+				);
 				return;
 			}
 
