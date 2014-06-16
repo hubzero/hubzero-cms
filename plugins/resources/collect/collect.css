@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/abouttool/abouttool.css
+ * @file        plugins/resources/collect/collect.css
  * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -8,7 +8,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	Resources abouttool plugin CSS
+	Resources collect plugin CSS
 	-- -- -- -- -- -- --
 
 */
@@ -43,11 +43,14 @@
 		font-family: "Fontcons";
 	}
 	#sbox-content #hubForm .grid {
+		margin: 0;
 		position: relative;
 		border-bottom: 1px solid #ccc;
 	}
 	#sbox-content #hubForm .grid label {
 		border-bottom: none;
+		padding-left: 1em;
+		padding-right: 1em;
 	}
 	#sbox-content #hubForm .grid .or {
 		position: absolute;

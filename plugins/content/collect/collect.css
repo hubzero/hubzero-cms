@@ -43,11 +43,14 @@
 		font-family: "Fontcons";
 	}
 	#sbox-content #hubForm .grid {
+		margin: 0;
 		position: relative;
 		border-bottom: 1px solid #ccc;
 	}
 	#sbox-content #hubForm .grid label {
 		border-bottom: none;
+		padding-left: 1em;
+		padding-right: 1em;
 	}
 	#sbox-content #hubForm .grid .or {
 		position: absolute;

@@ -77,6 +77,7 @@ if ($this->groupboards)
 {
 	foreach ($this->groupboards as $optgroup => $boards)
 	{
+		if (count($boards) <= 0) continue;
 ?>
 						<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
 <?php
