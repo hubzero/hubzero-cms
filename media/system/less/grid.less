@@ -10,8 +10,7 @@
 // --------------------------------------------------
 
 	.grid {
-		max-width: 100%;
-		.clearfix(left);
+		#grid > .grid
 	}
 	.columns,
 	.grid .col {
@@ -20,6 +19,7 @@
 		min-height: 1em;
 		.box-sizing(border-box);
 	}
+	
 	.grid .col.omega,
 	.two.second,
 	.three.third,
@@ -33,9 +33,7 @@
 
 	.columns,
 	.grid [class*="span"] {
-		float: left;
-		margin-right: @fluidGridGutterWidth;
-		*margin-right: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+		#grid > .col
 	}
 
 // Old columns support
@@ -173,12 +171,8 @@
 
 
 // Breaking the grid media queries
-@media only screen and (max-width: @break8) {
-	
-}
 
 @media only screen and (max-width: @break6) and (min-width: (@break3 + 1)) {
-	
 	// Collapse 6 columns into a set of two 3 columns
 	
 	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
@@ -205,7 +199,7 @@
 	.grid.break6 > .col {
 		.basicColumn;
 	}
-	
+
 }
 
 @media only screen and (max-width: @break4) and (min-width: (@break2 + 1)) {
@@ -257,7 +251,7 @@
 		margin-right: 0;	
 	}
 	
-	// Re-collapse 6 columns	
+	// Re-collapse 6 columns (2-2-2)	
 	.grid:not(.nobreak) .col:first-child:nth-last-child(6),
 	.grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col {
 		float: left;

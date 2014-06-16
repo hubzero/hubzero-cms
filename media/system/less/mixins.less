@@ -608,6 +608,17 @@
 			width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1));
 			*width: (@fluidGridColumnWidth * @columns) + (@fluidGridGutterWidth * (@columns - 1)) - (.5 / @gridRowWidth * 100 * 1%);
 		}
+		
+		.grid {
+			max-width: 100%;
+			.clearfix(left);
+		}
+		
+		.col {
+			float: left;
+			margin-right: @fluidGridGutterWidth;
+			*margin-right: @fluidGridGutterWidth - (.5 / @gridRowWidth * 100 * 1%);
+		}
 	}
 	
 	// Breaking the grid

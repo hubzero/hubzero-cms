@@ -540,3 +540,82 @@
 			margin-left: 0.7em;
 		}
 	}
+
+
+	/* 
+		Responsive subject/aside reposition + hiding elements at different breaking points
+		
+		Use .hide6, .hide4, .hide3, .hide2 to hide elements at respective breaking points (breaking point values are defined in variables.less?
+		
+	*/
+
+	@media only screen and (max-width: @break6) {
+		// Place aside under subject
+		
+		section.section:not(.nobreak) .subject, section.section:not(.nobreak) .aside {
+			display: block;
+			float: none;
+			width: 100%;
+			margin-right: 0;
+			padding: 0;
+		}
+		
+		section.section .aside {
+			margin-top: 20px;
+		}
+		
+		section.section:not(.nobreak) .aside {
+			#grid > .grid;
+		}
+		
+		.hide6 {
+			display: none !important;
+		}
+	}
+	
+	@media only screen and (max-width: @break6) and (min-width: (@break3 + 1)) {
+		// Arrange three aside containers into three columns
+		
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(3),
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(3) ~ .container {
+			#grid > .col;
+			#grid > .span(4);
+		}
+		
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(3) ~ .container:nth-child(3) {
+			margin-right: 0;
+		}
+		
+	}
+	
+	@media only screen and (max-width: @break6) and (min-width: (@break2 + 1)) {
+		// Arrange two aside containers into two columns
+		
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(2),
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(2) ~ .container {
+			#grid > .col;
+			#grid > .span(6);
+		}
+		
+		section.section:not(.nobreak) .aside .container:first-child:nth-last-child(2) ~ .container {
+			margin-right: 0;
+		}
+	}
+	
+	@media only screen and (max-width: @break4) {
+		.hide4 {
+			display: none !important;
+		}
+	}
+	
+	@media only screen and (max-width: @break3) {
+		.hide3 {
+			display: none !important;
+		}
+	}
+	
+	@media only screen and (max-width: @break2) {
+		.hide2 {
+			display: none !important;
+		}
+	}
