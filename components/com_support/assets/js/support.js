@@ -81,9 +81,9 @@ HUB.Support = {
 							'<ul class="qq-upload-list"></ul>' + 
 						'</div>',
 				onSubmit: function(id, file) {
-					//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
 				},
 				onComplete: function(id, file, response) {
+					$('ul.qq-upload-list').empty();
 					// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
 					response.html = response.html.replace(/&gt;/g, '>');
 					response.html = response.html.replace(/&lt;/g, '<');
