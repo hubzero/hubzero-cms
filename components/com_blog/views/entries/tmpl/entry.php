@@ -172,7 +172,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<?php } ?>
 		</div><!-- / .subject -->
 
-		<aside class="aside">
+		<aside class="aside hide6">
 		<?php if ($this->config->get('access-create-entry')) { ?>
 			<p>
 				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
