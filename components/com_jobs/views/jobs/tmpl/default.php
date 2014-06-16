@@ -277,18 +277,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</form>
 			</div><!-- / .subject -->
 			<aside class="aside minimenu">
-				<h3><?php echo JText::_('COM_JOBS_EMPLOYERS'); ?></h3>
-				<ul>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_POST_JOB'); ?></a></li>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=resumes'); ?>"><?php echo JText::_('COM_JOBS_BROWSE_RESUMES'); ?></a></li>
-				</ul>
-				<h3><?php echo JText::_('COM_JOBS_SEEKERS'); ?></h3>
-				<ul>
-					<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_POST_RESUME'); ?></a></li>
-				</ul>
-				<?php if ($this->config->get('infolink')) { ?>
-					<p><a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_JOBS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_JOBS_ABOUT_THE_PROCESS'); ?>.</p>
-				<?php } ?>
+				<div class="container">
+					<h3><?php echo JText::_('COM_JOBS_EMPLOYERS'); ?></h3>
+					<ul>
+						<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_POST_JOB'); ?></a></li>
+						<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=resumes'); ?>"><?php echo JText::_('COM_JOBS_BROWSE_RESUMES'); ?></a></li>
+					</ul>
+				</div>
+				<div class="container">
+					<h3><?php echo JText::_('COM_JOBS_SEEKERS'); ?></h3>
+					<ul>
+						<li><a href="<?php echo JRoute::_('index.php?option='.$option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_POST_RESUME'); ?></a></li>
+					</ul>
+					<?php if ($this->config->get('infolink')) { ?>
+						<p><a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_JOBS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_JOBS_ABOUT_THE_PROCESS'); ?>.</p>
+					<?php } ?>
+				</div>
 			</aside><!-- / .aside -->
 		<?php } ?>
 	<?php } ?>
