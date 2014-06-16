@@ -203,10 +203,19 @@ class CollectionsTablePost extends JTable
 		{
 			$where[] = "i.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0) 
+		if (isset($filters['access'])) 
 		{
-			$where[] = "i.access=" . $this->_db->Quote($filters['access']);
-			$where[] = "c.access=" . $this->_db->Quote($filters['access']);
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "i.access IN (" . implode(',', $filters['access']) . ")";
+				$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "i.access=" . $this->_db->Quote($filters['access']);
+				$where[] = "c.access=" . $this->_db->Quote($filters['access']);
+			}
 		}
 		if (isset($filters['original'])) 
 		{
