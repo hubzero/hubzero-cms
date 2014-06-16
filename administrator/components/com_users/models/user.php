@@ -86,6 +86,11 @@ class UsersModelUser extends JModelAdmin
 			return false;
 		}
 
+		if (JComponentHelper::getParams('com_users')->get('change_login_name'))
+		{
+			$form->setFieldAttribute('username', 'readonly', 'false');
+		}
+
 		return $form;
 	}
 
