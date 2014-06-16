@@ -403,6 +403,7 @@
 	.editauthor {
 		color: blue;
 		float: right;
+		margin: 0 0.3em;
 	}
 	.crumbs {
 		background: #CCC;

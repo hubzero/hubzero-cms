@@ -370,6 +370,54 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	}
 	
 	/**
+	 * Delete author
+	 * 
+	 * @return     void
+	 */
+	public function deleteauthorTask()
+	{
+		// Incoming
+		$aid = JRequest::getInt( 'aid', 0 );
+
+		$pAuthor = new PublicationAuthor( $this->database );
+		if (!$pAuthor->load($aid))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('Cannot load publication author to delete.'),
+				'error'
+			);
+			return;
+		}
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+
+		// Instantiate Version
+		$row = new PublicationVersion($this->database);
+		if ($row->load($pAuthor->publication_version_id))
+		{
+			$url .= '&task=edit' . '&id[]=' . $row->publication_id . '&version=' . $row->version_number;
+		}
+
+		if (!$pAuthor->delete())
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('Failed to delete author information'),
+				'error'
+			);
+			return;
+		}
+
+		// Redirect back to publication
+		$this->setRedirect(
+			$url,
+			JText::_('Author deleted')
+		);
+		return;
+	}
+	
+	/**
 	 * Save author name and details
 	 * 
 	 * @return     void
