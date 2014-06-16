@@ -199,13 +199,6 @@ class ProjectsGitHelper extends JObject
 			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ' ' 
 			. $new['hash'] . ' 2>&1 ', $out);
 		}
-		/*
-		if ($file)
-		{
-			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ' ' 
-			. $new['hash'] . $file . ' 2>&1 ', $out);
-		}
-		*/
 		else
 		{
 			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ':' . $old['fpath'] . ' '
