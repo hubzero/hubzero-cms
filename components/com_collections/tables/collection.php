@@ -336,9 +336,17 @@ class CollectionsTableCollection extends JTable
 		{
 			$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0) 
+		if (isset($filters['access'])) 
 		{
-			$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "b.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
+			}
 		}
 		if (isset($filters['is_default']) && $filters['is_default'] >= 0) 
 		{

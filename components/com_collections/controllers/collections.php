@@ -90,6 +90,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 		$this->view->filters['access'] = 0;
+		if (!$this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = array(0, 1);
+		}
 
 		$this->view->collection = new CollectionsModelCollection();
 
@@ -157,6 +161,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 		$this->view->filters['access'] = 0;
+		if (!$this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = array(0, 1);
+		}
 
 		$model = CollectionsModel::getInstance();
 
