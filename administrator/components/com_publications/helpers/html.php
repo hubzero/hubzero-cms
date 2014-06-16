@@ -414,14 +414,15 @@ class PublicationsHtml
 			{
 				$authIDs[] = $authname->id;
 				$name = $authname->name;
-
+				
 				$org = ($authname->organization) ? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : '';
 				$credit = ($authname->credit) ? htmlentities($authname->credit,ENT_COMPAT,'UTF-8') : '';
 				$userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
 				$html .= "\t".'<li id="author_'.$authname->id.'">'. $i . '. ' . $name .' ('.$userid.')';			
 				$html .= $org ? ' - <span class="org">'.$org.'</span>' : '';
-				$html .= '<a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id .'" >Edit</a>';
+				$html .= ' <a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id .'" >Edit</a> ';
+				$html .= ' <a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id .'"  >Delete</a> ';
 				if ($credit) 
 				{
 					$html .= '<br />'.JText::_('Credit').': '.$credit;
