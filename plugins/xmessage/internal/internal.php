@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * XMessage plugin class for internal messages
  */
-class plgXMessageInternal extends \Hubzero\Hubzero\Plugin
+class plgXMessageInternal extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return this messaging type
