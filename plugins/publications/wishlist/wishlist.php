@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Publications Plugin class for wishes
  */
-class plgPublicationsWishlist extends JPlugin
+class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 {
 	
 	/**
@@ -136,7 +136,7 @@ class plgPublicationsWishlist extends JPlugin
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php' );
 
 		// Configure controller
-		$controller = new WishlistControllerController();
+		$controller = new WishlistControllerWishlist();
 
 		// Get filters
 		$filters = $controller->getFilters(0);
