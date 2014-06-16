@@ -37,33 +37,17 @@
 	}
 	#page_container {
 		background-color: transparent;
-		overflow: hidden;
-		display: table;
-		padding-left: 0;
 	}
 	#page_options {
 		top: 5px;
 	}
 	#page_sidebar {
 		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
-		/*margin-bottom: -50000px;
-		padding-bottom: 50000px;*/
-		display: table-cell;
-		float: none;
-		margin-left: 0;
 		-webkit-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		   -moz-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		    -ms-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
-	}
-	#page_main {
-		display: table-cell;
-		float: none;
-		vertical-align: top;
-	}
-	#page_menu {
-		width: 215px;
 	}
 	#page_menu li {
 		border-bottom: 1px solid #d1d1d1;
@@ -83,3 +67,11 @@
 	#page_menu li span {
 		color: #888;
 	}
+@media (max-width: 800px) {
+	#page_header:before {
+		left: 6em;
+	}
+	#page_header h2:after {
+		left: 95px;
+	}
+}
