@@ -20,11 +20,17 @@ if (!jq) {
 	var jq = $;
 }
 
+function test() {
+	alert('test');
+}
+
 HUB.GroupsMediaBrowser = {
 	jQuery: jq,
 	
 	initialize: function() 
 	{
+		var $ = this.jQuery;
+
 		// file tree
 		HUB.GroupsMediaBrowser.folderTree();
 		
@@ -40,6 +46,8 @@ HUB.GroupsMediaBrowser = {
 	
 	openLightbox: function( url )
 	{
+		var $ = this.jQuery;
+
 		$.fancybox({
 			type: 'ajax',
 			href: url,
@@ -125,18 +133,7 @@ HUB.GroupsMediaBrowser = {
 		
 		// if we have a folder tree lets auto-open to the active folder
 		// also listen fro folder click notifications from inside file/folder list
-		if ($('.foldertree').length)
-		{
-			//open active from the start
-			HUB.GroupsMediaBrowser.folderTreeOpenActive();
-			
-			// when we click on folder in the file list set new active folder
-			// and trigger folder tree to open active
-			$('.foldertree').on('onGroupFilelistClick', function(event, folder) {
-				$('.foldertree').attr('data-activefolder', folder);
-				HUB.GroupsMediaBrowser.folderTreeOpenActive();
-			});
-		}
+		HUB.GroupsMediaBrowser.setFolderTreeOpenActive();
 		
 		// folder tree list change (used in small screens)
 		$('.foldertree-list').on('change', 'select', function(event) {
@@ -148,12 +145,36 @@ HUB.GroupsMediaBrowser = {
 	
 	//-----
 	
+	setFolderTreeOpenActive: function( folder )
+	{
+		var $ = this.jQuery;
+
+		if ($('.foldertree').length)
+		{
+			//open active from the start
+			HUB.GroupsMediaBrowser.folderTreeOpenActive();
+
+			$('.foldertree').attr('data-activefolder', folder);
+			HUB.GroupsMediaBrowser.folderTreeOpenActive();
+		}
+	},
+
+	//-----
+
+	refreshAndOpenFolder: function( folder )
+	{
+		var url = HUB.GroupsMediaBrowser._urlAddQueryParam(window.location.href, 'path', folder);
+		window.location.href = url;
+	},
+
+	//-----
+	
 	folderTreeOpenActive: function()
 	{
 		var $ = this.jQuery;
 		
 		// get active folder
-		var activeFolder      = $('.foldertree').attr('data-activefolder');
+		var activeFolder      = $('.foldertree').attr('data-activefolder').toLowerCase();
 		
 		// trigger clicking of active folder
 		$('.foldertree .tree-folder').each(function(index, element){
@@ -214,8 +235,12 @@ HUB.GroupsMediaBrowser = {
 							$(".qq-uploading").remove();
 						});
 						
-						//trigger event that logos were just uploaded
-						window.parent.$('body').trigger('onGroupImageUploaded');
+						// tell the parent that images were just uploaded
+						// group edit screen - picking group logo
+						if (parent.HUB.Groups)
+						{
+							parent.HUB.Groups.imagesUploaded();
+						}
 					}
 				});
 		}

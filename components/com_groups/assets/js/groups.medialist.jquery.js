@@ -30,6 +30,34 @@ HUB.GroupsMediaList = {
 		// context menu for added actions
 		HUB.GroupsMediaList.filelistContextMenu();
 	},
+
+	//-----
+	
+	callParent: function( folder )
+	{
+		// get the folder we want to open and a pointer to the filebrowser object
+		var mediaBrowser = parent.HUB.GroupsMediaBrowser;
+
+		// if we found the parent lets set the folder we want to open
+		if (mediaBrowser)
+		{
+			mediaBrowser.setFolderTreeOpenActive( folder );
+		}
+	},
+
+	//-----
+
+	refreshParent: function( folder)
+	{
+		// get the folder we want to open and a pointer to the filebrowser object
+		var mediaBrowser = parent.HUB.GroupsMediaBrowser;
+
+		// if we found the parent lets set the folder we want to open
+		if (mediaBrowser)
+		{
+			mediaBrowser.refreshAndOpenFolder( folder );
+		}
+	},
 	
 	//-----
 	
@@ -43,13 +71,13 @@ HUB.GroupsMediaList = {
 			// post notification when a folder is clicked in file/folder list
 			$('.upload-filelist').on('click', '.folder', function(event) {
 				event.preventDefault();
-				window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [$(this).find('a').attr('data-folder')]);
+				HUB.GroupsMediaList.callParent( $(this).find('a').attr('data-folder') );
 			});
 			
 			// breadcrumbs
 			$('.upload-filelist-toolbar').on('click', '.path a', function(event) {
 				event.preventDefault();
-				window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [$(this).attr('data-folder')]);
+				HUB.GroupsMediaList.callParent( $(this).attr('data-folder') );
 			});
 			
 			// open file detail pane
@@ -90,7 +118,7 @@ HUB.GroupsMediaList = {
 						type: 'get',
 						success: function( data, status, jqXHR )
 						{
-							window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [data]);
+							HUB.GroupsMediaList.callParent( data );
 						}
 					})
 				}
@@ -104,7 +132,9 @@ HUB.GroupsMediaList = {
 					type: 'get',
 					success: function( data, status, jqXHR )
 					{
-						window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [data]);
+						// refresh parent to reload folder tree
+						// needed to allow us to navigate newly extracted folder
+						HUB.GroupsMediaList.refreshParent( data );
 					}
 				});
 			});
@@ -125,6 +155,8 @@ HUB.GroupsMediaList = {
 	
 	openLightbox: function( url )
 	{
+		var $ = this.jQuery;
+
 		$.fancybox({
 			type: 'ajax',
 			href: url,
@@ -143,7 +175,7 @@ HUB.GroupsMediaList = {
 							data: $(this).serialize(),
 							success: function( data, status, jqXHR )
 							{
-								window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [data]);
+								HUB.GroupsMediaList.callParent( data );
 								$.fancybox.close();
 							},
 							error: function( status, data, jqXHR )
@@ -161,6 +193,8 @@ HUB.GroupsMediaList = {
 	
 	filelistContextMenu: function()
 	{
+		var $ = this.jQuery;
+
 		// context menu for folders
 		$.contextMenu({
 			selector: '.upload-filelist .folder',
@@ -212,6 +246,8 @@ HUB.GroupsMediaList = {
 	
 	folderContextMenuAction: function( action, element )
 	{
+		var $ = this.jQuery;
+
 		var folder    = element.find('.name a').attr('data-folder'),
 			actionUrl = element.find('.name a').attr('data-action-' + action);
 		
@@ -225,7 +261,8 @@ HUB.GroupsMediaList = {
 					type: 'get',
 					success: function(data, status, jqXHR)
 					{
-						window.parent.$('body').find('.foldertree').trigger('onGroupFilelistClick', [data]);
+						// refresh parent to reload folder tree
+						HUB.GroupsMediaList.refreshParent( data );
 					}
 				})
 			}
@@ -240,6 +277,8 @@ HUB.GroupsMediaList = {
 	
 	filelistContextMenuAction: function( action, element )
 	{
+		var $ = this.jQuery;
+
 		//find button in file details which actually performs action
 		var button = element.next('.file-details').find('.action-' + action);
 		
