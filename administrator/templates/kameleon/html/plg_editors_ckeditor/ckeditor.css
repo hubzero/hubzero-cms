@@ -1,0 +1,66 @@
+/* Show macros text */
+.cke_button__hubzeromacro_label {
+	display: inline-block !important;
+}
+
+body .cke_chrome {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	border: 1px solid #D9D9D9;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+body .cke_chrome .cke_inner {
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	border-radius: 0.25em;
+	background: rgba(0,0,0,0.039);
+}
+body .cke_chrome .cke_contents {
+	-webkit-border-radius: 0 0 0.25em 0.25em;
+	-moz-border-radius: 0 0 0.25em 0.25em;
+	border-radius: 0 0 0.25em 0.25em;
+}
+body .cke_top {
+	background: transparent;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	border-bottom: 1px solid #D9D9D9;
+}
+
+body .cke_top .cke_combo_button,
+body .cke_top .cke_toolgroup {
+	background: transparent;
+	border: 1px solid #D9D9D9;
+	/*border: none;
+	border-right: 1px solid #D9D9D9;*/
+}
+body .cke_top .cke_toolgroup a:hover {
+	background: #D9D9D9;
+	background: rgba(0, 0, 0, 0.1);
+}
+body .cke_top .cke_button_on {
+	background: #D1D1D1;
+	background: rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+body .cke_bottom {
+	background: transparent;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	border-top: 1px solid #D9D9D9;
+}
