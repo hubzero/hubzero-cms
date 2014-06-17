@@ -188,7 +188,7 @@ class Migration implements CommandInterface
 		$email = false;
 		if ($this->arguments->getOpt('email'))
 		{
-			if(!preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,4}$/', $this->arguments->getOpt('email')))
+			if (!preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,4}$/', $this->arguments->getOpt('email')))
 			{
 				$this->output->error('Error: ' . $this->arguments->getOpt('email') . ' does not appear to be a valid email address');
 			}
