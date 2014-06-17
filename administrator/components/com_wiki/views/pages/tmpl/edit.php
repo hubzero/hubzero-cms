@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?>">
-				<label for="pagename"><?php echo JText::_('COM_WIKI_FIELD_PAGENAME'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="pagename"><?php echo JText::_('COM_WIKI_FIELD_PAGENAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="page[pagename]" id="pagename" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('pagename'))); ?>" />
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
 			</div>

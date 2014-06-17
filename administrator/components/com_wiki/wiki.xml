@@ -79,10 +79,10 @@ HUBzero is a registered trademark of Purdue University.
 		</languages>
 	</administration>
 	<params>
-		<param name="mode" type="list" default="wiki" label="Mode" description="Mode of the page">
-			<option value="wiki">Wiki</option>
-			<option value="knol">Knol</option>
-			<option value="static">Static</option>
+		<param name="mode" type="list" default="wiki" label="COM_WIKI_MODE_LABEL" description="COM_WIKI_MODE_DESC">
+			<option value="wiki">COM_WIKI_MODE_WIKI</option>
+			<option value="knol">COM_WIKI_MODE_KNOL</option>
+			<option value="static">COM_WIKI_MODE_STATIC</option>
 		</param>
 	</params>
 </install>
