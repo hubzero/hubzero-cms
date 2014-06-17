@@ -77,6 +77,8 @@ if ($juser->get("guest"))
 }
 
 if (!$no_html) {
+	$this->css()
+	     ->js();
 ?>
 <header id="content-header" class="content-header">
 	<div id="page_header">

@@ -397,40 +397,30 @@
 		margin: 1em 0 1em 0;
 		padding: 0;
 		position: relative;
-		border-top: 1px dashed #bAbAbA;
-		border-bottom: none;
+		//border-top: 1px dashed #bAbAbA;
+		//border-bottom: none;
 
 		li {
-			border-bottom: 1px solid #dadada;
-			padding: 1em 0 1em 1em;
+			padding: @spacing 0;
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
 			margin: 0;
 			list-style: none;
 		}
-		p,
+		&>li:first-child {
+			border-top: none;
+		}
 		.details {
 			margin: 0.5em 0;
 			padding: 0;
-		}
-		.details {
-			font-size: 90%;
+			font-size: 0.85em;
 			color: #999;
-
-			span {
-				color: #fff;
-				margin: 0 0.5em;
-
-				&.highlight {
-					color: #333;
-					margin: 0;
-				}
-			}
-			a span.highlight {
-				color: #6699cc;
-			}
+			font-style: italic;
 		}
 		.title {
-			margin-left: -1em;
-			font-weight: bold;
+			margin: 0;
+			padding: 0;
+			font-weight: 400;
+			font-size: 1.1em;
 		}
 		.metadata { 
 			margin: -1.2em 0 0 0;
@@ -447,9 +437,15 @@
 				padding: 0;
 			}
 		}
+		.url,
 		.href {
-			font-size: 85%;
-			color: green;
+			margin: 0.5em 0 0 0;
+			padding: 0;
+			font-size: 0.85em;
+
+			a {
+				color: #222;
+			}
 		}
 		.protected .title:before {
 			font-family: 'Fontcons';
@@ -644,6 +640,95 @@ body {
 
 // Dark header
 @import "_dark.less";
+
+@media (max-width: 1064px) {
+	#page_content {
+		section.section {
+			display: block;
+			width: auto;
+
+			.subject,
+			.aside {
+				display: block;
+				width: auto;
+				margin-right: 0;
+				margin-left: 0;
+				padding-right: 0;
+				padding-left: 0;
+			}
+		}
+	}
+}
+
+@media (max-width: 800px) {
+	#hubForm {
+		&:before {
+			display: none;
+		}
+		.explaination {
+			float: none;
+			width: auto;
+			padding: 0;
+			margin: 1em 0;
+			border: none;
+		}
+		fieldset {
+			margin-right: 0;
+		}
+		.submit {
+			margin-right: 0;
+		}
+	}
+
+	#masthead {
+		font-size: 90%;
+	}
+
+	section.section {
+		display: block;
+		width: auto;
+
+		.subject,
+		.aside {
+			display: block;
+			width: auto;
+			margin-right: 0;
+			margin-left: 0;
+			padding-right: 0;
+			padding-left: 0;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	#content {
+		padding: 0;
+	}
+	#hubForm .grid .span4,
+	#hubForm .grid .span-third {
+		float: none;
+		width: auto;
+		margin-right: 0;
+	}
+	#footer {
+		#ancillary {
+			padding: 0 @spacing @spacing @spacing;
+		}
+		ul#legalese {
+			padding: @spacing;
+
+			.policy {
+				left: @spacing;
+			}
+		}
+		.grid {
+			.span3,
+			.span-quarter {
+				margin-top: @spacing;
+			}
+		}
+	}
+}
 
 // Print
 @import "_print.less";

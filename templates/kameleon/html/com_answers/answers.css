@@ -1,0 +1,48 @@
+@import url("../../../../components/com_answers/assets/css/answers.css");
+
+.com_answers .entry {
+	margin-top: 30px;
+}
+.com_answers .entry .entry-content {
+	background: #fff;
+}
+
+.com_answers .user-options {
+	margin: 30px 0;
+	background: transparent;
+	border-bottom: 1px solid #BABABA;
+}
+.com_answers .user-options li a {
+	border: none;
+	background: transparent;
+	color: #999;
+	text-shadow: none;
+	padding: 0.618em 1em;
+	position: relative;
+	top: 1px;
+}
+.com_answers .user-options li a.active,
+.com_answers .user-options li a.active:hover {
+	background: #f9f9f9;
+	border: 1px solid #BABABA;
+	border-bottom: none;
+}
+
+.com_answers .entries .answered {
+	background: transparent;
+}
+
+.com_answers h3 {
+	font-size: 115%;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 0 0 0.618em 0;
+}
+.com_answers h3 + ol.comments {
+	margin: 30px 0;
+}
+.com_answers .aside .entry-status {
+	margin-top: 0;
+}

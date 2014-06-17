@@ -1,0 +1,118 @@
+/*@import url("../../../../components/com_search/assets/css/search.css");*/
+
+.com_search h3 {
+	font-size: 115%;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 0 0 0.618em 0;
+}
+.com_search ol.tags + .results{
+	border-top: 1px dashed #ccc;
+	border-top: 1px dashed rgba(0, 0, 0, 0.15);
+}
+
+.results .result-pre {
+	float: left;
+	margin: 0 1em 0 0;
+}
+.results .result-pre + .result-description {
+
+}
+.results .result-pre img {
+	width: 50px;
+	height: 50px;
+}
+
+/* Events */
+	.event-date {
+		margin: 0 !important;
+	}
+	.event-date span {
+		display: block;
+		float: left;
+		width: 100%;
+	}
+	.event-date .month {
+		background: #D51007;
+		border: 1px solid #D51007;
+		color: #FFFFFF;
+		font-size: 85%;
+		font-weight: bold;
+		line-height: 1.1em;
+		text-align: center;
+		text-transform: uppercase;
+	}
+	.event-date .day {
+		background: #FFFFFF;
+		border-color: #CCCCCC;
+		border-style: none solid solid;
+		border-width: medium 1px 1px;
+		color: #000000;
+		font-size: 120%;
+		font-weight: bold;
+		letter-spacing: -0.1em;
+		line-height: 1.4em;
+		text-align: center;
+	}
+	.event-date .year {
+		background: #CCCCCC none repeat scroll 0 0;
+		border: 1px solid #CCCCCC;
+		color: #FFFFFF;
+		font-size: 85%;
+		font-weight: bold;
+		line-height: 1.1em;
+		text-align: center;
+		text-transform: uppercase;
+	}
+/* Children */
+	.child-types,
+	.child-types li,
+	.child-types h3,
+	.child-result,
+	.child-result li {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	.child-types:before {
+		content: "";
+		width: 1em;
+		height: 1em;
+		border-bottom: 1px solid #ccc;
+		border-left: 1px solid #ccc;
+		position: absolute;
+		left: -1.2em;
+		top: 0;
+	}
+	.child-types li {
+		border: 0; 
+	}
+	.child-types {
+		clear: left;
+		position: relative;
+	}
+	.child-types, 
+	.child-result {
+		margin-left: 2em;
+	}
+	.child-types h4 {
+		font-weight: bold;
+	}
+	.expand {
+		width: 15px;
+		height: 15px;
+		float: left;
+		cursor: pointer;
+		margin-right: 4px;
+		background: url('/components/com_search/assets/img/expand.gif') no-repeat 0 0;
+		display: none;
+	}
+	h4 {
+		font-weight: normal;
+		font-style: italic;
+	}
+	.odd {
+		background: #f8f8f8;
+	}
