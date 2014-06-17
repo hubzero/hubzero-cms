@@ -32,10 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = KbHelper::getActions('article');
 
-if ($this->filters['orphans']) {
-	$ttle = JText::_('COM_KB_ARTICLES').' (orphans)';
-} else {
-	$ttle = JText::_('COM_KB_ARTICLES');
+$ttle = JText::_('COM_KB_ARTICLES');
+if ($this->filters['orphans'])
+{
+	$ttle .= JText::_('COM_KB_ARTICLES') . ' ' . JText::_('COM_KB_ORPHANS');
 }
 
 JToolBarHelper::title(JText::_('COM_KB') . ': ' . $ttle, 'kb.png');
@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 			}
 		?>
 
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
 	</fieldset>
 	<div class="clr"> </div>
 
@@ -95,9 +95,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
  				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
- 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
- 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_PUBLISHED'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
- 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_KB_CATEGORY'), 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+ 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+ 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+ 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
  				<th><?php echo JText::_('COM_KB_VOTES'); ?></th>
 			</tr>
 		</thead>
@@ -117,18 +117,18 @@ foreach ($this->rows as $row)
 		case 1:
 			$class = 'publish';
 			$task = 'unpublish';
-			$alt = JText::_('COM_KB_PUBLISHED');
+			$alt = JText::_('JPUBLISHED');
 		break;
 		case 2:
 			$class = 'expire';
 			$task = 'publish';
-			$alt = JText::_('COM_KB_TRASHED');
+			$alt = JText::_('JTRASHED');
 		break;
 		case 0:
 		default:
 			$class = 'unpublish';
 			$task = 'publish';
-			$alt = JText::_('COM_KB_UNPUBLISHED');
+			$alt = JText::_('JUNPUBLISHED');
 		break;
 	}
 

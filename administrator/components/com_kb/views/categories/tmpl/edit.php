@@ -80,15 +80,16 @@ function submitbutton(pressbutton)
 				<?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]'); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('Alpha-numeric characters, underscores, and dashes. If none provided, one will generated from the title.'); ?>">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_KB_ALIAS_HINT'); ?>">
 				<label for="field-alias"><?php echo JText::_('COM_KB_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_KB_ALIAS_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('COM_KB_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-description"><?php echo JText::_('COM_KB_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->row->get('description'))), '', '', 50, 10, false, 'field-description'); ?>
 			</div>
 		</fieldset>
@@ -97,7 +98,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_KB_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('id'); ?>
 						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
@@ -112,17 +113,17 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-state"><?php echo JText::_('COM_KB_PUBLISH'); ?>:</label>
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unpublished'); ?></option>
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Published'); ?></option>
-					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Trashed'); ?></option>
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 			<div class="input-wrap">
 				<label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label>
 				<select name="fields[access]" id="field-access">
-					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Registered'); ?></option>
-					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('Special'); ?></option>
+					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_PUBLIC'); ?></option>
+					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_REGISTERED'); ?></option>
+					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_SPECIAL'); ?></option>
 				</select>
 			</div>
 		</fieldset>

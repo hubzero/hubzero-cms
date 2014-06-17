@@ -312,7 +312,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Articles Successfully Removed')
+			JText::sprintf('COM_KB_ITEMS_REMOVED', count($ids))
 		);
 	}
 
