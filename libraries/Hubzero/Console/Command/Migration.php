@@ -306,7 +306,7 @@ class Migration implements CommandInterface
 			}
 
 			// Send the message
-			if(!mail($email, $subject, $message, $headers))
+			if (!mail($email, $subject, $message, $headers))
 			{
 				$this->output->addLine("Error: failed to send message!", 'warning');
 			}
