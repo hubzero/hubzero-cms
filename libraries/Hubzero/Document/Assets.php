@@ -476,13 +476,21 @@ class Assets
 		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
 
 		// Run through each path until we find one that works
-		foreach ($paths as $path)
+		foreach ($paths as $i => $path)
 		{
 			if (file_exists(JPATH_SITE . $path)) 
 			{
+				if ($i == 0)
+				{
+					$root = rtrim(JURI::getInstance()->base(true), DS);
+				}
+				else
+				{
+					$root = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
+				}
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
+				$jdocument->addStyleSheet($root . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
 				break;
 			}
 		}
