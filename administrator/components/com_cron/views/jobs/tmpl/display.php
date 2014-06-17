@@ -36,7 +36,7 @@ if ($canDo->get('core.admin'))
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-JToolBarHelper::custom('run', 'purge', '', JText::_('COM_CRON_RUN'), false);
+JToolBarHelper::custom('run', 'purge', '', 'COM_CRON_RUN', false);
 JToolBarHelper::spacer();
 if ($canDo->get('core.edit.state')) 
 {
