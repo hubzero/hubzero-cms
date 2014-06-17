@@ -86,12 +86,19 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$path = $this->params->get('jqueryuicsspath', $root . '/media/system/css/jquery.ui.css');
-					if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+					$path = $this->params->get('jqueryuicsspath', '/media/system/css/jquery.ui.css');
+					if ($path != '/media/system/css/jquery.ui.css') //$root . '/media/system/css/jquery.ui.css'
 					{
-						$path = $root . '/' . ltrim($path, '/');
+						if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+						{
+							$path = $root . '/' . ltrim($path, '/');
+						}
+						$document->addStyleSheet($path);
 					}
-					$document->addStyleSheet($path);
+					else
+					{
+						\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+					}
 				}
 			}
 		}
@@ -112,12 +119,19 @@ class plgSystemJquery extends JPlugin
 			{
 				if ($value == 1) 
 				{
-					$path = $this->params->get('jqueryfbcsspath', $root . '/media/system/css/jquery.fancybox.css');
-					if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+					$path = $this->params->get('jqueryfbcsspath', '/media/system/css/jquery.fancybox.css'); //$root . '/media/system/css/jquery.fancybox.css'
+					if ($path != '/media/system/css/jquery.fancybox.css')
 					{
-						$path = $root . '/' . ltrim($path, '/');
+						if (substr($path, 0, strlen($root)) != $root && substr($path, 0, strlen('http')) != 'http')
+						{
+							$path = $root . '/' . ltrim($path, '/');
+						}
+						$document->addStyleSheet($path);
 					}
-					$document->addStyleSheet($path);
+					else
+					{
+						\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancybox.css');
+					}
 				}
 			}
 		}
