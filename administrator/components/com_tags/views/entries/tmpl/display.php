@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS'), 'tags.png');
+JToolBarHelper::title(JText::_('COM_TAGS'), 'tags.png');
 if ($canDo->get('core.admin')) 
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -40,8 +40,8 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit')) 
 {
-	JToolBarHelper::custom('pierce', 'copy', '', JText::_('PIERCE'), false);
-	JToolBarHelper::custom('merge', 'forward', '', JText::_('MERGE'), false);
+	JToolBarHelper::custom('pierce', 'copy', '', 'COM_TAGS_PIERCE', false);
+	JToolBarHelper::custom('merge', 'forward', '', 'COM_TAGS_MERGE', false);
 	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.create')) 
@@ -71,18 +71,18 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<label for="filter_search"><?php echo JText::_('COM_TAGS_SEARCH'); ?>:</label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" name="filter_submit" value="<?php echo JText::_('GO'); ?>" />
+			<input type="submit" name="filter_submit" value="<?php echo JText::_('COM_TAGS_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-filterby"><?php echo JText::_('FILTER'); ?>:</label>
+			<label for="filter-filterby"><?php echo JText::_('COM_TAGS_FILTER'); ?>:</label>
 			<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
-				<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ALL_TAGS'); ?></option>
-				<option value="user"<?php if ($this->filters['by'] == 'user') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_USER_TAGS'); ?></option>
-				<option value="admin"<?php if ($this->filters['by'] == 'admin') { echo ' selected="selected"'; } ?>><?php echo JText::_('FILTER_ADMIN_TAGS'); ?></option>
+				<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_FILTER_ALL_TAGS'); ?></option>
+				<option value="user"<?php if ($this->filters['by'] == 'user') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_FILTER_USER_TAGS'); ?></option>
+				<option value="admin"<?php if ($this->filters['by'] == 'admin') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TAGS_FILTER_ADMIN_TAGS'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -92,11 +92,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('RAW_TAG'), 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TAG'), 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ADMIN'), 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('NUMBER_TAGGED'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ALIAS'), 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_RAW_TAG', 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_TAG', 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_ADMIN', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_NUMBER_TAGGED', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_ALIAS', 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -112,13 +112,13 @@ foreach ($this->rows as $row)
 {
 	if ($row->get('admin')) 
 	{
-		$calt = JText::_('Yes');
+		$calt = JText::_('JYES');
 		$cls2 = 'yes';
 		$state = 0;
 	} 
 	else 
 	{
-		$calt = JText::_('No');
+		$calt = JText::_('JNO');
 		$cls2 = 'no';
 		$state = 1;
 	}

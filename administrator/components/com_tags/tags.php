@@ -49,22 +49,22 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 $task = JRequest::getCmd('task', '');
 
 JSubMenuHelper::addEntry(
-	JText::_('Tags'),
+	JText::_('COM_TAGS'),
 	'index.php?option=com_tags',
 	($controllerName == 'entries')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Relationships'),
+	JText::_('COM_TAGS_RELATIONSHIPS'),
 	'index.php?option=com_tags&controller=relationships',
 	($controllerName == 'relationships' && $task != 'meta' && $task != 'updatefocusareas')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Focus Areas'),
+	JText::_('COM_TAGS_FOCUS_AREAS'),
 	'index.php?option=com_tags&controller=relationships&task=meta',
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
 JSubMenuHelper::addEntry(
-	JText::_('Plugins'),
+	JText::_('COM_TAGS_PLUGINS'),
 	'index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags'
 );
 

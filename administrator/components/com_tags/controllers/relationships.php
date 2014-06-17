@@ -36,6 +36,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class TagsControllerRelationships extends \Hubzero\Component\AdminController
 {
+	/**
+	 * Prelead
+	 * 
+	 * @var string
+	 */
 	private $preload;
 
 	/**
@@ -45,7 +50,6 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$this->preload = 'nikki';
 		$this->view->setLayout('display');
 
 		// Set any errors
@@ -56,11 +60,14 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 				$this->view->setError($error);
 			}
 		}
-		
-		if (isset($_REQUEST['tag']) && (int)$_REQUEST['tag'] == $_REQUEST['tag']) {
-			$this->database->setQuery('SELECT tag FROM #__tags WHERE id = '.$_REQUEST['tag']);
+
+		$tag = JRequest::getVar('tag', null);
+		if ($tag && (int) $tag == $tag)
+		{
+			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);
 			$this->view->set('preload', $this->database->loadResult());
 		}
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -374,7 +381,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 					}
 				}
 				// any tags that have not been unset were deleted on the form, so we need to reflect that in the database
-				foreach ($ex as $e_tag=>$_v)
+				foreach ($ex as $e_tag => $_v)
 				{
 					$e_tag = $this->get_tag($e_tag, false);
 					$this->database->setQuery(sprintf($sql[1], $tid, $e_tag['id']));
@@ -567,10 +574,12 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 
 			return $rv;
 		}
+
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
 		$this->database->setQuery('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
 		$this->database->execute();
 		$id = $this->database->insertid();
+
 		return array(
 			'id'          => $id,
 			'tag'         => $norm_tag,

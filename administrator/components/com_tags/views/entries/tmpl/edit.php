@@ -33,9 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('TAGS') . ': ' . $text, 'tags.png');
+JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . $text, 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save();
@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if ($('#field-raw_tag').val() == '') {
-		alert('<?php echo JText::_('ERROR_EMPTY_TAG'); ?>');
+		alert('<?php echo JText::_('COM_TAGS_ERROR_EMPTY_TAG'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -75,25 +75,27 @@ if ($this->getError())
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Only administrators can see admin tags. They\'re a useful way to apply metadata that may not be appropriate or useful for the site\'s visitors.'); ?>">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ADMIN_HINT'); ?>">
 				<input type="checkbox" name="fields[admin]" id="field-admin" value="1" <?php if ($this->tag->get('admin') == 1) { echo 'checked="checked"'; } ?> /> 
-				<label for="field-admin"><?php echo JText::_('ADMIN'); ?></label>
+				<label for="field-admin"><?php echo JText::_('COM_TAGS_FIELD_ADMIN'); ?></label>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('To create the normalized tag (used for URLs), all spaces, punctuation, and non-alpanumeric characters are stripped. &quot;N.Y.&quot;, &quot;NY&quot;, and &quot;ny&quot; will all have a normalized tag of &quot;ny&quot;.'); ?>">
-				<label for="field-raw_tag"><?php echo JText::_('RAW_TAG'); ?>: <span class="required"><?php echo JText::_('requiredG'); ?></span></label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_TAG_HINT'); ?>">
+				<label for="field-raw_tag"><?php echo JText::_('COM_TAGS_FIELD_RAW_TAG'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[raw_tag]" id="field-raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_TAGS_FIELD_TAG_HINT'); ?></span>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Enter a comma-separated list of alternate spellings, abbreviations, or synonyms for this tag.'); ?>">
-				<label for="field-substitutions"><?php echo JText::_('ALIAS'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-substitutions"><?php echo JText::_('COM_TAGS_FIELD_ALIAS'); ?>:</label><br />
 				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
+				<span class="hint"><?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('DESCRIPTION'); ?>:</label><br />
+				<label for="field-description"><?php echo JText::_('COM_TAGS_FIELD_DESCRIPTION'); ?>:</label><br />
 				<?php echo JFactory::getEditor()->display('fields[description]', stripslashes($this->tag->get('description')), '', '', '50', '4', false, 'field-description', null, null, array('class' => 'minimal')); ?>
 			</div>
 		</fieldset>
@@ -106,7 +108,7 @@ if ($this->getError())
 		if ($logs = $this->tag->logs('list'))
 		{
 ?>
-			<h4><?php echo JText::_('Activity log'); ?></h4>
+			<h4><?php echo JText::_('COM_TAGS_LOG'); ?></h4>
 			<ul class="entry-log">
 				<?php
 				foreach ($logs as $log)
@@ -126,54 +128,54 @@ if ($this->getError())
 					{
 						case 'substitute_created':
 							$c = 'created';
-							$s = JText::sprintf('%s alias created on %s by %s', $data->raw_tag, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_CREATED', $data->raw_tag, $log->get('timestamp'), $actor);
 						break;
 
 						case 'substitute_edited':
 							$c = 'edited';
-							$s = JText::sprintf('%s alias edited on %s by %s', $data->raw_tag, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_EDITED', $data->raw_tag, $log->get('timestamp'), $actor);
 						break;
 
 						case 'substitute_deleted':
 							$c = 'deleted';
-							$s = JText::sprintf('%s aliases removed on %s by %s', implode(', ', $data->tags), $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_DELETED', implode(', ', $data->tags), $log->get('timestamp'), $actor);
 						break;
 
 						case 'substitute_moved':
 							$c = 'moved';
-							$s = JText::sprintf('%s aliases moved from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 						break;
 
 						case 'tags_removed':
 							$c = 'deleted';
-							$s = JText::sprintf('%s associations removed from %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
 						break;
 
 						case 'objects_copied':
 							$c = 'copied';
-							$s = JText::sprintf('%s associations copied from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_COPIED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 						break;
 
 						case 'objects_moved':
 							$c = 'moved';
-							$s = JText::sprintf('%s associations moved from %s on %s by %s', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
 						break;
 
 						case 'objects_removed':
 							$c = 'deleted';
 							if ($data->objectid || $data->tbl)
 							{
-								$s = JText::sprintf('%s associations removed for %s %s on %s by %s', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
+								$s = JText::sprintf('COM_TAGS_LOG_OBJ_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
 							}
 							else 
 							{
-								$s = JText::sprintf('%s associations removed on %s by %s', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
+								$s = JText::sprintf('COM_TAGS_LOG_OBJ_REMOVED', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
 							}
 						break;
 
 						default:
 							$c = 'edited';
-							$s = JText::sprintf('%s on %s by %s', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
+							$s = JText::sprintf('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
 						break;
 					}
 					if ($s)

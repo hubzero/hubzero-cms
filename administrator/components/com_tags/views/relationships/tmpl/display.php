@@ -32,36 +32,35 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('Relationships'), 'tags.png');
+JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_RELATIONSHIPS'), 'tags.png');
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
 JHTML::_('behavior.tooltip');
 
-$doc = JFactory::getDocument();
-$doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/assets/css/tag_graph.css');
+$this->css('tag_graph.css');
 ?>
 <form id="tag-sel" action="" method="get">
 	<fieldset class="adminform">
-		<legend><span>Find tag</span></legend>
+		<legend><span><?php echo JText::_('COM_TAGS_FIND_TAG'); ?></span></legend>
 		<table class="admintable">
 			<tfoot>
 				<tr>
 					<td colspan="3">
-						<button type="submit" id="center">Lookup</button>
+						<button type="submit" id="center"><?php echo JText::_('COM_TAGS_LOOKUP'); ?></button>
 					</td>
 				</tr>
 			</tfoot>
 			<tbody>
 				<tr>
-					<th class="key"><label>Tag:</label></th>
+					<th class="key"><label><?php echo JText::_('COM_TAGS_TAG'); ?>:</label></th>
 					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->get('preload'); ?>" /></td>
-					<td>Look up a tag to view and assign its relationships to other tags.</td>
+					<td><?php echo JText::_('COM_TAGS_TAG_RELATIONSHIP'); ?></td>
 				</tr>
 				<tr>
-					<th class="key">Show relationships:</th>
-					<td><label><input type="radio" name="relationship" id="hierarchical" checked="checked" /> labels and hierarchy</label></td>
-					<td><label><input type="radio" name="relationship" id="implicit" /> implicit</label></td>
+					<th class="key"><?php echo JText::_('COM_TAGS_SHOW_RELATIONSHIPS'); ?>:</th>
+					<td><label><input type="radio" name="relationship" id="hierarchical" checked="checked" /> <?php echo JText::_('COM_TAGS_RELATIONSHIP_HIERARCHICAL'); ?></label></td>
+					<td><label><input type="radio" name="relationship" id="implicit" /> <?php echo JText::_('COM_TAGS_RELATIONSHIP_IMPLICIT'); ?></label></td>
 				</tr>
 			</tbody>
 		</table>
@@ -69,7 +68,7 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 </form>
 
 <fieldset class="adminform">
-	<legend><span>Relationship graph</span></legend>
+	<legend><span><?php echo JText::_('COM_TAGS_RELATIONSHIP_GRAPH'); ?></span></legend>
 	<div id="graph"></div>
 </fieldset>
 
@@ -77,36 +76,36 @@ $doc->addStyleSheet($base . '/administrator/components/' . $this->option . '/ass
 	<div class="col width-100">
 		<form id="metadata" action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post">
 			<fieldset class="adminform">
-				<legend><span>Metadata</span></legend>
+				<legend><span><?php echo JText::_('COM_TAGS_RELATIONSHIP_METADATA'); ?></span></legend>
 				<table class="admintable">
 					<tfoot>
 						<tr>
 							<td colspan="2">
 								<input type="hidden" class="tag-id" name="tag" value="" />
 								<input type="hidden" value="update" name="task" />
-								<button type="submit">Update</button>
+								<button type="submit"><?php echo JText::_('COM_TAGS_RELATIONSHIP_UPDATE'); ?></button>
 							</td>
 						</tr>
 					</tfoot>
 					<tbody>
 						<tr>
-							<th class="key">Description:</th>
+							<th class="key"><?php echo JText::_('COM_TAGS_RELATIONSHIP_DESCRIPTION'); ?>:</th>
 							<td><textarea cols="100" rows="4" id="description" name="description"></textarea></td>
 						</tr>
 						<tr>
-							<th class="key">Labeled:</th>
+							<th class="key"><?php echo JText::_('COM_TAGS_RELATIONSHIP_LABELED'); ?>:</th>
 							<td><ul id="labeled" class="textboxlist-holder act"></ul></td>
 						</tr>
 						<tr>
-							<th class="key">Labels:</th>
+							<th class="key"><?php echo JText::_('COM_TAGS_RELATIONSHIP_LABELS'); ?>:</th>
 							<td><ul id="labels" class="textboxlist-holder act"></ul></td>
 						</tr>
 						<tr>
-							<th class="key">Parents:</th>
+							<th class="key"><?php echo JText::_('COM_TAGS_RELATIONSHIP_PARENTS'); ?>:</th>
 							<td><ul id="parents" class="textboxlist-holder act"></ul></td>
 						</tr>
 						<tr>
-							<th class="key">Children:</th>
+							<th class="key"><?php echo JText::_('COM_TAGS_RELATIONSHIP_CHILDREN'); ?>:</th>
 							<td><ul id="children" class="textboxlist-holder act"></ul></td>
 						</tr>
 					</tbody>

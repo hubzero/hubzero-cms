@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('MERGE'), 'tags.png');
+JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_MERGE'), 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save('merge');
@@ -56,11 +56,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
-	<p class="warning"><?php echo JText::_('MERGED_EXPLANATION'); ?></p>
+	<p class="warning"><?php echo JText::_('COM_TAGS_MERGED_EXPLANATION'); ?></p>
 
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MERGING'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_TAGS_MERGING'); ?></span></legend>
 
 			<ul>
 			<?php
@@ -74,10 +74,10 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MERGE_TO'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_TAGS_MERGE_TO'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="newtag"><?php echo JText::_('Tag'); ?>:</label><br />
+				<label for="newtag"><?php echo JText::_('COM_TAGS_TAG'); ?>:</label><br />
 				<?php
 				JPluginHelper::importPlugin('hubzero');
 				$tf = JDispatcher::getInstance()->trigger(
@@ -89,7 +89,7 @@ function submitbutton(pressbutton)
 				echo (count($tf) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />');
 				?>
 			</div>
-			<p>Enter the tag you wish to merge to. This may be an existing tag, including one of the selected 'merging' tags, or an entirely new tag.</p>
+			<p><?php echo JText::_('COM_TAGS_SELECT_TAG'); ?></p>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

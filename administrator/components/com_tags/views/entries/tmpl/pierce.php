@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = TagsHelper::getActions();
 
-JToolBarHelper::title(JText::_('TAGS') . ': ' . JText::_('PIERCE'), 'tags.png');
+JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_PIERCE'), 'tags.png');
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::save('pierce');
@@ -55,11 +55,11 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
-	<p class="warning"><?php echo JText::_('PIERCED_EXPLANATION'); ?></p>
+	<p class="warning"><?php echo JText::_('COM_TAGS_PIERCED_EXPLANATION'); ?></p>
 
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PIERCING'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_TAGS_PIERCING'); ?></span></legend>
 
 			<ul>
 			<?php
@@ -73,10 +73,10 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('PIERCE_TO'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_TAGS_PIERCE_TO'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="newtag"><?php echo JText::_('NEW_TAG'); ?>:</label><br />
+				<label for="newtag"><?php echo JText::_('COM_TAGS_NEW_TAG'); ?>:</label><br />
 				<?php
 				JPluginHelper::importPlugin('hubzero');
 				$tf = JDispatcher::getInstance()->trigger(

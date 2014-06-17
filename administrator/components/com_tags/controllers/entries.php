@@ -219,7 +219,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('TAG_SAVED')
+				JText::_('COM_TAGS_TAG_SAVED')
 			);
 		}
 	}
@@ -245,7 +245,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No items selected'),
+				JText::_('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
@@ -269,7 +269,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('TAG_REMOVED')
+			JText::_('COM_TAGS_TAG_REMOVED')
 		);
 	}
 
@@ -400,7 +400,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('TAGS_MERGED')
+					JText::_('COM_TAGS_TAGS_MERGED')
 				);
 			break;
 		}
@@ -521,7 +521,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('TAGS_COPIED')
+					JText::_('COM_TAGS_TAGS_COPIED')
 				);
 			break;
 		}
