@@ -125,13 +125,13 @@ class PollController extends JController
 		switch (JRequest::getVar('task', 'save'))
 		{
 			case 'apply':
-				$msg = JText::_( 'Changes to Poll saved' );
+				$msg = JText::_( 'COM_POLL_ITEM_SAVED' );
 				$link = 'index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id .'';
 				break;
 
 			case 'save':
 			default:
-				$msg = JText::_( 'Poll saved' );
+				$msg = JText::_( 'COM_POLL_ITEM_SAVED' );
 				$link = 'index.php?option=com_poll';
 				break;
 		}
@@ -184,9 +184,8 @@ class PollController extends JController
 
 		if (count( $cid ) < 1)
 		{
-			$action = $publish ? 'publish' : 'unpublish';
-			//JError::raiseError(500, JText::_( 'Select an item to' .$action, true ) );
-			$this->setRedirect('index.php?option=com_poll', JText::_( 'Select an item to' .$action, true ));
+			$action = $publish ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
+			$this->setRedirect('index.php?option=com_poll', JText::sprintf( 'COM_POLL_SELECT_ITEM_TO', JText::_($action), true ));
 			return;
 		}
 
@@ -234,8 +233,8 @@ class PollController extends JController
 
 		if (count( $cid ) < 1)
 		{
-			$action = $publish ? 'open' : 'close';
-			JError::raiseError(500, JText::_( 'Select an item to' .$action, true ) );
+			$action = $publish ? 'COM_POLL_OPEN' : 'COM_POLL_CLOSE';
+			JError::raiseError(500, JText::sprintf('COM_POLL_SELECT_ITEM_TO', $action, true ) );
 		}
 
 		$cids = implode( ',', $cid );

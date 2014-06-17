@@ -4,7 +4,7 @@
 
 	$canDo = PollHelper::getActions('component');
 
-	JToolBarHelper::title(  JText::_( 'Poll Manager' ), 'poll.png' );
+	JToolBarHelper::title(  JText::_( 'COM_POLL' ), 'poll.png' );
 	if ($canDo->get('core.edit.state')) 
 	{
 		JToolBarHelper::publishList();
@@ -31,11 +31,11 @@
 <form action="index.php?option=com_poll" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo JText::_('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
 
-			<button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+			<button onclick="this.form.submit();"><?php echo JText::_('COM_POLL_GO'); ?></button>
+			<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
 			<?php echo $this->lists['state']; ?>
@@ -47,31 +47,31 @@
 		<thead>
 			<tr>
 				<th>
-					<?php echo JText::_( 'NUM' ); ?>
+					<?php echo JText::_('COM_POLL_COL_NUM'); ?>
 				</th>
 				<th>
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>
 				<th class="title">
-					<?php echo JHTML::_('grid.sort',   'Poll Title', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'Published', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'Open', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'Votes', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'Options', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'Lag', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort',   'ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -89,18 +89,18 @@
 		{
 			$row = &$this->items[$i];
 
-			$link 		= JRoute::_( 'index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id );
+			$link = JRoute::_('index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id);
 
 			//$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 			//$published 	= JHTML::_('grid.published', $row, $i );
 			
 			$task  = $row->published ? 'unpublish' : 'publish';
 			$class = $row->published ? 'published' : 'unpublished';
-			$alt   = $row->published ? JText::_('PUBLISHED') : JText::_('UNPUBLISHED');
+			$alt   = $row->published ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
 
 			$task2  = ($row->open == 1) ? 'close' : 'open';
 			$class2 = ($row->open == 1) ? 'published' : 'unpublished';
-			$alt2   = ($row->open == 1) ? JText::_('OPEN') : JText::_('CLOSED');
+			$alt2   = ($row->open == 1) ? JText::_('COM_POLL_OPEN') : JText::_('COM_POLL_CLOSED');
 		?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -118,8 +118,8 @@
 					echo $row->title;
 				} else {
 					?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_( 'Edit Poll' );?>::<?php echo $this->escape($row->title); ?>">
-						<a href="<?php echo $link  ?>">
+					<span class="editlinktip hasTip" title="<?php echo $this->escape($row->title); ?>">
+						<a href="<?php echo $link; ?>">
 							<?php echo $this->escape($row->title); ?>
 						</a>
 					</span>
@@ -129,7 +129,7 @@
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class;?>" href="index.php?option=com_poll&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $class;?>" href="index.php?option=com_poll&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -140,7 +140,7 @@
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class2;?>" href="index.php?option=com_poll&amp;task=<?php echo $task2; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task2;?>">
+					<a class="state <?php echo $class2;?>" href="index.php?option=com_poll&amp;task=<?php echo $task2; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task2); ?>">
 						<span><?php echo $alt2; ?></span>
 					</a>
 				<?php } else { ?>

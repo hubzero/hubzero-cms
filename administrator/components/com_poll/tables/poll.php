@@ -43,7 +43,7 @@ class TablePoll extends JTable
 	/**
 	* @param database A database connector object
 	*/
-	function __construct( &$db )
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__polls', 'id', $db );
 	}
@@ -54,7 +54,7 @@ class TablePoll extends JTable
 	 * @param 	string	Space separated list of fields not to bind
 	 * @return	boolean
 	 */
-	function bind( $array, $ignore='' )
+	public function bind( $array, $ignore='' )
 	{
 		$result = parent::bind( $array );
 		// cast properties
@@ -71,26 +71,29 @@ class TablePoll extends JTable
 	 * @see JTable::check
 	 * @since 1.5
 	 */
-	function check()
+	public function check()
 	{
 		// check for valid name
 		if (trim( $this->title ) == '')
 		{
-			$this->setError(JText::_( 'Your Poll must contain a title.' ));
+			$this->setError(JText::_( 'COM_POLL_MISSING_TITLE' ));
 			return false;
 		}
 		// check for valid lag
 		$this->lag = intval( $this->lag );
-		if ($this->lag == 0) {
-			$this->setError(JText::_( 'Your Poll must have a non-zero lag time.' ));
+		if ($this->lag == 0)
+		{
+			$this->setError(JText::_( 'COM_POLL_MISSING_LAG' ));
 			return false;
 		}
 
-		if(empty($this->alias)) {
+		if (empty($this->alias))
+		{
 			$this->alias = $this->title;
 		}
 		$this->alias = JFilterOutput::stringURLSafe($this->alias);
-		if(trim(str_replace('-','',$this->alias)) == '') {
+		if (trim(str_replace('-','',$this->alias)) == '')
+		{
 			$datenow = JFactory::getDate();
 			$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 		}
@@ -99,10 +102,11 @@ class TablePoll extends JTable
 	}
 
 	// overloaded delete function
-	function delete( $oid=null )
+	public function delete( $oid=null )
 	{
 		$k = $this->_tbl_key;
-		if ( $oid ) {
+		if ( $oid )
+		{
 			$this->$k = intval( $oid );
 		}
 
@@ -112,7 +116,8 @@ class TablePoll extends JTable
 			. ' WHERE pollid = '.(int) $this->$k
 			;
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() ) {
+			if ( !$this->_db->query() )
+			{
 				$this->_error .= $this->_db->getErrorMsg() . "\n";
 			}
 
@@ -120,7 +125,8 @@ class TablePoll extends JTable
 			. ' WHERE poll_id = '.(int) $this->$k
 			;
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() ) {
+			if ( !$this->_db->query() )
+			{
 				$this->_error .= $this->_db->getErrorMsg() . "\n";
 			}
 
@@ -128,7 +134,8 @@ class TablePoll extends JTable
 			. ' WHERE pollid = '.(int) $this->$k
 			;
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() ) {
+			if ( !$this->_db->query() )
+			{
 				$this->_error .= $this->_db->getErrorMsg() . "\n";
 			}
 

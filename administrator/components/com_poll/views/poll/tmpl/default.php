@@ -10,13 +10,13 @@
 		if ($option->text <> "")
 		{?>
 		<tr>
-			<td valign="top" height="30"><input type="radio" name="poll" value="<?php echo $option->text; ?>"></td>
+			<td valign="top" height="30"><input type="radio" name="poll" value="<?php echo $this->escape($option->text); ?>"></td>
 			<td class="poll" width="100%" valign="top"><?php echo $option->text; ?></td>
 		</tr>
 		<?php }
 	} ?>
 	<tr>
-		<td valign="middle" height="50" colspan="2" align="center"><input type="button" name="submit" value="<?php echo JText::_( 'Vote' ); ?>">&nbsp;&nbsp;<input type="button" name="result" value="<?php echo JText::_( 'Results' ); ?>"></td>
+		<td valign="middle" height="50" colspan="2" align="center"><input type="button" name="submit" value="<?php echo JText::_( 'COM_POLL_VOTE' ); ?>">&nbsp;&nbsp;<input type="button" name="result" value="<?php echo JText::_( 'COM_POLL_RESULTS' ); ?>"></td>
 	</tr>
 </table>
 </form>
