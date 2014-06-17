@@ -79,7 +79,7 @@ if (array_key_exists('search-task', $_POST))
 	}
 }
 
-JToolBarHelper::title(JText::_('Search') . ': ' . JText::_('Site Map'), 'search.png');
+JToolBarHelper::title(JText::_('COM_SEARCH') . ': ' . JText::_('COM_SEARCH_SITEMAP'), 'search.png');
 JToolBarHelper::help('search');
 
 $app = JFactory::getApplication();
