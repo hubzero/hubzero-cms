@@ -72,7 +72,7 @@ class Assets
 
 		$root = self::base();
 
-		if (empty($stylesheet)) 
+		if (empty($stylesheet))
 		{
 			$stylesheet = substr($component, 4) . '.css';
 		}
@@ -91,7 +91,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -113,7 +113,7 @@ class Assets
 	 */
 	public static function addComponentScript($component, $script = '', $type = "text/javascript", $defer = false, $async = false)
 	{
-		if (empty($script)) 
+		if (empty($script))
 		{
 			$script = substr($component, 4);
 		}
@@ -143,7 +143,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -190,7 +190,7 @@ class Assets
 			{
 				$base = JPATH_SITE;
 			}
-			if (file_exists($base . $path)) 
+			if (file_exists($base . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -235,7 +235,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists(JPATH_ROOT . $path)) 
+			if (file_exists(JPATH_ROOT . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -267,7 +267,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				return rtrim(JURI::getInstance()->base(true), DS) . $path;
@@ -297,7 +297,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				return rtrim(JURI::getInstance()->base(true), DS) . $path;
@@ -326,7 +326,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				return rtrim(JURI::getInstance()->base(true), DS) . $path;
@@ -348,7 +348,7 @@ class Assets
 	{
 		$template = JFactory::getApplication()->getTemplate();
 
-		if (empty($stylesheet)) 
+		if (empty($stylesheet))
 		{
 			$stylesheet = $module . '.css';
 		}
@@ -373,7 +373,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -397,7 +397,7 @@ class Assets
 	{
 		$template = JFactory::getApplication()->getTemplate();
 
-		if (empty($script)) 
+		if (empty($script))
 		{
 			$script = $module;
 		}
@@ -430,7 +430,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists($root . $path)) 
+			if (file_exists($root . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -455,7 +455,7 @@ class Assets
 	{
 		$template = JFactory::getApplication()->getTemplate();
 
-		if (empty($stylesheet)) 
+		if (empty($stylesheet))
 		{
 			if (!$plugin)
 			{
@@ -478,7 +478,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $i => $path)
 		{
-			if (file_exists(JPATH_SITE . $path)) 
+			if (file_exists(JPATH_SITE . $path))
 			{
 				if ($i == 0)
 				{
@@ -511,7 +511,7 @@ class Assets
 	{
 		$template = JFactory::getApplication()->getTemplate();
 
-		if (empty($script)) 
+		if (empty($script))
 		{
 			$script = $plugin;
 		}
@@ -542,7 +542,7 @@ class Assets
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists(JPATH_SITE . $path)) 
+			if (file_exists(JPATH_SITE . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
@@ -602,7 +602,7 @@ class Assets
 				$template  = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS . 'less'; // . 'bootstrap.less';
 				$input     = $lesspath . DS . $primary . '.less';
 
-				if (file_exists($template . DS . $primary . '.less')) 
+				if (file_exists($template . DS . $primary . '.less'))
 				{
 					// Reset the path to the primary build file
 					$input = $template . DS . $primary . '.less';
@@ -617,7 +617,7 @@ class Assets
 				$cacheFile = $cachedir . DS . $primary . '.less.cache';
 				$cache     = null;
 
-				if (file_exists($cacheFile)) 
+				if (file_exists($cacheFile))
 				{
 					$cache = unserialize(file_get_contents($cacheFile));
 				}
@@ -664,7 +664,7 @@ class Assets
 				)
 				*/
 
-				if (is_string($cache)) 
+				if (is_string($cache))
 				{
 					$newCache = $less->cachedCompile($cache);
 				}
@@ -709,7 +709,7 @@ class Assets
 
 			foreach ($elements as $k => $element) 
 			{
-				if (!$element) 
+				if (!$element)
 				{
 					$elements[$k] = false;
 					continue;
@@ -723,7 +723,7 @@ class Assets
 				// Check if the file exists
 				$path = $thispath . DS . $element . '.css';
 
-				if (!file_exists($path)) 
+				if (!file_exists($path))
 				{
 					$elements[$k] = false;
 					continue;
