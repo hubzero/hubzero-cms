@@ -167,24 +167,24 @@ class Scaffolding implements CommandInterface
 		if (!$user_name || !$user_email)
 		{
 			$this->output
-				 ->addSpacer()
-				 ->addLine('You can specify your name and email via:')
-				 ->addLine(
-				 	'muse configure --name="John Doe"',
-				 	array(
-				 		'indentation' => '2',
-				 		'color'       => 'blue'
-				 	)
-				 )
-				 ->addLine(
-				 	'muse configure --email=john.doe@gmail.com',
-				 	array(
-				 		'indentation' => '2',
-				 		'color'       => 'blue'
-				 	)
-				 )
-				 ->addSpacer()
-				 ->error("Error: failed to retrieve author name and/or email.");
+			     ->addSpacer()
+			     ->addLine('You can specify your name and email via:')
+			     ->addLine(
+			        'muse configure --name="John Doe"',
+			        array(
+			            'indentation' => '2',
+			            'color'       => 'blue'
+			        )
+			     )
+			     ->addLine(
+			        'muse configure --email=john.doe@gmail.com',
+			        array(
+			            'indentation' => '2',
+			            'color'       => 'blue'
+			        )
+			     )
+			     ->addSpacer()
+			     ->error("Error: failed to retrieve author name and/or email.");
 		}
 
 		$obj->addReplacement('author_name', $user_name)
