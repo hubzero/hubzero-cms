@@ -917,7 +917,7 @@ class Profile extends Object
 				$first = false;
 			}
 
-			if($property == 'params')
+			if ($property == 'params')
 			{
 				if (is_object($this->_params))
 				{

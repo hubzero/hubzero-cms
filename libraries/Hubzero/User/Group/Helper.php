@@ -102,7 +102,7 @@ class Helper
 		$groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
 
 		//make sure we have a list of groups
-		if(count($groupList) < 1)
+		if (count($groupList) < 1)
 		{
 			return array();
 		}
@@ -117,7 +117,7 @@ class Helper
 				AND g.cn IN ('".implode("','", $groupList)."')";
 
 		$database->setQuery( $sql );
-		if(!$database->getError())
+		if (!$database->getError())
 		{
 			return $database->loadObjectList();
 		}
@@ -212,7 +212,7 @@ class Helper
 		$totalCount = 0;
 
 		//loop through each group
-		foreach($groups as $group)
+		foreach ($groups as $group)
 		{
 			//get the Hubzero Group Object
 			$hg = Group::getInstance($group->gidNumber);

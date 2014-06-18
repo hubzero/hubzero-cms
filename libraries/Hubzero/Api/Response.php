@@ -166,7 +166,7 @@ class Response
 	{
 		$headers = headers_list();
 
-		foreach($headers as $header)
+		foreach ($headers as $header)
 		{
 			$this->setHeader($header);
 		}
@@ -410,7 +410,7 @@ class Response
 			return false;
 		}
 
-		foreach($this->_headers as $header)
+		foreach ($this->_headers as $header)
 		{
 			if ($name == $header['name'])
 			{
@@ -433,7 +433,7 @@ class Response
 	{
 		$result = array();
 
-		foreach($this->headers as $header)
+		foreach ($this->headers as $header)
 		{
 			if ($header['name'] == $name)
 			{
@@ -457,7 +457,7 @@ class Response
 
 		$result[] = $this->_http_version . ' ' . $this->_status_code . ' ' . $this->_reason . "\n";
 
-		foreach($this->_headers as $header)
+		foreach ($this->_headers as $header)
 		{
 			$result[] =  $header['name'] . ': ' . $header['value'] . "\n";
 		}
@@ -501,7 +501,7 @@ class Response
 		{
 			echo $this->_http_version . ' ' . $this->_status_code . ' ' . $this->_reason . "\n";
 
-			foreach($this->_headers as $header)
+			foreach ($this->_headers as $header)
 			{
 				echo $header['name'] . ': ' . $header['value'] . "\n";
 			}
@@ -584,7 +584,8 @@ class Response
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
-	function setBody($content) {
+	function setBody($content)
+	{
 		$this->_body = array((string) $content);
 	}
 
@@ -956,11 +957,11 @@ class Response
 			$accept = array("*/*"=>"1");
 		}
 
-		foreach($accept as $client_type=>$client_value)
+		foreach ($accept as $client_type=>$client_value)
 		{
 			if ($client_type == 'text/*')
 			{
-				foreach($provide as $provider_type=>$provider_value)
+				foreach ($provide as $provider_type=>$provider_value)
 				{
 					if (strncmp($provider_type,'text/',5) == 0)
 					{
@@ -972,7 +973,7 @@ class Response
 			}
 			else if (($client_type == '*/*') || ($client_type == 'application/*'))
 			{
-				foreach($provide as $provider_type=>$provider_value)
+				foreach ($provide as $provider_type=>$provider_value)
 				{
 					$score = $client_value * $provider_value;
 					$client_type = $provider_type;

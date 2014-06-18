@@ -196,7 +196,7 @@ class Request
 		}
 
 		foreach ($what as $item) {
-			switch($item)
+			switch ($item)
 			{
 				case 'method':
 					$this->set('method', $_SERVER['REQUEST_METHOD']);
@@ -210,7 +210,7 @@ class Request
 				case 'headers':
 					$this->set('header', null);
 
-					foreach($_SERVER as $key=>$value)
+					foreach ($_SERVER as $key=>$value)
 					{
 						if (strncmp($key, 'HTTP_', 5) == 0)
 						{
@@ -270,7 +270,7 @@ class Request
 
 		foreach ($what as $item)
 		{
-			switch($item)
+			switch ($item)
 			{
 				case 'version':
 					$_SERVER['SERVER_PROTOCOL'] = $this->version;
@@ -336,7 +336,7 @@ class Request
 					$_POST = $this->get('postdata');
 					break;
 				case 'headers':
-					foreach($this->headers as $key=>$value)
+					foreach ($this->headers as $key=>$value)
 					{
 						$key = str_replace('-','_',$key);
 						$key = "HTTP_" . strtoupper($key);
@@ -371,7 +371,7 @@ class Request
 
 			if (!empty($_POST))
 			{
-				foreach($_POST as $k=>$v)
+				foreach ($_POST as $k=>$v)
 				{
 					$_REQUEST[$k] = $v;
 				}
@@ -383,7 +383,7 @@ class Request
 
 			if (!empty($_GET))
 			{
-				foreach($_GET as $k=>$v)
+				foreach ($_GET as $k=>$v)
 				{
 					$_REQUEST[$k] = $v;
 				}
@@ -449,7 +449,7 @@ class Request
 
 	public function get($key, $default = '')
 	{
-		switch($key)
+		switch ($key)
 		{
 			case 'version':
 				return isset($this->version) ? $this->version : $default;
@@ -554,7 +554,7 @@ class Request
 
 	public function add($property, $key, $value)
 	{
-		switch($property)
+		switch ($property)
 		{
 			case 'query':
 
@@ -581,7 +581,7 @@ class Request
 
 	public function set($key, $value = null)
 	{
-		switch($key)
+		switch ($key)
 		{
 			case 'method':
 				$this->method = $value;
@@ -609,7 +609,7 @@ class Request
 				{
 					$this->query = '';
 
-					foreach($value as $key=>$value)
+					foreach ($value as $key=>$value)
 					{
 						if (!empty($this->query))
 						{
@@ -692,7 +692,7 @@ class Request
 			}
 		}
 		//$qkey = 'query';
-		switch($type)
+		switch ($type)
 		{
 			case 'oauth':
 				$queryvars = $this->get('queryvars');

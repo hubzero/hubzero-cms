@@ -33,6 +33,6 @@ namespace Hubzero\Filesystem;
 /**
  * File not found exception
  */
-class FileNotFoundException extends \Exception 
+class FileNotFoundException extends \Exception
 {
 }

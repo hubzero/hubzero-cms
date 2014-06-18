@@ -354,7 +354,7 @@ class Geocode
 		return $gdb->loadResultArray();
 	}
 
- 	/**
+	/**
 	 * Get continent by the country
 	 *
 	 * @param      string $country Parameter description (if any) ...

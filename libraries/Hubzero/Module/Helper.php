@@ -48,7 +48,7 @@ class Helper
 		//$result = '';
 
 		$words = explode(' ', $condition);
-		for($i = 0; $i < count($words); $i+=2)
+		for ($i = 0; $i < count($words); $i+=2)
 		{
 			// odd parts (modules)
 			$name = strtolower($words[$i]);

@@ -468,7 +468,7 @@ class Migration
 				}
 
 				// Try running the '$direction' SQL
-				if(method_exists($class, $direction))
+				if (method_exists($class, $direction))
 				{
 					try
 					{

@@ -380,7 +380,7 @@ class Blacklist
 		$words[] = $surname.$middleName.$givenName;
 		$words[] = strrev($surname.$middleName.$givenName);
 
-		foreach($words as $w)
+		foreach ($words as $w)
 		{
 			if ($w == $word)
 			{

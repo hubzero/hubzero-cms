@@ -1310,7 +1310,7 @@ class Group extends Object
 				$where_clause .= "WHERE";
 			}
 
-			if($filters['created'] == 'pastday')
+			if ($filters['created'] == 'pastday')
 			{
 				$pastDay = date("Y-m-d H:i:s", strtotime('-1 DAY'));
 				$where_clause .= " created >= '" . $pastDay . "'";

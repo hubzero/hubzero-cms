@@ -681,7 +681,7 @@ class Link
 
 		if (!empty($exclude[0]))
 		{
-			foreach($exclude as $e)
+			foreach ($exclude as $e)
 			{
 				$sql .= " AND l.auth_domain_id != " . $db->Quote($e);
 			}

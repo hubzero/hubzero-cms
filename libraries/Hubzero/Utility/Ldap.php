@@ -299,7 +299,7 @@ class Ldap
 			$entry['objectclass'][] = 'posixAccount'; // MUST cn,gidNumber,homeDirectory,uidNumber
 			$entry['objectclass'][] = 'shadowAccount';
 
-			foreach($dbinfo as $key=>$value)
+			foreach ($dbinfo as $key=>$value)
 			{
 				if (is_array($value) && $value != array())
 				{
@@ -504,7 +504,7 @@ class Ldap
 			$entry['objectclass'][] = 'top';
 			$entry['objectclass'][] = 'posixGroup';
 
-			foreach($dbinfo as $key=>$value)
+			foreach ($dbinfo as $key=>$value)
 			{
 				if (is_array($value) && $value != array())
 				{
@@ -768,7 +768,7 @@ class Ldap
 			if (ldap_mod_add($conn, $dn, $adds) == false)
 			{
 				// if bulk add fails, try individual
-				foreach($add as $memberUid)
+				foreach ($add as $memberUid)
 				{
 					ldap_mod_add($conn, $dn, array('memberUid' => $memberUid));
 				}
@@ -820,7 +820,7 @@ class Ldap
 			return false;
 		}
 
-		foreach($result as $row)
+		foreach ($result as $row)
 		{
 			self::syncGroup($row);
 
@@ -1102,7 +1102,7 @@ class Ldap
 			return false;
 		}
 
-		foreach($result as $row)
+		foreach ($result as $row)
 		{
 			$dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
 			$result = ldap_delete($conn, $dn);

@@ -351,7 +351,7 @@ class Provider
 	 * 		If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
 	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
- 	function consumerHandler()
+	function consumerHandler()
 	{
 		$db = \JFactory::getDBO();
 
