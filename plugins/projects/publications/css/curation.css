@@ -278,6 +278,7 @@
 		display: block;
 		float: left;
 		text-align: center;
+		position: relative;
 	}
 	.item-order {
 		width: 25px;
