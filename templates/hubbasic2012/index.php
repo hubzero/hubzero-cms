@@ -136,7 +136,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<li id="account-register">
 									<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
 								</li>
-							?php } ?>
+							<?php } ?>
 							</ul><!-- / #account -->
 
 							<nav id="nav" role="menu">

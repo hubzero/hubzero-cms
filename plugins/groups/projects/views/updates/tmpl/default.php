@@ -54,7 +54,7 @@ $this->css();
 				<div id="latest_activity" class="infofeed">
 				<?php 
 					// Display item list
-					$this->view('default', 'activity');
+					$this->view('default', 'activity')
 					     ->set('option', $this->option)
 					     ->set('activities', $this->activities)
 					     ->set('limit', $this->limit)

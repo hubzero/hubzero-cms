@@ -32,5 +32,5 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="curl">
-	<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $uid . '&active=profile'; ?>" class="whole"><img id="curl-img" src="<?php echo $media->get('/images/smallcurl.png'); ?>" class="small" title="Get rewards for completing your profile" /></a>
+	<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $uid . '&active=profile'); ?>" class="whole"><img id="curl-img" src="<?php echo $media->get('/images/smallcurl.png'); ?>" class="small" title="Get rewards for completing your profile" /></a>
 </div>

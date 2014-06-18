@@ -3,7 +3,7 @@
 namespace Plugins\Content\Mollom\Service\Mollom\Exception;
 
 use Exception;
-use namespace Plugins\Content\Mollom\Service\Mollom;
+use Plugins\Content\Mollom\Service\Mollom;
 
 /**
  * A catchable Mollom exception.

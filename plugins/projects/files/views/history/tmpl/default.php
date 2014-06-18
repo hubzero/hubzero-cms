@@ -91,7 +91,7 @@ if (!$this->getError())
 					     ->set('remote', $this->remote)
 					     ->set('type', 'file')
 					     ->set('action', 'history')
-					     ->set('multi', '');
+					     ->set('multi', '')
 					     ->display();
 				?>
 			</ul>

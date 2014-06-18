@@ -225,7 +225,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'),
 				'error'
 			);

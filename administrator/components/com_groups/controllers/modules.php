@@ -559,7 +559,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// do we get errors?
 		if ($return != 0)
 		{
-			$this->view->setLayout('errors')
+			$this->view->setLayout('errors');
 			$this->view->error = (isset($output[0])) ? $output[0] : '';
 			$this->view->error = str_replace($file, '"' . $module->get('title') . '"', $view->error);
 			$this->view->module = $module;

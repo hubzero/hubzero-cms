@@ -75,7 +75,7 @@ if (count($matches) > 0)
 					<?php echo JText::_('PLG_RESOURCES_FINDTHISTEXT_FIELD_LOCALLIBRARY_DESC'); ?>
 					<?php
 						$text  = $this->openurl->text;
-						$image = "<img src=\"{$this->openurl->icon}\" alt="" />";
+						$image = "<img src=\"{$this->openurl->icon}\" alt=\"\" />";
 						
 						// add field data to local library link
 						$fields   = array('doi','isbn','issn');

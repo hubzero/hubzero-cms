@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 			foreach ($this->modules as $module)
 			{
 				// create view object
-				$this->view('module', 'display');
+				$this->view('module', 'display')
 				     ->set('admin', $this->admin)
 				     ->set('module', $module)
 				     ->display();

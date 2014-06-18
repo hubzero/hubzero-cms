@@ -84,7 +84,7 @@ $database = JFactory::getDBO();
 			}
 
 			// Make sure we have an SEF, otherwise it's a querystring
-			$d = (strstr($sef,'option=') ? '&' : '?';
+			$d = (strstr($sef,'option=')) ? '&' : '?';
 
 			// Format the ranking
 			$line->ranking = round($line->ranking, 1);

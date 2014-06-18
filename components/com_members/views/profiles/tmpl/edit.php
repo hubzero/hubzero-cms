@@ -178,7 +178,7 @@ if ($this->registration->Email != REG_HIDE
 
 if ($this->registration->ORCID != REG_HIDE) {
 	$required = ($this->registration->ORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('REQUIRED').'</span>' : '';
-	$message = (!empty($this->xregistration->_invalid['orcid'])) ? '<p class="error">' . $this->xregistration->_invalid['orcid']) . '</p>' : '';
+	$message = (!empty($this->xregistration->_invalid['orcid'])) ? '<p class="error">' . $this->xregistration->_invalid['orcid'] . '</p>' : '';
 	$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 	$html .= '<div class="grid">

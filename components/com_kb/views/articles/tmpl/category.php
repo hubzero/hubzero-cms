@@ -119,8 +119,8 @@ $this->css()
 								{
 									if ($row->get('user_id') == $this->juser->get('id')) 
 									{
-										$view->set('vote', $row->get('vote'))
-										$view->set('id', $row->get('id'))
+										$view->set('vote', $row->get('vote'));
+										$view->set('id', $row->get('id'));
 									}
 								}
 								$view->display();
