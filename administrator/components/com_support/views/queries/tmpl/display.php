@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Support').': '.JText::_('Ticket Queries'), 'support.png');
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKET') . ': ' . JText::_('COM_SUPPORT_QUERIES'), 'support.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -43,7 +43,7 @@ JToolBarHelper::help('queries');
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	if (pressbutton == 'cancelres') {
+	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
@@ -57,10 +57,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'Owner', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Type', 'iscore', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_TYPE', 'iscore', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -74,24 +73,24 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	switch ($row->iscore)
 	{
 		case 4: 
-			$iscore = JText::_('common (not in ACL)');
+			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
 		break;
 
 		case 2: 
-			$iscore = JText::_('common (in ACL)');
+			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
 		break;
 		
 		case 1:
-			$iscore = JText::_('mine');
+			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_MINE');
 		break;
 		
 		case 0:
 		default:
-			$iscore = JText::_('custom');
+			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_CUSTOM');
 		break;
 	}
 ?>
@@ -107,11 +106,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</td>
-				<!-- <td>
-<?php /*if ($row->iscore == 0) { ?>
-					<?php echo $this->escape(stripslashes($row->name)); ?>
-<?php }*/ ?>
-				</td> -->
 				<td>
 					<?php echo $iscore; ?>
 				</td>
@@ -127,6 +121,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

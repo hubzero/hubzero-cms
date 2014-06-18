@@ -30,29 +30,29 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( JText::_( 'Ticket Category' ).': '. $text, 'addedit.png' );
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_CATEGORIES') . ': ' . $text, 'support.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	if ($('#field-title').val() == '') {
-		alert( '<?php echo JText::_('CATEGORY_ERROR_NO_TEXT'); ?>' );
+		alert('<?php echo JText::_('COM_SUPPORT_CATEGORY_ERROR_NO_TEXT'); ?>');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -60,16 +60,17 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-title"><?php echo JText::_('COM_SUPPORT_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->title); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Letters, numbers, and dashes allowed. If no alias provided, one will be generated form the title.'); ?>">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label>
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_SUPPORT_FIELD_ALIAS'); ?>:</label>
 				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->alias); ?>" />
+				<span class="hint"><?php echo JText::_('COM_SUPPORT_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -77,7 +78,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->id; ?>
 						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
@@ -85,13 +86,13 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php if ($this->row->created_by) { ?>
 				<tr>
-					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo JHTML::_('date', $this->row->created, 'Y-m-d H:i:s'); ?>
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php 
 						$user = JUser::getInstance($this->row->created_by);
@@ -101,13 +102,13 @@ function submitbutton(pressbutton)
 				</tr>
 				<?php if ($this->row->modified_by) { ?>
 					<tr>
-						<th class="key"><?php echo JText::_('Modified'); ?>:</th>
+						<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
 						<td>
 							<?php echo JHTML::_('date', $this->row->modified, 'Y-m-d H:i:s'); ?>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo JText::_('Modified by'); ?>:</th>
+						<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php 
 							$user = JUser::getInstance($this->row->modified_by);
@@ -126,5 +127,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

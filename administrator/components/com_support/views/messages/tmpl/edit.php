@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title( JText::_( 'Support' ).': '. $text, 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_MESSAGES') . ': ' . $text, 'support.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
@@ -44,17 +44,17 @@ $jconfig = JFactory::getConfig();
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancelmsg') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	if ($('msg[message]').value == '') {
-		alert( '<?php echo JText::_('MESSAGE_ERROR_NO_TEXT'); ?>' );
+		alert('<?php echo JText::_('COM_SUPPORT_MESSAGE_ERROR_NO_TEXT'); ?>');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -62,24 +62,24 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MESSAGE_LEGEND'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_SUPPORT_MESSAGE_LEGEND'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('MESSAGE_SUMMARY'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_SUPPORT_MESSAGE_SUMMARY'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-message"><?php echo JText::_('MESSAGE_TEXT'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-message"><?php echo JText::_('COM_SUPPORT_MESSAGE_TEXT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<textarea name="msg[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->message)); ?></textarea>
 			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<p><?php echo JText::_('MESSAGE_TEXT_EXPLANATION'); ?></p>
+		<p><?php echo JText::_('COM_SUPPORT_MESSAGE_TEXT_EXPLANATION'); ?></p>
 		<dl>
 			<dt>{ticket#}</dt>
-			<dd><?php echo JText::_('MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
+			<dd><?php echo JText::_('COM_SUPPORT_MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
 			
 			<dt>{sitename}</dt>
 			<dd><?php echo $jconfig->getValue('config.sitename'); ?></dd>

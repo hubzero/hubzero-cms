@@ -233,11 +233,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		$this->view->setLayout('edit');
 
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . $this->_name . '.css');
-		//$document->addScript('/components' . DS . 'com_support' . DS . 'autosave.js');
-
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
@@ -517,9 +512,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Did the tags change?
 			if ($tags != $oldtags)
 			{
-				$oldtags = (trim($oldtags) == '') ? JText::_('BLANK') : $oldtags;
+				$oldtags = (trim($oldtags) == '') ? JText::_('COM_SUPPORT_BLANK') : $oldtags;
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_TAGS'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_TAGS'),
 					'before' => $oldtags,
 					'after'  => $tags
 				);
@@ -528,7 +523,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($row->group != $old->group)
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_GROUP'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_GROUP'),
 					'before' => $old->group,
 					'after'  => $row->group
 				);
@@ -537,7 +532,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($row->severity != $old->severity)
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_SEVERITY'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_SEVERITY'),
 					'before' => $old->severity,
 					'after'  => $row->severity
 				);
@@ -546,7 +541,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($row->owner != $old->owner)
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_OWNER'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_OWNER'),
 					'before' => $old->owner,
 					'after'  => $row->owner
 				);
@@ -554,9 +549,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Did the resolution change?
 			if ($row->resolved != $old->resolved)
 			{
-				$row->resolved = ($row->resolved) ? $row->resolved : '[unresolved]';
+				$row->resolved = ($row->resolved) ? $row->resolved : JText::_('COM_SUPPORT_TICKET_UNRESOLVED');
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_RESOLUTION'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_RESOLUTION'),
 					'before' => $old->resolved,
 					'after'  => $row->resolved
 				);
@@ -565,7 +560,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($row->status != $old->status)
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_STATUS'),
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_STATUS'),
 					'before' => SupportHtml::getStatus($old->open, $old->status),
 					'after'  => SupportHtml::getStatus($row->open, $row->status)
 				);
@@ -573,9 +568,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($row->category != $old->category) 
 			{
 				$log['changes'][] = array(
-					'field'  => JText::_('Category'),
-					'before' => ($old->category ? $old->category : JText::_('BLANK')),
-					'after'  => ($row->category ? $row->category : JText::_('BLANK'))
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_CATEGORY'),
+					'before' => ($old->category ? $old->category : JText::_('COM_SUPPORT_BLANK')),
+					'after'  => ($row->category ? $row->category : JText::_('COM_SUPPORT_BLANK'))
 				);
 			}
 
@@ -874,12 +869,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 							if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
 							{
-								$this->setError(JText::_('Failed to message ticket owner.'));
+								$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE_OWNER'));
 							}
 							else
 							{
 								$log['notifications'][] = array(
-									'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
+									'role'    => JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_OWNER'),
 									'name'    => $juser->get('name'),
 									'address' => $juser->get('email')
 								);
@@ -931,13 +926,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								// Send message
 								if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
 								{
-									$this->setError(JText::_('Failed to message user.'));
+									$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE_USER'));
 								}
 								else 
 								{
 									// Add to log
 									$log['notifications'][] = array(
-										'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+										'role'    => JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'),
 										'name'    => $juser->get('name'),
 										'address' => $juser->get('email')
 									);
@@ -979,11 +974,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							{
 								if (strtolower($row->email) == $email[0])
 								{
-									$emaillog[] = '<li>'.JText::_('TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
+									$emaillog[] = '<li>'.JText::_('COM_SUPPORT_TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 								}
 								else 
 								{
-									$emaillog[] = '<li>' . JText::_('TICKET_EMAILED_CC') . ' - ' . $email[0] . '</li>';
+									$emaillog[] = '<li>' . JText::_('COM_SUPPORT_TICKET_EMAILED_CC') . ' - ' . $email[0] . '</li>';
 								}
 							}
 						}
@@ -995,7 +990,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								if (strtolower($row->email) == $email)
 								{
 									$log['notifications'][] = array(
-										'role'    => JText::_('COMMENT_SEND_EMAIL_SUBMITTER'),
+										'role'    => JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_SUBMITTER'),
 										'name'    => $row->name,
 										'address' => $row->email
 									);
@@ -1003,8 +998,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								else 
 								{
 									$log['notifications'][] = array(
-										'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
-										'name'    => JText::_('[none]'),
+										'role'    => JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'),
+										'name'    => JText::_('COM_SUPPORT_NONE'),
 										'address' => $email
 									);
 								}
@@ -1037,7 +1032,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''),
-				JText::sprintf('TICKET_SUCCESSFULLY_SAVED', $row->id)
+				JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->id)
 			);
 		} 
 		else 
@@ -1065,7 +1060,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
+				JText::_('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
 				'error'
 			);
 			return;
@@ -1095,7 +1090,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('TICKET_SUCCESSFULLY_DELETED', count($ids))
+			JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 
@@ -1160,7 +1155,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 			foreach ($groups as $name => $gusers)
 			{
-				$users[] = JHTML::_('select.optgroup', JText::_('group:') . ' ' . $name);
+				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $name);
 				$users = array_merge($users, $gusers);
 			}
 		}
@@ -1185,7 +1180,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$users = array();
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
+			$users[] = JHTML::_('select.option', '', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
 		}
 
 		if (strstr($group, ','))
@@ -1267,13 +1262,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	 */
 	public function downloadTask()
 	{
-		// Ensure we have a database object
-		if (!$this->database)
-		{
-			JError::raiseError(500, JText::_('SUPPORT_DATABASE_NOT_FOUND'));
-			return;
-		}
-
 		// Get the ID of the file requested
 		$id = JRequest::getInt('id', 0);
 
@@ -1282,7 +1270,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$attach->load($id);
 		if (!$attach->filename)
 		{
-			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'));
 			return;
 		}
 		$file = $attach->filename;
@@ -1290,7 +1278,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Ensure we have a path
 		if (empty($file))
 		{
-			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'));
 			return;
 		}
 
@@ -1315,7 +1303,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('SUPPORT_FILE_NOT_FOUND') . ' ' . $filename);
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
 		}
 
@@ -1328,7 +1316,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('SUPPORT_SERVER_ERROR'));
+			JError::raiseError(404, JText::_('COM_SUPPORT_SERVER_ERROR'));
 		}
 		else
 		{
@@ -1350,7 +1338,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_SUPPORT_NO_ID'));
+			$this->setError(JText::_('COM_SUPPORT_ERROR_NO_ID'));
 			return '';
 		}
 
@@ -1358,7 +1346,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_SUPPORT_NO_FILE'));
+			$this->setError(JText::_('COM_SUPPORT_ERROR_NO_FILE'));
 			return '';
 		}
 
@@ -1370,7 +1358,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($file_path))
 			{
-				$this->setError(JText::_('COM_SUPPORT_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return '';
 			}
 		}
@@ -1404,7 +1392,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			{
 				if (JFile::delete($finalfile)) 
 				{
-					$this->setError(JText::_('File rejected due to possible security risk.'));
+					$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_SECURITY_SCAN'));
 					return '';
 				}
 			}

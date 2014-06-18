@@ -28,43 +28,22 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="feed_summary" type="radio" default="0" label="For each feed item show" description="TIPSHOWFEEDITEM">
-			<option value="0">Intro Text</option>
-			<option value="1">Full Text</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="severities" type="text" menu="hide" default="critical,major,normal,minor,trivial" label="Severities" description="Ticket severity levels" />
-		<param name="webpath" type="text" menu="hide" default="/site/tickets" label="Upload path" description="File path for attachments" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<param name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
-		<param name="group" type="text" menu="hide" label="Group" default="" description="Group ID to pull users from" />
-		<param name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="Notify when ticket created" description="Add a line for each email address a new ticket should be sent to." />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="blacklist" type="textarea" rows="15" cols="40" default="" description="A comma-separated list of IPs to be blacklisted" />
-		<param name="badwords" type="textarea" rows="15" cols="40" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="email_processing" type="list" default="0" label="Enable email interface" description="Allow for processing of responses via e-mail to ticketting system. Make sure /etc/hubmail_gw.conf exists.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-	</params>
 	<fieldset name="basic">
-		<field name="group" type="text" menu="hide" label="Group" default="" description="Group ID to pull users from" />
-		<field name="severities" type="text" menu="hide" default="critical,major,normal,minor,trivial" label="Severities" description="Ticket severity levels" />
-		<field name="email_processing" type="list" default="0" label="Enable email interface" description="Allow for processing of responses via e-mail to ticketting system. Make sure /etc/hubmail_gw.conf exists.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="group" type="text" menu="hide" label="COM_SUPPORT_CONFIG_GROUP_LABEL" default="" description="COM_SUPPORT_CONFIG_GROUP_DESC" />
+		<field name="severities" type="text" menu="hide" default="critical,major,normal,minor,trivial" label="COM_SUPPORT_CONFIG_SEVERITIES_LABEL" description="COM_SUPPORT_CONFIG_SEVERITIES_DESC" />
+		<field name="email_processing" type="list" default="0" label="COM_SUPPORT_CONFIG_EMAIL_INTERFACE_LABEL" description="COM_SUPPORT_CONFIG_EMAIL_INTERFACE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="Notify when ticket created" description="Add a line for each email address a new ticket should be sent to." />
+		<field name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="COM_SUPPORT_CONFIG_EMAILS_LABEL" description="COM_SUPPORT_CONFIG_EMAILS_DESC" />
 	</fieldset>
 	<fieldset name="files">
-		<field name="webpath" type="text" menu="hide" default="/site/tickets" label="Upload path" description="File path for attachments" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="webpath" type="text" menu="hide" default="/site/tickets" label="COM_SUPPORT_CONFIG_WEBPATH_LABEL" description="COM_SUPPORT_CONFIG_WEBPATH_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_SUPPORT_CONFIG_MAXALLOWED_LABEL" description="COM_SUPPORT_CONFIG_MAXALLOWED_DESC" />
+		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="COM_SUPPORT_CONFIG_EXTENSIONS_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_SUPPORT_CONFIG_EXTENSIONS_DESC" />
 	</fieldset>
 	<fieldset name="spam">
-		<field name="blacklist" type="textarea" rows="15" cols="40" label="IP Blacklist" default="" description="A comma-separated list of IPs to be blacklisted" />
-		<field name="badwords" type="textarea" rows="15" cols="40" label="Bad words" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
+		<field name="blacklist" type="textarea" rows="15" cols="40" label="COM_SUPPORT_CONFIG_BLACKLIST_LABEL" default="" description="COM_SUPPORT_CONFIG_BLACKLIST_DESC" />
+		<field name="badwords" type="textarea" rows="15" cols="40" label="COM_SUPPORT_CONFIG_BADWORDS_LABEL" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="COM_SUPPORT_CONFIG_BADWORDS_DESC" />
 	</fieldset>
 </config>

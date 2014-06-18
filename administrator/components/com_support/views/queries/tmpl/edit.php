@@ -41,8 +41,8 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if (!$tmpl) 
 {
-	$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-	JToolBarHelper::title(JText::_('Ticket Query').': '. $text, 'support.png');
+	$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+	JToolBarHelper::title(JText::_('COM_SUPPORT_TICKET') . ': ' . JText::_('COM_SUPPORT_QUERIES') . ': ' . $text, 'support.png');
 	JToolBarHelper::save();
 	JToolBarHelper::cancel();
 }
@@ -53,25 +53,25 @@ $juser = JFactory::getUser();
 	<form action="index.php" method="post" name="adminForm" id="item-form">
 		<div class="col width-100">
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Details'); ?></legend>
+				<legend><?php echo JText::_('JDETAILS'); ?></legend>
 
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<td class="key"><label for="field-iscore"><?php echo JText::_('Type:'); ?></label></td>
+							<td class="key"><label for="field-iscore"><?php echo JText::_('COM_SUPPORT_FIELD_TYPE'); ?></label></td>
 							<td colspan="2">
 								<select name="fields[iscore]" id="field-iscore">
-									<optgroup label="<?php echo JText::_('Common'); ?>">
-										<option value="2"<?php if ($this->row->iscore == 2) { echo ' selected="selected"'; }; ?>><?php echo JText::_('In ACL'); ?></option>
-										<option value="4"<?php if ($this->row->iscore == 4) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Not in ACL'); ?></option>
+									<optgroup label="<?php echo JText::_('COM_SUPPORT_QUERY_TYPE_COMMON'); ?>">
+										<option value="2"<?php if ($this->row->iscore == 2) { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_ACL'); ?></option>
+										<option value="4"<?php if ($this->row->iscore == 4) { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL'); ?></option>
 									</optgroup>
-									<option value="1"<?php if ($this->row->iscore == 1) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Mine'); ?></option>
-									<option value="0"<?php if ($this->row->iscore == 0) { echo ' selected="selected"'; }; ?>><?php echo JText::_('Custom'); ?></option>
+									<option value="1"<?php if ($this->row->iscore == 1) { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_TYPE_MINE'); ?></option>
+									<option value="0"<?php if ($this->row->iscore == 0) { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_TYPE_CUSTOM'); ?></option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-title"><?php echo JText::_('Title'); ?></label></td>
+							<td class="key"><label for="field-title"><?php echo JText::_('COM_SUPPORT_FIELD_TITLE'); ?></label></td>
 							<td colspan="2"><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
 						</tr>
 						<tr>
@@ -97,7 +97,7 @@ $juser = JFactory::getUser();
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><label for="field-sort"><?php echo JText::_('Sort results by:'); ?></label></td>
+							<td class="key"><label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label></td>
 							<td>
 								<select name="fields[sort]" id="field-sort">
 									<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>>Open/Closed</option>
@@ -166,22 +166,22 @@ $juser = JFactory::getUser();
 } else { 
 	if ($this->row->iscore != 0)
 	{
-		$this->row->title .= ' ' . JText::_('(copy)');
+		$this->row->title .= ' ' . JText::_('COM_SUPPORT_COPY');
 	}
 ?>
 	<form action="index.php" method="post" name="adminForm" id="queryForm">
 		<fieldset>
 			<div style="float: right">
-				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_( 'Save' );?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
+				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('JAPPLY');?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_('JCANCEL');?></button>
 			</div>
 			<div class="configuration" >
-				<?php echo JText::_('Query builder') ?>
+				<?php echo JText::_('COM_SUPPORT_QUERY_BUILDER'); ?>
 			</div>
 		</fieldset>
 
 		<fieldset class="fields title">
-			<label for="field-title"><?php echo JText::_('Title'); ?></label>
+			<label for="field-title"><?php echo JText::_('COM_SUPPORT_FIELD_TITLE'); ?></label>
 			<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 		</fieldset>
 
@@ -206,7 +206,7 @@ $juser = JFactory::getUser();
 
 		<fieldset class="fields sort">
 			<p>
-				<label for="field-sort"><?php echo JText::_('Sort results by:'); ?></label>
+				<label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
 				<select name="fields[sort]" id="field-sort">
 					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>>Open/Closed</option>
 					<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>>Status</option>
@@ -263,7 +263,7 @@ $juser = JFactory::getUser();
 			var query = {};
 
 			if (!$('#field-title').val()) {
-				alert('Please provide a title.');
+				alert('<?php echo JText::_('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE'); ?>');
 				return false;
 			}
 

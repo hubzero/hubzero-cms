@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'Ticket Resolutions' ), 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_RESOLUTIONS'), 'support.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -39,12 +39,12 @@ JToolBarHelper::deleteList();
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	if (pressbutton == 'cancelres') {
-		submitform( pressbutton );
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -52,9 +52,9 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('SUPPORT_COL_ID'); ?></th>
-				<th><?php echo JText::_('SUPPORT_COL_RESOLUTION'); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_ID'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_RESOLUTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -81,10 +81,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

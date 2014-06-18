@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'Ticket Stats' ), 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_STATS'), 'support.png');
 
 JToolBarHelper::spacer();
 JToolBarHelper::help('stats');
@@ -124,10 +124,10 @@ function getMonthName($month)
 	<div id="ticket-stats">
 		<fieldset id="filter-bar" class="support-stats-filter">
 			<label for="ticket-group">
-				<?php echo JText::_('Show for group:'); ?>
+				<?php echo JText::_('COM_SUPPORT_STATS_FOR_GROUP'); ?>
 			</label>
 			<select name="group" id="ticket-group">
-				<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('[ none ]'); ?></option>
+				<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_NONE'); ?></option>
 				<?php
 				if ($this->groups)
 				{
@@ -147,7 +147,7 @@ function getMonthName($month)
 			<legend>
 				<span><?php echo getMonthName(1) . ' ' . $this->first ?> - <?php echo getMonthName($this->month) . ' ' . $this->year; ?></span>
 			</legend>
-			
+
 			<div id="container" style="min-width: 400px; height: 200px; margin: 60px 20px 20px 20px;"></div>
 			<?php
 				$top = 0;
@@ -256,49 +256,46 @@ function getMonthName($month)
 		</fieldset>
 
 		<fieldset class="adminform breakdown">
-			<!-- <legend>
-				<span><?php echo JText::_('Breakdown'); ?></span>
-			</legend> -->
 			<div class="breakdown">
-	
-			<table class="support-stats-overview" summary="<?php echo JText::_('Overview of open support tickets'); ?>">
-				<thead>
-					<tr>
-						<th scope="col"><?php echo JText::_('Opened (all time)'); ?></th>
-						<th scope="col"><?php echo JText::_('Closed (all time)'); ?></th>
-						<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
-						<th scope="col" class="major"><?php echo JText::_('Unassigned'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><?php echo $this->opened['open']; ?></td>
-						<td><?php echo $this->opened['closed']; ?></td>
-						<td class="block">
-							<?php
-							$lifetime = SupportUtilities::calculateAverageLife($this->closedTickets);
-							?>
-							<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('days'); ?></span> 
-							<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('hours'); ?></span> 
-							<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('minutes'); ?></span>
-						</td>
-						<td class="major"><?php echo $this->opened['unassigned']; ?></td>
-					</tr>
-				</tbody>
-			</table>
+
+				<table class="support-stats-overview">
+					<thead>
+						<tr>
+							<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_OPENED_ALL'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_CLOSED_ALL'); ?></th>
+							<th scope="col" class="block"><?php echo JText::_('COM_SUPPORT_STATS_COL_AVERAGE'); ?></th>
+							<th scope="col" class="major"><?php echo JText::_('COM_SUPPORT_STATS_COL_UNASSIGNED'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><?php echo $this->opened['open']; ?></td>
+							<td><?php echo $this->opened['closed']; ?></td>
+							<td class="block">
+								<?php
+								$lifetime = SupportUtilities::calculateAverageLife($this->closedTickets);
+								?>
+								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span> 
+								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span> 
+								<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_MINUTES'); ?></span>
+							</td>
+							<td class="major"><?php echo $this->opened['unassigned']; ?></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</fieldset>
-		
+
 		<div class="col width-50 fltlft">
 			<fieldset class="adminform breakdown pies">
-				<legend><span><?php echo JText::_('Tickets by severity'); ?></span></legend>
+				<legend><span><?php echo JText::_('COM_SUPPORT_STATS_FIELDSET_BY_SEVERITY'); ?></span></legend>
 				<div id="severities-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
-					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of number of tickets for each severity'); ?>">
+					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
-								<th scope="col"><?php echo JText::_('Severity'); ?></th>
-								<th scope="col"><?php echo JText::_('Number'); ?></th>
-								<th scope="col"><?php echo JText::_('Percent'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_SEVERITY'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_NUMBER'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_PERCENT'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -382,19 +379,19 @@ function getMonthName($month)
 		
 		<div class="col width-50 fltrt">
 			<fieldset class="adminform breakdown pies">
-				<legend><span><?php echo JText::_('Tickets by resolution'); ?></span></legend>
+				<legend><span><?php echo JText::_('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span></legend>
 				<div id="resolutions-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
-					<table class="support-stats-resolutions" summary="<?php echo JText::_('Breakdown of people and the number of tickets closed'); ?>">
+					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
-								<th scope="col"><?php echo JText::_('Resolution'); ?></th>
-								<th scope="col"><?php echo JText::_('Number'); ?></th>
-								<th scope="col"><?php echo JText::_('Percent'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_RESOLUTION'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_NUMBER'); ?></th>
+								<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_PERCENT'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr class="odd">
-								<th scope="row"><?php echo JText::_('No resolution'); ?></th>
+								<th scope="row"><?php echo JText::_('COM_SUPPORT_STATS_NO_RESOLUTION'); ?></th>
 								<td><?php echo (isset($res['noresolution'])) ? $res['noresolution'] : '0'; ?></td>
 								<td><?php echo (isset($res['noresolution'])) ? $res['noresolution']/$total : '0'; ?></td>
 							</tr>
@@ -404,7 +401,7 @@ function getMonthName($month)
 
 							$cls = 'odd';
 							$data = array(
-								"{label: '" . JText::_('No resolution') . "', data: " . (isset($res['noresolution']) ? $res['noresolution']/$total : '0') . ", color: '" . $colors[0] . "'}"
+								"{label: '" . JText::_('COM_SUPPORT_STATS_NO_RESOLUTION') . "', data: " . (isset($res['noresolution']) ? $res['noresolution']/$total : '0') . ", color: '" . $colors[0] . "'}"
 							);
 							$i = 1;
 							foreach ($resolutions as $resolution)
@@ -520,11 +517,11 @@ function getMonthName($month)
 					<strong>#<?php echo $j; ?></strong>
 				</p>
 				<p class="entry-member-photo">
-					<img src="<?php echo $profile->getPicture($anon); ?>" alt="<?php echo JText::sprintf('Photo for %s', $this->escape(stripslashes($user->name))); ?>" />
+					<img src="<?php echo $profile->getPicture($anon); ?>" alt="<?php echo JText::sprintf('COM_SUPPORT_STATS_PHOTO_FOR', $this->escape(stripslashes($user->name))); ?>" />
 				</p>
 				<p class="entry-title">
 					<?php echo $this->escape(stripslashes($user->name)); ?><br />
-					<span><?php echo JText::sprintf('%s assigned', number_format($user->assigned)); ?></span>
+					<span><?php echo JText::sprintf('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned)); ?></span>
 				</p>
 			</div>
 			<div class="entry-content">
@@ -580,11 +577,11 @@ function getMonthName($month)
 						}
 					</script>
 				</div><!-- / #user -->
-				<table class="support-stats-overview" summary="<?php echo JText::_('Overview of open support tickets'); ?>">
+				<table class="support-stats-overview">
 					<thead>
 						<tr>
-							<th scope="col"><?php echo JText::_('Closed'); ?></th>
-							<th scope="col" class="block"><?php echo JText::_('Average lifetime'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_SUPPORT_STATS_COL_CLOSED'); ?></th>
+							<th scope="col" class="block"><?php echo JText::_('COM_SUPPORT_STATS_COL_AVERAGE'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -594,9 +591,9 @@ function getMonthName($month)
 								<?php
 								$lifetime = SupportUtilities::calculateAverageLife($user->tickets);
 								?>
-								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('days'); ?></span> 
-								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('hours'); ?></span> 
-								<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('minutes'); ?></span>
+								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span> 
+								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span> 
+								<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_MINUTES'); ?></span>
 							</td>
 						</tr>
 					</tbody>

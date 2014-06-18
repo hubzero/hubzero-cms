@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Support').': '.JText::_('ACL'), 'support.png');
+JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_ACL'), 'support.png');
 JToolBarHelper::deleteList();
 JToolBarHelper::spacer();
 JToolBarHelper::help('acl');
@@ -58,8 +58,8 @@ function checkAllOptions()
 {
 	var f = document.adminForm;
 	var c = f.toggleOpt.checked;
-	console.log(f.toggle);
-	$$('.chk').each(function(el){
+
+	$('.chk').each(function(i, el){
 		el.checked = c;
 	});
 }
@@ -73,23 +73,23 @@ function checkAllOptions()
 				<th> </th>
 				<th> </th>
 				<th> </th>
-				<th colspan="3"><?php echo JText::_('Tickets'); ?></th>
-				<th colspan="2"><?php echo JText::_('Comments'); ?></th>
-				<th colspan="2"><?php echo JText::_('Private Comments'); ?></th>
+				<th colspan="3"><?php echo JText::_('COM_SUPPORT_COL_TICKETS'); ?></th>
+				<th colspan="2"><?php echo JText::_('COM_SUPPORT_COL_COMMENTS'); ?></th>
+				<th colspan="2"><?php echo JText::_('COM_SUPPORT_COL_PRIVATE_COMMENTS'); ?></th>
 				<th> </th>
 			</tr>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('SUPPORT_COL_ID'); ?></th>
-				<th><?php echo JText::_('Object'); ?></th>
-				<th><?php echo JText::_('Model'); ?></th>
-				<th><?php echo JText::_('Read'); ?></th>
-				<th><?php echo JText::_('Update'); ?></th>
-				<th><?php echo JText::_('Delete'); ?></th>
-				<th><?php echo JText::_('Create'); ?></th>
-				<th><?php echo JText::_('Read'); ?></th>
-				<th><?php echo JText::_('Create'); ?></th>
-				<th><?php echo JText::_('Read'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_ID'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_OBJECT'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_MODEL'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_READ'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_UPDATE'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_DELETE'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_READ'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_READ'); ?></th>
 				<th> </th>
 			</tr>
 		</thead>
@@ -100,15 +100,15 @@ function checkAllOptions()
 					<input type="hidden" name="aro[id]" id="aro_id" value="" />
 				</td>
 				<td>
-					<label for="aro_foreign_key">Alias or ID:</label>
+					<label for="aro_foreign_key"><?php echo JText::_('COM_SUPPORT_ACL_ALIAS_ID'); ?>:</label>
 					<input type="text" name="aro[foreign_key]" id="aro_foreign_key" size="20" value="" />
 				</td>
 				<td>
 					<select name="aro[model]" id="aro_model">
-						<option value="user"><?php echo JText::_('user'); ?></option>
-						<option value="group"><?php echo JText::_('group'); ?></option>
+						<option value="user"><?php echo JText::_('COM_SUPPORT_ACL_USER'); ?></option>
+						<option value="group"><?php echo JText::_('COM_SUPPORT_ACL_GROUP'); ?></option>
 					</select>
-					<input type="checkbox" name="toggleOpt" value="" onclick="checkAllOptions();" /> <abbr title="<?php echo JText::_('Check all options'); ?>"><?php echo JText::_('All'); ?></abbr>
+					<input type="checkbox" name="toggleOpt" value="" onclick="checkAllOptions();" /> <abbr title="<?php echo JText::_('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo JText::_('COM_SUPPORT_COL_ALL'); ?></abbr>
 				</td>
 				<td>
 					<input type="hidden" name="map[tickets][id]" value="0" />
@@ -198,11 +198,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo $row->model; ?></td>
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['tickets']['read']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -212,11 +212,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['tickets']['update']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -226,11 +226,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['tickets']['delete']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -241,11 +241,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['comments']['create']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -255,11 +255,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['comments']['read']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -270,11 +270,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['private_comments']['create']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>
@@ -284,11 +284,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="text-align:center;">
 					<?php 
-					$calt = JText::_('no');
+					$calt = JText::_('JNO');
 					$cls = 'unpublish';
 					if ($data['private_comments']['read']) 
 					{
-						$calt = JText::_('yes');
+						$calt = JText::_('JYES');
 						$cls = 'publish';
 					}
 					?>

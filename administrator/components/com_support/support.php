@@ -58,47 +58,47 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Tickets'),
+	JText::_('COM_SUPPORT_TICKETS'),
 	'index.php?option=com_support&controller=tickets',
 	$controllerName == 'tickets'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Categories'),
+	JText::_('COM_SUPPORT_CATEGORIES'),
 	'index.php?option=com_support&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Queries'),
+	JText::_('COM_SUPPORT_QUERIES'),
 	'index.php?option=com_support&controller=queries',
 	$controllerName == 'queries'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Messages'),
+	JText::_('COM_SUPPORT_MESSAGES'),
 	'index.php?option=com_support&controller=messages',
 	$controllerName == 'messages'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Resolutions'),
+	JText::_('COM_SUPPORT_RESOLUTIONS'),
 	'index.php?option=com_support&controller=resolutions',
 	$controllerName == 'resolutions'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Abuse Reports'),
+	JText::_('COM_SUPPORT_ABUSE_REPORTS'),
 	'index.php?option=com_support&controller=abusereports',
 	$controllerName == 'abusereports'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Tag/Groups'),
+	JText::_('COM_SUPPORT_TAG_GROUPS'),
 	'index.php?option=com_support&controller=taggroups',
 	$controllerName == 'taggroups'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Stats'),
+	JText::_('COM_SUPPORT_STATS'),
 	'index.php?option=com_support&controller=stats',
 	$controllerName == 'stats'
 );
 JSubMenuHelper::addEntry(
-	JText::_('ACL'),
+	JText::_('COM_SUPPORT_ACL'),
 	'index.php?option=com_support&controller=acl',
 	$controllerName == 'acl'
 );

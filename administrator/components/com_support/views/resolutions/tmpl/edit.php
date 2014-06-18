@@ -30,8 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Ticket Resolution').': '. $text, 'support.png');
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_RESOLUTIONS') . ': ' . $text, 'support.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -40,15 +41,15 @@ JToolBarHelper::cancel();
 function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-	
-	if (pressbutton == 'cancelres') {
+
+	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
-	if ($('title').value == '') {
-		alert('<?php echo JText::_('RESOLUTION_ERROR_NO_TEXT'); ?>');
+	if ($('#field-title').val() == '') {
+		alert('<?php echo JText::_('COM_SUPPORT_RESOLUTION_ERROR_NO_TEXT'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -58,12 +59,12 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<div class="input-wrap">
-			<label for="field-title"><?php echo JText::_('RESOLUTION_TEXT'); ?>:</label><br />
+			<label for="field-title"><?php echo JText::_('COM_SUPPORT_RESOLUTION_TEXT'); ?>:</label><br />
 			<input type="text" name="res[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" />
 		</div>
 	</fieldset>
 
-	<input type="hidden" name="res[alias]" value="<?php echo $this->row->alias; ?>" />
+	<input type="hidden" name="res[alias]" value="<?php echo $this->escape($this->row->alias); ?>" />
 	<input type="hidden" name="res[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
