@@ -48,11 +48,12 @@ class modMyMessages extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
-		$limit = intval($this->params->get('limit', 10));
+		$this->limit = intval($this->params->get('limit', 10));
 
 		// Find the user's most recent support tickets
 		$recipient = new \Hubzero\Message\Recipient($database);
-		$this->rows = $recipient->getUnreadMessages($this->juser->get('id'), $limit);
+		$this->rows = $recipient->getUnreadMessages($this->juser->get('id'), $this->limit);
+		$this->total = count($recipient->getUnreadMessages($this->juser->get('id')));
 
 		if ($recipient->getError())
 		{
