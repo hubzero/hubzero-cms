@@ -85,16 +85,16 @@ $this->css()
 							foreach ($this->rows as $row)
 							{
 								$price = $row->price*$row->quantity;
-								if ($row->available) 
+								if ($row->available)
 								{ // do not add if not available
 									$total = $total+$price;
 								}
 								$sizes = array(); // build size options
-								if ($row->sizes && count($row->sizes) > 0) 
+								if ($row->sizes && count($row->sizes) > 0)
 								{
 									foreach ($row->sizes as $rs)
 									{
-										if (trim($rs) != '') 
+										if (trim($rs) != '')
 										{
 											$sizes[$rs] = $rs;
 										}

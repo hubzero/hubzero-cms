@@ -70,9 +70,7 @@ $this->css()
 							<select name="country" id="country">
 								<option value=""><?php echo JText::_('(select from list)'); ?></option>
 		<?php 
-			
 			$countries = \Hubzero\Geocode\Geocode::countries();
-			
 			$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : \Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'));
 			foreach ($countries as $country)
 			{
