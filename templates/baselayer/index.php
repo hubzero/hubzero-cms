@@ -162,6 +162,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div class="inner">
 				<?php if ($this->countModules('left or right')) : ?>
 					<section class="main section cf">
+						<div class="section-inner">
 				<?php endif; ?>
 
 				<?php if ($this->countModules('left')) : ?>
@@ -174,19 +175,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<?php endif; ?>
 
 						<!-- start component output -->
-						<?php
-						if (JRequest::getVar('option', '') == 'com_content')
-						{
-							echo '<div class="section-inner">';
-						}
-						?>
 						<jdoc:include type="component" />
-						<?php
-						if (JRequest::getVar('option', '') == 'com_content')
-						{
-							echo '</div>';
-						}
-						?>
 						<!-- end component output -->
 
 				<?php if ($this->countModules('left or right')) : ?>
@@ -199,6 +188,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<?php endif; ?>
 
 				<?php if ($this->countModules('left or right')) : ?>
+						</section><!-- / .section-inner -->
 					</section><!-- / .main section -->
 				<?php endif; ?>
 			</div>
