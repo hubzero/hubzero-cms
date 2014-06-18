@@ -99,7 +99,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	public function grades($scope=null, $member_id=null)
 	{
 		// If no user provided, assume section
-		if(is_null($member_id))
+		if (is_null($member_id))
 		{
 			$members = $this->course->offering()->section()->members();
 

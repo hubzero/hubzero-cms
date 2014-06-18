@@ -43,7 +43,7 @@ $app = JFactory::getApplication();
 			$template_css = DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'media.css';
 			$component_css = DS.'components'.DS.'com_courses'.DS.'assets'.DS.'css'.DS.'media.css';
 		?>
-		<?php if(is_file( JPATH_ROOT . $template_css)) { ?>
+		<?php if (is_file( JPATH_ROOT . $template_css)) { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $template_css; ?>" />
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />

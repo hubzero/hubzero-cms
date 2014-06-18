@@ -66,7 +66,7 @@ class VideoAssetHandler extends FileAssetHandler
 		$return_info = parent::create();
 
 		// Check for errors in response
-		if(array_key_exists('error', $return_info))
+		if (array_key_exists('error', $return_info))
 		{
 			return array('error' => $return_info['error']);
 		}
@@ -75,7 +75,7 @@ class VideoAssetHandler extends FileAssetHandler
 			$asset = $return_info['assets'];
 
 			// Exapand zip file if applicable - we're assuming zips are hubpresenter videos
-			if($asset['asset_ext'] == 'zip')
+			if ($asset['asset_ext'] == 'zip')
 			{
 				// Set the timout so that PHP execution doesn't run out of time
 				set_time_limit(60);
@@ -85,7 +85,7 @@ class VideoAssetHandler extends FileAssetHandler
 
 				// Exec the command to unzip things
 				// @FIXME: check for symlinks and other potential security concerns
-				if($result = shell_exec("unzip {$escaped_file} -d {$asset['upload_path']}"))
+				if ($result = shell_exec("unzip {$escaped_file} -d {$asset['upload_path']}"))
 				{
 					// Remove original archive
 					JFile::delete($asset['target_path']);

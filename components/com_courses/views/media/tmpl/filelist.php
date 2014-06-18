@@ -45,7 +45,7 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 			$template_css = DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'media.css';
 			$component_css = DS.'components'.DS.'com_courses'.DS.'assets'.DS.'css'.DS.'media.css';
 		?>
-		<?php if(is_file( JPATH_ROOT . $template_css)) { ?>
+		<?php if (is_file( JPATH_ROOT . $template_css)) { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $template_css; ?>" />
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
@@ -146,7 +146,7 @@ for ($i=0; $i<count($docs); $i++)
 						<td><img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $docs[$doc_name]; ?></td>
 						<td>
-							<?php if(is_object($course)) : ?>
+							<?php if (is_object($course)) : ?>
 								<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
 									<img src="/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
 								</a>
@@ -172,7 +172,7 @@ for ($i=0; $i<count($images); $i++)
 						<td><img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $images[$image_name]; ?></td>
 						<td>
-							<?php if(is_object($course)) : ?>
+							<?php if (is_object($course)) : ?>
 							<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" /></a>
 							<?php endif; ?>
 						</td>

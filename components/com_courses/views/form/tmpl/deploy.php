@@ -46,7 +46,7 @@ $this->css('form.css')
 		<fieldset>
 			<input type="hidden" name="controller" value="form" />
 			<input type="hidden" name="task" value="createDeployment" />
-			<input type="hidden" name="formId" value="<?= $this->pdf->getId() ?>" />
+			<input type="hidden" name="formId" value="<?php echo $this->pdf->getId() ?>" />
 			<?php if ($tmpl = JRequest::getWord('tmpl', false)): ?>
 				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 			<?php endif; ?>

@@ -135,14 +135,14 @@ class AssetHandler
 		// Loop through the added classes
 		foreach ($diff as $class)
 		{
-			if($class != get_class())
+			if ($class != get_class())
 			{
 				// Check to see if this handler responds to our current extension
-				if(method_exists($class, 'getExtensions'))
+				if (method_exists($class, 'getExtensions'))
 				{
 					$extensions = $class::getExtensions();
 
-					if(in_array(strtolower($fileType), $extensions))
+					if (in_array(strtolower($fileType), $extensions))
 					{
 						$this->addHandler($class);
 					}
@@ -208,11 +208,11 @@ class AssetHandler
 		// @FIXME: how do we want to handle having an unknown extension?  Just upload it or throw an error?
 
 		// If we have an incoming class, we know to just run that
-		if(!empty($class) && in_array($class, $this->handlers))
+		if (!empty($class) && in_array($class, $this->handlers))
 		{
 			$handler = $class;
 		}
-		elseif(isset($this->handlers[0]))
+		elseif (isset($this->handlers[0]))
 		{
 			// otherwise, just run the first in the list
 			// This is a fallback - not intended to be triggered unless there was only one handler for this filetype
@@ -225,7 +225,7 @@ class AssetHandler
 		}
 
 		// Make sure the class exists and has a create method
-		if(isset($handler) && method_exists($handler, 'create'))
+		if (isset($handler) && method_exists($handler, 'create'))
 		{
 			// Run create and return the results
 			return $handler::create();

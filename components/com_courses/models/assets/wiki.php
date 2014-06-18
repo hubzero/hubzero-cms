@@ -145,7 +145,7 @@ class WikiAssetHandler extends ContentAssetHandler
 
 				// Move the file to the site folder
 				set_time_limit(60);
-				if(!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path))
+				if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][$i], $target_path))
 				{
 					return array('error' => 'Move file failed');
 				}

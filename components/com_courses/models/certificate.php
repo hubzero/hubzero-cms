@@ -120,12 +120,12 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid . $course_id])) 
+		if (!isset($instances[$oid . $course_id]))
 		{
 			$instances[$oid . $course_id] = new self($oid, $course_id);
 		}
@@ -173,7 +173,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			if (!file_exists($base))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($base)) 
+				if (!JFolder::create($base))
 				{
 					$this->setError(JText::_('Unable to create directory.'));
 					return false;
@@ -414,11 +414,11 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	{
 		// Remove files
 		$path = $this->path('system');
-		if (is_dir($path)) 
+		if (is_dir($path))
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path)) 
+			if (!JFolder::delete($path))
 			{
 				$this->setError(JText::_('Unable to remove upload directory and files for certificate.'));
 				return false;

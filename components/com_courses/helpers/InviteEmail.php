@@ -96,11 +96,15 @@ Class CoursesHelperInviteEmail extends JTable
 		$db->setQuery($sql);
 		$invitees = $db->loadAssocList();
 
-		if($email_only) {
-			foreach($invitees as $invitee) {
+		if ($email_only)
+		{
+			foreach ($invitees as $invitee)
+			{
 				$final[] = $invitee['email'];
 			}
-		} else {
+		}
+		else
+		{
 			$final = $invitees;
 		}
 
@@ -124,9 +128,9 @@ Class CoursesHelperInviteEmail extends JTable
 
 		$current = $this->getInviteEmails( $gid, true );
 
-		foreach($emails as $e)
+		foreach ($emails as $e)
 		{
-			if(in_array($e, $current))
+			if (in_array($e, $current))
 			{
 				$exists[] = $e;
 			}
@@ -136,10 +140,10 @@ Class CoursesHelperInviteEmail extends JTable
 			}
 		}
 
-		if(count($added) > 0)
+		if (count($added) > 0)
 		{
-	   		$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";
-			foreach($added as $a)
+			$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";
+			foreach ($added as $a)
 			{
 				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
 			}
@@ -151,6 +155,6 @@ Class CoursesHelperInviteEmail extends JTable
 
 		$return['exists'] = $exists;
 		$return['added'] = $added;
-	    return $return;
+		return $return;
 	}
 }

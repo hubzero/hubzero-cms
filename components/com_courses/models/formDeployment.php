@@ -666,7 +666,7 @@ class PdfFormDeployment
 			'SELECT `asset_id` FROM `#__courses_forms` WHERE `id` = ' . $dbh->Quote($fid)
 		);
 
-		if($result = $dbh->loadResult())
+		if ($result = $dbh->loadResult())
 		{
 			// Get our asset object
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');

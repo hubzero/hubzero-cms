@@ -54,7 +54,7 @@ if (empty($path))
 $filename = JPATH_ROOT . $path;
 
 // Ensure the file exist
-if(!file_exists($filename))
+if (!file_exists($filename))
 {
 	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
 	return;

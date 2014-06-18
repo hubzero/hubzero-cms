@@ -113,7 +113,7 @@ class FormAssetHandler extends ContentAssetHandler
 		$return = parent::create();
 
 		// Check for errors in response
-		if(array_key_exists('error', $return))
+		if (array_key_exists('error', $return))
 		{
 			return array('error' => $return['error']);
 		}

@@ -99,7 +99,7 @@ class PdfForm
 		$this->base = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/courses'), DS) . DS . 'forms' . DS;
 
 		// If the direcotry doesn't exist, create it
-		if(!is_dir($this->base))
+		if (!is_dir($this->base))
 		{
 			mkdir($this->base);
 		}

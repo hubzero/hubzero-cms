@@ -58,7 +58,7 @@ $this->css('course.css')
 </header>
 
 	<?php
-		foreach($this->notifications as $notification) {
+		foreach ($this->notifications as $notification) {
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
@@ -77,7 +77,7 @@ $this->css('course.css')
 			<label>
 				<select name="course[logo]" id="course_logo" rel="<?php echo $this->course->get('gidNumber'); ?>">
 					<option value="">Select a course logo...</option>
-					<?php foreach($this->logos as $logo) { ?>
+					<?php foreach ($this->logos as $logo) { ?>
 						<?php
 							$remove = JPATH_SITE . DS . 'site' . DS . 'courses' . DS . $this->course->get('gidNumber') . DS;
 							$sel = (str_replace($remove,"",$logo) == $this->course->get('logo')) ? 'selected' : '';
@@ -89,7 +89,7 @@ $this->css('course.css')
 			<label>
 				<div class="preview" id="logo">
 					<div id="logo_picked">
-						<?php if($this->course->get('logo')) { ?>
+						<?php if ($this->course->get('logo')) { ?>
 							<img src="/site/courses/<?php echo $this->course->get('gidNumber'); ?>/<?php echo $this->course->get('logo'); ?>" alt="<?php echo $this->course->get('cn') ?>" />
 						<?php } else { ?>
 							<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->course->get('cn') ?>" >
@@ -108,14 +108,14 @@ $this->css('course.css')
 
 			<fieldset>
 			<legend>Pick Overview Content Type</legend>
-			<p class="side-by-side<?php if($this->course->get('overview_type') == 0) { echo ' checked'; } ?>">
+			<p class="side-by-side<?php if ($this->course->get('overview_type') == 0) { echo ' checked'; } ?>">
 				<label>
-					<input type="radio" name="course[overview_type]" id="course_overview_type_default" value="0" <?php if($this->course->get('overview_type') == 0) { echo 'checked'; } ?>> Default Content
+					<input type="radio" name="course[overview_type]" id="course_overview_type_default" value="0" <?php if ($this->course->get('overview_type') == 0) { echo 'checked'; } ?>> Default Content
 				</label>
 			</p>
-			<p class="side-by-side<?php if($this->course->get('overview_type') == 1) { echo ' checked'; } ?>">
+			<p class="side-by-side<?php if ($this->course->get('overview_type') == 1) { echo ' checked'; } ?>">
 				<label>
-					<input type="radio" name="course[overview_type]" id="course_overview_type_custom" value="1" <?php if($this->course->get('overview_type') == 1) { echo 'checked'; } ?>> Custom Content
+					<input type="radio" name="course[overview_type]" id="course_overview_type_custom" value="1" <?php if ($this->course->get('overview_type') == 1) { echo 'checked'; } ?>> Custom Content
 				</label>
 			</p>
 			<br class="clear" />
@@ -139,15 +139,15 @@ $this->css('course.css')
 				<legend>Set Permissions for each Tab</legend>
 				<ul id="access">
 					<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->course->get('cn') ?>" >
-					<?php for($i=0; $i<count($this->hub_course_plugins); $i++) { ?>
+					<?php for ($i=0; $i<count($this->hub_course_plugins); $i++) { ?>
 						<?php if ($this->hub_course_plugins[$i]['display_menu_tab']) { ?>
 							<li class="course_access_control_<?php echo strtolower($this->hub_course_plugins[$i]['title']); ?>">
 								<input type="hidden" name="course_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_course_plugins[$i]['name']; ?>">
 								<span class="menu_item_title"><?php echo $this->hub_course_plugins[$i]['title']; ?></span>
 								<select name="course_plugin[<?php echo $i; ?>][access]">
-									<?php foreach($levels as $level => $name) { ?>
+									<?php foreach ($levels as $level => $name) { ?>
 										<?php $sel = ($this->course_plugin_access[$this->hub_course_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
-										<?php if(($this->hub_course_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_course_plugins[$i]['name'] != 'overview') { ?>
+										<?php if (($this->hub_course_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_course_plugins[$i]['name'] != 'overview') { ?>
 											<option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
 										<?php } ?>
 									<?php } ?>

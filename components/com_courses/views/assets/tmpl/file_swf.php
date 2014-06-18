@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <header id="content-header">
-	<h2><?= $this->asset->title ?></h2>
+	<h2><?php echo $this->asset->title ?></h2>
 </header>
 
 <object type="application/x-shockwave-flash" width="100%" height="100%">

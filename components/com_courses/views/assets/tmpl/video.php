@@ -202,11 +202,11 @@ if ($type == 'hubpresenter' || $type == 'html5')
 
 <?php if ($type == 'html5') : ?>
 	<div id="video-container">
-		<?php if(count($presentation->media) > 0) : ?>
+		<?php if (count($presentation->media) > 0) : ?>
 			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->id; ?>">
-				<?php foreach($presentation->media as $video) : ?>
+				<?php foreach ($presentation->media as $video) : ?>
 					<?php
-						switch( $video->type )
+						switch ( $video->type )
 						{
 							case 'ogg':
 							case 'ogv':     $type = "video/ogg;";    break;
@@ -243,8 +243,8 @@ if ($type == 'hubpresenter' || $type == 'html5')
 					style="<?php echo "width:{$width};height:{$height};"; ?>"
 					data-mediaid="<?php echo $this->asset->id; ?>"></a>
 
-				<?php if(count($presentation->subtitles) > 0) : ?>
-					<?php foreach($presentation->subtitles as $subtitle) : ?>
+				<?php if (count($presentation->subtitles) > 0) : ?>
+					<?php foreach ($presentation->subtitles as $subtitle) : ?>
 						<?php
 							//get file modified time
 							$source = $subtitle->source;
@@ -362,7 +362,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer"></a>
 
 							<?php if (isset($subs) && count($subs) > 0) : ?>
-								<?php foreach($subs as $sub) : ?>
+								<?php foreach ($subs as $sub) : ?>
 									<?php $info2 = pathinfo($sub); ?>
 									<div data-type="subtitle" data-lang="<?php echo $info2['filename']; ?>" data-src="<?php echo $content_folder . DS . $sub; ?>?v=<?php echo filemtime( JPATH_ROOT . $content_folder . DS . $sub ); ?>"></div>
 								<?php endforeach; ?>
@@ -387,7 +387,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									<?php
 										// Use thumb if possible
 										$thumb = '';
-										if(isset($slide->thumb) && $slide->thumb && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->thumb))
+										if (isset($slide->thumb) && $slide->thumb && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->thumb))
 										{
 											$thumb = $content_folder.DS.$slide->thumb;
 										}

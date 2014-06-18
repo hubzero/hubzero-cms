@@ -34,7 +34,7 @@ $incomplete = $this->incomplete;
 		<?php $pdf->eachPage(function($url, $idx) use ($layout, $progress, $incomplete) { ?>
 			<li>
 				<img src="<?php echo $url ?>" alt="" />
-				<?
+				<?php
 				if (isset($layout[$idx - 1])):
 					$qidx = 0;
 					foreach ($layout[$idx - 1] as $qid=>$group):
@@ -48,7 +48,7 @@ $incomplete = $this->incomplete;
 					endforeach;
 				endif; ?>
 			</li>
-		<? }); ?>
+		<?php }); ?>
 		</ol>
 		<fieldset>
 			<p>

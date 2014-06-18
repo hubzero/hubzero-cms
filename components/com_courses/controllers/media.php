@@ -164,7 +164,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			}
 
 			// Check to see if we need to set a new farthest position
-			if(isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
+			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
 				$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();

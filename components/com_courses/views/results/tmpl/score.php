@@ -65,7 +65,7 @@ $record = $resp->getAnswers();
 			View another attempt:
 			<select name="attempt">
 				<?php for ($i = 1; $i <= $this->dep->getAllowedAttempts(); $i++) { ?>
-					<?
+					<?php
 						if ($i == $attempt) :
 							continue;
 						endif;

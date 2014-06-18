@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		<h3>Times</h3>
 		<p>
 			<label>
-				<span>Start time:</span><input type="datetime" name="deployment[startTime]" value="<?= htmlentities(($val = $this->dep->getStartTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : JHTML::_('date', 'now', 'Y-m-d H:i:s')) ?>" />
+				<span>Start time:</span><input type="datetime" name="deployment[startTime]" value="<?php echo htmlentities(($val = $this->dep->getStartTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : JHTML::_('date', 'now', 'Y-m-d H:i:s')) ?>" />
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('startTime')): ?>
 			<ul class="errors">
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<p>
 			<label>
-				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?= htmlentities(($val = $this->dep->getEndTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : '') ?>" />
+				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?php echo htmlentities(($val = $this->dep->getEndTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : '') ?>" />
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('endTime')): ?>
 			<ul class="error">
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<p>
 			<label>
-				<span>Time limit:</span><input type="number" class="minutes" name="deployment[timeLimit]" value="<?= htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
+				<span>Time limit:</span><input type="number" class="minutes" name="deployment[timeLimit]" value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('timeLimit')): ?>
 			<ul class="error">
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<p>
 			<label>
-				<span>Attempts:</span><input type="number" class="minutes" name="deployment[allowedAttempts]" value="<?= htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
+				<span>Attempts:</span><input type="number" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('allowedAttempts')): ?>
 			<ul class="error">
@@ -92,9 +92,9 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<h3>Results</h3>
 		<p>While the form is open, show users:<br />
-			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <? if ($resultPages['open'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
-			<input type="radio" name="deployment[resultsOpen]" value="score" <? if ($resultPages['open'] == 'score' || !$resultPages['open']) echo 'checked="checked" '; ?>/> their score<br />
-			<input type="radio" name="deployment[resultsOpen]" value="details" <? if ($resultPages['open'] == 'details') echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
+			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <?php if ($resultPages['open'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
+			<input type="radio" name="deployment[resultsOpen]" value="score" <?php if ($resultPages['open'] == 'score' || !$resultPages['open']) echo 'checked="checked" '; ?>/> their score<br />
+			<input type="radio" name="deployment[resultsOpen]" value="details" <?php if ($resultPages['open'] == 'details') echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
 			<?php if ($showErrors && $this->dep->hasErrors('resultsOpen')): ?>
 			<ul class="error">
 				<?php foreach ($this->dep->getErrors('resultsOpen') as $err): ?>
@@ -104,9 +104,9 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endif; ?>
 		</p>
 		<p>After the form is closed, show users:<br />
-			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <? if ($resultPages['closed'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
-			<input type="radio" name="deployment[resultsClosed]" value="score" <? if ($resultPages['closed'] == 'score') echo 'checked="checked" '; ?>/> their score<br />
-			<input type="radio" name="deployment[resultsClosed]" value="details" <? if ($resultPages['closed'] == 'details' || !$resultPages['closed']) echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
+			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <?php if ($resultPages['closed'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
+			<input type="radio" name="deployment[resultsClosed]" value="score" <?php if ($resultPages['closed'] == 'score') echo 'checked="checked" '; ?>/> their score<br />
+			<input type="radio" name="deployment[resultsClosed]" value="details" <?php if ($resultPages['closed'] == 'details' || !$resultPages['closed']) echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
 			<?php if ($showErrors && $this->dep->hasErrors('resultsClosed')): ?>
 			<ul class="error">
 				<?php foreach ($this->dep->getErrors('resultsClosed') as $err): ?>

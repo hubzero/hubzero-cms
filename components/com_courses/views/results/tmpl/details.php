@@ -80,7 +80,7 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 	<?php $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
 		<li>
 			<img src="<?php echo $url ?>" />
-			<?
+			<?php
 			if (isset($layout[$idx - 1])):
 				$qidx = 0;
 				foreach ($layout[$idx - 1] as $qid=>$group):

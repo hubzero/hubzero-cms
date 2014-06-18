@@ -173,7 +173,7 @@ class FileAssetHandler extends AssetHandler
 			return array('error' => 'File rejected because the anti-virus scan failed.');
 		}
 
-		if(!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
+		if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
 		{
 			// Move failed, delete asset and association and return an error
 			$assetObj->delete();
