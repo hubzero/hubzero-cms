@@ -310,7 +310,7 @@ class Helper
 		if ($cat == 1) {
 			$g .= "(g.type='".$cat."' OR g.type='3') AND";
 		}
-		else
+		elseif ($cat !== null)
 		{
 			$g .= "g.type=" . $db->quote($cat) . " AND ";
 		}
