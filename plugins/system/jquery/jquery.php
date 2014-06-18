@@ -29,7 +29,7 @@ class plgSystemJquery extends JPlugin
 		$app = JFactory::getApplication();
 
 		$client = 'Site';
-		if ($app->isAdmin()) 
+		if ($app->isAdmin())
 		{
 			$client = 'Admin';
 		}
@@ -69,22 +69,22 @@ class plgSystemJquery extends JPlugin
 				break;
 			}
 		}
-		if ($value = $this->params->get('jqueryui')) 
+		if ($value = $this->params->get('jqueryui'))
 		{
-			if ($value == 1) 
+			if ($value == 1)
 			{
 				$version = $this->params->get('jqueryuiVersion', '1.8.6');
 
 				$document->addScript($root . '/media/system/js/jquery.ui.js');
 			}
-			elseif ($value == 2) 
+			elseif ($value == 2)
 			{
 				$document->addScript($this->params->get('jqueryuicdnpath'));
 			}
 
-			if ($value = $this->params->get('jqueryuicss')) 
+			if ($value = $this->params->get('jqueryuicss'))
 			{
-				if ($value == 1) 
+				if ($value == 1)
 				{
 					$path = $this->params->get('jqueryuicsspath', '/media/system/css/jquery.ui.css');
 					if ($path != '/media/system/css/jquery.ui.css') //$root . '/media/system/css/jquery.ui.css'
@@ -104,10 +104,10 @@ class plgSystemJquery extends JPlugin
 		}
 		if ($value = $this->params->get('jqueryfb'))
 		{
-			if ($value == 1) 
+			if ($value == 1)
 			{
 				$version = $this->params->get('jqueryfbVersion', '2.0.4');
-				
+
 				$document->addScript($root . '/media/system/js/jquery.fancybox.js');
 			}
 			elseif ($value == 2)
@@ -167,7 +167,7 @@ class plgSystemJquery extends JPlugin
 
 		// No remember me for admin
 		$client = 'Site';
-		if ($app->isAdmin() || JRequest::getVar('format') == 'pdf') 
+		if ($app->isAdmin() || JRequest::getVar('format') == 'pdf')
 		{
 			$client = 'Admin';
 			return;
