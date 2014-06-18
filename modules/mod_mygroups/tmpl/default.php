@@ -36,11 +36,10 @@ $groups = $this->groups;
 $total = count($this->groups);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
-	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_MY_GROUPS'); ?> (<?php echo $total; ?>)</a></li>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
-	</ul>
+	<ul class="module-nav grouped">
+		<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
+		<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
+	</ul>  
 
 	<?php if ($groups && $total > 0) { ?>
 		<ul class="compactlist mygroups">
@@ -74,11 +73,11 @@ $total = count($this->groups);
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></em></p>
 	<?php } ?>
 
 	<?php if ($total > $this->limit) { ?>
-		<p><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, ($total - $this->limit)); ?></p>
+		<p class="note"><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups')); ?></p>
 	<?php } ?>
 </div>
 

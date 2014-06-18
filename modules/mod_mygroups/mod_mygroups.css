@@ -12,84 +12,83 @@
 	-- -- -- -- -- -- --
 
 */
-	div.draggable .compactlist li.group {
-		background-position: 0.7em 0.7em;
-		padding-right: 5em;
-	}
-	div.draggable .compactlist li.group a {
-	}
-	div.draggable .compactlist li span span.status {
-	}
-	div.draggable .compactlist li span span.member {
-		color: #66AA00;
-	}
-	div.draggable .compactlist li span span.manager {
-		color: #ff1177;
-	}
-	div.draggable .compactlist li span span.pending {
-		color: #AA3300;
-	}
-	div.draggable .compactlist li span span.invitee {
-		color: #aaaaaa;
-	}
-	div.draggable .compactlist li span.pending-approval {
-		background-color: #FF9900;
-		color: #FFF;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		margin: 0;
-		padding: 0.25em 0.5em;
-		font-weight: bold;
-		font-size: 0.9em;
-	}
-	div.draggable .compactlist li.group .actions {
-		text-align: left;
-		display: block;
-		padding-right: 1em;
-		margin:0;
-	}
-	div.draggable .compactlist li.group .actions a {
-		font-size: 90%;
-		border: none;
-		padding: 0.2em 0.5em;
-		background-color: #777;
-		color: #fff;
-		-webkit-border-radius: 0.5em;
-		-moz-border-radius: 0.5em;
-		-ms-border-radius: 0.5em;
-		-o-border-radius: 0.5em;
-		border-radius: 0.5em;
-		margin: 0;
-	}
-	div.draggable .compactlist li.group .actions a:hover {
-		border: none;
-	}
-	div.draggable .compactlist li.group .actions a.action-accept:hover {
-		background-color: #66AA00;
-	}
-	div.draggable .compactlist li.group .actions a.action-cancel:hover {
-		background-color: #c30;
-	}
-	div.draggable .compactlist .group { 
-		position: relative;
-	}
-	div.draggable .compactlist .group:before {
-		content: "\f042";
-		font-family: "Fontcons";
-		position: absolute;
-		top: 0.6em;
-		left: 0.6em;
-		font-size: 1.2em;
-		line-height: 1;
-		color: #ccc;
-	}
-	div.draggable .compactlist .group:hover:before {
-		color: #999;
-	}
-	ul.mygroups {
-		max-height: 350px;
-		overflow-y: scroll;
-	}
+.compactlist li.group {
+	padding-right: 5em;
+}
+.compactlist li.group a {
+}
+.compactlist li span span.status {
+}
+.compactlist li span span.member {
+	color: #66AA00;
+}
+.compactlist li span span.manager {
+	color: #ff1177;
+}
+.compactlist li span span.pending {
+	color: #AA3300;
+}
+.compactlist li span span.invitee {
+	color: #aaaaaa;
+}
+.compactlist li span.pending-approval {
+	background-color: #FF9900;
+	color: #FFF;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+	margin: 0;
+	padding: 0.25em 0.5em;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+.compactlist li.group .actions {
+	text-align: left;
+	display: block;
+	padding-right: 1em;
+	margin:0;
+}
+.compactlist li.group .actions a {
+	font-size: 90%;
+	border: none;
+	padding: 0.2em 0.5em;
+	background-color: #777;
+	color: #fff;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-ms-border-radius: 0.5em;
+	-o-border-radius: 0.5em;
+	border-radius: 0.5em;
+	margin: 0;
+}
+.compactlist li.group .actions a:hover {
+	border: none;
+}
+.compactlist li.group .actions a.action-accept:hover {
+	background-color: #66AA00;
+}
+.compactlist li.group .actions a.action-cancel:hover {
+	background-color: #c30;
+}
+.compactlist .group { 
+	position: relative;
+}
+.compactlist .group:before {
+	content: "\f042";
+	font-family: "Fontcons";
+	position: absolute;
+	top: 0.6em;
+	left: 0.6em;
+	font-size: 1.2em;
+	line-height: 1;
+	color: #ccc;
+}
+.compactlist .group:hover:before {
+	color: #999;
+}
+
+p.note {
+	color: #aaa;
+}
