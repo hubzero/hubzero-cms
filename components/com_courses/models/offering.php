@@ -1179,6 +1179,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$section->set('title', JText::_('Default'));
 			$section->set('state', 1);
 			$section->set('is_default', 1);
+			$section->set('enrollment', $this->config('default_enrollment', 0));
 			$section->set('start_date', $this->get('start_date'));
 			$section->set('end_date', $this->get('end_date'));
 			$section->set('publish_up', $this->get('publish_up'));

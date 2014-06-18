@@ -75,6 +75,11 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="uploadpath" type="text" menu="hide" default="/site/courses" label="Upload path" description="File path for pictures" size="50" />
 		<field name="tmpl" type="text" menu="hide" default="" label="Template" description="Template to use" size="50" />
 		<field name="default_asset_groups" type="text" menu="hide" default="Lectures, Homework, Exam" label="Default Asset Groups" description="Comma separated list of default asset groups to create when creating a new unit using the instructor builder." size="50" />
+		<field name="default_enrollment" type="list" default="0" label="Default Enrollment" description="Specify the enrollment setting for newly created sections.">
+			<option value="0">Open (anyone can join)</option>
+			<option value="1">Restricted (coupon code is required)</option>
+			<option value="2">Closed (no new enrollment)</option>
+		</field>
 		<field name="section_grade_policy" type="list" default="1" label="Can section owners edit grading policy?" description="Specify whether or not section owners are allowed to editing the grading policy for their section. If no, policy inteface only shows up for course instructors.">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
