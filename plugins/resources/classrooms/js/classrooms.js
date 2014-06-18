@@ -2,7 +2,7 @@ jQuery(function() {
 
 	var dataSrc = $('#cluster-data'),
 	       prnt = dataSrc.parent(),
-	       info = $('<div class="info"></div>'),
+	       info = $('<div class="tooltip info"></div>'),
 	      nodes = dataSrc.data('seed'),
 	   coreTool = dataSrc.data('tool');
 
@@ -283,6 +283,7 @@ jQuery(function() {
 		threshold.val(5);
 	}
 	prnt
+		.append($('<p class="info">The chart shows the use of this tool, along with other tools, by automatically detected clustered groups exhibiting classroom behavior during the year and semester selected.  Each row represents a user and each column represents a day.  The dots represent use of a tool by that user on that day. The color of the dot indicates the tool used.  The chart is segmented into different usage patterns for these tools over time.</p>').show())
 		.append(yearList)
 		.append(semesterList)
 		.append($('<p>Showing classroom tool usage comproside of at least </p>').append(threshold).append(document.createTextNode(' sessions with this tool')))
