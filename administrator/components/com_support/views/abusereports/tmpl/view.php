@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -38,15 +38,19 @@ $reporter = JUser::getInstance($this->report->created_by);
 
 $link = '';
 
-if (is_object($this->reported)) {
+if (is_object($this->reported))
+{
 	$author = JUser::getInstance($this->reported->author);
 
-	if (is_object($author) && $author->get('username')) {
-		$this->title .= ' by '.$author->get('username');
-	} else {
-		$this->title .= ' by '.JText::_('UNKNOWN');
+	if (is_object($author) && $author->get('username'))
+	{
+		$this->title .= $author->get('username');
 	}
-	$this->title .= ($this->reported->anon) ? '('.JText::_('ANONYMOUS').')':'';
+	else
+	{
+		$this->title .= JText::_('COM_SUPPORT_UNKNOWN');
+	}
+	$this->title .= ($this->reported->anon) ? '(' . JText::_('COM_SUPPORT_ANONYMOUS') . ')':'';
 
 	$link = '../'.$this->reported->href;
 }
@@ -68,27 +72,30 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('ITEM_REPORTED_AS_ABUSIVE'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_SUPPORT_REPORT_ITEM_REPORTED_AS_ABUSIVE'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td>
-							<h4><?php echo '<a href="'.$link.'">'.$this->escape($this->title).'</a>: ' ?></h4>
+							<h4><?php echo '<a href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
 							<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
-		                    <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
-								echo '<p>'.$this->escape(stripslashes($this->reported->subject)) .'</p>';
+							<?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
+								echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
 							} ?>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<p style="color:#999;">
-								<?php echo JText::_('REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('UNKNOWN'); ?>, <?php echo JText::_('RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?>: 
+								<?php echo JText::_('COM_SUPPORT_REPORT_REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('COM_SUPPORT_UNKNOWN'); ?>, <?php echo JText::_('COM_SUPPORT_REPORT_RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?>: 
 								<?php 
-								if ($this->report->report) {
+								if ($this->report->report)
+								{
 									echo '<br /><br />' . $this->escape(stripslashes($this->report->report));
-								} else {
+								}
+								else
+								{
 									echo '<br /><br />' . $this->escape(stripslashes($this->report->subject));
 								}
 								?>
@@ -101,41 +108,41 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('TAKE_ACTION'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_SUPPORT_REPORT_TAKE_ACTION'); ?></span></legend>
 
-<?php if ($this->report->state==0) { ?>
+		<?php if ($this->report->state==0) { ?>
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td>
-							<label for="field-task-release"><input type="radio" name="task" id="field-task-release" value="release" /> <?php echo JText::_('RELEASE_ITEM'); ?></label><br />
+							<label for="field-task-release"><input type="radio" name="task" id="field-task-release" value="release" /> <?php echo JText::_('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?></label><br />
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label for="field-task-remove"><input type="radio" name="task" id="field-task-remove" value="remove" /> <?php echo JText::_('DELETE_ITEM'); ?> <?php echo JText::_('(Append explanation below - optional)'); ?></label><br />
+							<label for="field-task-remove"><input type="radio" name="task" id="field-task-remove" value="remove" /> <?php echo JText::_('COM_SUPPORT_REPORT_DELETE_ITEM'); ?> <?php echo JText::_('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?></label><br />
 							<label><textarea name="note" id="note" rows="5" cols="25" style="width: 100%;"></textarea></label><br />
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label for="field-task-cancel"><input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" /> <?php echo JText::_('DECIDE_LATER'); ?></label>
+							<label for="field-task-cancel"><input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" /> <?php echo JText::_('COM_SUPPORT_REPORT_DECIDE_LATER'); ?></label>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-<?php } else { ?>
-			<p class="warning"><?php echo JText::_('Action already taken.'); ?></p>
+		<?php } else { ?>
+			<p class="warning"><?php echo JText::_('COM_SUPPORT_REPORT_ACTION_TAKEN'); ?></p>
 			<input type="hidden" name="task" value="view" />
-<?php } ?>
+		<?php } ?>
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->report->id ?>" />
 	<input type="hidden" name="parentid" value="<?php echo $this->parentid ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -196,7 +196,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('CATEGORY_SUCCESSFULLY_SAVED')
+				JText::_('COM_SUPPORT_CATEGORY_SUCCESSFULLY_SAVED')
 			);
 			return;
 		}
@@ -224,8 +224,11 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE');
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+				JText::_('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
@@ -239,7 +242,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('CATEGORY_SUCCESSFULLY_DELETED', count($ids))
+			JText::sprintf('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 

@@ -28,9 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( JText::_( 'Support' ).': <small><small>[ '.JText::_( 'Tag/Group' ).' ]</small></small>', 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TAG_GROUPS'), 'support.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -40,11 +40,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -52,10 +52,10 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JText::_('SUPPORT_COL_TAG'); ?></th>
-				<th><?php echo JText::_('SUPPORT_COL_GROUP'); ?></th>
-				<th colspan="3"><?php echo JText::_('SUPPORT_COL_PRIORITY'); ?></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_TAG'); ?></th>
+				<th><?php echo JText::_('COM_SUPPORT_COL_GROUP'); ?></th>
+				<th colspan="3"><?php echo JText::_('COM_SUPPORT_COL_PRIORITY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -91,5 +91,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

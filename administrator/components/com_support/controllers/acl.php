@@ -101,7 +101,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('ACL successfully updated')
+			JText::_('COM_SUPPORT_ACL_SAVED')
 		);
 	}
 
@@ -142,7 +142,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('ACL successfully removed')
+			JText::_('COM_SUPPORT_ACL_REMOVED')
 		);
 	}
 
@@ -176,7 +176,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 					$user = JUser::getInstance($row->foreign_key);
 					if (!is_object($user))
 					{
-						JError::raiseError(500, JText::_('Cannot find user'));
+						JError::raiseError(500, JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'));
 						return;
 					}
 					$row->foreign_key = intval($user->get('id'));
@@ -187,7 +187,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 					$group = \Hubzero\User\Group::getInstance($row->foreign_key);
 					if (!is_object($group))
 					{
-						JError::raiseError(500, JText::_('Cannot find group'));
+						JError::raiseError(500, JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'));
 						return;
 					}
 					$row->foreign_key = intval($group->gidNumber);
@@ -247,7 +247,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('ACL successfully created')
+			JText::_('COM_SUPPORT_ACL_SAVED')
 		);
 	}
 

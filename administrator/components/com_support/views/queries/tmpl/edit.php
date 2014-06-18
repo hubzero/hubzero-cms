@@ -100,19 +100,19 @@ $juser = JFactory::getUser();
 							<td class="key"><label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label></td>
 							<td>
 								<select name="fields[sort]" id="field-sort">
-									<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>>Open/Closed</option>
-									<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>>Status</option>
-									<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>>Submitter</option>
-									<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>>Owner</option>
-									<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>>Group</option>
-									<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>>ID</option>
-									<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>>Report</option>
-									<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>>Resolution</option>
-									<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>>Severity</option>
-									<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>>Tag</option>
-									<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>>Type</option>
-									<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>>Created</option>
-									<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>>Category</option>
+									<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+									<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+									<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+									<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+									<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>><?php echo JText::_('Group'); ?></option>
+									<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+									<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+									<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
+									<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+									<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+									<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+									<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+									<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 								</select>
 							</td>
 							<td>
@@ -208,19 +208,19 @@ $juser = JFactory::getUser();
 			<p>
 				<label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
 				<select name="fields[sort]" id="field-sort">
-					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>>Open/Closed</option>
-					<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>>Status</option>
-					<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>>Submitter</option>
-					<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>>Owner</option>
-					<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>>Group</option>
-					<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>>ID</option>
-					<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>>Report</option>
-					<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>>Resolution</option>
-					<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>>Severity</option>
-					<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>>Tag</option>
-					<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>>Type</option>
-					<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>>Created</option>
-					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>>Category</option>
+					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+					<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+					<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+					<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+					<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>><?php echo JText::_('Group'); ?></option>
+					<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+					<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+					<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
+					<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+					<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+					<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+					<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 				</select>
 				<select name="fields[sort_dir]" id="field-sort_dir">
 					<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; }; ?>>desc</option>

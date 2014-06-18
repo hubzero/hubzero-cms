@@ -38,6 +38,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('stats');
 
 JHTML::_('behavior.framework');
+$this->css();
 
 $database = JFactory::getDBO();
 $sql = "SELECT resolved

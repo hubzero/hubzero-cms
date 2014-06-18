@@ -42,11 +42,11 @@ if ($this->getError()) { ?>
 		<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=tickets&amp;show=<?php echo $query->id; ?>">
 			<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 		</a>
-		<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Delete'); ?>">
-			<?php echo JText::_('Delete'); ?>
+		<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('JDELETE'); ?>">
+			<?php echo JText::_('JDELETE'); ?>
 		</a>
-		<a class="modal edit" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-			<?php echo JText::_('Edit'); ?>
+		<a class="modal edit" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+			<?php echo JText::_('JACTION_EDIT'); ?>
 		</a>
 	</li>
 <?php

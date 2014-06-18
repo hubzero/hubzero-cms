@@ -29,8 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$text = ( $this->task == 'edit' ? JText::_( 'Edit' ) : JText::_( 'New' ) );
-JToolBarHelper::title( JText::_( 'Tag/Group' ).': <small><small>[ '. $text.' ]</small></small>', 'support.png' );
+
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TAG_GROUPS') . ': ' . $text, 'support.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -40,44 +42,40 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
-	if (pressbutton == 'canceltg') {
-		submitform( pressbutton );
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
 	if (form.tag.value == '') {
-		alert( '<?php echo JText::_('TAG_ERROR_NO_TEXT'); ?>' );
+		alert('<?php echo JText::_('COM_SUPPORT_TAG_ERROR_NO_TEXT'); ?>');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td class="key"><label for="tag"><?php echo JText::_('TAG_TEXT'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="tag" id="tag" value="<?php echo $this->tag->tag; ?>" size="50" /></td>
-				</tr>
-				<tr>
-					<td class="key"><label for="group"><?php echo JText::_('GROUP_TEXT'); ?>: <span class="required">*</span></label></td>
-					<td><input type="text" name="group" id="group" value="<?php echo (is_object($this->group)) ? $this->escape($this->group->cn) : ''; ?>" size="50" /></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="input-wrap">
+			<label for="field-tag"><?php echo JText::_('COM_SUPPORT_TAG_TEXT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<input type="text" name="tag" id="field-tag" value="<?php echo $this->tag->tag; ?>" size="50" />
+		</div>
+		<div class="input-wrap">
+			<label for="field-group"><?php echo JText::_('COM_SUPPORT_GROUP_TEXT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<input type="text" name="group" id="field-group" value="<?php echo (is_object($this->group)) ? $this->escape($this->group->cn) : ''; ?>" size="50" />
+		</div>
 	</fieldset>
 
 	<input type="hidden" name="taggroup[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="taggroup[tagid]" value="<?php echo $this->row->tagid; ?>" />
 	<input type="hidden" name="taggroup[groupid]" value="<?php echo $this->row->groupid; ?>" />
 	<input type="hidden" name="taggroup[priority]" value="<?php echo $this->row->priority; ?>" />
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

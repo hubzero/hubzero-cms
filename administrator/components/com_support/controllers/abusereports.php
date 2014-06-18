@@ -34,9 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reportabuse.php');
 
 /**
- * Short description for 'SupportControllerAbusereports'
- * 
- * Long description (if any) ...
+ * Support cotnroller for Abuse Reports
  */
 class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 {
@@ -250,7 +248,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('ITEM_RELEASED_SUCCESSFULLY')
+			JText::_('COM_SUPPORT_ITEM_RELEASED_SUCCESSFULLY')
 		);
 	}
 
@@ -349,12 +347,12 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 
 			// Email "from" info
 			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('SUPPORT');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 			$from['multipart'] = md5(date('U'));
 
 			// Email subject
-			$subject = JText::sprintf('REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
+			$subject = JText::sprintf('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
 
 			// Plain text
 			$eview = new \Hubzero\Component\View(array(
@@ -410,7 +408,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new \Hubzero\Bank\Teller($this->database, $ruser->get('id'));
-					$BTL->deposit($ar, JText::_('ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
+					$BTL->deposit($ar, JText::_('COM_SUPPORT_ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}
 		}
@@ -418,7 +416,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JTexT::_('ITEM_TAKEN_DOWN')
+			JTexT::_('COM_SUPPORT_ITEM_TAKEN_DOWN')
 		);
 	}
 

@@ -227,7 +227,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('QUERY_SUCCESSFULLY_SAVED')
+				JText::_('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
 			);
 		}
 		else 
@@ -287,7 +287,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
+					JText::_('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
 				);
 			}
@@ -306,7 +306,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('QUERY_SUCCESSFULLY_DELETED', count($ids))
+				JText::sprintf('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', count($ids))
 			);
 		}
 		else

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Support' ).': '.JText::_( 'REPORT_ABUSE' ), 'support.png' );
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 
 JHTML::_('behavior.framework');
 ?>
@@ -49,17 +49,17 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter-state"><?php echo JText::_('SHOW'); ?>:</label> 
+		<label for="filter-state"><?php echo JText::_('COM_SUPPORT_SHOW'); ?>:</label> 
 		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">
-			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('OUTSTANDING'); ?></option>
-			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('RELEASED'); ?></option>
-			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('DELETED'); ?></option>
+			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_OUTSTANDING'); ?></option>
+			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_RELEASED'); ?></option>
+			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_DELETED'); ?></option>
 		</select>
 
-		<label for="filter-sortby"><?php echo JText::_('SORT_BY'); ?>:</label> 
+		<label for="filter-sortby"><?php echo JText::_('COM_SUPPORT_SORT_BY'); ?>:</label> 
 		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
-			<option value="a.category"<?php if ($this->filters['sortby'] == 'a.category') { echo ' selected="selected"'; } ?>><?php echo JText::_('CATEGORY'); ?></option>
-			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('MOST_RECENT'); ?></option>
+			<option value="a.category"<?php if ($this->filters['sortby'] == 'a.category') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_SORT_CATEGORY'); ?></option>
+			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_SORT_MOST_RECENT'); ?></option>
 		</select>
 	</fieldset>
 	<div class="clr"></div>
@@ -67,12 +67,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('STATUS'); ?></th>
-				<th scope="col"><?php echo JText::_('REPORTED_ITEM'); ?></th>
-				<th scope="col"><?php echo JText::_('REASON'); ?></th>
-				<th scope="col"><?php echo JText::_('BY'); ?></th>
-				<th scope="col"><?php echo JText::_('DATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_STATUS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_REPORTED_ITEM'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_REASON'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_BY'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SUPPORT_COL_DATE'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -91,10 +91,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 	switch ($row->state)
 	{
 		case '1':
-			$status = JText::_('RELEASED');
+			$status = JText::_('COM_SUPPORT_REPORT_RELEASED');
 			break;
 		case '0':
-			$status = JText::_('NEW');
+			$status = JText::_('COM_SUPPORT_REPORT_NEW');
 			break;
 	}
 
