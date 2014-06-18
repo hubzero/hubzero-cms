@@ -49,13 +49,13 @@ defined('_JEXEC') or die('Restricted access');
 		<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
-				<img src="<?php echo $this->comment->creator()->getPicture($xuser, $this->comment->get('anonymous')); ?>" alt="" />
+				<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
 			</p>
 			<div class="comment-content">
 				<?php
 					if ($this->params->get('comments_votable', 1))
 					{
-						$this->view( 'vote')
+						$this->view('vote')
 						     ->set('option', $this->option)
 						     ->set('item', $this->comment)
 						     ->set('url', $this->url)
@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (!$this->comment->isReported()) { ?>
 				<p class="comment-options">
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_HUBZERO_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>"href="<?php echo JRoute::_($$this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_HUBZERO_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>"href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
@@ -163,11 +163,13 @@ defined('_JEXEC') or die('Restricted access');
 			</div><!-- / .comment-content -->
 
 			<?php
-				if ($this->comment->replies)
+			if ($this->depth < $this->params->get('comments_depth', 3))
+			{
+				if ($replies = $this->comment->get('replies'))
 				{
 					$this->view('list')
 					     ->set('option', $this->option)
-					     ->set('comments', $this->comment->get('replies'))
+					     ->set('comments', $replies)
 					     ->set('obj_type', $this->obj_type)
 					     ->set('obj', $this->obj)
 					     ->set('params', $this->params)
@@ -176,5 +178,6 @@ defined('_JEXEC') or die('Restricted access');
 					     ->set('cls', $cls)
 					     ->display();
 				}
+			}
 			?>
 		</li>
