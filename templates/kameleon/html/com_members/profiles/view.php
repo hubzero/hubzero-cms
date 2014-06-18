@@ -27,13 +27,13 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
-$no_html = JRequest::getInt( 'no_html', 0 );
+$no_html = JRequest::getInt('no_html', 0);
 $user_messaging = $this->config->get('user_messaging', 0);
 
-$prefix = $this->profile->get("name")."'s";
+$prefix = $this->profile->get("name") . "'s";
 $edit = false;
 $password = false;
 $messaging = false;
@@ -49,7 +49,8 @@ switch ($user_messaging)
 		break;
 	case 1:
 		$common = \Hubzero\User\Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
-		if (count($common) > 0) {
+		if (count($common) > 0)
+		{
 			$messaging = true;
 		}
 		break;
@@ -59,9 +60,9 @@ switch ($user_messaging)
 }
 
 //if user is this member turn on editing and password change, turn off messaging
-if ($this->profile->get('uidNumber') == $juser->get("id")) 
+if ($this->profile->get('uidNumber') == $juser->get("id"))
 {
-	if ($this->tab == "profile") 
+	if ($this->tab == "profile")
 	{
 		$edit = true;
 		$password = true;
@@ -76,7 +77,8 @@ if ($juser->get("guest"))
 	$messaging = false;
 }
 
-if (!$no_html) {
+if (!$no_html)
+{
 	$this->css()
 	     ->js();
 ?>
@@ -127,7 +129,7 @@ if (!$no_html) {
 				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
 					<img src="<?php echo $src; ?>" alt="<?php echo JText::sprintf('The profile picture for %s', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
 				</a>
-			</div><!-- /#page_identity --> 
+			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li>
@@ -138,10 +140,10 @@ if (!$no_html) {
 			</ul>
 			<?php endif; ?>
 			<ul id="page_menu">
-				<?php foreach($this->cats as $k => $c) : ?>
+				<?php foreach ($this->cats as $k => $c) : ?>
 					<?php 
-						$key = key($c); 
-						if (!$key) 
+						$key = key($c);
+						if (!$key)
 						{
 							continue;
 						}
@@ -149,7 +151,7 @@ if (!$no_html) {
 						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
 						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
-						
+
 						$metadata = $this->sections[$k]['metadata'];
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
 						if (isset($metadata['alert']) && $metadata['alert'] != "") 
@@ -180,24 +182,24 @@ if (!$no_html) {
 					</li>
 				<?php endforeach; ?>
 			</ul><!-- /#page_menu -->
-			
+
 			<?php
-				$thumb = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'_th.gif';
-				$full = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'.gif';
+				$thumb = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '_th.gif';
+				$full = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
 			?>
 			<?php if (file_exists(JPATH_ROOT . $thumb)) : ?>
-				<a id="member-stats-graph" rel="lightbox" title="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
-					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
+				<a id="member-stats-graph" rel="lightbox" title="<?php echo $this->profile->get("name") . "'s Impact Graph"; ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
+					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name") . "'s Impact Graph"; ?>" />
 				</a>
 			<?php endif; ?>
-			
+
 		</div><!-- /#page_sidebar -->
 		<div id="page_main">
 		<?php if ($edit || $password) : ?>
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->profile->get('uidNumber').'&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&task=edit'); ?>">
 							<?php echo JText::_('Edit profile'); ?>
 						</a>
 					</li>
@@ -213,29 +215,30 @@ if (!$no_html) {
 		<?php endif; ?>
 			<div id="page_notifications">
 				<?php
-					if ($this->getError()) {
+					if ($this->getError())
+					{
 						echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 					}
 				?>
 			</div>
 			<div id="page_content" class="member_<?php echo $this->tab; ?>">
 				<?php
-					} 
+					}
 					if ($this->overwrite_content)
 					{
 						echo $this->overwrite_content;
 					}
 					else
 					{
-						foreach ($this->sections as $s) 
+						foreach ($this->sections as $s)
 						{
-							if ($s['html'] != '') 
+							if ($s['html'] != '')
 							{
 								echo $s['html'];
 							}
 						}
 					}
-					if (!$no_html) { 
+					if (!$no_html) {
 				?>
 			</div><!-- /#page_content -->
 		</div><!-- /#page_main -->
