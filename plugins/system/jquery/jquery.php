@@ -1,7 +1,7 @@
 <?php
 /**
- * @version             $Id: jqueryintegrator.php revision date tushev $
- * @package             Joomla
+ * @version     $Id: jqueryintegrator.php revision date tushev $
+ * @package     Joomla
  * @subpackage  System
  * @copyright   Copyright (C) S.A. Tushev, 2010. All rights reserved.
  * @license     GNU GPL v2.0
@@ -11,20 +11,20 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
- 
- // no direct access
+
+// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-class plgSystemJquery extends JPlugin 
+class plgSystemJquery extends JPlugin
 {
 	/**
 	 * Hook for after routing application
 	 * 
 	 * @return     void
 	 */
-	public function onAfterRoute() 
+	public function onAfterRoute()
 	{
 		$app = JFactory::getApplication();
 
@@ -35,7 +35,7 @@ class plgSystemJquery extends JPlugin
 		}
 
 		// Check if active for this client (Site|Admin)
-		if (!$this->params->get('activate' . $client) || JRequest::getVar('format') == 'pdf') 
+		if (!$this->params->get('activate' . $client) || JRequest::getVar('format') == 'pdf')
 		{
 			return;
 		}
@@ -43,7 +43,7 @@ class plgSystemJquery extends JPlugin
 		$document = JFactory::getDocument();
 		$root = JURI::root(true);
 
-		if ($value = $this->params->get('jquery')) 
+		if ($value = $this->params->get('jquery'))
 		{
 			$version = $this->params->get('jqueryVersion', '1.7.2');
 
@@ -74,7 +74,7 @@ class plgSystemJquery extends JPlugin
 			if ($value == 1) 
 			{
 				$version = $this->params->get('jqueryuiVersion', '1.8.6');
-				
+
 				$document->addScript($root . '/media/system/js/jquery.ui.js');
 			}
 			elseif ($value == 2) 
@@ -102,7 +102,7 @@ class plgSystemJquery extends JPlugin
 				}
 			}
 		}
-		if ($value = $this->params->get('jqueryfb')) 
+		if ($value = $this->params->get('jqueryfb'))
 		{
 			if ($value == 1) 
 			{
@@ -110,14 +110,14 @@ class plgSystemJquery extends JPlugin
 				
 				$document->addScript($root . '/media/system/js/jquery.fancybox.js');
 			}
-			elseif ($value == 2) 
+			elseif ($value == 2)
 			{
 				$document->addScript($this->params->get('jqueryfbcdnpath'));
 			}
 
-			if ($value = $this->params->get('jqueryfbcss')) 
+			if ($value = $this->params->get('jqueryfbcss'))
 			{
-				if ($value == 1) 
+				if ($value == 1)
 				{
 					$path = $this->params->get('jqueryfbcsspath', '/media/system/css/jquery.fancybox.css'); //$root . '/media/system/css/jquery.fancybox.css'
 					if ($path != '/media/system/css/jquery.fancybox.css')
@@ -137,18 +137,18 @@ class plgSystemJquery extends JPlugin
 		}
 		/*if ($value = $this->params->get('jquerytools')) 
 		{
-			if ($value == 1) 
+			if ($value == 1)
 			{
 				$version = $this->params->get('jquerytoolsVersion', '1.2.5');
 				
 				$document->addScript($root . '/media/system/js/jquery.tools.js');
 			}
-			elseif ($value == 2) 
+			elseif ($value == 2)
 			{
 				$document->addScript($this->params->get('jquerytoolscdnpath'));
 			}
 		}*/
-		if ($this->params->get('noconflict' . $client)) 
+		if ($this->params->get('noconflict' . $client))
 		{
 			$document->addScript($root . '/media/system/js/jquery.noconflict.js');
 			JHTML::_('behavior.mootools');
@@ -186,7 +186,7 @@ class plgSystemJquery extends JPlugin
 			$no_html = 1;
 		}
 
-		if (!$this->params->get('noconflict' . $client) && !$no_html && $format != 'xml') 
+		if (!$this->params->get('noconflict' . $client) && !$no_html && $format != 'xml')
 		{
 			$base = rtrim(JURI::base(true), '/');
 
