@@ -32,13 +32,13 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of content pages
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _getList()
 	{
 		$db = JFactory::getDBO();
-	
+
 		$catid   = (int) $this->params->get('catid', 0);
 		$orderby = 'a.publish_up DESC';
 		$limit   = (int) $this->params->get('numitems', 0);
@@ -64,7 +64,7 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 			' AND cc.published = 1' .
 			' AND s.published = 1' .
 			' ORDER BY ' . $orderby . ' ' . $limitby;
-		
+
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$query = 'SELECT a.*, cc.alias as catname, cc.path as catpath, ' .
@@ -79,7 +79,7 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 				' AND cc.published = 1' .
 				' ORDER BY ' . $orderby . ' ' . $limitby;
 		}
-		
+
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -88,10 +88,10 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function display() 
+	public function display()
 	{
 		//check if cache diretory is writable as cache files will be created for the announcements
 		if ($this->params->get('cache', 1) && !is_writable(JPATH_BASE . DS . 'cache'))
@@ -110,7 +110,7 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 		// Push some CSS to the template
 		$this->css();
 
-		$this->content = $this->_getList();	
+		$this->content = $this->_getList();
 		$this->cid = (int) $this->params->get('catid', 0);
 		$this->container = $this->params->get('container', 'block-announcements');
 

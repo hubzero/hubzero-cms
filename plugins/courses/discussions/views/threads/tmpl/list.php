@@ -31,11 +31,11 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread'))
 ?>
 <div class="sticky-thread-controls<?php echo ($this->post->sticky) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->thread; ?>">
 	<p>
-		<a class="sticky-toggle" 
-			href="<?php echo JRoute::_($stick . ($this->post->sticky ? 0 : 1)); ?>" 
-			data-stick-href="<?php echo JRoute::_($stick . '1'); ?>" 
-			data-unstick-href="<?php echo JRoute::_($stick . '0'); ?>" 
-			data-stick-txt="<?php echo JText::_('Make sticky'); ?>" 
+		<a class="sticky-toggle"
+			href="<?php echo JRoute::_($stick . ($this->post->sticky ? 0 : 1)); ?>"
+			data-stick-href="<?php echo JRoute::_($stick . '1'); ?>"
+			data-unstick-href="<?php echo JRoute::_($stick . '0'); ?>"
+			data-stick-txt="<?php echo JText::_('Make sticky'); ?>"
 			data-unstick-txt="<?php echo JText::_('Make not sticky'); ?>">
 			<?php echo ($this->post->sticky) ? JText::_('Make not sticky') : JText::_('Make sticky'); ?>
 		</a>
@@ -44,13 +44,13 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread'))
 		</span>
 	</p>
 </div>
-<?php 
+<?php
 }
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
-if ($this->comments && is_array($this->comments)) 
-{ 
+if ($this->comments && is_array($this->comments))
+{
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -64,7 +64,7 @@ if ($this->comments && is_array($this->comments))
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$this->view('comment')
 		     ->set('option', $this->option)

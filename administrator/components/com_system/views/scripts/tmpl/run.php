@@ -36,7 +36,7 @@ JToolBarHelper::title(JText::_('Scripts'), 'script.png');
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 			</blockquote>
 		</fieldset>
 	</div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="cancel" />

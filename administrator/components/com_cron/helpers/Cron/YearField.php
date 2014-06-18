@@ -25,13 +25,13 @@ class YearField extends AbstractField
 	 */
 	public function increment(DateTime $date, $invert = false)
 	{
-		if ($invert) 
+		if ($invert)
 		{
 			$date->sub(new DateInterval('P1Y'));
 			$date->setDate($date->format('Y'), 12, 31);
 			$date->setTime(23, 59, 0);
-		} 
-		else 
+		}
+		else
 		{
 			$date->add(new DateInterval('P1Y'));
 			$date->setDate($date->format('Y'), 1, 1);

@@ -31,22 +31,22 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ForumHelper::getActions('section');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_SECTIONS'), 'forum.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -54,7 +54,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('sections');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -68,7 +68,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="scopeinfo"><?php echo JText::_('COM_FORUM_FILTER_SCOPE'); ?>:</label> 
+		<label for="scopeinfo"><?php echo JText::_('COM_FORUM_FILTER_SCOPE'); ?>:</label>
 		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
 			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_NONE'); ?></option>
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 				foreach ($optgroup as $result)
 				{
 					$html .= ' <option value="' . $result->get('scope') . ':' . $result->get('scope_id') . '"';
-					if ($this->filters['scopeinfo'] == $result->get('scope') . ':' . $result->get('scope_id')) 
+					if ($this->filters['scopeinfo'] == $result->get('scope') . ':' . $result->get('scope_id'))
 					{
 						$html .= ' selected="selected"';
 					}
@@ -136,7 +136,7 @@ if ($this->results)
 	$k = 0;
 	foreach ($this->results as $i => $row)
 	{
-		switch ($row->get('state')) 
+		switch ($row->get('state'))
 		{
 			case '2':
 				$task = 'publish';
@@ -155,7 +155,7 @@ if ($this->results)
 				$cls = 'unpublish';
 			break;
 		}
-		
+
 		switch ($row->get('access'))
 		{
 			case 0:

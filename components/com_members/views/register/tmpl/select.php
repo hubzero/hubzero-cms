@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				<?php foreach ($realms as $key => $value) { ?>
 					<label>
-						<input class="option" type="radio" name="realm" value="<?php echo $key; ?>" /> 
+						<input class="option" type="radio" name="realm" value="<?php echo $key; ?>" />
 						<?php echo $value; ?>
 					</label>
 				<?php } ?>

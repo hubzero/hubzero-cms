@@ -79,7 +79,7 @@ class modLoginHelper
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	static function display($params, $module)
@@ -127,7 +127,7 @@ class modLoginHelper
 			}
 		}
 
-		// Figure out whether or not any of our third party auth plugins are turned on 
+		// Figure out whether or not any of our third party auth plugins are turned on
 		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
 		$multiAuth      = false;
 		$plugins        = JPluginHelper::getPlugin('authentication');

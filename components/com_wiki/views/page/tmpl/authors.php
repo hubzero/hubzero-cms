@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0)) 
+if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0))
 {
 	$author = ($this->page->creator('name') ? $this->page->creator('name') : JText::_('Unknown'));
 

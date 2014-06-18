@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the collections post table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,21 +15,21 @@ class CollectionsTablePostTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'created', 
-		'created_by', 
-		'collection_id', 
+		'id',
+		'created',
+		'created_by',
+		'collection_id',
 		'item_id',
 		'description',
 		'original'
 	);
 	var $mock       = array(
-		'id'            => null, 
-		'created'       => '2013-09-17 12:31:45', 
+		'id'            => null,
+		'created'       => '2013-09-17 12:31:45',
 		'created_by'    => 123,
 		'collection_id' => 1,
 		'item_id'       => 1,
-		'description'   => 'Neat thing here.', 
+		'description'   => 'Neat thing here.',
 		'original'      => 0
 	);
 
@@ -95,7 +95,7 @@ class CollectionsTablePostTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTablePost::getCount
 	 */
@@ -112,7 +112,7 @@ class CollectionsTablePostTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords returns an array
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTablePost::getRecords
 	 */

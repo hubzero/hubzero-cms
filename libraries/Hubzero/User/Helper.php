@@ -38,9 +38,9 @@ class Helper
 
 	/**
 	 * Short description for 'random_password'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $length Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -66,9 +66,9 @@ class Helper
 
 	/**
 	 * Short description for 'encrypt_password'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $password Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -79,9 +79,9 @@ class Helper
 
 	/**
 	 * Short description for 'getXDomainId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $domain Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -106,9 +106,9 @@ class Helper
 
 	/**
 	 * Short description for 'getXDomainUserId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $domain_username Parameter description (if any) ...
 	 * @param      string $domain Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -137,9 +137,9 @@ class Helper
 
 	/**
 	 * Short description for 'deleteXDomainUserId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -166,9 +166,9 @@ class Helper
 
 	/**
 	 * Short description for 'isXDomainUser'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $uid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -190,9 +190,9 @@ class Helper
 
 	/**
 	 * Short description for 'createXDomain'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $domain Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -228,9 +228,9 @@ class Helper
 
 	/**
 	 * Short description for 'setXDomainUserId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $domain_username Parameter description (if any) ...
 	 * @param      unknown $domain Parameter description (if any) ...
 	 * @param      unknown $uidNumber Parameter description (if any) ...
@@ -243,9 +243,9 @@ class Helper
 
 	/**
 	 * Short description for 'mapXDomainUser'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $domain_username Parameter description (if any) ...
 	 * @param      unknown $domain Parameter description (if any) ...
 	 * @param      unknown $uidNumber Parameter description (if any) ...
@@ -294,9 +294,9 @@ class Helper
 
 	/**
 	 * Short description for 'getGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $uid Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
 	 * @param      string $cat Parameter description (if any) ...
@@ -349,33 +349,33 @@ class Helper
 
 		return $result;
 	}
-	
+
 	/**
 	 * Remove User From Groups
-	 * 
-	 * @param      string $uid 
+	 *
+	 * @param      string $uid
 	 * @return     boolean
 	 */
 	public static function removeUserFromGroups( $uid )
 	{
 		$db = \JFactory::getDBO();
 		$tables = array('#__xgroups_members', '#__xgroups_managers', '#__xgroups_invitees', '#__xgroups_applicants');
-		
+
 		foreach ($tables as $table)
 		{
 			$sql = "DELETE FROM `".$table."` WHERE uidNumber=" . $db->quote( $uid );
 			$db->setQuery( $sql );
 			$db->query();
 		}
-		
+
 		return true;
 	}
 
 	/**
 	 * Short description for 'getCourses'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $uid Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
 	 * @param      string $cat Parameter description (if any) ...
@@ -427,9 +427,9 @@ class Helper
 
 	/**
 	 * Short description for 'getCommonGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $uid Parameter description (if any) ...
 	 * @param      string $pid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -437,7 +437,7 @@ class Helper
 	public static function getCommonGroups( $uid, $pid )
 	{
 		$uprofile = Profile::getInstance($uid);
-		
+
 		// Get the groups the visiting user
 		$xgroups = (is_object($uprofile)) ? $uprofile->getGroups('all') : array();
 		$usersgroups = array();
@@ -463,10 +463,10 @@ class Helper
 				}
 			}
 		}
-		
+
 		// Find the common groups
 		$common = array_intersect($usersgroups, $profilesgroups);
-		
+
 		//return common groups
 		return $common;
 	}

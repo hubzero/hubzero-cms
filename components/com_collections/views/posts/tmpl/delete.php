@@ -58,19 +58,19 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
 
 			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" value="1" />
 				<?php echo JText::_('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
-		
+
 		<input type="hidden" name="gid" value="<?php echo $this->group->cn; ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="entry" value="<?php echo $this->entry->id; ?>" />
-		
+
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias); ?>">Cancel</a>

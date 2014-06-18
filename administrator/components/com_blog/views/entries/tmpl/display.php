@@ -34,26 +34,26 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = BlogHelper::getActions('entry');
 
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('', 'delete');
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
@@ -63,7 +63,7 @@ JToolBarHelper::help('entries');
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<?php if ($this->filters['scope'] == 'group') { ?>
@@ -88,21 +88,21 @@ function submitbutton(pressbutton)
 				$filters['type'] = array(1,3);
 				$filters['sortby'] = 'description';
 				$groups = \Hubzero\User\Group::find($filters);
-				
+
 				$html  = '<label for="filter_group_id">' . JText::_('COM_BLOG_SCOPE_GROUP') . ':</label> '."\n";
 				$html .= '<select name="group_id" id="filter_group_id">'."\n";
 				$html .= '<option value="0"';
-				if ($this->filters['group_id'] == 0) 
+				if ($this->filters['group_id'] == 0)
 				{
 					$html .= ' selected="selected"';
 				}
 				$html .= '>'.JText::_('JNONE').'</option>'."\n";
-				if ($groups) 
+				if ($groups)
 				{
 					foreach ($groups as $group)
 					{
 						$html .= ' <option value="'.$group->gidNumber.'"';
-						if ($this->filters['group_id'] == $group->gidNumber) 
+						if ($this->filters['group_id'] == $group->gidNumber)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -155,31 +155,31 @@ foreach ($this->rows as $row)
 	$publish_up->setOffset($config->getValue('config.offset'));
 	$publish_down->setOffset($config->getValue('config.offset'));
 
-	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1) 
+	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1)
 	{
 		$alt  = JText::_('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
-	} 
-	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1) 
+	}
+	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1)
 	{
 		$alt  = JText::_('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
-	} 
-	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1) 
+	}
+	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1)
 	{
 		$alt  = JText::_('JLIB_HTML_PUBLISHED_EXPIRED_ITEM');
 		$cls  = 'publish';
 		$task = 'unpublish';
-	} 
-	else if ($row->get('state') == 0) 
+	}
+	else if ($row->get('state') == 0)
 	{
 		$alt  = JText::_('JUNPUBLISHED');
 		$task = 'publish';
 		$cls  = 'unpublish';
-	} 
-	else if ($row->get('state') == -1) 
+	}
+	else if ($row->get('state') == -1)
 	{
 		$alt  = JText::_('JTRASHED');
 		$task = 'publish';
@@ -187,36 +187,36 @@ foreach ($this->rows as $row)
 	}
 
 	$times = '';
-	if ($row->get('publish_up')) 
+	if ($row->get('publish_up'))
 	{
-		if ($row->get('publish_up') == $nullDate) 
+		if ($row->get('publish_up') == $nullDate)
 		{
 			$times .= JText::_('COM_BLOG_START') . ': ' . JText::_('COM_BLOG_ALWAYS');
-		} 
-		else 
+		}
+		else
 		{
 			$times .= JText::_('COM_BLOG_START') . ': ' . $publish_up->toSql();
 		}
 	}
-	if ($row->get('publish_down')) 
+	if ($row->get('publish_down'))
 	{
-		if ($row->get('publish_down') == $nullDate) 
+		if ($row->get('publish_down') == $nullDate)
 		{
 			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . JText::_('COM_BLOG_NO_EXPIRY');
-		} 
-		else 
+		}
+		else
 		{
 			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . $publish_down->toSql();
 		}
 	}
 
-	if ($row->get('allow_comments') == 0) 
+	if ($row->get('allow_comments') == 0)
 	{
 		$calt = JText::_('JOFF');
 		$cls2 = 'off';
 		$state = 1;
-	} 
-	else 
+	}
+	else
 	{
 		$calt = JText::_('JON');
 		$cls2 = 'on';

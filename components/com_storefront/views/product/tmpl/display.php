@@ -59,7 +59,7 @@ if (!empty($errors))
 		// format price/price range
 		$price = $this->price;
 		$priceRange = '$';
-		
+
 		if ($price['high'] == $price['low'])
 		{
 			$priceRange .= $price['high'];
@@ -67,66 +67,66 @@ if (!empty($errors))
 		else {
 			$priceRange .= $price['low'] . ' &ndash; $' . $price['high'];
 		}
-		
+
 		if(!$this->inStock)
 		{
 			$priceRange = 'Out of stock';
 		}
-		
+
 	?>
-	
+
 	<div id="price"><?php echo $priceRange; ?></div>
-	
+
 	<form id="productInfo" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 	<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
-	
+
 	<?php
 	if (count($this->options))
-	{	
+	{
 	?>
-	
+
 	<h3>Product options</h3>
-	
+
 	<div id="productOptions">
-	
+
 	<?php
-	
+
 		foreach ($this->options as $optionGroupId => $info)
 		{
 			echo '<p>' . $info['info']->ogName . '</p>';
 			echo '<ul>';
-					
+
 			foreach ($info['options'] as $opt)
 			{
 				echo '<li><input type="radio" name="og[' . $optionGroupId . ']" value="' . $opt->oId . '" id="option_' . $opt->oId . '">';
 				echo '<label for="option_' . $opt->oId . '">' . $opt->oName . '</label></li>';
 			}
-			
-			echo '</ul>';	
+
+			echo '</ul>';
 		}
-	
+
 	?>
-	
+
 	</div>
-	
+
 	<?php
 	}
 	?>
-	
+
 	<h3>Product info</h3>
-	
+
 	<?php
-	
+
 		foreach ($this->product as $k => $val)
 		{
-			echo '<p>' . $k . ': ' . $val . '</p>';		
+			echo '<p>' . $k . ': ' . $val . '</p>';
 		}
-	
+
 	?>
-	
+
 	<div id="qtyWrap">
 	<?php
-	
+
 		$addToCartEnabled = false;
 		if ($this->qtyDropDown)
 		{
@@ -135,7 +135,7 @@ if (!empty($errors))
 			{
 				echo '<select name="qty" id="qty">';
 					for ($i = 1; $i <= $this->qtyDropDown; $i++)
-					{ 
+					{
 						echo '<option value="' . $i . '">' . $i . '</option>';
 					}
 				echo '</select>';
@@ -143,7 +143,7 @@ if (!empty($errors))
 		}
 	?>
 	</div>
-	
+
 	<?php
 	if($this->inStock)
 	{

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -46,7 +46,7 @@ function oauthBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -54,12 +54,12 @@ function oauthParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		$vars['task'] = $segments[0];
 	}

@@ -38,29 +38,29 @@ class CollectionsTableVote extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $user_id  = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $item_id = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $voted      = NULL;
 
@@ -77,14 +77,14 @@ class CollectionsTableVote extends JTable
 
 	/**
 	 * Load a record by its bulletin and user IDs
-	 * 
+	 *
 	 * @param      integer $item_id Bulletin ID
 	 * @param      integer $user_id     User ID
 	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadByBulletin($item_id=null, $user_id=null)
 	{
-		if (!$item_id || !$user_id) 
+		if (!$item_id || !$user_id)
 		{
 			return false;
 		}
@@ -94,11 +94,11 @@ class CollectionsTableVote extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($item_id) . " AND user_id=" . $this->_db->Quote($user_id);
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -107,20 +107,20 @@ class CollectionsTableVote extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->item_id = intval($this->item_id);
-		if (!$this->item_id) 
+		if (!$this->item_id)
 		{
 			$this->setError(JText::_('Please provide a bulletin ID'));
 			return false;
 		}
 
 		$juser = JFactory::getUser();
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->voted = JFactory::getDate()->toSql();
 			$this->user_id = $juser->get('id');
@@ -131,7 +131,7 @@ class CollectionsTableVote extends JTable
 
 	/**
 	 * Get a total of all likes
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -143,11 +143,11 @@ class CollectionsTableVote extends JTable
 		$where = array();
 		//$where[] = "v.vote >= '1'";
 
-		if (isset($filters['user_id']) && $filters['user_id']) 
+		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$where[] = "v.user_id=" . $this->_db->Quote(intval($filters['user_id']));
 		}
-		if (isset($filters['collection_id']) && $filters['collection_id']) 
+		if (isset($filters['collection_id']) && $filters['collection_id'])
 		{
 			if (is_array($filters['collection_id']))
 			{
@@ -171,7 +171,7 @@ class CollectionsTableVote extends JTable
 
 	/**
 	 * Get a total of all dislikes
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -183,11 +183,11 @@ class CollectionsTableVote extends JTable
 		$where = array();
 		//$where[] = "v.vote <= '0'";
 
-		if (isset($filters['user_id']) && $filters['user_id']) 
+		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$where[] = "v.user_id=" . $this->_db->Quote(intval($filters['user_id']));
 		}
-		if (isset($filters['collection_id']) && $filters['collection_id']) 
+		if (isset($filters['collection_id']) && $filters['collection_id'])
 		{
 			if (is_array($filters['collection_id']))
 			{

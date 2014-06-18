@@ -30,7 +30,7 @@ class Migration20140605155804ComPublications extends Base
 			  `support_accesses` int(11) DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			
+
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

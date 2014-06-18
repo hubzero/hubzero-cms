@@ -25,10 +25,10 @@ class Migration20130816143341ComCitations extends Base
 				  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		//import jparameter
 		jimport('joomla.html.parameter');
-		
+
 		//get citation params
 		if ($this->db->tableExists('#__extensions'))
 		{
@@ -38,11 +38,11 @@ class Migration20130816143341ComCitations extends Base
 		{
 			$sql = "SELECT params FROM `#__components` WHERE `option`='com_citations';";
 		}
-		
+
 		$this->db->setQuery($sql);
 		$rawCitationParams = $this->db->loadResult();
 		$citationParams = new \JParameter( $rawCitationParams );
-		
+
 		//insert default format
 		$query = "INSERT INTO `#__citations_format` (`typeid`, `style`, `format`)
 			SELECT NULL,'custom'," . $this->db->quote( $citationParams->get('citation_format', '') ) . "

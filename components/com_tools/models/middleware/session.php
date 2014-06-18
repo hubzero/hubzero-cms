@@ -43,14 +43,14 @@ class MiddlewareModelSession extends MiddlewareModelBase
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'MwSession';
 
 	/**
 	 * \Hubzero\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_cache = array(
@@ -60,7 +60,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed  $oid        Integer (ID), string (alias), object or array
 	 * @param      string $authorized Authorization level
 	 * @return     void
@@ -113,7 +113,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -131,7 +131,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			$key = $oid;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($key, $authorized);
 		}
@@ -141,12 +141,12 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Check if the entry exists (i.e., has a database record)
-	 * 
+	 *
 	 * @return     boolean True if record exists, False if not
 	 */
 	public function exists()
 	{
-		if ($this->get('sessnum') && (int) $this->get('sessnum') > 0) 
+		if ($this->get('sessnum') && (int) $this->get('sessnum') > 0)
 		{
 			return true;
 		}
@@ -155,7 +155,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Get a list of shared views
-	 * 
+	 *
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
@@ -205,7 +205,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Share a session
-	 * 
+	 *
 	 * @param      string $with     List of users
 	 * @param      string $group    Group to share with
 	 * @param      string $readonly More to share with
@@ -215,17 +215,17 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	{
 		$users = array();
 
-		if (strstr($with, ',')) 
+		if (strstr($with, ','))
 		{
 			$users = explode(',', $with);
 			$users = array_map('trim', $users);
-		} 
-		elseif (strstr($with, ' ')) 
+		}
+		elseif (strstr($with, ' '))
 		{
 			$users = explode(' ', $with);
 			$users = array_map('trim', $users);
-		} 
-		else 
+		}
+		else
 		{
 			$users[] = $with;
 		}
@@ -249,7 +249,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			$users = array_values(array_filter($users));
 		}
 
-		if ($readonly != 'Yes') 
+		if ($readonly != 'Yes')
 		{
 			$readonly = 'No';
 		}
@@ -257,7 +257,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 		foreach ($users as $user)
 		{
 			// Check for invalid characters
-			if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $user)) 
+			if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $user))
 			{
 				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
@@ -265,7 +265,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 			// Check that the user exist
 			$zuser = JUser::getInstance($user);
-			if (!$zuser || !is_object($zuser) || !$zuser->get('id')) 
+			if (!$zuser || !is_object($zuser) || !$zuser->get('id'))
 			{
 				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
@@ -277,7 +277,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 			// If there are no matching entries in viewperm, add a new entry,
 			// Otherwise, update the existing entry (e.g. readonly).
-			if (count($currentViewPerm) == 0) 
+			if (count($currentViewPerm) == 0)
 			{
 				$mwViewperm->sessnum   = $this->get('sessnum');
 				$mwViewperm->viewuser  = $zuser->get('username');
@@ -314,7 +314,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Stop sharing a session with a specified user
-	 * 
+	 *
 	 * @param      string $with Username
 	 * @return     boolean
 	 */
@@ -331,7 +331,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 	/**
 	 * Get associated tool information
-	 * 
+	 *
 	 * @param      string $what What data to return
 	 * @return     boolean
 	 */
@@ -348,7 +348,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 
 			case 'version':
 				$r = substr(strrchr($app, '_'), 1);
-				if (substr($r, 0, 1) == 'r') 
+				if (substr($r, 0, 1) == 'r')
 				{
 					return substr($r, 1);
 				}
@@ -376,7 +376,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}

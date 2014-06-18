@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'ContribtoolHtml'
- * 
+ *
  * Long description (if any) ...
  */
 class ContribtoolHtml
@@ -41,9 +41,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -55,9 +55,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'warning'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -69,9 +69,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'passed'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -83,9 +83,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'alert'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -96,9 +96,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'hed'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $level Parameter description (if any) ...
 	 * @param      string $txt Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -110,9 +110,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'div'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $txt Parameter description (if any) ...
 	 * @param      string $cls Parameter description (if any) ...
 	 * @param      string $id Parameter description (if any) ...
@@ -138,15 +138,15 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'mkt'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $stime Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
 	public static function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs )) 
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs ))
 		{
 			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
 		}
@@ -155,9 +155,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'timeAgoo'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      number $timestamp Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -171,13 +171,13 @@ class ContribtoolHtml
 
 		// Set the periods of time
 		$periods = array(
-			JText::_('COM_TOOLS_SECOND'), 
-			JText::_('COM_TOOLS_MINUTE'), 
-			JText::_('COM_TOOLS_HOUR'), 
-			JText::_('COM_TOOLS_DAY'), 
-			JText::_('COM_TOOLS_WEEK'), 
-			JText::_('COM_TOOLS_MONTH'), 
-			JText::_('COM_TOOLS_YEAR'), 
+			JText::_('COM_TOOLS_SECOND'),
+			JText::_('COM_TOOLS_MINUTE'),
+			JText::_('COM_TOOLS_HOUR'),
+			JText::_('COM_TOOLS_DAY'),
+			JText::_('COM_TOOLS_WEEK'),
+			JText::_('COM_TOOLS_MONTH'),
+			JText::_('COM_TOOLS_YEAR'),
 			JText::_('COM_TOOLS_DECADE')
 		);
 
@@ -199,7 +199,7 @@ class ContribtoolHtml
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) 
+		if ($val < 0)
 		{
 			$val = 0;
 		}
@@ -214,13 +214,13 @@ class ContribtoolHtml
 		if ($number != 1)
 		{
 			$periods = array(
-				JText::_('COM_TOOLS_SECONDS'), 
-				JText::_('COM_TOOLS_MINUTES'), 
-				JText::_('COM_TOOLS_HOURS'), 
-				JText::_('COM_TOOLS_DAYS'), 
-				JText::_('COM_TOOLS_WEEKS'), 
-				JText::_('COM_TOOLS_MONTHS'), 
-				JText::_('COM_TOOLS_YEARS'), 
+				JText::_('COM_TOOLS_SECONDS'),
+				JText::_('COM_TOOLS_MINUTES'),
+				JText::_('COM_TOOLS_HOURS'),
+				JText::_('COM_TOOLS_DAYS'),
+				JText::_('COM_TOOLS_WEEKS'),
+				JText::_('COM_TOOLS_MONTHS'),
+				JText::_('COM_TOOLS_YEARS'),
 				JText::_('COM_TOOLS_DECADES')
 			);
 		}
@@ -239,9 +239,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'timeAgo'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $timestamp Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -259,9 +259,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'formSelect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $name Parameter description (if any) ...
 	 * @param      string $idname Parameter description (if any) ...
 	 * @param      array $array Parameter description (if any) ...
@@ -288,9 +288,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'primaryButton'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $class Parameter description (if any) ...
 	 * @param      string $href Parameter description (if any) ...
 	 * @param      string $msg Parameter description (if any) ...
@@ -310,9 +310,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getNumofTools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $status Parameter description (if any) ...
 	 * @param      string $toolnum Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -323,7 +323,7 @@ class ContribtoolHtml
 		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
 		$sitename = $jconfig->getValue('config.sitename');
-		
+
 		$toolnum = ($status['state']!=9) ? JText::_('COM_TOOLS_THIS_TOOL').'  ': '';
 		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
 			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_UNDER_DEVELOPMENT')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
@@ -340,15 +340,15 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'toolActive'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolActive($stateNum) 
+	public static function toolActive($stateNum)
 	{
-		if ($stateNum == 8 || $stateNum == 9) 
+		if ($stateNum == 8 || $stateNum == 9)
 		{
 			return false;
 		}
@@ -357,15 +357,15 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'toolWIP'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolWIP($stateNum) 
+	public static function toolWIP($stateNum)
 	{
-		if ($stateNum == 2 || $stateNum == 9 || $stateNum == 1) 
+		if ($stateNum == 2 || $stateNum == 9 || $stateNum == 1)
 		{
 			return false;
 		}
@@ -374,15 +374,15 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'toolEstablished'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolEstablished($stateNum) 
+	public static function toolEstablished($stateNum)
 	{
-		if ($stateNum == 1 || $stateNum == 9) 
+		if ($stateNum == 1 || $stateNum == 9)
 		{
 			return false;
 		}
@@ -391,14 +391,14 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getStatusClass'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusNum Parameter description (if any) ...
 	 * @param      string &$statusClass Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getStatusClass($statusNum, &$statusClass) 
+	public static function getStatusClass($statusNum, &$statusClass)
 	{
 		switch ($statusNum)
 		{
@@ -413,14 +413,14 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getStatusName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusNum Parameter description (if any) ...
 	 * @param      unknown &$statusName Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public static function getStatusName($statusNum, &$statusName) 
+	public static function getStatusName($statusNum, &$statusName)
 	{
 		switch ($statusNum)
 		{
@@ -440,9 +440,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getStatusNum'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusName Parameter description (if any) ...
 	 * @param      integer $statusNum Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -466,9 +466,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getPriority'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $int Parameter description (if any) ...
 	 * @param      string $priority Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -489,34 +489,34 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getDevTeam'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $members Parameter description (if any) ...
 	 * @param      integer $obj Parameter description (if any) ...
 	 * @param      string $team Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getDevTeam($members, $obj = 1, $team='') 
+	public static function getDevTeam($members, $obj = 1, $team='')
 	{
-		if ($members && count($members) > 0) 
+		if ($members && count($members) > 0)
 		{
-			foreach ($members as $member) 
+			foreach ($members as $member)
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
 				$juser = JUser::getInstance($uid);
-				if (is_object($juser)) 
+				if (is_object($juser))
 				{
 					$login = $juser->get('username');
-				} 
-				else 
+				}
+				else
 				{
 					$login = JText::_('COM_TOOLS_UNKNOWN');
 				}
 				$team .= ($member != end($members)) ? $login . ', ' : $login;
 			}
 		}
-		else 
+		else
 		{
 			$team .= JText::_('COM_TOOLS_N/A');
 		}
@@ -525,19 +525,19 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      integer $obj Parameter description (if any) ...
 	 * @param      string $list Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getGroups($groups, $obj = 1, $list='') 
+	public static function getGroups($groups, $obj = 1, $list='')
 	{
-		if ($groups && count($groups) > 0) 
+		if ($groups && count($groups) > 0)
 		{
-			foreach ($groups as $group) 
+			foreach ($groups as $group)
 			{
 				$cn = ($obj) ? $group->cn : $group;
 				$list .= ($group != end($groups)) ? $cn . ', ' : $cn;
@@ -548,9 +548,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getToolAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      string $toolaccess Parameter description (if any) ...
@@ -561,16 +561,16 @@ class ContribtoolHtml
 		switch ($access)
 		{
 			case '@GROUP':
-				if (count($groups)>0) 
+				if (count($groups)>0)
 				{
 					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
-					foreach ($groups as $group) 
+					foreach ($groups as $group)
 					{
 						$toolaccess .= ($group != end($groups)) ? $group->cn . ', ' : $group->cn;
 					}
 				}
-				else 
-				{ 
+				else
+				{
 					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_UNSPECIFIED') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS');
 				}
 			break;
@@ -586,9 +586,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getCodeAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      string $codeaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -607,9 +607,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getWikiAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      string $wikiaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -628,9 +628,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'writeApproval'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $active_stage Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -668,9 +668,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'selectAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $as Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -680,10 +680,10 @@ class ContribtoolHtml
 		$html  = '<select name="access">';
 		for ($i=0, $n=count( $as ); $i < $n; $i++)
 		{
-			if ($as[$i] != 'Registered' && $as[$i] != 'Special') 
+			if ($as[$i] != 'Registered' && $as[$i] != 'Special')
 			{
 				$html .= '<option value="' . $i . '"';
-				if ($value == $i) 
+				if ($value == $i)
 				{
 					$html .= ' selected="selected"';
 				}
@@ -696,9 +696,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'selectGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -710,7 +710,7 @@ class ContribtoolHtml
 		foreach ($groups as $group)
 		{
 			$html .= '<option value="'.$group->cn.'"';
-			if ($value == $group->cn) 
+			if ($value == $group->cn)
 			{
 				$html .= ' selected="selected"';
 			}
@@ -722,9 +722,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'writeNotesArea'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $notes Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
@@ -737,10 +737,10 @@ class ContribtoolHtml
 
 		$out ='';
 		$i = 0;
-		if (count($notes) > 0 ) 
+		if (count($notes) > 0 )
 		{
 			$out .= '<ul class="features">'."\n";
-			for ($i=0, $n=count( $notes ); $i < $n; $i++) 
+			for ($i=0, $n=count( $notes ); $i < $n; $i++)
 			{
 				$note = $notes[$i];
 				$out .= ' <li>'."\n";
@@ -751,7 +751,7 @@ class ContribtoolHtml
 			$out .= '</ul>'."\n";
 		}
 
-		if ($addnew) 
+		if ($addnew)
 		{
 			$out .= ContribtoolHtml::addNoteArea($i, $option, $type);
 		}
@@ -761,9 +761,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'addNoteArea'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $i Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
@@ -784,9 +784,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'parseTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -806,9 +806,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'txt_unpee'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -825,9 +825,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'niceidformat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -842,9 +842,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'getFileAttribs'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $path Parameter description (if any) ...
 	 * @param      string $base_path Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -913,9 +913,9 @@ class ContribtoolHtml
 
 	/**
 	 * Short description for 'formatsize'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $file_size Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */

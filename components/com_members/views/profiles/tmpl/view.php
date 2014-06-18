@@ -60,7 +60,7 @@ switch( $user_messaging )
 
 //if user is this member turn on editing and password change, turn off messaging
 if ($this->profile->get('uidNumber') == $juser->get("id")) {
-	if ($this->tab == "profile") 
+	if ($this->tab == "profile")
 	{
 		$edit = true;
 		$password = true;
@@ -91,7 +91,7 @@ if (!$no_html) {
 				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
 					<img src="<?php echo $src; ?>" alt="<?php echo JText::sprintf('The profile picture for %s', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
 				</a>
-			</div><!-- /#page_identity --> 
+			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
 			<ul id="member_options">
 				<li>
@@ -103,9 +103,9 @@ if (!$no_html) {
 			<?php endif; ?>
 			<ul id="page_menu">
 				<?php foreach($this->cats as $k => $c) : ?>
-					<?php 
-						$key = key($c); 
-						if (!$key) 
+					<?php
+						$key = key($c);
+						if (!$key)
 						{
 							continue;
 						}
@@ -113,10 +113,10 @@ if (!$no_html) {
 						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
 						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
-						
+
 						$metadata = $this->sections[$k]['metadata'];
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
-						if (isset($metadata['alert']) && $metadata['alert'] != "") 
+						if (isset($metadata['alert']) && $metadata['alert'] != "")
 						{
 							$meta_alert = $metadata['alert'];
 							$cls .= ' with-alert';
@@ -125,7 +125,7 @@ if (!$no_html) {
 						{
 							$meta_alert = '';
 						}
-						
+
 						if (!isset($c['icon']))
 						{
 							$c['icon'] = 'f009';
@@ -140,11 +140,11 @@ if (!$no_html) {
 								<span class="count"><?php echo $meta_count; ?></span>
 							<?php endif; ?>
 						</span>
-						<?php echo $meta_alert; ?> 
+						<?php echo $meta_alert; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul><!-- /#page_menu -->
-			
+
 			<?php
 				$thumb = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'_th.gif';
 				$full = '/site/stats/contributor_impact/impact_'.$this->profile->get('uidNumber').'.gif';
@@ -154,7 +154,7 @@ if (!$no_html) {
 					<img src="<?php echo $thumb; ?>" alt="<?php echo $this->profile->get("name")."'s Impact Graph"; ?>" />
 				</a>
 			<?php endif; ?>
-			
+
 		</div><!-- /#page_sidebar -->
 		<div id="page_main">
 <?php if ($edit || $password) : ?>
@@ -188,7 +188,7 @@ if (!$no_html) {
 							$title = "Private Profile :: Click here to set your profile public.";
 						}
 					?>
-					
+
 					<?php if ($this->tab == 'profile') : ?>
 						<a id="profile-privacy" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 							<?php echo $title; ?>
@@ -199,7 +199,7 @@ if (!$no_html) {
 						</span>
 					<?php endif; ?>
 				<?php endif; ?>
-				
+
 				<h2>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>">
 						<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
@@ -217,23 +217,23 @@ if (!$no_html) {
 			</div>
 			<div id="page_content" class="member_<?php echo $this->tab; ?>">
 				<?php
-					} 
+					}
 					if ($this->overwrite_content)
 					{
 						echo $this->overwrite_content;
 					}
 					else
 					{
-						foreach ($this->sections as $s) 
+						foreach ($this->sections as $s)
 						{
-							if ($s['html'] != '') 
+							if ($s['html'] != '')
 							{
 								echo $s['html'];
 							}
 						}
 					}
-					
-					if (!$no_html) { 
+
+					if (!$no_html) {
 				?>
 			</div><!-- /#page_content -->
 		</div><!-- /#page_main -->

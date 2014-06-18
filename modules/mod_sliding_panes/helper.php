@@ -38,7 +38,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of content articles
-	 * 
+	 *
 	 * @return     array
 	 */
 	private function _getList()
@@ -75,7 +75,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 				' AND s.published = 1' .
 				' ORDER BY ' . $orderby . ' ' . $limitby;
 		}
-		else 
+		else
 		{
 			// query to determine article count
 			$query = 'SELECT a.* FROM #__content AS a' .
@@ -93,7 +93,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -102,7 +102,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
-		if (!$this->multiple_instances) 
+		if (!$this->multiple_instances)
 		{
 			// Push some CSS to the template
 			$this->css($type . '.css');
@@ -119,7 +119,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 		{
 			$js = "jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });";
 		}
-		else 
+		else
 		{
 			$js = "window.addEvent('domready', function(){
 				if ($('" . $this->container . "')) {

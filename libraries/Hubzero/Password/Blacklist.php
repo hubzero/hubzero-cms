@@ -36,12 +36,12 @@ class Blacklist
 	{
 		$db =  \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (empty($word)) 
+		if (empty($word))
 		{
 			$word = '';
 		}
@@ -57,8 +57,8 @@ class Blacklist
 
 	public static function simple_l33t($word)
 	{
-		$subs = array( 
-			'4' => 'A', 
+		$subs = array(
+			'4' => 'A',
 			'@' => 'A',
 			'^' => 'A',
 			'8' => 'B',
@@ -81,10 +81,10 @@ class Blacklist
 			'*' => 'O',
 			'5' => 'S',
 			'$' => 'S',
-			'7' => 'T', 
-			'+' => 'T', 
-			'%' => 'Y', 
-			'2' => 'Z', 
+			'7' => 'T',
+			'+' => 'T',
+			'%' => 'Y',
+			'2' => 'Z',
 		);
 
 		$word2 = str_replace( array_keys($subs), array_values($subs), $word);
@@ -94,7 +94,7 @@ class Blacklist
 
 	private static function l33t($word)
 	{
-		$subs = array( 
+		$subs = array(
 			'][\\//][' => 'M',
 
 			//'\\/\//' => 'W',
@@ -103,8 +103,8 @@ class Blacklist
 			'[]-[]' => 'H',
 			']]-[[' => 'H',
 			'[]V[]' => 'M',
-			'][\][' => 'N', 
-			'[]\[]' => 'N', 
+			'][\][' => 'N',
+			'[]\[]' => 'N',
 			'[]_[]' => 'U',
 
 			';_[]' => 'J',
@@ -114,16 +114,16 @@ class Blacklist
 			'[\\/]' => 'M',
 			'(\\/)' => 'M',
 			'[[]]' => 'O',
-			'\'][\'' => 'T', 
+			'\'][\'' => 'T',
 			'\\\\//' => 'V',
-			'\\/\\/' => 'W', 
-			'|/\\|' => 'W', 
-			'[/\\]' => 'W', 
-			'(/\\)' => 'W', 
-			'1/\\/' => 'W', 
-			'\\/1/' => 'W', 
+			'\\/\\/' => 'W',
+			'|/\\|' => 'W',
+			'[/\\]' => 'W',
+			'(/\\)' => 'W',
+			'1/\\/' => 'W',
+			'\\/1/' => 'W',
 			'1/1/' => 'W',
-			'``//' => 'Y', 
+			'``//' => 'Y',
 
 			'133' => 'LEE',
 			'/-\\' => 'A',
@@ -151,13 +151,13 @@ class Blacklist
 			'.\\\\' => 'M',
 			'//.' => 'M',
 			'JVL' => 'M',
-			'/\\/' => 'N', 
-			'|\\|' => 'N', 
-			'(\\)' => 'N', 
-			'/|/' => 'N', 
-			'[\\]' => 'N', 
-			'{\\}' => 'N', 
-			'[]D' => 'P', 
+			'/\\/' => 'N',
+			'|\\|' => 'N',
+			'(\\)' => 'N',
+			'/|/' => 'N',
+			'[\\]' => 'N',
+			'{\\}' => 'N',
+			'[]D' => 'P',
 			'][D' => 'P',
 			'(,)' => 'Q',
 			'[]\\' => 'Q',
@@ -165,18 +165,18 @@ class Blacklist
 			'[]2' => 'R',
 			'][2' => 'R',
 			'\']\'' => 'T',
-			'~|~' => 'T', 
-			'-|-' => 'T', 
+			'~|~' => 'T',
+			'-|-' => 'T',
 			'\'|\'' => 'T',
-			'(_)' => 'U', 
-			'|_|' => 'U', 
-			'\\_\\' => 'U', 
-			'/_/' => 'U', 
-			'\\_/' => 'U', 
+			'(_)' => 'U',
+			'|_|' => 'U',
+			'\\_\\' => 'U',
+			'/_/' => 'U',
+			'\\_/' => 'U',
 			']_[' => 'U',
-			'///' => 'W', 
+			'///' => 'W',
 			'\\^/' => 'W',
-			'\\|/' => 'Y', 
+			'\\|/' => 'Y',
 			'`/_' => 'Z',
 
 			'/\\' => 'A',
@@ -209,34 +209,34 @@ class Blacklist
 			'|{' => 'K',
 			'|_' => 'L',
 			'^^' => 'M',
-			'()' => 'O', 
-			'[]' => 'O', 
-			'<>' => 'O', 
+			'()' => 'O',
+			'[]' => 'O',
+			'<>' => 'O',
 			'|o' => 'P',
-			'|D' => 'P', 
-			'|*' => 'P', 
-			'|>' => 'P', 
+			'|D' => 'P',
+			'|*' => 'P',
+			'|>' => 'P',
 			'0,' => 'Q',
 			'O,' => 'Q',
 			'O\\' => 'Q',
-			'|2' => 'R', 
-			'|?' => 'R', 
-			'|-' => 'R', 
+			'|2' => 'R',
+			'|?' => 'R',
+			'|-' => 'R',
 			'7`' => 'T',
-			'\\/' => 'V', 
-			'VV' => 'W', 
+			'\\/' => 'V',
+			'VV' => 'W',
 			'><' => 'X',
 			//'}{' => 'X',
-			')(' => 'X', 
+			')(' => 'X',
 			'}[' => 'X',
 			'\'/' => 'Y',
 			'`/' => 'Y',
-			'\\j' => 'Y', 
+			'\\j' => 'Y',
 			'-/' => 'Y',
 			'7_' => 'Z',
 			't1' => 'thi',
 			'T1' => 'THI',
-			'4' => 'A', 
+			'4' => 'A',
 			'@' => 'A',
 			'^' => 'A',
 			'8' => 'B',
@@ -259,12 +259,12 @@ class Blacklist
 			'*' => 'O',
 			'5' => 'S',
 			'$' => 'S',
-			'7' => 'T', 
-			'+' => 'T', 
-			'%' => 'Y', 
-			//'j' => 'Y', 
-			'2' => 'Z', 
-			'z' => 'Z', 
+			'7' => 'T',
+			'+' => 'T',
+			'%' => 'Y',
+			//'j' => 'Y',
+			'2' => 'Z',
+			'z' => 'Z',
 		);
 
 		$wordsubs = array(
@@ -287,16 +287,16 @@ class Blacklist
 
 		$len = strlen($word);
 
-		for ($i = 0; $i < $word; $i++) 
+		for ($i = 0; $i < $word; $i++)
 		{
 			$o = ord($word[$i]);
 
-			if ($o < 97) 
+			if ($o < 97)
 			{ // convert to lowercase
 				$o += 32;
 			}
 
-			if ($o > 122 || $o < 97) 
+			if ($o > 122 || $o < 97)
 			{ // skip anything not a lowercase letter
 				continue;
 			}
@@ -311,12 +311,12 @@ class Blacklist
 	{
 		$db =  \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (empty($word)) 
+		if (empty($word))
 		{
 			$word = '';
 		}
@@ -328,9 +328,9 @@ class Blacklist
 		$len = strlen($word);
 		$word2 = '';
 		// @FIXME: badly inefficient
-		for ($i = 0; $i < $len; $i++) 
+		for ($i = 0; $i < $len; $i++)
 		{
-			if (preg_match('/[a-zA-Z]/',$word[$i])) 
+			if (preg_match('/[a-zA-Z]/',$word[$i]))
 			{
 				$word2 .= $word[$i];
 			}
@@ -380,9 +380,9 @@ class Blacklist
 		$words[] = $surname.$middleName.$givenName;
 		$words[] = strrev($surname.$middleName.$givenName);
 
-		foreach($words as $w) 
+		foreach($words as $w)
 		{
-			if ($w == $word) 
+			if ($w == $word)
 			{
 				return true;
 			}
@@ -400,9 +400,9 @@ class Blacklist
 		$words[] = $username;
 		$words[] = strrev($username);
 
-		foreach ($words as $w) 
+		foreach ($words as $w)
 		{
-			if ($w == $word) 
+			if ($w == $word)
 			{
 				return true;
 			}

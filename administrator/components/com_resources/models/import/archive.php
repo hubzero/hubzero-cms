@@ -43,27 +43,27 @@ class Archive extends \Hubzero\Base\Object
 {
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
-	
+
 	/**
 	 * Import list
 	 * @var Hubzero\ItemList
 	 */
 	private $_imports = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function __construct()
 	{
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Get Instance of Page Archive
 	 *
@@ -73,19 +73,19 @@ class Archive extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self();
 		}
-		
+
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Get a list of imports
 	 *

@@ -38,56 +38,56 @@ class Vote extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $referenceid    = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $voted 			= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $voter   		= NULL;
 
 	/**
 	 * varchar(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $helpful     	= NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ip      		= NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category     	= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,20 +98,20 @@ class Vote extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->referenceid = intval($this->referenceid);
-		if (!$this->referenceid) 
+		if (!$this->referenceid)
 		{
 			$this->setError(JText::_('Missing reference ID'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
-		if (!$this->category) 
+		if (!$this->category)
 		{
 			$this->setError(JText::_('Missing category'));
 			return false;
@@ -134,7 +134,7 @@ class Vote extends JTable
 
 	/**
 	 * Check if a user has voted on an item
-	 * 
+	 *
 	 * @param      integer $refid    Reference ID
 	 * @param      string  $category Reference type
 	 * @param      integer $voter    User ID
@@ -142,19 +142,19 @@ class Vote extends JTable
 	 */
 	public function checkVote($refid=null, $category=null, $voter=null)
 	{
-		if ($refid == null) 
+		if ($refid == null)
 		{
 			$refid = $this->referenceid;
 		}
-		if ($refid == null) 
+		if ($refid == null)
 		{
 			return false;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			$category = $this->category;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			return false;
 		}
@@ -169,14 +169,14 @@ class Vote extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
 	public function getResults($filters=array())
 	{
-		$query = "SELECT c.* 
-				FROM $this->_tbl AS c 
+		$query = "SELECT c.*
+				FROM $this->_tbl AS c
 				WHERE c.referenceid=" . $this->_db->Quote($filters['id']) . " AND category=" . $this->_db->Quote($filters['category']) . " ORDER BY c.voted DESC";
 
 		$this->_db->setQuery($query);

@@ -34,96 +34,96 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Memberships lookup and management
- * 
+ *
  */
 class StorefrontModelMemberships
-{	
+{
 	// Database instance
 	var $_db = NULL;
-	
+
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
 	public function __construct()
 	{
 		$this->_db = JFactory::getDBO();
-		
+
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
 	}
-	
+
 	/**
 	 * Get all product type IDs with membership model
-	 * 
+	 *
 	 * @param  void
-	 * @return array		membership type IDs	
+	 * @return array		membership type IDs
 	 */
 	public function getMembershipTypes()
 	{
-		$sql = "SELECT `ptId` FROM `jos_storefront_product_types` WHERE `ptModel` = 'membership'";				
+		$sql = "SELECT `ptId` FROM `jos_storefront_product_types` WHERE `ptModel` = 'membership'";
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$membershipTypes = $this->_db->loadResultArray();
-		
+
 		return $membershipTypes;
-	}	
-	
+	}
+
 	/**
 	 * Lookup membership info
-	 * 
+	 *
 	 * @param  int			cart ID
 	 * @param  int			membership product ID
-	 * @return array		membership info	
+	 * @return array		membership info
 	 */
 	public function getMembershipInfo($crtId, $pId)
 	{
-		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < NOW(), 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);				
+		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < NOW(), 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$membershipInfo = $this->_db->loadAssoc();
-		
+
 		return $membershipInfo;
 	}
-	
+
 	/**
 	 * Set membership expiration
-	 * 
+	 *
 	 * @param  int			cart ID
 	 * @param  int			membership product ID
 	 * @param  int			new expiration time (UNIX format)
-	 * @return array		membership info	
+	 * @return array		membership info
 	 */
 	public function setMembershipExpiration($crtId, $pId, $expires)
 	{
-		$sql = "INSERT INTO `jos_cart_memberships` SET 
-				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . "), 
-				`pId` = " . $this->_db->quote($pId) . ", 
+		$sql = "INSERT INTO `jos_cart_memberships` SET
+				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . "),
+				`pId` = " . $this->_db->quote($pId) . ",
 				`crtId` = " . $this->_db->quote($crtId) . "
-				ON DUPLICATE KEY UPDATE 
+				ON DUPLICATE KEY UPDATE
 				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . ")";
-				
+
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql; die;
-		$this->_db->query();		
+		$this->_db->query();
 	}
-	
+
 	/**
 	 * Calculate new and return old expiration info for a product
-	 * 
+	 *
 	 * @param  string		TTL
-	 * @return void			
+	 * @return void
 	 */
 	public function getNewExpirationInfo($crtId, $item)
 	{
 		// Get current membership (if any)
 		$membershipInfo = $this->getMembershipInfo($crtId, $item['info']->pId);
-		
+
 		// Calculate correct TTL for one SKU (sku tll * qty)
 		$ttl = $this->_getTtl($item['meta']['ttl'], $item['cartInfo']->qty);
-		
+
 		// Calculate the new expiration date
 		if ($membershipInfo && $membershipInfo['crtmActive'])
 		{
@@ -135,17 +135,17 @@ class StorefrontModelMemberships
 		else
 		{
 			// New expiration date is now + TTL
-			$membershipSIdInfo->newExpires = strtotime('+ ' . $ttl);	
+			$membershipSIdInfo->newExpires = strtotime('+ ' . $ttl);
 		}
-		
+
 		return $membershipSIdInfo;
 	}
-	
+
 	/**
 	 * Check TTL format
-	 * 
+	 *
 	 * @param  string		TTL
-	 * @return void			
+	 * @return void
 	 */
 	public function checkTtl($ttl)
 	{
@@ -154,10 +154,10 @@ class StorefrontModelMemberships
 			throw new Exception(JText::_('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
 		}
 	}
-	
+
 	/**
 	 * Calculate correct TTL
-	 * 
+	 *
 	 * @param  string		single item TTL
 	 * @param  int			number of items
 	 * @return string		combined TTL
@@ -168,7 +168,7 @@ class StorefrontModelMemberships
 		// Split ttl into parts
 		$ttlParts = explode(' ', $ttl);
 		$ttlParts[0] = $qty * $ttlParts[0];
-		
+
 		$ttl = implode(' ', $ttlParts);
 		return $ttl;
 	}

@@ -51,7 +51,7 @@ jimport('joomla.application.module.helper');
 
 <section class="main section">
 	<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
-	
+
 <?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
 	<div class="introtext">
 		<?php echo JModuleHelper::renderModule(JModuleHelper::getModule('mod_poll')); ?>

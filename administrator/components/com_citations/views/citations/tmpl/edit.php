@@ -35,7 +35,7 @@ $canDo = CitationsHelper::getActions('citation');
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
 JToolBarHelper::title(JText::_('CITATION') . ': ' . $text, 'citation.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -72,15 +72,15 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 <script type="text/javascript" src="../components/com_citations/assets/js/citations.jquery.js"></script>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	//if (form.title.value == '') {
 	//	alert('<?php echo JText::_('CITATION_MUST_HAVE_TITLE'); ?>');
@@ -237,7 +237,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="edition"><?php echo JText::_('EDITION'); ?>:</label><br />
-				<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition)); ?>" /> 
+				<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition)); ?>" />
 				<br /><span style="font-size: 90%;color:#aaa;"><?php echo JText::_('EDITION_EXPLANATION'); ?></span>
 			</div>
 			<div class="input-wrap">
@@ -250,7 +250,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="institution"><?php echo JText::_('INSTITUTION'); ?>:</label><br />
-				<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution)); ?>" /> 
+				<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution)); ?>" />
 				<br /><span style="font-size: 90%;color:#aaa;"><?php echo JText::_('INSTITUTION_EXPLANATION'); ?></span>
 			</div>
 			<div class="input-wrap">
@@ -259,12 +259,12 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="location"><?php echo JText::_('LOCATION'); ?>:</label><br />
-				<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location)); ?>" /> 
+				<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location)); ?>" />
 				<span style="font-size: 90%;color:#aaa;"><?php echo JText::_('LOCATION_EXPLANATION'); ?></span>
 			</div>
 			<div class="input-wrap">
 				<label for="howpublished"><?php echo JText::_('PUBLISH_METHOD'); ?>:</label><br />
-				<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished)); ?>" /> 
+				<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished)); ?>" />
 				<br /><span style="font-size: 90%;color:#aaa;"><?php echo JText::_('PUBLISH_METHOD_EXPLANATION'); ?></span>
 			</div>
 			<div class="input-wrap">
@@ -394,7 +394,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<?php
 						$t = array();
-						foreach ($this->tags as $tag) 
+						foreach ($this->tags as $tag)
 						{
 							$t[] = stripslashes($tag['raw_tag']);
 						}
@@ -403,7 +403,7 @@ function submitbutton(pressbutton)
 				</div>
 			</fieldset>
 		<?php endif; ?>
-		
+
 		<?php if ($this->config->get('citation_allow_badges', 'no') == 'yes') : ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('Badges'); ?></span></legend>
@@ -411,7 +411,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<?php
 						$b = array();
-						foreach ($this->badges as $badge) 
+						foreach ($this->badges as $badge)
 						{
 							$b[] = stripslashes($badge['raw_tag']);
 						}
@@ -420,7 +420,7 @@ function submitbutton(pressbutton)
 				</div>
 			</fieldset>
 		<?php endif; ?>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Exclude from Export'); ?></span></legend>
 
@@ -447,7 +447,7 @@ function submitbutton(pressbutton)
 				}
 
 				//check this citations setting
-				if ($rollover == 1) 
+				if ($rollover == 1)
 				{
 					$ckd = 'checked="checked"';
 				}

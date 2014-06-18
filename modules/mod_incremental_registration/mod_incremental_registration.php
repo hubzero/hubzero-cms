@@ -32,7 +32,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (!class_exists('ModIncrementalRegistrationMediaPath')): 
+if (!class_exists('ModIncrementalRegistrationMediaPath')):
 /**
  * Incremental Registration Module class for media paths
  */
@@ -40,35 +40,35 @@ class ModIncrementalRegistrationMediaPath
 {
 	/**
 	 * Path to template overrides
-	 * 
+	 *
 	 * @var array
 	 */
 	private $tpl_path = '/templates/system/html/mod_incremental_registration';
 
 	/**
 	 * Path to module directory
-	 * 
+	 *
 	 * @var array
 	 */
 	private $mod_path = '/modules/mod_incremental_registration';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$this->tpl_path = '/templates/' . JFactory::getApplication()->getTemplate() . '/html/mod_incremental_registration';
 	}
 
 	/**
 	 * Determines if the file ($path) passed to it exists
-	 * 
+	 *
 	 * @param      string $path File path
 	 * @return     mixed
 	 */
-	public function get($path) 
+	public function get($path)
 	{
 		return file_exists($this->tpl_path . $path) ? $this->tpl_path . $path : $this->mod_path . $path;
 	}
@@ -81,14 +81,14 @@ class ModIncrementalRegistrationController
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return     unknown
 	 */
-	public function __construct() 
+	public function __construct()
 	{
 		$user = JFactory::getUser();
 		$dbg = isset($_GET['dbg']);
-		if ($user->get('guest')) 
+		if ($user->get('guest'))
 		{
 			return;
 		}
@@ -97,9 +97,9 @@ class ModIncrementalRegistrationController
 		$dbh = JFactory::getDBO();
 
 		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
-			
+
 		$opts = new ModIncrementalRegistrationOptions;
-		if (!$opts->isEnabled($uid)) 
+		if (!$opts->isEnabled($uid))
 		{
 			return;
 		}
@@ -109,13 +109,13 @@ class ModIncrementalRegistrationController
 		{
 			return;
 		}
-		
+
 		// looks like an error page, don't show
 		if (JDocument::getInstance('error')->getTitle()) {
 			return;
 		}
 
-		if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out') 
+		if (isset($_POST['incremental-registration']) && isset($_POST['submit']) && $_POST['submit'] === 'opt-out')
 		{
 			$awards = new ModIncrementalRegistrationAwards($uid);
 			$awards->optOut();
@@ -125,9 +125,9 @@ class ModIncrementalRegistrationController
 		$media = new ModIncrementalRegistrationMediaPath;
 		$groups = new ModIncrementalRegistrationGroups;
 		$hasCurl = file_exists(JPATH_BASE.'/media/media/images/bigcurl.png');
-		if (($row = $groups->getActiveColumns($uid)) || $hasCurl) 
+		if (($row = $groups->getActiveColumns($uid)) || $hasCurl)
 		{
-			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri)) 
+			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri))
 			{
 				$_SESSION['return'] = $uri;
 			}
@@ -135,16 +135,16 @@ class ModIncrementalRegistrationController
 			$doc->addStylesheet($media->get('/mod_incremental_registration.css'));
 			$doc->addScript($media->get('/mod_incremental_registration.jquery.js'));
 
-			if ($row) 
+			if ($row)
 			{
 				$dbh->setQuery('SELECT popover_text, award_per FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
 				list($introText, $awardPer) = $dbh->loadRow();
-				
-				if ($_SERVER['REQUEST_METHOD'] == 'GET') 
+
+				if ($_SERVER['REQUEST_METHOD'] == 'GET')
 				{
 					require JPATH_BASE . $media->get('/views/popover.php');
 				}
-				elseif (isset($_POST['incremental-registration']) && $_POST['incremental-registration'] == 'update') 
+				elseif (isset($_POST['incremental-registration']) && $_POST['incremental-registration'] == 'update')
 				{
 					$errors       = array();
 					$orgtype      = null;
@@ -152,135 +152,135 @@ class ModIncrementalRegistrationController
 					$reason       = null;
 					$mailPreferenceOption = -1;
 
-					if (isset($_POST['mailPreferenceOption'])) 
+					if (isset($_POST['mailPreferenceOption']))
 					{
 						$mailPreferenceOption = (int)$_POST['mailPreferenceOption'];
 					}
-					if (isset($_POST['orgtype']) && trim($_POST['orgtype'])) 
+					if (isset($_POST['orgtype']) && trim($_POST['orgtype']))
 					{
 						$orgtype = trim($_POST['orgtype']);
 					}
-					if (isset($_POST['org-other']) && trim($_POST['org-other'])) 
+					if (isset($_POST['org-other']) && trim($_POST['org-other']))
 					{
 						$organization = trim($_POST['org-other']);
 					}
-					elseif (isset($_POST['org']) && trim($_POST['org'])) 
+					elseif (isset($_POST['org']) && trim($_POST['org']))
 					{
 						$organization = trim($_POST['org']);
 					}
 
-					if (isset($_POST['reason-other']) && trim($_POST['reason-other'])) 
+					if (isset($_POST['reason-other']) && trim($_POST['reason-other']))
 					{
 						$reason = trim($_POST['reason-other']);
 					}
-					elseif (isset($_POST['reason']) && trim($_POST['reason'])) 
+					elseif (isset($_POST['reason']) && trim($_POST['reason']))
 					{
 						$reason = trim($_POST['reason']);
 					}
 
-					if (isset($_POST['name'])) 
+					if (isset($_POST['name']))
 					{
-						if (!isset($POST['name']['first']) || !isset($_POST['name']['last'])) 
+						if (!isset($POST['name']['first']) || !isset($_POST['name']['last']))
 						{
 							$errors['name'] = true;
 						}
 						$name = preg_replace('/\s+/', ' ', trim(implode(' ', array($name['first'], $name['middle'], $name['last']))));
 					}
 
-					if (isset($row['gender'])) 
+					if (isset($row['gender']))
 					{
-						if (!isset($_POST['gender']) 
-						 || ($_POST['gender'] != 'male' && $_POST['gender'] != 'female' && $_POST['gender'] != 'refused')) 
+						if (!isset($_POST['gender'])
+						 || ($_POST['gender'] != 'male' && $_POST['gender'] != 'female' && $_POST['gender'] != 'refused'))
 						{
 							$errors['gender'] = true;
 						}
-						else 
+						else
 						{
 							$gender = $_POST['gender'];
 						}
 					}
-					if (isset($_POST['url'])) 
+					if (isset($_POST['url']))
 					{
-						if (!trim($_POST['url'])) 
+						if (!trim($_POST['url']))
 						{
 							$errors['url'] = true;
 						}
 						$url = trim($_POST['url']);
 					}
 
-					if (isset($_POST['phone'])) 
+					if (isset($_POST['phone']))
 					{
-						if (!trim($_POST['phone'])) 
+						if (!trim($_POST['phone']))
 						{
 							$errors['phone'] = true;
 						}
 						$phone = trim($_POST['phone']);
 					}
 
-					if (isset($row['race'])) 
+					if (isset($row['race']))
 					{
-						if (empty($_POST['race']) || !is_array($_POST['race'])) 
+						if (empty($_POST['race']) || !is_array($_POST['race']))
 						{
 							$errors['race'] = true;
 						}
-						else 
+						else
 						{
 							$race = array_map('trim',  $_POST['race']);
 						}
 					}
 
-					if (isset($row['countryorigin'])) 
+					if (isset($row['countryorigin']))
 					{
 						if (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes') {
 							$countryorigin = 'us';
 						}
-						elseif (!isset($_POST['countryorigin']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryorigin'])) 
+						elseif (!isset($_POST['countryorigin']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryorigin']))
 						{
 							$errors['countryorigin'] = true;
 						}
-						else 
+						else
 						{
 							$countryorigin = $_POST['countryorigin'];
 						}
 						// race does not apply to non-us
-						if (isset($countryorigin) && strtolower($countryorigin) != 'us' && isset($errors['race'])) 
+						if (isset($countryorigin) && strtolower($countryorigin) != 'us' && isset($errors['race']))
 						{
 							unset($errors['race']);
 						}
 					}
-					if (isset($row['countryresident'])) 
+					if (isset($row['countryresident']))
 					{
-						if (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes') 
+						if (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes')
 						{
 							$countryresident = 'us';
 						}
-						elseif (!isset($_POST['countryresident']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryresident'])) 
+						elseif (!isset($_POST['countryresident']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryresident']))
 						{
 							$errors['countryresident'] = true;
 						}
-						else 
+						else
 						{
 							$countryresident = $_POST['countryresident'];
 						}
 					}
-					
-					if (isset($row['disability'])) 
+
+					if (isset($row['disability']))
 					{
-						if (!isset($_POST['disability']) || ($_POST['disability'] == 'yes' && ((!isset($_POST['specificDisability']) || !$_POST['specificDisability']) && (!isset($_POST['otherDisability']) || !trim($_POST['otherDisability']))))) 
+						if (!isset($_POST['disability']) || ($_POST['disability'] == 'yes' && ((!isset($_POST['specificDisability']) || !$_POST['specificDisability']) && (!isset($_POST['otherDisability']) || !trim($_POST['otherDisability'])))))
 						{
 							$errors['disability'] = true;
 						}
 					}
 
-					if (isset($row['orgtype']) && !$orgtype) 
+					if (isset($row['orgtype']) && !$orgtype)
 					{
 						$errors['orgtype'] = true;
 					}
-					if (isset($row['organization']) && !$organization) 
+					if (isset($row['organization']) && !$organization)
 					{
 						$errors['organization'] = true;
 					}
-					if (isset($row['reason']) && !$reason) 
+					if (isset($row['reason']) && !$reason)
 					{
 						$errors['reason'] = true;
 					}
@@ -296,11 +296,11 @@ class ModIncrementalRegistrationController
 						}
 					}
 
-					if ($errors) 
+					if ($errors)
 					{
 						require JPATH_BASE . $media->get('/views/popover.php');
 					}
-					else 
+					else
 					{
 						$dbh->setQuery('SELECT '.implode(', ', array_keys($row)).' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
 						$award = 0;
@@ -308,9 +308,9 @@ class ModIncrementalRegistrationController
 
 						if (!empty($awarded))
 						{
-							foreach ($awarded as $v) 
+							foreach ($awarded as $v)
 							{
-								if (!$v) 
+								if (!$v)
 								{
 									$award += $awardPer;
 								}
@@ -320,7 +320,7 @@ class ModIncrementalRegistrationController
 						$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = ' . $uid . ' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = ' . $uid . ')), 0)');
 						$new_amount = $dbh->loadResult() + $award;
 
-						if ($award) 
+						if ($award)
 						{
 							$BTL = new \Hubzero\Bank\Teller($dbh, $uid);
 							$BTL->deposit($award, 'Profile completion award', 'registration', 0);
@@ -329,20 +329,20 @@ class ModIncrementalRegistrationController
 						$xp_update = 'UPDATE #__xprofiles SET ';
 						$aw_update = 'UPDATE #__profile_completion_awards SET edited_profile = 1, ';
 						$first = true;
-						foreach (array_keys($row) as $k) 
+						foreach (array_keys($row) as $k)
 						{
-							if ($k == 'race') 
+							if ($k == 'race')
 							{
-								if (isset($race)) 
+								if (isset($race))
 								{
 									$dbh->setQuery('DELETE FROM #__xprofiles_race WHERE uidNumber = '.$uid);
 									$dbh->execute();
-									foreach ($race as $r) 
+									foreach ($race as $r)
 									{
 										$dbh->setQuery('INSERT INTO #__xprofiles_race(uidNumber, race) VALUES ('.$uid.', '.$dbh->quote($r).')');
 										$dbh->execute();
 									}
-									if (isset($_POST['racenativetribe'])) 
+									if (isset($_POST['racenativetribe']))
 									{
 										$dbh->setQuery('UPDATE #__xprofiles SET nativeTribe = '.$dbh->quote($_POST['racenativetribe']).' WHERE uidNumber = '.$uid);
 										$dbh->execute();
@@ -350,14 +350,14 @@ class ModIncrementalRegistrationController
 								}
 								continue;
 							}
-							if ($k == 'disability') 
+							if ($k == 'disability')
 							{
 								$disabilities = array();
-								switch ($_POST['disability']) 
+								switch ($_POST['disability'])
 								{
 									case 'yes':
 										$disabilities = isset($_POST['specificDisability']) && is_array($_POST['specificDisability']) ? $_POST['specificDisability'] : array();
-										if (($other = isset($_POST['otherDisability']) ? trim($_POST['otherDisability']) : NULL)) 
+										if (($other = isset($_POST['otherDisability']) ? trim($_POST['otherDisability']) : NULL))
 										{
 											$disabilities[] = $other;
 										}
@@ -369,7 +369,7 @@ class ModIncrementalRegistrationController
 										$disabilities[] = 'refused';
 									break;
 								}
-								foreach ($disabilities as $disability) 
+								foreach ($disabilities as $disability)
 								{
 									$dbh->setQuery('INSERT INTO #__xprofiles_disability(uidNumber, disability) VALUES ('.$uid.', '.$dbh->quote($disability).')');
 									$dbh->execute();
@@ -381,23 +381,23 @@ class ModIncrementalRegistrationController
 								$dbh->execute();
 								continue;
 							}
-							if ($k == 'name') 
+							if ($k == 'name')
 							{
 								$dbh->setQuery('UPDATE #__xprofiles SET givenName = '.$dbh->quote($_POST['name']['first']).', middleName = '.$dbh->quote($_POST['name']['middle']).', surname = '.$dbh->quote($_POST['name']['last']).' WHERE uidNumber = '.$uid);
 								$dbh->execute();
 							}
-							if ($k == 'countryorigin' || $k == 'countryresident') 
+							if ($k == 'countryorigin' || $k == 'countryresident')
 							{
 								$$k = strtoupper($$k);
 							}
-							if (isset($row[$k])) 
+							if (isset($row[$k]))
 							{
 								$xp_update .= ($first ? '' : ', ') . $k . ' = ' . $dbh->quote($$k);
 								$aw_update .= ($first ? '' : ', ') . $k . ' = 1';
 								$first = false;
 							}
 						}
-						if (!$first) 
+						if (!$first)
 						{
 							$dbh->setQuery($xp_update . ' WHERE uidNumber = ' . $uid);
 							$dbh->execute();
@@ -410,7 +410,7 @@ class ModIncrementalRegistrationController
 					}
 				}
 			}
-			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl) 
+			else if (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl)
 			{
 				require JPATH_BASE . $media->get('/views/curl.php');
 			}

@@ -205,7 +205,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 
 	/**
 	 * Upload a file or create a new folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()

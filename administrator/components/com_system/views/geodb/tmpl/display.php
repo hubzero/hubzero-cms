@@ -50,12 +50,12 @@ JToolBarHelper::preferences($this->option, '550');
 	</div>
 	<div class="col width-50 fltrt">
 		<p>
-			The Geo DB is used for accessing a centralized database of geolocation data. This data can be available site-wide and can be used by components, 
+			The Geo DB is used for accessing a centralized database of geolocation data. This data can be available site-wide and can be used by components,
 			for example, to pre-select a value when filling out a form that asks for a user's country.
 		</p>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="importHubConfig" />

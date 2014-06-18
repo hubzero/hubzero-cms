@@ -40,7 +40,7 @@ class SupportTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class SupportTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -66,22 +66,22 @@ class SupportTags extends TagsHandler
 		$max_font_size = 1.8;
 
 		$filter = "";
-		if ($oid) 
+		if ($oid)
 		{
 			$filter .= "WHERE rt.objectid=" . $oid;
 		}
-		if ($admin == 0) 
+		if ($admin == 0)
 		{
-			if ($oid) 
+			if ($oid)
 			{
 				$filter .= " AND t.admin=0 ";
-			} 
-			else 
+			}
+			else
 			{
 				$filter .= "WHERE t.admin=0 ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$filter .= "";
 		}
@@ -96,9 +96,9 @@ class SupportTags extends TagsHandler
 
 		$html = '';
 
-		if ($tags && count($tags) > 0) 
+		if ($tags && count($tags) > 0)
 		{
-			if ($showsizes) 
+			if ($showsizes)
 			{
 				$retarr = array();
 				foreach ($tags as $tag)
@@ -112,7 +112,7 @@ class SupportTags extends TagsHandler
 
 				// For ever additional tagged object from min to max, we add $step to the font size.
 				$spread = $max_qty - $min_qty;
-				if (0 == $spread) 
+				if (0 == $spread)
 				{ // Divide by zero
 					$spread = 1;
 				}
@@ -120,18 +120,18 @@ class SupportTags extends TagsHandler
 			}
 
 			// build HTML
-			if ($showsizes == 3) 
+			if ($showsizes == 3)
 			{
 				$bits = array();
-			} 
-			else 
+			}
+			else
 			{
 				$html = '<ol class="tags">' . "\n";
 			}
 			foreach ($tags as $tag)
 			{
 				$class = '';
-				if ($tag->admin == 1) 
+				if ($tag->admin == 1)
 				{
 					$class = ' class="admin"';
 				}
@@ -159,11 +159,11 @@ class SupportTags extends TagsHandler
 					break;
 				}
 			}
-			if ($showsizes == 3) 
+			if ($showsizes == 3)
 			{
 				$html = implode(', ', $bits);
-			} 
-			else 
+			}
+			else
 			{
 				$html .= '</ol>' . "\n";
 			}
@@ -174,7 +174,7 @@ class SupportTags extends TagsHandler
 
 	/**
 	 * Check tag existence for tickets
-	 * 
+	 *
 	 * @param      integer $id        Resource ID
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
@@ -194,15 +194,15 @@ class SupportTags extends TagsHandler
 		$where = array();
 		$where[] = "rt.objectid IN ($id)";
 		$where[] = "rt.tbl='$this->_tbl'";
-		/*if ($admin != 1) 
+		/*if ($admin != 1)
 		{
 			$where[] = "t.admin=0";
 		}*/
-		if ($tagger_id != 0) 
+		if ($tagger_id != 0)
 		{
 			$where[] = "rt.taggerid=" . $tagger_id;
 		}
-		if ($strength) 
+		if ($strength)
 		{
 			$where[] = "rt.strength=" . $strength;
 		}

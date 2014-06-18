@@ -41,12 +41,12 @@ else
 if ($this->remote && $this->item != $this->remote['title'])
 {
 	$append = ProjectsHtml::getAppendedNumber($this->item);
-	
+
 	if ($append > 0)
 	{
 		$ext = explode('.', $this->item);
 		$ext = count($ext) > 1 ? end($ext) : '';
-		
+
 		$name = ProjectsHtml::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
 	}
 }
@@ -72,17 +72,17 @@ $img = $this->remote && $this->remote['converted'] == 1 ? ProjectsHtml::getGoogl
 $multi = isset($this->multi) && $this->multi ? '[]' : '';
 
 $fpath = isset($this->subdir) && $this->subdir ? $this->subdir. DS . urldecode($name) : urldecode($name);
-				
+
 ?>
 <li><img src="<?php echo $img; ?>" alt="<?php echo $name; ?>" />
-<?php echo $fpath; ?> 
+<?php echo $fpath; ?>
 <?php if ($this->remote && $this->remote['converted'] == 1) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
 <?php if ($this->remote && $this->remote['original_path'] && $this->remote['converted'] == 1) { echo '<span class="remote-file faded">' . JText::_('COM_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</span>'; } ?>
 
 <?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . JText::_('COM_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
-<?php echo $this->type == 'folder' 
+<?php echo $this->type == 'folder'
 	? '<input type="hidden" name="folder' . $multi . '" value="'.$this->item.'" />'
 	: '<input type="hidden" name="asset' . $multi . '" value="'.$this->item.'" />'; ?>
-	
+
 <?php if (isset($this->extras)) { echo $this->extras; } ?>
 </li>

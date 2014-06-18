@@ -39,7 +39,7 @@ class Google_REST {
     return $ret;
   }
 
-  
+
   /**
    * Decode an HTTP Response.
    * @static
@@ -51,7 +51,7 @@ class Google_REST {
     $code = $response->getResponseHttpCode();
     $body = $response->getResponseBody();
     $decoded = null;
-    
+
     if ($code != '200' && $code != '201' && $code != '204') {
       $decoded = json_decode($body, true);
       $err = 'Error calling ' . $response->getRequestMethod() . ' ' . $response->getUrl();
@@ -66,7 +66,7 @@ class Google_REST {
       $errors = isset($decoded['error']) && isset($decoded['error']['errors']) ? $decoded['error']['errors'] : $err;
       throw new Google_ServiceException($err, $code, null, $errors);
     }
-    
+
     // Only attempt to decode the response, if the response code wasn't (204) 'no content'
     if ($code != '204') {
       $decoded = json_decode($body, true);

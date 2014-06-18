@@ -40,35 +40,35 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 {
 	/**
 	 * \Hubzero\User\Profile
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_image = NULL;
 
 	/**
 	 * URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_baselink = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	//private $_db = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Member ID
 	 * @return     void
 	 */
@@ -94,12 +94,12 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CollectionsModelFollowingMember($oid);
 		}

@@ -114,7 +114,7 @@ class Repository implements CommandInterface
 	{
 		$mode    = $this->output->getMode();
 		$status  = $this->mechanism->status();
-		$message = (!empty($status)) 
+		$message = (!empty($status))
 			? 'This repository is managed by ' . $this->mechanism->getName() . ' and has the following divergence:'
 			: 'This repository is managed by ' . $this->mechanism->getName() . ' and is clean';
 

@@ -30,10 +30,10 @@ $project = $this->pub->_project;
 $prov = $this->pub->_project->provisioned ? 1 : 0;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
@@ -49,18 +49,18 @@ $step 	  =  $this->step;
 $complete =  $this->pub->_curationModel->_progress->blocks->$step->status->status;
 
 // Is panel content (of any kind) required?
-$required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest->params->required) 
+$required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest->params->required)
 	? $this->pub->_curationModel->_progress->blocks->$step->manifest->params->required : 0;
-	
+
 $element = JRequest::getInt( 'el', 0 );
 
 ?>
 <div id="pub-editor" class="pane-desc">
-	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-	 	 <fieldset>	
+	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	 	 <fieldset>
 			<input type="hidden" name="id" value="<?php echo $project->id; ?>" id="projectid" />
 			<input type="hidden" name="version" id="version" value="<?php echo $this->pub->version; ?>" />
-			<input type="hidden" name="active" value="publications" />					
+			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" id="action" value="save" />
 			<input type="hidden" name="complete" id="complete" value="<?php echo $complete; ?>" />
 			<input type="hidden" name="required" id="required" value="<?php echo $required; ?>" />
@@ -78,33 +78,33 @@ $element = JRequest::getInt( 'el', 0 );
   		<div id="c-pane" class="columns">
 			 <div class="c-inner draftflow">
 						<h4><?php echo $title; ?></h4>
-						<?php 
+						<?php
 							if ($tagline && $move)
 							{ ?>
-							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov && $this->manifest->elements) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>	
+							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov && $this->manifest->elements) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
 						<?php }
 						?>
 						<?php echo $this->content; ?>
 						<div class="hidden">
 							<div id="info-panel" class="full-content"><?php echo $this->manifest->about; ?></div>
 						</div>
-						
+
 						<?php
 						if ($this->active != 'review') { ?>
 						<div class="submit-area <?php echo $this->showControls == 2 ? ' extended' : ''; ?>" id="submit-area">
 							<?php if ($this->step != 1 && $this->showControls) { ?>
 								<span class="button-wrapper bw-previous icon-prev">
-									<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" /> 
+									<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
 								</span>
 							<?php } ?>
-							<span class="button-wrapper icon-apply">								
-								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />	
-							</span>						
+							<span class="button-wrapper icon-apply">
+								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
+							</span>
 							<?php if ($this->showControls) { ?>
 							<span class="button-wrapper icon-next">
 								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="c-next" class="submitbutton btn icon-next" />
 							</span>
-							<?php } ?>							
+							<?php } ?>
 						</div>
 					<?php } ?>
 			 </div>

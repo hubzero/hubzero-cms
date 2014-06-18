@@ -54,7 +54,7 @@ class Csv implements \Resources\Import\Interfaces\Adapter
 	 * @var int
 	 */
 	private $data_count = 0;
-	
+
 	/**
 	 * Does this adapter respond to a mime type
 	 *
@@ -66,7 +66,7 @@ class Csv implements \Resources\Import\Interfaces\Adapter
 		$acceptable = array('text/plain', 'text/csv', 'application/vnd.ms-excel');
 		return in_array($mime, $acceptable);
 	}
-	
+
 	/**
 	 * Count Import data
 	 *
@@ -91,7 +91,7 @@ class Csv implements \Resources\Import\Interfaces\Adapter
 		// return count
 		return $this->data_count;
 	}
-	
+
 	/**
 	 * Process Import data
 	 *
@@ -117,7 +117,7 @@ class Csv implements \Resources\Import\Interfaces\Adapter
    			{
    				continue;
    			}
-			
+
 			// do we have a post parse callback ?
 			$record = $this->map($record, $callbacks['postparse'], $dryRun);
 
@@ -135,17 +135,17 @@ class Csv implements \Resources\Import\Interfaces\Adapter
 
 			// add to data array
 			array_push($this->data, $resource);
-			
-			// mark record processed		
+
+			// mark record processed
 			$import->runs('current')->processed(1);
 		}
-		
+
 		return $this->data;
 	}
 
 	/**
 	 * Run Callbacks on Record
-	 * 
+	 *
 	 * @param  object $record    Resource Record
 	 * @param  array  $callbacks Array of Callbacks
 	 * @param  bool   $dryRun    Dry Run mode?

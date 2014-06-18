@@ -38,21 +38,21 @@ class VideoMacro extends WikiMacro
 {
 	/**
 	 * Container for parsed attributes
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $attr = array();
 
 	/**
 	 * JParameter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $config = null;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -82,7 +82,7 @@ class VideoMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -91,7 +91,7 @@ class VideoMacro extends WikiMacro
 		$content = $this->args;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return '';
 		}
@@ -100,12 +100,12 @@ class VideoMacro extends WikiMacro
 		//$youtube_url = 'https://www.youtube.com/embed/';
 		$video_url = '';
 
-		//defaults 
+		//defaults
 		$default_width  = 640;
 		$default_height = 380;
 
 		$this->config = JComponentHelper::getParams('com_wiki');
-		if ($this->filepath != '') 
+		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
@@ -131,7 +131,7 @@ class VideoMacro extends WikiMacro
 		$height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
-		if (!strstr($url, 'http')) 
+		if (!strstr($url, 'http'))
 		{
 			// File path, so assume local
 			if (strstr($url, '/'))
@@ -153,8 +153,8 @@ class VideoMacro extends WikiMacro
 					}
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$video_url = $url;
 		}
@@ -169,7 +169,7 @@ class VideoMacro extends WikiMacro
 
 			if (strstr($video_url, '?'))
 			{
-				//split the string into two parts 
+				//split the string into two parts
 				//uri and query string
 				$full_url_parts = explode('?', $video_url);
 
@@ -179,10 +179,10 @@ class VideoMacro extends WikiMacro
 				//foreach query string parts
 				//explode at equals sign
 				//check to see if v is the first part and if it is set the second part to the video id
-				foreach ($query_string_parts as $qsp) 
+				foreach ($query_string_parts as $qsp)
 				{
 					$pairs_parts = explode("%3D", $qsp);
-					if ($pairs_parts[0] == 'v') 
+					if ($pairs_parts[0] == 'v')
 					{
 						$video_id = $pairs_parts[1];
 						break;
@@ -285,17 +285,17 @@ class VideoMacro extends WikiMacro
 	/**
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
-	 * 
+	 *
 	 * @param      $file  Filename
 	 * @return     string
 	 */
 	private function _path($file, $alt=false)
 	{
-		if (substr($file, 0, 1) == DS) 
+		if (substr($file, 0, 1) == DS)
 		{
 			$path = JPATH_ROOT . $file;
 		}
-		else 
+		else
 		{
 			if ($alt)
 			{
@@ -327,7 +327,7 @@ class VideoMacro extends WikiMacro
 	/**
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching attr=val pairs
 	 * @return     void
 	 */
@@ -340,9 +340,9 @@ class VideoMacro extends WikiMacro
 		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches) && $key != 'border') 
+		if (preg_match($size, $val, $matches) && $key != 'border')
 		{
 			if ($matches[0])
 			{
@@ -353,7 +353,7 @@ class VideoMacro extends WikiMacro
 			}
 		}
 
-		// Set width if just a numeric size is given 
+		// Set width if just a numeric size is given
 		// e.g., [[File(myfile.jpg, width=120)]]
 		if (is_numeric($val))
 		{
@@ -365,7 +365,7 @@ class VideoMacro extends WikiMacro
 
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, align=left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
 			{
@@ -373,7 +373,7 @@ class VideoMacro extends WikiMacro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $key;
 				if ($key == 'left')
@@ -389,7 +389,7 @@ class VideoMacro extends WikiMacro
 		}
 
 		// Look for any other attributes
-		if ($key == 'align') 
+		if ($key == 'align')
 		{
 			if ($val == 'center')
 			{
@@ -397,7 +397,7 @@ class VideoMacro extends WikiMacro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $val;
 				if ($val == 'left')
@@ -409,12 +409,12 @@ class VideoMacro extends WikiMacro
 					$this->attr['style']['margin-left'] = '1em';
 				}
 			}
-		} 
-		else if ($key == 'border') 
+		}
+		else if ($key == 'border')
 		{
 			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
-		} 
-		else 
+		}
+		else
 		{
 			$this->attr[$key] = $val;
 		}
@@ -424,7 +424,7 @@ class VideoMacro extends WikiMacro
 	/**
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching the single attribute pattern
 	 * @return     void
 	 */
@@ -432,9 +432,9 @@ class VideoMacro extends WikiMacro
 	{
 		$key = strtolower(trim($matches[1]));
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, 120px)]]
-		if (preg_match('/[0-9+](%|px|em)$/', $key, $matches)) 
+		if (preg_match('/[0-9+](%|px|em)$/', $key, $matches))
 		{
 			if ($matches[0])
 			{
@@ -445,7 +445,7 @@ class VideoMacro extends WikiMacro
 			}
 		}
 
-		// Set width if just a numeric size is given 
+		// Set width if just a numeric size is given
 		// e.g., [[File(myfile.jpg, 120)]]
 		if (is_numeric($key))
 		{
@@ -457,7 +457,7 @@ class VideoMacro extends WikiMacro
 
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
 			{
@@ -465,7 +465,7 @@ class VideoMacro extends WikiMacro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['display'] = 'block';
 				$this->attr['style']['float'] = $key;
@@ -485,7 +485,7 @@ class VideoMacro extends WikiMacro
 	/**
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
-	 * 
+	 *
 	 * @param      $file  Filename
 	 * @return     string
 	 */
@@ -500,15 +500,15 @@ class VideoMacro extends WikiMacro
 		$file = trim($file, DS);
 
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope) 
+		if ($this->scope)
 		{
 			$scope = trim($this->scope, DS);
-			
+
 			$link .= $scope . DS;
 		}
 		$type = 'File';
 		$this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
-		if (in_array(strtolower(JFile::getExt($file)), $this->imgs)) 
+		if (in_array(strtolower(JFile::getExt($file)), $this->imgs))
 		{
 			if (JRequest::getVar('format') == 'pdf')
 			{

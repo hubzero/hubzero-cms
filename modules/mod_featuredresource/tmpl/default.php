@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->getError()) { ?>
 	<p class="error"><?php echo JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS'); ?></p>
 <?php } else {
-	if ($this->row) { 
+	if ($this->row) {
 ?>
 	<div class="<?php echo $this->cls; ?>">
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
@@ -59,7 +59,7 @@ if ($this->getError()) { ?>
 			<?php echo JText::_('MOD_FEATUREDRESOURCE_NO_RESULTS'); ?>
 		</p>
 	</div>
-<?php 
+<?php
 	}
 }
 ?>

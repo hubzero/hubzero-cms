@@ -38,14 +38,14 @@ class TimestampMacro extends WikiMacro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -58,7 +58,7 @@ class TimestampMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()

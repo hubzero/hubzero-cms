@@ -38,12 +38,12 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Upload an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
@@ -51,7 +51,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		if (!($id = JRequest::getInt('id', 0))) 
+		if (!($id = JRequest::getInt('id', 0)))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
@@ -60,7 +60,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NO_FILE'));
 			$this->displayTask('', $id);
@@ -70,10 +70,10 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		// Build upload path
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -87,19 +87,19 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_ERROR_UPLOADING'));
 			$file = $curfile;
-		} 
-		else 
+		}
+		else
 		{
 			// Do we have an old file we're replacing?
 			$curfile = JRequest::getVar('currentfile', '');
 
-			if ($curfile != '' && file_exists($path . DS . $curfile)) 
+			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
-				if (!JFile::delete($path . DS . $curfile)) 
+				if (!JFile::delete($path . DS . $curfile))
 				{
 					$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file['name'], $id);
@@ -116,12 +116,12 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
@@ -129,14 +129,14 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming member ID
-		if (!($id = JRequest::getInt('id', 0))) 
+		if (!($id = JRequest::getInt('id', 0)))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
-		if ($this->juser->get('id') != $id) 
+		if ($this->juser->get('id') != $id)
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', $this->juser->get('id'));
@@ -144,7 +144,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming file
-		if (!($file = JRequest::getVar('file', ''))) 
+		if (!($file = JRequest::getVar('file', '')))
 		{
 			$this->setError(JText::_('COM_FEEDBACK_NO_FILE'));
 			$this->displayTask($file, $id);
@@ -156,15 +156,15 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		// Build the file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
 
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('COM_FEEDBACK_FILE_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
@@ -180,7 +180,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for uploading an image and any data for current uploaded image
-	 * 
+	 *
 	 * @param      string  $file Image name
 	 * @param      integer $id   User ID
 	 * @return     void
@@ -190,7 +190,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Do have an ID or do we need to get one?
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('id', 0);
 		}
@@ -213,7 +213,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->file_path = $path;
 		$this->view->id        = $id;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

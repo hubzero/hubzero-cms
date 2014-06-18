@@ -40,28 +40,28 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CollectionsTableFollowing';
 
 	/**
 	 * CollectionsModelFollowingAbstract
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_following = null;
 
 	/**
 	 * CollectionsModelFollowingAbstract
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_follower = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid            Following ID, array, or object
 	 * @param      string  $following_type Type being followed [collection, member, group]
 	 * @param      integer $follower_id    Follower ID [member, group]
@@ -100,14 +100,14 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$key = $oid . '_' . $following_type . '_' . $follower_id . '_' . $follower_type;
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new CollectionsModelFollowing($oid, $following_type, $follower_id, $follower_type);
 		}
@@ -118,7 +118,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Return the adapter for this entry's follower,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	public function follower()
@@ -133,7 +133,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Return the adapter for this entry's following,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	public function following()
@@ -147,7 +147,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 
 	/**
 	 * Get an adapter
-	 * 
+	 *
 	 * @param     string $what Key name [following, follower]
 	 * @return    object
 	 */
@@ -243,7 +243,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 
 	/**
 	 * Stop following an object
-	 * 
+	 *
 	 * @param      integer $id ID of record to unfollow
 	 * @return     boolean
 	 */

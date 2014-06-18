@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALL'); ?>
 						</a>
 					<?php endif; ?>
-					
+
 					<h3><?php echo $module->title; ?></h3>
 				</div>
 				<dl class="module-details">

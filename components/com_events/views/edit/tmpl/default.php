@@ -57,12 +57,12 @@ $this->css()
 		</div>
 		<fieldset>
 			<legend><?php echo ($this->row->id) ? JText::_('EVENTS_UPDATE_EVENT') : JText::_('EVENTS_NEW_EVENT');?></legend>
-			
+
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
 				<?php echo EventsHtml::buildCategorySelect($this->row->catid, '', $this->gid, $this->option); ?>
 			</label>
-			
+
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
 				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
@@ -89,7 +89,7 @@ $this->css()
 			?>
 			<label>
 				<?php echo $field[1]; ?>: <?php echo ($field[3]) ? '<span class="required">required</span>' : ''; ?>
-				<?php 
+				<?php
 				if ($field[2] == 'checkbox') {
 					echo '<input class="option" type="checkbox" name="fields['. $field[0] .']" value="1"';
 					if (stripslashes(end($field)) == 1) {
@@ -101,7 +101,7 @@ $this->css()
 				}
 				?>
 			</label>
-<?php 
+<?php
 		}
 	}
 ?>
@@ -131,7 +131,7 @@ $this->css()
 					<input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php if ($this->times['start_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
 					<?php } ?>
 				</p>
-				
+
 				<label for="publish_down">
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_ENDDATE').' &amp; '.JText::_('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?></label>
 				<p>
@@ -143,7 +143,7 @@ $this->css()
 					<input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
 					<?php } ?>
 				</p>
-				
+
 				<label>
 					<?php echo JText::_('EVENTS_CAL_TIME_ZONE'); ?>
 					<?php echo EventsHtml::buildTimeZoneSelect($this->times['time_zone'], ''); ?>

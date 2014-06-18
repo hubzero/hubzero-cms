@@ -38,84 +38,84 @@ class WikiTableComment extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pageid     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version    = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ctext      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $chtml      = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rating     = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent     = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $status     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,7 +126,7 @@ class WikiTableComment extends JTable
 
 	/**
 	 * Get all replies to a comment
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getResponses()
@@ -137,25 +137,25 @@ class WikiTableComment extends JTable
 
 	/**
 	 * Mark a comment as abusive
-	 * 
+	 *
 	 * @param      integer $oid Entry ID
 	 * @return     boolean True on success, False if error
 	 */
 	public function report($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = intval($oid);
 		}
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = " . $this->_db->Quote($this->$k));
 
-		if ($this->_db->query()) 
+		if ($this->_db->query())
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -164,7 +164,7 @@ class WikiTableComment extends JTable
 
 	/**
 	 * Get all comments for a page
-	 * 
+	 *
 	 * @param      integer $id     Page ID
 	 * @param      integer $parent Parent comment ID
 	 * @param      string  $ver    Page version
@@ -180,7 +180,7 @@ class WikiTableComment extends JTable
 	/**
 	 * Return a count of entries based off of filters passed
 	 * Used for admin interface
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -196,7 +196,7 @@ class WikiTableComment extends JTable
 	/**
 	 * Get entries based off of filters passed
 	 * Used for admin interface
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -211,7 +211,7 @@ class WikiTableComment extends JTable
 	/**
 	 * Build a query from filters passed
 	 * Used for admin interface
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -223,27 +223,27 @@ class WikiTableComment extends JTable
 			"c.created_by=u.uidNumber"
 		);
 
-		if (isset($filters['created_by']) && $filters['created_by'] != 0) 
+		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
 			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
-		if (isset($filters['pageid']) && $filters['pageid'] != 0) 
+		if (isset($filters['pageid']) && $filters['pageid'] != 0)
 		{
 			$where[] = "c.pageid=" . $this->_db->Quote($filters['pageid']);
 		}
-		if (isset($filters['parent']) && $filters['parent'] != '') 
+		if (isset($filters['parent']) && $filters['parent'] != '')
 		{
 			$where[] = "c.parent=" . $this->_db->Quote($filters['parent']);
 		}
-		if (isset($filters['anonymous']) && $filters['anonymous'] != '') 
+		if (isset($filters['anonymous']) && $filters['anonymous'] != '')
 		{
 			$where[] = "c.anonymous=" . $this->_db->Quote($filters['anonymous']);
 		}
-		if (isset($filters['version']) && $filters['version'] != 0) 
+		if (isset($filters['version']) && $filters['version'] != 0)
 		{
 			$where[] = "c.version=" . $this->_db->Quote($filters['version']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "LOWER(c.ctext) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
@@ -253,16 +253,16 @@ class WikiTableComment extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'created';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		/*if (isset($filters['limit']) && $filters['limit'] != 0) 
+		/*if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}*/

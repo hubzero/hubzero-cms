@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $option = 'com_members';
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -96,7 +96,7 @@ JSubMenuHelper::addEntry(
 );
 
 JSubMenuHelper::addEntry(
-	JText::_('Registration'), 
+	JText::_('Registration'),
 	'index.php?option=' .  $option . '&controller=registration',
 	(in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
 );

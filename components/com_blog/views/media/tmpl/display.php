@@ -43,7 +43,7 @@ $this->css();
 			<fieldset>
 				<p><input type="file" name="upload" id="upload" /></p>
 				<p><input type="submit" value="<?php echo JText::_('COM_BLOG_UPLOAD'); ?>" /></p>
-				
+
 				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 				<input type="hidden" name="task" value="upload" />

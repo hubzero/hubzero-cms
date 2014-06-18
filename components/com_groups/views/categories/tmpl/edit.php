@@ -63,12 +63,12 @@ if ($this->category->get('id'))
 	<form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=savecategory'); ?>" method="POST" id="hubForm" class="full editcategory">
 		<fieldset>
 			<legend><?php echo JText::_('Details')?></legend>
-			
+
 			<label for="field-category-title">
 				<strong>Title:</strong> <span class="required">Required</span>
 				<input type="text" name="category[title]" id="field-category-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
 			</label>
-			
+
 			<label for="field-category-color">
 				<strong>Color:</strong> <span class="optional">Optional</span>
 				<input type="text" maxlength="6" name="category[color]" id="field-category-color" value="<?php echo $this->escape($this->category->get('color')); ?>" />

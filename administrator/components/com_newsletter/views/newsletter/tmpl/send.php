@@ -57,12 +57,12 @@ jQuery(document).ready(function($){
 				success: function(data)
 				{
 					var emailCount = data.length;
-					
+
 					//show count
 					$('#mailinglist-count').show();
-					
+
 					//set actual counter
-					$('#mailinglist-count').find('#mailinglist-count-count').html(emailCount);		
+					$('#mailinglist-count').find('#mailinglist-count-count').html(emailCount);
 
 					//add list of emails
 					$('#mailinglist-emails').html('<br />--------------------------------<br />' + data.join('<br />'));
@@ -78,7 +78,7 @@ jQuery(document).ready(function($){
 	$('#mailinglist-count').hide();
 });
 
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	//are we trying to send newsletter
 	if(pressbutton == 'dosendnewsletter')
@@ -88,14 +88,14 @@ function submitbutton(pressbutton)
 		{
 			return;
 		}
-		
+
 		//double check with user
 		if (!HUB.Administrator.Newsletter.sendNewsletterDoubleCheck())
 		{
 			return;
 		}
 	}
-	
+
 	//submit form
 	submitform( pressbutton );
 }
@@ -153,18 +153,18 @@ function submitbutton(pressbutton)
 								<div id="scheduler">
 									<input type="radio" name="scheduler" value="1" checked="checked" /> Send Now <br />
 									<input type="radio" name="scheduler" value="0" /> Send Later <br />
-									
+
 									<div id="scheduler-alt">
 										Date:
 										<input type="text" name="scheduler_date" id="scheduler_date" style="width:auto;" />
-										Time: 
+										Time:
 										<select name="scheduler_date_hour" id="scheduler_date_hour" style="width:auto;">
 											<option value="">--</option>
 											<?php for($i = 1, $n = 13; $i < $n; $i++) : ?>
 												<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 											<?php endfor; ?>
 										</select>
-								
+
 										<select name="scheduler_date_minute" id="scheduler_date_minute" style="width:auto;">
 											<option value="">--</option>
 											<?php for($i = 0, $n = 60; $i < $n; $i+=5) : ?>
@@ -177,12 +177,12 @@ function submitbutton(pressbutton)
 													{
 														$i = '05';
 													}
-										
+
 												?>
 												<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 											<?php endfor; ?>
 										</select>
-								
+
 										<select name="scheduler_date_meridian" id="scheduler_date_meridian" style="width:auto;">
 											<option value="">--</option>
 											<option value="am">AM</option>
@@ -215,7 +215,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 		<?php endif; ?>
 	</div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="dosendnewsletter" />

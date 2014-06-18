@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'com_install'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @return void
  */
 function com_install()

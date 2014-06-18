@@ -50,10 +50,10 @@ $notify = array();
 
 $submitter = new \Hubzero\User\Profile();
 
-if ($this->row->login) 
+if ($this->row->login)
 {
 	$submitter->load($this->row->login);
-	if (is_object($submitter) && $submitter->get('name')) 
+	if (is_object($submitter) && $submitter->get('name'))
 	{
 		jimport('joomla.user.helper');
 		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
@@ -72,7 +72,7 @@ if (!$name)
 	{
 		$name  = $this->escape($this->row->name) . ' (' . $this->escape($this->row->email) . ')';
 	}
-	else 
+	else
 	{
 		$name  = $this->escape($this->row->email);
 	}
@@ -83,7 +83,7 @@ $owner = new \Hubzero\User\Profile();
 if ($this->row->owner)
 {
 	$owner->load($this->row->owner);
-	if (is_object($owner) && $owner->get('name')) 
+	if (is_object($owner) && $owner->get('name'))
 	{
 		$notify[] = $this->escape(stripslashes($owner->get('name'))) . ' (' . $this->escape(stripslashes($owner->get('username'))) . ')';
 	}
@@ -98,7 +98,7 @@ $dispatcher = JDispatcher::getInstance();
 $cc = array();
 ?>
 <form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
-<?php 
+<?php
 if ($this->row->id)
 {
 	if (count($this->comments) > 0)
@@ -186,19 +186,19 @@ if ($this->row->id)
 				</tr>
 				<tr>
 					<th scope="row"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_OWNER'); ?></th>
-					<td><?php 
-					if ($this->row->owner) 
+					<td><?php
+					if ($this->row->owner)
 					{
 						if (is_object($owner))
 						{
 							echo '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $owner->get('uidNumber') . '">' . $this->escape(stripslashes($owner->get('name'))) . '</a>';
 						}
-						else 
+						else
 						{
 							echo $this->escape($this->row->owner);
 						}
 					}
-					else 
+					else
 					{
 						echo JText::_('COM_SUPPORT_NONE');
 					}
@@ -255,9 +255,9 @@ if ($this->row->id)
 						$cite = $name;
 						$useri->load($comment->created_by);
 						$anon = 1;
-						if ($comment->created_by) 
+						if ($comment->created_by)
 						{
-							if (is_object($useri)) 
+							if (is_object($useri))
 							{
 								$name = '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $useri->get('uidNumber') . '">' . $this->escape(stripslashes($useri->get('name'))) . ' (' . $this->escape(stripslashes($useri->get('username'))) . ')</a>';
 								$cite = $this->escape(stripslashes($useri->get('name')));
@@ -283,7 +283,7 @@ if ($this->row->id)
 						</p>
 					<?php if ($comment->comment) { ?>
 						<blockquote class="comment-content" cite="<?php echo $cite; ?>">
-							<p><?php 
+							<p><?php
 								$comment->comment = str_replace("<br />", '', $comment->comment);
 								$comment->comment = nl2br($comment->comment);
 								$comment->comment = str_replace("\t", ' &nbsp; &nbsp;', $comment->comment);
@@ -336,9 +336,9 @@ if ($this->row->id)
 						<div class="comment-changelog">
 							<?php echo $clog; ?>
 						</div><!-- / .comment-changelog -->
-						<?php 
+						<?php
 						}
-					} 
+					}
 					?>
 					</li>
 					<?php
@@ -383,7 +383,7 @@ if ($this->row->id)
 					<tr>
 						<td class="key" style="vertical-align:top;"><label for="ticket-field-tags"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label></td>
 						<td colspan="3">
-							<?php 
+							<?php
 							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->lists['tags'])) );
 							if (count($tf) > 0) {
 								echo $tf[0];
@@ -395,7 +395,7 @@ if ($this->row->id)
 					<tr>
 						<td class="key"><label for="ticket-field-group"><?php echo JText::_('COM_SUPPORT_TICKET_COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:</label></td>
 						<td>
-							<?php 
+							<?php
 							$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','','','','owner')) );
 							if (count($gc) > 0) {
 								echo $gc[0];
@@ -427,9 +427,9 @@ if ($this->row->id)
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
 									<?php
-									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
 									{
-										foreach ($this->lists['resolutions'] as $anode) 
+										foreach ($this->lists['resolutions'] as $anode)
 										{
 											?>
 											<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
@@ -509,12 +509,12 @@ if ($this->row->id)
 							</select>
 							<?php echo implode("\n", $hi); ?>
 						</label>
-					
+
 						<label for="comment-field-content">
 							<span class="label"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS'); ?></span>
 							<textarea name="comment" id="comment-field-comment" cols="75" rows="15"></textarea>
 						</label>
-					
+
 						<div class="col width-50 fltlft">
 							<label for="comment-field-upload">
 								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_FILE'); ?>
@@ -530,7 +530,7 @@ if ($this->row->id)
 						<div class="clr"></div>
 
 						<label for="comment-field-message">
-							<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php 
+							<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php
 							$mc = $dispatcher->trigger('onGetMultiEntry', array(
 								array(
 									'members',   // The component to call
@@ -548,13 +548,13 @@ if ($this->row->id)
 						</label>
 						<div class="col width-50 fltlft">
 							<label for="email_submitter">
-								<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" /> 
+								<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
 								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_SUBMITTER'); ?>
 							</label>
 						</div>
 						<div class="col width-50 fltrt">
 							<label for="email_owner">
-								<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" /> 
+								<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
 								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_OWNER'); ?>
 							</label>
 						</div>
@@ -565,7 +565,7 @@ if ($this->row->id)
 				<fieldset class="ticket-details">
 					<label for="ticket-field-tags">
 						<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?>
-						<?php 
+						<?php
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->lists['tags'])) );
 
 						if (count($tf) > 0) {
@@ -578,7 +578,7 @@ if ($this->row->id)
 					<div class="col width-50 fltlft">
 						<label for="ticket-field-group">
 							<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_GROUP'); ?>:<br />
-							<?php 
+							<?php
 							$gc = $dispatcher->trigger( 'onGetSingleEntryWithSelect', array(array('groups', 'group', 'acgroup','',$this->row->group,'','owner')) );
 							if (count($gc) > 0) {
 								echo $gc[0];
@@ -601,7 +601,7 @@ if ($this->row->id)
 						<select name="category" id="ticket-field-category">
 							<option value=""><?php echo JText::_('COM_SUPPORT_NONE'); ?></option>
 							<?php
-							foreach ($this->lists['categories'] as $category) 
+							foreach ($this->lists['categories'] as $category)
 							{
 								?>
 							<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($category->alias == $this->row->category) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
@@ -633,9 +633,9 @@ if ($this->row->id)
 								<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?>">
 									<option value="noresolution"<?php if ($this->row->open == 0 && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
 									<?php
-									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
 									{
-										foreach ($this->lists['resolutions'] as $anode) 
+										foreach ($this->lists['resolutions'] as $anode)
 										{
 											?>
 											<option value="<?php echo $this->escape($anode->alias); ?>"<?php if ($anode->alias == $this->row->resolved) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($anode->title)); ?></option>
@@ -669,7 +669,7 @@ if ($this->row->id)
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -70,13 +70,13 @@ if ($mode != 'preview')
 				<header id="content-header">
 					<h2>
 						<?php echo $txt . $this->escape(stripslashes($this->model->resource->title)); ?>
-						<?php 
-							if ($this->model->params->get('access-edit-resource')) 
-							{ 
+						<?php
+							if ($this->model->params->get('access-edit-resource'))
+							{
 						?>
 							<a class="icon-edit edit btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->resource->alias); ?>"><?php echo JText::_('COM_RESOURCES_EDIT'); ?></a>
-						<?php 
-							} // if ($this->model->params->get('access-edit-resource')) 
+						<?php
+							} // if ($this->model->params->get('access-edit-resource'))
 						?>
 					</h2>
 					<input type="hidden" name="rid" id="rid" value="<?php echo $this->model->resource->id; ?>" />
@@ -94,8 +94,8 @@ if ($mode != 'preview')
 				<?php } ?>
 
 				<p class="ataglance">
-					<?php echo $this->model->resource->introtext 
-							? \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255) 
+					<?php echo $this->model->resource->introtext
+							? \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->introtext), 255)
 							: \Hubzero\Utility\String::truncate(stripslashes($this->model->resource->fulltxt), 255);
 					?>
 				</p>
@@ -104,7 +104,7 @@ if ($mode != 'preview')
 			<div class="col span4 omega launcharea">
 				<?php
 				// Private/Public resource access check
-				if (!$this->model->access('view-all')) 
+				if (!$this->model->access('view-all'))
 				{
 					$ghtml = array();
 					foreach ($this->model->resource->getGroups() as $allowedgroup)
@@ -116,8 +116,8 @@ if ($mode != 'preview')
 					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 				</p>
 				<?php
-				} 
-				else 
+				}
+				else
 				{
 					// get launch button
 					//$helper->getFirstChild();
@@ -142,19 +142,19 @@ if ($mode != 'preview')
 						$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? JHTML::_('date', $curtool->released, JText::_('DATE_FORMAT_HZ1')): JHTML::_('date', $this->model->resource->publish_up, JText::_('DATE_FORMAT_HZ1'));
 					}
 
-					if (!$thistool) 
+					if (!$thistool)
 					{
 						$html .= "\t\t\t\t".'<p class="curversion">'.JText::_('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
-					} 
-					else if ($revision == 'dev') 
+					}
+					else if ($revision == 'dev')
 					{
 						$html .= "\t\t\t\t".'<p class="devversion">'.JText::_('COM_RESOURCES_VERSION').' '.$versiontext;
 						$html .= $this->model->resource->toolpublished ? ' <span>'.JText::_('View').' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('other versions').'</a></span>' : '';
 						$html .='</p>'."\n";
-					} 
-					else 
+					}
+					else
 					{
-						// Show archive message		
+						// Show archive message
 						$msg = '<strong>'.JText::_('COM_RESOURCES_ARCHIVE').'</strong> '.JText::_('COM_RESOURCES_VERSION').' '.$versiontext;
 						if (isset($this->model->resource->curversion) && $this->model->resource->curversion) {
 							$msg .= ' <br />'.JText::_('COM_RESOURCES_LATEST_VERSION').': <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a>.';
@@ -173,7 +173,7 @@ if ($mode != 'preview')
 						{
 							$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->model->resource->id . '.' . $this->model->resource->doi_label;
 						}
-						
+
 						$html .= "\t\t".'<p class="doi">'.$doi.' <span><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=about').'#citethis">'.JText::_('cite this').'</a></span></p>'."\n";
 					}
 
@@ -210,20 +210,20 @@ if ($mode != 'preview')
 						$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('View All Supporting Documents').'</a></span>'."\n";
 						$html .= "\t\t".'</p>'."\n";
 					}
-					
+
 					echo $html;
-					
+
 				} // --- end else (if group check passed)
 				?>
 			</div><!-- / .aside launcharea -->
 		</div>
 	</div><!-- / .subject -->
 	<aside class="aside rankarea">
-		<?php 
+		<?php
 		// Show resource ratings
-		if (!$thistool) 
+		if (!$thistool)
 		{
-			if ($this->model->params->get('show_metadata', 1)) 
+			if ($this->model->params->get('show_metadata', 1))
 			{
 				$this->view('_metadata')
 				     ->set('option', $this->option)
@@ -231,17 +231,17 @@ if ($mode != 'preview')
 				     ->set('model', $this->model)
 				     ->display();
 			}
-		} 
-		else if ($revision == 'dev' or !$this->model->resource->toolpublished) 
+		}
+		else if ($revision == 'dev' or !$this->model->resource->toolpublished)
 		{
 		?>
 			<div class="metaplaceholder">
 				<p>
-					<?php echo ($revision=='dev') 
-							? JText::_('This section will be filled when this tool version gets published.') 
+					<?php echo ($revision=='dev')
+							? JText::_('This section will be filled when this tool version gets published.')
 							: JText::_('This section is unavailable in an archive version of a tool.');
 
-					if (isset($this->model->resource->curversion) && $this->model->resource->curversion) 
+					if (isset($this->model->resource->curversion) && $this->model->resource->curversion)
 					{
 						echo ' '.JText::_('Consult the latest published version').' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a> '.JText::_('for most current information.');
 					}
@@ -268,11 +268,11 @@ if ($mode != 'preview')
 
 			// Show related content
 			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
-			if (count($out) > 0) 
+			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
 				{
-					if (isset($ou['html'])) 
+					if (isset($ou['html']))
 					{
 						echo $ou['html'];
 					}
@@ -280,7 +280,7 @@ if ($mode != 'preview')
 			}
 
 			// Show what's popular
-			if ($this->tab == 'about') 
+			if ($this->tab == 'about')
 			{
 				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}

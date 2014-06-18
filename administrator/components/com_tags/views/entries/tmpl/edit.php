@@ -36,7 +36,7 @@ $canDo = TagsHelper::getActions();
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . $text, 'tags.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
@@ -49,7 +49,7 @@ JToolBarHelper::help('edit');
 JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 </script>
 
 <?php
-if ($this->getError()) 
+if ($this->getError())
 {
 	echo '<p class="error">' . implode('<br />', $this->getError()) . '</p>';
 }
@@ -78,7 +78,7 @@ if ($this->getError())
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ADMIN_HINT'); ?>">
-				<input type="checkbox" name="fields[admin]" id="field-admin" value="1" <?php if ($this->tag->get('admin') == 1) { echo 'checked="checked"'; } ?> /> 
+				<input type="checkbox" name="fields[admin]" id="field-admin" value="1" <?php if ($this->tag->get('admin') == 1) { echo 'checked="checked"'; } ?> />
 				<label for="field-admin"><?php echo JText::_('COM_TAGS_FIELD_ADMIN'); ?></label>
 			</div>
 
@@ -167,7 +167,7 @@ if ($this->getError())
 							{
 								$s = JText::sprintf('COM_TAGS_LOG_OBJ_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
 							}
-							else 
+							else
 							{
 								$s = JText::sprintf('COM_TAGS_LOG_OBJ_REMOVED', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
 							}
@@ -184,12 +184,12 @@ if ($this->getError())
 					<li class="<?php echo $c; ?>">
 						<span class="entry-log-data"><?php echo $s; ?></span>
 					</li>
-							<?php 
+							<?php
 					}
 				}
 				?>
 			</ul>
-<?php 
+<?php
 		}
 	}
 ?>

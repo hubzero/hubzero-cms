@@ -37,63 +37,63 @@ Class TimeHubs extends JTable
 {
 	/**
 	 * id, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * hub name
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = null;
 
 	/**
 	 * normalized hub name
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name_normalized = null;
 
 	/**
 	 * hub liaison
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $liaison = null;
 
 	/**
 	 * anniversary date
-	 * 
+	 *
 	 * @var date
 	 */
 	var $anniversary_date = null;
 
 	/**
 	 * support level
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $support_level = null;
 
 	/**
 	 * active
-	 * 
+	 *
 	 * @var int(1)
 	 */
 	var $active = null;
 
 	/**
 	 * notes
-	 * 
+	 *
 	 * @var blob
 	 */
 	var $notes = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   database object
 	 * @return  void
 	 */
@@ -104,7 +104,7 @@ Class TimeHubs extends JTable
 
 	/**
 	 * Override check function to perform validation
-	 * 
+	 *
 	 * @return boolean true if all checks pass, else false
 	 */
 	public function check()
@@ -137,7 +137,7 @@ Class TimeHubs extends JTable
 
 	/**
 	 * Build query
-	 * 
+	 *
 	 * @param  $filters (not needed yet...)
 	 * @return $query
 	 */
@@ -150,7 +150,7 @@ Class TimeHubs extends JTable
 
 	/**
 	 * Get count of hubs, mainly used for pagination
-	 * 
+	 *
 	 * @return query result number of hubs
 	 */
 	public function getCount($filters=array())
@@ -170,7 +170,7 @@ Class TimeHubs extends JTable
 
 	/**
 	 * Get list of hubs
-	 * 
+	 *
 	 * @param  $filters (examples: active, orderby, orderdir, start, limit)
 	 * @return object list of hubs
 	 */
@@ -207,7 +207,7 @@ Class TimeHubs extends JTable
 
 	/**
 	 * Get hubname by report id
-	 * 
+	 *
 	 * @param  $id of current report
 	 * @return query result hubname
 	 */

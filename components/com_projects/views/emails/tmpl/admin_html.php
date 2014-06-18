@@ -64,7 +64,7 @@ $subtitle  = JText::_('COM_PROJECTS_EMAIL_ADMIN_NOTIFICATION');
 $comment = $this->message;
 
 // Parse admin comment
-if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 {
 	$comment = str_replace("<br />", '', $comment);
 	$comment = $this->escape($comment);
@@ -78,7 +78,7 @@ if ($comment)
 	$comment = '<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">' . $comment . '</p>';
 }
 
-if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive') 
+if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive')
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') . '</li>';
@@ -86,11 +86,11 @@ if ($this->config->get('restricted_data', 0) && $this->reviewer == 'sensitive')
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') . '</li>';
 	if ($this->params->get('followup'))
 	{
-		$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') . '</li>';	
+		$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') . '</li>';
 	}
 	$comment .= '</ul>';
 }
-if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored') 
+if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') . '</li>';
@@ -100,23 +100,23 @@ if ($this->config->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 	$comment .= '</ul>';
 }
 
-if ($this->config->get('ginfo_group', 0) && $this->reviewer == 'sponsored') 
+if ($this->config->get('ginfo_group', 0) && $this->reviewer == 'sponsored')
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_SPS') . '<br />';
 	$comment .= $browseLink . '?reviewer=sponsored' . '</p>';
 }
 
-if ($this->config->get('sdata_group', 0) && $this->reviewer == 'sensitive') 
+if ($this->config->get('sdata_group', 0) && $this->reviewer == 'sensitive')
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_HIPAA') . '<br />';
 	$comment .= $browseLink . '?reviewer=sensitive' . '</p>';
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group 
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$owner   = $this->project->owned_by_group
+		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
-		
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get project thumbnail

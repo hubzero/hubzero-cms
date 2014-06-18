@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<select name="collection" id="field-collection">
 						<option value="0"><?php echo JText::_('PLG_RESOURCES_COLLECT_SELECT'); ?></option>
 						<optgroup label="<?php echo JText::_('PLG_RESOURCES_COLLECT_MY_COLLECTIONS'); ?>">
-<?php 
+<?php
 $i = 0;
 if ($this->myboards)
 {
@@ -61,7 +61,7 @@ if ($this->myboards)
 }
 ?>
 						</optgroup>
-<?php 
+<?php
 if ($this->groupboards)
 {
 	foreach ($this->groupboards as $optgroup => $boards)

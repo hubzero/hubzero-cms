@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchWeightTools'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchWeightTools
@@ -41,9 +41,9 @@ class plgSearchWeightTools
 
 	/**
 	 * Short description for 'onSearchWeightResources'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $_terms Parameter description (if any) ...
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...

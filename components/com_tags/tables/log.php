@@ -39,56 +39,56 @@ class TagsTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $tag_id    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $timestamp = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id   = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action    = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $comments  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $actorid   = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -99,27 +99,27 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->tag_id = intval($this->tag_id);
-		if (!$this->tag_id) 
+		if (!$this->tag_id)
 		{
 			$this->setError(JText::_('TAGS_LOGS_MUST_HAVE_TAG_ID'));
 			return false;
 		}
 
 		$juser = JFactory::getUser();
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->timestamp = JFactory::getDate()->toSql();
 			$this->actorid = $juser->get('id');
 		}
 
 		$this->user_id = intval($this->user_id);
-		if (!$this->user_id) 
+		if (!$this->user_id)
 		{
 			$this->user_id = $juser->get('id');
 		}
@@ -129,17 +129,17 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Get all records for a tag
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @return     array
 	 */
 	public function log($tag_id=null, $action=null, $comments=null)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id || !$action) 
+		if (!$tag_id || !$action)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -165,17 +165,17 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Get all records for a tag
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @return     array
 	 */
 	public function getLogs($tag_id=null)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			return null;
 		}
@@ -185,23 +185,23 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Delete logs for a tag
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @return     boolean True on success
 	 */
 	public function deleteLogs($tag_id=null)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			return null;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -210,13 +210,13 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Format a log
-	 * 
+	 *
 	 * @param      object $log Database row (TagsTableLog)
 	 * @return     string
 	 */
 	public function formatLog($log=null)
 	{
-		if (!$log) 
+		if (!$log)
 		{
 			return '';
 		}
@@ -224,7 +224,7 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     string SQL
 	 */
@@ -234,23 +234,23 @@ class TagsTableLog extends JTable
 
 		$where = array();
 
-		if (isset($filters['timestamp']) && (string) $filters['timestamp'] != '') 
+		if (isset($filters['timestamp']) && (string) $filters['timestamp'] != '')
 		{
 			$where[] = "o.timestamp >= " . $this->_db->Quote($filters['timestamp']);
 		}
-		if (isset($filters['action']) && (string) $filters['action'] != '') 
+		if (isset($filters['action']) && (string) $filters['action'] != '')
 		{
 			$where[] = "o.action=" . $this->_db->Quote($filters['action']);
 		}
-		if (isset($filters['tag_id']) && (int) $filters['tag_id'] > 0) 
+		if (isset($filters['tag_id']) && (int) $filters['tag_id'] > 0)
 		{
 			$where[] = "o.tag_id=" . $this->_db->Quote(intval($filters['tag_id']));
 		}
-		if (isset($filters['user_id']) && (int) $filters['user_id'] >= 0) 
+		if (isset($filters['user_id']) && (int) $filters['user_id'] >= 0)
 		{
 			$where[] = "o.user_id=" . $this->_db->Quote(intval($filters['user_id']));
 		}
-		if (isset($filters['actorid']) && (int) $filters['actorid'] > 0) 
+		if (isset($filters['actorid']) && (int) $filters['actorid'] > 0)
 		{
 			$where[] = "o.actorid=" . $this->_db->Quote(intval($filters['actorid']));
 		}
@@ -268,14 +268,14 @@ class TagsTableLog extends JTable
 				$filters['sort'] = 'timestamp';
 			}
 
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 			{
 				$filters['sort_Dir'] = 'DESC';
 			}
 			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
 			if (!isset($filters['start']))
 			{
@@ -289,7 +289,7 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     integer
 	 */
@@ -304,7 +304,7 @@ class TagsTableLog extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     array
 	 */

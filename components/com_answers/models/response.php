@@ -43,49 +43,49 @@ class AnswersModelResponse extends AnswersModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'AnswersTableResponse';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_answers.response.answer';
 
 	/**
 	 * Class scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'answer';
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = null;
 
 	/**
 	 * Comment count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = null;
 
 	/**
 	 * URL to this entry
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = null;
 
 	/**
 	 * Get a list or count of comments
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -113,19 +113,19 @@ class AnswersModelResponse extends AnswersModelAbstract
 				{
 					$this->_comments_count = 0;
 
-					if (!$this->_comments) 
+					if (!$this->_comments)
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($this->_comments as $com)
 					{
 						$this->_comments_count++;
-						if ($com->replies()) 
+						if ($com->replies())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_comments_count++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$this->_comments_count += $rep->replies()->total();
 								}
@@ -173,7 +173,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 	/**
 	 * Get the contents of this entry in various formats
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [raw, parsed]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -237,7 +237,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     boolean
 	 */
@@ -290,7 +290,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	public function reset()
 	{
 		// Can't manipulate what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}
@@ -330,7 +330,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 		// Mark it at the chosen one
 		$question->set('state', 1);
-		if (!$question->store(true)) 
+		if (!$question->store(true))
 		{
 			$this->setError($question->getError());
 			return false;
@@ -360,7 +360,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 		// Mark it at the chosen one
 		$question->set('state', 0);
-		if (!$question->store(true)) 
+		if (!$question->store(true))
 		{
 			$this->setError($question->getError());
 			return false;
@@ -410,9 +410,9 @@ class AnswersModelResponse extends AnswersModelAbstract
 					// Call the plugin
 					if (
 						!$dispatcher->trigger('onTakeAction', array(
-							'answers_reply_submitted', 
-							array($aq->creator('id')), 
-							'com_answers', 
+							'answers_reply_submitted',
+							array($aq->creator('id')),
+							'com_answers',
 							$this->get('question_id')
 						))
 					)
@@ -441,7 +441,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}

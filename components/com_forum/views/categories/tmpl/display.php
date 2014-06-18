@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -94,13 +94,13 @@ $this->category->set('section_alias', $this->filters['section']);
 				<table class="entries">
 					<caption>
 						<?php
-						if ($this->filters['search']) 
+						if ($this->filters['search'])
 						{
-							if ($this->category->get('title')) 
+							if ($this->category->get('title'))
 							{
 								echo JText::sprintf('COM_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
-							} 
-							else 
+							}
+							else
 							{
 								echo JText::sprintf('COM_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
 							}
@@ -112,7 +112,7 @@ $this->category->set('section_alias', $this->filters['section']);
 					<tbody>
 				<?php
 				if ($this->category->threads('list', $this->filters)->total() > 0) {
-					foreach ($this->category->threads() as $row) 
+					foreach ($this->category->threads() as $row)
 					{
 						$name = JText::_('COM_FORUM_ANONYMOUS');
 						if (!$row->get('anonymous'))
@@ -120,11 +120,11 @@ $this->category->set('section_alias', $this->filters['section']);
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 						}
 						$cls = array();
-						if ($row->isClosed()) 
+						if ($row->isClosed())
 						{
 							$cls[] = 'closed';
 						}
-						if ($row->isSticky()) 
+						if ($row->isSticky())
 						{
 							$cls[] = 'sticky';
 						}
@@ -156,12 +156,12 @@ $this->category->set('section_alias', $this->filters['section']);
 							<td>
 								<span><?php echo JText::_('COM_FORUM_LAST_POST'); ?></span>
 								<span class="entry-details">
-							<?php 
+							<?php
 								$lastpost = $row->lastActivity();
-								if ($lastpost->exists()) 
+								if ($lastpost->exists())
 								{
 										$lname = JText::_('COM_FORUM_ANONYMOUS');
-										if (!$lastpost->get('anonymous')) 
+										if (!$lastpost->get('anonymous'))
 										{
 											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
 										}
@@ -199,11 +199,11 @@ $this->category->set('section_alias', $this->filters['section']);
 					</tbody>
 				</table>
 
-				<?php 
+				<?php
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
-					$this->category->threads('count', $this->filters), 
-					$this->filters['start'], 
+					$this->category->threads('count', $this->filters),
+					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
@@ -221,10 +221,10 @@ $this->category->set('section_alias', $this->filters['section']);
 			<p>
 			<?php
 			$last = $this->category->lastActivity();
-			if ($last->exists()) 
+			if ($last->exists())
 			{
 				$lname = JText::_('COM_FORUM_ANONYMOUS');
-				if (!$last->get('anonymous')) 
+				if (!$last->get('anonymous'))
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
 				}
@@ -233,8 +233,8 @@ $this->category->set('section_alias', $this->filters['section']);
 			?>
 				<a href="<?php echo JRoute::_($last->link()); ?>" class="entry-date">
 					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
-					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 					<span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">

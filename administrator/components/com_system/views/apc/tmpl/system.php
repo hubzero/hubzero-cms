@@ -41,9 +41,9 @@ $cache     = $this->cache;
 
 <div role="navigation" class="sub-navigation">
 	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system" class="active">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
 	</ul>
@@ -56,7 +56,7 @@ $cache     = $this->cache;
 		$fieldname = 'filename';
 		$fieldheading = 'Script Filename';
 		if(ini_get("apc.stat")) $fieldkey = 'inode';
-		else $fieldkey = 'filename'; 
+		else $fieldkey = 'filename';
 	}
 	if (!empty($this->MYREQUEST['SH']))
 	{
@@ -115,7 +115,7 @@ $cache     = $this->cache;
 			<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
 			<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
 		</select>
-		
+
 		<label for="filter-sort1">Sorting:</label>
 		<select name="SORT1" id="filter-sort1">
 			<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Hits</option>
@@ -129,12 +129,12 @@ $cache     = $this->cache;
 			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Timeout</option>
 		<?php } ?>
 		</select>
-		
+
 		<select name="SORT2">
 			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
 			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
 		</select>
-		
+
 		<select name="COUNT" onChange="form.submit()">
 			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
 			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
@@ -147,14 +147,14 @@ $cache     = $this->cache;
 		</select>
 		</div>
 		<div class="col width-40 fltrt">
-		<label for="filter_search">Search:</label> 
+		<label for="filter_search">Search:</label>
 		<input name="SEARCH" id="filter_search" value="<?php echo $this->MYREQUEST['SEARCH']; ?>" type="text" size="25" />
-		
+
 		&nbsp;<input type="submit" value="GO!" />
 		</div>
 	</fieldset>
 	<div class="clr"></div>
-	
+
 <?php
 		if (isset($this->MYREQUEST['SEARCH']))
 		{
@@ -213,7 +213,7 @@ $cache     = $this->cache;
 		if ($list)
 		{
 			// sort list
-			switch ($this->MYREQUEST['SORT2']) 
+			switch ($this->MYREQUEST['SORT2'])
 			{
 				case "A": krsort($list); break;
 				case "D": ksort($list);  break;
@@ -264,8 +264,8 @@ $cache     = $this->cache;
 					}
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			echo '<tr class=tr-0><td class="center" colspan="',$cols,'"><i>No data</i></td></tr>';
 		}

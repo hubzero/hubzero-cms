@@ -50,7 +50,7 @@ abstract class modArticlesNewsHelper
 		// Get ordering &  direction params
 		$ordering  = $params->get('ordering', 'a.publish_up');
 		$direction = $params->get('direction', 'DESC');
-		
+
 		// Set ordering &  direction
 		$model->setState('list.ordering', $ordering);
 		$model->setState('list.direction', $direction);

@@ -31,22 +31,22 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ForumHelper::getActions('category');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_CATEGORIES'), 'forum.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -54,7 +54,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('categories');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -68,13 +68,13 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="scopeinfo"><?php echo JText::_('COM_FORUM_FILTER_SCOPE'); ?>:</label> 
+		<label for="scopeinfo"><?php echo JText::_('COM_FORUM_FILTER_SCOPE'); ?>:</label>
 		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
 			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_NONE'); ?></option>
 			<?php
 			$html = '';
-			//if ($this->results) 
+			//if ($this->results)
 			//{
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
@@ -86,14 +86,14 @@ function submitbutton(pressbutton)
 				$database = JFactory::getDBO();
 
 				$database->setQuery("
-					SELECT s.scope, s.scope_id, 
-						CASE 
+					SELECT s.scope, s.scope_id,
+						CASE
 							WHEN scope='course' THEN c.alias
 							WHEN scope='group' THEN g.cn
 							ELSE s.scope
 						END AS caption
 					FROM #__forum_sections AS s
-					LEFT JOIN #__xgroups AS g ON g.gidNumber=s.scope_id AND s.scope='group' 
+					LEFT JOIN #__xgroups AS g ON g.gidNumber=s.scope_id AND s.scope='group'
 					LEFT JOIN #__courses_offerings AS c ON c.id=s.scope_id AND s.scope='course'
 				");
 				$results = $database->loadObjectList();
@@ -127,7 +127,7 @@ function submitbutton(pressbutton)
 					foreach ($optgroup as $result)
 					{
 						$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
-						if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id) 
+						if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -142,7 +142,7 @@ function submitbutton(pressbutton)
 		</select>
 
 <?php if ($this->filters['scopeinfo']) { ?>
-		<label for="field-section_id"><?php echo JText::_('COM_FORUM_FILTER_SECTION'); ?>:</label> 
+		<label for="field-section_id"><?php echo JText::_('COM_FORUM_FILTER_SECTION'); ?>:</label>
 		<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FILTER_SECTION_SELECT'); ?></option>
 	<?php
@@ -203,10 +203,10 @@ function submitbutton(pressbutton)
 if ($this->results)
 {
 	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	{
 		$row =& $this->results[$i];
-		switch ($row->state) 
+		switch ($row->state)
 		{
 			case '2':
 				$task = 'publish';
@@ -225,7 +225,7 @@ if ($this->results)
 				$cls = 'unpublish';
 			break;
 		}
-		
+
 		switch ($row->access)
 		{
 			case 0:

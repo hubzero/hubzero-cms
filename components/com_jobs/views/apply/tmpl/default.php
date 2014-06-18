@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -49,7 +49,7 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($juser->get('guest')) { ?> 
+		<?php if ($juser->get('guest')) { ?>
 			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -59,9 +59,9 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 				<?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
 				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
 			</li>
-		<?php } else { ?>  
+		<?php } else { ?>
 			<li><a class="alljobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>"><?php echo JText::_('COM_JOBS_ALL_JOBS'); ?></a></li>
-		<?php } ?>  
+		<?php } ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -84,9 +84,9 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 		<div id="applyinfo">
 			<h3>
-				<?php echo $job->title; ?> - 
-				<?php echo preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName; ?>, 
-				<?php echo $job->companyLocation; ?>, 
+				<?php echo $job->title; ?> -
+				<?php echo preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="'.$job->companyWebsite.'">'.$job->companyName.'</a>' : $job->companyName; ?>,
+				<?php echo $job->companyLocation; ?>,
 				<?php echo $job->companyLocationCountry; ?> <span><?php echo JText::_('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
 			</h3>
 		</div>
@@ -117,7 +117,7 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 					$dispatcher = JDispatcher::getInstance();
 					// show seeker info
 					$out = $dispatcher->trigger( 'showSeeker', array($seeker, $this->emp, $this->admin, 'com_members', $list=0) );
-					if (count($out) > 0) 
+					if (count($out) > 0)
 					{
 						echo implode("\n", $out);
 					}

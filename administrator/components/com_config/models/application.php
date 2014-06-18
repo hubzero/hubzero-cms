@@ -202,7 +202,7 @@ class ConfigModelApplication extends JModelForm
 
 		// Clear cache of com_config component.
 		$this->cleanCache('_system');
-		
+
 		// Write the configuration file.
 		return $this->writeConfigFile($config);
 	}

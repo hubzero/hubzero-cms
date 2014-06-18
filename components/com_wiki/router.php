@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -40,12 +40,12 @@ function WikiBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['scope'])) 
+	if (!empty($query['scope']))
 	{
 		$segments[] = $query['scope'];
 	}
 	unset($query['scope']);
-	if (!empty($query['pagename'])) 
+	if (!empty($query['pagename']))
 	{
 		$segments[] = $query['pagename'];
 	}
@@ -58,7 +58,7 @@ function WikiBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -74,7 +74,7 @@ function WikiParseRoute($segments)
 	//$vars['task'] = 'view';
 	$e = array_pop($segments);
 	$s = implode(DS, $segments);
-	if ($s) 
+	if ($s)
 	{
 		$vars['scope'] = $s;
 	}
@@ -94,13 +94,13 @@ function WikiParseRoute($segments)
 		case 'media':
 			$vars['controller'] = 'media';
 		break;
-		
+
 		case 'history':
 		case 'compare':
 		case 'approve':
 			$vars['controller'] = 'history';
 		break;
-		
+
 		case 'addcomment':
 		case 'savecomment':
 		case 'reportcomment':
@@ -108,7 +108,7 @@ function WikiParseRoute($segments)
 		case 'comments':
 			$vars['controller'] = 'comments';
 		break;
-		
+
 		case 'delete':
 		case 'edit':
 		case 'save':
@@ -122,7 +122,7 @@ function WikiParseRoute($segments)
 	}
 
 	if (substr(strtolower($vars['pagename']), 0, strlen('image:')) == 'image:'
-	 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:') 
+	 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:')
 	{
 		$vars['controller'] = 'media';
 		$vars['task'] = 'download';

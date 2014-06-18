@@ -38,14 +38,14 @@ class EventsConfig extends JTable
 {
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $param = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $value = NULL;
@@ -63,13 +63,13 @@ class EventsConfig extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		// check for valid name
-		if (trim($this->param) == '') 
+		if (trim($this->param) == '')
 		{
 			$this->setError(JText::_('EVENTS_BLANK_CONFIG_PARAMETER'));
 			return false;
@@ -85,28 +85,28 @@ class EventsConfigs
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_tbl   = NULL;
 
 	/**
 	 * JDatavase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db    = NULL;
 
 	/**
 	 * Container for data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data  = array();
 
 	/**
 	 * Container for error messages
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_error = NULL;
@@ -143,7 +143,7 @@ class EventsConfigs
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -151,7 +151,7 @@ class EventsConfigs
 
 	/**
 	 * Get all configurations and populate $this
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function load()
@@ -159,16 +159,16 @@ class EventsConfigs
 		$this->_db->setQuery("SELECT * FROM $this->_tbl");
 		$configs = $this->_db->loadObjectList();
 
-		if (empty($configs) || count($configs) <= 0) 
+		if (empty($configs) || count($configs) <= 0)
 		{
-			if ($this->loadDefaults()) 
+			if ($this->loadDefaults())
 			{
 				$this->_db->setQuery("SELECT * FROM $this->_tbl");
 				$configs = $this->_db->loadObjectList();
 			}
 		}
 
-		if (!empty($configs)) 
+		if (!empty($configs))
 		{
 			foreach ($configs as $config)
 			{
@@ -178,7 +178,7 @@ class EventsConfigs
 		}
 
 		$fields = array();
-		if (trim($this->fields) != '') 
+		if (trim($this->fields) != '')
 		{
 			$fs = explode("\n", trim($this->fields));
 			foreach ($fs as $f)
@@ -191,7 +191,7 @@ class EventsConfigs
 
 	/**
 	 * Set the default configuration values
-	 * 
+	 *
 	 * @return     boolean True on success, false on errors
 	 */
 	public function loadDefaults()
@@ -217,7 +217,7 @@ class EventsConfigs
 		foreach ($config as $p => $v)
 		{
 			$this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES (" . $this->_db->Quote($p) . ", " . $this->_db->Quote($v) . ")");
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				return false;
 			}
@@ -227,17 +227,17 @@ class EventsConfigs
 
 	/**
 	 * Get a configuration value
-	 * 
+	 *
 	 * @param      string $f Property name
-	 * @return     string 
+	 * @return     string
 	 */
 	public function getCfg($f='')
 	{
-		if ($f) 
+		if ($f)
 		{
 			return $this->$f;
-		} 
-		else 
+		}
+		else
 		{
 			return NULL;
 		}

@@ -30,7 +30,7 @@ $juser = JFactory::getUser();
 $dcls = '';
 $lcls = '';
 
-if ($vote = $this->item->get('vote')) 
+if ($vote = $this->item->get('vote'))
 {
 	switch ($vote)
 	{
@@ -46,8 +46,8 @@ if ($vote = $this->item->get('vote'))
 			$dcls = ' chosen';
 		break;
 	}
-} 
-else 
+}
+else
 {
 	$this->item->set('vote', null);
 }

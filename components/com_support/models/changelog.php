@@ -38,14 +38,14 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 {
 	/**
 	 * \Hubzero\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_log = array();
 
 	/**
 	 * Is the question open?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function __construct($data=null)
@@ -131,7 +131,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 								$obj['before'] = trim($matches[1]);
 								$obj['after'] = trim($matches[2]);
 							}
-							else 
+							else
 							{
 								$obj['name'] = trim($matches[1]);
 								$obj['address'] = trim($matches[2]);
@@ -209,7 +209,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -249,7 +249,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -262,7 +262,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -275,7 +275,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -288,7 +288,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -313,7 +313,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -338,7 +338,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function __toString()

@@ -26,20 +26,20 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if ($this->version == 'dev') 
+if ($this->version == 'dev')
 {
-	$ptitle = $this->last_idx > $this->current_idx  
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUDIENCE')) 
+	$ptitle = $this->last_idx > $this->current_idx
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUDIENCE'))
 		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_AUDIENCE')) ;
 }
-else 
+else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_AUDIENCE'));	
+	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_AUDIENCE'));
 }
 
 ?>
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-	<?php echo $this->project->provisioned == 1 
+<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 
@@ -53,10 +53,10 @@ $sel 		= 0;
 $picked 	= '';
 
 $canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
+	$this->pub->state == 3
+	|| $this->pub->state == 4
+	|| $this->pub->state == 5
+	|| in_array($this->active, $this->mayupdate))
 	? 1 : 0;
 
 ?>
@@ -69,9 +69,9 @@ $canedit = (
 				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SELECT'); ?></p>
 				<div id="c-show">
 					<ul id="c-browser">
-					<?php foreach($this->levels as $level) { 
+					<?php foreach($this->levels as $level) {
 							$label = $level->label;
-							
+
 							$sel = $this->audience->$label == 1 ? $sel + 1 : $sel;
 							$picked .= $this->audience->$label == 1 ? $label.'-' : ''; ?>
 						<li id="<?php echo $level->label; ?>" class="c-click" title="<?php echo htmlentities($level->title); ?>">	<?php echo PublicationsHtml::skillLevelCircle($this->levels, $level->label); ?> <span class="aud-desc"><?php echo $level->description; ?></span></li>
@@ -79,7 +79,7 @@ $canedit = (
 					</ul>
 				</div>
 				<p class="and_or vpadded"><?php echo strtoupper(JText::_('PLG_PROJECTS_PUBLICATIONS_OR')); ?>...</p>
-				<label><input type="checkbox" name="no_audience" id="no-audience" value="1" <?php echo (!$picked && $this->audience->id) ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOW'); ?>	
+				<label><input type="checkbox" name="no_audience" id="no-audience" value="1" <?php echo (!$picked && $this->audience->id) ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOW'); ?>
 				</label>
 				<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_AUDIENCE'); ?></p>
 				<?php } else { ?>
@@ -101,10 +101,10 @@ $canedit = (
 		</div>
 	</div>
 </div>
-<fieldset>	
+<fieldset>
 	<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-	<input type="hidden" name="active" value="publications" />					
+	<input type="hidden" name="active" value="publications" />
 	<input type="hidden" name="action" value="save" />
 	<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 	<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -119,5 +119,5 @@ $canedit = (
 	<?php if($this->project->provisioned == 1 ) { ?>
 	<input type="hidden" name="task" value="submit" />
 	<?php } ?>
-</fieldset>	
+</fieldset>
 </form>

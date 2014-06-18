@@ -36,7 +36,7 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -50,16 +50,16 @@ function submitbutton(pressbutton)
 <?php if($this->config->get('enabled') == 0) { ?>
 <p class="warning">This component is currently disabled and is inaccessible to end users.</p>
 <?php } ?>
-<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller=' 
-. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option=' 
+<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
+. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
 . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('Publication') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('Versions'); ?></p>
 
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th class="tdmini"></th>	
+				<th class="tdmini"></th>
 				<th class="tdmini"><?php echo JText::_('COM_PUBLICATIONS_VERSION'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_TITLE'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS'); ?></th>
@@ -71,27 +71,27 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 
-	foreach($this->versions as $v) { 
+	foreach($this->versions as $v) {
 	// Get DOI
 	$doi = $v->doi ? 'doi:'.$v->doi : '';
 	$ark = $v->ark ? 'ark:'.$v->ark : '';
 	if($ark || $doi)
 	{
-		$doi_notice = $doi ? $doi : $ark;	
+		$doi_notice = $doi ? $doi : $ark;
 	}
 	else {
-		$doi_notice = JText::_('COM_PUBLICATIONS_NA');	
+		$doi_notice = JText::_('COM_PUBLICATIONS_NA');
 	}
-				
+
 	// Version status
 	$status = PublicationHelper::getPubStateProperty($v, 'status');
 	$class = PublicationHelper::getPubStateProperty($v, 'class');
 	$date = PublicationHelper::getPubStateProperty($v, 'date');
-			
-	$options = '<a href="index.php?option=' . $this->option . '&amp;controller=' 
+
+	$options = '<a href="index.php?option=' . $this->option . '&amp;controller='
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
 	.JText::_('COM_PUBLICATIONS_MANAGE_VERSION').'</a>';
-	
+
 	?>
 	<tr class="mini <?php if($v->main == 1) { echo ' vprime'; } ?>">
 		<td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
@@ -112,6 +112,6 @@ $k = 0;
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

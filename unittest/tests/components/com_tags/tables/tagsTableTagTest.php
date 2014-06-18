@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'tag', 
-		'raw_tag', 
-		'description', 
+		'id',
+		'tag',
+		'raw_tag',
+		'description',
 		'admin'
 	);
 	var $mock       = array(
@@ -91,7 +91,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_tags
 	 * @covers TagsTableTag::getCount
 	 */
@@ -108,7 +108,7 @@ class TagsTableTagTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_tags
 	 * @covers TagsTableTag::getRecords
 	 */

@@ -56,7 +56,7 @@ $app = JFactory::getApplication();
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 
-				<input type="file" name="upload" id="upload" size="17" /> 
+				<input type="file" name="upload" id="upload" size="17" />
 				<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
 			</fieldset>
 

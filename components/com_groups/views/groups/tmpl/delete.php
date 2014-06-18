@@ -79,7 +79,7 @@ $this->css()
 			</label>
 
 			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
 				<?php echo JText::_('COM_GROUPS_DELETE_CONFIRM_CONFIRM'); ?>
 			</label>
 		</fieldset>

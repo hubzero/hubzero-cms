@@ -37,7 +37,7 @@ $config = array(
 	'pagename' => $this->asset->id,
 	'pageid'   => '',
 	'filepath' => DS . 'site' . DS . 'courses' . DS . $this->course->get('id') . DS . $this->asset->id,
-	'domain'   => $this->course->get('alias') 
+	'domain'   => $this->course->get('alias')
 );
 
 $this->model->set('content', stripslashes($this->model->get('content')));

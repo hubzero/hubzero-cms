@@ -22,8 +22,8 @@ class Migration20140114091331PlgGeocode extends Base
 		if (!$this->db->loadResult())
 		{
 			$plugins = array(
-				'arcgisonline', 
-				'baidu', 
+				'arcgisonline',
+				'baidu',
 				'bingmaps',
 				'cloudmade',
 				'datasciencetoolkit',

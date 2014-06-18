@@ -48,7 +48,7 @@ JHTML::_('behavior.tooltip');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -130,13 +130,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				 : '';
 		$checked = ' ['.JText::_('checked out').']';
 	}
-		
+
 	// What's the publication status?
 	$status = PublicationsHtml::getPubStateProperty($row, 'status');
 	$class 	= PublicationsHtml::getPubStateProperty($row, 'class');
 	$task 	= PublicationsHtml::getPubStateProperty($row, 'task');
-	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00' 
-			? JHTML::_('date', $row->modified, $dateFormat, $tz) 
+	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
+			? JHTML::_('date', $row->modified, $dateFormat, $tz)
 			: JHTML::_('date', $row->created, $dateFormat, $tz);
 ?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">

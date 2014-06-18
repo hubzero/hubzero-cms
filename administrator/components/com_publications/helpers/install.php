@@ -35,69 +35,69 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Publications install helper class
  */
 class PubInstall extends JObject {
-	
+
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
-	
+
 	/**
 	 * List of available database tables
-	 * 
+	 *
 	 * @var array
 	 */
 	private $tables = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $tables = array() )
 	{
 		$this->_db = $db;
 		$this->tables = $tables;
 	}
-	
+
 	/**
 	 * Run query
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function runQuery( $query = '' ) 
+	 */
+	public function runQuery( $query = '' )
 	{
 		if (!$query)
 		{
 			return false;
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
-	
+
 	/**
 	 * Install J1.6 extension
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installExtension( $name = '', $type = '', $element = '', $folder = '', $ordering = 0, $params = '', $enabled = 1, $client_id = 0) 
+	 */
+	public function installExtension( $name = '', $type = '', $element = '', $folder = '', $ordering = 0, $params = '', $enabled = 1, $client_id = 0)
 	{
 		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 		SELECT $name, $type, $element, $folder, $client_id, $enabled, 1, 0, null, $params, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
 		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = '$name')";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install project logs
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installLogs( ) 
+	 */
+	public function installLogs( )
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__publication_logs` (
 		   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -111,23 +111,23 @@ class PubInstall extends JObject {
 		    `support_accesses` int(11) DEFAULT '0',
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
-		
+
 		$this->runQuery($query);
 	}
-		
+
 	/**
 	 * Install publishing
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installPublishing( ) 
+	 */
+	public function installPublishing( )
 	{
 		$queries 	= array();
 		$prefix 	= $this->_db->getPrefix();
 		$iniSetup 	= 0;
-		
+
 		// Access
-		if (!in_array($prefix . 'publication_access', $this->tables)) 
+		if (!in_array($prefix . 'publication_access', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_access` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -136,9 +136,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Attachments
-		if (!in_array($prefix . 'publication_attachments', $this->tables)) 
+		if (!in_array($prefix . 'publication_attachments', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_attachments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -165,9 +165,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Audience records
-		if (!in_array($prefix . 'publication_audience', $this->tables)) 
+		if (!in_array($prefix . 'publication_audience', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -185,9 +185,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Audience levels
-		if (!in_array($prefix . 'publication_audience_levels', $this->tables)) 
+		if (!in_array($prefix . 'publication_audience_levels', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience_levels` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -198,22 +198,22 @@ class PubInstall extends JObject {
 			) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8";
 
 			// Set audience level defaults
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 						  VALUES ('1','level0','K12','Middle/High School')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 						  VALUES ('2','level1','Easy','Freshmen/Sophomores')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 						  VALUES ('3','level2','Intermediate','Juniors/Seniors')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 				    	  VALUES ('4','level3','Advanced','Graduate Students')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 						  VALUES ('5','level4','Expert','PhD Experts')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`id`,`label`,`title`,`description`)
 						  VALUES ('6','level5','Professional','Beyond PhD')";
 		}
-		
+
 		// Authors
-		if (!in_array($prefix . 'publication_authors', $this->tables)) 
+		if (!in_array($prefix . 'publication_authors', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_authors` (
 			  `publication_version_id` int(11) NOT NULL DEFAULT '0',
@@ -235,9 +235,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Categories
-		if (!in_array($prefix . 'publication_categories', $this->tables)) 
+		if (!in_array($prefix . 'publication_categories', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_categories` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -268,9 +268,9 @@ class PubInstall extends JObject {
 			$queries[] = "INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('12','Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
 			$queries[] = "INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1')";
 		}
-		
+
 		// Types
-		if (!in_array($prefix . 'publication_master_types', $this->tables)) 
+		if (!in_array($prefix . 'publication_master_types', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_master_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -285,24 +285,24 @@ class PubInstall extends JObject {
 			  UNIQUE KEY `alias` (`alias`)
 			) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8";
 
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('1','File(s)','files','uploaded material','1','1','1','peer_review=1')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('2','Link','links','external content','0','0','3','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('3','Wiki','notes','from project notes','0','0','5','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('4','Application','apps','simulation tool','0','0','4','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('5','Series','series','publication collection','0','0','6','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('6','Gallery','gallery','image/photo gallery','0','0','7','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`id`,`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('7','Databases','databases','project database','0','0','2','')";
 		}
-		
+
 		// Reviews
-		if (!in_array($prefix . 'publication_ratings', $this->tables)) 
+		if (!in_array($prefix . 'publication_ratings', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_ratings` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -316,9 +316,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Screenshots
-		if (!in_array($prefix . 'publication_screenshots', $this->tables)) 
+		if (!in_array($prefix . 'publication_screenshots', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_screenshots` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -335,9 +335,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Stats
-		if (!in_array($prefix . 'publication_stats', $this->tables)) 
+		if (!in_array($prefix . 'publication_stats', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_stats` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -352,9 +352,9 @@ class PubInstall extends JObject {
 			  UNIQUE KEY `pub_stats` (`publication_id`,`datetime`,`period`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Versions
-		if (!in_array($prefix . 'publication_versions', $this->tables)) 
+		if (!in_array($prefix . 'publication_versions', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_versions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -389,9 +389,9 @@ class PubInstall extends JObject {
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
 		}
-		
+
 		// Publications
-		if (!in_array($prefix . 'publications', $this->tables)) 
+		if (!in_array($prefix . 'publications', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publications` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -409,12 +409,12 @@ class PubInstall extends JObject {
 			  `ranking` float NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=9000 DEFAULT CHARSET=utf8";
-			
+
 			$iniSetup = 1;
 		}
-		
+
 		// Licenses
-		if (!in_array($prefix . 'publication_licenses', $this->tables)) 
+		if (!in_array($prefix . 'publication_licenses', $this->tables))
 		{
 			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_licenses` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -434,15 +434,15 @@ class PubInstall extends JObject {
 			) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8";
 
 			$queries[] = "INSERT INTO `#__publication_licenses` (`id`,`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('2','cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0','CC0 enables scientists, educators, artists and other creators and owners of copyright- or database-protected content to waive those interests in their works and thereby place them as completely as possible in the public domain, so that others may freely build upon, enhance and reuse the works for any purposes without restriction under copyright or database law.','2','1','0','1','1','0','/components/com_publications/assets/img/logos/cc.gif')";
-		
+
 			$queries[] = "INSERT INTO `#__publication_licenses` (`id`,`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('1','custom','[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]','Custom','http://creativecommons.org/about/cc0','Custom license','3','1','0','0','0','1','/components/com_publications/assets/img/logos/license.gif')";
-		
+
 			$queries[] = "INSERT INTO `#__publication_licenses` (`id`,`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('3','standard','All rights reserved.','Standard HUB License','http://nanohub.org','Standard HUB license.','1','0','0','0','0','0','/components/com_publications/images/logos/license.gif')";
 		}
-						
+
 		// Enable component
 		if ($iniSetup == 1)
-		{			
+		{
 			// The following is for Joomla 1.6+
 			$params = '{"enabled":"1","autoapprove":"1","autoapproved_users":"","email":"0","default_category":"dataset","defaultpic":"\/components\/com_publications\/assets\/img\/resource_thumb.gif","toolpic":"\/components\/com_publications\/assets\/img\/tool_thumb.gif","video_thumb":"\/components\/com_publications\/images\/video_thumb.gif","gallery_thumb":"\/components\/com_publications\/images\/gallery_thumb.gif","webpath":"\/site\/publications","aboutdoi":"","doi_shoulder":"","doi_prefix":"","doi_service":"","doi_userpw":"","doi_xmlschema":"","doi_publisher":"","doi_resolve":"http:\/\/dx.doi.org\/","doi_verify":"http:\/\/n2t.net\/ezid\/id\/","supportedtag":"","supportedlink":"","google_id":"","show_authors":"1","show_ranking":"1","show_rating":"1","show_date":"3","show_citation":"1","panels":"content, description, authors, audience, gallery, tags, access, license, notes","suggest_licence":"0","show_tags":"1","show_metadata":"1","show_notes":"1","show_license":"1","show_access":"0","show_gallery":"1","show_audience":"0","audiencelink":"","documentation":"\/kb\/publications","deposit_terms":"\/legal\/termsofdeposit","dbcheck":"0","repository":"0","aip_path":"\/srv\/AIP"}';
 			$this->installExtension('com_publications', 'component', 'com_publications', '', 0, $params, 1, 1);
@@ -455,21 +455,21 @@ class PubInstall extends JObject {
 			$this->installExtension('plg_publications_citations', 'plugin', 'citations', 'publications', 7, '', 1, 0);
 			$this->installExtension('plg_publications_usage', 'plugin', 'usage', 'publications', 8, '', 1, 0);
 			$this->installExtension('plg_publications_share', 'plugin', 'share', 'publications', 9, '', 1, 0);
-			
+
 			// Get Publication component ID
 			$query = "SELECT extension_id FROM `#__extensions` WHERE name='com_publications' ORDER BY ordering ASC LIMIT 1";
 			$this->_db->setQuery( $query );
 			$cid = $this->_db->loadResult();
-			
+
 			// Add menu item
 			if ($cid)
 			{
 				$query = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)
 				SELECT 0,'main','Publications','publications','','publications','index.php?option=com_publications','component',1,1,1,$cid,0,0,'0000-00-00 00:00:00',0,0,'',0,'',47,48,0,'*',1 FROM DUAL WHERE NOT EXISTS (SELECT `component_id` FROM `#__extensions` WHERE component_id = '$cid')";
-			 
+
 				$this->_db->setQuery( $query );
 				$this->_db->query();
 			}
-		}		
+		}
 	}
 }

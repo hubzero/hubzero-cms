@@ -17,7 +17,7 @@ class Migration20131113134600ComTags extends Base
 	{
 		if ($this->db->tableExists('#__tags'))
 		{
-			$query = "ALTER TABLE `#__tags` 
+			$query = "ALTER TABLE `#__tags`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `raw_tag` `raw_tag` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `description` `description` TEXT  NOT NULL,
@@ -36,7 +36,7 @@ class Migration20131113134600ComTags extends Base
 
 		if ($this->db->tableExists('#__tags_object'))
 		{
-			$query = "ALTER TABLE `#__tags_object` 
+			$query = "ALTER TABLE `#__tags_object`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `objectid` `objectid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `tagid` `tagid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
@@ -52,7 +52,7 @@ class Migration20131113134600ComTags extends Base
 
 		if ($this->db->tableExists('#__tags_group'))
 		{
-			$query = "ALTER TABLE `#__tags_group` 
+			$query = "ALTER TABLE `#__tags_group`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `groupid` `groupid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `tagid` `tagid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
@@ -78,7 +78,7 @@ class Migration20131113134600ComTags extends Base
 
 		if ($this->db->tableExists('#__tags_log'))
 		{
-			$query = "ALTER TABLE `#__tags_log` 
+			$query = "ALTER TABLE `#__tags_log`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `tag_id` `tag_id` INT(11)  UNSIGNED  NOT NULL DEFAULT '0',
 					CHANGE `action` `action` VARCHAR(50)  NOT NULL  DEFAULT '',
@@ -106,7 +106,7 @@ class Migration20131113134600ComTags extends Base
 
 		if ($this->db->tableExists('#__tags_substitute'))
 		{
-			$query = "ALTER TABLE `#__tags_substitute` 
+			$query = "ALTER TABLE `#__tags_substitute`
 					CHANGE `tag_id` `tag_id` INT(11)  UNSIGNED  NOT NULL DEFAULT '0',
 					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `raw_tag` `raw_tag` VARCHAR(100)  NOT NULL  DEFAULT '',

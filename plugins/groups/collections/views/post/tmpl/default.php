@@ -49,7 +49,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span> 
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span>
 					<span class="entry-date-on">on</span> <span class="date"><?php echo $item->created('date'); ?></span>
 				</span>
 			</p>
@@ -117,21 +117,21 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
-				</a> 
-				onto 
+				</a>
+				onto
 				<a href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span> 
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span>
 					<span class="entry-date-on">on</span> <span class="date"><?php echo $this->post->created('date'); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php 
-if ($item->get('comments')) 
-{ 
+<?php
+if ($item->get('comments'))
+{
 	foreach ($item->comments() as $comment)
 	{
 		$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
@@ -142,11 +142,11 @@ if ($item->get('comments'))
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> 
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
 					said
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span>
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
@@ -155,9 +155,9 @@ if ($item->get('comments'))
 				</blockquote>
 			</div>
 		</div>
-<?php 
+<?php
 	}
-} 
+}
 $now = JFactory::getDate();
 ?>
 		<div class="commnts">
@@ -166,11 +166,11 @@ $now = JFactory::getDate();
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a> 
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
 					will say
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span>
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
@@ -180,7 +180,7 @@ $now = JFactory::getDate();
 						<input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
 						<input type="hidden" name="comment[item_type]" value="collection" />
 						<input type="hidden" name="comment[state]" value="1" />
-						
+
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 						<input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />

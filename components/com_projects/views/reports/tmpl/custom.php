@@ -38,9 +38,9 @@ $filter = JRequest::getVar( 'searchterm', '');
 
 <section class="main section custom-reports" id="custom-reports">
 	<div class="status-msg">
-	<?php 
+	<?php
 		// Display error or success message
-		if ($this->getError()) { 
+		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
 		else if ($this->msg) {

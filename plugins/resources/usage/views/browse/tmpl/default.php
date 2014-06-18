@@ -56,7 +56,7 @@ switch ($this->params->get('defaultDataset', 'cumulative'))
 {
 	case 'yearly':  $prd = 12; break;
 	case 'monthly': $prd = 1;  break;
-	case 'cumulative': 
+	case 'cumulative':
 	default: $prd = 14; break;
 }
 
@@ -67,7 +67,7 @@ if (intval($this->params->get('cache', 1)))
 	$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 	$results = $cache->call(array('plgResourcesUsage', 'getOverview'), $this->resource->id, $prd);
 }
-else 
+else
 {
 	$results = plgResourcesUsage::getOverview($this->resource->id, $prd);
 }
@@ -90,7 +90,7 @@ if ($results)
 {
 	$usersTop = 0;
 	$runsTop = 0;
-	
+
 	$c = count($results);
 	foreach ($results as $result)
 	{
@@ -111,7 +111,7 @@ if ($results)
 
 ?>
 <h3 id="plg-usage-header">
-	<?php echo JText::_('PLG_RESOURCES_USAGE'); ?> 
+	<?php echo JText::_('PLG_RESOURCES_USAGE'); ?>
 </h3>
 <form method="get" action="<?php echo JRoute::_($url); ?>">
 	<?php
@@ -170,7 +170,7 @@ if ($results)
 				</p>
 				<div id="users-overview" style="min-width:400px;height:250px;">
 				<?php
-				if ($results) 
+				if ($results)
 				{
 					// Find the highest value
 					$vals = array();
@@ -212,7 +212,7 @@ if ($results)
 							</tr>
 						</thead>
 						<tbody>
-						<?php 
+						<?php
 					$colors = array(
 						$this->params->get('pie_chart_color1', '#7c7c7c'),
 						$this->params->get('pie_chart_color2', '#515151'),
@@ -248,7 +248,7 @@ if ($results)
 						$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 						$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 3, $tid, $datetime);
 					}
-					else 
+					else
 					{
 						$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
 
@@ -287,7 +287,7 @@ if ($results)
 							}
 							$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
 
-							if ($row->rank != '0') 
+							if ($row->rank != '0')
 							{
 								$total += $row->value;
 							}
@@ -299,12 +299,12 @@ if ($results)
 						$total = ($total) ? $total : 1;
 						foreach ($dataset as $row)
 						{
-							if ($row->rank == '0') 
+							if ($row->rank == '0')
 							{
 								continue;
 							}
 
-							if ($row->name == '?') 
+							if ($row->name == '?')
 							{
 								$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 							}
@@ -321,7 +321,7 @@ if ($results)
 							$i++;
 						}
 					}
-					else 
+					else
 					{
 					?>
 							<tr>
@@ -355,7 +355,7 @@ if ($results)
 							</tr>
 						</thead>
 						<tbody>
-						<?php 
+						<?php
 						if (intval($this->params->get('cache', 1)))
 						{
 							$cache = JFactory::getCache('callback');
@@ -363,7 +363,7 @@ if ($results)
 							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 							$dataset = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 1, $tid, $datetime);
 						}
-						else 
+						else
 						{
 							$dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
 						}
@@ -393,7 +393,7 @@ if ($results)
 
 								$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}'."\n";
 
-								if ($row->rank != '0') 
+								if ($row->rank != '0')
 								{
 									$total += $row->value;
 								}
@@ -412,12 +412,12 @@ if ($results)
 
 							foreach ($dataset as $row)
 							{
-								if ($row->rank == '0') 
+								if ($row->rank == '0')
 								{
 									continue;
 								}
 
-								if ($row->name == '?') 
+								if ($row->name == '?')
 								{
 									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 								}
@@ -426,9 +426,9 @@ if ($results)
 								?>
 							<tr rel="<?php echo $row->name; ?>">
 								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
-								<td class="textual-data"><?php 
+								<td class="textual-data"><?php
 								if (isset($codes[$row->name])) { ?>
-									<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" /> 
+									<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
 								<?php }
 								echo $row->name; ?></td>
 								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
@@ -438,7 +438,7 @@ if ($results)
 								$i++;
 							}
 						}
-						else 
+						else
 						{
 						?>
 							<tr>
@@ -473,7 +473,7 @@ if ($results)
 							</tr>
 						</thead>
 						<tbody>
-						<?php 
+						<?php
 						if (intval($this->params->get('cache', 1)))
 						{
 							$cache = JFactory::getCache('callback');
@@ -481,7 +481,7 @@ if ($results)
 							$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 							$results = $cache->call(array('plgResourcesUsage', 'getTopValue'), $this->resource->id, 2, $tid, $datetime);
 						}
-						else 
+						else
 						{
 							$results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
 						}
@@ -509,7 +509,7 @@ if ($results)
 								}
 								$r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
 
-								if ($row->rank != '0') 
+								if ($row->rank != '0')
 								{
 									$total += $row->value;
 								}
@@ -523,12 +523,12 @@ if ($results)
 							$i = 0;
 							foreach ($results as $row)
 							{
-								if ($row->rank == '0') 
+								if ($row->rank == '0')
 								{
 									continue;
 								}
 
-								if ($row->name == '?') 
+								if ($row->name == '?')
 								{
 									$row->name = JText::_('PLG_RESOURCES_USAGE_UNIDENTIFIED');
 								}
@@ -545,7 +545,7 @@ if ($results)
 								$i++;
 							}
 						}
-						else 
+						else
 						{
 					?>
 							<tr>
@@ -721,9 +721,9 @@ if ($results)
 					{
 						tbl.append(
 							'<tr>' +
-								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' + 
-								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100),2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100),2) + '%)</span></span></td>' + 
-								//'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' + 
+								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
+								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100),2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100),2) + '%)</span></span></td>' +
+								//'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
 							'</tr>'
 						);
 					}
@@ -748,7 +748,7 @@ if ($results)
 
 					var options = {
 						series: {
-							lines: { 
+							lines: {
 								show: true,
 								fill: true
 							},
@@ -760,26 +760,26 @@ if ($results)
 							//color: 'rgba(0, 0, 0, 0.6)',
 							borderWidth: 1,
 							//borderColor: 'transparent',
-							hoverable: true, 
+							hoverable: true,
 							clickable: true
 						},
 						legend: { show: false },
-						xaxis: { 
-							position: 'top', 
-							mode: "time", 
-							//tickLength: 0, 
-							min: new Date('<?php echo $from; ?>'), 
-							max: new Date('<?php echo $to; ?>'), 
+						xaxis: {
+							position: 'top',
+							mode: "time",
+							//tickLength: 0,
+							min: new Date('<?php echo $from; ?>'),
+							max: new Date('<?php echo $to; ?>'),
 							tickFormatter: function (val, axis) {
 								var d = new Date(val);
 								return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
 							},
-							tickDecimals: 0 
+							tickDecimals: 0
 						},
 						yaxis: { min: 0, labelWidth: 25 }
 					};
 
-					
+
 					function plotCharts() {
 						var placeholderU = $("#users-overview");
 						// Bind the selection area so the chart updates
@@ -831,9 +831,9 @@ if ($results)
 							series: {
 								points: { show: false },
 								lines: {
-									show: true, 
+									show: true,
 									lineWidth: 1,
-									fill: true, 
+									fill: true,
 									fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)"); ?>'
 								},
 								shadowSize: 0
@@ -842,20 +842,20 @@ if ($results)
 								borderWidth: 1,
 								borderColor: 'rgba(0, 0, 0, 0.6)'
 							},
-							xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0, 
+							xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0,
 								tickFormatter: function (val, axis) {
 									var d = new Date(val);
 									return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
 								}
 							},
 							yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25 },
-							selection: { 
-								mode: "x", 
-								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>', 
-								navigate: true 
+							selection: {
+								mode: "x",
+								color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>',
+								navigate: true
 							}
 						};
-						
+
 
 
 						var placeholderR = $("#runs-overview");
@@ -905,12 +905,12 @@ if ($results)
 
 						var uoTimeline = $("#users-overview-timeline");
 						var plotUO = $.plot(uoTimeline, [datasets[0]], timelineOptions);
-						plotUO.setSelection({ 
+						plotUO.setSelection({
 								xaxis: {
 									from: new Date('<?php echo $min; ?>'),
 									to: new Date('<?php echo $to; ?>')
 								}
-							}, 
+							},
 							true
 						);
 						uoTimeline
@@ -931,12 +931,12 @@ if ($results)
 
 						var roTimeline = $("#runs-overview-timeline");
 						var plotRO = $.plot(roTimeline, [datasets[1]], timelineOptions);
-						plotRO.setSelection({ 
+						plotRO.setSelection({
 								xaxis: {
 									from: new Date('<?php echo $min; ?>'),
 									to: new Date('<?php echo $to; ?>')
 								}
-							}, 
+							},
 							true
 						);
 						roTimeline
@@ -953,7 +953,7 @@ if ($results)
 								ranges.yaxis.to = <?php echo $usersTop; ?>;
 								plotU.setSelection(ranges);
 							});
-						
+
 						$('.set-selection').click(function (e) {
 							e.preventDefault();
 
@@ -978,18 +978,18 @@ if ($results)
 							// don't fire event on the overview to prevent eternal loop
 							plotUO.setSelection({
 									xaxis: {
-										from: new Date(from), 
+										from: new Date(from),
 										to: new Date(to)
 									}
-								}, 
+								},
 								true
 							);
 							plotRO.setSelection({
 									xaxis: {
-										from: new Date(from), 
+										from: new Date(from),
 										to: new Date(to)
 									}
-								}, 
+								},
 								true
 							);
 						});
@@ -1003,7 +1003,7 @@ if ($results)
 							$.getJSON($(this).attr('href'), function(data){
 								var runs = [], users = [], runstop = 0, userstop = 0;
 
-								for (var i=0; i<data.points.length; i++) 
+								for (var i=0; i<data.points.length; i++)
 								{
 									users.push([
 										new Date(data.points[i].datetime),
@@ -1021,23 +1021,23 @@ if ($results)
 
 								var plotU = $.plot(placeholderU, [datasets[0]], options);
 								var plotUO = $.plot(uoTimeline, [datasets[0]], timelineOptions);
-								plotUO.setSelection({ 
+								plotUO.setSelection({
 										xaxis: {
 											from: new Date('<?php echo $from; ?>'),
 											to: new Date('<?php echo $to; ?>')
 										}
-									}, 
+									},
 									true
 								);
 
 								var plotR = $.plot(placeholderR, [datasets[1]], options);
 								var plotRO = $.plot(roTimeline, [datasets[1]], timelineOptions);
-								plotRO.setSelection({ 
+								plotRO.setSelection({
 										xaxis: {
 											from: new Date('<?php echo $from; ?>'),
 											to: new Date('<?php echo $to; ?>')
 										}
-									}, 
+									},
 									true
 								);
 							});
@@ -1068,10 +1068,10 @@ if ($results)
 								plotR.setupGrid();
 								plotR.draw();
 							}
-							
+
 						});
 
-					
+
 				});
 			}
 		</script>

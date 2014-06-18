@@ -37,70 +37,70 @@ class Transaction extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid         = NULL;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type        = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $referenceid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $amount      = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $balance     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -111,27 +111,27 @@ class Transaction extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->uid = intval($this->uid);
-		if (!$this->uid) 
+		if (!$this->uid)
 		{
 			$this->setError(\JText::_('Entry must have a user ID.'));
 			return false;
 		}
 
 		$this->type = trim($this->type);
-		if (!$this->type) 
+		if (!$this->type)
 		{
 			$this->setError(\JText::_('Entry must have a type (e.g., deposit, withdraw).'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
-		if (!$this->category) 
+		if (!$this->category)
 		{
 			$this->setError(\JText::_('Entry must have a category.'));
 			return false;
@@ -151,24 +151,24 @@ class Transaction extends \JTable
 
 	/**
 	 * Get a history of transactions for a user
-	 * 
+	 *
 	 * @param      integer $limit Number of records to return
 	 * @param      integer $uid   User ID
 	 * @return     mixed False if errors, array on success
 	 */
 	public function history($limit=50, $uid=null)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			$uid = $this->uid;
 		}
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
 
 		$lmt = "";
-		if ($limit > 0) 
+		if ($limit > 0)
 		{
 			$lmt .= " LIMIT " . $limit;
 		}
@@ -178,7 +178,7 @@ class Transaction extends \JTable
 
 	/**
 	 * Delete records for a given category, type, and reference combination
-	 * 
+	 *
 	 * @param      string  $category    Transaction category (royalties, etc)
 	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
 	 * @param      integer $referenceid Reference ID (resource ID, etc)
@@ -186,19 +186,19 @@ class Transaction extends \JTable
 	 */
 	public function deleteRecords($category=null, $type=null, $referenceid=null)
 	{
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			return false;
 		}
-		if ($type == null) 
+		if ($type == null)
 		{
 			$type = $this->type;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			$category = $this->category;
 		}
@@ -206,7 +206,7 @@ class Transaction extends \JTable
 		$query = "DELETE FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -216,7 +216,7 @@ class Transaction extends \JTable
 
 	/**
 	 * Get a list of transactions of a certain type for a reference item and, optionally, user
-	 * 
+	 *
 	 * @param      string  $category    Transaction category (royalties, etc)
 	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
 	 * @param      integer $referenceid Reference ID (resource ID, etc)
@@ -225,24 +225,24 @@ class Transaction extends \JTable
 	 */
 	public function getTransactions($category=null, $type=null, $referenceid=null, $uid=null)
 	{
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			return false;
 		}
-		if ($type == null) 
+		if ($type == null)
 		{
 			$type = $this->type;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			$category = $this->category;
 		}
 		$query = "SELECT amount, SUM(amount) as sum, count(*) as total FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
-		if ($uid) 
+		if ($uid)
 		{
 			$query .= " AND uid=" . $this->_db->Quote($uid);
 		}
@@ -254,7 +254,7 @@ class Transaction extends \JTable
 
 	/**
 	 * Get get the transaction amount for a category, type, reference item and, optionally, user
-	 * 
+	 *
 	 * @param      string  $category    Transaction category (royalties, etc)
 	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
 	 * @param      integer $referenceid Reference ID (resource ID, etc)
@@ -263,25 +263,25 @@ class Transaction extends \JTable
 	 */
 	public function getAmount($category=null, $type=null, $referenceid=null, $uid=null)
 	{
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			$referenceid = $this->referenceid;
 		}
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			return false;
 		}
-		if ($type == null) 
+		if ($type == null)
 		{
 			$type = $this->type;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			$category = $this->category;
 		}
 
 		$query = "SELECT amount FROM $this->_tbl WHERE category=" . $this->_db->Quote($category) . " AND type=" . $this->_db->Quote($type) . " AND referenceid=" . $this->_db->Quote($referenceid);
-		if ($uid) 
+		if ($uid)
 		{
 			$query .= " AND uid=" . $this->_db->Quote($uid);
 		}
@@ -291,7 +291,7 @@ class Transaction extends \JTable
 
 	/**
 	 * Get a point total/average for a combination of category, type, user, etc.
-	 * 
+	 *
 	 * @param      string  $category    Transaction category (royalties, etc)
 	 * @param      string  $type        Transaction type (deposit, withdraw, etc)
 	 * @param      integer $referenceid Reference ID (resource ID, etc)
@@ -305,71 +305,71 @@ class Transaction extends \JTable
 	 */
 	public function getTotals($category=null, $type=null, $referenceid=null, $royalty=0, $action=null, $uid=null, $allusers = 0, $when=null, $calc=0)
 	{
-		if ($referenceid == null) 
+		if ($referenceid == null)
 		{
 			$referenceid = $this->referenceid;
 		}
-		if ($type == null) 
+		if ($type == null)
 		{
 			$type = $this->type;
 		}
-		if ($category == null) 
+		if ($category == null)
 		{
 			$category = $this->category;
 		}
 
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			$juser = \JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
 		$query = "SELECT ";
-		if ($calc == 0) 
+		if ($calc == 0)
 		{
 			$query .= " SUM(amount)";
-		} 
-		else if ($calc == 1) 
+		}
+		else if ($calc == 1)
 		{
 			// average
 			$query .= " AVG(amount)";
-		} 
-		else if ($calc == 2) 
+		}
+		else if ($calc == 2)
 		{
 			// num of transactions
 			$query .= " COUNT(*)";
 		}
 		$query .= " FROM $this->_tbl WHERE type=" . $this->_db->Quote($type) . " ";
-		if ($category) 
+		if ($category)
 		{
 			$query .= " AND category=" . $this->_db->Quote($category) . " ";
 		}
-		if ($referenceid) 
+		if ($referenceid)
 		{
 			$query .= " AND referenceid=" . $this->_db->Quote($referenceid);
 		}
-		if ($royalty) 
+		if ($royalty)
 		{
 			$query .= " AND description like 'Royalty payment%' ";
 		}
-		if ($action == 'asked') 
+		if ($action == 'asked')
 		{
 			$query .= " AND description like '%posting question%' ";
-		} 
-		else if ($action == 'answered') 
+		}
+		else if ($action == 'answered')
 		{
 			$query .= " AND (description like '%answering question%' OR description like 'Answer for question%' OR description like 'Answered question%') ";
-		} 
-		else if ($action == 'misc') 
+		}
+		else if ($action == 'misc')
 		{
-			$query .= " AND (description NOT LIKE '%posting question%' AND description NOT LIKE '%answering question%' 
+			$query .= " AND (description NOT LIKE '%posting question%' AND description NOT LIKE '%answering question%'
 							AND description NOT LIKE 'Answer for question%' AND description NOT LIKE 'Answered question%') ";
 		}
-		if (!$allusers) 
+		if (!$allusers)
 		{
 			$query .= " AND uid=$uid ";
 		}
-		if ($when) 
+		if ($when)
 		{
 			$query .= " AND created LIKE '" . $when . "%' ";
 		}

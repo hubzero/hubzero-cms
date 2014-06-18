@@ -42,15 +42,15 @@ $html = '';
 	$height = $attribs->get('height', '');
 
 	$attributes = $attribs->get('attributes', '');
-	if ($attributes) 
+	if ($attributes)
 	{
 		$a = explode(',', $attributes);
 		$bits = array();
-		if ($a && is_array($a)) 
+		if ($a && is_array($a))
 		{
 			foreach ($a as $b)
 			{
-				if (strstr($b, ':')) 
+				if (strstr($b, ':'))
 				{
 					$b = preg_split('#:#', $b);
 					$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
@@ -76,7 +76,7 @@ $html = '';
 
 	if (preg_match("/$UrlPtn/", $url))
 	{
-		if (!empty( $_SERVER['HTTPS'])) 
+		if (!empty( $_SERVER['HTTPS']))
 		{
 			$url = str_replace('http:', 'https:', $url);
 		}
@@ -86,7 +86,7 @@ $html = '';
 			// YouTube
 			if (strstr($url, '?'))
 			{
-				//split the string into two parts 
+				//split the string into two parts
 				//uri and query string
 				$full_url_parts = explode('?', $url);
 
@@ -96,10 +96,10 @@ $html = '';
 				//foreach query string parts
 				//explode at equals sign
 				//check to see if v is the first part and if it is set the second part to the video id
-				foreach ($query_string_parts as $qsp) 
+				foreach ($query_string_parts as $qsp)
 				{
 					$pairs_parts = explode("%3D", $qsp);
-					if ($pairs_parts[0] == 'v') 
+					if ($pairs_parts[0] == 'v')
 					{
 						$video_id = $pairs_parts[1];
 						break;
@@ -108,7 +108,7 @@ $html = '';
 				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
 			}
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
-		} 
+		}
 		else if (stristr($parsed['host'], 'vimeo'))
 		{
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
@@ -118,7 +118,7 @@ $html = '';
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
-	else if (is_file(JPATH_ROOT . $url)) 
+	else if (is_file(JPATH_ROOT . $url))
 	{
 		if (strtolower($type) == 'swf') {
 			$height = '400px';
@@ -168,8 +168,8 @@ $html = '';
 			}
 			$html .= '</applet>'."\n";
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$html .= '<p class="error">'.JText::_('COM_RESOURCES_FILE_NOT_FOUND').'</p>'."\n";
 	}

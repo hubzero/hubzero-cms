@@ -122,7 +122,7 @@ abstract class Inflect
 		foreach (self::$irregular as $pattern=>$result)
 			if (preg_match("/$pattern$/i", $string))
 				return preg_replace("/$pattern/i", $result, $string);
-		
+
 		// check for matches using regular expressions
 		foreach (self::$plural as $pattern=>$result)
 			if (preg_match($pattern, $string))
@@ -151,7 +151,7 @@ abstract class Inflect
 
 	public static function pluralize_if($count, $string)
 	{
-		return $count == 1 
+		return $count == 1
 			? "1 $string"
 			: $count . " " . self::pluralize($string);
 	}

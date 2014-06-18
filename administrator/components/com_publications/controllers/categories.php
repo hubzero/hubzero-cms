@@ -40,7 +40,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 {
 	/**
 	 * List types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -78,13 +78,13 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			'filter_order_Dir',
 			'ASC'
 		));
-		
+
 		$this->view->filters['state'] = 'all';
-		
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		
+
 		// Instantiate an object
 		$rt = new PublicationCategory($this->database);
 
@@ -114,7 +114,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 	/**
 	 * Add a new type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -125,7 +125,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 	/**
 	 * Edit a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -157,24 +157,24 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		$this->view->config = $this->config;
-		
+
 		// Get all contributable master types
 		$objMT = new PublicationMasterType($this->database);
 		$this->view->types = $objMT->getTypes('alias', 1);
-		
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
 
 	/**
 	 * Save a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -183,9 +183,9 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$prop = JRequest::getVar('prop', array(), 'post');
-		
+
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $prop['id'];
-		
+
 		// Initiate extended database class
 		$row = new PublicationCategory($this->database);
 		if (!$row->bind($prop))
@@ -194,7 +194,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			$this->setRedirect($url);
 			return;
 		}
-				
+
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields))
@@ -241,7 +241,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			$re = new PublicationsElements($elements);
 			$row->customFields = $re->toString();
 		}
-		
+
 		// Get parameters
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params))
@@ -253,7 +253,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			}
 			$row->params = implode("\n", $txt);
 		}
-						
+
 		// Check content
 		if (!$row->check())
 		{
@@ -272,11 +272,11 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		$this->setRedirect($url, JText::_('Publication Category successfully saved')
 		);
 	}
-	
+
 	/**
-	 * Change status 
+	 * Change status
 	 * Redirects to list
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function changestatusTask($dir = 0)
@@ -286,10 +286,10 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0), '', 'array');
-	
+
 		// Initialize
 		$row = new PublicationCategory($this->database);
-		
+
 		foreach ($ids as $id)
 		{
 			if (intval($id))
@@ -297,7 +297,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				// Load row
 				$row->load( $id );
 				$row->state = $row->state == 1 ? 0 : 1;
-				
+
 				// Save
 				if (!$row->store())
 				{
@@ -309,14 +309,14 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				}
 			}
 		}
-				
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('Item(s) successfully published/unpublished')
-		);		
+		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
@@ -326,10 +326,10 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	{
 		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
 	}
-	
+
 	/**
 	 * Strip any non-alphanumeric characters and make lowercase
-	 * 
+	 *
 	 * @param      string  $txt    String to normalize
 	 * @param      boolean $dashes Allow dashes and underscores
 	 * @return     string
@@ -343,7 +343,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		}
 		return strtolower(preg_replace("/[^$allowed]/", '', $txt));
 	}
-	
+
 	/**
 	 * Retrieve an element's options (typically called via AJAX)
 	 *

@@ -101,7 +101,7 @@ class Extension implements CommandInterface
 	 * Add an entry to the extension table
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function add()
 	{
@@ -112,7 +112,7 @@ class Extension implements CommandInterface
 	 * Delete an entry from the extension table
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function delete()
 	{
@@ -191,7 +191,7 @@ class Extension implements CommandInterface
 	 * Enable an extension
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function enable()
 	{
@@ -202,7 +202,7 @@ class Extension implements CommandInterface
 	 * Disable an extension
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function disable()
 	{

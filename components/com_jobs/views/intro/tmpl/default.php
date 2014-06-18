@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Intro */
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
-	
+
 	$jobsHtml = new JobsHtml();
-	
+
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
 ?>
@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($this->guest) { ?> 
+		<?php if ($this->guest) { ?>
 			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option . '&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -54,16 +54,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
 				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
 			</li>
-		<?php } else { ?> 
+		<?php } else { ?>
 			<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
-		<?php } ?> 
+		<?php } ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <?php if ($this->msg) { ?>
 	<p class="help"><?php echo $this->msg; ?></p>
-<?php } ?>  
+<?php } ?>
 
 <?php if ($this->allowsubscriptions) { ?>
 <section id="introduction" class="section">
@@ -81,9 +81,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=resumes'); ?>"><?php echo JText::_('COM_JOBS_ACTION_BROWSE_RESUMES'); ?></a></li>
 					<li><a href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ACTION_POST_JOB'); ?></a></li>
 				</ul>
-				 <?php if ($promoline) { ?> 
+				 <?php if ($promoline) { ?>
 				<p class="promo"><?php echo $promoline; ?></p>
-				<?php } ?>	 
+				<?php } ?>
 			</div>
 			<div class="col span-third omega">
 				<h3><?php echo JText::_('COM_JOBS_SEEKERS'); ?></h3>

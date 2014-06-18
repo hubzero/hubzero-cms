@@ -40,28 +40,28 @@ class ResourcesHelper extends JObject
 {
 	/**
 	 * Resource ID
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_id = 0;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @param      object &$db JDatabase
 	 * @return     void
@@ -79,7 +79,7 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
@@ -91,13 +91,13 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -105,45 +105,45 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a list of contributors without linking names
-	 * 
+	 *
 	 * @param      boolean $incSubmitter Include submitters?
 	 * @return     void
 	 */
 	public function getUnlinkedContributors($incSubmitter=false)
 	{
-		if (!isset($this->_contributors)) 
+		if (!isset($this->_contributors))
 		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
 		$html = '';
-		if ($contributors != '') 
+		if ($contributors != '')
 		{
 			$names = array();
 			foreach ($contributors as $contributor)
 			{
-				if ($incSubmitter == false && $contributor->role == 'submitter') 
+				if ($incSubmitter == false && $contributor->role == 'submitter')
 				{
 					continue;
 				}
-				if ($contributor->lastname || $contributor->firstname) 
+				if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL) 
+					if ($contributor->middlename != NULL)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} 
-				else 
+				}
+				else
 				{
 					$name = $contributor->name;
 				}
 				$name = str_replace('"', '&quot;', $name);
 				$names[] = $name;
 			}
-			if (count($names) > 0) 
+			if (count($names) > 0)
 			{
 				$html = implode('; ', $names);
 			}
@@ -153,7 +153,7 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a list of authors for a tool
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $revision Parameter description (if any) ...
 	 * @return     void
@@ -178,15 +178,15 @@ class ResourcesHelper extends JObject
 		}
 		$this->_db->setQuery($sql);
 		$cons = $this->_db->loadObjectList();
-		if ($cons) 
+		if ($cons)
 		{
 			foreach ($cons as $k => $c)
 			{
-				if (!$cons[$k]->name) 
+				if (!$cons[$k]->name)
 				{
 					$cons[$k]->name = $cons[$k]->xname;
 				}
-				if (trim($cons[$k]->org) == '') 
+				if (trim($cons[$k]->org) == '')
 				{
 					$cons[$k]->org = $cons[$k]->xorg;
 				}
@@ -197,16 +197,16 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get contributors
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getCons()
 	{
 		$sql = "SELECT a.authorid, a.name, a.name AS xname, a.organization AS org, a.role, n.uidNumber AS id, n.givenName AS firstname, n.middleName AS middlename, n.surname AS lastname, n.organization AS xorg
-				FROM #__author_assoc AS a 
+				FROM #__author_assoc AS a
 				LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
-				WHERE a.subtable='resources' 
-				AND a.subid=" . $this->_id . " 
+				WHERE a.subtable='resources'
+				AND a.subid=" . $this->_id . "
 				ORDER BY ordering, surname, givenName, middleName";
 
 		$this->_db->setQuery($sql);
@@ -217,20 +217,20 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a list of contributors
-	 * 
+	 *
 	 * @param      boolean $showorgs Show organizations?
 	 * @param      integer $newstyle Use new style formatting?
 	 * @return     void
 	 */
 	public function getContributors($showorgs=false, $newstyle=0)
 	{
-		if (!isset($this->_contributors) && !$this->_contributors) 
+		if (!isset($this->_contributors) && !$this->_contributors)
 		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
-		if ($contributors != '') 
+		if ($contributors != '')
 		{
 			$html = '';
 			$names = array();
@@ -243,30 +243,30 @@ class ResourcesHelper extends JObject
 
 			foreach ($contributors as $contributor)
 			{
-				if (strtolower($contributor->role) == 'submitter') 
+				if (strtolower($contributor->role) == 'submitter')
 				{
 					continue;
 				}
 
 				// Build the user's name and link to their profile
-				if ($contributor->name) 
+				if ($contributor->name)
 				{
 					$name = $contributor->name;
-				} 
-				else if ($contributor->lastname || $contributor->firstname) 
+				}
+				else if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL) 
+					if ($contributor->middlename != NULL)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} 
-				else 
+				}
+				else
 				{
 					$name = $contributor->xname;
 				}
-				if (!$contributor->org) 
+				if (!$contributor->org)
 				{
 					$contributor->org = $contributor->xorg;
 				}
@@ -276,15 +276,15 @@ class ResourcesHelper extends JObject
 				{
 					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
-				else 
+				else
 				{
 					$link  = $name;
 				}
 				$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
 
-				if ($newstyle) 
+				if ($newstyle)
 				{
-					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 					{
 						$orgs[$i-1] = trim($contributor->org);
 						$orgsln   .= $i . '. ' . trim($contributor->org) . ' ';
@@ -295,16 +295,16 @@ class ResourcesHelper extends JObject
 						$link_s = $link;
 						$link .= '<sup>' . $k . '</sup>';
 						$names_s[] = $link_s;
-					} 
-					else 
+					}
+					else
 					{
 						//$k = array_search(trim($contributor->org), $orgs) + 1;
 						$link_s = $link;
 						$link .= '';
 						$names_s[] = $link_s;
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$orgs[trim($contributor->org)][] = $link;
 				}
@@ -312,40 +312,40 @@ class ResourcesHelper extends JObject
 				$names[] = $link;
 			}
 
-			if ($showorgs && !$newstyle) 
+			if ($showorgs && !$newstyle)
 			{
 				foreach ($orgs as $org => $links)
 				{
 					$orgs[$org] = implode(', ', $links) . '<br />' . $org;
 				}
 				$html .= implode('<br /><br />', $orgs);
-			} 
-			else if ($newstyle) 
+			}
+			else if ($newstyle)
 			{
-				if (count($names) > 0) 
+				if (count($names) > 0)
 				{
 					$html = '<p>'.ucfirst(JText::_('By')).' ';
 					//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= count($contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
 				}
-				if ($showorgs && count($orgs) > 0) 
+				if ($showorgs && count($orgs) > 0)
 				{
 					$html .= '<p class="orgs">';
 					//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 					$html .= count($contributors) > 1 ? $orgsln : $orgsln_s;
 					$html .= '</p>';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if (count($names) > 0) 
+				if (count($names) > 0)
 				{
 					$html = implode(', ', $names);
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html = '';
 		}
@@ -354,20 +354,20 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a list of submitters
-	 * 
+	 *
 	 * @param      boolean $showorgs Show organizations?
 	 * @param      integer $newstyle Use new style formatting?
 	 * @return     void
 	 */
 	public function getSubmitters($showorgs=false, $newstyle=0, $badges=0)
 	{
-		if (!isset($this->_contributors) && !$this->_contributors) 
+		if (!isset($this->_contributors) && !$this->_contributors)
 		{
 			$this->getCons();
 		}
 		$contributors = $this->_contributors;
 
-		if ($contributors != '') 
+		if ($contributors != '')
 		{
 			$html = '';
 			$names = array();
@@ -380,30 +380,30 @@ class ResourcesHelper extends JObject
 
 			foreach ($contributors as $contributor)
 			{
-				if (strtolower($contributor->role) != 'submitter') 
+				if (strtolower($contributor->role) != 'submitter')
 				{
 					continue;
 				}
 
 				// Build the user's name and link to their profile
-				if ($contributor->name) 
+				if ($contributor->name)
 				{
 					$name = $contributor->name;
-				} 
-				else if ($contributor->lastname || $contributor->firstname) 
+				}
+				else if ($contributor->lastname || $contributor->firstname)
 				{
 					$name = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL) 
+					if ($contributor->middlename != NULL)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} 
-				else 
+				}
+				else
 				{
 					$name = $contributor->xname;
 				}
-				if (!$contributor->org) 
+				if (!$contributor->org)
 				{
 					$contributor->org = $contributor->xorg;
 				}
@@ -413,43 +413,43 @@ class ResourcesHelper extends JObject
 				{
 					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
-				else 
+				else
 				{
 					$link  = $name;
 				}
 
-				if ($newstyle) 
+				if ($newstyle)
 				{
-					if ($badges) 
+					if ($badges)
 					{
 						$xuser = JUser::getInstance($contributor->id);
-						if (is_object($xuser) && $xuser->get('name')) 
+						if (is_object($xuser) && $xuser->get('name'))
 						{
 							$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
-							if (isset($types[$xuser->gid])) 
+							if (isset($types[$xuser->gid]))
 							{
 								$link .= ' <ul class="badges"><li>' . str_replace(' ', '-', $types[$xuser->gid]) . '</li></ul>';
 							}
 						}
 					}
 
-					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 					{
 						$orgs[$i-1] = trim($contributor->org);
 						$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
 						$orgsln_s 	.= trim($contributor->org).' ';
 						$k = $i;
 						$i++;
-					} 
-					else 
+					}
+					else
 					{
 						$k = array_search(trim($contributor->org), $orgs) + 1;
 					}
 					$link_s = $link;
 					$link .= '<sup>' . $k . '</sup>';
 					$names_s[] = $link_s;
-				} 
-				else 
+				}
+				else
 				{
 					$orgs[trim($contributor->org)][] = $link;
 				}
@@ -457,38 +457,38 @@ class ResourcesHelper extends JObject
 				$names[] = $link;
 			}
 
-			if ($showorgs && !$newstyle) 
+			if ($showorgs && !$newstyle)
 			{
 				foreach ($orgs as $org => $links)
 				{
 					$orgs[$org] = implode(', ', $links) . '<br />' . $org;
 				}
 				$html .= implode('<br /><br />', $orgs);
-			} 
-			else if ($newstyle) 
+			}
+			else if ($newstyle)
 			{
-				if (count($names) > 0) 
+				if (count($names) > 0)
 				{
 					$html  = '<p>';
 					$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
 				}
-				if ($showorgs && count($orgs) > 0) 
+				if ($showorgs && count($orgs) > 0)
 				{
 					$html .= '<p class="orgs">';
 					$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 					$html .= '</p>';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if (count($names) > 0) 
+				if (count($names) > 0)
 				{
 					$html = implode(', ', $names);
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html = '';
 		}
@@ -497,18 +497,18 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get the IDs of all the contributors of a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getContributorIDs()
 	{
 		$cons = array();
 
-		if (isset($this->_data['_contributors'])) 
+		if (isset($this->_data['_contributors']))
 		{
 			$contributors = $this->_contributors;
-		} 
-		else 
+		}
+		else
 		{
 			$sql = "SELECT n.uidNumber AS id"
 				 . "\n FROM #__xprofiles AS n"
@@ -521,7 +521,7 @@ class ResourcesHelper extends JObject
 			$contributors = $this->_db->loadObjectList();
 		}
 
-		if ($contributors) 
+		if ($contributors)
 		{
 			foreach ($contributors as $con)
 			{
@@ -533,12 +533,12 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get citations on a resource
-	 * 
+	 *
 	 * @return     boolean False if errors
 	 */
 	public function getCitations()
 	{
-		if (!$this->_id) 
+		if (!$this->_id)
 		{
 			return false;
 		}
@@ -555,13 +555,13 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a count of citations on a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getCitationsCount()
 	{
 		$citations = $this->citations;
-		if (!$citations) 
+		if (!$citations)
 		{
 			$citations = $this->getCitations();
 		}
@@ -571,12 +571,12 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get the last citation's date
-	 * 
+	 *
 	 * @return     boolean False if errors
 	 */
 	public function getLastCitationDate()
 	{
-		if ($this->_id) 
+		if ($this->_id)
 		{
 			return false;
 		}
@@ -593,7 +593,7 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get tags on this resource
-	 * 
+	 *
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
 	 * @param      integer $admin     Include admin tags?
@@ -601,7 +601,7 @@ class ResourcesHelper extends JObject
 	 */
 	public function getTags($tagger_id=0, $strength=0, $admin=0)
 	{
-		if ($this->_id == 0) 
+		if ($this->_id == 0)
 		{
 			return false;
 		}
@@ -615,14 +615,14 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a comma-separated list of tags for a resource
-	 * 
+	 *
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
 	 * @return     boolean False if errors, string on success
 	 */
 	public function getTagsForEditing($tagger_id=0, $strength=0)
 	{
-		if ($this->_id == 0) 
+		if ($this->_id == 0)
 		{
 			return false;
 		}
@@ -636,13 +636,13 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a tag cloud for this resource
-	 * 
+	 *
 	 * @param      integer $admin Include admin tags?
 	 * @return     boolean False if errors, string on success
 	 */
 	public function getTagCloud($admin=0)
 	{
-		if ($this->_id == 0) 
+		if ($this->_id == 0)
 		{
 			return false;
 		}
@@ -656,7 +656,7 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get the children of a resource
-	 * 
+	 *
 	 * @param      integer $id                Optional resource ID (uses internal ID if none passeD)
 	 * @param      integer $limit             Number of results to return
 	 * @param      string  $standalone        Include standalone children?
@@ -666,12 +666,12 @@ class ResourcesHelper extends JObject
 	public function getChildren($id=0, $limit=0, $standalone='all', $excludeFirstChild = 0)
 	{
 		$children = '';
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->_id;
 		}
-		$sql = "SELECT r.id, r.title, r.introtext, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
-				r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.params, 
+		$sql = "SELECT r.id, r.title, r.introtext, r.type, r.logical_type AS logicaltype, r.created, r.created_by,
+				r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.params,
 				t.type AS logicaltitle, rt.type AS typetitle, a.grouping, a.ordering "
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
@@ -685,18 +685,18 @@ class ResourcesHelper extends JObject
 			default: $sql .= ""; break;
 		}
 		$sql .= "\n ORDER BY a.ordering, a.grouping";
-		if ($limit != 0 or $excludeFirstChild) 
+		if ($limit != 0 or $excludeFirstChild)
 		{
 			$sql .= $excludeFirstChild ? " LIMIT $excludeFirstChild, 100" : " LIMIT  ".$limit;
 		}
 		$this->_db->setQuery($sql);
 		$children = $this->_db->loadObjectList();
 
-		if ($limit != 0) 
+		if ($limit != 0)
 		{
 			return (isset($children[0])) ? $children[0] : NULL;
-		} 
-		else 
+		}
+		else
 		{
 			$this->children = $children;
 		}
@@ -704,7 +704,7 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get a count of standalone children
-	 * 
+	 *
 	 * @param      array $filters Optional filters to apply
 	 * @return     integer
 	 */
@@ -721,21 +721,21 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get all standalone children
-	 * 
+	 *
 	 * @param      array $filters Optional filters to apply
 	 * @return     array
 	 */
 	public function getStandaloneChildren($filters)
 	{
-		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltxt, r.type, r.logical_type AS logicaltype, r.created, r.created_by, 
+		$sql = "SELECT r.id, r.title, r.alias, r.introtext, r.fulltxt, r.type, r.logical_type AS logicaltype, r.created, r.created_by,
 						r.published, r.publish_up, r.path, r.access, r.standalone, r.rating, r.times_rated, r.attribs, r.ranking,
-						r.params, t.type AS logicaltitle, rt.type AS typetitle, a.grouping, 
+						r.params, t.type AS logicaltitle, rt.type AS typetitle, a.grouping,
 						(SELECT n.surname FROM #__xprofiles AS n, #__author_assoc AS aa WHERE n.uidNumber=aa.authorid AND aa.subtable='resources' AND aa.subid=r.id ORDER BY ordering LIMIT 1) AS author"
 			 . "\n FROM #__resource_types AS rt, #__resources AS r"
 			 . "\n JOIN #__resource_assoc AS a ON r.id=a.child_id"
 			 . "\n LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
 			 . "\n WHERE r.published=1 AND a.parent_id=" . $filters['id'] . " AND r.standalone=1 AND r.type=rt.id";
-		if (isset($filters['year']) && $filters['year'] > 0) 
+		if (isset($filters['year']) && $filters['year'] > 0)
 		{
 			$sql .= " AND r.publish_up >= '" . $filters['year'] . "-01-01 00:00:00' AND r.publish_up <= '" . $filters['year'] . "-12-31 23:59:59'";
 		}
@@ -749,7 +749,7 @@ class ResourcesHelper extends JObject
 			case 'ranking':  $sql .= "r.ranking DESC"; break;
 			case 'author':   $sql .= "author"; break;
 		}
-		if (isset($filters['limit']) && $filters['limit'] != '' && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != '' && $filters['limit'] != 0)
 		{
 			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'] . " ";
 		}
@@ -760,16 +760,16 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get the first child resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getFirstChild()
 	{
-		if ($this->children) 
+		if ($this->children)
 		{
 			$this->firstChild = $this->children[0];
-		} 
-		else 
+		}
+		else
 		{
 			$this->firstChild = $this->getChildren('', 1);
 		}
@@ -777,23 +777,23 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get all parents of a resource
-	 * 
+	 *
 	 * @return     boolean False if errors, true on success
 	 */
 	public function getParents()
 	{
-		if ($this->_id == 0) 
+		if ($this->_id == 0)
 		{
 			return false;
 		}
 
-		$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype, 
+		$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype,
 				r.created, r.published, r.publish_up, r.path, r.standalone, r.hits, r.rating, r.times_rated, r.params, r.ranking,
-				t.type AS logicaltitle, rt.type AS typetitle 
-				FROM #__resource_types AS rt, #__resources AS r 
-				JOIN #__resource_assoc AS a ON r.id=a.parent_id 
-				LEFT JOIN #__resource_types AS t ON r.logical_type=t.id 
-				WHERE r.published=1 AND a.child_id=" . $this->_id . " AND r.type=rt.id AND r.type!=8 
+				t.type AS logicaltitle, rt.type AS typetitle
+				FROM #__resource_types AS rt, #__resources AS r
+				JOIN #__resource_assoc AS a ON r.id=a.parent_id
+				LEFT JOIN #__resource_types AS t ON r.logical_type=t.id
+				WHERE r.published=1 AND a.child_id=" . $this->_id . " AND r.type=rt.id AND r.type!=8
 				ORDER BY a.ordering, a.grouping";
 		$this->_db->setQuery($sql);
 		$parents = $this->_db->loadObjectList();
@@ -805,12 +805,12 @@ class ResourcesHelper extends JObject
 
 	/**
 	 * Get the reviews for a resource
-	 * 
+	 *
 	 * @return     boolean False if errors, true on success
 	 */
 	public function getReviews()
 	{
-		if ($this->_id == 0) 
+		if ($this->_id == 0)
 		{
 			return false;
 		}

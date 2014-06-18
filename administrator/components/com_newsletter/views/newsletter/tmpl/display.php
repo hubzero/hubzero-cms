@@ -71,7 +71,7 @@ Joomla.submitbutton = function(pressbutton)
 				id = parseInt(ids[i].value);
 			}
 		}
-		
+
 		HUB.Administrator.Newsletter.newsletterPreview( id );
 		return;
 	}
@@ -125,7 +125,7 @@ Joomla.submitbutton = function(pressbutton)
 										}
 									}
 								}
-								
+
 								echo ($activeTemplate) ? $activeTemplate : '<em>No Template Found</em>';
 							?>
 						</td>
@@ -134,21 +134,21 @@ Joomla.submitbutton = function(pressbutton)
 								<font color="green"><?php echo JText::_('Yes'); ?></font>
 							<?php else : ?>
 								<font color="red"><?php echo JText::_('No'); ?></font>
-							<?php endif; ?>	
+							<?php endif; ?>
 						</td>
 						<td width="50px">
 							<?php if ($newsletter->sent) : ?>
 								<font color="green"><?php echo JText::_('Yes'); ?></font>
 							<?php else : ?>
 								<font color="red"><?php echo JText::_('No'); ?></font>
-							<?php endif; ?>	
+							<?php endif; ?>
 						</td>
 						<td width="50px">
 							<?php if ($newsletter->tracking) : ?>
 								<strong><?php echo JText::_('Yes'); ?></strong>
 							<?php else : ?>
 								<em><font color="red"><?php echo JText::_('No'); ?></font></em>
-							<?php endif; ?>	
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -166,4 +166,4 @@ Joomla.submitbutton = function(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="add" />
 	<input type="hidden" name="boxchecked" value="0" />
-</form>	
+</form>

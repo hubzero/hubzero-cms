@@ -33,100 +33,100 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication building blocks
  */
-class PublicationBlock extends JTable 
+class PublicationBlock extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       			= NULL;
-		
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $block				= NULL;
-	
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $label				= NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title				= NULL;
-		
+
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $status     		= NULL;
-	
+
 	/**
-	 * int(1) 
+	 * int(1)
 	 * Minimum number required
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $minimum     		= NULL;
-	
+
 	/**
-	 * int(1) 
+	 * int(1)
 	 * Maximum number allowed
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $maximum    		= NULL;
-	
+
 	/**
 	 * Params
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $params      		= NULL;
-	
+
 	/**
 	 * Ordering
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $ordering     		= NULL;
-	
+
 	/**
 	 * Default manifest
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $manifest      		= NULL;
-		
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_blocks', 'id', $db );
 	}
-	
+
 	/**
 	 * Get record by name
-	 * 
+	 *
 	 * @param      string 		$name
 	 * @return     object or false
-	 */	
-	public function getBlock( $name = '' ) 
+	 */
+	public function getBlock( $name = '' )
 	{
-		if (!$name) 
+		if (!$name)
 		{
 			return false;
 		}
@@ -134,40 +134,40 @@ class PublicationBlock extends JTable
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
-	
+
 	/**
 	 * Get record id by name
-	 * 
+	 *
 	 * @param      string 		$name
 	 * @return     integer
-	 */	
-	public function getBlockId( $name='' ) 
+	 */
+	public function getBlockId( $name='' )
 	{
-		if (!$name) 
+		if (!$name)
 		{
 			return false;
 		}
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE block='" . $name . "' LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get available blocks
-	 * 
+	 *
 	 * @param      string  $select 				Select query
 	 * @return     array
-	 */	
-	public function getBlocks( $select = '*', $where = '', $order = '') 
+	 */
+	public function getBlocks( $select = '*', $where = '', $order = '')
 	{
 		$query  = "SELECT $select FROM $this->_tbl " . $where;
 		$query .= $order ? $order : " ORDER BY id ";
-		
+
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
-		if ($select == 'block') 
+		if ($select == 'block')
 		{
 			$blocks = array();
-			if ($results) 
+			if ($results)
 			{
 				foreach($results as $result)
 				{
@@ -178,27 +178,27 @@ class PublicationBlock extends JTable
 		}
 		return $results;
 	}
-	
+
 	/**
 	 * Load default block manifest
-	 * 
+	 *
 	 * @param      string 	$name 	Block name
 	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function getManifest( $name = NULL ) 
+	 */
+	public function getManifest( $name = NULL )
 	{
-		if ($name === NULL) 
+		if ($name === NULL)
 		{
 			return false;
 		}
-		
+
 		$query = "SELECT manifest FROM $this->_tbl WHERE block='" . $name . "'";
 		$query.= " LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();
-		
+
 		return $result ? json_decode($result) : false;
 
 	}

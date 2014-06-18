@@ -40,7 +40,7 @@ class ResourcesTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get tags on a resource
-	 * 
+	 *
 	 * @param      integer $id        Resource ID
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
@@ -67,15 +67,15 @@ class ResourcesTags extends TagsHandler
 		$where = array();
 		$where[] = "rt.objectid=$id";
 		$where[] = "rt.tbl='$this->_tbl'";
-		if ($admin != 1) 
+		if ($admin != 1)
 		{
 			$where[] = "t.admin=0";
 		}
-		if ($tagger_id != 0) 
+		if ($tagger_id != 0)
 		{
 			$where[] = "rt.taggerid=" . $tagger_id;
 		}
-		if ($strength) 
+		if ($strength)
 		{
 			$where[] = "rt.strength=" . $strength;
 		}
@@ -88,7 +88,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get all tags with a resource association
-	 * 
+	 *
 	 * @param      integer $id   Resource ID
 	 * @param      integer $type Resource type (optional)
 	 * @param      string  $tag  Parameter description (if any) ...
@@ -103,7 +103,7 @@ class ResourcesTags extends TagsHandler
 		$objs = $this->_db->loadObjectList();
 
 		$ids = '';
-		if ($objs) 
+		if ($objs)
 		{
 			$s = array();
 			foreach ($objs as $obj)
@@ -113,32 +113,32 @@ class ResourcesTags extends TagsHandler
 			$ids = implode(',', $s);
 		}
 
-		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids 
+		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
 				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__resources AS r
-				WHERE o.tbl='$this->_tbl' 
-				AND o.tagid=t.id 
-				AND t.admin=0 
-				AND o.objectid=r.id 
-				AND r.published=1 
+				WHERE o.tbl='$this->_tbl'
+				AND o.tagid=t.id
+				AND t.admin=0
+				AND o.objectid=r.id
+				AND r.published=1
 				AND r.standalone=1
-				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now') 
+				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= '$now')
 				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= '$now') ";
-		if ($type) 
+		if ($type)
 		{
 			$sql .= "AND r.type=" . $type . " ";
 		}
 
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
-			if ($xgroups != '') 
+			if ($xgroups != '')
 			{
 				$usersgroups = self::getUsersGroups($xgroups);
-				if (count($usersgroups) > 1) 
+				if (count($usersgroups) > 1)
 				{
 					$groups = implode("','", $usersgroups);
-				} 
-				else 
+				}
+				else
 				{
 					$groups = count($usersgroups) ? $usersgroups[0] : '';
 				}
@@ -148,17 +148,17 @@ class ResourcesTags extends TagsHandler
 					$sql .= " OR r.group_access LIKE '%;" . $group . ";%'";
 				}
 				$sql .= "))) ";
-			} 
-			else 
+			}
+			else
 			{
 				$sql .= "AND (r.access=0 OR r.access=1 OR r.access=3) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$sql .= "AND (r.access=0 OR r.access=3) ";
 		}
-		if ($ids) 
+		if ($ids)
 		{
 			$sql .= "AND o.objectid IN ($ids) ";
 		}
@@ -168,19 +168,19 @@ class ResourcesTags extends TagsHandler
 		$results = $this->_db->loadObjectList();
 
 		$rows = array();
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if (!isset($rows[$result->id])) 
+				if (!isset($rows[$result->id]))
 				{
 					$rows[$result->id] = $result;
 					$rows[$result->id]->ucount++;
 					$rows[$result->id]->rids = array($result->rid);
-				} 
-				else 
+				}
+				else
 				{
-					if (!in_array($result->rid, $rows[$result->id]->rids)) 
+					if (!in_array($result->rid, $rows[$result->id]->rids))
 					{
 						$rows[$result->id]->ucount++;
 						$rows[$result->id]->rids[] = $result->rid;
@@ -193,7 +193,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Push group alias into array for easier searching
-	 * 
+	 *
 	 * @param      array $groups User's gorups
 	 * @return     array
 	 */
@@ -201,11 +201,11 @@ class ResourcesTags extends TagsHandler
 	{
 		$arr = array();
 
-		if (!empty($groups)) 
+		if (!empty($groups))
 		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$arr[] = $group->cn;
 				}
@@ -217,7 +217,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get all resources associated with a tag
-	 * 
+	 *
 	 * @param      string  $tag      Tag to find data for
 	 * @param      integer $id       Resource ID
 	 * @param      integer $type     Resource type
@@ -231,14 +231,14 @@ class ResourcesTags extends TagsHandler
 		$juser = JFactory::getUser();
 		$now  = JFactory::getDate()->toSql();
 
-		if ($tag || $tag2) 
+		if ($tag || $tag2)
 		{
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
-			if ($type == 7) 
+			if ($type == 7)
 			{
 				$query.= "TV.title ";
-			} 
-			else 
+			}
+			else
 			{
 				$query.= "C.title ";
 			}
@@ -252,28 +252,28 @@ class ResourcesTags extends TagsHandler
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			if ($id) 
+			if ($id)
 			{
 				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=" . $id . ")";
 			}
-			if ($type == 7) 
+			if ($type == 7)
 			{
-				if (!empty($filterby)) 
+				if (!empty($filterby))
 				{
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
 				$query .= ", #__tool_version as TV ";
 			}
 			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
-		} 
-		else 
+		}
+		else
 		{
 			$query  = "SELECT C.id,  ";
-			if ($type == 7) 
+			if ($type == 7)
 			{
 				$query .= "TV.title ";
-			} 
-			else 
+			}
+			else
 			{
 				$query .= "C.title ";
 			}
@@ -287,13 +287,13 @@ class ResourcesTags extends TagsHandler
 				break;
 			}
 			$query .= "FROM #__resources AS C ";
-			if ($id) 
+			if ($id)
 			{
 				$query .= "INNER JOIN #__resource_assoc AS RA ON (RA.child_id = C.id AND RA.parent_id=" . $id . ")";
 			}
-			if ($type == 7) 
+			if ($type == 7)
 			{
-				if (!empty($filterby)) 
+				if (!empty($filterby))
 				{
 					$query .= " LEFT JOIN #__resource_taxonomy_audience AS TTA ON C.id=TTA.rid ";
 				}
@@ -302,15 +302,15 @@ class ResourcesTags extends TagsHandler
 		}
 
 		$query .= "WHERE C.published=1 AND C.standalone=1 ";
-		if ($type) 
+		if ($type)
 		{
 			$query .= "AND C.type=" . $type . " ";
 		}
-		if ($type == 7) 
+		if ($type == 7)
 		{
 			$query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
 		}
-		if (!empty($filterby) && $type == 7) 
+		if (!empty($filterby) && $type == 7)
 		{
 			$fquery = " AND ((";
 			for ($i=0, $n=count($filterby); $i < $n; $i++)
@@ -330,17 +330,17 @@ class ResourcesTags extends TagsHandler
 		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= '" . $now . "') ";
 		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= '" . $now . "') AND ";
 
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
-			if ($xgroups != '') 
+			if ($xgroups != '')
 			{
 				$usersgroups = self::getUsersGroups($xgroups);
-				if (count($usersgroups) > 1) 
+				if (count($usersgroups) > 1)
 				{
 					$groups = implode("','", $usersgroups);
-				} 
-				else 
+				}
+				else
 				{
 					$groups = count($usersgroups) ? $usersgroups[0] : '';
 				}
@@ -353,24 +353,24 @@ class ResourcesTags extends TagsHandler
 			} else {
 				$query .= "(C.access=0 OR C.access=1 OR C.access=3) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$query .= "(C.access=0 OR C.access=3) ";
 		}
-		if ($tag || $tag2) 
+		if ($tag || $tag2)
 		{
-			if ($tag && !$tag2) 
+			if ($tag && !$tag2)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} 
-			else if ($tag2 && !$tag) 
+			}
+			else if ($tag2 && !$tag)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} 
-			else if ($tag && $tag2) 
+			}
+			else if ($tag && $tag2)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=2";
@@ -403,7 +403,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Check if a tag is being used
-	 * 
+	 *
 	 * @param      string  $tag   Tag
 	 * @param      integer $id    Resource ID
 	 * @param      string  $alias Resource alias
@@ -411,27 +411,27 @@ class ResourcesTags extends TagsHandler
 	 */
 	public function checkTagUsage($tag, $id=0, $alias='')
 	{
-		if (!$id && !$alias) 
+		if (!$id && !$alias)
 		{
 			return false;
 		}
-		if ($id) 
+		if ($id)
 		{
-			$query = "SELECT COUNT(*) 
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t 
-						WHERE ta.tagid=t.id 
-						AND t.tag='" . $tag . "' 
-						AND ta.tbl='resources' 
+			$query = "SELECT COUNT(*)
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t
+						WHERE ta.tagid=t.id
+						AND t.tag='" . $tag . "'
+						AND ta.tbl='resources'
 						AND ta.objectid=" . $id;
 		}
-		if (!$id && $alias) 
+		if (!$id && $alias)
 		{
-			$query = "SELECT COUNT(*) 
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r 
-						WHERE ta.tagid=t.id 
-						AND t.tag='" . $tag . "' 
-						AND ta.tbl='resources' 
-						AND ta.objectid=r.id 
+			$query = "SELECT COUNT(*)
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r
+						WHERE ta.tagid=t.id
+						AND t.tag='" . $tag . "'
+						AND ta.tbl='resources'
+						AND ta.objectid=r.id
 						AND r.alias='" . $alias . "'";
 		}
 
@@ -441,23 +441,23 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get a singular field, such as ID, for all items with a specific tag
-	 * 
+	 *
 	 * @param      string $tag  Tag to get data for
 	 * @param      string $rtrn Field to return
 	 * @return     array
 	 */
 	public function getTagUsage($tag, $rtrn='id')
 	{
-		if (!$tag) 
+		if (!$tag)
 		{
 			return array();
 		}
 
-		$query = "SELECT r.$rtrn 
-					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r 
-					WHERE ta.tagid=t.id 
-					AND t.tag='".$tag."' 
-					AND ta.tbl='resources' 
+		$query = "SELECT r.$rtrn
+					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__resources AS r
+					WHERE ta.tagid=t.id
+					AND t.tag='".$tag."'
+					AND ta.tbl='resources'
 					AND ta.objectid=r.id";
 
 		$this->_db->setQuery($query);
@@ -466,7 +466,7 @@ class ResourcesTags extends TagsHandler
 
 /**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -483,7 +483,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -497,7 +497,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -509,7 +509,7 @@ class ResourcesTags extends TagsHandler
 
 		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
 
-		if ($tags && count($tags) > 0) 
+		if ($tags && count($tags) > 0)
 		{
 			$tagarray = array();
 			foreach ($tags as $tag)
@@ -517,8 +517,8 @@ class ResourcesTags extends TagsHandler
 				$tagarray[] = $tag->raw_tag;
 			}
 			$tags = implode(', ', $tagarray);
-		} 
-		else 
+		}
+		else
 		{
 			$tags = (is_array($tags)) ? implode('', $tags) : '';
 		}
@@ -527,7 +527,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Turn a string of tags to an array
-	 * 
+	 *
 	 * @param      string $tag Tag string
 	 * @return     mixed
 	 */
@@ -564,7 +564,7 @@ class ResourcesTags extends TagsHandler
 
 	/**
 	 * Build a tag cloud
-	 * 
+	 *
 	 * @param      array   $tags      List of tags
 	 * @param      string  $sort      How to sort tags?
 	 * @param      integer $showsizes Show tag size based on use?
@@ -574,7 +574,7 @@ class ResourcesTags extends TagsHandler
 	{
 		$html = '';
 
-		if ($tags && count($tags) > 0) 
+		if ($tags && count($tags) > 0)
 		{
 			$lst = array();
 			if (is_string($tagstring))
@@ -589,7 +589,7 @@ class ResourcesTags extends TagsHandler
 			$min_font_size = 1;
 			$max_font_size = 1.8;
 
-			if ($showsizes) 
+			if ($showsizes)
 			{
 				$retarr = array();
 				foreach ($tags as $tag)
@@ -603,7 +603,7 @@ class ResourcesTags extends TagsHandler
 
 				// For ever additional tagged object from min to max, we add $step to the font size.
 				$spread = $max_qty - $min_qty;
-				if (0 == $spread) 
+				if (0 == $spread)
 				{ // Divide by zero
 					$spread = 1;
 				}
@@ -641,17 +641,17 @@ class ResourcesTags extends TagsHandler
 				$tag->raw_tag = stripslashes($tag->raw_tag);
 				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
 				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
-				if ($showsizes == 1) 
+				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
 					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
-			if ($sort == 'alpha') 
+			if ($sort == 'alpha')
 			{
 				ksort($tll);
 				$html .= implode('', $tll);

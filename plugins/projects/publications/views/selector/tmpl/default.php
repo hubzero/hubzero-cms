@@ -25,14 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id  
+$route = $this->project->provisioned == 1
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' 
+$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
-	
+
 $title = JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));
 $req   = JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block));
 
@@ -52,12 +52,12 @@ if ($block == 'license')
 {
 	$objL 			= new PublicationLicense( $this->database);
 	$selections 	= $objL->getBlockLicenses( $manifest );
-	
+
 	if (!$selections)
 	{
 		$selections = $objL->getDefaultLicense();
 	}
-	
+
 	$selected 		= $objL->getPubLicense( $this->publication->version_id );
 }
 
@@ -71,7 +71,7 @@ if ($block == 'license')
 				<?php } ?>
 			</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
-	<fieldset >	
+	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -84,11 +84,11 @@ if ($block == 'license')
 		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
-		<input type="hidden" name="active" value="publications" />					
-		<input type="hidden" name="action" value="apply" />	
-		<input type="hidden" name="move" value="continue" />	
+		<input type="hidden" name="active" value="publications" />
+		<input type="hidden" name="action" value="apply" />
+		<input type="hidden" name="move" value="continue" />
 	</fieldset>
-	
+
 	<?php if (!$selections)
 		{
 			echo '<p class="error">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_SELECTIONS') . '</p>';

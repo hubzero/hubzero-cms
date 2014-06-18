@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Students'), 'courses.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -49,7 +49,7 @@ if ($canDo->get('core.delete'))
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -64,11 +64,11 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-30 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter name, username, or ID'); ?>" />
 		</div>
 		<div class="col width-70 fltrt">
-			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label> 
+			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label>
 			<select name="offering" id="filter_offering">
 				<option value="0"><?php echo JText::_('(none)'); ?></option>
 <?php
@@ -91,14 +91,14 @@ function submitbutton(pressbutton)
 			}
 ?>
 				</optgroup>
-<?php 
+<?php
 		}
 	}
 ?>
 			</select>
 
 <?php if ($this->filters['offering']) { ?>
-			<label for="filter_section"><?php echo JText::_('Section'); ?>:</label> 
+			<label for="filter_section"><?php echo JText::_('Section'); ?>:</label>
 			<select name="section" id="filter_section">
 				<option value="0"><?php echo JText::_('(none)'); ?></option>
 		<?php
@@ -128,10 +128,10 @@ function submitbutton(pressbutton)
 				<th colspan="<?php echo (!$this->filters['offering']) ? '7' : '6'; ?>">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					</a>) 
+					</a>)
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					</a>: 
+					</a>:
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>
@@ -164,7 +164,7 @@ $n = count($this->rows);
 foreach ($this->rows as $row)
 {
 	/*$u = JUser::getInstance($row->get('user_id'));
-	if (!is_object($u)) 
+	if (!is_object($u))
 	{
 		continue;
 	}*/

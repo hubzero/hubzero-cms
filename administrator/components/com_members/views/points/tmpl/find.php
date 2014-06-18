@@ -43,7 +43,7 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span>Find User Details</span></legend>
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>
@@ -58,10 +58,10 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 		<p class="info">Enter a user ID to view their point history and balance.</p>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="edit" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

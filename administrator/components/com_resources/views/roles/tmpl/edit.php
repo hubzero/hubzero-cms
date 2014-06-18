@@ -35,7 +35,7 @@ $canDo = ResourcesHelperPermissions::getActions('role');
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Resource Role') . ': ' . $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::spacer();
@@ -44,15 +44,15 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {
@@ -91,10 +91,10 @@ function submitbutton(pressbutton)
 			if ($this->types)
 			{
 				foreach ($this->types as $type)
-				{ 
+				{
 					?>
 					<div class="input-wrap">
-						<input type="checkbox" name="types[]" id="type-<?php echo $type->id; ?>"<?php if (in_array($type->id, $this->row->types)) { echo ' checked="checked"'; } ?> value="<?php echo $type->id; ?>" /> 
+						<input type="checkbox" name="types[]" id="type-<?php echo $type->id; ?>"<?php if (in_array($type->id, $this->row->types)) { echo ' checked="checked"'; } ?> value="<?php echo $type->id; ?>" />
 						<label for="type-<?php echo $type->id; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></label>
 					</div>
 					<?php
@@ -115,9 +115,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->created_by);
-						echo $this->escape($editor->get('name')); 
+						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />
 					</td>
@@ -133,9 +133,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('Modifier'); ?></th>
 					<td>
-						<?php 
+						<?php
 						$modifier = JUser::getInstance($this->row->modified_by);
-						echo $this->escape($modifier->get('name')); 
+						echo $this->escape($modifier->get('name'));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->modified_by); ?>" />
 					</td>

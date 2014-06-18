@@ -39,7 +39,7 @@ function get_conf($db_id)
 	}
 
 	$dv_conf = array_merge($dv_conf, $db_dv_conf);
-	
+
 	return $dv_conf;
 }
 

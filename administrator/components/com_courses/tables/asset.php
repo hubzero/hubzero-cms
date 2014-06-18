@@ -34,97 +34,97 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course assets table class
- * 
+ *
  */
 class CoursesTableAsset extends JTable
 {
 	/**
 	 * ID, primary key for course assets table
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * Assets title
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $title = NULL;
 
 	/**
 	 * mediumtext
-	 * 
+	 *
 	 * @var text
 	 */
 	var $content = NULL;
 
 	/**
 	 * Assets type
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $type = NULL;
 
 	/**
 	 * Assets subtype
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $subtype = NULL;
 
 	/**
 	 * Association url (basically an alternative to [associated_id + scope])
-	 * 
+	 *
 	 * @var string
 	 */
 	var $url = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $course_id = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $graded = NULL;
 
 	/**
 	 * Asset weighting classification for grading purposes
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $grade_weight = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -135,7 +135,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -148,7 +148,7 @@ class CoursesTableAsset extends JTable
 		}
 
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -174,7 +174,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -220,7 +220,7 @@ class CoursesTableAsset extends JTable
 		{
 			$where[] = "caa.scope=" . $this->_db->Quote((string) $filters['asset_scope']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
 		}
@@ -248,9 +248,9 @@ class CoursesTableAsset extends JTable
 		{
 			$where[] = "ca.graded=1";
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(ca.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -264,7 +264,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -283,7 +283,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -316,7 +316,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Find all assets for a given scope/scope_id
-	 * 
+	 *
 	 * @param  string $scope
 	 * @param  int    $scope_id
 	 * @param  array  $filters
@@ -333,7 +333,7 @@ class CoursesTableAsset extends JTable
 
 		$where = array();
 
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "ca.state=" . $this->_db->Quote($filters['state']);
 		}
@@ -360,7 +360,7 @@ class CoursesTableAsset extends JTable
 
 	/**
 	 * Check to see if this asset has any associations connected to it
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function isOrphaned()

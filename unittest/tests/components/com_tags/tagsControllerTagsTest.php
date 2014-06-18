@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the tags component controller
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  */
 

@@ -80,7 +80,7 @@ $this->js()
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
 							<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_START'); ?>
-							<?php 
+							<?php
 								$publish_up = $this->announcement->get('publish_up');
 								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 								{
@@ -88,14 +88,14 @@ $this->js()
 									$publish_up = date("m/d/Y @ g:i a", strtotime($publish_up));
 								}
 							?>
-							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($publish_up); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($publish_up); ?>" />
 							<span class="hint"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
 							<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_END'); ?>
-							<?php 
+							<?php
 								$publish_down = $this->announcement->get('publish_down');
 								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 								{
@@ -103,15 +103,15 @@ $this->js()
 									$publish_down = date("m/d/Y @ g:i a", strtotime($publish_down));
 								}
 							?>
-							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($publish_down); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($publish_down); ?>" />
 							<span class="hint"><?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 				</div>
 			</fieldset>
-			
+
 			<label for="field-email" id="email-label">
-				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->email == 1) { echo 'checked="checked"'; } ?> /> 
+				<input class="option" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->email == 1) { echo 'checked="checked"'; } ?> />
 				<?php if ($this->announcement->sent == 1) : ?>
 					<span class="important"><?php echo JText::_('Announcement already emailed, send again?'); ?></span>
 				<?php else : ?>
@@ -120,11 +120,11 @@ $this->js()
 			</label>
 
 			<label for="field-priority" id="priority-label">
-				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> /> 
+				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?> <a href="#" class="tooltips" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</a>
 			</label>
 			<label for="field-sticky" id="sticky-label">
-				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> /> 
+				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?> <a href="#" class="tooltips" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</a>
 			</label>
 

@@ -40,7 +40,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute!
-	 * 
+	 *
 	 * @return void
 	 */
 	function execute()
@@ -60,50 +60,50 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			case 'files':
 				switch($this->_action)
 				{
-					case 'list': 
+					case 'list':
 					case 'get':
-					case 'insert': 	
-						$this->_manageFiles();         			
+					case 'insert':
+						$this->_manageFiles();
 						break;
-					default:     	
-						$this->_not_found(); 			
+					default:
+						$this->_not_found();
 						break;
 				}
 			break;
-			
+
 			// Project list
 			case 'list':
-				$this->_projectList();         			
+				$this->_projectList();
 			break;
 
-			default:    
-				$this->_not_found();  
+			default:
+				$this->_not_found();
 			break;
 		}
 	}
-	
+
 	//--------------------------
 	// Projects functions
 	//--------------------------
-	
+
 	/**
 	 * List projects user has access to
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _projectList()
 	{
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
-				
+
 		$result = \Hubzero\User\Profile::getInstance($userid);
-		
+
 		// make sure we have a user
 		if ($result === false)	return $this->_not_found('User not found');
-		
+
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		$objP = new Project($this->_database);
-		
+
 		// Set filters
 		$filters = array();
 		$filters['mine']     = 1;
@@ -111,33 +111,33 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$filters['sortby']   = JRequest::getVar('sortby', 'title');
 		$filters['getowner'] = 1;
 		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
-		
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;		
-		
+
+		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+
 		$response 			= new stdClass;
 		$response->projects = array();
-		$response->total 	= $objP->getCount($filters, $admin = false, $userid, 0, $setup_complete);		
+		$response->total 	= $objP->getCount($filters, $admin = false, $userid, 0, $setup_complete);
 		$response->success 	= true;
-		
+
 		if ($response->total)
 		{
 			$projects = $objP->getRecords($filters, $admin = false, $userid, 0, $setup_complete);
-			
+
 			$juri = JURI::getInstance();
 			$jconfig 	= JFactory::getConfig();
 
 			// Get config
-			$livesite = $jconfig->getValue('config.live_site') 
-				? $jconfig->getValue('config.live_site') 
+			$livesite = $jconfig->getValue('config.live_site')
+				? $jconfig->getValue('config.live_site')
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 			$livesite = trim(preg_replace('/\/api/', '', $juri->base()), DS);
-			
+
 			$webdir = JPATH_ROOT . DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 			$weburl = $livesite . DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
-			
+
 			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
 			$ih = new ProjectsImgHandler();
-			
+
 			foreach ($projects as $i => $entry)
 			{
 				$obj 			= new stdClass;
@@ -148,10 +148,10 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 				$obj->author 	= $entry->authorname;
 				$obj->created 	= $entry->created;
 				$obj->userRole 	= $entry->role;
-				
+
 				$path = $webdir . DS . strtolower($entry->alias) . DS . 'images';
 				$url  = $weburl . DS . strtolower($entry->alias) . DS . 'images';
-				
+
 				// Get thumbnail
 				if ($entry->picture)
 				{
@@ -168,17 +168,17 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		$this->setMessage($response);
-		
+
 		return;
 	}
-	
+
 	//--------------------------
 	// Files functions
 	//--------------------------
 
 	/**
 	 * Manage project files
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _manageFiles()
@@ -189,34 +189,34 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		{
 			// Set the error message
 			$this->_errorMessage(
-				401, 
-				JText::_('Unauthorized task.'), 
+				401,
+				JText::_('Unauthorized task.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
 		}
-		
+
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = JDispatcher::getInstance();
-				
+
 		// Plugin params
 		$plugin_params = array(
-			$this->project_id, 
-			$this->_action, 
+			$this->project_id,
+			$this->_action,
 			$this->user_id
 		);
-						
+
 		// Perform action
 		$output = $dispatcher->trigger( 'onProjectExternal', $plugin_params);
-		
+
 		$response 			= new stdClass;
 		$response->task 	= 'files';
 		$response->action 	= $this->_action;
 		$response->project 	= $this->project_id;
-		
+
 		$output = empty($output) ? NULL : $output[0];
-		
+
 		if (!$output || (isset($output['error']) && $output['error'] == true))
 		{
 			$response->error 	= (isset($output['error']) && $output['error'] == true) ? $output['message'] : 'Failed to perform action';
@@ -227,11 +227,11 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			$response->success 	= true;
 			$response->error 	= NULL;
 			$response->items 	= isset($output['output']) ? $output['output'] : NULL;
-			$response->message 	= isset($output['message']) ? $output['message'] : NULL;			
+			$response->message 	= isset($output['message']) ? $output['message'] : NULL;
 		}
-				
+
 		$this->setMessage($response);
-		
+
 		return;
 	}
 
@@ -241,37 +241,37 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Default method - not found
-	 * 
+	 *
 	 * @return 404, method not found error
 	 */
 	private function _not_found($text = 'Invalid task')
 	{
 		// Set the error message
 		$this->_errorMessage(
-			404, 
-			$text, 
+			404,
+			$text,
 			JRequest::getWord('format', 'json')
 		);
 		return;
 	}
-	
+
 	/**
 	 * Helper function to check whether or not someone is using oauth and authorized
-	 * 
+	 *
 	 * @return bool - true if in group, false otherwise
 	 */
 	private function _authorize()
 	{
 		// Get the user id
 		$this->user_id = JFactory::getApplication()->getAuthn('user_id');
-		
+
 		// Get the project id
 		$this->project_id     = JRequest::getVar('project_id', 0);
-		
+
 		$authorized           = array();
 		$authorized['view']   = false;
 		$authorized['manage'] = false;
-		
+
 		// Not logged in and/or not using OAuth OR no project ID
 		if (!is_numeric($this->user_id) || !$this->project_id)
 		{
@@ -280,7 +280,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		$objP = new Project($this->_database);
-		
+
 		$this->project 	= $objP->getProject($this->project_id, $this->user_id);
 
 		if ($this->project)
@@ -291,7 +291,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 
 		return $authorized;
 	}
-	
+
 	/**
 	 * Method to report errors. creates error node for response body as well
 	 *
@@ -307,11 +307,11 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$object = new stdClass();
 		$object->error->code = $code;
 		$object->error->message = $message;
-		
+
 		//set http status code and reason
 		$response = $this->getResponse();
 		$response->setErrorMessage( $object->error->code, $object->error->message );
-		
+
 		//add error to message body
 		$this->setMessageType( $format );
 		$this->setMessage( $object );

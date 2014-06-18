@@ -24,47 +24,47 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	$data  		 = $this->data;
 	$ih    		 = $this->ih;
 	$allowRename = $this->data->allowRename;
-	
+
 	// Get settings
-	$suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix 
+	$suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix
 			? $this->config->params->thumbSuffix : '-tn';
-			
+
 	$format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
 			? $this->config->params->thumbFormat : 'png';
-			
+
 	$width = isset($this->config->params->thumbWidth) && $this->config->params->thumbWidth
 			? $this->config->params->thumbWidth : 100;
-			
+
 	$height = isset($this->config->params->thumbHeight) && $this->config->params->thumbHeight
 			? $this->config->params->thumbHeight : 60;
-	
+
 	$dirHierarchy = isset($this->params->dirHierarchy) ? $this->params->dirHierarchy : 1;
-	
-	if ($dirHierarchy)	
+
+	if ($dirHierarchy)
 	{
-		$file = $this->data->path;				
+		$file = $this->data->path;
 	}
 	else
 	{
 		$file 	= ProjectsHtml::fixFileName(basename($data->path), '-' . $data->id);
 	}
-	
+
 	$filePath  = $data->pubPath . DS . $file;
 	$thumbName = $ih->createThumbName($file, $suffix, $format);
 	$thumbPath = $data->pubPath . DS . $thumbName;
-	
+
 	// No file found
 	if (!is_file($filePath))
 	{
 		return;
 	}
-	
+
 	$md5 = hash_file('sha256', $filePath);
-	
+
 	// Create/update thumb if doesn't exist or file changed
 	if (!is_file($thumbPath) || $md5 != $data->md5)
 	{
@@ -74,12 +74,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$ih->set('path', $data->pubPath . DS);
 		$ih->set('maxWidth', $width);
 		$ih->set('maxHeight', $height);
-		if (!$ih->process()) 
+		if (!$ih->process())
 		{
 			return false;
 		}
 	}
-	
+
 	// Image src
 	if (is_file($thumbPath))
 	{
@@ -89,15 +89,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		$thumbSrc = $this->configs->defaultThumb;
 	}
-	
+
 	$filePath = str_replace(JPATH_ROOT, '', $filePath);
-	
+
 	// Is this image used for publication thumbail?
 	$class = $data->pubThumb == 1 ? ' starred' : '';
 	$over  = $data->pubThumb == 1 ? ' title="' . JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_DEFAULT') . '"' : '';
-	
+
 	$viewer = $this->data->viewer;
-	
+
 	if ($viewer == 'freeze')
 	{
 		$title 	 = $data->title;
@@ -107,7 +107,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	else
 	{
 		$title 	 = $data->title;
-		$details = $data->path; 
+		$details = $data->path;
 		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
 		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
 	}
@@ -120,7 +120,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php if (!$data->pubThumb) { ?>
 				<a href="<?php echo $data->editUrl . '/?action=saveitem&aid=' . $data->id . '&p=' . $data->props . '&makedefault=1'; ?>" class="item-default" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT'); ?>">&nbsp;</a>
 				<?php } ?>
-				<a href="<?php echo $data->editUrl . '/?action=edititem&aid=' . $data->id . '&p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>  
+				<a href="<?php echo $data->editUrl . '/?action=edititem&aid=' . $data->id . '&p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
 				<a href="<?php echo $data->editUrl . '/?action=deleteitem&aid=' . $data->id . '&p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 			<?php } ?>
@@ -128,5 +128,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<span class="item-image<?php echo $class; ?>" <?php echo $over; ?>><a class="more-content" href="<?php echo $filePath; ?>"><img alt="" src="<?php echo $thumbSrc; ?>" /></a></span>
 		<span class="item-title">
 			<?php echo $title; ?></span>
-		<span class="item-details"><?php echo $details; ?></span>		
+		<span class="item-details"><?php echo $details; ?></span>
 	</li>

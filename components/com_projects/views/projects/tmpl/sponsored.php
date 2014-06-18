@@ -43,9 +43,9 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 <section class="main section" id="reviewer-list">
 	<div class="status-msg">
-	<?php 
+	<?php
 		// Display error or success message
-		if ($this->getError()) { 
+		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
 		else if ($this->msg) {
@@ -68,14 +68,14 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	$totalnote .= ' '.JText::_('COM_PROJECTS_NOTICE_PROJECTS');
 
 	$sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
-	
+
 	// Loop through results
 	$html .= '<div class="list-editing"><p>'.JText::_('COM_PROJECTS_SHOWING');
 	if ($this->total <= count($this->rows)) {
 		$html .= ' '.JText::_('COM_PROJECTS_ALL').' <span class="prominent">'.$this->total.'</span> ';
 	}
 	else {
-		$html .= ' <span class="prominent">'.count($this->rows).'</span> '.JText::_('COM_PROJECTS_OUT_OF').' '.$this->total;	
+		$html .= ' <span class="prominent">'.count($this->rows).'</span> '.JText::_('COM_PROJECTS_OUT_OF').' '.$this->total;
 	}
 	$html .= $this->filters['filterby'] == 'pending' ? strtolower(JText::_('COM_PROJECTS_PENDING')) : '';
 	$html .= ' '.strtolower(JText::_('COM_PROJECTS_PROJECTS'));
@@ -97,26 +97,26 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	$html .= '<input type="hidden" name="sortby" value="' . $this->filters['sortby'] . '" />';
 	$html .= '<input type="hidden" name="sortdir" value="' . $this->filters['sortdir'] . '" />';
 	$html .= '</p></div>';
-	
-	if (count($this->rows) > 0) {		
+
+	if (count($this->rows) > 0) {
 		$html .= t.t.'<table class="listing" id="projectlist">'.n;
 		$html .= t.t.t.'<thead>'.n;
 		$html .= t.t.t.'<tr>'.n;
 		$html .='<th class="th_image" colspan="2"></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if ($this->filters['sortby'] == 'title') { 
-			$html .= ' class="activesort"'; 
-		} 
-		$html .= '><a href="'. JRoute::_('index.php?option=' . $this->option . a 
-		. 'task=browse') . '/?sortby=title' . a . 'sortdir=' . $sortbyDir . a 
+		if ($this->filters['sortby'] == 'title') {
+			$html .= ' class="activesort"';
+		}
+		$html .= '><a href="'. JRoute::_('index.php?option=' . $this->option . a
+		. 'task=browse') . '/?sortby=title' . a . 'sortdir=' . $sortbyDir . a
 		. 'reviewer=' . $this->reviewer . a. 'filterby=' . $this->filters['filterby'] . '" class="re_sort">';
 		$html .= JText::_('COM_PROJECTS_TITLE').'</a></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if ($this->filters['sortby'] == 'created') { 
-			$html .= ' class="activesort"'; 
-		} 
-		$html .= '><a href="'. JRoute::_('index.php?option=' . $this->option . a 
-		. 'task=browse').'/?sortby=created' . a . 'sortdir='.$sortbyDir. a 
+		if ($this->filters['sortby'] == 'created') {
+			$html .= ' class="activesort"';
+		}
+		$html .= '><a href="'. JRoute::_('index.php?option=' . $this->option . a
+		. 'task=browse').'/?sortby=created' . a . 'sortdir='.$sortbyDir. a
 		. 'reviewer=' . $this->reviewer . a. 'filterby=' . $this->filters['filterby'] . '" class="re_sort">';
 		$html .= JText::_('COM_PROJECTS_CREATED').'</a></th>'.n;
 
@@ -127,15 +127,15 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= t.t.t.'</tr>'.n;
 		$html .= t.t.t.'</thead>'.n;
 		$html .= t.t.t.'<tbody>'.n;
-		foreach ($this->rows as $row) {	
+		foreach ($this->rows as $row) {
 			if ($row->owned_by_group && !$row->groupcn) {
 				continue; // owner group has been deleted
 			}
-			
+
 			// Get project params
 			$params = new JParameter( $row->params );
-				
-			$goto  = 'alias=' . $row->alias;				
+
+			$goto  = 'alias=' . $row->alias;
 			$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_privacy">';
@@ -146,7 +146,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= t.t.t.t.'<td class="th_image">';
 			$html .='<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"><img src="'.$thumb.'" alt="'.htmlentities(ProjectsHtml::cleanText($row->title)).'" /></a></td>'.n;
 			$html .= t.t.t.t.'<td class="th_title"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"  title="';
-			$html .= $row->about ? htmlentities(ProjectsHtml::cleanText($row->about)) 
+			$html .= $row->about ? htmlentities(ProjectsHtml::cleanText($row->about))
 			: htmlentities(ProjectsHtml::cleanText($row->title));
 			$html .='">'.ProjectsHtml::cleanText($row->title).'</a><span class="block mini faded">'.$row->alias.'</span></td>'.n;
 			$html .= '<td class="mini faded">';
@@ -157,7 +157,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			if ($profile)
 			{
 				$html .= '<span class="block">'. $profile->get('email').'</span>';
-				if ($profile->get('phone'))	
+				if ($profile->get('phone'))
 				{
 					$html .= '<span class="block"> Tel.'. $profile->get('phone').'</span>';
 				}
@@ -166,40 +166,40 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= t.t.t.t.'<td class="mini">';
 			if ($params->get('grant_title'))
 			{
-				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_TITLE') 
-				. ':</span> ' . $params->get('grant_title') . '</span>';	
+				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_TITLE')
+				. ':</span> ' . $params->get('grant_title') . '</span>';
 			}
 			if ($params->get('grant_PI'))
 			{
-				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_PI') 
-				. ':</span> ' . $params->get('grant_PI') . '</span>';	
+				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_PI')
+				. ':</span> ' . $params->get('grant_PI') . '</span>';
 			}
 			if ($params->get('grant_agency'))
 			{
-				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_AGENCY') 
-				. ':</span> ' . $params->get('grant_agency') . '</span>';	
+				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_AGENCY')
+				. ':</span> ' . $params->get('grant_agency') . '</span>';
 			}
 			if ($params->get('grant_budget'))
 			{
-				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_BUDGET') 
-				. ':</span> ' . $params->get('grant_budget') . '</span>';	
+				$html .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_BUDGET')
+				. ':</span> ' . $params->get('grant_budget') . '</span>';
 			}
 
-			$html .= '</td>'.n;	
+			$html .= '</td>'.n;
 			$html .= t.t.t.t.'<td class="faded mini">';
-			if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0) 
+			if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0)
 			{
-				$html .= '<span class="italic pending">' 
-				. JText::_('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';	
+				$html .= '<span class="italic pending">'
+				. JText::_('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
 			}
-			else if ($params->get('grant_approval') || $params->get('grant_status') == 1 ) 
+			else if ($params->get('grant_approval') || $params->get('grant_status') == 1 )
 			{
-				$html .= '<span class="active green">' 
-				. JText::_('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';	
+				$html .= '<span class="active green">'
+				. JText::_('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
 			}
 			else if ($params->get('grant_status') == '2')
 			{
-				$html .= '<span class="italic dark">' 
+				$html .= '<span class="italic dark">'
 				. JText::_('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
 			}
 			$comment_count = 0;
@@ -211,15 +211,15 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 			$html .= '</td>'.n;
 			$html .= t.t.t.t.'<td class="faded actions">';
-			
+
 			if ($this->filters['filterby'] == 'pending') {
 				//$html .= ' <span class="skipentry delit"><a href="' . JRoute::_('index.php?option=' . $this->option . a . 'task=process' . a . 'id=' . $row->id ) . '?reviewer=' . $this->reviewer . a . 'action=skip' . a . 'filterby=' . $this->filters['filterby'] . '" class="showinbox">&nbsp;</a></span>';
 			}
-			
+
 		//	if (!$params->get('grant_approval')) {
 				$html .= '<span class="manage mini"><a href="' . JRoute::_('index.php?option=' . $this->option . a . 'task=process' . a . 'id=' . $row->id ) . '?reviewer=' . $this->reviewer . a .  'filterby=' . $this->filters['filterby'] . '" class="showinbox">' . JText::_('COM_PROJECTS_MANAGE') . '</a></span>';
 		//	}
-			
+
 			$html .= '</td>'.n;
 			$html .= t.t.t.'</tr>'.n;
 		}
@@ -232,22 +232,22 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= JText::_('COM_PROJECTS_NO_PROJECTS_FOUND').' '.JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=browse').'?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS');
 		}
 		else {
-			$html .= $this->filters['filterby'] == 'pending' 
+			$html .= $this->filters['filterby'] == 'pending'
 			? JText::_('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_PENDING')
 			: JText::_('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_ALL');
 		}
 		$html .= '</p>'.n;
 	}
-	
+
 	// Insert page navigation
-	if (count($this->rows) > 0) {	
+	if (count($this->rows) > 0) {
 		$pagenavhtml = $this->pageNav->getListFooter();
 		$pagenavhtml = str_replace('projects/?','projects/browse/?',$pagenavhtml);
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.$pagenavhtml;
 		$html .= t.t.'</fieldset>'.n;
-	}	
-	$html .= t.'</form>'.n;	
+	}
+	$html .= t.'</form>'.n;
 	echo $html;
 ?>
 	<div class="clear"></div>

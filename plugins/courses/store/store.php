@@ -47,7 +47,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onOfferingEdit()
@@ -61,7 +61,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -95,7 +95,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -117,11 +117,11 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		{
 			$warehouse = new StorefrontModelWarehouse();
 			// Get course by pID returned with $course->add() above
-			try 
+			try
 			{
 				$product = $warehouse->getCourse($offering->params('store_product_id', 0));
 			}
-			catch (Exception $e) 
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -137,7 +137,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after saving a course
-	 * 
+	 *
 	 * @param      object  $model CoursesModelCourse
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -182,12 +182,12 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				{
 					$product->setActiveStatus(1);
 				}
-				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...) 
+				// Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...)
 				$product->setTimeToLive($duration);
 				// Course alias id
 				$product->setCourseId($course->get('alias'));
 				$product->setOfferingId($model->get('alias'));
-				try 
+				try
 				{
 					// Returns object with values, pId is the new product ID to link to
 					$info = $product->add();
@@ -197,7 +197,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 					$model->set('params', $params->toString());
 					$model->store();
 				}
-				catch (Exception $e) 
+				catch (Exception $e)
 				{
 					$this->setError('ERROR: ' . $e->getMessage());
 				}
@@ -205,7 +205,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$warehouse = new StorefrontModelWarehouse();
-				try 
+				try
 				{
 					// Get course by pID returned with $course->add() above
 					$product = $warehouse->getCourse($params->get('store_product_id', 0));
@@ -223,7 +223,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 					}
 					$product->update();
 				}
-				catch (Exception $e) 
+				catch (Exception $e)
 				{
 					$this->setError('ERROR: ' . $e->getMessage());
 				}
@@ -233,7 +233,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting a course
-	 * 
+	 *
 	 * @param      object  $model CoursesModelCourse
 	 * @return     void
 	 */
@@ -261,7 +261,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after saving an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelOffering
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -276,7 +276,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelOffering
 	 * @return     void
 	 */
@@ -290,7 +290,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after saving an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -305,7 +305,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @return     void
 	 */
@@ -319,7 +319,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -334,18 +334,18 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		{
 			include_once(JPATH_ROOT . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupon.php');
 
-			try 
+			try
 			{
 				// Constructor take the coupon code
 				$coupon = new StorefrontModelCoupon($model->get('code'));
 				// Couponn description (shows up in the cart)
 				$coupon->setDescription(JRequest::getVar('description', 'Test coupon, 10% off product with ID 111'));
-				// Expiration date 
+				// Expiration date
 				$coupon->setExpiration($model->get('created'));
 				// Number of times coupon can be used (unlimited by default)
 				$coupon->setUseLimit(1);
 
-				// Product the coupon will be applied to: 
+				// Product the coupon will be applied to:
 				// first parameter: product ID
 				// second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
 				//$section = new CorusesModelSection($model->get('section_id'));
@@ -362,17 +362,17 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 				// Add coupon
 				$coupon->add();
 			}
-			catch (Exception $e) 
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
 			return;
 		}
 	}
-	
+
 	/**
 	 * Actions to perform after deleting an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -385,11 +385,11 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 		}
 
 		$warehouse = new StorefrontModelWarehouse();
-		try 
+		try
 		{
 			$warehouse->deleteCoupon($model->get('code'));
 		}
-		catch (Exception $e) 
+		catch (Exception $e)
 		{
 			echo 'ERROR: ' . $e->getMessage();
 		}

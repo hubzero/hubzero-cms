@@ -38,35 +38,35 @@ class CitationsSponsor extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = null;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sponsor = null;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $link = null;
-	
+
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $image = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,7 +77,7 @@ class CitationsSponsor extends JTable
 
 	/**
 	 * Load sponsor(s) in an associative array
-	 * 
+	 *
 	 * @param      integer $id Sponsor ID
 	 * @return     array
 	 */
@@ -92,7 +92,7 @@ class CitationsSponsor extends JTable
 
 	/**
 	 * Get all the sponsor IDs associated with a citation
-	 * 
+	 *
 	 * @param      integer $citeid Citation ID
 	 * @return     array
 	 */
@@ -107,14 +107,14 @@ class CitationsSponsor extends JTable
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResultArray();
 	}
-	
+
 	public function getSponsorsForCitationWithId( $citeid )
 	{
 		if (!$citeid)
 		{
 			return;
 		}
-		
+
 		$sql = "SELECT s.id, s.sponsor, s.link, s.image
 				FROM #__citations_sponsors AS s, #__citations_sponsors_assoc AS sa
 				WHERE sa.cid={$citeid}
@@ -125,7 +125,7 @@ class CitationsSponsor extends JTable
 
 	/**
 	 * Add associations to a citation for a list of sponsors
-	 * 
+	 *
 	 * @param      integer $citeid   Citation ID
 	 * @param      array   $sponsors List of sponsor IDs
 	 * @return     array

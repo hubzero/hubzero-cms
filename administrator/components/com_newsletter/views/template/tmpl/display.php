@@ -76,7 +76,7 @@ JToolBarHelper::preferences($this->option, '550');
 			<?php else : ?>
 				<tr>
 					<td colspan="2">
-						<?php echo JText::_('Currently there are no Newsletter Templates.'); ?> 
+						<?php echo JText::_('Currently there are no Newsletter Templates.'); ?>
 						<a onclick="javascript:submitbutton('add')" href="#"><?php echo JText::_('Click here to create a new one!'); ?></a>
 					</td>
 				</tr>
@@ -87,4 +87,4 @@ JToolBarHelper::preferences($this->option, '550');
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="add" />
 	<input type="hidden" name="boxchecked" value="0" />
-</form>	
+</form>

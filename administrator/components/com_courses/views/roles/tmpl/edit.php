@@ -35,7 +35,7 @@ $canDo = CoursesHelper::getActions();
 $text = ($this->task == 'edit' ? JText::_('Edit Role') : JText::_('New Role'));
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . $text, 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -43,15 +43,15 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {

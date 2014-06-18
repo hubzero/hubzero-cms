@@ -35,64 +35,64 @@ class NewsletterSecondaryStory extends JTable
 {
 	/**
 	 * Secondary Story Id
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 		= NULL;
-	
+
 	/**
 	 * Secondary Story Newsletter ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $nid	  	= NULL;
-	
+
 	/**
 	 * Secondary Story Title
-	 * 
+	 *
 	 * @var varchar(150)
 	 */
 	var $title 		= NULL;
-	
+
 	/**
 	 * Secondary Story Story
-	 * 
+	 *
 	 * @var text
 	 */
 	var $story	 	= NULL;
-	
+
 	/**
 	 * Secondary Story Read More Title
-	 * 
+	 *
 	 * @var varchar(100)
 	 */
 	var $readmore_title 	= NULL;
-	
+
 	/**
 	 * Secondary Story Read More Link
-	 * 
+	 *
 	 * @var varchar(200)
 	 */
 	var $readmore_link 		= NULL;
-	
+
 	/**
 	 * Primary Story Order
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $order		= NULL;
-	
+
 	/**
 	 * Secondary Story Deleted?
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $deleted	= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Primary Story Constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
@@ -100,32 +100,32 @@ class NewsletterSecondaryStory extends JTable
 	{
 		parent::__construct( '#__newsletter_secondary_story', 'id', $db );
 	}
-	
-	
+
+
 	/**
 	 * Get Secondary Stories
-	 * 
+	 *
 	 * @param 	$newsletterId		Newsletter Id
 	 * @return 	array
 	 */
 	public function getStories( $newsletterId )
 	{
 		$sql = "SELECT * FROM {$this->_tbl} WHERE deleted=0";
-		
+
 		if ($newsletterId)
 		{
 			$sql .= " AND nid=". $this->_db->quote( $newsletterId );
 		}
-		
+
 		$sql .= " ORDER BY `order`";
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get Highest Story Order
-	 * 
+	 *
 	 * @param 	$newsletterId		Newsletter Id
 	 * @return 	order
 	 */

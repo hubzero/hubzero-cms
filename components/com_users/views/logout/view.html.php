@@ -24,8 +24,8 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * This file incorporates work covered by the following copyright and  
- * permission notice:  
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
  *
  * @package   hubzero-cms-joomla
  * @file      components/com_user/views/logout/view.html.php
@@ -42,17 +42,17 @@ jimport( 'joomla.application.component.view');
 /**
  * User component logout view class
  *
- * @package		Joomla 
+ * @package		Joomla
  * @subpackage	Users
- * @since	1.0       
+ * @since	1.0
  */
 class UsersViewLogout extends JViewLegacy
 {
 	/**
 	 * Short description for 'display'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $tpl Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -129,9 +129,9 @@ class UsersViewLogout extends JViewLegacy
 
 	/**
 	 * Short description for 'attach'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function attach() {}

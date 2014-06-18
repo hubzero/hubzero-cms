@@ -98,7 +98,7 @@ class SystemHelperScript extends JObject
 	/**
 	 * Generic run method
 	 *
-	 * Can be overloaded/supplemented by the child class 
+	 * Can be overloaded/supplemented by the child class
 	 *
 	 * @return	void
 	 */

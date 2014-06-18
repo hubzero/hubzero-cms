@@ -39,7 +39,7 @@ class Config extends Object
 {
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_db = NULL;
@@ -47,7 +47,7 @@ class Config extends Object
 	/**
 	 * Constructor
 	 * Loads points configuration
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

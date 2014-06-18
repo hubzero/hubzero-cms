@@ -35,7 +35,7 @@ JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUP
 JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -49,14 +49,14 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter-state"><?php echo JText::_('COM_SUPPORT_SHOW'); ?>:</label> 
+		<label for="filter-state"><?php echo JText::_('COM_SUPPORT_SHOW'); ?>:</label>
 		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">
 			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_OUTSTANDING'); ?></option>
 			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_RELEASED'); ?></option>
 			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_DELETED'); ?></option>
 		</select>
 
-		<label for="filter-sortby"><?php echo JText::_('COM_SUPPORT_SORT_BY'); ?>:</label> 
+		<label for="filter-sortby"><?php echo JText::_('COM_SUPPORT_SORT_BY'); ?>:</label>
 		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
 			<option value="a.category"<?php if ($this->filters['sortby'] == 'a.category') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_SORT_CATEGORY'); ?></option>
 			<option value="a.created DESC"<?php if ($this->filters['sortby'] == 'a.created DESC') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_SORT_MOST_RECENT'); ?></option>

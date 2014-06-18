@@ -48,7 +48,7 @@ if (substr($base, -13) == 'administrator')
 else
 {
 	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id=' 
+	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id='
 				. $this->row->publication_id . '&v=' . $this->row->version_number);
 }
 
@@ -65,7 +65,7 @@ $subtitle  = $this->subject;
 $comment = $this->message;
 
 // Parse admin comment
-if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 {
 	$comment = str_replace("<br />", '', $comment);
 	$comment = $this->escape($comment);
@@ -78,7 +78,7 @@ if ($comment)
 {
 	$comment = '<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">' . $comment . '</p>';
 }
-		
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get publication thumbnail
@@ -288,7 +288,7 @@ if ($showThumb)
 														</div>
 													</td>
 													<?php } ?>
-													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">														
+													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
 														<?php echo '#' . $this->row->publication_id; ?>
 													</td>
 													<td width="100%" style="padding: 8px;">

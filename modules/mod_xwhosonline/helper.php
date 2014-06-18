@@ -39,7 +39,7 @@ class modXWhosonline extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -53,7 +53,7 @@ class modXWhosonline extends \Hubzero\Module\Module
 		$juser = JFactory::getUser();
 		$this->admin = $juser->authorize('mod_xwhosonline', 'manage');
 
-		if ($this->online) 
+		if ($this->online)
 		{
 			$query1 = "SELECT COUNT(DISTINCT ip) AS guest_online FROM #__session WHERE guest=1 AND (usertype is NULL OR usertype='')";
 			$database->setQuery($query1);
@@ -62,22 +62,22 @@ class modXWhosonline extends \Hubzero\Module\Module
 			$query2 = "SELECT COUNT(DISTINCT username) AS user_online FROM #__session WHERE guest=0 AND usertype <> 'administrator' AND usertype <> 'superadministrator'";
 			$database->setQuery($query2);
 			$this->user_array = $database->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			$this->guest_array = null;
 			$this->user_array = null;
 		}
 
-		if ($this->users) 
+		if ($this->users)
 		{
 			$query = "SELECT DISTINCT a.username"
 					. "\n FROM #__session AS a"
 					. "\n WHERE (a.guest=0)";
 			$database->setQuery($query);
 			$this->rows = $database->loadObjectList();
-		} 
-		else 
+		}
+		else
 		{
 			$this->rows = null;
 		}

@@ -39,7 +39,7 @@ foreach ($this->fields as $field)
 	}
 }
 
-// make sure we have at least one 
+// make sure we have at least one
 if ($count < 1 || $this->admin)
 {
 	return '';
@@ -54,7 +54,7 @@ if ($count < 1 || $this->admin)
 				{
 					continue;
 				}
-				
+
 				if (!$field->getAttribute('member_dashboard', 0))
 				{
 					continue;

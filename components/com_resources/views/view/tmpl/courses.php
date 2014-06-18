@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -52,7 +52,7 @@ if ($mode != 'preview')
 
 $thumb = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id."_th.gif";
 $full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->id.".gif";
-if (file_exists(JPATH_ROOT . $thumb)) 
+if (file_exists(JPATH_ROOT . $thumb))
 {
 	$html .= '</br>';
 	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="'.$full.'" rel="lightbox">';
@@ -89,7 +89,7 @@ $juser = JFactory::getUser();
 			<div class="col span4 omega launcharea">
 				<?php
 					// Private/Public resource access check
-					if (!$this->model->access('view-all')) 
+					if (!$this->model->access('view-all'))
 					{
 						$ghtml = array();
 						foreach ($this->model->resource->getGroups() as $allowedgroup)
@@ -101,12 +101,12 @@ $juser = JFactory::getUser();
 					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 				</p>
 				<?php
-				} 
-				else 
+				}
+				else
 				{
 					$ccount = count($this->model->children('standalone'));
 
-					if ($ccount > 0) 
+					if ($ccount > 0)
 					{
 						echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
 					}
@@ -116,14 +116,14 @@ $juser = JFactory::getUser();
 
 					// Display some supporting documents
 					$children = $this->model->children('!standalone');
-							
+
 					// Sort out supporting docs
 					$html .= $children && count($children) > 1
-						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children ) 
+						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children )
 						   : '';
-					
+
 					echo $html;
-					
+
 					$live_site = rtrim(JURI::base(),'/');
 					?>
 					<p>
@@ -141,7 +141,7 @@ $juser = JFactory::getUser();
 	<aside class="aside rankarea">
 		<?php
 		// Show metadata
-		if ($this->model->params->get('show_metadata', 1)) 
+		if ($this->model->params->get('show_metadata', 1))
 		{
 			$this->view('_metadata')
 			     ->set('option', $this->option)
@@ -167,11 +167,11 @@ $juser = JFactory::getUser();
 
 			// Show related content
 			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
-			if (count($out) > 0) 
+			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
 				{
-					if (isset($ou['html'])) 
+					if (isset($ou['html']))
 					{
 						echo $ou['html'];
 					}
@@ -179,7 +179,7 @@ $juser = JFactory::getUser();
 			}
 
 			// Show what's popular
-			if ($this->tab == 'about') 
+			if ($this->tab == 'about')
 			{
 				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}
@@ -189,11 +189,11 @@ $juser = JFactory::getUser();
 
 	<?php
 	// Show course listings under 'about' tab
-	if ($this->tab == 'about') 
+	if ($this->tab == 'about')
 	{
 		// Course children
 		$schildren = $this->model->children('standalone');
-		if ($schildren) 
+		if ($schildren)
 		{
 			$o = 'even';
 	?>
@@ -251,7 +251,7 @@ $juser = JFactory::getUser();
 						}
 					}
 					$html .= '</td>'."\n";
-					if ($this->helper->children && count($this->helper->children) > 0) 
+					if ($this->helper->children && count($this->helper->children) > 0)
 					{
 						$videoi   		= '';
 						$breeze    		= '';
@@ -294,7 +294,7 @@ $juser = JFactory::getUser();
 										$linkAction = $grandchildParams->get( 'link_action', 0 );
 										$width      = $grandchildAttribs->get('width', 640) + 20;
 										$height     = $grandchildAttribs->get('height', 360) + 60;
-										
+
 										if ($linkAction == 1)
 										{
 											$supp .= '<a rel="external" href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
@@ -328,7 +328,7 @@ $juser = JFactory::getUser();
 					}
 					$html .= "\t\t".'</tr>'."\n";
 					if ($child->standalone == 1) {
-						if ($child->type != 31 && $child->introtext) { 
+						if ($child->type != 31 && $child->introtext) {
 							$html .= "\t\t".'<tr class="'.$o.'">'."\n";
 							$html .= "\t\t\t".'<td colspan="6">';
 							$html .= \Hubzero\Utility\String::truncate(stripslashes($child->introtext),200) . '<br /><br />';
@@ -341,7 +341,7 @@ $juser = JFactory::getUser();
 				?>
 				</tbody>
 			</table>
-			<?php 
+			<?php
 			}
 		}
 		?>

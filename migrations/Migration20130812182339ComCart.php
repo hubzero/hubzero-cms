@@ -26,7 +26,7 @@ class Migration20130812182339ComCart extends Base
 		  `selections` text,
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -42,11 +42,11 @@ class Migration20130812182339ComCart extends Base
 		  `crtiAvailable` tinyint(1) DEFAULT '1',
 		  PRIMARY KEY (`crtId`,`sId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_carts` */		
+
+		/*Table structure for table `#__cart_carts` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_carts` (
 		  `crtId` int(16) NOT NULL AUTO_INCREMENT,
 		  `crtCreated` datetime DEFAULT NULL,
@@ -55,22 +55,22 @@ class Migration20130812182339ComCart extends Base
 		  PRIMARY KEY (`crtId`),
 		  UNIQUE KEY `uidNumber` (`uidNumber`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_coupons` */		
+
+		/*Table structure for table `#__cart_coupons` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_coupons` (
 		  `crtId` int(16) NOT NULL,
 		  `cnId` int(16) NOT NULL,
 		  `crtCnAdded` datetime DEFAULT NULL,
 		  `crtCnStatus` char(15) DEFAULT NULL
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_memberships` */		
+
+		/*Table structure for table `#__cart_memberships` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_memberships` (
 		  `crtmId` int(16) NOT NULL AUTO_INCREMENT,
 		  `pId` int(16) DEFAULT NULL,
@@ -79,11 +79,11 @@ class Migration20130812182339ComCart extends Base
 		  PRIMARY KEY (`crtmId`),
 		  UNIQUE KEY `pId` (`pId`,`crtId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_saved_addresses` */		
+
+		/*Table structure for table `#__cart_saved_addresses` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_saved_addresses` (
 		  `saId` int(16) NOT NULL AUTO_INCREMENT,
 		  `uidNumber` int(16) NOT NULL,
@@ -96,11 +96,11 @@ class Migration20130812182339ComCart extends Base
 		  PRIMARY KEY (`saId`),
 		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_transaction_info` */		
+
+		/*Table structure for table `#__cart_transaction_info` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_info` (
 		  `tId` int(16) NOT NULL,
 		  `tiShippingToFirst` char(100) DEFAULT NULL,
@@ -121,11 +121,11 @@ class Migration20130812182339ComCart extends Base
 		  `tiCustomerStatus` char(15) DEFAULT 'unconfirmed',
 		  PRIMARY KEY (`tId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_transaction_items` */		
+
+		/*Table structure for table `#__cart_transaction_items` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_items` (
 		  `tId` int(16) NOT NULL,
 		  `sId` int(16) NOT NULL,
@@ -133,11 +133,11 @@ class Migration20130812182339ComCart extends Base
 		  `tiPrice` decimal(10,2) DEFAULT NULL,
 		  PRIMARY KEY (`tId`,`sId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_transaction_steps` */		
+
+		/*Table structure for table `#__cart_transaction_steps` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_steps` (
 		  `tsId` int(16) NOT NULL AUTO_INCREMENT,
 		  `tId` int(16) NOT NULL,
@@ -146,11 +146,11 @@ class Migration20130812182339ComCart extends Base
 		  PRIMARY KEY (`tsId`),
 		  UNIQUE KEY `tId` (`tId`,`tsStep`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-		
-		/*Table structure for table `#__cart_transactions` */		
+
+		/*Table structure for table `#__cart_transactions` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__cart_transactions` (
 		  `tId` int(16) NOT NULL AUTO_INCREMENT,
 		  `crtId` int(16) DEFAULT NULL,
@@ -159,10 +159,10 @@ class Migration20130812182339ComCart extends Base
 		  `tStatus` char(32) DEFAULT NULL,
 		  PRIMARY KEY (`tId`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		
+
 		$this->db->setQuery($query);
 		$this->db->query();
-				
+
 	}
 
 	/**
@@ -174,47 +174,47 @@ class Migration20130812182339ComCart extends Base
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_cart_items`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_carts`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_coupons`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_memberships`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_saved_addresses`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_info`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_items`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_transaction_steps`";
 
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__cart_transactions`";
 
 		$this->db->setQuery($query);

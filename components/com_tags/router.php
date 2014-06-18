@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -41,25 +41,25 @@ function tagsBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['tag'])) 
+	if (!empty($query['tag']))
 	{
 		$segments[] = $query['tag'];
 		unset($query['tag']);
 	}
-	if (!empty($query['area'])) 
+	if (!empty($query['area']))
 	{
 		$segments[] = $query['area'];
 		unset($query['area']);
 	}
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
-		if ($query['task'] != 'edit') 
+		if ($query['task'] != 'edit')
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
 	}
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		unset($query['controller']);
 	}
@@ -68,7 +68,7 @@ function tagsBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -81,30 +81,30 @@ function tagsParseRoute($segments)
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
-		if ($segments[0] == 'browse' || $segments[0] == 'delete' || $segments[0] == 'edit') 
+		if ($segments[0] == 'browse' || $segments[0] == 'delete' || $segments[0] == 'edit')
 		{
 			$vars['task'] = $segments[0];
-		} 
-		else 
+		}
+		else
 		{
 			$vars['tag']  = $segments[0];
 			$vars['task'] = 'view';
 		}
 	}
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
-		if ($segments[1] == 'feed' || $segments[1] == 'feed.rss') 
+		if ($segments[1] == 'feed' || $segments[1] == 'feed.rss')
 		{
 			$vars['task'] = $segments[1];
-		} 
-		else 
+		}
+		else
 		{
 			$vars['area'] = $segments[1];
 		}
 	}
-	if (isset($segments[2])) 
+	if (isset($segments[2]))
 	{
 		$vars['task'] = $segments[2];
 	}

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchSiteMap'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchSiteMap extends SearchPlugin
@@ -41,21 +41,21 @@ class plgSearchSiteMap extends SearchPlugin
 
 	/**
 	 * Short description for 'getName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getName() 
+	public static function getName()
 	{
 		return 'Site Map';
 	}
 
 	/**
 	 * Short description for 'onYSearch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $request Parameter description (if any) ...
 	 * @param      object &$results Parameter description (if any) ...
 	 * @return     void
@@ -78,7 +78,7 @@ class plgSearchSiteMap extends SearchPlugin
 		$results->add(new SearchResultSQL(
 			"SELECT
 				title, description, link, $weight as weight
-			FROM 
+			FROM
 				#__ysearch_site_map s
 			WHERE $weight > 0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		));
@@ -86,9 +86,9 @@ class plgSearchSiteMap extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearchAdministrate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $context Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -98,8 +98,8 @@ class plgSearchSiteMap extends SearchPlugin
 		$dbh->setQuery('SELECT id, title, link, description FROM #__ysearch_site_map ORDER BY title');
 		$map = $dbh->loadAssocList();
 		$edit = NULL;
-		if (array_key_exists('sitemap', $context) 
-		 && array_key_exists('edit_id', $context['sitemap']) 
+		if (array_key_exists('sitemap', $context)
+		 && array_key_exists('edit_id', $context['sitemap'])
 		 && (!array_key_exists('save_id', $context['sitemap']) || $context['sitemap']['save_id'] != $context['sitemap']['edit_id']))
 		{
 			$edit = $context['sitemap']['edit_id'];
@@ -157,9 +157,9 @@ class plgSearchSiteMap extends SearchPlugin
 
 	/**
 	 * Short description for 'save_entry_from_post'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $update Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -203,9 +203,9 @@ class plgSearchSiteMap extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearchTaskSiteMapEdit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public static function onSearchTaskSiteMapEdit()
@@ -235,9 +235,9 @@ class plgSearchSiteMap extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearchTaskSiteMapSaveEdit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public static function onSearchTaskSiteMapSaveEdit()

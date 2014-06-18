@@ -39,7 +39,7 @@ class modRandomQuote extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -69,11 +69,11 @@ class modRandomQuote extends \Hubzero\Module\Module
 		$quotes = $sq->getResults($filters);
 		$quote = ($quotes) ? $quotes[0] : '';
 
-		if ($quote) 
+		if ($quote)
 		{
 			$this->quote_to_show = ($quotesrc == 'miniquote') ? stripslashes($quote->miniquote) : stripslashes($quote->short_quote);
-		} 
-		else 
+		}
+		else
 		{
 			$this->quote_to_show = '';
 		}
@@ -84,7 +84,7 @@ class modRandomQuote extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

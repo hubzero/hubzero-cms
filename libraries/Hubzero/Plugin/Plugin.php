@@ -45,21 +45,21 @@ class Plugin extends \JPlugin
 
 	/**
 	 * URL to redirect to
-	 * 
+	 *
 	 * @var string
 	 */
 	public $_redirect = NULL;
 
 	/**
 	 * Message to send
-	 * 
+	 *
 	 * @var string
 	 */
 	public $_message = NULL;
 
 	/**
 	 * Message type [error, message, warning]
-	 * 
+	 *
 	 * @var string
 	 */
 	public $_messageType = NULL;
@@ -108,7 +108,7 @@ class Plugin extends \JPlugin
 		$msg = ($msg) ? $msg : $this->_message;
 		$msgType = ($msgType) ? $msgType : $this->_messageType;
 
-		if ($url) 
+		if ($url)
 		{
 			//preserve plugin messages after redirect
 			if (count($this->pluginMessageQueue))
@@ -131,11 +131,11 @@ class Plugin extends \JPlugin
 	 */
 	public function addPluginMessage($message, $type='message')
 	{
-		if (!count($this->pluginMessageQueue)) 
+		if (!count($this->pluginMessageQueue))
 		{
 			$session = \JFactory::getSession();
 			$pluginMessage = $session->get('plugin.message.queue');
-			if (count($pluginMessage)) 
+			if (count($pluginMessage))
 			{
 				$this->pluginMessageQueue = $pluginMessage;
 				$session->set('plugin.message.queue', null);
@@ -143,12 +143,12 @@ class Plugin extends \JPlugin
 		}
 
 		//if message is somthing
-		if ($message != '') 
+		if ($message != '')
 		{
 			$this->pluginMessageQueue[] = array(
-				'message' => $message, 
-				'type'    => strtolower($type), 
-				'option'  => $this->option, 
+				'message' => $message,
+				'type'    => strtolower($type),
+				'option'  => $this->option,
 				'plugin'  => $this->plugin
 			);
 		}
@@ -163,20 +163,20 @@ class Plugin extends \JPlugin
 	 */
 	public function getPluginMessage()
 	{
-		if (!count($this->pluginMessageQueue)) 
+		if (!count($this->pluginMessageQueue))
 		{
 			$session = \JFactory::getSession();
 			$pluginMessage = $session->get('plugin.message.queue');
-			if (count($pluginMessage)) 
+			if (count($pluginMessage))
 			{
 				$this->pluginMessageQueue = $pluginMessage;
 				$session->set('plugin.message.queue', null);
 			}
 		}
 
-		foreach ($this->pluginMessageQueue as $k => $cmq) 
+		foreach ($this->pluginMessageQueue as $k => $cmq)
 		{
-			if ($cmq['option'] != $this->option) 
+			if ($cmq['option'] != $this->option)
 			{
 				$this->pluginMessageQueue[$k] = array();
 			}

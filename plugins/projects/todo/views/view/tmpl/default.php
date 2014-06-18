@@ -43,14 +43,14 @@ $which = $this->filters['state'] == 1 ? strtolower(JText::_('COM_PROJECTS_COMPLE
 $where = $this->listname ? ' '.JText::_('COM_PROJECTS_TODO_ON_THIS_LIST') : '';
 $where.= $this->filters['mine'] == 1 ? ' '.JText::_('COM_PROJECTS_IN_MY_TODOS') : '';
 
-$goto  = 'alias=' . $this->project->alias;	
+$goto  = 'alias=' . $this->project->alias;
 ?>
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>" method="post" id="plg-form" >
-  <div id="plg-header">	
+  <div id="plg-header">
 	<h3 class="todo"><?php if($this->listname or $this->filters['assignedto'] or $this->filters['state'] == 1) { ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>"> <?php } ?><?php echo $this->title; ?><?php if($this->listname or $this->filters['assignedto'] or $this->filters['state'] == 1) { ?></a><?php } ?>
 	<?php if($this->listname) { ?> &raquo; <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?list='.$this->filters['todolist']; ?>"><span class="indlist <?php echo 'pin_'.$this->filters['todolist'] ?>"><?php echo $this->listname; ?></span></a> <?php } ?>
-	<?php if($this->filters['assignedto']) { ?> &raquo; <span class="indlist mytodo"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?mine=1'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_MY_TODOS')); ?></a></span> <?php } ?>	
-	<?php if($this->filters['state']) { ?> &raquo; <span class="indlist completedtd"><?php echo ucfirst(JText::_('COM_PROJECTS_COMPLETED')); ?></span> <?php } ?>	
+	<?php if($this->filters['assignedto']) { ?> &raquo; <span class="indlist mytodo"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?mine=1'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_MY_TODOS')); ?></a></span> <?php } ?>
+	<?php if($this->filters['state']) { ?> &raquo; <span class="indlist completedtd"><?php echo ucfirst(JText::_('COM_PROJECTS_COMPLETED')); ?></span> <?php } ?>
 	</h3>
   </div>
 <div>
@@ -59,8 +59,8 @@ $goto  = 'alias=' . $this->project->alias;
 		<div class="sidebox">
 			<h4><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_TODO_LISTS')); ?></a></h4>
 			<ul class="tdlists">
-				<?php if (count($this->lists) > 0) {  ?>					
-						<?php foreach($this->lists as $list) { 
+				<?php if (count($this->lists) > 0) {  ?>
+						<?php foreach($this->lists as $list) {
 							$class = $list->color ? 'pin_'.$list->color : 'pin_grey';
 							$selected = $list->color == $this->filters['todolist'] ? ' activelist' : '';
 						?>
@@ -77,14 +77,14 @@ $goto  = 'alias=' . $this->project->alias;
 							</li>
 						<?php } ?>
 				<?php } ?>
-				<?php if(!empty($this->unused)) { // can add a list 
+				<?php if(!empty($this->unused)) { // can add a list
 					$newcolor = $this->unused[0];
 				?>
 					<li class="newcolor pin_<?php echo $newcolor; ?>">
 						<span class="pin">&nbsp;</span>
 						<input type="hidden" name="newcolor" value="<?php echo $newcolor; ?>" />
 						<input type="text" name="newlist" value="" maxlength="50" />
-						<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />	
+						<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />
 					</li>
 				<?php }  ?>
 			</ul>
@@ -133,7 +133,7 @@ $goto  = 'alias=' . $this->project->alias;
 								<input type="radio" name="listt"  class="listclicker" value="" checked="checked" /> <span><?php echo JText::_('COM_PROJECTS_ADD_TO_NO_LIST'); ?></span>
 							</label>
 						</li>
-						<?php foreach($this->lists as $list) { 
+						<?php foreach($this->lists as $list) {
 							$class = $list->color ? 'pin_'.$list->color : 'pin_grey';
 						?>
 							<li>
@@ -145,10 +145,10 @@ $goto  = 'alias=' . $this->project->alias;
 					</ul>
 				</div>
 			<?php } else {  $class = $this->filters['todolist'] ? 'pin_'.$this->filters['todolist'] : 'pin_grey'; ?>
-				<span class="showpin"><span class="<?php echo $class; ?>">&nbsp;</span></span>	
+				<span class="showpin"><span class="<?php echo $class; ?>">&nbsp;</span></span>
 			<?php } ?>
 			<input name="content" type="text" id="todo-content" maxlength="150" value="" />
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />	
+			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="todo-submit btn" />
 				<label class="hidden" id="td-selector">
 					<?php echo JText::_('COM_PROJECTS_ASSIGNED_TO'); ?>
 				<select name="assigned">
@@ -156,7 +156,7 @@ $goto  = 'alias=' . $this->project->alias;
 				<?php foreach($this->team as $member) { if($member->userid && $member->userid != 0) { $team_ids[] = $member->userid; ?>
 					<option value="<?php echo $member->userid; ?>" class="nameopt"><?php echo $member->name; ?></option><?php } } ?>
 				</select>
-				</label>	
+				</label>
 		</fieldset>
 	</div>
 		<?php } ?>
@@ -165,14 +165,14 @@ $goto  = 'alias=' . $this->project->alias;
 		<span class="td-mv"><?php if($this->filters['start'] > 0) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?list='.$this->filters['todolist'].a.'limitstart='.$prev; ?>"><?php } ?>&laquo; <?php echo ucfirst(JText::_('COM_PROJECTS_PREVIOUS')); ?><?php if($this->filters['start'] > 0) { ?></a><?php } ?></span>
 		<span class="td-mv">&#183;</span> <span class="td-mv"><?php if($whatsleft > 0) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?list='.$this->filters['todolist'].a.'limitstart='.$next; ?>"><?php } ?><?php echo ucfirst(JText::_('COM_PROJECTS_NEXT')); ?> &raquo;<?php if($whatsleft > 0) { ?></a><?php } ?></span>
 		<?php } ?>
-		<span class="sorting js"><?php echo JText::_('COM_PROJECTS_ORDER_BY'); ?>: 
+		<span class="sorting js"><?php echo JText::_('COM_PROJECTS_ORDER_BY'); ?>:
 			<?php if($this->filters['state'] != 1 ) { ?>
 			<input type="radio" name="sortby" class="sortoption" value="p.priority ASC" <?php if ($this->filters['sortby'] == 'p.priority ASC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_NEWEST'); ?>
 			<input type="radio" name="sortby" class="sortoption" value="due DESC, p.duedate ASC" <?php if ($this->filters['sortby'] == 'due DESC, p.duedate ASC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_DUE_DATE'); ?>
 			<?php } else { ?>
 			<input type="radio" name="sortby" class="sortoption" value="p.closed DESC" <?php if ($this->filters['sortby'] == 'p.closed DESC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_RECENTLY_CLOSED'); ?>
 			<input type="radio" name="sortby" class="sortoption" value="p.closed_by DESC, p.closed DESC" <?php if ($this->filters['sortby'] == 'p.closed_by DESC, p.closed DESC') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TODO_SORT_CLOSED_BY'); ?>
-			<?php } ?>		
+			<?php } ?>
 		</span>
 	</p>
 	<?php if (count($this->todos) > 0) {  ?>
@@ -180,8 +180,8 @@ $goto  = 'alias=' . $this->project->alias;
 	<?php } ?>
 		<ul class="<?php echo $this->layout; ?>" id="pinboard">
 				<?php if (count($this->todos) > 0) {  $order = 1; ?>
-				
-					<?php foreach($this->todos as $todo) { 
+
+					<?php foreach($this->todos as $todo) {
 						$class = $todo->color ? 'pin_'.$todo->color : 'pin_grey';
 						$index = $todo->assigned_to ? array_search($todo->assigned_to, $team_ids) : 0;
 
@@ -190,7 +190,7 @@ $goto  = 'alias=' . $this->project->alias;
 							$overdue = ' ('.JText::_('COM_PROJECTS_OVERDUE').')';
 						}
 						$deletable = ($this->project->role == 1 or $todo->created_by == $this->uid) ? 1 : 0;
-						
+
 					?>
 						<li class="<?php echo $class; ?> droptarget tdassigned:<?php echo $todo->assigned_to; ?> <?php echo $todo->state==1 ? 'tdclosed' : ''; ?> <?php echo $deletable ? 'deletable' : ''; ?>" id="todo-<?php echo $todo->id; ?>">
 							<div id="td-<?php echo $todo->id; ?>">
@@ -202,9 +202,9 @@ $goto  = 'alias=' . $this->project->alias;
 								<span class="todo-options" id="td-options-<?php echo $todo->id; ?>">
 								<?php if($todo->state == 1) { ?>
 									<span class="todo-assigned"> <?php echo $todo->closedbyname; ?></span> <?php if($todo->closed && $todo->closed != '0000-00-00 00:00:00' ) { echo '<span class="todo-due">'.JText::_('COM_PROJECTS_CHECKED_OFF').' '.JHTML::_('date', $todo->closed, $dateFormat, $tz).'</span>'; } ?>
-								<?php } else { ?>	
+								<?php } else { ?>
 								<?php echo '<span class="todo-assigned" id="td-assigned-'.$todo->id.'">'.$todo->assignedname.'</span>'; ?> <?php if($todo->duedate && $todo->duedate != '0000-00-00 00:00:00' ) { echo '<span class="todo-due" id="td-due-'.$todo->id.'">'.JText::_('COM_PROJECTS_DUE').' '.JHTML::_('date', $todo->duedate, $dateFormat, $tz).$overdue.'</span>'; }?>
-								<?php } ?>	
+								<?php } ?>
 								</span>
 								<input type="hidden" name="idx" id="idx-<?php echo $todo->id; ?>" value="<?php echo $index; ?>" />
 								<input type="hidden" name="order" id="order-<?php echo $todo->id; ?>" value="<?php echo $order; ?>" />
@@ -213,7 +213,7 @@ $goto  = 'alias=' . $this->project->alias;
 						</li>
 					<?php $order++; } ?>
 			<?php } else { ?>
-			<li class="todo-empty">	
+			<li class="todo-empty">
 				<span class="todo-content-empty"><?php echo JText::_('COM_PROJECTS_NO_TODOS').$where.'.'; ?></span>
 			</li>
 			<?php } ?>

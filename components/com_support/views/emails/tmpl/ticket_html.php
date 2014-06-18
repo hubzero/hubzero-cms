@@ -68,7 +68,7 @@ if ($submitter && is_object($submitter))
 	if (version_compare(JVERSION, '1.6', 'lt'))
 	{
 		$usertype = $submitter->get('usertype');
-	} 
+	}
 	else
 	{
 		jimport( 'joomla.user.helper' );
@@ -327,7 +327,7 @@ $comment = $this->ticket->report;
 												<tr>
 													<td style="padding: 0 2em;">
 													<?php
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 														{
 															$comment = str_replace("<br />", '', $comment);
 															$comment = $this->escape($comment);

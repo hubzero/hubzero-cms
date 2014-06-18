@@ -37,10 +37,10 @@ JToolBarHelper::unpublishList();
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter">
 		<?php echo $this->states; ?>
-	
+
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
-	
+
 	<table class="adminlist" summary="<?php echo JText::_('A list of resource plugins'); ?>">
 		<thead>
 			<tr>
@@ -93,8 +93,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$published 	= JHTML::_('grid.published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
-	
-	switch ($row->published) 
+
+	switch ($row->published)
 	{
 		case '2':
 			$task = 'publish';
@@ -187,6 +187,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

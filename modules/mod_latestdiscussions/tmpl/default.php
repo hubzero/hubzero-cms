@@ -54,15 +54,15 @@ $c = 0;
 					<li>
 						<h4>
 							<a href="<?php echo JRoute::_($post->link()); ?>">
-								<?php 
-								echo ($post->get('parent') && isset($this->threads[$post->get('parent')])) 
-									? $this->escape(stripslashes($this->threads[$post->get('parent')])) 
-									: $this->escape(stripslashes($post->get('title'))); 
+								<?php
+								echo ($post->get('parent') && isset($this->threads[$post->get('parent')]))
+									? $this->escape(stripslashes($this->threads[$post->get('parent')]))
+									: $this->escape(stripslashes($post->get('title')));
 								?>
 							</a>
 						</h4>
 						<span class="discussion-author">
-							<?php 
+							<?php
 								if ($post->get('anonymous')) {
 									echo '<em>' . JText::_('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
 								} else {

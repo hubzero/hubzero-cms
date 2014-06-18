@@ -41,14 +41,14 @@ class CoursesModelSectionDate extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableSectionDate';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'section_date';

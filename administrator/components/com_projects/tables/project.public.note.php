@@ -38,39 +38,39 @@ class ProjectPublicNote extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * Project id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $projectid       	= NULL;
-	
+
 	/**
 	 * Wiki page id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $pageid       		= NULL;
-		
+
 	/**
 	 * Front page?
-	 * 
+	 *
 	 * @var tiny integer
-	 */	
+	 */
 	var $frontpage       	= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_public_notes', 'id', $db );
 	}

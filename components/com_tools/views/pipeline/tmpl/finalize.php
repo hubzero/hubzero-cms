@@ -82,7 +82,7 @@ $this->css('pipeline.css')
 				<?php if ($this->status['license']) { ?>
 				<div class="col span-half omega">
 					<h4>
-						<?php echo JText::_('COM_TOOLS_TOOL_LICENSE'); ?> 
+						<?php echo JText::_('COM_TOOLS_TOOL_LICENSE'); ?>
 						<span class="actionlink">
 							[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname'] . '&action=confirm'); ?>"><?php echo JText::_('COM_TOOLS_EDIT'); ?></a>]
 						</span>

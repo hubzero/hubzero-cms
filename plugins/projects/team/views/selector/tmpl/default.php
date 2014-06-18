@@ -25,12 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id  
+$route = $this->project->provisioned == 1
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
-		
+
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' 
+$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $i = 0;
@@ -52,9 +52,9 @@ if (count($this->authors) > 0)
 	}
 }
 
-$newauthorUrl   = $this->project->provisioned == 1 
+$newauthorUrl   = $this->project->provisioned == 1
 		? JRoute::_( $route) . '?active=team&action=newauthor'
-		: JRoute::_( $route . '&active=team&action=newauthor') .'/?p=' . $this->props . a . 'pid=' 
+		: JRoute::_( $route . '&active=team&action=newauthor') .'/?p=' . $this->props . a . 'pid='
 		. $this->publication->id . a . 'vid=' . $this->publication->version_id;
 
 ?>
@@ -68,7 +68,7 @@ $newauthorUrl   = $this->project->provisioned == 1
 		<?php } ?>
 	</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
-	<fieldset >	
+	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -79,9 +79,9 @@ $newauthorUrl   = $this->project->provisioned == 1
 		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
 		<input type="hidden" name="section" value="<?php echo $block; ?>" />
 		<input type="hidden" name="step" value="<?php echo $step; ?>" />
-		<input type="hidden" name="active" value="publications" />					
-		<input type="hidden" name="action" value="apply" />	
-		<input type="hidden" name="move" value="continue" />	
+		<input type="hidden" name="active" value="publications" />
+		<input type="hidden" name="action" value="apply" />
+		<input type="hidden" name="move" value="continue" />
 	</fieldset>
 	<p class="requirement"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_SELECT_FROM_TEAM'); ?></p>
 	<div id="content-selector" class="content-selector">

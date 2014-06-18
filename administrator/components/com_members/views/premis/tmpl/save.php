@@ -39,12 +39,12 @@ JToolBarHelper::deleteList();
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php 
-	} 
-	else 
+<?php
+	}
+	else
 	{
 		echo '<p>Import complete</p>';
-		
+
 		echo '<p>Total records processed: ' . ($this->ok + $this->fail) . '<br>';
 		echo 'Successfully processed: ' . $this->ok . '<br>';
 		echo 'Errors processing: ' . $this->fail . '</p>';
@@ -53,7 +53,7 @@ JToolBarHelper::deleteList();
 		{
 			echo '<h4>Error log:</h4>';
 			echo '<p id="report">';
-			foreach ($this->report as $line) 
+			foreach ($this->report as $line)
 			{
 				if ($line['status'] != 'ok')
 				{

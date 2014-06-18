@@ -35,8 +35,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
 				foreach ($results as $result)
 				{
 					// Does this user already have this favorite as a collection item?
-					$query = "SELECT p.id 
-							FROM `#__collections_posts` AS p 
+					$query = "SELECT p.id
+							FROM `#__collections_posts` AS p
 							JOIN `#__collections_items` AS i ON p.`item_id`=i.`id`
 							WHERE p.`created_by`=" . $this->db->quote($result->uid) . " AND i.`type`='resource' AND i.`object_id`=" . $this->db->quote($result->oid);
 
@@ -90,11 +90,11 @@ class Migration20140506104910PlgMembersFavorites extends Base
 								$b->title       = $resource->title;
 								$b->description = $resource->introtext;
 								$b->url         = JRoute::_('index.php?option=com_resources&id=' . $resource->id);
-								if (!$b->check()) 
+								if (!$b->check())
 								{
 									continue;
 								}
-								if (!$b->store()) 
+								if (!$b->store())
 								{
 									continue;
 								}
@@ -109,10 +109,10 @@ class Migration20140506104910PlgMembersFavorites extends Base
 						$stick = new CollectionsTablePost($this->db);
 						$stick->item_id       = $objs[$result->oid];
 						$stick->collection_id = $usrs[$result->uid];
-						if ($stick->check()) 
+						if ($stick->check())
 						{
 							// Store new content
-							if (!$stick->store()) 
+							if (!$stick->store())
 							{
 								continue;
 							}

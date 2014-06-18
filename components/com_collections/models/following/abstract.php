@@ -38,28 +38,28 @@ abstract class CollectionsModelFollowingAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * Varies
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_image = NULL;
 
 	/**
 	 * URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_baselink = 'index.php';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Member ID
 	 * @return     void
 	 */
@@ -80,12 +80,12 @@ abstract class CollectionsModelFollowingAbstract extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CollectionsModelFollowingAbstract($oid);
 		}
@@ -95,7 +95,7 @@ abstract class CollectionsModelFollowingAbstract extends \Hubzero\Base\Object
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object

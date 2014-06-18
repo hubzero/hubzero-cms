@@ -38,7 +38,7 @@ if (strstr($newSession, '?'))
 {
 	$newSession .= '&amp;newinstance=1';
 }
-else 
+else
 {
 	$newSession .= '?newinstance=1';
 }
@@ -99,7 +99,7 @@ else
 				<td>
 					<a class="disconnect" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=unshare&app=' . $session->appname . '&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_DISCONNECT_TITLE'); ?>">
 						<?php echo JText::_('COM_TOOLS_DISCONNECT'); ?>
-					</a> 
+					</a>
 					<span class="owner"><?php echo JText::_('COM_TOOLS_MY_SESSIONS_OWNER').': '.$session->username; ?></span>
 				</td>
 			<?php } ?>

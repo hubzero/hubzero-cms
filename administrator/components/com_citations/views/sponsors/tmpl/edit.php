@@ -35,7 +35,7 @@ $canDo = CitationsHelper::getActions('sponsor');
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
 JToolBarHelper::title(JText::_('Citation Sponsor') . ': ' . $text, 'citation.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -56,7 +56,7 @@ if ($this->sponsor)
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	return submitform(pressbutton);
 }
@@ -87,6 +87,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

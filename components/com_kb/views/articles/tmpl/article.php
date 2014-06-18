@@ -63,7 +63,7 @@ $this->css()
 			<?php } ?>
 
 				<p class="entry-voting voting">
-					<?php 
+					<?php
 						$this->view('_vote')
 						     ->set('option', $this->option)
 						     ->set('item', $this->article)
@@ -75,10 +75,10 @@ $this->css()
 				</p>
 
 				<p class="entry-details">
-					<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?> 
+					<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>
 					<span class="entry-date-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
-					<span class="entry-time"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span> 
+					<span class="entry-time"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('time'); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
 					<span class="entry-date"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('date'); ?></time></span>
 				</p>
 
@@ -162,15 +162,15 @@ $this->css()
 			</p>
 			<fieldset>
 			<?php
-			if (!$this->juser->get('guest')) 
+			if (!$this->juser->get('guest'))
 			{
-				if ($this->replyto->get('id')) 
+				if ($this->replyto->get('id'))
 				{
 					$name = JText::_('COM_KB_ANONYMOUS');
 					$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
-					if (!$this->replyto->get('anonymous')) 
+					if (!$this->replyto->get('anonymous'))
 					{
-						if (is_object($xuser) && $xuser->get('name')) 
+						if (is_object($xuser) && $xuser->get('name'))
 						{
 							$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->get('created_by')).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 						}
@@ -178,10 +178,10 @@ $this->css()
 				?>
 				<blockquote cite="c<?php echo $this->replyto->id ?>">
 					<p>
-						<strong><?php echo $name; ?></strong> 
-						<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span> 
-						<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('time')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span> 
+						<strong><?php echo $name; ?></strong>
+						<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('time')); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('date')); ?></time></span>
 					</p>
 					<p>

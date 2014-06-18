@@ -42,7 +42,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 {
 	/**
 	 * \Hubzero\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_cache = array(
@@ -55,14 +55,14 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_config = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
@@ -86,7 +86,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	 */
 	public function session($sessnum=null, $permissions=null)
 	{
-		if (!isset($this->_cache['session']) 
+		if (!isset($this->_cache['session'])
 		 || ($sessnum !== null && (int) $this->_cache['session']->get('sessnum') != $sessnum))
 		{
 			$this->_cache['session'] = MiddlewareModelSession::getInstance($sessnum, $permissions);
@@ -97,14 +97,14 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 
 	/**
 	 * Set and get a specific zone
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function zone($id=null)
 	{
 		// If the current offering isn't set
 		//    OR the ID passed doesn't equal the current offering's ID or alias
-		if (!isset($this->_cache['zones.one']) 
+		if (!isset($this->_cache['zones.one'])
 		 || ($id !== null && (int) $this->_cache['zones.one']->get('id') != $id))
 		{
 			// Reset current offering
@@ -140,7 +140,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	 *
 	 * Second param is a list of zone IDs to check against. That list
 	 * is pulled from the #__tool_version_zone table.
-	 * 
+	 *
 	 * @param      string $ip
 	 * @param      array  $allowed List of zone IDs to check against
 	 * @return     object
@@ -203,7 +203,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 
 	/**
 	 * Get a list of zones
-	 * 
+	 *
 	 * @param      string $rtrn    Data type to return [count, list]
 	 * @param      array  $filters Filters to apply to query
 	 * @return     mixed Returns an integer or array depending upon format chosen
@@ -247,7 +247,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 
 	/**
 	 * Get a config value
-	 * 
+	 *
 	 * @param      string $key     Property to return
 	 * @param      mixed  $default Default value
 	 * @return     mixed

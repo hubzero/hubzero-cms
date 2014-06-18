@@ -84,7 +84,7 @@ $this->css()
 					<?php echo JText::_('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
 				<?php } elseif (isset($this->year) && isset($this->month) && $this->month == 0) { ?>
 					<?php echo JText::sprintf('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->year); ?>
-				<?php } else { 
+				<?php } else {
 					$archiveDate  = $this->year;
 					$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 					$archiveDate .= '-01 00:00:00';
@@ -104,7 +104,7 @@ $this->css()
 							$path .= ($this->month) ? '&month=' . $this->month : '';
 							$feed = JRoute::_($path);
 							$live_site = 'https://' . $_SERVER['HTTP_HOST'];
-							if (substr($feed, 0, 4) != 'http') 
+							if (substr($feed, 0, 4) != 'http')
 							{
 								$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 							}
@@ -117,12 +117,12 @@ $this->css()
 				</h3>
 			<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
 				<ol class="blog-entries">
-			<?php 
+			<?php
 				$cls = 'even';
 				foreach ($rows as $row)
 				{
 					$cls = ($cls == 'even') ? 'odd' : 'even';
-					
+
 					if ($row->ended())
 					{
 						$cls .= ' expired';
@@ -201,21 +201,21 @@ $this->css()
 							<div class="entry-content">
 								<?php if ($this->config->get('cleanintro', 1)) { ?>
 										<p>
-											<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?> 
+											<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
 										</p>
 								<?php } else { ?>
-										<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?> 
+										<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
 								<?php } ?>
 							</div>
 						</article>
 					</li>
 		<?php } ?>
 				</ol>
-				<?php 
+				<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->model->entries('count', $this->filters), 
-						$this->filters['start'], 
+						$this->model->entries('count', $this->filters),
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 					$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
@@ -244,7 +244,7 @@ $this->css()
 				<h4><?php echo JText::_('PLG_GROUPS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
 					<?php if ($first->exists()) { ?>
-						<?php 
+						<?php
 							$start = intval(substr($first->get('publish_up'), 0, 4));
 							$now = date("Y");
 						?>
@@ -291,8 +291,8 @@ $this->css()
 				</ol>
 			</div>
 
-		<?php 
-		$limit = $this->filters['limit']; 
+		<?php
+		$limit = $this->filters['limit'];
 		$this->filters['limit'] = 5;
 		?>
 			<div class="container blog-popular-entries">
@@ -300,7 +300,7 @@ $this->css()
 			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>
-					<?php 
+					<?php
 						if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
 						{
 							continue;
@@ -323,7 +323,7 @@ $this->css()
 			<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($recent as $row) { ?>
-					<?php 
+					<?php
 						if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
 						{
 							continue;
@@ -341,7 +341,7 @@ $this->css()
 			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
 		<?php
-		$this->filters['limit'] = $limit; 
+		$this->filters['limit'] = $limit;
 		?>
 		</aside><!-- / .aside -->
 	</section>

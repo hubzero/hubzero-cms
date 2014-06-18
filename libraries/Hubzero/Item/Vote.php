@@ -27,60 +27,60 @@ namespace Hubzero\Item;
 /**
  * Table class for comment votes
  */
-class Vote extends \JTable 
+class Vote extends \JTable
 {
 	/**
 	 * Primary key
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $id         = NULL;
 
 	/**
 	 * Object this is a comment for
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $item_id    = NULL;
 
 	/**
 	 * Object type (resource, kb, etc)
-	 * 
+	 *
 	 * @var string varchar(100)
 	 */
 	var $item_type  = NULL;
 
 	/**
 	 * IP address
-	 * 
+	 *
 	 * @var string varchar(100)
 	 */
 	var $ip         = NULL;
 
 	/**
 	 * When the entry was created
-	 * 
+	 *
 	 * @var string datetime (0000-00-00 00:00:00)
 	 */
 	var $created    = NULL;
 
 	/**
 	 * Who created this entry
-	 * 
+	 *
 	 * @var integer int(11)
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * Vote
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $vote       = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,26 +91,26 @@ class Vote extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
-	public function check() 
+	public function check()
 	{
 		$this->item_id = intval($this->item_id);
-		if (!$this->item_id) 
+		if (!$this->item_id)
 		{
 			$this->setError(\JText::_('Missing item ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
-		if (!$this->item_type) 
+		if (!$this->item_type)
 		{
 			$this->setError(\JText::_('Missing item type.'));
 			return false;
 		}
 
-		if (!$this->created_by) 
+		if (!$this->created_by)
 		{
 			$juser = \JFactory::getUser();
 			$this->created_by = $juser->get('id');

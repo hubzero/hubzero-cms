@@ -34,15 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 $juser = JFactory::getUser();
 ?>
 	<h4>
-		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS'); ?> 
+		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS'); ?>
 		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=mine&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
 	</h4>
 <?php if ($this->openquestions) { ?>
 	<ul class="compactlist">
-	<?php 
+	<?php
 	for ($i=0; $i < count($this->openquestions); $i++)
 	{
-		if ($i < $this->limit_mine) 
+		if ($i < $this->limit_mine)
 		{
 			$rcount = $this->openquestions[$i]->get('rcount', 0);
 			$rclass = ($rcount > 0) ?  'yes' : 'no';
@@ -71,16 +71,16 @@ $juser = JFactory::getUser();
 
 <?php if ($this->show_assigned) { // Questions related to my contributions ?>
 	<h4>
-		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS'); ?> 
+		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS'); ?>
 		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=assigned&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
 	</h4>
 	<?php if ($this->assigned) { ?>
 		<p class="incentive"><span><?php echo strtolower(JText::_('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')); ?></span></p>
 		<ul class="compactlist">
-		<?php 
+		<?php
 		for ($i=0; $i < count($this->assigned); $i++)
 		{
-			if ($i < $this->limit_assigned) 
+			if ($i < $this->limit_assigned)
 			{
 				?>
 				<li class="question">
@@ -103,7 +103,7 @@ $juser = JFactory::getUser();
 
 <?php if ($this->show_interests) { // Questions of interest ?>
 	<h4>
-		<?php echo JText::_('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER'); ?> 
+		<?php echo JText::_('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER'); ?>
 		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=interest&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
 	</h4>
 	<p class="category-header-details">
@@ -120,7 +120,7 @@ $juser = JFactory::getUser();
 		<?php
 		for ($i=0; $i < count($this->otherquestions); $i++)
 		{
-			if ($i < $this->limit_interest) 
+			if ($i < $this->limit_interest)
 			{
 				?>
 				<li class="question">

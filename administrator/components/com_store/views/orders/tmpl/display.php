@@ -35,7 +35,7 @@ $canDo = StoreHelper::getActions('component');
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences('com_store', '550');
 }
@@ -44,7 +44,7 @@ JToolBarHelper::help('orders');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
+		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label>
 		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
 			<option value="new"<?php if ($this->filters['filterby'] == 'new') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_NEW'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 			<option value="processed"<?php if ($this->filters['filterby'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_COMPLETED'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL'); ?> <?php echo ucfirst(JText::_('COM_STORE_ORDERS')); ?></option>
 		</select>
 
-		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
+		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label>
 		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit();">
 			<option value="m.ordered"<?php if ($this->filters['sortby'] == 'm.ordered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ORDER_DATE'); ?></option>
 			<option value="m.status_changed"<?php if ($this->filters['sortby'] == 'm.status_changed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LAST_STATUS_CHANGE'); ?></option>

@@ -35,11 +35,11 @@ $canDo = StoreHelper::getActions('item');
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
@@ -48,7 +48,7 @@ JToolBarHelper::help('items');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -61,14 +61,14 @@ function submitbutton(pressbutton)
 </script>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label> 
+		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label>
 		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
 			<option value="available"<?php if ($this->filters['filterby'] == 'available') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_INSTORE_ITEMS'); ?></option>
 			<option value="published"<?php if ($this->filters['filterby'] == 'published') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_PUBLISHED'); ?></option>
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_ALL_ITEMS'); ?></option>
 		</select>
 
-		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label> 
+		<label for="filter-sortby"><?php echo JText::_('COM_STORE_SORTBY'); ?>:</label>
 		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit();">
 			<option value="pricelow"<?php if ($this->filters['sortby'] == 'pricelow') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_LOWEST_PRICE'); ?></option>
 			<option value="pricehigh"<?php if ($this->filters['sortby'] == 'pricehigh') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_STORE_HIGHEST_PRICE'); ?></option>

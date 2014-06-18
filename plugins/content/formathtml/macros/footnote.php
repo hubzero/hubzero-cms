@@ -40,7 +40,7 @@ class FootNote extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -53,14 +53,14 @@ class FootNote extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		static $wm;
 
-		if (!is_object($wm)) 
+		if (!is_object($wm))
 		{
 			$wm = new \stdClass();
 			$wm->footnotes = array();
@@ -70,7 +70,7 @@ class FootNote extends Macro
 
 		$note = $this->args;
 
-		if ($note) 
+		if ($note)
 		{
 			$p = new Parser('Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain);
 
@@ -78,7 +78,7 @@ class FootNote extends Macro
 
 			$wm->footnotes_count++;
 
-			if (in_array($note, $wm->footnotes_notes)) 
+			if (in_array($note, $wm->footnotes_notes))
 			{
 				$i = array_search($note, $wm->footnotes_notes) + 1;
 				$k = $wm->footnotes_count;
@@ -101,8 +101,8 @@ class FootNote extends Macro
 			$wm->footnotes[] = $footnote;
 
 			return '<sup><a name="fndef-' . $i . '"></a><a href="#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
-		} 
-		else 
+		}
+		else
 		{
 			$letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 

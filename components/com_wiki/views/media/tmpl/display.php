@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
-	
+
 			<fieldset>
 				<table>
 					<tbody>

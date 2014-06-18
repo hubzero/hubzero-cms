@@ -49,15 +49,15 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<th><?php echo JText::_('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
 				<td>
-					<?php 
+					<?php
 						$subject = stripslashes($this->xmessage->subject);
-						if ($this->xmessage->component == 'support') 
+						if ($this->xmessage->component == 'support')
 						{
 							$fg = explode(' ', $subject);
 							$fh = array_pop($fg);
 							echo implode(' ', $fg);
-						} 
-						else 
+						}
+						else
 						{
 							echo $this->escape($subject);
 						}

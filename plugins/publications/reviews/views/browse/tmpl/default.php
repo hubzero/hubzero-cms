@@ -31,7 +31,7 @@ $this->css()
 $database = JFactory::getDBO();
 $juser = JFactory::getUser();
 
-if (!isset($this->reviews) || !$this->reviews) 
+if (!isset($this->reviews) || !$this->reviews)
 {
 	$this->reviews = array();
 }
@@ -81,10 +81,10 @@ else
 }
 
 // Display the review form if needed
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$myreview = $this->h->myreview;
-	if (is_object($myreview)) 
+	if (is_object($myreview))
 	{
 		$this->view('default', 'review')
 		     ->set('option', $this->option)

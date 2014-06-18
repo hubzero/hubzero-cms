@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * OIORest plugin for geocode
  *
- * The OIORestProvider is able to geocode and reverse geocode 
+ * The OIORestProvider is able to geocode and reverse geocode
  * street addresses, exclusively in Denmark.
  */
 class plgGeocodeOiorest extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

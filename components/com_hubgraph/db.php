@@ -1,4 +1,4 @@
-<? defined('JPATH_BASE') or die(); 
+<? defined('JPATH_BASE') or die();
 
 class Db
 {
@@ -33,7 +33,7 @@ class Db
 		self::getStatementHandle($sql, $params, $success);
 		return $success ? self::$dbh->lastInsertId() : NULL;
 	}
-	
+
 	public static function update($sql, $params = array()) {
 		$sth = self::getStatementHandle($sql, $params, $success);
 		return $success ? $sth->rowCount() : FALSE;
@@ -50,7 +50,7 @@ class Db
 	public static function commit() {
 		self::getHandle()->query('COMMIT');
 	}
-	
+
 	public static function rollback() {
 		self::getHandle()->query('ROLLBACK');
 	}

@@ -37,49 +37,49 @@ Class CoursesTablePageHit extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $page_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $timestamp = NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ip = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -90,20 +90,20 @@ Class CoursesTablePageHit extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->offering_id = intval($this->offering_id);
-		if (!$this->offering_id) 
+		if (!$this->offering_id)
 		{
 			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_OFFERING_ID'));
 			return false;
 		}
 
 		$this->page_id = intval($this->page_id);
-		if (!$this->page_id) 
+		if (!$this->page_id)
 		{
 			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_PAGE_ID'));
 			return false;
@@ -114,7 +114,7 @@ Class CoursesTablePageHit extends JTable
 		if (!$this->id)
 		{
 			$this->timestamp = JFactory::getDate()->toSql();
-			if (!$this->ip) 
+			if (!$this->ip)
 			{
 				$this->ip = JRequest::ip();
 			}
@@ -125,7 +125,7 @@ Class CoursesTablePageHit extends JTable
 		}
 
 		$this->user_id = intval($this->user_id);
-		if (!$this->user_id) 
+		if (!$this->user_id)
 		{
 			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
 			return false;
@@ -136,7 +136,7 @@ Class CoursesTablePageHit extends JTable
 
 	/**
 	 * Record a page hit
-	 * 
+	 *
 	 * @param      integer $pid Page ID
 	 * @return     void
 	 */

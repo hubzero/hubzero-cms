@@ -35,41 +35,41 @@ defined('_JEXEC') or die('Restricted access');
  * Courses controller class
  */
 class StorefrontControllerStorefront extends ComponentController
-{	
+{
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
-	{		
+	{
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
-		
+
 		// Get the task
 		$this->_task  = JRequest::getVar('task', '');
-		
+
 		if (empty($this->_task))
 		{
 			$this->_task = 'home';
 			$this->registerTask('__default', $this->_task);
 		}
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display default page
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function homeTask() 
+	public function homeTask()
 	{
 		// get categories
 		$categories = $this->warehouse->getRootCategories();
-		$this->view->categories = $categories;	
-		
+		$this->view->categories = $categories;
+
 		$this->view->display();
-	}	
+	}
 }
 

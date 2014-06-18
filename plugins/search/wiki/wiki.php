@@ -38,9 +38,9 @@ class plgSearchWiki extends SearchPlugin
 {
 	/**
 	 * Short description for 'onYSearch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $request Parameter description (if any) ...
 	 * @param      object &$results Parameter description (if any) ...
 	 * @param      object $authz Parameter description (if any) ...
@@ -66,19 +66,19 @@ class plgSearchWiki extends SearchPlugin
 		{
 			$user = JFactory::getUser();
 			$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
-			
+
 			if (($gids = $authz->get_group_ids()))
 			{
 				$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
 			}
-			else 
+			else
 			{
 				$authorization = '(wp.access IN (0,' . $viewlevels . '))';
 			}
 		}
-		else 
+		else
 		{
-			if ($authz->is_guest()) 
+			if ($authz->is_guest())
 			{
 				$authorization = 'wp.access = 0';
 			}
@@ -111,10 +111,10 @@ class plgSearchWiki extends SearchPlugin
 		}
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				wp.title,
 				wv.pagehtml AS description,
-				CASE 
+				CASE
 					WHEN wp.group_cn THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_wiki&scope=', wp.scope, '&pagename=', wp.pagename)
 				END AS link,
@@ -122,22 +122,22 @@ class plgSearchWiki extends SearchPlugin
 				wv.created AS date,
 				'Wiki' AS section
 			FROM #__wiki_version wv
-			INNER JOIN #__wiki_page wp 
+			INNER JOIN #__wiki_page wp
 				ON wp.id = wv.pageid
 			LEFT JOIN #__xgroups xg ON xg.cn = wp.group_cn
 			WHERE
 				$authorization AND
-				$weight > 0 AND 
+				$weight > 0 AND
 				wp.state < 2 AND
 				wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version wv2 WHERE wv2.pageid = wv.pageid) " .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))  
+				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))
 			 ORDER BY $weight DESC"
 		);
 
 		foreach ($rows->to_associative() as $row)
 		{
-			if (!$row) 
+			if (!$row)
 			{
 				continue;
 			}

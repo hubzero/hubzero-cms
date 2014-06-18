@@ -38,7 +38,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Upload a file or create a new folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -88,8 +88,8 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 				}
 			}
 			// Directory created
-		} 
-		else 
+		}
+		else
 		{
 			// Make sure the upload path exist
 			if (!is_dir($path))
@@ -140,11 +140,11 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 					//include libs
 					jimport('joomla.filesystem.folder');
 					jimport('joomla.filesystem.file');
-					
+
 					//build path
 					$path = rtrim($path, DS) . DS;
 					$escaped_file = escapeshellarg($path . $file['name']);
-					
+
 					//determine command to uncompress
 					switch ($ext)
 					{
@@ -153,19 +153,19 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 						case 'zip':
 						default:       $cmd = "unzip {$escaped_file} -d {$path}";
 					}
-					
+
 					//unzip file
 					if ($result = shell_exec($cmd))
 					{
 						// Remove original archive
 						JFile::delete( $path . $file['name'] );
-						
+
 						// Remove MACOSX dirs if there
 						if (JFolder::exists($path . '__MACOSX'))
 						{
 							JFolder::delete($path . '__MACOSX');
 						}
-						
+
 						//remove ._ files
 						$dotFiles = JFolder::files($path, '._[^\s]*', true, true);
 						foreach ($dotFiles as $dotFile)
@@ -183,7 +183,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a folder and contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefolderTask()
@@ -229,7 +229,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 		$folder = ResourcesUtilities::normalizePath($folder);
 
 		// Check if the folder even exists
-		if (!is_dir($path . $folder) or !$folder) 
+		if (!is_dir($path . $folder) or !$folder)
 		{
 			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
 		}
@@ -249,7 +249,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Deletes a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefileTask()
@@ -313,7 +313,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display an upload form and file listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -376,7 +376,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Lists all files and folders for a given directory
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listTask()
@@ -449,7 +449,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Scans directory and builds multi-dimensional array of all files and sub-directories
-	 * 
+	 *
 	 * @param      string $base Directory to scan
 	 * @return     array
 	 */

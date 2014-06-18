@@ -37,7 +37,7 @@ function isSystemUser( $userid )
 }
 
 // get group params
-$params = JComponentHelper::getParams("com_groups"); 
+$params = JComponentHelper::getParams("com_groups");
 $displaySystemUsers = $params->get('display_system_users', 'no');
 
 //get this groups params
@@ -50,7 +50,7 @@ shuffle($members);
 
 //if we dont want to display system users
 //filter values through callback above and then reset array keys
-if ($displaySystemUsers == 'no') 
+if ($displaySystemUsers == 'no')
 {
 	$members = array_map("isSystemUser", $members);
 	$members = array_values(array_filter($members));
@@ -95,7 +95,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 			</a>
 		</div>
 	</div>
-	
+
 	<div id="member_browser" class="member_browser">
 		<?php
 			$counter = 1;

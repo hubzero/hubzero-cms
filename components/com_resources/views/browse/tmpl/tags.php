@@ -46,14 +46,14 @@ $this->css()
 		<div id="content-header-extra">
 			<p>
 				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=2&type=' . $type->id); ?>">
-					<?php 
+					<?php
 					$name = $type->type;
-					/*if (substr($type->type, -3) == 'ies') 
+					/*if (substr($type->type, -3) == 'ies')
 					{
 						$name = $type->type; //substr($type->type, 0, -3) . 'y';
-					} 
+					}
 					else */
-					if (substr($type->type, -1) == 's') 
+					if (substr($type->type, -1) == 's')
 					{
 						$name = substr($type->type, 0, -1);
 					}
@@ -69,7 +69,7 @@ $this->css()
 	<section class="main section" id="browse-resources">
 		<fieldset>
 			<label for="browse-type">
-				<span><?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span> 
+				<span><?php echo JText::_('COM_RESOURCES_TYPE'); ?>:</span>
 				<select name="type" id="browse-type">
 				<?php foreach ($this->types as $type) { ?>
 					<option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
@@ -139,7 +139,7 @@ $this->css()
 	<?php if ($this->results) { ?>
 		<div class="subject">
 			<h3><?php echo JText::_('COM_RESOURCES_TOP_RATED'); ?></h3>
-			<?php 
+			<?php
 			$this->view('_list', 'browse')
 			     ->set('lines', $this->results)
 			     ->set('show_edit', $this->authorized)

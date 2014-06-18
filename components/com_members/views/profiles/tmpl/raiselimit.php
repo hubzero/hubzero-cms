@@ -48,9 +48,9 @@ $this->css();
 		<fieldset>
 	<?php if ($this->resource != 'select') { ?>
 			<p>
-				Please provide a short reason why you would like this increase in resources. Your 
-				request for additional resources will then be e-mailed to the site administrators 
-				who will grant your request or provide a reason why we are unable to meet your 
+				Please provide a short reason why you would like this increase in resources. Your
+				request for additional resources will then be e-mailed to the site administrators
+				who will grant your request or provide a reason why we are unable to meet your
 				request at this time.
 			</p>
 			<label>
@@ -98,8 +98,8 @@ $this->css();
 			<div class="help">
 				<h4>How do I get more resources?</h4>
 				<p>
-					Click "Increase" for the resource you wish to request more. Depending on the resource and your 
-					current limits, you will either be automatically granted more resources, asked to fill out some 
+					Click "Increase" for the resource you wish to request more. Depending on the resource and your
+					current limits, you will either be automatically granted more resources, asked to fill out some
 					feedback, asked to review a resource for others, or asked to email support.
 				</p>
 			</div>

@@ -38,7 +38,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Override Execute Method
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function execute()
@@ -56,12 +56,12 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display Page Modules
 	 *
@@ -80,11 +80,11 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get page approvers
 		$approvers = $this->config->get('approvers', '');
 		$approvers = array_map("trim", explode(',', $approvers));
-		
+
 		// get modules archive
 		$moduleArchive = GroupsModelModuleArchive::getInstance();
 		$this->view->modules = $moduleArchive->modules('list', array(
@@ -92,7 +92,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'state'     => array(0,1,2),
 			'orderby'   => 'position ASC, ordering ASC'
 		));
-		
+
 		// are we in the approvers
 		$this->view->needsAttention = new \Hubzero\Base\ItemList();
 		if (in_array($this->juser->get('username'), $approvers))
@@ -105,10 +105,10 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 				'orderby'   => 'ordering'
 			));
 		}
-		
+
 		// pass group to view
 		$this->view->group = $this->group;
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -121,7 +121,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Add Page Category
 	 *
@@ -131,7 +131,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 	{
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Edit Page Module
 	 *
@@ -141,14 +141,14 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 	{
 		//set to edit layout
 		$this->view->setLayout('edit');
-		
+
 		// get request vars
 		$ids = JRequest::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		// get the category object
 		$this->view->module = new GroupsModelModule( $id );
-		
+
 		// get a list of all pages for creating module menu
 		$pageArchive = GroupsModelPageArchive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
@@ -156,7 +156,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'state'     => array(0,1,2),
 			'orderby'   => 'ordering'
 		));
-		
+
 		// get a list of all pages for creating module menu
 		$moduleArchive = GroupsModelModuleArchive::getInstance();
 		$this->view->order = $moduleArchive->modules('list', array(
@@ -165,16 +165,16 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'state'     => array(0,1,2),
 			'orderby'   => 'ordering'
 		));
-		
+
 		// are we passing a category object
 		if ($this->module)
 		{
 			$this->view->module = $this->module;
 		}
-		
+
 		// pass group to view
 		$this->view->group = $this->group;
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -187,7 +187,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save Page Category
 	 *
@@ -198,17 +198,17 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// get request vars
 		$module = JRequest::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
 		$menu   = JRequest::getVar('menu', array(), 'post');
-		
+
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
-		
+
 		// clean title & position
 		$module['title']    = preg_replace("/[^-_ a-zA-Z0-9]+/", "", $module['title']);
 		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", "", $module['position']);
-		
+
 		// get the category object
 		$this->module = new GroupsModelModule( $module['id'] );
-		
+
 		// ordering change
 		$ordering = null;
 		if (isset($module['ordering']) && $module['ordering'] != $this->module->get('ordering'))
@@ -216,8 +216,8 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$ordering = $module['ordering'];
 			unset($module['ordering']);
 		}
-		
-		// if this is new module or were changing position, 
+
+		// if this is new module or were changing position,
 		// get next order possible for position
 		if (!isset($module['id']) || ($module['id'] == '')
 			|| ($module['position'] != $this->module->get('position')))
@@ -225,17 +225,17 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$ordering = null;
 			$module['ordering'] = $this->module->getNextOrder($module['position']);
 		}
-		
+
 		// bind request vars to module model
 		if (!$this->module->bind( $module ))
 		{
 			$this->addComponentMessage($this->module->getError(), 'error');
 			return $this->editTask();
 		}
-		
+
 		// mark approved unless fails check below
 		$this->module->set('approved', 1);
-		
+
 		// if we have php or script tags we must get page approved by admin
 		if (strpos($this->module->get('content'), '<?') !== false ||
 			strpos($this->module->get('content'), '<?php') !== false ||
@@ -247,18 +247,18 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$this->module->set('checked_errors', 0);
 			$this->module->set('scanned', 0);
 		}
-		
+
 		// set created if new module
 		if (!$this->module->get('id'))
 		{
 			$this->module->set('created', JFactory::getDate()->toSql());
 			$this->module->set('created_by', JFactory::getUser()->get('id'));
 		}
-		
-		// set modified 
+
+		// set modified
 		$this->module->set('modified', JFactory::getDate()->toSql());
 		$this->module->set('modified_by', JFactory::getUser()->get('id'));
-		
+
 		// save version settings
 		if (!$this->module->store(true, $this->group->isSuperGroup()))
 		{
@@ -266,7 +266,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$this->editTask();
 			return;
 		}
-		
+
 		// create module menu
 		if (!$this->module->buildMenu($menu))
 		{
@@ -274,21 +274,21 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$this->editTask();
 			return;
 		}
-		
+
 		// do we need to reorder
 		if ($ordering !== null)
 		{
 			$move = (int) $ordering - (int) $this->module->get('ordering');
 			$this->module->move($move, $this->module->get('position'));
 		}
-		
+
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_module_saved',
 			'comments'  => array('module' => $module, 'module_menu' => $menu)
 		));
-		
+
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -296,7 +296,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Delete Page Module
 	 *
@@ -306,16 +306,16 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 	{
 		// get request vars
 		$ids = JRequest::getVar('id', array());
-		
+
 		// delete each module
 		foreach ($ids as $moduleid)
 		{
 			// load modules
 			$module = new GroupsModelModule( $moduleid );
-			
+
 			//set to deleted state
 			$module->set('state', $module::APP_STATE_DELETED);
-			
+
 			// save module
 			if (!$module->store(true))
 			{
@@ -327,14 +327,14 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-		
+
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_modules_deleted',
 			'comments'  => $ids
 		));
-		
+
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -342,10 +342,10 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
-	 * Output raw content 
-	 * 
+	 * Output raw content
+	 *
 	 * @param     $escape    Escape outputted content
 	 * @return    string     HTML content
 	 */
@@ -361,19 +361,19 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get reqest vars
 		$moduleid  = JRequest::getInt('moduleid', 0, 'get');
-		
+
 		// page object
 		$module = new GroupsModelModule( $moduleid );
-		
+
 		// make sure module belongs to this group
 		if (!$module->belongsToGroup($this->group))
 		{
 			JError::raiseError(403, 'You are not authorized to view this module.');
 		}
-		
+
 		// output page version
 		if ($escape)
 		{
@@ -385,7 +385,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		}
 		exit();
 	}
-	
+
 	/**
 	 * Preview Group Module
 	 *
@@ -403,22 +403,22 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get reqest vars
 		$moduleid  = JRequest::getInt('moduleid', 0, 'get');
-		
+
 		// page object
 		$module = new GroupsModelModule( $moduleid );
-		
+
 		// make sure page belongs to this group
 		if (!$module->belongsToGroup($this->group))
 		{
 			JError::raiseError(403, 'You are not authorized to view this page.');
 		}
-		
+
 		// get first module menu's page id
 		$pageid = $module->menu()->first()->get('pageid');
-		
+
 		// check if pageid 0
 		if ($pageid == 0)
 		{
@@ -429,33 +429,33 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 				'state'     => array(1),
 				'orderby'   => 'ordering'
 			));
-			
+
 			// get first page
 			$pageid = $pages->first()->get('id');
 		}
-		
+
 		// load page
 		$page = new GroupsModelPage( $pageid );
-		
+
 		// load page version
 		$content = $page->version()->get('content');
-		
+
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
-		
+
 		// strip out scripts & php tags if not super group
 		if (!$this->group->isSuperGroup())
 		{
 			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
 			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
 		}
-		
+
 		// are we allowed to display group modules
 		if(!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
-		
+
 		// set group doc needed props
 		// parse and render content
 		$groupDocument->set('group', $this->group)
@@ -464,10 +464,10 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			          ->set('allMods', true)
 			          ->parse()
 			          ->render();
-		
+
 		// get doc content
 		$content = $groupDocument->output();
-		
+
 		// only parse php if Super Group
 		if ($this->group->isSuperGroup())
 		{
@@ -482,16 +482,16 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			};
 			$content = $eval();
 		}
-		
-		// get group css 
+
+		// get group css
 		$pageCss = GroupsHelperView::GetPageCss($this->group);
-		
+
 		$css = '';
 		foreach($pageCss as $p)
 		{
 			$css .= '<link rel="stylesheet" href="'.$p.'" />';
 		}
-		
+
 		// output html
 		$html = '<!DOCTYPE html>
 				<html>
@@ -503,12 +503,12 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 						'. $content .'
 					</body>
 				</html>';
-				
+
 		//echo content and exit
 		echo $html;
 		exit();
 	}
-	
+
 	/**
 	 * Check for PHP Errors
 	 *
@@ -526,13 +526,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get request vars
 		$id = JRequest::getInt('id', 0);
-		
+
 		// load page
 		$module = new GroupsModelModule( $id );
-		
+
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)
 		{
@@ -544,18 +544,18 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// create file for page
 		$file    = JPATH_ROOT . DS . 'tmp' . DS . 'group_module_' . $module->get('id') . '.php';
 		$content = $module->get('content');
 		file_put_contents($file, $content);
-		
+
 		// basic php lint command
 		$cmd = 'php -l ' . escapeshellarg($file) . ' 2>&1';
-		
+
 		// run lint
 		exec($cmd, $output, $return);
-		
+
 		// do we get errors?
 		if ($return != 0)
 		{
@@ -569,16 +569,16 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$this->view->display();
 			return;
 		}
-		
+
 		// marked as checked for errors!
 		$module->set('checked_errors', 1);
 		$module->store(true, $this->group->isSuperGroup());
-		
+
 		// delete temp file
 		register_shutdown_function(function($file){
 			unlink($file);
 		}, $file);
-		
+
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -586,7 +586,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Check for Errors again
 	 *
@@ -604,23 +604,23 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		//get request vars
 		$module = JRequest::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
-		
+
 		// load page
 		$groupModule = new GroupsModelModule( $module['id'] );
-		
-		// set the new content 
+
+		// set the new content
 		$groupModule->set('content', $module['content']);
 		$groupModule->store(true, $this->group->isSuperGroup());
-		
+
 		//go back to error checker
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupModule->get('id')
 		);
 	}
-	
+
 	public function scanTask()
 	{
 		// make sure we are approvers
@@ -633,13 +633,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get request vars
 		$id = JRequest::getInt('id', 0);
-		
+
 		// load page
 		$module = new GroupsModelModule( $id );
-		
+
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)
 		{
@@ -651,13 +651,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get flags
 		$flags = GroupsHelperPages::getCodeFlags();
-		
+
 		// get current versions content by lines
 		$content = explode("\n", $module->get('content'));
-		
+
 		// get any issues
 		$issues->count = 0;
 		foreach ($flags as $lang => $flag)
@@ -666,16 +666,16 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$severe   = implode('|', $flag['severe']);
 			$elevated = implode('|', $flag['elevated']);
 			$minor    = implode('|', $flag['minor']);
-			
+
 			// do case insensitive search for any flags
 			$issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
 			$issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
 			$issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
-			
+
 			// add to issues count
 			$issues->count += count($issues->$lang->severe) + count($issues->$lang->elevated) + count($issues->$lang->minor);
 		}
-		
+
 		// handle issues
 		if ($issues->count != 0)
 		{
@@ -688,11 +688,11 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$this->view->display();
 			return;
 		}
-		
+
 		// marked as scanned for potential issues!
 		$module->set('scanned', 1);
 		$module->store(true, $this->group->isSuperGroup());
-		
+
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -700,7 +700,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	public function markScannedTask()
 	{
 		// make sure we are approvers
@@ -713,18 +713,18 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		//get request vars
 		$module = JRequest::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
-		
+
 		// load module
 		$groupModule = new GroupsModelModule( $module['id'] );
-		
-		// set the new content 
+
+		// set the new content
 		$groupModule->set('content', $module['content']);
 		$groupModule->set('scanned', 1);
 		$groupModule->store(true, $this->group->isSuperGroup());
-		
+
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -732,7 +732,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	public function scanAgainTask()
 	{
 		// make sure we are approvers
@@ -745,23 +745,23 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get request vars
 		$module = JRequest::getVar('module', array(), 'post', 'none', JREQUEST_ALLOWRAW);
-		
+
 		// load page
 		$groupModule = new GroupsModelModule( $module['id'] );
-		
-		// set the new content 
+
+		// set the new content
 		$groupModule->set('content', $module['content']);
 		$groupModule->store(true, $this->group->isSuperGroup());
-		
+
 		//go back to scanner
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupModule->get('id')
 		);
 	}
-	
+
 	/**
 	 * Approve a group page
 	 *
@@ -779,13 +779,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// get request vars
 		$id = JRequest::getInt('id', 0);
-		
+
 		// load page
 		$module = new GroupsModelModule( $id );
-		
+
 		// make sure version is unapproved
 		if ($module->get('approved') == 1)
 		{
@@ -797,23 +797,23 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		// set approved and approved date and approver
 		$module->set('approved', 1);
 		$module->set('approved_on', JFactory::getDate()->toSql());
 		$module->set('approved_by', $this->juser->get('id'));
 		$module->store(true, $this->group->isSuperGroup());
-		
+
 		// send approved notifcation
 		GroupsHelperPages::sendApprovedNotification('module', $module);
-		
+
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_modules_approved',
 			'comments'  => array($module->get('id'))
 		));
-		
+
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -821,7 +821,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Cancel a group page module task
 	 *
@@ -833,7 +833,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . JRequest::getVar('gid', '')
 		);
 	}
-	
+
 	/**
 	 * Manage group
 	 *

@@ -38,35 +38,35 @@ class MwZoneLocations extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $zone_id;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipFROM;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipTO;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $continent;
@@ -74,7 +74,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $countrySHORT;
@@ -82,7 +82,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $countryLONG;
@@ -90,7 +90,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipREGION;
@@ -98,7 +98,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipCity;
@@ -106,7 +106,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipLATITUDE;
@@ -114,14 +114,14 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ipLONGITUDE;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -132,13 +132,13 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean False if invalid data, true on success
 	 */
 	public function check()
 	{
 		$this->zone_id = intval($this->zone_id);
-		if (!$this->zone_id) 
+		if (!$this->zone_id)
 		{
 			$this->setError(JText::_('No zone ID provided'));
 			return false;
@@ -186,7 +186,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * Construct an SQL statement based on the array of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build SQL from
 	 * @return     string SQL
 	 */
@@ -194,7 +194,7 @@ class MwZoneLocations extends JTable
 	{
 		$where = array();
 
-		if (isset($filters['zone_id']) && $filters['zone_id'] != '') 
+		if (isset($filters['zone_id']) && $filters['zone_id'] != '')
 		{
 			$where[] = "c.`zone_id`=" . $this->_db->Quote($filters['zone_id']);
 		}
@@ -213,7 +213,7 @@ class MwZoneLocations extends JTable
 
 	/**
 	 * Get a list of records
-	 * 
+	 *
 	 * @param      string $what    Data to return
 	 * @param      array  $filters Filters to build SQL from
 	 * @return     mixed
@@ -240,17 +240,17 @@ class MwZoneLocations extends JTable
 			default:
 				$query  = "SELECT c.*, t.zone " . $this->_buildQuery($filters);
 
-				if (!isset($filters['sort']) || !$filters['sort']) 
+				if (!isset($filters['sort']) || !$filters['sort'])
 				{
 					$filters['sort'] = 'c.zone_id';
 				}
-				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 				{
 					$filters['sort_Dir'] = 'ASC';
 				}
 				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				if (isset($filters['limit']) && $filters['limit'] != 0)
 				{
 					$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 				}

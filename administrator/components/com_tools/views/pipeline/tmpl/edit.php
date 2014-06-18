@@ -12,7 +12,7 @@ JToolBarHelper::help('tool');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
 	if (pressbutton == 'cancel') {

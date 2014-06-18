@@ -53,7 +53,7 @@ abstract class JInstallerHelper
 		JPluginHelper::importPlugin('installer');
 		$dispatcher	= JDispatcher::getInstance();
 		$results = $dispatcher->trigger('onInstallerBeforePackageDownload', array(&$url, &$headers));
-		
+
 		try
 		{
 			$response = $http->get($url, $headers);

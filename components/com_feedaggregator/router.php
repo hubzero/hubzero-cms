@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'FeedaggregatorBuildRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -54,11 +54,11 @@ function FeedaggregatorBuildRoute(&$query)
 		else if (($query['task'] == 'generateFeed') && ($query['controller'] == 'posts'))
 		{
 			$segments[0] = 'feed.rss';
-			
+
 			unset($query['task']);
 			unset($query['controller']);
-		} 
-	} 
+		}
+	}
 	else if (isset($query['controller']))
 	{
 		if($query['controller'] == 'feeds')
@@ -67,15 +67,15 @@ function FeedaggregatorBuildRoute(&$query)
 			unset($query['controller']);
 		}
 	}
-	
+
 	return $segments;
 }
 
 /**
  * Short description for 'FeedaggregatorParseRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -107,9 +107,9 @@ function FeedaggregatorParseRoute($segments)
 			case 'feeds':
 				$vars['controller'] = 'feeds';
 				$vars['task'] = 'display';
-		} // end switch	
+		} // end switch
 	}
-	
+
 	return $vars;
 }
 

@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'FeedbackBuildRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -43,7 +43,7 @@ function FeedbackBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
@@ -54,9 +54,9 @@ function FeedbackBuildRoute(&$query)
 
 /**
  * Short description for 'FeedbackParseRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -64,7 +64,7 @@ function FeedbackParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}
@@ -75,7 +75,7 @@ function FeedbackParseRoute($segments)
 		$vars['controller'] = 'tickets';
 		$vars['task'] = 'new';
 	}
-	else 
+	else
 	{
 		$vars['task'] = $segments[0];
 	}

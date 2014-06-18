@@ -35,11 +35,11 @@ $config = JFactory::getConfig();
 $juser = JFactory::getUser();
 
 //do we want to include jQuery
-if (JPluginHelper::isEnabled('system', 'jquery')) 
+if (JPluginHelper::isEnabled('system', 'jquery'))
 {
 	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
-} 
-else 
+}
+else
 {
 	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 }
@@ -98,11 +98,11 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<a name="header"></a>
 				<h1>
 					<a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-						<?php echo $config->getValue('config.sitename'); ?> 
+						<?php echo $config->getValue('config.sitename'); ?>
 						<span id="tagline">powered by HUBzero&reg;</span>
 					</a>
 				</h1>
-		
+
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
 	if (!$juser->get('guest')) {

@@ -38,35 +38,35 @@ class WishAttachment extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $wish = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $filename = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,17 +77,17 @@ class WishAttachment extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if ($this->wish == NULL) 
+		if ($this->wish == NULL)
 		{
 			$this->setError(JText::_('Error: wish not found.'));
 			return false;
 		}
-		if (trim($this->filename) == '') 
+		if (trim($this->filename) == '')
 		{
 			$this->setError(JText::_('Error: attachment not found.'));
 			return false;
@@ -98,9 +98,9 @@ class WishAttachment extends JTable
 
 	/**
 	 * Short description for 'getID'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getID()
@@ -112,7 +112,7 @@ class WishAttachment extends JTable
 
 	/**
 	 * Look for attachment string and replace with file/link
-	 * 
+	 *
 	 * @param      string $text Text to parse
 	 * @return     string
 	 */
@@ -123,62 +123,62 @@ class WishAttachment extends JTable
 
 	/**
 	 * Find a record and generate a linkt o the file
-	 * 
+	 *
 	 * @param      array $matches preg_replace_callback matches
 	 * @return     string HTML
 	 */
 	public function getAttachment($matches)
 	{
 		$match = $matches[0];
-		
+
 		if (!$match)
 		{
 			return '';
 		}
-		
+
 		$tokens = explode('#', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT a.filename, a.description, a.wish, l.category, l.referenceid 
-							FROM $this->_tbl AS a 
-							JOIN #__wishlist_item AS i ON i.id=a.wish 
-							JOIN #__wishlist AS l ON l.id=i.wishlist 
+		$this->_db->setQuery("SELECT a.filename, a.description, a.wish, l.category, l.referenceid
+							FROM $this->_tbl AS a
+							JOIN #__wishlist_item AS i ON i.id=a.wish
+							JOIN #__wishlist AS l ON l.id=i.wishlist
 							WHERE a.id=" . $id);
 		$a = $this->_db->loadRow();
 
-		if ($this->output == 'web') 
+		if ($this->output == 'web')
 		{
-			if (is_file($this->uppath . DS . $a[0])) 
+			if (is_file($this->uppath . DS . $a[0]))
 			{
 				$path = rtrim(JRoute::_('index.php?option=com_wishlist&task=wish&category='.$a[3].'&rid='.$a[4].'&wishid='.$a[2]), DS);
 
-				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0])) 
+				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0]))
 				{
 					$size = getimagesize($this->uppath . DS . $a[0]);
-					if ($size[0] > 300) 
+					if ($size[0] > 300)
 					{
 						$img = '<a href="' . $path . '/' . $a[0] . '" rel="lightbox" title="' . $a[1] . '"><img src="' . $path . '/' . $a[0] . '" alt="' . $a[1] . '" width="300" /></a>';
-					} 
-					else 
+					}
+					else
 					{
 						$img = '<img src="' . $path . '/' . $a[0] . '" alt="' . $a[1] . '" />';
 					}
 					$this->description = $img;
-				} 
-				else 
+				}
+				else
 				{
 					$html  = '<a href="' . $path . '/' . $a[0] . '" title="' . $a[1] . '">';
 					$html .= ($a[1]) ? $a[1] : $a[0];
 					$html .= '</a>';
 					$this->description = $html;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$this->description = ''; //'[attachment #' . $id . ' not found]';
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->description = $this->webpath . '/' . $a[0];
 		}
@@ -188,7 +188,7 @@ class WishAttachment extends JTable
 
 	/**
 	 * Remove a record
-	 * 
+	 *
 	 * @param      string  $filename File to remove
 	 * @param      integer $wish     Wish ID
 	 * @return     mixed String if error, True otherwise
@@ -196,7 +196,7 @@ class WishAttachment extends JTable
 	public function deleteAttachment($filename, $wish)
 	{
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			return $this->_db->getErrorMsg();
 		}
@@ -205,18 +205,18 @@ class WishAttachment extends JTable
 
 	/**
 	 * Get a record based off of filename and wish ID
-	 * 
+	 *
 	 * @param      string  $filename File name
 	 * @param      integer $wish     Wish ID
 	 * @return     mixed False if error, object otherwise
 	 */
 	public function loadAttachment($filename=NULL, $wish=NULL)
 	{
-		if ($filename === NULL) 
+		if ($filename === NULL)
 		{
 			return false;
 		}
-		if ($wish === NULL) 
+		if ($wish === NULL)
 		{
 			return false;
 		}

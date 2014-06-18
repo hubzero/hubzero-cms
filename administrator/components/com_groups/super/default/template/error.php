@@ -2,7 +2,7 @@
 /**
  * Error Template
  *
- * Template used for Special Groups. Will now be auto-created 
+ * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
  * @author 		Christopher Smoak
@@ -19,15 +19,15 @@ JFactory::getDocument()
 	->addScript( $base . DS . 'assets/js/main.js' );
 ?>
 <script>
-	jQuery(document).ready(function(jq) { 
-		HUB.Modules.ReportProblems.initialize('.report'); 
+	jQuery(document).ready(function(jq) {
+		HUB.Modules.ReportProblems.initialize('.report');
 	});
 </script>
 <div class="super-group-body-wrap group-<?php echo $this->group->get('cn'); ?>">
 	<div class="super-group-body error-page">
 		<div class="error-message"><?php echo $this->error->get('message'); ?></div>
 		<div class="error-num"><?php echo $this->error->get('code'); ?></div>
-		
+
 		<ul class="error-options cf">
 			<li>
 				<a class="back" title="Go Back" href="javascript: history.go(-1);">Back</a>

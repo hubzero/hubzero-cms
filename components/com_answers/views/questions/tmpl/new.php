@@ -76,7 +76,7 @@ $this->css();
 			<input type="hidden" name="fields[state]" value="0" />
 
 			<label for="field-anonymous">
-				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 				<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 			</label>
 
@@ -105,14 +105,14 @@ $this->css();
 						stripslashes($this->question->get('question', '')), // content
 						35,  // cols
 						10,   // rows
-						'field-question'   // id 
+						'field-question'   // id
 					);
 				?>
 			</label>
 		<?php if ($this->config->get('banking')) { ?>
 			<label for="field-reward">
 				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
+				<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
 				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>

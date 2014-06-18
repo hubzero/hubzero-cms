@@ -33,26 +33,26 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WishlistHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('Wishlist Manager'), 'wishlist.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -60,7 +60,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('lists');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -75,14 +75,14 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label> 
+			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label>
 			<select name="category" id="filter-category">
 				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
 				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
@@ -134,13 +134,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		break;
 	}
 
-	if (!$row->public) 
+	if (!$row->public)
 	{
 		$color_access = 'access private';
 		$task_access = 'accessregistered';
 		$groupname = 'Private';
-	} 
-	else 
+	}
+	else
 	{
 		$color_access = 'access public';
 		$task_access = 'accesspublic';

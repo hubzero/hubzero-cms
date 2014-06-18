@@ -40,7 +40,7 @@ class plgSupportPublications extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -54,9 +54,9 @@ class plgSupportPublications extends JPlugin
 
 	/**
 	 * Short description for 'getReportedItem'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $refid Parameter description (if any) ...
 	 * @param      string $category Parameter description (if any) ...
 	 * @param      string $parent Parameter description (if any) ...
@@ -64,30 +64,30 @@ class plgSupportPublications extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'pubreview' && $category != 'pubreviewcomment') 
+		if ($category != 'pubreview' && $category != 'pubreviewcomment')
 		{
 			return null;
 		}
 
-		if ($category == 'pubreview') 
+		if ($category == 'pubreview')
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author, 
-						NULL as subject, 'pubreview' as parent_category, rr.anonymous as anon 
-						FROM #__publication_ratings AS rr 
+			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author,
+						NULL as subject, 'pubreview' as parent_category, rr.anonymous as anon
+						FROM #__publication_ratings AS rr
 						WHERE rr.id=" . $refid;
-		} 
-		else if ($category == 'pubreviewcomment') 
+		}
+		else if ($category == 'pubreviewcomment')
 		{
-			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author, 
-						NULL as subject, 'pubreviewcomment' as parent_category, rr.anonymous as anon 
-						FROM #__item_comments AS rr 
+			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
+						NULL as subject, 'pubreviewcomment' as parent_category, rr.anonymous as anon
+						FROM #__item_comments AS rr
 						WHERE rr.id=" . $refid;
 		}
 
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $key => $row)
 			{
@@ -103,7 +103,7 @@ class plgSupportPublications extends JPlugin
 
 	/**
 	 * Looks up ancestors to find root element
-	 * 
+	 *
 	 * @param      integer $parentid ID to check for parents of
 	 * @param      string  $category Element type (determines table to look in)
 	 * @return     integer
@@ -113,20 +113,20 @@ class plgSupportPublications extends JPlugin
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
-		if ($category == 'pubreviewcomment') 
+		if ($category == 'pubreviewcomment')
 		{
 			$pdata = $this->parent($parentid);
 			$category = $pdata->item_type;
 			$refid = $pdata->item_id;
 
-			if ($pdata->category == 'pubreviewcomment') 
+			if ($pdata->category == 'pubreviewcomment')
 			{
 				// Yet another level?
 				$pdata = $this->parent($pdata->parent);
 				$category = $pdata->item_type;
 				$refid = $pdata->item_id;
 
-				if ($pdata->category == 'pubreviewcomment') 
+				if ($pdata->category == 'pubreviewcomment')
 				{
 					// Yet another level?
 					$pdata = $this->parent($pdata->parent);
@@ -136,7 +136,7 @@ class plgSupportPublications extends JPlugin
 			}
 		}
 
-		if ($category == 'review') 
+		if ($category == 'review')
 		{
 			$database->setQuery("SELECT publication_id FROM #__publication_ratings WHERE id=" . $refid);
 		 	return $database->loadResult();
@@ -145,7 +145,7 @@ class plgSupportPublications extends JPlugin
 
 	/**
 	 * Retrieve parent element
-	 * 
+	 *
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     object
 	 */
@@ -161,14 +161,14 @@ class plgSupportPublications extends JPlugin
 
 	/**
 	 * Returns the appropriate text for category
-	 * 
+	 *
 	 * @param      string  $category Element type (determines text)
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     string
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'pubreview' && $category != 'pubreviewcomment') 
+		if ($category != 'pubreview' && $category != 'pubreviewcomment')
 		{
 			return null;
 		}
@@ -187,7 +187,7 @@ class plgSupportPublications extends JPlugin
 
 	/**
 	 * Removes an item reported as abusive
-	 * 
+	 *
 	 * @param      integer $referenceid ID of the database table row
 	 * @param      integer $parentid    If the element has a parent element
 	 * @param      string  $category    Element type (determines table to look in)
@@ -196,7 +196,7 @@ class plgSupportPublications extends JPlugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'pubreview' && $category != 'pubreviewcomment') 
+		if ($category != 'pubreview' && $category != 'pubreviewcomment')
 		{
 			return null;
 		}
@@ -241,7 +241,7 @@ class plgSupportPublications extends JPlugin
 				$pub->load($parentid);
 				$pub->calculateRating();
 				$pub->updateRating();
-				if (!$pub->store()) 
+				if (!$pub->store())
 				{
 					$this->setError($pub->getError());
 					return false;
@@ -274,7 +274,7 @@ class plgSupportPublications extends JPlugin
 					$comment->content = '[[Span(' . $msg . ', class="warning")]]';
 				}
 
-				if (!$comment->store()) 
+				if (!$comment->store())
 				{
 					$this->setError($comment->getError());
 					return false;

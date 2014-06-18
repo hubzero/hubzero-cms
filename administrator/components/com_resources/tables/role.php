@@ -38,63 +38,63 @@ class ResourcesContributorRole extends JTable
 {
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $alias = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $title = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $state  = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -105,14 +105,14 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -130,7 +130,7 @@ class ResourcesContributorRole extends JTable
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
-		else 
+		else
 		{
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
@@ -141,17 +141,17 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      mixed $oid String (alias) or integer (ID)
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $reset = true)
 	{
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
-		
+
 		if (is_numeric($oid))
 		{
 			return parent::load($oid);
@@ -159,11 +159,11 @@ class ResourcesContributorRole extends JTable
 
 		$oid = trim($oid);
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -172,7 +172,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -186,7 +186,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -194,17 +194,17 @@ class ResourcesContributorRole extends JTable
 	{
 		$query  = "SELECT r.* " . $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
@@ -215,7 +215,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -224,13 +224,13 @@ class ResourcesContributorRole extends JTable
 		$query  = "FROM $this->_tbl AS r";
 
 		$where = array();
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "r.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(r.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(r.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 				OR LOWER(r.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -245,13 +245,13 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Get all the roles associated with a type
-	 * 
+	 *
 	 * @param      integer $type_id Type ID
 	 * @return     array
 	 */
 	public function getRolesForType($type_id=null)
 	{
-		if ($type_id === null) 
+		if ($type_id === null)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -259,7 +259,7 @@ class ResourcesContributorRole extends JTable
 
 		$type_id = intval($type_id);
 
-		$query = "SELECT r.id, r.title, r.alias 
+		$query = "SELECT r.id, r.title, r.alias
 					FROM $this->_tbl AS r
 					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
 					ORDER BY r.title ASC";
@@ -270,7 +270,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Get all the types associated with a role
-	 * 
+	 *
 	 * @param      integer $role_id Role ID
 	 * @return     array
 	 */
@@ -281,7 +281,7 @@ class ResourcesContributorRole extends JTable
 			$role_id = $this->id;
 		}
 
-		if (!$role_id) 
+		if (!$role_id)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -289,7 +289,7 @@ class ResourcesContributorRole extends JTable
 
 		$role_id = intval($role_id);
 
-		$query = "SELECT r.id, r.type, r.alias 
+		$query = "SELECT r.id, r.type, r.alias
 					FROM #__resource_types AS r
 					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
 					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
@@ -301,7 +301,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Associated types with a role
-	 * 
+	 *
 	 * @param      integer $role_id Role ID
 	 * @param      array   $current Current types associated
 	 * @return     boolean True on success
@@ -322,7 +322,7 @@ class ResourcesContributorRole extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $oid Record to delete
 	 * @return     boolean True on success
 	 */

@@ -41,14 +41,14 @@ class WishlistModelAttachment extends WishlistModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'WishAttachment';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
@@ -103,7 +103,7 @@ class WishlistModelAttachment extends WishlistModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -121,7 +121,7 @@ class WishlistModelAttachment extends WishlistModelAbstract
 			$key = $wishid . '_' . $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $wishid);
 		}
@@ -157,7 +157,7 @@ class WishlistModelAttachment extends WishlistModelAbstract
 	}
 
 	/**
-	 * Checks the file type and determines if it's in the 
+	 * Checks the file type and determines if it's in the
 	 * whitelist of allowed extensions
 	 *
 	 * @return     boolean True if allowed file type
@@ -167,7 +167,7 @@ class WishlistModelAttachment extends WishlistModelAbstract
 		jimport('joomla.filesystem.file');
 		$ext = strtolower(JFile::getExt($this->get('filename')));
 
-		if (!in_array($ext, explode(',', $this->config('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz')))) 
+		if (!in_array($ext, explode(',', $this->config('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'))))
 		{
 			return false;
 		}

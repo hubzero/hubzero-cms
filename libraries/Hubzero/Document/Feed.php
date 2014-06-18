@@ -170,56 +170,56 @@ class Feed extends \JDocument
 
 	/**
 	 * Description for 'itunes_summary'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_summary = '';
 
 	/**
 	 * Description for 'itunes_category'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_category = '';
 
 	/**
 	 * Description for 'itunes_subcategories'
-	 * 
+	 *
 	 * @public unknown
 	 */
 	public $itunes_subcategories = null;
 
 	/**
 	 * Description for 'itunes_owner'
-	 * 
+	 *
 	 * @public unknown
 	 */
 	public $itunes_owner = null;
 
 	/**
 	 * Description for 'itunes_explicit'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_explicit = 'no';
 
 	/**
 	 * Description for 'itunes_keywords'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_keywords = '';
 
 	/**
 	 * Description for 'itunes_author'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_author = '';
 
 	/**
 	 * Description for 'itunes_image'
-	 * 
+	 *
 	 * @public unknown
 	 */
 	public $itunes_image = null;
@@ -262,7 +262,7 @@ class Feed extends \JDocument
 
 		// Instantiate feed renderer and set the mime encoding
 		$renderer = $this->loadXRenderer(($type) ? $type : 'Rss');
-		if (!($renderer instanceof \JDocumentRenderer)) 
+		if (!($renderer instanceof \JDocumentRenderer))
 		{
 			\JError::raiseError(404, \JText::_('Resource Not Found'));
 		}
@@ -274,7 +274,7 @@ class Feed extends \JDocument
 		$data .= '<!-- generator="' . $this->getGenerator() . '" -->' . "\n";
 
 		// Generate stylesheet links
-		foreach ($this->_styleSheets as $src => $attr) 
+		foreach ($this->_styleSheets as $src => $attr)
 		{
 			$data .= '<?xml-stylesheet href="' . $src . '" type="' . $attr['mime'] . '"?>' . "\n";
 		}
@@ -299,20 +299,20 @@ class Feed extends \JDocument
 		$null  = null;
 		$class = __NAMESPACE__ . '\\Renderer\\' . ucfirst(strtolower($type));
 
-		if (!class_exists($class)) 
+		if (!class_exists($class))
 		{
 			$path = __DIR__ . DS . 'Renderer' . DS . ucfirst(strtolower($type)) . '.php';
-			if (file_exists($path)) 
+			if (file_exists($path))
 			{
 				require_once($path);
-			} 
-			else 
+			}
+			else
 			{
 				throw new \InvalidArgumentException(\JText::_('Unable to load renderer class'), 500);
 			}
 		}
 
-		if (!class_exists($class)) 
+		if (!class_exists($class))
 		{
 			return $null;
 		}

@@ -64,7 +64,7 @@ $subtitle .= ' "' . $this->project->title. '"';
 // Get the actual message
 $comment = '';
 
-if ($this->config->get('restricted_data', 0)) 
+if ($this->config->get('restricted_data', 0))
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') . '</li>';
@@ -72,11 +72,11 @@ if ($this->config->get('restricted_data', 0))
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') . '</li>';
 	if ($this->params->get('followup'))
 	{
-		$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') . '</li>';	
+		$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') . '</li>';
 	}
 	$comment .= '</ul>';
 }
-if ($this->config->get('grantinfo', 0)) 
+if ($this->config->get('grantinfo', 0))
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
 	$comment .= '<li>' . JText::_('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') . '</li>';
@@ -86,23 +86,23 @@ if ($this->config->get('grantinfo', 0))
 	$comment .= '</ul>';
 }
 
-if ($this->config->get('ginfo_group', 0)) 
+if ($this->config->get('ginfo_group', 0))
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_SPS') . '<br />';
 	$comment .= $browseLink . '?reviewer=sponsored' . '</p>';
 }
 
-if ($this->config->get('sdata_group', 0)) 
+if ($this->config->get('sdata_group', 0))
 {
 	$comment .= '<p>' . JText::_('COM_PROJECTS_EMAIL_LINK_HIPAA') . '<br />';
 	$comment .= $browseLink . '?reviewer=sensitive' . '</p>';
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group 
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$owner   = $this->project->owned_by_group
+		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
-		
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get project thumbnail

@@ -283,7 +283,7 @@ class Migration20130924000002Core extends Base
 						'user'     => $config->getValue('user'),
 						'password' => $config->getValue('password'),
 						'database' => $config->getValue('db')
-					) 
+					)
 				);
 
 				$table = new \JTableCategory($database);

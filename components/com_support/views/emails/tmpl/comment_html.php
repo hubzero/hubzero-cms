@@ -303,7 +303,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 													<?php
-														if ($this->comment->changelog && count($this->comment->changelog) >  0) 
+														if ($this->comment->changelog && count($this->comment->changelog) >  0)
 														{
 													?>
 														<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
@@ -339,7 +339,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 														</table>
 													<?php
 														}
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 														{
 															$comment = str_replace("<br />", '', $comment);
 															$comment = $this->escape($comment);

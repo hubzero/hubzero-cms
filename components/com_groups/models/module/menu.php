@@ -35,24 +35,24 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTableModuleMenu';
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     $
 	 * @return     void
 	 */
 	public function __construct( $oid )
 	{
 		$this->_db = JFactory::getDBO();
-		
+
 		$this->_tbl = new GroupsTableModuleMenu($this->_db);
-		
+
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load($oid);
@@ -62,27 +62,27 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	public function getPageTitle()
 	{
 		if ($this->get('pageid') == 0)
 		{
 			return  JText::_('All Pages');
 		}
-		
+
 		if ($this->get('pageid') == -1)
 		{
 			return  JText::_('No Pages');
 		}
-		
+
 		// new group page
 		$tbl = new GroupsTablePage($this->_db);
-		
+
 		//load page
 		$tbl->load( $this->get('pageid') );
-		
+
 		//return page title
 		return $tbl->get('title');
 	}
-	
+
 }

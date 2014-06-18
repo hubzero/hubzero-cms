@@ -40,7 +40,7 @@ class plgUserLdap extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -76,7 +76,7 @@ class plgUserLdap extends JPlugin
 		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteUser(" . $user['id'] . ")");
 		\Hubzero\Utility\Ldap::syncUser($user['id']);
 	}
-	
+
 	/**
 	 * Method is called after user data is stored in the database
 	 *
@@ -98,7 +98,7 @@ class plgUserLdap extends JPlugin
 		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteProfile(" . $user->get('uidNumber') . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->get('uidNumber'));
 	}
-	
+
 	/**
 	 * Method is called after password data is stored in the database
 	 *
@@ -120,7 +120,7 @@ class plgUserLdap extends JPlugin
 		//JFactory::getLogger()->debug("plgUserLdap::onAfterDeleteUser(" . $user->user_id . ")");
 		\Hubzero\Utility\Ldap::syncUser($user->user_id);
 	}
-	
+
 	/**
 	 * Method is called after group data is stored in the database
 	 *
@@ -131,7 +131,7 @@ class plgUserLdap extends JPlugin
 		//JFactory::getLogger()->debug("plgUserLdap::onAfterStoreGroup(" . $group->cn . ")");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
-	
+
 	/**
 	 * Method is called after group data is deleted from the database
 	 *
@@ -141,5 +141,5 @@ class plgUserLdap extends JPlugin
 	{
 		//JFactory::getLogger()->debug("onAfterDeleteGroup($group)");
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
-	}	
+	}
 }

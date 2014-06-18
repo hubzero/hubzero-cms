@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -41,9 +41,9 @@ function membersBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
-		if (substr($query['id'], 0, 1) == '-') 
+		if (substr($query['id'], 0, 1) == '-')
 		{
 			$query['id'] = 'n' . substr($query['id'], 1);
 		}
@@ -51,25 +51,25 @@ function membersBuildRoute(&$query)
 		unset($query['id']);
 	}
 
-	if (!empty($query['active'])) 
+	if (!empty($query['active']))
 	{
 		$segments[] = $query['active'];
 		unset($query['active']);
 
-		if (!empty($query['task'])) 
+		if (!empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
 	}
 
-	if (!empty($query['controller']) && $query['controller'] == 'register') 
+	if (!empty($query['controller']) && $query['controller'] == 'register')
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
 
-	if (empty($query['id']) && !empty($query['task'])) 
+	if (empty($query['id']) && !empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
@@ -80,7 +80,7 @@ function membersBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -88,18 +88,18 @@ function membersParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		switch ($segments[0])
 		{
 			case 'register':
 				$vars['controller'] = $segments[0];
-				if (isset($segments[1])) 
+				if (isset($segments[1]))
 				{
 					$vars['task'] = $segments[1];
 				}
@@ -129,59 +129,59 @@ function membersParseRoute($segments)
 				$vars['task'] = 'browse';
 			break;
 			default:
-				if ($segments[0]{0} == 'n') 
+				if ($segments[0]{0} == 'n')
 				{
 					$vars['id'] = '-' . substr($segments[0],1);
-				} 
-				else 
+				}
+				else
 				{
 					$vars['id'] = $segments[0];
 				}
 			break;
-		} 
+		}
 	}
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
 		$userTasks = array(
-			'edit', 
-			'changepassword', 
-			'raiselimit', 
-			'cancel', 
-			'deleteimg', 
-			'upload', 
-			'ajaxupload', 
-			'doajaxupload', 
-			'ajaxuploadsave', 
-			'getfileatts', 
+			'edit',
+			'changepassword',
+			'raiselimit',
+			'cancel',
+			'deleteimg',
+			'upload',
+			'ajaxupload',
+			'doajaxupload',
+			'ajaxuploadsave',
+			'getfileatts',
 			'promo-opt-out'
 		);
-		if (in_array($segments[1], $userTasks)) 
+		if (in_array($segments[1], $userTasks))
 		{
 			$vars['task'] = $segments[1];
 			$mediaTasks = array(
-				'deleteimg', 
-				'upload', 
-				'ajaxupload', 
-				'doajaxupload', 
-				'ajaxuploadsave', 
+				'deleteimg',
+				'upload',
+				'ajaxupload',
+				'doajaxupload',
+				'ajaxuploadsave',
 				'getfileatts'
 			);
-			if (in_array($segments[1], $mediaTasks)) 
+			if (in_array($segments[1], $mediaTasks))
 			{
 				$vars['controller'] = 'media';
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$vars['active'] = $segments[1];
 
-			if (isset($segments[2])) 
+			if (isset($segments[2]))
 			{
-				if (trim($segments[1]) == 'profile') 
+				if (trim($segments[1]) == 'profile')
 				{
 					$vars['task'] = $segments[2];
-				} 
-				else 
+				}
+				else
 				{
 					$vars['action'] = $segments[2];
 				}
@@ -192,8 +192,8 @@ function membersParseRoute($segments)
 	$parts = explode('/', $_SERVER['REQUEST_URI']);
 	$file = array_pop($parts);
 
-	if (substr(strtolower($file), 0, 5) == 'image' 
-	 || substr(strtolower($file), 0, 4) == 'file') 
+	if (substr(strtolower($file), 0, 5) == 'image'
+	 || substr(strtolower($file), 0, 4) == 'file')
 	{
 		$vars['task'] = 'download';
 		$vars['controller'] = 'media';

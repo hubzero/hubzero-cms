@@ -43,14 +43,14 @@ $this->css()
 	$user->load($this->wish->get('proposed_by'));
 
 	$name = JText::_('COM_WISHLIT_ANONYMOUS');
-	if ($this->wish->get('anonymous') != 1) 
+	if ($this->wish->get('anonymous') != 1)
 	{
 		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->wish->get('proposed_by')) . '">' . $this->wish->proposer('name') . '</a>';
 	}
 
 	$assigned = ($this->wish->get('assigned') && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->get('assignedto').'</a>' : '';
 
-	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0) 
+	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0)
 	{
 		$assigned = '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.JText::_('unassigned').'</a>';
 	}
@@ -146,9 +146,9 @@ $this->css()
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
 						<a class="permalink" href="<?php echo JRoute::_($this->wish->link()); ?>" rel="bookmark" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">
-							<span class="entry-date-at"><?php echo JText::_('COM_WISHLIST_AT'); ?></span> 
-							<span class="time"><time datetime="<?php echo $this->wish->proposed(); ?>"><?php echo $this->wish->proposed('time'); ?></time></span> 
-							<span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span> 
+							<span class="entry-date-at"><?php echo JText::_('COM_WISHLIST_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $this->wish->proposed(); ?>"><?php echo $this->wish->proposed('time'); ?></time></span>
+							<span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $this->wish->proposed(); ?>"><?php echo $this->wish->proposed('date'); ?></time></span>
 						</a>
 					</p><!-- / .wish-title -->
@@ -174,7 +174,7 @@ $this->css()
 				</div><!-- / .wish-content -->
 
 				<?php
-					if ($this->wishlist->access('manage')) 
+					if ($this->wishlist->access('manage'))
 					{
 						$eligible = array_merge($this->wishlist->owners('individuals'), $this->wishlist->owners('advisory'));
 						$eligible = array_unique($eligible);
@@ -182,10 +182,10 @@ $this->css()
 						$voters = ($this->wish->get('num_votes') <= count($eligible)) ? count($eligible) : $this->wish->get('num_votes');
 						//$html .= "\t\t\t".'<div class="wishpriority">'.JText::_('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.JText::_('NOTICE_OUT_OF').' '.$voters.' '.JText::_('VOTES').')</span>';
 						$html = '';
-						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted()) 
+						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
 						{
-							$html .= ($this->wish->get('due') <= JFactory::getDate()->format('Y-m-d H:i:s')) 
-									? '<span class="overdue"><a href="'.JRoute::_($this->wish->link('editplan')).'">'.JText::_('COM_WISHLIST_OVERDUE') 
+							$html .= ($this->wish->get('due') <= JFactory::getDate()->format('Y-m-d H:i:s'))
+									? '<span class="overdue"><a href="'.JRoute::_($this->wish->link('editplan')).'">'.JText::_('COM_WISHLIST_OVERDUE')
 									: '<span class="due"><a href="'.JRoute::_($this->wish->link('editplan')).'">'.JText::_('COM_WISHLIST_WISH_DUE_IN').' '.WishlistHTML::nicetime($this->wish->get('due'));
 							$html .= '</a></span>';
 						}
@@ -247,7 +247,7 @@ $this->css()
 					<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="rankingform" id="rankForm">
 						<table class="wish-priority" id="priority">
 							<caption>
-								<?php echo JText::_('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->get('ranking'); ?></strong> 
+								<?php echo JText::_('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->get('ranking'); ?></strong>
 								<span>(<?php echo $this->wish->get('num_votes', 0).' '.JText::_('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.JText::_('COM_WISHLIST_VOTES'); ?>)</span>
 							</caption>
 							<thead>
@@ -284,15 +284,15 @@ $this->css()
 									<th><?php echo JText::_('COM_WISHLIST_IMPORTANCE'); ?></th>
 								<?php
 								// My opinion is available for list owners/advisory committee only
-								if ($this->wishlist->access('manage')) 
+								if ($this->wishlist->access('manage'))
 								{
 									$importance = array(
 										''    => JText::_('COM_WISHLIST_SELECT_IMP'),
 										'0.0' => '0 -' . JText::_('COM_WISHLIST_RUBBISH'),
 										'1'   => '1 - ' . JText::_('COM_WISHLIST_MAYBE'),
 										'2'   => '2 - ' . JText::_('COM_WISHLIST_INTERESTING'),
-										'3'   => '3 - ' . JText::_('COM_WISHLIST_GOODIDEA'), 
-										'4'   => '4 - ' . JText::_('COM_WISHLIST_IMPORTANT'), 
+										'3'   => '3 - ' . JText::_('COM_WISHLIST_GOODIDEA'),
+										'4'   => '4 - ' . JText::_('COM_WISHLIST_IMPORTANT'),
 										'5'   => '5 - ' . JText::_('COM_WISHLIST_CRITICAL')
 									);
 									?>
@@ -301,14 +301,14 @@ $this->css()
 									</td>
 									<?php
 								}
-								if ($this->wish->rankings()->total() == 0) 
+								if ($this->wish->rankings()->total() == 0)
 								{
 								?>
 									<td><?php echo JText::_('COM_WISHLIST_NA'); ?></td>
 								<?php
 								}
-								else 
-								{ 
+								else
+								{
 									?>
 									<td><?php echo WishlistHtml::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance'); ?></td>
 									<?php
@@ -332,7 +332,7 @@ $this->css()
 									<th><?php echo JText::_('COM_WISHLIST_EFFORT'); ?></th>
 								<?php
 								// My opinion is available for list owners/advisory committee only
-								if ($this->wishlist->access('manage')) 
+								if ($this->wishlist->access('manage'))
 								{
 									$effort = array(
 										''    => JText::_('COM_WISHLIST_SELECT_EFFORT'),
@@ -341,27 +341,27 @@ $this->css()
 										'3'   => JText::_('COM_WISHLIST_TWODAYS'),
 										'2'   => JText::_('COM_WISHLIST_ONEWEEK'),
 										'1'   => JText::_('COM_WISHLIST_TWOWEEKS'),
-										'0.0' => JText::_('COM_WISHLIST_TWOMONTHS'), 
+										'0.0' => JText::_('COM_WISHLIST_TWOMONTHS'),
 										'6'   => JText::_('COM_WISHLIST_DONT_KNOW')
 									);
 									?>
 									<td>
 										<?php echo WishlistHtml::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices'); ?>
 									</td>
-									<?php 
+									<?php
 								}
 
-								if ($this->wish->rankings()->total() == 0) 
+								if ($this->wish->rankings()->total() == 0)
 								{
 									?>
 									<td><?php echo JText::_('COM_WISHLIST_NA'); ?></td>
 									<?php
 								}
-								else 
-								{ 
+								else
+								{
 									if ($this->wish->get('num_votes', 0)
 									 && $this->wish->get('num_skipped_votes', 0)
-									 && $this->wish->get('num_votes') == $this->wish->get('num_skipped_votes')) 
+									 && $this->wish->get('num_votes') == $this->wish->get('num_skipped_votes'))
 									{
 										$this->wish->set('average_effort', 7);
 									}
@@ -405,7 +405,7 @@ $this->css()
 							<a class="btn btn-danger" href="<?php echo JRoute::_($this->wish->link('withdraw')); ?>">
 								<?php echo JText::_('COM_WISHLIST_YES'); ?>
 							</a>
-						</span> 
+						</span>
 						<span class="say_no">
 							<a class="btn btn-secondary" href="<?php echo JRoute::_($this->wish->link()); ?>">
 								<?php echo JText::_('COM_WISHLIST_NO'); ?>
@@ -431,7 +431,7 @@ $this->css()
 							<input type="hidden" id="wishid" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
 							<label for="field-status-pending">
-								<input type="radio" name="status" id="field-status-pending" value="pending" <?php echo ($this->wish->isOpen()) ? 'checked="checked"' : ''; ?> /> 
+								<input type="radio" name="status" id="field-status-pending" value="pending" <?php echo ($this->wish->isOpen()) ? 'checked="checked"' : ''; ?> />
 								<?php echo JText::_('COM_WISHLIST_WISH_STATUS_PENDING'); ?>
 							</label>
 
@@ -441,12 +441,12 @@ $this->css()
 							</label>
 
 							<label for="field-status-rejected">
-								<input type="radio" name="status" id="field-status-rejected" value="rejected" <?php echo ($this->wish->isRejected()) ? 'checked="checked"' : ''; ?> /> 
+								<input type="radio" name="status" id="field-status-rejected" value="rejected" <?php echo ($this->wish->isRejected()) ? 'checked="checked"' : ''; ?> />
 								<?php echo JText::_('COM_WISHLIST_WISH_STATUS_REJECTED'); ?>
 							</label>
 
 							<label<?php if ($this->wishlist->get('category') == 'resource') { echo ' class="grantstatus"'; } ?>>
-								<input type="radio" name="status" value="granted" <?php echo ($this->wish->get('status') == 1) ? 'checked="checked"' : ''; echo ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) ? 'disabled="disabled"' : ''; ?> /> 
+								<input type="radio" name="status" value="granted" <?php echo ($this->wish->get('status') == 1) ? 'checked="checked"' : ''; echo ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) ? 'disabled="disabled"' : ''; ?> />
 								<?php echo JText::_('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
 							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) { ?>
 								<span class="forbidden"> - <?php echo JText::_('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
@@ -465,7 +465,7 @@ $this->css()
 							</label>
 
 							<p>
-								<input type="submit" value="<?php echo strtolower(JText::_('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" /> 
+								<input type="submit" value="<?php echo strtolower(JText::_('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
 
 								<span class="cancelaction">
 									<a href="<?php echo JRoute::_($this->wish->link()); ?>">
@@ -490,7 +490,7 @@ $this->css()
 
 								<p class="summary">
 									<strong>
-										<?php 
+										<?php
 										$bonus = $this->wish->get('bonus', 0);
 										echo $this->wish->get('bonusgivenby') .' '.JText::_('user(s)').' '.JText::_('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL').' '.$bonus.' '.JText::_('COM_WISHLIST_POINTS').' '.JText::_('COM_WISHLIST_WISH_BONUS_AS_BONUS');
 										?>
@@ -506,7 +506,7 @@ $this->css()
 									<span class="price"></span>
 									<input class="option" type="text" maxlength="4" name="amount" id="field-amount" value=""<?php echo ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : ''; ?> />
 									<span>
-										(<?php echo JText::_('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo JText::_('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?> 
+										(<?php echo JText::_('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo JText::_('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?>
 										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=points'); ?>"><?php echo JText::_('COM_WISHLIST_ACCOUNT'); ?></a>)
 									</span>
 								</label>
@@ -543,12 +543,12 @@ $this->css()
 								<input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->get('id'); ?>" />
 
 								<label>
-									<input class="option" type="radio" name="type" value="general" <?php echo ($this->wishlist->get('category')=='general') ? 'checked="checked"' : ''; ?> /> 
+									<input class="option" type="radio" name="type" value="general" <?php echo ($this->wishlist->get('category')=='general') ? 'checked="checked"' : ''; ?> />
 									<?php echo JText::_('COM_WISHLIST_MAIN_NAME'); ?>
 								</label>
 
 								<label>
-									<input class="option" type="radio" name="type" value="resource" <?php echo ($this->wishlist->get('category')=='resource') ? 'checked="checked"' : ''; ?> /> 
+									<input class="option" type="radio" name="type" value="resource" <?php echo ($this->wishlist->get('category')=='resource') ? 'checked="checked"' : ''; ?> />
 									<?php echo JText::_('COM_WISHLIST_RESOURCE_NAME'); ?>
 								</label>
 								<label>
@@ -557,12 +557,12 @@ $this->css()
 
 							<?php if ($this->wish->get('cats') && preg_replace("/group/", '', $this->wish->get('cats')) != $this->wish->get('cats')) { ?>
 								<label>
-									<input class="option" type="radio" name="type" value="group" <?php if ($this->wishlist->get('category')=='group') { echo 'checked="checked"'; } ?> /> 
+									<input class="option" type="radio" name="type" value="group" <?php if ($this->wishlist->get('category')=='group') { echo 'checked="checked"'; } ?> />
 									<?php echo JText::_('COM_WISHLIST_GROUP_NAME'); ?>
 								</label>
 
 								<label>
-									<?php 
+									<?php
 									if (!JPluginHelper::isEnabled('system', 'jquery'))
 									{
 										$this->js('observer.js');
@@ -576,25 +576,25 @@ $this->css()
 								<fieldset>
 									<legend><?php echo JText::_('COM_WISHLIST_TRANSFER_OPTIONS'); ?>:</legend>
 									<label>
-										<input class="option" type="checkbox" name="keepcomments" value="1" checked="checked" /> 
+										<input class="option" type="checkbox" name="keepcomments" value="1" checked="checked" />
 										<?php echo JText::_('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_COMMENTS'); ?>
 									</label>
 									<label>
-										<input class="option" type="checkbox" name="keepplan" value="1" checked="checked" /> 
+										<input class="option" type="checkbox" name="keepplan" value="1" checked="checked" />
 										<?php echo JText::_('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_PLAN'); ?>
 									</label>
 									<label>
-										<input class="option" type="checkbox" name="keepstatus" value="1" checked="checked" /> 
+										<input class="option" type="checkbox" name="keepstatus" value="1" checked="checked" />
 										<?php echo JText::_('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_STATUS'); ?>
 									</label>
 									<label>
-										<input class="option" type="checkbox" name="keepfeedback" value="1" checked="checked" /> 
+										<input class="option" type="checkbox" name="keepfeedback" value="1" checked="checked" />
 										<?php echo JText::_('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_VOTES'); ?>
 									</label>
 								</fieldset>
 
 								<p>
-									<input type="submit" value="<?php echo strtolower(JText::_('COM_WISHLIST_ACTION_MOVE_THIS_WISH')); ?>" /> 
+									<input type="submit" value="<?php echo strtolower(JText::_('COM_WISHLIST_ACTION_MOVE_THIS_WISH')); ?>" />
 									<span class="cancelaction">
 										<a href="<?php echo JRoute::_($this->wish->link()); ?>">
 											<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>
@@ -634,7 +634,7 @@ $this->css()
 			<h3>
 				<?php echo JText::_('COM_WISHLIST_COMMENTS');?> (<?php echo $this->wish->comments('count'); ?>)
 			</h3>
-			<?php 
+			<?php
 			if ($this->wish->comments('list')->total() > 0)
 			{
 				$this->view('_list')
@@ -714,7 +714,7 @@ $this->css()
 						</fieldset>
 
 						<label id="comment-anonymous-label">
-							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" /> 
+							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" />
 							<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
@@ -777,7 +777,7 @@ $this->css()
 							<input type="hidden" name="create_revision" value="0" />
 						<?php } ?>
 						<label>
-							<?php echo JText::_('COM_WISHLIST_ACTION_INSERT_TEXT'); ?> 
+							<?php echo JText::_('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
 							<?php echo JFactory::getEditor()->display('pagetext', $this->escape($this->wish->plan()->content('raw')), '', '', 35, 40, false, 'pagetext', null, null, array('class' => 'minimal no-footer')); ?>
 						</label>
 
@@ -813,10 +813,10 @@ $this->css()
 						</p>
 						<?php if ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
 							<p>
-								<?php echo JText::_('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?> 
+								<?php echo JText::_('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?>
 								<?php echo $assigned; ?>
 
-								<?php echo JText::_('COM_WISHLIST_PLAN_IS_DUE'); ?> 
+								<?php echo JText::_('COM_WISHLIST_PLAN_IS_DUE'); ?>
 								<a href="<?php echo JRoute::_($this->wish->link('editplan')); ?>'">
 									<?php echo ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00') ? $this->wish->due() : JText::_('COM_WISHLIST_DUE_NEVER'); ?>
 								</a>
@@ -825,7 +825,7 @@ $this->css()
 				<?php } else { ?>
 					<?php if ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
 						<p>
-							<?php echo JText::_('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?> 
+							<?php echo JText::_('COM_WISHLIST_PLAN_IS_ASSIGNED'); ?>
 							<?php echo $assigned; ?>
 							<?php echo JText::_('COM_WISHLIST_PLAN_IS_DUE'); ?>
 							<a href="<?php echo JRoute::_($this->wish->link('editplan')); ?>'">
@@ -858,5 +858,5 @@ $this->css()
 	<?php } // if ($this->admin) ?>
 <?php } // if not withdrawn ?>
 
-<?php 
+<?php
 }

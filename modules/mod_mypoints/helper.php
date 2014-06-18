@@ -39,7 +39,7 @@ class modMyPoints extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -56,12 +56,12 @@ class modMyPoints extends \Hubzero\Module\Module
 		// installed with the com_support component
 		$tables = $database->getTableList();
 
-		if ($tables && array_search($jconfig->getValue('config.dbprefix') . 'users_points', $tables) === false) 
+		if ($tables && array_search($jconfig->getValue('config.dbprefix') . 'users_points', $tables) === false)
 		{
 			// Points table not found
 			$this->error = true;
-		} 
-		else 
+		}
+		else
 		{
 			// Get the user's point summary and history
 			$BTL  = new \Hubzero\Bank\Teller($database, $juser->get('id'));

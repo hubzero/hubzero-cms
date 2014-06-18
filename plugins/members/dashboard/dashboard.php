@@ -42,7 +42,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * 
+	 *
 	 */
 	protected $_actionMap = array();
 
@@ -71,7 +71,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -93,7 +93,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -106,10 +106,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onMembersAreas($user, $member)) 
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -121,7 +121,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		);
 
 		// Build the final HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			// include dasboard models
 			include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
@@ -142,7 +142,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 			// build the action
 			$doAction = strtolower($this->action) . 'Action';
-			
+
 			// make sure we have that action
 			if (in_array($doAction, $this->_actionMap))
 			{
@@ -159,7 +159,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display Member Dashboard
-	 * 
+	 *
 	 * @return Void
 	 */
 	public function displayAction()
@@ -175,17 +175,17 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 		// load dashboard modules
 		$dashboardModules = $this->_loadModules($this->params->get('position', 'myhub'));
-		
+
 		// load member preferences
 		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
 		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
-		
+
 		// if user doesnt have preferences, get default & store them
 		if (!isset($preferences) && !is_array($preferences))
 		{
 			$preferences = $this->params->get('defaults', '[]');
 			$preferences = json_encode(json_decode($preferences));
-			
+
 			$dashboardPreferences = new MembersDashboardModelPreferences();
 			$dashboardPreferences->set('uidNumber', $this->juser->get('id'));
 			$dashboardPreferences->set('preferences', $preferences);
@@ -220,7 +220,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 					$params->merge($uparams);
 					$module->params = $params->toString();
 				}
-				
+
 				$view->modules[] = $module;
 			}
 		}
@@ -236,7 +236,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return Module Rendered & Ready For Display
-	 * 
+	 *
 	 * @return void
 	 */
 	public function moduleAction()
@@ -272,7 +272,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			$module->positioning->row    = 1;
 			$module->positioning->size_x = 1;
 			$module->positioning->size_y = 2;
-		
+
 			// merge user params with hub wide params
 			if (isset($preference->parameters))
 			{
@@ -282,7 +282,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				$module->params = $params->toString();
 			}
 		}
-		
+
 		// create view object
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -309,14 +309,14 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				$stylesheets[] = $strSrc;
 			}
 		}
-		foreach ($document->_scripts as $strSrc => $strType) 
+		foreach ($document->_scripts as $strSrc => $strType)
 		{
 			if (strstr($strSrc, $module->module))
 			{
 				$scripts[] = $strSrc;
 			}
 		}
-		
+
 		// return content
 		echo json_encode(array('html' => $content, 'assets' => array('scripts' => $scripts, 'stylesheets' => $stylesheets)));
 		exit();
@@ -384,10 +384,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			JError::raiseError(500,'Unable to save the users modules.');
 			exit();
 		}
-		
+
 		// build return
 		echo json_encode(array(
-			'saved' => true, 
+			'saved' => true,
 			'modules' => $modules
 		));
 		exit();
@@ -395,7 +395,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Returns the name of the plugin if it has an admin interface
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function onCanManage()
@@ -405,7 +405,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for managing this plugin's content
-	 * 
+	 *
 	 * @param      string $option     Component name
 	 * @param      string $controller Cotnroller to use
 	 * @param      string $action     Action to perform
@@ -436,7 +436,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display Main Dashboard Manage
-	 * 
+	 *
 	 * @return void
 	 */
 	public function manageDefaultAction()
@@ -472,7 +472,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				$module->positioning->row    = $preference->row;
 				$module->positioning->size_x = $preference->size_x;
 				$module->positioning->size_y = $preference->size_y;
-				
+
 				$view->modules[] = $module;
 			}
 		}
@@ -486,21 +486,21 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save Module Defaults
-	 * 
+	 *
 	 * @return void
 	 */
 	public function manageSaveAction()
 	{
 		// get request vars
 		$modules = JRequest::getString('modules', '');
-		
+
 		// set our new defaults
 		$this->params->set('defaults', $modules);
-		
+
 		// save
 		$query = "UPDATE #__extensions SET params=" . $this->database->quote($this->params->toString()) . " WHERE `folder`='members' AND `element`='dashboard'";
 		$this->database->setQuery($query);
-		if ($this->database->query()) 
+		if ($this->database->query())
 		{
 			$this->setError($this->database->getErrorMsg());
 		}
@@ -511,7 +511,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display Add Module View
-	 * 
+	 *
 	 * @return void
 	 */
 	public function manageAddAction()
@@ -542,8 +542,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Return Rendered Module 
-	 * 
+	 * Return Rendered Module
+	 *
 	 * @return void
 	 */
 	public function manageModuleAction()
@@ -565,7 +565,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			$module->positioning->size_x = 1;
 			$module->positioning->size_y = 2;
 		}
-		
+
 		// create view object
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -581,7 +581,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$view->admin  = $application->isAdmin();
 		$view->module = $module;
 		$content      = $view->loadTemplate();
-		
+
 		// return content
 		echo json_encode(array('html' => $content));
 		exit();
@@ -589,7 +589,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display Push Module View
-	 * 
+	 *
 	 * @return void
 	 */
 	public function managePushAction()
@@ -675,7 +675,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 				array_push($params, $newModule);
 			}
 			else
-			{	
+			{
 				$newModule->row = 1;
 				array_unshift($params, $newModule);
 
@@ -692,10 +692,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 					$mins[$col] += $min;
 				}
 			}
-				
+
 			// encode params
 			$params = json_encode($params);
-			
+
 			// update user params
 			$sql = "UPDATE `#__xprofiles_dashboard_preferences` SET `preferences`=" . $this->database->quote($params) . " WHERE `uidNumber`=" . $memberPreference->uidNumber;
 			$this->database->setQuery($sql);
@@ -714,15 +714,15 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	 */
 	private function _loadModules( $position = '' )
 	{
-		$query = "SELECT * 
+		$query = "SELECT *
 		          FROM `#__modules` AS m
 		          WHERE position=" . $this->database->quote($position)  . "
-		          AND m.published=1 
-		          AND m.client_id=0 
+		          AND m.published=1
+		          AND m.client_id=0
 		          ORDER BY m.ordering";
 		$this->database->setQuery($query);
 		$modules = $this->database->loadObjectList('id');
-		
+
 		return $modules;
 	}
 }

@@ -45,7 +45,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -53,17 +53,17 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->isTool() && $model->type->params->get('plg_versions')) 
+		if ($model->isTool() && $model->type->params->get('plg_versions'))
 		{
 			$areas['versions'] = JText::_('PLG_RESOURCES_VERSIONS');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -79,24 +79,24 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
 
 		// Display only for tools
-		if (!$model->isTool()) 
+		if (!$model->isTool())
 		{
 			return $arr;
 		}
 
 		$database = JFactory::getDBO();
 
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			$tv = new ToolVersion($database);
 			$rows = $tv->getVersions($model->resource->alias);
@@ -118,7 +118,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$view->option   = $option;
 			$view->resource = $model->resource;
 			$view->rows     = $rows;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -130,7 +130,7 @@ class plgResourcesVersions extends \Hubzero\Plugin\Plugin
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$arr['metadata'] = '';
 		}

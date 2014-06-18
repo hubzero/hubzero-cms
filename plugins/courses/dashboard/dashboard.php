@@ -45,7 +45,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onCourseAreas()
@@ -62,7 +62,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $course      Current course
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -85,9 +85,9 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				return $arr;
 			}
@@ -115,7 +115,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 
 		$pathway = JFactory::getApplication()->getPathway();
 		$pathway->addItem(
-			JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
+			JText::_('PLG_COURSES_' . strtoupper($this->_name)),
 			$this->offering->link() . '&active=' . $this->_name
 		);
 
@@ -127,7 +127,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of all announcements
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _overview()
@@ -147,7 +147,7 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 		$view->offering = $this->offering;
 		$view->params   = $this->params;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

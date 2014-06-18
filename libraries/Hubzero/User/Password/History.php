@@ -41,7 +41,7 @@ class History
 
 	/**
 	 * Log a message
-	 * 
+	 *
 	 * @param   string $msg
 	 * @return  void
 	 */
@@ -53,7 +53,7 @@ class History
 
 	/**
 	 * Get an instance of a user's password History
-	 * 
+	 *
 	 * @param   mixed $instance User ID (integer) or username (string)
 	 * @return  object
 	 */
@@ -67,22 +67,22 @@ class History
 
 		$hzph = new self();
 
-		if (is_numeric($instance) && $instance > 0) 
+		if (is_numeric($instance) && $instance > 0)
 		{
 			$hzph->user_id = $instance;
 		}
-		else 
+		else
 		{
 			$query = "SELECT id FROM #__users WHERE username=" .  $db->Quote($instance) . ";";
 			$db->setQuery($query);
 			$result = $db->loadResult();
-			if (is_numeric($result) && $result > 0) 
+			if (is_numeric($result) && $result > 0)
 			{
 				$hzph->user_id = $result;
 			}
 		}
 
-		if (empty($hzph->user_id)) 
+		if (empty($hzph->user_id))
 		{
 			return false;
 		}
@@ -92,7 +92,7 @@ class History
 
 	/**
 	 * Add a passhash to a user's history
-	 * 
+	 *
 	 * @param   string $passhash
 	 * @param   string $invalidated
 	 * @return  boolean
@@ -101,40 +101,40 @@ class History
 	{
 		$db = \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (empty($passhash)) 
+		if (empty($passhash))
 		{
 			$passhash = null;
 		}
 
-		if (empty($invalidated)) 
+		if (empty($invalidated))
 		{
 			$invalidated = "UTC_TIMESTAMP()";
 		}
-		else 
+		else
 		{
-			$invalidated = $db->Quote($invalidated); 
+			$invalidated = $db->Quote($invalidated);
 		}
 
 		$user_id = $this->user_id;
 
 		$query = "INSERT INTO #__users_password_history(user_id," .
-			"passhash,invalidated)" . 
+			"passhash,invalidated)" .
 			" VALUES ( " .
-			$db->Quote($user_id) . "," . 
+			$db->Quote($user_id) . "," .
 			$db->Quote($passhash) . "," .
-			$invalidated . 
-			");"; 
+			$invalidated .
+			");";
 
 		$db->setQuery($query);
 
 		$result = $db->query();
 
-		if ($result !== false || $db->getErrorNum() == 1062) 
+		if ($result !== false || $db->getErrorNum() == 1062)
 		{
 			return true;
 		}
@@ -144,7 +144,7 @@ class History
 
 	/**
 	 * Check if a password exists for a user
-	 * 
+	 *
 	 * @param   string $password
 	 * @param   string $since
 	 * @return  boolean
@@ -186,14 +186,14 @@ class History
 
 	/**
 	 * Remove a passhash from a user's history
-	 * 
+	 *
 	 * @param   string $passhash
 	 * @param   string $timestamp
 	 * @return  boolean
 	 */
 	public function remove($passhash, $timestamp)
 	{
-		if ($this->user_id <= 0) 
+		if ($this->user_id <= 0)
 		{
 			return false;
 		}
@@ -205,12 +205,12 @@ class History
 			return false;
 		}
 
-		$db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " . 
+		$db->setQuery("DELETE FROM #__users_password_history WHERE user_id= " .
 			$db->Quote($this->user_id) . " AND passhash = " .
 			$db->Quote($passhash) . " AND invalidated = " .
 			$db->Quote($timestamp) . ";");
 
-		if (!$db->query()) 
+		if (!$db->query())
 		{
 			return false;
 		}
@@ -219,9 +219,9 @@ class History
 	}
 
 	/**
-	 * Shortcut helper method for adding 
+	 * Shortcut helper method for adding
 	 * a password to a user's history
-	 * 
+	 *
 	 * @param   string $passhash
 	 * @param   string $user
 	 * @return  boolean

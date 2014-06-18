@@ -38,7 +38,7 @@ JToolBarHelper::back();
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -63,9 +63,9 @@ function submitbutton(pressbutton)
 				<?php foreach ($this->success as $success) : ?>
 					<tr>
 						<td>
-							<?php 
+							<?php
 								$group = \Hubzero\User\Group::getInstance($success['group']);
-								echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>'; 
+								echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>';
 							?>
 							<br />
 							<br />
@@ -89,9 +89,9 @@ function submitbutton(pressbutton)
 				<?php foreach ($this->failed as $failed) : ?>
 					<tr>
 						<td>
-							<?php 
+							<?php
 								$group = \Hubzero\User\Group::getInstance($failed['group']);
-								echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>'; 
+								echo '<strong>' . $group->get('description') . ' (' . $group->get('cn') . ')</strong>';
 							?>
 							<br />
 							<br />

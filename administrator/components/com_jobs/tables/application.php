@@ -38,70 +38,70 @@ class JobApplication extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $jid		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid		= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $applied	= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $withdrawn	= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $cover		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $resumeid	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $status		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $reason		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -112,13 +112,13 @@ class JobApplication extends JTable
 
 	/**
 	 * Get job applications
-	 * 
+	 *
 	 * @param      integer $jobid Job ID
 	 * @return     mixed False if errors, Array upon success
 	 */
 	public function getApplications($jobid)
 	{
-		if ($jobid === NULL) 
+		if ($jobid === NULL)
 		{
 			return false;
 		}
@@ -134,7 +134,7 @@ class JobApplication extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $uid     User ID
 	 * @param      integer $jid     Job ID
 	 * @param      string  $jobcode Job code
@@ -142,7 +142,7 @@ class JobApplication extends JTable
 	 */
 	public function loadApplication($uid = NULL, $jid = NULL, $jobcode = NULL)
 	{
-		if ($uid === NULL or ($jid === NULL && $jobcode === NULL)) 
+		if ($uid === NULL or ($jid === NULL && $jobcode === NULL))
 		{
 			return false;
 		}
@@ -153,7 +153,7 @@ class JobApplication extends JTable
 		$query .=  $jid ? "AND A.jid=" . $this->_db->Quote($jid) . " " : "AND J.code=" . $this->_db->Quote($jobcode) . " ";
 		$query .= " LIMIT 1";
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}

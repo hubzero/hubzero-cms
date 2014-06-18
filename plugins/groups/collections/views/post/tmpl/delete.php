@@ -53,7 +53,7 @@ if (!$identifier)
 			<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
 
 			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" value="1" />
 				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

@@ -77,7 +77,7 @@ class FeedAggregatorTablePosts extends JTable
 	 * @var int
 	 */
 	var $feed_id = NULL;
-	
+
 	/**
 	 * varchar(45)
 	 *
@@ -110,7 +110,7 @@ class FeedAggregatorTablePosts extends JTable
 
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get all posts with respect to the limit of posts per page AND status category
 	 *
@@ -126,7 +126,7 @@ class FeedAggregatorTablePosts extends JTable
 		
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get a single post by its ID
 	 *
@@ -142,7 +142,7 @@ class FeedAggregatorTablePosts extends JTable
 
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Update the status of a single post
 	 *
@@ -156,8 +156,8 @@ class FeedAggregatorTablePosts extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->query();
 	}
-	
-	
+
+
 	/**
 	 * Get posts with the specified feed id
 	 *
@@ -184,7 +184,7 @@ class FeedAggregatorTablePosts extends JTable
 		return $this->_db->loadResultArray();
 	}
 
-	
+
 	/**
 	 *  Counts the number of posts in a specified category.
 	 * @param      integer $status of category
@@ -192,7 +192,7 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getRowCount($status = NULL)
 	{
-		
+
 		$query = 'SELECT COUNT(*) FROM #__feedaggregator_posts WHERE status';
 		if ($status !== null)
 		{
@@ -202,7 +202,7 @@ class FeedAggregatorTablePosts extends JTable
 		{
 			$query .= '< 3';
 		}
-		
+
 		$this->_db->setQuery($query);
 		return intval($this->_db->loadResult());
 	}

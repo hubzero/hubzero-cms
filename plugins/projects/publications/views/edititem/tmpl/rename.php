@@ -59,7 +59,7 @@ if ($this->row->type == 'file')
 						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>" placeholder="<?php echo $placeholder; ?>"  />
 						<span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 					</label>
-										
+
 					<?php if ($this->row->type == 'file') { ?>
 						<?php if ($gone) { ?>
 						<p>
@@ -75,17 +75,17 @@ if ($this->row->type == 'file')
 						<p class="content-hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME_NOTICE'); ?></p>
 						<?php } ?>
 					<?php } ?>
-					
+
 					<p class="submitarea">
 						<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-						<?php if ($this->ajax) { ?>	
+						<?php if ($this->ajax) { ?>
 						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?>" />
 						<?php } else { ?>
 						<a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 						<?php } ?>
 					</p>
-				</div>	
-			</div>	
+				</div>
+			</div>
 	</form>
 	<div class="clear"></div>
 </div>

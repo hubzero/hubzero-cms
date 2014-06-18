@@ -47,7 +47,7 @@ function get_dd($db_id)
 		$r = $db->loadAssoc();
 
 		$td = json_decode($r['table_definition'], true);
-		
+
 		$dd['db'] = $dv_conf['db'];
 		$dd['db']['name'] = 'ds_' . $r['datastore_id'];
 		$dd['table'] = $td['name'];
@@ -102,9 +102,9 @@ function get_dd($db_id)
 			return false;
 		}
 	}
-	
 
-	
+
+
 	$dd['db_id'] = $db_id;
 	$dd['dv_id'] = $dv_id;
 
@@ -132,7 +132,7 @@ function get_dd($db_id)
 			$vis_col_count = 0;
 			if(isset($dd['cols'])) {
 				$vis_col_count = count(array_filter($dd['cols'], function ($col) {
-						return !isset($col['hide']); 
+						return !isset($col['hide']);
 					})
 				);
 			}
@@ -180,12 +180,12 @@ function get_dd($db_id)
 	/* ACL */
 
 	// Dataviews attached to resources & publised
-	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path 
-		FROM jos_datastore_resources AS dr 
-			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id) 
-		WHERE r.id IS NOT NULL 
-			AND r.published = 1 
-			AND dr.datastore_id = {$db_id['name']} 
+	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path
+		FROM jos_datastore_resources AS dr
+			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id)
+		WHERE r.id IS NOT NULL
+			AND r.published = 1
+			AND dr.datastore_id = {$db_id['name']}
 			AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
 	$db->setQuery($sql);
 	$res = $db->loadAssoc();

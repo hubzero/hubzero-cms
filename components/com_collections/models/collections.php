@@ -42,70 +42,70 @@ class CollectionsModel extends \Hubzero\Base\Object
 {
 	/**
 	 * Object type [member, group, etc.]
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_object_type = NULL;
 
 	/**
 	 * Object ID [member ID, group ID, etc.]
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_object_id = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_collections = null;
 
 	/**
 	 * CollectionsModelCollection
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_collection = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_followers = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_following = null;
 
 	/**
 	 * Is following?
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_isFollowing = null;
 
 	/**
 	 * Is being followed?
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_isFollowed = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -132,14 +132,14 @@ class CollectionsModel extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$oid = $object_type . '_' . $object_id;
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CollectionsModel($object_type, $object_id);
 		}
@@ -157,7 +157,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	public function get($property, $default=null)
 	{
 		$property = '_' . $property;
-		if (isset($this->$property)) 
+		if (isset($this->$property))
 		{
 			return $this->$property;
 		}
@@ -181,14 +181,14 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 	/**
 	 * Set and get a specific offering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function collection($id=null)
 	{
 		// If the current offering isn't set
 		//    OR the ID passed doesn't equal the current offering's ID or alias
-		if (!isset($this->_collection) 
+		if (!isset($this->_collection)
 		 || ($id !== null && (int) $this->_collection->get('id') != $id && (string) $this->_collection->get('alias') != $id))
 		{
 			// Reset current offering
@@ -223,7 +223,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -273,7 +273,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -312,7 +312,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -371,7 +371,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 						$groups[] = $following->get('following_id');
 					}
 				}
-				
+
 			}
 			if (count($members) > 0 || count($groups) > 0)
 			{
@@ -386,7 +386,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 				if (count($members) > 0 && count($groups) > 0)
 				{
 					$query = "( $query1 ) UNION ( $query2 );";
-				} 
+				}
 				else if (count($members) > 0)
 				{
 					$query = $query1;
@@ -399,7 +399,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 				$this->_db->setQuery($query);
 				$ids = array_merge($ids, $this->_db->loadResultArray());
 			}
-			
+
 			return $ids;
 		}
 
@@ -411,7 +411,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -437,7 +437,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -511,7 +511,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 	/**
 	 * Check if someone or a group is following this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -538,7 +538,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 	/**
 	 * Check if someone or a group is following this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -565,7 +565,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 	/**
 	 * Unfollow this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -591,7 +591,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 	/**
 	 * Follow this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean

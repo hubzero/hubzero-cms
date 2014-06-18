@@ -34,17 +34,17 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Coupon class
- * 
+ *
  */
 class StorefrontModelCoupon
-{	
+{
 	// Database instance
 	var $db = NULL;
 	var $data;
-	
+
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
@@ -52,16 +52,16 @@ class StorefrontModelCoupon
 	{
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
-		
+
 		if ($code)
 		{
-			$this->setCode($code);	
+			$this->setCode($code);
 		}
 	}
-	
+
 	/**
 	 * Set code
-	 * 
+	 *
 	 * @param	string	coupon code
 	 * @return	bool	true on success
 	 */
@@ -70,7 +70,7 @@ class StorefrontModelCoupon
 		$this->data->code = $code;
 		return true;
 	}
-	
+
 	public function getCode()
 	{
 		if(!empty($this->data->code))
@@ -79,10 +79,10 @@ class StorefrontModelCoupon
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set code description
-	 * 
+	 *
 	 * @param	string	coupon description
 	 * @return	bool	true on success
 	 */
@@ -91,7 +91,7 @@ class StorefrontModelCoupon
 		$this->data->description = $description;
 		return true;
 	}
-	
+
 	public function getDescription()
 	{
 		if(!empty($this->data->description))
@@ -100,10 +100,10 @@ class StorefrontModelCoupon
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set code use limit
-	 * 
+	 *
 	 * @param	int		use limit
 	 * @return	bool	true on success
 	 */
@@ -111,13 +111,13 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($limit) || $limit <= 0)
 		{
-			throw new Exception(JText::_('Use limit must be a positive number'));	
+			throw new Exception(JText::_('Use limit must be a positive number'));
 		}
-		
+
 		$this->data->useLimit = floor($limit);
 		return true;
 	}
-	
+
 	public function getUseLimit()
 	{
 		if(!empty($this->data->useLimit))
@@ -126,10 +126,10 @@ class StorefrontModelCoupon
 		}
 		return 'DEFAULT';
 	}
-	
+
 	/**
 	 * Set the limit of objects coupon can be applied to
-	 * 
+	 *
 	 * @param	int		object limit
 	 * @return	bool	true on success
 	 */
@@ -137,13 +137,13 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($limit) || $limit < 0)
 		{
-			throw new Exception(JText::_('Use limit must be a non-negative number'));	
+			throw new Exception(JText::_('Use limit must be a non-negative number'));
 		}
-		
+
 		$this->data->objectLimit = floor($limit);
 		return true;
 	}
-	
+
 	public function getObjectLimit()
 	{
 		if(!empty($this->data->objectLimit))
@@ -152,10 +152,10 @@ class StorefrontModelCoupon
 		}
 		return 'DEFAULT';
 	}
-	
+
 	/**
 	 * Set active status
-	 * 
+	 *
 	 * @param	bool		status
 	 * @return	bool		true
 	 */
@@ -165,16 +165,16 @@ class StorefrontModelCoupon
 		{
 			$this->data->activeStatus = 1;
 		}
-		else 
+		else
 		{
 			$this->data->activeStatus = 0;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get active status
-	 * 
+	 *
 	 * @param	void
 	 * @return	bool		status
 	 */
@@ -186,10 +186,10 @@ class StorefrontModelCoupon
 		}
 		return $this->data->activeStatus;
 	}
-	
+
 	/**
 	 * Set expiration date (if needed)
-	 * 
+	 *
 	 * @param	char	date
 	 * @return	bool	true on success
 	 */
@@ -201,11 +201,11 @@ class StorefrontModelCoupon
 		{
 			throw new Exception(JText::_('Bad expiration date'));
 		}
-		
+
 		$this->data->expires = $expires;
 		return true;
 	}
-	
+
 	public function getExpiration()
 	{
 		if(!empty($this->data->expires))
@@ -214,26 +214,26 @@ class StorefrontModelCoupon
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Set code object
-	 * 
+	 *
 	 * @param	string		object type
 	 * @return	bool		true on success
 	 */
 	public function setObjectType($objectType = 'product')
 	{
 		$allowedObjectsTypes = array('order', 'sku', 'product', 'shipping');
-		
+
 		if (!in_array($objectType, $allowedObjectsTypes))
 		{
-			throw new Exception(JText::_('Bad coupon object.'));	
+			throw new Exception(JText::_('Bad coupon object.'));
 		}
-		
+
 		$this->data->objectType = $objectType;
 		return true;
 	}
-	
+
 	public function getObjectType()
 	{
 		if(!empty($this->data->objectType))
@@ -242,40 +242,40 @@ class StorefrontModelCoupon
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set code action
-	 * 
+	 *
 	 * @param	string		object action
 	 * @return	bool		true on success
 	 */
 	public function setAction($action, $actionValue)
 	{
 		$allowedActions = array('discount');
-		
+
 		if (!in_array($action, $allowedActions))
 		{
-			throw new Exception(JText::_('Bad coupon action.'));	
+			throw new Exception(JText::_('Bad coupon action.'));
 		}
-		
+
 		if ($action == 'discount' && !is_numeric($actionValue))
 		{
 			$lastChar = substr($actionValue, strlen($actionValue) - 1);
 			$val = substr($actionValue, 0, strlen($actionValue) - 1);
-			
+
 			if (!is_numeric($val) || $lastChar != '%')
 			{
-				throw new Exception(JText::_('Bad action value.'));	
+				throw new Exception(JText::_('Bad action value.'));
 			}
-			
+
 		}
-		
+
 		$act->action = $action;
 		$act->value = $actionValue;
 		$this->data->action = $act;
 		return true;
 	}
-	
+
 	public function getAction()
 	{
 		if(!empty($this->data->action))
@@ -284,10 +284,10 @@ class StorefrontModelCoupon
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Add object
-	 * 
+	 *
 	 * @param	int			object ID
 	 * @param	int			limit of obejct coupon will be applied to (when purchasing multiple quantities of the same object)
 	 * @return	bool		true on success
@@ -296,16 +296,16 @@ class StorefrontModelCoupon
 	{
 		if (!is_numeric($objectLimit) || $objectLimit < 0)
 		{
-			throw new Exception(JText::_('Use limit must be a non-negative integer number'));	
+			throw new Exception(JText::_('Use limit must be a non-negative integer number'));
 		}
-				
+
 		$obj->id = $object;
 		$obj->objectLimit = ceil($objectLimit);
-		
+
 		$this->data->objects[] = $obj;
 		return true;
 	}
-	
+
 	public function getObjects()
 	{
 		if(!empty($this->data->objects))
@@ -314,32 +314,32 @@ class StorefrontModelCoupon
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Add coupon to the warehouse
-	 * 
+	 *
 	 * @param  void
 	 * @return object	info
 	 */
 	public function add()
 	{
 		$this->verify();
-		
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
-		
+
 		return($warehouse->addCoupon($this));
-	}	
-	
+	}
+
 	public function verify()
 	{
 		if (empty($this->data->code))
 		{
-			throw new Exception(JText::_('Code must be set'));	
+			throw new Exception(JText::_('Code must be set'));
 		}
 		if (empty($this->data->description))
 		{
-			throw new Exception(JText::_('Description must be set'));	
+			throw new Exception(JText::_('Description must be set'));
 		}
 		if (empty($this->data->objectType))
 		{
@@ -347,9 +347,9 @@ class StorefrontModelCoupon
 		}
 		if (empty($this->data->action))
 		{
-			throw new Exception(JText::_('Action must be set'));	
+			throw new Exception(JText::_('Action must be set'));
 		}
-		
-		return true;	
-	}	
+
+		return true;
+	}
 }

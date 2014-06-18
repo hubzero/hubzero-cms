@@ -44,7 +44,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<a class="icon-add btn add" title="" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=addcalendar'); ?>">
 			<?php echo JText::_('Add Calendar'); ?>
 		</a>
-		
+
 	</li>
 </ul>
 <!--
@@ -99,7 +99,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<a class="refresh" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=refreshcalendar&calendar_id=' . $calendar->get('id')); ?>">
 								Refresh
 							</a>
-						<?php endif; ?>	
+						<?php endif; ?>
 					</td>
 				</tr>
 				<tr>
@@ -112,7 +112,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<br />
 							<span class="calendar-url">
 								<span>Last Fetched:</span>
-								<?php 
+								<?php
 									if ($calendar->get('last_fetched') == '' || $calendar->get('last_fetched') == '0000-00-00 00:00:00')
 									{
 										echo 'Never';

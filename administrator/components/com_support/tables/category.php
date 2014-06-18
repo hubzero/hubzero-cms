@@ -38,7 +38,7 @@ class SupportCategory extends JTable
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -49,13 +49,13 @@ class SupportCategory extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
@@ -72,7 +72,7 @@ class SupportCategory extends JTable
 
 	/**
 	 * Build an SQL statement based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -82,27 +82,27 @@ class SupportCategory extends JTable
 
 		$where = array();
 
-		if (isset($filters['id'])) 
+		if (isset($filters['id']))
 		{
 			$where[] = "`id`=" . $this->_db->Quote($filters['uid']);
 		}
-		if (isset($filters['alias']) && $filters['alias']) 
+		if (isset($filters['alias']) && $filters['alias'])
 		{
 			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
 		}
-		if (isset($filters['title']) && $filters['title']) 
+		if (isset($filters['title']) && $filters['title'])
 		{
 			$where[] = "`title`=" . $this->_db->Quote($filters['title']);
 		}
-		if (isset($filters['section_id']) && $filters['section_id']) 
+		if (isset($filters['section_id']) && $filters['section_id'])
 		{
 			$where[] = "`section_id`=" . $this->_db->Quote($filters['section_id']);
 		}
-		if (isset($filters['created_by']) && $filters['created_by']) 
+		if (isset($filters['created_by']) && $filters['created_by'])
 		{
 			$where[] = "`created_by`=" . $this->_db->Quote($filters['created_by']);
 		}
-		if (isset($filters['modified_by']) && $filters['modified_by']) 
+		if (isset($filters['modified_by']) && $filters['modified_by'])
 		{
 			$where[] = "`modified_by`=" . $this->_db->Quote($filters['modified_by']);
 		}
@@ -117,7 +117,7 @@ class SupportCategory extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -172,7 +172,7 @@ class SupportCategory extends JTable
 				$query  = "SELECT * " . $this->_buildQuery($filters);
 				$query .= " ORDER BY `title` ASC";
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
 

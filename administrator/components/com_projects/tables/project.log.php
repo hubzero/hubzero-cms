@@ -34,93 +34,93 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for project logs
  */
-class ProjectLog extends JTable 
+class ProjectLog extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * Project id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $projectid      = NULL;
-	
+
 	/**
 	 * User id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $userid       	= NULL;
-	
+
 	/**
 	 * Datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $time			= NULL;
-		
+
 	/**
 	 * Major section (general / setup / project / edit / reviewer etc.)
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $section        = NULL;
-	
+
 	/**
 	 * Plugin or layout name ( feed / todo / apps etc.)
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $layout        	= NULL;
-	
+
 	/**
 	 * Task name (view / save etc.)
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $action       	= NULL;
-	
+
 	/**
 	 * Request uri at time of log
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $request_uri    = NULL;
-	
+
 	/**
 	 * Ajax call?
-	 * 
+	 *
 	 * @var tinyint
-	 */	
+	 */
 	var $ajax       	= NULL;
-	
+
 	/**
 	 * Project owner ID
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $owner       	= NULL;
-				
+
 	/**
 	 * IP address
-	 * 
+	 *
 	 * @var varchar
-	 */	
-	var $ip       		= NULL;	
-	
+	 */
+	var $ip       		= NULL;
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_logs', 'id', $db );
-	}	
+	}
 }

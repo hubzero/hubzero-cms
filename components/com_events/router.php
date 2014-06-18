@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'EventsBuildRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -73,9 +73,9 @@ function EventsBuildRoute(&$query)
 
 /**
  * Short description for 'EventsParseRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */

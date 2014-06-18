@@ -59,11 +59,11 @@ class Simple extends AbstractAdapter
 
 	/**
 	 *	Tests for spam.
-	 * 
+	 *
 	 * @param    string $value Content to test
 	 * @return   bool True if the comment is spam, false if not
 	 */
-	public function isSpam($value = null) 
+	public function isSpam($value = null)
 	{
 		if ($value)
 		{
@@ -77,20 +77,20 @@ class Simple extends AbstractAdapter
 
 		// Spammer IPs (banned)
 		$bl = array();
-		if ($ips = $this->get('blacklist')) 
+		if ($ips = $this->get('blacklist'))
 		{
 			$bl = explode(',', $ips);
 			array_map('trim', $bl);
-		} 
+		}
 
 		// Bad words
 		$words = $this->get('badwords');
-		if ($words) 
+		if ($words)
 		{
 			$badwords = explode(',', $words);
 			array_map('trim', $badwords);
-		} 
-		else 
+		}
+		else
 		{
 			$badwords = array();
 		}
@@ -99,7 +99,7 @@ class Simple extends AbstractAdapter
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
 		foreach ($badwords as $badword)
 		{
-			if (!empty($badword)) 
+			if (!empty($badword))
 			{
 				$patterns[] = '/(.*?)' . trim($badword) . '(.*?)/s';
 			}
@@ -112,7 +112,7 @@ class Simple extends AbstractAdapter
 		foreach ($patterns as $pattern)
 		{
 			preg_match_all($pattern, $this->getValue(), $matches);
-			if (count($matches[0]) >= 1) 
+			if (count($matches[0]) >= 1)
 			{
 				$spam = true;
 			}
@@ -120,18 +120,18 @@ class Simple extends AbstractAdapter
 
 		// Check the number of links in the text
 		// Very unusual to have 5 or more - usually only spammers
-		if (!$spam) 
+		if (!$spam)
 		{
 			$num = substr_count($this->getValue(), 'http://');
 			if ($num >= intval($this->get('linkFrequency'))) // too many links
-			{ 
+			{
 				$spam = true;
 			}
 		}
 
 		// Check the user's IP against the blacklist
 		$ip = \JRequest::ip();
-		if (in_array($ip, $bl)) 
+		if (in_array($ip, $bl))
 		{
 			$spam = true;
 		}

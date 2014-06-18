@@ -98,7 +98,7 @@ $database = JFactory::getDBO();
 				<td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo JText::_('PLG_RESOURCES_RELATED_RANKING'); ?></span></td>
 				<td>
 				<?php if ($line->section != 'Topic') { ?>
-					<?php echo JText::_('PLG_RESOURCES_RELATED_PART_OF'); ?> 
+					<?php echo JText::_('PLG_RESOURCES_RELATED_PART_OF'); ?>
 					<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
 					<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
 						<h4><?php echo stripslashes($line->title); ?></h4>

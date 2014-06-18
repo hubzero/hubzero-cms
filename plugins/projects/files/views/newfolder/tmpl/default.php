@@ -33,7 +33,7 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 <h3><?php echo JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo JText::_('COM_PROJECTS_IN'); ?> <span class="folder"><?php echo $this->subdir; ?></span> <?php } ?></h3>
 <?php
 // Display error
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>

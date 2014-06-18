@@ -129,11 +129,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 						},
 
 						formatTime: function(seconds) {
-							var times = new Array(3600, 60, 1), 
-								time = '', 
+							var times = new Array(3600, 60, 1),
+								time = '',
 								tmp;
 
-							for (var i = 0; i < times.length; i++) 
+							for (var i = 0; i < times.length; i++)
 							{
 								tmp = Math.floor(seconds / times[i]);
 

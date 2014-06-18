@@ -31,24 +31,24 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CronHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('COM_CRON'), 'cron.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::custom('run', 'purge', '', 'COM_CRON_RUN', false);
 JToolBarHelper::spacer();
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -56,7 +56,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('jobs');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -95,11 +95,11 @@ function submitbutton(pressbutton)
 if ($this->results)
 {
 	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	{
 		$row =& $this->results[$i];
 
-		switch ($row->get('state')) 
+		switch ($row->get('state'))
 		{
 			case '2': // Deleted
 				$task = 'publish';
@@ -119,7 +119,7 @@ if ($this->results)
 			break;
 		}
 
-		switch ($row->get('active')) 
+		switch ($row->get('active'))
 		{
 			case '1': // Published
 				$alt2 = JText::_('COM_CRON_ACTIVE');

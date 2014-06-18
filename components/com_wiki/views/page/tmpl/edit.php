@@ -43,19 +43,19 @@ $dispatcher = JDispatcher::getInstance();
 
 $tags = $this->page->tags('string');
 
-if ($this->page->exists()) 
+if ($this->page->exists())
 {
 	$lid = $this->page->get('id');
-} 
-else 
+}
+else
 {
 	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-	<?php 
-	//if ($this->page->exists()) 
+	<?php
+	//if ($this->page->exists())
 	//{
 		$this->view('authors')
 		     ->setBasePath($this->base_path)
@@ -65,7 +65,7 @@ else
 	?>
 </header><!-- /#content-header -->
 
-<?php 
+<?php
 	$this->view('submenu')
 	     ->setBasePath($this->base_path)
 	     ->set('option', $this->option)
@@ -136,9 +136,9 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 					<select name="scope" id="parent">
 						<option value=""><?php echo JText::_('[ none ]'); ?></option>
 					<?php
-						if ($this->tree) 
+						if ($this->tree)
 						{
-							foreach ($this->tree as $item) 
+							foreach ($this->tree as $item)
 							{
 								if ($this->page->get('pagename') == $item->get('pagename'))
 								{
@@ -164,17 +164,17 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 							foreach ($this->book->templates('list', array(), true) as $template)
 							{
 								$tmpltags = $template->tags('string');
-								if (strtolower($this->tplate) == strtolower($template->get('pagename'))) 
+								if (strtolower($this->tplate) == strtolower($template->get('pagename')))
 								{
 									$tags = $tmpltags;
 								}
 
 								echo "\t".'<option value="t'.$template->get('id').'"';
 								if (strtolower($this->tplate) == strtolower($template->get('pagename'))
-								 || strtolower($this->tplate) == 't' . $template->get('id')) 
+								 || strtolower($this->tplate) == 't' . $template->get('id'))
 								{
 									echo ' selected="selected"';
-									if (!$this->page->exists()) 
+									if (!$this->page->exists())
 									{
 										$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
 									}
@@ -202,9 +202,9 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } else { ?>
 		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" />
 	<?php } ?>
-		
+
 		<label for="pagetext" style="position: relative;">
-			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>: 
+			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>:
 			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
 			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
@@ -238,7 +238,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php if ($this->page->access('edit')) {
 		$mode = $this->page->param('mode', 'wiki');
 		$cls = '';
-		if ($mode && $mode != 'knol') 
+		if ($mode && $mode != 'knol')
 		{
 			$cls = ' class="hide"';
 		}
@@ -261,14 +261,14 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 			<label<?php echo $cls; ?> for="params_authors">
 				<?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:
-				<?php 
+				<?php
 				$mc = $dispatcher->trigger(
-					'onGetMultiEntry', 
+					'onGetMultiEntry',
 					array(array(
-						'members', 
-						'authors', 
-						'params_authors', 
-						'', 
+						'members',
+						'authors',
+						'params_authors',
+						'',
 						$this->page->authors('string')
 					))
 				);
@@ -323,7 +323,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<legend><?php echo JText::_('Metadata'); ?></legend>
 			<label>
 				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
-				<?php 
+				<?php
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
 				if (count($tf) > 0) {
 					echo $tf[0];
@@ -356,7 +356,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
 		<input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
 		<input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 <?php if ($this->sub) { ?>
@@ -370,7 +370,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp; 
+			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp;
 			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>

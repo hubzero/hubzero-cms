@@ -38,44 +38,44 @@ class CitationsDownload
 {
 	/**
 	 * Description for '_format'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_format = 'Bibtex';
 
 	/**
 	 * Description for '_reference'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_reference = null;
 
 	/**
 	 * Description for '_formatters'
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_formatters = array();
 
 	/**
 	 * Description for '_mime'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_mime = '';
 
 	/**
 	 * Description for '_extension'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_extension = '';
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $reference Parameter description (if any) ...
 	 * @param      string $format Parameter description (if any) ...
 	 * @return     void
@@ -88,9 +88,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'setFormat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $format Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -101,9 +101,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'getFormat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function getFormat()
@@ -113,9 +113,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'setReference'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $reference Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -126,9 +126,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'getReference'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function getReference()
@@ -138,9 +138,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'setMimeType'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $mime Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -151,9 +151,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'getMimeType'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function getMimeType()
@@ -163,9 +163,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'setExtension'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $extension Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -176,9 +176,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'getExtension'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function getExtension()
@@ -188,9 +188,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'setFormatter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $formatter Parameter description (if any) ...
 	 * @param      string $format Parameter description (if any) ...
 	 * @return     void
@@ -204,9 +204,9 @@ class CitationsDownload
 
 	/**
 	 * Short description for 'getFormatter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $format Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -219,18 +219,18 @@ class CitationsDownload
 
 	/**
 	 * Format a record
-	 * 
+	 *
 	 * @param      object $reference Record to format
 	 * @return     string
 	 */
 	public function formatReference($reference=null)
 	{
-		if (!$reference) 
+		if (!$reference)
 		{
 			$reference = $this->getReference();
 		}
 
-		if (!$reference || (!is_array($reference) && !is_object($reference))) 
+		if (!$reference || (!is_array($reference) && !is_object($reference)))
 		{
 			return '';
 		}
@@ -239,15 +239,15 @@ class CitationsDownload
 
 		$formatter = $this->getFormatter($format);
 
-		if (!$formatter || !is_object($formatter)) 
+		if (!$formatter || !is_object($formatter))
 		{
 			$cls = 'CitationsDownload' . $format;
 
-			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php')) 
+			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php');
 			}
-			if (!class_exists($cls)) 
+			if (!class_exists($cls))
 			{
 				JError::raiseError(500, JText::_('Download format unavailable.'));
 				return;
@@ -255,7 +255,7 @@ class CitationsDownload
 
 			$formatter = new $cls();
 
-			if (!$formatter instanceof CitationsDownloadAbstract) 
+			if (!$formatter instanceof CitationsDownloadAbstract)
 			{
 				JError::raiseError(500, JText::_('Invalid download formatter specified.'));
 				return;
@@ -264,8 +264,8 @@ class CitationsDownload
 			$this->setFormatter($formatter, $format);
 			$this->setExtension($formatter->getExtension());
 			$this->setMimeType($formatter->getMimeType());
-		} 
-		else 
+		}
+		else
 		{
 			$this->setExtension($formatter->getExtension());
 			$this->setMimeType($formatter->getMimeType());

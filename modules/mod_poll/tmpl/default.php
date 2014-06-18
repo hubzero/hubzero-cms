@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</ul>
 		<p>
 			<input type="submit" name="task_button" class="button" value="<?php echo JText::_('MOD_POLL_VOTE'); ?>" />
-			 &nbsp; 
+			 &nbsp;
 			<a href="<?php echo JRoute::_('index.php?option=com_poll&view=poll&id=' . $this->escape($poll->slug)); ?>"><?php echo JText::_('MOD_POLL_RESULTS'); ?></a>
 		</p>
 

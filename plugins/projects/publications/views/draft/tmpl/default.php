@@ -43,8 +43,8 @@ $projectsHelper = $this->pub->_helpers->projectsHelper;
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
-$site 	 = $jconfig->getValue('config.live_site') 
-	? $jconfig->getValue('config.live_site') 
+$site 	 = $jconfig->getValue('config.live_site')
+	? $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $now = JFactory::getDate()->toSql();
@@ -57,17 +57,17 @@ $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 $status = $pubHelper->getPubStateProperty($this->pub, 'status');
 $class 	= $pubHelper->getPubStateProperty($this->pub, 'class');
 
-// Get block content		
+// Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
 
 ?>
-<?php echo $this->project->provisioned == 1 
+<?php echo $this->project->provisioned == 1
 			? $pubHelper->showPubTitleProvisioned( $this->pub, $this->route)
 			: $pubHelper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 
-<?php 
-	// Draw status bar		
-	echo $this->pub->_curationModel->drawStatusBar(); 
+<?php
+	// Draw status bar
+	echo $this->pub->_curationModel->drawStatusBar();
 ?>
 <div id="pub-body">
 	<?php echo $blockcontent; ?>

@@ -34,12 +34,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$publishing = 
+$publishing =
 	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 		.'com_publications' . DS . 'tables' . DS . 'publication.php')
 	&& JPluginHelper::isEnabled('projects', 'publications')
 	? 1 : 0;
-	
+
 if (!$publishing)
 {
 	return false;
@@ -61,16 +61,16 @@ $route 	= 'index.php?option=com_publications';
 
 require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
-if ($items) { 
+if ($items) {
 ?>
 <div class="public-list-header">
 	<h3><?php echo JText::_('COM_PROJECTS_PUBLICATIONS'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>
-		<?php foreach ($items as $item) { 
+		<?php foreach ($items as $item) {
 		?>
-		<li class="publications"><a href="<?php echo JRoute::_($route . a . 'id=' . $item->id);  ?>"><?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo JText::_('COM_PROJECTS_PUBLISHED') . ' ' . JHTML::_('date', $item->published_up, $dateFormat, $tz) . ' ' . JText::_('COM_PROJECTS_IN') . ' <a href="'.JRoute::_('index.php?option=com_publications&category='.$item->cat_url).'">' . $item->cat_name . '</a>'; ?></span></li>	
+		<li class="publications"><a href="<?php echo JRoute::_($route . a . 'id=' . $item->id);  ?>"><?php echo $item->title; ?></a> <span class="public-list-info"> - <?php echo JText::_('COM_PROJECTS_PUBLISHED') . ' ' . JHTML::_('date', $item->published_up, $dateFormat, $tz) . ' ' . JText::_('COM_PROJECTS_IN') . ' <a href="'.JRoute::_('index.php?option=com_publications&category='.$item->cat_url).'">' . $item->cat_name . '</a>'; ?></span></li>
 		<?php
 		} ?>
 	</ul>

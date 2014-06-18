@@ -25,12 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id  
+$route = $this->project->provisioned == 1
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
-		
+
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' 
+$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $i = 0;
@@ -55,15 +55,15 @@ $citationFormat = $config->get('citation_format', 'apa');
 			<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
 			<?php } ?>
 		</span></h3>
-		<form id="add-cite" class="add-cite" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>">		
-			<fieldset>	
+		<form id="add-cite" class="add-cite" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>">
+			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
 				<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
-				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />	
+				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="additem" />
 				<input type="hidden" name="cite[id]" value="<?php echo $this->row->id; ?>" />
@@ -71,7 +71,7 @@ $citationFormat = $config->get('citation_format', 'apa');
 				<?php if ($this->project->provisioned == 1) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
-				<?php }  ?>	
+				<?php }  ?>
 			</fieldset>
 			<?php if (!$this->row->id) { ?>
 			<p class="requirement"><?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_ADD_CITATION_NOTE'); ?></p>
@@ -108,23 +108,23 @@ $citationFormat = $config->get('citation_format', 'apa');
 						</label>
 					</div>
 				</div>
-								
+
 				<label for="author">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_AUTHORS'); ?>:
 					<input type="text" name="cite[author]" id="author" size="30" value="<?php echo $this->row->author; ?>" />
 					<span class="hint"><?php echo JText::_('Lastname, Firstname; Lastname, Firstname; Lastname ...'); ?></span>
 				</label>
-				
+
 				<label for="journal">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_JOURNAL'); ?>:
 					<input type="text" name="cite[journal]" id="journal" size="30" maxlength="250" value="<?php echo $this->row->journal; ?>" />
 				</label>
-				
+
 				<label for="booktitle">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_BOOK_TITLE'); ?>:
 					<input type="text" name="cite[booktitle]" id="booktitle" size="30" maxlength="250" value="<?php echo $this->row->booktitle; ?>" />
 				</label>
-				
+
 				<div class="grid">
 					<div class="col span4">
 						<label for="volume">
@@ -145,13 +145,13 @@ $citationFormat = $config->get('citation_format', 'apa');
 						</label>
 					</div>
 				</div>
-				
+
 				<label for="eprint">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_EPRINT'); ?>:
 					<input type="text" name="cite[eprint]" id="eprint" size="30" maxlength="250" value="<?php echo $this->row->eprint; ?>" />
 					<span class="hint"><?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_EPRINT_EXPLANATION'); ?></span>
 				</label>
-				
+
 				<div class="grid">
 					<div class="col span6">
 						<label for="isbn">
@@ -166,12 +166,12 @@ $citationFormat = $config->get('citation_format', 'apa');
 						</label>
 					</div>
 				</div>
-				
+
 				<label for="abstract">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_ABSTRACT'); ?>:
 					<textarea name="cite[abstract]" id="abstract" rows="4" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
 				</label>
-				
+
 				<label for="series">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_SERIES'); ?>:
 					<input type="text" name="cite[series]" id="series" size="30" maxlength="250" value="<?php echo $this->row->series; ?>" />
@@ -179,15 +179,15 @@ $citationFormat = $config->get('citation_format', 'apa');
 
 				<label for="edition">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_EDITION'); ?>:
-					<input type="text" name="cite[edition]" id="edition" size="30" maxlength="250" value="<?php echo $this->row->edition; ?>" /> 
+					<input type="text" name="cite[edition]" id="edition" size="30" maxlength="250" value="<?php echo $this->row->edition; ?>" />
 					<span class="hint"><?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_EDITION_EXPLANATION'); ?></span>
 				</label>
-				
+
 				<label for="publisher">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_PUBLISHER'); ?>:
 					<input type="text" name="cite[publisher]" id="publisher" size="30" maxlength="250" value="<?php echo $this->row->publisher; ?>" />
 				</label>
-				
+
 				<label for="uri">
 					<?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_URL'); ?>:
 					<input type="text" name="cite[uri]" id="uri" size="30" maxlength="250" value="<?php echo $this->row->url; ?>" />
@@ -198,7 +198,7 @@ $citationFormat = $config->get('citation_format', 'apa');
 				<label for="formatted">
 					<textarea name="cite[formatted]" id="formatted" rows="4" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
 					<span class="hint"><?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_EXPLANATION'); ?> <?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_FORMAT'); ?> <?php echo strtoupper($citationFormat); ?></span>
-				</label>					
+				</label>
 			</div>
 		</form>
 </div>

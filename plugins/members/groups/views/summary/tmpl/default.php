@@ -103,19 +103,19 @@ $this->css();
 					else if ($group->registered && $group->regconfirmed)
 					{
 						$status = 'member';
-						
+
 						$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 					}
 					else if ($group->registered && !$group->regconfirmed)
 					{
 						$status = 'pending';
-						
+
 						$options = '<a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 					}
 					else if (!$group->registered && $group->regconfirmed)
 					{
 						$status = 'invitee';
-						
+
 						$options  = '<a class="accept tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
 						$options .= ' <a class="cancel tooltips" href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" title="' . JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.JText::_('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</a>';
 					}
@@ -198,7 +198,7 @@ $this->css();
 						<?php echo JText::_('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?>
 					</td>
 				</tr>
-			<?php 
+			<?php
 			}
 			?>
 			</tbody>

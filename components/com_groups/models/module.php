@@ -39,37 +39,37 @@ class GroupsModelModule extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTableModule';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_groups.module.content';
-	
+
 	/**
 	 * Menu Items
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_menu_items = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     $
 	 * @return     void
 	 */
 	public function __construct( $oid )
 	{
 		$this->_db = JFactory::getDBO();
-		
+
 		$this->_tbl = new GroupsTableModule($this->_db);
-		
+
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load($oid);
@@ -79,7 +79,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Get module menu
 	 *
@@ -91,13 +91,13 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	public function menu( $rtrn = 'list', $filters = array(), $clear = false )
 	{
 		$tbl = new GroupsTableModuleMenu($this->_db);
-		
+
 		// make sure we have a moduleId
 		if (!isset($filters['moduleid']))
 		{
 			$filters['moduleid'] = $this->get('id');
 		}
-		
+
 		// get module menu items
 		switch (strtolower($rtrn))
 		{
@@ -122,7 +122,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 			break;
 		}
 	}
-	
+
 	/**
 	 * BUild module menu
 	 *
@@ -132,30 +132,30 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	{
 		// create module menu object
 		$tbl = new GroupsTableModuleMenu($this->_db);
-		
+
 		// delete any previous menu items
 		if (!$tbl->deleteMenus( $this->get('id') ))
 		{
 			$this->setError($tbl->getError());
 			return false;
 		}
-		
+
 		// get module id and array of pages
 		$moduleid = $this->get('id');
 		$assigned = (isset($modulesMenu['assigned'])) ? $modulesMenu['assigned'] : array();
 		$pages    = ($modulesMenu['assignment'] == '0') ? array(0) : $assigned;
-		
+
 		// create new menus
 		if (!$tbl->createMenus( $moduleid, $pages ))
 		{
 			$this->setError($tbl->getError());
 			return false;
 		}
-		
+
 		// everything went smoothly
 		return true;
 	}
-	
+
 	/**
 	 * Should we display module on this page?
 	 *
@@ -165,22 +165,22 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	{
 		// get module menu
 		$menus = $this->menu('list');
-		
+
 		// if we only have one menu && menu pageid 0 (display on all pages)
 		if ($menus->count() == 1 && $menus->first()->get('pageid') == 0)
 		{
 			return true;
 		}
-		
+
 		// attempt to load menu for this page
 		if ($menus->fetch('pageid', $pageid) !== null)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Check to see if group owns module
 	 *
@@ -195,7 +195,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Overload Store method so we can run some purifying before save
 	 *
@@ -207,20 +207,20 @@ class GroupsModelModule extends \Hubzero\Base\Model
 	{
 		//get content
 		$content = $this->get('content');
-		
+
 		// if content is not trusted, strip php and scripts
 		if (!$trustedContent)
 		{
 			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
 			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
 		}
-		
+
 		// purify content
 		$content = $this->purify($content, $trustedContent);
-		
+
 		// set the purified content
 		$this->set('content', $content);
-		
+
 		// call parent store
 		if (!parent::store($check))
 		{
@@ -228,7 +228,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get the next order value for position
 	 *
@@ -240,7 +240,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		$order = $this->_tbl->getNextOrder("position='".$position."'");
 		return $order;
 	}
-	
+
 	/**
 	 * Reorder Module for position
 	 *
@@ -257,7 +257,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 			$dir = '-';
 			$move = substr($move, 1);
 		}
-		
+
 		// move the number of times different
 		for ($i=0; $i < $move; $i++)
 		{
@@ -267,7 +267,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the page version
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -319,10 +319,10 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Purify the HTML content via HTML Purifier
-	 * 
+	 *
 	 * @param     string    $content           Unpurified HTML content
 	 * @param     bool      $trustedContent    Is the content trusted?
 	 * @return    string
@@ -342,7 +342,7 @@ class GroupsModelModule extends \Hubzero\Base\Model
 		{
 			$options['CSS.Trusted'] = true;
 			$options['HTML.Trusted'] = true;
-			
+
 			$filters[] = new HTMLPurifier_Filter_ExternalScripts();
 			$filters[] = new HTMLPurifier_Filter_Php();
 		}

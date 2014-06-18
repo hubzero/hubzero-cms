@@ -47,17 +47,17 @@ class MembersAddress extends JTable
 	var $addressCountry   = null;
 	var $addressLatitude  = null;
 	var $addressLongitude = null;
-	
-	
+
+
 	public function __construct( $db )
 	{
 		parent::__construct('#__xprofiles_address', 'id', $db);
 	}
-	
-	
+
+
 	/**
 	 * Check method for saving addresses
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function check()
@@ -67,22 +67,22 @@ class MembersAddress extends JTable
 			$this->setError( JText::_('You must supply a user id.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Method to verify we can delete address
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function canDelete($pk = NULL, $joins = NULL)
 	{
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Method to get addressed for member
 	 *
@@ -97,18 +97,18 @@ class MembersAddress extends JTable
 			$this->setError( JText::_('You must supply a user id.') );
 			return false;
 		}
-		
+
 		//query database for addresses for user id
 		$sql = "SELECT * FROM {$this->_tbl} WHERE uidNumber=" . $this->_db->quote( $uidNumber );
 		$this->_db->setQuery( $sql );
-		
+
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Method to format addresses for display on profile tab
-	 * 
+	 *
 	 * @param      $addresses           Array of Member Addresses
 	 * @param      $displayEditLinks    Display Edit/Delete links with addresses
 	 * @return     void
@@ -116,7 +116,7 @@ class MembersAddress extends JTable
 	public function formatAddressesForProfile( $addresses = array(), $displayEditLinks = false )
 	{
 		$formattedAddresses = '<div class="grid cf">';
-		
+
 		if (count($addresses) < 1)
 		{
 			$formattedAddresses .= '<div class="col span4">';
@@ -136,35 +136,35 @@ class MembersAddress extends JTable
 				{
 					$formattedAddresses .= '<div class="col span4">';
 				}
-				
+
 				//do we have a to field
 				if (isset($address->addressTo) && $address->addressTo != '')
 				{
 					$formattedAddresses .= '<strong>' . $address->addressTo . '</strong><br />';
 				}
-				
+
 				//do we have an address line 1
 				if (isset($address->address1) && $address->address1 != '')
 				{
 					$formattedAddresses .= $address->address1 . '<br />';
 				}
-			
+
 				//do we have an address line 2
 				if (isset($address->address2) && $address->address2 != '')
 				{
 					$formattedAddresses .= $address->address2 . '<br />';
 				}
-			
+
 				//do we gave a city state and zip
 				$formattedAddresses .= $address->addressCity . ' ' . $address->addressRegion . ', ' . $address->addressPostal . '<br />';
-			
+
 				//do we have a country && its not USA
-				if (isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US' && 
+				if (isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US' &&
 					$address->addressCountry != 'USA' && $address->addressCountry != 'United States' && $address->addressCountry != 'United States of America')
 				{
 					$formattedAddresses .= $address->addressCountry . '<br />';
 				}
-			
+
 				//do we want to display edit links
 				if ($displayEditLinks)
 				{
@@ -173,7 +173,7 @@ class MembersAddress extends JTable
 					$formattedAddresses .= ' | <a class="delete delete-address" href="'.JRoute::_('index.php?option=com_members&id='.JFactory::getUser()->get('id').'&active=profile&action=deleteaddress&addressid='.$address->id).'">Delete</a>';
 					$formattedAddresses .= '</span>';
 				}
-				
+
 				//end column
 				$formattedAddresses .= '</div><!-- /#end address col -->';
 				if ((($k+1) % 3 == 0) && count($addresses) > 3)
@@ -183,10 +183,10 @@ class MembersAddress extends JTable
 				}
 			}
 		}
-		
+
 		//end grid
 		$formattedAddresses .= '</div><!-- /#end address grid -->';
-		
+
 		return $formattedAddresses;
 	}
 }

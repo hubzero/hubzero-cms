@@ -115,7 +115,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON save method
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save_json()
@@ -150,7 +150,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting list of tasks per hub
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _tasks_json()
@@ -186,7 +186,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting list of hubs
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _hubs_json()
@@ -214,7 +214,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting list of users
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _users_json()
@@ -239,7 +239,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for retrieving data about a hub
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _hub_json()
@@ -269,7 +269,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting records (for MMC)
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _records_json()
@@ -327,7 +327,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting records for bills
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _report_records_json()
@@ -418,7 +418,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON method for getting possible unique values based on table and column
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _get_values_json()
@@ -454,7 +454,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * JSON save contact method
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save_contact_json()
@@ -485,7 +485,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Authentication - check token provided during post
-	 * 
+	 *
 	 * @FIXME: replace this with HUBzero API when ready
 	 *
 	 * @return bool, true or false
@@ -516,7 +516,7 @@ class plgTimeAjax extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Authorize current user
-	 * 
+	 *
 	 * @return true or false
 	 */
 	protected function _authorize()

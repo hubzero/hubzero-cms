@@ -38,7 +38,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Executes a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -46,14 +46,14 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		// Load the component config
 		$config = JComponentHelper::getParams( $this->_option );
 		$this->_config = $config;
-				
+
 		// Publishing enabled?
-		$this->_publishing = 
+		$this->_publishing =
 			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
-					
+
 		// Enable publication management
 		if ($this->_publishing)
 		{
@@ -80,16 +80,16 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . DS.'attachment.php');
 			require_once( JPATH_ROOT . DS . 'components'.DS
-				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');	
+				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		}
-		
+
 		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		parent::execute();
 	}
 
 	/**
 	 * Lists projects
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -106,20 +106,20 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Get filters
 		$this->view->filters = array();
-		$this->view->filters['search'] 		= urldecode($app->getUserStateFromRequest($this->_option 
+		$this->view->filters['search'] 		= urldecode($app->getUserStateFromRequest($this->_option
 										. '.search', 'search', ''));
-		$this->view->filters['search_field'] 	= urldecode($app->getUserStateFromRequest($this->_option 
+		$this->view->filters['search_field'] 	= urldecode($app->getUserStateFromRequest($this->_option
 										. '.search_field', 'search_field', 'title'));
-		$this->view->filters['sortby']  		= trim($app->getUserStateFromRequest($this->_option 
+		$this->view->filters['sortby']  		= trim($app->getUserStateFromRequest($this->_option
 										. '.sort', 'filter_order', 'id'));
 		$this->view->filters['sortdir'] 		= trim($app->getUserStateFromRequest($this->_option
 										. '.sortdir', 'filter_order_Dir', 'DESC'));
 		$this->view->filters['authorized'] 	= true;
 		$this->view->filters['getowner'] 		= 1;
 		$this->view->filters['activity'] 		= 1;
-		
+
 		// Get paging variables
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit', 
+		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit',
 								  $config->getValue('config.list_limit'), 'int');
 		$this->view->filters['start'] = JRequest::getInt('limitstart', 0);
 
@@ -127,7 +127,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Get a record count
 		$this->view->total = $obj->getCount( $this->view->filters, true, 0, 1 );
-		
+
 		// Get records
 		$this->view->rows = $obj->getRecords( $this->view->filters, true, 0, 1 );
 
@@ -136,7 +136,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->view->pageNav = new JPagination( $this->view->total, $this->view->filters['start'], $this->view->filters['limit'] );
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError( $this->getError() );
 		}
@@ -153,14 +153,14 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit project info
-	 * 
-	 * @return     void 
+	 *
+	 * @return     void
 	 */
 	public function editTask()
 	{
 		// Incoming project ID
 		$id = JRequest::getVar( 'id', array(0) );
-		if (is_array( $id )) 
+		if (is_array( $id ))
 		{
 			$id = $id[0];
 		}
@@ -190,20 +190,20 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$obj = new Project( $this->database );
 		$objAC = new ProjectActivity( $this->database );
 
-		if ($id) 
+		if ($id)
 		{
-			if (!$obj->loadProject($id)) 
+			if (!$obj->loadProject($id))
 			{
-				$this->setRedirect('index.php?option=' . $this->_option, 
-					JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+				$this->setRedirect('index.php?option=' . $this->_option,
+					JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 					'error');
 				return;
 			}
 		}
-		if (!$id) 
+		if (!$id)
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
 				'error');
 			return;
 		}
@@ -240,7 +240,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		// Was project suspended?
 		$this->view->suspended = false;
 		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
+		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
 		{
 			$this->view->suspended = $objAC->checkActivity( $id, JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
@@ -251,12 +251,12 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		// Get Disk Usage
 		JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = JDispatcher::getInstance();
-		$project = $obj->getProject($id, $this->juser->get('id'));	
+		$project = $obj->getProject($id, $this->juser->get('id'));
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', '', $this->_config, NULL));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError( $this->getError() );
 		}
@@ -284,7 +284,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 	/**
 	 * Saves a project
 	 * Redirects to main listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask($redirect = false)
@@ -306,10 +306,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if (!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -325,7 +325,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Was project suspended?
 		$suspended = false;
-		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete) 
+		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
 		{
 			$suspended = $objAA->checkActivity( $id, JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
@@ -339,9 +339,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$managers = $objO->getIds( $id, 1, 1 );
 
 		// Admin actions
-		if ($action) 
+		if ($action)
 		{
-			switch ($action) 
+			switch ($action)
 			{
 				case 'delete':
 					$obj->state = 2;
@@ -349,24 +349,24 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 					$subject .= JText::_('COM_PROJECTS_MSG_ADMIN_DELETED');
 					$this->_message = JText::_('COM_PROJECTS_SUCCESS_DELETED');
 				break;
-				
+
 				case 'suspend':
 					$obj->state = 0;
 					$what = JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
 					$subject .= JText::_('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
 					$this->_message = JText::_('COM_PROJECTS_SUCCESS_SUSPENDED');
 				break;
-				
+
 				case 'reinstate':
 					$obj->state = 1;
-					$what = $suspended 
+					$what = $suspended
 						? JText::_('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED')
 						: JText::_('COM_PROJECTS_ACTIVITY_PROJECT_ACTIVATED');
-					$subject .= $suspended 
+					$subject .= $suspended
 						? JText::_('COM_PROJECTS_MSG_ADMIN_REINSTATED')
 						: JText::_('COM_PROJECTS_MSG_ADMIN_ACTIVATED');
 
-					$this->_message = $suspended 
+					$this->_message = $suspended
 						? JText::_('COM_PROJECTS_SUCCESS_REINSTATED')
 						: JText::_('COM_PROJECTS_SUCCESS_ACTIVATED');
 				break;
@@ -376,15 +376,15 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			$objAA->recordActivity( $obj->id, $this->juser->get('id'), $what, 0, '', '', 'project', 0, $admin = 1 );
 			$sendmail = 1;
 		}
-		elseif ($message) 
+		elseif ($message)
 		{
 			$subject .= ' - '.JText::_('COM_PROJECTS_MSG_ADMIN_NEW_MESSAGE');
-			$sendmail = 1; 
-			$this->_message = JText::_('COM_PROJECTS_SUCCESS_MESSAGE_SENT'); 
+			$sendmail = 1;
+			$this->_message = JText::_('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
 		}
 
 		// Save changes
-		if (!$obj->store()) 
+		if (!$obj->store())
 		{
 			$this->setError( $obj->getError() );
 			return false;
@@ -399,11 +399,11 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Save params
 		$incoming   = JRequest::getVar( 'params', array() );
-		if (!empty($incoming)) 
+		if (!empty($incoming))
 		{
-			foreach ($incoming as $key=>$value) 
+			foreach ($incoming as $key=>$value)
 			{
-				if ($key == 'quota' || $key == 'pubQuota') 
+				if ($key == 'quota' || $key == 'pubQuota')
 				{
 					// convert GB to bytes
 					$value = ProjectsHtml::convertSize( floatval($value), 'GB', 'b');
@@ -417,7 +417,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->_saveMember();
 
 		// Send message
-		if ($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0) 
+		if ($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
 			// Email config
 			$jconfig 		= JFactory::getConfig();
@@ -434,7 +434,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			$eview->subject 		= $subject;
 			$eview->action 			= $action;
 			$eview->project 		= $project;
-			$eview->message			= $message; 
+			$eview->message			= $message;
 
 			$body = array();
 			$body['plaintext'] 	= $eview->loadTemplate();
@@ -448,7 +448,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			// Send HUB message
 			JPluginHelper::importPlugin( 'xmessage' );
 			$dispatcher = JDispatcher::getInstance();
-			$dispatcher->trigger( 'onSendMessage', 
+			$dispatcher->trigger( 'onSendMessage',
 				array( 'projects_admin_notice', $subject, $body, $from, $managers, $this->_option ));
 		}
 
@@ -465,7 +465,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save member
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _saveMember()
@@ -475,7 +475,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$role 		= JRequest::getInt( 'role', 0 );
 		$id 		= JRequest::getVar( 'id', 0 );
 
-		// Get owner class		
+		// Get owner class
 		$objO = new ProjectOwner($this->database);
 
 		$mbrs = explode(',', $members);
@@ -498,7 +498,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Redirects
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -510,10 +510,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Erases all project information (to be used for test projects only)
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function eraseTask() 
+	public function eraseTask()
 	{
 		$id = JRequest::getVar( 'id', 0 );
 		$permanent = 1;
@@ -521,10 +521,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if (!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -547,7 +547,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		// Erase owner group
 		$group = new \Hubzero\User\Group();
 		$group->read( $prgroup );
-		if ($group) 
+		if ($group)
 		{
 			$group->delete();
 		}
@@ -576,20 +576,20 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 
-		if (is_file(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php')) 
+		if (is_file(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php'))
 		{
 			include_once(JPATH_ROOT.DS.'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'config.php');
 		}
 		$masterscope = 'projects' . DS . $alias . DS . 'notes';
 
 		// Get all notes
-		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p 
+		$this->database->setQuery( "SELECT DISTINCT p.id FROM #__wiki_page AS p
 			WHERE p.group_cn='".$prgroup."' AND p.scope LIKE '".$masterscope."%' " );
 		$notes = $this->database->loadObjectList();
 
-		if ($notes) 
+		if ($notes)
 		{
-			foreach ($notes as $note) 
+			foreach ($notes as $note)
 			{
 				$page = new WikiTablePage( $this->database );
 
@@ -612,7 +612,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$repodir 	= DS . trim($this->_config->get('webpath'), DS);
 		$path 		= $prefix . $repodir . DS . $dir;
 
-		if (is_dir($path)) 
+		if (is_dir($path))
 		{
 			JFolder::delete($path);
 		}
@@ -621,7 +621,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$webpath = JPATH_ROOT . $webdir . DS . $dir;
 
-		if (is_dir($webpath)) 
+		if (is_dir($webpath))
 		{
 			JFolder::delete($webpath);
 		}
@@ -641,22 +641,22 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add and commit untracked/changed files
-	 * 
+	 *
 	 * This is helpful in case git add/commit failed during file upload
 	 *
 	 * @return     void
 	 */
-	public function gitaddTask() 
+	public function gitaddTask()
 	{
 		$id   = JRequest::getVar( 'id', 0 );
 		$file = JRequest::getVar( 'file', '' );
 
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if (!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -666,8 +666,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		if (!$file)
 		{
-			$this->setRedirect($url, 
-				JText::_('Please specify a file/directory path to add and commit into project'), 
+			$this->setRedirect($url,
+				JText::_('Please specify a file/directory path to add and commit into project'),
 				'error'
 			);
 			return;
@@ -680,16 +680,16 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		if (!is_file($path . DS . $file))
 		{
-			$this->setRedirect($url, 
-				JText::_('Error: File not found in the project, cannot add and commit'), 
+			$this->setRedirect($url,
+				JText::_('Error: File not found in the project, cannot add and commit'),
 				'error');
 			return;
 		}
-				
+
 		// Git helper
 		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
 		$gitHelper = new ProjectsGitHelper(
-			$this->_config->get('gitpath', '/opt/local/bin/git'), 
+			$this->_config->get('gitpath', '/opt/local/bin/git'),
 			$obj->owned_by_user,
 			$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
 		);
@@ -709,19 +709,19 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Optimize git repo
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function gitgcTask() 
+	public function gitgcTask()
 	{
 		$id = JRequest::getVar( 'id', 0 );
 
 		// Initiate extended database class
 		$obj = new Project($this->database);
-		if (!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -730,7 +730,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));
-		
+
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->_config, NULL));
 
 		// Redirect
@@ -742,20 +742,20 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 	/**
 	 * Unlock sync and view sync log for project
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function fixsyncTask() 
+	public function fixsyncTask()
 	{
 		$id = JRequest::getVar( 'id', 0 );
 		$service = 'google';
 
 		// Initiate extended database class
 		$obj = new Project( $this->database );
-		if (!$id or !$obj->loadProject($id)) 
+		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option, 
-				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'), 
+			$this->setRedirect('index.php?option=' . $this->_option,
+				JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -779,7 +779,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			$result = $xserver->serve_attachment($sfile, 'sync.' . JFactory::getDate()->format('Y-m') . '.txt', false);
 			exit;
 		}
-		
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option.'&task=edit&id='.$id,

@@ -72,13 +72,13 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		);
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
@@ -143,7 +143,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 		$id = 0;
-		if (is_array($ids) && !empty($ids)) 
+		if (is_array($ids) && !empty($ids))
 		{
 			$id = $ids[0];
 		}
@@ -152,7 +152,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			$this->view->row = CoursesModelCourse::getInstance($id);
 		}
@@ -202,7 +202,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new CoursesModelCourse(0);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -210,7 +210,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		}
 
 		// Store content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);

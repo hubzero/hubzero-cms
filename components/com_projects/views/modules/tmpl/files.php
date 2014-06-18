@@ -45,7 +45,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<p class="mini"><?php echo JText::_('COM_PROJECTS_FILES_NONE'); ?></p>
 <?php } else { ?>
 	<ul>
-		<?php foreach($this->files as $file) { 		
+		<?php foreach($this->files as $file) {
 		?>
 			<li>
 				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=files'.a.$this->goto).'/?action=download'.a.'file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo ProjectsHtml::shortenFileName($file['name']); ?></a>

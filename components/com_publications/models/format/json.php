@@ -54,7 +54,7 @@ class PublicationsElementsFormatJSON extends PublicationsElementsFormat
 	public function stringToObject($data, $options = array('processSections' => false))
 	{
 		// Fix legacy API.
-		if (is_bool($options)) 
+		if (is_bool($options))
 		{
 			$options = array('processSections' => $options);
 
@@ -63,12 +63,12 @@ class PublicationsElementsFormatJSON extends PublicationsElementsFormat
 		}
 
 		$data = trim($data);
-		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}')) 
+		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
 			$ini = PublicationsElementsFormat::getInstance('INI');
 			$obj = $ini->stringToObject($data, $options);
-		} 
-		else 
+		}
+		else
 		{
 			$obj = json_decode($data);
 		}

@@ -41,12 +41,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Redirect to login form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
@@ -66,7 +66,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for importing citations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -75,7 +75,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$importParam = $this->config->get('citation_bulk_import', 1);
 
 		//if importing is turned off go to intro page
-		if (!$importParam) 
+		if (!$importParam)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
@@ -85,7 +85,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 		//are we only allowing admins?
 		$isAdmin = $this->juser->authorize($this->_option, 'import');
-		if ($importParam == 2 && !$isAdmin) 
+		if ($importParam == 2 && !$isAdmin)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
@@ -123,7 +123,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -132,7 +132,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$file = JRequest::getVar('citations_file', null, 'files', 'array');
 
 		// make sure we have a file
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
@@ -143,7 +143,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		}
 
 		// make sure file is under 4MB
-		if ($file['size'] > 4000000) 
+		if ($file['size'] > 4000000)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
@@ -154,7 +154,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		}
 
 		// make sure we dont have any file errors
-		if ($file['error'] > 0) 
+		if ($file['error'] > 0)
 		{
 			JError::raiseError(500, JText::_('An error occurred while trying to upload the file.'));
 		}
@@ -168,7 +168,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$citations = array_values(array_filter($citations));
 
 		// did we get citations from the citation plugins
-		if (!$citations) 
+		if (!$citations)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
@@ -197,7 +197,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Review an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reviewTask()
@@ -219,11 +219,11 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$citations_require_no_attention = unserialize(JFile::read($p2));
 		}
-		
-		
+
+
 
 		// make sure we have some citations
-		if (!$citations_require_attention && !$citations_require_no_attention) 
+		if (!$citations_require_attention && !$citations_require_no_attention)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
@@ -256,7 +256,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -278,7 +278,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$citations_action_no_attention = JRequest::getVar('citation_action_no_attention', array());
 
 		// check to make sure we have citations
-		if (!$cites_require_attention && !$cites_require_no_attention) 
+		if (!$cites_require_attention && !$cites_require_no_attention)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
@@ -316,14 +316,14 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($cra['errors']);
 
 				// if tags were sent over
-				if (array_key_exists('tags', $cra)) 
+				if (array_key_exists('tags', $cra))
 				{
 					$tags = $cra['tags'];
 					unset($cra['tags']);
 				}
 
 				// if badges were sent over
-				if (array_key_exists('badges', $cra)) 
+				if (array_key_exists('badges', $cra))
 				{
 					$badges = $cra['badges'];
 					unset($cra['badges']);
@@ -334,9 +334,9 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				$types = $ct->getType();
 
 				$type = '';
-				foreach ($types as $t) 
+				foreach ($types as $t)
 				{
-					if (strtolower($t['type_title']) == strtolower($cra['type'])) 
+					if (strtolower($t['type_title']) == strtolower($cra['type']))
 					{
 						$type = $t['id'];
 					}
@@ -362,25 +362,25 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($cra['duplicate']);
 
 				// save the citation
-				if (!$cc->save($cra)) 
+				if (!$cc->save($cra))
 				{
 					$citations_error[] = $cra;
-				} 
+				}
 				else
 				{
 					// tags
-					if ($allow_tags == 'yes' && isset($tags)) 
+					if ($allow_tags == 'yes' && isset($tags))
 					{
 						$this->_tagCitation($user, $cc->id, $tags, '');
 					}
 
 					// badges
-					if ($allow_badges == 'yes' && isset($badges)) 
+					if ($allow_badges == 'yes' && isset($badges))
 					{
 						$this->_tagCitation($user, $cc->id, $badges, 'badge');
 					}
 
-					// add the citattion to the saved 
+					// add the citattion to the saved
 					$citations_saved[] = $cc->id;
 				}
 			}
@@ -406,21 +406,21 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($crna['errors']);
 
 				// if tags were sent over
-				if (array_key_exists('tags', $crna)) 
+				if (array_key_exists('tags', $crna))
 				{
 					$tags = $crna['tags'];
 					unset($crna['tags']);
 				}
 
 				// if badges were sent over
-				if (array_key_exists('badges', $crna)) 
+				if (array_key_exists('badges', $crna))
 				{
 					$badges = $crna['badges'];
 					unset($crna['badges']);
 				}
 
 				// verify we haad this one checked to be submitted
-				if ($citations_action_no_attention[$k] != 1) 
+				if ($citations_action_no_attention[$k] != 1)
 				{
 					$citations_not_saved[] = $crna;
 					continue;
@@ -431,10 +431,10 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				$types = $ct->getType();
 
 				$type = '';
-				foreach ($types as $t) 
+				foreach ($types as $t)
 				{
 					// TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
-					if (strtolower($t['type_title']) == strtolower($crna['type'])) 
+					if (strtolower($t['type_title']) == strtolower($crna['type']))
 					{
 						$type = $t['id'];
 					}
@@ -445,25 +445,25 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($crna['duplicate']);
 
 				// save the citation
-				if (!$cc->save($crna)) 
+				if (!$cc->save($crna))
 				{
 					$citations_error[] = $crna;
-				} 
+				}
 				else
 				{
 					// tags
-					if ($allow_tags == 'yes' && isset($tags)) 
+					if ($allow_tags == 'yes' && isset($tags))
 					{
 						$this->_tagCitation($user, $cc->id, $tags, '');
 					}
 
 					// badges
-					if ($allow_badges == 'yes' && isset($badges)) 
+					if ($allow_badges == 'yes' && isset($badges))
 					{
 						$this->_tagCitation($user, $cc->id, $badges, 'badge');
 					}
 
-					// add the citattion to the saved 
+					// add the citattion to the saved
 					$citations_saved[] = $cc->id;
 				}
 			}
@@ -473,12 +473,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->addComponentMessage('You have successfully uploaded <strong>' . count($citations_saved) . '</strong> new citation(s). Your citation(s) can be viewed below.', 'passed');
 
 		// if we have citations not getting saved
-		if (count($citations_not_saved) > 0) 
+		if (count($citations_not_saved) > 0)
 		{
 			$this->addComponentMessage('<strong>' . count($citations_not_saved) . '</strong> citation(s) NOT uploaded.', 'warning');
 		}
-		
-		if (count($citations_error) > 0) 
+
+		if (count($citations_error) > 0)
 		{
 			$this->addComponentMessage('An error occurred while trying to save <strong>' . count($citations_error) . '</strong> citation(s).', 'error');
 		}
@@ -504,7 +504,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show the results of the import
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savedTask()
@@ -515,10 +515,10 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		// Get the citations
 		$citations_saved     = $session->get('citations_saved');
 		$citations_not_saved = $session->get('citations_not_saved');
-		$citations_error     = $session->get('citations_error'); 
+		$citations_error     = $session->get('citations_error');
 
 		// Check to make sure we have citations
-		if (!$citations_saved && !$citations_not_saved) 
+		if (!$citations_saved && !$citations_not_saved)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_citations&task=import'),
@@ -546,7 +546,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->view->filters   = $filters;
 		$this->view->citations = array();
 
-		foreach ($citations_saved as $cs) 
+		foreach ($citations_saved as $cs)
 		{
 			$cc = new CitationsCitation($this->database);
 			$cc->load($cs);
@@ -570,7 +570,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Add tags to a citation
-	 * 
+	 *
 	 * @param      integer $userid     User ID
 	 * @param      integer $objectid   Citation ID
 	 * @param      string  $tag_string Comma separated list of tags
@@ -579,7 +579,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	 */
 	protected function _tagCitation($userid, $objectid, $tag_string, $label)
 	{
-		if ($tag_string) 
+		if ($tag_string)
 		{
 			$ct = new CitationTags($this->database);
 			$ct->tag_object($userid, $objectid, $tag_string, 1, false, $label);
@@ -588,24 +588,24 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete old files
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _citationCleanup()
 	{
 		$p = JPATH_ROOT . DS . 'tmp' . DS . 'citations';
 
-		if (is_dir($p)) 
+		if (is_dir($p))
 		{
 			$tmp = JFolder::files($p);
 
-			if ($tmp) 
+			if ($tmp)
 			{
-				foreach($tmp as $t) 
+				foreach($tmp as $t)
 				{
 					$ft = filemtime($p . DS . $t);
 
-					if ($ft < strtotime("-1 DAY")) 
+					if ($ft < strtotime("-1 DAY"))
 					{
 						JFile::delete($p . DS . $t);
 					}
@@ -616,7 +616,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 	/**
 	 * Return the citation format
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getformatTask()

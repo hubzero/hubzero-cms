@@ -35,7 +35,7 @@ $canDo = JobsHelper::getActions('category');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Job Categories') . ': ' . $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -44,15 +44,15 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('category');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if (form.category.value == '') {
 		alert('Category must have a title');

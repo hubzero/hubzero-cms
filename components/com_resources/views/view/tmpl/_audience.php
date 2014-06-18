@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -50,7 +50,7 @@ if ($this->audience && count($this->audience) > 0) { ?>
 					$levels[$lv] = $this->audience->$lv;
 					$labels[$lv]['title'] = $this->audience->$lb;
 					$labels[$lv]['desc']  = $this->audience->$ds;
-					if ($this->audience->$lv) 
+					if ($this->audience->$lv)
 					{
 						$selected[] = $lv;
 					}
@@ -67,11 +67,11 @@ if ($this->audience && count($this->audience) > 0) { ?>
 				}
 
 				// figure out text label
-				if (count($selected) == 1) 
+				if (count($selected) == 1)
 				{
 					$txtlabel = $labels[$selected[0]]['title'];
-				} 
-				else if (count($selected) > 1) 
+				}
+				else if (count($selected) > 1)
 				{
 					$first 	    = array_shift($selected);
 					$first		= $labels[$first]['title'];
@@ -84,8 +84,8 @@ if ($this->audience && count($this->audience) > 0) { ?>
 					$last     = end($lastbits);
 
 					$txtlabel = $first . '-' . $last;
-				} 
-				else 
+				}
+				else
 				{
 					$txtlabel = JText::_('Tool Audience Unrated');
 				}

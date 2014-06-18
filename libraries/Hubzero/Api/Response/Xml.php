@@ -58,7 +58,7 @@ class Xml
 
 	/**
 	 * Encode a variable into XML
-	 * 
+	 *
 	 * @param      mixed   $mixed            Data to encode (array/object)
 	 * @param      string  $tag              Root tag name
 	 * @param      string  $attributes       Attributes to add
@@ -202,9 +202,9 @@ class Xml
 
 	/**
 	 * Set the last error
-	 * 
+	 *
 	 * @param      integer $id Error number
-	 * @return     integer 
+	 * @return     integer
 	 */
 	public function last_error($id)
 	{
@@ -220,7 +220,7 @@ class Xml
 
 	/**
 	 * Parse XML and return as array or object
-	 * 
+	 *
 	 * @param      string $xml XML
 	 * @return     mixed Array or object
 	 */

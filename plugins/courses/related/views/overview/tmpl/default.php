@@ -38,10 +38,10 @@ $this->css();
 		<?php echo (count($this->ids) > 1) ? JText::_('PLG_COURSES_RELATED_OTHER_BY_INSTRUCTORS') : JText::_('PLG_COURSES_RELATED_OTHER_BY_INSTRUCTOR'); ?>
 	</h3>
 	<?php
-	$i = 0; 
+	$i = 0;
 	$cls = '';
-	foreach ($this->courses as $course) 
-	{ 
+	foreach ($this->courses as $course)
+	{
 		$course = new CoursesModelCourse($course);
 		$i++;
 		if ($i == 3)
@@ -73,13 +73,13 @@ $this->css();
 				</p>
 			</div><!-- / .content -->
 		</div><!-- / .col -->
-		<?php 
+		<?php
 		if ($i == 0 || $i == count($this->courses))
 		{
 		?>
 	</div><!-- / .grid -->
 		<?php
 		}
-	} 
+	}
 	?>
 </div><!-- / #related-courses -->

@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $name = $this->author->name ? $this->author->name : $this->author->p_name;
 $name = trim($name) ? $name : $this->author->invited_name;
 
-if(trim($name)) {	
+if(trim($name)) {
 	$nameParts    = explode(" ", $name);
 	$lastname  	  = end($nameParts);
 	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
@@ -45,12 +45,12 @@ $firstname = $this->author->firstName ? htmlspecialchars($this->author->firstNam
 $lastname = $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
 
 // Don't display email in name fields
-$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/'; 
-if(preg_match($regex, $lastname)) 
+$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
+if(preg_match($regex, $lastname))
 {
 	$lastname = '';
 }
-if(preg_match($regex, $firstname)) 
+if(preg_match($regex, $firstname))
 {
 	$firstname = '';
 }
@@ -62,9 +62,9 @@ $mconfig = JComponentHelper::getParams( 'com_members' );
 $path  			= DS .trim($mconfig->get('webpath'), DS);
 $default_thumb 	= DS . trim($mconfig->get('defaultpic'), DS);
 
-// Get profile thumb image 
+// Get profile thumb image
 $thumb = '';
-					
+
 if($this->author->picture && $this->author->user_id) {
 	$curthumb = $ih->createThumbName($this->author->picture);
 	$thumb = $path.DS.\Hubzero\Utility\String::pad($this->author->user_id).DS.$curthumb;
@@ -78,15 +78,15 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 ?>
 
 <div id="abox-content">
-<h3><?php echo $this->author->id 
+<h3><?php echo $this->author->id
 	? JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR')
 	: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ADD_AUTHOR'); ?></h3>
 <?php
 // Display error  message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } else { ?>
-	
+
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -96,8 +96,8 @@ if ($this->getError()) {
 				<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->vid; ?>" />
 				<input type="hidden" name="uid" value="<?php echo $this->uid; ?>" />
-				<input type="hidden" name="owner" value="<?php echo $this->owner; ?>" />	
-				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />	
+				<input type="hidden" name="owner" value="<?php echo $this->owner; ?>" />
+				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<?php if($this->project->provisioned == 1 ) { ?>
@@ -105,7 +105,7 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 			<div class="author-edit">
-				
+
 				<?php if ($this->author->id) { ?>
 				<div class="profile-info">
 					<p><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $name; ?>" />
@@ -136,22 +136,22 @@ if ($this->getError()) {
 					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')); ?>:</span>
 					<input type="text" name="credit" class="long" value="<?php echo htmlspecialchars($this->author->credit); ?>" maxlength="255"  /><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 				</label>
-		
-				<p class="hint"><?php echo ($this->author->username) 
+
+				<p class="hint"><?php echo ($this->author->username)
 					? JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_TIPS')
 					: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_UNCONFIRMED_TIPS') ; ?></p>
-					
+
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-					<?php if($this->ajax) { ?>	
+					<?php if($this->ajax) { ?>
 					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-					<?php } else { 
-						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');	
+					<?php } else {
+						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
 					?>
 					<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 					<?php } ?>
 				</p>
-			</div>		
+			</div>
 	</form>
 	<div class="clear"></div>
 <?php } ?>

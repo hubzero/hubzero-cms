@@ -55,7 +55,7 @@ $goto  = 'alias=' . $this->project->alias;
 </div>
 <div class="list-editing">
  <p><?php echo ucfirst(JText::_('COM_PROJECTS_SHOWING')); ?> <?php if($this->total <= count($this->team)) { echo JText::_('COM_PROJECTS_ALL'); }?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if($this->total > count($this->team)) { echo JText::_('COM_PROJECTS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('COM_PROJECTS_TEAM_MEMBERS'); ?>
-	<?php if ($this->project->role == 1) { ?> 		
+	<?php if ($this->project->role == 1) { ?>
 	<span class="editlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=edit'.a.$goto).'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_TEAM'); ?></a></span>
 	<?php } ?></p>
 </div>
@@ -71,20 +71,20 @@ $goto  = 'alias=' . $this->project->alias;
 			</tr>
 		</thead>
 		<tbody>
-<?php foreach ($this->team as $owner) 
+<?php foreach ($this->team as $owner)
 	{
-					// Get profile thumb image 				
+					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
-					
+
 					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
-					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'  
+					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'
 								? ProjectsHtml::timeAgo($owner->lastvisit) . ' ' . JText::_('COM_PROJECTS_AGO')
 								: JText::_('COM_PROJECTS_NEVER');
 					$lastvisit = $owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)
-								? '<span class="online">' . JText::_('COM_PROJECTS_TEAM_ONLINE_NOW') . '</span>' 
+								? '<span class="online">' . JText::_('COM_PROJECTS_TEAM_ONLINE_NOW') . '</span>'
 								: $lastvisit;
-								
+
 					// User deleted?
 					// Edge case!
 					if ($owner->userid && !$owner->username)
@@ -95,23 +95,23 @@ $goto  = 'alias=' . $this->project->alias;
 						$objO->store();
 						continue;
 					}
-								
+
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;
-					
+
 					// Determine css class for user
 					$usr_class = $owner->status == 0 ? ' class="userinvited"' : ' class="useractive"';
-					$usr_class = ($creator || ($this->project->owned_by_group && $owner->native)) 
+					$usr_class = ($creator || ($this->project->owned_by_group && $owner->native))
 						? ' class="userowner"' : $usr_class;
-					$role = $owner->role == 1 
-						? JText::_('COM_PROJECTS_LABEL_OWNER') 
-						: JText::_('COM_PROJECTS_LABEL_COLLABORATOR');	
-					$username = $owner->username ? $owner->username : $owner->invited_email;		
+					$role = $owner->role == 1
+						? JText::_('COM_PROJECTS_LABEL_OWNER')
+						: JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
+					$username = $owner->username ? $owner->username : $owner->invited_email;
 ?>
 			<tr class="mline <?php if($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td<?php echo $usr_class; ?>><a href="/members/<?php echo $owner->userid; ?>" <?php if($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname).' ('.$owner->userid.')'; ?>"<?php } ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini"><?php echo $role; ?></td>
-				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>				
+				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 				<td class="mini"><?php echo $lastvisit; ?></td>
 			</tr>
@@ -120,13 +120,13 @@ $goto  = 'alias=' . $this->project->alias;
 			</table>
 			<div class="nav_pager">
 				<p>
-				<?php 
+				<?php
 				if($this->filters['start'] == 0) {	?>
 					<span>&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></span>
 				<?php	} else {  ?>
 					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
 				<?php } ?><span>&nbsp; | &nbsp;</span>
-				<?php 
+				<?php
 				if( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 					<span><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</span>
 				<?php	} else { ?>

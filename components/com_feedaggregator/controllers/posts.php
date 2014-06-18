@@ -41,7 +41,7 @@ use Guzzle\Http\Client;
  */
 class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 {
-	
+
 	/**
 	 * Default component view
 	 *
@@ -125,7 +125,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 					$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
 					$this->view->total = intval($model->loadRowCount());
 				}
-	
+
 				// Initiate paging
 				jimport('joomla.html.pagination');
 				$this->view->pageNav = new JPagination(
@@ -133,9 +133,9 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 						$this->view->filters['start'],
 						$this->view->filters['limit']
 				);
-				
+
 				$this->view->pageNav->setAdditionalUrlParam('filterby', $this->view->filters['filterby']);
-							
+
 			}
 
 			/*Truncates the title to save screen real-estate. Full version shown in FancyBox*/
@@ -259,7 +259,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			try {
 
 				Guzzle\Http\StaticClient::mount();
-				
+
 
 				foreach ($feeds as $feed)
 				{
@@ -288,14 +288,14 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 								{
 									$link = $link;
 								}
-								
+
 								if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
 								{
 									$post = new FeedAggregatorModelPosts; //create post object
 									$post->set('title', html_entity_decode(strip_tags($item->title))); 
 									$post->set('feed_id', (integer) $feed->id);
 									$post->set('status', 0);  //force new status
-									
+
 									//ATOM original content link
 									$post->set('url', (string) $link);
 									
@@ -308,11 +308,11 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 										$post->set('created', strtotime($item->updated));
 									}
 									
-									$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));	
+									$post->set('description', (string) html_entity_decode(strip_tags($item->content, '<img>')));
 									$post->store(); //save the post
-														
-								} // end check for prior existance 
-								
+
+								} // end check for prior existance
+
 							}
 							else if ($feedType == 'RSS')
 							{
@@ -325,7 +325,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 									$post->set('created', strtotime($item->pubDate));
 									$post->set('description', (string) html_entity_decode(strip_tags($item->description, '<img>')));
 									$post->set('url', (string) $item->link);
-									
+
 									$post->store(); //save the post
 								}
 							}
@@ -333,7 +333,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 						} //end foreach
 					}//end if
 				}
-				
+
 				// Output messsage and redirect
 				$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
@@ -356,7 +356,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		// Get the approved posts
 		$model = new FeedAggregatorModelPosts;
 		$posts = $model->getPostsByStatus(1000,0,2);
-		
+
 		// Set the mime encoding for the document
 		$doc = JFactory::getDocument();
 		$doc->setMimeEncoding('application/rss+xml');
@@ -386,15 +386,15 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$item->link        = $post->link;
 				$item->date        = date($post->created);
 				$item->description = (string) html_entity_decode(strip_tags($post->description, '<img>'));
-				
+
 				$doc->addItem($item);
-			} 
+			}
 		}
 		// Output the feed
 		header("Content-Type: application/rss+xml");
 		echo $doc->render();
 		die;
-		
+
 	}
 
 } // end class

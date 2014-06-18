@@ -47,7 +47,7 @@ class Console extends AbstractRenderer
 
 	/**
 	 * Render a list of messages
-	 * 
+	 *
 	 * @param   array  $messages
 	 * @return  string
 	 */

@@ -35,7 +35,7 @@ if ($this->getError())
 {
 ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
-<?php 
+<?php
 }
 else
 {

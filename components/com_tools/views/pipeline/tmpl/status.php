@@ -63,12 +63,12 @@ $this->css('pipeline.css')
 			JText::_('COM_TOOLS_PUBLISHED')
 		); // regular state list
 
-		if ($state == JText::_('COM_TOOLS_RETIRED')) 
+		if ($state == JText::_('COM_TOOLS_RETIRED'))
 		{
 			$states[] = JText::_('COM_TOOLS_RETIRED');
 		}
 
-		if ($state == JText::_('COM_TOOLS_UPDATED')) 
+		if ($state == JText::_('COM_TOOLS_UPDATED'))
 		{
 			$states[2] = JText::_('COM_TOOLS_UPDATED');
 		}
@@ -78,15 +78,15 @@ $this->css('pipeline.css')
 	<div class="clear"></div>
 	<ol id="steps">
 		<li class="steps_hed"><?php echo JText::_('COM_TOOLS_STATUS'); ?>:</li>
-		<?php 
-		for ($i=0, $n=count($states); $i < $n; $i++) 
-		{ 
+		<?php
+		for ($i=0, $n=count($states); $i < $n; $i++)
+		{
 			$cls = 'done';
 			if (strtolower($state) == strtolower($states[$i]))
 			{
 				$cls = 'active';
 			}
-			else if (count($key) == 0 or $i > $key[0]) 
+			else if (count($key) == 0 or $i > $key[0])
 			{
 				$cls = 'future';
 			}
@@ -103,19 +103,19 @@ $this->css('pipeline.css')
 		}
 	?>
 
-	<div class="toolinfo_note"> 
+	<div class="toolinfo_note">
 		<?php if ($this->msg) { echo '<p class="passed">'.$this->msg.'</p>'; } ?>
 		<?php if (ToolsHelperHtml::getNumofTools($this->status)) { echo '<p>'.ToolsHelperHtml::getNumofTools($this->status).'.</p>'; }?>
 	</div><!-- / .toolinfo_note -->
 
 	<div class="grid">
 		<div class="col span-half">
-			<div class="toolinfo<?php echo $this->statusClass; ?>"> 
+			<div class="toolinfo<?php echo $this->statusClass; ?>">
 				<table id="toolstatus">
 					<tbody>
 						<tr>
 							<th colspan="2" class="toolinfo_hed">
-								<?php echo JText::_('COM_TOOLS_TOOL_INFO'); ?> 
+								<?php echo JText::_('COM_TOOLS_TOOL_INFO'); ?>
 							<?php if (ToolsHelperHtml::toolActive($this->status['state'])) { ?>
 								<a class="edit button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname']); ?>" title="<?php echo JText::_('COM_TOOLS_EDIT_TIPS'); ?>"><?php echo JText::_('COM_TOOLS_EDIT'); ?></a>
 							<?php } ?>
@@ -139,7 +139,7 @@ $this->css('pipeline.css')
 						<tr>
 							<th><?php echo JText::_('COM_TOOLS_DESCRIPTION'); ?></th>
 							<td>
-								<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+								<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 								<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_EDIT_THIS_PAGE'); ?></a>
 							</td>
 						</tr>
@@ -301,11 +301,11 @@ $this->css('pipeline.css')
 						<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 						<input type="hidden" name="task" value="update" />
 						<input type="hidden" name="id" value="<?php echo $this->status['toolid']?>" />
-						<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']?>" />	
+						<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']?>" />
 						<input type="hidden" name="newstate" id="newstate" value="" />
-					</fieldset>	
+					</fieldset>
 				</form>
-				<?php 
+				<?php
 				$juser = JFactory::getUser();
 				$jconfig = JFactory::getConfig();
 				$juri = JURI::getInstance();
@@ -319,7 +319,7 @@ $this->css('pipeline.css')
 				$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
 				$live_site = rtrim(JURI::base(),'/');
 				$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
-					
+
 				// get configurations/ defaults
 				$developer_site = $this->config->get('developer_site', 'hubFORGE');
 				$rappture_url   = $this->config->get('rappture_url', '');
@@ -331,30 +331,30 @@ $this->css('pipeline.css')
 				$this->statuspath =  JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
 				$testpath = JRoute::_('index.php?option=' . $this->option . '&controller=sessions&task=invoke&app=' . $this->status['toolname'] . '&version=test');
 
-				switch ($this->status['state']) 
+				switch ($this->status['state'])
 				{
 					//  registered
 					case 1:
 				?>
 					<p>
-						<?php echo JText::_('COM_TOOLS_TEAM_WILL_CREATE'); ?> <a class="developer-site" href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS');?>. 
-						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>. 
+						<?php echo JText::_('COM_TOOLS_TEAM_WILL_CREATE'); ?> <a class="developer-site" href="<?php echo $developer_url; ?>/tools"><?php echo $developer_site; ?></a>, <?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS');?>.
+						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST'); ?>.
 						<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 24 <?php echo JText::_('COM_TOOLS_HOURS'); ?>
 					</p>
 					<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
 					<ul>
 						<li class="complete">
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTER'); ?> 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTER'); ?>
 							<?php echo $sitename; ?>
 						</li>
 						<li class="incomplete">
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOAD_CODE'); ?> 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOAD_CODE'); ?>
 							<?php echo $developer_site; ?>
 						</li>
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -407,18 +407,18 @@ $this->css('pipeline.css')
 					<ul>
 						<li class="complete"><?php echo JText::_('COM_TOOLS_WHATSNEXT_REGISTER'); ?> <?php echo $sitename; ?></li>
 						<li class="incomplete">
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOAD_COMMIT_FINAL_CODE'); ?> 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOAD_COMMIT_FINAL_CODE'); ?>
 							<span id="Uploaded_">
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Uploaded&app=' . $this->status['toolname']); ?>" class="flip">
 									<?php echo JText::_('COM_TOOLS_WHATSNEXT_DONE'); ?>
 								</a>
-							</span> 
+							</span>
 							<br /><a class="developer-wiki" href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOAD_HOW_DO_I_DO_THIS'); ?></a>
 						</li>
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -441,8 +441,8 @@ $this->css('pipeline.css')
 					case 3:
 				?>
 					<p>
-						<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
-						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
+						<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>.
+						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
 						<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('COM_TOOLS_DAYS'); ?>.
 					</p>
 					<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -456,7 +456,7 @@ $this->css('pipeline.css')
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -527,7 +527,7 @@ $this->css('pipeline.css')
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -537,11 +537,11 @@ $this->css('pipeline.css')
 						</li>
 					<?php } ?>
 						<li class="todo">
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_TEST_AND_APPROVE'); ?>. 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_TEST_AND_APPROVE'); ?>.
 					<?php if ($this->status['resource_modified'] == '1') { ?>
-							<span id="Approved_"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Approved&app=' . $this->status['toolname']); ?>" class="flip"><?php echo JText::_('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></a></span> 
+							<span id="Approved_"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Approved&app=' . $this->status['toolname']); ?>" class="flip"><?php echo JText::_('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></a></span>
 					<?php } else { ?>
-							<span class="disabled"><?php echo JText::_('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></span> 
+							<span class="disabled"><?php echo JText::_('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></span>
 					<?php } ?>
 							| <span id="Updated_"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Updated&app=' . $this->status['toolname']); ?>" class="flip"><?php echo JText::_('COM_TOOLS_WHATSNEXT_CHANGES_MADE'); ?></a></span>
 						</li>
@@ -549,15 +549,15 @@ $this->css('pipeline.css')
 							<?php echo JText::_('COM_TOOLS_WHATSNEXT_PUBLISH'); ?> <?php echo $hubShortURL; ?>
 						</li>
 					</ul>
-				<?php 
+				<?php
 					break;
 
 					//  updated
 					case 5:
 				?>
 					<p>
-						<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>. 
-						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>. 
+						<?php echo ucfirst(JText::_('COM_TOOLS_THE')); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST'); ?>.
+						<?php echo JText::_('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN'); ?> <?php echo ToolsHelperHtml::timeAgo($this->status['changed']); ?> <?php echo JText::_('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE'); ?>.
 						<?php echo JText::_('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE'); ?> 3 <?php echo JText::_('COM_TOOLS_DAYS'); ?>.
 					</p>
 					<h4><?php echo JText::_('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
@@ -571,7 +571,7 @@ $this->css('pipeline.css')
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&task=preview&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -611,7 +611,7 @@ $this->css('pipeline.css')
 					<?php if ($this->status['resource_modified'] == '1') { ?>
 						<li class="complete">
 							<?php echo JText::_('COM_TOOLS_TODO_MAKE_RES_PAGE'); ?>.
-							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> | 
+							<a class="preview-resource" href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->status['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW'); ?></a> |
 							<a class="edit-resource" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE'); ?>...</a>
 						</li>
 					<?php } else { ?>
@@ -641,7 +641,7 @@ $this->css('pipeline.css')
 					<h3><?php echo JText::_('COM_TOOLS_WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
 					<ul class="youroptions">
 						<li>
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_CHANGES_MADE'); ?> 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_CHANGES_MADE'); ?>
 							<span id="Updated"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Updated&app=' . $this->status['toolname']); ?>" class="flip"><?php echo JText::_('COM_TOOLS_WHATSNEXT_PUBLISHED_PLS_INSTALL'); ?></a></span>
 						</li>
 					</ul>
@@ -652,13 +652,13 @@ $this->css('pipeline.css')
 					case 8:
 				?>
 					<p>
-						<?php echo JText::_('COM_TOOLS_WHATSNEXT_RETIRED_FROM'); ?> <?php echo $hubShortURL; ?>. 
+						<?php echo JText::_('COM_TOOLS_WHATSNEXT_RETIRED_FROM'); ?> <?php echo $hubShortURL; ?>.
 						<?php echo JText::_('COM_TOOLS_CONTACT'); ?> <?php echo $sitename; ?> <?php echo JText::_('COM_TOOLS_CONTACT_SUPPORT_TO_REPUBLISH'); ?>.
 					</p>
 					<h3><?php echo JText::_('COM_TOOLS_WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
 					<ul class="youroptions">
 						<li>
-							<?php echo JText::_('COM_TOOLS_WHATSNEXT_RETIRED_WANT_REPUBLISH'); ?>. 
+							<?php echo JText::_('COM_TOOLS_WHATSNEXT_RETIRED_WANT_REPUBLISH'); ?>.
 							<span id="Updated">
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Updated&app=' . $this->status['toolname']); ?>" class="flip"><?php echo JText::_('COM_TOOLS_WHATSNEXT_RETIRED_PLS_REPUBLISH'); ?></a>
 							</span>

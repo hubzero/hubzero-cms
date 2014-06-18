@@ -41,35 +41,35 @@ class WishlistModelPlan extends WishlistModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'WishlistPlan';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_wishlist.plan.pagetext';
 
 	/**
 	 * ForumModelAttachment
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_attachment = null;
 
 	/**
 	 * ForumModelAttachment
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
@@ -123,7 +123,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -141,7 +141,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid, $wish);
 		}
@@ -151,7 +151,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
@@ -177,7 +177,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
 	 */
@@ -201,7 +201,7 @@ class WishlistModelPlan extends WishlistModelAbstract
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer

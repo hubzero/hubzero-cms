@@ -66,7 +66,7 @@ if (!$this->no_html) {
 
 			<label for="field-alias">
 				<?php echo JText::_('Offering identifier'); ?>
-				<input name="offering[alias]" id="field-alias" type="text" size="35" value="<?php echo $this->escape($this->offering->get('alias')); ?>" /> 
+				<input name="offering[alias]" id="field-alias" type="text" size="35" value="<?php echo $this->escape($this->offering->get('alias')); ?>" />
 				<span class="hint"><?php echo JText::_('This is a short identifier used for URLs. Allowed characters are letters, numbers, dashes, underscores, and periods. Example: fall2013, version1. If none is provided, one will be generated from the title.'); ?></span>
 			</label>
 

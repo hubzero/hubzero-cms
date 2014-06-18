@@ -45,7 +45,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Marks action items as completed
-	 * 
+	 *
 	 * @param      string  $type      Item type
 	 * @param      array   $uids      User IDs
 	 * @param      string  $component ITem component
@@ -55,13 +55,13 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	public function onTakeAction($type, $uids=array(), $component='', $element=null)
 	{
 		// Do we have the proper bits?
-		if (!$element || !$component || !$type) 
+		if (!$element || !$component || !$type)
 		{
 			return false;
 		}
 
 		// Do we have any user IDs?
-		if (count($uids) > 0) 
+		if (count($uids) > 0)
 		{
 			$database = JFactory::getDBO();
 
@@ -73,7 +73,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$mids = $action->getActionItems($type, $component, $element, $uid);
 
 				// Check if the user has any action items
-				if (count($mids) > 0) 
+				if (count($mids) > 0)
 				{
 					foreach ($mids as $mid)
 					{
@@ -81,9 +81,9 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						$xseen->mid = $mid;
 						$xseen->uid = $uid;
 						$xseen->loadRecord();
-						if ($xseen->whenseen == '' 
-						 || $xseen->whenseen == $database->getNullDate() 
-						 || $xseen->whenseen == NULL) 
+						if ($xseen->whenseen == ''
+						 || $xseen->whenseen == $database->getNullDate()
+						 || $xseen->whenseen == NULL)
 						{
 							$xseen->whenseen = JFactory::getDate()->toSql();
 							$xseen->store(true);
@@ -98,7 +98,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Send a message to one or more users
-	 * 
+	 *
 	 * @param      string  $type        Message type (maps to #__xmessage_component table)
 	 * @param      string  $subject     Message subject
 	 * @param      string  $message     Message to send
@@ -113,7 +113,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	public function onSendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0, $bypassGroupsCheck = false)
 	{
 		// Do we have a message?
-		if (!$message) 
+		if (!$message)
 		{
 			return false;
 		}
@@ -124,7 +124,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		// Create the message object
 		$xmessage = new \Hubzero\Message\Message($database);
 
-		if ($type == 'member_message') 
+		if ($type == 'member_message')
 		{
 			$time_limit  = intval($this->params->get('time_limit', 30));
 			$daily_limit = intval($this->params->get('daily_limit', 100));
@@ -136,7 +136,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 			$number_sent = $xmessage->getSentMessagesCount($filters);
 
-			if ($number_sent >= $daily_limit) 
+			if ($number_sent >= $daily_limit)
 			{
 				return false;
 			}
@@ -145,18 +145,18 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 			$filters['limit'] = 1;
 			$filters['start'] = 0;
 			$sent = $xmessage->getSentMessages($filters);
-			if (count($sent) > 0) 
+			if (count($sent) > 0)
 			{
 				$last_sent = $sent[0];
 
 				$last_time = 0;
-				if ($last_sent->created) 
+				if ($last_sent->created)
 				{
 					$last_time = JFactory::getDate($last_sent->created)->toUnix();
 				}
 				$time_difference = (JFactory::getDate()->toUnix() + $time_limit) - $last_time;
 
-				if ($time_difference < $time_limit) 
+				if ($time_difference < $time_limit)
 				{
 					return false;
 				}
@@ -164,10 +164,10 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a subject line? If not, create it from the message
-		if (!$subject && $message) 
+		if (!$subject && $message)
 		{
 			$subject = substr($message, 0, 70);
-			if (strlen($subject) >= 70) 
+			if (strlen($subject) >= 70)
 			{
 				$subject .= '...';
 			}
@@ -182,7 +182,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		$xmessage->type       = $type;
 		$xmessage->group_id   = $group_id;
 
-		if (!$xmessage->store()) 
+		if (!$xmessage->store())
 		{
 			return $xmessage->getError();
 		}
@@ -193,7 +193,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have any recipients?
-		if (count($to) > 0) 
+		if (count($to) > 0)
 		{
 			// Load plugins
 			$dispatcher = JDispatcher::getInstance();
@@ -206,11 +206,11 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 				$xgroups = $profile->getGroups('all');
 				$usersgroups = array();
-				if (!empty($xgroups)) 
+				if (!empty($xgroups))
 				{
 					foreach ($xgroups as $group)
 					{
-						if ($group->regconfirmed) 
+						if ($group->regconfirmed)
 						{
 							$usersgroups[] = $group->cn;
 						}
@@ -235,7 +235,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 
 				//$user = JUser::getInstance($uid);
 				$user = \Hubzero\User\Profile::getInstance($uid);
-				if (!is_object($user) || !$user->get('username')) 
+				if (!is_object($user) || !$user->get('username'))
 				{
 					continue;
 				}
@@ -244,11 +244,11 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				{
 					$pgroups = $user->getGroups('all');
 					$profilesgroups = array();
-					if (!empty($pgroups)) 
+					if (!empty($pgroups))
 					{
 						foreach ($pgroups as $group)
 						{
-							if ($group->regconfirmed) 
+							if ($group->regconfirmed)
 							{
 								$profilesgroups[] = $group->cn;
 							}
@@ -258,7 +258,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 					if (!$bypassGroupsCheck)
 					{
 						$common = array_intersect($usersgroups, $profilesgroups);
-						if (count($common) <= 0) 
+						if (count($common) <= 0)
 						{
 							continue;
 						}
@@ -266,34 +266,34 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 				}
 
 				// Do we have any methods?
-				if ($methods) 
+				if ($methods)
 				{
 					// Loop through each method
 					foreach ($methods as $method)
 					{
 						$action = strtolower($method->method);
-						if ($action == 'internal') 
+						if ($action == 'internal')
 						{
-							if (!$recipient->store()) 
+							if (!$recipient->store())
 							{
 								$this->setError($recipient->getError());
 							}
-						} 
-						else 
+						}
+						else
 						{
-							if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action))) 
+							if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action)))
 							{
 								$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
 							}
 						}
 					}
-				} 
-				else 
+				}
+				else
 				{
 					// First check if they have ANY methods saved (meaning they've changed their default settings)
 					// If They do have some methods, then they simply turned off everything for this $type
 					$methods = $notify->getRecords($uid);
-					if (!$methods || count($methods) <= 0) 
+					if (!$methods || count($methods) <= 0)
 					{
 						// Load the default method
 						$p = JPluginHelper::getPlugin('members', 'messages');
@@ -302,13 +302,13 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 						$d = $pp->get('default_method');
 						$d = ($d) ? $d : 'email';
 
-						if (!$recipient->store()) 
+						if (!$recipient->store())
 						{
 							$this->setError($recipient->getError());
 						}
 
 						// Use the Default in the case the user has no methods
-						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d))) 
+						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $d)))
 						{
 							$this->setError(JText::sprintf('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $d));
 						}

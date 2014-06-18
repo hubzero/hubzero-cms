@@ -31,7 +31,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) 
+if (!defined('n'))
 {
 	/**
 	 * Shortcut constant for tabs
@@ -71,7 +71,7 @@ class JobsHtml
 {
 	/**
 	 * Remove paragraph tags and break tags
-	 * 
+	 *
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
@@ -88,7 +88,7 @@ class JobsHtml
 
 	/**
 	 * Return a confirmation screen
-	 * 
+	 *
 	 * @param      string $returnurl URL to return to if they press 'no'
 	 * @param      string $actionurl URL to go to if they press 'yes'
 	 * @param      string $action    Action the confirmation is for
@@ -99,15 +99,15 @@ class JobsHtml
 		$html  = '<div class="confirmwrap">' . "\n";
 		$html .= "\t" . '<div class="confirmscreen">' . "\n";
 		$html .= "\t" . '<p class="warning">' . JText::_('CONFIRM_ARE_YOU_SURE') . ' ';
-		if ($action == 'cancelsubscription') 
+		if ($action == 'cancelsubscription')
 		{
 			$html .= strtolower(JText::_('SUBSCRIPTION_CANCEL_THIS'));
-		} 
-		else if ($action == 'withdrawapp') 
+		}
+		else if ($action == 'withdrawapp')
 		{
 			$html .=  JText::_('APPLICATION_WITHDRAW');
-		} 
-		else 
+		}
+		else
 		{
 			$html .= JText::_('ACTION_PERFORM_THIS');
 		}
@@ -129,7 +129,7 @@ class JobsHtml
 
 	/**
 	 * Generate a select form
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Data to populate select with
 	 * @param      mixed  $value Value to select
@@ -153,7 +153,7 @@ class JobsHtml
 
 	/**
 	 * Returns a wiki syntax reference table
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function wikiHelp()

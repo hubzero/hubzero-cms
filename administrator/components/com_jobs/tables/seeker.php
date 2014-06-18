@@ -38,77 +38,77 @@ class JobSeeker extends JTable
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id         = NULL;  // @var int(11) Primary key
 
 	/**
 	 * Description for 'uid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $uid		= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'active'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $active		= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'lookingfor'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $lookingfor	= NULL;
 
 	/**
 	 * Description for 'tagline'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tagline	= NULL;
 
 	/**
 	 * Description for 'linkedin'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $linkedin	= NULL;
 
 	/**
 	 * Description for 'url'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $url		= NULL;
 
 	/**
 	 * Description for 'updated'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $updated	= NULL;
 
 	/**
 	 * Description for 'sought_cid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $sought_cid	= NULL;
 
 	/**
 	 * Description for 'sought_type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $sought_type= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -119,12 +119,12 @@ class JobSeeker extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval($this->uid) == 0) 
+		if (intval($this->uid) == 0)
 		{
 			$this->setError(JText::_('ERROR_MISSING_UID'));
 			return false;
@@ -135,29 +135,29 @@ class JobSeeker extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $name User id
 	 * @return     boolean True upon success
 	 */
 	public function loadSeeker($name=NULL)
 	{
-		if ($name !== NULL) 
+		if ($name !== NULL)
 		{
 			$this->_tbl_key = 'uid';
 		}
 		$k = $this->_tbl_key;
-		if ($name !== NULL) 
+		if ($name !== NULL)
 		{
 			$this->$k = $name;
 		}
 		$name = $this->$k;
-		if ($name === NULL) 
+		if ($name === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($name) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
@@ -166,13 +166,13 @@ class JobSeeker extends JTable
 
 	/**
 	 * Get a shortlist count for a yser
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     integer
 	 */
 	public function countShortlistedBy($uid=0)
 	{
-		if ($uid == NULL) 
+		if ($uid == NULL)
 		{
 			return 0;
 		}
@@ -183,7 +183,7 @@ class JobSeeker extends JTable
 
 	/**
 	 * Count seekers
-	 * 
+	 *
 	 * @param      array   $filters   Filters to build query
 	 * @param      integer $uid       User ID
 	 * @param      integer $excludeme Exclude a user?
@@ -210,7 +210,7 @@ class JobSeeker extends JTable
 
 	/**
 	 * Get a list of seekers
-	 * 
+	 *
 	 * @param      array   $filters   Filters to build query
 	 * @param      integer $uid       User ID
 	 * @param      integer $excludeme Exclude a user?
@@ -224,7 +224,7 @@ class JobSeeker extends JTable
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
 		$empid = $admin ? 1 : $uid;
 
-		if ($uid && !$count) 
+		if ($uid && !$count)
 		{
 			// shortlisted users
 			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($uid) . " AND s.uid=r.uid AND W.category='resume') AS shortlisted ";
@@ -233,19 +233,19 @@ class JobSeeker extends JTable
 		}
 
 		// determine relevance to search keywords
-		if ($filters['search'] && !$count) 
+		if ($filters['search'] && !$count)
 		{
 			$words   = explode(',', $filters['search']);
 			$s = array();
 			foreach ($words as $word)
 			{
-				if (trim($word) != '') 
+				if (trim($word) != '')
 				{
 					$s[] = trim($word);
 				}
 			}
 
-			if (count($s) > 0) 
+			if (count($s) > 0)
 			{
 				$kw = '';
 				for ($i=0, $n=count($s); $i < $n; $i++)
@@ -256,20 +256,20 @@ class JobSeeker extends JTable
 				}
 
 				$query .= "\n , (SELECT " . $kw . ") AS keywords ";
-			} 
-			else 
+			}
+			else
 			{
 				$query .= "\n , (SELECT 0) AS keywords ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$query.= "\n , (SELECT 0) AS keywords ";
 		}
 
 		// Categories
 		$catquery = 'AND 1=2';
-		if ($filters['category']) 
+		if ($filters['category'])
 		{
 			$catquery = "AND (s.sought_cid = " . $this->_db->Quote($filters['category']) . " OR  s.sought_cid = 0) ";
 		}
@@ -278,7 +278,7 @@ class JobSeeker extends JTable
 
 		// Types
 		$typequery = 'AND 1=2';
-		if ($filters['type']) 
+		if ($filters['type'])
 		{
 			$typequery = "AND (s.sought_type = " . $this->_db->Quote($filters['type']) . " OR  s.sought_type = 0) ";
 		}
@@ -319,16 +319,16 @@ class JobSeeker extends JTable
 		$seekers = $this->_db->loadObjectList();
 
 		// Exclude duplicates
-		if ($filters['filterby'] == 'applied') 
+		if ($filters['filterby'] == 'applied')
 		{
 			$uids = array();
 			foreach ($seekers as $i => $seeker)
 			{
-				if (!in_array($seeker->uid, $uids)) 
+				if (!in_array($seeker->uid, $uids))
 				{
 					$uids[] = $seeker->uid;
-				} 
-				else 
+				}
+				else
 				{
 					unset($seekers[$i]);
 				}
@@ -340,7 +340,7 @@ class JobSeeker extends JTable
 
 	/**
 	 * Get a seeker
-	 * 
+	 *
 	 * @param      integer $uid   User ID
 	 * @param      integer $eid   Employer ID
 	 * @param      integer $admin Admin access?
@@ -348,7 +348,7 @@ class JobSeeker extends JTable
 	 */
 	public function getSeeker($uid, $eid=0, $admin = 0)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			return false;
 		}
@@ -357,7 +357,7 @@ class JobSeeker extends JTable
 
 		$query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
-		if ($eid) 
+		if ($eid)
 		{
 			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->Quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->Quote($uid) . " AND s.uid != " . $this->_db->Quote($eid) . " AND W.category='resume') AS shortlisted ";
 		}

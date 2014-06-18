@@ -34,16 +34,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 class GroupsHelperTemplate extends GroupsHelperDocument
 {
 	public $error = null;
-	
+
 	/**
 	 * Array of group include tags allowed
 	 * (all tags)
 	 */
 	public $allowed_tags = array('module', 'modules', 'toolbar', 'menu', 'content', 'googleanalytics');
-	
+
 	/**
 	 * Override parse template to get document content
-	 * 
+	 *
 	 * @return    void
 	 */
 	public function parse()
@@ -53,22 +53,22 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		{
 			JError::raiseError(406, 'Missing Needed Hubzero Group Object');
 		}
-		
+
 		// define base path
 		$params = JComponentHelper::getParams('com_groups');
 		$base   = $params->get('uploadpath', '/site/groups');
 		$base   = DS . trim($base, DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS;
-		
+
 		// fetch template file (sets document for parsing)
 		$this->_fetch($base);
-		
+
 		// call parse
 		return parent::parse();
 	}
-	
+
 	/**
 	 * Return Content
-	 * 
+	 *
 	 * @return string
 	 */
 	public function output($echo = false)
@@ -77,14 +77,14 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		ob_start();
 		eval("?> ".$this->get('document')." <?php ");
 		$this->set('document', ob_get_clean());
-		
+
 		// run output declared in parent
 		parent::output($echo);
 	}
-	
+
 	/**
 	 * Fetches Template File
-	 * 
+	 *
 	 * @return    void
 	 */
 	private function _fetch( $base )
@@ -95,13 +95,13 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		{
 			// var to hold our final template
 			$template = null;
-			
+
 			// build array of possible page templates to load
 			$possibleTemplates = array(
 				$base . 'index.php',
 				$base . 'default.php'
 			);
-			
+
 			// if we have an active page, add other template possibilities
 			if ($this->page !== null)
 			{
@@ -111,7 +111,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 				$possibleTemplates[] = $base . $this->page->get('template') . '.php';
 				$possibleTemplates = array_reverse($possibleTemplates);
 			}
-			
+
 			// get the template we want to load
 			foreach ($possibleTemplates as $possibleTemplate)
 			{
@@ -121,32 +121,32 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 					break;
 				}
 			}
-			
+
 			// do we have a problem houston?
 			if ($this->get('error') !== null)
 			{
 				$template = $base . 'error.php';
 			}
-			
-			//we we dont have a super group template 
+
+			//we we dont have a super group template
 			if ($template === null)
 			{
 				JError::raiseError(500, 'Missing "Super Group" template file.');
 				return;
 			}
-			
+
 			// load the template & set docuement
 			$this->set('document', $this->_load( JPATH_ROOT . $template ));
 		}
-		
+
 		// return this for chainability
 		return $this;
 	}
-	
-	
+
+
 	/**
 	 * Does the group have a specified template
-	 * 
+	 *
 	 * @return    void
 	 */
 	public static function hasTemplate($group, $template)
@@ -155,20 +155,20 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		$params = JComponentHelper::getParams('com_groups');
 		$base   = $params->get('uploadpath', '/site/groups');
 		$base   = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template' . DS;
-		
+
 		// add php extension
 		if (substr($template, -4, 4) != '.php')
 		{
 			$template .= '.php';
 		}
-		
+
 		// does the file exist?
 		return file_exists(JPATH_ROOT . $base . $template);
 	}
-	
+
 	/**
 	 * Load Template File
-	 * 
+	 *
 	 * @return    void
 	 */
 	private function _load( $template )

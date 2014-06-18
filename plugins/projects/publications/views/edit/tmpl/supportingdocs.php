@@ -32,13 +32,13 @@ $published = $this->pub->versions > 0 ? 1 : 0;
 $ptitle = '';
 if ($this->version == 'dev') {
 	$ptitle .= (($this->last_idx > $this->current_idx || $this->lastpane == 'review') && count($this->attachments) > 0)
-	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' ' 
+	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' '
 	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
 }
 $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
-	
+
 ?>
-	<?php echo $this->project->provisioned == 1 
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php
@@ -46,10 +46,10 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 	$this->contribHelper->drawStatusBar($this, 'supporting');
 
 	$canedit = (
-		$this->pub->state == 3 
-		|| $this->pub->state == 4 
-		|| $this->pub->state == 5 
-		|| in_array('supportingdocs', $this->mayupdate)) 
+		$this->pub->state == 3
+		|| $this->pub->state == 4
+		|| $this->pub->state == 5
+		|| in_array('supportingdocs', $this->mayupdate))
 		? 1 : 0;
 
 	// Section body starts:
@@ -59,8 +59,8 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>				
-				<!-- Load content selection browser //-->				
+				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>
+				<!-- Load content selection browser //-->
 				<div id="c-show">
 					<noscript>
 						<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
@@ -75,11 +75,11 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 		</div>
 		<div class="two columns second" id="c-output">
 			<form action="<?php echo $this->url;  ?>" method="post" id="plg-form" enctype="multipart/form-data">
-			<fieldset>	
+			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 				<input type="hidden" name="sel" value="<?php echo count($this->attachments); ?>" id="sel" />
 				<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-				<input type="hidden" name="active" value="publications" />					
+				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="save" />
 				<input type="hidden" name="base" id="base" value="<?php echo $this->base; ?>" />
 				<input type="hidden" name="primary" id="primary" value="0" />
@@ -102,33 +102,33 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?>: </h5>
 				<ul id="c-filelist" class="c-list">
 					<li id="nosel" <?php if($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
-					<?php 
+					<?php
 					// If we have files selected
 					if(count($this->attachments) > 0) {
 						$i = 1;
-						
-						foreach ($this->attachments as $att) 
-						{ 
+
+						foreach ($this->attachments as $att)
+						{
 							// Check if item is missing
-							$gone = $this->_typeHelper->dispatchByType($att->type, 'checkMissing', 
+							$gone = $this->_typeHelper->dispatchByType($att->type, 'checkMissing',
 									$data = array('item' => $att, 'fpath' => $this->prefix . $this->fpath,
 									'config' => $this->config ));
-									
-							$prop = $this->_typeHelper->dispatchByType($att->type, 'getMainProperty', 
+
+							$prop = $this->_typeHelper->dispatchByType($att->type, 'getMainProperty',
 									$data = array('item' => $att));
 
 							$layout = $att->type;
-																
+
 							?>
 							<li id="clone-<?php echo $att->type ?>::<?php echo urlencode($att->$prop); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
-							
-							<?php 
+
+							<?php
 									// Draw item
-									$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+									$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem',
 									$data = array(
-											'att' 		=> $att, 
+											'att' 		=> $att,
 											'item'		=> NULL,
-											'canedit' 	=> $canedit, 
+											'canedit' 	=> $canedit,
 											'pid' 		=> $this->row->publication_id,
 											'vid'		=> $this->row->id,
 											'url'		=> $this->url,
@@ -138,16 +138,16 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 											'path'		=> $this->prefix . $this->fpath
 									));
 									echo $itemHtml;
-							?>								
+							?>
 						</li>
-				<?php 					
+				<?php
 						$i++;
-					} 
+					}
 				}  ?>
 			</ul>
 				<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_FILES_HINT_DRAG'); ?></p>
 			</div>
 			</form>
 		 </div>
-	<iframe id="upload_target" name="upload_target" src="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?action=blank&no_html=1&ajax=1'; ?>" class="iframe"></iframe> 
+	<iframe id="upload_target" name="upload_target" src="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?action=blank&no_html=1&ajax=1'; ?>" class="iframe"></iframe>
 	</div>

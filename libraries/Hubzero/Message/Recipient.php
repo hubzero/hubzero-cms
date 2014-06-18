@@ -37,56 +37,56 @@ class Recipient extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $mid      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid      = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created  = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $expires  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $actionid = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -97,13 +97,13 @@ class Recipient extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->mid = intval($this->mid);
-		if (!$this->mid) 
+		if (!$this->mid)
 		{
 			$this->setError(\JText::_('Please provide a message ID.'));
 			return false;
@@ -113,32 +113,32 @@ class Recipient extends \JTable
 
 	/**
 	 * Load a record by message ID and user ID and bind to $this
-	 * 
+	 *
 	 * @param      integer $mid Message ID
 	 * @param      integer $uid User ID
 	 * @return     boolean True on success
 	 */
 	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid) 
+		if (!$mid)
 		{
 			$mid = $this->mid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$mid || !$uid) 
+		if (!$mid || !$uid)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -147,24 +147,24 @@ class Recipient extends \JTable
 
 	/**
 	 * Builds a query string based on filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	private function buildQuery($uid, $filters=array())
 	{
-		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid=" . $this->_db->Quote($uid) . ", $this->_tbl AS r 
-					WHERE r.uid=" . $this->_db->Quote($uid) . " 
+		$query  = "FROM #__xmessage AS m LEFT JOIN #__xmessage_seen AS s ON s.mid=m.id AND s.uid=" . $this->_db->Quote($uid) . ", $this->_tbl AS r
+					WHERE r.uid=" . $this->_db->Quote($uid) . "
 					AND r.mid=m.id ";
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$query .= "AND r.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['filter']) && $filters['filter'] != '') 
+		if (isset($filters['filter']) && $filters['filter'] != '')
 		{
 			$query .= "AND m.component=" . $this->_db->Quote($filters['filter']);
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " ORDER BY importance DESC, created DESC";
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
@@ -174,18 +174,18 @@ class Recipient extends \JTable
 
 	/**
 	 * Get records for a user based on filters passed
-	 * 
+	 *
 	 * @param      integer $uid     User ID
 	 * @param      array   $filters Filters to build query from
 	 * @return     mixed False if errors, array on success
 	 */
 	public function getMessages($uid=null, $filters=array())
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
@@ -199,18 +199,18 @@ class Recipient extends \JTable
 
 	/**
 	 * Get a record count for a user based on filters passed
-	 * 
+	 *
 	 * @param      integer $uid     User ID
 	 * @param      array   $filters Filters to build query from
 	 * @return     mixed False if errors, integer on success
 	 */
 	public function getMessagesCount($uid=null, $filters=array())
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
@@ -225,23 +225,23 @@ class Recipient extends \JTable
 
 	/**
 	 * Get a list of unread messages for a user
-	 * 
+	 *
 	 * @param      integer $uid   User ID
 	 * @param      unknown $limit Number of records to return
 	 * @return     mixed False if errors, array on success
 	 */
 	public function getUnreadMessages($uid=null, $limit=null)
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
 
-		$query = "SELECT DISTINCT m.*, r.expires, r.actionid 
+		$query = "SELECT DISTINCT m.*, r.expires, r.actionid
 				FROM #__xmessage AS m, $this->_tbl AS r
 				WHERE m.id = r.mid AND r.uid=" . $this->_db->Quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->Quote($uid) . ")";
 		$query .= " ORDER BY created DESC";
@@ -253,17 +253,17 @@ class Recipient extends \JTable
 
 	/**
 	 * Delete all messages marked as trash for a user
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     boolean True on success
 	 */
 	public function deleteTrash($uid=null)
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
@@ -271,7 +271,7 @@ class Recipient extends \JTable
 		$query = "DELETE FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " AND state='2'";
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getError());
 			return false;
@@ -281,14 +281,14 @@ class Recipient extends \JTable
 
 	/**
 	 * Set the state of multiple messages
-	 * 
+	 *
 	 * @param      integer $state State to set
 	 * @param      array   $ids   List of message IDs
 	 * @return     boolean True on success
 	 */
 	public function setState($state=0, $ids=array())
 	{
-		if (count($ids) <= 0) 
+		if (count($ids) <= 0)
 		{
 			return false;
 		}
@@ -298,7 +298,7 @@ class Recipient extends \JTable
 		$query = "UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id IN ($ids)";
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getError());
 			return false;

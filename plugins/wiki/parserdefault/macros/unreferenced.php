@@ -38,7 +38,7 @@ class UnreferencedMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,14 +51,14 @@ class UnreferencedMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$dt = '';
 
-		if ($this->args) 
+		if ($this->args)
 		{
 			$dt .= ' <span class="mbox-date">(' . $this->args . ')</span>';
 		}

@@ -40,7 +40,7 @@ class CoursesTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Array of optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class CoursesTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -70,7 +70,7 @@ class CoursesTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -85,7 +85,7 @@ class CoursesTags extends TagsHandler
 
 	/**
 	 * Get a tag cloud for an object
-	 * 
+	 *
 	 * @param      integer $showsizes Show tag size based on use?
 	 * @param      integer $admin     Show admin tags?
 	 * @param      integer $objectid  Object ID
@@ -95,17 +95,17 @@ class CoursesTags extends TagsHandler
 	{
 		$t = new TagsTableTag($this->_db);
 		/*$query = "SELECT t.id, t.tag, t.raw_tag
-					FROM $this->_tag_tbl AS t 
+					FROM $this->_tag_tbl AS t
 					JOIN $this->_obj_tbl AS ta ON ta.tagid=t.id
 					JOIN #__courses AS c ON c.id=ta.objectid
-					WHERE ta.tbl='courses' 
+					WHERE ta.tbl='courses'
 					AND t.admin=0";
 
 		$this->_db->setQuery($query);
 		$tags = $this->_db->loadResultArray();*/
 		$tags = $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
 
-		if ($tags && count($tags) > 0) 
+		if ($tags && count($tags) > 0)
 		{
 			$tagarray = array();
 			foreach ($tags as $tag)
@@ -114,8 +114,8 @@ class CoursesTags extends TagsHandler
 				$tagarray[] = $tag->raw_tag;
 			}
 			$tags = implode(', ', $tagarray);
-		} 
-		else 
+		}
+		else
 		{
 			$tags = (is_array($tags)) ? implode('', $tags) : '';
 		}
@@ -124,7 +124,7 @@ class CoursesTags extends TagsHandler
 
 	/**
 	 * Build a tag cloud
-	 * 
+	 *
 	 * @param      array   $tags      List of tags
 	 * @param      string  $sort      How to sort tags?
 	 * @param      integer $showsizes Show tag size based on use?
@@ -134,7 +134,7 @@ class CoursesTags extends TagsHandler
 	{
 		$html = '';
 
-		if ($tags && count($tags) > 0) 
+		if ($tags && count($tags) > 0)
 		{
 			$lst = array();
 			if (is_string($tagstring))
@@ -149,7 +149,7 @@ class CoursesTags extends TagsHandler
 			$min_font_size = 1;
 			$max_font_size = 1.8;
 
-			if ($showsizes) 
+			if ($showsizes)
 			{
 				$retarr = array();
 				foreach ($tags as $tag)
@@ -163,7 +163,7 @@ class CoursesTags extends TagsHandler
 
 				// For ever additional tagged object from min to max, we add $step to the font size.
 				$spread = $max_qty - $min_qty;
-				if (0 == $spread) 
+				if (0 == $spread)
 				{ // Divide by zero
 					$spread = 1;
 				}
@@ -201,17 +201,17 @@ class CoursesTags extends TagsHandler
 				$tag->raw_tag = stripslashes($tag->raw_tag);
 				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
 				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
-				if ($showsizes == 1) 
+				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
 					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
-			if ($sort == 'alpha') 
+			if ($sort == 'alpha')
 			{
 				ksort($tll);
 				$html .= implode('', $tll);

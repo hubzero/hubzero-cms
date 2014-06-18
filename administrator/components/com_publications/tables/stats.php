@@ -33,123 +33,123 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication stats
  */
-class PublicationStats extends JTable 
+class PublicationStats extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       					= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_id 			= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_version 		= NULL;
-	
+
 	/**
 	 * Description for 'users'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $users    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $downloads     = NULL;
 
 	/**
 	 * Timestamp
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $processed_on = NULL;
 
 	/**
 	 * Datetime
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $datetime = NULL;
 
 	/**
 	 * Description for 'period'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $period   = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_stats', 'id', $db );
 	}
-	
+
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
-	 */	
-	public function check() 
+	 */
+	public function check()
 	{
-		if (trim( $this->publication_id ) == '') 
+		if (trim( $this->publication_id ) == '')
 		{
 			$this->setError( JText::_('Your entry must have a publication ID.') );
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Load record
-	 * 
+	 *
 	 * @param      integer $publication_id      Pub ID
 	 * @param      integer $period 				Period
 	 * @param      integer $dthis
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function loadStats( $publication_id = NULL, $period = NULL, $dthis = NULL ) 
+	 */
+	public function loadStats( $publication_id = NULL, $period = NULL, $dthis = NULL )
 	{
-		if ($publication_id == NULL) 
+		if ($publication_id == NULL)
 		{
 			$publication_id = $this->publication_id;
 		}
-		if ($publication_id == NULL) 
+		if ($publication_id == NULL)
 		{
 			return false;
 		}
-		
-		$sql = "SELECT * 
+
+		$sql = "SELECT *
 				FROM $this->_tbl
-				WHERE period = '" . $period . "' 
+				WHERE period = '" . $period . "'
 				AND publication_id = '" . $publication_id . "'";
 		$sql.= $dthis ? " AND datetime='" . $dthis . "-01 00:00:00'" : '';
 		$sql.= " ORDER BY processed_on DESC LIMIT 1";
-		
+
 		$this->_db->setQuery( $sql );
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;

@@ -38,7 +38,7 @@ function dv_data_definition_update()
 	system($cmd);
 
 	$dd_file_json = "$base/$db_id/applications/$com_name/datadefinitions/$dd_name.json";
-	
+
 	$cmd = "cd " . JPATH_COMPONENT . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
 	system($cmd);
 

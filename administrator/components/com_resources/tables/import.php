@@ -46,7 +46,7 @@ class ResourcesTableImport extends JTable
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -54,7 +54,7 @@ class ResourcesTableImport extends JTable
 	{
 		parent::__construct('#__resource_imports', 'id', $db);
 	}
-	
+
 	public function check()
 	{
 		if ($this->name == '')
@@ -62,42 +62,42 @@ class ResourcesTableImport extends JTable
 			$this->setError( JText::_('Name field is required for import.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public function find( $filters = array())
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	private function _buildQuery( $filters = array() )
 	{
 		// var to hold conditions
 		$where = array();
 		$sql   = '';
-		
+
 		// published
 		if (isset($filters['state']) && is_array($filters['state']))
 		{
 			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
 		}
-		
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
 }

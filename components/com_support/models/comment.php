@@ -44,14 +44,14 @@ class SupportModelComment extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'SupportComment';
 
 	/**
 	 * Cached data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cache = array(
@@ -61,33 +61,33 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Base URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = null;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * Changelog
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_log;
 
 	/**
 	 * Is the question open?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isPrivate()
 	{
-		if ($this->get('access') == 1) 
+		if ($this->get('access') == 1)
 		{
 			return true;
 		}
@@ -96,7 +96,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -120,7 +120,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -151,7 +151,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -205,7 +205,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -230,11 +230,11 @@ class SupportModelComment extends \Hubzero\Base\Model
 						$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('ticket');
 
 						$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
-						if (isset($_SERVER['HTTPS'])) 
+						if (isset($_SERVER['HTTPS']))
 						{
 							$webpath = str_replace('http:', 'https:', $webpath);
 						}
-						if (!strstr($webpath, '://')) 
+						if (!strstr($webpath, '://'))
 						{
 							$webpath = str_replace(':/', '://', $webpath);
 						}
@@ -246,7 +246,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 					}
 
 					$comment = $this->get('comment');
-					if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+					if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 					{
 						$comment = preg_replace("/<br\s?\/>/i", '', $comment);
 						$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
@@ -283,7 +283,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Process an attachment macro and output a link to the file
-	 * 
+	 *
 	 * @param      array $matches Macro info
 	 * @return     string HTML
 	 */
@@ -332,7 +332,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}
@@ -367,7 +367,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */

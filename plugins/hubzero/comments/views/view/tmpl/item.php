@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	$this->comment->set('item_id', $this->obj->id);
 	$this->comment->set('item_type', $this->obj_type);
 
-	if (isset($this->obj->created_by) && $this->obj->created_by == $this->comment->get('created_by')) 
+	if (isset($this->obj->created_by) && $this->obj->created_by == $this->comment->get('created_by'))
 	{
 		$cls .= ' author';
 	}
@@ -72,22 +72,22 @@ defined('_JEXEC') or die('Restricted access');
 					<?php } else { ?>
 						<?php echo JText::_('PLG_HUBZERO_COMMENTS_ANONYMOUS'); ?>
 					<?php } ?>
-					</strong> 
+					</strong>
 					<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo JText::_('PLG_HUBZERO_COMMENTS_PERMALINK'); ?>">
-						<span class="comment-date-at"><?php echo JText::_('PLG_HUBZERO_COMMENTS_AT'); ?></span> 
-						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('PLG_HUBZERO_COMMENTS_ON'); ?></span> 
+						<span class="comment-date-at"><?php echo JText::_('PLG_HUBZERO_COMMENTS_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_HUBZERO_COMMENTS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					</a>
 				</p>
 
 				<div class="comment-body">
 				<?php
-					if ($this->comment->isReported()) 
+					if ($this->comment->isReported())
 					{
 						echo '<p class="warning">' . JText::_('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE') . '</p>';
-					} 
-					else 
+					}
+					else
 					{
 						echo $this->comment->content('parsed');
 					}
@@ -103,21 +103,21 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (!$this->comment->isReported()) { ?>
 				<p class="comment-options">
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_HUBZERO_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>"href="<?php echo JRoute::_($$this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_HUBZERO_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?>"href="<?php echo JRoute::_($$this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>"><!-- 
-						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>"><!--
+						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!--
 					--></a>
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!-- 
-						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_EDIT'); ?><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!--
+						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == $juser->get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!-- 
-						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_DELETE'); ?><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
+						--><?php echo JText::_('PLG_HUBZERO_COMMENTS_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				</p><!-- / .comment-options -->
@@ -149,12 +149,12 @@ defined('_JEXEC') or die('Restricted access');
 							</label>
 
 							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->id; ?>-anonymous">
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->id; ?>-anonymous" value="1" /> 
+								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->id; ?>-anonymous" value="1" />
 								<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" /> 
+								<input type="submit" value="<?php echo JText::_('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
 							</p>
 						</fieldset>
 					</form>
@@ -163,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div><!-- / .comment-content -->
 
 			<?php
-				if ($this->comment->replies) 
+				if ($this->comment->replies)
 				{
 					$this->view('list')
 					     ->set('option', $this->option)

@@ -75,10 +75,10 @@ abstract class NewsfeedsHelperRoute
 		else
 		{
 			$needles = array();
-			
+
 			//Create the link
 			$link = 'index.php?option=com_newsfeeds&view=category&id='.$id;
-			
+
 			$catids = array_reverse($category->getPath());
 			$needles['category'] = $catids;
 			$needles['categories'] = $catids;

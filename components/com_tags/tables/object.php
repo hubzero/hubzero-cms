@@ -38,63 +38,63 @@ class TagsTableObject extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $objectid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $tagid    = NULL;
 
 	/**
 	 * tinyint(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $strength = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $taggerid = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $taggedon = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tbl      = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $label    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -105,27 +105,27 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     True if data is valid
 	 */
 	public function check()
 	{
 		$this->objectid = intval($this->objectid);
-		if (!$this->objectid) 
+		if (!$this->objectid)
 		{
 			$this->setError(JText::_('Missing scope ID.'));
 			return false;
 		}
 
 		$this->tbl = trim($this->tbl);
-		if (!$this->tbl) 
+		if (!$this->tbl)
 		{
 			$this->setError(JText::_('Missing scope.'));
 			return false;
 		}
 
 		$this->tagid = intval($this->tagid);
-		if (!$this->tagid) 
+		if (!$this->tagid)
 		{
 			$this->setError(JText::_('Missing tag ID.'));
 			return false;
@@ -150,19 +150,19 @@ class TagsTableObject extends JTable
 	/**
 	 * Load a database row and populate this object with results
 	 * Uses unique tag string as identifier
-	 * 
+	 *
 	 * @param      string $oid Tag
 	 * @return     boolean True if tag found and loaded
 	 */
 	public function loadByObjectTag($tbl=null, $objectid=null, $tagid=null, $taggerid=null)
 	{
-		if ($tbl === null || $objectid === null || $tagid === null) 
+		if ($tbl === null || $objectid === null || $tagid === null)
 		{
 			return false;
 		}
-		$query = "SELECT * FROM $this->_tbl 
-				WHERE `tagid`=" . $this->_db->Quote((int) $tagid) . " 
-				AND `objectid`=" . $this->_db->Quote((int) $objectid) . " 
+		$query = "SELECT * FROM $this->_tbl
+				WHERE `tagid`=" . $this->_db->Quote((int) $tagid) . "
+				AND `objectid`=" . $this->_db->Quote((int) $objectid) . "
 				AND `tbl`=" . $this->_db->Quote((string) $tbl);
 		if ($taggerid > 0)
 		{
@@ -171,11 +171,11 @@ class TagsTableObject extends JTable
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -184,7 +184,7 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Delete attachments to a tag
-	 * 
+	 *
 	 * @param      integer $tagid    Tag ID
 	 * @param      string  $tbl      Object type
 	 * @param      integer $objectid Object ID
@@ -194,11 +194,11 @@ class TagsTableObject extends JTable
 	 */
 	public function deleteObjects($tagid=null, $tbl=null, $objectid=null, $taggerid=null, $admin=false)
 	{
-		if (!$tagid) 
+		if (!$tagid)
 		{
 			$tagid = $this->tagid;
 		}
-		if (!$tagid) 
+		if (!$tagid)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -206,15 +206,15 @@ class TagsTableObject extends JTable
 
 		$sql = "DELETE FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($tagid);
 		$filters = '';
-		if ($tbl) 
+		if ($tbl)
 		{
 			$filters .= " AND tbl=" . $this->_db->Quote($tbl);
 		}
-		if ($objectid) 
+		if ($objectid)
 		{
 			$filters .= " AND objectid=" . $this->_db->Quote($objectid);
 		}
-		if (!$admin) 
+		if (!$admin)
 		{
 			$filters .= " AND taggerid=" . $this->_db->Quote($taggerid);
 		}
@@ -223,7 +223,7 @@ class TagsTableObject extends JTable
 		$items = $this->_db->loadResultArray();
 
 		$this->_db->setQuery($sql . $filters);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -247,22 +247,22 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Remove all tag references for a given object
-	 * 
+	 *
 	 * @param      string  $tbl      Object type
 	 * @param      integer $objectid Object ID
 	 * @return     boolean True if records removed
 	 */
 	public function removeAllTags($tbl=null, $objectid=null, $tagger_id=null)
 	{
-		if (!$tbl) 
+		if (!$tbl)
 		{
 			$tbl = $this->tbl;
 		}
-		if (!$objectid) 
+		if (!$objectid)
 		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl || !$objectid) 
+		if (!$tbl || !$objectid)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -284,7 +284,7 @@ class TagsTableObject extends JTable
 		}
 
 		$this->_db->setQuery($sql);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -306,17 +306,17 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Get a record count for a tag
-	 * 
+	 *
 	 * @param      integer $tagid Tag ID
 	 * @return     mixed Integer if successful, false if not
 	 */
 	public function getCount($tagid=null)
 	{
-		if (!$tagid) 
+		if (!$tagid)
 		{
 			$tagid = $this->tagid;
 		}
-		if (!$tagid) 
+		if (!$tagid)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -328,7 +328,7 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Get all the tags on an object
-	 * 
+	 *
 	 * @param      integer $objectid Object ID
 	 * @param      string  $tbl      Object type
 	 * @param      integer $state    Admin authorization
@@ -338,28 +338,28 @@ class TagsTableObject extends JTable
 	 */
 	public function getTagsOnObject($objectid=null, $tbl=null, $state=0, $offset=0, $limit=10)
 	{
-		if (!$objectid) 
+		if (!$objectid)
 		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl) 
+		if (!$tbl)
 		{
 			$tbl = $this->tbl;
 		}
-		if (!$tbl || !$objectid) 
+		if (!$tbl || !$objectid)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
-		$sql = "SELECT DISTINCT t.* 
-				FROM $this->_tbl AS rt 
+		$sql = "SELECT DISTINCT t.*
+				FROM $this->_tbl AS rt
 				INNER JOIN #__tags AS t ON (rt.tagid = t.id)
 				WHERE rt.objectid=" . $this->_db->Quote($objectid) . " AND rt.tbl=" . $this->_db->Quote($tbl);
-		
+
 		if (isset($this->label))
 		{
-			$sql .= " AND rt.label=" . $this->_db->Quote($this->label); 
+			$sql .= " AND rt.label=" . $this->_db->Quote($this->label);
 		}
 		switch ($state)
 		{
@@ -367,7 +367,7 @@ class TagsTableObject extends JTable
 			case 1: $sql .= ""; break;
 		}
 		$sql .= " ORDER BY t.raw_tag ASC";
-		if ($limit > 0) 
+		if ($limit > 0)
 		{
 			$sql .= " LIMIT " . intval($offset) . ", " . intval($limit);
 		}
@@ -377,7 +377,7 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Get a count of tags on an object
-	 * 
+	 *
 	 * @param      integer $tagid    Tag ID
 	 * @param      integer $objectid Object ID
 	 * @param      string  $tbl      Object type
@@ -385,19 +385,19 @@ class TagsTableObject extends JTable
 	 */
 	public function getCountForObject($tagid=null, $objectid=null, $tbl=null)
 	{
-		if (!$tagid) 
+		if (!$tagid)
 		{
 			$tagid = $this->tagid;
 		}
-		if (!$objectid) 
+		if (!$objectid)
 		{
 			$objectid = $this->objectid;
 		}
-		if (!$tbl) 
+		if (!$tbl)
 		{
 			$tbl = $this->tbl;
 		}
-		if (!$tagid || !$tbl || !$objectid) 
+		if (!$tagid || !$tbl || !$objectid)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -409,22 +409,22 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Move all references to one tag to another tag
-	 * 
+	 *
 	 * @param      integer $oldtagid ID of tag to be moved
 	 * @param      integer $newtagid ID of tag to move to
 	 * @return     boolean True if records changed
 	 */
 	public function moveObjects($oldtagid=null, $newtagid=null)
 	{
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			$oldtagid = $this->tagid;
 		}
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			return false;
 		}
-		if (!$newtagid) 
+		if (!$newtagid)
 		{
 			return false;
 		}
@@ -433,12 +433,12 @@ class TagsTableObject extends JTable
 		$items = $this->_db->loadResultArray();
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET tagid=" . $this->_db->Quote($newtagid) . " WHERE tagid=" . $this->_db->Quote($oldtagid));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else 
+		else
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
 
@@ -455,29 +455,29 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Copy all tags on an object to another object
-	 * 
+	 *
 	 * @param      integer $oldtagid ID of tag to be copied
 	 * @param      integer $newtagid ID of tag to copy to
 	 * @return     boolean True if records copied
 	 */
 	public function copyObjects($oldtagid=null, $newtagid=null)
 	{
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			$oldtagid = $this->tagid;
 		}
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			return false;
 		}
-		if (!$newtagid) 
+		if (!$newtagid)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE tagid=" . $this->_db->Quote($oldtagid));
 		$rows = $this->_db->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			$entries = array();
 			foreach ($rows as $row)
@@ -507,34 +507,34 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     string SQL
 	 */
 	public function _buildQuery($filters)
 	{
-		$query  = " FROM $this->_tbl AS o 
+		$query  = " FROM $this->_tbl AS o
 					INNER JOIN #__tags AS t ON (o.tagid = t.id)";
 
 		$where = array();
 
-		if (isset($filters['objectid']) && (int) $filters['objectid'] > 0) 
+		if (isset($filters['objectid']) && (int) $filters['objectid'] > 0)
 		{
 			$where[] = "o.objectid=" . $this->_db->Quote(intval($filters['objectid']));
 		}
-		if (isset($filters['tbl']) && (string) $filters['tbl'] != '') 
+		if (isset($filters['tbl']) && (string) $filters['tbl'] != '')
 		{
 			$where[] = "o.tbl=" . $this->_db->Quote($filters['tbl']);
 		}
-		if (isset($filters['tagid']) && (int) $filters['tagid'] > 0) 
+		if (isset($filters['tagid']) && (int) $filters['tagid'] > 0)
 		{
 			$where[] = "o.tagid=" . $this->_db->Quote(intval($filters['tagid']));
 		}
-		if (isset($filters['strength']) && (int) $filters['strength'] >= 0) 
+		if (isset($filters['strength']) && (int) $filters['strength'] >= 0)
 		{
 			$where[] = "o.strength=" . $this->_db->Quote(intval($filters['strength']));
 		}
-		if (isset($filters['taggerid']) && (int) $filters['taggerid'] > 0) 
+		if (isset($filters['taggerid']) && (int) $filters['taggerid'] > 0)
 		{
 			$where[] = "o.taggerid=" . $this->_db->Quote(intval($filters['taggerid']));
 		}
@@ -545,16 +545,16 @@ class TagsTableObject extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (isset($filters['sort']) && $filters['sort'] != '') 
+		if (isset($filters['sort']) && $filters['sort'] != '')
 		{
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 			{
 				$filters['sort_Dir'] = 'ASC';
 			}
 			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
 			if (!isset($filters['start']))
 			{
@@ -568,7 +568,7 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     integer
 	 */
@@ -584,13 +584,13 @@ class TagsTableObject extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     array
 	 */
 	public function find($filters=array())
 	{
-		if (!isset($filters['sort']) || $filters['sort'] == '') 
+		if (!isset($filters['sort']) || $filters['sort'] == '')
 		{
 			$filters['sort'] = 'taggedon';
 		}

@@ -38,14 +38,14 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Method to set the document path
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildPathway()
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -60,7 +60,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to build and set the document title
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildTitle()
@@ -74,13 +74,13 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 	/**
 	 * Reports an item as abusive
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		// Login required
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
 			$this->setRedirect(
@@ -98,14 +98,14 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->view->cat = JRequest::getVar('category', '');
 
 		// Check for a reference ID
-		if (!$this->view->refid) 
+		if (!$this->view->refid)
 		{
 			JError::raiseError(404, JText::_('REFERENCE_ID_NOT_FOUND'));
 			return;
 		}
 
 		// Check for a category
-		if (!$this->view->cat) 
+		if (!$this->view->cat)
 		{
 			JError::raiseError(404, JText::_('CATEGORY_NOT_FOUND'));
 			return;
@@ -124,11 +124,11 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 		// Check the results returned for a reported item
 		$this->view->report = null;
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if ($result) 
+				if ($result)
 				{
 					$this->view->report = $result[0];
 				}
@@ -136,7 +136,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we found a reported item
-		if (!$this->view->report) 
+		if (!$this->view->report)
 		{
 			$this->setError(JText::_('ERROR_REPORTED_ITEM_NOT_FOUND'));
 		}
@@ -150,7 +150,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -162,7 +162,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an abuse report and displays a "Thank you" message
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -182,7 +182,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 		// Initiate class and bind posted items to database fields
 		$row = new ReportAbuse($this->database);
-		if (!$row->bind($incoming)) 
+		if (!$row->bind($incoming))
 		{
 			JRequest::setVar('referenceid', $this->view->refid);
 			$this->setError($row->getError());
@@ -197,7 +197,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$row->state      = 0;
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
@@ -206,7 +206,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
@@ -222,8 +222,8 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			$this->view->cat
 		));
 
-		// Send notification email 
-		if ($email) 
+		// Send notification email
+		if ($email)
 		{
 			$jconfig = JFactory::getConfig();
 
@@ -245,9 +245,9 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 			foreach ($tos as $to)
 			{
-				if (SupportUtilities::checkValidEmail($to)) 
+				if (SupportUtilities::checkValidEmail($to))
 				{
-					if (!SupportUtilities::sendEmail($from, $to, $subject, $message)) 
+					if (!SupportUtilities::sendEmail($from, $to, $subject, $message))
 					{
 						$this->setError(JText::sprintf('ERROR_FAILED_TO_SEND_EMAIL', $to));
 					}
@@ -257,7 +257,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$this->_buildTitle();
-		
+
 		$this->view->title = $this->_title;
 		$this->view->report = $row;
 
@@ -265,7 +265,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -39,7 +39,7 @@ if ($this->disabled) { ?>
 		<a class="btn btn-primary<?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php
 				echo ($this->href)   ? ' href="' . $this->href . '"' : '';
 				echo ($this->title)  ? ' title="' . $this->escape($this->title) . '"' : '';
-				echo ($this->action) ? ' ' . $this->action : ''; 
+				echo ($this->action) ? ' ' . $this->action : '';
 			?>><?php echo $this->msg; ?></a>
 	</p>
 <?php } ?>

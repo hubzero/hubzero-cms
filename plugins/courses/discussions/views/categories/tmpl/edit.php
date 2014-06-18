@@ -77,7 +77,7 @@ $juser = JFactory::getUser();
 				</label>
 
 				<label for="field-closed" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->model->closed) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->model->closed) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>
 				</label>
 

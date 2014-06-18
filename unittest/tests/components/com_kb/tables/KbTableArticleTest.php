@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the Knowledge Base article table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'title', 
-		'alias', 
-		'params', 
+		'id',
+		'title',
+		'alias',
+		'params',
 		'fulltxt',
 		'created',
 		'created_by',
@@ -36,10 +36,10 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 		'nothelpful'
 	);
 	var $mock       = array(
-		'id'          => null, 
-		'title'       => 'Maecenas sed diam eget risus varius blandit sit amet non magna.', 
-		'alias'       => '', 
-		'params'      => '', 
+		'id'          => null,
+		'title'       => 'Maecenas sed diam eget risus varius blandit sit amet non magna.',
+		'alias'       => '',
+		'params'      => '',
 		'fulltxt'     => '<p>Nullam quis risus eget urna mollis ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Maecenas sed diam eget risus varius blandit sit amet non magna. Cras mattis consectetur purus sit amet fermentum. Cras mattis consectetur purus sit amet fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
 <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec sed odio dui. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>',
@@ -121,7 +121,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_kb
 	 * @covers KbTableArticle::count
 	 */
@@ -137,7 +137,7 @@ class KbTableArticleTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords returns an array
-	 * 
+	 *
 	 * @group com_kb
 	 * @covers KbTableArticle::find
 	 */

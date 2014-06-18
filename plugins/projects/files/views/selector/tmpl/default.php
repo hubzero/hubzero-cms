@@ -28,20 +28,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 // Get attachment type model
 $attModel = new PublicationsModelAttachments($this->database);
 
-$route = $this->project->provisioned == 1 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id  
+$route = $this->project->provisioned == 1
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 // Filter URL
-$filterUrl   = $this->project->provisioned == 1 
+$filterUrl   = $this->project->provisioned == 1
 		? JRoute::_( $route) . '?active=files&action=filter&'
 		: JRoute::_( $route . '&active=files&action=filter') .'/?';
 
-$filterUrl .= 'p=' . $this->props . '&pid=' . $this->publication->id 
+$filterUrl .= 'p=' . $this->props . '&pid=' . $this->publication->id
 				. '&vid=' . $this->publication->version_id . '&amp;ajax=1&amp;no_html=1';
-		
+
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' 
+$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $parents = array();
@@ -164,7 +164,7 @@ if ($this->task == 'filter')
 	$view->allowed		= $allowed;
 	$view->used			= $used;
 	echo $view->loadTemplate();
-	
+
 	return;
 }
 
@@ -178,10 +178,10 @@ if ($this->task == 'filter')
 		<?php } ?>
 	</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
-	<fieldset >	
+	<fieldset >
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />	
-		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />		
+		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 		<input type="hidden" id="maxitems" name="maxitems" value="<?php echo $max; ?>" />
@@ -195,18 +195,18 @@ if ($this->task == 'filter')
 		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="next" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="step" value="<?php echo $step; ?>" />
-		<input type="hidden" name="active" value="publications" />					
-		<input type="hidden" name="action" value="apply" />	
+		<input type="hidden" name="active" value="publications" />
+		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />
 		<?php if ($this->project->provisioned == 1) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<input type="hidden" name="ajax" value="0" />
-		<?php }  ?>	
+		<?php }  ?>
 	</fieldset>
 	<div id="search-filter" class="search-filter">
 		<label><input type="text" value="<?php echo $this->filter; ?>" name="filter" id="item-search" /></label>
 	</div>
-	
+
 	<p class="requirement" id="req"><?php echo $req; ?></p>
 	<div id="content-selector" class="content-selector">
 		<?php
@@ -233,23 +233,23 @@ if ($this->task == 'filter')
 	</div>
 	</form>
 	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>">
-		
-	<fieldset >	
+
+	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-		<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />	
+		<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="json" value="1" />
 		<input type="hidden" name="ajax" value="1" />
 		<input type="hidden" name="no_html" value="1" />
 	</fieldset>
-	<div id="status-box"></div>	
+	<div id="status-box"></div>
 	<?php if ($this->project->provisioned == 1) { ?>
-		<input type="hidden" name="provisioned" id="provisioned" value="1" />	
+		<input type="hidden" name="provisioned" id="provisioned" value="1" />
 		<input type="hidden" name="task" value="submit" />
 	<div class="asset-uploader">
 		<h5 class="add"><?php echo JText::_('PLG_PROJECTS_FILES_PROV_UPLOAD'); ?>
@@ -259,7 +259,7 @@ if ($this->task == 'filter')
 		</h5>
 		<div id="ajax-uploader" data-action="<?php echo JRoute::_( $route) . '?active=files' . a . 'action=save&amp;no_html=1&amp;ajax=1'; ?>" >
 			<label class="addnew">
-				<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" /> 
+				<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 			</label>
 			<div id="upload-body">
 				<ul id="u-selected" class="qq-upload-list">
@@ -269,10 +269,10 @@ if ($this->task == 'filter')
 	</div>
 	<?php } else { ?>
 	<div id="quick-upload" class="quick-upload">
-		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />			
+		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
 		<label>
-			<input name="upload[]" type="file" class="option" id="uploader" multiple="multiple" /> 
-		</label>	
+			<input name="upload[]" type="file" class="option" id="uploader" multiple="multiple" />
+		</label>
 		<p><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
 	</div>
 	<?php } ?>

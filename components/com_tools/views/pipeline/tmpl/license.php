@@ -38,11 +38,11 @@ $licenseChoices = array(
 	'0' => JText::_('Choose a template')
 );
 
-if ($this->licenses) 
+if ($this->licenses)
 {
-	foreach ($this->licenses as $l) 
+	foreach ($this->licenses as $l)
 	{
-		if ($l->name != 'default') 
+		if ($l->name != 'default')
 		{
 			$licenseChoices[$l->name] = $l->title;
 		}
@@ -81,7 +81,7 @@ $this->css('pipeline.css')
 			</h3>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>" method="post" id="licenseForm" name="licenseForm">
 				<fieldset class="versionfield">
-					<label><?php echo JText::_('COM_TOOLS_CODE_ACCESS'); ?>:</label> 
+					<label><?php echo JText::_('COM_TOOLS_CODE_ACCESS'); ?>:</label>
 					<?php echo ToolsHelperHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
 					<span id="choice-icon">&nbsp;</span>
 					<div id="closed-source">
@@ -93,21 +93,21 @@ $this->css('pipeline.css')
 					</div>
 					<div id="open-source">
 						<div id="lic">
-							<label><?php echo JText::_('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label> 
+							<label><?php echo JText::_('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label>
 							<?php echo ToolsHelperHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
 						<div class="licinput" >
 							<label><?php echo JText::_('COM_TOOLS_LICENSE_TEXT'); ?><span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 							<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo JText::_('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 							</label>
-							<?php 
-							if ($this->licenses) 
+							<?php
+							if ($this->licenses)
 							{
-								foreach ($this->licenses as $l) 
+								foreach ($this->licenses as $l)
 								{
 									echo '<div class="hidden" id="' . $l->name . '" >' . $this->escape(stripslashes($l->text)) . '</div>' . "\n";
 								}
-							} 
+							}
 							?>
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -130,7 +130,7 @@ $this->css('pipeline.css')
 							</p>
 						</div>
 						<label for="field-authorize">
-							<input type="checkbox" name="authorize" id="field-authorize" value="1" /> 
+							<input type="checkbox" name="authorize" id="field-authorize" value="1" />
 							<span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span><?php echo JText::_('COM_TOOLS_LICENSE_CERTIFY') . ' '.JText::_('COM_TOOLS_LICENSE_UNDER_SPECIFIED'); ?>
 						</label>
 					</div>

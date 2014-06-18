@@ -34,104 +34,104 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course Instances table class
- * 
+ *
  */
 class CoursesTableOffering extends JTable
 {
 	/**
 	 * ID, primary key for course instances table
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * Course id of this instance (references #__courses.gidNumber)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $course_id = NULL;
 
 	/**
 	 * Instance alias
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $alias = NULL;
 
 	/**
 	 * Instance title
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $title = NULL;
 
 	/**
 	 * Instance term (i.e. semester, but more generic language)
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $term = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * Start date for instance
-	 * 
+	 *
 	 * @var date
 	 */
 	//var $start_date = NULL;
 
 	/**
 	 * End date for instance
-	 * 
+	 *
 	 * @var date
 	 */
 	//var $end_date = NULL;
 
 	/**
 	 * Start publishing date
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $publish_up = NULL;
 
 	/**
 	 * End publishing date
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $publish_down = NULL;
 
 	/**
 	 * Created date for unit
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $created = NULL;
 
 	/**
 	 * Who created the unit (reference #__users.id)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -156,12 +156,12 @@ class CoursesTableOffering extends JTable
 
 		$alias = $type;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$alias])) 
+		if (!isset($instances[$alias]))
 		{
 			$inst = new CoursesTableOffering(JFactory::getDBO());
 			$inst->load($alias);
@@ -174,13 +174,13 @@ class CoursesTableOffering extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $course_id=null)
 	{
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
@@ -193,11 +193,11 @@ class CoursesTableOffering extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND course_id=" . $this->_db->Quote(intval($course_id));
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -206,7 +206,7 @@ class CoursesTableOffering extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -219,7 +219,7 @@ class CoursesTableOffering extends JTable
 		}
 
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -243,7 +243,7 @@ class CoursesTableOffering extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -254,16 +254,16 @@ class CoursesTableOffering extends JTable
 
 		$where = array();
 
-		if (isset($filters['course_alias']) && $filters['course_alias']) 
+		if (isset($filters['course_alias']) && $filters['course_alias'])
 		{
 			$where[] = "c.alias=" . $this->_db->Quote($filters['course_alias']);
 		}
-		else if (isset($filters['course_id'])) // && $filters['course_id']) 
+		else if (isset($filters['course_id'])) // && $filters['course_id'])
 		{
 			$where[] = "c.id=" . $this->_db->Quote(intval($filters['course_id']));
 		}
 
-		if (isset($filters['available']) && $filters['available']) 
+		if (isset($filters['available']) && $filters['available'])
 		{
 			$now = JFactory::getDate()->toSql();
 
@@ -273,14 +273,14 @@ class CoursesTableOffering extends JTable
 			$filters['state'] = 1;
 		}
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(ci.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(ci.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(ci.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -295,7 +295,7 @@ class CoursesTableOffering extends JTable
 
 	/**
 	 * Get a count of course offerings
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -310,7 +310,7 @@ class CoursesTableOffering extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -319,19 +319,19 @@ class CoursesTableOffering extends JTable
 		$query  = "SELECT ci.*, c.alias AS course_alias";
 		$query .= $this->_buildquery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'publish_up';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			if (!isset($filters['start'])) 
+			if (!isset($filters['start']))
 			{
 				$filters['start'] = 0;
 			}

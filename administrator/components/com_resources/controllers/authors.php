@@ -38,7 +38,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource authors
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -50,34 +50,34 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'name'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -92,8 +92,8 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -102,7 +102,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -112,7 +112,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($rows=null)
@@ -129,12 +129,12 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		{
 			$this->view->rows = $rows;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array(0));
 
-			if (is_array($ids) && !empty($ids)) 
+			if (is_array($ids) && !empty($ids))
 			{
 				$this->view->authorid = $ids[0];
 			}
@@ -148,7 +148,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		$this->view->roles = $model->getRecords(array('sort' => 'title'));
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -162,7 +162,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and come back to the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -172,7 +172,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @param      boolean $redirect Redirect after save?
 	 * @return     void
 	 */
@@ -218,7 +218,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 						$this->addComponentMessage($rc->getError(), 'error');
 					}
 				}
-				else 
+				else
 				{
 					if (!$rc->updateAssociation())
 					{
@@ -233,7 +233,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		// Instantiate a resource/contributor association object
 		$rc = new ResourcesContributor($this->database);
 
-		if ($redirect) 
+		if ($redirect)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller

@@ -38,7 +38,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List categories
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -51,27 +51,27 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 		// Get paging variables
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
-		
+
 		// Get sorting variables
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'ordernum'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
@@ -85,13 +85,13 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		// initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -105,7 +105,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save the ordering of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveorderTask()
@@ -120,7 +120,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		// Instantiate an object
 		$jc = new JobCategory($this->database);
 
-		if (count($order) > 0) 
+		if (count($order) > 0)
 		{
 			foreach ($order as $id => $num)
 			{
@@ -138,7 +138,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new category
 	 * Displays the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -148,7 +148,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -161,7 +161,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
@@ -173,7 +173,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -187,7 +187,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -197,7 +197,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new JobCategory($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -205,7 +205,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -221,7 +221,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more categories
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -233,7 +233,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Ensure we have an ID to work with
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -257,7 +257,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 			JText::_('Category(ies) successfully removed')
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

@@ -30,7 +30,7 @@ $options = "
 xaxis: { ticks: xticks },
 yaxis: { ticks: [[0, ''], [yTickSize, yTickSize]], color: 'transparent', tickDecimals:0, labelWidth: 0 },
 series: {
-	lines: { 
+	lines: {
 		show: true,
 		fill: true
 	},
@@ -41,7 +41,7 @@ grid: {
 	color: 'rgba(0, 0, 0, 0.6)',
 	borderWidth: 0,
 	borderColor: 'transparent',
-	hoverable: hover, 
+	hoverable: hover,
 	clickable: true,
 	minBorderMargin: 10
 },
@@ -69,9 +69,9 @@ tooltip: true,
 
 <section class="main section" id="project-stats">
 	<div class="status-msg">
-	<?php 
+	<?php
 		// Display error or success message
-		if ($this->getError()) { 
+		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
 		else if($this->msg) {
@@ -92,19 +92,19 @@ tooltip: true,
 		</tr>
 
 		<tr>
-			<td><span class="stats-num"><?php echo $this->stats['general']['total']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['general']['total']; ?></span>
 				<span class="stats-label"><?php echo JText::_('Total projects'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['general']['setup']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['general']['setup']; ?></span>
 				<span class="stats-label"><?php echo JText::_('Projects in setup'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['general']['active']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['general']['active']; ?></span>
 				<span class="stats-label"><?php echo JText::_('Active projects'); ?></span></td>
-			<?php if ($this->monthly) { 
-				
+			<?php if ($this->monthly) {
+
 				$y 			= 0;
 				$xdata 		= '';
 				$xticks 	= '';
 				$yTickSize 	= $this->stats['general']['new'];
-				
+
 				foreach ($this->monthly as $month => $data)
 				{
 					$xdata 	.= '[' . $y . ', ' . $data['general']['new'] . ']';
@@ -114,7 +114,7 @@ tooltip: true,
 					$y++;
 				}
 			?>
-			<td class="stats-graph">			
+			<td class="stats-graph">
 				<div id="stat-total" class="ph"></div>
 				<script type="text/javascript">
 					if (!jq) {
@@ -122,15 +122,15 @@ tooltip: true,
 					}
 					if (jQuery()) {
 						var $ = jq;
-						
+
 						// Detect Safari browser (interactivity doesn't work somehow)
 						var safari = false;
-						if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) 
+						if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)
 						{
 							safari = true;
 						}
 						var hover  = safari ? false : true;
-												
+
 						function showTooltip(x,y,contents, append)
 						{
 						      $('<div>' +  contents + append + '</div>').css( {
@@ -145,14 +145,14 @@ tooltip: true,
 						            padding: '0 2px'
 						      }).appendTo("body").fadeIn(200);
 						 }
-												
-						function showLabels(graph, points, append) 
+
+						function showLabels(graph, points, append)
 						{
 							var graphx = $(graph).offset().left;
 							graphx 	   = graphx + 10;
 							var graphy = $(graph).offset().top;
 							graphy = graphy - 20;
-							
+
 							for (var k = 0; k < points.length; k++)
 							{
 								for(var m = 0; m < points[k].data.length; m++)
@@ -161,15 +161,15 @@ tooltip: true,
 									{
 								  		if (k == 0)
 										{
-									  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
+									  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 												graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
 												points[k].data[m][1], append)
 								  		}
 										else
 										{
-									 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
+									 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 												graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
-												points[k].data[m][1], append) 
+												points[k].data[m][1], append)
 								  		}
 
 									}
@@ -178,47 +178,47 @@ tooltip: true,
 						 }
 
 						var data   		= [<?php echo $xdata; ?>];
-						var xticks 		= [<?php echo $xticks; ?>];																			
+						var xticks 		= [<?php echo $xticks; ?>];
 						var ph 	   		= $('#stat-total');
 						var tipContent 	= '%y';
 						var yTickSize 	= <?php echo $yTickSize; ?>;
-						
+
 						if (ph.length > 0)
 						{
-							var chart = $.plot( ph, [data], {								
+							var chart = $.plot( ph, [data], {
 								<?php echo $options; ?>
 							});
-							
+
 							// Show labels in Safari
 							if (safari)
 							{
 								var points = chart.getData();
 								showLabels(ph, points, '');
 							}
-						}						
+						}
 					}
 				</script>
 			</td>
 			<?php } ?>
 			<td class="stats-more">
 				<ul>
-					<li><span class="stats-num-small"><?php echo $this->stats['general']['new']; ?></span> 
+					<li><span class="stats-num-small"><?php echo $this->stats['general']['new']; ?></span>
 						<?php echo JText::_('new projects this month'); ?></li>
-					<li><span class="stats-num-small"><?php echo $this->stats['general']['public']; ?></span> 
+					<li><span class="stats-num-small"><?php echo $this->stats['general']['public']; ?></span>
 						<?php echo JText::_('public projects'); ?></li>
 					<?php if($this->config->get('grantinfo', 0)) { ?>
-					<li><span class="stats-num-small"><?php echo $this->stats['general']['sponsored']; ?></span> 
+					<li><span class="stats-num-small"><?php echo $this->stats['general']['sponsored']; ?></span>
 					<?php echo JText::_('grant-sponsored projects'); ?></li>
 					<?php } ?>
 					<?php if($this->config->get('restricted_data', 0)) { ?>
-					<li><span class="stats-num-small"><?php echo $this->stats['general']['sensitive']; ?></span> 
+					<li><span class="stats-num-small"><?php echo $this->stats['general']['sensitive']; ?></span>
 						<?php echo JText::_('projects with sensitive data'); ?></li>
 					<?php } ?>
 				</ul>
 			</td>
 		</tr>
 	</table>
-	
+
 	<table class="stats-wrap">
 		<tr class="stats-activity">
 			<th class="stats-h" rowspan="2"><span><?php echo JText::_('Activity'); ?></span></th>
@@ -229,18 +229,18 @@ tooltip: true,
 			<th class="stats-graph"><?php echo JText::_('Active projects'); ?></th>
 			<?php } ?>
 			<th class="stats-more"><?php echo JText::_('Top active projects'); ?>
-				
+
 			<?php if (!$this->admin) { echo '(' . JText::_('public') . ')'; } ?></th>
 		</tr>
 
 		<tr>
-			<td><span class="stats-num"><?php echo $this->stats['activity']['total']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['activity']['total']; ?></span>
 				<span class="stats-label"><?php echo JText::_('total activity records'); ?></span> </td>
-			<td><span class="stats-num"><?php echo $this->stats['activity']['average']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['activity']['average']; ?></span>
 				<span class="stats-label"><?php echo JText::_('average activity records per project'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['activity']['usage']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['activity']['usage']; ?></span>
 				<span class="stats-label"><?php echo JText::_('projects active in past 30 days'); ?></span></td>
-					<?php if ($this->monthly) { 
+					<?php if ($this->monthly) {
 
 						$y 			= 0;
 						$xdata 		= '';
@@ -256,23 +256,23 @@ tooltip: true,
 							$y++;
 						}
 					?>
-					<td class="stats-graph">			
+					<td class="stats-graph">
 						<div id="stat-activity" class="ph"></div>
 						<script type="text/javascript">
 							if (jQuery()) {
 								var $ = jq;
 
 								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];																			
+								var xticks 		= [<?php echo $xticks; ?>];
 								var ph 	   		= $('#stat-activity');
 								var tipContent 	= '%y%';
 								var yTickSize 	= <?php echo $yTickSize; ?>;
 
 								if (ph.length > 0)
 								{
-									var chart = $.plot( ph, [data], {								
+									var chart = $.plot( ph, [data], {
 										<?php echo $options; ?>
-									}); 
+									});
 
 									// Show labels in Safari
 									if (safari)
@@ -280,15 +280,15 @@ tooltip: true,
 										var points = chart.getData();
 										showLabels(ph, points, '%');
 									}
-								}				
+								}
 							}
-						</script>	
+						</script>
 					</td>
 					<?php } ?>
 			<td class="stats-more">
 				<?php if (!empty($this->stats['topActiveProjects'])) { ?>
 				<ul>
-					<?php foreach ($this->stats['topActiveProjects'] as $topProject) { 
+					<?php foreach ($this->stats['topActiveProjects'] as $topProject) {
 						$thumb = ProjectsHtml::getThumbSrc($topProject->id, $topProject->alias, $topProject->picture, $this->config);
 						?>
 					<li><span class="stats-ima-small"><img src="<?php echo $thumb; ?>" alt="" /></span>
@@ -303,7 +303,7 @@ tooltip: true,
 			</td>
 		</tr>
 	</table>
-	
+
 	<table class="stats-wrap">
 		<tr class="stats-team">
 			<th class="stats-h" rowspan="2"><span><?php echo JText::_('Team'); ?></span></th>
@@ -318,13 +318,13 @@ tooltip: true,
 		</tr>
 
 		<tr>
-			<td><span class="stats-num"><?php echo $this->stats['team']['total']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['team']['total']; ?></span>
 				<span class="stats-label"><?php echo JText::_('total members in all teams'); ?></span> </td>
-			<td><span class="stats-num"><?php echo $this->stats['team']['average']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['team']['average']; ?></span>
 				<span class="stats-label"><?php echo JText::_('average project team size'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['team']['multi']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['team']['multi']; ?></span>
 				<span class="stats-label"><?php echo JText::_('projects have multi-person teams'); ?></span></td>
-					<?php if ($this->monthly) { 
+					<?php if ($this->monthly) {
 
 						$y 			= 0;
 						$xdata 		= '';
@@ -340,21 +340,21 @@ tooltip: true,
 							$y++;
 						}
 					?>
-					<td class="stats-graph">				
+					<td class="stats-graph">
 						<div id="stat-team" class="ph"></div>
 						<script type="text/javascript">
 							if (jQuery()) {
 								var $ = jq;
 
 								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];																			
+								var xticks 		= [<?php echo $xticks; ?>];
 								var ph 	   		= $('#stat-team');
 								var tipContent 	= '%y';
 								var yTickSize 	= <?php echo $yTickSize; ?>;
 
 								if (ph.length > 0)
 								{
-									var chart = $.plot( ph, [data], {								
+									var chart = $.plot( ph, [data], {
 										<?php echo $options; ?>
 									});
 
@@ -364,15 +364,15 @@ tooltip: true,
 										var points = chart.getData();
 										showLabels(ph, points, '');
 									}
-								}								
+								}
 							}
-						</script>	
+						</script>
 					</td>
 					<?php } ?>
 			<td class="stats-more">
 				<?php if (!empty($this->stats['topTeamProjects'])) { ?>
 				<ul>
-					<?php foreach ($this->stats['topTeamProjects'] as $topProject) { 
+					<?php foreach ($this->stats['topTeamProjects'] as $topProject) {
 						$thumb = ProjectsHtml::getThumbSrc($topProject->id, $topProject->alias, $topProject->picture, $this->config);
 						?>
 					<li><span class="stats-ima-small"><img src="<?php echo $thumb; ?>" alt="" /></span>
@@ -383,7 +383,7 @@ tooltip: true,
 				</ul>
 				<span class="block">&nbsp;</span>
 				<ul>
-					<li><span class="stats-num-small"><?php echo $this->stats['team']['multiusers']; ?></span> 
+					<li><span class="stats-num-small"><?php echo $this->stats['team']['multiusers']; ?></span>
 						<?php echo JText::_('unique users with multiple projects'); ?></li>
 				</ul>
 				<?php } else { ?>
@@ -392,7 +392,7 @@ tooltip: true,
 			</td>
 		</tr>
 	</table>
-	
+
 	<table class="stats-wrap">
 		<tr class="stats-files">
 			<th class="stats-h" rowspan="2"><span><?php echo JText::_('Files'); ?>
@@ -407,13 +407,13 @@ tooltip: true,
 		</tr>
 
 		<tr>
-			<td><span class="stats-num"><?php echo $this->stats['files']['total']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['files']['total']; ?></span>
 				<span class="stats-label"><?php echo JText::_('files stored'); ?></span> </td>
-			<td><span class="stats-num"><?php echo $this->stats['files']['average']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['files']['average']; ?></span>
 				<span class="stats-label"><?php echo JText::_('average files per project'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['files']['usage']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['files']['usage']; ?></span>
 				<span class="stats-label"><?php echo JText::_('projects store files'); ?></span></td>
-					<?php if ($this->monthly) { 
+					<?php if ($this->monthly) {
 
 						$y 			= 0;
 						$xdata 		= '';
@@ -429,40 +429,40 @@ tooltip: true,
 							$y++;
 						}
 					?>
-					<td class="stats-graph">				
+					<td class="stats-graph">
 						<div id="stat-files" class="ph"></div>
 						<script type="text/javascript">
 							if (jQuery()) {
 								var $ = jq;
 
 								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];																			
+								var xticks 		= [<?php echo $xticks; ?>];
 								var ph 	   		= $('#stat-files');
 								var tipContent 	= '%y';
 								var yTickSize 	= <?php echo $yTickSize; ?>;
 
 								if (ph)
 								{
-									var chart = $.plot( ph, [data], {								
+									var chart = $.plot( ph, [data], {
 										<?php echo $options; ?>
 									});
-									
+
 									// Show labels in Safari
 									if (safari)
 									{
 										var points = chart.getData();
 										showLabels(ph, points, '');
-									} 
-								}									
+									}
+								}
 							}
-						</script>	
+						</script>
 					</td>
 					<?php } ?>
 			<td class="stats-more">
 				<ul>
-					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['commits']; ?></span> 
+					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['commits']; ?></span>
 					<?php echo JText::_('total Git commits'); ?></li>
-					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['diskspace']; ?></span> 
+					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['diskspace']; ?></span>
 					<?php echo JText::_('total used disk space'); ?></li>
 				</ul>
 			</td>
@@ -482,13 +482,13 @@ tooltip: true,
 		</tr>
 
 		<tr>
-			<td><span class="stats-num"><?php echo $this->stats['pub']['total']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['pub']['total']; ?></span>
 				<span class="stats-label"><?php echo JText::_('publications started'); ?></span> </td>
-			<td><span class="stats-num"><?php echo $this->stats['pub']['average']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['pub']['average']; ?></span>
 				<span class="stats-label"><?php echo JText::_('average publications per project'); ?></span></td>
-			<td><span class="stats-num"><?php echo $this->stats['pub']['usage']; ?></span> 
+			<td><span class="stats-num"><?php echo $this->stats['pub']['usage']; ?></span>
 				<span class="stats-label"><?php echo JText::_('projects have used publications'); ?></span></td>
-					<?php if ($this->monthly) { 
+					<?php if ($this->monthly) {
 
 						$y 			= 0;
 						$xdata 		= '';
@@ -504,7 +504,7 @@ tooltip: true,
 							$y++;
 						}
 					?>
-					<td class="stats-graph">				
+					<td class="stats-graph">
 						<div id="stat-pub" class="ph"></div>
 						<script type="text/javascript">
 
@@ -512,35 +512,35 @@ tooltip: true,
 								var $ = jq;
 
 								var data   		= [<?php echo $xdata; ?>];
-								var xticks 		= [<?php echo $xticks; ?>];																			
+								var xticks 		= [<?php echo $xticks; ?>];
 								var ph 	   		= $('#stat-pub');
 								var tipContent 	= '%y';
 								var yTickSize 	= <?php echo $yTickSize; ?>;
 
 								if (ph)
 								{
-									var chart = $.plot( ph, [data], {								
+									var chart = $.plot( ph, [data], {
 										<?php echo $options; ?>
 									});
-									
+
 									// Show labels in Safari
 									if (safari)
 									{
 										var points = chart.getData();
 										showLabels(ph, points, '');
 									}
-								}									
+								}
 							}
-						</script>	
+						</script>
 					</td>
 					<?php } ?>
 			<td class="stats-more">
 				<ul>
-					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['released']; ?></span> 
+					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['released']; ?></span>
 					<?php echo JText::_('publicly released publications'); ?></li>
-					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['versions']; ?></span> 
+					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['versions']; ?></span>
 					<?php echo JText::_('total publication versions'); ?></li>
-					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A'; ?></span> 
+					<li><span class="stats-num-small-unfloat"><?php echo $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A'; ?></span>
 					<?php echo JText::_('allocated to published files'); ?></li>
 				</ul>
 			</td>

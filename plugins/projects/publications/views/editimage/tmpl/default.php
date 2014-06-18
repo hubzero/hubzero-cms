@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_EDIT_IMAGE'); ?></h3>
 <?php
 // Display error  message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } else { ?>
 	<?php if($this->file && $this->gallery_path && $this->thumb) { ?>
@@ -41,9 +41,9 @@ if ($this->getError()) {
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->vid; ?>" />
-				<input type="hidden" name="ima" value="<?php echo urlencode($this->ima); ?>" />	
+				<input type="hidden" name="ima" value="<?php echo urlencode($this->ima); ?>" />
 				<input type="hidden" name="srcfile" value="<?php echo $this->file; ?>" />
-				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />		
+				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<?php if($this->project->provisioned == 1 ) { ?>
@@ -58,19 +58,19 @@ if ($this->getError()) {
 				<input type="text" name="title" class="long" maxlength="80" value="<?php echo $this->shot->title; ?>"  /></label>
 				<p class="submitarea">
 				<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-				<?php if($this->ajax) { ?>	
+				<?php if($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-				<?php } else { 
+				<?php } else {
 					$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
 				?>
 				<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
-				<?php } ?>	
-				</p>	
+				<?php } ?>
+				</p>
 		</div>
 	</div>
 	</form>
 	<div class="clear"></div>
-	
+
 	<?php if($this->type == 'image') { ?>
 	<div id="gallery-preview">
 		<img src="<?php echo $this->gallery_path.DS.$this->file; ?>" />

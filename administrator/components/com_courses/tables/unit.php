@@ -34,90 +34,90 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course Units table class
- * 
+ *
  */
 class CoursesTableUnit extends JTable
 {
 	/**
 	 * ID, primary key for course units table
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * Course instance id of this unit (references #__course_instances.id)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * Alias
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $alias = NULL;
 
 	/**
 	 * Unit title
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $title = NULL;
 
 	/**
 	 * Unit description
-	 * 
+	 *
 	 * @var longtext
 	 */
 	var $description = NULL;
 
 	/**
 	 * Ordering
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * Start date for unit
-	 * 
+	 *
 	 * @var date
 	 */
 	//var $start_date = NULL;
 
 	/**
 	 * End date for unit
-	 * 
+	 *
 	 * @var date
 	 */
 	//var $end_date = NULL;
 
 	/**
 	 * Created date for unit
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $created = NULL;
 
 	/**
 	 * Who created the unit (reference #__users.id)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -129,18 +129,18 @@ class CoursesTableUnit extends JTable
 	/**
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
-	 * 
+	 *
 	 * @param      mixed $oid Unique ID or alias of object to retrieve
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $offering_id=null)
 	{
-		if (empty($oid)) 
+		if (empty($oid))
 		{
 			return false;
 		}
 
-		if (is_numeric($oid)) 
+		if (is_numeric($oid))
 		{
 			return parent::load($oid);
 		}
@@ -152,11 +152,11 @@ class CoursesTableUnit extends JTable
 		}
 		$sql .= " AND `state`!=2 LIMIT 1";
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -165,7 +165,7 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -178,7 +178,7 @@ class CoursesTableUnit extends JTable
 		}
 
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -211,33 +211,33 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = " FROM $this->_tbl AS cu 
+		$query = " FROM $this->_tbl AS cu
 					LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='unit' AND sd.scope_id=cu.id";
 
-		if (isset($filters['section_id']) && $filters['section_id']) 
+		if (isset($filters['section_id']) && $filters['section_id'])
 		{
 			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
 
 		$where = array();
 
-		if (isset($filters['offering_id']) && $filters['offering_id']) 
+		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
 			$where[] = "cu.offering_id=" . $this->_db->Quote($filters['offering_id']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "cu.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(cu.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(cu.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(cu.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -251,7 +251,7 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Get a count of course offering units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -266,7 +266,7 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Get an object list of course offering units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -288,7 +288,7 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Get the last page in the ordering
-	 * 
+	 *
 	 * @param      string  $offering_id
 	 * @return     integer
 	 */
@@ -301,7 +301,7 @@ class CoursesTableUnit extends JTable
 
 	/**
 	 * Return a unique alias based on given alias
-	 * 
+	 *
 	 * @return     integer
 	 */
 	private function makeAliasUnique()

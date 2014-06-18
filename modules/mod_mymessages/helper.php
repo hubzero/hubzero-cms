@@ -39,7 +39,7 @@ class modMyMessages extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

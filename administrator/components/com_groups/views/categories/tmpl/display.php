@@ -34,15 +34,15 @@ $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
 
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('Delete page Categories?', 'delete');
 }
@@ -51,7 +51,7 @@ JToolBarHelper::custom('manage', 'config','config','Manage',false);
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }

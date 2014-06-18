@@ -38,19 +38,19 @@ class MwUtils
 {
 	/**
 	 * Return a middleware database object
-	 * 
+	 *
 	 * @return     mixed
 	 */
 	public static function getMWDBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) 
+		if (!is_object($instance))
 		{
 			$config = JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
-			if (!$enabled) 
+			if (!$enabled)
 			{
 				return null;
 			}
@@ -63,23 +63,23 @@ class MwUtils
 			$options['database'] = $config->get('mwDBDatabase');
 			$options['prefix']   = $config->get('mwDBPrefix');
 
-			if ((!isset($options['password']) || $options['password'] == '') 
+			if ((!isset($options['password']) || $options['password'] == '')
 			 && (!isset($options['user']) || $options['user'] == '')
-			 && (!isset($options['database']) || $options['database'] == '')) 
+			 && (!isset($options['database']) || $options['database'] == ''))
 			{
 				$instance = JFactory::getDBO();
 			}
-			else 
+			else
 			{
 				$instance = JDatabase::getInstance($options);
-				if (JError::isError($instance)) 
+				if (JError::isError($instance))
 				{
 					$instance = JFactory::getDBO();
 				}
 			}
 		}
 
-		if (JError::isError($instance)) 
+		if (JError::isError($instance))
 		{
 			return null;
 		}
@@ -89,7 +89,7 @@ class MwUtils
 
 	/**
 	 * Return the amount of disk space used
-	 * 
+	 *
 	 * @param      string $username User to look up disk space for
 	 * @return     array
 	 */
@@ -100,14 +100,14 @@ class MwUtils
 		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
-		if ($username && $host) 
+		if ($username && $host)
 		{
 			$fp = @stream_socket_client($host, $errno, $errstr, 30);
-			if (!$fp) 
+			if (!$fp)
 			{
 				$info[] = "$errstr ($errno)\n";
-			} 
-			else 
+			}
+			else
 			{
 				$msg = '';
 				fwrite($fp, "getquota user=" . $username . "\n");
@@ -132,7 +132,7 @@ class MwUtils
 
 	/**
 	 * Create a user's home director (if it doesn't exist)
-	 * 
+	 *
 	 * @param      string $username User for which to create home directory
 	 * @return     array
 	 */
@@ -144,7 +144,7 @@ class MwUtils
 		exec($cmd, $results, $status);
 
 		// Check exec status
-		if (!isset($status) || $status != 0) 
+		if (!isset($status) || $status != 0)
 		{
 			// Something went wrong
 			return false;

@@ -51,28 +51,28 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableGradeBook';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'gradebook';
 
 	/**
 	 * Course object
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $course = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  $course
 	 * @return     void
@@ -88,10 +88,10 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	/**
 	 * Get student grades
 	 *
-	 * Retrieve single or group of student grades from the grade book.  You could also 
+	 * Retrieve single or group of student grades from the grade book.  You could also
 	 * provide a scope, limiting the grades to an array of items, such as unit, course, or asset.
 	 * The results will be returned as an array with student id as the uppermost key.
-	 * 
+	 *
 	 * @param      int or array $scope, scope for which to pull grades (unit, course, asset)
 	 * @param      int or array $member_id, user id for which to pull grades
 	 * @return     array $grades
@@ -146,7 +146,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Generate summary statistics
-	 * 
+	 *
 	 * @param      bool  $section - section only?
 	 * @return     array $stats
 	 */
@@ -192,12 +192,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 * Get current progress
 	 *
 	 * At this point, this method only takes into account what students have viewed.
-	 * This makes sense on a PDF download, for example, but not on a quiz.  This 
+	 * This makes sense on a PDF download, for example, but not on a quiz.  This
 	 * should be expanded to account for views on simpler asset types, and more complex
 	 * criteria on assets where it can be tracked (ex: videos, where we can track an
 	 * entire view, or an exam, where we know when they've actually finished it).
-	 * 
-	 * @param      int $member_id 
+	 *
+	 * @param      int $member_id
 	 * @return     array $progress
 	 */
 	public function progress($member_id=null)
@@ -350,7 +350,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 	/**
 	 * Calculate scores for each unit and the course as a whole
-	 * 
+	 *
 	 * @param      int $member_id
 	 * @param      int $asset_id
 	 * @return     boolean true on success, false otherwise

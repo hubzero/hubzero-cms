@@ -45,7 +45,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -67,7 +67,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -80,10 +80,10 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -113,7 +113,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		}
 		foreach ($members as $mem)
 		{
-			if (!in_array($mem->cn, $managerids)) 
+			if (!in_array($mem->cn, $managerids))
 			{
 				$groups[$mem->description] = $mem;
 			}
@@ -121,7 +121,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		ksort($groups);
 
 		// Build the final HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -185,7 +185,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 			$view->groups = $groups;
 			$view->member = $member;
 			$view->option = 'com_groups';
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -197,11 +197,11 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML meant for the "profile" tab's metadata overview
-		if ($returnmeta) 
+		if ($returnmeta)
 		{
 			//display a different message if its me
-			if ($member->get('uidNumber') == $user->get("id")) 
-			{ 
+			if ($member->get('uidNumber') == $user->get("id"))
+			{
 				$arr['metadata']['count'] = count($groups);
 
 				if (count($invitees))

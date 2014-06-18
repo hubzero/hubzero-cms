@@ -33,23 +33,23 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'SearchAuthorization'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchAuthorization
 {
 	/**
 	 * Description for 'uid'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $uid = NULL, $super_admin = false, $groups = NULL;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function __construct()
@@ -69,9 +69,9 @@ class SearchAuthorization
 
 	/**
 	 * Short description for 'is_guest'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function is_guest()
@@ -81,9 +81,9 @@ class SearchAuthorization
 
 	/**
 	 * Short description for 'is_super_admin'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function is_super_admin()
@@ -93,9 +93,9 @@ class SearchAuthorization
 
 	/**
 	 * Short description for 'get_groups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function get_groups()
@@ -118,9 +118,9 @@ class SearchAuthorization
 
 	/**
 	 * Short description for 'get_group_ids'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_group_ids()
@@ -130,9 +130,9 @@ class SearchAuthorization
 
 	/**
 	 * Short description for 'get_group_names'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_group_names()

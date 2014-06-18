@@ -49,18 +49,18 @@ $typetitle = $this->project->projecttype;
 if ($this->project->state == 1)
 {
 	$class = 'active';
-	$note  = '<span class="' . $class . '" >' 
+	$note  = '<span class="' . $class . '" >'
 	. JText::_('COM_PROJECTS_ACTIVE') . '</span> ' . JText::_('COM_PROJECTS_SINCE') . ' '
 	. JHTML::_('date', $this->project->created, $dateFormat, $tz);
 }
 else if ($this->project->state == 5)
 {
 	$class = 'pending';
-	$note  = '<span class="' . $class . '" >' 
+	$note  = '<span class="' . $class . '" >'
 	. JText::_('COM_PROJECTS_STATUS_PENDING') . '</span> ' . JText::_('COM_PROJECTS_SINCE') . ' '
 	. JHTML::_('date', $this->project->created, $dateFormat, $tz);
 }
-else 
+else
 {
 	$class = 'inactive';
 	$note  = JText::_('COM_PROJECTS_INACTIVE');
@@ -90,7 +90,7 @@ else
 				</div>
 			<?php } ?>
 
-			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 0, 2); ?>	
+			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 0, 2); ?>
 			<div id="basic_info">
 				<table id="infotbl">
 					<tbody>
@@ -122,9 +122,9 @@ else
 				</table>
 			</div>
 
-			<?php if ($this->params->get('publications_public', 0)) 
-			{ 
-				// Show team		
+			<?php if ($this->params->get('publications_public', 0))
+			{
+				// Show team
 				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'projects',
@@ -136,10 +136,10 @@ else
 				$view->project 	= $this->project;
 				echo $view->loadTemplate();
 			 } ?>
-			
-			<?php if ($this->params->get('files_public', 0)) 
-			{ 
-				// Show team	
+
+			<?php if ($this->params->get('files_public', 0))
+			{
+				// Show team
 				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'projects',
@@ -151,10 +151,10 @@ else
 				$view->project 	= $this->project;
 				echo $view->loadTemplate();
 			 } ?>
-			
-			<?php if ($this->params->get('notes_public', 0)) 
-			{ 
-				// Show team	
+
+			<?php if ($this->params->get('notes_public', 0))
+			{
+				// Show team
 				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'projects',
@@ -166,10 +166,10 @@ else
 				$view->project 	= $this->project;
 				echo $view->loadTemplate();
 			 } ?>
-			
-			<?php if ($this->params->get('team_public', 0)) 
-			{ 
-				// Show team	
+
+			<?php if ($this->params->get('team_public', 0))
+			{
+				// Show team
 				$view = new \Hubzero\Plugin\View(
 					array(
 						'folder'=>'projects',

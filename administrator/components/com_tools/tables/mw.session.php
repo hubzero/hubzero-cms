@@ -33,98 +33,98 @@ class MwSession extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $sessnum    = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $username   = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $remoteip   = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $exechost   = null;
 
 	/**
 	 * int(10)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $dispnum    = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start      = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $accesstime = null;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $timeout    = null;
 
 	/**
 	 * varchar(80)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $appname    = null;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sessname   = null;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sesstoken  = null;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params  = null;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $zone_id = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -135,35 +135,35 @@ class MwSession extends JTable
 
 	/**
 	 * Load a record and bind it to $this object
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username User to delete for
 	 * @return     boolean False if errors, True if success
 	 */
 	public function load($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
 
-		if ($username) 
+		if ($username)
 		{
 			$query .= " AND username=" . $this->_db->Quote($username);
 		}
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -172,37 +172,37 @@ class MwSession extends JTable
 
 	/**
 	 * Retrieve a session
-	 * 
+	 *
 	 * @param      string $sess       Session number
 	 * @param      string $authorized Admin authorization?
 	 * @return     object
 	 */
 	public function loadSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
 					  LIMIT 1";
-		} 
-		else 
+		}
+		else
 		{
 			$juser = JFactory::getUser();
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
 					  AND v.viewuser=" . $this->_db->Quote($juser->get('username'));
 		}
 
@@ -212,39 +212,39 @@ class MwSession extends JTable
 
 	/**
 	 * Check if a user owns a session
-	 * 
+	 *
 	 * @param      string $sess       Session number
 	 * @param      string $authorized Admin authorization?
 	 * @return     object
 	 */
 	public function checkSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
 					  LIMIT 1";
-		} 
-		else 
+		}
+		else
 		{
 			// Note: this check is different from others.
 			// Here, we check that the $juser->get('username') OWNS the session.
 			$juser = JFactory::getUser();
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $this->_db->Quote($sess) . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $this->_db->Quote($sess) . "
 					  AND s.username=" . $this->_db->Quote($juser->get('username')) . "
 					  AND v.viewuser=" . $this->_db->Quote($juser->get('username'));
 		}
@@ -255,24 +255,24 @@ class MwSession extends JTable
 
 	/**
 	 * Get a session count for a user, optionally restricted to a specific app
-	 * 
+	 *
 	 * @param      string $username Username to look for
 	 * @param      string $appname  App to look for
 	 * @return     integer
 	 */
 	public function getCount($username=NULL, $appname=NULL)
 	{
-		if ($username == null) 
+		if ($username == null)
 		{
 			$username = $this->username;
 		}
-		if ($username === null) 
+		if ($username === null)
 		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) 
+		if ($appname)
 		{
 			$a = "AND s.appname='$appname'";
 		}
@@ -280,7 +280,7 @@ class MwSession extends JTable
 		$mv = new MwViewperm($this->_db);
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
-				  ON v.sessnum = s.sessnum 
+				  ON v.sessnum = s.sessnum
 				  WHERE v.viewuser=" . $this->_db->Quote($username) . " AND s.username=" . $this->_db->Quote($username) . " $a
 				  ORDER BY s.start";
 
@@ -290,7 +290,7 @@ class MwSession extends JTable
 
 	/**
 	 * Get sessions for a user, optionally restricted to a specific app
-	 * 
+	 *
 	 * @param      string $username   Username to look for
 	 * @param      string $appname    App to look for
 	 * @param      string $authorized Admin authorization?
@@ -298,28 +298,28 @@ class MwSession extends JTable
 	 */
 	public function getRecords($username=null, $appname=null, $authorized=null)
 	{
-		if ($username == null) 
+		if ($username == null)
 		{
 			$username = $this->username;
 		}
-		if ($username === null) 
+		if ($username === null)
 		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) 
+		if ($appname)
 		{
 			$a = "AND s.appname=" . $this->_db->Quote($appname);
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
 			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.start";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
@@ -338,17 +338,17 @@ class MwSession extends JTable
 
 	/**
 	 * Get the time left until the session times out
-	 * 
+	 *
 	 * @param      integer $sess Sess ID
 	 * @return     integer
 	 */
 	public function getTimeout($sess)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
@@ -369,7 +369,7 @@ class MwSession extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     string SQL
 	 */
@@ -377,44 +377,44 @@ class MwSession extends JTable
 	{
 		$mv = new MwViewperm($this->_db);
 
-		if (isset($filters['count']) && $filters['count']) 
+		if (isset($filters['count']) && $filters['count'])
 		{
 			$query = "SELECT COUNT(*) ";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT * ";
 		}
-		$query .= " FROM $mv->_tbl AS v 
+		$query .= " FROM $mv->_tbl AS v
 					JOIN $this->_tbl AS s ON v.sessnum = s.sessnum";
 
 		$where = array();
-		if (isset($filters['username']) && $filters['username'] != '') 
+		if (isset($filters['username']) && $filters['username'] != '')
 		{
 			$where[] = "v.viewuser=" . $this->_db->Quote($filters['username']);
 		}
-		if (isset($filters['appname']) && $filters['appname'] != '') 
+		if (isset($filters['appname']) && $filters['appname'] != '')
 		{
 			$where[] = "s.appname=" . $this->_db->Quote($filters['appname']);
 		}
-		if (isset($filters['zone_id']) && $filters['zone_id']) 
+		if (isset($filters['zone_id']) && $filters['zone_id'])
 		{
 			$where[] = "s.zone_id=" . $this->_db->Quote($filters['zone_id']);
 		}
-		if (isset($filters['exechost']) && $filters['exechost'] != '') 
+		if (isset($filters['exechost']) && $filters['exechost'] != '')
 		{
 			$where[] = "s.exechost=" . $this->_db->Quote($filters['exechost']);
 		}
-		if (count($where) > 0) 
+		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
-		} 
+		}
 
-		if (!isset($filters['sort']) || $filters['sort'] == '') 
+		if (!isset($filters['sort']) || $filters['sort'] == '')
 		{
 			$filters['sort'] = 'start';
 		}
-		if (!isset($filters['sort_Dir']) || $filters['sort_Dir'] == '') 
+		if (!isset($filters['sort_Dir']) || $filters['sort_Dir'] == '')
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
@@ -424,7 +424,7 @@ class MwSession extends JTable
 		}
 		$query .= " ORDER BY s." . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -434,7 +434,7 @@ class MwSession extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     integer
 	 */
@@ -450,7 +450,7 @@ class MwSession extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     array
 	 */

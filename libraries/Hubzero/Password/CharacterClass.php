@@ -50,26 +50,26 @@ class CharacterClass
 	{
 		$result = array();
 
-		if (empty(self::$classes)) 
+		if (empty(self::$classes))
 		{
 			self::init();
 		}
 
-		if (empty(self::$classes)) 
+		if (empty(self::$classes))
 		{
 			return $result;
 		}
 
-		if (count($char) == 0) 
+		if (count($char) == 0)
 		{
 			$char = chr(0);
 		}
 
 		$char = $char{0};
 
-		foreach (self::$classes as $class) 
+		foreach (self::$classes as $class)
 		{
-			if (preg_match("/" . $class['regex'] . "/", $char)) 
+			if (preg_match("/" . $class['regex'] . "/", $char))
 			{
 				$match = new \stdClass();
 				$match->name = $class['name'];

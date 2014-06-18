@@ -39,13 +39,13 @@ class modNotices extends \Hubzero\Module\Module
 {
 	/**
 	 * Calculate the time left from a date time
-	 * 
+	 *
 	 * @param      integer $year   Year
 	 * @param      integer $month  Month
 	 * @param      integer $day    Day
 	 * @param      integer $hour   Hour
 	 * @param      integer $minute Minute
-	 * @return     array 
+	 * @return     array
 	 */
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
@@ -58,7 +58,7 @@ class modNotices extends \Hubzero\Module\Module
 		$now = time() + ($config->getValue('config.offset') * 60 * 60);
 
 		$difference = $the_countdown_date - $now;
-		if ($difference < 0) 
+		if ($difference < 0)
 		{
 			$difference = 0;
 		}
@@ -73,13 +73,13 @@ class modNotices extends \Hubzero\Module\Module
 
 	/**
 	 * Turn datetime 0000-00-00 00:00:00 to time
-	 * 
+	 *
 	 * @param      string $stime Datetime to convert
 	 * @return     integer
 	 */
 	private function _mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs))
 		{
 			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
@@ -88,7 +88,7 @@ class modNotices extends \Hubzero\Module\Module
 
 	/**
 	 * Break a timestamp into its parts
-	 * 
+	 *
 	 * @param      integer $stime Timestamp
 	 * @return     array
 	 */
@@ -106,17 +106,17 @@ class modNotices extends \Hubzero\Module\Module
 
 	/**
 	 * Show the amoutn of time left
-	 * 
+	 *
 	 * @param      array $stime Timestamp
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _timeto($stime)
 	{
-		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) 
+		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0)
 		{
 			$o  = JText::_('MOD_NOTICES_IMMEDIATELY');
-		} 
-		else 
+		}
+		else
 		{
 			$o  = JText::_('MOD_NOTICES_IN') . ' ';
 			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . JText::_('MOD_NOTICES_DAYS') . ', '  : '';
@@ -128,7 +128,7 @@ class modNotices extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -150,32 +150,32 @@ class modNotices extends \Hubzero\Module\Module
 		//$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
-		if (!$start || $start == $database->getNullDate()) 
+		if (!$start || $start == $database->getNullDate())
 		{
 			$this->publish = true;
-		} 
-		else 
+		}
+		else
 		{
-			if ($start <= $now) 
+			if ($start <= $now)
 			{
 				$this->publish = true;
-			} 
-			else 
+			}
+			else
 			{
 				$this->publish = false;
 			}
 		}
-		if (!$stop || $stop == $database->getNullDate()) 
+		if (!$stop || $stop == $database->getNullDate())
 		{
 			$this->publish = true;
-		} 
-		else 
+		}
+		else
 		{
-			if ($stop >= $now && $this->publish) 
+			if ($stop >= $now && $this->publish)
 			{
 				$this->publish = true;
-			} 
-			else 
+			}
+			else
 			{
 				$this->publish = false;
 			}
@@ -193,7 +193,7 @@ class modNotices extends \Hubzero\Module\Module
 			$now = time() + (JFactory::getConfig()->getValue('config.offset') * 60 * 60);
 
 			$difference = $the_countdown_date - $now;
-			if ($difference < 0) 
+			if ($difference < 0)
 			{
 				$difference = 0;
 			}
@@ -210,7 +210,7 @@ class modNotices extends \Hubzero\Module\Module
 		}
 
 		// Only do something if the module's time frame hasn't expired
-		if ($this->publish && !$hide) 
+		if ($this->publish && !$hide)
 		{
 			$this->css();
 

@@ -1,7 +1,7 @@
-<?php 
+<?php
 /**
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * @license	GNU General Public License, version 2 (GPLv2) 
+ * @license	GNU General Public License, version 2 (GPLv2)
  *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
@@ -23,7 +23,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-	
+
 	/* Resume List */
 	$seekers 	= $this->seekers;
 	$filters 	= $this->filters;
@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$pageNav 	= $this->pageNav;
 	$cats 		= $this->cats;
 	$types 		= $this->types;
-	
+
 	$jobsHtml = new JobsHtml();
 
 ?>
@@ -69,38 +69,38 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if (count($seekers) > 0) { // show how many ?>
 			<p class="note_total">
 				<?php echo JText::_('Displaying '); ?>
-				<?php 
+				<?php
 				$html = '';
 				if ($filters['start'] == 0) {
 					$html .= $pageNav->total > count($seekers) ? ' top ' . count($seekers) . ' out of ' . $pageNav->total : strtolower(JText::_('all')) . ' ' . count($seekers);
 				} else {
 					$html .= ($filters['start'] + 1);
 					$html .= ' - ' . ($filters['start'] + count($seekers)) . ' out of ' . $pageNav->total;
-				} 
+				}
 				$html .= ' ';
 				$html .= $filters['filterby']=='shortlisted' ? JText::_('shortlisted').' ' : '';
 				$html .= strtolower(JText::_('candidates'));
 				echo $html;
 				?>
 			</p>
-			
+
 			<ul id="candidates">
-			<?php 
+			<?php
 			JPluginHelper::importPlugin( 'members','resume' );
-			$dispatcher = JDispatcher::getInstance();	
-			foreach ($seekers as $seeker) 
+			$dispatcher = JDispatcher::getInstance();
+			foreach ($seekers as $seeker)
 			{
 				?>
 				<li>
 				<?php
 				$out = $dispatcher->trigger( 'showSeeker', array($seeker, $emp, $admin, 'com_members', $list=1) );  // show seeker info
-				if (count($out) > 0) 
+				if (count($out) > 0)
 				{
 					echo $out[0];
 				}
 				?>
 				</li>
-				<?php 
+				<?php
 			}
 			?>
 			</ul>
@@ -109,8 +109,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo $filters['filterby']=='shortlisted' ? JText::_('You haven\'t yet included any candidates on your shortlist. Keep searching!') : JText::_('Sorry, no resumes found at the moment.'); ?>
 			</p>
 		<?php } ?>
-		
-		<?php 
+
+		<?php
 		// Insert page navigation
 		$pageNav->setAdditionalUrlParam('task', 'resumes');
 		$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
@@ -125,14 +125,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($filters['filterby'] != 'shortlisted') { ?>
 			<fieldset id="matchsearch">
 				<label>
-					<?php echo JText::_('Sort by'); ?>: 
+					<?php echo JText::_('Sort by'); ?>:
 					<div class="together">
-						<input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby']!='bestmatch') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('last update'); ?> &nbsp; 
+						<input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby']!='bestmatch') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('last update'); ?> &nbsp;
 						<input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby']=='bestmatch') { echo ' checked="checked"'; } else if (!$filters['match']) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('best match'); ?>
 					</div>
 				</label>
 				<label>
-					<?php echo JText::_('Keywords'); ?>: 
+					<?php echo JText::_('Keywords'); ?>:
 					<span class="questionmark tooltips" title="Keywords Search :: Use skill and action keywords separated by commas, e.g. XML, web, MBA etc."></span>
 					<input name="q" maxlength="250" type="text" value="<?php echo $this->escape($filters['search']); ?>" />
 				</label>
@@ -145,7 +145,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<?php echo $jobsHtml->formSelect('type', $types, $filters['type'], '', ''); ?>
 				</label>
 				<label>
-					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" /> 
+					<input class="option" type="checkbox" name="saveprefs" value="1" checked="checked" />
 					<?php echo JText::_('Save my search preferences'); ?>
 				</label>
 				<input type="hidden" name="performsearch" value="1" />
@@ -161,4 +161,3 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div><!-- / .aside -->
 	</section>
 </form>
- 

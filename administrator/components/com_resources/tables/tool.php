@@ -38,42 +38,42 @@ class ToolLicense extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id  = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $text = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,13 +84,13 @@ class ToolLicense extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->name = trim($this->name);
-		if ($this->name == '') 
+		if ($this->name == '')
 		{
 			$this->setError(JText::_('Your entry must have a name.'));
 			return false;

@@ -45,7 +45,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -62,7 +62,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -88,9 +88,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$return = 'metadata';
 			}
@@ -114,7 +114,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->_authorize('item');
 
 		//are we returning html
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			// This needs to be called to ensure scripts are pushed to the document
 			$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
@@ -129,15 +129,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$members = $group->get('members');
 
 			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody') 
+			if ($group_plugin_acl == 'nobody')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($this->juser->get('guest') 
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+			if ($this->juser->get('guest')
+			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 				$this->redirect(
@@ -149,9 +149,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($this->juser->get('id'), $members) 
-			 && $group_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
+			if (!in_array($this->juser->get('id'), $members)
+			 && $group_plugin_acl == 'members'
+			 && $authorized != 'admin')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
@@ -160,7 +160,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$this->authorized = $authorized;
 
 			//group vars
-			
+
 			$this->members    = $members;
 
 			// Set some variables so other functions have access
@@ -187,7 +187,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 			$juri = JURI::getInstance();
 			$path = $juri->getPath();
-			if (strstr($path, '/')) 
+			if (strstr($path, '/'))
 			{
 				$path = str_replace($juri->base(true), '', $path);
 				$path = str_replace('index.php', '', $path);
@@ -226,7 +226,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 								}
 							}
 						break;
-						
+
 						case 'all':
 						case 'posts':
 						case 'followers':
@@ -235,7 +235,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 						case 'unfollow':
 							$this->action = $bits[0];
 						break;
-						
+
 						case 'new':
 						case 'save':
 							$this->action = $bits[0] . 'collection';
@@ -249,7 +249,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 						case 'savesettings':
 							$this->action = $bits[0];
 						break;
-						
+
 						default:
 							$this->action = 'collection';
 							JRequest::setVar('board', $bits[0]);
@@ -313,7 +313,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'count' => true
 		);
-		if (!$this->params->get('access-manage-collection')) 
+		if (!$this->params->get('access-manage-collection'))
 		{
 			$filters['access'] = 0;
 		}
@@ -324,7 +324,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Redirect to the login form
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _login()
@@ -341,7 +341,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of collections
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _followers()
@@ -374,7 +374,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'count'  => true
 		);
 
-		if (!$this->params->get('access-manage-collection')) 
+		if (!$this->params->get('access-manage-collection'))
 		{
 			$count['access'] = 0;
 			$view->filters['access'] = 0;
@@ -392,8 +392,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->total, 
-			$view->filters['start'], 
+			$view->total,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
@@ -401,7 +401,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'followers');
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -413,7 +413,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of collections
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _collections()
@@ -460,7 +460,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->rows = $this->model->collections($filters);
 
 		$view->posts = 0;
-		if ($view->rows) 
+		if ($view->rows)
 		{
 			foreach ($view->rows as $row)
 			{
@@ -470,15 +470,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->followers = $this->model->followers($count);
 
-		if ($this->params->get('access-can-follow')) 
+		if ($this->params->get('access-can-follow'))
 		{
 			$view->following = $this->model->following($count);
 		}
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->total, 
-			$view->filters['start'], 
+			$view->total,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
@@ -486,7 +486,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'all');
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -498,7 +498,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of items in a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _collection()
@@ -548,8 +548,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts, 
-			$view->filters['start'], 
+			$view->posts,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
@@ -557,7 +557,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', $view->collection->get('alias'));
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -569,7 +569,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of items in a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _follow($what='collection')
@@ -629,7 +629,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of items in a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _unfollow($what='collection')
@@ -689,7 +689,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of items in a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _posts()
@@ -728,7 +728,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			'count' => true
 		);
 
-		if (!$this->params->get('access-manage-collection')) 
+		if (!$this->params->get('access-manage-collection'))
 		{
 			$view->filters['access'] = 0;
 			$count['access'] = $view->filters['access'];
@@ -740,7 +740,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->followers   = $this->model->followers($count);
 
-		if ($this->params->get('access-can-follow')) 
+		if ($this->params->get('access-can-follow'))
 		{
 			$view->following   = $this->model->following($count);
 		}
@@ -753,8 +753,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts, 
-			$view->filters['start'], 
+			$view->posts,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
@@ -762,7 +762,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
 		$view->pageNav->setAdditionalUrlParam('scope', 'posts');
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -774,7 +774,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a post
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _post()
@@ -797,7 +797,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->post = CollectionsModelPost::getInstance($post_id);
 
-		if (!$view->post->exists()) 
+		if (!$view->post->exists())
 		{
 			return $this->_collections();
 		}
@@ -805,13 +805,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->collection = $this->model->collection($view->post->get('collection_id'));
 
 		// Check authorization
-		if (!$this->params->get('access-view-item')) 
+		if (!$this->params->get('access-view-item'))
 		{
 			JError::raiseError(403, JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -834,7 +834,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for creating an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _new()
@@ -844,17 +844,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for editing an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _edit($entry=null)
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) 
+		if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item'))
 		{
 			$this->redirect(
 				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
@@ -941,7 +941,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _save()
@@ -950,13 +950,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-edit-item') || !$this->params->get('access-create-item')) 
+		if (!$this->params->get('access-edit-item') || !$this->params->get('access-create-item'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
 			return $this->_collections();
@@ -970,14 +970,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$row = new CollectionsModelItem();
 
 		// Bind content
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
 
 		// Add some data
-		if ($files) 
+		if ($files)
 		{
 			$row->set('_files', $files);
 		}
@@ -987,7 +987,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$row->set('access', 0);
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
@@ -1021,7 +1021,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			$post->set('description', $p['description']);
 		}
-		if (!$post->store()) 
+		if (!$post->store())
 		{
 			$this->setError($post->getError());
 		}
@@ -1039,17 +1039,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Repost an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _repost()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-create-item')) 
+		if (!$this->params->get('access-create-item'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTHORIZED'));
 			return $this->_collections();
@@ -1104,7 +1104,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				$view->display();
 				exit;
 			}
-			else 
+			else
 			{
 				return $view->loadTemplate();
 			}
@@ -1139,12 +1139,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
 			$post->description   = JRequest::getVar('description', '', 'none', 2);
-			if ($post->check()) 
+			if ($post->check())
 			{
 				$this->setError($post->getError());
 			}
 			// Store new content
-			if (!$post->store()) 
+			if (!$post->store())
 			{
 				$this->setError($post->getError());
 			}
@@ -1167,19 +1167,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Repost an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _remove()
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-create-item')) 
+		if (!$this->params->get('access-create-item'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1215,19 +1215,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Move a post to another collection
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _move()
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-create-item')) 
+		if (!$this->params->get('access-create-item'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1254,7 +1254,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _delete()
@@ -1263,13 +1263,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		//JRequest::checkToken() or jexit('Invalid Token');
 
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-delete-item')) 
+		if (!$this->params->get('access-delete-item'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1279,7 +1279,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$no_html = JRequest::getInt('no_html', 0);
 
 		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
-		if (!$post->get('id')) 
+		if (!$post->get('id'))
 		{
 			return $this->_collections();
 		}
@@ -1290,9 +1290,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($post->get('collection_id'));
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel || !JRequest::checkToken()) 
+		if (!$process || !$confirmdel || !JRequest::checkToken())
 		{
-			if ($process && !$confirmdel) 
+			if ($process && !$confirmdel)
 			{
 				$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_ERROR_CONFIRM_DELETION'));
 				if ($no_html)
@@ -1320,7 +1320,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->name     = $this->_name;
 			$view->collection = $collection;
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -1336,7 +1336,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Mark the entry as deleted
 		$item = $post->item();
 		$item->set('state', 2);
-		if (!$item->store()) 
+		if (!$item->store())
 		{
 			$msg = $item->getError();
 			$type = 'error';
@@ -1356,7 +1356,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save a comment
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _savecomment()
@@ -1365,7 +1365,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
@@ -1375,21 +1375,21 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Instantiate a new comment object and pass it the data
 		$row = new \Hubzero\Item\Comment($this->database);
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
 			return $this->_post();
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return $this->_post();
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return $this->_post();
@@ -1400,20 +1400,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a comment
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _deletecomment()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Incoming
 		$id = JRequest::getInt('comment', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->_post();
 		}
@@ -1424,7 +1424,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$comment->state = 2;
 
 		// Delete the entry itself
-		if (!$comment->store()) 
+		if (!$comment->store())
 		{
 			$this->setError($comment->getError());
 		}
@@ -1435,7 +1435,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Vote for an item
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _vote()
@@ -1471,7 +1471,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for creating a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _newcollection()
@@ -1481,19 +1481,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for editing a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _editcollection($row=null)
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) 
+		if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection'))
 		{
 			$this->redirect(
 				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
@@ -1532,7 +1532,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->entry->set('access', $this->params->get('access-plugin'));
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1551,7 +1551,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _savecollection()
@@ -1559,12 +1559,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
-		if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) 
+		if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1575,14 +1575,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Bind new content
 		$row = new CollectionsModelCollection();
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
 			return $this->_editcollection($row);
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return $this->_editcollection($row);
@@ -1596,19 +1596,19 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a collection
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _deletecollection()
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
 		// Access check
-		if (!$this->params->get('access-delete-collection')) 
+		if (!$this->params->get('access-delete-collection'))
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1619,7 +1619,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$id = JRequest::getVar('board', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->_collections();
 		}
@@ -1631,9 +1631,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$collection = $this->model->collection($id);
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel) 
+		if (!$process || !$confirmdel)
 		{
-			if ($process && !$confirmdel) 
+			if ($process && !$confirmdel)
 			{
 				$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_ERROR_CONFIRM_DELETION'));
 			}
@@ -1655,7 +1655,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->no_html    = $no_html;
 			$view->name       = $this->_name;
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -1667,7 +1667,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Mark the entry as deleted
 		$collection->set('state', 2);
-		if (!$collection->store()) 
+		if (!$collection->store())
 		{
 			$this->setError($collection->getError());
 		}
@@ -1686,18 +1686,18 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display settings
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _settings()
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
-		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			$this->setError(JText::_('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_browse();
@@ -1722,7 +1722,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->authorized  = $this->authorized;
 		$view->message     = (isset($this->message)) ? $this->message : '';
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1734,18 +1734,18 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save blog settings
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _savesettings()
 	{
 		// Login check
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_login();
 		}
 
-		if ($this->authorized != 'manager' && $this->authorized != 'admin') 
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			$this->setError(JText::_('PLG_COLLECTIONS_BLOG_NOT_AUTH'));
 			return $this->_collections();
@@ -1754,7 +1754,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$settings = JRequest::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings)) 
+		if (!$row->bind($settings))
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
@@ -1768,14 +1768,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$row->params = $params->toString();
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
@@ -1790,7 +1790,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set permissions
-	 * 
+	 *
 	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
 	 * @param      integer $assetId   Specific object to check permissions for
 	 * @return     void
@@ -1800,7 +1800,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Everyone can view by default
 		$this->params->set('access-view', true);
 		$this->params->set('access-can-follow', false);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$customParams = $p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name);

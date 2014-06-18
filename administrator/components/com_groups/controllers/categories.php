@@ -38,7 +38,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Override Execute Method
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function execute()
@@ -56,12 +56,12 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		$this->group = \Hubzero\User\Group::getInstance( $this->gid );
-		
+
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display Page Categories
 	 *
@@ -75,10 +75,10 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			'gidNumber' => $this->group->get('gidNumber'),
 			'orderby'   => 'title'
 		));
-		
+
 		// pass group to view
 		$this->view->group = $this->group;
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -91,7 +91,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Add Page Category
 	 *
@@ -101,7 +101,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	{
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Edit Page Category
 	 *
@@ -111,23 +111,23 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	{
 		//set to edit layout
 		$this->view->setLayout('edit');
-		
+
 		// get request vars
 		$ids = JRequest::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		// get the category object
 		$this->view->category = new GroupsModelPageCategory( $id );
-		
+
 		// are we passing a category object
 		if ($this->category)
 		{
 			$this->view->category = $this->category;
 		}
-		
+
 		// pass group to view
 		$this->view->group = $this->group;
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -140,7 +140,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save Page Category
 	 *
@@ -150,29 +150,29 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 	{
 		// get request vars
 		$category = JRequest::getVar('category', array(), 'post');
-		
+
 		// add group id to category
 		$category['gidNumber'] = $this->group->get('gidNumber');
-		
+
 		// load category object
 		$this->category = new GroupsModelPageCategory( $category['id'] );
-		
+
 		// bind to our new results
-		if (!$this->category->bind($category)) 
+		if (!$this->category->bind($category))
 		{
 			$this->setNotification($this->category->getError(), 'error');
 			$this->editTask();
 			return;
 		}
-		
+
 		// Store new content
-		if (!$this->category->store(true)) 
+		if (!$this->category->store(true))
 		{
 			$this->setNotification($this->category->getError(), 'error');
 			$this->editTask();
 			return;
 		}
-		
+
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
@@ -183,7 +183,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 				'color' => $this->category->get('color')
 			)
 		));
-		
+
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -191,7 +191,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Delete Page Category
 	 *
@@ -202,24 +202,24 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		// get request vars
 		$ids = JRequest::getVar('id', array());
 		$deleted = array();
-		
+
 		// delete each category
 		foreach ($ids as $categoryid)
 		{
 			// load category object
 			$category = new GroupsModelPageCategory( $categoryid );
-		
+
 			// make sure this is our groups cat
 			if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 			{
-				$this->setRedirect( 
+				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
 					JText::_('Unable to delete category.'),
 					'error'
 				);
 				return;
 			}
-		
+
 			// delete row
 			if (!$category->delete())
 			{
@@ -232,14 +232,14 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			}
 			$deleted[] = $category->get('id');
 		}
-		
+
 		// log change
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'action'    => 'group_pagecategory_deleted',
 			'comments'  => $deleted
 		));
-		
+
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -247,7 +247,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
+
 	/**
 	 * Cancel a group page task
 	 *
@@ -259,7 +259,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . JRequest::getVar('gid', '')
 		);
 	}
-	
+
 	/**
 	 * Manage group
 	 *

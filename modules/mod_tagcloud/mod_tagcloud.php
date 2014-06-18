@@ -15,7 +15,7 @@ function cloud()
 	$mid = $min + (($max - $min)/2);
 
 	usort($tags, create_function('$a, $b', 'return strcmp($a["raw_tag"], $b["raw_tag"]);'));
-	
+
 	echo '<h2>Top Tags</h2>';
 	echo '<ol class="tags">';
 	foreach ($tags as $tag)

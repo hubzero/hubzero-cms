@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,10 +36,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jobs = $this->jobs;
 	$filters = $this->filters;
 	$allowsubscriptions = $this->allowsubscriptions;
-	
+
 	$jobsHtml = new JobsHtml();
 
-	if ($this->subscriptioncode && $this->thisemployer) 
+	if ($this->subscriptioncode && $this->thisemployer)
 	{
 		$this->title .= ' '.JText::_('FROM').' '.$this->thisemployer->companyName;
 	}
@@ -47,7 +47,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html  = '';
 	$now = JFactory::getDate()->toSql();
 
-	if (!$this->mini) 
+	if (!$this->mini)
 	{
 		?>
 		<header id="content-header">
@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			<div id="content-header-extra">
 				<ul id="useroptions">
-				<?php if($this->guest) { ?> 
+				<?php if($this->guest) { ?>
 					<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 				<?php } else if($this->emp && $this->allowsubscriptions) {  ?>
 					<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -84,7 +84,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<div class="jobs_controls">
 						<fieldset>
 							<label>
-								<?php echo JText::_('COM_JOBS_ACTION_SEARCH_BY_KEYWORDS'); ?>:<span class="questionmark tooltips" title="<?php echo JText::_('COM_JOBS_TIP_SEARCH_JOBS_BY_KEYWORDS'); ?>"></span> 
+								<?php echo JText::_('COM_JOBS_ACTION_SEARCH_BY_KEYWORDS'); ?>:<span class="questionmark tooltips" title="<?php echo JText::_('COM_JOBS_TIP_SEARCH_JOBS_BY_KEYWORDS'); ?>"></span>
 								<input type="text" name="q" value="<?php echo $this->escape($filters['search']); ?>" />
 							</label>
 							<input type="submit" value="<?php echo JText::_('COM_JOBS_GO'); ?>" />
@@ -92,14 +92,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<input type="hidden" name="performsearch" value="1" />
 						</fieldset>
 						<div class="note_total">
-							<?php 
+							<?php
 							// show how many
 							$totalnote = JText::_('COM_JOBS_NOTICE_DISPLAYING').' ';
-							if ($filters['start'] == 0) 
+							if ($filters['start'] == 0)
 							{
 								$totalnote .= ($this->pageNav->total > count($jobs)) ? ' '.JText::_('COM_JOBS_NOTICE_TOP').' '.count($jobs).' '.JText::_('COM_JOBS_NOTICE_OUT_OF').' '.$this->pageNav->total : strtolower(JText::_('COM_JOBS_ALL')).' '.count($jobs);
 							}
-							else 
+							else
 							{
 								$totalnote .= ($filters['start'] + 1);
 								$totalnote .= ' - ';
@@ -249,15 +249,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</table>
 		<?php } else { ?>
 			<p>
-				<?php 
+				<?php
 				echo JText::_('COM_JOBS_NO_JOBS_FOUND');
-				if ($this->subscriptioncode) 
+				if ($this->subscriptioncode)
 				{
-					if ($this->thisemployer) 
+					if ($this->thisemployer)
 					{
 						echo ' '.JText::_('COM_JOBS_FROM').' '.JText::_('COM_JOBS_EMPLOYER').' '.$this->thisemployer->companyName.' ('.$this->subscriptioncode.')';
 					}
-					else 
+					else
 					{
 						echo ' '.JText::_('COM_JOBS_FROM').' '.JText::_('COM_JOBS_REQUESTED_EMPLOYER').' ('.$this->subscriptioncode.')';
 					}
@@ -268,7 +268,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php } ?>
 
 	<?php if (!$this->mini) { ?>
-		<?php 
+		<?php
 		// Insert page navigation
 		$pagenavhtml = $this->pageNav->getListFooter();
 		$pagenavhtml = str_replace('jobs/?','jobs/browse/?',$pagenavhtml);

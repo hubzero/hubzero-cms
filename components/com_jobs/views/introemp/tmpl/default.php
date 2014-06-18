@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -76,11 +76,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 			<div>
 				<p>
-					<?php 
-					echo ($this->task=='addjob') 
-							? JText::_('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.JText::_('COM_JOBS_INTRO_POST_DETAILS') 
+					<?php
+					echo ($this->task=='addjob')
+							? JText::_('COM_JOBS_INTRO_POST_UP_TO').' '.$maxads.' '.JText::_('COM_JOBS_INTRO_POST_DETAILS')
 							: JText::_('COM_JOBS_INTRO_BROWSE_INFO').' '.JText::_('COM_JOBS_INTRO_BROWSE_DETAILS'); ?>
-					<?php 
+					<?php
 					echo ($this->task=='addjob')
 							? '<img src="'.JURI::Base(true).'/components/'.$this->option.'/assets/img/helper_job_search.gif" alt="'.JText::_('COM_JOBS_ACTION_POST_JOB').'" />'
 							: '<img src="'.JURI::Base(true).'/components/'.$this->option.'/assets/img/helper_browse_resumes.gif" alt="'.JText::_('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';

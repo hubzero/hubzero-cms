@@ -51,7 +51,7 @@ class plgSystemXFeed extends JPlugin
 
 	/**
 	 * Perform actions after initialization
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function onAfterInitialise()
@@ -61,7 +61,7 @@ class plgSystemXFeed extends JPlugin
 		$bit = $bits[0];
 		$bi = explode('.', $bit);
 		$b = end($bi);
-		if ($b == strtolower('rss') || $b == strtolower('atom')) 
+		if ($b == strtolower('rss') || $b == strtolower('atom'))
 		{
 			$_GET['no_html'] = 1;
 			$_REQUEST['no_html'] = 1;

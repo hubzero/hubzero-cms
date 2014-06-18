@@ -47,7 +47,7 @@ class Wallet
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param	string 		provider
 	 * @param	string 		requestType
 	 * @return  void

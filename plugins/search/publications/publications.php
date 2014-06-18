@@ -38,14 +38,14 @@ class PublicationChildSorter
 {
 	/**
 	 * Description for 'order'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $order;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $order Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -56,9 +56,9 @@ class PublicationChildSorter
 
 	/**
 	 * Short description for 'sort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      object $b Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -89,7 +89,7 @@ class plgSearchPublications extends SearchPlugin
 {
 	/**
 	 * Execute query and add results to $results object
-	 * 
+	 *
 	 * @param      mixed $request Parameter description (if any) ...
 	 * @param      object &$results Parameter description (if any) ...
 	 * @param      object $authz Parameter description (if any) ...
@@ -114,12 +114,12 @@ class plgSearchPublications extends SearchPlugin
 				$group_list = '(\'' . join('\', \'', $groups) . '\')';
 				$access = '(p.access IN (' . $viewlevels . ') OR ((v.access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
 			}
-			else 
+			else
 			{*/
 				$access = '(p.access IN (0, ' . $viewlevels . '))';
 			//}
 		}
-		else 
+		else
 		// Joomla 1.5
 		{
 			if ($authz->is_guest())
@@ -203,22 +203,22 @@ class plgSearchPublications extends SearchPlugin
 				$weight AS weight,
 				v.published_up AS date,
 				c.alias AS section,
-				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 					AS contributors,
-				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 					AS contributor_ids,
 				NULL AS parents
 			FROM #__publication_versions v
-			INNER JOIN #__publications p 
+			INNER JOIN #__publications p
 				ON p.id = v.publication_id
-			LEFT JOIN #__publication_categories c 
+			LEFT JOIN #__publication_categories c
 				ON c.id = p.category
-			WHERE 
-				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down) 
+			WHERE
+				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
 				AND ($weight > 0)" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			"UNION
-			SELECT 
+			SELECT
 				p.id,
 				v.publication_id,
 				v.title,
@@ -227,20 +227,20 @@ class plgSearchPublications extends SearchPlugin
 				1 AS weight,
 				v.published_up AS date,
 				c.alias AS section,
-				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 					AS contributors,
-				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 					AS contributor_ids,
 				NULL AS parents
 			FROM #__publication_authors a
-			INNER JOIN #__publication_versions v 
-				ON v.id = a.publication_version_id  
-			INNER JOIN #__publications p 
+			INNER JOIN #__publication_versions v
+				ON v.id = a.publication_version_id
+			INNER JOIN #__publications p
 				ON p.id = v.publication_id
-			LEFT JOIN #__publication_categories c 
+			LEFT JOIN #__publication_categories c
 				ON c.id = p.category
-			WHERE 
-				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down) 
+			WHERE
+				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
 				AND a.status = 1 AND $weight_authors"
 		);
 		$assoc = $sql->to_associative();
@@ -277,18 +277,18 @@ class plgSearchPublications extends SearchPlugin
 						0.5 as weight,
 						v.published_up AS date,
 						c.alias AS section,
-						(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+						(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 							AS contributors,
-						(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1) 
+						(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
 							AS contributor_ids,
 						NULL AS parents
 					FROM #__publication_versions v
-					INNER JOIN #__publications p 
+					INNER JOIN #__publications p
 						ON p.id = v.publication_id
-					LEFT JOIN #__publication_categories c 
+					LEFT JOIN #__publication_categories c
 						ON c.id = p.category
 					WHERE
-						v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down) 
+						v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
 						AND p.id in (" . implode(',', array_keys($tag_map)) . ")" . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
 				);
 				foreach ($sql->to_associative() as $row)

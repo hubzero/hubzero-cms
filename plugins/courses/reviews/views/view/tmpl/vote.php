@@ -38,12 +38,12 @@ if (!strstr($this->url, 'index.php'))
 {
 	$this->url .= '?';
 }
-else 
+else
 {
 	$this->url .= '&';
 }
 
-if ($this->item->get('vote') !== null) 
+if ($this->item->get('vote') !== null)
 {
 	switch ($this->item->get('vote'))
 	{
@@ -65,20 +65,20 @@ if ($this->item->get('vote') !== null)
 			$dcls = ' chosen';
 		break;
 	}
-} 
-else 
+}
+else
 {
 	$this->item->set('vote', null);
 }
 
 $juser = JFactory::getUser();
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$like_title    = JText::sprintf('PLG_COURSES_REVIEWS_VOTE_UP', $this->item->get('positive', 0));
 	$dislike_title = JText::sprintf('PLG_COURSES_REVIEWS_VOTE_DOWN', $this->item->get('negative', 0));
 	$cls = ' tooltips';
-} 
-else 
+}
+else
 {
 	$like_title    = JText::_('PLG_COURSES_REVIEWS_VOTE_UP_LOGIN');
 	$dislike_title = JText::_('PLG_COURSES_REVIEWS_VOTE_DOWN_LOGIN');

@@ -82,40 +82,40 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display Help Article Pages
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function displayTask()
 	{
 		//force help template
 		JRequest::setVar('tmpl', 'help');
-		
+
 		//var to hold content
 		$this->view->content = '';
-		
+
 		//get the page we are trying to access
 		$page      = JRequest::getWord('page', 'index');
 		$component = JRequest::getWord('component', 'com_help');
 		$extension = JRequest::getWord('extension', '');
-		
+
 		//template override help page
 		$templateHelpPage = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . $component  . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
 		$templateHelpPageAlt = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . 'plg_'.str_replace('com_', '', $component).'_'.$page . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . 'index.phtml';
-		
+
 		//path to help page
 		$helpPage    = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
 		$helpPageAlt = JPATH_ROOT . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $page . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . 'index.phtml';
-		
+
 		//if we have an extension
 		if (isset($extension) && $extension != '')
 		{
 			$helpPage            = JPATH_ROOT . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $extension . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
 			$templateHelpPageAlt = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . 'plg_'.str_replace('com_', '', $component).'_'.$extension . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
 		}
-		
+
 		//store  final page
 		$finalHelpPage = '';
-		
+
 		//determine path for help page, check template first
 		if (file_exists($templateHelpPageAlt))
 		{
@@ -133,7 +133,7 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 		{
 			$finalHelpPage = $helpPageAlt;
 		}
-		
+
 		//if we have an existing pge
 		if ($finalHelpPage != '')
 		{
@@ -146,7 +146,7 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 		{
 			//get list of component pages
 			$pages[] = $this->helpPagesForComponent( $component );
-			
+
 			//display page
 			$this->view->content = $this->displayHelpPageIndexForPages( $pages, 'h2' );
 		}
@@ -155,20 +155,20 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 			//raise error to avoid security bug
 			JError::raiseError( 404, JText::_('Help page not found.') );
 		}
-		
+
 		// set vars for views
 		$this->view->modified  = filemtime($finalHelpPage);
 		$this->view->component = $component;
 		$this->view->extension = $extension;
 		$this->view->page      = $page;
-		
+
 		//display
 		$this->view->display();
 	}
 
 	/**
 	 * Get array of help pages for component
-	 * 
+	 *
 	 * @param      $component    Component to get pages for
 	 * @return     array
 	 */
@@ -184,10 +184,10 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 		{
 			return array();
 		}
-		
+
 		//path to help pages
 		$helpPagesPath = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . JFactory::getLanguage()->getTag();
-		
+
 		//make sure directory exists
 		$pages = array();
 		if (is_dir($helpPagesPath))
@@ -202,7 +202,7 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get array of help pages for component
-	 * 
+	 *
 	 * @param      $componentAndPages    Component info and corresponding help pages
 	 * @param      $headingLevel         Leading level for component separation
 	 * @return     array
@@ -211,13 +211,13 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 	{
 		//var to hold content
 		$content = '';
-		
+
 		//loop through each component and pages group passed in
 		foreach ($componentAndPages as $component)
 		{
 			//build content to return
 			$content .= "<".$headingLevel.">{$component['name']} Help</".$headingLevel.">";
-			
+
 			//make sure we have pages
 			if (count($component['pages']) > 0)
 			{
@@ -236,7 +236,7 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 				$content .= "<p>Currently there are no help pages for this component.</p>";
 			}
 		}
-		
+
 		return $content;
 	}
 }

@@ -38,7 +38,7 @@ class SupportHtml
 {
 	/**
 	 * Display an error message with javascript and then back the page up one view
-	 * 
+	 *
 	 * @param      string $msg Message to display
 	 * @return     string Javascript
 	 */
@@ -49,9 +49,9 @@ class SupportHtml
 
 	/**
 	 * Get the status text for a status number
-	 * 
+	 *
 	 * @param      integer $int Status number
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getStatus($open=0, $status=0)
 	{
@@ -89,7 +89,7 @@ class SupportHtml
 
 	/**
 	 * Generate a select list from a simply array of values
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Values to populate
 	 * @param      string $value Chosen value
@@ -114,7 +114,7 @@ class SupportHtml
 
 	/**
 	 * Generate a select list from an array of objects
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Values to populate
 	 * @param      string $value Chosen value
@@ -139,7 +139,7 @@ class SupportHtml
 
 	/**
 	 * Collapse (concatenate) querystring filters into a single line
-	 * 
+	 *
 	 * @param      array $filters Filters to collapse
 	 * @return     string
 	 */
@@ -148,9 +148,9 @@ class SupportHtml
 		$fstring = array();
 		foreach ($filters as $key => $val)
 		{
-			if (substr($key,0,1) != '_' && $key != 'limit' && $key != 'start') 
+			if (substr($key,0,1) != '_' && $key != 'limit' && $key != 'start')
 			{
-				if ($val !== '') 
+				if ($val !== '')
 				{
 					$fstring[] = $key . ':' . $val;
 				}

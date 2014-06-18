@@ -45,7 +45,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -53,7 +53,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	{
 		static $area = array();
 
-		if (!$model->type->params->get('plg_share')) 
+		if (!$model->type->params->get('plg_share'))
 		{
 			return $area;
 		}
@@ -63,7 +63,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -72,7 +72,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
-		if (!$model->type->params->get('plg_share')) 
+		if (!$model->type->params->get('plg_share'))
 		{
 			return;
 		}
@@ -89,14 +89,14 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 
 		// Incoming action
 		$sharewith = JRequest::getVar('sharewith', '');
-		if ($sharewith && $sharewith != 'email') 
+		if ($sharewith && $sharewith != 'email')
 		{
 			$this->share($sharewith, $url, $model->resource);
 			return;
 		}
 
 		// Email form
-		if ($sharewith == 'email') 
+		if ($sharewith == 'email')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -113,7 +113,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			$view->resource = $model->resource;
 			$view->_params  = $this->params;
 			$view->url      = $url;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -127,7 +127,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -143,7 +143,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			$view->resource = $model->resource;
 			$view->_params  = $this->params;
 			$view->url      = $url;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -160,7 +160,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Redirect to social sharer
-	 * 
+	 *
 	 * @param      string $with     Social site to share with
 	 * @param      string $url      The URL to share
 	 * @param      object $resource Resource to share
@@ -202,7 +202,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			break;
 		}
 
-		if ($link) 
+		if ($link)
 		{
 			$app = JFactory::getApplication();
 			$app->redirect($link, '', '');

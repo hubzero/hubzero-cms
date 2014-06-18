@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
@@ -43,7 +43,7 @@ if ($this->config->get('access-manage-section')) {
 	<?php
 		foreach ($this->sections as $section)
 		{
-			if (!$section->exists()) 
+			if (!$section->exists())
 			{
 				continue;
 			}
@@ -224,20 +224,20 @@ if ($this->config->get('access-manage-section')) {
 			<h3><?php echo JText::_('PLG_GROUPS_FORUM_LAST_POST'); ?></h3>
 			<p>
 			<?php
-			if ($this->model->lastActivity()->exists()) 
+			if ($this->model->lastActivity()->exists())
 			{
 				$post = $this->model->lastActivity();
 
 				$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
-				if (!$post->get('anonymous')) 
+				if (!$post->get('anonymous'))
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
 				}
 				foreach ($this->sections as $section)
 				{
-					if ($section->categories()->total() > 0) 
+					if ($section->categories()->total() > 0)
 					{
-						foreach ($section->categories() as $row) 
+						foreach ($section->categories() as $row)
 						{
 							if ($row->get('id') == $post->get('category_id'))
 							{
@@ -251,8 +251,8 @@ if ($this->config->get('access-manage-section')) {
 				?>
 				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
 					<span class="entry-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
-					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">

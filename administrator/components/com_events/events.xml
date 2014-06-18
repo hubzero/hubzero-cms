@@ -75,7 +75,7 @@ HUBzero is a registered trademark of Purdue University.
 		<menu>Events</menu>
 			<submenu>
 				<menu>Manage Events</menu>
-				<menu task="cats">Manage Events Categories</menu>    		
+				<menu task="cats">Manage Events Categories</menu>
 				<menu task="configure">Edit Config</menu>
 			</submenu>
 		<files>

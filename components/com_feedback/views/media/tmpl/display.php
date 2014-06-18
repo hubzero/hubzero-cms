@@ -59,7 +59,7 @@ $this->css();
 		?>
 			<tr>
 				<td>
-					<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" /> 
+					<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" />
 				</td>
 				<td width="100%">
 					<input type="hidden" name="conimg" value="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" />
@@ -96,7 +96,7 @@ $this->css();
 </form>
 <script type="text/javascript">
 	<!--
-	function validate() 
+	function validate()
 	{
 		var apuf = document.getElementById('file');
 		return apuf.value ? true : false;

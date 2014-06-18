@@ -70,7 +70,7 @@ $this->css('course.css')
 				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->course->get('id'); ?>"></iframe>
 			</div><!-- / .asset_browser -->
 		</div>
-		
+
 		<fieldset id="top_box">
 			<legend>Course Logo</legend>
 			<p>Upload your logo using the file upload browser to the right first then refresh your browser and select it in the drop down below.</p>
@@ -78,7 +78,7 @@ $this->css('course.css')
 				<select name="course[logo]" id="course_logo" rel="<?php echo $this->course->get('gidNumber'); ?>">
 					<option value="">Select a course logo...</option>
 					<?php foreach($this->logos as $logo) { ?>
-						<?php 
+						<?php
 							$remove = JPATH_SITE . DS . 'site' . DS . 'courses' . DS . $this->course->get('gidNumber') . DS;
 							$sel = (str_replace($remove,"",$logo) == $this->course->get('logo')) ? 'selected' : '';
 						?>
@@ -98,14 +98,14 @@ $this->css('course.css')
 				</div>
 			</label>
 		</fieldset>
-		
+
 		<fieldset>
 			<legend>Course Main Content</legend>
 			<p>This is the content that appears on the main (overview tab) for each course. You can choose to use the default which is your course description and a selection of course members or you can also place custom content using wiki-syntax</p>
 			<div class="preview">
 				<img src="/components/com_courses/assets/img/course_overview_preview.jpg" alt="Course Overview Content" />
 			</div>
-			
+
 			<fieldset>
 			<legend>Pick Overview Content Type</legend>
 			<p class="side-by-side<?php if($this->course->get('overview_type') == 0) { echo ' checked'; } ?>">
@@ -130,7 +130,7 @@ $this->css('course.css')
 				</label>
 			</fieldset>
 		</fieldset>
-		
+
 		<fieldset>
 			<legend>Course Access</legend>
 			<p>Below is a list of all tabs available to courses on this HUB. You can set access permissions on a per course basis by changing the value in the dropdown corresponding with each link. If you have not previously set permissions but notice that some are pre-selected, that is because those are the defaults set until a course manager overrides them.</p>
@@ -158,17 +158,17 @@ $this->css('course.css')
 				</ul>
 			</fieldset>
 		</fieldset>
-		
+
 		<fieldset id="bottom_box">
 			<h3>Course Custom Content</h3>
 			<p>Course Custom Content includes all the course pages and any course modules at also appear on those pages. Clicking the link below will take you to a different interface where you can add, edit, reorder, turn on/off any course page or module.</p>
 			<p><a class="leave_area" rel="You are about to leave the course customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=managepages'); ?>">Manage Course Pages</a></p>
 		</fieldset>
-		
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" name="course[submit]" value="Save Course Customization" />
 		</p>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 		<input type="hidden" name="task" value="savecustomization">
 		<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>">

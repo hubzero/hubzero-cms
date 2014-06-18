@@ -55,7 +55,7 @@ $this->css('jquery.datepicker.css', 'system')
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
@@ -98,7 +98,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<div class="grid">
 				<div class="col span6">
 					<label for="field-allow_comments">
-						<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+						<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 					</label>
 				</div>

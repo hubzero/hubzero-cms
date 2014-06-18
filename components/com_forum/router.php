@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring params
  * @return array
  */
@@ -41,32 +41,32 @@ function ForumBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['section'])) 
+	if (!empty($query['section']))
 	{
 		$segments[] = $query['section'];
 		unset($query['section']);
 	}
-	if (!empty($query['category'])) 
+	if (!empty($query['category']))
 	{
 		$segments[] = $query['category'];
 		unset($query['category']);
 	}
-	if (!empty($query['thread'])) 
+	if (!empty($query['thread']))
 	{
 		$segments[] = $query['thread'];
 		unset($query['thread']);
 	}
-	if (!empty($query['post'])) 
+	if (!empty($query['post']))
 	{
 		$segments[] = $query['post'];
 		unset($query['post']);
 	}
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['file'])) 
+	if (!empty($query['file']))
 	{
 		$segments[] = $query['file'];
 		unset($query['file']);
@@ -77,7 +77,7 @@ function ForumBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments SEF broken into segments
  * @return array
  */
@@ -85,12 +85,12 @@ function ForumParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		$vars['controller'] = 'sections';
 		$vars['task'] = 'display';
@@ -104,7 +104,7 @@ function ForumParseRoute($segments)
 		}
 	}
 
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
 		switch ($segments[1])
 		{
@@ -112,14 +112,14 @@ function ForumParseRoute($segments)
 				$vars['task'] = $segments[1];
 				$vars['controller'] = 'categories';
 			break;
-			
+
 			case 'edit':
 			case 'save':
 			case 'delete':
 				$vars['task'] = $segments[1];
 				$vars['controller'] = 'sections';
 			break;
-			
+
 			default:
 				$vars['controller'] = 'categories';
 				$vars['task'] = 'display';
@@ -127,8 +127,8 @@ function ForumParseRoute($segments)
 			break;
 		}
 	}
-	
-	if (isset($segments[2])) 
+
+	if (isset($segments[2]))
 	{
 		switch ($segments[2])
 		{
@@ -151,8 +151,8 @@ function ForumParseRoute($segments)
 			break;
 		}
 	}
-	
-	if (isset($segments[3])) 
+
+	if (isset($segments[3]))
 	{
 		switch ($segments[3])
 		{
@@ -176,7 +176,7 @@ function ForumParseRoute($segments)
 		}
 	}
 
-	if (isset($segments[4])) 
+	if (isset($segments[4]))
 	{
 		$vars['task'] = 'download';
 		$vars['file'] = $segments[4];

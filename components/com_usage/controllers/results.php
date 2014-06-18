@@ -38,7 +38,7 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -50,7 +50,7 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display usage data
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function defaultTask()
@@ -78,7 +78,7 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 
 		// Establish a connection to the usage database
 		$udb = UsageHelper::getUDBO();
-		if (!is_object($udb)) 
+		if (!is_object($udb))
 		{
 			JError::raiseError(500, JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'));
 			return;
@@ -105,14 +105,14 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$pathway->addItem(
 				JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
@@ -140,7 +140,7 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

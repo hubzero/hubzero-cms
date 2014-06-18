@@ -38,7 +38,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -50,7 +50,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display all responses for a given question
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -88,13 +88,13 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		// Sorting
 		$this->view->filters['sortby']   = '';
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'created'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 
@@ -174,7 +174,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// load infor from database
 			$this->view->row = new AnswersModelResponse($id);
@@ -194,7 +194,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a question and fall back to edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -204,7 +204,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a response
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -250,7 +250,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Removes one or more entries and associated data
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -284,7 +284,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Mark an entry as "accepted" and unmark any previously accepted entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function rejectTask()
@@ -294,7 +294,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Mark an entry as "accepted" and unmark any previously accepted entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function acceptTask()
@@ -365,7 +365,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task and redirect to default view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -377,7 +377,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reset the vote count for an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function resetTask()

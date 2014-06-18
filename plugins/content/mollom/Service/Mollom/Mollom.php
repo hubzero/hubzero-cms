@@ -35,7 +35,7 @@ require_once __DIR__ . '/AbstractMollom.php';
 /**
  * The base class for Mollom client implementations.
  */
-class Mollom extends AbstractMollom 
+class Mollom extends AbstractMollom
 {
 	public $configuration = array(
 		'publicKey'  => null,
@@ -48,7 +48,7 @@ class Mollom extends AbstractMollom
 	 * @param  array $keys Public and private API keys to set
 	 * @return void
 	 */
-	public function __construct($keys = null) 
+	public function __construct($keys = null)
 	{
 		if (is_array($keys) && !empty($keys))
 		{
@@ -177,12 +177,12 @@ class Mollom extends AbstractMollom
 			'timeout' => $this->requestTimeout
 		);
 
-		if ($method == 'GET') 
+		if ($method == 'GET')
 		{
 			$function = 'remote_get';
 			$url .= '?' . $query;
 		}
-		else 
+		else
 		{
 			$function = 'remote_post';
 			$data['body'] = $query;

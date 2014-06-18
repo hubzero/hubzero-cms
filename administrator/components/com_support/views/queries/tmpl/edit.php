@@ -39,7 +39,7 @@ $this->css('conditions.css')
 
 $tmpl = JRequest::getVar('tmpl', '');
 
-if (!$tmpl) 
+if (!$tmpl)
 {
 	$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 	JToolBarHelper::title(JText::_('COM_SUPPORT_TICKET') . ': ' . JText::_('COM_SUPPORT_QUERIES') . ': ' . $text, 'support.png');
@@ -140,7 +140,7 @@ $juser = JFactory::getUser();
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 	<script type="text/javascript">
-		function submitbutton(pressbutton) 
+		function submitbutton(pressbutton)
 		{
 			var query = {};
 
@@ -162,8 +162,8 @@ $juser = JFactory::getUser();
 			Conditions.addqueryroot('.query', true);
 		});
 	</script>
-<?php 
-} else { 
+<?php
+} else {
 	if ($this->row->iscore != 0)
 	{
 		$this->row->title .= ' ' . JText::_('COM_SUPPORT_COPY');
@@ -242,7 +242,7 @@ $juser = JFactory::getUser();
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 	<script type="text/javascript">
-		function submitbutton(pressbutton) 
+		function submitbutton(pressbutton)
 		{
 			var form = document.adminForm;
 

@@ -109,7 +109,7 @@ class modMegaMenuHelper
 							break;
 						}
 					}
-	
+
 					if ($i == $start-1) {
 						$found = true;
 						break;
@@ -276,7 +276,7 @@ class MegaMenuTree extends JTree
 		$data = null;
 
 		$append = '';
-		
+
 		// Menu Link is a special type that is a link to another item
 		if ($item->type == 'menulink')
 		{

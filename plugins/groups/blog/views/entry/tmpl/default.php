@@ -120,9 +120,9 @@ $this->css()
 				<?php echo $this->row->tags('cloud'); ?>
 			</div>
 
-			<?php 
+			<?php
 			$author = \Hubzero\User\Profile::getInstance($this->row->get('created_by'));
-			if (is_object($author) && $author->get('name')) 
+			if (is_object($author) && $author->get('name'))
 			{
 			?>
 			<div class="entry-author">
@@ -149,8 +149,8 @@ $this->css()
 		</div>
 	</div><!-- /.subject -->
 	<aside class="aside">
-	<?php 
-	$limit = $this->filters['limit']; 
+	<?php
+	$limit = $this->filters['limit'];
 	$this->filters['limit'] = 5;
 	?>
 		<div class="container blog-popular-entries">
@@ -158,7 +158,7 @@ $this->css()
 		<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($popular as $row) { ?>
-				<?php 
+				<?php
 					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
 					{
 						continue;
@@ -181,7 +181,7 @@ $this->css()
 		<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
 			<ol>
 			<?php foreach ($recent as $row) { ?>
-				<?php 
+				<?php
 					if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
 					{
 						continue;
@@ -199,7 +199,7 @@ $this->css()
 		<?php } ?>
 		</div><!-- / .blog-recent-entries -->
 	<?php
-	$this->filters['limit'] = $limit; 
+	$this->filters['limit'] = $limit;
 	?>
 	</aside><!-- /.aside -->
 </section>
@@ -211,7 +211,7 @@ $this->css()
 				<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 			<?php if ($this->row->comments('count') > 0) { ?>
-				<?php 
+				<?php
 					$this->view('_list', 'comments')
 					     ->set('group', $this->group)
 					     ->set('parent', 0)
@@ -238,7 +238,7 @@ $this->css()
 					<?php
 						$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
 						$anon = 1;
-						if (!$juser->get('guest')) 
+						if (!$juser->get('guest'))
 						{
 							$anon = 0;
 						}
@@ -248,13 +248,13 @@ $this->css()
 				<fieldset>
 					<?php
 						$replyto = $this->row->comment(JRequest::getInt('reply', 0));
-						if ($replyto->exists()) 
+						if ($replyto->exists())
 						{
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
-							if (!$replyto->get('anonymous')) 
+							if (!$replyto->get('anonymous'))
 							{
 								$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
-								if (is_object($xuser) && $xuser->get('name')) 
+								if (is_object($xuser) && $xuser->get('name'))
 								{
 									$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 								}
@@ -262,10 +262,10 @@ $this->css()
 					?>
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
-							<strong><?php echo $name; ?></strong> 
-							<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span> 
-							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
-							<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span> 
+							<strong><?php echo $name; ?></strong>
+							<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+							<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($replyto->get('content')), 300); ?></p>

@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * The default site paginator says something like "Viewing 20 results out of 433"
  * which is only accurate here in a sense... that is the number of top-level <li>,
  * but some of them have nested results in them, so the actual result count shown
- * at the top of the page might be something like 470. To keep people from 
+ * at the top of the page might be something like 470. To keep people from
  * wondering where their missing results are we just show them how many pages
  * they have to go through.
  * Sometimes it is possible to see the discrepency by multiplying the number of
@@ -49,16 +49,16 @@ class SearchPages
 
 	/**
 	 * Description for 'total'
-	 * 
+	 *
 	 * @var number
 	 */
 	private $total, $offset, $limit;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $total Parameter description (if any) ...
 	 * @param      unknown $offset Parameter description (if any) ...
 	 * @param      unknown $limit Parameter description (if any) ...
@@ -73,13 +73,13 @@ class SearchPages
 
 	/**
 	 * Short description for 'link_to'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $update Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	private function link_to($update) 
+	private function link_to($update)
 	{
 		$get = array();
 		foreach (array_merge($_GET, array('limit' => $this->limit, 'limitstart' => $this->offset), $update) as $k=>$v)
@@ -95,9 +95,9 @@ class SearchPages
 
 	/**
 	 * Short description for 'getListFooter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getListFooter()

@@ -60,7 +60,7 @@ $this->js();
 					<p class="comment-member-photo">
 						<?php
 							$anonymous = 1;
-							if (!$this->juser->get('guest')) 
+							if (!$this->juser->get('guest'))
 							{
 								$jxuser = new \Hubzero\User\Profile();
 								$jxuser->load($this->juser->get('id'));
@@ -71,19 +71,19 @@ $this->js();
 					</p>
 					<fieldset>
 					<?php
-					if (!$this->juser->get('guest')) 
+					if (!$this->juser->get('guest'))
 					{
-						if (($replyto = JRequest::getInt('replyto', 0))) 
+						if (($replyto = JRequest::getInt('replyto', 0)))
 						{
 							$reply = new \Hubzero\Item\Comment($this->database);
 							$reply->load($replyto);
 
 							$name = JText::_('COM_KB_ANONYMOUS');
-							if (!$reply->anonymous) 
+							if (!$reply->anonymous)
 							{
 								$xuser = new \Hubzero\User\Profile();
 								$xuser->load($reply->created_by);
-								if (is_object($xuser) && $xuser->get('name')) 
+								if (is_object($xuser) && $xuser->get('name'))
 								{
 									$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $reply->created_by) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 								}
@@ -91,10 +91,10 @@ $this->js();
 							?>
 						<blockquote cite="c<?php echo $this->replyto->id ?>">
 							<p>
-								<strong><?php echo $name; ?></strong> 
-								<span class="comment-date-at"><?php echo JText::_('COM_ANSWERS_AT'); ?></span> 
-								<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span> 
+								<strong><?php echo $name; ?></strong>
+								<span class="comment-date-at"><?php echo JText::_('COM_ANSWERS_AT'); ?></span>
+								<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span>
 								<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							</p>
 							<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
@@ -105,7 +105,7 @@ $this->js();
 
 					$comment = new \Hubzero\Item\Comment($this->database);
 					$comment->parent = JRequest::getInt('replyto', 0);
-					if (($edit = JRequest::getInt('editcomment', 0))) 
+					if (($edit = JRequest::getInt('editcomment', 0)))
 					{
 						$comment->load($edit);
 					}
@@ -113,7 +113,7 @@ $this->js();
 						<label for="commentcontent">
 							<?php echo JText::_('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
 							<?php
-								if (!$this->juser->get('guest')) 
+								if (!$this->juser->get('guest'))
 								{
 									echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
 								}

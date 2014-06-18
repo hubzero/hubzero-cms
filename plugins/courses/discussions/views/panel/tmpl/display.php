@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
@@ -8,7 +8,7 @@ $base = $this->offering->link() . '&active=discussions';
 $instructors = array();
 
 $inst = $this->course->instructors();
-if (count($inst) > 0) 
+if (count($inst) > 0)
 {
 	foreach ($inst as $i)
 	{
@@ -43,7 +43,7 @@ if (count($inst) > 0)
 						<fieldset>
 							<input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('search ...'); ?>" />
 							<input type="submit" class="submit" value="<?php echo JText::_('Go'); ?>" />
-							
+
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 							<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
@@ -84,7 +84,7 @@ if (count($inst) > 0)
 							<span class="category-discussions count"><?php echo $this->post->getCount($filters); ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
-							<?php 
+							<?php
 							$this->view('_threads', 'threads')
 							     ->set('category', 'categorymine')
 							     ->set('option', $this->option)
@@ -140,11 +140,11 @@ if (count($inst) > 0)
 							<span class="category-discussions count"><?php echo $section->threads; ?></span>
 						</div><!-- / .category-header -->
 						<div class="category-content">
-						<?php 
-						if ($section->categories) 
+						<?php
+						if ($section->categories)
 						{
-							foreach ($section->categories as $row) 
-							{ 
+							foreach ($section->categories as $row)
+							{
 								?>
 								<div class="thread closed" id="ct<?php echo $row->id; ?>" data-category="<?php echo $row->id; ?>">
 									<div class="thread-header">
@@ -169,7 +169,7 @@ if (count($inst) > 0)
 										?>
 									</div><!-- / .thread-content -->
 								</div><!-- / .thread -->
-								<?php 
+								<?php
 							}
 							?>
 						<?php } else { ?>
@@ -195,7 +195,7 @@ if (count($inst) > 0)
 						<p class="comment-member-photo">
 							<?php
 							$anon = 1;
-							if (!$juser->get('guest')) 
+							if (!$juser->get('guest'))
 							{
 								$anon = 0;
 							}
@@ -211,11 +211,11 @@ if (count($inst) > 0)
 							<p class="comment-title">
 								<strong>
 									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-								</strong> 
+								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
@@ -242,7 +242,7 @@ if (count($inst) > 0)
 				<?php
 								foreach ($this->sections as $section)
 								{
-									if ($section->categories) 
+									if ($section->categories)
 									{
 				?>
 										<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
@@ -269,7 +269,7 @@ if (count($inst) > 0)
 							</div>
 
 							<label for="field-anonymous" id="comment-anonymous-label">
-								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 							</label>
 

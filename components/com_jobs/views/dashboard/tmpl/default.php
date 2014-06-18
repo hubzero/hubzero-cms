@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,9 +35,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	// load some classes
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
-	
+
 	$jobsHtml = new JobsHtml();
-	
+
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
@@ -139,20 +139,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				<p class="reg">
 					<span><?php echo JText::_('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY').' '.$this->activejobs.' '.JText::_('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
-					if (!$this->masteradmin) { ?> <br /><?php echo $allowed_ads.' '.JText::_('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>			
+					if (!$this->masteradmin) { ?> <br /><?php echo $allowed_ads.' '.JText::_('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED'); } ?></span>
 				</p>
 				<?php if (count($this->myjobs) > 0) {
 				foreach ($this->myjobs as $mj) { ?>
-				<p class="reg myjob<?php 
+				<p class="reg myjob<?php
 							if ($mj->status == 3) { echo '_inactive'; }
-							else if ($mj->status == 4 or $mj->status == 0) { echo '_pending'; } ?>">  
+							else if ($mj->status == 4 or $mj->status == 0) { echo '_pending'; } ?>">
 								<span class="view"><?php if ($mj->status == 1)
 								{ echo $mj->applications.' '.JText::_('COM_JOBS_DASHBOARD_APPLICATIONS').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'#applications" class="cancelit">[ '.JText::_( 'COM_JOBS_DASHBOARD_VIEW' ).' ]</a>'; }
 								else if ($mj->status == 4) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_DRAFT')).')'; }
 								else if ($mj->status == 0) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_PENDING')).')'; }
 								else if ($mj->status == 3) { echo '('.strtolower(JText::_('COM_JOBS_JOB_STATUS_INACTIVE')).')'; } ?>
-								</span> 
-							<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'">'.\Hubzero\Utility\String::truncate($mj->title, 50).'</a>';  ?>     
+								</span>
+							<?php echo '<span class="code">'.$mj->code.'</span>: <a href="'.JRoute::_('index.php?option='.$this->option.'&task=job&code='.$mj->code).'">'.\Hubzero\Utility\String::truncate($mj->title, 50).'</a>';  ?>
 					</p>
 				<?php }
 				} ?>
@@ -182,7 +182,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<p>
 						<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=subscribe').'" class="cancelit">[ '.JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW_OR_CANCEL' ).' ]</a>'; ?>
 					</p>
-					<?php echo $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid)); ?>    	
+					<?php echo $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid)); ?>
 					<div class="spacer"></div>
 
 					<h3><?php echo JText::_('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo JText::_('COM_JOBS_EMPLOYER_USERNAME').': '.$this->login; ?></span></h3>

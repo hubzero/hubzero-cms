@@ -31,22 +31,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_ACCESS'); ?></h3>
 <?php } ?>
 
-<?php if(!$this->ajax) { ?>	
+<?php if(!$this->ajax) { ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<?php if($this->project->provisioned == 1 ) { ?>
 		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_TEAM')); ?></h3>
 	<?php } else { ?>
 		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_TEAM')); ?></span>
 		</h3>
-	<?php } 
- } 
-else 
+	<?php }
+ }
+else
 { ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
-<fieldset>	
+<fieldset>
 	<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
-	<input type="hidden" name="active" value="team" />					
+	<input type="hidden" name="active" value="team" />
 	<input type="hidden" name="action" value="saveauthors" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -68,16 +68,16 @@ else
 			</tr>
 		</thead>
 		<tbody>
-<?php foreach ($this->team as $owner) 
+<?php foreach ($this->team as $owner)
 	{
-					// Get profile thumb image 			
+					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
-					
+
 					// Determine css class for user
 					$username 	= $owner->username ? $owner->username : $owner->invited_email;
-					$creator 	= $this->project->created_by_user == $owner->userid ? 1 : 0;	
-					$usr_class 	= $creator ? ' class="usercreator"' : '';	
+					$creator 	= $this->project->created_by_user == $owner->userid ? 1 : 0;
+					$usr_class 	= $creator ? ' class="usercreator"' : '';
 ?>
 			<tr class="mline" id="tr_<?php echo $owner->id; ?>">
 				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>

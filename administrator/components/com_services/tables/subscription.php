@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
  * Short description for 'Subscription'
- * 
+ *
  * Long description (if any) ...
  */
 class Subscription extends JTable
@@ -41,112 +41,112 @@ class Subscription extends JTable
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id       		= NULL;  // @var int(11) Primary key
 
 	/**
 	 * Description for 'uid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $uid      		= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'serviceid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $serviceid  	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'units'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $units 			= NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'status'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $status 		= NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'code'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $code 			= NULL;  //	@var varchar
 
 	/**
 	 * Description for 'contact'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $contact 		= NULL;  //	@var varchar
 
 	/**
 	 * Description for 'added'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $added 			= NULL;  //	@var datetime
 
 	/**
 	 * Description for 'updated'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $updated 		= NULL;  //	@var datetime
 
 	/**
 	 * Description for 'expires'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $expires 		= NULL;  //	@var datetime
 
 	/**
 	 * Description for 'pendingunits'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $pendingunits 	= NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'installment'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $installment 	= NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'pendingpayment'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $pendingpayment = NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'totalpaid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $totalpaid 		= NULL;  //	@var int(11)
 
 	/**
 	 * Description for 'notes'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $notes 			= NULL;  //	@var text
 
 	/**
 	 * Description for 'usepoints'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $usepoints 		= NULL;  //	@var tinyint
@@ -155,9 +155,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -168,9 +168,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function check()
@@ -190,9 +190,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'loadSubscription'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $id Parameter description (if any) ...
 	 * @param      unknown $oid Parameter description (if any) ...
 	 * @param      unknown $serviceid Parameter description (if any) ...
@@ -232,9 +232,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'cancelSubscription'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $subid Parameter description (if any) ...
 	 * @param      integer $refund Parameter description (if any) ...
 	 * @param      integer $unitsleft Parameter description (if any) ...
@@ -260,9 +260,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'getSubscriptionsCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -280,9 +280,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'getSubscriptions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -303,9 +303,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'getSubscription'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -329,9 +329,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'buildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -376,9 +376,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'generateCode'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $minlength Parameter description (if any) ...
 	 * @param      integer $maxlength Parameter description (if any) ...
 	 * @param      integer $usespecial Parameter description (if any) ...
@@ -401,9 +401,9 @@ class Subscription extends JTable
 
 	/**
 	 * Short description for 'getRemaining'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $type Parameter description (if any) ...
 	 * @param      object $subscription Parameter description (if any) ...
 	 * @param      integer $maxunits Parameter description (if any) ...

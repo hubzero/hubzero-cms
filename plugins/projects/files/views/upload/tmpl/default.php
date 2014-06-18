@@ -38,9 +38,9 @@ $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
 $url = '';
 $parent = '';
-if (count($desect_path) > 0) 
+if (count($desect_path) > 0)
 {
-	for ($p = 0; $p < count($desect_path); $p++) 
+	for ($p = 0; $p < count($desect_path); $p++)
 	{
 		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url 	.= DS . $desect_path[$p];
@@ -56,12 +56,12 @@ if (count($desect_path) > 0)
 <?php } ?>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 
 <form id="hubForm-ajax" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
@@ -74,7 +74,7 @@ if (!$this->getError()) {
 		</div>
 	<?php } ?>
 	<fieldset class="uploader">
-		<p id="upload-instruct"><?php echo JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' '; 
+		<p id="upload-instruct"><?php echo JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
 			if ($this->subdir)
 			{
 				echo JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . JText::_('COM_PROJECTS_FILES_DIR') . ':';
@@ -84,13 +84,13 @@ if (!$this->getError()) {
 				echo ' ' . JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME') . ' ' . JText::_('COM_PROJECTS_FILES_DIR') . ':';
 			} ?>
 		</p>
-		
+
 		<div class="field-wrap">
 			<div class="asset-uploader">
 		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
 					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1'  . $subdirlink; ?>" >
 						<label class="addnew">
-							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" /> 
+							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 							<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>
 						</label>
 						<div id="upload-body">
@@ -103,7 +103,7 @@ if (!$this->getError()) {
 					<script src="/plugins/projects/files/js/fileupload.jquery.js"></script>
 		<?php } else { ?>
 				<label class="addnew">
-					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" /> 
+					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 					<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>
 				</label>
 		<?php } ?>
@@ -119,8 +119,8 @@ if (!$this->getError()) {
 			</label>
 		</div>
 		<?php } ?>
-		
-		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />	
+
+		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 		<input type="hidden" name="action" id="formaction" value="save" />
@@ -132,10 +132,10 @@ if (!$this->getError()) {
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="avail" id="avail" value="<?php echo $this->unused; ?>" />
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />		
+		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
-		
+
 		<div id="upload-submit">
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
@@ -144,11 +144,11 @@ if (!$this->getError()) {
 			<?php } else {  ?>
 				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
-		</p>	
+		</p>
 		</div>
 		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
 			<p class="hint rightfloat mini faded">Having trouble with the file upload? Try using <a href="<?php echo $this->url . '?action=upload&basic=1' .$subdirlink; ?>">basic upload</a>.</p>
-		<?php } ?>	
+		<?php } ?>
 	</fieldset>
 </form>
 <?php } ?>

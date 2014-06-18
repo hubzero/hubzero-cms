@@ -40,14 +40,14 @@ class CoursesModelManager extends CoursesModelMember
 {
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'manager';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -94,12 +94,12 @@ class CoursesModelManager extends CoursesModelMember
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid . '_' . $uid])) 
+		if (!isset($instances[$oid . '_' . $uid]))
 		{
 			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
 		}

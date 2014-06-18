@@ -49,10 +49,10 @@ defined('_JEXEC') or die('Restricted access');
 
 		$path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
 
-		if (!is_dir(JPATH_ROOT . $path)) 
+		if (!is_dir(JPATH_ROOT . $path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path)) 
+			if (!JFolder::create(JPATH_ROOT . $path))
 			{
 				$path = '';
 			}
@@ -106,16 +106,16 @@ defined('_JEXEC') or die('Restricted access');
 	<?php if ($resume) { ?>
 			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
 				<?php echo ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')); ?>
-			</a> 
+			</a>
 			<span class="mini"><?php echo JText::_('PLG_MEMBERS_RESUME_LAST_UPDATE'); ?>: <?php echo plgMembersResume::nicetime($this->seeker->created); ?></span>
 			<?php if ($this->seeker->url) { ?>
-				<span class="mini"> | </span> 
+				<span class="mini"> | </span>
 				<span class="mini">
 					<a href="<?php echo $this->seeker->url; ?>" class="web" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
 				</span>
 			<?php } ?>
 			<?php if ($this->seeker->linkedin) { ?>
-				<span class="mini"> | </span> 
+				<span class="mini"> | </span>
 				<span class="mini">
 					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
 				</span>

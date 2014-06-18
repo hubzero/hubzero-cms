@@ -32,7 +32,7 @@ namespace Hubzero\Document\Renderer;
 
 /**
  * RSS is a feed that implements RSS 2.0 Specification that includes support for iTunes tags
- * 
+ *
  * @see    http://www.rssboard.org/rss-specification
  */
 class Rss extends \JDocumentRenderer
@@ -67,14 +67,14 @@ class Rss extends \JDocumentRenderer
 		$feed .= '		<generator>' . $data->getGenerator() . '</generator>' . "\n";
 
 		// iTunes specific tags
-		if ($data->itunes_summary != '') 
+		if ($data->itunes_summary != '')
 		{
 			$feed .= '		<itunes:summary>' . $this->escape($data->itunes_summary) . '</itunes:summary>' . "\n";
 		}
-		if ($data->itunes_category != '') 
+		if ($data->itunes_category != '')
 		{
 			$feed .= '		<itunes:category text="' . $this->escape($data->itunes_category) . '">' . "\n";
-			if ($data->itunes_subcategories != null) 
+			if ($data->itunes_subcategories != null)
 			{
 				$cats = $data->itunes_subcategories;
 				foreach ($cats as $cat)
@@ -91,19 +91,19 @@ class Rss extends \JDocumentRenderer
 			$feed .= '			<itunes:email>' . $data->itunes_owner->email . '</itunes:email>' . "\n";;
 			$feed .= '		</itunes:owner>' . "\n";
 		}
-		if ($data->itunes_explicit != '') 
+		if ($data->itunes_explicit != '')
 		{
 			$feed .= '		<itunes:explicit>' . $data->itunes_explicit . '</itunes:explicit>' . "\n";
 		}
-		if ($data->itunes_keywords != '') 
+		if ($data->itunes_keywords != '')
 		{
 			$feed .= '		<itunes:keywords>' . $this->escape($data->itunes_keywords) . '</itunes:keywords>' . "\n";
 		}
-		if ($data->itunes_author != '') 
+		if ($data->itunes_author != '')
 		{
 			$feed .= '		<itunes:author>' . $this->escape($data->itunes_author) . '</itunes:author>' . "\n";
 		}
-		if ($data->itunes_image != null) 
+		if ($data->itunes_image != null)
 		{
 			$feed .= '		<itunes:image href="' . $data->itunes_image->url . '" />' . "\n";
 		}
@@ -115,62 +115,62 @@ class Rss extends \JDocumentRenderer
 			$feed .= '			<url>' . $data->image->url . '</url>' . "\n";
 			$feed .= '			<title>' . $this->escape($data->image->title) . '</title>' . "\n";
 			$feed .= '			<link>' . $data->image->link . '</link>' . "\n";
-			if ($data->image->width != "") 
+			if ($data->image->width != "")
 			{
 				$feed .= '			<width>' . $data->image->width . '</width>' . "\n";
 			}
-			if ($data->image->height != '') 
+			if ($data->image->height != '')
 			{
 				$feed .= '			<height>' . $data->image->height . '</height>' . "\n";
 			}
-			if ($data->image->description != '') 
+			if ($data->image->description != '')
 			{
 				$feed .= '			<description><![CDATA[' . $data->image->description . ']]></description>' . "\n";
 			}
 			$feed .= '		</image>' . "\n";
 		}
-		if ($data->language != '') 
+		if ($data->language != '')
 		{
 			$feed .= "		<language>" . $data->language . "</language>\n";
 		}
-		if ($data->copyright != '') 
+		if ($data->copyright != '')
 		{
 			$feed .= "		<copyright>" . $this->escape($data->copyright) . "</copyright>\n";
 		}
-		if ($data->editor != '') 
+		if ($data->editor != '')
 		{
 			$feed .= "		<managingEditor>" . $this->escape($data->editor) . "</managingEditor>\n";
 		}
-		if ($data->webmaster != '') 
+		if ($data->webmaster != '')
 		{
 			$feed .= "		<webMaster>" . $this->escape($data->webmaster) . "</webMaster>\n";
 		}
-		if ($data->pubDate != '') 
+		if ($data->pubDate != '')
 		{
 			$pubDate = \JFactory::getDate($data->pubDate);
 			$feed .= "		<pubDate>" . $this->escape($pubDate->toRFC822()) . "</pubDate>\n";
 		}
-		if ($data->category != '') 
+		if ($data->category != '')
 		{
 			$feed .= "		<category>" . $this->escape($data->category) . "</category>\n";
 		}
-		if ($data->docs != '') 
+		if ($data->docs != '')
 		{
 			$feed .= "		<docs>" . $this->escape($data->docs) . "</docs>\n";
 		}
-		if ($data->ttl != '') 
+		if ($data->ttl != '')
 		{
 			$feed .= "		<ttl>" . $this->escape($data->ttl) . "</ttl>\n";
 		}
-		if ($data->rating != '') 
+		if ($data->rating != '')
 		{
 			$feed .= "		<rating>" . $this->escape($data->rating) . "</rating>\n";
 		}
-		if ($data->skipHours != '') 
+		if ($data->skipHours != '')
 		{
 			$feed .= "		<skipHours>" . $this->escape($data->skipHours) . "</skipHours>\n";
 		}
-		if ($data->skipDays != '') 
+		if ($data->skipDays != '')
 		{
 			$feed .= "		<skipDays>" . $this->escape($data->skipDays) . "</skipDays>\n";
 		}
@@ -183,30 +183,30 @@ class Rss extends \JDocumentRenderer
 			$feed .= "			<description>" . $this->_relToAbs($data->items[$i]->description) . "</description>\n";
 
 			// iTunes specific tags
-			if ($data->items[$i]->itunes_summary != '') 
+			if ($data->items[$i]->itunes_summary != '')
 			{
 				$feed .= "			<itunes:summary>" . $this->escape($data->items[$i]->itunes_summary) . "</itunes:summary>\n";
 			}
-			if ($data->items[$i]->itunes_duration != '') 
+			if ($data->items[$i]->itunes_duration != '')
 			{
 				$feed .= "			<itunes:duration>" . $this->escape($data->items[$i]->itunes_duration) . "</itunes:duration>\n";
 			}
-			if ($data->items[$i]->itunes_explicit != '') 
+			if ($data->items[$i]->itunes_explicit != '')
 			{
 				$feed .= "			<itunes:explicit>" . $data->items[$i]->itunes_explicit . "</itunes:explicit>\n";
 			}
-			if ($data->items[$i]->itunes_keywords != '') 
+			if ($data->items[$i]->itunes_keywords != '')
 			{
 				$feed .= "			<itunes:keywords>" . $this->escape($data->items[$i]->itunes_keywords) . "</itunes:keywords>\n";
 			}
-			if ($data->items[$i]->itunes_author != '') 
+			if ($data->items[$i]->itunes_author != '')
 			{
 				$feed .= "			<itunes:author>" . $this->escape($data->items[$i]->itunes_author) . "</itunes:author>\n";
 			}
-			if ($data->items[$i]->itunes_category != '') 
+			if ($data->items[$i]->itunes_category != '')
 			{
 				$feed .= "			<itunes:category text=\"" . $this->escape($data->items[$i]->itunes_category) . "\">\n";
-				if ($data->items[$i]->itunes_subcategories != '') 
+				if ($data->items[$i]->itunes_subcategories != '')
 				{
 					$icats = $data->items[$i]->itunes_subcategories;
 					foreach ($icats as $icat)
@@ -222,15 +222,15 @@ class Rss extends \JDocumentRenderer
 				$feed .= "				<url>" . $data->items[$i]->itunes_image->url . "</url>\n";
 				$feed .= "				<title>" . $this->escape($data->items[$i]->itunes_image->title) . "</title>\n";
 				$feed .= "				<link>" . $data->items[$i]->itunes_image->link . "</link>\n";
-				if ($data->items[$i]->itunes_image->width != '') 
+				if ($data->items[$i]->itunes_image->width != '')
 				{
 					$feed .= "			<width>" . $data->items[$i]->itunes_image->width . "</width>\n";
 				}
-				if ($data->items[$i]->itunes_image->height != '') 
+				if ($data->items[$i]->itunes_image->height != '')
 				{
 					$feed .= "			<height>" . $data->items[$i]->itunes_image->height . "</height>\n";
 				}
-				if ($data->items[$i]->itunes_image->description != '') 
+				if ($data->items[$i]->itunes_image->description != '')
 				{
 					$feed .= "			<description><![CDATA[" . $data->items[$i]->itunes_image->description . "]]></description>\n";
 				}
@@ -238,24 +238,24 @@ class Rss extends \JDocumentRenderer
 			}
 			// end iTunes specific tags
 
-			if ($data->items[$i]->author != '') 
+			if ($data->items[$i]->author != '')
 			{
 				$feed .= "			<author>" . $this->escape($data->items[$i]->author) . "</author>\n";
 			}
-			if ($data->items[$i]->category != '') 
+			if ($data->items[$i]->category != '')
 			{
 				$feed .= "			<category>" . $this->escape($data->items[$i]->category) . "</category>\n";
 			}
-			if ($data->items[$i]->comments != '') 
+			if ($data->items[$i]->comments != '')
 			{
 				$feed .= "			<comments>" . $this->escape($data->items[$i]->comments) . "</comments>\n";
 			}
-			if ($data->items[$i]->date != '') 
+			if ($data->items[$i]->date != '')
 			{
 				$itemDate = \JFactory::getDate($data->items[$i]->date);
 				$feed .= "			<pubDate>" . $this->escape($itemDate->toRFC822()) . "</pubDate>\n";
 			}
-			if ($data->items[$i]->guid != '') 
+			if ($data->items[$i]->guid != '')
 			{
 				$feed .= "			<guid>" . $this->escape($data->items[$i]->guid) . "</guid>\n";
 			}

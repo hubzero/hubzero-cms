@@ -41,14 +41,14 @@ class BillboardsCollection extends JTable
 
 	/**
 	 * Collection ID, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * Collection name
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = NULL;
@@ -57,7 +57,7 @@ class BillboardsCollection extends JTable
 
 	/**
 	 * Constructor method
-	 * 
+	 *
 	 * @param  &$db database
 	 * @return void
 	 */
@@ -68,7 +68,7 @@ class BillboardsCollection extends JTable
 
 	/**
 	 * Build query method, currently just adding "FROM..."
-	 * 
+	 *
 	 * @param  $filters not needed yet
 	 * @return $query
 	 */
@@ -81,7 +81,7 @@ class BillboardsCollection extends JTable
 
 	/**
 	 * Get count of collection rows, mainly used for pagination
-	 * 
+	 *
 	 * @param  $filters not needed yet
 	 * @return query result: number of collections
 	 */
@@ -96,7 +96,7 @@ class BillboardsCollection extends JTable
 
 	/**
 	 * Get the billboard collections
-	 * 
+	 *
 	 * @param  $filters start and limit, mainly used for pagination in Joomla
 	 * @return object list of collections
 	 */
@@ -110,25 +110,25 @@ class BillboardsCollection extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	public function getBillboards( $filters )
 	{
 		$query 	= "SELECT b.name, b.learn_more_target, b.background_img FROM jos_billboards as b, jos_billboard_collection as c WHERE c.id=b.collection_id";
 		$query .= " AND published=" . $filters['published'];
 		$query .= " AND b.collection_id=" . $filters['collection'];
 		$query .= " ORDER BY `ordering` ASC";
-		
+
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadAssocList();
-		
+
 		if(isset($filters['include_retina']) && $filters['include_retina'])
 		{
 			for($i=0,$n=count($result); $i<$n; $i++)
 			{
 				$image = $result[$i]['background_img'];
 				$image_info = pathinfo($image);
-				
+
 				$retina_image = $image_info['dirname'] . DS . $image_info['filename'] . "@2x." . $image_info['extension'];
 				if(file_exists( JPATH_ROOT . DS . $retina_image ))
 				{
@@ -140,7 +140,7 @@ class BillboardsCollection extends JTable
 				}
 			}
 		}
-		
+
 		return $result;
 	}
 }

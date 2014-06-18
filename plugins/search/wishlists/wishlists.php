@@ -33,16 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchWishlists'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchWishlists extends SearchPlugin
 {
 	/**
 	 * Short description for 'onSearch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $request Parameter description (if any) ...
 	 * @param      object &$results Parameter description (if any) ...
 	 * @return     void
@@ -63,32 +63,32 @@ class plgSearchWishlists extends SearchPlugin
 		}
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				wli.subject AS title,
 				wli.about AS description,
 				concat('index.php?option=com_wishlist&category=', wl.category, '&rid=', wl.referenceid, '&task=wish&wishid=', wli.id) AS link,
 				match(wli.subject, wli.about) against('collaboration') AS weight,
 				wli.proposed AS date,
 				concat(wl.title) AS section,
-				CASE 
-				WHEN wli.anonymous THEN NULL 
-				ELSE (SELECT name FROM jos_users ju WHERE ju.id = wli.proposed_by) 
+				CASE
+				WHEN wli.anonymous THEN NULL
+				ELSE (SELECT name FROM jos_users ju WHERE ju.id = wli.proposed_by)
 				END AS contributors,
-				CASE 
-				WHEN wli.anonymous THEN NULL 
-				ELSE wli.proposed_by 
+				CASE
+				WHEN wli.anonymous THEN NULL
+				ELSE wli.proposed_by
 				END AS contributor_ids
 			FROM #__wishlist_item wli
 			INNER JOIN #__wishlist wl
 				ON wl.id = wli.wishlist AND wl.public = 1
-			WHERE 
+			WHERE
 				NOT wli.private AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{
-			if (!$row) 
+			if (!$row)
 			{
 				continue;
 			}

@@ -34,7 +34,7 @@ $canDo = BlogHelper::getActions('entry');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE') . ': ' . $text, 'blog.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -45,7 +45,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('entry');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -93,17 +93,17 @@ function submitbutton(pressbutton)
 
 					$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
 					$html .= '<option value="0"';
-					if ($this->row->get('group_id') == 0) 
+					if ($this->row->get('group_id') == 0)
 					{
 						$html .= ' selected="selected"';
 					}
 					$html .= '>'.JText::_('JNONE').'</option>'."\n";
-					if ($groups) 
+					if ($groups)
 					{
 						foreach ($groups as $group)
 						{
 							$html .= ' <option value="'.$group->gidNumber.'"';
-							if ($this->row->get('group_id') == $group->gidNumber) 
+							if ($this->row->get('group_id') == $group->gidNumber)
 							{
 								$html .= ' selected="selected"';
 							}
@@ -145,9 +145,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_BLOG_FIELD_CREATOR'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->get('created_by'));
-						echo $this->escape(stripslashes($editor->get('name'))); 
+						echo $this->escape(stripslashes($editor->get('name')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 					</td>

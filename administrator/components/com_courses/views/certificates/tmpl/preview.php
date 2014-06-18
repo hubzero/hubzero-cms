@@ -117,9 +117,9 @@ p.signature {
 	</head>
 	<body>
 		<div id="border-top"><span>&nbsp;</span></div>
-		
+
 		<p id="title">Certification of completion</p>
-		
+
 		<p>This is to certify that</p>
 		<p id="name"><?php echo $this->student->get('name'); ?></p>
 		<p>has successfully completed the course requirements for</p>

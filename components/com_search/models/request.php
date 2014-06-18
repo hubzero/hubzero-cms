@@ -40,52 +40,52 @@ class SearchModelRequest
 {
 	/**
 	 * Description for 'terms'
-	 * 
+	 *
 	 * @var object
 	 */
 	private $terms, $term_ar, $tags, $object_tags = array();
 
 	/**
 	 * Short description for 'get_terms'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
-	public function get_terms() 
+	public function get_terms()
 	{
 		return $this->terms;
 	}
 
 	/**
 	 * Short description for 'get_term_ar'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function get_term_ar() 
+	public function get_term_ar()
 	{
 		return $this->term_ar;
 	}
 
 	/**
 	 * Short description for 'get_tags'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function get_tags() 
+	public function get_tags()
 	{
 		return $this->tags;
 	}
 
 	/**
 	 * Short description for 'get_tagged_ids'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $tbl Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -96,9 +96,9 @@ class SearchModelRequest
 
 	/**
 	 * Short description for 'get_tag_ids_by_table'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $tbl Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -109,7 +109,7 @@ class SearchModelRequest
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $terms Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -127,9 +127,9 @@ class SearchModelRequest
 
 	/**
 	 * Short description for 'load_tags'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function load_tags()
@@ -147,7 +147,7 @@ class SearchModelRequest
 		}
 
 		$tags = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				id,
 				t.raw_tag AS title,
 				description,
@@ -156,7 +156,7 @@ class SearchModelRequest
 				NULL AS date,
 				'Tags' AS section
 			FROM #__tags t
-			WHERE 
+			WHERE
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"

@@ -53,7 +53,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } // close foreach 
+		<?php } // close foreach
 	} // close if count ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">

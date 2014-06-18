@@ -56,21 +56,21 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/plain;charset=utf-8
 
-<?php 
+<?php
 $message  = 'The following is a list of open tickets.' . "\n\n";
 
 if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 {
 	$message .= '----------------------------'."\n";
-	$message .= 'Critical' . "\n"; 
+	$message .= 'Critical' . "\n";
 	$message .= '----------------------------'."\n\n";
 
-	foreach ($this->tickets['critical'] as $ticket) 
+	foreach ($this->tickets['critical'] as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -93,15 +93,15 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 if (isset($this->tickets['major']) && count($this->tickets['major']) > 0)
 {
 	$message .= '----------------------------'."\n";
-	$message .= 'Major' . "\n"; 
+	$message .= 'Major' . "\n";
 	$message .= '----------------------------'."\n\n";
 
-	foreach ($this->tickets['major'] as $ticket) 
+	foreach ($this->tickets['major'] as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -125,7 +125,7 @@ $message .= '----------------------------'."\n\n";
 
 $more = 0;
 $i = 0;
-foreach ($this->tickets as $severity => $tickets) 
+foreach ($this->tickets as $severity => $tickets)
 {
 	if ($severity == 'critical' || $severity == 'major')
 	{
@@ -143,7 +143,7 @@ foreach ($this->tickets as $severity => $tickets)
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -333,15 +333,15 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 										</table>
 										<!-- ====== End Header Spacer ====== -->
-								<?php 
+								<?php
 								if (isset($this->tickets['critical']))
 								{
-									foreach ($this->tickets['critical'] as $ticket) 
+									foreach ($this->tickets['critical'] as $ticket)
 									{
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
-											if (strlen($ticket->summary) >= 70) 
+											if (strlen($ticket->summary) >= 70)
 											{
 												$ticket->summary .= '...';
 											}
@@ -359,15 +359,15 @@ Content-type: text/html;charset=utf-8";
 
 										$tags = $st->get_tag_string($ticket->id, 0, 0, NULL, 0, 1);
 								?>
-										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['critical']; ?>; background: <?php echo $bgcolor['critical']; ?>; font-size: 0.9em; line-height: 1.6em; 
+										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['critical']; ?>; background: <?php echo $bgcolor['critical']; ?>; font-size: 0.9em; line-height: 1.6em;
 											background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
 											background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
-											-webkit-background-size: 30px 30px; 
-											-moz-background-size: 30px 30px; 
+											-webkit-background-size: 30px 30px;
+											-moz-background-size: 30px 30px;
 											background-size: 30px 30px;">
 											<thead>
 												<tr>
@@ -424,12 +424,12 @@ Content-type: text/html;charset=utf-8";
 
 								if (isset($this->tickets['major']))
 								{
-									foreach ($this->tickets['major'] as $ticket) 
+									foreach ($this->tickets['major'] as $ticket)
 									{
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
-											if (strlen($ticket->summary) >= 70) 
+											if (strlen($ticket->summary) >= 70)
 											{
 												$ticket->summary .= '...';
 											}
@@ -447,15 +447,15 @@ Content-type: text/html;charset=utf-8";
 
 										$tags = $st->get_tag_string($ticket->id, 0, 0, NULL, 0, 1);
 								?>
-										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['major']; ?>; background: <?php echo $bgcolor['major']; ?>; font-size: 0.9em; line-height: 1.6em; 
+										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['major']; ?>; background: <?php echo $bgcolor['major']; ?>; font-size: 0.9em; line-height: 1.6em;
 											background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
 											background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
-											-webkit-background-size: 30px 30px; 
-											-moz-background-size: 30px 30px; 
+											-webkit-background-size: 30px 30px;
+											-moz-background-size: 30px 30px;
 											background-size: 30px 30px;">
 											<thead>
 												<tr>
@@ -520,14 +520,14 @@ Content-type: text/html;charset=utf-8";
 											</tr>
 										</table>
 										<!-- ====== End Footer Spacer ====== -->
-								<?php 
+								<?php
 								}
-								
+
 								$more = 0;
 								//if (isset($this->tickets['normal']))
 								//{
 								$i = 0;
-								foreach ($this->tickets as $severity => $tickets) 
+								foreach ($this->tickets as $severity => $tickets)
 								{
 									if ($severity == 'critical' || $severity == 'major')
 									{
@@ -550,7 +550,7 @@ Content-type: text/html;charset=utf-8";
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
-											if (strlen($ticket->summary) >= 70) 
+											if (strlen($ticket->summary) >= 70)
 											{
 												$ticket->summary .= '...';
 											}
@@ -566,15 +566,15 @@ Content-type: text/html;charset=utf-8";
 										$sef = JRoute::_($base . $ticket->id);
 										$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 								?>
-										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em; 
+										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em;
 											background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
 											background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
 											background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
-											-webkit-background-size: 30px 30px; 
-											-moz-background-size: 30px 30px; 
+											-webkit-background-size: 30px 30px;
+											-moz-background-size: 30px 30px;
 											background-size: 30px 30px;">
 											<tbody>
 												<tr>

@@ -81,7 +81,7 @@ class plgContentXhubtags extends JPlugin
 		}
 
 		// simple performance check to determine whether bot should process further
-		if (strpos($article->text, '{xhub') === false) 
+		if (strpos($article->text, '{xhub') === false)
 		{
 			return true;
 		}
@@ -90,13 +90,13 @@ class plgContentXhubtags extends JPlugin
 		$regex = "/\{xhub:\s*[^\}]*\}/i";
 
 		// weblinks is somehow calling this with null params
-		/*if (!is_object($params)) 
+		/*if (!is_object($params))
 		{
 			return false;
 		}*/
 
 		// check whether plugin has been unpublished
-		/*if (!$params->get('enabled', 1)) 
+		/*if (!$params->get('enabled', 1))
 		{
 			$row->text = preg_replace($regex, '', $row->text);
 
@@ -106,7 +106,7 @@ class plgContentXhubtags extends JPlugin
 		// find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches, PREG_SET_ORDER);
 
-		if ($matches) 
+		if ($matches)
 		{
 			foreach ($matches as $match)
 			{
@@ -149,7 +149,7 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * {xhub:module position="position" style="style"}
 	 * Renders a module from an {xhub} tag
-	 * 
+	 *
 	 * @param  string $options Tag options (e.g. 'component="support"')
 	 * @return string
 	 */
@@ -174,7 +174,7 @@ class plgContentXhubtags extends JPlugin
 
 	/**
 	 * {xhub:templatedir}
-	 * 
+	 *
 	 * @return string Template path
 	 */
 	private function _templateDir()
@@ -187,7 +187,7 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * {xhub:include type="script" component="component" filename="filename"}
 	 * {xhub:include type="stylesheet" component="component" filename="filename"}
-	 * 
+	 *
 	 * @param  string $options Tag options (e.g. 'component="support"')
 	 * @return string
 	 */
@@ -217,7 +217,7 @@ class plgContentXhubtags extends JPlugin
 		{
 			$filename = $file[2];
 		}
-		else if (preg_match($regex, $options, $component)) 
+		else if (preg_match($regex, $options, $component))
 		{
 			$filename = 'templates/' . $template . '/html/' . $component[2] . '/' . $file[2];
 			if (!file_exists(JPATH_SITE . DS . $filename))
@@ -261,7 +261,7 @@ class plgContentXhubtags extends JPlugin
 
 	/**
 	 * {xhub:image component="component" filename="filename"}
-	 * 
+	 *
 	 * @param  string $options Tag options (e.g. 'component="support"')
 	 * @return string
 	 */
@@ -303,7 +303,7 @@ class plgContentXhubtags extends JPlugin
 
 	/**
 	 * {xhub:getcfg variable}
-	 * 
+	 *
 	 * @param  string $options Variable name
 	 * @return string
 	 */
@@ -316,11 +316,11 @@ class plgContentXhubtags extends JPlugin
 		$sitename = $jconfig->getValue('config.sitename');
 		$live_site = rtrim(JURI::base(),'/');
 
-		if ($options == 'hubShortName') 
+		if ($options == 'hubShortName')
 		{
 			return $sitename;
 		}
-		else if ($options == 'hubShortURL') 
+		else if ($options == 'hubShortURL')
 		{
 			return $live_site;
 		}

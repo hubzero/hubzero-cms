@@ -38,7 +38,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 {
 	/**
 	 * View respondent details
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function respondentTask()
@@ -54,7 +54,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 		$this->view->event->load($id);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -68,7 +68,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display a list of respondents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -79,7 +79,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array(0));
 		$id = $ids[0];
 
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option
@@ -91,7 +91,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 		$this->view->event->load($id);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -105,7 +105,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Get respondents for an event
-	 * 
+	 *
 	 * @return     object
 	 */
 	private function getRespondents()
@@ -129,7 +129,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Download a list of respondents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadTask()
@@ -139,7 +139,7 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -152,13 +152,13 @@ class EventsControllerRespondents extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('rid', array());
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Do we have any IDs?
-		if (!empty($ids)) 
+		if (!empty($ids))
 		{
 			$r = new EventsRespondent(array());
 

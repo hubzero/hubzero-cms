@@ -35,59 +35,59 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Publication master type helper class
  */
 class PublicationTypesHelper extends JObject
-{	
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_database       = NULL;
-	
+
 	/**
 	 * Project
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_project      	 = NULL;
-	
+
 	/**
 	 * Base alias
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_base   		 = NULL;
-		
+
 	/**
 	 * Helper
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_helper   		 = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      	 JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $project = NULL )
 	{
 		$this->_database = $db;
 		$this->_project  = $project;
 	}
-	
+
 	/**
 	 * Get all avail types
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function getTypes()
 	{
 		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
-			
+
 		$types = scandir($dir);
 		$bases = array();
-		
+
 		foreach ($types as $t)
 		{
 			if (is_file($dir . DS . $t))
@@ -95,99 +95,99 @@ class PublicationTypesHelper extends JObject
 				$bases[] = str_replace('.php', '', $t);
 			}
 		}
-		
-		return $bases;		
+
+		return $bases;
 	}
-	
+
 	/**
 	 * Dispatch by attachment type
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function dispatchByType( $type = NULL, $task = NULL, $data = array() )
 	{
 		if ($type === NULL)
 		{
 			return false;
 		}
-		
+
 		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
-			
+
 		$types = scandir($dir);
-		
+
 		foreach ($types as $t)
 		{
 			if (is_file($dir . DS . $t))
 			{
 				require_once($dir . DS . $t);
-				
+
 				$base = str_replace('.php', '', $t);
 				$helperName = 'type' . ucfirst($base);
-				
+
 				$helper = new $helperName($this->_database, $this->_project, $data);
 				if ($helper->_attachmentType == $type)
 				{
 					return $this->dispatch ($base, $task, $data);
 				}
-				
+
 			}
 		}
-		
+
 		return false;
 	}
-		
+
 	/**
 	 * Dispatch
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function dispatch( $base = NULL, $task = NULL, $data = array() )
 	{
 		$output 		 = NULL;
 		$this->_base 	 = $base;
-		
+
 		if ($base === NULL || $task === NULL)
 		{
 			return false;
 		}
-		
-		if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS 
+
+		if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
 			. 'models' . DS . 'types' . DS . $base . '.php'))
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'types' . DS . $base . '.php');
-				
+
 			$helperName = 'type' . ucfirst($base);
-			
+
 			$this->_helper = new $helperName($this->_database, $this->_project, $data);
 
 			// Task routing
-			switch ( $task ) 
+			switch ( $task )
 			{
-				case 'checkVersionDuplicate': 								
-					$output = $this->_checkVersionDuplicate(); 		
+				case 'checkVersionDuplicate':
+					$output = $this->_checkVersionDuplicate();
 					break;
-					
-				case 'checkDuplicate': 								
-					$output = $this->_checkDuplicate(); 		
+
+				case 'checkDuplicate':
+					$output = $this->_checkDuplicate();
 					break;
-					
-				case 'parseSelections': 								
-					$output = $this->_parseSelections(); 		
+
+				case 'parseSelections':
+					$output = $this->_parseSelections();
 					break;
-					
-				case 'getMainProperty': 
-					$output = $this->_getProperty('_attProperties', true); 		
+
+				case 'getMainProperty':
+					$output = $this->_getProperty('_attProperties', true);
 					break;
-					
-				case 'getProperty': 								
-					$output = $this->_getProperty(); 		
+
+				case 'getProperty':
+					$output = $this->_getProperty();
 					break;
-			
-				case 'getHelper': 								
-					return $this->_helper; 		
+
+				case 'getHelper':
+					return $this->_helper;
 					break;
-														
+
 				default:
 					$output = $this->_helper->dispatch($task);
 					break;
@@ -197,101 +197,101 @@ class PublicationTypesHelper extends JObject
 		{
 			return false;
 		}
-		
-		return $output;		
+
+		return $output;
 	}
-	
+
 	/**
 	 * Check Duplicate (_showOptions function in plg_projects_publications)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkDuplicate()
 	{
 		$selections 	= $this->_helper->__get('selections');
 		$pid			= $this->_helper->__get('pid');
 		$attachmentType	= $this->_helper->_attachmentType;
 		$attProperties	= $this->_helper->_attProperties;
-		$attPrimeProp	= 'A.' .$attProperties[0];	
-		
+		$attPrimeProp	= 'A.' .$attProperties[0];
+
 		if (!$this->_project)
 		{
 			return false;
 		}
-		
+
 		$query = "SELECT DISTINCT P.id, V.title, A.path FROM #__publications AS P ";
 		$query.= " JOIN #__publication_attachments AS A ON A.publication_id = P.id ";
 		$query.= " JOIN #__publication_versions AS V ON A.publication_id = V.publication_id AND V.main=1 ";
 		$query.= " WHERE P.id != ".$pid;
-				
+
 		if (!$selections)
 		{
 			return false;
 		}
-		
+
 		if (isset($selections[$this->_base]) && !empty($selections[$this->_base]))
 		{
 			$ids = '';
-			foreach ($selections[$this->_base] as $sel) 
+			foreach ($selections[$this->_base] as $sel)
 			{
-				$ids .= '"'.$sel.'",';	
+				$ids .= '"'.$sel.'",';
 			}
 			$ids = substr($ids, 0, strlen($ids) - 1);
 
-			$query.= " AND $attPrimeProp IN(" . $ids . ")  ";		
+			$query.= " AND $attPrimeProp IN(" . $ids . ")  ";
 		}
-		
+
 		$query.= " AND A.type='" . $attachmentType . "' AND A.role=1 AND P.project_id=" . $this->_project->id;
 		$query.= " GROUP BY P.id";
-		
+
 		$this->_database->setQuery( $query );
 		return $this->_database->loadObjectList();
-		
+
 	}
-	
+
 	/**
 	 * checkVersionDuplicate (_showOptions function in plg_projects_publications)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkVersionDuplicate()
 	{
 		$info = array();
-		
+
 		$selections 	= $this->_helper->__get('selections');
 		$vid			= $this->_helper->__get('vid');
 		$pid			= $this->_helper->__get('pid');
 		$count 			= isset($selections['count']) ? $selections['count'] : 0;
 		$attachmentType	= $this->_helper->_attachmentType;
-		$attProperties	= $this->_helper->_attProperties;	
-				
+		$attProperties	= $this->_helper->_attProperties;
+
 		// Instantiate pub attachment
-		$objPA = new PublicationAttachment( $this->_database );	
-		
+		$objPA = new PublicationAttachment( $this->_database );
+
 		if ($selections && $vid && isset($selections[$this->_base]) && !empty($selections[$this->_base]))
 		{
-			foreach ($selections[$this->_base] as $sel) 
+			foreach ($selections[$this->_base] as $sel)
 			{
-				if ($objPA->loadAttachment($vid, urldecode($sel), $attachmentType )) 
+				if ($objPA->loadAttachment($vid, urldecode($sel), $attachmentType ))
 				{
 					$finfo = array();
-					
+
 					foreach ($attProperties as $prop)
 					{
 						$finfo[$prop] = $objPA->$prop;
 					}
 					$info[] = $finfo;
 				}
-			}	
+			}
 		}
-		
+
 		$result = $objPA->getVersionAttachments($pid, $vid);
-		
-		if (!$result) 
+
+		if (!$result)
 		{
 			return false;
 		}
-		else 
+		else
 		{
 			$matched   = 0;
 			foreach ($info as $o)
@@ -306,56 +306,56 @@ class PublicationTypesHelper extends JObject
 							$i++;
 						}
 					}
-					
+
 					if ($i == 2 && $r->type ==$attachmentType)
 					{
 						$matched++;
 					}
 				}
 			}
-			
+
 			if ($matched == $count)
 			{
 				return $result[0]->version_label;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Parse selections
-	 * 
+	 *
 	 * @return     array
 	 */
-	protected function _parseSelections() 
+	protected function _parseSelections()
 	{
 		$sels 			= $this->_helper->__get('sels');
 		$attachmentType	= $this->_helper->_attachmentType;
 		$out 			= array();
-		
-		foreach ($sels as $sel) 
+
+		foreach ($sels as $sel)
 		{
 			$arr = explode("::", $sel);
-			if ($arr[0] == $attachmentType) 
+			if ($arr[0] == $attachmentType)
 			{
 				$out[] = urldecode($arr[1]);
 			}
 		}
-		
+
 		return $out;
 	}
-		
+
 	/**
 	 * Get property
-	 * 
+	 *
 	 * @return     array
 	 */
-	protected function _getProperty($property = NULL, $firstKey = false) 
+	protected function _getProperty($property = NULL, $firstKey = false)
 	{
 		$property = $property ? $property : $this->_helper->__get('property');
 		$value = isset($this->_helper->$property) ? $this->_helper->$property : NULL;
-		
+
 		return ($firstKey && !empty($value[0])) ? $value[0] : $value;
 	}
 }

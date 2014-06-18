@@ -47,7 +47,7 @@ class PollViewPoll extends JView
 		}
 
 		// fail if checked out not by 'me'
-		if ($poll->isCheckedOut( $user->get('id') )) 
+		if ($poll->isCheckedOut( $user->get('id') ))
 		{
 			$msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The poll' ), $poll->title );
 			$this->setRedirect( 'index.php?option='. $option, $msg );

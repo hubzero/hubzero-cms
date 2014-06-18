@@ -39,18 +39,18 @@ include_once(dirname(__FILE__) . DS . 'blockelements.php');
 include_once(dirname(__FILE__) . DS . 'handlers.php');
 
 // Include tables
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
-	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.history.php');	
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.history.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
-	
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 	. DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'helper.php');
-	
+
 // Get language file
 $lang = JFactory::getLanguage();
 $lang->load('com_publications_curation');
@@ -62,81 +62,81 @@ $lang->load('com_publications_curation');
  *
  */
 class PublicationsCuration extends JObject
-{		
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_db      		= NULL;
-	
+
 	/**
 	 * @var    object  Project
 	 */
 	var $_project      	= NULL;
-	
+
 	/**
 	 * @var    object  Publication
 	 */
 	var $_pub 			= NULL;
-	
+
 	/**
 	 * @var    string  Publication ID
 	 */
 	var $_pid 			= NULL;
-	
+
 	/**
 	 * @var    string  Publication version ID
 	 */
 	var $_vid 			= NULL;
-	
+
 	/**
 	 * @var    string Curation manifest
 	 */
 	var $_manifest 		= NULL;
-	
+
 	/**
 	 * @var    object Blocks
 	 */
 	var $_blocks 		= array();
-	
+
 	/**
 	 * @var    int total blocks
 	 */
 	var $_blockcount 	= 0;
-	
+
 	/**
 	 * @var    object Current block
 	 */
 	var $_block 		= array();
-	
+
 	/**
 	 * @var    string Current block name
 	 */
 	var $_blockname 	= NULL;
-	
+
 	/**
 	 * @var    string Current block sequence
 	 */
 	var $_blockorder 	= NULL;
-	
+
 	/**
 	 * @var    object
 	 */
 	var $_progress 		= NULL;
-	
+
 	/**
 	 * @var    string  Message
 	 */
 	var $_message 		= NULL;
-				
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      	 JDatabase
 	 * @param      string  $manifest     Pup type manifest
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $manifest = NULL )
 	{
 		$this->_db 		 = $db;
@@ -145,7 +145,7 @@ class PublicationsCuration extends JObject
 		// Parse blocks
 		$this->setBlocks();
 	}
-	
+
 	/**
 	 * Get blocks in order
 	 *
@@ -153,7 +153,7 @@ class PublicationsCuration extends JObject
 	 * @return  boolean
 	 */
 	public function setBlocks($manifest = NULL)
-	{		
+	{
 		$manifest = $manifest ? $manifest : $this->_manifest;
 		$blocks   = array();
 
@@ -162,13 +162,13 @@ class PublicationsCuration extends JObject
 		{
 			// Get blocks model
 			$blocksModel = new PublicationsModelBlocks($this->_db);
-			
+
 			// Get default blocks
-			$blocks = $blocksModel->getBlocks('block', 
-				" WHERE minimum=1 OR params LIKE '%default=1%'", 
+			$blocks = $blocksModel->getBlocks('block',
+				" WHERE minimum=1 OR params LIKE '%default=1%'",
 				" ORDER BY ordering, id"
-			);			
-			
+			);
+
 			// Build default manifest
 			if ($blocks && !empty($blocks))
 			{
@@ -177,42 +177,42 @@ class PublicationsCuration extends JObject
 				foreach ($blocks as $blockname)
 				{
 					$blockManifest = $blocksModel->getManifest($blockname);
-					
+
 					if ($blockManifest)
-					{						
+					{
 						$manifest->blocks->$i = $blockManifest;
 						$i++;
 					}
 				}
 			}
-			
+
 			$manifest->params->default_title 	= 'Untitled Draft';
 			$manifest->params->default_category = 1;
 			$manifest->params->curation 		= 1;
 			$manifest->params->require_doi 		= 1;
 			$manifest->params->show_archive 	= 1;
-			
-			$this->_manifest = $manifest; 
-			
+
+			$this->_manifest = $manifest;
+
 			/*
 			echo '<pre>';
 			print_r(json_encode($this->_manifest));
 			echo '</pre>';
 			*/
 		}
-		
+
 		// Parse manifest (TBD)
 		$this->_blocks = $manifest ? $manifest->blocks : NULL;
-		
+
 		// Get block count
 		foreach ($this->_blocks as $b)
 		{
 			$this->_blockcount++;
 		}
-			
+
 		return true;
 	}
-	
+
 	/**
 	 * Get active block
 	 *
@@ -220,28 +220,28 @@ class PublicationsCuration extends JObject
 	 * @return  boolean
 	 */
 	public function setBlock($name = NULL, $sequence = 0)
-	{		
+	{
 		if ($sequence && (!isset($this->_blocks->$sequence) || $this->_blocks->$sequence->name != $name))
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$sequence)
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$sequence)
 		{
 			return false;
 		}
-		
+
 		$this->_block 		= $this->_blocks->$sequence;
 		$this->_blockname 	= $this->_blocks->$sequence->name;
 		$this->_blockorder 	= $sequence;
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Get block sequence
 	 *
@@ -257,14 +257,14 @@ class PublicationsCuration extends JObject
 			if ($block->name == $name)
 			{
 				$sequence = $i;
-				break;					
+				break;
 			}
 			$i++;
 		}
-		
+
 		return $sequence;
 	}
-	
+
 	/**
 	 * Set association with publication and load curation
 	 *
@@ -276,33 +276,33 @@ class PublicationsCuration extends JObject
 		$this->_pid 	= is_object($pub) ? $pub->id : NULL;
 		$this->_vid 	= is_object($pub) ? $pub->version_id : NULL;
 		$this->_pub		= $pub;
-				
+
 		// Set progress
-		$this->setProgress();		
+		$this->setProgress();
 	}
-	
+
 	/**
 	 * Get manifests elements of interest
 	 *
 	 * @return  string
 	 */
 	public function getElements( $role = 1, $handler = NULL )
-	{	
+	{
 		if (!$this->_blocks)
 		{
 			return false;
-		}		
-		
+		}
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		$elements = array();
-				
+
 		// Find all blocks of the same parent
 		foreach ($this->_blocks as $sequence => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
-			
+
 			if ($parentBlock == 'content')
 			{
 				foreach ($block->elements as $elId => $element)
@@ -311,7 +311,7 @@ class PublicationsCuration extends JObject
 					{
 						// continue;
 					}
-					
+
 					if ($element->params->role == $role)
 					{
 						$output 			= new stdClass;
@@ -324,14 +324,14 @@ class PublicationsCuration extends JObject
 				}
 			}
 		}
-		
-		return $elements;		
+
+		return $elements;
 	}
-	
+
 	/**
 	 * Get manifest for element of block type (content OR description)
 	 *
-	 * @param   integer  $elementId 
+	 * @param   integer  $elementId
 	 * @return  object
 	 */
 	public function getElementManifest( $elementId = 0, $name = 'content')
@@ -340,20 +340,20 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		if (!$this->_blocks)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-				
+
 		// Find all blocks of the same parent
 		foreach ($this->_blocks as $sequence => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
-			
+
 			// Go through elements
 			if ($parentBlock == $name)
 			{
@@ -370,10 +370,10 @@ class PublicationsCuration extends JObject
 				}
 			}
 		}
-		
-		return false;		
+
+		return false;
 	}
-	
+
 	/**
 	 * Parse block
 	 *
@@ -382,9 +382,9 @@ class PublicationsCuration extends JObject
 	 * @return  string
 	 */
 	public function parseBlock( $viewer = 'edit', $name = NULL, $sequence = 0 )
-	{		
+	{
 		$sequence = $sequence ? $sequence : $this->_blockorder;
-		
+
 		// Set the block
 		if ($name)
 		{
@@ -392,53 +392,53 @@ class PublicationsCuration extends JObject
 			{
 				$sequence = $this->getBlockSequence($name);
 			}
-			
+
 			if (!$sequence)
 			{
 				$this->setError( JText::_('Error loading block') );
 				return false;
 			}
-			
+
 			$this->_block 		= $this->_blocks->$sequence;
 			$this->_blockname 	= $this->_blocks->$sequence->name;
 			$this->_blockorder 	= $sequence;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		return $blocksModel->renderBlock($this->_blockname, $viewer, $this->_block, $this->_pub, $sequence);
 	}
-	
+
 	/**
 	 * Reorder attached items
 	 *
 	 * @return  void
 	 */
 	public function reorder ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		$blocksModel->reorder($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-		
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-		
+
 		// Set success message
 		if ($blocksModel->get('_message'))
 		{
 			$this->set('_message', $blocksModel->get('_message'));
 		}
-	
+
 		// Record update requested?
 		if ($blocksModel->get('_update'))
 		{
@@ -446,41 +446,41 @@ class PublicationsCuration extends JObject
 			$data 				= new stdClass;
 			$data->updated 		= JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);			
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Save attached item info
 	 *
 	 * @return  void
 	 */
 	public function saveItem ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		$blocksModel->saveItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-				
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-		
+
 		// Set success message
 		if ($blocksModel->get('_message'))
 		{
 			$this->set('_message', $blocksModel->get('_message'));
 		}
-		
+
 		// Record update requested?
 		if ($blocksModel->get('_update'))
 		{
@@ -488,41 +488,41 @@ class PublicationsCuration extends JObject
 			$data 				= new stdClass;
 			$data->updated 		= JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);			
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Save attached item info
 	 *
 	 * @return  void
 	 */
 	public function deleteItem ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		$blocksModel->deleteItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-				
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-		
+
 		// Set success message
 		if ($blocksModel->get('_message'))
 		{
 			$this->set('_message', $blocksModel->get('_message'));
 		}
-		
+
 		// Record update requested?
 		if ($blocksModel->get('_update'))
 		{
@@ -530,98 +530,98 @@ class PublicationsCuration extends JObject
 			$data 				= new stdClass;
 			$data->updated 		= JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);			
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Attach new record
 	 *
 	 * @return  void
 	 */
 	public function dispute ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Incoming
 		$dispute  = urldecode(JRequest::getVar('review', ''));
-		
+
 		if (!trim($dispute))
 		{
 			$this->setError('Please provide a reason for dispute');
 			return false;
 		}
-		
+
 		// Record update time
 		$data 				= new stdClass;
 		$data->updated 		= JFactory::getDate()->toSql();
 		$data->updated_by 	= $actor;
 		$data->update		= stripslashes($dispute);
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
-		
+
 		$this->set('_message', 'Curator change request disputed');
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Attach new record
 	 *
 	 * @return  void
 	 */
 	public function undispute ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-				
+
 		// Delete message
 		$data 				= new stdClass;
 		$data->update		= NULL;
 		$data->updated 		= NULL;
 		$data->updated_by 	= 0;
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
-		
+
 		$this->set('_message', 'Dispute cleared. Please make changes requested by curator.');
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Attach new record
 	 *
 	 * @return  void
 	 */
 	public function addItem ($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		$blocksModel->addItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-				
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-		
+
 		// Set success message
 		if ($blocksModel->get('_message'))
 		{
 			$this->set('_message', $blocksModel->get('_message'));
 		}
-		
+
 		// Record update requested?
 		if ($blocksModel->get('_update'))
 		{
@@ -629,42 +629,42 @@ class PublicationsCuration extends JObject
 			$data 				= new stdClass;
 			$data->updated 		= JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);			
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Save new block information
 	 *
 	 * @return  void
 	 */
 	public function saveBlock($actor = 0, $elementId = 0)
-	{		
+	{
 		if (!$this->_blocks || !$this->_block || !$this->_pub)
 		{
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		// Save data
 		$blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
-				
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-		
+
 		// Set success message
 		if ($blocksModel->get('_message'))
 		{
 			$this->set('_message', $blocksModel->get('_message'));
 		}
-		
+
 		// Record update requested?
 		if ($blocksModel->get('_update'))
 		{
@@ -672,24 +672,24 @@ class PublicationsCuration extends JObject
 			$data 				= new stdClass;
 			$data->updated 		= JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
-			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);		
+			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
-			
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Get elements to draw publication draft status bar
 	 *
 	 * @return  array
 	 */
 	public function drawStatusBar()
-	{				
+	{
 		if (!$this->_progress)
 		{
 			return false;
 		}
-		
+
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
@@ -704,7 +704,7 @@ class PublicationsCuration extends JObject
 		$view->activenum	 = $this->_blockorder;
 		$view->display();
 	}
-	
+
 	/**
 	 * Check if block is in manifest
 	 *
@@ -716,7 +716,7 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		// Check status for each
 		foreach ($this->_blocks as $sequence => $block)
 		{
@@ -725,51 +725,51 @@ class PublicationsCuration extends JObject
 				return true;
 			}
 		}
-		
+
 		return false;
-		
+
 	}
-	
+
 	/**
 	 * Set curation progress
 	 *
 	 * @return  void
 	 */
 	public function setProgress()
-	{				
+	{
 		$result = new stdClass;
-				
+
 		if (!$this->_blocks)
 		{
 			return false;
 		}
-		
+
 		$result->lastBlock 	= 0;
 		$result->firstBlock = 0;
-		
+
 		$i = 0;
 		$k = 0;
-		
+
 		// Check status for each
 		foreach ($this->_blocks as $sequence => $block)
-		{			
+		{
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
-			
+
 			$result->blocks->$sequence->name 		= $block->name;
 			$result->blocks->$sequence->status 		= $autoStatus;
-			$result->blocks->$sequence->review 		= ($this->_pub->state == 5 || $this->_pub->state == 7) 
-													? self::getReviewStatus($block->name, $this->_pub, $sequence) 
+			$result->blocks->$sequence->review 		= ($this->_pub->state == 5 || $this->_pub->state == 7)
+													? self::getReviewStatus($block->name, $this->_pub, $sequence)
 													: NULL;
 			$result->blocks->$sequence->manifest 	= $block;
 			$result->blocks->$sequence->firstElement= self::getFirstElement($block->name, $this->_pub, $sequence);
 			$reviewStatus							= $result->blocks->$sequence->review;
-						
+
 			if ($autoStatus->status > 0)
 			{
 				$result->lastBlock = $sequence;
 			}
-			
-			if (!$result->firstBlock) 
+
+			if (!$result->firstBlock)
 			{
 				if ($reviewStatus && $reviewStatus->status == 0 && !$reviewStatus->lastupdate)
 				{
@@ -780,109 +780,109 @@ class PublicationsCuration extends JObject
 					$result->firstBlock = $sequence;
 				}
 			}
-			
+
 			$k++;
-			
-			if ($autoStatus->status > 0 && 
-				(!$reviewStatus 
+
+			if ($autoStatus->status > 0 &&
+				(!$reviewStatus
 				|| ($reviewStatus->status >= 1 || $reviewStatus->lastupdate))
 			)
 			{
 				$i++;
 			}
 		}
-		
+
 		$nextBlock = $result->lastBlock + 1;
 		$result->nextBlock = isset($this->_blocks->$nextBlock) ? $nextBlock : $result->lastBlock;
-		
+
 		// Are all sections complete for submission?
 		$result->complete  = $i == $k ? 1 : 0;
-		
+
 		$this->_progress = $result;
 	}
-	
+
 	/**
 	 * Transfer content from one version to another
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function transfer( $pub, $old, $new)
 	{
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
-		
+
 		foreach ($pub->_curationModel->_progress->blocks as $sequence => $block)
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
-			
+
 			if (in_array($parentBlock, array('content', 'authors')))
 			{
 				$blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
 			}
 		}
-		
+
 		// Set error
 		if ($blocksModel->getError())
 		{
 			$this->setError($blocksModel->getError());
 		}
-				
+
 		return true;
 	}
-	
+
 	/**
 	 * Check block status (auto check)
-	 * 
+	 *
 	 * @param      string $name
 	 * @return     string
 	 */
 	public function getStatus( $name, $pub, $sequence = 0)
-	{				
+	{
 		$pub = $pub ? $pub : $this->_pub;
-		
+
 		$sequence = $sequence ? $sequence : $this->_blockorder;
 		if (!$sequence)
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$sequence)
 		{
 			$this->setError( JText::_('Error loading block') );
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence);
-				
-		// Return status		
+
+		// Return status
 		return $status;
 	}
-	
+
 	/**
 	 * Get first element ID
-	 * 
+	 *
 	 * @param      string $name
 	 * @return     string
 	 */
 	public function getFirstElement( $name, $pub, $sequence = 0)
-	{				
+	{
 		$pub = $pub ? $pub : $this->_pub;
 		$elementId = 0;
-		
+
 		$sequence = $sequence ? $sequence : $this->_blockorder;
 		if (!$sequence)
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$sequence)
 		{
 			$this->setError( JText::_('Error loading block') );
 			return $elementId;
 		}
-		
+
 		if ($this->_blocks->$sequence->elements)
 		{
 			foreach ($this->_blocks->$sequence->elements as $id => $element)
@@ -890,41 +890,41 @@ class PublicationsCuration extends JObject
 				return $id;
 			}
 		}
-						
-		// Return status		
+
+		// Return status
 		return $elementId;
 	}
-	
+
 	/**
 	 * Check block element status (auto check)
-	 * 
+	 *
 	 * @param      string $name
 	 * @return     string
 	 */
 	public function getElementStatus( $name, $elementId = NULL, $pub, $sequence = 0)
-	{				
+	{
 		$pub = $pub ? $pub : $this->_pub;
-		
+
 		$sequence = $sequence ? $sequence : $this->_blockorder;
 		if (!$sequence)
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$sequence)
 		{
 			$this->setError( JText::_('Error loading block') );
 			return false;
 		}
-		
+
 		// Get blocks model
 		$blocksModel 	= new PublicationsModelBlocks($this->_db);
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence, $elementId );
 	}
-	
+
 	/**
 	 * Save version label
-	 * 
+	 *
 	 * @param      int $uid
 	 * @return     boolean
 	 */
@@ -934,58 +934,58 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		$row = new PublicationVersion( $this->_db );
-		
+
 		// Incoming
-		$label = trim(JRequest::getVar( 'label', '', 'post' )); 
+		$label = trim(JRequest::getVar( 'label', '', 'post' ));
 		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version );
-		
-		if ($label && in_array($label, $used_labels)) 
+
+		if ($label && in_array($label, $used_labels))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );	
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 			return false;
 		}
-		elseif ($label) 
+		elseif ($label)
 		{
 			if (!$row->loadVersion($this->_pub->id, $this->_pub->version))
 			{
 				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
 				return false;
 			}
-			
+
 			$row->version_label = $label;
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
-			}						
+			}
 		}
-		
+
 		// Success message
 		$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED'));
-		
-		return true;	
+
+		return true;
 	}
-	
+
 	/**
 	 * Check status for curation review
-	 * 
+	 *
 	 * @param      string $progress
 	 * @param      string $block
 	 * @return     string
 	 */
 	public function getReviewStatus( $block, $pub, $sequence = 0)
-	{		
+	{
 		// Get status model
 		$status = new PublicationsModelStatus();
-		
+
 		if (!isset($pub->reviewedItems))
 		{
 			$pub->reviewedItems = $pub->_curationModel->getReviewedItems($pub->version_id);
 		}
-		
+
 		$manifest = $this->_blocks->$sequence;
-		
+
 		// Get element status
 		if ($manifest->elements)
 		{
@@ -994,16 +994,16 @@ class PublicationsCuration extends JObject
 			$failed 	= 0;
 			$incomplete = 0;
 			$pending 	= 0;
-			
+
 			foreach ($manifest->elements as $elementId => $element)
 			{
 				$props = $block . '-' . $sequence . '-' . $elementId;
-				
+
 				$status->elements->$elementId = $this->getReviewItemStatus( $props, $pub->reviewedItems);
-				
+
 				// Store element label (for history tracking)
 				$status->elements->$elementId->label = $element->label;
-				
+
 				if ($status->elements->$elementId->status >= 1 || $status->elements->$elementId->lastupdate)
 				{
 					$success++;
@@ -1020,24 +1020,24 @@ class PublicationsCuration extends JObject
 				{
 					$pending++;
 				}
-				
+
 				$i++;
 			}
-			
+
 			$success 	    	= $success == $i ? 1 : 0;
 			$status->status 	= $failed > 0 ? 0 : $success;
-			$status->lastupdate = $pending > 0 && $failed == 0 ? true : NULL; 
+			$status->lastupdate = $pending > 0 && $failed == 0 ? true : NULL;
 		}
 		else
 		{
 			$props = $block . '-' . $sequence;
 			return $this->getReviewItemStatus( $props, $pub->reviewedItems);
 		}
-					
-		// Return status		
+
+		// Return status
 		return $status;
 	}
-	
+
 	/**
 	 * Get status of curation item
 	 *
@@ -1048,32 +1048,32 @@ class PublicationsCuration extends JObject
 		$status = new PublicationsModelStatus();
 		$status->status 		= 2;
 		$status->updated_by 	= 0;
-		
+
 		if ($props === NULL || $items === NULL)
 		{
 			return $status;
 		}
-		
+
 		$record = isset($items[$props]) ? $items[$props] : NULL;
-		
+
 		if (!$record)
 		{
 			return $status;
 		}
-		
+
 		if ($record->review_status == 1)
 		{
-			$status->status = 1;	
+			$status->status = 1;
 		}
 		elseif ($record->review_status == 2)
 		{
 			$status->status  = 0;
-			$status->setError($record->review); 
+			$status->setError($record->review);
 		}
-		
+
 		// Was item updated by authors?
 		if ($record->reviewed && $record->updated > $record->reviewed)
-		{			
+		{
 			$status->lastupdate = $record->updated;
 			$status->updated_by = $record->updated_by;
 		}
@@ -1081,10 +1081,10 @@ class PublicationsCuration extends JObject
 		{
 			$status->message = $record->update;
 		}
-				
+
 		return $status;
 	}
-	
+
 	/**
 	 * Parse curation status for display
 	 *
@@ -1099,12 +1099,12 @@ class PublicationsCuration extends JObject
 		$status->updatenotice 	= NULL;
 		$status->authornotice 	= NULL;
 		$status->updated_by		= 0;
-		
+
 		if ($pub->state != 7 && $pub->state != 5)
 		{
 			return $status;
 		}
-		
+
 		if ($elId)
 		{
 			$reviewStatus = $pub->_curationModel->_progress->blocks->$step->review->elements->$elId;
@@ -1113,34 +1113,34 @@ class PublicationsCuration extends JObject
 		{
 			$reviewStatus = $pub->_curationModel->_progress->blocks->$step->review;
 		}
-		
+
 		if (!$reviewStatus)
 		{
 			return $status;
 		}
-		
+
 		$status->status 		= $reviewStatus->status;
 		$status->curatornotice 	= $reviewStatus->getError();
 		$status->updated		= $reviewStatus->lastupdate;
-		
+
 		if ($status->updated && $reviewStatus->updated_by)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($reviewStatus->updated_by);
 			$by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
-			
-			$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_UPDATED') . ' ' 
+
+			$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
 				. JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
-				
+
 			if ($reviewStatus->message)
 			{
 				$status->authornotice = $reviewStatus->message;
 			}
 		}
-	
-				
-		return $status;		
+
+
+		return $status;
 	}
-	
+
 	/**
 	 * Show curator notice
 	 *
@@ -1154,37 +1154,37 @@ class PublicationsCuration extends JObject
 		<?php } ?>
 		<div class="status-notice">
 			<span class="update-notice"><?php if ($viewer == 'curator') { echo  $curatorStatus->updatenotice; }
-			else { 
-				if ($curatorStatus->authornotice && $curatorStatus->updated) 
+			else {
+				if ($curatorStatus->authornotice && $curatorStatus->updated)
 				{
 					?>
 						<span class="dispute-notice">
 							<span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE'); ?></a>]</span>
-							<?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?> 
+							<?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?>
 							<span class="dispute-text"><?php echo $curatorStatus->authornotice; ?></span>
 						</span>
 				<?php }
 				else
 				{
-					echo  JText::_('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED'); 	
-				}				
-			} ?></span> 
+					echo  JText::_('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
+				}
+			} ?></span>
 			<?php if ($viewer == 'author' && $curatorStatus->curatornotice && !$curatorStatus->updated) {  ?>
-			<span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>	
+			<span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>
 			<?php } ?>
-			
-			<span class="fail-notice"><?php echo $viewer == 'curator' ? JText::_('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : JText::_('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span> 
+
+			<span class="fail-notice"><?php echo $viewer == 'curator' ? JText::_('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : JText::_('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
 			<span class="notice-text"><?php echo $curatorStatus->curatornotice; ?></span>
 			<?php if ($curatorStatus->authornotice && $curatorStatus->updated && $viewer == 'curator') { ?>
 			<span class="dispute-notice">
-				<strong><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong> 
+				<strong><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
 				<?php echo $curatorStatus->authornotice; ?>
-			</span> 
+			</span>
 			<?php } ?>
 		</div>
-		
+
 	<?php }
-	
+
 	/**
 	 * draw curation checker
 	 *
@@ -1199,9 +1199,9 @@ class PublicationsCuration extends JObject
 			<span class="checker-pass <?php echo ($status == 1) ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="<?php echo $url; ?>" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_APPROVE'); ?>"></a></span>
 			<span class="checker-fail <?php echo $status == 0 ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="#addnotice" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_NOT_APPROVE'); ?>"></a></span>
 		</div>
-	<?php 
+	<?php
 	}
-	
+
 	/**
 	 * Get curation reviews for version ID
 	 *
@@ -1213,12 +1213,12 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		$review = array();
-		
+
 		$curation = new PublicationCuration($this->_db);
 		$results = $curation->getRecords($versionId);
-		
+
 		if ($results)
 		{
 			foreach ($results as $result)
@@ -1232,10 +1232,10 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		return $review;
 	}
-	
+
 	/**
 	 * Get change log
 	 *
@@ -1244,30 +1244,30 @@ class PublicationsCuration extends JObject
 	public function getChangeLog( $pub, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
 		$changelog  = NULL;
-		
-		switch ($newStatus) 
+
+		switch ($newStatus)
 		{
 			case 7:
 				// Kicked back
-				$changelog .= 'reviewed and kicked back to authors';					
+				$changelog .= 'reviewed and kicked back to authors';
 			break;
-			
+
 			case 5:
 				// Submitted
 				$changelog .= $oldStatus == 7 ? 'updated and re-submitted for review' : ' submitted for review';
 			break;
-			
+
 			case 1:
 				// Submitted
 				$changelog .= 'approved and published';
-			break;	
-			
+			break;
+
 			case 4:
 				// Saved or reverted
 				$changelog .= $oldStatus == 1 ? 'reverted to draft' : 'saved draft for internal review';
-			break;		
+			break;
 		}
-		
+
 		// Add details
 		if ($pub->_curationModel->_progress && ($newStatus == 7 || $oldStatus == 7))
 		{
@@ -1276,7 +1276,7 @@ class PublicationsCuration extends JObject
 			$changelog .= '<ul>';
 			foreach ($this->_progress->blocks as $sequence => $block)
 			{
-				if ($block->review && (($newStatus == 7 && $block->review->status == 0) 
+				if ($block->review && (($newStatus == 7 && $block->review->status == 0)
 					|| ($oldStatus == 7 && $block->review->lastupdate)))
 				{
 					$changelog .= '<li>' . $block->manifest->name . '</li>';
@@ -1284,27 +1284,27 @@ class PublicationsCuration extends JObject
 			}
 			$changelog .= '</ul>';
 		}
-		
+
 		return $changelog;
 	}
-	
+
 	/**
 	 * Save history log
 	 *
 	 * @return  void
 	 */
 	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
-	{				
+	{
 		// Collect details
 		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);
-		
+
 		if (!$changelog)
 		{
 			return false;
 		}
-				
+
 		$obj = new PublicationCurationHistory($this->_db);
-		
+
 		// Create new record
 		$obj->publication_version_id 	= $pub->version_id;
 		$obj->created 					= JFactory::getDate()->toSql();
@@ -1321,21 +1321,21 @@ class PublicationsCuration extends JObject
 
 		return false;
 	}
-	
+
 	/**
 	 * Get history logs
 	 *
 	 * @return  void
 	 */
 	public function getHistory( $pub, $curator = 0 )
-	{								
+	{
 		$obj = new PublicationCurationHistory($this->_db);
-		
+
 		$history = $obj->getRecords($pub->version_id);
 
 		return $history;
 	}
-	
+
 	/**
 	 * Save update
 	 *
@@ -1347,7 +1347,7 @@ class PublicationsCuration extends JObject
 		{
 			return false;
 		}
-		
+
 		$name 	  = $name ? $name : $this->_blockname;
 		$pub 	  = $pub ? $pub : $this->_pub;
 		$sequence = $sequence ? $sequence : $this->_blockorder;
@@ -1355,14 +1355,14 @@ class PublicationsCuration extends JObject
 		{
 			$sequence = $this->getBlockSequence($name);
 		}
-		
+
 		if (!$pub || !$name || !$sequence)
 		{
 			return false;
 		}
-		
+
 		$curation = new PublicationCuration($this->_db);
-		
+
 		// Load curation record if exists
 		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $sequence, $elementId))
 		{
@@ -1377,19 +1377,19 @@ class PublicationsCuration extends JObject
 			$curation->step						= $sequence;
 			$curation->element					= $elementId;
 		}
-		
+
 		// Insert incoming data
 		foreach ($data as $field => $value)
 		{
 			$field = trim($field);
 			$curation->$field = trim($value);
 		}
-		
+
 		if ($curation->store())
 		{
 			return true;
 		}
-		
-		return false;		
+
+		return false;
 	}
 }

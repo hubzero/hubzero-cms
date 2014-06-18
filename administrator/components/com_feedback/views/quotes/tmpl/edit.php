@@ -35,7 +35,7 @@ $canDo = FeedbackHelper::getActions('quote');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_FEEDBACK') . ': ' . $text, 'feedback.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -46,30 +46,30 @@ $editor = JEditor::getInstance();
 
 $short_quote = stripslashes($this->row->short_quote);
 $miniquote = stripslashes($this->row->miniquote);
-if (!$short_quote) 
+if (!$short_quote)
 {
 	$short_quote =  substr(stripslashes($this->row->quote), 0, 270);
 }
-if (!$miniquote) 
+if (!$miniquote)
 {
 	$miniquote =  substr(stripslashes($short_quote), 0, 150);
 }
 
-if (strlen($short_quote) >= 271) 
+if (strlen($short_quote) >= 271)
 {
 	$short_quote = $short_quote . '...';
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if (form.fullname.value == '') {
 		alert('<?php echo JText::_('COM_FEEDBACK_AUTHOR_MUST_HAVE_NAME'); ?>');
@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 	}
 }
 
-function getAuthorImage() 
+function getAuthorImage()
 {
 	var filew = window.filer;
 	if (filew) {
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
 			reader.onload = function(e) {
 				$('#uploadImages').append('<img style="margin-left: 15px" src="' + e.target.result + '" width="100" height="100" alt="test" />');
 			}
-			reader.readAsDataURL(file); 
+			reader.readAsDataURL(file);
 		});
 	}
 
@@ -140,7 +140,7 @@ jQuery(document).ready(function($) {
 			<legend><span><?php echo JText::_('COM_FEEDBACK_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<input type="checkbox" name="notable_quote" id="field-notable_quote" value="1" <?php if ($this->row->notable_quote == 1)  { echo 'checked="checked"'; } ?> /> 
+				<input type="checkbox" name="notable_quote" id="field-notable_quote" value="1" <?php if ($this->row->notable_quote == 1)  { echo 'checked="checked"'; } ?> />
 				<label for="field-notable_quote"><?php echo JText::_('COM_FEEDBACK_SELECT_FOR_QUOTES'); ?></label>
 			</div>
 

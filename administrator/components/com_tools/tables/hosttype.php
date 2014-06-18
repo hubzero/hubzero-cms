@@ -33,35 +33,35 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'Hosttype'
- * 
+ *
  * Long description (if any) ...
  */
 class MwHosttype extends JTable
 {
 	/**
 	 * Description for 'name'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $name;
 
 	/**
 	 * Description for 'value'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $value;
 
 	/**
 	 * Description for 'description'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $description;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -72,25 +72,25 @@ class MwHosttype extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean False if invalid data, true on success
 	 */
 	public function check()
 	{
 
-		if (!$this->name) 
+		if (!$this->name)
 		{
 			$this->setError(JText::_('No name provided'));
 			return false;
 		}
 
-		if (!$this->description) 
+		if (!$this->description)
 		{
 			$this->setError(JText::_('No description provided.'));
 			return false;
 		}
 
-		if (!$this->value) 
+		if (!$this->value)
 		{
 			$this->setError(JText::_('No value provided.'));
 			return false;
@@ -116,7 +116,7 @@ class MwHosttype extends JTable
 		{
 			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
-		else 
+		else
 		{
 			if($this->$k)
 			{
@@ -170,7 +170,7 @@ class MwHosttype extends JTable
 
 	/**
 	 * Construct an SQL statement based on the array of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build SQL from
 	 * @return     string SQL
 	 */
@@ -178,7 +178,7 @@ class MwHosttype extends JTable
 	{
 		$where = array();
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(c.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
@@ -195,7 +195,7 @@ class MwHosttype extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build SQL from
 	 * @return     integer
 	 */
@@ -211,7 +211,7 @@ class MwHosttype extends JTable
 
 	/**
 	 * Get a list of records
-	 * 
+	 *
 	 * @param      array $filters Filters to build SQL from
 	 * @return     array
 	 */
@@ -219,11 +219,11 @@ class MwHosttype extends JTable
 	{
 		$query  = "SELECT c.* " . $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'name';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
@@ -233,7 +233,7 @@ class MwHosttype extends JTable
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -53,7 +53,7 @@ if (!($this->post instanceof ForumModelPost))
 			<a class="comment-anchor" name="commentform"></a>
 			<?php
 			$anone = 1;
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
 				$anon = 0;
 			}
@@ -71,11 +71,11 @@ if (!($this->post instanceof ForumModelPost))
 			<p class="comment-title">
 				<strong>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-				</strong> 
+				</strong>
 				<span class="permalink">
 					<span class="comment-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 			</p>
@@ -85,7 +85,7 @@ if (!($this->post instanceof ForumModelPost))
 				<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
 				/* <textarea name="fields[comment]" id="field_<?php echo $this->post->get('id'); ?>_comment" cols="35" rows="5"><?php echo $this->escape($this->post->content('raw')); ?></textarea> */
-				
+
 				echo \JFactory::getEditor()->display('fields[comment]', $this->escape($this->post->content('raw')), '', '', 35, 5, false, 'field_' . $this->post->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
@@ -107,7 +107,7 @@ if (!($this->post instanceof ForumModelPost))
 						<?php
 						foreach ($this->sections as $section)
 						{
-							if ($section->categories) 
+							if ($section->categories)
 							{
 						?>
 							<optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
@@ -128,7 +128,7 @@ if (!($this->post instanceof ForumModelPost))
 		<?php } ?>
 
 			<label for="field-anonymous" id="comment-anonymous-label">
-				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) { echo ' checked="checked"'; } ?> value="1" /> 
+				<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) { echo ' checked="checked"'; } ?> value="1" />
 				<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 			</label>
 

@@ -38,7 +38,7 @@ class modSpotlight extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -60,7 +60,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -266,7 +266,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Format an entry
-	 * 
+	 *
 	 * @param      object  $row       Database row
 	 * @param      string  $tbl       Format type
 	 * @param      number  $txtLength Max text length to display
@@ -474,7 +474,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Get a user's average ranking
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     integer
 	 */
@@ -499,7 +499,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Get a count of a user's contributions
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     integer
 	 */
@@ -516,7 +516,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Get a resource image
-	 * 
+	 *
 	 * @param      string $path Path to get resource image from
 	 * @return     string
 	 */
@@ -561,7 +561,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Get a screenshot of a tool
-	 * 
+	 *
 	 * @param      string  $path      Path to look for screenshots in
 	 * @param      integer $versionid Tool version
 	 * @return     string
@@ -617,7 +617,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Generate a thumbnail name from a picture name
-	 * 
+	 *
 	 * @param      string $pic Picture name
 	 * @return     string
 	 */
@@ -631,11 +631,11 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Build a path to a resource's files
-	 * 
+	 *
 	 * @param      string  $date Resource date
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildPath($date, $id, $base='')
 	{
@@ -661,7 +661,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Encode some HTML entities
-	 * 
+	 *
 	 * @param      string  $str    String to encode
 	 * @param      integer $quotes Encode quote marks?
 	 * @return     string
@@ -689,7 +689,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 	/**
 	 * Convert ampersands
-	 * 
+	 *
 	 * @param      string  $str    String to encode
 	 * @return     string
 	 */

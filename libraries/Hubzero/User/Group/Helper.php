@@ -39,9 +39,9 @@ class Helper
 {
 	/**
 	 * Short description for 'niceidformat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -65,9 +65,9 @@ class Helper
 		$database = \JFactory::getDBO();
 
 		//query
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc, 
+		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc,
 				(SELECT COUNT(*) FROM #__xgroups_members AS gm WHERE gm.gidNumber=g.gidNumber) AS members
-				FROM #__xgroups AS g 
+				FROM #__xgroups AS g
 				WHERE g.type=1
 				AND g.published=1
 				AND g.approved=1
@@ -97,33 +97,33 @@ class Helper
 	{
 		//database object
 		$database = \JFactory::getDBO();
-		
+
 		//parse the group list
 		$groupList = array_map('trim', array_filter(explode(',', $groupList), 'trim'));
-		
+
 		//make sure we have a list of groups
 		if(count($groupList) < 1)
 		{
 			return array();
 		}
-		
+
 		//query to get groups
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc 
-				FROM jos_xgroups AS g 
-				WHERE g.type=1 
-				AND g.published=1 
+		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc
+				FROM jos_xgroups AS g
+				WHERE g.type=1
+				AND g.published=1
 				AND g.approved=1
 				AND g.discoverability=0
 				AND g.cn IN ('".implode("','", $groupList)."')";
-			
+
 		$database->setQuery( $sql );
 		if(!$database->getError())
 		{
 			return $database->loadObjectList();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Gets groups matching tag string
 	 *
@@ -150,7 +150,7 @@ class Helper
 		}
 
 		//query the databse for all published, type "HUB" groups
-		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc 
+		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc
 				FROM #__xgroups AS g
 				WHERE g.type=1
 				AND g.published=1
@@ -183,8 +183,8 @@ class Helper
 
 		return $groups;
 	}
-	
-	
+
+
 	/**
 	 * List groups in common format
 	 *
@@ -255,7 +255,7 @@ class Helper
 			//are we publised
 			$isPublished = ($hg->get('published')) ? true : false;
 
-			//if we have a description then strip tags, remove links, and shorten 
+			//if we have a description then strip tags, remove links, and shorten
 			if ($description != '')
 			{
 				$description = strip_tags($description);
@@ -301,7 +301,7 @@ class Helper
 						{
 							$html .= "<h3><a href=\"" . \JRoute::_('index.php?option=com_groups&task=view&cn=' . $group->cn) . "\">{$hg->description}</a></h3>";
 						}
-						
+
 						if ($gdescription)
 						{
 							$html .= "<p>{$gdescription}</p>";
@@ -314,7 +314,7 @@ class Helper
 						{
 							$html .= "<span class=\"status not-published\">".\JText::_('Group has been unpublished by administrator')."</span>";
 						}
-						
+
 						if (isset($group->matches))
 						{
 							$html .= "<ol class=\"tags\">";
@@ -333,12 +333,12 @@ class Helper
 			$totalCount++;
 
 			//move to next line depending on num columns
-			if (($cls == 'second' && $columns == 'two') 
-			 || ($cls == 'third' && $columns == 'three') 
-			 || ($cls == 'fourth' && $columns == 'four')) 
+			if (($cls == 'second' && $columns == 'two')
+			 || ($cls == 'third' && $columns == 'three')
+			 || ($cls == 'fourth' && $columns == 'four'))
 			{
 				$count = 0;
-				if (sizeof($groups) > $totalCount) 
+				if (sizeof($groups) > $totalCount)
 				{
 					$html .= '<br class="clear" /><hr />';
 				}
@@ -479,11 +479,11 @@ class Helper
 		if ($group_plugins)
 		{
 			$group_plugins = explode(',', $group_plugins);
-			
+
 			foreach ($group_plugins as $plugin)
 			{
 				$temp = explode('=', trim($plugin));
-				
+
 				if ($temp[0])
 				{
 					$active_group_plugins[$temp[0]] = trim($temp[1]);
@@ -496,7 +496,7 @@ class Helper
 		$group_plugin_access = array();
 		$acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
 
-		//if we have already set some 
+		//if we have already set some
 		if ($active_group_plugins)
 		{
 			//for each plugin that is active on the hub
@@ -523,7 +523,7 @@ class Helper
 			foreach ($hub_group_plugins as $hgp)
 			{
 				$value = $hgp['default_access'];
-				
+
 				//store final  access level in array of access levels
 				$group_plugin_access[$hgp['name']] = $value;
 			}
@@ -542,9 +542,9 @@ class Helper
 
 	/**
 	 * Get Instance of Super Group Database
-	 * 
+	 *
 	 * Always returns the same instance whenever this method is called
-	 * 
+	 *
 	 * @param      array     Array of database options
 	 * @return     object    JDatabase Object
 	 */

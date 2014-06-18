@@ -36,13 +36,13 @@ HUBzero is a registered trademark of Purdue University.
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.forgroup" title="For Group :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.forgroup" title="For Group :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.forgroup" title="For Group :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.forgroup" title="For Group :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.forgroup" title="For Group :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.type" title="Type :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.type" title="Type :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.type" title="Type :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />

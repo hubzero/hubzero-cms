@@ -38,28 +38,28 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
 	 * JParameter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
 
 	/**
 	 * Scope adapter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_adapter = null;
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
@@ -83,7 +83,7 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -112,7 +112,7 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
-	 * 
+	 *
 	 * @param      string $key Config property to retrieve
 	 * @return     mixed
 	 */
@@ -131,7 +131,7 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Create an adapter object based on scope
-	 * 
+	 *
 	 * @return  object
 	 */
 	public function _adapter()

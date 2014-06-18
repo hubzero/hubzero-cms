@@ -40,14 +40,14 @@ class plgSystemDisablecache extends JPlugin
 {
 	/**
 	 * Caching turned on/off
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_caching = 0;
 
 	/**
 	 * Current URI
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_path = '';
@@ -71,7 +71,7 @@ class plgSystemDisablecache extends JPlugin
 	 */
 	public function onAfterRoute()
 	{
-		if ($this->_checkRules() && JFactory::getApplication()->isSite()) 
+		if ($this->_checkRules() && JFactory::getApplication()->isSite())
 		{
 			$this->_caching = JFactory::getConfig()->getValue('config.caching');
 			JFactory::getConfig()->setValue('config.caching', 0);
@@ -79,16 +79,16 @@ class plgSystemDisablecache extends JPlugin
 	}
 
 	/**
-	 * Check if caching should be re-enabled for this page if it was disabled and 
+	 * Check if caching should be re-enabled for this page if it was disabled and
 	 * set the site config accordingly
 	 *
 	 * @return 	void
 	 */
 	public function onAfterDispatch()
 	{
-		if ($this->_checkRules() && JFactory::getApplication()->isSite()) 
+		if ($this->_checkRules() && JFactory::getApplication()->isSite())
 		{
-			if ($this->params->def('reenable_afterdispatch', 0)) 
+			if ($this->params->def('reenable_afterdispatch', 0))
 			{
 				JFactory::getConfig()->setValue('config.caching', $this->_caching);
 			}
@@ -102,7 +102,7 @@ class plgSystemDisablecache extends JPlugin
 	 */
 	private function _checkRules()
 	{
-		if (!$this->_path) 
+		if (!$this->_path)
 		{
 			$juri = JURI::getInstance();
 			$this->_path = $this->_parseQueryString(str_replace($juri->base(), '', $juri->current()));
@@ -114,7 +114,7 @@ class plgSystemDisablecache extends JPlugin
 		foreach ($defs As $def)
 		{
 			$result = $this->_parseQueryString($def);
-			if ($result == $this->_path) 
+			if ($result == $this->_path)
 			{
 				return true;
 			}

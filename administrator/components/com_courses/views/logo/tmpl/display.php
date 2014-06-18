@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 		<input type="hidden" name="task" value="upload" />
-		
+
 		<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
 		<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
 	   </td>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 	$k = 0;
 
-	if ($this->file && file_exists($this->path . DS . $this->file)) 
+	if ($this->file && file_exists($this->path . DS . $this->file))
 	{
 		$this_size = filesize($this->path . DS . $this->file);
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);

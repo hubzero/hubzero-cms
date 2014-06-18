@@ -37,7 +37,7 @@ $now = JFactory::getDate()->toSql();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -60,7 +60,7 @@ function submitbutton(pressbutton)
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('ALL'); ?> <?php echo ucfirst(JText::_('Subscriptions')); ?></option>
 		</select>
 
-		<label for="filter-sortby"><?php echo JText::_('Sort by'); ?>:</label> 
+		<label for="filter-sortby"><?php echo JText::_('Sort by'); ?>:</label>
 		<select name="sortby" id="filter-sortby" onchange="document.adminForm.submit( );">
 			<option value="date"<?php if ($this->filters['sortby'] == 'date') { echo ' selected="selected"'; } ?>><?php echo JText::_('Date Added'); ?></option>
 			<option value="date_updated"<?php if ($this->filters['sortby'] == 'date_updated') { echo ' selected="selected"'; } ?>><?php echo JText::_('Last Updated'); ?></option>

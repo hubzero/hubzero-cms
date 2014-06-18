@@ -39,7 +39,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display entries in the pipeline
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -51,40 +51,40 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		// Get filters
 		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search_field', 
-			'search_field', 
+			$this->_option . '.' . $this->_controller . '.search_field',
+			'search_field',
 			'all'
 		));
 
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'toolname'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
@@ -99,8 +99,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -119,20 +119,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		$this->view->setLayout('edit');
-		
+
 		// Incoming instance ID
 		$id = JRequest::getInt('id', 0);
 
 		// Do we have an ID?
-		if (!$id) 
+		if (!$id)
 		{
 			$this->cancelTask();
 			return;
@@ -142,7 +142,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			$this->view->row = ToolsModelTool::getInstance($id);
 		}
@@ -162,7 +162,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and show the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -172,7 +172,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -183,7 +183,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Do we have an ID?
-		if (!$fields['id']) 
+		if (!$fields['id'])
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -213,14 +213,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		$row->update();
 
-		if ($this->_task == 'apply') 
+		if ($this->_task == 'apply')
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id']
 			);
 			return;
 		}
-		else 
+		else
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -243,7 +243,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 	/**
 	 * Temp function to issue new service DOIs for tool versions published previously
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function batchdoiTask()
@@ -255,7 +255,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		//  Limit one-time batch size
 		$limit = JRequest::getInt('limit', 2);
 
-		// Store output	
+		// Store output
 		$created = array();
 		$failed = array();
 
@@ -276,17 +276,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL ");
 		$rows = $this->database->loadObjectList();
 
-		if ($rows) 
+		if ($rows)
 		{
 			$i = 0;
-			foreach ($rows as $row) 
+			foreach ($rows as $row)
 			{
-				if ($limit && $i == $limit) 
+				if ($limit && $i == $limit)
 				{
 					// Output status message
-					if ($created) 
+					if ($created)
 					{
-						foreach ($created as $cr) 
+						foreach ($created as $cr)
 						{
 							echo '<p>'.$cr.'</p>';
 						}
@@ -296,7 +296,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				}
 
 				// Skip entries with no resource information loaded / non-tool resources
-				if (!$resource->load($row->rid) || !$row->alias) 
+				if (!$resource->load($row->rid) || !$row->alias)
 				{
 					continue;
 				}
@@ -305,12 +305,12 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname='".$row->alias."' AND revision='".$row->local_revision."' AND state!=3 LIMIT 1");
 				$results = $this->database->loadObjectList();
 
-				if ($results) 
+				if ($results)
 				{
 					$title = $results[0]->title ? $results[0]->title : $resource->title;
 					$pubyear = $results[0]->released ? trim(JHTML::_('date', $results[0]->released, $yearFormat)) : date('Y');
 				}
-				else 
+				else
 				{
 					// Skip if version not found
 					continue;
@@ -321,26 +321,26 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
 				$metadata['title'] = htmlspecialchars($title);
 				$metadata['pubYear'] = $pubyear;
-				
+
 				// Get authors
 				$objA = new ToolAuthor($this->database);
 				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI
 				$doiSuccess = $objDOI->registerDOI($authors, $config, $metadata, $doierr);
-				if ($doiSuccess) 
+				if ($doiSuccess)
 				{
 					$this->database->setQuery("UPDATE `#__doi_mapping` SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
-					if (!$this->database->query()) 
+					if (!$this->database->query())
 					{
 						$failed[] = $doiSuccess;
 					}
-					else 
+					else
 					{
 						$created[] = $doiSuccess;
 					}
 				}
-				else 
+				else
 				{
 					print_r($doierr);
 					echo '<br />';
@@ -353,9 +353,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		}
 
 		// Output status message
-		if ($created) 
+		if ($created)
 		{
-			foreach ($created as $cr) 
+			foreach ($created as $cr)
 			{
 				echo '<p>'.$cr.'</p>';
 			}
@@ -366,26 +366,26 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 	/**
 	 * Temp function to ensure jos_doi_mapping table is updated
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function setupdoiTask()
 	{
 		$fields = $this->database->getTableFields('jos_doi_mapping');
 
-		if (!array_key_exists('versionid', $fields['jos_doi_mapping'])) 
+		if (!array_key_exists('versionid', $fields['jos_doi_mapping']))
 		{
 			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `versionid` int(11) default '0'");
-			if (!$this->database->query()) 
+			if (!$this->database->query())
 			{
 				echo $this->database->getErrorMsg();
 				return false;
 			}
 		}
-		if (!array_key_exists('doi', $fields['jos_doi_mapping'])) 
+		if (!array_key_exists('doi', $fields['jos_doi_mapping']))
 		{
 			$this->database->setQuery("ALTER TABLE `#__doi_mapping` ADD `doi` varchar(50) default NULL");
-			if (!$this->database->query()) 
+			if (!$this->database->query())
 			{
 				echo $this->database->getErrorMsg();
 				return false;

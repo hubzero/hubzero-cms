@@ -35,12 +35,12 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Publication contrib process html helper class
  */
 class PublicationContribHelper
-{		
+{
 	/**
 	 * Include status bar - publication steps/sections/version navigation
-	 * 
+	 *
 	 * @return     array
-	 */	
+	 */
 	public function drawStatusBar($item, $step = NULL, $showSubSteps = false, $review = 0)
 	{
 		$view = new \Hubzero\Plugin\View(

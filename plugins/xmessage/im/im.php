@@ -38,7 +38,7 @@ class plgXMessageIm extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return this messaging type
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function onMessageMethods()
@@ -48,7 +48,7 @@ class plgXMessageIm extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Send a message to a user
-	 * 
+	 *
 	 * @param      array   $from     Message 'from' data (e.g., name, address)
 	 * @param      object  $xmessage The message to send
 	 * @param      object  $user     User to send the message to
@@ -57,7 +57,7 @@ class plgXMessageIm extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMessage($from, $xmessage, $user, $action)
 	{
-		if ($this->onMessageMethods() != $action) 
+		if ($this->onMessageMethods() != $action)
 		{
 			return true;
 		}

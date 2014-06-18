@@ -21,7 +21,7 @@ class modPoll extends \Hubzero\Module\Module
 {
 	/**
 	 * Get poll data
-	 * 
+	 *
 	 * @return     object
 	 */
 	public function getPoll($id)
@@ -38,7 +38,7 @@ class modPoll extends \Hubzero\Module\Module
 				.' AND published = 1'
 				;
 		}
-		else 
+		else
 		{
 			$query = 'SELECT id, title,'
 				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
@@ -58,7 +58,7 @@ class modPoll extends \Hubzero\Module\Module
 
 	/**
 	 * Get poll options
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getPollOptions($id)
@@ -72,7 +72,7 @@ class modPoll extends \Hubzero\Module\Module
 			' ORDER BY id';
 		$db->setQuery($query);
 
-		if (!($options = $db->loadObjectList())) 
+		if (!($options = $db->loadObjectList()))
 		{
 			echo "MD " . $db->stderr();
 			return;
@@ -83,7 +83,7 @@ class modPoll extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -93,7 +93,7 @@ class modPoll extends \Hubzero\Module\Module
 
 	/**
 	 * Build module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -106,7 +106,7 @@ class modPoll extends \Hubzero\Module\Module
 
 		$poll   = $this->getPoll($this->params->get( 'id', 0 ));
 
-		if ($poll && $poll->id) 
+		if ($poll && $poll->id)
 		{
 			$tabcnt = 0;
 			$options = $this->getPollOptions($poll->id);

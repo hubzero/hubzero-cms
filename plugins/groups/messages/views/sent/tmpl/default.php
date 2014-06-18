@@ -76,8 +76,8 @@ defined('_JEXEC') or die('Restricted access');
 				</tbody>
 			</table>
 		</form>
-	
-	<?php 
+
+	<?php
 		$this->pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
 		$this->pageNav->setAdditionalUrlParam('active', 'messages');
 

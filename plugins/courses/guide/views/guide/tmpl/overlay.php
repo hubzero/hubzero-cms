@@ -52,8 +52,8 @@ foreach ($plugins as $plugin)
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
 							{
-								if (!$this->course->offering()->access('manage', 'section') 
-								 && isset($course_plugin_access[$cat['name']]) 
+								if (!$this->course->offering()->access('manage', 'section')
+								 && isset($course_plugin_access[$cat['name']])
 								 && $course_plugin_access[$cat['name']] == 'managers')
 								{
 									continue;

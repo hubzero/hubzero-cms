@@ -45,7 +45,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -74,7 +74,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -96,7 +96,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check if a user has employer authorization
-	 * 
+	 *
 	 * @param      object $user       JUser
 	 * @param      object $member     \Hubzero\User\Profile
 	 * @return     integer 1 = authorized, 0 = not
@@ -118,15 +118,15 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$emp = $employer->isEmployer($juser->get('id'));
 
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup')) 
+		if ($this->config->get('admingroup'))
 		{
 			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				foreach ($ugs as $ug)
 				{
-					if ($ug->cn == $this->config->get('admingroup')) 
+					if ($ug->cn == $this->config->get('admingroup'))
 					{
 						$emp = 1;
 					}
@@ -134,7 +134,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($member) 
+		if ($member)
 		{
 			$my =  $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
 			$emp = $my && $emp ? 0 : $emp;
@@ -145,7 +145,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check if the user is part of the administration group
-	 * 
+	 *
 	 * @param      integer $admin Var to set
 	 * @return     integer 1 = authorized, 0 = not
 	 */
@@ -154,15 +154,15 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 
 		// check if they belong to a dedicated admin group
-		if ($this->config->get('admingroup')) 
+		if ($this->config->get('admingroup'))
 		{
 			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 			$ugs = $profile->getGroups('all');
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
-				foreach ($ugs as $ug) 
+				foreach ($ugs as $ug)
 				{
-					if ($ug->cn == $this->config->get('admingroup')) 
+					if ($ug->cn == $this->config->get('admingroup'))
 					{
 						$admin = 1;
 					}
@@ -175,7 +175,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -188,10 +188,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$active = 'resume';
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				// do nothing
 			}
@@ -205,13 +205,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		);
 
 		// Do we need to return any data?
-		if ($return != 'html' && $return != 'metadata') 
+		if ($return != 'html' && $return != 'metadata')
 		{
 			return $arr;
 		}
 
 		// Jobs component needs to be enabled
-		if (!$this->config->get('component_enabled')) 
+		if (!$this->config->get('component_enabled'))
 		{
 			$arr['html'] = '<p class="warning">' . JText::_('PLG_MEMBERS_RESUME_WARNING_DISABLED') . '</p>';
 			return $arr;
@@ -221,7 +221,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$emp = $this->isEmployer($user, $member);
 
 		// Are we returning HTML?
-		if ($return == 'html'  && $areas[0] == 'resume') 
+		if ($return == 'html'  && $areas[0] == 'resume')
 		{
 			$database = JFactory::getDBO();
 			$juser = JFactory::getUser();
@@ -241,8 +241,8 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				case 'view':
 				default: $arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0); break;
 			}
-		} 
-		else if ($emp) 
+		}
+		else if ($emp)
 		{
 			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
 			$arr['metadata'] = '';
@@ -253,7 +253,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save data
-	 * 
+	 *
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
 	 * @param      object  $member   \Hubzero\User\Profile
@@ -269,17 +269,17 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$author     = JRequest::getInt('author', 0);
 		$title      = JRequest::getVar('title','');
 
-		if ($task == 'saveprefs') 
+		if ($task == 'saveprefs')
 		{
 			$js = new JobSeeker($database);
 
-			if (!$js->loadSeeker($member->get('uidNumber'))) 
+			if (!$js->loadSeeker($member->get('uidNumber')))
 			{
 				$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 				return '';
 			}
 
-			if (!$js->bind($_POST)) 
+			if (!$js->bind($_POST))
 			{
 				echo $this->alert($js->getError());
 				exit();
@@ -288,19 +288,19 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			$js->active = $active;
 			$js->updated = JFactory::getDate()->toSql();
 
-			if (!$js->store()) 
+			if (!$js->store())
 			{
 				echo $this->alert($js->getError());
 				exit();
 			}
 		}
-		else if ($task == 'savetitle' && $author && $title) 
+		else if ($task == 'savetitle' && $author && $title)
 		{
 			$resume = new Resume ($database);
-			if ($resume->loadResume($author)) 
+			if ($resume->loadResume($author))
 			{
 				$resume->title = $title;
-				if (!$resume->store()) 
+				if (!$resume->store())
 				{
 					echo $this->alert($resume->getError());
 					exit();
@@ -313,7 +313,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set a user as being a 'job seeker'
-	 * 
+	 *
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
 	 * @param      object  $member   \Hubzero\User\Profile
@@ -327,18 +327,18 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$js = new JobSeeker($database);
 
-		if (!$js->loadSeeker($member->get('uidNumber'))) 
+		if (!$js->loadSeeker($member->get('uidNumber')))
 		{
 			$this->setError(JText::_('PLG_MEMBERS_RESUME_ERROR_PROFILE_NOT_FOUND'));
 			return '';
-		} 
-		else if (!$active) 
+		}
+		else if (!$active)
 		{
 			$js->active = $active;
 			$js->updated = JFactory::getDate()->toSql();
 
 			// store new content
-			if (!$js->store()) 
+			if (!$js->store())
 			{
 				echo $js->getError();
 				exit();
@@ -346,7 +346,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			return $this->_view($database, $option, $member, $emp);
 		}
-		else 
+		else
 		{
 			// ask to confirm/add search preferences
 			return $this->_view($database, $option, $member, $emp, 0, 1);
@@ -355,7 +355,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * View user's resumes
-	 * 
+	 *
 	 * @param      object  $database  JDatabase
 	 * @param      string  $option    Component name
 	 * @param      object  $member    \Hubzero\User\Profile
@@ -372,7 +372,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		// get job seeker info on the user
 		$js = new JobSeeker($database);
-		if (!$js->loadSeeker($member->get('uidNumber'))) 
+		if (!$js->loadSeeker($member->get('uidNumber')))
 		{
 			// make a new entry
 			$js = new JobSeeker($database);
@@ -380,14 +380,14 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			$js->active = 0;
 
 			// check content
-			if (!$js->check()) 
+			if (!$js->check())
 			{
 				echo $js->getError();
 				exit();
 			}
 
 			// store new content
-			if (!$js->store()) 
+			if (!$js->store())
 			{
 				echo $js->getError();
 				exit();
@@ -402,12 +402,12 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file = '';
 		$path = $this->build_path($member->get('uidNumber'));
 
-		if ($resume->loadResume($member->get('uidNumber'))) 
+		if ($resume->loadResume($member->get('uidNumber')))
 		{
 			$file = JPATH_ROOT . $path . DS . $resume->filename;
-			if (!is_file($file)) 
-			{ 
-				$file = ''; 
+			if (!is_file($file))
+			{
+				$file = '';
 			}
 		}
 
@@ -451,7 +451,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build the path for uploading a resume to
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     mixed False if errors, string otherwise
 	 */
@@ -465,10 +465,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$listdir = $base_path . DS . $dir;
 
-		if (!is_dir(JPATH_ROOT . $listdir)) 
+		if (!is_dir(JPATH_ROOT . $listdir))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $listdir)) 
+			if (!JFolder::create(JPATH_ROOT . $listdir))
 			{
 				return false;
 			}
@@ -480,7 +480,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Upload a resume
-	 * 
+	 *
 	 * @param      object $database JDatabase
 	 * @param      string $option   Component name
 	 * @param      object $member   \Hubzero\User\Profile
@@ -491,7 +491,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$path = $this->build_path($member->get('uidNumber'));
 		$emp = JRequest::getInt('emp', 0);
 
-		if (!$path) 
+		if (!$path)
 		{
 			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_UPLOAD_DIRECTORY'));
 			return $this->_view($database, $option, $member, $emp);
@@ -503,7 +503,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Incoming file
 		$file = JRequest::getVar('uploadres', '', 'files', 'array');
 
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
 			return $this->_view($database, $option, $member, $emp);
@@ -525,7 +525,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		$ext = strtolower(JFile::getExt($file['name']));
-		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt')))) 
+		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt'))))
 		{
 			$this->setError(JText::_('Disallowed file type.'));
 			return $this->_view($database, $option, $member, $emp);
@@ -533,7 +533,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$row = new Resume($database);
 
-		if (!$row->loadResume($member->get('uidNumber'))) 
+		if (!$row->loadResume($member->get('uidNumber')))
 		{
 			$row = new Resume($database);
 			$row->id   = 0;
@@ -550,11 +550,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
-		} 
-		else 
+		}
+		else
 		{
 			$fpath = $path . DS . $file['name'];
 			exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
@@ -572,11 +572,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			$row->filename = $file['name'];
 			$row->title = $title ? $title : $default_title;
 
-			if (!$row->check()) 
+			if (!$row->check())
 			{
 				$this->setError($row->getError());
 			}
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				$this->setError($row->getError());
 			}
@@ -586,7 +586,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a resume
-	 * 
+	 *
 	 * @param      object  $database JDatabase
 	 * @param      string  $option   Component name
 	 * @param      object  $member   \Hubzero\User\Profile
@@ -596,7 +596,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _deleteresume($database, $option, $member, $emp)
 	{
 		$row = new Resume($database);
-		if (!$row->loadResume($member->get('uidNumber'))) 
+		if (!$row->loadResume($member->get('uidNumber')))
 		{
 			$this->setError(JText::_('Resume ID not found.'));
 			return '';
@@ -607,19 +607,19 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$path = $this->build_path($member->get('uidNumber'));
 
-		if (!file_exists(JPATH_ROOT . $path . DS . $file) or !$file) 
+		if (!file_exists(JPATH_ROOT . $path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete(JPATH_ROOT . $path . DS . $file)) 
+			if (!JFile::delete(JPATH_ROOT . $path . DS . $file))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 			}
-			else 
+			else
 			{
 				$row->delete();
 
@@ -631,7 +631,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$js = new JobSeeker ($database);
 				$js->loadSeeker($member->get('uidNumber'));
 				$js->bind(array('active' => 0));
-				if (!$js->store()) 
+				if (!$js->store())
 				{
 					$this->setError($js->getError());
 				}
@@ -644,14 +644,14 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show a shortlist
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function onMembersShortlist()
 	{
 		$oid = JRequest::getInt('oid', 0);
 
-		if ($oid) 
+		if ($oid)
 		{
 			$this->_shortlist($oid, $ajax=1);
 		}
@@ -659,7 +659,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve a shortlist for a user
-	 * 
+	 *
 	 * @param      integer $oid  List ID
 	 * @param      integer $ajax Being displayed via AJAX?
 	 * @return     void
@@ -667,14 +667,14 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	protected function _shortlist($oid, $ajax=0)
 	{
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$database = JFactory::getDBO();
 
 			$shortlist = new Shortlist($database);
 			$shortlist->loadEntry($juser->get('id'), $oid, 'resume');
 
-			if (!$shortlist->id) 
+			if (!$shortlist->id)
 			{
 				$shortlist->emp      = $juser->get('id');
 				$shortlist->seeker   = $oid;
@@ -682,13 +682,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$shortlist->category = 'resume';
 				$shortlist->check();
 				$shortlist->store();
-			} 
-			else 
+			}
+			else
 			{
 				$shortlist->delete();
 			}
 
-			if ($ajax) 
+			if ($ajax)
 			{
 				// get seeker info
 				$js = new JobSeeker($database);
@@ -715,7 +715,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return javascript to generate an alert prompt
-	 * 
+	 *
 	 * @param      string $msg Message to show
 	 * @return     string HTML
 	 */
@@ -726,7 +726,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Generate a select form
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Data to populate select with
 	 * @param      mixed  $value Value to select
@@ -750,13 +750,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Convert a timestamp to a more human readable string such as "3 days ago"
-	 * 
+	 *
 	 * @param      string $date Timestamp
 	 * @return     string
 	 */
 	public static function nicetime($date)
 	{
-		if (empty($date)) 
+		if (empty($date))
 		{
 			return 'No date provided';
 		}
@@ -768,7 +768,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$unix_date = strtotime($date);
 
 		// check validity of date
-		if (empty($unix_date)) 
+		if (empty($unix_date))
 		{
 			return JText::_('Bad date');
 		}
@@ -778,22 +778,22 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			$difference = $now - $unix_date;
 			$tense = 'ago';
 
-		} 
-		else 
+		}
+		else
 		{
 			$difference = $unix_date - $now;
 			//$tense = "from now";
 			$tense = '';
 		}
 
-		for ($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++) 
+		for ($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++)
 		{
 			$difference /= $lengths[$j];
 		}
 
 		$difference = round($difference);
 
-		if ($difference != 1) 
+		if ($difference != 1)
 		{
 			$periods[$j] .= 's';
 		}
@@ -803,9 +803,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'download'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $member Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -815,7 +815,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$juser    = JFactory::getUser();
 
 		// Ensure we have a database object
-		if (!$database) 
+		if (!$database)
 		{
 			JError::raiseError(500, JText::_('DATABASE_NOT_FOUND'));
 			return;
@@ -829,12 +829,12 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file = '';
 		$path = $this->build_path($uid);
 
-		if ($resume->loadResume($uid)) 
+		if ($resume->loadResume($uid))
 		{
 			$file = JPATH_ROOT . $path . DS . $resume->filename;
 		}
 
-		if (!is_file($file)) 
+		if (!is_file($file))
 		{
 			JError::raiseError(404, JText::_('FILE_NOT_FOUND'));
 			return;
@@ -850,7 +850,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		// record view
 		$stats = new JobStats($database);
-		if ($juser->get('id') != $uid) 
+		if ($juser->get('id') != $uid)
 		{
 			$stats->saveView($uid, 'seeker');
 		}
@@ -860,11 +860,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$xserver->saveas(stripslashes($resume->title));
 		$result = $xserver->serve_attachment($file, stripslashes($default_title), false); // @TODO fix byte range support
 
-		if (!$result) 
+		if (!$result)
 		{
 			JError::raiseError(500, JText::_('SERVER_ERROR'));
 		}
-		else 
+		else
 		{
 			exit;
 		}

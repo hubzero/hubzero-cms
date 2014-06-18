@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * BingMaps plugin for geocode
  *
- * The BingMapsProvider is able to geocode and reverse geocode 
+ * The BingMapsProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
 class plgGeocodeBingmaps extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

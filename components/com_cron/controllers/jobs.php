@@ -50,7 +50,7 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of latest whiteboard entries
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function displayTask()
@@ -129,7 +129,7 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 
 		$this->view->output = $output;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

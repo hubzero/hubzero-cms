@@ -33,49 +33,49 @@ class MwView extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $viewid    = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $username  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var stirng
 	 */
 	var $remoteip  = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var stirng
 	 */
 	var $start     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var stirng
 	 */
 	var $heartbeat = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

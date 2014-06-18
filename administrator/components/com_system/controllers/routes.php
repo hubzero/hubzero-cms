@@ -40,7 +40,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -52,39 +52,39 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['catid']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.catid', 
-			'catid', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.catid',
+			'catid',
+			0,
 			'int'
 		);
 		$this->view->filters['ViewModeId']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.viewmode', 
-			'viewmode', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.viewmode',
+			'viewmode',
+			0,
 			'int'
 		);
 		$this->view->filters['SortById']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortby', 
-			'sortby', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.sortby',
+			'sortby',
+			0,
 			'int'
 		);
 
 		// Determine the mode
 		$this->view->is404mode = false;
-		if ($this->view->filters['ViewModeId'] == 1) 
+		if ($this->view->filters['ViewModeId'] == 1)
 		{
 			$this->view->is404mode = true;
 		}
@@ -103,7 +103,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		$orderby = array();
 		$orderby[] = JHTML::_('select.option', '0', JText::_('SEF Url (asc)'), 'value', 'text');
 		$orderby[] = JHTML::_('select.option', '1', JText::_('SEF Url (desc)'), 'value', 'text');
-		if ($this->view->is404mode != true) 
+		if ($this->view->is404mode != true)
 		{
   			$orderby[] = JHTML::_('select.option', '2', JText::_('Real Url (asc)'), 'value', 'text');
 			$orderby[] = JHTML::_('select.option', '3', JText::_('Real Url (desc)'), 'value', 'text');
@@ -125,13 +125,13 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -145,7 +145,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for adding an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -155,7 +155,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for editing an entry
-	 * 
+	 *
 	 * @param      object $row SefEntry
 	 * @return     void
 	 */
@@ -166,11 +166,11 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Load a tag object if one doesn't already exist
-		if (!is_object($row)) 
+		if (!is_object($row))
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array());
-			if (!is_array($ids)) 
+			if (!is_array($ids))
 			{
 				$ids = array();
 			}
@@ -180,19 +180,19 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 			$this->view->row = new SefEntry($this->database);
 			$this->view->row->load($id);
 
-			if (!$id) 
+			if (!$id)
 			{
 				// do stuff for new records
 				$this->view->row->dateadd = date("Y-m-d");
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->row = $row;
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -206,7 +206,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task and redirect
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -218,7 +218,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -228,7 +228,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 		// Load the tag object and bind the incoming data to it
 		$row = new SefEntry($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -236,7 +236,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -244,7 +244,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -260,7 +260,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -269,13 +269,13 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller

@@ -354,7 +354,7 @@ class UsersModelReset extends JModelForm
 			$this->setError(JText::_('COM_USERS_REMIND_SUPERADMIN_ERROR'));
 			return false;
 		}
-		
+
 		// Make sure the user has not exceeded the reset limit
 		if (!$this->checkResetLimit($user)) {
 			$resetLimit = (int) JFactory::getApplication()->getParams()->get('reset_time');

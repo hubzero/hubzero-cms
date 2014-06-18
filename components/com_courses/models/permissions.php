@@ -42,63 +42,63 @@ class CoursesModelPermissions extends JObject
 {
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_config = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_managers = NULL;
 
 	/**
 	 * CoursesModelMember
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_manager = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_students = NULL;
 
 	/**
 	 * CoursesModelMember
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_student = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_course_id = NULL;
 
 	/**
 	 * CoursesModelSection
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_offering_id = NULL;
 
 	/**
 	 * CoursesModelSection
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_section_id = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
@@ -122,7 +122,7 @@ class CoursesModelPermissions extends JObject
 	{
 		static $instance;
 
-		if (!is_object($instance)) 
+		if (!is_object($instance))
 		{
 			$instance = new CoursesModelPermissions($course_id, $offering_id, $section_id);
 		}
@@ -132,7 +132,7 @@ class CoursesModelPermissions extends JObject
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @return     boolean True if authorized, false if not
 	 */
 	public function config()
@@ -153,7 +153,7 @@ class CoursesModelPermissions extends JObject
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->{'_' . $property})) 
+		if (isset($this->{'_' . $property}))
 		{
 			return $this->{'_' . $property};
 		}
@@ -177,7 +177,7 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isManager()
@@ -187,12 +187,12 @@ class CoursesModelPermissions extends JObject
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function manager($user_id=null)
 	{
-		if (!isset($this->_manager) 
+		if (!isset($this->_manager)
 		 || ($user_id !== null && (int) $this->_manager->get('user_id') != $user_id))
 		{
 			$this->_manager = null;
@@ -216,7 +216,7 @@ class CoursesModelPermissions extends JObject
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
 	 * @return     mixed
@@ -283,7 +283,7 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isStudent()
@@ -298,12 +298,12 @@ class CoursesModelPermissions extends JObject
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function student($user_id=null)
 	{
-		if (!isset($this->_student) 
+		if (!isset($this->_student)
 		 || ($user_id !== null && (int) $this->_student->get('user_id') != $user_id))
 		{
 			$this->_student = null;
@@ -319,7 +319,7 @@ class CoursesModelPermissions extends JObject
 			$this->_student = CoursesModelStudent::getInstance($user_id, $this->get('course_id'), null, $this->get('section_id'));
 		}
 
-		return $this->_student; 
+		return $this->_student;
 	}
 
 	/**
@@ -327,7 +327,7 @@ class CoursesModelPermissions extends JObject
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
 	 * @return     mixed
@@ -377,7 +377,7 @@ class CoursesModelPermissions extends JObject
 
 	/**
 	 * Calculate permissions
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _calculate()
@@ -406,7 +406,7 @@ class CoursesModelPermissions extends JObject
 			/*if (version_compare(JVERSION, '1.6', 'lt')) // Joomla 1.5.x
 			{
 				// If they're a site admin
-				if ($juser->authorize('com_courses', 'manage')) 
+				if ($juser->authorize('com_courses', 'manage'))
 				{
 					// Authorize for each action and actionable item
 					foreach ($actions as $action)
@@ -423,7 +423,7 @@ class CoursesModelPermissions extends JObject
 			else // Joomla 1.6+
 			{
 				// If they're a site admin
-				if ($juser->authorise('core.manage', 'com_courses.component')) 
+				if ($juser->authorise('core.manage', 'com_courses.component'))
 				{
 					// Authorize for each action and actionable item
 					foreach ($actions as $action)
@@ -441,7 +441,7 @@ class CoursesModelPermissions extends JObject
 		}*/
 
 		// Are they an admin?
-		if ($this->config()->get('access-admin-course') 
+		if ($this->config()->get('access-admin-course')
 		 || $this->config()->get('access-manage-course'))
 		{
 			// Admin - no need to go any further
@@ -450,7 +450,7 @@ class CoursesModelPermissions extends JObject
 
 		/*if (!$this->config()->get('access-checked-course'))
 		{
-			
+
 		}*/
 		// If no course Id found
 		if (!$this->get('course_id'))
@@ -587,7 +587,7 @@ class CoursesModelPermissions extends JObject
 								$this->config()->set('access-' . $action . '-section', true);
 							}
 						}
-						else 
+						else
 						{
 							foreach ($actions as $action)
 							{
@@ -629,7 +629,7 @@ class CoursesModelPermissions extends JObject
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */

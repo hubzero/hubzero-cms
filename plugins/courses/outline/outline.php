@@ -45,7 +45,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onCourseAreas()
@@ -62,7 +62,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $course      Current course
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -89,9 +89,9 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				//return $arr;
 				$return = 'metadata';
@@ -99,14 +99,14 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check to see if user is member and plugin access requires members
-		if (!$course->offering()->section()->access('view')) 
+		if (!$course->offering()->section()->access('view'))
 		{
 			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 			return $arr;
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
 
@@ -150,7 +150,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @return     string
 	 */
@@ -177,7 +177,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _build()
@@ -240,7 +240,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      string $url  URL to redirect to
 	 * @param      string $msg  Message to send
 	 * @param      string $type Message type (message, error, warning, info)

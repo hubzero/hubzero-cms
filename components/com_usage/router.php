@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -41,17 +41,17 @@ function UsageBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['period'])) 
+	if (!empty($query['period']))
 	{
 		$segments[] = $query['period'];
 		unset($query['period']);
 	}
-	if (!empty($query['type'])) 
+	if (!empty($query['type']))
 	{
 		$segments[] = $query['type'];
 		unset($query['type']);
@@ -62,7 +62,7 @@ function UsageBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -76,19 +76,19 @@ function UsageParseRoute($segments)
 	}
 
 	$vars['task'] = $segments[0];
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		switch ($segments[0])
 		{
 			case 'maps':
-				if (isset($segments[1])) 
+				if (isset($segments[1]))
 				{
 					$vars['type'] = $segments[1];
 				}
 			break;
 			case 'overview':
 			default:
-				if (isset($segments[1])) 
+				if (isset($segments[1]))
 				{
 					$vars['period'] = $segments[1];
 				}

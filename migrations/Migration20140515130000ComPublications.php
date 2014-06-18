@@ -16,19 +16,19 @@ class Migration20140515130000ComPublications extends Base
 	public function up()
 	{
 		$queries = array();
-		
-		// Add opensource field			
+
+		// Add opensource field
 		if (!$this->db->tableHasField('#__publication_licenses', 'opensource'))
 		{
 			$queries[] = "ALTER TABLE `#__publication_licenses` ADD `opensource` tinyint(1) NOT NULL DEFAULT '0';";
 		}
-		// Add restriction field			
+		// Add restriction field
 		if (!$this->db->tableHasField('#__publication_licenses', 'restriction'))
 		{
 			$queries[] = "ALTER TABLE `#__publication_licenses` ADD `restriction` varchar(100);";
 		}
-		
-		// Run queries		
+
+		// Run queries
 		if (count($queries) > 0)
 		{
 			// Run queries
@@ -45,6 +45,6 @@ class Migration20140515130000ComPublications extends Base
 	 **/
 	public function down()
 	{
-		
+
 	}
 }

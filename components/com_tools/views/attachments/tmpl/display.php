@@ -63,7 +63,7 @@ if (!$this->allowupload) { ?>
 	</p>
 <?php } ?>
 
-<?php 
+<?php
 $out = '';
 // loop through children and build list
 if ($this->children) {
@@ -97,7 +97,7 @@ if ($this->children) {
 					$url = '/index.php?option=com_resources&id='. $child->id;
 				}
 			break;
-			
+
 			default:
 				$url = $child->path;
 			break;
@@ -135,7 +135,7 @@ if ($this->children) {
   		    	$out .= '&nbsp;';
 			}
 			$out .= '</td>';
-		
+
 			$out .= '  <td class="u">';
 		//ContribtoolHtml::orderDownIcon( $i, $n, $id, $child->id, 'a' );
 			if ($i < $n-1 || $i+0 < $n-1) {

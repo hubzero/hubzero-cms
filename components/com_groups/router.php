@@ -33,50 +33,50 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring
  */
 function GroupsBuildRoute(&$query)
 {
 	$segments = array();
-	
-	if (!empty($query['task']) && $query['task'] == 'view') 
+
+	if (!empty($query['task']) && $query['task'] == 'view')
 	{
 		unset($query['task']);
 	}
-	
-	if (!empty($query['cn'])) 
+
+	if (!empty($query['cn']))
 	{
 		$segments[] = $query['cn'];
 		unset($query['cn']);
 	}
-	
+
 	if(!empty($query['gid']))
 	{
 		//log regardless
 		JFactory::getLogger()->debug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
-		
+
 		$segments[] = $query['gid'];
 		unset($query['gid']);
 	}
-	
-	if (!empty($query['controller'])) 
+
+	if (!empty($query['controller']))
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-	
-	if (!empty($query['active'])) 
+
+	if (!empty($query['active']))
 	{
 		$segments[] = $query['active'];
-		if ($query['active'] == '' && !empty($query['task'])) 
+		if ($query['active'] == '' && !empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
 		unset($query['active']);
-	} 
-	else 
+	}
+	else
 	{
 		if ((empty($query['scope']) || $query['scope'] == '') && !empty($query['task']))
 		{
@@ -84,19 +84,19 @@ function GroupsBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
-	if (!empty($query['scope'])) 
+	if (!empty($query['scope']))
 	{
 		$segments[] = $query['scope'];
 		unset($query['scope']);
 	}
-	if (!empty($query['pagename'])) 
+	if (!empty($query['pagename']))
 	{
 		$segments[] = $query['pagename'];
 		unset($query['pagename']);
 	}
-	
+
 	//are we on the group calendar
-	if (in_array('calendar', $segments)) 
+	if (in_array('calendar', $segments))
 	{
 		if (!empty($query['year']))
 		{
@@ -124,15 +124,15 @@ function GroupsBuildRoute(&$query)
 			unset($query['calendar_id']);
 		}
 	}
-	
+
 	return $segments;
 }
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route
- * @return array 
+ * @return array
  */
 function GroupsParseRoute($segments)
 {
@@ -146,14 +146,14 @@ function GroupsParseRoute($segments)
 	if ($segments[0] == 'new' || $segments[0] == 'browse' || $segments[0] == 'features')
 	{
 		$vars['task'] = $segments[0];
-	} 
-	else 
+	}
+	else
 	{
 		$vars['task'] = 'view';
 		$vars['cn'] = $segments[0];
 	}
-	
-	if (isset($segments[1])) 
+
+	if (isset($segments[1]))
 	{
 		switch ($segments[1])
 		{
@@ -180,20 +180,20 @@ function GroupsParseRoute($segments)
 				$vars['active'] = $segments[1];
 		}
 	}
-	
-	if (isset($segments[2])) 
+
+	if (isset($segments[2]))
 	{
 		if (isset($vars['controller']) && in_array($vars['controller'], array('pages', 'media', 'categories', 'modules')))
 		{
 			$vars['task'] = $segments[2];
 		}
-		else if ($segments[1] == 'wiki') 
+		else if ($segments[1] == 'wiki')
 		{
-			if (isset($segments[3]) && preg_match('/File:|Image:/', $segments[3])) 
+			if (isset($segments[3]) && preg_match('/File:|Image:/', $segments[3]))
 			{
 				$vars['pagename'] = $segments[2];
-			} 
-			else 
+			}
+			else
 			{
 				$vars['pagename'] = array_pop($segments);
 			}
@@ -201,12 +201,12 @@ function GroupsParseRoute($segments)
 			$s = implode(DS,$segments);
 			$vars['scope'] = $s;
 		}
-		else 
+		else
 		{
 			$vars['action'] = $segments[2];
 		}
 	}
-	
+
 	//are we on the calendar
 	if (isset($vars['active']) && $vars['active'] == 'calendar')
 	{
@@ -221,7 +221,7 @@ function GroupsParseRoute($segments)
 				$vars['action'] = $segments[2];
 			}
 		}
-		
+
 		if (isset($segments[3]))
 		{
 			if (isset($vars['year']))
@@ -241,7 +241,7 @@ function GroupsParseRoute($segments)
 			}
 		}
 	}
-	
+
 	return $vars;
 }
 

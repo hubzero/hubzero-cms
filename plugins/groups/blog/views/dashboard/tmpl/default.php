@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <table class="activity" summary="<?php echo JText::_('PLG_GROUPS_BLOG_ENTRIES_TABLE_SUMMARY'); ?>">
 	<tbody>
-<?php 
+<?php
 if ($this->entries) {
 	foreach ($this->entries as $entry)
 	{
@@ -53,7 +53,7 @@ if ($this->entries) {
 		<tr>
 			<td><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></td>
 		</tr>
-<?php 
+<?php
 }
 ?>
 	</tbody>

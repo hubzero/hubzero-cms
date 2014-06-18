@@ -38,14 +38,14 @@ class UsageHelper
 {
 	/**
 	 * Return a usage database object
-	 * 
+	 *
 	 * @return     mixed
 	 */
 	public static function getUDBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) 
+		if (!is_object($instance))
 		{
 			$config = JComponentHelper::getParams('com_usage');
 
@@ -57,23 +57,23 @@ class UsageHelper
 			$options['database'] = $config->get('statsDBDatabase');
 			$options['prefix']   = $config->get('statsDBPrefix');
 
-			if ((!isset($options['password']) || $options['password'] == '') 
+			if ((!isset($options['password']) || $options['password'] == '')
 			 && (!isset($options['user']) || $options['user'] == '')
-			 && (!isset($options['database']) || $options['database'] == '')) 
+			 && (!isset($options['database']) || $options['database'] == ''))
 			{
 				$instance = JFactory::getDBO();
 			}
-			else 
+			else
 			{
 				$instance = JDatabase::getInstance($options);
-				if (JError::isError($instance)) 
+				if (JError::isError($instance))
 				{
 					$instance = JFactory::getDBO();
 				}
 			}
 		}
 
-		if (JError::isError($instance)) 
+		if (JError::isError($instance))
 		{
 			return null;
 		}
@@ -83,7 +83,7 @@ class UsageHelper
 
 	/**
 	 * Print Top X List from Database
-	 * 
+	 *
 	 * @param      object $db Parameter description (if any) ...
 	 * @param      unknown $top Parameter description (if any) ...
 	 * @param      mixed $t Parameter description (if any) ...
@@ -97,11 +97,11 @@ class UsageHelper
 		$hub = 1;
 		$html = '';
 
-		if (!$enddate) 
+		if (!$enddate)
 		{
 			$dtmonth = date("m") - 1;
 			$dtyear  = date("Y");
-			if (!$dtmonth) 
+			if (!$dtmonth)
 			{
 				$dtmonth = 12;
 				$dtyear = $dtyear - 1;
@@ -116,14 +116,14 @@ class UsageHelper
 		$sql = "SELECT name, valfmt, size FROM tops WHERE top='" . $db->getEscaped($top) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadRow();
-		if ($result) 
+		if ($result)
 		{
 			$topname = $result[0];
 			$valfmt = $result[1];
 			$size = $result[2];
 		}
 
-		if ($topname) 
+		if ($topname)
 		{
 			// Prepare some date ranges...
 			$enddate .= '-00';
@@ -132,7 +132,7 @@ class UsageHelper
 			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
 			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
 
-			if ($dtmonthnext > 12) 
+			if ($dtmonthnext > 12)
 			{
 				$dtmonthnext = 1;
 				$dtyearnext++;
@@ -154,25 +154,25 @@ class UsageHelper
 			{
 				// Calculate the total value for this toplist...
 				$toplistset = array();
-				$sql = "SELECT topvals.name, topvals.value 
-						FROM tops, topvals 
-						WHERE tops.top = topvals.top 
-						AND topvals.hub = '" . $db->getEscaped($hub) . "' 
-						AND tops.top = '" . $db->getEscaped($top) . "' 
-						AND topvals.datetime = '" . $db->getEscaped($dt) . "' 
-						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "' 
+				$sql = "SELECT topvals.name, topvals.value
+						FROM tops, topvals
+						WHERE tops.top = topvals.top
+						AND topvals.hub = '" . $db->getEscaped($hub) . "'
+						AND tops.top = '" . $db->getEscaped($top) . "'
+						AND topvals.datetime = '" . $db->getEscaped($dt) . "'
+						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "'
 						AND topvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) 
+				if ($results)
 				{
 					foreach ($results as $row)
 					{
 						$formattedval = UsageHelper::valformat($row->value, $valfmt);
-						if (strstr($formattedval, "day") !== FALSE) 
+						if (strstr($formattedval, "day") !== FALSE)
 						{
 							$chopchar = strrpos($formattedval, ',');
-							if ($chopchar !== FALSE) 
+							if ($chopchar !== FALSE)
 							{
 								$formattedval = substr($formattedval, 0, $chopchar) . '+';
 							}
@@ -180,29 +180,29 @@ class UsageHelper
 						array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
 					}
 				}
-				if (!count($toplistset)) 
+				if (!count($toplistset))
 				{
 					array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
 				}
 
 				// Calculate the top X values for the toplist...
 				$rank = 1;
-				$sql = "SELECT topvals.rank, topvals.name, topvals.value 
-						FROM tops, topvals 
-						WHERE tops.top = topvals.top 
-						AND topvals.hub = '" . $db->getEscaped($hub) . "' 
-						AND tops.top = '" . $db->getEscaped($top) . "' 
-						AND datetime = '" . $db->getEscaped($dt) . "' 
-						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "' 
-						AND topvals.rank > '0' 
+				$sql = "SELECT topvals.rank, topvals.name, topvals.value
+						FROM tops, topvals
+						WHERE tops.top = topvals.top
+						AND topvals.hub = '" . $db->getEscaped($hub) . "'
+						AND tops.top = '" . $db->getEscaped($top) . "'
+						AND datetime = '" . $db->getEscaped($dt) . "'
+						AND topvals.period = '" . $db->getEscaped($period[$pidx]["key"]) . "'
+						AND topvals.rank > '0'
 						ORDER BY topvals.rank, topvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) 
+				if ($results)
 				{
 					foreach ($results as $row)
 					{
-						if ($row->rank > 0 && (!$size || $row->rank <= $size)) 
+						if ($row->rank > 0 && (!$size || $row->rank <= $size))
 						{
 							while ($rank < $row->rank)
 							{
@@ -210,19 +210,19 @@ class UsageHelper
 								$rank++;
 							}
 							$formattedval = UsageHelper::valformat($row->value, $valfmt);
-							if (strstr($formattedval, 'day') !== FALSE) 
+							if (strstr($formattedval, 'day') !== FALSE)
 							{
 								$chopchar = strrpos($formattedval, ',');
-								if ($chopchar !== FALSE) 
+								if ($chopchar !== FALSE)
 								{
 									$formattedval = substr($formattedval, 0, $chopchar) . '+';
 								}
 							}
-							if ($toplistset[0][1] > 0) 
+							if ($toplistset[0][1] > 0)
 							{
 								array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]))));
-							} 
-							else 
+							}
+							else
 							{
 								array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
 							}
@@ -283,7 +283,7 @@ class UsageHelper
 
 	/**
 	 * Create New Array, Dropping All Duplicates and Reindexing All Elements
-	 * 
+	 *
 	 * @param      array $somearray
 	 * @return     array
 	 */
@@ -301,7 +301,7 @@ class UsageHelper
 
 	/**
 	 * Check for data for a date
-	 * 
+	 *
 	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @param      string $period    Time period to check for
@@ -309,13 +309,13 @@ class UsageHelper
 	 */
 	public static function check_for_data($db, $yearmonth, $period)
 	{
-		$sql = "SELECT COUNT(datetime) 
-				FROM totalvals 
-				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%' 
+		$sql = "SELECT COUNT(datetime)
+				FROM totalvals
+				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%'
 				AND period = '" . $db->getEscaped($period) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) 
+		if ($result && $result > 0)
 		{
 			return(true);
 		}
@@ -324,19 +324,19 @@ class UsageHelper
 
 	/**
 	 * Check for domain class data
-	 * 
+	 *
 	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
 	 */
 	public static function check_for_classdata($db, $yearmonth)
 	{
-		$sql = "SELECT COUNT(datetime) 
-				FROM classvals 
+		$sql = "SELECT COUNT(datetime)
+				FROM classvals
 				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) 
+		if ($result && $result > 0)
 		{
 			return(true);
 		}
@@ -345,7 +345,7 @@ class UsageHelper
 
 	/**
 	 * Check for region data for a date
-	 * 
+	 *
 	 * @param      object $db       JDatabase
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
@@ -353,11 +353,11 @@ class UsageHelper
 	public static function check_for_regiondata($db, $yearmonth)
 	{
 		$sql = "SELECT COUNT(datetime)
-				FROM regionvals 
+				FROM regionvals
 				WHERE datetime LIKE '" . $db->getEscaped($yearmonth) . "-%'";
 		$db->setQuery($sql);
 		$result = $db->loadResult();
-		if ($result && $result > 0) 
+		if ($result && $result > 0)
 		{
 			return(true);
 		}
@@ -366,9 +366,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'dateformat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      string $period Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -381,11 +381,11 @@ class UsageHelper
 		switch ($period)
 		{
 			case 'fiscalyear':
-				if ($month <= 9) 
+				if ($month <= 9)
 				{
 					return("FY " . $year);
-				} 
-				else 
+				}
+				else
 				{
 					return("FY " . ($year + 1));
 				}
@@ -394,30 +394,30 @@ class UsageHelper
 				return($year);
 			break;
 			case 'quarter':
-				if ($month <= 3) 
+				if ($month <= 3)
 				{
 					$qtr = '1st';
-				} 
-				elseif ($month <= 6) 
+				}
+				elseif ($month <= 6)
 				{
 					$qtr = '2nd';
-				} 
-				elseif ($month <= 9) 
+				}
+				elseif ($month <= 9)
 				{
 					$qtr = '3rd';
-				} 
-				else 
+				}
+				else
 				{
 					$qtr = '4th';
 				}
 				return($qtr .' Quarter ' . $year);
 			break;
 			default:
-				if ($day > 0) 
+				if ($day > 0)
 				{
 					return(sprintf("%d/%d/%d", $month, $day, $year));
-				} 
-				else 
+				}
+				else
 				{
 					return(sprintf("%d/%d", $month, $year));
 				}
@@ -427,9 +427,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'dateformat_plot'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -438,11 +438,11 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($day > 0) 
+		if ($day > 0)
 		{
 			return(sprintf("%02d/%02d/%04d", $month, $day, $year));
-		} 
-		else 
+		}
+		else
 		{
 			return(sprintf("%02d/%04d", $month, $year));
 		}
@@ -450,9 +450,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_value'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $valarray Parameter description (if any) ...
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      string $valkey Parameter description (if any) ...
@@ -460,11 +460,11 @@ class UsageHelper
 	 */
 	public static function seldate_value($valarray, $seldate, $valkey='value')
 	{
-		if ($valarray) 
+		if ($valarray)
 		{
 			foreach ($valarray as $val)
 			{
-				if (substr($val['date'], 0, strlen($seldate)) == $seldate) 
+				if (substr($val['date'], 0, strlen($seldate)) == $seldate)
 				{
 					return($val[$valkey]);
 				}
@@ -475,9 +475,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_next'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      unknown $period Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -489,9 +489,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_prev'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      unknown $period Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -503,9 +503,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_nextyear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -521,9 +521,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_prevyear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -539,9 +539,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_fix'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      string $period Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -551,40 +551,40 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($period == 'fiscalyear') 
+		if ($period == 'fiscalyear')
 		{
-			if ($month < 9) 
+			if ($month < 9)
 			{
 				$month = 9;
 			}
-			if ($month > 9) 
+			if ($month > 9)
 			{
 				$month = 9;
 				$year++;
 			}
-		} 
-		elseif ($period == 'calyear') 
+		}
+		elseif ($period == 'calyear')
 		{
-			if ($month != 12) 
+			if ($month != 12)
 			{
 				$month = 12;
 			}
-		} 
-		elseif ($period == 'quarter') 
+		}
+		elseif ($period == 'quarter')
 		{
-			if ($month < 3) 
+			if ($month < 3)
 			{
 				$month = 3;
-			} 
-			elseif ($month > 3 && $month < 6) 
+			}
+			elseif ($month > 3 && $month < 6)
 			{
 				$month = 6;
-			} 
-			elseif ($month > 6 && $month < 9) 
+			}
+			elseif ($month > 6 && $month < 9)
 			{
 				$month = 9;
-			} 
-			elseif ($month > 9 && $month < 12) 
+			}
+			elseif ($month > 9 && $month < 12)
 			{
 				$month = 12;
 			}
@@ -594,9 +594,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_shift'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $seldate Parameter description (if any) ...
 	 * @param      unknown $period Parameter description (if any) ...
 	 * @param      unknown $right Parameter description (if any) ...
@@ -607,7 +607,7 @@ class UsageHelper
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
-		if ($right) 
+		if ($right)
 		{
 			switch ($period)
 			{
@@ -619,7 +619,7 @@ class UsageHelper
 				break;
 				case 'quarter':
 					$month += 3;
-					if ($month > 12) 
+					if ($month > 12)
 					{
 						$year++;
 						$month -= 12;
@@ -627,15 +627,15 @@ class UsageHelper
 				break;
 				default:
 					$month++;
-					if ($month > 12) 
+					if ($month > 12)
 					{
 						$year++;
 						$month = 1;
 					}
 				break;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			switch ($period)
 			{
@@ -647,7 +647,7 @@ class UsageHelper
 				break;
 				case 'quarter':
 					$month -= 3;
-					if ($month < 1) 
+					if ($month < 1)
 					{
 						$year--;
 						$month += 12;
@@ -655,7 +655,7 @@ class UsageHelper
 				break;
 				default:
 					$month--;
-					if ($month < 1) 
+					if ($month < 1)
 					{
 						$year--;
 						$month = 12;
@@ -668,9 +668,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_valuedescsortkey'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array &$arr Parameter description (if any) ...
 	 * @param      unknown $date Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
@@ -689,12 +689,12 @@ class UsageHelper
 		{
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
 			$len = strlen($dateval);
-			if ($len > $dmax) 
+			if ($len > $dmax)
 			{
 				$dmax = $len;
 			}
 			$len = strlen($arr[$i]['total']);
-			if ($len > $tmax) 
+			if ($len > $tmax)
 			{
 				$tmax = $len;
 			}
@@ -704,7 +704,7 @@ class UsageHelper
 		{
 			$arr[$i]['sortkey'] = '';
 			$dateval = UsageHelper::seldate_value($arr[$i], $date);
-			if (!$dateval) 
+			if (!$dateval)
 			{
 				$dateval = "0";
 			}
@@ -715,9 +715,9 @@ class UsageHelper
 
 	/**
 	 * Short description for 'seldate_valuedescsort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$arr Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -728,26 +728,26 @@ class UsageHelper
 
 	/**
 	 * Short description for 'valformat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      number $value Parameter description (if any) ...
 	 * @param      integer $format Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public static function valformat($value, $format)
 	{
-		if ($format == 1) 
+		if ($format == 1)
 		{
 			return(number_format($value));
-		} 
-		elseif ($format == 2 || $format == 3) 
+		}
+		elseif ($format == 2 || $format == 3)
 		{
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				$min = round($value / 60);
-			} 
-			else 
+			}
+			else
 			{
 				$min = floor($value / 60);
 				$sec = $value - ($min * 60);
@@ -756,28 +756,28 @@ class UsageHelper
 			$min -= ($hr * 60);
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
-			if ($day == 1) 
+			if ($day == 1)
 			{
 				$day = '1 ' . JText::_('COM_USAGE_DAY') . ', ';
-			} 
-			elseif ($day > 1) 
+			}
+			elseif ($day > 1)
 			{
 				$day = number_format($day) . ' ' . JText::_('COM_USAGE_DAYS') . ', ';
-			} 
-			else 
+			}
+			else
 			{
 				$day = '';
 			}
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			} 
-			else 
+			}
+			else
 			{
 				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return($value);
 		}
@@ -785,7 +785,7 @@ class UsageHelper
 
 	/**
 	 * Build a list of select options
-	 * 
+	 *
 	 * @param      object  $db           JDatabase
 	 * @param      string  $enddate       Parameter description (if any) ...
 	 * @param      integer $thisyear      Current year
@@ -801,10 +801,10 @@ class UsageHelper
 			foreach ($monthsReverse as $key => $month)
 			{
 				$value = $i . '-' . $key;
-				if (UsageHelper::$func($db, $value)) 
+				if (UsageHelper::$func($db, $value))
 				{
 					$o .= '<option value="' . $value . '"';
-					if ($value == $enddate) 
+					if ($value == $enddate)
 					{
 						$o .= ' selected="selected"';
 					}

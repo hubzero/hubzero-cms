@@ -53,7 +53,7 @@ if ($this->announcement->priority == 1)
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/plain;charset=utf-8
 
-<?php 
+<?php
 echo JText::_('Group Announcement') . ' - ' . $group->get('description') . "\n";
 echo '-------------------------------------------------------' . "\n\n";
 echo strip_tags($this->announcement->content)  . "\n\n";

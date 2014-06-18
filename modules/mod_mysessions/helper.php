@@ -39,7 +39,7 @@ class modMySessions extends \Hubzero\Module\Module
 {
 	/**
 	 * Set the time when the session will tiemout
-	 * 
+	 *
 	 * @param      integer $sess Session ID
 	 * @return     void
 	 */
@@ -55,7 +55,7 @@ class modMySessions extends \Hubzero\Module\Module
 
 	/**
 	 * Get the time when the session will tiemout
-	 * 
+	 *
 	 * @param      integer $sess Session ID
 	 * @return     string
 	 */
@@ -68,7 +68,7 @@ class modMySessions extends \Hubzero\Module\Module
 
 		$tl = 'unknown';
 
-		if (is_numeric($remaining)) 
+		if (is_numeric($remaining))
 		{
 			$days_left = floor($remaining/60/60/24);
 			$hours_left = floor(($remaining - $days_left*60*60*24)/60/60);
@@ -86,7 +86,7 @@ class modMySessions extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -94,19 +94,19 @@ class modMySessions extends \Hubzero\Module\Module
 		//include mw libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
-		
+
 		//get user object
 		$this->juser = JFactory::getUser();
-		
+
 		//get database object
 		$this->database = JFactory::getDBO();
-		
+
 		//Get a connection to the middleware database
 		$mwdb = MwUtils::getMWDBO();
-		
+
 		//get tool paras
 		$this->toolsConfig = JComponentHelper::getParams('com_tools');
-		
+
 		//set ACL for com_tools
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
@@ -124,12 +124,12 @@ class modMySessions extends \Hubzero\Module\Module
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;
-		if (!$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)) 
+		if (!$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized))
 		{
 			$this->error = true;
 			return false;
 		}
-		
+
 		//run middleware command to create screenshots
 		//only take snapshots if screenshots are on
 		if ($this->params->get('show_screenshots', 1))
@@ -137,17 +137,17 @@ class modMySessions extends \Hubzero\Module\Module
 			$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $this->juser->get('username') . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 		}
-		
+
 		//get sessions
 		$session = new MwSession($mwdb);
 		$this->sessions = $session->getRecords( $this->juser->get('username'), '', false );
-		
+
 		// Push the module CSS to the template
 		$this->css();
-		
+
 		// Add the JavaScript that does the AJAX magic to the template
 		$this->js();
-		
+
 		//output module
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

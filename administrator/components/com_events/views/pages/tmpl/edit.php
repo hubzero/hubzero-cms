@@ -39,15 +39,15 @@ jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	submitform( pressbutton );
 }
 </script>
@@ -61,13 +61,13 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_EVENTS_PAGE'); ?></span></legend>
-			
+
 			<input type="hidden" name="event" value="<?php echo $this->event->id; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->page->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>

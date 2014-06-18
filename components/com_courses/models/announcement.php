@@ -41,21 +41,21 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableAnnouncement';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_courses.announcement.content';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'announcement';
@@ -73,12 +73,12 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}
@@ -88,13 +88,13 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
 	public function published($as='')
 	{
-		$dt = ($this->get('publish_up') && $this->get('publish_up') != '0000-00-00 00:00:00') 
+		$dt = ($this->get('publish_up') && $this->get('publish_up') != '0000-00-00 00:00:00')
 			? $this->get('publish_up')
 			: $this->get('created');
 		switch (strtolower($as))
@@ -115,7 +115,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer

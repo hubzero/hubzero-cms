@@ -29,26 +29,26 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'description-element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
-$field 			= $this->manifest->params->field;		
+$field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
 
 $class 			= $value ? ' be-complete' : '';
-$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength 
-				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';	
+$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
+				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
 			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
-			
+
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
-$aboutTxt 		= $this->manifest->adminTips 
-				? $this->manifest->adminTips 
+$aboutTxt 		= $this->manifest->adminTips
+				? $this->manifest->adminTips
 				: $this->manifest->about;
-				
+
 $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten)
 {
 	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
-	$about.= ' <a href="#more-' . $elName . '" class="more-content">' 
+	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
 	$about.= ' <div class="hidden">';
 	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
@@ -62,10 +62,10 @@ else
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
@@ -82,14 +82,14 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $url, $this->manifest->label); ?>
 		<div class="block-subject">
 			<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
-			    <?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); ?>	
-			<?php if ($value) { 
+			    <?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); ?>
+			<?php if ($value) {
 				// Parse editor text
 				if ($editor)
 				{
 					$model = new PublicationsModelPublication($this->pub);
 					$value = $model->parse($aliasmap, $field, 'parsed');
-				} 
+				}
 				?>
 				<div class="element-value"><?php echo $value; ?></div>
 			<?php } else { ?>

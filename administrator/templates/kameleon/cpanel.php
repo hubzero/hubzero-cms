@@ -37,12 +37,12 @@ $app = JFactory::getApplication();
 $this->addStyleSheet('templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
 $this->addStyleSheet('templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/cpanel.css'));
 // Load theme
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 // Load language direction CSS
-if ($this->direction == 'rtl') 
+if ($this->direction == 'rtl')
 {
 	$this->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
 }
@@ -92,8 +92,8 @@ $browser = new \Hubzero\Browser\Detector();
 						$output = array();
 
 						// Print the logout link.
-						$output[] = ($hideLinks 
-										? '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '" class="disabled"><span class="logout">' 
+						$output[] = ($hideLinks
+										? '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '" class="disabled"><span class="logout">'
 										: '<li data-title="' . JText::_('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
 						// Reverse rendering order for rtl display.
 						if ($this->direction == "rtl") :

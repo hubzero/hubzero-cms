@@ -38,77 +38,77 @@ class AnswersTableQuestion extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $subject    = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $question   = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state      = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous  = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $email      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $helpful    = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $reward    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -119,13 +119,13 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->subject = trim($this->subject);
-		if ($this->subject == '') 
+		if ($this->subject == '')
 		{
 			$this->setError(JText::_('Your question must contain a subject.'));
 			return false;
@@ -144,7 +144,7 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -154,23 +154,23 @@ class AnswersTableQuestion extends JTable
 
 		// build body of query
 		$query  = "";
-		if ($filters['tag']) 
+		if ($filters['tag'])
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
 			$tagging = new AnswersTags($this->_db);
 
 			$query .= "FROM $this->_tbl AS C";
-			if (isset($filters['count'])) 
+			if (isset($filters['count']))
 			{
 				$query .= " JOIN #__tags_object AS RTA ON RTA.objectid=C.id AND RTA.tbl='answers' ";
-			} 
-			else 
+			}
+			else
 			{
 				$query .= ", #__tags_object AS RTA ";
 			}
 			$query .= "INNER JOIN $tagging->_tag_tbl AS TA ON TA.id=RTA.tagid ";
-		} 
-		else 
+		}
+		else
 		{
 			$query .= "FROM $this->_tbl AS C ";
 		}
@@ -186,42 +186,42 @@ class AnswersTableQuestion extends JTable
 			default:       $query .= "WHERE C.state!=2 "; break;
 		}
 		$query .= "AND U.id=C.created_by ";
-		if (isset($filters['q']) && $filters['q'] != '') 
+		if (isset($filters['q']) && $filters['q'] != '')
 		{
 			$words   = explode(' ', $filters['q']);
 			foreach ($words as $word)
 			{
 				$word = $this->_db->getEscaped(strtolower($word));
-				$query .= "AND ((LOWER(C.subject) LIKE '%$word%') 
-					OR (LOWER(C.question) LIKE '%$word%') 
+				$query .= "AND ((LOWER(C.subject) LIKE '%$word%')
+					OR (LOWER(C.question) LIKE '%$word%')
 					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.question_id=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
 			}
 		}
-		if (isset($filters['mine']) && $filters['mine'] != 0) 
+		if (isset($filters['mine']) && $filters['mine'] != 0)
 		{
 			$query .= " AND C.created_by=" . $this->_db->Quote($juser->get('id')) . " ";
 		}
-		if (isset($filters['mine']) && $filters['mine'] == 0) 
+		if (isset($filters['mine']) && $filters['mine'] == 0)
 		{
 			$query .= " AND C.created_by!=" . $this->_db->Quote($juser->get('id')) . " ";
 		}
-		if (isset($filters['created_before']) && $filters['created_before'] != '') 
+		if (isset($filters['created_before']) && $filters['created_before'] != '')
 		{
 			$query .= " AND C.created <= " . $this->_db->Quote($filters['created_before']) . " ";
 		}
-		if ($filters['tag']) 
+		if ($filters['tag'])
 		{
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$query .= "AND (
-							RTA.objectid=C.id 
-							AND RTA.tbl='answers' 
+							RTA.objectid=C.id
+							AND RTA.tbl='answers'
 							AND (
 								TA.tag IN ('" . implode("','", $tags) . "') OR TA.raw_tag IN ('" . implode("','", $tags) . "')
 							)
 						)";
 
-			if (!isset($filters['count'])) 
+			if (!isset($filters['count']))
 			{
 				$query .= " GROUP BY C.id ";
 			}
@@ -238,12 +238,12 @@ class AnswersTableQuestion extends JTable
 				case 'status':       $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 				case 'withinplugin': $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 				default:
-					if (isset($filters['sort'])) 
+					if (isset($filters['sort']))
 					{
 						$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
 						$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
 					}
-					else 
+					else
 					{
 						$query .= " ";
 					}
@@ -256,7 +256,7 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -274,7 +274,7 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -295,7 +295,7 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Get questions by tag
-	 * 
+	 *
 	 * @param      string  $tag   Tag to find records by
 	 * @param      integer $limit Max number of records to return
 	 * @return     array
@@ -317,7 +317,7 @@ class AnswersTableQuestion extends JTable
 
 	/**
 	 * Get the ID of question either before or after the current ID
-	 * 
+	 *
 	 * @param      integer $id    Question ID
 	 * @param      string  $which Direction to look (prev or next)
 	 * @return     integer

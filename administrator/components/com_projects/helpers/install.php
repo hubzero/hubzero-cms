@@ -35,55 +35,55 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Projects install helper class
  */
 class ProjectsInstall extends JObject {
-	
+
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
-	
+
 	/**
 	 * List of available database tables
-	 * 
+	 *
 	 * @var array
 	 */
 	private $tables = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $tables = array() )
 	{
 		$this->_db = $db;
 		$this->tables = $tables;
 	}
-	
+
 	/**
 	 * Run query
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function runQuery( $query = '' ) 
+	 */
+	public function runQuery( $query = '' )
 	{
 		if (!$query)
 		{
 			return false;
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
-	
+
 	/**
 	 * Install project logs
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installLogs( ) 
+	 */
+	public function installLogs( )
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__project_logs` (
 		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -100,16 +100,16 @@ class ProjectsInstall extends JObject {
 		  PRIMARY KEY (`id`),
 		  KEY `projectid` (`projectid`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install project stats
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installStats( ) 
+	 */
+	public function installStats( )
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__project_stats` (
 		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -120,16 +120,16 @@ class ProjectsInstall extends JObject {
 		  `stats` text,
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install public stamps
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installPubStamps( ) 
+	 */
+	public function installPubStamps( )
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__project_public_stamps` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -144,16 +144,16 @@ class ProjectsInstall extends JObject {
 		  PRIMARY KEY (`id`),
 		  UNIQUE KEY `stamp` (`stamp`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install remote connections
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installRemotes( ) 
+	 */
+	public function installRemotes( )
 	{
 		$query = "CREATE TABLE IF NOT EXISTS `#__project_remote_files` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -183,16 +183,16 @@ class ProjectsInstall extends JObject {
 		  `remote_modified` datetime DEFAULT NULL,
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install project plugin
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installPlugin( $name = '', $active = 0, $ordering = 8) 
+	 */
+	public function installPlugin( $name = '', $active = 0, $ordering = 8)
 	{
 		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 				SELECT 'Projects - " . ucfirst($name) . "', 'plugin', '" . strtolower($name) . "', 'projects', 0, $active, 1, 0, null, null, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
@@ -200,45 +200,45 @@ class ProjectsInstall extends JObject {
 
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install J1.6 extension
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function installExtension( $name = '', $type = '', $element = '', $folder = '', $ordering = 0, $params = '', $enabled = 1, $client_id = 0) 
+	 */
+	public function installExtension( $name = '', $type = '', $element = '', $folder = '', $ordering = 0, $params = '', $enabled = 1, $client_id = 0)
 	{
 		$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 		SELECT $name, $type, $element, $folder, $client_id, $enabled, 1, 0, null, $params, null, null, 0, '0000-00-00 00:00:00', $ordering, 0
 		FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__extensions` WHERE name = '$name')";
-		
+
 		$this->runQuery($query);
 	}
-	
+
 	/**
 	 * Install project tables
-	 * 
+	 *
 	 * @return     void
-	 */	
-	public function runInstall( ) 
+	 */
+	public function runInstall( )
 	{
 		$queries = array();
-		
+
 		// The following is for Joomla 1.6+
 		$params = '{"component_on":"0","grantinfo":"0","confirm_step":"0","edit_settings":"1","restricted_data":"0","restricted_upfront":"0","approve_restricted":"0","privacylink":"\/legal\/privacy","HIPAAlink":"\/legal\/privacy","FERPAlink":"\/legal\/privacy","creatorgroup":"","admingroup":"projectsadmin","sdata_group":"hipaa_reviewers","ginfo_group":"sps_reviewers","min_name_length":"6","max_name_length":"25","reserved_names":"clone, temp, test","webpath":"\/srv\/projects","offroot":"1","gitpath":"\/usr\/bin\/git","gitclone":"\/site\/projects\/clone\/.git","maxUpload":"104857600","defaultQuota":"1","premiumQuota":"1","approachingQuota":"90","pubQuota":"1","premiumPubQuota":"1","imagepath":"\/site\/projects","defaultpic":"\/components\/com_projects\/assets\/img\/project.png","img_maxAllowed":"5242880","img_file_ext":"jpg,jpeg,jpe,bmp,tif,tiff,png,gif","logging":"0","messaging":"1","privacy":"1","limit":"25","sidebox_limit":"3","group_prefix":"pr-","use_alias":"1","documentation":"\/projects\/features","dbcheck":"1"}';
-		
+
 		$this->installExtension('com_projects', 'component', 'com_projects', '', 0, $params, 1, 1);
-		
+
 		$this->installExtension('plg_projects_blog', 'plugin', 'blog', 'projects', 1, '', 1, 0);
 		$this->installExtension('plg_projects_team', 'plugin', 'team', 'projects', 2, '', 1, 0);
-		
+
 		$params = '{"maxUpload":"104857600","maxDownload":"1048576","reservedNames":"google , dropbox, shared, temp","connectedProjects":"","enable_google":"0","google_clientId":"","google_clientSecret":"","google_appKey":"","google_folder":"Google","sync_lock":"0","auto_sync":"1","latex":"1","texpath":"\/usr\/bin\/","gspath":"\/usr\/bin\/"}';
-		
+
 		$this->installExtension('plg_projects_files','plugin', 'files', 'projects', 3, $params, 1, 0);
-		
+
 		$this->installExtension('plg_projects_todo','plugin', 'todo', 'projects', 7, '', 1, 0);
 		$this->installExtension('plg_projects_notes','plugin', 'notes', 'projects', 8, '', 1, 0);
-		
+
 		// Make entries for Groups/Members plugins, My Projects module
 		$this->installExtension('plg_members_projects','plugin', 'projects', 'members', 17, '', 1, 0);
 		$this->installExtension('plg_groups_projects','plugin', 'projects', 'groups', 17, '', 1, 0);
@@ -246,9 +246,9 @@ class ProjectsInstall extends JObject {
 
 		// Make entries to enable HUB messaging
 		$queries[] = "INSERT INTO `#__xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_member_added','You were added or invited to a project')";
-		
+
 		$queries[] = "INSERT INTO `#__xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_new_project_admin','Receive notifications about project(s) you monitor as an admin or reviewer')";
-		
+
 		$queries[] = "INSERT INTO `#__xmessage_component` (`id`,`component`,`action`,`title`) VALUES ('','com_projects','projects_admin_message','Receive administrative messages about your project(s)')";
 
 		// Create #__project_activity
@@ -351,13 +351,13 @@ class ProjectsInstall extends JObject {
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1";
 
-		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`) 
+		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`)
 						SELECT '1','General','Individual or collaborative projects of general nature','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
 						FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
-		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`) 
+		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`)
 						SELECT '3','Content publication','Projects created with the purpose to publish data as a resource or a collection of related resources','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
 						FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
-		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`) 
+		$queries[] = "INSERT INTO `#__project_types` (`id`,`type`,`description`,`params`)
 						SELECT '2','Application development','Projects created with the purpose to develop and publish a simulation tool or a code library','apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0'
 						FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
 
@@ -384,12 +384,12 @@ class ProjectsInstall extends JObject {
 		  PRIMARY KEY (`id`),
 		  UNIQUE KEY `alias` (`alias`)
 		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1";
-		
+
 		// Run queries
 		foreach ($queries as $query)
 		{
 			$this->_db->setQuery( $query );
 			$this->_db->query();
-		}		
+		}
 	}
 }

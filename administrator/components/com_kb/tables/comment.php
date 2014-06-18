@@ -38,77 +38,77 @@ class KbTableComment extends JTable
 {
 	/**
 	 * int(11) primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $entry_id   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $helpful    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $nothelpful = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -119,20 +119,20 @@ class KbTableComment extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->content = trim($this->content);
-		if ($this->content == '') 
+		if ($this->content == '')
 		{
 			$this->setError(JText::_('Your comment must contain text.'));
 			return false;
 		}
 
 		$this->entry_id = intval($this->entry_id);
-		if (!$this->entry_id) 
+		if (!$this->entry_id)
 		{
 			$this->setError(JText::_('Missing entry ID.'));
 			return false;
@@ -146,7 +146,7 @@ class KbTableComment extends JTable
 		}
 
 		$this->created_by = intval($this->created_by);
-		if (!$this->created_by) 
+		if (!$this->created_by)
 		{
 			$this->created_by = $juser->get('id');
 		}
@@ -162,7 +162,7 @@ class KbTableComment extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $entry_id Entry ID
 	 * @param      integer $user_id  User ID
 	 * @return     boolean True upon success, False if errors
@@ -170,11 +170,11 @@ class KbTableComment extends JTable
 	public function loadUserComment($entry_id, $user_id)
 	{
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE entry_id=" . $this->_db->Quote($entry_id) . " AND created_by=" . $this->_db->Quote($user_id) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -183,18 +183,18 @@ class KbTableComment extends JTable
 
 	/**
 	 * Get all comments for an entry and parent comment
-	 * 
+	 *
 	 * @param      itneger $entry_id Entry ID
 	 * @param      integer $parent   Parent comment
 	 * @return     array
 	 */
 	public function getComments($entry_id=NULL, $parent=NULL)
 	{
-		if (!$entry_id) 
+		if (!$entry_id)
 		{
 			$entry_id = $this->entry_id;
 		}
-		if (!$parent) 
+		if (!$parent)
 		{
 			$parent = 0;
 		}
@@ -202,12 +202,12 @@ class KbTableComment extends JTable
 		$juser = JFactory::getUser();
 
 		//$sql = "SELECT * FROM $this->_tbl WHERE entry_id=$entry_id AND parent=$parent ORDER BY created ASC";
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$sql  = "SELECT c.*, v.vote FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__faq_helpful_log AS v ON v.object_id=c.id AND v.user_id=" . $juser->get('id') . " AND v.type='comment' ";
-		} 
-		else 
+		}
+		else
 		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
@@ -219,43 +219,43 @@ class KbTableComment extends JTable
 
 	/**
 	 * Get all comments (and their abuse reports) on an entry
-	 * 
+	 *
 	 * @param      integer $entry_id Entry ID
 	 * @return     array
 	 */
 	public function getAllComments($entry_id=NULL)
 	{
-		if (!$entry_id) 
+		if (!$entry_id)
 		{
 			$entry_id = $this->entry_id;
 		}
 
 		$comments = $this->getComments($entry_id, 0);
-		if ($comments) 
+		if ($comments)
 		{
 			$ra = null;
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new ReportAbuse($this->_db);
 			}
 			foreach ($comments as $key => $row)
 			{
-				if ($ra) 
+				if ($ra)
 				{
 					$comments[$key]->reports = $ra->getCount(array('id'=>$comments[$key]->id, 'category'=>'kb'));
 				}
 				$comments[$key]->replies = $this->getComments($entry_id, $row->id);
-				if ($comments[$key]->replies) 
+				if ($comments[$key]->replies)
 				{
 					foreach ($comments[$key]->replies as $ky => $rw)
 					{
-						if ($ra) 
+						if ($ra)
 						{
 							$comments[$key]->replies[$ky]->reports = $ra->getCount(array('id'=>$rw->id, 'category'=>'kb'));
 						}
 						$comments[$key]->replies[$ky]->replies = $this->getComments($entry_id, $rw->id);
-						if ($comments[$key]->replies[$ky]->replies && $ra) 
+						if ($comments[$key]->replies[$ky]->replies && $ra)
 						{
 							foreach ($comments[$key]->replies[$ky]->replies as $kyy => $rwy)
 							{
@@ -271,20 +271,20 @@ class KbTableComment extends JTable
 
 	/**
 	 * Delete all children of a comment
-	 * 
+	 *
 	 * @param      integer $id Comment ID
 	 * @return     boolean True upon success
 	 */
 	public function deleteChildren($id=NULL)
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->id;
 		}
 
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
 		$comments = $this->_db->loadObjectList();
-		if ($comments) 
+		if ($comments)
 		{
 			foreach ($comments as $row)
 			{
@@ -296,14 +296,14 @@ class KbTableComment extends JTable
 				}*/
 				// Delete children
 				$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($row->id));
-				if (!$this->_db->query()) 
+				if (!$this->_db->query())
 				{
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
 			}
 			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($id));
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;

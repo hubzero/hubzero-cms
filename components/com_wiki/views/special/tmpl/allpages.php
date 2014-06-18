@@ -55,11 +55,11 @@ if ($namespace)
 	$where .= "AND LOWER(wp.pagename) LIKE '" . $database->getEscaped(strtolower($namespace)) . "%'";
 }
 
-$query = "SELECT COUNT(*) 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
+$query = "SELECT COUNT(*)
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				$where
@@ -69,10 +69,10 @@ $database->setQuery($query);
 $total = $database->loadResult();
 
 $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !='') THEN wp.`title` ELSE wp.`pagename` END) AS `title`, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				$where
@@ -100,7 +100,7 @@ $rows = $database->loadObjectList();
 
 		<div class="grid">
 <?php
-if ($rows) 
+if ($rows)
 {
 	$columns = array_chunk($rows, ceil(count($rows) / 3 ), true /* preserve keys */ );
 
@@ -132,7 +132,7 @@ if ($rows)
 						<h3><?php echo $index; ?></h3>
 						<ul>
 						<?php
-					} 
+					}
 					else if ($k == 0)
 					{
 						?>
@@ -151,7 +151,7 @@ if ($rows)
 				}
 				?>
 				</ul>
-			<?php 
+			<?php
 			}
 			?>
 			</div>

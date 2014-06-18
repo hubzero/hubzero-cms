@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 <?php } else { ?>
 	<ul>
-		<?php foreach($this->items as $todo) { 
+		<?php foreach($this->items as $todo) {
 			$overdue = '';
 			$due = '';
 			if($todo->duedate && $todo->duedate != '0000-00-00 00:00:00' && $todo->duedate <= date( 'Y-m-d H:i:s') ) {
@@ -47,17 +47,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 			}
 			else if($todo->duedate && $todo->duedate != '0000-00-00 00:00:00') {
 				$due = JText::_('COM_PROJECTS_DUE').' '.JText::_('COM_PROJECTS_IN').' '.ProjectsHtml::timeFromNow($todo->duedate);
-			}						
+			}
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias. a . 'active=todo' . a . 'action=view').'/?todoid='.$todo->id; ?>" title="<?php echo htmlentities($todo->content); ?>">
 		<?php echo \Hubzero\Utility\String::truncate($todo->content, 35); ?></a>
 		 <span class="block faded mini">
 			<?php if($todo->assignedname) { ?>
-			<span><?php echo ProjectsHtml::shortenName($todo->assignedname); ?></span> | 
-			<?php } ?>	
+			<span><?php echo ProjectsHtml::shortenName($todo->assignedname); ?></span> |
+			<?php } ?>
 			<?php if($due) { ?>
-			<span class="duetd<?php echo $overdue; ?>"><?php echo $due; ?></span> | 
+			<span class="duetd<?php echo $overdue; ?>"><?php echo $due; ?></span> |
 			<?php } ?>
 			<span><?php echo $todo->comments.' '; echo $todo->comments == 1 ? strtolower(JText::_('COM_PROJECTS_COMMENT')) : JText::_('COM_PROJECTS_COMMENTS'); ?></span>
 		</span>

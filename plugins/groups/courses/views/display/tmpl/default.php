@@ -58,11 +58,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 			<table class="courses entries" summary="<?php echo JText::_('PLG_GROUPS_COURSES_RESULTS_SUMMARY'); ?>">
 				<caption>
-					<?php 
+					<?php
 					$s = ($this->total > 0) ? $this->filters['start']+1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-					echo $this->escape(JText::_('PLG_GROUPS_COURSES')); //JText::_('PLG_GROUPS_COURSES_' . strtoupper($this->filters['task'])); 
+					echo $this->escape(JText::_('PLG_GROUPS_COURSES')); //JText::_('PLG_GROUPS_COURSES_' . strtoupper($this->filters['task']));
 					?>
 					<span>(<?php echo JText::sprintf('PLG_GROUPS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 				</caption>
@@ -81,7 +81,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							</a><br />
 						<?php
 							$instructors = $course->instructors();
-							if (count($instructors) > 0) 
+							if (count($instructors) > 0)
 							{
 								$names = array();
 								foreach ($instructors as $i)
@@ -102,23 +102,23 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<?php
 							}
 						?>
-							<span class="<?php 
-							switch ($course->get('state')) 
+							<span class="<?php
+							switch ($course->get('state'))
 							{
 								case 3: echo 'draft'; break;
 								case 2: echo 'trashed'; break;
 								case 1: echo 'published'; break;
 								case 0: echo 'unpublished'; break;
-							} 
+							}
 							?> entry-state">
-							<?php 
-							switch ($course->get('state')) 
+							<?php
+							switch ($course->get('state'))
 							{
 								case 3: echo JText::_('PLG_GROUPS_COURSES_STATE_DRAFT'); break;
 								case 2: echo JText::_('PLG_GROUPS_COURSES_STATE_DELETED'); break;
 								case 1: echo JText::_('PLG_GROUPS_COURSES_STATE_PUBLISHED'); break;
 								case 0: echo JText::_('PLG_GROUPS_COURSES_STATE_UNPUBLISHED'); break;
-							} 
+							}
 							?>
 							</span>
 						</td>
@@ -129,11 +129,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				</tbody>
 			</table>
 
-			<?php 
+			<?php
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				$this->total, 
-				$this->filters['start'], 
+				$this->total,
+				$this->filters['start'],
 				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));

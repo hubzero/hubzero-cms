@@ -56,7 +56,7 @@ $juser = JFactory::getUser();
 				</fieldset>
 			</div><!-- / .container -->
 
-			<?php 
+			<?php
 			$qs = array();
 			foreach ($this->filters as $f=>$v)
 			{
@@ -71,7 +71,7 @@ $juser = JFactory::getUser();
 			$url .= ($qs != '') ? '&' . $qs : '';
 
 			$html  = '<a href="' . JRoute::_($url) . '"';
-			if ($this->filters['index'] == '') 
+			if ($this->filters['index'] == '')
 			{
 				$html .= ' class="active-index"';
 			}
@@ -82,7 +82,7 @@ $juser = JFactory::getUser();
 				$url .= ($qs != '') ? '&' . $qs : '';
 
 				$html .= '<a href="' . JRoute::_($url) . '"';
-				if ($this->filters['index'] == strtolower($letter)) 
+				if ($this->filters['index'] == strtolower($letter))
 				{
 					$html .= ' class="active-index"';
 				}
@@ -137,9 +137,9 @@ $juser = JFactory::getUser();
 						} else {
 							$title = 'COM_MEMBERS_BROWSE_CONTRIBUTORS';
 						}
-						if ($this->filters['index']) { 
+						if ($this->filters['index']) {
 							$title = JText::sprintf($title . '_STARTING_WITH', strToUpper($this->filters['index']));
-						} 
+						}
 						else
 						{
 							$title = JText::_($title);
@@ -164,7 +164,7 @@ $juser = JFactory::getUser();
 					</thead>
 					<tbody>
 					<?php
-					if (count($this->rows) > 0) 
+					if (count($this->rows) > 0)
 					{
 						// Get plugins
 						JPluginHelper::importPlugin('members');
@@ -190,7 +190,7 @@ $juser = JFactory::getUser();
 
 						// User messaging
 						$messaging = false;
-						if ($this->config->get('user_messaging') > 0 && !$juser->get('guest')) 
+						if ($this->config->get('user_messaging') > 0 && !$juser->get('guest'))
 						{
 							switch ($this->config->get('user_messaging'))
 							{
@@ -198,11 +198,11 @@ $juser = JFactory::getUser();
 									// Get the groups the visiting user
 									$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 									$usersgroups = array();
-									if (!empty($xgroups)) 
+									if (!empty($xgroups))
 									{
 										foreach ($xgroups as $group)
 										{
-											if ($group->regconfirmed) 
+											if ($group->regconfirmed)
 											{
 												$usersgroups[] = $group->cn;
 											}
@@ -222,21 +222,21 @@ $juser = JFactory::getUser();
 						{
 							//$cls = ($cls == 'odd') ? 'even' : 'odd';
 							$cls = '';
-							if ($row->public != 1) 
+							if ($row->public != 1)
 							{
 								$cls = 'private';
 							}
 
-							if ($row->uidNumber < 0) 
+							if ($row->uidNumber < 0)
 							{
 								$id = 'n' . -$row->uidNumber;
-							} 
-							else 
+							}
+							else
 							{
 								$id = $row->uidNumber;
 							}
 
-							if ($row->uidNumber == $juser->get('id')) 
+							if ($row->uidNumber == $juser->get('id'))
 							{
 								$cls .= ($cls) ? ' me' : 'me';
 							}
@@ -247,28 +247,28 @@ $juser = JFactory::getUser();
 							$row->givenName  = stripslashes($row->givenName);
 							$row->middelName = stripslashes($row->middleName);
 
-							if (!$row->surname) 
+							if (!$row->surname)
 							{
 								$bits = explode(' ', $row->name);
 								$row->surname = array_pop($bits);
-								if (count($bits) >= 1) 
+								if (count($bits) >= 1)
 								{
 									$row->givenName = array_shift($bits);
 								}
-								if (count($bits) >= 1) 
+								if (count($bits) >= 1)
 								{
 									$row->middleName = implode(' ', $bits);
 								}
 							}
 
 							$name = ($row->surname) ? stripslashes($row->surname) : '';
-							if ($row->givenName) 
+							if ($row->givenName)
 							{
 								$name .= ($row->surname) ? ', ' : '';
 								$name .= stripslashes($row->givenName);
 								$name .= ($row->middleName) ? ' ' . stripslashes($row->middleName) : '';
 							}
-							if (!trim($name)) 
+							if (!trim($name))
 							{
 								$name = JText::_('COM_MEMBERS_UNKNOWN') . ' (' . $row->username . ')';
 							}
@@ -276,23 +276,23 @@ $juser = JFactory::getUser();
 							// User picture
 							/*$new_thumb = '';
 							$old_thumb = '';
-							if ($row->picture) 
+							if ($row->picture)
 							{
 								$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
-								
+
 								$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
 								$old_thumb = \Hubzero\User\Profile\Helper::thumbit($old_thumb);
 							}
 
-							if ($new_thumb && is_file(JPATH_ROOT . $new_thumb)) 
+							if ($new_thumb && is_file(JPATH_ROOT . $new_thumb))
 							{
 								$p = $new_thumb;
 							}
 							else if($old_thumb && is_file(JPATH_ROOT . $old_thumb))
 							{
 								$p = $old_thumb;
-							} 
-							else 
+							}
+							else
 							{
 								$p = $dfthumb;
 							}*/
@@ -305,7 +305,7 @@ $juser = JFactory::getUser();
 
 							// User messaging
 							$messageuser = false;
-							if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id')) 
+							if ($messaging && $row->uidNumber > 0 && $row->uidNumber != $juser->get('id'))
 							{
 								switch ($this->config->get('user_messaging'))
 								{
@@ -314,11 +314,11 @@ $juser = JFactory::getUser();
 										$pgroups = \Hubzero\User\Helper::getGroups($row->uidNumber, 'all');
 										// Get the groups the user has access to
 										$profilesgroups = array();
-										if (!empty($pgroups)) 
+										if (!empty($pgroups))
 										{
 											foreach ($pgroups as $group)
 											{
-												if ($group->regconfirmed) 
+												if ($group->regconfirmed)
 												{
 													$profilesgroups[] = $group->cn;
 												}
@@ -328,7 +328,7 @@ $juser = JFactory::getUser();
 										// Find the common groups
 										$common = array_intersect($usersgroups, $profilesgroups);
 
-										if (count($common) > 0) 
+										if (count($common) > 0)
 										{
 											$messageuser = true;
 										}
@@ -360,7 +360,7 @@ $juser = JFactory::getUser();
 							</td>
 							<td>
 								<?php if ($this->contribution_counting) { ?>
-								<!-- rcount: <?php echo $row->rcount; ?> --> 
+								<!-- rcount: <?php echo $row->rcount; ?> -->
 								<span class="activity"><?php echo $row->resource_count . ' Resources, ' . $row->wiki_count . ' Topics'; ?></span>
 								<?php } ?>
 							</td>

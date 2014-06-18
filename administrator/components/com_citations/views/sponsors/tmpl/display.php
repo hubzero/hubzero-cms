@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CitationsHelper::getActions('sponsor');
 
 JToolBarHelper::title(JText::_('Citation Sponsors'), 'citation.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
@@ -41,7 +41,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('sponsors');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 						<td><?php echo $sponsor['image']; ?></td>
 						<td>
 <?php if ($canDo->get('core.edit')) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $sponsor['id']); ?>">Edit</a> | 
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $sponsor['id']); ?>">Edit</a> |
 <?php } ?>
 <?php if ($canDo->get('core.delete')) { ?>
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id[]=' . $sponsor['id']); ?>">Delete</a>

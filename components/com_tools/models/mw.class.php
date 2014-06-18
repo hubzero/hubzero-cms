@@ -38,84 +38,84 @@ class MwSession extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum    = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $username   = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $remoteip   = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $exechost   = null;
 
 	/**
 	 * int(10)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $dispnum    = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start      = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $accesstime = null;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $timeout    = null;
 
 	/**
 	 * varchar(80)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $appname    = null;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sessname   = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sesstoken  = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,35 +126,35 @@ class MwSession extends JTable
 
 	/**
 	 * Load a session and bind to $this
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username Username
 	 * @return     boolean False if error, true on success
 	 */
 	public function load($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
 
-		if ($username) 
+		if ($username)
 		{
 			$query .= " AND username='$username'";
 		}
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -163,43 +163,43 @@ class MwSession extends JTable
 
 	/**
 	 * Load a session
-	 * 
+	 *
 	 * @param      integer $sess       Session number
 	 * @param      string  $authorized Is user admin?
 	 * @return     mixed False if error, object on success
 	 */
 	public function loadSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $sess . "
 					  LIMIT 1";
-		} 
-		else 
+		}
+		else
 		{
 			$juser = JFactory::getUser();
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $sess . "
 					  AND v.viewuser='" . $juser->get('username') . "'";
 		}
 
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			return $rows[0];
 		}
@@ -207,46 +207,46 @@ class MwSession extends JTable
 
 	/**
 	 * Check if a session is owner by the current user
-	 * 
+	 *
 	 * @param      integer $sess       Session number
 	 * @param      string  $authorized Is user admin?
 	 * @return     mixed False if error, object on success
 	 */
 	public function checkSession($sess=null, $authorized=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $sess . "
 					  LIMIT 1";
-		} 
-		else 
+		}
+		else
 		{
 			// Note: this check is different from others.
 			// Here, we check that the $juser->get('username') OWNS the session.
 			$juser = JFactory::getUser();
-			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s 
-					  ON v.sessnum = s.sessnum 
-					  WHERE v.sessnum=" . $sess . " 
+			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
+					  ON v.sessnum = s.sessnum
+					  WHERE v.sessnum=" . $sess . "
 					  AND s.username='" . $juser->get('username') . "'
 					  AND v.viewuser='" . $juser->get('username') . "'";
 		}
 
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			return $rows[0];
 		}
@@ -254,24 +254,24 @@ class MwSession extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      string $username Username
 	 * @param      string $appname  Tool name
 	 * @return     mixed False if error, integer on success
 	 */
 	public function getCount($username=NULL, $appname=NULL)
 	{
-		if ($username == null) 
+		if ($username == null)
 		{
 			$username = $this->username;
 		}
-		if ($username === null) 
+		if ($username === null)
 		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) 
+		if ($appname)
 		{
 			$a = "AND s.appname='$appname'";
 		}
@@ -279,7 +279,7 @@ class MwSession extends JTable
 		$mv = new MwViewperm($this->_db);
 
 		$query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
-				  ON v.sessnum = s.sessnum 
+				  ON v.sessnum = s.sessnum
 				  WHERE v.viewuser='".$username."' AND s.username='".$username."' $a
 				  ORDER BY s.start";
 
@@ -289,7 +289,7 @@ class MwSession extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      string $username   Username
 	 * @param      string $appname    Tool name
 	 * @param      string $authorized Is user admin?
@@ -297,28 +297,28 @@ class MwSession extends JTable
 	 */
 	public function getRecords($username=null, $appname=null, $authorized=null)
 	{
-		if ($username == null) 
+		if ($username == null)
 		{
 			$username = $this->username;
 		}
-		if ($username === null) 
+		if ($username === null)
 		{
 			return false;
 		}
 
 		$a = "";
-		if ($appname) 
+		if ($appname)
 		{
 			$a = "AND s.appname='$appname'";
 		}
 
 		$mv = new MwViewperm($this->_db);
 
-		if ($authorized === 'admin') 
+		if ($authorized === 'admin')
 		{
 			$query = "SELECT * FROM $this->_tbl AS s ORDER BY s.accesstime DESC";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
@@ -337,17 +337,17 @@ class MwSession extends JTable
 
 	/**
 	 * Get the timeout time
-	 * 
+	 *
 	 * @param      integer $sess Session number
 	 * @return     mixed False on error, integer on success
 	 */
 	public function getTimeout($sess)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
@@ -374,70 +374,70 @@ class MwJob extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $jobid     = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $superjob  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $event     = null;
 
 	/**
 	 * smallint(5)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ncpus     = null;
 
 	/**
 	 * varchar(80)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $venue     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $heartbeat = null;
 
 	/**
 	 * smallint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $active     = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -454,49 +454,49 @@ class MwView extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $viewid    = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $username  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $remoteip  = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $heartbeat = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -513,63 +513,63 @@ class MwViewperm extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $viewuser  = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $viewtoken = null;
 
 	/**
 	 * varchar(9)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $geometry  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $fwhost    = null;
 
 	/**
 	 * smallint(5)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $fwport    = null;
 
 	/**
 	 * varchar(16)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $vncpass   = null;
 
 	/**
 	 * varchar(4)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $readonly  = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -580,23 +580,23 @@ class MwViewperm extends JTable
 
 	/**
 	 * Load a record
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username Username
 	 * @return     mixed False on error, array on success
 	 */
 	public function loadViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum='$sess'";
-		if ($username) 
+		if ($username)
 		{
 			$query .=  " AND viewuser='" . $username . "'";
 		}
@@ -606,28 +606,28 @@ class MwViewperm extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username Username
 	 * @return     boolean False on error, true on success
 	 */
 	public function deleteViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 		$query = "DELETE FROM $this->_tbl WHERE sessnum='$sess'";
-		if ($username) 
+		if ($username)
 		{
 			$query .=  " AND viewuser='" . $username . "'";
 		}
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -637,7 +637,7 @@ class MwViewperm extends JTable
 
 	/**
 	 * Update a record
-	 * 
+	 *
 	 * @param      boolean $updateNulls Update null values?
 	 * @return     boolean False on error, true on success
 	 */
@@ -645,12 +645,12 @@ class MwViewperm extends JTable
 	{
 		$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -658,19 +658,19 @@ class MwViewperm extends JTable
 
 	/**
 	 * Insert a record
-	 * 
+	 *
 	 * @return     boolean False on error, true on success
 	 */
 	public function insert()
 	{
 		$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -684,63 +684,63 @@ class MiddlewareApp
 {
 	/**
 	 * varchar(80)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $appname;
 
 	/**
 	 * varchar(9)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $geometry;
 
 	/**
 	 * smallint(5)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $depth;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $hostreq;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $userreq;
 
 	/**
 	 * int(10)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $timeout;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $command;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string  $a    App name
 	 * @param      string  $g    Geometry
 	 * @param      integer $d    Depth
@@ -771,28 +771,28 @@ class Host
 {
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $hostname;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $provisions;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $status;
 
 	/**
 	 * Set values
-	 * 
+	 *
 	 * @param      string  $h Hostname
 	 * @param      integer $p Provisions
 	 * @param      string  $s Status
@@ -813,28 +813,28 @@ class Hosttype
 {
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $value;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description;
 
 	/**
 	 * Set values
-	 * 
+	 *
 	 * @param      string  $n Name
 	 * @param      integer $v Value
 	 * @param      string  $d Description
@@ -855,35 +855,35 @@ class RecentTool extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid     = NULL;
 
 	/**
 	 * varchar
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tool    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -894,17 +894,17 @@ class RecentTool extends JTable
 
 	/**
 	 * Get all records for recently used tools
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     mixed False if error, array on success
 	 */
 	public function getRecords($uid=null)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			$uid = $this->uid;
 		}
-		if ($uid === null) 
+		if ($uid === null)
 		{
 			return false;
 		}

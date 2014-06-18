@@ -21,7 +21,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 			$database = JFactory::getDBO();
 			$pt = new ProjectTags($database);
 
-			for ($i=0, $n=count( $this->rows ); $i < $n; $i++) 
+			for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			{
 				$row = $this->rows[$i];
 

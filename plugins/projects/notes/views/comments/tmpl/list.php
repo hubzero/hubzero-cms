@@ -116,7 +116,7 @@ if (count($this->comments) > 0) {
 			}
 		if ($this->level < 3) {
 			$html .= "\t\t\t\t".'<a class="reply" href="'.JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->scope.'&pagename='.$this->page->pagename.'&action=addcomment&parent='.$comment->id).'" title="'.JText::sprintf('WIKI_COMMENT_REPLY_TO',$author).'">'.JText::_('Reply').'</a>'."\n";
-			
+
 		}
 		//$html .= t.t.t.' | <a class="abuse" href="'.JRoute::_('index.php?option='.$this->option.a.'scope='.$this->page->scope.a.'pagename='.$this->page->pagename.a.'task=reportcomment'.a.'id='.$comment->id).'">'.JText::_('WIKI_COMMENT_REPORT').'</a>';
 		//$html .= '</p><p class="actions">&nbsp;</p>'.n;

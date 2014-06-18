@@ -35,7 +35,7 @@ $size = getimagesize($this->upath . DS . $this->file);
 $w = ($size[0] > 600) ? $size[0]/1.4444444 : $size[0];
 $h = ($w != $size[0]) ? $size[1]/1.4444444 : $size[1];
 
-$title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[0]->title : ''; 
+$title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[0]->title : '';
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>

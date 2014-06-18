@@ -46,7 +46,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			</p>
 
 			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
 				<?php echo JText::_('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
 			</label>
 		</fieldset>

@@ -35,7 +35,7 @@ $canDo = ResourcesHelperPermissions::getActions('license');
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Resource License') . ': ' . $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::spacer();
@@ -43,15 +43,15 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	/*var form = document.getElementById('adminForm');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {
@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
-				<?php 
+				<?php
 				echo JFactory::getEditor()->display('fields[text]', stripslashes($this->row->text), '', '', '45', '10', false);
 				?>
 			</div>

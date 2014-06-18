@@ -38,13 +38,13 @@ class UsageControllerData extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display primary page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -58,7 +58,7 @@ class UsageControllerData extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancel()

@@ -46,36 +46,36 @@ $lcls = '';
 $cls  = ' tooltips';
 
 $juser = JFactory::getUser();
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	// Logged in
 	$like_title    = JText::_('COM_WISHLIST_VOTING_I_LIKE_THIS');
 	$dislike_title = JText::_('COM_WISHLIST_VOTING_I_DISLIKE_THIS');
 
-	if ($this->item->get('vote')) 
+	if ($this->item->get('vote'))
 	{
 		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_ALREADY_VOTED');
-		if ($this->item->get('vote') == $this->item->get('positive')) 
+		if ($this->item->get('vote') == $this->item->get('positive'))
 		{
 			$lcls = ' chosen';
 		}
-		if ($this->item->get('vote') == $this->item->get('negative')) 
+		if ($this->item->get('vote') == $this->item->get('negative'))
 		{
 			$dcls = ' chosen';
 		}
 	}
-	if ($juser->get('id') == $this->item->get('proposed_by')) 
+	if ($juser->get('id') == $this->item->get('proposed_by'))
 	{
 		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_CANNOT_VOTE_FOR_OWN');
 	}
-	if ($this->item->get('status') == 1 
-	 || $this->item->get('status') == 3 
-	 || $this->item->get('status') == 4) 
-	{ 
+	if ($this->item->get('status') == 1
+	 || $this->item->get('status') == 3
+	 || $this->item->get('status') == 4)
+	{
 		$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_CLOED');
 	}
-} 
-else 
+}
+else
 {
 	// Not logged in
 	$like_title = $dislike_title = JText::_('COM_WISHLIST_VOTING_LOGIN_TO_VOTE');

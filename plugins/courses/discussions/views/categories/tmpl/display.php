@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
@@ -74,15 +74,15 @@ $base = $this->offering->link() . '&active=forum';
 				<?php } ?>
 					<tbody>
 				<?php
-				if ($this->rows) 
+				if ($this->rows)
 				{
-					foreach ($this->rows as $row) 
+					foreach ($this->rows as $row)
 					{
 						$name = JText::_('Anonymous');
 						if (!$row->anonymous)
 						{
 							$creator = JUser::getInstance($row->created_by);
-							if (is_object($creator)) 
+							if (is_object($creator))
 							{
 								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
 							}
@@ -117,17 +117,17 @@ $base = $this->offering->link() . '&active=forum';
 							<td>
 								<span><?php echo JText::_('Last Post:'); ?></span>
 								<span class="entry-details">
-								<?php 
+								<?php
 									/*$lastpost = null;
 									if ($row->last_activity != '0000-00-00 00:00:00')
 									{*/
 										$lastpost = $this->forum->getLastPost($row->id);
 									//}
-									if (is_object($lastpost)) 
+									if (is_object($lastpost))
 									{
 										$lname = JText::_('Anonymous');
 										$lastposter = JUser::getInstance($lastpost->created_by);
-										if (is_object($lastposter)) 
+										if (is_object($lastposter))
 										{
 											$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 										}
@@ -159,7 +159,7 @@ $base = $this->offering->link() . '&active=forum';
 							</td>
 						<?php } ?>
 						</tr>
-				<?php 
+				<?php
 					}
 				} else { ?>
 						<tr>
@@ -170,8 +170,8 @@ $base = $this->offering->link() . '&active=forum';
 				<?php } ?>
 					</tbody>
 				</table>
-				<?php 
-				if ($this->pageNav) 
+				<?php
+				if ($this->pageNav)
 				{
 					$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 					$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));

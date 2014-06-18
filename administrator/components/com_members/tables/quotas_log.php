@@ -38,77 +38,77 @@ class MembersQuotasLog extends JTable
 {
 	/**
 	 * ID - primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * Object type (user quota or quota class)
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $object_type = null;
 
 	/**
 	 * Object ID, Id of object being changed
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $object_id = null;
 
 	/**
 	 * Name (eithe class name or user name, depending on object type)
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = null;
 
 	/**
 	 * Action type (add/modify/delete)
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $action = null;
 
 	/**
 	 * Actor id, who's performing the change
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $actor_id = null;
 
 	/**
 	 * Soft blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_blocks = null;
 
 	/**
 	 * Hard blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_blocks = null;
 
 	/**
 	 * Soft files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_files = null;
 
 	/**
 	 * Hard files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_files = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

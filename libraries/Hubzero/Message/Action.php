@@ -37,35 +37,35 @@ class Action extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          = NULL;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $class       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $element     = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -76,13 +76,13 @@ class Action extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->element = intval($this->element);
-		if (!$this->element) 
+		if (!$this->element)
 		{
 			$this->setError(\JText::_('Please provide an element.'));
 			return false;
@@ -92,7 +92,7 @@ class Action extends \JTable
 
 	/**
 	 * Get records for specific type, element, component, and user
-	 * 
+	 *
 	 * @param      string  $type      Action type
 	 * @param      string  $component Component name
 	 * @param      integer $element   ID of element that needs action
@@ -101,21 +101,21 @@ class Action extends \JTable
 	 */
 	public function getActionItems($type=null, $component=null, $element=null, $uid=null)
 	{
-		if (!$component) 
+		if (!$component)
 		{
 			$component = $this->class;
 		}
-		if (!$element) 
+		if (!$element)
 		{
 			$element = $this->element;
 		}
-		if (!$component || !$element || !$uid || !$type) 
+		if (!$component || !$element || !$uid || !$type)
 		{
 			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
-		$query = "SELECT m.id 
+		$query = "SELECT m.id
 				FROM `#__xmessage_recipient` AS r, $this->_tbl AS a, `#__xmessage` AS m
 				WHERE m.id=r.mid AND r.actionid = a.id AND m.type=" . $this->_db->Quote($type) . " AND r.uid=" . $this->_db->Quote($uid) . " AND a.class=" . $this->_db->Quote($component) . " AND a.element=" . $this->_db->Quote($element);
 

@@ -38,7 +38,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -50,7 +50,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * List all questions
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -94,13 +94,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Sorting
 		$this->view->filters['sortby']   = '';
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'created'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 
@@ -175,7 +175,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			$this->view->row = new AnswersModelQuestion($id);
 		}
@@ -195,7 +195,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a question and fall back to edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -205,7 +205,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a question
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask($redirect=true)
@@ -262,7 +262,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more questions and associated data
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -312,7 +312,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set one or more questions to open
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function openTask()
@@ -322,7 +322,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set one or more questions to closed
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function closeTask()
@@ -332,7 +332,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state of one or more questions
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function stateTask()
@@ -408,7 +408,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task and redirect to default view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancel()

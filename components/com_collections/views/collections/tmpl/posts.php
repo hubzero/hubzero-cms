@@ -38,7 +38,7 @@ $this->css()
      ->js();
 
 $likes = 0;
-if ($this->rows->total() > 0) 
+if ($this->rows->total() > 0)
 {
 	foreach ($this->rows as $row)
 	{
@@ -92,8 +92,8 @@ $base = 'index.php?option=' . $this->option;
 
 	<section class="main section">
 		<div id="posts" data-base="<?php echo JURI::base(true); ?>" class="view-as <?php echo $mode; ?>">
-<?php 
-if ($this->rows->total() > 0) 
+<?php
+if ($this->rows->total() > 0)
 {
 	foreach ($this->rows as $row)
 	{
@@ -152,16 +152,16 @@ if ($this->rows->total() > 0)
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>">
 							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-						</a> 
-						onto 
+						</a>
+						onto
 						<a href="<?php echo JRoute::_($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-							<span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-							<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+							<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+							<span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
+							<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
 							<span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>

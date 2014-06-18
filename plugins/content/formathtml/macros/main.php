@@ -39,7 +39,7 @@ class Main extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -52,14 +52,14 @@ class Main extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -74,15 +74,15 @@ class Main extends Macro
 
 			// Is it numeric?
 			$scope = '';
-			if (is_numeric($page)) 
+			if (is_numeric($page))
 			{
 				// Yes
 				$page = intval($page);
-			} 
-			else 
+			}
+			else
 			{
 				$page = trim($page, DS);
-				if (strstr($page, '/') && !strstr($page, ' ')) 
+				if (strstr($page, '/') && !strstr($page, ' '))
 				{
 					$bits = explode('/', $page);
 					$page = array_pop($bits);
@@ -90,14 +90,14 @@ class Main extends Macro
 				}
 			}
 
-			if ($this->domain != '' && $scope == '') 
+			if ($this->domain != '' && $scope == '')
 			{
 				$scope = $this->scope;
 			}
 			// No, get resource by alias
 			$g = new \WikiTablePage($this->_db);
 
-			if (strstr($page, ' ')) 
+			if (strstr($page, ' '))
 			{
 				$g->loadByTitle($page, $scope);
 			}
@@ -105,22 +105,22 @@ class Main extends Macro
 			{
 				$g->load($page, $scope);
 			}
-			if (!$g->id) 
+			if (!$g->id)
 			{
 				$g->pagename = $page;
 			}
 
 			// Build and return the link
-			if ($g->group_cn != '' && $g->scope != '') 
+			if ($g->group_cn != '' && $g->scope != '')
 			{
 				$link = 'index.php?option=com_groups&scope=' . $g->scope . '&pagename=' . $g->pagename;
-			} 
-			else 
+			}
+			else
 			{
 				$link = 'index.php?option=com_wiki&scope=' . $g->scope . '&pagename=' . $g->pagename;
 			}
-			
-			if (!$g->id) 
+
+			if (!$g->id)
 			{
 				$l[] = '<a href="' . \JRoute::_($link) . '">' . stripslashes($g->getTitle()) . '</a>';
 			}
@@ -137,7 +137,7 @@ class Main extends Macro
 			$html .= implode(', ', $l);
 			$html .= ' and ' . $last;
 		}
-		else 
+		else
 		{
 			$html .= $l[0];
 		}

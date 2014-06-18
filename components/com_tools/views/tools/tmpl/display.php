@@ -82,10 +82,10 @@ $this->css('introduction.css', 'system')
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
+				<?php
 				$cls = 'even';
 				if (count($this->apps) > 0) {
-					foreach ($this->apps as $project) 
+					foreach ($this->apps as $project)
 					{
 						//if ($project->state == 1 || $project->state == 3) {
 						if ($project->tool_state != 8) {

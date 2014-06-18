@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  = JFactory::getUser();
-	
+
 	$jobsHtml = new JobsHtml();
 
 	$job = $this->job;
@@ -47,8 +47,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, 'Y-m-d') : '';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, 'Y-m-d') : '';
 
-	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode	
-	
+	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode
+
 	$hubzero_Geo = new \Hubzero\Geocode\Geocode();
 	$countries = $hubzero_Geo->getcountries();
 ?>
@@ -60,11 +60,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($this->emp) {  ?>
 			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
-		<?php } else { ?> 
+		<?php } else { ?>
 			<li>
 				<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
 				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
-			</li> 
+			</li>
 		<?php } ?>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -114,13 +114,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_JOBS_EDITJOB_COUNTRY'); ?>: <span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 				<select name="companyLocationCountry" id="companyLocationCountry">
 					<option value=""><?php echo JText::_('COM_JOBS_OPTION_SELECT_FROM_LIST'); ?></option>
-					<?php 
-					foreach ($countries as $country) 
+					<?php
+					foreach ($countries as $country)
 					{
 						$selected = $job->companyLocationCountry ? $job->companyLocationCountry : 'United States';
 						?>
 						<option value="<?php echo $this->escape($country['name']); ?>"<?php if (strtoupper($country['name']) == strtoupper($selected)) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
-						<?php 
+						<?php
 					}
 					?>
 				</select>
@@ -134,7 +134,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input name="companyName" maxlength="120" id="companyName" type="text" value="<?php echo $this->escape(stripslashes($job->companyName)); ?>" />
 			</label>
 			<label>
-				<?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY_WEBSITE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EMPLOYER_COMPANY_WEBSITE'); ?>:
 				<input name="companyWebsite" maxlength="190" id="companyWebsite" type="text" value="<?php echo $this->escape(stripslashes($job->companyWebsite)); ?>" />
 			</label>
 			<p class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_COMPANY'); ?></p>
@@ -158,13 +158,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_JOBS_EDITJOB_JOB_SPECIFICS'); ?></legend>
-			
+
 			<label>
-				<?php echo JText::_('COM_JOBS_EDITJOB_CATEGORY'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CATEGORY'); ?>:
 				<?php echo $jobsHtml->formSelect('cid', $this->cats, $job->cid, '', ''); ?>
 			</label>
 			<label>
-				<?php echo JText::_('COM_JOBS_EDITJOB_TYPE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_TYPE'); ?>:
 				<?php echo $jobsHtml->formSelect('type', $this->types, $job->type, '', ''); ?>
 			</label>
 			<label for="startdate">
@@ -180,7 +180,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
 			</label>
 			<label for="applyInternal">
-				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> /> 
+				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1"<?php echo $job->applyInternal ? ' checked="checked" ' : ''; ?> />
 				<?php echo JText::_('COM_JOBS_EDITJOB_ALLOW_INTERNAL_APPLICATION'); ?>
 			</label>
 		</fieldset>
@@ -190,9 +190,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_INFO'); ?> <span>(<?php echo JText::_('COM_JOBS_OPTIONAL'); ?>)</span></legend>
-			
+
 			<label for="contactName">
-				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_NAME'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_NAME'); ?>:
 				<input name="contactName" id="contactName" maxlength="100"  type="text" value="<?php echo $job->contactName ? $this->escape(stripslashes($job->contactName)) : $this->escape(stripslashes($profile->get('name'))); ?>" />
 			</label>
 			<label for="contactEmail">
@@ -200,7 +200,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input name="contactEmail" id="contactEmail" maxlength="100"  type="text" value="<?php echo $job->contactEmail ? $this->escape(stripslashes($job->contactEmail)) : $this->escape(stripslashes($profile->get('email'))); ?>" />
 			</label>
 			<label for="contactPhone">
-				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_PHONE'); ?>: 
+				<?php echo JText::_('COM_JOBS_EDITJOB_CONTACT_PHONE'); ?>:
 				<input name="contactPhone" id="contactPhone" maxlength="100"  type="text" value="<?php echo $job->contactPhone ? $this->escape(stripslashes($job->contactPhone)) : $this->escape(stripslashes($profile->get('phone'))); ?>" />
 			</label>
 		</fieldset>

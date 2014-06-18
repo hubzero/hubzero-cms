@@ -38,7 +38,7 @@ class plgSearchCollections extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void

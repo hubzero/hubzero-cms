@@ -148,7 +148,7 @@ $tool_path = $config->get('tool_path');
 		<?php endif; ?>
 
 		<div class="prerequisites">
-			<?php 
+			<?php
 				$this->view('_prerequisites')
 				     ->set('scope', 'asset')
 				     ->set('scope_id', $asset->get('id'))

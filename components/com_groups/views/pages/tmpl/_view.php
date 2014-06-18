@@ -50,7 +50,7 @@ $overviewPageAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 
 $pagePrivacy = ($this->page->get('privacy') == 'default') ? $overviewPageAccess : $this->page->get('privacy');
 
 // check to make sure user has access this page
-if (($pagePrivacy== 'registered' && $this->juser->get('guest')) || 
+if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
    ($pagePrivacy == 'members' && !in_array($this->juser->get('id'), $this->group->get('members'))))
 {
 	$this->version->set('content', '<p class="info">You currently don\'t have the permissions to access this group page.</p>');
@@ -58,16 +58,16 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 ?>
 
 <div class="group-page page-<?php echo $this->page->get('alias'); ?>">
-	
+
 	<?php if ($newerVersion && $this->authorized == 'manager') : ?>
 		<div class="group-page group-page-notice notice-info">
 			<h4>Newer Version Pending Approval</h4>
 			<p>A newer version of this page has been submitted and is pending approval from a site administrator. Approvals are made during normal business hours Monday - Friday 8am to 5pm <abbr title="Eastern Standard Time">EST</abbr>.</p>
 		</div>
 	<?php endif; ?>
-	
+
 	<?php echo $this->version->content('parsed'); ?>
-	
+
 	<div class="group-page-toolbar grid">
 		<?php
 			$firstVersion     = $versions->last();
@@ -78,7 +78,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 			$modifiedProfile  = \Hubzero\User\Profile::getInstance( $currentVersion->get("created_by") );
 			$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : JText::_('System');
 			$modifiedBy       = (is_object($modifiedProfile)) ? $modifiedProfile->get('name') : JText::_('System');
-			
+
 			$createdLink  = 'javascript:void(0);';
 			$modifiedLink = 'javascript:void(0);';
 			if (is_object($createdProfile))
@@ -89,21 +89,21 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 			{
 				$modifiedLink     = JRoute::_('index.php?option=com_members&id='.$modifiedProfile->get('uidNumber'));
 			}
-			
+
 			$createdLink      = '<a href="'.$createdLink.'">'.$createdBy.'</a>';
 			$modifiedLink     = '<a href="'.$modifiedLink.'">'.$modifiedBy.'</a>';
-			
+
 			$editPageLink     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id'));
 			$setPageHomeLink  = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$this->page->get('id'));
 			$overrideHomeLink = JRoute::_('index.php?option=com_help&component=groups&page=pages&cn='.$this->group->get('cn').'#grouphomepageoverride');
-			
+
 			// current location
 			$editPageLink    .= '&return=' . base64_encode(JURI::getInstance()->toString());
 			$setPageHomeLink .= '&return=' . base64_encode(JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn')));
 			$categoryLink     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&filter=' . $category->get('id'));
 		?>
-		
-		
+
+
 		<div class="page-meta col span10">
 			<?php if ($this->page->get('id') != 0) : ?>
 				<span class="created" title="<?php echo JText::sprintf('Created on %s by %s', $createdDate, $createdBy); ?>">
@@ -113,8 +113,8 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 					<?php echo JText::sprintf('Last Modified %s by %s', $modifiedDate, $modifiedLink); ?>
 				</span>
 			<?php endif; ?>
-		</div> 
-		
+		</div>
+
 		<?php if ($this->authorized == 'manager') : ?>
 			<div class="page-controls col span2 omega">
 				<ul class="page-controls">
@@ -131,7 +131,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 							</a>
 						</li>
 					<?php endif; ?>
-					
+
 					<?php if ($category->get('id') != '') : ?>
 						<li>
 							<a href="<?php echo $categoryLink; ?>" class="tooltips category" title="In <?php echo $category->get('title'); ?>" style="background-color:#<?php echo $category->get('color'); ?>"></a>

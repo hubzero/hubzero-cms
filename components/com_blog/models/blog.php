@@ -40,42 +40,42 @@ class BlogModel extends \Hubzero\Base\Object
 {
 	/**
 	 * BlogTableEntry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_tbl = null;
 
 	/**
 	 * BlogModelEntry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_entry = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_entries = null;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_config;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string  $scope    Blog scope [site, group, member]
 	 * @param      integer $scope_id Scope ID if scope is member or group
 	 * @return     void
@@ -116,14 +116,14 @@ class BlogModel extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$key = $scope . '_' . $scope_id;
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($scope, $scope_id);
 		}
@@ -140,7 +140,7 @@ class BlogModel extends \Hubzero\Base\Object
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		if (isset($this->_tbl->$property))
 		{
 			return $this->_tbl->$property;
 		}
@@ -163,12 +163,12 @@ class BlogModel extends \Hubzero\Base\Object
 
 	/**
 	 * Set and get a specific offering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function entry($id=null)
 	{
-		if (!isset($this->_entry) 
+		if (!isset($this->_entry)
 		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
 		{
 			/*$this->_entry = null;
@@ -196,7 +196,7 @@ class BlogModel extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -297,7 +297,7 @@ class BlogModel extends \Hubzero\Base\Object
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -315,7 +315,7 @@ class BlogModel extends \Hubzero\Base\Object
 				// Check if they're a site admin
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
-					if ($juser->authorize('com_blog', 'manage')) 
+					if ($juser->authorize('com_blog', 'manage'))
 					{
 						$this->params->set('access-admin-entry', true);
 						$this->params->set('access-manage-entry', true);
@@ -325,7 +325,7 @@ class BlogModel extends \Hubzero\Base\Object
 						$this->params->set('access-edit-own-entry', true);
 					}
 				}
-				else 
+				else
 				{
 					$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
 					$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));

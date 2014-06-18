@@ -45,7 +45,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -55,24 +55,24 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		if (isset($model->resource->toolpublished) || isset($model->resource->revision))
 		{
-			if (isset($model->resource->thistool) 
-			 && $model->resource->thistool 
-			 && ($model->resource->revision=='dev' or !$model->resource->toolpublished)) 
+			if (isset($model->resource->thistool)
+			 && $model->resource->thistool
+			 && ($model->resource->revision=='dev' or !$model->resource->toolpublished))
 			{
 				$model->type->params->set('plg_questions', 0);
 			}
 		}
-		if ($model->type->params->get('plg_questions')) 
+		if ($model->type->params->get('plg_questions'))
 		{
 			$areas['questions'] = JText::_('PLG_RESOURCES_QUESTIONS');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -88,15 +88,15 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_questions')) 
+		if (!$model->type->params->get('plg_questions'))
 		{
 			return $arr;
 		}
@@ -124,7 +124,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$this->count = $this->a->getCount($this->filters);
 
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			switch (strtolower(JRequest::getWord('action', 'browse')))
 			{
@@ -144,7 +144,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we returning metadata?
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -165,7 +165,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show a list of questions attached to this resource
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _browse()
@@ -195,7 +195,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view->rows     = $this->a->getResults($this->filters);
 		$view->count    = $this->count;
 		$view->limit    = $this->params->get('display_limit', 10);
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -208,14 +208,14 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for adding a question
-	 * 
+	 *
 	 * @param      object $row AnswersTableQuestion
 	 * @return     string
 	 */
 	private function _new($row=null)
 	{
 		// Login required
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id . '&active=' . $this->_name, false, true), 'server');
 
@@ -256,7 +256,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view->banking = $upconfig->get('bankAccounts');
 
 		$view->funds = 0;
-		if ($view->banking) 
+		if ($view->banking)
 		{
 			$juser = JFactory::getUser();
 
@@ -265,7 +265,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -278,13 +278,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save a question and redirect to the main listing when done
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _save()
 	{
 		// Login required
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_browse();
 		}
@@ -298,16 +298,16 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$reward = JRequest::getInt('reward', 0);
 
 		// If offering a reward, do some checks
-		if ($reward) 
+		if ($reward)
 		{
 			// Is it an actual number?
-			if (!is_numeric($reward)) 
+			if (!is_numeric($reward))
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 				return;
 			}
 			// Are they offering more than they can afford?
-			if ($reward > $funds) 
+			if ($reward > $funds)
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 				return;
@@ -318,26 +318,26 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
 		$row = new AnswersModelQuestion($fields['id']);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
 			return $this->_new($row);
 		}
 
-		if ($reward && $this->banking) 
+		if ($reward && $this->banking)
 		{
 			$row->set('reward', 1);
 		}
 
 		// Ensure the user added a tag
-		if (!$tags) 
+		if (!$tags)
 		{
 			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->_new($row);
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$row->set('tags', $tags);
 
@@ -346,7 +346,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Hold the reward for this question if we're banking
-		if ($reward && $this->banking) 
+		if ($reward && $this->banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
@@ -368,10 +368,10 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$receivers = array();
 
 		// Get tool contributors if question is about a tool
-		if ($tags) 
+		if ($tags)
 		{
 			$tags = explode(',', $tags);
-			if (count($tags) > 0) 
+			if (count($tags) > 0)
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
@@ -385,9 +385,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 					$rev = $objV->getCurrentVersionProperty($toolname, 'revision');
 					$authors = $TA->getToolAuthors('', 0, $toolname, $rev);
-					if (count($authors) > 0) 
+					if (count($authors) > 0)
 					{
-						foreach ($authors as $author) 
+						foreach ($authors as $author)
 						{
 							$receivers[] = $author->uidNumber;
 						}
@@ -396,12 +396,12 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (!empty($apu)) 
+		if (!empty($apu))
 		{
 			foreach ($apu as $u)
 			{
 				$user = JUser::getInstance($u);
-				if ($user) 
+				if ($user)
 				{
 					$receivers[] = $user->get('id');
 				}
@@ -410,7 +410,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$receivers = array_unique($receivers);
 
 		// Send the message
-		if (!empty($receivers)) 
+		if (!empty($receivers))
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
 			$jconfig = JFactory::getConfig();
@@ -450,7 +450,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers'))) 
+			if (!$dispatcher->trigger('onSendMessage', array('new_question_admin', $subject, $message, $from, $receivers, 'com_answers')))
 			{
 				$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
 			}

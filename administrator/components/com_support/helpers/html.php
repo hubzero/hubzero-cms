@@ -38,9 +38,9 @@ class SupportHtml
 {
 	/**
 	 * Get the status text for a status number
-	 * 
+	 *
 	 * @param      integer $int Status number
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getStatus($open=0, $status=0)
 	{

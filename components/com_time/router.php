@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Time build route
- * 
+ *
  * @param  array &$query
  * @return array Return
  */
@@ -59,7 +59,7 @@ function TimeBuildRoute(&$query)
 
 /**
  * Time parse route
- * 
+ *
  * @param  array $segments
  * @return array Return
  */

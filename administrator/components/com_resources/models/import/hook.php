@@ -43,21 +43,21 @@ class Hook extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'ResourcesTableImportHook';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @access public
 	 * @param  ResourcesTableImportRun Object Id
 	 * @return void
@@ -66,11 +66,11 @@ class Hook extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -80,7 +80,7 @@ class Hook extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Return imports filespace path
 	 *
@@ -91,11 +91,11 @@ class Hook extends \Hubzero\Base\Model
 	{
 		// get com resources params
 		$params = JComponentHelper::getParams('com_resources');
-		
+
 		// build upload path
 		$uploadPath = $params->get('import_hooks_uploadpath', '/site/resources/import/hooks');
 		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
-		
+
 		// return path
 		return $uploadPath;
 	}

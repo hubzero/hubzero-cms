@@ -55,7 +55,7 @@ foreach ($this->rows as $row)
 		echo encodeCSVField(JText::_('(unknown)'));
 	}
 	echo "\n";
-	
+
 }
 
 die;

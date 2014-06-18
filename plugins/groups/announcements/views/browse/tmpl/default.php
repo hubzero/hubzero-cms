@@ -81,11 +81,11 @@ $this->js();
 				</p>
 			<?php endif; ?>
 
-			<?php 
+			<?php
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
-					$this->total, 
-					$this->filters['start'], 
+					$this->total,
+					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));

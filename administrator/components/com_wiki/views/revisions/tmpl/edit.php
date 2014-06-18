@@ -35,7 +35,7 @@ $canDo = WikiHelper::getActions('page');
 $text = ($this->task == 'editrevision' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_REVISION') . ': ' . $text, 'wiki.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
@@ -46,7 +46,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('revision');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

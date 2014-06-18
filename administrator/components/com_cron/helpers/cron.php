@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class CronHelper
 {
 	public static $extension = 'com_cron';
-	
+
 	/**
 	 * Configure the Linkbar.
 	 *
@@ -55,7 +55,7 @@ class CronHelper
 			$vName == 'plugins'
 		);
 	}
-	
+
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
@@ -77,12 +77,12 @@ class CronHelper
 				'admin', 'manage', 'create', 'edit', 'edit.state', 'delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
 			}
 		}
-		else 
+		else
 		{
 			$assetName .= '.' . $assetType;
 			if ($assetId) {
@@ -93,7 +93,7 @@ class CronHelper
 				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set($action, $user->authorise($action, $assetName));
 			}

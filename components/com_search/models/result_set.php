@@ -35,30 +35,30 @@ jimport('joomla.application.component.model');
 
 /**
  * Short description for 'SearchModelResultSet'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchModelResultSet extends JModel implements Iterator
 {
 	/**
 	 * Description for 'plugin_weights'
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $plugin_weights;
 
 	/**
 	 * Description for 'tags'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $tags = array(), $total_list_count, $limit, $widgets, $custom_title = NULL, $custom_mode = false, $offset, $pos = 0, $results = array(), $custom = array(), $processed_results = array(), $highlighter, $current_plugin, $total_count, $tag_mode = false, $result_counts = array(), $shown_results = array(), $sorters = array();
 
 	/**
 	 * Short description for 'get_tags'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function get_tags()
@@ -68,9 +68,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_limit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_limit()
@@ -80,9 +80,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_offset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_offset()
@@ -92,9 +92,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'set_limit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $limit Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -105,9 +105,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'set_offset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $offset Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -118,9 +118,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_widgets'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_widgets()
@@ -130,9 +130,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_shown_results'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_shown_results()
@@ -142,9 +142,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_shown_count'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_shown_count()
@@ -154,9 +154,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_result_counts'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_result_counts()
@@ -166,9 +166,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_tag_weight_modifier'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public static function get_tag_weight_modifier()
@@ -178,9 +178,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_custom_title'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_custom_title()
@@ -190,9 +190,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'collect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $force_generic Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -433,7 +433,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		// nested hierarchies of results in a single <li>, ie for courses that
 		// all part of the same series.
 		$this->total_list_count = $this->total_count;
-		foreach ($this->result_counts as $plugin => $def) 
+		foreach ($this->result_counts as $plugin => $def)
 		{
 			$this->result_counts[$plugin]['list_count'] = $this->result_counts[$plugin]['count'];
 		}
@@ -487,9 +487,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'sort_results'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      mixed $b Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -525,9 +525,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $terms Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -551,9 +551,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'add'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -578,9 +578,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'process_result'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $res Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -609,9 +609,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_total_count'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_total_count()
@@ -621,9 +621,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_total_list_count'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_total_list_count()
@@ -633,9 +633,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_plugin_list_count'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function get_plugin_list_count()
@@ -656,9 +656,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_plugin_count'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function get_plugin_count()
@@ -674,9 +674,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'get_shown'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_shown()
@@ -686,9 +686,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'rewind'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function rewind()
@@ -698,9 +698,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'current'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function current()
@@ -710,9 +710,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'key'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function key()
@@ -722,9 +722,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'next'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function next()
@@ -734,9 +734,9 @@ class SearchModelResultSet extends JModel implements Iterator
 
 	/**
 	 * Short description for 'valid'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function valid()

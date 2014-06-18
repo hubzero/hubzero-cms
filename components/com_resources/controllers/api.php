@@ -26,7 +26,7 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * 
+ *
  */
 
 ini_set('display_errors', 1);
@@ -49,7 +49,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'whatsnew': $this->whatsnewTask(); break;
 			case 'service':
@@ -135,7 +135,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		$category = JRequest::getVar('category', 'resources');
 
 		JLoader::import('joomla.plugin.helper');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'finder.php'); 
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'finder.php');
 
 		$whatsnew = WhatsnewHelperFinder::getWhatsNewBasedOnPeriodAndCategory($period, $category, $limit);
 

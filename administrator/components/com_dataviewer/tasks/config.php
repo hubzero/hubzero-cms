@@ -39,7 +39,7 @@ function dv_config()
 	}
 ?>
 <style>
-	#db-conf-editor { 
+	#db-conf-editor {
 		margin: 0;
 	}
 

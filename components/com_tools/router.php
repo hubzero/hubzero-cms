@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'toolsBuildRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -43,7 +43,7 @@ function toolsBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		if ($query['controller'] == 'media')
 		{
@@ -51,27 +51,27 @@ function toolsBuildRoute(&$query)
 		}
 		unset($query['controller']);
 	}
-	if (!empty($query['app'])) 
+	if (!empty($query['app']))
 	{
 		$segments[] = $query['app'];
 		unset($query['app']);
 	}
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['version'])) 
+	if (!empty($query['version']))
 	{
 		$segments[] = $query['version'];
 		unset($query['version']);
 	}
-	/*if (isset($query['sess'])) 
+	/*if (isset($query['sess']))
 	{
 		$segments[] = $query['sess'];
 		unset($query['sess']);
 	}*/
-	if (isset($query['return']) && $query['return'] == '') 
+	if (isset($query['return']) && $query['return'] == '')
 	{
 		unset($query['return']);
 	}
@@ -81,9 +81,9 @@ function toolsBuildRoute(&$query)
 
 /**
  * Short description for 'toolsParseRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -91,12 +91,12 @@ function toolsParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		switch ($segments[0])
 		{
@@ -109,7 +109,7 @@ function toolsParseRoute($segments)
 				$vars['task'] = $segments[0];
 				$vars['controller'] = 'pipeline';
 			break;
-			
+
 			case 'login':
 			case 'accessdenied':
 			case 'quotaexceeded':
@@ -117,7 +117,7 @@ function toolsParseRoute($segments)
 				$vars['task'] = $segments[0];
 				$vars['controller'] = 'sessions';
 			break;
-			
+
 			case 'assets':
 				if (count($segments) < 3)
 				{
@@ -134,7 +134,7 @@ function toolsParseRoute($segments)
 				$vars['task'] = $segments[0];
 				$vars['controller'] = 'tools';
 			break;
-			
+
 			case 'diskusage':
 			case 'storageexceeded':
 			case 'storage':
@@ -163,7 +163,7 @@ function toolsParseRoute($segments)
 		}
 	}
 
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
 		switch ($segments[1])
 		{
@@ -247,7 +247,7 @@ function toolsParseRoute($segments)
 				{
 					$vars['task'] = $segments[1];
 				}
-				if (isset($segments[2])) 
+				if (isset($segments[2]))
 				{
 					$vars['sess'] = $segments[2];
 				}

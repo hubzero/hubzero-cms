@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $no_html = JRequest::getInt( 'no_html', 0 );
 $tmpl    = JRequest::getWord('tmpl', false);
 
-if (!$no_html && $tmpl != 'component') : 
+if (!$no_html && $tmpl != 'component') :
 	$this->css('offering.css')
 	     ->js('courses.offering.js');
 	?>
@@ -102,8 +102,8 @@ if (!$no_html && $tmpl != 'component') :
 							//do we want to show category in menu?
 							if ($cat['display_menu_tab'])
 							{
-								if (!$this->course->offering()->access('manage', 'section') 
-								 && isset($this->course_plugin_access[$cat['name']]) 
+								if (!$this->course->offering()->access('manage', 'section')
+								 && isset($this->course_plugin_access[$cat['name']])
 								 && $this->course_plugin_access[$cat['name']] == 'managers')
 								{
 									continue;
@@ -140,7 +140,7 @@ if (!$no_html && $tmpl != 'component') :
 									{
 										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
 										$menu_item .= '<a class="outline" href="' . $link . '" data-icon="&#x' . $cat['icon'] . '" data-title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
-									} 
+									}
 									$menu_item .= '</li>';
 									$menu_item .= '</li>';
 								}
@@ -171,7 +171,7 @@ if (!$no_html && $tmpl != 'component') :
 										$menu_item .= $meta_alert;
 										$menu_item .= '</li>';
 									}
-								} 
+								}
 
 								//add menu item to variable holding entire menu
 								$course_menu .= $menu_item;
@@ -180,12 +180,12 @@ if (!$no_html && $tmpl != 'component') :
 						echo $course_menu;
 					?>
 				</ul><!-- /#page_menu -->
-			</div><!-- /#page_sidebar --> 
+			</div><!-- /#page_sidebar -->
 
 			<div id="page_main">
 				<div id="page_notifications">
 					<?php
-						foreach ($this->notifications as $notification) 
+						foreach ($this->notifications as $notification)
 						{
 							echo '<p class="' . $this->escape($notification['type']) . '">' . $this->escape($notification['message']) . '</p>';
 						}

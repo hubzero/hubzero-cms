@@ -41,21 +41,21 @@ class Run extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'ResourcesTableImportRun';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @access public
 	 * @param  ResourcesTableImportRun Object Id
 	 * @return void
@@ -64,11 +64,11 @@ class Run extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -78,7 +78,7 @@ class Run extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Add to the processed number on this run
 	 * @param  integer $number Number to increpemnt by

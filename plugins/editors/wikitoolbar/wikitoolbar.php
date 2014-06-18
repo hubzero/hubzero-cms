@@ -40,19 +40,19 @@ class plgEditorWikiToolbar extends JPlugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
 
 	/**
 	 * Initiate the editor. Push scripts to document if needed
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function onInit()
 	{
-		if ($this->_pushscripts) 
+		if ($this->_pushscripts)
 		{
 			\Hubzero\Document\Assets::addPluginStylesheet('editors', $this->_name);
 			\Hubzero\Document\Assets::addPluginScript('editors', $this->_name);
@@ -81,7 +81,7 @@ class plgEditorWikiToolbar extends JPlugin
 	 */
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
-		if (empty($id)) 
+		if (empty($id))
 		{
 			$id = $name;
 		}
@@ -91,11 +91,11 @@ class plgEditorWikiToolbar extends JPlugin
 		$row = $row ? (int) $row : 35;
 
 		// Only add "px" to width and height if they are not given as a percentage
-		if (is_numeric($width)) 
+		if (is_numeric($width))
 		{
 			$width .= 'px';
 		}
-		if (is_numeric($height)) 
+		if (is_numeric($height))
 		{
 			$height .= 'px';
 		}

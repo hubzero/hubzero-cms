@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the question response table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'qid', 
-		'answer', 
-		'created', 
+		'id',
+		'qid',
+		'answer',
+		'created',
 		'created_by',
 		'helpful',
 		'nothelpful',
@@ -26,10 +26,10 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 		'anonymous'
 	);
 	var $mock       = array(
-		'id'         => null, 
-		'qid'        => 1, 
-		'answer'     => 'The anser is 42', 
-		'created'    => '2013-09-21 12:56:41', 
+		'id'         => null,
+		'qid'        => 1,
+		'answer'     => 'The anser is 42',
+		'created'    => '2013-09-21 12:56:41',
 		'created_by' => 'admin',
 		'helpful'    => 0,
 		'nothelpful' => 0,
@@ -99,7 +99,7 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableResponse::getCount
 	 */
@@ -115,7 +115,7 @@ class AnswersTableResponseTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableResponse::getResults
 	 */

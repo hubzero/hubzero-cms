@@ -53,7 +53,7 @@ if ($this->getError()) { ?>
 		<p>
 			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
 				<?php echo $this->escape(stripslashes($this->title)); ?>
-			</a>: 
+			</a>:
 	<?php if ($this->txt) { ?>
 			<?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->txt)), $this->txt_length); ?>
 	<?php } ?>

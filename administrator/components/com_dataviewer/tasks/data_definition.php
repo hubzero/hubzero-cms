@@ -24,7 +24,7 @@ function dv_data_definition()
 
 	$dd_name = JRequest::getString('dd', false);
 
-	
+
 	$full_screen = JRequest::getString('tmpl', false);
 
 
@@ -44,7 +44,7 @@ function dv_data_definition()
 ?>
 
 	<style>
-		#db-dd-editor { 
+		#db-dd-editor {
 			margin: 0;
 		}
 	</style>
@@ -70,7 +70,7 @@ function dv_data_definition()
 			<textarea id="db-dd-source-php" style="display: none;"><?=($dd_php)?></textarea>
 			<div id="db-dd-editor-php" style="height: <?=$full_screen ? 600 : 500;?>px; width: 100%;"></div>
 			<input id="db-dd-update" type="button" value="Update Dataview" style="color: blue; position: absolute; top: 60px; right: 60px;" />
-			<br />			
+			<br />
 		</div>
 
 		<div id="tabs-3">
@@ -86,7 +86,7 @@ function dv_data_definition()
 ?>
 			[<a href="<?=$host . '/administrator/index.php?option=com_' . $com_name . '&task=dataview_list&db=' . $db_id?>" title="Go back to Dataview list">
 				&nbsp;<span class="ui-icon ui-icon-arrowthick-1-w" style="display: inline-block; margin-bottom: -4px;"></span>&nbsp;
-			</a>] &nbsp;			
+			</a>] &nbsp;
 			[<a href="<?=$close?>" title="Leave Full Screen mode">
 				&nbsp;<span class="ui-icon ui-icon-close" style="display: inline-block; margin-bottom: -4px;"></span>&nbsp;
 			</a>]
@@ -99,7 +99,7 @@ function dv_data_definition()
 			</a>]
 <?php
 		}
-?>			
+?>
 		</div>
 	</div>
 

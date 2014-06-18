@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -35,7 +35,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser 	  = JFactory::getUser();
-	
+
 	$jobsHtml = new JobsHtml();
 
 	// get some configs
@@ -48,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if($juser->get('guest')) { ?> 
+		<?php if($juser->get('guest')) { ?>
 			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -83,7 +83,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<label for="companyLocation">
 				<?php echo JText::_( 'COM_JOBS_EMPLOYER_COMPANY_LOCATION' ); ?>:
 				<span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
-				<input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyLocation); ?>" />  
+				<input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyLocation); ?>" />
 			</label>
 			<label for="companyWebsite">
 				<?php echo JText::_( 'COM_JOBS_EMPLOYER_COMPANY_WEBSITE' ); ?>:
@@ -96,7 +96,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p><?php echo JText::_('COM_JOBS_SUBSCRIBE_HINT_PICK') ?></p>
 			<h4><?php echo JText::_('COM_JOBS_SUBSCRIBE_NEXT_STEP') ?></h4>
 			<p><?php echo JText::_('COM_JOBS_SUBSCRIBE_HINT_PAYMENT') ?></p>
-		<?php if ($promoline) { ?> 
+		<?php if ($promoline) { ?>
 			<p class="promo"><?php echo $promoline; ?></p>
 		<?php } ?>
 		</div>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_( 'COM_JOBS_SUBSCRIBE_SELECT_SERVICE' ); ?>:
 				<span class="required"><?php echo JText::_('COM_JOBS_REQUIRED'); ?></span>
 			</label>
-			<?php 
+			<?php
 				$html = '';
 				$now = JFactory::getDate()->toSql();
 				for ($i=0, $n=count( $this->services ); $i < $n; $i++)  {
@@ -162,7 +162,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					{
 						$html .= $jobsHtml->confirmscreen(JRoute::_('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), JRoute::_('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
 					}
-				
+
 					$html .= '<label> ';
 					$html .= $thissub ? JText::_( 'COM_JOBS_SUBSCRIPTION_EXTEND_OR_RENEW' ) : JText::_( 'COM_JOBS_ACTION_SIGN_UP' );
 					$html .= ' '.JText::_( 'for' ).' '."\n";

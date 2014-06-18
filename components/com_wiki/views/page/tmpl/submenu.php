@@ -98,8 +98,8 @@ if (!isset($this->controller))
 				<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
 			</a>
 		</li>
-	<?php 
-		if (($this->page->isLocked() && $this->page->access('manage', 'page')) 
+	<?php
+		if (($this->page->isLocked() && $this->page->access('manage', 'page'))
 			|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
 		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
 			<a href="<?php echo JRoute::_($this->page->link('delete')); ?>">

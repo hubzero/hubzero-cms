@@ -77,7 +77,7 @@ Attachments (up to 2MB each) are permitted
 Message from <?php echo rtrim($juri->base(), DS); ?>/support / Ticket #<?php echo $this->ticket->id; ?>
 <?php } ?>
 
-<?php 
+<?php
 $message  = '----------------------------'."\n";
 $message .= strtoupper(JText::_('TICKET')).': '.$this->ticket->id."\n";
 $message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->summary."\n";
@@ -88,7 +88,7 @@ $message .= strtoupper(JText::_('Tags')).': '.$st->get_tag_string($this->ticket-
 $message .= '----------------------------'."\n\n";
 $message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED',$this->ticket->id).': '.$this->commentor->get('name') . '(' . $this->comment->created_by . ")\n";
 $message .= JText::_('TICKET_EMAIL_COMMENT_CREATED').': '.$this->comment->created."\n\n";
-if ($this->comment->changelog) 
+if ($this->comment->changelog)
 {
 	foreach ($this->comment->changelog as $type => $log)
 	{
@@ -356,7 +356,7 @@ Content-type: text/html;charset=utf-8";
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 													<?php
-														if ($this->comment->changelog && count($this->comment->changelog) >  0) 
+														if ($this->comment->changelog && count($this->comment->changelog) >  0)
 														{
 													?>
 														<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
@@ -392,7 +392,7 @@ Content-type: text/html;charset=utf-8";
 														</table>
 													<?php
 														}
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 														{
 															$comment = str_replace("<br />", '', $comment);
 															$comment = $this->escape($comment);

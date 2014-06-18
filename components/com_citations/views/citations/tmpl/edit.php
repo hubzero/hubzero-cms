@@ -44,12 +44,12 @@ $fieldset_label = ($allow_tags == "yes" && $allow_badges == "yes") ? "Tags and B
 $t = array();
 $b = array();
 
-foreach($this->tags as $tag) 
+foreach($this->tags as $tag)
 {
 	$t[] = $tag['raw_tag'];
 }
 
-foreach($this->badges as $badge) 
+foreach($this->badges as $badge)
 {
 	$b[] = $badge['raw_tag'];
 }
@@ -259,7 +259,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 
 			<label for="edition">
 				<?php echo JText::_('COM_CITATIONS_EDITION'); ?>:
-				<input type="text" name="edition" id="edition" size="30" maxlength="250" value="<?php echo $this->row->edition; ?>" /> 
+				<input type="text" name="edition" id="edition" size="30" maxlength="250" value="<?php echo $this->row->edition; ?>" />
 				<span class="hint"><?php echo JText::_('COM_CITATIONS_EDITION_EXPLANATION'); ?></span>
 			</label>
 
@@ -275,7 +275,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 
 			<label for="institution">
 				<?php echo JText::_('COM_CITATIONS_INSTITUTION'); ?>:
-				<input type="text" name="institution" id="institution" size="30" maxlength="250" value="<?php echo $this->row->institution; ?>" /> 
+				<input type="text" name="institution" id="institution" size="30" maxlength="250" value="<?php echo $this->row->institution; ?>" />
 				<span class="hint"><?php echo JText::_('COM_CITATIONS_INSTITUTION_EXPLANATION'); ?></span>
 			</label>
 
@@ -286,13 +286,13 @@ $pid = JRequest::getInt( 'publication', 0 );
 
 			<label for="location">
 				<?php echo JText::_('COM_CITATIONS_LOCATION'); ?>:
-				<input type="text" name="location" id="location" size="30" maxlength="250" value="<?php echo $this->row->location; ?>" /> 
+				<input type="text" name="location" id="location" size="30" maxlength="250" value="<?php echo $this->row->location; ?>" />
 				<span class="hint"><?php echo JText::_('COM_CITATIONS_LOCATION_EXPLANATION'); ?></span>
 			</label>
 
 			<label for="howpublished">
 				<?php echo JText::_('COM_CITATIONS_PUBLISH_METHOD'); ?>:
-				<input type="text" name="howpublished" id="howpublished" size="30" maxlength="250" value="<?php echo $this->row->howpublished; ?>" /> 
+				<input type="text" name="howpublished" id="howpublished" size="30" maxlength="250" value="<?php echo $this->row->howpublished; ?>" />
 				<span class="hint"><?php echo JText::_('COM_CITATIONS_PUBLISH_METHOD_EXPLANATION'); ?></span>
 			</label>
 
@@ -311,22 +311,22 @@ $pid = JRequest::getInt( 'publication', 0 );
 				<?php echo JText::_('Abstract'); ?>:
 				<textarea name="abstract" id="abstract" rows="8" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
 			</label>
-			
+
 			<label for="note">
 				<?php echo JText::_('Notes'); ?>:
 				<textarea name="note" id="note" rows="8" cols="10"><?php echo stripslashes($this->row->note); ?></textarea>
 			</label>
-			
+
 			<label for="keywords">
 				<?php echo JText::_('Keywords'); ?>:
 				<textarea name="keywords" id="keywords" rows="8" cols="10"><?php echo stripslashes($this->row->keywords); ?></textarea>
 			</label>
-				
+
 			<label for="research_notes">
 				<?php echo JText::_('Research Notes'); ?>:
 				<textarea name="research_notes" id="research_notes" rows="8" cols="10"><?php echo stripslashes($this->row->research_notes); ?></textarea>
 			</label>
-			
+
 			<div class="group twoup">
 				<label for="language">
 					<?php echo JText::_('Language'); ?>:
@@ -339,7 +339,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 				</label>
 			</div>
 		</fieldset><div class="clear"></div>
-		
+
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">
 				<p><?php echo JText::_(''); ?></p>
@@ -349,7 +349,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 				<?php if ($allow_tags == "yes") : ?>
 					<label>
 						Tags: <span class="optional">Optional</span>
-						<?php 
+						<?php
 							if (count($tags_list) > 0) {
 								echo $tags_list[0];
 							} else {
@@ -359,11 +359,11 @@ $pid = JRequest::getInt( 'publication', 0 );
 						<span class="hint"><?php echo JText::_('Enter tags separated by commas (e.g. negf theory, ion transport).'); ?></span>
 					</label>
 				<?php endif; ?>
-				
+
 				<?php if ($allow_badges == "yes") : ?>
 					<label class="badges">
 						Badges: <span class="optional">Optional</span>
-						<?php 
+						<?php
 							if (count($badges_list) > 0) {
 								echo $badges_list[0];
 							} else {
@@ -375,7 +375,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 				<?php endif; ?>
 			</fieldset><div class="clear"></div>
 		<?php endif; ?>
-		
+
 		<?php if ($pid) { ?>
 			<input type="hidden" name="assocs[0][oid]" value="<?php echo $pid; ?>" />
 			<input type="hidden" name="assocs[0][tbl]" value="publication" />
@@ -386,7 +386,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CITATIONS_CITATION_FOR'); ?></legend>
-			
+
 			<div class="field-wrap">
 			<table id="assocs">
 				<thead>
@@ -419,7 +419,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 								$this->assocs[$i]->type = NULL;
 								$this->assocs[$i]->tbl = NULL;
 							}
-							
+
 							echo "\t\t\t".'  <tr>'."\n";
 							echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
 							echo ' <option value=""';
@@ -445,7 +445,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 		<?php } ?>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CITATIONS_AFFILIATION'); ?></legend>
-			
+
 			<label>
 				<input type="checkbox" class="option" name="affiliated" id="affiliated" value="1"<?php if ($this->row->affiliated) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::_('COM_CITATIONS_AFFILIATED_WITH_YOUR_ORG'); ?>
@@ -455,7 +455,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 				<input type="checkbox" class="option" name="fundedby" id="fundedby" value="1"<?php if ($this->row->fundedby) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::_('COM_CITATIONS_FUNDED_BY_YOUR_ORG'); ?>
 			</label>
-			
+
 			<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
 			<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

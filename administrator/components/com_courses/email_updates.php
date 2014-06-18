@@ -74,9 +74,9 @@ echo "right before afterload \n";
 
 /**
  * Short description for 'apache_note'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @return void
  */
 function apache_note()

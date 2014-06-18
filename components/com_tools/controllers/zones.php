@@ -40,7 +40,7 @@ class ToolsControllerZones extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Page Not found
-	 * 
+	 *
 	 * @return    exit
 	 */
 	public function notFoundTask()
@@ -54,7 +54,7 @@ class ToolsControllerZones extends \Hubzero\Component\SiteController
 
 	/**
 	 * Normalize a path
-	 * 
+	 *
 	 * @param     string  $path
 	 * @param     boolean $isFile
 	 * @return    mixed
@@ -100,7 +100,7 @@ class ToolsControllerZones extends \Hubzero\Component\SiteController
 
 	/**
 	 * Asset delivery function.
-	 * 
+	 *
 	 * @return    exit
 	 */
 	public function assetsTask()
@@ -123,7 +123,7 @@ class ToolsControllerZones extends \Hubzero\Component\SiteController
 
 		$file = $zone->logo('path') . '/' . ltrim($file, '/');
 
-		if (!is_file($file) || !is_readable($file)) 
+		if (!is_file($file) || !is_readable($file))
 		{
 			return $this->notFoundTask();
 		}

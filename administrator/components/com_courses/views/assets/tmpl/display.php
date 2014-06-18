@@ -41,7 +41,7 @@ $canDo = CoursesHelper::getActions();
 JHTML::_('behavior.modal');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -85,7 +85,7 @@ function addDeleteQueryEvent()
 					addDeleteQueryEvent();
 				}
 			}).request();
-			
+
 			return false;
 		});
 	});
@@ -122,9 +122,9 @@ window.addEvent('domready', function() {
 					<select name="asset" style="max-width: 15em;">
 						<option value="0"><?php echo JText::_('Select asset...'); ?></option>
 <?php if ($this->assets) { ?>
-	<?php 
-	foreach ($this->assets as $asset) 
-	{ 
+	<?php
+	foreach ($this->assets as $asset)
+	{
 		if (in_array($asset->id, $ids))
 		{
 			continue;
@@ -200,11 +200,11 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 				<td>
-					<?php 
+					<?php
 					echo $this->pageNav->orderUpIcon( $i, ($row->ordering != @$this->rows[$i-1]->ordering) ); ?>
 				</td>
 				<td>
-					<?php 
+					<?php
 					echo $this->pageNav->orderDownIcon( $i, $n, ($row->ordering != @$this->rows[$i+1]->ordering) ); ?>
 				</td>
 				<td>

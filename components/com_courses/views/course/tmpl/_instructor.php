@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</p>
 	</div><!-- / .course-instructor-content cf -->
 
-	<?php 
+	<?php
 	$params = new JRegistry($this->instructor->get('params'));
 	if ($params->get('access_bio') == 0 // public
 	 || ($params->get('access_bio') == 1 && !JFactory::getUser()->get('guest')) // registered members

@@ -40,112 +40,112 @@ class Response
 
 	/**
 	 * Description for 'suppress_response_codes'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	public  $suppress_response_codes = false;
 
 	/**
 	 * Description for '_request_accept'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_request_accept = '*/*';
 
 	/**
 	 * Description for '_response_accept'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_response_accept = 'text/plain';
 
 	/**
 	 * Description for '_request_accept_encoding'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_request_accept_encoding = null;
 
 	/**
 	 * Description for '_response_accept_encoding'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_response_accept_encoding = null;
 
 	/**
 	 * Description for '_autoencode'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_autoencode = false;
 
 	/**
 	 * Description for '_cachable'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_cachable = true;
 
 	/**
 	 * Description for '_sent'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_sent = false;
 
 	/**
 	 * Description for '_http_version'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_http_version = 'HTTP/1.1';
 
 	/**
 	 * Description for '_status_code'
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_status_code = 200;
 
 	/**
 	 * Description for '_reason'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_reason = 'OK';
 
 	/**
 	 * Description for '_headers'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_headers = array();
 
 	/**
 	 * Description for '_content_type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_content_type = null;
 
 	/**
 	 * Description for '_encoding'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_encoding = null;
 
 	/**
 	 * Description for '_body'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_body = array();
 
 	/**
 	 * Description for '_reasons'
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $_reasons = array(
@@ -157,9 +157,9 @@ class Response
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function __construct()
@@ -175,9 +175,9 @@ class Response
 
 	/**
 	 * Short description for 'setStatusCode'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $code Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -195,9 +195,9 @@ class Response
 
 	/**
 	 * Short description for 'getStatusCode'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	function getStatusCode()
@@ -207,9 +207,9 @@ class Response
 
 	/**
 	 * Short description for 'setHttpVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $version Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -227,9 +227,9 @@ class Response
 
 	/**
 	 * Short description for 'getHttpVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getHttpVersion()
@@ -239,9 +239,9 @@ class Response
 
 	/**
 	 * Short description for 'setReason'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $reason Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -259,9 +259,9 @@ class Response
 
 	/**
 	 * Short description for 'getReason'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getReason()
@@ -271,9 +271,9 @@ class Response
 
 	/**
 	 * Short description for 'setStatusLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $string Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -313,9 +313,9 @@ class Response
 
 	/**
 	 * Short description for 'getStatusLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getStatusLine()
@@ -325,9 +325,9 @@ class Response
 
 	/**
 	 * Short description for 'setHeader'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $string Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -343,9 +343,9 @@ class Response
 
 	/**
 	 * Short description for 'addHeader'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $string Parameter description (if any) ...
 	 * @param      boolean $replace Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -375,9 +375,9 @@ class Response
 
 	/**
 	 * Short description for 'removeAllHeaders'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function removeAllHeaders()
@@ -397,9 +397,9 @@ class Response
 
 	/**
 	 * Short description for 'removeHeader'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -423,9 +423,9 @@ class Response
 
 	/**
 	 * Short description for 'getHeader'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -446,9 +446,9 @@ class Response
 
 	/**
 	 * Short description for 'getAllHeaders'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getAllHeaders()
@@ -466,9 +466,9 @@ class Response
 
 	/**
 	 * Short description for 'headersSent'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function headersSent()
@@ -483,9 +483,9 @@ class Response
 
 	/**
 	 * Short description for 'sendHeaders'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function sendHeaders()
@@ -514,9 +514,9 @@ class Response
 
 	/**
 	 * Short description for 'setEncodeOnOutput'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -534,9 +534,9 @@ class Response
 
 	/**
 	 * Short description for 'getEncodeOnOutput'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function getEncodeOnOutput()
@@ -546,9 +546,9 @@ class Response
 
 	/**
 	 * Short description for 'setCachable'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -566,9 +566,9 @@ class Response
 
 	/**
 	 * Short description for 'getCachable'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function getCachable()
@@ -578,9 +578,9 @@ class Response
 
 	/**
 	 * Short description for 'setBody'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -590,47 +590,47 @@ class Response
 
 	/**
 	 * Short description for 'prependBody'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
-	function prependBody($content) 
+	function prependBody($content)
 	{
 		array_unshift($this->_body, (string) $content);
 	}
 
 	/**
 	 * Short description for 'appendBody'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
 	 */
-	function appendBody($content) 
+	function appendBody($content)
 	{
 		array_push($this->_body, (string) $content);
 	}
 
 	/**
 	 * Short description for 'getBody'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $toArray Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
 	function getBody($toArray = false)
 	{
-		if ($toArray) 
+		if ($toArray)
 		{
 			return $this->_body;
 		}
 
 		ob_start();
-		foreach ($this->_body as $content) 
+		foreach ($this->_body as $content)
 		{
 			echo $content;
 		}
@@ -639,9 +639,9 @@ class Response
 
 	/**
 	 * Short description for 'setSuppressResponseCodes'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -659,9 +659,9 @@ class Response
 
 	/**
 	 * Short description for 'getSuppressResponseCodes'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function getSuppressResponseCodes()
@@ -671,9 +671,9 @@ class Response
 
 	/**
 	 * Short description for '_parse_accept'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $input Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -719,9 +719,9 @@ class Response
 
 	/**
 	 * Short description for '_parse_encoding'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $input Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -750,9 +750,9 @@ class Response
 
 	/**
 	 * Short description for 'setRequestAccepts'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $accept Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -775,9 +775,9 @@ class Response
 
 	/**
 	 * Short description for 'getRequestAccepts'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getAcceptableMediaTypes()
@@ -787,9 +787,9 @@ class Response
 
 	/**
 	 * Short description for 'setResponseProvides'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $provide Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -812,9 +812,9 @@ class Response
 
 	/**
 	 * Short description for 'getResponseProvides'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getResponseProvides()
@@ -824,9 +824,9 @@ class Response
 
 	/**
 	 * Short description for 'getContentType'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getContentType()
@@ -838,15 +838,15 @@ class Response
 		{
 			$this->_content_type = $this->_resolveContentType($accepts, $provides);
 		}
-		
+
 		return $this->_content_type;
 	}
 
 	/**
 	 * Short description for 'setRequestAcceptsEncodings'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $accept Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -869,9 +869,9 @@ class Response
 
 	/**
 	 * Short description for 'getRequestAcceptsEncodings'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getAcceptableEncodings()
@@ -881,9 +881,9 @@ class Response
 
 	/**
 	 * Short description for 'setResponseProvideEncoding'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $provide Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -906,9 +906,9 @@ class Response
 
 	/**
 	 * Short description for 'getResponseProvideEncoding'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getResponseProvideEncoding()
@@ -918,9 +918,9 @@ class Response
 
 	/**
 	 * Short description for 'getEncoding'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getEncoding()
@@ -938,9 +938,9 @@ class Response
 
 	/**
 	 * Short description for '_resolveContentType'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $accept Parameter description (if any) ...
 	 * @param      array $provide Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -955,7 +955,7 @@ class Response
 		{
 			$accept = array("*/*"=>"1");
 		}
-		
+
 		foreach($accept as $client_type=>$client_value)
 		{
 			if ($client_type == 'text/*')
@@ -999,9 +999,9 @@ class Response
 
 	/**
 	 * Short description for '_resolveEncoding'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $accept Parameter description (if any) ...
 	 * @param      array $provide Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -1034,9 +1034,9 @@ class Response
 
 	/**
 	 * Short description for '_encode'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $data Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -1074,9 +1074,9 @@ class Response
 
 	/**
 	 * Short description for 'send'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function send()
@@ -1107,9 +1107,9 @@ class Response
 
 	/**
 	 * Short description for '_serializeResponseObject'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $mixed Parameter description (if any) ...
 	 * @param      boolean $encode Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -1262,9 +1262,9 @@ class Response
 
 	/**
 	 * Short description for 'setMessage'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $message Parameter description (if any) ...
 	 * @param      unknown $status Parameter description (if any) ...
 	 * @param      unknown $reason Parameter description (if any) ...
@@ -1281,7 +1281,7 @@ class Response
 		{
 			$this->setReason($reason);
 		}
-				
+
 		$message = $this->_serializeResponseObject($message);
 
 		if ($message === 406)
@@ -1300,9 +1300,9 @@ class Response
 
 	/**
 	 * Short description for 'setErrorMessage'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $status Parameter description (if any) ...
 	 * @param      unknown $reason Parameter description (if any) ...
 	 * @param      unknown $message Parameter description (if any) ...

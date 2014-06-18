@@ -35,10 +35,10 @@ $inDir	 = $dirname && $dirname != '.' ? ' in /' . ProjectsHtml::shortenFileName(
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_EDIT_ITEM'); ?></h3>
 <?php
 // Display error  message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } else { ?>
-	
+
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -48,9 +48,9 @@ if ($this->getError()) {
 				<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->vid; ?>" />
 				<input type="hidden" name="item" value="<?php echo $this->item; ?>" />
-				<input type="hidden" name="role" value="<?php echo $this->role; ?>" />	
-				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />	
-				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />	
+				<input type="hidden" name="role" value="<?php echo $this->role; ?>" />
+				<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
+				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<?php if($this->project->provisioned == 1 ) { ?>
@@ -68,15 +68,15 @@ if ($this->getError()) {
 				</label>
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-					<?php if($this->ajax) { ?>	
+					<?php if($this->ajax) { ?>
 					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-					<?php } else { 
+					<?php } else {
 						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
 					?>
 					<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 					<?php } ?>
 				</p>
-			</div>		
+			</div>
 	</form>
 	<div class="clear"></div>
 <?php } ?>

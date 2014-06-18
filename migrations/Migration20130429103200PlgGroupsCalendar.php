@@ -58,7 +58,7 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 							title,
 							details as content,
 							active AS state,
-							created, 
+							created,
 							actorid AS created,
 							start AS publish_up,
 							end AS publish_down

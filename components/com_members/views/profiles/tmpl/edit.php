@@ -57,7 +57,7 @@ $html .= "\t".'</ul>'."\n";
 $html .= '</div><!-- / #content-header-extra -->'."\n";
 $html .= '</header><!-- / #content-header-extra -->'."\n";
 
-$html .= '<section class="main section">'."\n"; 
+$html .= '<section class="main section">'."\n";
 
 
 $html .= "\t".'<form id="hubForm" class="edit-profile" method="post" action="index.php" enctype="multipart/form-data">'."\n";
@@ -183,7 +183,7 @@ if ($this->registration->ORCID != REG_HIDE) {
 
 	$html .= '<div class="grid">
 				<div class="col span9">
-					<label'.$fieldclass.'>' . 
+					<label'.$fieldclass.'>' .
 						JText::_('ORCID').': '.$required. '
 						<input type="text" name="orcid" value="'. $this->escape(stripslashes($this->profile->get('orcid'))) .'" />
 						' . $message . '

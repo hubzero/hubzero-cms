@@ -33,27 +33,27 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = FeedbackHelper::getActions('quote');
 
 JToolBarHelper::title(JText::_('COM_FEEDBACK'), 'feedback.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_FEEDBACK_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_FEEDBACK_GO'); ?>" />

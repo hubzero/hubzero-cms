@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -41,35 +41,35 @@ function AnswersBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
-		if ($query['task'] == 'new') 
+		if ($query['task'] == 'new')
 		{
 			$segments[] = 'question';
 			$segments[] = 'new';
-		} 
-		else 
+		}
+		else
 		{
 			$segments[] = $query['task'];
 		}
 		unset($query['task']);
 	}
-	if (!empty($query['tag'])) 
+	if (!empty($query['tag']))
 	{
 		$segments[] = $query['tag'];
 		unset($query['tag']);
 	}
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['rid'])) 
+	if (!empty($query['rid']))
 	{
 		$segments[] = $query['rid'];
 		unset($query['rid']);
 	}
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		unset($query['controller']);
 	}
@@ -78,7 +78,7 @@ function AnswersBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -89,7 +89,7 @@ function AnswersParseRoute($segments)
 	// Count route segments
 	$count = count($segments);
 
-	if (empty($segments[0])) 
+	if (empty($segments[0]))
 	{
 		return $vars;
 	}
@@ -101,17 +101,17 @@ function AnswersParseRoute($segments)
 			$vars['task'] = $segments[0];
 			break;
 		case 'question':
-			if (empty($segments[1])) 
+			if (empty($segments[1]))
 			{
 				return $vars;
 			}
 
 			$vars['task'] = 'question';
 
-			if ($segments[1] == 'new') 
+			if ($segments[1] == 'new')
 			{
 				$vars['task'] = 'new';
-				if (isset($segments[2]) && $segments[2]) 
+				if (isset($segments[2]) && $segments[2])
 				{
 					$vars['tag'] = $segments[2];
 				}

@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
@@ -15,11 +15,11 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 
 		<?php if ($ct > 0) { ?>
 
-			<?php 
+			<?php
 			$ct--;
 			foreach ($this->sections as $i => $section)
 			{
-				if ($section->id == 0 && !$section->categories[0]->posts) 
+				if ($section->id == 0 && !$section->categories[0]->posts)
 				{
 					continue;
 				}
@@ -205,19 +205,19 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 			<h3><?php echo JText::_('Last Post'); ?></h3>
 			<p>
 			<?php
-			if (is_object($this->lastpost)) 
+			if (is_object($this->lastpost))
 			{
 				$lname = JText::_('Anonymous');
 				$lastposter = JUser::getInstance($this->lastpost->created_by);
-				if (is_object($lastposter)) 
+				if (is_object($lastposter))
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastposter->get('id')) . '">' . $this->escape(stripslashes($lastposter->get('name'))) . '</a>';
 				}
 				foreach ($this->sections as $section)
 				{
-					if ($section->categories) 
+					if ($section->categories)
 					{
-						foreach ($section->categories as $row) 
+						foreach ($section->categories as $row)
 						{
 							if ($row->id == $this->lastpost->category_id)
 							{
@@ -231,8 +231,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 				?>
 				<span class="entry-date" data-href="<?php echo JRoute::_($base . '&b=' . $sec . '&c=' . $cat . '/' . ($this->lastpost->parent ? $this->lastpost->parent : $this->lastpost->id)); ?>">
 					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="time"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->lastpost->created; ?>"><?php echo JHTML::_('date', $this->lastpost->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 				</span>
 				<span class="entry-author">

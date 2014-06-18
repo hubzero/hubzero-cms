@@ -39,36 +39,36 @@ class GroupsModelModuleArchive extends JObject
 {
 	/**
 	 * \Hubzero\Base\Model
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_modules = null;
 
 	/**
 	 * Modules count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_modules_count = null;
-	
+
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_config;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -76,7 +76,7 @@ class GroupsModelModuleArchive extends JObject
 	{
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Get Instance of Module Archive
 	 *
@@ -86,19 +86,19 @@ class GroupsModelModuleArchive extends JObject
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new GroupsModelModuleArchive();
 		}
-		
+
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Get a list of group modules
 	 *
@@ -109,7 +109,7 @@ class GroupsModelModuleArchive extends JObject
 	 */
 	public function modules( $rtrn = 'list', $filters = array(), $clear = false )
 	{
-		
+
 		switch (strtolower($rtrn))
 		{
 			case 'unapproved':
@@ -142,5 +142,5 @@ class GroupsModelModuleArchive extends JObject
 			break;
 		}
 	}
-	
+
 }

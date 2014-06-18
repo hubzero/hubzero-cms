@@ -41,7 +41,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 {
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array(
@@ -50,7 +50,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $referenceid Scope ID (group, course, etc.)
 	 * @return     void
 	 */
@@ -76,20 +76,20 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 
 	/**
 	 * Generate and return the title for this wishlist
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function title()
 	{
-		return ($this->_item->type == 7 && isset($this->_item->alias)) 
-				? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias 
+		return ($this->_item->type == 7 && isset($this->_item->alias))
+				? JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
 				: JText::_('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
@@ -182,7 +182,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 	/**
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
-	 * 
+	 *
 	 * @param      string $title Breadcrumb title
 	 * @param      string $url   Breadcrumb URL
 	 * @return     string
@@ -194,7 +194,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_('Resources'), 
+				JText::_('Resources'),
 				'index.php?option=' . $this->get('option')
 			);
 			$pathway->addItem(
@@ -202,14 +202,14 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
-				JText::_('Wishlist'), 
+				JText::_('Wishlist'),
 				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				$title, 
+				$title,
 				$url
 			);
 		}

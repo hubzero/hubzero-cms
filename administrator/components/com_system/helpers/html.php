@@ -71,7 +71,7 @@ class SystemHtml
 	{
 		foreach (array('', 'K', 'M', 'G') as $i => $k)
 		{
-			if ($s < 1024) 
+			if ($s < 1024)
 			{
 				break;
 			}

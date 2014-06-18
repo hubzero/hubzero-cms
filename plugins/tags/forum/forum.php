@@ -44,14 +44,14 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
@@ -63,7 +63,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get the group IDs for all the groups of a specific user
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     array
 	 */
@@ -78,7 +78,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -88,16 +88,16 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas['forum']) && !in_array('forum', $areas)) 
+			if (!isset($areas['forum']) && !in_array('forum', $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -118,7 +118,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		{
 			$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 		}
-		else 
+		else
 		{
 			$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
 
@@ -126,7 +126,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 			{
 				$addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
 			}
-			else 
+			else
 			{
 				$addtl_where[] = '(e.access IN (' . $viewlevels . '))';
 			}
@@ -134,12 +134,12 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down, 
+		$e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down,
 					(CASE WHEN e.scope_id > 0 AND e.scope='group' THEN
 						concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END))
 					ELSE
 						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END)
-					END) AS href, 
+					END) AS href,
 					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, NULL AS params, e.last_activity AS rcount, c.alias AS data1, s.alias AS data2, g.cn AS data3 ";
 		$e_from  = " FROM #__forum_posts AS e
 		 			LEFT JOIN #__forum_categories c ON c.id = e.category_id
@@ -158,23 +158,23 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit) 
+		if (!$limit)
 		{
 			// Get a count
 			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} 
-		else 
+		}
+		else
 		{
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				return $e_fields . $e_from . $e_where;
 			}
 
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
-				if ($this->_total == 0) 
+				if ($this->_total == 0)
 				{
 					return array();
 				}
@@ -190,13 +190,13 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Static method for formatting results
-	 * 
+	 *
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
 	public static function out($row)
 	{
-		if (strstr($row->href, 'index.php')) 
+		if (strstr($row->href, 'index.php'))
 		{
 			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&thread=' . $row->alias);
 		}
@@ -206,7 +206,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		$html  = "\t" . '<li class="kb-entry">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
 		$html .= "\t\t" . '<p class="details">' . JText::_('PLG_TAGS_FORUM') . ' &rsaquo; ' . stripslashes($row->data2) . ' &rsaquo; ' . stripslashes($row->data1) . '</p>' . "\n";
-		if ($row->ftext) 
+		if ($row->ftext)
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . "</p>\n";
 		}

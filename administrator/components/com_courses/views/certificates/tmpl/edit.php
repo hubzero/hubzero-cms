@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Certificate') . ': ' . $text, 'courses.png');
-/*if ($canDo->get('core.edit')) 
+/*if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }*/
@@ -44,7 +44,7 @@ JToolBarHelper::cancel();
 JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

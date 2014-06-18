@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -41,13 +41,13 @@ function systemBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset($query['controller'])) 
+	if (isset($query['controller']))
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
 
-	if (isset($query['task'])) 
+	if (isset($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
@@ -58,7 +58,7 @@ function systemBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */

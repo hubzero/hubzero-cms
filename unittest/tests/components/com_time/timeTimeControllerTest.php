@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time component controller
- * 
+ *
  * @author Sam Wilson <samwilson@purdue.edu>
  */
 

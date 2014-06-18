@@ -39,7 +39,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -94,7 +94,7 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$user = JUser::getInstance($this->row->created_by);
 						echo $this->escape($user->get('name'));
 						?>
@@ -110,7 +110,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo JText::_('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
 						<td>
-							<?php 
+							<?php
 							$user = JUser::getInstance($this->row->modified_by);
 							echo $this->escape($user->get('name'));
 							?>

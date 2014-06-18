@@ -33,117 +33,117 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for available publication handlers
  */
-class PublicationHanlder extends JTable 
+class PublicationHanlder extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       				= NULL;
-	
+
 	/**
 	 * Name
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name 					= NULL;
-	
+
 	/**
 	 * Label
-	 * 
+	 *
 	 * @var string
 	 */
 	var $label 					= NULL;
 
 	/**
 	 * Title
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title 					= NULL;
 
 	/**
 	 * About
-	 * 
+	 *
 	 * @var text
 	 */
 	var $about 					= NULL;
-	
+
 	/**
 	 * Status
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $status 				= NULL;
-	
+
 	/**
 	 * Params
-	 * 
+	 *
 	 * @var text
 	 */
 	var $params 				= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
-	public function __construct( &$db ) 
+	 */
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_handlers', 'id', $db );
 	}
-	
+
 	/**
 	 * Load handler
-	 * 
+	 *
 	 * @param      string 	$name 	Alias name of handler
 	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function loadRecord( $name = NULL ) 
+	 */
+	public function loadRecord( $name = NULL )
 	{
-		if ($name === NULL) 
+		if ($name === NULL)
 		{
 			return false;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
 		$query.= " LIMIT 1";
 		$this->_db->setQuery( $query );
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
-	}	
-	
+	}
+
 	/**
 	 * Load handler config
-	 * 
+	 *
 	 * @param      string 	$name 	Alias name of handler
 	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function getConfig( $name = NULL ) 
+	 */
+	public function getConfig( $name = NULL )
 	{
-		if ($name === NULL) 
+		if ($name === NULL)
 		{
 			return false;
 		}
-		
+
 		$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
 		$query.= " LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		
+
 		// Collect configs
 		if ($result)
 		{
@@ -157,12 +157,12 @@ class PublicationHanlder extends JTable
 				else
 				{
 					$output[$field] = $value;
-				}				
+				}
 			}
-			
+
 			return $output['params'] ? json_decode(json_encode($output), FALSE) : false;
 		}
-		
-		return false;		
+
+		return false;
 	}
 }

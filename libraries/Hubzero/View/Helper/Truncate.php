@@ -48,14 +48,14 @@ class Truncate extends AbstractHelper
 	 */
 	public function __invoke($text = null, $length = null, $options = array())
 	{
-		if (null === $text) 
+		if (null === $text)
 		{
 			throw new \InvalidArgumentException(
 				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
 			);
 		}
 
-		if (!$length || !is_numeric($length)) 
+		if (!$length || !is_numeric($length))
 		{
 			throw new \InvalidArgumentException(
 				__CLASS__ .'::' . __METHOD__ . '(); Length must be an integer'

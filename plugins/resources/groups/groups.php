@@ -45,7 +45,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -59,7 +59,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      integer $miniview  View style
@@ -94,7 +94,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			'name'    => 'display'
 		));
 
-		if ($miniview) 
+		if ($miniview)
 		{
 			$this->view->setLayout('mini');
 		}
@@ -105,7 +105,7 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 		$this->view->params   = $this->params;
 		$this->view->group    = $group;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}

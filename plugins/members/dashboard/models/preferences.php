@@ -37,21 +37,21 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'MembersDashboardTablePreferences';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -59,11 +59,11 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -73,7 +73,7 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Get Instance this Model
 	 *
@@ -83,22 +83,22 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($key);
 		}
-		
+
 		return $instances[$key];
 	}
 
 	/**
 	 * Load Member Dashboard Prefs by uidNumber
-	 * 
+	 *
 	 * @param  int $uidNumber  Member uidNumber
 	 * @return object
 	 */
@@ -114,13 +114,13 @@ class MembersDashboardModelPreferences extends \Hubzero\Base\Model
 
 		// create new instance of this object
 		$object = new self();
-		
+
 		// bind data if we have any
 		if (isset($data))
 		{
 			$object->bind($data);
 		}
-		
+
 		// return object
 		return $object;
 	}

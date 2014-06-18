@@ -33,63 +33,63 @@ class MwViewperm extends JTable
 {
 	/**
 	 * bigint(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $viewuser  = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $viewtoken = null;
 
 	/**
 	 * varchar(9)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $geometry  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $fwhost    = null;
 
 	/**
 	 * smallint(5)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $fwport    = null;
 
 	/**
 	 * varchar(16)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $vncpass   = null;
 
 	/**
 	 * varchar(4)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $readonly  = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -100,33 +100,33 @@ class MwViewperm extends JTable
 
 	/**
 	 * Load database rows
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username User to load for
 	 * @return     array
 	 */
 	public function loadViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
-		if ($username) 
+		if ($username)
 		{
 			$query .=  " AND viewuser=" . $this->_db->Quote($username);
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Update View perm
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateViewPerm()
@@ -135,12 +135,12 @@ class MwViewperm extends JTable
 		{
 			return false;
 		}
-		
+
 		if (!isset($this->viewuser) || $this->viewuser === null || $this->viewuser == '')
 		{
 			return false;
 		}
-		
+
 		$sql = "UPDATE `viewperm` SET `viewtoken`=" . $this->_db->quote( $this->viewtoken ) . ", `geometry`=" . $this->_db->quote( $this->geometry ) . ", `fwhost`=" . $this->_db->quote( $this->fwhost ) . ", `fwport`=" . $this->_db->quote( $this->fwport ) . ", `vncpass`=" . $this->_db->quote( $this->vncpass ) . ", `readonly`=" . $this->_db->quote( $this->readonly ) . " WHERE `sessnum`=" . $this->_db->quote( $this->sessnum ) . " AND `viewuser`=" . $this->_db->quote( $this->viewuser );
 		$this->_db->setQuery( $sql );
 		$this->_db->query();
@@ -148,28 +148,28 @@ class MwViewperm extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $sess     Session number
 	 * @param      string  $username User to delete for
 	 * @return     boolean False if errors, True if success
 	 */
 	public function deleteViewperm($sess=null, $username=null)
 	{
-		if ($sess == null) 
+		if ($sess == null)
 		{
 			$sess = $this->sessnum;
 		}
-		if ($sess === null) 
+		if ($sess === null)
 		{
 			return false;
 		}
 		$query = "DELETE FROM $this->_tbl WHERE sessnum=" . $this->_db->Quote($sess);
-		if ($username) 
+		if ($username)
 		{
 			$query .=  " AND viewuser=" . $this->_db->Quote($username);
 		}
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError(get_class($this) . '::delete failed - ' . $this->_db->getErrorMsg());
 			return false;
@@ -179,7 +179,7 @@ class MwViewperm extends JTable
 
 	/**
 	 * Update a record
-	 * 
+	 *
 	 * @param      boolean $updateNulls Update null values?
 	 * @return     boolean False if errors, True if success
 	 */
@@ -187,7 +187,7 @@ class MwViewperm extends JTable
 	{
 		$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(get_class($this) . '::update failed - ' . $this->_db->getErrorMsg());
 			return false;
@@ -197,14 +197,14 @@ class MwViewperm extends JTable
 
 	/**
 	 * Insert a new record
-	 * 
+	 *
 	 * @return     boolean False if errors, True if success
 	 */
 	public function insert()
 	{
 		$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(get_class($this) . '::insert failed - ' . $this->_db->getErrorMsg());
 			return false;

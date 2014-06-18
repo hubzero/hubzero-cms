@@ -28,7 +28,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_coupon_actions` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_actions` (
 		  `cnId` int(16) NOT NULL,
@@ -38,7 +38,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_coupon_conditions` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_conditions` (
 		  `cnId` int(16) NOT NULL,
@@ -47,7 +47,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_coupon_objects` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_objects` (
 		  `cnId` int(16) NOT NULL,
@@ -57,7 +57,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_coupons` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupons` (
 		  `cnId` int(16) NOT NULL AUTO_INCREMENT,
@@ -72,7 +72,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_option_groups` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_option_groups` (
 		  `ogId` int(16) NOT NULL AUTO_INCREMENT,
@@ -81,7 +81,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_options` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_options` (
 		  `oId` int(16) NOT NULL AUTO_INCREMENT,
@@ -92,7 +92,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_product_collections` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_collections` (
 		  `cllId` int(16) NOT NULL AUTO_INCREMENT,
@@ -103,7 +103,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_product_option_groups` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_option_groups` (
 		  `pId` int(16) NOT NULL,
@@ -112,7 +112,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_product_types` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_types` (
 		  `ptId` int(16) NOT NULL AUTO_INCREMENT,
@@ -122,7 +122,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_products` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_products` (
 		  `pId` int(16) NOT NULL AUTO_INCREMENT,
@@ -137,7 +137,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_sku_meta` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_sku_meta` (
 		  `smId` int(16) NOT NULL AUTO_INCREMENT,
@@ -149,7 +149,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_sku_options` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_sku_options` (
 		  `sId` int(16) NOT NULL,
@@ -158,7 +158,7 @@ class Migration20130812201731ComStorefront extends Base
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		/*Table structure for table `#__storefront_skus` */
 		$query = "CREATE TABLE IF NOT EXISTS `#__storefront_skus` (
 		  `sId` int(16) NOT NULL AUTO_INCREMENT,
@@ -188,43 +188,43 @@ class Migration20130812201731ComStorefront extends Base
 		$query = "DROP TABLE IF EXISTS `#__storefront_collections`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_actions`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_conditions`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupon_objects`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_coupons`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_option_groups`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_options`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_collections`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_option_groups`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_product_types`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_products`";
 		$this->db->setQuery($query);
 		$this->db->query();
@@ -232,11 +232,11 @@ class Migration20130812201731ComStorefront extends Base
 		$query = "DROP TABLE IF EXISTS `#__storefront_sku_meta`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_sku_options`";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		$query = "DROP TABLE IF EXISTS `#__storefront_skus`";
 		$this->db->setQuery($query);
 		$this->db->query();

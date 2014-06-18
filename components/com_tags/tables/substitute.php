@@ -38,49 +38,49 @@ class TagsTableSubstitute extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tag        = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $raw_tag    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $tag_id     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,7 +91,7 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     True if data is valid
 	 */
 	public function check()
@@ -101,7 +101,7 @@ class TagsTableSubstitute extends JTable
 			$this->raw_tag = $this->tag;
 		}
 		$this->raw_tag = trim($this->raw_tag);
-		if (!$this->raw_tag) 
+		if (!$this->raw_tag)
 		{
 			$this->setError(JText::_('You must enter a tag.'));
 			return false;
@@ -109,7 +109,7 @@ class TagsTableSubstitute extends JTable
 
 		$this->tag = $this->normalize($this->raw_tag);
 
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
@@ -181,7 +181,7 @@ class TagsTableSubstitute extends JTable
 	/**
 	 * Normalize a raw tag
 	 * Strips all non-alphanumeric characters
-	 * 
+	 *
 	 * @param      string $tag Raw tag
 	 * @return     string
 	 */
@@ -192,18 +192,18 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Remove all tag references for a given object
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @param      array   $data   List of specific tags to remove (removes all if empty)
 	 * @return     boolean True if records removed
 	 */
 	public function removeForTag($tag_id=null, $data=array())
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -216,7 +216,7 @@ class TagsTableSubstitute extends JTable
 		}
 
 		$this->_db->setQuery($sql);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -235,17 +235,17 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Get a record count for a tag ID
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @return     mixed Integer if successful, false if not
 	 */
 	public function getCount($tag_id=null)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -257,7 +257,7 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Get all the tags on an object
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @param      integer $offset Record offset
 	 * @param      integer $limit  Number of records to return (returns all if less than 1)
@@ -265,18 +265,18 @@ class TagsTableSubstitute extends JTable
 	 */
 	public function getRecords($tag_id=null, $offset=0, $limit=0)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
 		$sql = "SELECT * FROM $this->_tbl WHERE tag_id=" . $this->_db->Quote($tag_id) . " ORDER BY raw_tag ASC";
-		if ($limit > 0) 
+		if ($limit > 0)
 		{
 			$sql .= " LIMIT " . intval($offset) . ", " . intval($limit);
 		}
@@ -287,7 +287,7 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Get all the tags on an object
-	 * 
+	 *
 	 * @param      integer $tag_id Tag ID
 	 * @param      integer $offset Record offset
 	 * @param      integer $limit  Number of records to return (returns all if less than 1)
@@ -310,22 +310,22 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Move all references to one tag to another tag
-	 * 
+	 *
 	 * @param      integer $oldtagid ID of tag to be moved
 	 * @param      integer $newtagid ID of tag to move to
 	 * @return     boolean True if records changed
 	 */
 	public function moveSubstitutes($oldtagid=null, $newtagid=null)
 	{
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			$oldtagid = $this->tag_id;
 		}
-		if (!$oldtagid) 
+		if (!$oldtagid)
 		{
 			return false;
 		}
-		if (!$newtagid) 
+		if (!$newtagid)
 		{
 			return false;
 		}
@@ -334,12 +334,12 @@ class TagsTableSubstitute extends JTable
 		$items = $this->_db->loadResultArray();
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET tag_id=" . $this->_db->Quote($newtagid) . " WHERE tag_id=" . $this->_db->Quote($oldtagid));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else 
+		else
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
 
@@ -356,17 +356,17 @@ class TagsTableSubstitute extends JTable
 
 	/**
 	 * Clean up duplicate references
-	 * 
+	 *
 	 * @param      integer $tag_id ID of tag to clean up
 	 * @return     boolean True on success, false if errors
 	 */
 	public function cleanUp($tag_id=null)
 	{
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$tag_id = $this->tag_id;
 		}
-		if (!$tag_id) 
+		if (!$tag_id)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
@@ -384,7 +384,7 @@ class TagsTableSubstitute extends JTable
 					// Item isn't in collection yet, so add it
 					$tags[$sub->tag] = $sub->id;
 				}
-				else 
+				else
 				{
 					// Item tag *is* in collection.
 					if ($tags[$sub->tag] == $sub->id)
@@ -392,7 +392,7 @@ class TagsTableSubstitute extends JTable
 						// Really this shouldn't happen
 						continue;
 					}
-					else 
+					else
 					{
 						// Duplcate tag with a different ID!
 						// We don't need duplicates.

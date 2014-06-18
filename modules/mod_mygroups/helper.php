@@ -39,7 +39,7 @@ class modMyGroups extends \Hubzero\Module\Module
 {
 	/**
 	 * Get groups for a user
-	 * 
+	 *
 	 * @param      integer $uid  User ID
 	 * @param      string  $type Membership type to return groups for
 	 * @return     array
@@ -49,24 +49,24 @@ class modMyGroups extends \Hubzero\Module\Module
 		$db = JFactory::getDBO();
 
 		// Get all groups the user is a member of
-		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager 
-				   FROM #__xgroups AS g, #__xgroups_applicants AS m 
+		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
+				   FROM #__xgroups AS g, #__xgroups_applicants AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query2 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager 
-				   FROM #__xgroups AS g, #__xgroups_members AS m 
-				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN 
-						(SELECT uidNumber 
+		$query2 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
+				   FROM #__xgroups AS g, #__xgroups_members AS m
+				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN
+						(SELECT uidNumber
 						 FROM #__xgroups_managers AS manager
 						 WHERE manager.gidNumber = m.gidNumber)
 				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query3 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager 
-				   FROM #__xgroups AS g, #__xgroups_managers AS m 
+		$query3 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
+				   FROM #__xgroups AS g, #__xgroups_managers AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
-		$query4 = "SELECT g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager 
-				   FROM #__xgroups AS g, #__xgroups_invitees AS m 
+		$query4 = "SELECT g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
+				   FROM #__xgroups AS g, #__xgroups_invitees AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		switch ($type)
@@ -103,36 +103,36 @@ class modMyGroups extends \Hubzero\Module\Module
 
 	/**
 	 * Get the user's status in the gorup
-	 * 
+	 *
 	 * @param      object $group Group to check status in
 	 * @return     string
 	 */
 	public function getStatus($group)
 	{
-		if ($group->manager) 
+		if ($group->manager)
 		{
 			$status = 'manager';
-		} 
-		else 
+		}
+		else
 		{
-			if ($group->registered) 
+			if ($group->registered)
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$status = 'member';
-				} 
-				else 
+				}
+				else
 				{
 					$status = 'pending';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$status = 'invitee';
-				} 
-				else 
+				}
+				else
 				{
 					$status = '';
 				}
@@ -143,7 +143,7 @@ class modMyGroups extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

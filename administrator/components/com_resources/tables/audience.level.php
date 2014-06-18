@@ -37,35 +37,35 @@ class ResourceAudienceLevel extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       		= NULL;
 
 	/**
 	 * varchar(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $label 			= NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title 			= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description 	= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -76,7 +76,7 @@ class ResourceAudienceLevel extends JTable
 
 	/**
 	 * Get records to a determined level
-	 * 
+	 *
 	 * @param      integer $numlevels Number of levels to return
 	 * @param      array   $levels    Array to populate
 	 * @return     array
@@ -89,7 +89,7 @@ class ResourceAudienceLevel extends JTable
 
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $r)
 			{

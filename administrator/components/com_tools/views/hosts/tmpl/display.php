@@ -12,15 +12,15 @@ JToolBarHelper::help('hosts');
 $this->css();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	submitform( pressbutton );
 }
 </script>
@@ -45,7 +45,7 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-if ($this->rows) 
+if ($this->rows)
 {
 	$i = 0;
 	foreach ($this->rows as $row)
@@ -67,10 +67,10 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-				<?php 
+				<?php
 					foreach ($list as $key => $value)
 					{
-						if ($value != '0') 
+						if ($value != '0')
 						{
 							echo '<strong>';
 						}
@@ -79,7 +79,7 @@ if ($this->rows)
 						<span><?php echo $this->escape($key); ?></span>
 					</a>
 						<?php
-						if ($value != '0') 
+						if ($value != '0')
 						{
 							echo '</strong>';
 						}

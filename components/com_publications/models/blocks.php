@@ -34,29 +34,29 @@ defined('_JEXEC') or die( 'Restricted access' );
 include_once(dirname(__FILE__) . DS . 'format.php');
 include_once(dirname(__FILE__) . DS . 'block.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 
 /**
  * Publications blocks class
- * 
+ *
  */
 class PublicationsModelBlocks extends JObject
-{		
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	public $_db   			= NULL;
-	
+
 	/**
 	 * Table class
-	 * 
+	 *
 	 * @var object
 	 */
 	public $_objBlock   	= NULL;
-	
+
 	/**
 	* @var    array  Loaded elements
 	*/
@@ -66,7 +66,7 @@ class PublicationsModelBlocks extends JObject
 	* @var    array  Directories, where block types can be stored
 	*/
 	protected $_blockPath 	= array();
-							
+
 	/**
 	 * Constructor
 	 *
@@ -77,20 +77,20 @@ class PublicationsModelBlocks extends JObject
 	{
 		$this->_db 		 	= $db;
 		$this->_blockPath[] = dirname(__FILE__) . DS . 'blocks';
-		
+
 		$this->_objBlock 	= new PublicationBlock($db);
 	}
-	
+
 	/**
 	 * Get status for a block within publication
 	 *
 	 * @return object
 	 */
 	public function getStatus($name, $pub = NULL, $manifest = NULL, $sequence = 0, $elementId = NULL)
-	{		
+	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$status = new PublicationsModelStatus();
@@ -99,12 +99,12 @@ class PublicationsModelBlocks extends JObject
 		{
 			$status = $block->getStatus($pub, $manifest, $elementId);
 		}
-		
+
 		// Return status
 		return $status;
 
 	}
-		
+
 	/**
 	 * Loads a block
 	 *
@@ -114,21 +114,21 @@ class PublicationsModelBlocks extends JObject
 	{
 		$signature = md5($name);
 
-		if ((isset($this->_blocks[$signature]) 
-			&& !($this->_blocks[$signature] instanceof __PHP_Incomplete_Class))  
-			&& $new === false) 
+		if ((isset($this->_blocks[$signature])
+			&& !($this->_blocks[$signature] instanceof __PHP_Incomplete_Class))
+			&& $new === false)
 		{
 			return	$this->_blocks[$signature];
-		}		
-		
+		}
+
 		$elementClass = 'PublicationsBlock' . ucfirst($name);
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
-			if (isset($this->_blockPath)) 
+			if (isset($this->_blockPath))
 			{
 				$dirs = $this->_blockPath;
-			} 
-			else 
+			}
+			else
 			{
 				$dirs = array();
 			}
@@ -136,37 +136,37 @@ class PublicationsModelBlocks extends JObject
 			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file)) 
+			if ($elementFile = JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
-			} 
-			else 
+			}
+			else
 			{
 				$false = false;
 				return $false;
 			}
 		}
 
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
 			$false = false;
 			return $false;
 		}
-		
+
 		$this->_blocks[$signature] = new $elementClass($this);
-		return $this->_blocks[$signature];		
+		return $this->_blocks[$signature];
 	}
-	
+
 	/**
 	 * Get list of all available blocks
 	 *
 	 * @return  array  An array of all available blocks
 	 */
 	public function getBlocks( $select = '*', $where = '', $order = '')
-	{	
-		return $this->_objBlock->getBlocks($select, $where, $order);		
+	{
+		return $this->_objBlock->getBlocks($select, $where, $order);
 	}
-	
+
 	/**
 	 * Get default block manifest
 	 *
@@ -177,7 +177,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false)
 		{
 			$this->setError('Error loading block');
@@ -186,9 +186,9 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			return $block->getManifest();
-		}		
+		}
 	}
-	
+
 	/**
 	 * Get block property
 	 *
@@ -201,10 +201,10 @@ class PublicationsModelBlocks extends JObject
 		{
 			return false;
 		}
-		
+
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false)
 		{
 			return false;
@@ -212,9 +212,9 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			return $block->getProperty($property);
-		}		
+		}
 	}
-	
+
 	/**
 	 * Transfers data
 	 *
@@ -224,7 +224,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false)
 		{
 			return false;
@@ -232,9 +232,9 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			return $block->transferData($manifest, $pub, $old, $new);
-		}		
+		}
 	}
-		
+
 	/**
 	 * Renders a block
 	 *
@@ -246,7 +246,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		$html = '';
 		if ($block === false || !$pub || !is_object($pub))
 		{
@@ -256,33 +256,33 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			// Are we allowed to edit?
-			$viewname = $viewname == 'edit' 
-						&& $this->checkFreeze($manifest->params, $pub) 
+			$viewname = $viewname == 'edit'
+						&& $this->checkFreeze($manifest->params, $pub)
 						? 'freeze' : $viewname;
-		
+
 			// Render
 			$html = $block->display($pub, $manifest, $viewname, $sequence);
 		}
 
-		return $html;		
+		return $html;
 	}
-	
+
 	/**
 	 * Check if changes are allowed
 	 *
 	 * @return  boolean
 	 */
 	public function checkFreeze($blockParams, $pub)
-	{		
+	{
 		// Allow changes in non-draft version?
-		$freeze 	= isset($blockParams->published_editing) 
-					 && $blockParams->published_editing == 0 
-					 && ($pub->state == 1 || $pub->state == 5 ) 
+		$freeze 	= isset($blockParams->published_editing)
+					 && $blockParams->published_editing == 0
+					 && ($pub->state == 1 || $pub->state == 5 )
 					? true : false;
-					
-		return $freeze; 		
+
+		return $freeze;
 	}
-	
+
 	/**
 	 * Saves input in a block
 	 *
@@ -293,7 +293,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$this->setError('Error saving block');
@@ -302,23 +302,23 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			$block->save($manifest, $sequence, $pub, $actor, $elementId);
-			
+
 			// Pick up error messages
 			if ($block->getError())
 			{
 				$this->setError($block->getError());
 			}
-			
+
 			// Set success message
 			if ($block->get('_message'))
 			{
 				$this->set('_message', $block->get('_message'));
 			}
-						
+
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Reorders items in block/element
 	 *
@@ -329,7 +329,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$this->setError('Error saving block');
@@ -338,23 +338,23 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			$block->reorder($manifest, $sequence, $pub, $actor, $elementId);
-			
+
 			// Pick up error messages
 			if ($block->getError())
 			{
 				$this->setError($block->getError());
 			}
-			
+
 			// Set success message
 			if ($block->get('_message'))
 			{
 				$this->set('_message', $block->get('_message'));
 			}
-			
+
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Save block/element item
 	 *
@@ -365,7 +365,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$this->setError('Error saving block');
@@ -374,23 +374,23 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			$block->saveItem($manifest, $sequence, $pub, $actor, $elementId);
-			
+
 			// Pick up error messages
 			if ($block->getError())
 			{
 				$this->setError($block->getError());
 			}
-			
+
 			// Set success message
 			if ($block->get('_message'))
 			{
 				$this->set('_message', $block->get('_message'));
 			}
-			
+
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Save block/element item
 	 *
@@ -401,7 +401,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$this->setError('Error saving block');
@@ -410,23 +410,23 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			$block->deleteItem($manifest, $sequence, $pub, $actor, $elementId);
-			
+
 			// Pick up error messages
 			if ($block->getError())
 			{
 				$this->setError($block->getError());
 			}
-			
+
 			// Set success message
 			if ($block->get('_message'))
 			{
 				$this->set('_message', $block->get('_message'));
 			}
-			
+
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Add item
 	 *
@@ -437,7 +437,7 @@ class PublicationsModelBlocks extends JObject
 	{
 		// Load block
 		$block = $this->loadBlock($name);
-		
+
 		if ($block === false || !$pub || !is_object($pub))
 		{
 			$this->setError('Error saving block');
@@ -446,19 +446,19 @@ class PublicationsModelBlocks extends JObject
 		else
 		{
 			$block->addItem($manifest, $sequence, $pub, $actor, $elementId);
-			
+
 			// Pick up error messages
 			if ($block->getError())
 			{
 				$this->setError($block->getError());
 			}
-			
+
 			// Set success message
 			if ($block->get('_message'))
 			{
 				$this->set('_message', $block->get('_message'));
 			}
-			
+
 			return true;
 		}
 	}

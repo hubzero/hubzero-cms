@@ -36,7 +36,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('acl');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 * @param The number of box to 'check'
 * @param An alternative field name
 */
-function checkAllOptions() 
+function checkAllOptions()
 {
 	var f = document.adminForm;
 	var c = f.toggleOpt.checked;
@@ -158,9 +158,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 
 	$sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
-	FROM #__support_acl_aros_acos AS m 
-	LEFT JOIN #__support_acl_aros AS r ON m.aro_id=r.id 
-	LEFT JOIN #__support_acl_acos AS c ON m.aco_id=c.id 
+	FROM #__support_acl_aros_acos AS m
+	LEFT JOIN #__support_acl_aros AS r ON m.aro_id=r.id
+	LEFT JOIN #__support_acl_acos AS c ON m.aco_id=c.id
 	WHERE r.foreign_key=$row->foreign_key AND r.model='$row->model'
 	ORDER BY aro_foreign_key, aro_model";
 	$this->database->setQuery($sql);
@@ -197,10 +197,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['tickets']['read']) 
+					if ($data['tickets']['read'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -211,10 +211,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['tickets']['update']) 
+					if ($data['tickets']['update'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -225,10 +225,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['tickets']['delete']) 
+					if ($data['tickets']['delete'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -240,10 +240,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['comments']['create']) 
+					if ($data['comments']['create'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -254,10 +254,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['comments']['read']) 
+					if ($data['comments']['read'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -269,10 +269,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['private_comments']['create']) 
+					if ($data['private_comments']['create'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';
@@ -283,10 +283,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td style="text-align:center;">
-					<?php 
+					<?php
 					$calt = JText::_('JNO');
 					$cls = 'unpublish';
-					if ($data['private_comments']['read']) 
+					if ($data['private_comments']['read'])
 					{
 						$calt = JText::_('JYES');
 						$cls = 'publish';

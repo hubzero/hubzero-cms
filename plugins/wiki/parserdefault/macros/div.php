@@ -38,7 +38,7 @@ class DivMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,14 +51,14 @@ class DivMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -66,10 +66,10 @@ class DivMacro extends WikiMacro
 		$attribs = explode(',', $et);
 		$text = array_shift($attribs);
 
-		if (trim($text) == 'start') 
+		if (trim($text) == 'start')
 		{
 			$atts = array();
-			if (!empty($attribs) && count($attribs) > 0) 
+			if (!empty($attribs) && count($attribs) > 0)
 			{
 				foreach ($attribs as $a)
 				{
@@ -88,8 +88,8 @@ class DivMacro extends WikiMacro
 
 			$div  = '<div';
 			$div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
-		} 
-		elseif (trim($text) == 'end') 
+		}
+		elseif (trim($text) == 'end')
 		{
 			$div  = '</div>';
 		}

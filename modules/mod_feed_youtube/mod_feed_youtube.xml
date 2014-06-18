@@ -49,19 +49,19 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 		</param>
 		<param name="feedtitle" type="text" size="50" default="" label="Alternative Title" description="Title to display instead of the feed title" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="rssdesc" type="radio" default="1" label="Feed Description" description="Show the description text for the whole Feed">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="feeddesc" type="text" size="50" default="" label="Alternative Description" description="Description to display instead of the feed description" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="rssimage" type="radio" default="1" label="YouTube Image" description="Show the YouTube image">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="imagepath" type="text" size="50" default="" label="Path to YouTube image" description="Enter the path to YouTube image" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="rssitems" type="text" default="3" label="Items" description="Enter number of RSS items to display" />
 		<param name="pick_random" type="radio" default="0" label="Random items" description="Display items in random or feed-defined order">
 			<option value="1">Yes</option>
@@ -72,7 +72,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="vertical">Vertical</option>
 			<option value="horizontal">Horizontal</option>
 		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="showmorelink" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
@@ -97,19 +97,19 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 				</field>
 				<field name="feedtitle" type="text" size="50" default="" label="Alternative Title" description="Title to display instead of the feed title" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="rssdesc" type="radio" default="1" label="Feed Description" description="Show the description text for the whole Feed">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
 				<field name="feeddesc" type="text" size="50" default="" label="Alternative Description" description="Description to display instead of the feed description" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="rssimage" type="radio" default="1" label="YouTube Image" description="Show the YouTube image">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
 				<field name="imagepath" type="text" size="50" default="" label="Path to YouTube image" description="Enter the path to YouTube image" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="rssitems" type="text" default="3" label="Items" description="Enter number of RSS items to display" />
 				<field name="pick_random" type="radio" default="0" label="Random items" description="Display items in random or feed-defined order">
 					<option value="1">Yes</option>
@@ -120,7 +120,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="vertical">Vertical</option>
 					<option value="horizontal">Horizontal</option>
 				</field>
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="showmorelink" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
 					<option value="1">Yes</option>
 					<option value="0">No</option>

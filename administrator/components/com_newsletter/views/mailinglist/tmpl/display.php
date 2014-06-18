@@ -46,7 +46,7 @@ JToolBarHelper::preferences($this->option, '550');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {

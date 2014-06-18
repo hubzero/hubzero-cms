@@ -54,7 +54,7 @@ $widgetSettings .= ($this->params->get('displayBorders') == 'no') ? ' noborders'
 	</h3>
 <?php endif; ?>
 
-<a class="twitter-timeline" 
+<a class="twitter-timeline"
 	href="https://twitter.com/"
 	data-widget-id="346714310770302976"
 	data-screen-name="<?php echo $screenName; ?>"

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $canDo = MembersHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('MEMBER') . ': <small><small>[ ' . JText::_('NEW') . ' ]</small></small>', 'user.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save('new');
 }

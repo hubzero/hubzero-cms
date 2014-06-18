@@ -43,11 +43,11 @@ class CronExpression
 	 * @var array Order in which to test of cron parts
 	 */
 	private static $order = array(
-		self::YEAR, 
-		self::MONTH, 
-		self::DAY, 
-		self::WEEKDAY, 
-		self::HOUR, 
+		self::YEAR,
+		self::MONTH,
+		self::DAY,
+		self::WEEKDAY,
+		self::HOUR,
 		self::MINUTE
 	);
 
@@ -78,7 +78,7 @@ class CronExpression
 			'@hourly'   => '0 * * * *'
 		);
 
-		if (isset($mappings[$expression])) 
+		if (isset($mappings[$expression]))
 		{
 			$expression = $mappings[$expression];
 		}
@@ -109,14 +109,14 @@ class CronExpression
 	public function setExpression($value)
 	{
 		$this->cronParts = explode(' ', $value);
-		if (count($this->cronParts) < 5) 
+		if (count($this->cronParts) < 5)
 		{
 			throw new InvalidArgumentException(
 				$value . ' is not a valid CRON expression'
 			);
 		}
 
-		foreach ($this->cronParts as $position => $part) 
+		foreach ($this->cronParts as $position => $part)
 		{
 			$this->setPart($position, $part);
 		}
@@ -135,7 +135,7 @@ class CronExpression
 	 */
 	public function setPart($position, $value)
 	{
-		if (!$this->fieldFactory->getField($position)->validate($value)) 
+		if (!$this->fieldFactory->getField($position)->validate($value))
 		{
 			throw new InvalidArgumentException(
 				'Invalid CRON field value ' . $value . ' as position ' . $position
@@ -199,7 +199,7 @@ class CronExpression
 	public function getMultipleRunDates($total, $currentTime = 'now', $invert = false, $allowCurrentDate = false)
 	{
 		$matches = array();
-		for ($i = 0; $i < max(0, $total); $i++) 
+		for ($i = 0; $i < max(0, $total); $i++)
 		{
 			$matches[] = $this->getRunDate($currentTime, $i, $invert, $allowCurrentDate);
 		}
@@ -218,11 +218,11 @@ class CronExpression
 	 */
 	public function getExpression($part = null)
 	{
-		if (null === $part) 
+		if (null === $part)
 		{
 			return implode(' ', $this->cronParts);
-		} 
-		else if (array_key_exists($part, $this->cronParts)) 
+		}
+		else if (array_key_exists($part, $this->cronParts))
 		{
 			return $this->cronParts[$part];
 		}
@@ -241,17 +241,17 @@ class CronExpression
 	 */
 	public function isDue($currentTime = null)
 	{
-		if (null === $currentTime || 'now' === $currentTime) 
+		if (null === $currentTime || 'now' === $currentTime)
 		{
 			$currentDate = date('Y-m-d H:i');
 			$currentTime = strtotime($currentDate);
-		} 
-		else if ($currentTime instanceof DateTime) 
+		}
+		else if ($currentTime instanceof DateTime)
 		{
 			$currentDate = $currentTime->format('Y-m-d H:i');
 			$currentTime = strtotime($currentDate);
-		} 
-		else 
+		}
+		else
 		{
 			$currentTime = new DateTime($currentTime);
 			$currentTime->setTime($currentTime->format('H'), $currentTime->format('i'), 0);
@@ -285,12 +285,12 @@ class CronExpression
 		$nth = (int) $nth;
 
 		// Set a hard limit to bail on an impossible date
-		for ($i = 0; $i < 1000; $i++) 
+		for ($i = 0; $i < 1000; $i++)
 		{
-			foreach (self::$order as $position) 
+			foreach (self::$order as $position)
 			{
 				$part = $this->getExpression($position);
-				if (null === $part) 
+				if (null === $part)
 				{
 					continue;
 				}
@@ -299,15 +299,15 @@ class CronExpression
 				// Get the field object used to validate this part
 				$field = $this->fieldFactory->getField($position);
 				// Check if this is singular or a list
-				if (strpos($part, ',') === false) 
+				if (strpos($part, ',') === false)
 				{
 					$satisfied = $field->isSatisfiedBy($nextRun, $part);
-				} 
-				else 
+				}
+				else
 				{
-					foreach (array_map('trim', explode(',', $part)) as $listPart) 
+					foreach (array_map('trim', explode(',', $part)) as $listPart)
 					{
-						if ($field->isSatisfiedBy($nextRun, $listPart)) 
+						if ($field->isSatisfiedBy($nextRun, $listPart))
 						{
 							$satisfied = true;
 							break;
@@ -316,7 +316,7 @@ class CronExpression
 				}
 
 				// If the field is not satisfied, then start over
-				if (!$satisfied) 
+				if (!$satisfied)
 				{
 					$field->increment($nextRun, $invert);
 					continue 2;
@@ -324,7 +324,7 @@ class CronExpression
 			}
 
 			// Skip this match if needed
-			if ((!$allowCurrentDate && $nextRun == $currentDate) || --$nth > -1) 
+			if ((!$allowCurrentDate && $nextRun == $currentDate) || --$nth > -1)
 			{
 				$this->fieldFactory->getField(0)->increment($nextRun, $invert);
 				continue;

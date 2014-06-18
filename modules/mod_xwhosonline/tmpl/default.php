@@ -33,24 +33,24 @@ defined('_JEXEC') or die('Restricted access');
 
 $content = '';
 
-if ($this->online) 
+if ($this->online)
 {
 	$guest_array = $this->guest_array;
 	$user_array  = $this->user_array;
 
-	if ($this->admin) 
+	if ($this->admin)
 	{
 		$content .= '<a href="/users/">';
 	}
 
-	if ($guest_array<>0 && $user_array==0) 
+	if ($guest_array<>0 && $user_array==0)
 	{
-		if ($guest_array == 1) 
+		if ($guest_array == 1)
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
-		} 
-		else 
+		}
+		else
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
@@ -58,14 +58,14 @@ if ($this->online)
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($guest_array==0 && $user_array<>0) 
+	if ($guest_array==0 && $user_array<>0)
 	{
-		if ($user_array==1) 
+		if ($user_array==1)
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
-		} 
-		else 
+		}
+		else
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
@@ -73,42 +73,42 @@ if ($this->online)
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($guest_array<>0 && $user_array<>0) 
+	if ($guest_array<>0 && $user_array<>0)
 	{
-		if ($guest_array==1) 
+		if ($guest_array==1)
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUEST_COUNT');
 			$content .= JText::_('MOD_XWHOSONLINE_AND');
-		} 
-		else 
+		}
+		else
 		{
 			$content .= JText::_('MOD_XWHOSONLINE_WE_HAVE');
 			$content .= $guest_array . ' ' . JText::_('MOD_XWHOSONLINE_GUESTS_COUNT');
 			$content .= JText::_('MOD_XWHOSONLINE_AND');
 		}
 
-		if ($user_array==1) 
+		if ($user_array==1)
 		{
 			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBER_COUNT');
-		} 
-		else 
+		}
+		else
 		{
 			$content .= $user_array . ' ' . JText::_('MOD_XWHOSONLINE_MEMBERS_COUNT');
 		}
 		$content .= JText::_('MOD_XWHOSONLINE_ONLINE');
 	}
 
-	if ($this->admin) 
+	if ($this->admin)
 	{
 		$content .= '</a>';
 	}
 }
 
-if ($this->users) 
+if ($this->users)
 {
 	$rows = $this->rows;
-	if ($rows) 
+	if ($rows)
 	{
 		$content .= '<ul>' . "\n";
 		foreach ($rows as $row)
@@ -116,8 +116,8 @@ if ($this->users)
 			$content .= '<li><strong>' . $row->username . '</strong></li>' . "\n";
 		}
 		$content .= '</ul>' . "\n";
-	} 
-	else 
+	}
+	else
 	{
 		$content .= '<p>' . JText::_('MOD_XWHOSONLINE_NONE') . '</p>' . "\n";
 	}

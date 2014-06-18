@@ -41,7 +41,7 @@ class plgSystemRemember extends JPlugin
 
 				$key = new JCryptKey('simple', $privateKey, $privateKey);
 				$crypt = new JCrypt(new JCryptCipherSimple, $key);
-			
+
 				try
 				{
 					$str = $crypt->decrypt($str);

@@ -70,7 +70,7 @@ class Test implements CommandInterface
 	 * Dump the database
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function execute()
 	{

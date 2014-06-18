@@ -45,7 +45,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		echo $this->transactionInfo->tiShippingToFirst;
 		echo ' ';
 		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';		
+		echo '<br>';
 		echo $this->transactionInfo->tiShippingAddress;
 		echo '<br>';
 		echo $this->transactionInfo->tiShippingCity;
@@ -55,7 +55,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		echo $this->transactionInfo->tiShippingZip;
 		echo '</p>';
 	}
-	
+
 	echo '<a href="';
 	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
 	echo '">Change</a>';

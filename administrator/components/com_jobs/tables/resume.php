@@ -38,49 +38,49 @@ class Resume extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid		= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created	= NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title		= NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $filename	= NULL;
 
 	/**
 	 * tinyint  0 - no, 1 - yes
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $main		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,18 +91,18 @@ class Resume extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval($this->uid) == 0) 
+		if (intval($this->uid) == 0)
 		{
 			$this->setError(JText::_('ERROR_MISSING_UID'));
 			return false;
 		}
 
-		if (trim($this->filename) == '') 
+		if (trim($this->filename) == '')
 		{
 			$this->setError(JText::_('ERROR_MISSING_FILENAME'));
 			return false;
@@ -113,29 +113,29 @@ class Resume extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $name Parameter description (if any) ...
 	 * @return     boolean True upon success
 	 */
 	public function loadResume($name=NULL)
 	{
-		if ($name !== NULL) 
+		if ($name !== NULL)
 		{
 			$this->_tbl_key = 'uid';
 		}
 		$k = $this->_tbl_key;
-		if ($name !== NULL) 
+		if ($name !== NULL)
 		{
 			$this->$k = $name;
 		}
 		$name = $this->$k;
-		if ($name === NULL) 
+		if ($name === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($name) . " AND main='1' LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
@@ -144,24 +144,24 @@ class Resume extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $id Resume ID
 	 * @return     boolean False if errors, True upon success
 	 */
 	public function delete_resume($id = NULL)
 	{
-		if ($id === NULL) 
+		if ($id === NULL)
 		{
 			$id == $this->id;
 		}
-		if ($id === NULL) 
+		if ($id === NULL)
 		{
 			return false;
 		}
 
 		$query  = "DELETE FROM $this->_tbl WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -171,11 +171,11 @@ class Resume extends JTable
 
 	/**
 	 * Get resume files
-	 * 
+	 *
 	 * @param      string  $pile  shortlisted or applied
 	 * @param      integer $uid   User ID
 	 * @param      integer $admin Admin access?
-	 * @return     array 
+	 * @return     array
 	 */
 	public function getResumeFiles($pile = 'all', $uid = 0, $admin = 0)
 	{
@@ -191,7 +191,7 @@ class Resume extends JTable
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $r)
 			{

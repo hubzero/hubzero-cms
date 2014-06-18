@@ -68,7 +68,7 @@ require_once( JPATH_COMPONENT . DS . 'models' . DS . 'types.php' );
 
 require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_projects' . DS . 'tables' . DS . 'project.php' );
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_projects' . DS . 'tables'. DS . 'project.owner.php' );
 
 jimport('joomla.application.component.helper');

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'AnswersHtml'
- * 
+ *
  * Long description (if any) ...
  */
 class AnswersHtml
@@ -41,9 +41,9 @@ class AnswersHtml
 
 	/**
 	 * Short description for 'alert'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -54,9 +54,9 @@ class AnswersHtml
 
 	/**
 	 * Short description for 'autop'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $pee Parameter description (if any) ...
 	 * @param      integer $br Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -68,10 +68,10 @@ class AnswersHtml
 		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
 		$pee = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $pee); // Space things out a little
 		$pee = preg_replace('!(</(?:table|ul|ol|li|pre|form|blockquote|h[1-6])>)!', "$1\n", $pee); // Space things out a little
-		$pee = preg_replace("/(\r\n|\r)/", "\n", $pee); // cross-platform newlines 
+		$pee = preg_replace("/(\r\n|\r)/", "\n", $pee); // cross-platform newlines
 		$pee = preg_replace("/\n\n+/", "\n\n", $pee); // take care of duplicates
-		$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "\t<p>$1</p>\n", $pee); // make paragraphs, including one at the end 
-		$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace 
+		$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "\t<p>$1</p>\n", $pee); // make paragraphs, including one at the end
+		$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace
 		$pee = preg_replace("|<p>(<li.+?)</p>|", "$1", $pee); // problem with nested lists
 		$pee = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee);
 		$pee = str_replace('</blockquote></p>', '</p></blockquote>', $pee);
@@ -87,9 +87,9 @@ class AnswersHtml
 
 	/**
 	 * Short description for 'unpee'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */

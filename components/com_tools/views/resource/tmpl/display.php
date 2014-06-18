@@ -84,11 +84,11 @@ $this->css('resource.css')
 		</div>
 		<div class="clear"></div>
 
-		<?php 
-			switch ($this->step) 
+		<?php
+			switch ($this->step)
 			{
 				//  registered
-				case 1: 
+				case 1:
 					$layout = 'compose';
 				break;
 				case 2:

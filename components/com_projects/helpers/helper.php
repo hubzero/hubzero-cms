@@ -35,255 +35,255 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Projects helper class
  */
 class ProjectsHelper extends JObject {
-		
+
 	/**
 	 * Project ID
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_id = 0;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( $db )
 	{
 		$this->_db = $db;
 	}
-		
+
 	/**
 	 * Get a list of project notes
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $masterscope
 	 * @param      int $limit
 	 * @param      string $orderby
 	 * @return     object list
-	 */	
-	public function getNotes( $group, $masterscope, $limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id' ) 
-	{		
+	 */
+	public function getNotes( $group, $masterscope, $limit = 0, $orderby = 'p.scope, p.times_rated ASC, p.id' )
+	{
 		$orderby 	= $orderby ? $orderby : 'p.scope, p.times_rated ASC, p.id';
-		
-		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated 
-		          FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope LIKE '" . $masterscope . "%' 
-				  AND p.pagename NOT LIKE 'Template:%' 
+
+		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated
+		          FROM #__wiki_page AS p
+				  WHERE p.group_cn='" . $group . "'
+				  AND p.scope LIKE '" . $masterscope . "%'
+				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
 				  ORDER BY $orderby ";
 		$query.= intval($limit) ? " LIMIT $limit" : '';
-				
-		$this->_db->setQuery($query);				
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get count of project notes
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @return     void
-	 */	
-	public function getNoteCount( $group, $scope = '' ) 
+	 */
+	public function getNoteCount( $group, $scope = '' )
 	{
-		$query = "SELECT COUNT(*) FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' AND p.state!=2 
+		$query = "SELECT COUNT(*) FROM #__wiki_page AS p
+				  WHERE p.group_cn='" . $group . "' AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 		$query.= $scope ? " AND p.scope LIKE '" . $scope . "%'" : "";
-				
-		$this->_db->setQuery($query);				
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get a list of parent project notes
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $scope
 	 * @param      string $task
 	 * @return     void
-	 */	
-	public function getParentNotes( $group, $scope, $task = '' ) 
+	 */
+	public function getParentNotes( $group, $scope, $task = '' )
 	{
-		$parts = explode ( '/', $scope );	
+		$parts = explode ( '/', $scope );
 		$remaining = array_slice($parts, 3);
-		if ($remaining) 
+		if ($remaining)
 		{
 			$query = "SELECT DISTINCT p.pagename, p.title, p.scope ";
 			$query.= "FROM #__wiki_page AS p ";
 			$query.= "WHERE p.group_cn='" . $group . "' AND p.state!=2 ";
 			$k = 1;
 			$where = '';
-			foreach ($remaining as $r) 
+			foreach ($remaining as $r)
 			{
 				$where .= "p.pagename='" . trim($r) . "'";
 				$where .= $k == count($remaining) ? '' : ' OR ';
 				$k++;
 			}
 			$query.= "AND (".$where.")" ;
-			$this->_db->setQuery($query);				
+			$this->_db->setQuery($query);
 			return $this->_db->loadObjectList();
 		}
-		else 
+		else
 		{
 			return array();
 		}
 	}
-	
+
 	/**
 	 * Get project note
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $masterscope
 	 * @param      string $prefix
 	 * @return     void
-	 */	
-	public function getSelectedNote( $id = '', $group = '', $masterscope = '' ) 
+	 */
+	public function getSelectedNote( $id = '', $group = '', $masterscope = '' )
 	{
 		$query = "SELECT DISTINCT p.id, p.pagename, p.title, p.scope, p.times_rated,
-	 		  	  (SELECT v.version FROM #__wiki_version as v WHERE v.pageid=p.id 
+	 		  	  (SELECT v.version FROM #__wiki_version as v WHERE v.pageid=p.id
 				  ORDER by v.version DESC LIMIT 1) as version,
-				  (SELECT vv.id FROM #__wiki_version as vv WHERE vv.pageid=p.id 
+				  (SELECT vv.id FROM #__wiki_version as vv WHERE vv.pageid=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
 			      FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope LIKE '" . $masterscope . "%' 
+				  WHERE p.group_cn='" . $group . "'
+				  AND p.scope LIKE '" . $masterscope . "%'
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
-		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";				  
-				
-		$this->_db->setQuery($query);				
+		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";
+
+		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		
+
 		return $result ? $result[0] : NULL;
 	}
-	
+
 	/**
 	 * Get default project note
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $masterscope
 	 * @param      string $prefix
 	 * @return     void
-	 */	
-	public function getFirstNote( $group, $masterscope, $prefix = '' ) 
+	 */
+	public function getFirstNote( $group, $masterscope, $prefix = '' )
 	{
-		$query = "SELECT p.pagename FROM #__wiki_page AS p 
+		$query = "SELECT p.pagename FROM #__wiki_page AS p
 				  WHERE p.group_cn='" . $group . "' AND p.state!=2
 				  AND p.scope='" . $masterscope . "'";
 		$query.= $prefix ? "AND p.pagename LIKE '" . $prefix . "%'" : "";
-		$query.= " ORDER BY p.times_rated, p.id ASC LIMIT 1";				  
-				
-		$this->_db->setQuery($query);				
+		$query.= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get a last note
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $scope
 	 * @return     void
-	 */	
-	public function getLastNote( $group, $scope ) 
+	 */
+	public function getLastNote( $group, $scope )
 	{
-		$query = "SELECT p.pagename, p.title, p.scope, p.times_rated 
-		          FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope='" . $scope . "' 
+		$query = "SELECT p.pagename, p.title, p.scope, p.times_rated
+		          FROM #__wiki_page AS p
+				  WHERE p.group_cn='" . $group . "'
+				  AND p.scope='" . $scope . "'
 				  ORDER BY p.times_rated DESC LIMIT 1";
-				
-		$this->_db->setQuery($query);				
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get last note order
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $scope
 	 * @return     void
-	 */	
-	public function getLastNoteOrder( $group, $scope ) 
+	 */
+	public function getLastNoteOrder( $group, $scope )
 	{
-		$query = "SELECT p.times_rated FROM #__wiki_page AS p 
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope='" . $scope . "' 
+		$query = "SELECT p.times_rated FROM #__wiki_page AS p
+				  WHERE p.group_cn='" . $group . "'
+				  AND p.scope='" . $scope . "'
 				  ORDER BY p.times_rated DESC LIMIT 1";
-				
-		$this->_db->setQuery($query);				
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Save note order
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $scope
 	 * @param      int $order
 	 * @return     void
-	 */	
-	public function saveNoteOrder( $group, $scope, $order = 0 ) 
+	 */
+	public function saveNoteOrder( $group, $scope, $order = 0 )
 	{
-		$query = "UPDATE #__wiki_page AS p SET p.times_rated='" . $order . "' 
-				  WHERE p.group_cn='" . $group . "' 
-				  AND p.scope='" . $scope . "' 
+		$query = "UPDATE #__wiki_page AS p SET p.times_rated='" . $order . "'
+				  WHERE p.group_cn='" . $group . "'
+				  AND p.scope='" . $scope . "'
 				  AND p.times_rated='0'";
-				
-		$this->_db->setQuery($query);				
-		if (!$this->_db->query()) 
+
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
 		{
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Fix scope paths after page rename
-	 * 
+	 *
 	 * @param      string $group cn of project group
 	 * @param      string $scope
 	 * @param      string $oldpagename
 	 * @param      string $newpagename
 	 * @return     void
-	 */	
-	public function fixScopePaths( $group, $scope, $oldpagename, $newpagename ) 
-	{		
+	 */
+	public function fixScopePaths( $group, $scope, $oldpagename, $newpagename )
+	{
 		$query = "UPDATE #__wiki_page AS p SET p.scope=replace(p.scope, '/" . $oldpagename . "', '/" . $newpagename . "')
 				  WHERE p.group_cn='" . $group . "'";
-				
-		$this->_db->setQuery($query);				
-		if (!$this->_db->query()) 
+
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
 		{
 			return false;
 		}
-		return true;		
+		return true;
 	}
-		
+
 	/**
 	 * Save wiki attachment
-	 * 
+	 *
 	 * @param      string $page
 	 * @param      string $file
 	 * @param      int $uid
 	 * @return     void
-	 */	
+	 */
 	public function saveWikiAttachment( $page, $file, $uid = 0 )
 	{
 		// Create database entry
@@ -292,155 +292,155 @@ class ProjectsHelper extends JObject {
 		$attachment->filename    	= $file;
 		$attachment->description 	= '';
 		$attachment->created     	= JFactory::getDate()->toSql();
-		
+
 		if (!$uid)
 		{
 			$juser = JFactory::getUser();
 			$uid   = $juser->get('id');
 		}
-		
+
 		$attachment->created_by  	= $uid;
 
-		if (!$attachment->check()) 
+		if (!$attachment->check())
 		{
 			$this->setError($attachment->getError());
 		}
-		if (!$attachment->store()) 
+		if (!$attachment->store())
 		{
 			$this->setError($attachment->getError());
 		}
 		return $attachment->id;
 	}
-	
+
 	/**
 	 * Get suggestions for new project members
-	 * 
+	 *
 	 * @param      object $project
 	 * @param      string $option
 	 * @param      int $uid
 	 * @param      array $config
 	 * @param      array $params
 	 * @return     void
-	 */	
-	public static function getSuggestions( $project, $option, $uid = 0, $config, $params ) 
-	{	
+	 */
+	public static function getSuggestions( $project, $option, $uid = 0, $config, $params )
+	{
 		$suggestions = array();
 		$creator = $project->created_by_user == $uid ? 1 : 0;
 		$goto  = 'alias=' . $project->alias;
-		
+
 		// Adding a picture
-		if ($creator && !$project->picture) 
+		if ($creator && !$project->picture)
 		{
 			$suggestions[] = array(
-				'class' => 's-picture', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_THUMB'), 
+				'class' => 's-picture',
+				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_THUMB'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&task=edit')
 			);
 		}
-		
+
 		// Adding grant information
-		if ($creator && $config->get('grantinfo') && !$params->get('grant_title', '')) 
+		if ($creator && $config->get('grantinfo') && !$params->get('grant_title', ''))
 		{
 			$suggestions[] = array(
-				'class' => 's-about', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'), 
+				'class' => 's-about',
+				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&task=edit') . '?edit=settings'
 			);
 		}
-		
+
 		// Adding about text
-		if ($creator && !$project->about && $project->private == 0) 
+		if ($creator && !$project->about && $project->private == 0)
 		{
 			$suggestions[] = array(
-				'class' => 's-about', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_ABOUT'), 
+				'class' => 's-about',
+				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_ABOUT'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&task=edit')
 			);
 		}
-		
+
 		// File upload
-		if ($project->counts['files'] == 0 || (!$creator && $project->num_visits < 5) 
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['files'] == 0 ) ) 
+		if ($project->counts['files'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['files'] == 0 ) )
 		{
 			$text = $creator ? JText::_('COM_PROJECTS_WELCOME_UPLOAD_FILES') : JText::_('COM_PROJECTS_WELCOME_SHARE_FILES');
 			$suggestions[] = array(
-				'class' => 's-files', 
-				'text' => $text, 
+				'class' => 's-files',
+				'text' => $text,
 				'url' =>  JRoute::_('index.php?option=' . $option . a . $goto . '&active=files')
 			);
 		}
-		
+
 		// Inviting others
-		if ($project->counts['team'] == 1 && $project->role == 1) 
+		if ($project->counts['team'] == 1 && $project->role == 1)
 		{
 			$suggestions[] = array(
-				'class' => 's-team', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_INVITE_USERS'), 
+				'class' => 's-team',
+				'text' => JText::_('COM_PROJECTS_WELCOME_INVITE_USERS'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&task=edit').'?edit=team'
 			);
 		}
-		
+
 		// Todo items
-		if ($project->counts['todo'] == 0 || (!$creator && $project->num_visits < 5) 
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['todo'] == 0 ) ) 
+		if ($project->counts['todo'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['todo'] == 0 ) )
 		{
 			$suggestions[] = array(
-				'class' => 's-todo', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_TODO'), 
+				'class' => 's-todo',
+				'text' => JText::_('COM_PROJECTS_WELCOME_ADD_TODO'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&active=todo')
 			);
 		}
-		
+
 		// Notes
-		if ($project->counts['notes'] == 0 || (!$creator && $project->num_visits < 5) 
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['notes'] == 0 )  ) 
+		if ($project->counts['notes'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['notes'] == 0 )  )
 		{
 			$suggestions[] = array(
-				'class' => 's-notes', 
-				'text' => JText::_('COM_PROJECTS_WELCOME_START_NOTE'), 
+				'class' => 's-notes',
+				'text' => JText::_('COM_PROJECTS_WELCOME_START_NOTE'),
 				'url' => JRoute::_('index.php?option=' . $option . a . $goto . '&active=notes')
 			);
 		}
 		return $suggestions;
 	}
-	
+
 	/**
 	 * Get project path
-	 * 
+	 *
 	 * @param      string $projectAlias
 	 * @param      string $webdir
 	 * @param      boolean $offroot
 	 * @param      string $case
 	 * @return     string
-	 */	
-	public static function getProjectPath( $projectAlias = '', $webdir = '', $offroot = 0, $case = 'files' ) 
-	{		
+	 */
+	public static function getProjectPath( $projectAlias = '', $webdir = '', $offroot = 0, $case = 'files' )
+	{
 		if (!$projectAlias || ! $webdir)
 		{
 			return false;
 		}
-		
+
 		// Build upload path for project files
 		$dir = strtolower($projectAlias);
-		
-		if (substr($webdir, 0, 1) != DS) 
+
+		if (substr($webdir, 0, 1) != DS)
 		{
 			$webdir = DS.$webdir;
 		}
-		if (substr($webdir, -1, 1) == DS) 
+		if (substr($webdir, -1, 1) == DS)
 		{
 			$webdir = substr($webdir, 0, (strlen($webdir) - 1));
 		}
 		$path  = $case ? $webdir . DS . $dir. DS . $case : $webdir . DS . $dir ;
 		$path  = $offroot ? $path : JPATH_ROOT . $path;
-		return $path;		
+		return $path;
 	}
-	
+
 	/**
 	 * Covert param to array of values
-	 * 
+	 *
 	 * @param      string $param
-	 * 
+	 *
 	 * @return     array
 	 */
 	public static function getParamArray($param = '')
@@ -448,14 +448,14 @@ class ProjectsHelper extends JObject {
 		if ($param)
 		{
 			$array = explode(',', $param);
-			return array_map('trim', $array);		
+			return array_map('trim', $array);
 		}
 		return array();
 	}
-	
+
 	/**
 	 * Send hub message
-	 * 
+	 *
 	 * @param      string 	$option
 	 * @param      array 	$config
 	 * @param      object 	$project
@@ -466,33 +466,33 @@ class ProjectsHelper extends JObject {
 	 * @param      string 	$message
 	 * @param      string 	$reviewer
 	 * @return     void
-	 */	
-	public static function sendHUBMessage( 
-		$option, $config, $project, 
-		$addressees = array(), $subject = '', 
-		$component = '', $layout = '', 
+	 */
+	public static function sendHUBMessage(
+		$option, $config, $project,
+		$addressees = array(), $subject = '',
+		$component = '', $layout = '',
 		$message = '', $reviewer = '')
 	{
 		if (!$layout || !$subject || !$component || empty($addressees))
 		{
 			return false;
 		}
-		
+
 		// Is messaging turned on?
 		if ($config->get('messaging') != 1)
 		{
 			return false;
 		}
-		
+
 		// Set up email config
 		$jconfig = JFactory::getConfig();
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('COM_PROJECTS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-		
+
 		// Html email
 		$from['multipart'] = md5(date('U'));
-		
+
 		// Get message body
 		$eview 					= new JView( array('name'=>'emails', 'layout'=> $layout . '_plain' ) );
 		$eview->option 			= $option;
@@ -500,13 +500,13 @@ class ProjectsHelper extends JObject {
 		$eview->project 		= $project;
 		$eview->params 			= new JParameter( $project->params );
 		$eview->config 			= $config;
-		$eview->message			= $message;	
-		$eview->reviewer		= $reviewer;				
+		$eview->message			= $message;
+		$eview->reviewer		= $reviewer;
 
 		// Get profile of author group
-		if ($project->owned_by_group) 
+		if ($project->owned_by_group)
 		{
-			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );	
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );
 		}
 		$body = array();
 		$body['plaintext'] 	= $eview->loadTemplate();
@@ -520,49 +520,49 @@ class ProjectsHelper extends JObject {
 		// Send HUB message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger( 'onSendMessage', 
-			array( 
-				$component, 
+		$dispatcher->trigger( 'onSendMessage',
+			array(
+				$component,
 				$subject,
-			 	$body, 
-				$from, 
-				$addressees, 
-				$option 
+			 	$body,
+				$from,
+				$addressees,
+				$option
 			)
-		);		
+		);
 	}
-	
+
 	/**
 	 * Show Git info
-	 * 
+	 *
 	 * @param      string 	$gitpath
 	 * @param      string 	$path
 	 * @param      string 	$fhash
 	 * @param      string 	$file
 	 * @param      int 		$showstatus
 	 * @return     void
-	 */	
-	public function showGitInfo ($gitpath = '', $path = '', $fhash = '', $file = '', $showstatus = 1) 
+	 */
+	public function showGitInfo ($gitpath = '', $path = '', $fhash = '', $file = '', $showstatus = 1)
 	{
-		if (!$gitpath || !$path || !$file) 
+		if (!$gitpath || !$path || !$file)
 		{
 			return false;
 		}
 		chdir($path);
-		
+
 		// Get all file revisions
 		exec ($gitpath . ' log --diff-filter=AM --pretty=format:%H ' . escapeshellarg($file) . ' 2>&1', $out);
-		
+
 		$versions = array();
 		$hashes = array();
 		$added = array();
 		$latest = array();
 
-		if (count($out) > 0 && $out[0] != '') 
+		if (count($out) > 0 && $out[0] != '')
 		{
-			foreach ($out as $line) 
+			foreach ($out as $line)
 			{
-				if (preg_match("/[a-zA-Z0-9]/", $line) && strlen($line) == 40) 
+				if (preg_match("/[a-zA-Z0-9]/", $line) && strlen($line) == 40)
 				{
 					$hashes[]  = $line;
 				}
@@ -570,20 +570,20 @@ class ProjectsHelper extends JObject {
 			// Start with oldest commit
 			$hashes = array_reverse($hashes);
 		}
-		
-		if (!empty($hashes)) 
+
+		if (!empty($hashes))
 		{
 			$i = 0;
-			foreach ($hashes as $hash) 
+			foreach ($hashes as $hash)
 			{
 				$out1 = array();
 				$out2 = array();
-							
+
 				exec($gitpath . ' log --pretty=format:%cd ' . escapeshellarg($hash) . ' 2>&1', $out1);
 				$arr = explode("\t", $out1[0]);
 				$timestamp = strtotime($arr[0]);
 				$versions[$i]['date'] =  date ('m/d/Y g:i A', $timestamp);
-					
+
 				exec($gitpath . ' log --pretty=format:%an ' . escapeshellarg($hash) . ' 2>&1', $out2);
 				$arr = explode("\t", $out2[0]);
 				$versions[$i]['author'] = $arr[0];
@@ -591,35 +591,35 @@ class ProjectsHelper extends JObject {
 				$versions[$i]['latest'] = ($i == (count($hashes) - 1)) ? 1 : 0;
 
 				$versions[$i]['hash'] = $hash;
-				if ($hash == $fhash) 
+				if ($hash == $fhash)
 				{
 					$versions[$i]['changes'] = count($hashes) - 1 - $i;
-					$added = $versions[$i];					
+					$added = $versions[$i];
 				}
-				if ($i == (count($hashes) - 1)) 
+				if ($i == (count($hashes) - 1))
 				{
 					$latest = $versions[$i];
 				}
 
 				$i++;
 			}
-			
-			if ($showstatus == 1) 
+
+			if ($showstatus == 1)
 			{
 				// Review stage
 				$status = '';
-				if (empty($added)) 
+				if (empty($added))
 				{
 					$added = $latest;
 				}
-				if (!empty($added)) 
+				if (!empty($added))
 				{
 					$status .= 'Added at revision #'.$added['num'];
-					if ($added['latest'] == 1) 
+					if ($added['latest'] == 1)
 					{
 						$status .= ' (latest) ';
 					}
-					else 
+					else
 					{
 						$status .= ' ('.$added['changes'].' new update(s)';
 						$status .= ' - last update by '.$latest['author'].' on '.$latest['date'].')';
@@ -627,27 +627,27 @@ class ProjectsHelper extends JObject {
 				}
 				return $status;
 			}
-			elseif ($showstatus == 2) 
+			elseif ($showstatus == 2)
 			{
 				// Get latest commit
 				return $latest;
 			}
-			elseif ($showstatus == 3) 
+			elseif ($showstatus == 3)
 			{
 				// Get added commit
 				return $added;
 			}
-			else 
+			else
 			{
 				return $versions;
 			}
 		}
 	}
-	
+
 	/**
 	 * check values
-	 * 
-	 * @param      string	$value	
+	 *
+	 * @param      string	$value
 	 *
 	 * @return     response string
 	 */
@@ -662,17 +662,17 @@ class ProjectsHelper extends JObject {
 		$value = strip_tags($value);
 		$value = htmlspecialchars($value);
 		return $value;
-	}	
-	
+	}
+
 	/**
 	 * Run cURL
-	 * 
+	 *
 	 * @param      string	$url
 	 * @param      string	$method
-	 * @param      array	$postvals	
+	 * @param      array	$postvals
 	 *
 	 * @return     response string
-	 */	
+	 */
 	public function runCurl($url, $method = 'GET', $postvals = null)
 	{
 	    $ch = curl_init($url);
@@ -680,12 +680,12 @@ class ProjectsHelper extends JObject {
 	    //GET request: send headers and return data transfer
 	    if ($method == 'GET')
 		{
-	        
+
 			$headers   = array();
 			$headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';
 			$headers[] = 'Connection: Keep-Alive';
 			$headers[] = 'Content-type: text/html;charset=UTF-8';
-			
+
 			$options = array(
 	            CURLOPT_URL => $url,
 	            CURLOPT_RETURNTRANSFER => 1,
@@ -699,8 +699,8 @@ class ProjectsHelper extends JObject {
 				CURLOPT_FOLLOWLOCATION => 1
 	        );
 	        curl_setopt_array($ch, $options);
-	    } 
-		else 
+	    }
+		else
 		{
 	        $options = array(
 	            CURLOPT_URL => $url,
@@ -716,15 +716,15 @@ class ProjectsHelper extends JObject {
 
 	    return $response;
 	}
-	
+
 	/**
 	 * Check file for viruses
-	 * 
+	 *
 	 * @param      string 	$fpath		Full path to scanned file
 	 *
 	 * @return     mixed
 	 */
-	public static function virusCheck( $fpath = '' ) 
+	public static function virusCheck( $fpath = '' )
 	{
 		exec("clamscan -i --no-summary --block-encrypted " . escapeshellarg($fpath), $output, $status);
 
@@ -736,78 +736,78 @@ class ProjectsHelper extends JObject {
 
 		return false;
 	}
-	
+
 	/**
 	 * Get path to wiki page images and files
-	 * 
+	 *
 	 * @param      int 	$page
 	 *
 	 * @return     string
 	 */
 	public static function getWikiPath( $id = 0)
-	{				
+	{
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('lid', 0);
 		$id = $id ? $id : $listdir;
-		
+
 		if (!$id)
 		{
 			return false;
 		}
-		
+
 		// Load wiki configs
-		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 			
-		
+		$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+
 		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 
-		if (!is_dir(JPATH_ROOT . $path)) 
+		if (!is_dir(JPATH_ROOT . $path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path)) 
+			if (!JFolder::create(JPATH_ROOT . $path))
 			{
 				return false;
 			}
 		}
-		
+
 		return $path;
 	}
-	
+
 	/**
 	 * Fix up internal image references
-	 * 
+	 *
 	 *
 	 * @return     mixed
 	 */
-	public static function wikiFixImages( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = true ) 
+	public static function wikiFixImages( $page, $pagetext, $projectid, $alias, $publication = NULL, $html = '', $copy = true )
 	{
 		if (!$page || !$pagetext)
 		{
 			return $html;
 		}
-		
+
 		// Load component configs
 		$config = JComponentHelper::getParams( 'com_projects' );
 		$option = 'com_projects';
-		
+
 		// Get project path
 		$projectPath = ProjectsHelper::getProjectPath(
-			$alias, 
+			$alias,
 			$config->get('webpath', 0),
 			$config->get('offroot', 0)
 		);
-		
+
 		// Load wiki configs
-		$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 	
-		
+		$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+
 		// Get wiki upload path
-		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));		
-		
+		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));
+
 		// Get joomla libraries
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-		
+
 		$database = JFactory::getDBO();
-		
+
 		// Inlcude public stamps class
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
@@ -819,63 +819,63 @@ class ProjectsHelper extends JObject {
 		{
 			return $html;
 		}
-		
+
 		// Get publication path
 		if ($publication)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
-			
+
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
 			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, $base_path, 'wikicontent', $root = 0);
-			
+
 			if (!is_dir(JPATH_ROOT . $pubPath))
 			{
-				if (!JFolder::create( JPATH_ROOT . $pubPath )) 
+				if (!JFolder::create( JPATH_ROOT . $pubPath ))
 				{
 					return $html;
 				}
 			}
-			
-			$previewPath = $pubPath;			
+
+			$previewPath = $pubPath;
 		}
-		
+
 		// Get image extensions
 		$imgs = explode(',', $wiki_config->get('img_ext'));
 		array_map('trim', $imgs);
 		array_map('strtolower', $imgs);
-		
+
 		// Parse images
 		preg_match_all("'Image\\(.*?\\)'si", $pagetext, $images);
 		if (!empty($images))
 		{
 			$images = $images[0];
-													
+
 			foreach ($images as $image)
 			{
 				$ibody = str_replace('Image(' , '', $image);
 				$ibody = str_replace(')' , '', $ibody);
 				$args  = explode(',', $ibody);
 				$file  = array_shift($args);
-								
+
 				$fpath = $projectPath . DS . $file;
-				
+
 				$pubstamp = NULL;
-				
+
 				// Copy file to wiki dir if not there
 				if (is_file( $fpath ) && !is_file(JPATH_ROOT . $previewPath . DS . $file) && $copy == true)
-				{											
+				{
 					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
 					{
-						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file) )) 
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file) ))
 						{
 							return $html;
 						}
 					}
-					
+
 					JFile::copy($fpath, JPATH_ROOT . $previewPath . DS . $file);
 				}
-				
+
 				// Get public stamp for file
 				$objSt = new ProjectPubStamp( $database );
 				if (is_file( $fpath ) && !$publication)
@@ -885,7 +885,7 @@ class ProjectsHelper extends JObject {
 						'file'   => $file,
 						'disp' 	 => 'inline'
 					);
-					
+
 					if ($objSt->registerStamp($projectid, json_encode($reference), 'files'))
 					{
 						$pubstamp = $objSt->stamp;
@@ -901,13 +901,13 @@ class ProjectsHelper extends JObject {
 						'folder' => 'wikicontent',
 						'disp'	 => 'inline'
 					);
-					
+
 					if ($objSt->registerStamp($projectid, json_encode($reference), 'publications'))
 					{
 						$pubstamp = $objSt->stamp;
 					}
 				}
-				
+
 				// Get link
 				if ($pubstamp)
 				{
@@ -917,37 +917,37 @@ class ProjectsHelper extends JObject {
 				{
 					$link = $previewPath . DS . $file;
 				}
-				
+
 				// Replace not found error
-				$href = '<a href="' . $link . '" rel="lightbox"><img src="' . $link . '" /></a>';				
+				$href = '<a href="' . $link . '" rel="lightbox"><img src="' . $link . '" /></a>';
 				$replace = '(Image(' . $ibody . ') failed - File not found)' . JPATH_ROOT . $previewPath . DS . $file;
 
 				$fname = preg_quote($replace, '/');
-				$html = str_replace($replace, $href, $html);										
-				
+				$html = str_replace($replace, $href, $html);
+
 				// Replace reference
 				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'Image:' . $file;
 				$replace = preg_quote($replace, '/');
-				$html = preg_replace("/\/projects\/$replace/", $link, $html);				
+				$html = preg_replace("/\/projects\/$replace/", $link, $html);
 			}
 		}
-		
-		return $html;			
+
+		return $html;
 	}
-	
+
 	/**
 	 * Fix up references to other project notes
-	 * 
+	 *
 	 *
 	 * @return     mixed
 	 */
-	public static function parseNoteRefs( $page, $projectid, $masterscope = '', $publication = NULL, $html = '') 
+	public static function parseNoteRefs( $page, $projectid, $masterscope = '', $publication = NULL, $html = '')
 	{
 		if (!$page)
 		{
 			return $html;
 		}
-		
+
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
 		{
@@ -958,16 +958,16 @@ class ProjectsHelper extends JObject {
 		{
 			return $html;
 		}
-		
+
 		$database = JFactory::getDBO();
 		$pagename = $page->pagename;
-		
+
 		// Change all relative links to point to correct locations
 		$weed = DS . $masterscope . DS;
-		
+
 		$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-		if (preg_match_all("/$regexp/siU", $html, $matches)) 
-		{    
+		if (preg_match_all("/$regexp/siU", $html, $matches))
+		{
 			foreach ($matches[2] as $match)
 			{
 				$pagename = str_replace($weed, '', $match);
@@ -976,15 +976,15 @@ class ProjectsHelper extends JObject {
 				$part  = dirname($pagename);
 				$scope = $masterscope;
 				$scope.= $part ? DS . $part : '';
-				
+
 				$objSt = new ProjectPubStamp( $database );
 
 				// Get page id
-				$page = new WikiTablePage( $database );		
-				if ($page->load( basename($pagename), $scope)) 
-				{								
+				$page = new WikiTablePage( $database );
+				if ($page->load( basename($pagename), $scope))
+				{
 					$pubstamp = NULL;
-					
+
 					// Build reference
 					$reference = array(
 						'pageid'   => $page->id,
@@ -994,12 +994,12 @@ class ProjectsHelper extends JObject {
 
 					if ($objSt->registerStamp($projectid, json_encode($reference), 'notes'))
 					{
-						$pubstamp = $objSt->stamp;	
+						$pubstamp = $objSt->stamp;
 					}
-					
+
 					if ($publication)
 					{
-						$html = str_replace($weed. $pagename . DS . 'view', DS . 'publications' . DS . $publication->id 
+						$html = str_replace($weed. $pagename . DS . 'view', DS . 'publications' . DS . $publication->id
 								. DS . 'wiki?s=' . $pubstamp, $html );
 					}
 					else
@@ -1009,46 +1009,46 @@ class ProjectsHelper extends JObject {
 				}
 			}
 		}
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Fix up internal file references
-	 * 
+	 *
 	 *
 	 * @return     mixed
 	 */
-	public static function parseProjectFileRefs( $page, $pagetext, $projectid, $alias, 
-		$publication = NULL, $html = '', $copy = false) 
+	public static function parseProjectFileRefs( $page, $pagetext, $projectid, $alias,
+		$publication = NULL, $html = '', $copy = false)
 	{
 		if (!$page || !$pagetext || !$projectid || !$alias)
 		{
 			return $html;
 		}
-		
+
 		// Load component configs
 		$config = JComponentHelper::getParams( 'com_projects' );
-		
+
 		// Get project path
 		$projectPath = ProjectsHelper::getProjectPath(
-			$alias, 
+			$alias,
 			$config->get('webpath', 0),
 			$config->get('offroot', 0)
 		);
-		
+
 		$database = JFactory::getDBO();
-		
+
 		// Get wiki upload path
 		$previewPath = ProjectsHelper::getWikiPath($page->get('id'));
-		
+
 		if ($copy == true)
 		{
 			// Get joomla libraries
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
 		}
-		
+
 		// Inlcude public stamps class
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
@@ -1060,34 +1060,34 @@ class ProjectsHelper extends JObject {
 		{
 			return $html;
 		}
-		
+
 		// Get publication path
 		if ($publication)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
-			
+
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$base_path = $pubconfig->get('webpath');
-			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id, 
+			$pubPath = PublicationHelper::buildPath($publication->id, $publication->version_id,
 				$base_path, 'wikicontent', $root = 0);
-			
+
 			if (!is_dir(JPATH_ROOT . $pubPath))
 			{
-				if (!JFolder::create( JPATH_ROOT . $pubPath )) 
+				if (!JFolder::create( JPATH_ROOT . $pubPath ))
 				{
 					return $html;
 				}
 			}
-			
-			$previewPath = $pubPath;			
+
+			$previewPath = $pubPath;
 		}
-		
+
 		// Parse files
 		preg_match_all("'File\\(.*?\\)'si", $pagetext, $files);
 		if (!empty($files))
 		{
 			$files = $files[0];
-								
+
 			foreach ($files as $file)
 			{
 				$ibody = str_replace('File(' , '', $file);
@@ -1096,15 +1096,15 @@ class ProjectsHelper extends JObject {
 				$file  = array_shift($args);
 
 				$fpath = $projectPath . DS . $file;
-				
+
 				$pubstamp = NULL;
-				
+
 				if (is_file( $fpath ) && $copy == true && !is_file(JPATH_ROOT . $previewPath . DS . $file))
 				{
 					// Copy if not there
 					if (!is_dir(JPATH_ROOT . $previewPath . DS . dirname($file)))
 					{
-						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file) )) 
+						if (!JFolder::create( JPATH_ROOT . $previewPath . DS . dirname($file) ))
 						{
 							return $html;
 						}
@@ -1112,7 +1112,7 @@ class ProjectsHelper extends JObject {
 
 					JFile::copy($fpath, JPATH_ROOT . $previewPath . DS . $file);
 				}
-				
+
 				// Get public stamp for file
 				$objSt = new ProjectPubStamp( $database );
 				if (is_file( $fpath ) && !$publication)
@@ -1122,7 +1122,7 @@ class ProjectsHelper extends JObject {
 						'file'   => $file,
 						'disp' 	 => 'attachment'
 					);
-					
+
 					if ($objSt->registerStamp($projectid, json_encode($reference), 'files'))
 					{
 						$pubstamp = $objSt->stamp;
@@ -1138,13 +1138,13 @@ class ProjectsHelper extends JObject {
 						'folder' => 'wikicontent',
 						'disp'	 => 'attachment'
 					);
-					
+
 					if ($objSt->registerStamp($projectid, json_encode($reference), 'publications'))
 					{
 						$pubstamp = $objSt->stamp;
 					}
-				}				
-				
+				}
+
 				if ($pubstamp)
 				{
 					$link = JRoute::_('index.php?option=com_projects&task=get') . '/?s=' . $pubstamp;
@@ -1153,30 +1153,30 @@ class ProjectsHelper extends JObject {
 				{
 					$link = $previewPath . DS . $file;
 				}
-				
-				// Replace not found error				
-				$href = '<a href="' . $link . '">' . basename($file) . '</a>';				
+
+				// Replace not found error
+				$href = '<a href="' . $link . '">' . basename($file) . '</a>';
 				$fname = preg_quote($file, '/');
-				$html = preg_replace("/\\(file:". $fname . " not found\\)/", $href, $html);			
-				
+				$html = preg_replace("/\\(file:". $fname . " not found\\)/", $href, $html);
+
 				// Replace reference
 				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'File:' . $file;
 				$replace = preg_quote($replace, '/');
 				$html = preg_replace("/\/projects\/$replace/", $link, $html);
-				
+
 				// Replace image reference
 				$replace = $page->get('scope'). DS . $page->get('pagename') . DS . 'Image:' . $file;
 				$replace = preg_quote($replace, '/');
 				$html = preg_replace("/\/projects\/$replace/", $link, $html);
 			}
 		}
-		
-		return $html;			
+
+		return $html;
 	}
-	
+
 	/**
 	 * Authorize reviewer
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function checkReviewerAuth($reviewer, $config)
@@ -1185,20 +1185,20 @@ class ProjectsHelper extends JObject {
 		{
 			return false;
 		}
-		
+
 		$juser = JFactory::getUser();
 		if ($juser->get('guest'))
 		{
 			return false;
 		}
-		
+
 		$sdata_group 	= $config->get('sdata_group', '');
 		$ginfo_group 	= $config->get('ginfo_group', '');
 		$admingroup 	= $config->get('admingroup', '');
 		$group      	= '';
 		$authorized 	= false;
-		
-		// Get authorized group	
+
+		// Get authorized group
 		if ($reviewer == 'sensitive' && $sdata_group)
 		{
 			$group = \Hubzero\User\Group::getInstance($sdata_group);
@@ -1211,23 +1211,23 @@ class ProjectsHelper extends JObject {
 		{
 			$group = \Hubzero\User\Group::getInstance($admingroup);
 		}
-			
+
 		if ($group)
 		{
 			// Check if they're a member of this group
 			$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				foreach ($ugs as $ug)
 				{
-					if ($group && $ug->cn == $group->get('cn')) 
+					if ($group && $ug->cn == $group->get('cn'))
 					{
 						$authorized = true;
 					}
 				}
 			}
 		}
-		
+
 		return $authorized;
 	}
 }

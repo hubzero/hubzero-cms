@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -40,7 +40,7 @@ if (!isset($this->instructors) || !is_array($this->instructors))
 {
 	$this->instructors = array();
 	$inst = $this->course->instructors();
-	if (count($inst) > 0) 
+	if (count($inst) > 0)
 	{
 		foreach ($inst as $i)
 		{
@@ -50,7 +50,7 @@ if (!isset($this->instructors) || !is_array($this->instructors))
 }
 
 $prfx = 'thread';
-if (isset($this->prfx)) 
+if (isset($this->prfx))
 {
 	$prfx = $this->prfx;
 }
@@ -71,13 +71,13 @@ if (!$this->thread->thread)
 }
 ?>
 					<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
-						<?php 
+						<?php
 							$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 							$huser = '';
-							if (!$this->thread->anonymous) 
+							if (!$this->thread->anonymous)
 							{
 								$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
-								if (is_object($huser) && $huser->get('name')) 
+								if (is_object($huser) && $huser->get('name'))
 								{
 									$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->thread->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 								}

@@ -34,84 +34,84 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Billboard table class
- * 
+ *
  */
 class BillboardsBillboard extends JTable
 {
 
 	/**
 	 * ID, primary key for jos_billboards
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * ID of collection, referencing jos_billboard_collection
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $collection_id = NULL;
 
 	/**
 	 * Name of the billboard
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = NULL;
 
 	/**
 	 * H3 header text of the billboard
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $header = NULL;
 
 	/**
 	 * Billboard text (i.e. slide content)
-	 * 
+	 *
 	 * @var text
 	 */
 	var $text = NULL;
 
 	/**
 	 * Text of the "learn More" link
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $learn_more_text = NULL;
 
 	/**
 	 * Target of the "Learn More" link, should be a relative URL
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $learn_more_target = NULL;
 
 	/**
 	 * CSS class for the "Learn More" link
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $learn_more_class = NULL;
 
 	/**
 	 * Location for the "Learn More" link
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $learn_more_location = NULL;
 
 	/**
 	 * Background image of the billboard
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $background_img = NULL;
 
 	/**
 	 * CSS paragraph padding property of the billboard
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $padding = NULL;
@@ -119,42 +119,42 @@ class BillboardsBillboard extends JTable
 	/**
 	 * A unique billboard alias to be used for the billboard container
 	 * It will also serve as the billboard CSS ID
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $alias = NULL;
 
 	/**
 	 * CSS styling for the billboard, only needed for more detailed/advanced styling
-	 * 
+	 *
 	 * @var text
 	 */
 	var $css = NULL;
 
 	/**
 	 * Published/Unpublished state of the billboard (0 for unpublished, 1 for published)
-	 * 
+	 *
 	 * @var tinyint(1)
 	 */
 	var $published = NULL;
 
 	/**
 	 * Banner ordering
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * uidNumber/ID of member currently editing billboard (0 if no one is editing)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $checked_out = NULL;
 
 	/**
 	 * Time at which the billboard was checked out
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $checked_out_time = NULL;
@@ -163,7 +163,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -174,7 +174,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -184,7 +184,7 @@ class BillboardsBillboard extends JTable
 		$this->text = str_replace("</p>","<br />",str_replace("<p>", "", $this->text));
 
 		// Give an arbitrary billboard alias/CSS ID name when one isn't provided
-		if (!$this->alias) 
+		if (!$this->alias)
 		{
 			$this->alias = strtolower(str_replace(" ", "", $this->name));
 		}
@@ -199,7 +199,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Build query method (basically just used to specify the FROM portion)
-	 * 
+	 *
 	 * @param  array $filters not needed right now
 	 * @return $query database query
 	 */
@@ -212,7 +212,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Get a count of the number of billboard (used mainly for pagination)
-	 * 
+	 *
 	 * @param  unknown $filters not needed right now
 	 * @return object Return count of rows
 	 */
@@ -227,7 +227,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Get the an object list of the billboards in the database
-	 * 
+	 *
 	 * @param  array $filters start and limit, needed for pagination
 	 * @return object Return billboard records
 	 */
@@ -245,7 +245,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Build the ordering query
-	 * 
+	 *
 	 * @param  $collection_id is the collection in which to order the billboards
 	 * @return $query
 	 */
@@ -261,7 +261,7 @@ class BillboardsBillboard extends JTable
 
 	/**
 	 * Get the next ordering number based on the collection selected
-	 * 
+	 *
 	 * @param  $collection_id is the collection in which to find the max order number
 	 * @return the current highest order number + 1
 	 */

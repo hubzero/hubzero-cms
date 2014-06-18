@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -80,7 +80,7 @@ $juser = JFactory::getUser();
 			<div class="col span4 omega launcharea">
 				<?php
 					// Private/Public resource access check
-					if (!$this->model->access('view-all')) 
+					if (!$this->model->access('view-all'))
 					{
 						$ghtml = array();
 						foreach ($this->model->resource->getGroups() as $allowedgroup)
@@ -92,12 +92,12 @@ $juser = JFactory::getUser();
 					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 				</p>
 				<?php
-				} 
-				else 
+				}
+				else
 				{
 					$ccount = count($this->model->children('standalone'));
 
-					if ($ccount > 0) 
+					if ($ccount > 0)
 					{
 						echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
 					}
@@ -114,7 +114,7 @@ $juser = JFactory::getUser();
 						{
 							$rhelper = new ResourcesHelper($child->id, $this->database);
 							$rhelper->getChildren();
-							if ($rhelper->children && count($rhelper->children) > 0) 
+							if ($rhelper->children && count($rhelper->children) > 0)
 							{
 								foreach ($rhelper->children as $grandchild)
 								{
@@ -159,8 +159,8 @@ $juser = JFactory::getUser();
 					}
 
 					$live_site = rtrim(JURI::base(),'/');
-					
-					if ($notes || $audio || $video) 
+
+					if ($notes || $audio || $video)
 					{
 						?>
 						<p>
@@ -188,7 +188,7 @@ $juser = JFactory::getUser();
 	<aside class="aside rankarea">
 		<?php
 		// Show metadata
-		if ($this->model->params->get('show_metadata', 1)) 
+		if ($this->model->params->get('show_metadata', 1))
 		{
 			$this->view('_metadata')
 			     ->set('option', $this->option)
@@ -214,18 +214,18 @@ $juser = JFactory::getUser();
 
 			// Show related content
 			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
-			if (count($out) > 0) 
+			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
 				{
-					if (isset($ou['html'])) 
+					if (isset($ou['html']))
 					{
 						echo $ou['html'];
 					}
 				}
 			}
 			// Show what's popular
-			if ($this->tab == 'about') 
+			if ($this->tab == 'about')
 			{
 				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}
@@ -254,7 +254,7 @@ $juser = JFactory::getUser();
 			'author'   => JText::_('AUTHOR'),
 			'ordering' => JText::_('ORDERING')
 		);
-		if ($this->model->params->get('show_ranking')) 
+		if ($this->model->params->get('show_ranking'))
 		{
 			$sortbys['ranking'] = JText::_('RANKING');
 		}
@@ -266,7 +266,7 @@ $juser = JFactory::getUser();
 						<?php echo JText::_('In This Workshop'); ?>
 					</h3>
 
-					<?php 
+					<?php
 					$this->view('_list', 'browse')
 					     ->set('lines', $children)
 					     ->set('show_edit', $this->model->access('edit'))
@@ -275,12 +275,12 @@ $juser = JFactory::getUser();
 
 					<div class="clear"></div><!-- / .clear -->
 
-					<?php 
+					<?php
 					// Initiate paging for children
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$ccount, 
-						$filters['start'], 
+						$ccount,
+						$filters['start'],
 						$filters['limit']
 					);
 					$pageNav->setAdditionalUrlParam('id', $this->model->resource->id);

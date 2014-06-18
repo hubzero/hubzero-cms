@@ -38,26 +38,26 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_resources';
-		if (isset($config['base_path'])) 
+		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
 		}
 
 		$this->_sub = false;
-		if (isset($config['sub'])) 
+		if (isset($config['sub']))
 		{
 			$this->_sub = $config['sub'];
 		}
 
 		$this->_group = false;
-		if (isset($config['group'])) 
+		if (isset($config['group']))
 		{
 			$this->_group = $config['group'];
 		}
@@ -67,7 +67,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -77,11 +77,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->_alias = JRequest::getVar('alias', '');
 		$this->_resid = JRequest::getInt('resid', 0);
 
-		if ($this->_resid && !$task) 
+		if ($this->_resid && !$task)
 		{
 			JRequest::setVar('task', 'play');
 		}
-		if (($this->_id || $this->_alias) && !$task) 
+		if (($this->_id || $this->_alias) && !$task)
 		{
 			JRequest::setVar('task', 'view');
 		}
@@ -98,19 +98,19 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1 && $this->_task) 
+		if (count($pathway->getPathWay()) <= 1 && $this->_task)
 		{
 			switch ($this->_task)
 			{
 				case 'browse':
-					if ($this->_task_title) 
+					if ($this->_task_title)
 					{
 						$pathway->addItem(
 							$this->_task_title,
@@ -119,7 +119,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					}
 				break;
 				case 'browsetags':
-					if ($this->_task_title) 
+					if ($this->_task_title)
 					{
 						$pathway->addItem(
 							$this->_task_title,
@@ -144,16 +144,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		if (!$this->_title) 
+		if (!$this->_title)
 		{
 			$this->_title = JText::_(strtoupper($this->_option));
-			if ($this->_task) 
+			if ($this->_task)
 			{
 				switch ($this->_task)
 				{
 					case 'browse':
 					case 'browsetags':
-						if ($this->_task_title) 
+						if ($this->_task_title)
 						{
 							$this->_title .= ': ' . $this->_task_title;
 						}
@@ -170,7 +170,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Component front page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -188,7 +188,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->title = $this->_title;
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -202,14 +202,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Browse entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browseTask()
 	{
 		// Set the default sort
 		$default_sort = 'date';
-		if ($this->config->get('show_ranking')) 
+		if ($this->config->get('show_ranking'))
 		{
 			$default_sort = 'ranking';
 		}
@@ -234,7 +234,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$t = new ResourcesType($this->database);
 		$this->view->types = $t->getMajorTypes();
 
-		if (!is_numeric($this->view->filters['type'])) 
+		if (!is_numeric($this->view->filters['type']))
 		{
 			// Normalize the title
 			// This is so we can determine the type of resource to display from the URL
@@ -243,7 +243,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			{
 				$normalized = ($this->view->types[$i]->alias ? $this->view->types[$i]->alias : $t->normalize($this->view->types[$i]->type));
 
-				if (trim($this->view->filters['type']) == $normalized) 
+				if (trim($this->view->filters['type']) == $normalized)
 				{
 					$this->view->filters['type'] = $this->view->types[$i]->id;
 					break;
@@ -271,13 +271,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Get type if not given
 		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
-		if ($this->view->filters['type'] != '') 
+		if ($this->view->filters['type'] != '')
 		{
 			$t->load($this->database->getEscaped($this->view->filters['type']));
 			$this->_title .= $t->type;
 			$this->_task_title = $t->type;
-		} 
-		else 
+		}
+		else
 		{
 			$this->_title .= JText::_('COM_RESOURCES_ALL');
 			$this->_task_title = JText::_('COM_RESOURCES_ALL');
@@ -292,7 +292,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->title = $this->_title;
 		$this->view->config = $this->config;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -306,13 +306,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Browse resources by tags
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browsetagsTask()
 	{
 		// Check if we're using this view type
-		if ($this->config->get('browsetags') == 'off') 
+		if ($this->config->get('browsetags') == 'off')
 		{
 			return $this->browseTask();
 		}
@@ -325,7 +325,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// default tag in tag browser is config var
 		$this->view->supportedtag = $this->config->get('supportedtag');
 		$this->view->supportedtag_default = $this->config->get('browsetags_defaulttag', '');
-		if (!$this->view->tag && $this->view->supportedtag_default != '' && $this->view->type == 'tools') 
+		if (!$this->view->tag && $this->view->supportedtag_default != '' && $this->view->type == 'tools')
 		{
 			$this->view->tag = $this->view->supportedtag_default;
 		}
@@ -341,7 +341,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$activetitle = '';
 		for ($i = 0; $i < count($this->view->types); $i++)
 		{
-			if (trim($this->view->type) == $this->view->types[$i]->alias) 
+			if (trim($this->view->type) == $this->view->types[$i]->alias)
 			{
 				$activetype  = $this->view->types[$i]->id;
 				$activetitle = $this->view->types[$i]->type;
@@ -350,7 +350,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		asort($this->view->types);
 
 		// Ensure we have a type to display
-		if (!$activetype) 
+		if (!$activetype)
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 			return;
@@ -364,7 +364,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Set the default sort
 		$default_sort = 'rating';
-		if ($this->config->get('show_ranking')) 
+		if ($this->config->get('show_ranking'))
 		{
 			$default_sort = 'ranking';
 		}
@@ -382,11 +382,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->results = $rr->getRecords($this->view->filters);
 
 		$this->type = $this->view->type;
-		if ($activetitle) 
+		if ($activetitle)
 		{
 			$this->_task_title = $activetitle;
-		} 
-		else 
+		}
+		else
 		{
 			$this->_task_title = JText::_('COM_RESOURCES_ALL');
 		}
@@ -399,7 +399,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->title = $this->_title;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -414,7 +414,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	/**
 	 * Display a level of the tag browser
 	 * NOTE: This view should only be called through AJAX
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browserTask()
@@ -460,7 +460,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 				// Get extra filter options
 				$bits['filters'] = array();
-				if ($this->config->get('show_audience') && $bits['type'] == 7) 
+				if ($this->config->get('show_audience') && $bits['type'] == 7)
 				{
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'audience.php');
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'audience.level.php');
@@ -473,11 +473,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 				// Get resources assigned to this tag
 				$bits['tools'] = $rt->get_objects_on_tag(
-					$bits['tag'], 
-					$bits['id'], 
-					$bits['type'], 
-					$bits['sortby'], 
-					$bits['tag2'], 
+					$bits['tag'],
+					$bits['id'],
+					$bits['type'],
+					$bits['sortby'],
+					$bits['tag2'],
 					$bits['filter']
 				);
 
@@ -485,7 +485,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$bits['typetitle'] = JText::_('COM_RESOURCES');
 
 				// See if we can load the type so we can set the typetitle
-				if (isset($bits['type']) && $bits['type'] != 0) 
+				if (isset($bits['type']) && $bits['type'] != 0)
 				{
 					$t = new ResourcesType($this->database);
 					$t->load($bits['type']);
@@ -511,11 +511,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$model->resource->ranking = round($model->resource->ranking, 1);
 
 				// Generate the SEF
-				if ($model->resource->alias) 
+				if ($model->resource->alias)
 				{
 					$sef = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $model->resource->alias);
-				} 
-				else 
+				}
+				else
 				{
 					$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $model->resource->id);
 				}
@@ -530,7 +530,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$firstChild = $model->children(0);
 
 				// Get the first child
-				if ($firstChild || $model->isTool()) 
+				if ($firstChild || $model->isTool())
 				{
 					$bits['primary_child'] = ResourcesHtml::primary_child($this->_option, $model->resource, $firstChild, '');
 				}
@@ -555,7 +555,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->bits   = $bits;
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -570,7 +570,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	/**
 	 * 'play' a resource
 	 * This displays a Breeze presentation, iframe, Google doc viewer, etc.
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function playTask()
@@ -582,7 +582,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$helper = new ResourcesHelper($id, $this->database);
 
 		// Do we have a child ID?
-		if (!$this->resid) 
+		if (!$this->resid)
 		{
 			// No ID, default to the first child
 			$helper->getFirstChild();
@@ -595,24 +595,24 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$activechild->load($this->resid);
 
 		// Do some work on the child's path to make sure it's kosher
-		if ($activechild->path) 
+		if ($activechild->path)
 		{
 			$activechild->path = stripslashes($activechild->path);
 
-			if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $activechild->path)) 
+			if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $activechild->path))
 			{
 				// Do nothing
-			} 
-			else 
+			}
+			else
 			{
-				if (substr($activechild->path, 0, 1) != DS) 
+				if (substr($activechild->path, 0, 1) != DS)
 				{
 					$activechild->path = DS . $activechild->path;
-					if (substr($activechild->path, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) 
+					if (substr($activechild->path, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath'))
 					{
 						// Do nothing
-					} 
-					else 
+					}
+					else
 					{
 						$activechild->path = $this->config->get('uploadpath') . $activechild->path;
 					}
@@ -625,7 +625,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Viewing via AJAX?
 		$no_html = JRequest::getInt('no_html', 0);
-		if ($no_html) 
+		if ($no_html)
 		{
 			$resource = new ResourcesResource($this->database);
 			$resource->load($id);
@@ -643,7 +643,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$this->view->fsize = 0;
 
 			// Output HTML
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -660,7 +660,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Select a presentation
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function selectPresentation()
@@ -679,7 +679,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Perform a some setup needed for presenter()
-	 * 
+	 *
 	 * @return     array
 	 */
 	protected function preWatch()
@@ -693,7 +693,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		//get the presentation id
 		//$id = JRequest::getVar('id', '');
 		$resid = JRequest::getVar('resid', '');
-		if (!$resid) 
+		if (!$resid)
 		{
 			$this->setError(JText::_('Unable to find presentation.'));
 		}
@@ -701,7 +701,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		//load resource
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($resid);
-		
+
 		$path = '';
 		if ($activechild->path)
 		{
@@ -727,17 +727,17 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$manifest_path_xml  = JPATH_ROOT . $path . DS . 'presentation.xml';
 
 		//check if the formatted json exists
-		if (!file_exists(JPATH_ROOT . $path . DS . $manifest_path_json)) 
+		if (!file_exists(JPATH_ROOT . $path . DS . $manifest_path_json))
 		{
 			//check to see if we just havent converted yet
-			if (!file_exists($manifest_path_xml)) 
+			if (!file_exists($manifest_path_xml))
 			{
 				$this->setError(JText::_('Missing outline used to build presentation.'));
-			} 
-			else 
+			}
+			else
 			{
 				$job = HUBpresenterHelper::createJsonManifest($path, $manifest_path_xml);
-				if ($job != '') 
+				if ($job != '')
 				{
 					$this->setError($job);
 				}
@@ -748,23 +748,23 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$media_path = JPATH_ROOT . $path;
 
 		//check if path exists
-		if (!is_dir($media_path)) 
+		if (!is_dir($media_path))
 		{
 			$this->setError(JText::_('Path to media does not exist.'));
-		} 
-		else 
+		}
+		else
 		{
 			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
 			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
 			$ext = array();
-			foreach ($media as $m) 
+			foreach ($media as $m)
 			{
 				$parts = explode('.', $m);
 				$ext[] = array_pop($parts);
 			}
-			
+
 			//if we dont have all the necessary media formats
-			if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2)) 
+			if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2))
 			{
 				$this->setError(JText::_('Missing necessary media formats for video or audio.'));
 			}
@@ -779,13 +779,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			//build array for checking slide video formats
 			if ($slides && is_array($slides))
 			{
-				foreach ($slides as $s) 
+				foreach ($slides as $s)
 				{
 					$parts = explode('.', $s);
 					$ext = array_pop($parts);
 					$name = implode('.', $parts);
 
-					if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) 
+					if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv')))
 					{
 						$slide_video[$name][$ext] = $name . '.' . $ext;
 					}
@@ -794,14 +794,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 			//make sure for each of the slide videos we have all three formats
 			//and has a backup image for the slide
-			foreach ($slide_video as $k => $v) 
+			foreach ($slide_video as $k => $v)
 			{
-				if (count($v) < 3) 
+				if (count($v) < 3)
 				{
 					$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
 				}
 
-				if (!file_exists($slide_path . DS . $k .'.png') && !file_exists($slide_path . DS . $k .'.jpg')) 
+				if (!file_exists($slide_path . DS . $k .'.png') && !file_exists($slide_path . DS . $k .'.jpg'))
 				{
 					$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "' . $k . '.png" or "' . $k . '.jpg".'));
 				}
@@ -812,13 +812,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$return['errors'] = $this->getErrors();
 		$return['content_folder'] = $path;
 		$return['manifest'] = $path . DS . $manifest_path_json;
-		
+
 		return $return;
 	}
 
 	/**
 	 * Display presenter
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function watchTask()
@@ -860,7 +860,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		//do we have javascript?
 		$js = JRequest::getVar('tmpl', '');
-		if ($js != '') 
+		if ($js != '')
 		{
 			$pre = $this->preWatch();
 
@@ -874,16 +874,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$content_folder = $pre['content_folder'];
 
 			//if we have no errors
-			if (count($errors) > 0) 
+			if (count($errors) > 0)
 			{
 				echo HUBpresenterHelper::errorMessage($errors);
 				return;
-			} 
-			else 
+			}
+			else
 			{
 				// Instantiate a new view
 				$this->view = new \Hubzero\Component\View(array(
-					'name'   => 'view', 
+					'name'   => 'view',
 					'layout' => 'watch'
 				));
 				$this->view->option         = $this->_option;
@@ -896,7 +896,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$this->view->resid          = $child;
 
 				// Output HTML
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					foreach ($this->getErrors() as $error)
 					{
@@ -906,14 +906,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$this->view->display();
 				return;
 			}
-		} 
+		}
 
 		$this->viewTask();
 	}
 
 	/**
 	 * Display an HTML5 video
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function videoTask()
@@ -968,7 +968,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Instantiate a new view
 		$this->view = new \Hubzero\Component\View(array(
-			'name'   => 'view', 
+			'name'   => 'view',
 			'layout' => 'video'
 		));
 		$this->view->option   = $this->_option;
@@ -978,7 +978,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->manifest = $manifest;
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -990,7 +990,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get Video Manifest for resource
-	 * 
+	 *
 	 * @param      $resource     HUB Resource
 	 * @return     BOOL
 	 */
@@ -1022,13 +1022,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check for Video manifest file
-	 * 
+	 *
 	 * @param      $resource     HUB Resource
 	 * @return     BOOL
 	 */
 	private function videoManifestExistsForResource( $resource )
 	{
-		//get video manifest 
+		//get video manifest
 		$manifest = $this->getVideoManifestForResource( $resource );
 
 		//do we have a manifest already?
@@ -1037,7 +1037,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create manifest file for video
-	 * 
+	 *
 	 * @param      $resource     HUB Resource
 	 * @return     Void
 	 */
@@ -1113,7 +1113,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * View a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function viewTask()
@@ -1129,7 +1129,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$tab      = JRequest::getVar('active', 'about');  // The active tab (section)
 
 		// Ensure we have an ID or alias to work with
-		if (!$id && !$alias) 
+		if (!$id && !$alias)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
@@ -1149,21 +1149,21 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Make sure the resource is published and standalone
-		if (!$this->model->resource->standalone) // || !$this->model->published()) 
+		if (!$this->model->resource->standalone) // || !$this->model->published())
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Is the visitor authorized to view this resource?
-		if (!$this->model->access('view')) 
+		if (!$this->model->access('view'))
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Make sure they have access to view this resource
-		if ($this->checkGroupAccess($this->model->resource)) 
+		if ($this->checkGroupAccess($this->model->resource))
 		{
 			JError::raiseError(403, JText::sprintf('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
 			return;
@@ -1175,7 +1175,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Build the pathway
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
-		if ($this->model->inGroup()) 
+		if ($this->model->inGroup())
 		{
 			// Alter the pathway to reflect a group owned resource
 			$group = \Hubzero\User\Group::getInstance($this->model->resource->group_owner);
@@ -1208,8 +1208,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 				);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$pathway->addItem(
 				stripslashes($this->model->type->type),
@@ -1218,7 +1218,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Tool development version requested
-		if ($this->juser->get('guest') && $revision == 'dev') 
+		if ($this->juser->get('guest') && $revision == 'dev')
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
@@ -1229,13 +1229,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			// if (development revision
 			//   or (specific revision that is NOT published))
-			if (($revision == 'dev') 
-			 or (!$revision && $this->model->resource->published != 1)) 
+			if (($revision == 'dev')
+			 or (!$revision && $this->model->resource->published != 1))
 			{
 				// Check if the user has access to the tool
 				$objT = new Tool($this->database);
 				$toolid = $objT->getToolId($this->model->resource->alias);
-				if (!$this->_checkToolaccess($toolid)) 
+				if (!$this->_checkToolaccess($toolid))
 				{
 					// Denied, punk! How do you like them apples?!
 					JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
@@ -1261,7 +1261,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$cats = array();
 
 		// We need to do this here because we need some stats info to pass to the body
-		if (!isset($this->model->thistool) || !$this->model->thistool) 
+		if (!isset($this->model->thistool) || !$this->model->thistool)
 		{
 			// Trigger the functions that return the areas we'll be using
 			$cats = $dispatcher->trigger('onResourcesAreas', array(
@@ -1309,28 +1309,28 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
-			if ($name != '') 
+			if ($name != '')
 			{
 				$available[] = $name;
 			}
 		}
-		if ($tab != 'about' && !in_array($tab, $available)) 
+		if ($tab != 'about' && !in_array($tab, $available))
 		{
 			$tab = 'about';
 		}
 
 		// Display different main text if "playing" a resource
-		if ($this->_task == 'play') 
+		if ($this->_task == 'play')
 		{
 			$activechild = NULL;
-			if (is_object($this->activechild)) 
+			if (is_object($this->activechild))
 			{
 				$activechild = $this->activechild;
 			}
 
 			$view = new \Hubzero\Component\View(array(
 				'base_path' => $this->_base_path,
-				'name'      => 'view', 
+				'name'      => 'view',
 				'layout'    => 'play'
 			));
 			$view->option 		= $this->_option;
@@ -1343,7 +1343,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$view->activechild 	= $activechild;
 			$view->no_html 		= 0;
 			$view->fsize 		= 0;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -1356,13 +1356,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				'play' => JText::_('COM_RESOURCES_PLAY')
 			);
 			$sections[] = array(
-				'html'     => $body, 
-				'metadata' => '', 
+				'html'     => $body,
+				'metadata' => '',
 				'area'     => 'play'
 			);
 			$tab = 'play';
-		} 
-		elseif ($this->_task == 'watch') 
+		}
+		elseif ($this->_task == 'watch')
 		{
 			//test to make sure HUBpresenter is ready to go
 			$pre = $this->preWatch();
@@ -1377,16 +1377,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$content_folder = $pre['content_folder'];
 
 			//if we have no errors
-			if (count($errors) > 0) 
+			if (count($errors) > 0)
 			{
 				$body = HUBpresenterHelper::errorMessage($errors);
-			} 
-			else 
+			}
+			else
 			{
 				// Instantiate a new view
 				$view = new \Hubzero\Component\View(array(
 					'base_path' => $this->_base_path,
-					'name'      => 'view', 
+					'name'      => 'view',
 					'layout'    => 'watch'
 				));
 				$view->config         = $this->config;
@@ -1399,7 +1399,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$view->doc            = JFactory::getDocument();
 
 				// Output HTML
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					foreach ($this->getErrors() as $error)
 					{
@@ -1413,7 +1413,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				'watch' => JText::_('Watch Presentation')
 			);
 			$sections[] = array(
-				'html'     => $body, 
+				'html'     => $body,
 				'metadata' => '',
 				'area' => 'watch'
 			);
@@ -1424,7 +1424,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
-		if ($canonical = $this->model->attribs->get('canonical', '')) 
+		if ($canonical = $this->model->attribs->get('canonical', ''))
 		{
 			if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical))
 			{
@@ -1450,14 +1450,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$app = JFactory::getApplication();
 		if ($type_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
-			|| is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))) 
+			|| is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php')))
 		{
 			$layout = $type_alias;
 		}
 		// Instantiate a new view
 		$this->view->setLayout($layout);
 
-		if ($this->model->isTool()) 
+		if ($this->model->isTool())
 		{
 			$this->view->thistool = $this->model->thistool;
 			$this->view->curtool  = $this->model->curtool;
@@ -1473,7 +1473,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->sections = $sections;
 		$this->view->database = $this->database;
 		$this->view->helper   = $helper;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1487,7 +1487,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an RSS feed
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function feedTask()
@@ -1508,7 +1508,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$alias = JRequest::getVar('alias', '');
 
 		// Ensure we have an ID or alias to work with
-		if (!$id && !$alias) 
+		if (!$id && !$alias)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
@@ -1518,33 +1518,33 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Load the resource
 		$resource = new ResourcesResource($this->database);
-		if ($alias) 
+		if ($alias)
 		{
 			$resource->load($alias);
 			$id = $resource->id;
-		} 
-		else 
+		}
+		else
 		{
 			$resource->load($id);
 			$alias = $resource->alias;
 		}
 
 		// Make sure we got a result from the database
-		if (!$resource) 
+		if (!$resource)
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Make sure the resource is published and standalone
-		if ($resource->published == 0 || $resource->standalone != 1) 
+		if ($resource->published == 0 || $resource->standalone != 1)
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Make sure they have access to view this resource
-		if ($this->checkGroupAccess($resource)) 
+		if ($this->checkGroupAccess($resource))
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
@@ -1552,11 +1552,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$filters = array();
-		if ($resource->type == 2) 
+		if ($resource->type == 2)
 		{
 			$filters['sortby'] = JRequest::getVar('sortby', 'ordering');
-		} 
-		else 
+		}
+		else
 		{
 			$filters['sortby'] = JRequest::getVar('sortby', 'ranking');
 		}
@@ -1598,23 +1598,23 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$tagarray = array();
 		$categories = array();
 		$subcategories = array();
-		if ($rtags) 
+		if ($rtags)
 		{
 			foreach ($rtags as $tag)
 			{
-				if (substr($tag['tag'], 0, 6) == 'itunes') 
+				if (substr($tag['tag'], 0, 6) == 'itunes')
 				{
 					$tbits = explode(':', $tag['raw_tag']);
-					if (count($tbits) > 2) 
+					if (count($tbits) > 2)
 					{
 						$subcategories[] = end($tbits);
-					} 
-					else 
+					}
+					else
 					{
 						$categories[] = str_replace('itunes:', '', $tag['raw_tag']);
 					}
-				} 
-				elseif ($tag['admin'] == 0) 
+				}
+				elseif ($tag['admin'] == 0)
 				{
 					$tagarray[] = $tag['raw_tag'];
 				}
@@ -1631,7 +1631,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$author = '';
 		foreach ($cons as $con)
 		{
-			if ($con) 
+			if ($con)
 			{
 				$author = trim($con);
 				break;
@@ -1639,10 +1639,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		$doc->itunes_summary = html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext)));
-		if (count($categories) > 0) 
+		if (count($categories) > 0)
 		{
 			$doc->itunes_category = $categories[0];
-			if (count($subcategories) > 0) 
+			if (count($subcategories) > 0)
 			{
 				$doc->itunes_subcategories = $subcategories;
 			}
@@ -1654,7 +1654,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$itunes_image_name = 'itunes_' . str_replace(' ', '_', strtolower($feedtype));
 
 		$dimg = $this->_checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
-		if ($dimg) 
+		if ($dimg)
 		{
 			$dimage = new \Hubzero\Document\Feed\Image();
 			$dimage->url = $dimg;
@@ -1670,14 +1670,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$doc->itunes_owner = $owner;
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
 				$paramsClass = 'JRegistry';
 			}
-			
+
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -1714,7 +1714,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					$as_mnemonic = preg_replace('/[_-]/', ' ', $queried);
 					foreach($all_logical_types as $logical_type)
 					{
-						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1 
+						if (preg_match_all('/Podcast \(([^()]+)\)/', $logical_type->type, $matches) == 1
 						 && strcasecmp($matches[ 1 ][ 0 ], $as_mnemonic) == 0)
 						{
 							$relevant_logical_types_by_id[ $logical_type->id ] = $logical_type;
@@ -1737,7 +1737,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 				$podcasts = array();
 				$children = array();
-				if ($rhelper->children && count($rhelper->children) > 0) 
+				if ($rhelper->children && count($rhelper->children) > 0)
 				{
 					$grandchildren = $rhelper->children;
 					foreach ($grandchildren as $grandchild)
@@ -1785,7 +1785,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					$item->author      = $author;
 
 					$img = $this->_checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
-					if ($img) 
+					if ($img)
 					{
 						$image = new \Hubzero\Document\Feed\Image();
 						$image->url = $img;
@@ -1800,26 +1800,26 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					$item->itunes_keywords = $rtags;
 					$item->itunes_author   = $author;
 
-					if ($attribs->get('duration')) 
+					if ($attribs->get('duration'))
 					{
 						$item->itunes_duration = $attribs->get('duration');
 					}
 
-					if ($podcast) 
+					if ($podcast)
 					{
 						$podcastp = $podcast;
 						$podcast = DS . ltrim($this->_fullPath($podcast), DS);
 
-						if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) 
+						if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath'))
 						{
 							// Do nothing
-						} 
-						else 
+						}
+						else
 						{
 							$podcastp = trim($this->config->get('uploadpath'), DS) . DS . ltrim($podcastp, DS);
 						}
 						$podcastp = JPATH_ROOT . DS . ltrim($podcastp, DS);
-						if (file_exists($podcastp)) 
+						if (file_exists($podcastp))
 						{
 							$fs = filesize($podcastp);
 
@@ -1872,9 +1872,9 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for 'checkForImage'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $filename Parameter description (if any) ...
 	 * @param      string $upath Parameter description (if any) ...
 	 * @param      unknown $created Parameter description (if any) ...
@@ -1895,16 +1895,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		$images = array();
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|jpg|png#i", $img_file)) 
+					if (preg_match("#bmp|jpg|png#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
@@ -1915,11 +1915,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		$b = 0;
 		$img = '';
-		if ($images) 
+		if ($images)
 		{
 			foreach ($images as $ima)
 			{
-				if (substr($ima, 0, strlen($filename)) == $filename) 
+				if (substr($ima, 0, strlen($filename)) == $filename)
 				{
 					$img = $ima;
 					break;
@@ -1927,7 +1927,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (!$img) 
+		if (!$img)
 		{
 			return '';
 		}
@@ -1941,7 +1941,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	/**
 	 * Call a plugin method
 	 * NOTE: This view should normally only be called through AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function pluginTask()
@@ -1950,7 +1950,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$trigger = trim(JRequest::getVar('trigger', ''));
 
 		// Ensure we have a trigger
-		if (!$trigger) 
+		if (!$trigger)
 		{
 			echo '<p class="error">' . JText::_('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
 			return;
@@ -1962,7 +1962,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Call the trigger
 		$results = $dispatcher->trigger($trigger, array($this->_option));
-		if (is_array($results)) 
+		if (is_array($results))
 		{
 			$html = $results[0]['html'];
 		}
@@ -1974,13 +1974,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	/**
 	 * Download a file
 	 * Runs through various permissions checks to ensure user has access
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadTask()
 	{
 		// Ensure we have a database object
-		if (!$this->database) 
+		if (!$this->database)
 		{
 			JError::raiseError(500, JText::_('COM_RESOURCES_DATABASE_NOT_FOUND'));
 			return;
@@ -1999,7 +1999,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Load the resource
 		$resource = new ResourcesResource($this->database);
-		if ($alias && !$resource->loadAlias($alias)) 
+		if ($alias && !$resource->loadAlias($alias))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
@@ -2012,14 +2012,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$resource->path       = null;
 			$resource->created    = JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
-		elseif (!$resource->load($id)) 
+		elseif (!$resource->load($id))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		if (($token = JRequest::getVar('token', '', 'get'))) 
+		if (($token = JRequest::getVar('token', '', 'get')))
 		{
 			$token = base64_decode($token);
 
@@ -2036,13 +2036,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$juser->guest = 0;
 			$juser->id = $session->userid;
 			$juser->usertype = $session->usertype;
-		} 
-		else 
+		}
+		else
 		{
 			$juser = JFactory::getUser();
 		}
 
-		if ($resource->access == 1 && $juser->get('guest')) 
+		if ($resource->access == 1 && $juser->get('guest'))
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
@@ -2053,7 +2053,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		 || $resource->access == 3  // protected
 		 || !$resource->standalone) // child, no direct access
 		{
-			if ($this->checkGroupAccess($resource, $juser)) 
+			if ($this->checkGroupAccess($resource, $juser))
 			{
 				JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 				return;
@@ -2068,7 +2068,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$resource->path = trim($resource->path);
 
 		// Ensure we have a path
-		if (empty($resource->path)) 
+		if (empty($resource->path))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
@@ -2076,21 +2076,21 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Get the configured upload path
 		$base_path = $this->config->get('uploadpath', '/site/resources');
-		if ($base_path) 
+		if ($base_path)
 		{
 			$base_path = DS . trim($base_path, DS);
 		}
 
 		// Does the path start with a slash?
-		if (substr($resource->path, 0, 1) != DS) 
+		if (substr($resource->path, 0, 1) != DS)
 		{
 			$resource->path = DS . $resource->path;
 			// Does the beginning of the $resource->path match the config path?
-			if (substr($resource->path, 0, strlen($base_path)) == $base_path) 
+			if (substr($resource->path, 0, strlen($base_path)) == $base_path)
 			{
 				// Yes - this means the full path got saved at some point
-			} 
-			else 
+			}
+			else
 			{
 				// No - append it
 				$resource->path = $base_path . $resource->path;
@@ -2101,7 +2101,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$filename = JPATH_ROOT . $resource->path;
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
@@ -2120,12 +2120,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$xserver->disposition($d);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_RESOURCES_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -2134,7 +2134,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download source code for a tool
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function sourcecodeTask()
@@ -2143,7 +2143,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$tool = JRequest::getVar('tool', 0);
 
 		// Ensure we have a tool
-		if (!$tool) 
+		if (!$tool)
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
@@ -2163,7 +2163,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			$tarball_path = "site/protected/source";
 		}
-		
+
 		if ($tarball_path[0] != DS)
 		{
 			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
@@ -2172,14 +2172,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$opencode = ($tv->codeaccess=='@OPEN') ? 1 : 0;
 
 		// Is a tarball available?
-		if (!file_exists($tarpath . $tarname)) 
+		if (!file_exists($tarpath . $tarname))
 		{
 			// File not found
 			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
 		}
 
-		if (!$opencode) 
+		if (!$opencode)
 		{
 			// This tool is not open source
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
@@ -2192,11 +2192,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas($tarname);
-		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false)) 
+		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false))
 		{ // @TODO fix byte range support
 			JError::raiseError(404, JText::_('COM_RESOURCES_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -2205,7 +2205,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a license for a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function licenseTask()
@@ -2215,7 +2215,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$tool     = JRequest::getVar('tool', '');
 
 		// Ensure we have a tool to work with
-		if (!$tool && !$resource) 
+		if (!$tool && !$resource)
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
@@ -2227,7 +2227,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$row = new ToolVersion($this->database);
 			$row->loadFromInstance($tool);
 		}
-		else 
+		else
 		{
 			$row = new ResourcesResource($this->database);
 			$row->load($resource);
@@ -2241,7 +2241,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Output HTML
-		if (!$row) 
+		if (!$row)
 		{
 			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
@@ -2262,7 +2262,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->no_html = JRequest::getVar('no_html', 0);
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -2276,7 +2276,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a citation for a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function citationTask()
@@ -2295,7 +2295,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Append DOI handle
 		$revision = JRequest::getVar('rev', 0);
 		$handle = '';
-		if ($revision) 
+		if ($revision)
 		{
 			$rdoi = new ResourcesDoi($this->database);
 			$rdoi->loadDoi($id, $revision);
@@ -2326,7 +2326,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$path = JPATH_ROOT . $this->config->get('cachepath', '/cache/resources');
 		$date = $row->created;
 		$dir_resid = \Hubzero\Utility\String::pad($row->id);
-		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) 
+		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
@@ -2334,10 +2334,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$dir_month = date('m', $date);
 		$path .= DS . $dir_year . DS . $dir_month . DS . $dir_resid . DS;
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError('Error. Unable to create path.');
 			}
@@ -2368,7 +2368,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				foreach($author_array as $auth)
 				{
 					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
-					if (!strstr($auth, ',')) 
+					if (!strstr($auth, ','))
 					{
 						$bits = explode(' ', $auth);
 						$n = array_pop($bits) . ', ';
@@ -2378,12 +2378,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					$doc .= "%A " . trim($auth) . "\r\n";
 				}
 				$doc .= "%U " . $url . "\r\n";
-				if ($thedate) 
+				if ($thedate)
 				{
 					$doc .= "%8 " . JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
 				}
 				//$doc .= "\r\n";
-				if ($handle) 
+				if ($handle)
 				{
 					$doc .= "%1 " .'doi:'.  $handle;
 					$doc .= "\r\n";
@@ -2407,15 +2407,15 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				{
 					$author = trim($auths[$i]);
 					$author = preg_replace('/\{\{(.+)\}\}/i','',$author);
-					if (strstr($author, ',')) 
+					if (strstr($author, ','))
 					{
 						$author_arr = explode(',', $author);
 						$author_arr = array_map('trim', $author_arr);
 
 						$addarray['author'][$i]['first'] = (isset($author_arr[1])) ? trim($author_arr[1]) : '';
 						$addarray['author'][$i]['last']  = (isset($author_arr[0])) ? trim($author_arr[0]) : '';
-					} 
-					else 
+					}
+					else
 					{
 						$author_arr = explode(' ',$author);
 						$author_arr = array_map('trim',$author_arr);
@@ -2428,7 +2428,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$addarray['month'] = JHTML::_('date', $thedate, $monthFormat, $tz);
 				$addarray['url']   = $url;
 				$addarray['year']  = JHTML::_('date', $thedate, $yearFormat, $tz);
-				if ($handle) 
+				if ($handle)
 				{
 					$addarray['doi'] = $handle;
 				}
@@ -2453,7 +2453,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Serve up a file
-	 * 
+	 *
 	 * @param      boolean $inline Disposition
 	 * @param      string  $p      File path
 	 * @param      string  $f      File name
@@ -2496,7 +2496,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Read file contents
-	 * 
+	 *
 	 * @param      string  $filename
 	 * @param      boolean $retbytes
 	 * @return     mixed
@@ -2507,7 +2507,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$buffer = '';
 		$cnt = 0;
 		$handle = fopen($filename, 'rb');
-		if ($handle === false) 
+		if ($handle === false)
 		{
 			return false;
 		}
@@ -2515,13 +2515,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			$buffer = fread($handle, $chunksize);
 			echo $buffer;
-			if ($retbytes) 
+			if ($retbytes)
 			{
 				$cnt += strlen($buffer);
 			}
 		}
 		$status = fclose($handle);
-		if ($retbytes && $status) 
+		if ($retbytes && $status)
 		{
 			return $cnt; // Return num. bytes delivered like readfile() does.
 		}
@@ -2530,14 +2530,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if a user is authorized
-	 * 
+	 *
 	 * @param      array $contributorIDs Authors of a resource
 	 * @return     boolean True if user has access
 	 */
 	protected function _authorize($contributorIDs=array(), $resource=null)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
@@ -2551,15 +2551,15 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're the resource creator
-		if (is_object($resource) && $resource->created_by == $this->juser->get('id')) 
+		if (is_object($resource) && $resource->created_by == $this->juser->get('id'))
 		{
 			return true;
 		}
 
 		// Check if they're a resource "contributor"
-		if (is_array($contributorIDs)) 
+		if (is_array($contributorIDs))
 		{
-			if (in_array($this->juser->get('id'), $contributorIDs)) 
+			if (in_array($this->juser->get('id'), $contributorIDs))
 			{
 				return true;
 			}
@@ -2578,11 +2578,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	private function checkGroupAccess($resource, $juser=null)
 	{
-		if (!$juser) 
+		if (!$juser)
 		{
 			$juser = JFactory::getUser();
 		}
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			// Check if they're a site admin (from Joomla)
 			$this->config->set('access-admin-component', $juser->authorise('core.admin', null));
@@ -2595,20 +2595,20 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$usersgroups = self::getUsersGroups($xgroups);
-		} 
-		else 
+		}
+		else
 		{
 			$usersgroups = array();
 		}
 
 		// Get the list of groups that can access this resource
 		$allowedgroups = $resource->getGroups();
-		if ($resource->standalone != 1) 
+		if ($resource->standalone != 1)
 		{
 			$helper = new ResourcesHelper($resource->id, $this->database);
 			$helper->getParents();
 			$parents = $helper->parents;
-			if (count($parents) == 1) 
+			if (count($parents) == 1)
 			{
 				$p = new ResourcesResource($this->database);
 				$p->load($parents[0]->id);
@@ -2622,34 +2622,34 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Make sure they have the proper group access
 		$restricted = false;
-		if ($resource->access == 4 || $resource->access == 3) 
+		if ($resource->access == 4 || $resource->access == 3)
 		{
 			// Are they logged in?
-			if ($juser->get('guest')) 
+			if ($juser->get('guest'))
 			{
 				// Not logged in
 				$restricted = true;
-			} 
-			else 
+			}
+			else
 			{
 				// Logged in
 
 				// Check if the user is apart of the group that owns the resource
 				// or if they have any groups in common
-				if (!in_array($resource->group_owner, $usersgroups) && count($common) < 1) 
+				if (!in_array($resource->group_owner, $usersgroups) && count($common) < 1)
 				{
 					$restricted = true;
 				}
 			}
 		}
-		if (!$resource->standalone) 
+		if (!$resource->standalone)
 		{
-			if (!isset($p) && isset($parents) && count($parents) == 1) 
+			if (!isset($p) && isset($parents) && count($parents) == 1)
 			{
 				$p = new ResourcesResource($this->database);
 				$p->load($parents[0]->id);
 			}
-			if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1) 
+			if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1)
 			{
 				$restricted = true;
 			}
@@ -2659,7 +2659,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Push group aliases into an array for easier searching
-	 * 
+	 *
 	 * @param      array $groups Users' groups
 	 * @return     array
 	 */
@@ -2667,11 +2667,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	{
 		$arr = array();
 
-		if (!empty($groups)) 
+		if (!empty($groups))
 		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$arr[] = $group->cn;
 				}
@@ -2683,7 +2683,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Generate the full (absolute) path to a file
-	 * 
+	 *
 	 * @param      string $path Relative path
 	 * @return     string
 	 */
@@ -2699,17 +2699,17 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		 || substr($path, 0, 7) == 'feed://'
 		 || substr($path, 0, 6) == 'mms://') {
 			// Do nothing
-		} 
-		else 
+		}
+		else
 		{
 			$uploadPath = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 			$path = DS . trim($path, DS);
-			if (substr($path, 0, strlen($uploadPath)) == $uploadPath) 
+			if (substr($path, 0, strlen($uploadPath)) == $uploadPath)
 			{
 				// Do nothing
-			} 
-			else 
+			}
+			else
 			{
 				$path = $uploadPath . $path;
 			}
@@ -2722,14 +2722,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if a user has access to a tool
-	 * 
+	 *
 	 * @param      integer $toolid Tool ID
 	 * @return     boolean True if user has access, false if not
 	 */
 	private function _checkToolaccess($toolid)
 	{
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage')) 
+		if ($this->juser->authorize($this->_option, 'manage'))
 		{
 			return true;
 		}
@@ -2738,11 +2738,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 		// check if user in tool dev team
 		$developers = $obj->getToolDevelopers($toolid);
-		if ($developers) 
+		if ($developers)
 		{
 			foreach ($developers as $dv)
 			{
-				if ($dv->uidNumber == $this->juser->get('id')) 
+				if ($dv->uidNumber == $this->juser->get('id'))
 				{
 					return true;
 				}

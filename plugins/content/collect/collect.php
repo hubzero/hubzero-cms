@@ -40,7 +40,7 @@ class plgContentCollect extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -55,7 +55,7 @@ class plgContentCollect extends JPlugin
 	/**
 	 * After display content method
 	 * Method is called by the view and the results are imploded and displayed in a placeholder
-	 * 
+	 *
 	 * @param      object $page     Wiki page
 	 * @param      object $revision Wiki revision
 	 * @param      object $config   Wiki config
@@ -67,7 +67,7 @@ class plgContentCollect extends JPlugin
 
 		// Incoming action
 		$action = JRequest::getVar('action', '');
-		if ($action && $action == 'collect') 
+		if ($action && $action == 'collect')
 		{
 			if (!$this->isHome() || ($this->isHome() && $article->alias == 'home'))
 			{
@@ -84,7 +84,7 @@ class plgContentCollect extends JPlugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest') && (!$this->isHome() || ($this->isHome() && $article->alias == 'home'))) 
+		if (!$juser->get('guest') && (!$this->isHome() || ($this->isHome() && $article->alias == 'home')))
 		{
 			// Push some scripts to the template
 			\Hubzero\Document\Assets::addPluginScript('content', $this->_name);
@@ -107,7 +107,7 @@ class plgContentCollect extends JPlugin
 
 	/**
 	 * Try to determine if this is the home page
-	 * 
+	 *
 	 * @return  boolean
 	 */
 	private function isHome()
@@ -134,7 +134,7 @@ class plgContentCollect extends JPlugin
 
 	/**
 	 * Un/favorite an item
-	 * 
+	 *
 	 * @param      integer $oid Resource to un/favorite
 	 * @return     void
 	 */
@@ -174,12 +174,12 @@ class plgContentCollect extends JPlugin
 			$b->object_id   = $this->article->id;
 			$b->title       = $this->article->title;
 			$b->description = \Hubzero\Utility\String::truncate($text, 300, array('html' => true));
-			if (!$b->check()) 
+			if (!$b->check())
 			{
 				$this->setError($b->getError());
 			}
 			// Store new content
-			if (!$b->store()) 
+			if (!$b->store())
 			{
 				$this->setError($b->getError());
 			}
@@ -213,7 +213,7 @@ class plgContentCollect extends JPlugin
 				$view->display();
 				exit;
 			}
-			else 
+			else
 			{
 				return $view->loadTemplate();
 			}
@@ -247,10 +247,10 @@ class plgContentCollect extends JPlugin
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
 				$stick->description   = JRequest::getVar('description', '', 'none', 2);
-				if ($stick->check()) 
+				if ($stick->check())
 				{
 					// Store new content
-					if (!$stick->store()) 
+					if (!$stick->store())
 					{
 						$this->setError($stick->getError());
 					}

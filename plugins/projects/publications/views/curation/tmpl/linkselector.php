@@ -31,16 +31,16 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 
-$aboutTxt 		= $this->manifest->adminTips 
-				? $this->manifest->adminTips 
+$aboutTxt 		= $this->manifest->adminTips
+				? $this->manifest->adminTips
 				: $this->manifest->about;
-				
+
 $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten)
 {
 	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
-	$about.= ' <a href="#more-' . $elName . '" class="more-content">' 
+	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
 	$about.= ' <div class="hidden">';
 	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
@@ -54,18 +54,18 @@ else
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
 $modelAttach = new PublicationsModelAttachmentLink();
-			
+
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'curator');
-			
+
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement fileselector<?php echo $required ? ' el-required' : ' el-optional';
@@ -81,7 +81,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 			<div class="list-wrapper">
 				<ul class="itemlist">
 			<?php	$i= 1; ?>
-					<?php foreach ($this->attachments as $att) { 
+					<?php foreach ($this->attachments as $att) {
 
 						$i++;
 

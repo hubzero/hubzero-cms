@@ -39,14 +39,14 @@ use ReflectionMethod;
 
 /**
  * Base controller for components to extend.
- * 
- * Accepts an array of configuration values to the constructor. If no config 
+ *
+ * Accepts an array of configuration values to the constructor. If no config
  * passed, it will automatically determine the component and controller names.
  * Internally, sets the $database, $user, $view, and component $config.
- * 
- * Executable tasks are determined by method name. All public methods that end in 
+ *
+ * Executable tasks are determined by method name. All public methods that end in
  * "Task" (e.g., displayTask, editTask) are callable by the end user.
- * 
+ *
  * View name defaults to controller name with layout defaulting to task name. So,
  * a $controller of "One" and a $task of "two" will map to:
  *
@@ -195,13 +195,13 @@ class SiteController extends Object implements ControllerInterface
 		}
 
 		// Set the base path
-		if (array_key_exists('base_path', $config)) 
+		if (array_key_exists('base_path', $config))
 		{
 			$this->_basePath = $config['base_path'];
-		} 
-		else 
+		}
+		else
 		{
-			// Set base path relative to the controller file rather than 
+			// Set base path relative to the controller file rather than
 			// an absolute path. This gives us a little more flexibility.
 			$this->_basePath = dirname(dirname($r->getFileName()));
 		}
@@ -232,7 +232,7 @@ class SiteController extends Object implements ControllerInterface
 		$lang   = \JFactory::getLanguage();
 		$loaded = $lang->getPaths($this->_option);
 
-		// Load language file if we dont have one yet 
+		// Load language file if we dont have one yet
 		if (!isset($loaded) || empty($loaded))
 		{
 			$lang->load($this->_option, $this->_basePath . '/../..');
@@ -267,7 +267,7 @@ class SiteController extends Object implements ControllerInterface
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -465,7 +465,7 @@ class SiteController extends Object implements ControllerInterface
 		{
 			$session = \JFactory::getSession();
 			$componentMessage = $session->get('component.message.queue');
-			if (count($componentMessage)) 
+			if (count($componentMessage))
 			{
 				$this->componentMessageQueue = $componentMessage;
 				$session->set('component.message.queue', null);
@@ -547,7 +547,7 @@ class SiteController extends Object implements ControllerInterface
 		{
 			Assets::addSystemStylesheet($stylesheet);
 		}
-		else 
+		else
 		{
 			Assets::addComponentStylesheet($option, $stylesheet);
 		}
@@ -575,7 +575,7 @@ class SiteController extends Object implements ControllerInterface
 		{
 			Assets::addSystemScript($script);
 		}
-		else 
+		else
 		{
 			Assets::addComponentScript($option, $script);
 		}
@@ -601,7 +601,7 @@ class SiteController extends Object implements ControllerInterface
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			// Check if they're a site admin (from Joomla)
 			if ($this->juser->authorize($this->_option, 'manage'))

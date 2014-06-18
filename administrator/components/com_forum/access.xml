@@ -36,25 +36,25 @@ HUBzero is a registered trademark of Purdue University.
 		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.section" title="Section :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.section" title="Section :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.section" title="Section :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.section" title="Section :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.section" title="Section :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.category" title="Category :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.category" title="Category :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.category" title="Category :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.category" title="Category :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.category" title="Category :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.thread" title="Thread :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.thread" title="Thread :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.thread" title="Thread :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.thread" title="Thread :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.thread" title="Thread :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
-		
+
 		<action name="core.create.post" title="Comment :: Create" description="JACTION_CREATE_COMPONENT_DESC" />
 		<action name="core.delete.post" title="Comment :: Delete" description="JACTION_DELETE_COMPONENT_DESC" />
 		<action name="core.edit.post" title="Comment :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />

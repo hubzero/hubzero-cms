@@ -41,13 +41,13 @@ $loggedin = false;
 $isUser = false;
 
 //if we are logged in set logged in flag
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$loggedin = true;
 }
 
 //if we are this user set user flag
-if ($juser->get("id") == $this->profile->get("uidNumber")) 
+if ($juser->get("id") == $this->profile->get("uidNumber"))
 {
 	$isUser = true;
 }
@@ -103,25 +103,25 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	</ul>
 	<?php endif; ?>
 
-	<?php 
-		if ($isUser && $isIncrementalEnabled) 
-		{ 
+	<?php
+		if ($isUser && $isIncrementalEnabled)
+		{
 			$awards = new ModIncrementalRegistrationAwards($this->profile);
 			$awards = $awards->award();
 
 			$increm  = '<div id="award-info">';
 			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', JRoute::_('index.php?option=com_store')) . '</p>';
 
-			if ($awards['prior']) 
+			if ($awards['prior'])
 			{
 				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
 			}
 
-			if ($awards['new']) 
+			if ($awards['new'])
 			{
 				$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
 			}
-			
+
 			$increm .= '<p>' . JText::sprintf('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), JRoute::_('index.php?option=com_store'), JRoute::_('index.php?option=com_answers'), JRoute::_('index.php?option=com_wishlist')) .'</p>';
 
 			$increm .= '</div>';
@@ -166,7 +166,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 	<?php endif; ?>
 
 	<ul id="profile">
-		<?php if ($isUser) : ?> 
+		<?php if ($isUser) : ?>
 			<li class="profile-name section hidden">
 				<div class="section-content">
 					<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_NAME'); ?></div>
@@ -217,16 +217,16 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 										<input type="password" name="oldpass" id="password" class="input-text" />
 									</label>
 									<label for="newpass" class="side-by-side">
-										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?> 
+										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_NEW'); ?>
 										<input type="password" name="newpass" id="newpass" class="input-text" />
 									</label>
 									<label for="newpass2" class="side-by-side no-padding-right">
-										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?> 
+										<?php echo JText::_('PLG_MEMBERS_PROFILE_PASSWORD_CONFIRM'); ?>
 										<input type="password" name="newpass2" id="newpass2" class="input-text" />
 									</label>
 									<input type="hidden" name="change" value="1" />
-									<input type="submit" class="section-edit-submit" value="Save" /> 
-									<input type="reset" class="section-edit-cancel" value="Cancel" /> 
+									<input type="submit" class="section-edit-submit" value="Save" />
+									<input type="reset" class="section-edit-cancel" value="Cancel" />
 									<input type="hidden" name="option" value="com_members" />
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('uidNumber'); ?>" />
 									<input type="hidden" name="task" value="changepassword" />
@@ -245,13 +245,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Organization != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_org') == 0 
-					|| ($this->params->get('access_org') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_org') == 0
+					|| ($this->params->get('access_org') == 1 && $loggedin)
 					|| ($this->params->get('access_org') == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_org') == 2) 
+						if ($this->params->get('access_org') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -264,8 +264,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION'); ?></div>
 						<div class="value">
-							<?php 
-								$org = $this->escape(stripslashes($this->profile->get('organization'))); 
+							<?php
+								$org = $this->escape(stripslashes($this->profile->get('organization')));
 								echo ($org) ? $org : JText::_('PLG_MEMBERS_PROFILE_ENTER_ORG');
 							?>
 						</div>
@@ -313,13 +313,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Employment != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_orgtype') == 0 
-					|| ($this->params->get('access_orgtype') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_orgtype') == 0
+					|| ($this->params->get('access_orgtype') == 1 && $loggedin)
 					|| ($this->params->get('access_orgtype') == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_orgtype') == 2) 
+						if ($this->params->get('access_orgtype') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -353,11 +353,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//build select of org types
 							$organization_types  = "<select name=\"orgtype\" class=\"input-select\">";
 							foreach($orgtypes as $k => $o)
-							{   
+							{
 								$sel = ($k == $this->profile->get("orgtype")) ? "selected=\"selected\"" : "";
 								$organization_types .= "<option {$sel} value=\"{$k}\">{$o}</option>";
 							}
-							$organization_types .= "</select>"; 
+							$organization_types .= "</select>";
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'orgtype')
@@ -383,16 +383,16 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->profile->get('email')) : ?>
-			<?php if ($this->params->get('access_email', 2) == 0 
-			 		|| ($this->params->get('access_email', 2) == 1 && $loggedin) 
+			<?php if ($this->params->get('access_email', 2) == 0
+			 		|| ($this->params->get('access_email', 2) == 1 && $loggedin)
 			 		|| ($this->params->get('access_email', 2) == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_email', 2) == 2) 
+						if ($this->params->get('access_email', 2) == 2)
 						{
 							$cls .= 'private';
-						}                     
+						}
 						if ($this->profile->get("email") == "" || is_null($this->profile->get("email")))
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
@@ -434,13 +434,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->ORCID != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_orcid') == 0 
-			 		|| ($this->params->get('access_orcid') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_orcid') == 0
+			 		|| ($this->params->get('access_orcid') == 1 && $loggedin)
 			 		|| ($this->params->get('access_orcid') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_orcid') == 2) 
+						if ($this->params->get('access_orcid') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -448,7 +448,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? ' hidden' : ' hide';
 						}
-						if (isset($update_missing) && in_array('orcid', array_keys($update_missing))) 
+						if (isset($update_missing) && in_array('orcid', array_keys($update_missing)))
 						{
 							$cls = str_replace(' hide', '', $cls);
 							$cls .= ' missing';
@@ -499,13 +499,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->URL != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_url') == 0 
-					|| ($this->params->get('access_url') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_url') == 0
+					|| ($this->params->get('access_url') == 1 && $loggedin)
 					|| ($this->params->get('access_url') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_url') == 2) 
+						if ($this->params->get('access_url') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -513,7 +513,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if (isset($update_missing) && in_array("web", array_keys($update_missing))) 
+						if (isset($update_missing) && in_array("web", array_keys($update_missing)))
 						{
 							$cls = str_replace(' hide', '', $cls);
 							$cls .= ' missing';
@@ -527,7 +527,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							if ($url)
 							{
 								$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)";
-								if (!preg_match("/$UrlPtn/", $url)) 
+								if (!preg_match("/$UrlPtn/", $url))
 								{
 									$url = 'http://' . $url;
 								}
@@ -562,13 +562,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Phone != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_phone') == 0 
-					|| ($this->params->get('access_phone') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_phone') == 0
+					|| ($this->params->get('access_phone') == 1 && $loggedin)
 					|| ($this->params->get('access_phone') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_phone') == 2) 
+						if ($this->params->get('access_phone') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -576,7 +576,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if (isset($update_missing) && in_array("phone",array_keys($update_missing))) 
+						if (isset($update_missing) && in_array("phone",array_keys($update_missing)))
 						{
 							$cls = str_replace(" hide", '', $cls);
 							$cls .= ' missing';
@@ -619,8 +619,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->address != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_address') == 0 
-					|| ($this->params->get('access_address') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_address') == 0
+					|| ($this->params->get('access_address') == 1 && $loggedin)
 					|| ($this->params->get('access_address') == 2 && $isUser)
 				) : ?>
 				<?php
@@ -629,7 +629,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					$addresses = $membersAddress->getAddressesForMember( $this->profile->get("uidNumber"));
 
 					$cls = '';
-					if ($this->params->get('access_address') == 2) 
+					if ($this->params->get('access_address') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -637,7 +637,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array('address', array_keys($update_missing))) 
+					if (isset($update_missing) && in_array('address', array_keys($update_missing)))
 					{
 						$cls = str_replace(" hide", '', $cls);
 						$cls .= ' missing';
@@ -678,13 +678,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			<?php endif; ?>
 		<?php endif; ?>
 
-		<?php if ($this->params->get('access_bio') == 0 
-				|| ($this->params->get('access_bio') == 1 && $loggedin) 
+		<?php if ($this->params->get('access_bio') == 0
+				|| ($this->params->get('access_bio') == 1 && $loggedin)
 				|| ($this->params->get('access_bio') == 2 && $isUser)
 			) : ?>
 				<?php
 					$cls = '';
-					if ($this->params->get('access_bio') == 2) 
+					if ($this->params->get('access_bio') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -692,7 +692,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("bio",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("bio",array_keys($update_missing)))
 					{
 						$cls = str_replace(' hide', '', $cls);
 						$cls .= ' missing';
@@ -702,7 +702,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<div class="section-content">
 					<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_BIOGRAPHY'); ?></div>
 					<?php
-						if ($this->profile->get('bio')) 
+						if ($this->profile->get('bio'))
 						{
 							$bio = $this->profile->getBio('parsed');
 						}
@@ -739,8 +739,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Interests != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_tags') == 0 
-			 		|| ($this->params->get('access_tags') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_tags') == 0
+			 		|| ($this->params->get('access_tags') == 1 && $loggedin)
 			 		|| ($this->params->get('access_tags') == 2 && $isUser)
 				) : ?>
 				<?php
@@ -750,7 +750,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					$tags = $mt->get_tag_cloud(0,0,$this->profile->get('uidNumber'));
 					$tag_string = $mt->get_tag_string( $this->profile->get('uidNumber'));
 
-					if ($this->params->get('access_tags') == 2) 
+					if ($this->params->get('access_tags') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -758,7 +758,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("interests",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("interests",array_keys($update_missing)))
 					{
 						$cls = str_replace(' hide', '', $cls);
 						$cls .= ' missing';
@@ -776,10 +776,10 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$dispatcher = JDispatcher::getInstance();
 							$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',stripslashes($tag_string))));
 
-							if (count($tf) > 0) 
+							if (count($tf) > 0)
 							{
 								$interests = $tf[0];
-							} else 
+							} else
 							{
 								$interests = "\t\t\t".'<input type="text" name="tags" value="'. $this->escape($tag_string) .'" />'."\n";
 							}
@@ -808,13 +808,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Citizenship != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_countryorigin') == 0 
-					|| ($this->params->get('access_countryorigin') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_countryorigin') == 0
+					|| ($this->params->get('access_countryorigin') == 1 && $loggedin)
 					|| ($this->params->get('access_countryorigin') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_countryorigin') == 2) 
+						if ($this->params->get('access_countryorigin') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -822,7 +822,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if (isset($update_missing) && in_array("countryorigin",array_keys($update_missing))) 
+						if (isset($update_missing) && in_array("countryorigin",array_keys($update_missing)))
 						{
 							$cls = str_replace(" hide", '', $cls);
 							$cls .= ' missing';
@@ -864,7 +864,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
-								if ($this->profile->get('countryorigin') == $c->code) 
+								if ($this->profile->get('countryorigin') == $c->code)
 								{
 									$countries .= ' selected="selected"';
 								}
@@ -877,7 +877,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$yes = 'checked="checked"';
 							}
-							elseif ($this->profile->get('countryorigin') != "" && (strcasecmp($this->profile->get('countryorigin'),'US') != 0) ) 
+							elseif ($this->profile->get('countryorigin') != "" && (strcasecmp($this->profile->get('countryorigin'),'US') != 0) )
 							{
 								$no = 'checked="checked"';
 							}
@@ -910,13 +910,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Residency != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_countryresident') == 0 
-					|| ($this->params->get('access_countryresident') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_countryresident') == 0
+					|| ($this->params->get('access_countryresident') == 1 && $loggedin)
 					|| ($this->params->get('access_countryresident') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_countryresident') == 2) 
+						if ($this->params->get('access_countryresident') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -924,7 +924,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if (isset($update_missing) && in_array("countryresident", array_keys($update_missing))) 
+						if (isset($update_missing) && in_array("countryresident", array_keys($update_missing)))
 						{
 							$cls = str_replace(' hide', '', $cls);
 							$cls .= ' missing';
@@ -964,7 +964,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							foreach ($co as $c)
 							{
 								$countries .= '<option value="' . $c->code . '"';
-								if ($this->profile->get('countryresident') == $c->code) 
+								if ($this->profile->get('countryresident') == $c->code)
 								{
 									$countries .= ' selected="selected"';
 								}
@@ -978,7 +978,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							{
 								$yes = 'checked="checked"';
 							}
-							elseif ($this->profile->get('countryresident') != '' && (strcasecmp($this->profile->get('countryresident'), 'US') != 0)) 
+							elseif ($this->profile->get('countryresident') != '' && (strcasecmp($this->profile->get('countryresident'), 'US') != 0))
 							{
 								$no = 'checked="checked"';
 							}
@@ -1011,13 +1011,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Sex != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_gender') == 0 
-					|| ($this->params->get('access_gender') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_gender') == 0
+					|| ($this->params->get('access_gender') == 1 && $loggedin)
 					|| ($this->params->get('access_gender') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
-						if ($this->params->get('access_gender') == 2) 
+						if ($this->params->get('access_gender') == 2)
 						{
 							$cls .= 'private';
 						}
@@ -1025,7 +1025,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						{
 							$cls .= ($isUser) ? " hidden" : " hide";
 						}
-						if (isset($update_missing) && in_array("sex",array_keys($update_missing))) 
+						if (isset($update_missing) && in_array("sex",array_keys($update_missing)))
 						{
 							$cls = str_replace(' hide', '', $cls);
 							$cls .= ' missing';
@@ -1035,8 +1035,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_GENDER'); ?></div>
 						<div class="value">
-							<?php 
-								$gender = MembersHtml::propercase_singleresponse($this->profile->get('gender')); 
+							<?php
+								$gender = MembersHtml::propercase_singleresponse($this->profile->get('gender'));
 								echo ($gender != 'n/a') ? $gender : JText::_('PLG_MEMBERS_PROFILE_GENDER_ENTER');
 							?>
 						</div>
@@ -1081,13 +1081,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Disability != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_disability') == 0 
-			 		|| ($this->params->get('access_disability') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_disability') == 0
+			 		|| ($this->params->get('access_disability') == 1 && $loggedin)
 			 		|| ($this->params->get('access_disability') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
-					if ($this->params->get('access_disability') == 2) 
+					if ($this->params->get('access_disability') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -1095,7 +1095,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("disability",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("disability",array_keys($update_missing)))
 					{
 						$cls = str_replace(' hide', '', $cls);
 						$cls .= ' missing';
@@ -1107,8 +1107,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_DISABILITY'); ?></div>
 						<div class="value">
-							<?php 
-								$disability = MembersHtml::propercase_multiresponse($this->profile->get('disability')); 
+							<?php
+								$disability = MembersHtml::propercase_multiresponse($this->profile->get('disability'));
 								echo ($disability != 'n/a') ? $disability : JText::_('PLG_MEMBERS_PROFILE_DISABILITY_ENTER');
 							?>
 						</div>
@@ -1221,13 +1221,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Hispanic != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_hispanic') == 0 
-					|| ($this->params->get('access_hispanic') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_hispanic') == 0
+					|| ($this->params->get('access_hispanic') == 1 && $loggedin)
 					|| ($this->params->get('access_hispanic') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
-					if ($this->params->get('access_hispanic') == 2) 
+					if ($this->params->get('access_hispanic') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -1235,7 +1235,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("hispanic",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("hispanic",array_keys($update_missing)))
 					{
 						$cls = str_replace(' hide', '', $cls);
 						$cls .= ' missing';
@@ -1248,7 +1248,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_HISPANIC'); ?></div>
 						<div class="value">
 							<?php
-								$hispanic = MembersHtml::propercase_multiresponse($this->profile->get('hispanic')); 
+								$hispanic = MembersHtml::propercase_multiresponse($this->profile->get('hispanic'));
 								echo ($hispanic != 'n/a') ? $hispanic : JText::_('PLG_MEMBERS_PROFILE_HISPANIC_ENTER');
 							?>
 						</div>
@@ -1349,13 +1349,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->Race != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_race') == 0 
-					|| ($this->params->get('access_race') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_race') == 0
+					|| ($this->params->get('access_race') == 1 && $loggedin)
 					|| ($this->params->get('access_race') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
-					if ($this->params->get('access_race') == 2) 
+					if ($this->params->get('access_race') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -1363,7 +1363,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("race",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("race",array_keys($update_missing)))
 					{
 						$cls = str_replace(" hide", '', $cls);
 						$cls .= ' missing';
@@ -1375,8 +1375,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					<div class="section-content">
 						<div class="key"><?php echo JText::_('PLG_MEMBERS_PROFILE_RACE'); ?></div>
 						<div class="value">
-							<?php 
-								$race = MembersHtml::propercase_multiresponse($this->profile->get('race')); 
+							<?php
+								$race = MembersHtml::propercase_multiresponse($this->profile->get('race'));
 								echo ($race != 'n/a') ? $race : JText::_('PLG_MEMBERS_PROFILE_RACE_ENTER');
 							?>
 						</div>
@@ -1456,13 +1456,13 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 		<?php endif; ?>
 
 		<?php if ($this->registration->OptIn != REG_HIDE) : ?>
-			<?php if ($this->params->get('access_optin') == 0 
-					|| ($this->params->get('access_optin') == 1 && $loggedin) 
+			<?php if ($this->params->get('access_optin') == 0
+					|| ($this->params->get('access_optin') == 1 && $loggedin)
 					|| ($this->params->get('access_optin') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
-					if ($this->params->get('access_optin') == 2) 
+					if ($this->params->get('access_optin') == 2)
 					{
 						$cls .= 'private';
 					}
@@ -1470,7 +1470,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					{
 						$cls .= ($isUser) ? " hidden" : " hide";
 					}
-					if (isset($update_missing) && in_array("optin",array_keys($update_missing))) 
+					if (isset($update_missing) && in_array("optin",array_keys($update_missing)))
 					{
 						$cls = str_replace(' hide', '', $cls);
 						$cls .= ' missing';

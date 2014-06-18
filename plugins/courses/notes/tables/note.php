@@ -39,105 +39,105 @@ class CoursesTableMemberNote extends JTable
 	/**
 	 * ID, primary key for course asset grouping table
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var text
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pos_x = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pos_y = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $width = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $height = NULL;
 
 	/**
 	 * 00:00:00
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $timestamp = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_id = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access = NULL;
 
 	/**
 	 * Constructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -148,27 +148,27 @@ class CoursesTableMemberNote extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		$this->scope_id = intval($this->scope_id);
-		if (!$this->scope_id) 
+		if (!$this->scope_id)
 		{
 			$this->setError(JText::_('Missing scope ID'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			$this->setError(JText::_('Missing scope'));
 			return false;
 		}
 
 		$this->section_id = intval($this->section_id);
-		if (!$this->section_id) 
+		if (!$this->section_id)
 		{
 			$this->setError(JText::_('Missing section ID'));
 			return false;
@@ -195,7 +195,7 @@ class CoursesTableMemberNote extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -260,7 +260,7 @@ class CoursesTableMemberNote extends JTable
 
 	/**
 	 * Get a count of records
-	 * 
+	 *
 	 * @param     array $filters
 	 * @return    integer
 	 */
@@ -275,7 +275,7 @@ class CoursesTableMemberNote extends JTable
 
 	/**
 	 * Get an object list of records
-	 * 
+	 *
 	 * @param     array $filters
 	 * @return    array
 	 */

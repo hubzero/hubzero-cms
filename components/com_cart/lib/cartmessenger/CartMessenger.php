@@ -38,97 +38,97 @@ class LoggingLevel {
 
 /**
  * Logs cart activity and sends emails out as necessary
- * 
+ *
  * Long description (if any) ...
  */
 class CartMessenger
-{	
-	private $logFile;	
+{
+	private $logFile;
 	private $caller;
-	
+
 	private $message;
 	private $postback;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function __construct($caller)
-	{		
+	{
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
-		
+
 		$this->logFile = JPATH_ROOT . DS . 'site' . DS . 'com_cart' . DS . 'cart.log';
 		$this->caller = $caller;
 	}
-	
+
 	public function setPostback($postback)
 	{
 		$this->postback = $postback;
 	}
-	
+
 	public function setMessage($msg)
 	{
 		$this->message = $msg;
 	}
-	
+
 	public function log($loggingLevel = 2)
 	{
 		if (!empty($this->postback))
 		{
 			$message = $this->message . "\n" . "Postback info: " . serialize($this->postback) . "\n";
 		}
-		
+
 		$message .= "\n";
 
 		$hzl = new \Hubzero\Log\Writer(
-			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
 			\JDispatcher::getInstance()
 		);
 		$hzl->useFiles($this->logFile);
-		
+
 		if ($loggingLevel == 0)
 		{
-			$hzl->error($this->caller . ': ' . $message);			
+			$hzl->error($this->caller . ': ' . $message);
 		}
 		elseif ($loggingLevel == 1)
 		{
-			$log = $hzl->warning($this->caller . ': ' . $message);	
+			$log = $hzl->warning($this->caller . ': ' . $message);
 			return $log;
 		}
-		elseif ($loggingLevel == 2) 
+		elseif ($loggingLevel == 2)
 		{
-			$log = $hzl->info($this->caller . ': ' . $message);	
+			$log = $hzl->info($this->caller . ': ' . $message);
 			return $log;
 		}
-		
+
 		// If error, needs to send email to admin
-		$this->emailError($this->message, 'POSTBACK');		
+		$this->emailError($this->message, 'POSTBACK');
 	}
-	
+
 	public function emailOrderComplete($transactionInfo)
 	{
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));	
-		
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+
 		$items = unserialize($transactionInfo->tiItems);
 		$meta = unserialize($transactionInfo->tiMeta);
 		//print_r($items); die;
-		
+
 		// Build emails
-		
+
 		// Build order summary
 		$summary = 'Order summary:';
 		$summary .= "\n====================\n\n";
-		
+
 		$summary .= 'Order number: ' . $transactionInfo->tId . "\n\n";
-		
+
 		$summary .= 'Order subtotal: ' . money_format('%n', $transactionInfo->tiSubtotal) . "\n";
 		if (!$transactionInfo->tiShipping)
 		{
 			$transactionInfo->tiShipping = 0;
-		}	
+		}
 		if ($transactionInfo->tiShipping > 0)
-		{	
+		{
 			$summary .= 'Shipping and handling: ' . money_format('%n', $transactionInfo->tiShipping) . "\n";
 		}
 		if (!$transactionInfo->tiTax)
@@ -144,24 +144,24 @@ class CartMessenger
 			$summary .= 'Tax: ' . money_format('%n', $transactionInfo->tiTax) . "\n";
 		}
 		$summary .= 'Order total: ' . money_format('%n', $transactionInfo->tiTotal) . "\n";
-		
+
 		if (!empty($transactionInfo->tiShippingToFirst))
 		{
 			$summary .= "\n\nShipping address:";
 			$summary .= "\n--------------------\n";
-			$summary .= $transactionInfo->tiShippingToFirst . ' ' . $transactionInfo->tiShippingToLast . "\n";	
+			$summary .= $transactionInfo->tiShippingToFirst . ' ' . $transactionInfo->tiShippingToLast . "\n";
 			$summary .= $transactionInfo->tiShippingAddress . "\n";
 			$summary .= $transactionInfo->tiShippingCity . '. ' . $transactionInfo->tiShippingState . ' ' . $transactionInfo->tiShippingZip . "\n";
 		}
-		
+
 		$summary .= "\n\nItems ordered:";
 		$summary .= "\n--------------------\n";
-		
+
 		foreach ($items as $k => $item)
 		{
 			$itemInfo = $item['info'];
 			$cartInfo = $item['cartInfo'];
-			
+
 			// If course
 			$action = false;
 			if ($itemInfo->ptId == 20)
@@ -169,10 +169,10 @@ class CartMessenger
 				$action = ' Go to the course page at: ' .
 				$action .= JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
 			}
-			
-			$summary .= "$cartInfo->qty x ";		
+
+			$summary .= "$cartInfo->qty x ";
 			$summary .= "$itemInfo->pName";
-			
+
 			if (!empty($item['options']))
 			{
 				$summary .= '(';
@@ -183,90 +183,90 @@ class CartMessenger
 					{
 						$summary .=	', ';
 					}
-					$summary .= $option;		
+					$summary .= $option;
 					$optionCount++;
 				}
 				$summary .= ')';
 			}
-			
-			$summary .= ' @ ' . money_format('%n', $itemInfo->sPrice);	
-			
-			if($action) 
+
+			$summary .= ' @ ' . money_format('%n', $itemInfo->sPrice);
+
+			if($action)
 			{
 				$summary .= "\n\t";
 				$summary .= $action;
 			}
-			
-			$summary .= "\n";		
+
+			$summary .= "\n";
 		}
-		
+
 		//print_r($summary); die;
-		
-		// Get message plugin
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
-		$jconfig = JFactory::getConfig();
-		
-		// "from" info
-		$from = array();		
-		$from['name']  = $jconfig->getValue('config.sitename');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
-		
-		// Email to admin
-		$adminEmail = "There is a new online store order: \n\n";
-		$adminEmail .= $summary;
-		
-		// Admin email
-		$to = array($params->get('storeAdminId'));
-		$dispatcher->trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
-		
-		// Email to client
-		$clientEmail = 'Thank you for your order at ' .  $jconfig->getValue('config.sitename') . "!\n\n";
-		$clientEmail .= $summary;
-		
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart(NULL, true);
-		$to = array($cart->getCartUser($transactionInfo->crtId));	
-		
-		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
-	}
-	
-	private function emailError($error, $errorType = NULL)
-	{
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));	
 
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
-		
+		$jconfig = JFactory::getConfig();
+
 		// "from" info
 		$from = array();
-		
+		$from['name']  = $jconfig->getValue('config.sitename');
+		$from['email'] = $jconfig->getValue('config.mailfrom');
+
+		// Email to admin
+		$adminEmail = "There is a new online store order: \n\n";
+		$adminEmail .= $summary;
+
+		// Admin email
+		$to = array($params->get('storeAdminId'));
+		$dispatcher->trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
+
+		// Email to client
+		$clientEmail = 'Thank you for your order at ' .  $jconfig->getValue('config.sitename') . "!\n\n";
+		$clientEmail .= $summary;
+
+		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
+		$cart = new CartModelCart(NULL, true);
+		$to = array($cart->getCartUser($transactionInfo->crtId));
+
+		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+	}
+
+	private function emailError($error, $errorType = NULL)
+	{
+		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+
+		// Get message plugin
+		JPluginHelper::importPlugin('xmessage');
+		$dispatcher = JDispatcher::getInstance();
+
+		// "from" info
+		$from = array();
+
 		$jconfig = JFactory::getConfig();
 		$from['name']  = $jconfig->getValue('config.sitename');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-		
+
 		// get admin id
 		$adminId = array($params->get('storeAdminId'));
-				
+
 		$mailMessage = JFactory::getDate() . "\n";
-		
+
 		if	($errorType == 'POSTBACK')
 		{
 			$mailSubject = ': Error processing postback payment.';
 			$mailMessage = 'There was an error processing payment postback:' . "\n\n";
 		}
-		else 
+		else
 		{
 			$mailSubject = 'Cart error';
 		}
-		
+
 		$mailMessage .= $error;
-		
+
 		$mailMessage .= "\n\n" . 'Please see log for details';
-	
+
 		// Send emails
 		$dispatcher->trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
-	
+
 }

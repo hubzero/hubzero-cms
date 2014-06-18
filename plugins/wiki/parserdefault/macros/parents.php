@@ -56,7 +56,7 @@ class ParentsMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -162,7 +162,7 @@ class ParentsMacro extends WikiMacro
 	 *
 	 * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-	 * @return array  
+	 * @return array
 	 */
 	private function _fetchPointer($depth, $scope)
 	{
@@ -214,11 +214,11 @@ class ParentsMacro extends WikiMacro
 	 *
 	 * @param  integer $depth How far back to look for ancestors
 	 * @param  string  $scope The URI path to traverse
-	 * @return array  
+	 * @return array
 	 */
 	private function _getPageByAlias($alias, $scope)
 	{
-		if (!class_exists('WikiTablePage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php')) 
+		if (!class_exists('WikiTablePage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		}

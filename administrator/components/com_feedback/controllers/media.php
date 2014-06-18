@@ -38,7 +38,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -56,7 +56,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Upload an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -146,7 +146,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -207,7 +207,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display an image
-	 * 
+	 *
 	 * @param      string  $file File name
 	 * @param      integer $id   User ID
 	 * @param      integer $qid  Quote ID

@@ -57,11 +57,11 @@ $this->draft = $this->draftInternal + $this->draftUser;
 					{label: 'removed', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#ccc"); ?>'},
 					{label: 'unpublished', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_unpublished", "#fff"); ?>'}
 				], {
-					legend: { 
+					legend: {
 						show: true
 					},
 					series: {
-						pie: { 
+						pie: {
 							innerRadius: 0.5,
 							show: true,
 							stroke: {

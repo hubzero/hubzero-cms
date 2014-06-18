@@ -87,7 +87,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 
 		// Path and file name
 		$dir = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'certificates';
-		$file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . $this->juser->get('id') . '.pdf'; 
+		$file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . $this->juser->get('id') . '.pdf';
 
 		// If the file exists and we want to force regenerate it
 		if (is_file($file) && JRequest::getInt('regenerate', 0))

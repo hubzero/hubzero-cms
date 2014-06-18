@@ -38,7 +38,7 @@ class CartControllerCheckout extends ComponentController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -55,7 +55,7 @@ class CartControllerCheckout extends ComponentController
 		$juser = JFactory::getUser();
 
 		// Check if they're logged in
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->login('Please login to continue');
 			return;
@@ -66,11 +66,11 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Checkout entry point. Begin checkout -- check, create, or update transaction and redirect to the next step
-	 * 
+	 *
 	 * @param	void
 	 * @return	void
 	 */
-	public function checkoutTask() 
+	public function checkoutTask()
 	{
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
@@ -94,7 +94,7 @@ class CartControllerCheckout extends ComponentController
 		$transactionInfo = $cart->getTransaction();
 
 		// Redirect to cart if no transaction items (no cart items)
-		if (!$transactionInfo) 
+		if (!$transactionInfo)
 		{
 			$cart->redirect('home');
 		}
@@ -107,11 +107,11 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Continue checkout -- decides where to take the checkout process next
-	 * 
+	 *
 	 * @param	void
 	 * @return	void
 	 */
-	public function continueTask() 
+	public function continueTask()
 	{
 		// Decide where to go next
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
@@ -121,7 +121,7 @@ class CartControllerCheckout extends ComponentController
 		$transactionInfo = $cart->getTransaction();
 
 		// Redirect to cart if no transaction items (no cart items)
-		if (!$transactionInfo) 
+		if (!$transactionInfo)
 		{
 			$cart->redirect('checkout');
 		}
@@ -134,10 +134,10 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Shipping step of the checkout
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function shippingTask() 
+	public function shippingTask()
 	{
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();;
@@ -149,12 +149,12 @@ class CartControllerCheckout extends ComponentController
 
 		if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select')
 		{
-			try 
+			try
 			{
 				$this->selectSavedShippingAddress($params->saId, $cart);
 				$addressSet = true;
-			} 
-			catch (Exception $e) 
+			}
+			catch (Exception $e)
 			{
 				$error = $e->getMessage();
 			}
@@ -171,16 +171,16 @@ class CartControllerCheckout extends ComponentController
 
 		// handle non-ajax form submit
 		$shippingInfoSubmitted = JRequest::getVar('submitShippingInfo', false, 'post');
-		
+
 		if ($shippingInfoSubmitted)
 		{
 			$res = $cart->setTransactionShippingInfo();
 
-			if ($res->status) 
+			if ($res->status)
 			{
 				$addressSet = true;
 			}
-			else 
+			else
 			{
 				$error = $res->errors;
 			}
@@ -199,7 +199,7 @@ class CartControllerCheckout extends ComponentController
 			$cart->redirect($nextStep);
 		}
 
-		if (!empty($error)) 
+		if (!empty($error))
 		{
 			$this->view->setError($error);
 		}
@@ -211,10 +211,10 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Select saved shipping address
-	 * 
+	 *
 	 * @return     void
 	 */
-	private function selectSavedShippingAddress($saId, $cart) 
+	private function selectSavedShippingAddress($saId, $cart)
 	{
 		// ajax vs non-ajax
 		$cart->setSavedShippingAddress($saId);
@@ -226,10 +226,10 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Summary step of the checkout
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function summaryTask() 
+	public function summaryTask()
 	{
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
@@ -252,7 +252,7 @@ class CartControllerCheckout extends ComponentController
 
 		if ($nextStep != 'summary')
 		{
-			$cart->redirect($nextStep);	
+			$cart->redirect($nextStep);
 		}
 
 		$cart->finalizeTransaction();
@@ -265,10 +265,10 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Confirm step of the checkout. Should be a passthrough page for JS-enabled browsers, requires a form submission to the payment gateway
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function confirmTask() 
+	public function confirmTask()
 	{
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
@@ -287,7 +287,7 @@ class CartControllerCheckout extends ComponentController
 
 		if ($nextStep != 'summary')
 		{
-			$cart->redirect($nextStep);	
+			$cart->redirect($nextStep);
 		}
 
 		// Final step here before payment
@@ -304,17 +304,17 @@ class CartControllerCheckout extends ComponentController
 		$pay->setTransactionDetails($transaction);
 
 		$error = false;
-		try 
+		try
 		{
 			$paymentCode = $pay->getPaymentCode();
 			$this->view->paymentCode = $paymentCode;
-		} 
-		catch (Exception $e) 
+		}
+		catch (Exception $e)
 		{
 			$error = $e->getMessage();
 		}
 
-		if (!empty($error)) 
+		if (!empty($error))
 		{
 			$this->view->setError($error);
 		}
@@ -324,7 +324,7 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Redirect to login page
-	 * 
+	 *
 	 * @return void
 	 */
 	private function login($message = '')
@@ -340,7 +340,7 @@ class CartControllerCheckout extends ComponentController
 
 	/**
 	 * Print transacttion info
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function printTransaction($t)

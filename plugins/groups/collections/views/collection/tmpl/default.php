@@ -56,7 +56,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<p class="overview">
 		<span class="title count">
-			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>" 
+			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
 		<span class="posts count">
 			<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->rows->total() . '</strong>'); ?>
@@ -84,8 +84,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 		<span class="clear"></span>
 	</p>
 
-<?php 
-if ($this->rows->total() > 0) 
+<?php
+if ($this->rows->total() > 0)
 {
 	?>
 	<div id="posts">
@@ -159,13 +159,13 @@ if ($this->rows->total() > 0)
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-						</a> 
-						posted 
+						</a>
+						posted
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> 
-							<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span> 
-							<span class="entry-date-on">on</span> 
+							<span class="entry-date-at">@</span>
+							<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+							<span class="entry-date-on">on</span>
 							<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
 						</span>
 					</p>
@@ -179,16 +179,16 @@ if ($this->rows->total() > 0)
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-						</a> 
-						onto 
+						</a>
+						onto
 						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
 							<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DATE_AT'); ?></span> 
-							<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
-							<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DATE_ON'); ?></span> 
+							<span class="entry-date-at"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DATE_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
+							<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_DATE_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						</span>
 					</p>

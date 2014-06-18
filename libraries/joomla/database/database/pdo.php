@@ -118,11 +118,11 @@ class JDatabasePDO extends JDatabase
 	 */
 	function connected()
 	{
-		try 
+		try
 		{
 			$this->connection->query('SELECT 1');
-		} 
-		catch (PDOException $e) 
+		}
+		catch (PDOException $e)
 		{
 			return false;
 		}
@@ -144,7 +144,7 @@ class JDatabasePDO extends JDatabase
 		{
 			return false;
 		}
-		
+
 		if ($this->connection->exec('USE `' . $database . '`') === false) {
 			$this->errorNum = 3;
 			$this->errorMsg = 'Could not connect to database';

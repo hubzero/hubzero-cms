@@ -53,7 +53,7 @@ define('USE_ASSERTS', function_exists('assert'));
 
 /**
  * Short description for '_DiffOp'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffOp
@@ -61,30 +61,30 @@ class _DiffOp
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $type;
 
 	/**
 	 * Description for 'orig'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $orig;
 
 	/**
 	 * Description for 'closing'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $closing;
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function reverse()
@@ -94,9 +94,9 @@ class _DiffOp
 
 	/**
 	 * Short description for 'norig'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     integer Return description (if any) ...
 	 */
 	function norig()
@@ -106,9 +106,9 @@ class _DiffOp
 
 	/**
 	 * Short description for 'nclosing'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     integer Return description (if any) ...
 	 */
 	function nclosing()
@@ -119,7 +119,7 @@ class _DiffOp
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffOp_Copy extends _DiffOp
@@ -127,16 +127,16 @@ class _DiffOp_Copy extends _DiffOp
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type = 'copy';
 
 	/**
 	 * Short description for '_DiffOp_Copy'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig Parameter description (if any) ...
 	 * @param      boolean $closing Parameter description (if any) ...
 	 * @return     void
@@ -151,9 +151,9 @@ class _DiffOp_Copy extends _DiffOp
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	function reverse()
@@ -164,7 +164,7 @@ class _DiffOp_Copy extends _DiffOp
 
 /**
  * Short description for '_DiffOp_Delete'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffOp_Delete extends _DiffOp
@@ -172,16 +172,16 @@ class _DiffOp_Delete extends _DiffOp
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type = 'delete';
 
 	/**
 	 * Short description for '_DiffOp_Delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -193,9 +193,9 @@ class _DiffOp_Delete extends _DiffOp
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	function reverse()
@@ -206,7 +206,7 @@ class _DiffOp_Delete extends _DiffOp
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffOp_Add extends _DiffOp
@@ -214,16 +214,16 @@ class _DiffOp_Add extends _DiffOp
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type = 'add';
 
 	/**
 	 * Short description for '_DiffOp_Add'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -235,9 +235,9 @@ class _DiffOp_Add extends _DiffOp
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	function reverse()
@@ -248,7 +248,7 @@ class _DiffOp_Add extends _DiffOp
 
 /**
  * Short description for '_DiffOp_Change'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffOp_Change extends _DiffOp
@@ -256,16 +256,16 @@ class _DiffOp_Change extends _DiffOp
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type = 'change';
 
 	/**
 	 * Short description for '_DiffOp_Change'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig Parameter description (if any) ...
 	 * @param      unknown $closing Parameter description (if any) ...
 	 * @return     void
@@ -278,9 +278,9 @@ class _DiffOp_Change extends _DiffOp
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	function reverse()
@@ -315,7 +315,7 @@ class _DiffOp_Change extends _DiffOp
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class _DiffEngine
@@ -328,9 +328,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for 'diff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $from_lines Parameter description (if any) ...
 	 * @param      array $to_lines Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
@@ -430,9 +430,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for '_line_hash'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -463,9 +463,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for '_diag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      number $xoff Parameter description (if any) ...
 	 * @param      number $xlim Parameter description (if any) ...
 	 * @param      number $yoff Parameter description (if any) ...
@@ -551,9 +551,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for '_lcs_pos'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $ypos Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -597,9 +597,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for '_compareseq'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      number $xoff Parameter description (if any) ...
 	 * @param      number $xlim Parameter description (if any) ...
 	 * @param      number $yoff Parameter description (if any) ...
@@ -665,9 +665,9 @@ class _DiffEngine
 
 	/**
 	 * Short description for '_shift_boundaries'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @param      array &$changed Parameter description (if any) ...
 	 * @param      array $other_changed Parameter description (if any) ...
@@ -780,7 +780,7 @@ class _DiffEngine
 
 /**
  * Short description for 'Diff'
- * 
+ *
  * Long description (if any) ...
  */
 class Diff
@@ -788,7 +788,7 @@ class Diff
 
 	/**
 	 * Description for 'edits'
-	 * 
+	 *
 	 * @var array
 	 */
 	var $edits;
@@ -802,9 +802,9 @@ class Diff
 
 	/**
 	 * Short description for 'Diff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $from_lines Parameter description (if any) ...
 	 * @param      unknown $to_lines Parameter description (if any) ...
 	 * @return     void
@@ -827,9 +827,9 @@ class Diff
 
 	/**
 	 * Short description for 'reverse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	function reverse()
@@ -848,9 +848,9 @@ class Diff
 
 	/**
 	 * Short description for 'isEmpty'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function isEmpty()
@@ -870,9 +870,9 @@ class Diff
 
 	/**
 	 * Short description for 'lcs'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     integer Return description (if any) ...
 	 */
 	function lcs()
@@ -894,9 +894,9 @@ class Diff
 
 	/**
 	 * Short description for 'orig'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	function orig()
@@ -919,9 +919,9 @@ class Diff
 
 	/**
 	 * Short description for 'closing'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	function closing()
@@ -941,9 +941,9 @@ class Diff
 
 	/**
 	 * Short description for '_check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $from_lines Parameter description (if any) ...
 	 * @param      unknown $to_lines Parameter description (if any) ...
 	 * @return     void
@@ -975,7 +975,7 @@ class Diff
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class MappedDiff extends Diff
@@ -1004,9 +1004,9 @@ class MappedDiff extends Diff
 
 	/**
 	 * Short description for 'MappedDiff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $from_lines Parameter description (if any) ...
 	 * @param      unknown $to_lines Parameter description (if any) ...
 	 * @param      unknown $mapped_from_lines Parameter description (if any) ...
@@ -1051,7 +1051,7 @@ class MappedDiff extends Diff
 
 /**
  * Short description for 'DiffFormatter'
- * 
+ *
  * Long description (if any) ...
  */
 class DiffFormatter
@@ -1063,7 +1063,7 @@ class DiffFormatter
 
 	/**
 	 * Description for 'leading_context_lines'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $leading_context_lines = 0;
@@ -1075,14 +1075,14 @@ class DiffFormatter
 
 	/**
 	 * Description for 'trailing_context_lines'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $trailing_context_lines = 0;
 
 	/**
 	 * Description for 'i'
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $i = 0;
@@ -1094,9 +1094,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for 'format'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $diff Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -1175,9 +1175,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $xbeg Parameter description (if any) ...
 	 * @param      unknown $xlen Parameter description (if any) ...
 	 * @param      unknown $ybeg Parameter description (if any) ...
@@ -1206,9 +1206,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_start_diff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function _start_diff()
@@ -1218,9 +1218,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_end_diff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function _end_diff()
@@ -1232,9 +1232,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_block_header'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $xbeg Parameter description (if any) ...
 	 * @param      number $xlen Parameter description (if any) ...
 	 * @param      string $ybeg Parameter description (if any) ...
@@ -1253,9 +1253,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_start_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $header Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1266,9 +1266,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_end_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function _end_block()
@@ -1277,9 +1277,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_lines'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @param      string $prefix Parameter description (if any) ...
 	 * @return     void
@@ -1292,9 +1292,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_context'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1305,9 +1305,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_added'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1318,9 +1318,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_deleted'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1331,9 +1331,9 @@ class DiffFormatter
 
 	/**
 	 * Short description for '_changed'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig Parameter description (if any) ...
 	 * @param      unknown $closing Parameter description (if any) ...
 	 * @return     void
@@ -1346,7 +1346,7 @@ class DiffFormatter
 }
 
 //-------------------------------------------------------------
-//	Additions by Axel Boldt follow, 
+//	Additions by Axel Boldt follow,
 //  partly taken from diff.php, phpwiki-1.3.3
 //-------------------------------------------------------------
 
@@ -1357,7 +1357,7 @@ define('NBSP', '&#160;');	// iso-8859-x non-breaking space.
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class _HWLDF_WordAccumulator
@@ -1365,9 +1365,9 @@ class _HWLDF_WordAccumulator
 
 	/**
 	 * Short description for '_HWLDF_WordAccumulator'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function _HWLDF_WordAccumulator ()
@@ -1380,9 +1380,9 @@ class _HWLDF_WordAccumulator
 
 	/**
 	 * Short description for '_flushGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $new_tag Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1404,9 +1404,9 @@ class _HWLDF_WordAccumulator
 
 	/**
 	 * Short description for '_flushLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $new_tag Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1423,9 +1423,9 @@ class _HWLDF_WordAccumulator
 
 	/**
 	 * Short description for 'addWords'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $words Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     void
@@ -1450,9 +1450,9 @@ class _HWLDF_WordAccumulator
 
 	/**
 	 * Short description for 'getLines'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getLines()
@@ -1464,7 +1464,7 @@ class _HWLDF_WordAccumulator
 
 /**
  * Short description for 'WordLevelDiff'
- * 
+ *
  * Long description (if any) ...
  */
 class WordLevelDiff extends MappedDiff
@@ -1477,9 +1477,9 @@ class WordLevelDiff extends MappedDiff
 
 	/**
 	 * Short description for 'WordLevelDiff'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig_lines Parameter description (if any) ...
 	 * @param      unknown $closing_lines Parameter description (if any) ...
 	 * @return     void
@@ -1494,9 +1494,9 @@ class WordLevelDiff extends MappedDiff
 
 	/**
 	 * Short description for '_split'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -1533,9 +1533,9 @@ class WordLevelDiff extends MappedDiff
 
 	/**
 	 * Short description for 'orig'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function orig ()
@@ -1556,9 +1556,9 @@ class WordLevelDiff extends MappedDiff
 
 	/**
 	 * Short description for 'closing'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function closing ()
@@ -1583,7 +1583,7 @@ class WordLevelDiff extends MappedDiff
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class TableDiffFormatter extends DiffFormatter
@@ -1591,9 +1591,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'TableDiffFormatter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function TableDiffFormatter()
@@ -1604,9 +1604,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_block_header'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $xbeg Parameter description (if any) ...
 	 * @param      unknown $xlen Parameter description (if any) ...
 	 * @param      string $ybeg Parameter description (if any) ...
@@ -1625,9 +1625,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_start_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $header Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1638,9 +1638,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_end_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function _end_block()
@@ -1650,9 +1650,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_lines'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @param      string $prefix Parameter description (if any) ...
 	 * @param      string $color Parameter description (if any) ...
@@ -1666,9 +1666,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'addedLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @param      integer $colspan Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -1682,9 +1682,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'deletedLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @param      integer $colspan Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -1698,9 +1698,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'contextLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1711,9 +1711,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'wrapLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $marker Parameter description (if any) ...
 	 * @param      string $class Parameter description (if any) ...
 	 * @param      string $line Parameter description (if any) ...
@@ -1735,9 +1735,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'emptyLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function emptyLine()
@@ -1747,9 +1747,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_added'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1767,9 +1767,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_deleted'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1787,9 +1787,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_context'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1804,9 +1804,9 @@ class TableDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_changed'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig Parameter description (if any) ...
 	 * @param      unknown $closing Parameter description (if any) ...
 	 * @return     void
@@ -1843,7 +1843,7 @@ class TableDiffFormatter extends DiffFormatter
 }
 
 //-------------------------------------------------------------
-//  Div style diff formatter. Highlights blocks that have 
+//  Div style diff formatter. Highlights blocks that have
 //  changed following a format like this:
 //
 //     unchanged code
@@ -1854,7 +1854,7 @@ class TableDiffFormatter extends DiffFormatter
 
 /**
  * Short description for 'DivDiffFormatter'
- * 
+ *
  * Long description (if any) ...
  */
 class DivDiffFormatter extends DiffFormatter
@@ -1862,9 +1862,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'DivDiffFormatter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function DivDiffFormatter()
@@ -1875,9 +1875,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_block_header'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $xbeg Parameter description (if any) ...
 	 * @param      unknown $xlen Parameter description (if any) ...
 	 * @param      string $ybeg Parameter description (if any) ...
@@ -1892,9 +1892,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_start_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $header Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1905,9 +1905,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_end_block'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function _end_block()
@@ -1916,9 +1916,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_lines'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $lines Parameter description (if any) ...
 	 * @param      string $prefix Parameter description (if any) ...
 	 * @param      string $color Parameter description (if any) ...
@@ -1932,9 +1932,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'addedLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1947,9 +1947,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'deletedLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1962,9 +1962,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'contextLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $line Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1975,9 +1975,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'wrapLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $marker Parameter description (if any) ...
 	 * @param      string $class Parameter description (if any) ...
 	 * @param      string $line Parameter description (if any) ...
@@ -1995,9 +1995,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for 'emptyLine'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function emptyLine()
@@ -2007,9 +2007,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_added'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -2022,9 +2022,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_deleted'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -2038,9 +2038,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_context'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $lines Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -2057,9 +2057,9 @@ class DivDiffFormatter extends DiffFormatter
 
 	/**
 	 * Short description for '_changed'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $orig Parameter description (if any) ...
 	 * @param      unknown $closing Parameter description (if any) ...
 	 * @return     void

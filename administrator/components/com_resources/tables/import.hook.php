@@ -43,7 +43,7 @@ class ResourcesTableImportHook extends JTable
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -51,7 +51,7 @@ class ResourcesTableImportHook extends JTable
 	{
 		parent::__construct('#__resource_import_hooks', 'id', $db);
 	}
-	
+
 	/**
 	 * [check description]
 	 * @return [type] [description]
@@ -60,7 +60,7 @@ class ResourcesTableImportHook extends JTable
 	{
 		return true;
 	}
-	
+
 	/**
 	 * [find description]
 	 * @param  array  $filters [description]
@@ -70,11 +70,11 @@ class ResourcesTableImportHook extends JTable
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * [_buildQuery description]
 	 * @param  array  $filters [description]
@@ -97,7 +97,7 @@ class ResourcesTableImportHook extends JTable
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		return $sql;
 	}
 }

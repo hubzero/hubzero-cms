@@ -38,7 +38,7 @@ class WishlistHtml
 {
 	/**
 	 * Generate a select form
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Data to populate select with
 	 * @param      mixed  $value Value to select
@@ -62,16 +62,16 @@ class WishlistHtml
 
 	/**
 	 * Convert a numerical vote value to a readable text value
-	 * 
+	 *
 	 * @param      integer $rawnum   Vote value
 	 * @param      string  $category Vote type
 	 * @param      string  $output   Value to append to
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function convertVote($rawnum, $category, $output='')
 	{
 		$rawnum = round($rawnum);
-		if ($category == 'importance') 
+		if ($category == 'importance')
 		{
 			switch ($rawnum)
 			{
@@ -82,8 +82,8 @@ class WishlistHtml
 				case 4: $output = JText::_('COM_WISHLIST_IMPORTANT');   break;
 				case 5: $output = JText::_('COM_WISHLIST_CRITICAL');    break;
 			}
-		} 
-		else if ($category == 'effort') 
+		}
+		else if ($category == 'effort')
 		{
 			switch ($rawnum)
 			{
@@ -103,13 +103,13 @@ class WishlistHtml
 
 	/**
 	 * Convert a timestamp to a more human readable string such as "3 days ago"
-	 * 
+	 *
 	 * @param      string $date Timestamp
 	 * @return     string
 	 */
 	public static function nicetime($date)
 	{
-		if (empty($date)) 
+		if (empty($date))
 		{
 			return JText::_('No date provided');
 		}
@@ -121,19 +121,19 @@ class WishlistHtml
 		$unix_date = strtotime($date);
 
 		   // check validity of date
-		if (empty($unix_date)) 
+		if (empty($unix_date))
 		{
 			return JText::_('Bad date');
 		}
 
 		// is it future date or past date
-		if ($now > $unix_date) 
+		if ($now > $unix_date)
 		{
 			$difference = $now - $unix_date;
 			$tense = 'ago';
 
-		} 
-		else 
+		}
+		else
 		{
 			$difference = $unix_date - $now;
 			$tense = '';
@@ -146,7 +146,7 @@ class WishlistHtml
 
 		$difference = round($difference);
 
-		if ($difference != 1) 
+		if ($difference != 1)
 		{
 			$periods[$j] .= 's';
 		}

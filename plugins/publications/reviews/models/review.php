@@ -41,35 +41,35 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 {
 	/**
 	 * ResourcesReview
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'PublicationReview';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_publications.review.comment';
 
 	/**
 	 * USer
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = NULL;
 
 	/**
 	 * Commen count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = NULL;
@@ -84,12 +84,12 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}
@@ -99,7 +99,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 	/**
 	 * HAs this comment been reported
-	 * 
+	 *
 	 * @return     boolean True if reported, False if not
 	 */
 	public function isReported()
@@ -109,14 +109,14 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 			return true;
 		}
 		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1) 
+		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
-					'id'       => $this->get('id'), 
+					'id'       => $this->get('id'),
 					'category' => 'pubreview'
 				));
 				$this->set('reports', $val);
@@ -131,7 +131,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -155,7 +155,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -182,7 +182,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list or count of comments
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -210,19 +210,19 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 				{
 					$this->_comments_count = 0;
 
-					if (!$this->_comments) 
+					if (!$this->_comments)
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($this->_comments as $com)
 					{
 						$this->_comments_count++;
-						if ($com->replies()) 
+						if ($com->replies())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_comments_count++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$this->_comments_count += $rep->replies()->total();
 								}
@@ -269,7 +269,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -321,7 +321,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}
-		
+
 		if ($shorten)
 		{
 			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
@@ -332,7 +332,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */

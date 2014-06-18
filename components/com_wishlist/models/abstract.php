@@ -38,7 +38,7 @@ class WishlistModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * JParameter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
@@ -46,7 +46,7 @@ class WishlistModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
-	 * 
+	 *
 	 * @param      string $key Config property to retrieve
 	 * @return     mixed
 	 */

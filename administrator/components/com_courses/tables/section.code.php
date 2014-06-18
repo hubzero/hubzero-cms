@@ -38,63 +38,63 @@ class CoursesTableSectionCode extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_id = NULL;
 
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $code = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $expires = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $redeemed = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $redeemed_by = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -105,20 +105,20 @@ class CoursesTableSectionCode extends JTable
 
 	/**
 	 * Validate fields before store()
-	 * 
+	 *
 	 * @return     boolean True if all fields are valid
 	 */
 	public function check()
 	{
 		$this->section_id = intval($this->section_id);
-		if (!$this->section_id) 
+		if (!$this->section_id)
 		{
 			$this->setError(JText::_('Please provide a section.'));
 			return false;
 		}
 
 		$this->code = trim($this->code);
-		if (!$this->code) 
+		if (!$this->code)
 		{
 			$this->setError(JText::_('Please provide a code.'));
 			return false;
@@ -139,30 +139,30 @@ class CoursesTableSectionCode extends JTable
 	/**
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
-	 * 
+	 *
 	 * @param      mixed   $oid        Unique ID or code to retrieve
 	 * @param      integer $section_id Unique section ID
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $section_id=NULL)
 	{
-		if (empty($oid)) 
+		if (empty($oid))
 		{
 			return false;
 		}
 
-		if (is_numeric($oid)) 
+		if (is_numeric($oid))
 		{
 			return parent::load($oid);
 		}
 
 		$sql  = "SELECT * FROM $this->_tbl WHERE `code`=" . $this->_db->Quote($oid) . " AND `section_id`=" . $this->_db->Quote($section_id) . " LIMIT 1";
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -171,7 +171,7 @@ class CoursesTableSectionCode extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
@@ -181,19 +181,19 @@ class CoursesTableSectionCode extends JTable
 
 		$where = array();
 
-		if (isset($filters['redeemed']) && $filters['redeemed']) 
+		if (isset($filters['redeemed']) && $filters['redeemed'])
 		{
 			$where[] = "c.redeemed_by > 0";
 		}
-		if (isset($filters['section_id'])) 
+		if (isset($filters['section_id']))
 		{
 			$where[] = "c.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
-		if (isset($filters['created_by'])) 
+		if (isset($filters['created_by']))
 		{
 			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(c.code) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
@@ -204,13 +204,13 @@ class CoursesTableSectionCode extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			if (!isset($filters['sort']) || !$filters['sort']) 
+			if (!isset($filters['sort']) || !$filters['sort'])
 			{
 				$filters['sort'] = 'expires';
 			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 			{
 				$filters['sort_Dir'] = 'DESC';
 			}
@@ -222,7 +222,7 @@ class CoursesTableSectionCode extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -238,7 +238,7 @@ class CoursesTableSectionCode extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
@@ -246,7 +246,7 @@ class CoursesTableSectionCode extends JTable
 	{
 		$query = "SELECT c.*" . $this->_buildQuery($filters);
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}

@@ -38,84 +38,84 @@ class WikiTableRevision extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pageid     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version    = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $minor_edit = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $pagetext   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $pagehtml   = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $approved   = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $summary    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $length     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,7 +126,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
@@ -140,12 +140,12 @@ class WikiTableRevision extends JTable
 		}
 
 		$this->pageid = intval($this->pageid);
-		if (!$this->pageid) 
+		if (!$this->pageid)
 		{
 			$this->setError(JText::_('This revision is missing its page ID.'));
 			return false;
 		}
-		if (trim($this->pagetext) == '') 
+		if (trim($this->pagetext) == '')
 		{
 			$this->setError(JText::_('Please provide content. A wiki page cannot be empty.'));
 			return false;
@@ -163,30 +163,30 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Load a record by the page/version combination and bind to $this
-	 * 
+	 *
 	 * @param      integer $pageid  Page ID
 	 * @param      integer $version Version number
 	 * @return     boolean True on success
 	 */
 	public function loadByVersion($pageid, $version=0)
 	{
-		if (!$pageid) 
+		if (!$pageid)
 		{
 			return;
 		}
-		if ($version) 
+		if ($version)
 		{
 			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version));
-		} 
-		else 
+		}
+		else
 		{
 			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC LIMIT 1");
 		}
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -195,7 +195,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get a list of all contributors on a wiki page
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getContributors()
@@ -204,7 +204,7 @@ class WikiTableRevision extends JTable
 		$contributors = $this->_db->loadObjectList();
 
 		$cons = array();
-		if (count($contributors) > 0) 
+		if (count($contributors) > 0)
 		{
 			foreach ($contributors as $con)
 			{
@@ -216,7 +216,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get a count of all revisions for a page
-	 * 
+	 *
 	 * @return     integer
 	 */
 	public function getRevisionCount()
@@ -227,13 +227,13 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get all the revision numbers for a page
-	 * 
+	 *
 	 * @param      integer $pageid Page ID
 	 * @return     array
 	 */
 	public function getRevisionNumbers($pageid=NULL)
 	{
-		if (!$pageid) 
+		if (!$pageid)
 		{
 			$pageid = $this->pageid;
 		}
@@ -243,13 +243,13 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get all the revisions for a page
-	 * 
+	 *
 	 * @param      integer $pageid Page ID
 	 * @return     array
 	 */
 	public function getRevisions($pageid=NULL)
 	{
-		if (!$pageid) 
+		if (!$pageid)
 		{
 			$pageid = $this->pageid;
 		}
@@ -258,7 +258,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get a record count based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build from
 	 * @return     integer
 	 */
@@ -273,7 +273,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Get a list of records based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build from
 	 * @return     array
 	 */
@@ -288,7 +288,7 @@ class WikiTableRevision extends JTable
 
 	/**
 	 * Build an SQL statement based on filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build from
 	 * @return     string SQL
 	 */
@@ -299,15 +299,15 @@ class WikiTableRevision extends JTable
 
 		$where = array();
 
-		if (isset($filters['pageid'])) 
+		if (isset($filters['pageid']))
 		{
 			$where[] = "r.pageid=" . $this->_db->Quote((int) $filters['pageid']);
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "LOWER(r.pagehtml) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
-		if (isset($filters['approved']) && $filters['approved']) 
+		if (isset($filters['approved']) && $filters['approved'])
 		{
 			if (is_array($filters['approved']))
 			{
@@ -325,16 +325,16 @@ class WikiTableRevision extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
 			$query .= " ORDER BY " . $filters['sortby'];
-		} 
-		else 
+		}
+		else
 		{
 			$query .= " ORDER BY version DESC, created DESC";
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}

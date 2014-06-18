@@ -52,7 +52,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 
 // Build message
 $message = '';
-if ($this->delimiter) 
+if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
 	$message .= 'You can reply to this message, just include your reply text above this area' . "\n";
@@ -69,7 +69,7 @@ $message .= strtoupper(JText::_('Tags')).': '.$st->get_tag_string($this->ticket-
 $message .= '----------------------------'."\n\n";
 $message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED', $this->ticket->id) . ': ' . $this->commentor->get('name') . '(' . $this->comment->created_by . ")\n";
 $message .= JText::_('TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created . "\n\n";
-if ($this->comment->changelog) 
+if ($this->comment->changelog)
 {
 	foreach ($this->comment->changelog as $type => $log)
 	{

@@ -31,11 +31,11 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Twitter Feed</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license> 
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>csmoak@purdue.edu</authorEmail>
 	<version>1.0.0</version>
 	<description>Loads the Twitter feed of the specified Twitter ID</description>
-	<files>	
+	<files>
 		<filename module="mod_twitterfeed">mod_twitterfeed.php</filename>
 		<filename>mod_twitterfeed.css</filename>
 		<filename>index.html</filename>

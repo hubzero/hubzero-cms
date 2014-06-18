@@ -38,35 +38,35 @@ class EventsRepeat
 {
 	/**
 	 * Event
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $row      = NULL;
 
 	/**
 	 * Year
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $year     = NULL;
 
 	/**
 	 * Month
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $month    = NULL;
 
 	/**
 	 * Day
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $day      = NULL;
 
 	/**
 	 * If item is viewable
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $viewable = NULL;
@@ -74,7 +74,7 @@ class EventsRepeat
 	/**
 	 * Constructor
 	 * Checks if a repeating event should be viewable (ie, this is one of the repeat dates)
-	 * 
+	 *
 	 * @param      object $row   Event
 	 * @param      number $year  Year
 	 * @param      number $month Month
@@ -91,7 +91,7 @@ class EventsRepeat
 		$select_date = sprintf("%4d-%02d-%02d", $year, $month, $day);
 		$numero_du_jour = date("w",mktime(0, 0, 0, $month, $day, $year));
 
-		if ($numero_du_jour == 0) 
+		if ($numero_du_jour == 0)
 		{
 		}
 
@@ -143,49 +143,49 @@ class EventsRepeat
 		$is_week_4 = false;
 		$is_week_5 = false;
 
-		// By 7 to 7 periode 
-		if ((intval($day) <= 7)) 
+		// By 7 to 7 periode
+		if ((intval($day) <= 7))
 		{
 			$is_week_1 = true;
-		} 
-		elseif ((intval($day) > 7) && (intval($day) <= 14)) 
+		}
+		elseif ((intval($day) > 7) && (intval($day) <= 14))
 		{
 			$is_week_2 = true;
-		} 
-		elseif ((intval($day) > 14) && (intval($day) <= 21)) 
+		}
+		elseif ((intval($day) > 14) && (intval($day) <= 21))
 		{
 			$is_week_3 = true;
-		} 
-		elseif ((intval($day) > 21) && (intval($day) <= 28)) 
+		}
+		elseif ((intval($day) > 21) && (intval($day) <= 28))
 		{
 			$is_week_4 = true;
 		}
-		elseif ((intval($day) >= 28)) 
+		elseif ((intval($day) >= 28))
 		{
 			$is_week_5 = true;
 		}
 
 		// Check event time parametres
-		if (($select_date <= $stop_publish) && ($select_date >= $start_publish)) 
+		if (($select_date <= $stop_publish) && ($select_date >= $start_publish))
 		{
 			$is_the_event_period = true;
 		}
-		if ($event_day == $day) 
+		if ($event_day == $day)
 		{
 			$is_the_event_day = true;
 		}
-		if ($numero_du_jour == $repeat_event_day) 
+		if ($numero_du_jour == $repeat_event_day)
 		{
 			$is_the_event_dayname = true;
 		}
 		$viewable_day = 0;
-		if ($repeat_event_weekdays <> '') 
+		if ($repeat_event_weekdays <> '')
 		{
 			$reccurweekdays = explode('|', $repeat_event_weekdays);
 			$countdays = count($reccurweekdays);
 			for ($x=0; $x < $countdays; $x++)
 			{
-				if ($reccurweekdays[$x] == $numero_du_jour) 
+				if ($reccurweekdays[$x] == $numero_du_jour)
 				{
 					$viewable_day = 1;
 				}
@@ -197,54 +197,54 @@ class EventsRepeat
 		$impair_weeks = 0;
 		$viewable_week = 0;
 
-		if ($repeat_event_weeks <> '') 
+		if ($repeat_event_weeks <> '')
 		{
 			$reccurweeks = explode('|', $repeat_event_weeks);
 			$countweeks = count($reccurweeks);
 			for ($x=0; $x < $countweeks; $x++)
 			{
-				if ($reccurweeks[$x] == 'pair') 
+				if ($reccurweeks[$x] == 'pair')
 				{
 					$pair_weeks = 1;
-				} 
-				elseif ($reccurweeks[$x] == 'impair') 
+				}
+				elseif ($reccurweeks[$x] == 'impair')
 				{
 					$impair_weeks = 1;
 				}
 
-				if (($reccurweeks[$x] == 1) && ($is_week_1)) 
+				if (($reccurweeks[$x] == 1) && ($is_week_1))
 				{
 					$viewable_week = 1;
-				} 
-				elseif (($reccurweeks[$x] == 2) && ($is_week_2)) 
+				}
+				elseif (($reccurweeks[$x] == 2) && ($is_week_2))
 				{
 					$viewable_week = 1;
-				} 
-				elseif (($reccurweeks[$x] == 3) && ($is_week_3)) 
+				}
+				elseif (($reccurweeks[$x] == 3) && ($is_week_3))
 				{
 					$viewable_week = 1;
-				} 
-				elseif (($reccurweeks[$x] == 4) && ($is_week_4)) 
+				}
+				elseif (($reccurweeks[$x] == 4) && ($is_week_4))
 				{
 					$viewable_week = 1;
-				} 
-				elseif (($reccurweeks[$x] == 5) && ($is_week_5)) 
+				}
+				elseif (($reccurweeks[$x] == 5) && ($is_week_5))
 				{
 					$viewable_week = 1;
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$viewable_week = 1;
 		}
 
 		// Check repeat
-		if ($is_the_event_period) 
+		if ($is_the_event_period)
 		{
 			switch ($repeat_event_type)
 			{
-				case 0: // All days 
+				case 0: // All days
 					$this->viewable = true;
 					return $this->viewable;
                 break;
@@ -254,16 +254,16 @@ class EventsRepeat
 					 || ($impair_weeks && !is_integer($day/2))
 					 || ($viewable_week) // && ($numero_du_jour <= 6))
 					) {
-						if ($repeat_event_day ==-1) 
+						if ($repeat_event_day ==-1)
 						{ //by day number
-							if ($is_the_event_day || (($select_date >= $start_publish) && is_integer(($day - $event_day)/7))) 
+							if ($is_the_event_day || (($select_date >= $start_publish) && is_integer(($day - $event_day)/7)))
 							{
 								$this->viewable = true;
 							}
-						} 
-						elseif ($repeat_event_day >=0) 
-						{ //by day name 
-							if ($is_the_event_dayname) 
+						}
+						elseif ($repeat_event_day >=0)
+						{ //by day name
+							if ($is_the_event_dayname)
 							{
 								$this->viewable = true;
 							}
@@ -272,13 +272,13 @@ class EventsRepeat
 					return $this->viewable;
 				break;
 
-				case 2: // By week - n* by week  	        
+				case 2: // By week - n* by week
 					if (($pair_weeks && is_integer($day/2))
 					 || ($impair_weeks && !is_integer($day/2))
 					 || ($viewable_week) // && ($numero_du_jour <= 6))
 					) {
-						if ($repeat_event_weekdays <> '') 
-						{ //by day select 
+						if ($repeat_event_weekdays <> '')
+						{ //by day select
 							if ($viewable_day) {
 								$this->viewable = true;
 							}
@@ -288,16 +288,16 @@ class EventsRepeat
 				break;
 
 				case 3: // By month - 1* by month
-					if ($repeat_event_day ==-1) 
+					if ($repeat_event_day ==-1)
 					{ //by day number
-						if ($is_the_event_day) 
+						if ($is_the_event_day)
 						{
 							$this->viewable = true;
 						}
-					} 
-					elseif ($repeat_event_day >=0) 
+					}
+					elseif ($repeat_event_day >=0)
 					{ //by day name
-						if ($is_the_event_dayname) 
+						if ($is_the_event_dayname)
 						{
 							$this->viewable = true;
 						}
@@ -306,7 +306,7 @@ class EventsRepeat
 				break;
 
 				case 4: // By month - end of the month
-					if ($day == $end_of_month) 
+					if ($day == $end_of_month)
 					{
 						$this->viewable = true;
 					}
@@ -314,18 +314,18 @@ class EventsRepeat
 				break;
 
 				case 5: // By year - 1* by year
-					if ($repeat_event_day ==-1) 
+					if ($repeat_event_day ==-1)
 					{ //by day number
-						if ($is_the_event_day && ($month == $event_month)) 
+						if ($is_the_event_day && ($month == $event_month))
 						{
 							$this->viewable = true;
 						}
-					} 
-					elseif ($repeat_event_day >=0) 
-					{ //by day name 
+					}
+					elseif ($repeat_event_day >=0)
+					{ //by day name
 						if ($is_the_event_dayname
 						 && (($day >= $event_day) && ($day <= $event_day+6))
-						 && ($month == $event_month)) 
+						 && ($month == $event_month))
 						{
 							$this->viewable = true;
 						}
@@ -337,8 +337,8 @@ class EventsRepeat
 					return $this->viewable;
 				break;
 			} // end switch
-		} 
-		else 
+		}
+		else
 		{
 			return $this->viewable;
 		}// end if

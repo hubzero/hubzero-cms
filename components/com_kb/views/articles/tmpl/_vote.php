@@ -37,7 +37,7 @@ $lcls = '';
 $like_link    = JRoute::_($this->item->link('vote') . '&vote=like');
 $dislike_link = JRoute::_($this->item->link('vote') . '&vote=dislike');
 
-if (isset($this->vote)) 
+if (isset($this->vote))
 {
 	switch ($this->vote)
 	{
@@ -60,13 +60,13 @@ else
 }
 
 $juser = JFactory::getUser();
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$like_title = JText::sprintf('COM_KB_VOTE_UP', $this->item->get('helpful', 0));
 	$dislike_title = JText::sprintf('COM_KB_VOTE_DOWN', $this->item->get('nothelpful', 0));
 	$cls = ' tooltips';
-} 
-else 
+}
+else
 {
 	$like_title = JText::_('COM_KB_VOTE_UP_LOGIN');
 	$dislike_title = JText::_('COM_KB_VOTE_DOWN_LOGIN');

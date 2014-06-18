@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 <?php } else { ?>
 	<ul>
-		<?php foreach($this->items as $note) { 		
+		<?php foreach($this->items as $note) {
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=notes' . a . 'scope='.$note->scope . a . 'pagename=' . $note->pagename); ?>" title="<?php echo htmlentities($note->title); ?>">

@@ -36,7 +36,7 @@ use DirectoryIterator;
 /**
  * Hubzero class for manipulating and reading the filesystem.
  */
-class Filesystem 
+class Filesystem
 {
 	/**
 	 * Determine if a file exists.
@@ -190,7 +190,7 @@ class Filesystem
 	 */
 	public function size($path)
 	{
-		if ($this->isFile($path)) 
+		if ($this->isFile($path))
 		{
 			return filesize($path);
 		}
@@ -412,7 +412,7 @@ class Filesystem
 		}
 
 		if ( ! $preserve) @rmdir($directory);
-		
+
 		return true;
 	}
 

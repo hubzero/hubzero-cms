@@ -62,11 +62,11 @@ $this->css()
 				<input name="oldpass" id="oldpass" type="password" value="" />
 			</label>
 			<?php
-			if ($this->change && !$this->oldpass) 
+			if ($this->change && !$this->oldpass)
 			{
 				echo '<p class="error">'.JText::_('MEMBERS_PASS_BLANK').'</p>';
 			}
-			if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true)) 
+			if ($this->change && $this->oldpass && !\Hubzero\User\Password::passwordMatches($this->profile->get('uidNumber'),$this->oldpass,true))
 			{
 				echo '<p class="error">'.JText::_('MEMBERS_PASS_INCORRECT').'</p>';
 			}
@@ -78,7 +78,7 @@ $this->css()
 						<?php echo JText::_('MEMBER_FIELD_NEW_PASS'); ?>
 						<input name="newpass" id="newpass" type="password" value="" />
 						<?php
-						if ($this->change && !$this->newpass) 
+						if ($this->change && !$this->newpass)
 						{
 							echo '<span class="error">'.JText::_('MEMBERS_PASS_BLANK').'</span>';
 						}
@@ -90,11 +90,11 @@ $this->css()
 						<?php echo JText::_('MEMBER_FIELD_PASS_CONFIRM'); ?>
 						<input name="newpass2" id="newpass2" type="password" value="" />
 						<?php
-						if ($this->change && !$this->newpass2) 
+						if ($this->change && !$this->newpass2)
 						{
 							echo '<span class="error">'.JText::_('MEMBERS_PASS_MUST_CONFIRM').'</span>';
 						}
-						if ($this->change && $this->newpass && $this->newpass2 && ($this->newpass != $this->newpass2)) 
+						if ($this->change && $this->newpass && $this->newpass2 && ($this->newpass != $this->newpass2))
 						{
 							echo '<span class="error">'.JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH').'</span>';
 						}
@@ -103,18 +103,18 @@ $this->css()
 				</div>
 			</div>
 			<?php
-			if (count($this->password_rules) > 0) 
+			if (count($this->password_rules) > 0)
 			{
 				echo "\t\t<ul id=\"passrules\">\n";
-				foreach ($this->password_rules as $rule) 
+				foreach ($this->password_rules as $rule)
 				{
-					if (!empty($rule)) 
+					if (!empty($rule))
 					{
-						if (is_array($this->validated)) 
+						if (is_array($this->validated))
 						{
 							$err = in_array($rule, $this->validated);
-						} 
-						else 
+						}
+						else
 						{
 							$err = '';
 						}
@@ -123,11 +123,11 @@ $this->css()
 						echo "\t\t\t<li $mclass>".$rule."</li>\n";
 					}
 				}
-				if (is_array($this->validated)) 
+				if (is_array($this->validated))
 				{
-					foreach ($this->validated as $msg) 
+					foreach ($this->validated as $msg)
 					{
-						if (!in_array($msg, $this->password_rules)) 
+						if (!in_array($msg, $this->password_rules))
 						{
 							echo "\t\t\t".'<li class="error">'.$msg."</li>\n";
 						}

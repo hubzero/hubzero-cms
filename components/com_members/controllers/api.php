@@ -8,7 +8,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		switch($this->segments[0]) 
+		switch($this->segments[0])
 		{
 			case 'myprofile':		$this->myprofile();					break;
 			case 'mygroups':		$this->mygroups();					break;
@@ -19,7 +19,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 			default:				$this->not_found();
 		}
 	}
-	
+
 	/**
 	 * Short description for 'not_found'
 	 *
@@ -32,13 +32,13 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$response = $this->getResponse();
 		$response->setErrorMessage(404,'Not Found');
 	}
-	
+
 	private function not_authorized()
 	{
 		$response = $this->getResponse();
 		$response->setErrorMessage(401,'Not Authorized');
 	}
-	
+
 	private function error( $code, $message )
 	{
 		if($code != '' && $message != '')
@@ -47,20 +47,20 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 			$response->setErrorMessage( $code, $message );
 		}
 	}
-	
+
 	function myprofile()
 	{
 		//get the userid from authentication token
 		//load user profile from userid
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
-		
+
 		//check to make sure we have a profile
 		if ($result === false)	return $this->not_found();
-		
+
 		//get any request vars
 		$format = JRequest::getVar('format', 'json');
-		
+
 		//
 		$profile = array(
 			'id' => $result->get('uidNumber'),
@@ -85,23 +85,23 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 				'full' => \Hubzero\User\Profile\Helper::getMemberPhoto( $result, 0, false )
 			)
 		);
-		
+
 		//encode and return result
 		$object = new stdClass();
 		$object->profile = $profile;
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
-	
+
 	private function mygroups()
 	{
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		if ($result === false)	return $this->not_found();
-		
+
 		$groups = \Hubzero\User\Helper::getGroups( $result->get('uidNumber'), 'members', 0);
-		
+
 		$g = array();
 		foreach($groups as $k => $group)
 		{
@@ -109,30 +109,30 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 			$g[$k]['cn'] 			= $group->cn;
 			$g[$k]['description'] 	= $group->description;
 		}
-		
+
 		//encode and return result
 		$obj = new stdClass();
 		$obj->groups = $g;
 		$this->setMessageType("application/json");
 		$this->setMessage($obj);
 	}
-	
+
 	private function mysessions()
 	{
 		//get user from authentication and load their profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
-		
+
 		//make sure we have a user
 		if ($result === false)
 		{
 			return $this->not_authorized();
 		}
-		
+
 		//include middleware utilities
 		JLoader::import("joomla.database.table");
 		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.utils.php' );
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.class.php' ); 
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_tools'.DS.'models'.DS.'mw.class.php' );
 
 		//get db connection
 		$db = JFactory::getDBO();
@@ -148,7 +148,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		{
 			return $this->error( 503, 'Middleware Service Unavailable' );
 		}
-		
+
 		//get request vars
 		$format = JRequest::getVar('format', 'json');
 		$order = JRequest::getVar('order', 'id_asc' );
@@ -156,11 +156,11 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		//get my sessions
 		$ms = new MwSession( $mwdb );
 		$sessions = $ms->getRecords( $result->get("username"), '', false );
-		
+
 		//run middleware command to create screenshots
 		$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
 		exec($cmd, $results, $status);
-		
+
 		//
 		$results = array();
 		foreach($sessions as $session)
@@ -176,7 +176,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 			);
 			$results[] = $r;
 		}
-		
+
 		//make sure we have an acceptable ordering
 		$accepted_ordering = array('id_asc', 'id_desc', 'started_asc', 'started_desc', 'accessed_asc', 'accessed_desc');
 		if(in_array($order, $accepted_ordering))
@@ -201,7 +201,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 					break;
 			}
 		}
-		
+
 		//encode sessions for return
 		$object = new stdClass();
 		$object->sessions = $results;
@@ -210,39 +210,39 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType( $format );
 		$this->setMessage( $object );
 	}
-	
+
 	private function id_sort_desc($a, $b)
 	{
 		return $a['id'] < $b['id'] ? 1 : -1;
 	}
-	
+
 	private function started_date_sort_desc($a, $b)
 	{
 		return (strtotime($a['started']) < strtotime($b['started'])) ? 1 : -1;
 	}
-	
+
 	private function accessed_date_sort_asc($a, $b)
 	{
 		return (strtotime($a['accessed']) < strtotime($b['accessed'])) ? -1 : 1;
 	}
-	
+
 	private function accessed_date_sort_desc($a, $b)
 	{
 		return (strtotime($a['accessed']) < strtotime($b['accessed'])) ? 1 : -1;
 	}
-	
+
 	//------
-	
+
 	private function recenttools()
 	{
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		if ($result === false)	return $this->not_found();
-		
+
 		//load database object
 		$database = JFactory::getDBO();
-		
+
 		//get the supported tag
 		$rconfig = JComponentHelper::getParams('com_resources');
 		$supportedtag = $rconfig->get('supportedtag', '');
@@ -251,10 +251,10 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		$this->rt = new ResourcesTags($database);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
-		
+
 		//load users recent tools
-		$sql = "SELECT r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision 
-				FROM #__resources as r, #__recent_tools as rt, #__tool_version as tv 
+		$sql = "SELECT r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision
+				FROM #__resources as r, #__recent_tools as rt, #__tool_version as tv
 				WHERE r.published=1
 				AND r.type=7
 				AND r.standalone=1
@@ -265,10 +265,10 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 				AND rt.tool=r.alias
 				GROUP BY r.alias
 				ORDER BY rt.created DESC";
-		
+
 		$database->setQuery($sql);
 		$recent_tools = $database->loadObjectList();
-		
+
 		$r = array();
 		foreach($recent_tools as $k => $recent)
 		{
@@ -278,7 +278,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 			$r[$k]['version'] = $recent->revision;
 			$r[$k]['supported'] = (in_array($recent->alias, $supportedtagusage)) ? 1 : 0;
 		}
-		
+
 		//encode sessions for return
 		$object = new stdClass();
 		$object->recenttools = $r;
@@ -368,12 +368,12 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 		$du = ToolsHelperUtils::getDiskUsage($result->get('username'));
-		if (count($du) <=1) 
+		if (count($du) <=1)
 		{
 			// error
 			$percent = 0;
-		} 
-		else 
+		}
+		else
 		{
 			bcscale(6);
 			$val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;

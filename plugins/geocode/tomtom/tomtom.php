@@ -36,16 +36,16 @@ jimport('joomla.plugin.plugin');
 /**
  * TomTom plugin for geocode
  *
- * The TomTomProvider named tomtom is able to geocode and reverse 
- * geocode street addresses. The default langage-locale is en, 
- * you can choose between de, es, fr, it, nl, pl, pt and sv. 
+ * The TomTomProvider named tomtom is able to geocode and reverse
+ * geocode street addresses. The default langage-locale is en,
+ * you can choose between de, es, fr, it, nl, pl, pt and sv.
  * A valid api key is required.
  */
 class plgGeocodeTomTom extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

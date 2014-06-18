@@ -66,32 +66,32 @@ if ($this->review->id) {
 				<input type="hidden" name="id" value="<?php echo $this->review->publication_id; ?>" />
 				<input type="hidden" name="action" value="savereview" />
 				<input type="hidden" name="active" value="reviews" />
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('PLG_PUBLICATION_REVIEWS_FORM_RATING'); ?>:</legend>
 					<label>
-						<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($this->review->rating == 1) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/1.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_1_STAR'); ?>" /> 
+						<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($this->review->rating == 1) { echo ' checked="checked"'; } ?> />
+						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/1.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_1_STAR'); ?>" />
 						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_POOR'); ?>
 					</label>
 					<label>
-						<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($this->review->rating == 2) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/2.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_2_STARS'); ?>" /> 
+						<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($this->review->rating == 2) { echo ' checked="checked"'; } ?> />
+						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/2.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_2_STARS'); ?>" />
 						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_FAIR'); ?>
 					</label>
 					<label>
-						<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($this->review->rating == 3) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/3.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_3_STARS'); ?>" /> 
+						<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($this->review->rating == 3) { echo ' checked="checked"'; } ?> />
+						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/3.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_3_STARS'); ?>" />
 						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_GOOD'); ?>
 					</label>
 					<label>
-						<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($this->review->rating == 4) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/4.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_4_STARS'); ?>" /> 
+						<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($this->review->rating == 4) { echo ' checked="checked"'; } ?> />
+						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/4.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_4_STARS'); ?>" />
 						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_VERY_GOOD'); ?>
 					</label>
 					<label>
-						<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($this->review->rating == 5) { echo ' checked="checked"'; } ?> /> 
-						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/5.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_5_STARS'); ?>" /> 
+						<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($this->review->rating == 5) { echo ' checked="checked"'; } ?> />
+						<img src="/components/<?php echo $this->option; ?>/assets/img/stars/5.gif" alt="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_5_STARS'); ?>" />
 						<?php echo JText::_('PLG_PUBLICATION_REVIEWS_RATING_EXCELLENT'); ?>
 					</label>
 				</fieldset>

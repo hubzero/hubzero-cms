@@ -39,14 +39,14 @@ class Link extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()
@@ -71,7 +71,7 @@ Examples:
 
 	/**
 	 * Generate macro output based on passed arguments
-	 * 
+	 *
 	 * @return     string HTML image tag on success or error message on failure
 	 */
 	public function render()
@@ -79,7 +79,7 @@ Examples:
 		$content = $this->args;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return '';
 		}

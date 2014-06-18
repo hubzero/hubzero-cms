@@ -42,7 +42,7 @@ class WishlistModelOwner extends WishlistModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'WishlistOwner';
@@ -57,7 +57,7 @@ class WishlistModelOwner extends WishlistModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -75,7 +75,7 @@ class WishlistModelOwner extends WishlistModelAbstract
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}

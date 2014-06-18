@@ -43,9 +43,9 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
-				<field name="updatable_areas" type="text" menu="hide" default="" label="Updatable fields" description="Publication info areas that may be updated after version release" />	
-				<field name="image_types" type="text" menu="hide" default="jpg, jpeg, gif, png" label="Gallery image formats" description="Allowable image types for gallery" />	
-				<field name="video_types" type="text" menu="hide" default="avi, mpeg, mov, mpg, wmv, rm, mp4" label="Gallery video formats" description="Allowable video types for gallery" />	
+				<field name="updatable_areas" type="text" menu="hide" default="" label="Updatable fields" description="Publication info areas that may be updated after version release" />
+				<field name="image_types" type="text" menu="hide" default="jpg, jpeg, gif, png" label="Gallery image formats" description="Allowable image types for gallery" />
+				<field name="video_types" type="text" menu="hide" default="avi, mpeg, mov, mpg, wmv, rm, mp4" label="Gallery video formats" description="Allowable video types for gallery" />
 				<field name="googleview" type="radio" default="0" label="Use google viewer" description="Allow certain types of docs to be served inline via Google Docs viewer">
 					<option value="0">No</option>
 					<option value="1">Yes</option>

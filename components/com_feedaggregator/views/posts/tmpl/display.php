@@ -78,7 +78,7 @@ $this->js('posts')
 					<caption>Showing <?php echo $this->filters['filterby'];?> posts</caption>
 					<tbody>
 					<?php foreach ($this->posts as $post): ?>
-						<?php if(($post->status != "removed" AND $this->filters['filterby'] != "removed") OR 
+						<?php if(($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
 								($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
 								($this->task == "PostsById")): ?>
 						<tr id="row-<?php echo $post->id; ?>">
@@ -113,7 +113,7 @@ $this->js('posts')
 							?>
 							</td>
 							<td>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Approve" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?>>	
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Approve" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?>>
 								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Mark for Review" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?>>
 								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Remove" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> >
 								<div class="postpreview-container">
@@ -137,11 +137,11 @@ $this->js('posts')
 				</table>
 			</div> <!--  / .container  -->
 
-			<?php 
+			<?php
 			if ($this->fromfeed != TRUE)
 			{
 				echo $this->pageNav->getListFooter();
-			} 
+			}
 			?>
 		<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
 			<p>There are no posts here.</p>

@@ -11,7 +11,7 @@ namespace Plugins\Content\Mollom\Service\Mollom\Exception;
  * @see Mollom::REQUEST_ERROR
  * @see Mollom::handleRequest()
  */
-class MollomBadRequestException extends MollomException 
+class MollomBadRequestException extends MollomException
 {
 }
 

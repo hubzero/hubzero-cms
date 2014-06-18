@@ -38,16 +38,16 @@ class AutocompleteHandler extends JObject
 {
 	/**
 	 * _getAutocomplete
-	 * 
+	 *
 	 * @param      array $filters
 	 * @param      string $which
 	 * @param      object $database
 	 * @param      integer $uid
 	 * @return     object
 	 */
-	public function _getAutocomplete( $filters=array(), $which = 'user', $database, $uid ) 
+	public function _getAutocomplete( $filters=array(), $which = 'user', $database, $uid )
 	{
-			if ($which == 'user') 
+			if ($which == 'user')
 			{
 					$query = "SELECT x.username, x.uidNumber, ";
 					$query .= " CASE WHEN x.surname IS NOT NULL AND x.surname != '' AND x.surname != '&nbsp;' AND x.givenName IS NOT NULL AND x.givenName != '' AND x.givenName != '&bnsp;' THEN
@@ -62,7 +62,7 @@ class AutocompleteHandler extends JObject
 						OR (LOWER( x.email ) LIKE '".$filters['search']."%' ))
 						ORDER BY x.username ASC";
 			}
-			elseif ($which == 'publicgroup') 
+			elseif ($which == 'publicgroup')
 			{
 					$query = "SELECT t.gidNumber, t.cn, t.description ";
 					$query .= " FROM #__xgroups AS t ";
@@ -70,7 +70,7 @@ class AutocompleteHandler extends JObject
 						(LOWER( t.description ) LIKE '%".$filters['search']."%' )
 						ORDER BY t.description ASC";
 			}
-			else 
+			else
 			{
 					$query = "SELECT t.gidNumber, t.cn, t.description ";
 					$query .= " FROM #__xgroups AS t, #__xgroups_members AS m ";
@@ -79,32 +79,32 @@ class AutocompleteHandler extends JObject
 						(LOWER( t.description ) LIKE '%".$filters['search']."%' )
 						ORDER BY t.description ASC";
 			}
-	
+
 			$database->setQuery( $query );
 			return $database->loadObjectList();
 	}
-	
+
 	/**
 	 * Get collaborators from all projects
-	 * 
+	 *
 	 * @param      integer $uid
 	 * @param      object $database
 	 * @param      string $selector
 	 * @return     array
 	 */
 	public function _getCollaborators( $uid, $database, $selector = 'uidNumber' ) {
-		
+
 		$collaborators = array();
 		$usergroups = AutocompleteHandler::_getGroups( $uid, $database );
-		if (empty($usergroups)) 
+		if (empty($usergroups))
 		{
 			$where_groups = ' WHERE 1=2 ';
 		}
-		else 
+		else
 		{
 			$where_groups = ' WHERE m.gidNumber IN ( ';
 			$k = 1;
-			foreach ($usergroups as $ug) 
+			foreach ($usergroups as $ug)
 			{
 				$where_groups .= $ug->gidNumber;
 				$where_groups .= $k == count($usergroups) ? '' : ',';
@@ -112,7 +112,7 @@ class AutocompleteHandler extends JObject
 			}
 			$where_groups .= ' ) AND m.uidNumber!=' . $uid . ' ';
 		}
-		
+
 		$query  = "(SELECT DISTINCT x.$selector ";
 		$query .= " FROM #__xprofiles as x JOIN #__xgroups_members AS m ON m.uidNumber=x.uidNumber ";
 		$query .= $where_groups." ) ";
@@ -120,17 +120,17 @@ class AutocompleteHandler extends JObject
 		$query .= "(SELECT DISTINCT x.$selector ";
 		$query .= " FROM #__xprofiles as x JOIN #__xgroups_managers AS m ON m.uidNumber=x.uidNumber ";
 		$query .= $where_groups . " ) ";
-		
+
 		$database->setQuery( $query );
 		$result = $database->loadObjectList();
 		$collaborators = $result ? $result[0] : $collaborators;
-		
+
 		return $collaborators;
 	}
-	
+
 	/**
 	 * Get groups user belongs to
-	 * 
+	 *
 	 * @param      integer $uid
 	 * @param      object $database
 	 * @param      string $selector
@@ -142,9 +142,9 @@ class AutocompleteHandler extends JObject
 		// Get all groups the user is a member of
 		$query1 = "SELECT DISTINCT g.$selector FROM #__xgroups AS g, #__xgroups_members AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
 		$query2 = "SELECT DISTINCT g.$selector FROM #__xgroups AS g, #__xgroups_managers AS m WHERE g.type='1' AND m.gidNumber=g.gidNumber AND m.uidNumber=".$uid;
-		
+
 		$query = "( $query1 ) UNION ( $query2 )";
-		
+
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
 
@@ -153,10 +153,10 @@ class AutocompleteHandler extends JObject
 
 		return $result;
 	}
-	
+
 	/**
 	 * Get projects user belong to
-	 * 
+	 *
 	 * @param      integer $uid
 	 * @param      object $database
 	 * @param      string $selector
@@ -166,7 +166,7 @@ class AutocompleteHandler extends JObject
 	{
 		// Get all groups the user is a member of
 		$query = "SELECT DISTINCT p.$selector FROM #__projects AS p, #__project_owners AS o WHERE o.type='1' AND p.id=o.projectid AND o.userid=".$uid;
-	
+
 		$database->setQuery($query);
 		$result = $database->loadObjectList();
 

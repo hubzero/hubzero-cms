@@ -38,49 +38,49 @@ class CoursesTableGradePolicies extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * mediumtext
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * decimal(3,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $threshold = NULL;
 
 	/**
 	 * decimal(3,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $exam_weight = NULL;
 
 	/**
 	 * decimal(3,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $quiz_weight = NULL;
 
 	/**
 	 * decimal(3,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $homework_weight = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

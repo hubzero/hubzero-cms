@@ -292,7 +292,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		if ($num > 0)
 		{
 			$codes = array();
-			for ($i = 0; $i < $num; $i++) 
+			for ($i = 0; $i < $num; $i++)
 			{
 				$model = new CoursesModelSectionCode(0);
 				$model->set('code', $this->_generateCode());
@@ -391,7 +391,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	{
 		$chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$res = '';
-		for ($i = 0; $i < 10; $i++) 
+		for ($i = 0; $i < 10; $i++)
 		{
 			$res .= $chars[mt_rand(0, strlen($chars)-1)];
 		}

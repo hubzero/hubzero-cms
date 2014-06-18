@@ -108,7 +108,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginScript('time','hubs');
 
 		// Only perform the following if this is the active tab/plugin
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			switch ($action)
 			{
@@ -137,7 +137,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -189,7 +189,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * New/Edit function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _edit($hub=null, $contacts=null)
@@ -209,7 +209,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 			// Use the prexisting object (i.e. we had an error when saving)
 			$view->row = $hub;
 		}
-		else 
+		else
 		{ // Create a new object (i.e. we're coming in clean)
 			// Get the id if we're editing a hub
 			$hid = JRequest::getInt('id');
@@ -231,7 +231,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 			// Use the prexisting object (i.e. we had an error when saving)
 			$view->contacts = $contacts;
 		}
-		else 
+		else
 		{
 			// Get the contacts for the hub (only if we're editing)
 			$view->contacts = array();
@@ -247,8 +247,8 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$view->slist = TimeHTML::buildSupportLevelList($view->row->support_level);
 
 		// If viewing an entry from a page other than the first, take the user back to that page if they click "all xxx"
-		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set a few things for the vew
@@ -261,7 +261,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * View/read-only hub entry
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _read_only()
@@ -317,8 +317,8 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$view->row->notes = $obj->notes('parsed');
 
 		// If viewing an entry from a page other than the first, take the user back to that page if they click "all xxx"
-		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set a few things for the vew
@@ -327,11 +327,11 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$view->action        = $this->action;
 
 		return $view->loadTemplate();
-	}	
+	}
 
 	/**
 	 * Save new hub and redirect to the hubs page
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save()
@@ -411,7 +411,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete hubs
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _delete()
@@ -476,7 +476,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save new contact
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save_contact()
@@ -486,7 +486,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a contact
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _delete_contact()
@@ -515,7 +515,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	private function setRedirect($url, $msg=null, $type='message')

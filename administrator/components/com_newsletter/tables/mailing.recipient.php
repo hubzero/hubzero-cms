@@ -35,50 +35,50 @@ class NewsletterMailingRecipient extends JTable
 {
 	/**
 	 * Mailing Recipient ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 			= NULL;
-	
+
 	/**
 	 * Mailing ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $mid 			= NULL;
-	
+
 	/**
 	 * Mailing Recipient Email
-	 * 
+	 *
 	 * @var varchar(150)
 	 */
 	var $email 			= NULL;
-	
+
 	/**
 	 * Mailing Recipient Status
-	 * 
+	 *
 	 * @var varchar(50)
 	 */
 	var $status 		= NULL;
-	
+
 	/**
 	 * Mailing Recipient Date Added
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $date_added 	= NULL;
-	
+
 	/**
 	 * Mailing Recipient Date Sent
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $date_sent 		= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Mailing Recipient Constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
@@ -86,7 +86,7 @@ class NewsletterMailingRecipient extends JTable
 	{
 		parent::__construct( '#__newsletter_mailing_recipients', 'id', $db );
 	}
-	
+
 	public function getRecipients( $mid, $status = 'all')
 	{
 		$sql = "SELECT * FROM {$this->_tbl} WHERE mid=" . $this->_db->quote( $mid );

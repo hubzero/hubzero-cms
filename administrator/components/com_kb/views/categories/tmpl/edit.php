@@ -35,7 +35,7 @@ $canDo = KbHelper::getActions('category');
 $text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'));
 
 JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_CATEGORY') . ': ' . $text, 'kb.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -45,7 +45,7 @@ JToolBarHelper::help('category');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton =='resethits') {
 		if (confirm("<?php echo JText::_('COM_KB_RESET_HITS_WARNING'); ?>")){

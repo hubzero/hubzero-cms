@@ -40,7 +40,7 @@ class plgUserXusers extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -78,7 +78,7 @@ class plgUserXusers extends JPlugin
 			$i = 0;
 
 			foreach ($plugins as $plugin) {
-				
+
 				if ($plugin->name == 'xusers') {
 					$xuser_order = $i;
 				}
@@ -103,34 +103,34 @@ class plgUserXusers extends JPlugin
 
 		// log login to auth log
 		JFactory::getAuthLogger()->info($juser->get('id') . ' [' . $juser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
-		
+
 		// correct apache log data
 		apache_note('auth','login');
 
 		// update session tracking with new data
 		$session =  JFactory::getSession();
-		
+
 		$session->set('tracker.user_id', $juser->get('id'));
-		
+
 		$session->set('tracker.username', $juser->get('username'));
-		
+
 		if ($session->get('tracker.sid') == '')
 		{
 			$session->set('tracker.sid', $session->getId());
 		}
 
 		$session->set('tracker.psid', $session->get('tracker.sid'));
-					
+
 		if ($session->get('tracker.rsid') == '')
 		{
 			$session->set('tracker.rsid', $session->getId());
 		}
-		
+
 		if ( ($session->get('tracker.user_id') != $juser->get('id')) || ($session->get('tracker.ssid') == '') )
 		{
 			$session->set('tracker.ssid', $session->getId());
 		}
-		
+
 		if (empty($user['type']))
 		{
 			$session->clear('session.authenticator');
@@ -139,7 +139,7 @@ class plgUserXusers extends JPlugin
 		{
 			$session->set('session.authenticator', $user['type']);
 		}
-		
+
 		if (isset($options['silent']) && $options['silent'])
 		{
 			$session->set('session.source','cookie');
@@ -148,15 +148,15 @@ class plgUserXusers extends JPlugin
 		{
 			$session->set('session.source','user');
 		}
-		
-		// update tracking data with changes related to login		
+
+		// update tracking data with changes related to login
 		jimport('joomla.utilities.simplecrypt');
 		jimport('joomla.utilities.utility');
-		
+
 		$hash = JUtility::getHash( JFactory::getApplication()->getName().':tracker');
-		
+
 		$crypt = new JSimpleCrypt();
-		
+
 		$tracker = array();
 		$tracker['user_id'] = $session->get('tracker.user_id');
 		$tracker['username'] = $session->get('tracker.username');
@@ -166,7 +166,7 @@ class plgUserXusers extends JPlugin
 		$cookie = $crypt->encrypt(serialize($tracker));
 		$lifetime = time() + 365*24*60*60;
 		setcookie($hash, $cookie, $lifetime, '/');
-		
+
 		/* Mark registration as incomplete so it gets checked on next page load */
 
 		$username = $juser->get('username');
@@ -179,13 +179,13 @@ class plgUserXusers extends JPlugin
 		}
 
 		if ($juser->get('tmp_user')) {
-			
+
 			$email = $juser->get('email');
 
 			if ($username[0] == '-') {
-				
+
 				$username = trim($username,'-');
-				
+
 				if ($hzal) {
 					$juser->set('username','guest;' . $username);
 					$juser->set('email', $hzal->email);
@@ -193,11 +193,11 @@ class plgUserXusers extends JPlugin
 			}
 		}
 		else {
-			
+
 			if ($username[0] == '-') {
-				
+
 				$username = trim($username, '-');
-				
+
 				if ($hzal) {
 					$hzal->user_id = $juser->get('id');
 					$hzal->update();
@@ -234,11 +234,11 @@ class plgUserXusers extends JPlugin
 		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 
 		if (!is_object($xprofile)) {
-						
+
 			$params = JComponentHelper::getParams('com_members');
-		
+
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
-		
+
 			if (empty($hubHomeDir)) {
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
@@ -270,12 +270,12 @@ class plgUserXusers extends JPlugin
 						$sitename = '';
 					}
 				}
-				
+
 				$hubHomeDir = DS . 'home';
 
 				if (!empty($sitename)) {
 					$hubHomeDir .= DS . $sitename;
-				}		
+				}
 
 				if (!empty($hubHomeDir)) {
 					$db = JFactory::getDBO();
@@ -289,7 +289,7 @@ class plgUserXusers extends JPlugin
 					}
 					else
 					{
-						
+
 						$component = new JTableExtension($this->database);
 						$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
 						$params = new JRegistry($component->params);
@@ -299,9 +299,9 @@ class plgUserXusers extends JPlugin
 					}
 				}
 			}
-			
+
 			$xprofile = new \Hubzero\User\Profile();
-			
+
 			$xprofile->set('gidNumber', $params->get('gidNumber', '100'));
 			$xprofile->set('gid', $params->get('gid', 'users'));
 			$xprofile->set('uidNumber', $user['id']);
@@ -316,11 +316,11 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
 			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
-			
+
 			if (isset($_SERVER['REMOTE_HOST'])) {
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
-			
+
 			$xprofile->set('registerDate', JFactory::getDate()->toSql());
 
 			$result = $xprofile->create();
@@ -429,7 +429,7 @@ class plgUserXusers extends JPlugin
 	public function onAfterDeleteUser($user, $succes, $msg)
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
-		
+
 		// remove user from groups
 		\Hubzero\User\Helper::removeUserFromGroups($user['id']);
 
@@ -467,9 +467,9 @@ class plgUserXusers extends JPlugin
 	public function onLogoutUser($user, $options = array())
 	{
 		$authlog = JFactory::getAuthLogger();
-		
+
 		$authlog->info($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
-		
+
 		apache_note('auth','logout');
 
 		// If this is a temporary user created during the auth_link process (ex: username is a negative number)

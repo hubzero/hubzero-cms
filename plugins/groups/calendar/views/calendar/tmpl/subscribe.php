@@ -95,7 +95,7 @@ foreach($this->calendars as $calendar)
 					?>
 				</label>
 			<?php endforeach; ?>
-			
+
 			<?php
 				$link = $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'calendar' . DS . 'subscribe' . DS . implode(',', $cals) . '.ics';
 				$httpsLink = 'https://' . $link;
@@ -103,7 +103,7 @@ foreach($this->calendars as $calendar)
 			?>
 			<br />
 			<label id="subscribe-link"><strong><?php echo JText::_('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
-				<input type="text" value="<?php echo $httpsLink; ?>" /> 
+				<input type="text" value="<?php echo $httpsLink; ?>" />
 				<a class="btn feed download https" href="<?php echo $httpsLink; ?>">Download</a>
 				<a class="btn feed subscribe-webcal webcal" href="<?php echo $webcalLink; ?>">Subscribe</a>
 			</label>

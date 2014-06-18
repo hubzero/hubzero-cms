@@ -38,28 +38,28 @@ class SupportAco extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id    = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $model = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $foreign_key = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,17 +70,17 @@ class SupportAco extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->model) == '') 
+		if (trim($this->model) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': model');
 			return false;
 		}
-		if (trim($this->foreign_key) == '') 
+		if (trim($this->foreign_key) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
 			return false;
@@ -91,14 +91,14 @@ class SupportAco extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -108,7 +108,7 @@ class SupportAco extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -121,7 +121,7 @@ class SupportAco extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

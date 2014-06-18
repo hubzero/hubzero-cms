@@ -74,7 +74,7 @@ if ($closed == 'closed' && $this->showClose == true)
 		<dl class="entry-meta">
 			<dt class="entry-id">
 				<?php echo $this->announcement->get('id'); ?>
-			</dt> 
+			</dt>
 		<?php if ($this->authorized == 'manager') : ?>
 			<dd class="entry-author">
 				<?php

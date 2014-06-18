@@ -102,10 +102,10 @@ $editor = JEditor::getInstance();
 					</td>
 				</tr>
 			</tbody>
-		</table>	
+		</table>
 	</fielset>
 	<input type="hidden" name="story[nid]" value="<?php echo $this->newsletter->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
-</form>	
+</form>

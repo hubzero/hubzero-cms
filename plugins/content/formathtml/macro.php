@@ -41,56 +41,56 @@ class Macro
 {
 	/**
 	 * Name of the macro
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_name  = NULL;
 
 	/**
 	 * Container for internal data
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_data  = array();
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_db    = NULL;
 
 	/**
 	 * Container for errors
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_error = NULL;
 
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = false;
 
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $linkLog = array();
 
 	/**
 	 * Instance of a macro
-	 * 
+	 *
 	 * @var object
 	 */
 	static protected $thisInstance = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Configuration options
 	 * @return     void
 	 */
@@ -101,13 +101,13 @@ class Macro
 		$this->args = '';
 
 		// Set the controller name
-		if (empty($this->_name)) 
+		if (empty($this->_name))
 		{
-			if (isset($config['name'])) 
+			if (isset($config['name']))
 			{
 				$this->_name = $config['name'];
-			} 
-			else 
+			}
+			else
 			{
 				// Get the reflection info
 				$r = new ReflectionClass($this);
@@ -118,7 +118,7 @@ class Macro
 					// It is! This makes things easy.
 					$this->_name = strtolower($r->getShortName());
 				}
-				else if (preg_match('/(.*)Macro/i', get_class($this), $r)) 
+				else if (preg_match('/(.*)Macro/i', get_class($this), $r))
 				{
 					$this->_name = strtolower($r[1]);
 				}
@@ -132,7 +132,7 @@ class Macro
 
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
@@ -144,13 +144,13 @@ class Macro
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -158,19 +158,19 @@ class Macro
 
 	/**
 	 * Get an instance of this macro, creating it if not found
-	 * 
+	 *
 	 * @param      array $config Configuration parameters
-	 * @return     object 
+	 * @return     object
 	 */
 	static public function getInstance($config=array())
 	{
-		if (self::$thisInstance == null) 
+		if (self::$thisInstance == null)
 		{
-			if (isset($config['name'])) 
+			if (isset($config['name']))
 			{
 				$name = $config['name'];
-			} 
-			else 
+			}
+			else
 			{
 				$name = get_class();
 			}
@@ -182,7 +182,7 @@ class Macro
 	/**
 	 * Render macro output
 	 * this should be overriden by extended classes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function render()
@@ -192,7 +192,7 @@ class Macro
 
 	/**
 	 * Returnt he macro's name
-	 * 
+	 *
 	 * @return  string
 	 */
 	public function name()
@@ -203,7 +203,7 @@ class Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * this should be overriden by extended classes
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()

@@ -38,112 +38,112 @@ class EventsCategory extends JTable
 {
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id               = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $asset_id        = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent_id        = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $lft        = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rgt        = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level        = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $path            = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $extension            = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title            = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias            = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description            = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $published        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $checked_out      = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $checked_out_time = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $access           = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params           = NULL;
@@ -161,13 +161,13 @@ class EventsCategory extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		// check for valid name
-		if (trim($this->title) == '') 
+		if (trim($this->title) == '')
 		{
 			$this->_error = JText::_('EVENTS_CATEGORY_MUST_HAVE_TITLE');
 			return false;
@@ -177,13 +177,13 @@ class EventsCategory extends JTable
 
 	/**
 	 * Update the count of an entry
-	 * 
+	 *
 	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
 	public function updateCount($oid=NULL)
 	{
-		if ($oid == NULL) 
+		if ($oid == NULL)
 		{
 			$oid = $this->id;
 		}
@@ -193,13 +193,13 @@ class EventsCategory extends JTable
 
 	/**
 	 * Set en entry to unpublished
-	 * 
+	 *
 	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
 	public function publish($oid = NULL, $state = 1, $userId = 0)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->id;
 		}
@@ -209,13 +209,13 @@ class EventsCategory extends JTable
 
 	/**
 	 * Set an entry to published
-	 * 
+	 *
 	 * @param      integer $oid Category ID
 	 * @return     void
 	 */
 	public function unpublish($oid=NULL)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->id;
 		}
@@ -225,13 +225,13 @@ class EventsCategory extends JTable
 
 	/**
 	 * Get a count of categories in a section
-	 * 
+	 *
 	 * @param      integer $section Section ID
 	 * @return     integer
 	 */
 	public function getCategoryCount($section=NULL)
 	{
-		if (!$section) 
+		if (!$section)
 		{
 			$section = $this->section;
 		}

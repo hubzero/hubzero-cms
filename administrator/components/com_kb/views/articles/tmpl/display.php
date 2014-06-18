@@ -39,21 +39,21 @@ if ($this->filters['orphans'])
 }
 
 JToolBarHelper::title(JText::_('COM_KB') . ': ' . $ttle, 'kb.png');
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -63,7 +63,7 @@ JToolBarHelper::help('articles');
 $juser = JFactory::getUser();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -173,7 +173,7 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>
 				</td>
 				<td>
-					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span> 
+					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span>
 					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>

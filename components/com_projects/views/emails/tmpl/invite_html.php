@@ -64,24 +64,24 @@ else {
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group 
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$owner   = $this->project->owned_by_group
+		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
 
 // Get the actual message
-$comment = '';		
-if ($this->uid) 
+$comment = '';
+if ($this->uid)
 {
 	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
-else 
+else
 {
 	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
 	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 
 $comment .= $link ."\n\n";
-	
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get project thumbnail
@@ -327,7 +327,7 @@ $bdcolor = '#e1e1e1';
 												<tr>
 													<td style="padding: 0 2em;">
 													<?php
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 														{
 															$comment = str_replace("<br />", '', $comment);
 															$comment = $this->escape($comment);

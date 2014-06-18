@@ -47,7 +47,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } // close foreach 
+		<?php } // close foreach
 	} // close if count ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
@@ -76,7 +76,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</tr>
 			</thead>
 			<tbody>
-				<?php 
+				<?php
 				// Set the odd/even row class
 				$cls = 'odd';
 
@@ -95,7 +95,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						<td><?php echo $record->pname; ?></td>
 						<td><?php echo $record->description; ?></td>
 					</tr>
-					<?php 
+					<?php
 						// Invert class
 						$cls = ($cls == 'even') ? 'odd' : 'even';
 					} // close foreach ?>

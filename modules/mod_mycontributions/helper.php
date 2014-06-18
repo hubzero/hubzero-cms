@@ -39,7 +39,7 @@ class modMyContributions extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of contributions
-	 * 
+	 *
 	 * @return     array
 	 */
 	private function _getContributions()
@@ -59,8 +59,8 @@ class modMyContributions extends \Hubzero\Module\Module
 		*/
 
 		// Get "in progress" contributions
-		/*$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
-							AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone, 
+		/*$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype,
+							AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone,
 							R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
 		$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
@@ -94,7 +94,7 @@ class modMyContributions extends \Hubzero\Module\Module
 
 	/**
 	 * Get a list of tools
-	 * 
+	 *
 	 * @param      integer $show_questions Show question count for tool
 	 * @param      integer $show_wishes    Show wish count for tool
 	 * @param      integer $show_tickets   Show ticket count for tool
@@ -118,7 +118,7 @@ class modMyContributions extends \Hubzero\Module\Module
 		$rows = ToolsModelTool::getTools($filters, false);
 		$limit = 100000;
 
-		if ($rows) 
+		if ($rows)
 		{
 			for ($i=0; $i < count($rows); $i++)
 			{
@@ -127,9 +127,9 @@ class modMyContributions extends \Hubzero\Module\Module
 				$rows[$i]->rid = $rid;
 
 				// get questions, wishes and tickets on published tools
-				if ($rows[$i]->published == 1 && $i <= $limit_tools) 
+				if ($rows[$i]->published == 1 && $i <= $limit_tools)
 				{
-					if ($show_questions) 
+					if ($show_questions)
 					{
 						// get open questions
 						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
@@ -144,11 +144,11 @@ class modMyContributions extends \Hubzero\Module\Module
 						$filters['tag']      = 'tool' . $rows[$i]->toolname;
 						$results = $aq->getResults($filters);
 						$unanswered = 0;
-						if ($results) 
+						if ($results)
 						{
 							foreach ($results as $r)
 							{
-								if ($r->rcount == 0) 
+								if ($r->rcount == 0)
 								{
 									$unanswered++;
 								}
@@ -159,7 +159,7 @@ class modMyContributions extends \Hubzero\Module\Module
 						$rows[$i]->q_new = $unanswered;
 					}
 
-					if ($show_wishes) 
+					if ($show_wishes)
 					{
 						// get open wishes
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
@@ -178,17 +178,17 @@ class modMyContributions extends \Hubzero\Module\Module
 						$rows[$i]->w = 0;
 						$rows[$i]->w_new = 0;
 
-						if ($listid) 
+						if ($listid)
 						{
 							$controller = new WishlistController();
 							$filters = $controller->getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
-							if ($wishes) 
+							if ($wishes)
 							{
 								foreach ($wishes as $w)
 								{
-									if ($w->ranked == 0) 
+									if ($w->ranked == 0)
 									{
 										$unranked++;
 									}
@@ -200,30 +200,30 @@ class modMyContributions extends \Hubzero\Module\Module
 						}
 					}
 
-					if ($show_tickets) 
+					if ($show_tickets)
 					{
 						// get open tickets
 						$group = $rows[$i]->devgroup;
 
 						// Find support tickets on the user's contributions
-						$database->setQuery("SELECT id, summary, category, status, severity, owner, created, login, name, 
+						$database->setQuery("SELECT id, summary, category, status, severity, owner, created, login, name,
 							 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 							 FROM #__support_tickets as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group='$group'
 							 ORDER BY created DESC
 							 LIMIT $limit"
 						);
 						$tickets = $database->loadObjectList();
-						if ($database->getErrorNum()) 
+						if ($database->getErrorNum())
 						{
 							echo $database->stderr();
 							return false;
 						}
 						$unassigned = 0;
-						if ($tickets) 
+						if ($tickets)
 						{
 							foreach ($tickets as $t)
 							{
-								if ($t->comments == 0 && $t->status == 0 && !$t->owner) 
+								if ($t->comments == 0 && $t->status == 0 && !$t->owner)
 								{
 									$unassigned++;
 								}
@@ -242,7 +242,7 @@ class modMyContributions extends \Hubzero\Module\Module
 
 	/**
 	 * Get tool status text
-	 * 
+	 *
 	 * @param      integer $int Tool status
 	 * @return     string
 	 */
@@ -265,7 +265,7 @@ class modMyContributions extends \Hubzero\Module\Module
 
 	/**
 	 * Get resource type title
-	 * 
+	 *
 	 * @param      integer $int Resource type
 	 * @return     string
 	 */
@@ -285,12 +285,12 @@ class modMyContributions extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
-		// Get the user's profile 
+		// Get the user's profile
 		$xprofile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		$juser = JFactory::getUser();
 		$session_quota = $xprofile->get('jobsAllowed');

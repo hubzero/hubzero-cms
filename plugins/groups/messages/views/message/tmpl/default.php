@@ -54,7 +54,7 @@ if (substr($this->xmessage->type, -8) == '_message') {
 	</ul>
 	<br class="clear" />
 	<?php endif; ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post">
 		<fieldset class="hub-mail" style="min-height:200px">
 			<table class="groups entries" summary="Groups this person is a member of">
@@ -86,6 +86,6 @@ if (substr($this->xmessage->type, -8) == '_message') {
 				</tbody>
 			</table>
 		</fieldset>
-	</form>	
+	</form>
 </div><!-- // .subject -->
 

@@ -586,17 +586,17 @@ class JCache extends JObject
 						// We have to serialize the content of the arrays because the may contain other arrays which is a notice in PHP 5.4 and newer
 						$nowvalue 		= array_map('serialize', $headnow[$now]);
 						$beforevalue 	= array_map('serialize', $options['headerbefore'][$now]);
-						
+
 						$newvalue = array_diff_assoc($nowvalue, $beforevalue);
 						$newvalue = array_map('unserialize', $newvalue);
-						
+
 						// Special treatment for script and style declarations.
 						if (($now == 'script' || $now == 'style') && is_array($newvalue) && is_array($options['headerbefore'][$now]))
 						{
 							foreach ($newvalue as $type => $currentScriptStr)
 							{
 								if (isset($options['headerbefore'][$now][strtolower($type)]))
-								{ 
+								{
 									$oldScriptStr = $options['headerbefore'][$now][strtolower($type)];
 									if ($oldScriptStr != $currentScriptStr)
 									{

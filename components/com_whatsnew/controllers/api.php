@@ -7,15 +7,15 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 	{
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
-		
-		switch($this->segments[0]) 
+
+		switch($this->segments[0])
 		{
 			case 'index':		$this->index();			break;
 			default:			$this->service();
 		}
 	}
-	
-	
+
+
 	private function service()
 	{
 		$response = new stdClass();
@@ -53,19 +53,19 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
-	
-	
+
+
 	function index()
 	{
 		//get the userid
 		$userid = JFactory::getApplication()->getAuthn('user_id');
-		
+
 		//if we dont have a user return nothing
 		if ($userid == null)
 		{
 			return $this->not_found();
 		}
-		
+
 		//get the request vars
 		$period = JRequest::getVar("period", "year");
 		$category = JRequest::getVar("category", "all");
@@ -73,14 +73,14 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		$limitstart = JRequest::getVar("limitstart", 0);
 		$content = JRequest::getVar("content", 0);
 		$order = JRequest::getVar("order", "desc");
-		
+
 		//import joomla plugin helper
 		jimport('joomla.plugin.helper');
-		
+
 		// Load plugins
 		JPluginHelper::importPlugin('whatsnew');
 		$dispatcher = JDispatcher::getInstance();
-		
+
 		//get the search areas
 		$areas = array();
 		$searchareas = $dispatcher->trigger('onWhatsNewAreas');
@@ -88,12 +88,12 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		{
 			$areas = array_merge($areas, $area);
 		}
-		
+
 		//parse our categories
 		//make sure we have a category
 		$category = ($category == '') ? 'all' : $category;
 		$category = array_filter(array_values(explode(',', $category)));
-		
+
 		//if we have an array of categories lets remove any areas not passed in
 		if(!in_array('all', $category))
 		{
@@ -105,14 +105,14 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 				}
 			}
 		}
-		
+
 		//parse the period
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
 		$p = new WhatsnewPeriod( $period );
 		$p->process();
-		
+
 		$results = $dispatcher->trigger(
-			'onWhatsnew', 
+			'onWhatsnew',
 			array(
 				$p,
 				999,
@@ -120,7 +120,7 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 				$areas
 			)
 		);
-		
+
 		$whatsnew = array();
 		foreach($results as $results_section)
 		{
@@ -141,7 +141,7 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 				$whatsnew[] = $item;
 			}
 		}
-		
+
 		//order by the date created
 		if($order == 'asc')
 		{
@@ -151,7 +151,7 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		{
 			usort($whatsnew, array("WhatsnewControllerApi", "sorter"));
 		}
-		
+
 		//
 		$w = array();
 		$count = 0;
@@ -169,15 +169,15 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType("application/json");
 		$this->setMessage($obj);
 	}
-	
+
 	function sorter($a, $b)
-	{	
+	{
 		return (strtotime($a['date']) < strtotime($b['date'])) ? 1 : -1;
 	}
-	
+
 	function sorter_asc($a, $b)
-	{	
+	{
 		return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;
 	}
-	
+
 }

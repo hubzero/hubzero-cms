@@ -33,9 +33,9 @@ $execChoices[''] = JText::_('COM_TOOLS_SELECT_TOP');
 $execChoices['@OPEN'] =  ucfirst(JText::_('COM_TOOLS_TOOLACCESS_OPEN'));
 $execChoices['@US'] = ucfirst(JText::_('COM_TOOLS_TOOLACCESS_US'));
 $execChoices['@D1'] = ucfirst(JText::_('COM_TOOLS_TOOLACCESS_D1'));
-if ($exec_pu) 
-{ 
-	$execChoices['@PU'] = ucfirst(JText::_('COM_TOOLS_TOOLACCESS_PU')); 
+if ($exec_pu)
+{
+	$execChoices['@PU'] = ucfirst(JText::_('COM_TOOLS_TOOLACCESS_PU'));
 }
 $execChoices['@GROUP'] = ucfirst(JText::_('COM_TOOLS_RESTRICTED')).' '.JText::_('COM_TOOLS_TO').' '.JText::_('COM_TOOLS_GROUP_OR_GROUPS');
 
@@ -78,7 +78,7 @@ $this->css('pipeline.css')
 		<form action="index.php" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 			<fieldset>
 				<legend><?php echo JText::_('COM_TOOLS_LEGEND_ABOUT'); ?>:</legend>
-				
+
 				<input type="hidden" name="toolid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -86,7 +86,7 @@ $this->css('pipeline.css')
 				<input type="hidden" name="editversion" value="<?php echo $this->editversion; ?>" />
 
 				<label for="t_toolname">
-					<?php echo JText::_('COM_TOOLS_TOOLNAME'); ?>: 
+					<?php echo JText::_('COM_TOOLS_TOOLNAME'); ?>:
 				<?php if ($this->id) { ?>
 					<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
 					<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? JText::_('COM_TOOLS_CURRENT_VERSION') : JText::_('COM_TOOLS_DEV_VERSION'); ?>)</strong>
@@ -99,7 +99,7 @@ $this->css('pipeline.css')
 					<p class="hint"><?php echo JText::_('COM_TOOLS_HINT_TOOLNAME'); ?></p>
 				<?php } ?>
 				</label>
-				
+
 				<label for="t_title">
 					<?php echo JText::_('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 					<input type="text" name="tool[title]" id="t_title" maxlength = "127" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
@@ -107,7 +107,7 @@ $this->css('pipeline.css')
 				</label>
 
 				<label for="t_version">
-					<?php echo JText::_('COM_TOOLS_VERSION') ?>: 
+					<?php echo JText::_('COM_TOOLS_VERSION') ?>:
 					<?php if ($this->editversion == 'current') { ?>
 						<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
 						<strong><?php echo $this->defaults['version']; ?></strong>
@@ -117,7 +117,7 @@ $this->css('pipeline.css')
 						<p class="hint"><?php echo JText::_('COM_TOOLS_HINT_VERSION'); ?></p>
 					<?php } ?>
 				</label>
-				
+
 				<label for="t_description">
 					<?php echo JText::_('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?php echo JText::_('COM_TOOLS_REQUIRED'); ?></span>
 					<input type="text" name="tool[description]" id="t_description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->defaults['description'])); ?>" />
@@ -125,8 +125,8 @@ $this->css('pipeline.css')
 				</label>
 			<?php if ($this->id && isset($this->defaults['resourceid'])) { ?>
 				<label>
-					<?php echo JText::_('COM_TOOLS_DESCRIPTION'); ?>: 
-					<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW') ?></a> | 
+					<?php echo JText::_('COM_TOOLS_DESCRIPTION'); ?>:
+					<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev'); ?>"><?php echo JText::_('COM_TOOLS_PREVIEW') ?></a> |
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&app=' . $this->defaults['toolname']); ?>"><?php echo JText::_('COM_TOOLS_TODO_EDIT_PAGE') ?>...</a>
 				</label>
 			<?php } ?>
@@ -144,7 +144,7 @@ $this->css('pipeline.css')
 
 				<div id="groupname" <?php echo ($this->defaults['exec']=='@GROUP') ? 'style="display:block"': 'style="display:none"'; ?>>
 					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo ToolsHelperHtml::getGroups($this->defaults['membergroups'], $this->id); ?>" />
-					<p class="hint"><?php echo JText::_('COM_TOOLS_HINT_GROUPS'); ?></p>                 
+					<p class="hint"><?php echo JText::_('COM_TOOLS_HINT_GROUPS'); ?></p>
 				</div>
 
 				<label for="t_code">

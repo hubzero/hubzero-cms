@@ -76,7 +76,7 @@ class View extends AbstractView
 
 	/**
 	 * Push CSS to the document
-	 * 
+	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $component  Component name
 	 * @param   string  $type       Mime encoding type
@@ -167,7 +167,7 @@ class View extends AbstractView
 	public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
-		if ($layout instanceof AbstractView) 
+		if ($layout instanceof AbstractView)
 		{
 			return $layout;
 		}

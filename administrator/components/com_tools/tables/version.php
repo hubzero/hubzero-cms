@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'ToolVersion'
- * 
+ *
  * Long description (if any) ...
  */
 class ToolVersion extends  JTable
@@ -41,163 +41,163 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id      	   = NULL;  // @var int (primary key)
 
 	/**
 	 * Description for 'toolid'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $toolid        = NULL;  // @var int (11)
 
 	/**
 	 * Description for 'toolname'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $toolname      = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'instance'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $instance      = NULL; // @var string (30)
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title         = NULL;  // @var string (127)
 
 	/**
 	 * Description for 'description'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $description   = NULL;  // @var text
 
 	/**
 	 * Description for 'fulltxt'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $fulltxt      = NULL;  // @var text
 
 	/**
 	 * Description for 'toolaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $toolaccess    = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'codeaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $codeaccess	   = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'wikiaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $wikiaccess	   = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'version'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $version       = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'revision'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $revision 	   = NULL;  // @var int
 
 	/**
 	 * Description for 'state'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $state         = NULL;  // @var int (11)
 
 	/**
 	 * Description for 'vnc_geometry'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $vnc_geometry  = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'vnc_command'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $vnc_command   = NULL;  // @var string (100)
 
 	/**
 	 * Description for 'mw'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $mw   		   = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'released'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $released      = NULL;  // @var dateandtime
 
 	/**
 	 * Description for 'released_by'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $released_by   = NULL;  // @var string
 
 	/**
 	 * Description for 'unpublished'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $unpublished   = NULL;  // @var dateandtime
 
 	/**
 	 * Description for 'license'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $license	   = NULL;  // @var text
 
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $params        = NULL;  // @var text
 
 	/**
 	 * Description for 'exportControl'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $exportControl = NULL;  // @var string (15)
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -208,32 +208,32 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function check()
 	{
-		if (!$this->id && trim($this->toolname) == '') 
+		if (!$this->id && trim($this->toolname) == '')
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_VERSION_NO_TOOLNAME'));
 			return false;
 		}
 
-		if (!$this->id && trim($this->title) == '') 
+		if (!$this->id && trim($this->title) == '')
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_VERSION_NO_TITLE'));
 			return false;
 		}
 
-		if (!$this->id && trim($this->revision) == '') 
+		if (!$this->id && trim($this->revision) == '')
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_VERSION_NO_REVISION'));
 			return false;
 		}
 
-		if (!$this->id && trim($this->version) == '') 
+		if (!$this->id && trim($this->version) == '')
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_VERSION_NO_VERSION'));
 			return false;
@@ -244,15 +244,15 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'loadFromInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $tool Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function loadFromInstance($tool=NULL)
 	{
-		if ($tool === NULL) 
+		if ($tool === NULL)
 		{
 			return false;
 		}
@@ -260,11 +260,11 @@ class ToolVersion extends  JTable
 		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->Quote($tool) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -273,16 +273,16 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getAll'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $includedev Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
 	public function getAll($includedev = 1)
 	{
 		$sql = "SELECT * FROM #__tool_version";
-		if (!$includedev) 
+		if (!$includedev)
 		{
 			$sql.= " WHERE state!='3'";
 		}
@@ -293,20 +293,20 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getVersions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $alias Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getVersions($alias)
 	{
 		// will load versions excluding dev
-		if ($alias === NULL) 
+		if ($alias === NULL)
 		{
 			$alias = $this->toolname;
 		}
-		if (!$alias) 
+		if (!$alias)
 		{
 			return false;
 		}
@@ -324,30 +324,30 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getVersionIdFromResource'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $rid Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getVersionIdFromResource($rid=NULL, $version ='dev')
 	{
-		if ($rid=== NULL) 
+		if ($rid=== NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT v.id FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
-		if ($version=='dev') 
+		if ($version=='dev')
 		{
 			$query.= " AND v.state=3 LIMIT 1";
 		}
-		else if ($version=='current') 
+		else if ($version=='current')
 		{
 			$query.= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
 		}
-		else 
+		else
 		{
 			$query.= " AND v.version=" . $this->_db->Quote($version) . " LIMIT 1";
 		}
@@ -358,15 +358,15 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'loadFromName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $alias Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function loadFromName($alias)
 	{
-		if ($alias === NULL) 
+		if ($alias === NULL)
 		{
 			return false;
 		}
@@ -374,11 +374,11 @@ class ToolVersion extends  JTable
 		$query  = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->Quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -387,29 +387,29 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'load_version'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function load_version ($toolid=NULL, $version='dev')
 	{
-		if ($toolid === NULL) 
+		if ($toolid === NULL)
 		{
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl WHERE toolid=" . $this->_db->Quote($toolid) . " AND ";
-		if (!$version or $version=='dev') 
+		if (!$version or $version=='dev')
 		{
 			$query .= "state='3'";
 		}
-		else if ($version=='current') 
+		else if ($version=='current')
 		{
 			$query .= "state='1'";
 		}
-		else 
+		else
 		{
 			$query .= "version=" . $this->_db->Quote($version);
 		}
@@ -420,9 +420,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'setUnpublishDate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $toolid Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      mixed $vid Parameter description (if any) ...
@@ -430,29 +430,29 @@ class ToolVersion extends  JTable
 	 */
 	public function setUnpublishDate($toolid=NULL, $toolname='', $vid=0)
 	{
-		if (!$toolid) 
+		if (!$toolid)
 		{
 			return false;
 		}
-		if ($toolname or $vid) 
+		if ($toolname or $vid)
 		{
 			$query = "UPDATE #__tool_version SET unpublished='".JFactory::getDate()->toSql()."' WHERE ";
-			if ($toolname) 
+			if ($toolname)
 			{
 				$query .= "toolname=" . $this->_db->Quote($toolname) . " ";
 			}
-			else if ($vid) 
+			else if ($vid)
 			{
 				$query.= "id=" . $this->_db->Quote($vid) . " ";
 			}
 			$query .= "AND state='1'";
 			$this->_db->setQuery($query);
-			if ($this->_db->query()) 
-			{ 
+			if ($this->_db->query())
+			{
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			return false;
 		}
@@ -460,9 +460,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'unpublish'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      mixed $vid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -471,13 +471,13 @@ class ToolVersion extends  JTable
 	{
 		$xlog =  JFactory::getLogger();
 
-		if (!$toolid) 
+		if (!$toolid)
 		{
 			return false;
 		}
 
 		$query = "UPDATE #__tool_version SET state='0', unpublished='".JFactory::getDate()->toSql()."' WHERE ";
-		if (intval($vid)) 
+		if (intval($vid))
 		{
 			$query.= "id=" . $this->_db->Quote($vid) . " AND ";
 		}
@@ -487,11 +487,11 @@ class ToolVersion extends  JTable
 
 		$xlog->debug(__FUNCTION__ . "()  $query");
 
-		if ($this->_db->query()) 
-		{ 
+		if ($this->_db->query())
+		{
 			return true;
 		}
-		else 
+		else
 		{
 			return false;
 		}
@@ -499,9 +499,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'save'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $toolid Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
 	 * @param      integer $create_new Parameter description (if any) ...
@@ -512,25 +512,25 @@ class ToolVersion extends  JTable
 		die('1');
 		$xlog =  JFactory::getLogger();
 
-		if (!$this->toolid) 
+		if (!$this->toolid)
 		{
 			$this->toolid= $toolid;
 		}
-		if (!$this->toolid) 
+		if (!$this->toolid)
 		{
 			return false;
 		}
 
 		$query = "SELECT id FROM #__tool_version WHERE toolid=" . $this->_db->Quote($this->toolid);
-		if (!$version or $version=='dev') 
+		if (!$version or $version=='dev')
 		{
 			$query.= " AND state='3'";
 		}
-		else if ($version=='current') 
+		else if ($version=='current')
 		{
 			$query.= " AND state='1'";
 		}
-		else 
+		else
 		{
 			$query.= " AND version=" . $this->_db->Quote($version);
 		}
@@ -545,7 +545,7 @@ class ToolVersion extends  JTable
 
 		if ((!$result && $create_new) or $this->id)
 		{
-			if (!$this->store()) 
+			if (!$this->store())
 			{
 				$this->setError(JText::_('CONTRIBTOOL_ERROR_VERSION_UPDATE_FAILED'));
 				return false;
@@ -557,9 +557,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'store'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function store($updateNulls = false)
@@ -585,9 +585,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getToolVersions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      array &$versions Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
@@ -602,15 +602,15 @@ class ToolVersion extends  JTable
 
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
-		if ($toolid) 
+		if ($toolid)
 		{
 			$query .= "WHERE v.toolid = " . $this->_db->Quote($toolid) . " ";
-		} 
-		else if ($toolname) 
+		}
+		else if ($toolname)
 		{
 			$query .= "WHERE v.toolname = " . $this->_db->Quote($toolname) . " ";
 		}
-		if (($toolname or $toolid) && $exclude_dev) 
+		if (($toolname or $toolid) && $exclude_dev)
 		{
 			$query .= "AND v.state != '3'";
 		}
@@ -619,18 +619,18 @@ class ToolVersion extends  JTable
 		$this->_db->setQuery($query);
 		$versions = $this->_db->loadObjectList();
 
-		if ($versions) 
+		if ($versions)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
-			foreach ($versions as $version) 
+			foreach ($versions as $version)
 			{
 				// get list of authors
-				if ($version->state!=3) 
+				if ($version->state!=3)
 				{
 					$version->authors = $objA->getToolAuthors($version->id);
 				}
-				else 
+				else
 				{
 					$rid = ToolsModelTool::getResourceId($version->toolid);
 					$version->authors = $objA->getToolAuthors('dev', $rid);
@@ -643,9 +643,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getVersionInfo'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $id Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
@@ -660,27 +660,27 @@ class ToolVersion extends  JTable
 		$juser  = JFactory::getUser();
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
-		if ($id) 
+		if ($id)
 		{
 			$query .= "WHERE v.id = " . $this->_db->Quote($id) . " ";
 		}
-		else if ($version && $toolname) 
+		else if ($version && $toolname)
 		{
 			$query.= "WHERE v.toolname=" . $this->_db->Quote($toolname) . " ";
-			if ($version=='current') 
+			if ($version=='current')
 			{
 				$query .= "AND v.state=1 ORDER BY v.revision DESC LIMIT 1 ";
 			}
-			else if ($version=='dev') 
+			else if ($version=='dev')
 			{
 				$query .= "AND v.state=3 LIMIT 1";
 			}
-			else 
+			else
 			{
 				$query .= "AND v.version = " . $this->_db->Quote($version) . " ";
 			}
 		}
-		else if ($instance) 
+		else if ($instance)
 		{
 			$query .= "WHERE v.instance=" . $this->_db->Quote($instance) . " ";
 		}
@@ -690,9 +690,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'compileResource'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $thistool Parameter description (if any) ...
 	 * @param      mixed $curtool Parameter description (if any) ...
 	 * @param      mixed $resource Parameter description (if any) ...
@@ -702,13 +702,13 @@ class ToolVersion extends  JTable
 	 */
 	public function compileResource($thistool, $curtool='', $resource, $revision, $config)
 	{
-		if ($curtool) 
+		if ($curtool)
 		{
 		//print_r($thistool);
 			$resource->curversion    = $curtool->version;
 			$resource->currevision   = $curtool->revision;
 			$resource->cursource   	 = ($curtool->codeaccess=='@OPEN') ? 1: 0;
-			if (!$thistool) 
+			if (!$thistool)
 			{
 				$resource->revision      = $curtool->revision;
 				$revision 			 	 = $resource->revision;
@@ -726,7 +726,7 @@ class ToolVersion extends  JTable
 			}
 		}
 
-		if ($thistool) 
+		if ($thistool)
 		{
 			$resource->revision      = ($thistool) ? $thistool->revision : 1;
 			$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
@@ -743,7 +743,7 @@ class ToolVersion extends  JTable
 			$resource->doi 			 = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
 			$resource->doi_label 	 = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
 		}
-		else if (!$curtool) 
+		else if (!$curtool)
 		{
 			$resource->revision      = 1;
 			$revision 			 	 = $resource->revision;
@@ -778,9 +778,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'validLicense'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $toolname Parameter description (if any) ...
 	 * @param      array $license Parameter description (if any) ...
 	 * @param      string $code Parameter description (if any) ...
@@ -792,19 +792,19 @@ class ToolVersion extends  JTable
 	{
 		preg_replace('/\[([^]]+)\]/', ' ', $license['text'], -1, $bingo);
 
-		if (!$license['text']) 
+		if (!$license['text'])
 		{
 			$error = JText::_('ERR_LICENSE_EMPTY');
 		}
-		else if ($bingo) 
+		else if ($bingo)
 		{
 			$error = JText::_('ERR_LICENSE_DEFAULTS');
 		}
-		else if (!$license['authorize'] && $code=='@OPEN') 
+		else if (!$license['authorize'] && $code=='@OPEN')
 		{
 			$error = JText::_('ERR_LICENSE_AUTH_MISSING');
 		}
-		else 
+		else
 		{
 			$result = 1;
 		}
@@ -814,9 +814,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'validToolReg'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array &$tool Parameter description (if any) ...
 	 * @param      array &$err Parameter description (if any) ...
 	 * @param      string $id Parameter description (if any) ...
@@ -835,7 +835,7 @@ class ToolVersion extends  JTable
 		$query  = "SELECT t.id ";
 		$query .= "FROM #__tool as t ";
 		$query .= "WHERE t.toolname LIKE '" . $this->_db->getEscaped($tool['toolname']) . "' ";
-		if ($id) 
+		if ($id)
 		{
 			$query .= "AND t.id!=" . $this->_db->Quote($id) . " ";
 		}
@@ -843,104 +843,104 @@ class ToolVersion extends  JTable
 		$this->_db->setQuery($query);
 		$checker = $this->_db->loadResult();
 
-		if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id)) 
+		if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id))
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME_EXISTS');
 		}
-		else if (preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' && !$id) 
+		else if (preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' && !$id)
 		{
 			$err['toolname'] = JText::_('ERR_TOOLNAME');
 		}
 
-		// check if title can be used - tool table	
+		// check if title can be used - tool table
 		$query  = "SELECT title, toolname ";
 		$query .= "FROM #__tool ";
-		if ($id) 
+		if ($id)
 		{
 			$query .= "WHERE id!=" . $this->_db->Quote($id) . " ";
 		}
 
 		$this->_db->setQuery($query);
 		$rows = $this->_db->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
-			for ($i=0, $n=count($rows); $i < $n; $i++) 
+			for ($i=0, $n=count($rows); $i < $n; $i++)
 			{
-				if (strtolower($rows[$i]->title) == strtolower($tool['title']) 
-				 && $rows[$i]->toolname != $tool['toolname']) 
+				if (strtolower($rows[$i]->title) == strtolower($tool['title'])
+				 && $rows[$i]->toolname != $tool['toolname'])
 				{
 					$checker = 1;
 				}
 			}
 		}
 
-		$tool['toolname'] = strtolower($tool['toolname']);	// make toolname lower case by default	
+		$tool['toolname'] = strtolower($tool['toolname']);	// make toolname lower case by default
 
-		if ($checker) 
+		if ($checker)
 		{  // check if title exists for other tools
 			$err['title'] = JText::_('ERR_TITLE_EXISTS');
 		}
-		else if ($tool['title']=='') 
+		else if ($tool['title']=='')
 		{
 			$err['title'] = JText::_('ERR_TITLE');
 		}
 
-		if ($tool['description']=='') 
+		if ($tool['description']=='')
 		{
 			$err['description'] = JText::_('ERR_DESC');
 		}
 
-		if ($tool['version']) 
+		if ($tool['version'])
 		{
 			$this->validVersion($tool['toolname'], $tool['version'], $error_v, 0);
-			if ($error_v) 
+			if ($error_v)
 			{
 				$err['version'] = $error_v;
 			}
 		}
 
-		if ($tool['exec']=='') 
+		if ($tool['exec']=='')
 		{
 			$err['exec'] = JText::_('ERR_EXEC');
 		}
 
-		if ($tool['exec']=='@GROUP' && $tool['membergroups']=='') 
+		if ($tool['exec']=='@GROUP' && $tool['membergroups']=='')
 		{
 			$err['membergroups'] = JText::_('ERR_GROUPS_EMPTY');
 			$tool['membergroups'] = array();
 		}
-		else if ($tool['membergroups']=='' or $tool['exec']!='@GROUP') 
+		else if ($tool['membergroups']=='' or $tool['exec']!='@GROUP')
 		{
 			$tool['membergroups'] = array();
 		}
-		else if ($tool['exec']=='@GROUP') 
+		else if ($tool['exec']=='@GROUP')
 		{
 			$tool['membergroups'] = $tgObj->writeMemberGroups($tool['membergroups'], $id, $this->_db, $error_g);
-			if ($error_g) 
+			if ($error_g)
 			{
 				$err['membergroups'] = $error_g;
 			}
 		}
 
-		if ($tool['code']=='') 
+		if ($tool['code']=='')
 		{
 			$err['code'] = JText::_('ERR_CODE');
 		}
 
-		if ($tool['wiki']=='') 
+		if ($tool['wiki']=='')
 		{
 			$err['wiki'] = JText::_('ERR_WIKI');
 		}
 
-		if ($tool['developers']=='') 
+		if ($tool['developers']=='')
 		{
 			$tool['developers'] = array();
 			$err['developers'] =  JText::_('ERR_TEAM_EMPTY');
 		}
-		else 
+		else
 		{
 			$tool['developers'] = $tgObj->writeTeam($tool['developers'], $id, $this->_db, $error_t);
-			if ($error_t) 
+			if ($error_t)
 			{
 				$err['developers'] = $error_t;
 			}
@@ -948,21 +948,21 @@ class ToolVersion extends  JTable
 
 		// format some data
 		$vnc     = isset($config->parameters['default_vnc']) ? $config->parameters['default_vnc'] : '780x600';
-		if ($tool['vncGeometryX'] 
-		 && $tool['vncGeometryY'] 
-		 && !preg_match('#[^0-9]#', $tool['vncGeometryX']) 
-		 && !preg_match('#[^0-9]#', $tool['vncGeometryY'])) 
+		if ($tool['vncGeometryX']
+		 && $tool['vncGeometryY']
+		 && !preg_match('#[^0-9]#', $tool['vncGeometryX'])
+		 && !preg_match('#[^0-9]#', $tool['vncGeometryY']))
 		{
 			$tool['vncGeometry'] = $tool['vncGeometryX'] . 'x' . $tool['vncGeometryY'];
 		}
-		else 
+		else
 		{
 			$tool['vncGeometry'] = $vnc;
 		}
 
 		// return result and errors
-		if (count($err) > 0) 
-		{ 
+		if (count($err) > 0)
+		{
 			$result = 0;
 		}
 
@@ -971,9 +971,9 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'validVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $toolname Parameter description (if any) ...
 	 * @param      unknown $newversion Parameter description (if any) ...
 	 * @param      unknown &$error Parameter description (if any) ...
@@ -985,25 +985,25 @@ class ToolVersion extends  JTable
 	{
 		$toolhelper = new ToolsHelperUtils();
 
-		if ($required && !$newversion) 
+		if ($required && !$newversion)
 		{ // was left blank
 			$result = 0;
 			$error = JText::_('ERR_VERSION_BLANK');
 		}
-		else if ($toolhelper->check_validInput($newversion)) 
+		else if ($toolhelper->check_validInput($newversion))
 		{ // illegal characters
 			$result = 0;
 			$error = JText::_('ERR_VERSION_ILLEGAL');
 		}
-		else if ($required) 
+		else if ($required)
 		{
 			$this->getToolVersions('', $versions, $toolname, 1);
 
-			if ($versions) 
+			if ($versions)
 			{
-				foreach ($versions as $t) 
+				foreach ($versions as $t)
 				{
-					if (strtolower($t->version) == strtolower($newversion)) 
+					if (strtolower($t->version) == strtolower($newversion))
 					{
 						$result = 0;
 						$error = JText::_('ERR_VERSION_EXISTS');
@@ -1017,19 +1017,19 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getToolname'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $instance Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function getToolname($instance) 
+	public function getToolname($instance)
 	{
 		$database = JFactory::getDBO();
 		$query  = "SELECT toolname FROM #__tool_version WHERE instance=" . $this->_db->Quote($instance) . " LIMIT 1";
 		$this->_db->setQuery($query);
 		$toolname = $this->_db->loadResult();
-		if (!$toolname) 
+		if (!$toolname)
 		{
 			$toolname = $instance;
 		}
@@ -1038,14 +1038,14 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getCurrentVersionProperty'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCurrentVersionProperty($toolname, $property) 
+	public function getCurrentVersionProperty($toolname, $property)
 	{
 		$database = JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version  WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
@@ -1055,14 +1055,14 @@ class ToolVersion extends  JTable
 
 	/**
 	 * Short description for 'getDevVersionProperty'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getDevVersionProperty($toolname, $property) 
+	public function getDevVersionProperty($toolname, $property)
 	{
 		$database = JFactory::getDBO();
 		$query  = "SELECT " . $property . " FROM #__tool_version WHERE toolname=" . $this->_db->Quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";

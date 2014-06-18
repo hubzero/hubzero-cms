@@ -13,7 +13,7 @@ JHTML::_('behavior.tooltip');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -61,7 +61,7 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
-	
+
 	switch ($row['state'])
 	{
 		case 0: $state = 'unpublished'; break;

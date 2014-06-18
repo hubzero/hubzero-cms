@@ -38,10 +38,10 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
-		if (!$this->page->isStatic()) 
+		if (!$this->page->isStatic())
 		{
 			$view = new JView(array(
-				'base_path' => $this->base_path, 
+				'base_path' => $this->base_path,
 				'name'      => 'page',
 				'layout'    => 'authors'
 			));
@@ -61,7 +61,7 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));

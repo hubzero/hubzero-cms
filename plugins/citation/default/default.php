@@ -47,7 +47,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return file type
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function onImportAcceptedFiles()
@@ -57,9 +57,9 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onImport'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $file Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -72,7 +72,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 		$file_info = pathinfo($file['name']);
 
 		//only process acceptable files
-		if (!in_array($file_info['extension'], $acceptable)) 
+		if (!in_array($file_info['extension'], $acceptable))
 		{
 			return;
 		}
@@ -81,7 +81,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 		$raw_contents = file_get_contents($file['tmp_name']);
 
 		//check to see if this is endnote content
-		if (preg_match('/%A|%0|%T/', $raw_contents)) 
+		if (preg_match('/%A|%0|%T/', $raw_contents))
 		{
 			//load citation import plugins
 			JPluginHelper::importPlugin('citation');

@@ -38,7 +38,7 @@ class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display whose online
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -49,14 +49,14 @@ class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
 		{
 			$and = ' AND gid != "25"';
 		}
-		
+
 		// manager check
 		if ( $this->juser->get('gid') == 23 )
 		{
 			$and = ' AND gid != "25"';
 			$and .= ' AND gid != "24"';
 		}
-		
+
 		//get users online
 		$query = 'SELECT username, MAX(time) as time, userid, usertype, client_id'
 		. ' FROM #__session'
@@ -66,10 +66,10 @@ class MembersControllerWhosOnline extends \Hubzero\Component\AdminController
 		. ' ORDER BY time DESC';
 		$this->database->setQuery( $query );
 		$this->view->rows = $this->database->loadObjectList();
-		
+
 		//set juser object for view
 		$this->view->juser = $this->juser;
-		
+
 		// Output the HTML
 		$this->view->display();
 	}

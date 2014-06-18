@@ -41,7 +41,7 @@ class MiddlewareModelLocation extends MiddlewareModelBase
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'MwZoneLocations';
@@ -56,12 +56,12 @@ class MiddlewareModelLocation extends MiddlewareModelBase
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}

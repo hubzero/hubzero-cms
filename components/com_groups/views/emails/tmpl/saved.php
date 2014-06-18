@@ -255,7 +255,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 												</tr>
 											</tbody>
 										</table>
-										
+
 										<table width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background: #fff; ">
 											<tbody>
 												<tr>
@@ -275,7 +275,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		<?php echo $this->group->get('description'); ?>
 																	</td>
 																</tr>
-																
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -297,7 +297,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		<?php endif; ?>
 																	</td>
 																</tr>
-																
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -315,7 +315,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		<?php endif; ?>
 																	</td>
 																</tr>
-																
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -333,7 +333,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		<?php endif; ?>
 																	</td>
 																</tr>
-																
+
 																<?php if (!$this->group->isSuperGroup()) : ?>
 																	<tr>
 																		<td align="left">&nbsp;</td>
@@ -353,7 +353,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		</td>
 																	</tr>
 																<?php endif ;?>
-																
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -375,7 +375,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																			default: $policy = JText::_('Open'); break;
 																		}
 																		echo $policy;
-																		
+
 																		if ($this->group->get('join_policy') == 1)
 																		{
 																			echo '<br /><em>' . $this->group->get('restrict_msg') . '</em>';
@@ -383,8 +383,8 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		?>
 																	</td>
 																</tr>
-																
-																
+
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -407,7 +407,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		?>
 																	</td>
 																</tr>
-																
+
 																<tr>
 																	<td align="left">&nbsp;</td>
 																</tr>
@@ -427,7 +427,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																			'members' => 'Only Group Members',
 																			'nobody' => 'Disabled/Off'
 																		);
-																		
+
 																		// Get plugins
 																		JPluginHelper::importPlugin('groups');
 																		$dispatcher = JDispatcher::getInstance();
@@ -435,12 +435,12 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		array_unshift($group_plugins, array(
 																			'name'             => 'overview',
 																			'title'            => 'Overview',
-																			'default_access'   => 'anyone', 
+																			'default_access'   => 'anyone',
 																			'display_menu_tab' => true
 																		));
-																		
+
 																		$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
-																		
+
 																		foreach ($group_plugins as $plugin)
 																		{
 																			if ($plugin['display_menu_tab'] == 1)
@@ -454,7 +454,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 																<?php $params = JComponentHelper::getParams('com_groups'); ?>
-																
+
 																<?php if ($params->get('email_comment_processing')) :?>
 																	<tr>
 																		<td align="left">&nbsp;</td>
@@ -479,7 +479,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		</td>
 																	</tr>
 																<?php endif; ?>
-																
+
 															</tbody>
 														</table>
 													</td>

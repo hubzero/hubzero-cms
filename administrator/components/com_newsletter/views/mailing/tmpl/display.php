@@ -45,7 +45,7 @@ JToolBarHelper::preferences($this->option, '550');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'stop')
 	{
@@ -55,8 +55,8 @@ function submitbutton(pressbutton)
 			return;
 		}
 	}
-	
-	
+
+
 	// do field validation
 	submitform( pressbutton );
 }
@@ -93,8 +93,8 @@ function submitbutton(pressbutton)
 							<?php echo JHTML::_('date', $mailing->mailing_date, "F d, Y @ g:ia"); ?>
 						</td>
 						<td>
-							<?php 
-								if ($mailing->emails_total != 0) 
+							<?php
+								if ($mailing->emails_total != 0)
 								{
 									echo number_format(($mailing->emails_sent/$mailing->emails_total) * 100, 2) . ' %';
 								}

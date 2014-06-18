@@ -32,7 +32,7 @@
 					type="radio"
 					default="1"
 					label="MOD_SYNDICATE_FIELD_DISPLAYTEXT_LABEL"
-					description="MOD_SYNDICATE_FIELD_DISPLAYTEXT_DESC" 
+					description="MOD_SYNDICATE_FIELD_DISPLAYTEXT_DESC"
 					filter="integer">
 					<option
 						value="1">JYES</option>

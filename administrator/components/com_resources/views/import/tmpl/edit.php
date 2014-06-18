@@ -43,7 +43,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -113,9 +113,9 @@ function submitbutton(pressbutton)
 				</span>
 			</div>
 		</fieldset>
-		<?php 
+		<?php
 			// parse our hooks
-			$hooks              = json_decode($this->import->get('hooks')); 
+			$hooks              = json_decode($this->import->get('hooks'));
 			if (!is_object($hooks))
 			{
 				$hooks = new stdClass;
@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 							<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
 						<?php endforeach; ?>
 					<?php endif; ?>
-					
+
 					<?php foreach ($this->hooks as $hook): ?>
 						<?php if ($hook->get('type') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) { continue; } ?>
 						<option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
@@ -146,7 +146,7 @@ function submitbutton(pressbutton)
 				</select>
 				<a class="hook-up" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_UP'); ?>
-				</a> | 
+				</a> |
 				<a class="hook-down" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_DOWN'); ?>
 				</a><br />
@@ -163,7 +163,7 @@ function submitbutton(pressbutton)
 						<?php $importHook = $this->hooks->fetch('id', $hook); ?>
 						<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
 					<?php endforeach; ?>
-					
+
 					<?php foreach ($this->hooks as $hook): ?>
 						<?php if ($hook->get('type') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) { continue; } ?>
 						<option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
@@ -171,7 +171,7 @@ function submitbutton(pressbutton)
 				</select>
 				<a class="hook-up" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_UP'); ?>
-				</a> | 
+				</a> |
 				<a class="hook-down" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_DOWN'); ?>
 				</a><br />
@@ -195,7 +195,7 @@ function submitbutton(pressbutton)
 				</select>
 				<a class="hook-up" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_UP'); ?>
-				</a> | 
+				</a> |
 				<a class="hook-down" href="#">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_DOWN'); ?>
 				</a><br />
@@ -225,9 +225,9 @@ function submitbutton(pressbutton)
 				<label>
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS'); ?>
 				</label>
-				<?php 
+				<?php
 					$rconfig = JComponentHelper::getParams('com_resources');
-					echo ResourcesHtml::selectAccess($rconfig->get('accesses'), $this->params->get('access', 0), 'params[access]'); 
+					echo ResourcesHtml::selectAccess($rconfig->get('accesses'), $this->params->get('access', 0), 'params[access]');
 				?>
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?></span>
 			</div>
@@ -277,7 +277,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
 						<td>
-							<?php 
+							<?php
 								if ($created_by = Hubzero\User\Profile::getInstance($this->import->get('created_by')))
 								{
 									echo $created_by->get('name');

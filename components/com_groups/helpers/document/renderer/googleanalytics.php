@@ -41,13 +41,13 @@ class GroupsHelperDocumentRendererGoogleAnalytics extends GroupsHelperDocumentRe
 	public function render()
 	{
 		$js = '';
-		
+
 		// get the account
 		$account = (isset($this->params->account)) ? $this->params->account : null;
-		
+
 		// define tracker name
 		$name    = ($this->group) ? $this->group->get('cn') : 'newtracker';
-		
+
 		// if we have an account lets output
 		if ($account !== null)
 		{
@@ -59,11 +59,11 @@ class GroupsHelperDocumentRendererGoogleAnalytics extends GroupsHelperDocumentRe
 							return;
 						}
 						ga('create', '" . $account . "', 'auto', {'name': '" . $name . "'});
-						ga('" . $name . ".send', 'pageview');	
+						ga('" . $name . ".send', 'pageview');
 					}, 200);
 				</script>";
 		}
-		
+
 		return $js;
 	}
 }

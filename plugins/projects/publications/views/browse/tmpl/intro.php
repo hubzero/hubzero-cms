@@ -28,41 +28,41 @@ defined('_JEXEC') or die( 'Restricted access' );
 $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 ?>
 
-<?php if($outside) 
+<?php if($outside)
 {
 	?>
 	<div class="mysubmissions">
 <?php	if ($this->juser->get('guest'))
 	{
 		// Have user log in
-		echo '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' . 
+		echo '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' .
 		JRoute::_('index.php?option=com_publications' . a . 'task=submit' . a . 'action=login') . '">'
-		. JText::_('PLG_PROJECTS_PUBLICATIONS_LOGIN') . '</a> ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TO_VIEW_SUBMISSIONS') 
-		. '</p>';	
+		. JText::_('PLG_PROJECTS_PUBLICATIONS_LOGIN') . '</a> ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TO_VIEW_SUBMISSIONS')
+		. '</p>';
 	}
 	else {
 		// Display submissions if any ?>
 		<div id="mypub">
 			<div class="columns three first second">
-			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED_BY_ME'); ?>	
+			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED_BY_ME'); ?>
 				<?php if($this->mypubs_count > count($this->mypubs)) { ?>
-					<span class="rightfloat mini"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'.a.'limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' ' 
+					<span class="rightfloat mini"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'.a.'limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
 					. $this->mypubs_count . ' ' . strtolower(JText::_('PUBLICATIONS')) ; ?></a></span>
 				<?php } ?></h3>
 			<?php if(count($this->mypubs) > 0 ) { ?>
 				<ul class="mypubs">
-					<?php foreach($this->mypubs as $row) { 
+					<?php foreach($this->mypubs as $row) {
 						// Normalize type title
 						$cls = str_replace(' ', '', $row->cat_alias);
-						
-						$route = $row->project_provisioned 
+
+						$route = $row->project_provisioned
 									? 'index.php?option=com_publications' . a . 'task=submit'
 									: 'index.php?option=com_projects' . a . 'alias=' . $row->project_alias . a . 'active=publications';
 						$url = JRoute::_($route . a . 'pid=' . $row->id);
 						$preview = 	JRoute::_('index.php?option=com_publications'.a.'id='.$row->id);
-						
+
 						$status = PublicationHelper::getPubStateProperty($row, 'status', 0);
-						$class = PublicationHelper::getPubStateProperty($row, 'class');						
+						$class = PublicationHelper::getPubStateProperty($row, 'class');
 					?>
 					<li>
 						<span class="mypub-options">
@@ -70,44 +70,44 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 							<a href="<?php echo $url; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a>
 						</span>
 						<span class="mypub-status"><span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span></span>
-						<span class="mypub-version"><?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
+						<span class="mypub-version"><?php if($row->dev_version_label && $row->dev_version_label != $row->version_label)
 						{ echo '<span class="mypub-newversion"><a href="' . $url . '/?version=dev'
 						. '">v.' . $row->dev_version_label . '</a> '
 						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 						<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
 						<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 80); ?>
-						<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">' 
-						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' 
+						<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">'
+						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
 						. JRoute::_('index.php?option=com_projects' . a . 'alias=' . $row->project_alias) . '">'
 						. \Hubzero\Utility\String::truncate(stripslashes($row->project_title), 80) . '</a>' . '</span>'; } ?>
-					</li>	
+					</li>
 					<?php }?>
 				</ul>
-			<?php } else { 
+			<?php } else {
 				echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); } ?>
-			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COAUTHORED'); ?>	
+			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COAUTHORED'); ?>
 					<?php if($this->coauthored_count > count($this->coauthored)) { ?>
-						<span class="rightfloat mini"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'.a.'limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' ' 
+						<span class="rightfloat mini"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'.a.'limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
 						. $this->coauthored_count . ' ' . strtolower(JText::_('PUBLICATIONS')) ; ?></a></span>
 					<?php } ?></h3>
 			<?php if(count($this->coauthored) > 0 ) { ?>
 					<ul class="mypubs">
-						<?php foreach($this->coauthored as $row) { 
+						<?php foreach($this->coauthored as $row) {
 							// Normalize type title
 							$cls = str_replace(' ', '', $row->cat_alias);
 
-							$route = $row->project_provisioned 
+							$route = $row->project_provisioned
 										? 'index.php?option=com_publications' . a . 'task=submit'
 										: 'index.php?option=com_projects' . a . 'alias=' . $row->project_alias . a . 'active=publications';
 							$url = JRoute::_($route . a . 'pid=' . $row->id);
 							$preview = 	JRoute::_('index.php?option=com_publications'.a.'id='.$row->id);
 
 							$status = PublicationHelper::getPubStateProperty($row, 'status', 0);
-							$class = PublicationHelper::getPubStateProperty($row, 'class');	
-							
-							// Check team role	
+							$class = PublicationHelper::getPubStateProperty($row, 'class');
+
+							// Check team role
 							$pOwner = new ProjectOwner( $this->database );
-							$owner = $pOwner->isOwner($this->uid, $row->project_id); 								
+							$owner = $pOwner->isOwner($this->uid, $row->project_id);
 						?>
 						<li>
 							<span class="mypub-options">
@@ -115,21 +115,21 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 								<a href="<?php echo $url; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a><?php } ?>
 							</span>
 							<span class="mypub-status"><span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span></span>
-							<span class="mypub-version"><?php if($row->dev_version_label && $row->dev_version_label != $row->version_label) 
+							<span class="mypub-version"><?php if($row->dev_version_label && $row->dev_version_label != $row->version_label)
 							{ echo '<span class="mypub-newversion"><a href="' . $url . '/?version=dev'
 							. '">v.' . $row->dev_version_label . '</a> '
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 							<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
 							<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 80); ?>
-							<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">' 
-							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' 
+							<?php if($row->project_provisioned == 0) { echo '<span class="mypub-project">'
+							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
 							. JRoute::_('index.php?option=com_projects' . a . 'alias=' . $row->project_alias) . '">'
 							. \Hubzero\Utility\String::truncate(stripslashes($row->project_title), 80) . '</a>' . '</span>'; } ?>
-						</li>	
+						</li>
 						<?php }?>
 					</ul>
-			<?php } else { 
-				echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></span></p>'); } ?>	
+			<?php } else {
+				echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></span></p>'); } ?>
 			</div>
 			<div class="columns three third">
 				<div id="contrib-start">
@@ -148,10 +148,10 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pubconfig->get('documentation')) { ?>
 	<span class="learnmore"><a href="<?php echo $this->pubconfig->get('documentation'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
 	<?php } ?></h3>
-	
+
 	<div class="columns three first">
 		<h4><span class="num">1</span> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE'); ?></h4>
-		<p><?php echo $outside 
+		<p><?php echo $outside
 						? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT_OUTSIDE')
 						: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT'); ?></p>
 	</div>

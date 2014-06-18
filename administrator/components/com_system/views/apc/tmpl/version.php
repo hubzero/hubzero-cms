@@ -36,9 +36,9 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 
 <div role="navigation" class="sub-navigation">
 	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version" class="active">Version</a></li>
 	</ul>
@@ -47,7 +47,7 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<div class="info">
 		<h2>APC Version Information</h2>
-<?php 
+<?php
 	if (defined('PROXY'))
 	{
 		$ctxt = stream_context_create( array( 'http' => array( 'proxy' => PROXY, 'request_fulluri' => True ) ) );
@@ -75,7 +75,7 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 		}
 		else
 		{
-			echo '<p class="warning">You are running an older version of APC ('.$apcversion.'), 
+			echo '<p class="warning">You are running an older version of APC ('.$apcversion.'),
 				newer version '.$match[1].' is available at <a href="http://pecl.php.net/package/APC/'.$match[1].'">
 				http://pecl.php.net/package/APC/'.$match[1].'</a>
 				</p>';
@@ -95,7 +95,7 @@ JToolBarHelper::title(JText::_('APC Version Information'), 'config.png');
 			if ($i < 0 && version_compare($apcversion, $ver, '>='))
 			{
 				break;
-			} 
+			}
 			else if (!$i--)
 			{
 				break;

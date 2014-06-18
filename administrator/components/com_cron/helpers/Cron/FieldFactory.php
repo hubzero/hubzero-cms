@@ -27,9 +27,9 @@ class FieldFactory
 	 */
 	public function getField($position)
 	{
-		if (!isset($this->fields[$position])) 
+		if (!isset($this->fields[$position]))
 		{
-			switch ($position) 
+			switch ($position)
 			{
 				case 0:
 					$this->fields[$position] = new MinutesField();

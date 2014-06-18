@@ -28,17 +28,17 @@ $suggestions = $this->suggestions;
 
 $max_s = 4;
 $actual_s = count($suggestions) >= $max_s ? $max_s : count($suggestions);
-switch ($actual_s) 
+switch ($actual_s)
 {
-	case 2: 
-	default: $numcols = 'two'; break;			
+	case 2:
+	default: $numcols = 'two'; break;
 	case 3:	$numcols = 'three'; break;
 	case 4:	$numcols = 'four'; break;
 }
 ?>
 <?php if($actual_s > 1) { ?>
 	<div class="welcome">
-		<p class="closethis"><a href="<?php echo JRoute::_('index.php?option=' . $this->option 
+		<p class="closethis"><a href="<?php echo JRoute::_('index.php?option=' . $this->option
 		. a . 'alias=' . $this->project->alias . a . 'active=feed') . '?c=1'; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
 		<h3><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR') : JText::_('COM_PROJECTS_WELCOME_TO').' '.stripslashes($this->project->title).' '.JText::_('COM_PROJECTS_PROJECT').'!'; ?> </h3>
 		<p><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR') : JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS'); ?></p>

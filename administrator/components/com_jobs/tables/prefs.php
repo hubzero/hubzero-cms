@@ -38,28 +38,28 @@ class Prefs extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid		= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $filters	= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,21 +70,21 @@ class Prefs extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $uid      User ID
 	 * @param      string  $category Category
 	 * @return     boolean True upon success
 	 */
 	public function loadPrefs($uid, $category = 'resume')
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid) . " AND category=" . $this->_db->Quote($category) . " LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}

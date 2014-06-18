@@ -47,13 +47,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<div class="item-title">
 						<?php echo $category->get('title'); ?>
 					</div>
-					
+
 					<div class="item-sub">
 						<?php echo $category->getPages('count'); ?> Page(s)
 					</div>
-					
+
 					<div class="item-color" style="background-color: #<?php echo $category->get('color'); ?>"></div>
-					
+
 					<div class="item-controls btn-group dropdown">
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>" class="btn">
 							<?php echo JText::_('Manage Page Category'); ?>

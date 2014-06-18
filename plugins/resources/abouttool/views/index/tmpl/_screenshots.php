@@ -42,7 +42,7 @@ $path = Resourceshtml::build_path($this->created, $this->id, '');
 $tconfig = JComponentHelper::getParams('com_tools');
 $allowversions = $tconfig->get('screenshot_edit');
 
-if ($versionid && $allowversions) 
+if ($versionid && $allowversions)
 {
 	// Add version directory
 	$path .= DS . $versionid;
@@ -56,20 +56,20 @@ $all = array();
 $ordering = array();
 $html = '';
 
-if ($d) 
+if ($d)
 {
 	while (false !== ($entry = $d->read()))
 	{
 		$img_file = $entry;
-		if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file) 
-		 && substr($entry, 0, 1) != '.' 
-		 && strtolower($entry) !== 'index.html') 
+		if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file)
+		 && substr($entry, 0, 1) != '.'
+		 && strtolower($entry) !== 'index.html')
 		{
-			if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) 
+			if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file))
 			{
 				$images[] = $img_file;
 			}
-			if (preg_match("/-tn/i", $img_file)) 
+			if (preg_match("/-tn/i", $img_file))
 			{
 				$tns[] = $img_file;
 			}
@@ -81,7 +81,7 @@ if ($d)
 }
 
 $b = 0;
-if ($images) 
+if ($images)
 {
 	foreach ($images as $ima)
 	{
@@ -90,11 +90,11 @@ if ($images)
 		$new['type'] = explode('.', $new['img']);
 
 		// get title and ordering info from the database, if available
-		if (count($sinfo) > 0) 
+		if (count($sinfo) > 0)
 		{
 			foreach ($sinfo as $si)
 			{
-				if ($si->filename == $ima) 
+				if ($si->filename == $ima)
 				{
 					$new['title'] = stripslashes($si->title);
 					$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
@@ -113,8 +113,8 @@ if (count($sinfo) > 0)
 {
 	// Sort by ordering
 	array_multisort($ordering, $all);
-} 
-else 
+}
+else
 {
 	// Sort by name
 	sort($all);
@@ -129,9 +129,9 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 	$tn = ResourcesHtml::thumbnail($images[$i]['img']);
 	$els .=  ($this->slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
 
-	if (is_file(JPATH_ROOT . $upath . $path . DS . $tn)) 
+	if (is_file(JPATH_ROOT . $upath . $path . DS . $tn))
 	{
-		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') 
+		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{
 			$g++;
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
@@ -139,8 +139,8 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 			$els .= ' <a class="popup" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
 			$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 			$els .= $this->slidebar ? '' : '</li>' . "\n";
-		} 
-		else 
+		}
+		else
 		{
 			$k++;
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;

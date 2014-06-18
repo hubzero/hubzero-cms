@@ -38,7 +38,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -113,7 +113,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add a new type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -123,7 +123,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -173,7 +173,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -281,7 +281,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Strip any non-alphanumeric characters and make lowercase
-	 * 
+	 *
 	 * @param      string  $txt    String to normalize
 	 * @param      boolean $dashes Allow dashes and underscores
 	 * @return     string
@@ -298,7 +298,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more types
-	 * 
+	 *
 	 * @return     void Redirects back to main listing
 	 */
 	public function removeTask()
@@ -359,7 +359,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	{
 		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
 	}
-	
+
 	/**
 	 * Retrieve an element's options (typically called via AJAX)
 	 *

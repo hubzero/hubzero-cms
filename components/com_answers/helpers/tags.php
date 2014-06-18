@@ -40,7 +40,7 @@ class AnswersTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -57,7 +57,7 @@ class AnswersTags extends TagsHandler
 	 * 1) First, check if the tag already exists
 	 *    a) if not, creates a database entry for the tag
 	 * 2) Adds a reference linking tag with object
-	 * 
+	 *
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $object_id Object ID
 	 * @param      string  $tag       Tag
@@ -66,13 +66,13 @@ class AnswersTags extends TagsHandler
 	 */
 	public function safe_tag($tagger_id, $object_id, $tag, $strength=1, $label='', $admintag=0)
 	{
-		if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) 
+		if (!isset($tagger_id) || !isset($object_id) || !isset($tag))
 		{
 			$this->setError('safe_tag argument missing');
 			return false;
 		}
 
-		if ($this->normalize_tag($tag) === '0') 
+		if ($this->normalize_tag($tag) === '0')
 		{
 			return true;
 		}
@@ -85,30 +85,30 @@ class AnswersTags extends TagsHandler
 		// First see if the tag exists.
 		$t = new TagsTableTag($this->_db);
 		$t->loadTag($t->normalize($tag));
-		if (!$t->id) 
+		if (!$t->id)
 		{
-			// Add new tag! 
+			// Add new tag!
 			$t->tag     = $t->normalize($tag);
 			$t->raw_tag = addslashes($tag);
 			$t->admin   = $admintag;
 
-			if (!$t->store()) 
+			if (!$t->store())
 			{
 				$this->setError($t->getError());
 				return false;
 			}
-			if (!$t->id) 
+			if (!$t->id)
 			{
 				return false;
 			}
 			$to->tagid = $t->id;
-		} 
-		else 
+		}
+		else
 		{
 			$to->tagid = $t->id;
 
 			// Check if the object has already been tagged
-			if ($to->getCountForObject() > 0) 
+			if ($to->getCountForObject() > 0)
 			{
 				return true;
 			}
@@ -119,7 +119,7 @@ class AnswersTags extends TagsHandler
 		$to->taggerid = $tagger_id;
 		$to->taggedon = JFactory::getDate()->toSql();
 
-		if (!$to->store()) 
+		if (!$to->store())
 		{
 			$this->setError($to->getError());
 			return false;

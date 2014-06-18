@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $dcls = '';
 $lcls = '';
 
-if ($this->item->get('vote', null)) 
+if ($this->item->get('vote', null))
 {
 	switch ($this->item->get('vote'))
 	{
@@ -53,13 +53,13 @@ if ($this->item->get('vote', null))
 }
 
 $juser = JFactory::getUser();
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$like_title    = JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $this->item->get('helpful', 0));
 	$dislike_title = JText::sprintf('COM_ANSWERS_VOTE_DISLIKE_TITLE', $this->item->get('nothelpful', 0));
 	$cls = ' tooltips';
-} 
-else 
+}
+else
 {
 	$like_title    = JText::_('COM_ANSWERS_VOTE_LIKE_LOGIN');;
 	$dislike_title = JText::_('COM_ANSWERS_VOTE_DISLIKE_LOGIN');;

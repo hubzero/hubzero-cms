@@ -39,7 +39,7 @@ class Twitter extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -52,7 +52,7 @@ class Twitter extends Macro
 							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
 						</ul>
 						<p>Displays:</p>
-						<a class="twitter-timeline" 
+						<a class="twitter-timeline"
 							href="https://twitter.com/"
 							data-widget-id="346714310770302976"
 							data-screen-name="hubzeroplatform"
@@ -60,30 +60,30 @@ class Twitter extends Macro
 							data-chrome=""
 							>Loading Tweets...</a>
 						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
-		
+
 		return $txt['html'];
 	}
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		//get the args passed in
 		$args = explode(',', $this->args);
-		
+
 		//get screen name & num tweets
 		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
 		$numItems   = (isset($args[1]) && is_numeric($args[1])) ? $args[1] : 3;
-		
+
 		//make sure we have a user name
 		if ($screenName == '')
 		{
 			return "(Please enter a valid Twitter Username or ID)";
 		}
-		
+
 		//output embeded timeline
 		return '<a class="twitter-timeline"
 					href="https://twitter.com/'. $screenName .'"

@@ -34,11 +34,11 @@ class ResourcesHelperPermissions
 {
 	/**
 	 * Name of the component
-	 * 
+	 *
 	 * @var string
 	 */
 	public static $extension = 'com_resources';
-	
+
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
@@ -60,12 +60,12 @@ class ResourcesHelperPermissions
 				'admin', 'manage', 'create', 'edit', 'edit.state', 'delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
 			}
 		}
-		else 
+		else
 		{
 			$assetName .= '.' . $assetType;
 			if ($assetId) {
@@ -76,7 +76,7 @@ class ResourcesHelperPermissions
 				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set($action, $user->authorise($action, $assetName));
 			}

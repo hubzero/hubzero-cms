@@ -36,16 +36,16 @@ jimport('joomla.plugin.plugin');
 /**
  * MaxMind plugin for geocode
  *
- * The MaxMindProvider named maxmind is able to geocode IPv4 and 
- * IPv6 addresses only. A valid City/ISP/Org or Omni service's api 
- * key is required. This provider provides two constants 
+ * The MaxMindProvider named maxmind is able to geocode IPv4 and
+ * IPv6 addresses only. A valid City/ISP/Org or Omni service's api
+ * key is required. This provider provides two constants
  * CITY_EXTENDED_SERVICE by default and OMNI_SERVICE.
  */
 class plgGeocodeMaxmind extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

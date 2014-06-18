@@ -54,7 +54,7 @@ class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 	public function stringToObject($data, $options = array('processSections' => false))
 	{
 		// Fix legacy API.
-		if (is_bool($options)) 
+		if (is_bool($options))
 		{
 			$options = array('processSections' => $options);
 
@@ -63,12 +63,12 @@ class ResourcesElementsFormatJSON extends ResourcesElementsFormat
 		}
 
 		$data = trim($data);
-		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}')) 
+		if ((substr($data, 0, 1) != '{') && (substr($data, -1, 1) != '}'))
 		{
 			$ini = ResourcesElementsFormat::getInstance('INI');
 			$obj = $ini->stringToObject($data, $options);
-		} 
-		else 
+		}
+		else
 		{
 			$obj = json_decode($data);
 		}

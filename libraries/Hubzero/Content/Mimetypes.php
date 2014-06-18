@@ -4,19 +4,19 @@
  * @author		Shawn Rice <zooley@purdue.edu> based on work by Robert Widdick
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- * 
+ *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -31,7 +31,7 @@ class Mimetypes
 {
 	/**
 	 * Define some private variables
-	 * 
+	 *
 	 * @var array
 	 */
 	private $mimeTypes = array(
@@ -750,7 +750,7 @@ class Mimetypes
 
 	/**
 	 * Free up some memory
-	 * 
+	 *
 	 * @return void
 	 */
 	public function __destruct()
@@ -760,13 +760,13 @@ class Mimetypes
 
 	/**
 	 * Retrieve the corresponding MIME type, if one exists
-	 * 
+	 *
 	 * @param  String $file File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
 	 * @return String $MIMEType - The type of the file passed in the argument
 	 */
 	public function getMimeType($file = NULL)
 	{
-		if (is_file($file)) 
+		if (is_file($file))
 		{
 			$extension = $this->_getExtension($file);
 
@@ -774,37 +774,37 @@ class Mimetypes
 			// If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
 			// If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
 			// If all else fails, just return application/octet-stream
-			if (!function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx'))) 
+			if (!function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx')))
 			{
-				if (array_key_exists($extension, $this->mimeTypes)) 
+				if (array_key_exists($extension, $this->mimeTypes))
 				{
 					return $this->mimeTypes[$extension];
-				} 
-				else 
+				}
+				else
 				{
-					if (function_exists('mime_content_type')) 
+					if (function_exists('mime_content_type'))
 					{
 						$type = mime_content_type($file);
 						return !empty($type) ? $type : 'application/octet-stream';
-					} 
-					else 
+					}
+					else
 					{
 						return 'application/octet-stream';
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$finfo = finfo_open(FILEINFO_MIME);
 				$MIMEType = finfo_file($finfo, $file);
 				finfo_close($finfo);
 				return $MIMEType;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$extension = $this->_getExtension($file);
-			if (array_key_exists($extension, $this->mimeTypes)) 
+			if (array_key_exists($extension, $this->mimeTypes))
 			{
 				return $this->mimeTypes[$extension];
 			}
@@ -820,7 +820,7 @@ class Mimetypes
 	 */
 	private function _getExtension($file = NULL)
 	{
-		if (!is_null($file)) 
+		if (!is_null($file))
 		{
 			$dot = strrpos($file, '.') + 1;
 

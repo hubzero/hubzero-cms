@@ -35,26 +35,26 @@ $canDo = MembersHelper::getActions('component');
 $juser =  JFactory::getUser();
 
 JToolBarHelper::title(JText::_('MEMBERS'), 'user.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList('confirm', JText::_('Confirm'));
 	JToolBarHelper::unpublishList('unconfirm', JText::_('Unconfirm'));
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	//JToolBarHelper::deleteList();
 }
@@ -62,7 +62,7 @@ if ($canDo->get('core.delete'))
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -86,10 +86,10 @@ function submitbutton(pressbutton)
 				<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
 				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
 			</select>
-			
-			<label for="filter_search"><?php echo JText::_('for'); ?></label> 
+
+			<label for="filter_search"><?php echo JText::_('for'); ?></label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
-			
+
 			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 		</div>
 		<div class="col width-60 fltrt">
@@ -142,15 +142,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	$row = &$this->rows[$i];
 
-	if (!$row->surname && !$row->givenName) 
+	if (!$row->surname && !$row->givenName)
 	{
 		$bits = explode(' ', $row->name);
 		$row->surname = array_pop($bits);
-		if (count($bits) >= 1) 
+		if (count($bits) >= 1)
 		{
 			$row->givenName = array_shift($bits);
 		}
-		if (count($bits) >= 1) 
+		if (count($bits) >= 1)
 		{
 			$row->middleName = implode(' ', $bits);
 		}
@@ -158,7 +158,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row->surname = (trim($row->surname)) ? trim($row->surname) : JText::_('[undefined]');
 	$row->givenName = (trim($row->givenName)) ? trim($row->givenName) : JText::_('[undefined]');
 
-	switch ($row->emailConfirmed) 
+	switch ($row->emailConfirmed)
 	{
 		case '1':
 			$task = 'unconfirm';
@@ -180,22 +180,22 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 	}
 
-	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00") 
+	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00")
 	{
 		$lvisit = '<span class="never" style="color:#bbb;">' . JText::_('never') . '</span>';
-	} 
-	else 
+	}
+	else
 	{
 		$lvisit = JHTML::_('date', $row->lastvisitDate, 'Y-m-d');
 	}
-	
+
 	if ($row->picture)
 	{
 		$thumb  = DS . trim($this->config->get('webpath'), DS);
 		$thumb .= DS . \Hubzero\User\Profile\Helper::niceidformat($row->uidNumber);
 		$thumb .= DS . ltrim($row->picture, DS);
 		$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
-		
+
 		if (file_exists(JPATH_ROOT . $thumb))
 		{
 			$picture = $thumb;

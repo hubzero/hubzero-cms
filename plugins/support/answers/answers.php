@@ -45,7 +45,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $category Element type (determines table to look in)
 	 * @param      string $parent   If the element has a parent element
@@ -53,7 +53,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'answer' && $category != 'question') // && $category != 'answercomment' 
+		if ($category != 'answer' && $category != 'question') // && $category != 'answercomment'
 		{
 			return null;
 		}
@@ -85,7 +85,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $key => $row)
 			{
@@ -110,7 +110,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Looks up ancestors to find root element
-	 * 
+	 *
 	 * @param      integer $parentid ID to check for parents of
 	 * @param      string  $category Element type (determines table to look in)
 	 * @return     integer
@@ -120,7 +120,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
-		if ($category == 'answercomment') 
+		if ($category == 'answercomment')
 		{
 			$database->setQuery("SELECT item_id FROM `#__item_comments` WHERE id=" . $refid);
 			$response = $database->loadResult();
@@ -129,13 +129,13 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			return $database->loadResult();
 		}
 
-		if ($category == 'answer') 
+		if ($category == 'answer')
 		{
 			$database->setQuery("SELECT question_id FROM `#__answers_responses` WHERE id=" . $refid);
 		 	return $database->loadResult();
 		}
 
-		if ($category == 'question') 
+		if ($category == 'question')
 		{
 		 	return $refid;
 		}
@@ -143,7 +143,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve parent element
-	 * 
+	 *
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     object
 	 */
@@ -159,14 +159,14 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Returns the appropriate text for category
-	 * 
+	 *
 	 * @param      string  $category Element type (determines text)
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     string
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') 
+		if ($category != 'answer' && $category != 'question' && $category != 'answercomment')
 		{
 			return null;
 		}
@@ -189,7 +189,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Removes an item reported as abusive
-	 * 
+	 *
 	 * @param      integer $referenceid ID of the database table row
 	 * @param      integer $parentid    If the element has a parent element
 	 * @param      string  $category    Element type (determines table to look in)
@@ -198,7 +198,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'answer' && $category != 'question' && $category != 'answercomment') 
+		if ($category != 'answer' && $category != 'question' && $category != 'answercomment')
 		{
 			return null;
 		}
@@ -210,7 +210,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		{
 			case 'answer':
 				$database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $referenceid);
-				if (!$database->query()) 
+				if (!$database->query())
 				{
 					$this->setError($database->getErrorMsg());
 					return false;
@@ -224,7 +224,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 				$banking = $upconfig->get('bankAccounts');
 
 				$reward = 0;
-				if ($banking) 
+				if ($banking)
 				{
 					$reward = $this->getReward($parentid);
 				}
@@ -234,13 +234,13 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 				$database->setQuery("SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid);
 				$answers = $database->loadObjectList();
 
-				if ($answers) 
+				if ($answers)
 				{
 					foreach ($answers as $answer)
 					{
 						// Delete response
 						$database->setQuery("UPDATE `#__answers_responses` SET state='2' WHERE id=" . $answer->id);
-						if (!$database->query()) 
+						if (!$database->query())
 						{
 							$this->setError($database->getErrorMsg());
 							return false;
@@ -252,23 +252,23 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 				}
 
 				$database->setQuery("UPDATE `#__answers_questions` SET state='2', reward='0' WHERE id=" . $referenceid);
-				if (!$database->query()) 
+				if (!$database->query())
 				{
 					$this->setError($database->getErrorMsg());
 					return false;
 				}
 
-				if ($banking && $reward) 
+				if ($banking && $reward)
 				{
 					// Send email to people who answered question with reward
-					if ($responders) 
+					if ($responders)
 					{
 						foreach ($responders as $r)
 						{
 							$zuser = JUser::getInstance($r);
-							if (is_object($zuser)) 
+							if (is_object($zuser))
 							{
-								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email) 
+								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email)
 								{
 									$jconfig = JFactory::getConfig();
 
@@ -276,7 +276,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 									$sub  = JText::sprintf('PLG_SUPPORT_ANSWERS_SUBJECT', $jconfig->getValue('config.sitename'), $referenceid);
 									$from = JText::sprintf('PLG_SUPPORT_ANSWERS_TITLE', $jconfig->getValue('config.sitename'));
 									$hub  = array(
-										'email' => $admin_email, 
+										'email' => $admin_email,
 										'name'  => $from
 									);
 
@@ -294,20 +294,20 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					$database->setQuery("SELECT created_by FROM `#__answers_questions` WHERE id=" . $parentid);
 					$asker = $database->loadResult();
 
-					if ($asker) 
+					if ($asker)
 					{
 						$quser = JUser::getInstance($asker);
-						if (is_object($quser)) 
+						if (is_object($quser))
 						{
 							$asker_id = $quser->get('id');
 						}
 
-						if (isset($asker_id)) 
+						if (isset($asker_id))
 						{
-							// Remove hold 
+							// Remove hold
 							$sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $parentid . " AND uid='" . $asker_id . "'";
 							$database->setQuery($sql);
-							if (!$database->query()) 
+							if (!$database->query())
 							{
 								$this->setError($database->getErrorMsg());
 								return false;
@@ -329,7 +329,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 				$comment = new \Hubzero\Item\Comment($database);
 				$comment->load($referenceid);
 				$comment->state = 2;
-				if (!$comment->store()) 
+				if (!$comment->store())
 				{
 					$this->setError($comment->getError());
 					return false;
@@ -344,7 +344,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieves the reward (points) value on an item
-	 * 
+	 *
 	 * @param      integer $id ID of item to look up
 	 * @return     integer
 	 */
@@ -352,7 +352,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		// check if question owner assigned a reward for answering his Q 
+		// check if question owner assigned a reward for answering his Q
 		$sql = "SELECT amount FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $id;
 		$database->setQuery($sql);
 

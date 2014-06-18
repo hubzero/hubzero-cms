@@ -43,7 +43,7 @@ class Migration20140311150000ComFeedaggregator extends Base
 		}
 
 		if (!empty($query))
-		{   
+		{
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

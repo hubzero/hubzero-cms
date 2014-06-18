@@ -207,7 +207,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 				{
 					$this->keystring .= $allowed_symbols{mt_rand(0,strlen($allowed_symbols)-1)};
 				}
-				if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring)) 
+				if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring))
 				{
 					break;
 				}
@@ -433,7 +433,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 		// Let's generate a totally random string using md5
 		$md5_hash = md5(rand(0,999));
 
-		// We don't need a 32 character long string so we trim it down to 5 
+		// We don't need a 32 character long string so we trim it down to 5
 		$security_code = str_replace(array("0","O","o"), array("p"), substr($md5_hash, 15, 5));
 
 		// Set the session to store the security code
@@ -452,7 +452,7 @@ class plgHubzeroImagecaptcha extends \Hubzero\Plugin\Plugin
 		$black = imagecolorallocate($image, $background_color[0], $background_color[1], $background_color[2]);
 		$grey = imagecolorallocate($image, 204, 204, 204);
 
-		// Make the background black 
+		// Make the background black
 		imagefill($image, 0, 0, $black);
 
 		$size = 10;

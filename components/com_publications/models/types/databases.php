@@ -35,261 +35,261 @@ defined('_JEXEC') or die( 'Restricted access' );
  * DATABASES master type helper class
  */
 class typeDatabases extends JObject
-{	
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_database       	= NULL;
-	
+
 	/**
 	 * Project
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_project      	 	= NULL;
-	
+
 	/**
 	 * Base alias
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $_base   		 	= 'databases';
 
 	/**
 	 * Attachment type
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_attachmentType 	= 'data';
-	
+
 	/**
 	 * Selection type (single/multi)
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_multiSelect 	 	= false;
-	
+
 	/**
 	 * Allow change to selection after draft is started?
-	 * 
+	 *
 	 * @var boolean
 	 */
-	var $_changeAllowed  	= false;	
-	
-	
+	var $_changeAllowed  	= false;
+
+
 	/**
 	 * Allow to create a new publication with exact same content?
-	 * 
+	 *
 	 * @var boolean
 	 */
-	var $_allowDuplicate  	= false;		
-	
+	var $_allowDuplicate  	= false;
+
 	/**
 	 * Unique attachment properties
-	 * 
+	 *
 	 * @var array
 	 */
 	var $_attProperties 	= array('object_name', 'object_revision');
-	
+
 	/**
 	 * Data
-	 * 
+	 *
 	 * @var array
 	 */
-	var $_data   		 = array();	
-	
+	var $_data   		 = array();
+
 	/**
 	 * Serve as (default value)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveas   	= 'external';
-	
+
 	/**
 	 * Serve as choices
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveChoices  = array('external');
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      	 JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $project = NULL, $data = array() )
 	{
 		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
 	}
-	
+
 	/**
 	 * Set
-	 * 
+	 *
 	 * @param      string 	$property
 	 * @param      string 	$value
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
+
 	/**
 	 * Get
-	 * 
+	 *
 	 * @param      string 	$property
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
 	}
-	
+
 	/**
 	 * Dispatch task
-	 * 
-	 * @param      string  $task 
+	 *
+	 * @param      string  $task
 	 * @return     void
-	 */	
+	 */
 	public function dispatch( $task = NULL )
 	{
 		$output 		 = NULL;
-		
-		switch ( $task ) 
+
+		switch ( $task )
 		{
-			case 'getServeAs': 								
-				$output = $this->_getServeAs(); 		
+			case 'getServeAs':
+				$output = $this->_getServeAs();
 				break;
-				
-			case 'checkContent': 								
-				$output = $this->_checkContent(); 		
+
+			case 'checkContent':
+				$output = $this->_checkContent();
 				break;
-				
-			case 'checkMissing': 								
-				$output = $this->_checkMissing(); 		
+
+			case 'checkMissing':
+				$output = $this->_checkMissing();
 				break;
-				
-			case 'drawItem': 								
-				$output = $this->_drawItem(); 		
+
+			case 'drawItem':
+				$output = $this->_drawItem();
 				break;
-				
-			case 'saveAttachments': 								
-				$output = $this->_saveAttachments(); 		
+
+			case 'saveAttachments':
+				$output = $this->_saveAttachments();
 				break;
-				
-			case 'publishAttachments': 								
-				$output = $this->_publishAttachments(); 		
+
+			case 'publishAttachments':
+				$output = $this->_publishAttachments();
 				break;
-			
+
 			case 'getPubTitle':
 				$output = $this->_getPubTitle();
-		
+
 			default:
 				break;
 		}
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Get serveas options (_showOptions function in plg_projects_publications)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getServeAs()
 	{
 		$result = array('serveas' => $this->_serveas, 'choices' => $this->_serveChoices);
 
 		return $result;
 	}
-	
+
 	/**
 	 * Get publication title for newly created draft
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getPubTitle($title = '')
 	{
 		// Incoming data
 		$item = $this->__get('item');
-		
+
 		// Get project database object
 		$objPD = new ProjectDatabase($this->_database);
 		if ($objPD->loadRecord($item))
 		{
 			$title = $objPD->title;
 		}
-				
+
 		return $title;
-		
+
 	}
-	
+
 	/**
 	 * Check content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkContent()
 	{
 		// Incoming data
 		$attachments = $this->__get('attachments');
-		
+
 		if ($attachments && count($attachments) > 0)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Check missing content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkMissing()
 	{
 		// Incoming data
 		$item  = $this->__get('item');
-		
+
 		if (!$item)
 		{
 			return false;
 		}
-		
+
 		$dataid = $item->object_id;
 		$dbName = $item->object_name;
-		
+
 		$data = new ProjectDatabase($this->_database);
 		if (!$data->loadRecord($dbName))
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Draw selected item html
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _drawItem()
 	{
 		// Incoming data
 		$att   		= $this->__get('att');
 		$item   	= $this->__get('item');
-		
+
 		$dbName = $att->id ? $att->object_name : $item;
-		
+
 		$data = new ProjectDatabase($this->_database);
 		if (!$data->loadRecord($dbName))
 		{
@@ -297,22 +297,22 @@ class typeDatabases extends JObject
 		}
 
 		$title = $att->title ? $att->title : $data->title;
-		
+
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		if ($data->source_file) {
-		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE') 
+		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE')
 			. ': ' . ProjectsHtml::shortenFileName($data->source_file, 40) . '</span>';
 		}
 
 		return $html;
-	
+
 	}
-	
+
 	/**
 	 * Save picked items as publication attachments
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _saveAttachments()
 	{
 		// Incoming data
@@ -328,29 +328,29 @@ class typeDatabases extends JObject
 		$state  		= $this->__get('state');
 		$secret  		= $this->__get('secret');
 		$newpub  		= $this->__get('newpub');
-		
-		if (isset($selections['databases']) && count($selections['databases']) > 0 ) 
+
+		if (isset($selections['databases']) && count($selections['databases']) > 0 )
 		{
 			$database_name = $selections['databases'][0];
 			$dbVersion = NULL;
-			
+
 			// Get database object and load record
 			$objData = new ProjectDatabase($this->_database);
 			$objData->loadRecord($database_name);
-			
+
 			// Load component configs
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$config = JComponentHelper::getParams( 'com_projects' );
-			
+
 			// Get databases plugin
 			JPluginHelper::importPlugin( 'projects', 'databases');
 			$dispatcher = JDispatcher::getInstance();
-			
+
 			// Get publications helper
 			$helper = new PublicationHelper($this->_database, $vid, $pid);
-			
+
 			$objPA = new PublicationAttachment( $this->_database );
-			
+
 			// Original database not found
 			if (!$objData->id)
 			{
@@ -365,29 +365,29 @@ class typeDatabases extends JObject
 					return true;
 				}
 			}
-						
+
 			// Build publication path
 			$base_path 		= $pubconfig->get('webpath');
 			$publishPath 	= $helper->buildPath($pid, $vid, $base_path, 'data', 1);
-			$pPath 			= JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid) 
+			$pPath 			= JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid)
 							. '/?vid=' . $vid . a . 'task=serve';
-			
+
 			// Create new version path
-			if (!is_dir( $publishPath )) 
+			if (!is_dir( $publishPath ))
 			{
-				if (!JFolder::create( $publishPath )) 
+				if (!JFolder::create( $publishPath ))
 				{
 					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 					return '<p class="error">' . $this->getError() . '</p>';
 				}
 			}
-			
+
 			// First-time clone
 			if ($newpub)
 			{
 				$result = $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
 				$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
-				
+
 				// Failed to clone
 				if (!$dbVersion)
 				{
@@ -395,9 +395,9 @@ class typeDatabases extends JObject
 					return false;
 				}
 			}
-						
+
 			// Save attachment data
-			if ($objPA->loadAttachment($vid, $database_name, $this->_attachmentType)) 
+			if ($objPA->loadAttachment($vid, $database_name, $this->_attachmentType))
 			{
 				$rtime = $objPA->modified ? strtotime($objPA->modified) : NULL;
 				if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime )
@@ -406,7 +406,7 @@ class typeDatabases extends JObject
 					$result 			= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
 					$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 					$objPA->modified_by = $uid;
-					$objPA->modified 	= JFactory::getDate()->toSql();					
+					$objPA->modified 	= JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -414,7 +414,7 @@ class typeDatabases extends JObject
 					$dbVersion = $objPA->object_revision;
 				}
 			}
-			else 
+			else
 			{
 				$objPA = new PublicationAttachment( $this->_database );
 				$objPA->publication_id 			= $pid;
@@ -422,69 +422,69 @@ class typeDatabases extends JObject
 				$objPA->type 					= $this->_attachmentType;
 				$objPA->created_by 				= $uid;
 				$objPA->created 				= JFactory::getDate()->toSql();
-			}			
-			
+			}
+
 			// We do need a revision number!
 			if (!$dbVersion)
 			{
 				return false;
 			}
-			
-			// NEW determine accompanying files and copy them in the right location				
+
+			// NEW determine accompanying files and copy them in the right location
 			$this->_publishDataFiles($objData, $publishPath);
-			
+
 			// Save object information
 			$objPA->object_id   	= $objData->id;
 			$objPA->object_name 	= $database_name;
 			$objPA->object_revision = $dbVersion;
-			
+
 			// Build link path
-			$objPA->path 			= 'dataviewer' . DS . 'view' . DS . 'publication:dsl' 
+			$objPA->path 			= 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
 										. DS . $database_name . DS . '?v=' . $dbVersion;
-					
+
 			$objPA->ordering 		= $added;
 			$objPA->role 			= $primary;
 			$objPA->title 			= $objPA->title ? $objPA->title : $objData->title;
 			$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-			if ($objPA->store()) 
+
+			if ($objPA->store())
 			{
 				$added++;
-			}			
+			}
 		}
-		
+
 		return $added;
 	}
-	
+
 	/**
 	 * Publish supporting database files
-	 * 
+	 *
 	 * @param      object  	$objPD
 	 *
 	 * @return     boolean or error
 	 */
-	protected function _publishDataFiles($objPD, $publishPath = '') 
-	{				
+	protected function _publishDataFiles($objPD, $publishPath = '')
+	{
 		if (!$objPD->id)
 		{
 			return false;
 		}
-		
+
 		// Load component configs
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$config = JComponentHelper::getParams( 'com_projects' );
-				
-		$repoPath = ProjectsHelper::getProjectPath($this->_project->alias, 
+
+		$repoPath = ProjectsHelper::getProjectPath($this->_project->alias,
 			$config->get('webpath'), $config->get('offroot')
 		);
-		
+
 		// Get data definition
 		$dd = json_decode($objPD->data_definition, true);
 
 		$files 	 = array();
 		$columns = array();
 
-		foreach ($dd['cols'] as $colname => $col) 
+		foreach ($dd['cols'] as $colname => $col)
 		{
 			if (isset($col['linktype']) && $col['linktype'] == "repofiles")
 			{
@@ -494,18 +494,18 @@ class typeDatabases extends JObject
 					$dir = $col['linkpath'];
 				}
 				$columns[$col['idx']] = $dir;
-			}			
+			}
 		}
-		
+
 		// No files to publish
 		if (empty($columns))
 		{
 			return false;
 		}
-		
+
 		$repoPath = $objPD->source_dir ? $repoPath . DS . $objPD->source_dir : $repoPath;
 		$csv = $repoPath . DS . $objPD->source_file;
-		
+
 		$files = array();
 
 		if (file_exists($csv) && ($handle = fopen($csv, "r")) !== FALSE)
@@ -515,8 +515,8 @@ class typeDatabases extends JObject
 			$col_labels = fgetcsv($handle);
 			$col_prop = fgetcsv($handle);
 			$data_start = fgetcsv($handle);
-			
-			if (isset($data_start[0]) && $data_start[0] == 'DATASTART') 
+
+			if (isset($data_start[0]) && $data_start[0] == 'DATASTART')
 			{
 				$expert_mode = true;
 			}
@@ -526,10 +526,10 @@ class typeDatabases extends JObject
 				$handle = fopen($path . '/' . $file, "r");
 				$col_labels = fgetcsv($handle);
 			}
-						
-			while ($r = fgetcsv($handle)) 
+
+			while ($r = fgetcsv($handle))
 			{
-				for ($i = 0; $i < count($col_labels); $i++) 
+				for ($i = 0; $i < count($col_labels); $i++)
 				{
 					if (isset($columns[$i]))
 					{
@@ -541,64 +541,64 @@ class typeDatabases extends JObject
 								$files[] = $file;
 							}
 						}
-					}					
+					}
 				}
 			}
 		}
-		
+
 		// Copy files from repo to published location
 		if (!empty($files))
 		{
 			jimport('joomla.filesystem.file');
 			jimport('joomla.filesystem.folder');
-			
+
 			foreach ($files as $file)
 			{
 				if (!file_exists( $repoPath . DS . $file))
 				{
 					continue;
 				}
-				
+
 				// If parent dir does not exist, we must create it
-				if (!file_exists(dirname($publishPath . DS . $file))) 
+				if (!file_exists(dirname($publishPath . DS . $file)))
 				{
 					JFolder::create(dirname($publishPath . DS . $file));
 				}
-				
+
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $file);
-				
+
 				// Get file extention
 				$ext = explode('.', $file);
 				$ext = count($ext) > 1 ? end($ext) : '';
-				
+
 				// Image formats
 				$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');
-				
+
 				// Image file?
 				if (!in_array(strtolower($ext), $image_formats))
 				{
 					continue;
 				}
-				
+
 				$ih = new ProjectsImgHandler();
-				
+
 				// Generate thumbnail
 				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
 				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
-				
+
 				$ih->set('image', basename($thumb));
 				$ih->set('overwrite',true);
 				$ih->set('path', $tpath . DS );
 				$ih->set('maxWidth', 100);
 				$ih->set('maxHeight', 60);
 				$ih->process();
-				
+
 				// Generate medium image
 				$med 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
 				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
-				
+
 				$ih->set('image', basename($med));
 				$ih->set('overwrite',true);
 				$ih->set('path', $mpath . DS );
@@ -610,76 +610,76 @@ class typeDatabases extends JObject
 			}
 		}
 	}
-	
+
 	/**
 	 * Publish attachments (draft submission step)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _publishAttachments()
 	{
 		// Incoming data
 		$attachments= $this->__get('attachments');
 		$row  		= $this->__get('row');
 		$uid  		= $this->__get('uid');
-		
+
 		$published = 0;
-				
+
 		// Get helper
 		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
-		
+
 		// Load component configs
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base_path 	= $pubconfig->get('webpath');
-						
+
 		foreach ($attachments as $att)
 		{
-			if ($att->type != $this->_attachmentType) 
+			if ($att->type != $this->_attachmentType)
 			{
 				continue;
 			}
-			
+
 			$database_name = $att->object_name;
 			$database_rev  = $att->object_revision;
-			
+
 			// Build publication path
 			$publishPath = $helper->buildPath($row->publication_id, $row->id, $base_path, 'data', 1);
-			$pPath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $row->publication_id) 
+			$pPath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $row->publication_id)
 				. '/?vid=' . $row->id . a . 'task=serve';
 
 			// Get database object and load record
 			$objData = new ProjectDatabase($this->_database);
 			$objData->loadRecord($database_name);
-			
+
 			if (!$objData->id)
 			{
 				// Can't do much
 				break;
 			}
-			
+
 			// Get last record update time
 			$rtime = $att->modified ? strtotime($att->modified) : NULL;
-			
+
 			// Db updated, clone again
 			if (strtotime($objData->updated) > $rtime)
 			{
 				// Get databases plugin
 				JPluginHelper::importPlugin( 'projects', 'databases');
 				$dispatcher = JDispatcher::getInstance();
-				
+
 				// New database instance - need to clone again and get a new version number
 				$result 	= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
 				$dbVersion  = $result && isset($result[0]) ? $result[0] : NULL;
-				
+
 				// Update attatchment record with new revision & path
 				if ($dbVersion)
 				{
 					// Make sure all data files are in the right location
 					$this->_publishDataFiles($objData, $publishPath);
-					
+
 					$objAtt = new PublicationAttachment( $this->_database );
 					$objAtt->load($att->id);
-					$objAtt->path 			 = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' 
+					$objAtt->path 			 = 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
 												. DS . $database_name . DS . '?v=' . $dbVersion;
 					$objAtt->object_revision = $dbVersion;
 					$objAtt->modified_by 	 = $uid;
@@ -689,7 +689,7 @@ class typeDatabases extends JObject
 				}
 			}
 		}
-		
+
 		return $published;
-	}	
+	}
 }

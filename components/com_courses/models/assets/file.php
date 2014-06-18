@@ -97,11 +97,11 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			return array('error' => 'File is empty');
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			return array('error' => "File is too large. Max file upload size is $max");

@@ -40,28 +40,28 @@ class TagsModelLog extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'TagsTableLog';
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_actor = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Tag ID or raw tag
 	 * @return     void
 	 */
@@ -98,7 +98,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -116,7 +116,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new TagsModelLog($oid);
 		}
@@ -126,7 +126,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -148,7 +148,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -170,7 +170,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */

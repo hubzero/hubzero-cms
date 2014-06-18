@@ -40,7 +40,7 @@ class plgCronMembers extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -62,7 +62,7 @@ class plgCronMembers extends JPlugin
 
 	/**
 	 * Calculate point royalties for members
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onPointRoyalties($params=null)
@@ -107,11 +107,11 @@ class plgCronMembers extends JPlugin
 		$accumulated = 0;
 
 		// Get Royalties on Answers
-		if (!$royaltyAnswers) 
+		if (!$royaltyAnswers)
 		{
 			$rows = $AE->getQuestions();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $r)
 				{
@@ -120,7 +120,7 @@ class plgCronMembers extends JPlugin
 				}
 
 				// make a record of royalty payment
-				if (intval($accumulated) > 0) 
+				if (intval($accumulated) > 0)
 				{
 					$MH = new \Hubzero\Bank\MarketHistory($this->database);
 					$data['itemid']       = $ref;
@@ -130,31 +130,31 @@ class plgCronMembers extends JPlugin
 					$data['action']       = $action;
 					$data['log']          = $this->_message;
 
-					if (!$MH->bind($data)) 
+					if (!$MH->bind($data))
 					{
 						$err = $MH->getError();
 					}
 
-					if (!$MH->store()) 
+					if (!$MH->store())
 					{
 						$err = $MH->getError();
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message = JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message = JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
 		}
 
 		// Get Royalties on Resource Reviews
-		if (!$royaltyReviews) 
+		if (!$royaltyReviews)
 		{
-			// get eligible 
+			// get eligible
 			$RE = new ReviewsEconomy($this->database);
 			$reviews = $RE->getReviews();
 
@@ -170,7 +170,7 @@ class plgCronMembers extends JPlugin
 			$voting = $plparam->get('voting');
 
 			$accumulated = 0;
-			if ($reviews && $voting) 
+			if ($reviews && $voting)
 			{
 				foreach ($reviews as $r)
 				{
@@ -179,14 +179,14 @@ class plgCronMembers extends JPlugin
 				}
 
 				$this->_message .= $rmsg;
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
 			}
 
 			// make a record of royalty payment
-			if (intval($accumulated) > 0) 
+			if (intval($accumulated) > 0)
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
@@ -196,31 +196,31 @@ class plgCronMembers extends JPlugin
 				$data['action']       = $action;
 				$data['log']          = $rmsg;
 
-				if (!$MH->bind($data)) 
+				if (!$MH->bind($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store()) 
+				if (!$MH->store())
 				{
 					$err = $MH->getError();
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
 		}
 
 		// Get Royalties on Resources
-		if (!$royaltyResources) 
+		if (!$royaltyResources)
 		{
-			// get eligible 
+			// get eligible
 			$ResE = new ResourcesEconomy($this->database);
 			$cons = $ResE->getCons();
 
 			$accumulated = 0;
-			if ($cons) 
+			if ($cons)
 			{
 				foreach ($cons as $con)
 				{
@@ -229,14 +229,14 @@ class plgCronMembers extends JPlugin
 				}
 
 				$this->_message .= $resmsg;
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message .= JText::_('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
 			}
 
 			// make a record of royalty payment
-			if (intval($accumulated) > 0) 
+			if (intval($accumulated) > 0)
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
@@ -246,18 +246,18 @@ class plgCronMembers extends JPlugin
 				$data['action']       = $action;
 				$data['log']          = $resmsg;
 
-				if (!$MH->bind($data)) 
+				if (!$MH->bind($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store()) 
+				if (!$MH->store())
 				{
 					$err = $MH->getError();
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message .= JText::sprintf('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
 		}

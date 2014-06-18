@@ -68,7 +68,7 @@ $this->css('tools.css');
 			foreach ($this->sessions as $session)
 			{
 				$cls = ($cls == 'odd') ? 'even' : 'odd';
-		?>	
+		?>
 			<tr class="<?php echo $cls; ?>">
 				<td><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=session&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo JText::_('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
 				<td><?php echo $session->start; ?></td>

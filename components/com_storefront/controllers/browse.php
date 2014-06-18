@@ -35,31 +35,31 @@ defined('_JEXEC') or die('Restricted access');
  * Product browsing controller class
  */
 class StorefrontControllerBrowse extends ComponentController
-{		
+{
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
-		
+
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
-				
+
 		$this->pathway = $pathway;
-		
+
 		// Get the task
 		$this->_task  = JRequest::getCmd('task', '');
-		
+
 		if (empty($this->_task))
 		{
 			$this->_task = 'home';
 			$this->registerTask('__default', $this->_task);
 		}
-		
+
 		$executed = false;
 		if (!method_exists($this, $this->_task . 'Task'))
 		{
@@ -72,46 +72,46 @@ class StorefrontControllerBrowse extends ComponentController
 				$this->browseCollection($cId);
 			}
 		}
-		
+
 		if (!$executed)
 		{
 			parent::execute();
 		}
 	}
-	
+
 	/**
 	 * Display default page
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function homeTask() 
+	public function homeTask()
 	{
 		// get categories
 		$categories = $this->warehouse->getRootCategories();
-		$this->view->categories = $categories;	
-		
+		$this->view->categories = $categories;
+
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Display collection
-	 * 
+	 *
 	 * @param		$cId
 	 * @return     	void
 	 */
-	private function browseCollection($cId) 
+	private function browseCollection($cId)
 	{
 		$view = new \Hubzero\Component\View(array('name'=>'browse', 'layout' => 'collection') );
-		
+
 		// Get the collection products
 		$this->warehouse->addLookupCollection($cId);
 		$products = $this->warehouse->getProducts();
-		
+
 		$view->products = $products;
-		
+
 		// Breadcrumbs
 		$this->pathway->addItem('Browsing collection', JRoute::_('index.php?id=' . '5'));
-		
+
 		$view->display();
 	}
 

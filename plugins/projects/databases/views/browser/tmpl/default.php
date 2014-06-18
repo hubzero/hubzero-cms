@@ -34,13 +34,13 @@ $shown = array();
 
 // Attached item
 $selected = NULL;
-if ($this->primary && !empty($this->attachments)) 
+if ($this->primary && !empty($this->attachments))
 {
 	$selected = $this->attachments[0]->object_name;
 }
 
 // Build url
-$route = $this->project->provisioned 
+$route = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=databases');
@@ -56,23 +56,23 @@ $p_url = JRoute::_($route . a . 'active=databases');
 			if ($item->revision == NULL || ($selected && $selected == $item->database_name) )
 			{
 			?>
-		<li class="c-click databases" id="data::<?php echo $item->database_name; ?>"><?php echo $item->title; ?></li>	
-	<?php 
+		<li class="c-click databases" id="data::<?php echo $item->database_name; ?>"><?php echo $item->title; ?></li>
+	<?php
 			$shown[] = $item->database_name;
 			}
 		} ?>
-		
+
 		<?php
 
 		// Check for missing items
 		// Primary content / Supporting docs
-		if (isset($this->attachments)) 
+		if (isset($this->attachments))
 		{
-			if (count($this->attachments) > 0) 
+			if (count($this->attachments) > 0)
 			{
-				foreach ($this->attachments as $attachment) 
+				foreach ($this->attachments as $attachment)
 				{
-					if (!in_array($attachment->object_name, $shown)) 
+					if (!in_array($attachment->object_name, $shown))
 					{
 						// Found missing
 						$miss = array();
@@ -83,15 +83,15 @@ $p_url = JRoute::_($route . a . 'active=databases');
 				}
 			}
 		}
-		
+
 		// Add missing items
-		if (count($missing) > 0) 
+		if (count($missing) > 0)
 		{
-			foreach ($missing as $miss) 
+			foreach ($missing as $miss)
 			{ ?>
 				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
 		<?php	}
-		}		
+		}
 	}
 ?>
 </ul>

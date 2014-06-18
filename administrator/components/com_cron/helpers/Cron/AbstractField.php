@@ -21,11 +21,11 @@ abstract class AbstractField implements FieldInterface
 	 */
 	public function isSatisfied($dateValue, $value)
 	{
-		if ($this->isIncrementsOfRanges($value)) 
+		if ($this->isIncrementsOfRanges($value))
 		{
 			return $this->isInIncrementsOfRanges($dateValue, $value);
-		} 
-		else if ($this->isRange($value)) 
+		}
+		else if ($this->isRange($value))
 		{
 			return $this->isInRange($dateValue, $value);
 		}
@@ -84,7 +84,7 @@ abstract class AbstractField implements FieldInterface
 	{
 		$parts = array_map('trim', explode('/', $value, 2));
 		$stepSize = isset($parts[1]) ? $parts[1] : 0;
-		if ($parts[0] == '*' || $parts[0] == 0) 
+		if ($parts[0] == '*' || $parts[0] == 0)
 		{
 			return (int) $dateValue % $stepSize == 0;
 		}
@@ -93,14 +93,14 @@ abstract class AbstractField implements FieldInterface
 		$offset = $range[0];
 		$to = isset($range[1]) ? $range[1] : $dateValue;
 		// Ensure that the date value is within the range
-		if ($dateValue < $offset || $dateValue > $to) 
+		if ($dateValue < $offset || $dateValue > $to)
 		{
 			return false;
 		}
 
-		for ($i = $offset; $i <= $to; $i+= $stepSize) 
+		for ($i = $offset; $i <= $to; $i+= $stepSize)
 		{
-			if ($i == $dateValue) 
+			if ($i == $dateValue)
 			{
 				return true;
 			}

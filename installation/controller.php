@@ -50,7 +50,7 @@ class JInstallationController extends JControllerLegacy
 		$options = $model->getOptions();
 
 		$vName = JRequest::getWord('view', $default_view);
-		
+
 		$CONFIG = new JConfig();
 
 		if (empty($options['installkey']) || ($options['installkey'] != $CONFIG->installkey))

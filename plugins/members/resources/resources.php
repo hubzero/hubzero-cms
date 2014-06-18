@@ -45,28 +45,28 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Resource areas
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource categories
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -81,19 +81,19 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a list of categories
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onMembersContributionsAreas()
 	{
 		$areas = $this->_areas;
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			return $areas;
 		}
 
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			// Get categories
 			$database = JFactory::getDBO();
@@ -122,7 +122,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build SQL for returning the count of the number of contributions
-	 * 
+	 *
 	 * @param      string $user_id  Field to join on user ID
 	 * @param      string $username Field to join on username
 	 * @return     string
@@ -135,7 +135,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return either a count or an array of the member's contributions
-	 * 
+	 *
 	 * @param      object  $member     Current member
 	 * @param      string  $option     Component name
 	 * @param      string  $authorized Authorization level
@@ -149,11 +149,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			$ars = $this->onMembersContributionsAreas();
-			if (!isset($areas[$this->_name]) 
-			 && !in_array($this->_name, $areas) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)
 			 && !array_intersect($areas, array_keys($ars['resources'])))
 
 			{
@@ -162,24 +162,24 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a member ID?
-		if ($member instanceof \Hubzero\User\Profile) 
+		if ($member instanceof \Hubzero\User\Profile)
 		{
-			if (!$member->get('uidNumber')) 
+			if (!$member->get('uidNumber'))
 			{
 				return array();
-			} 
-			else 
+			}
+			else
 			{
 				$uidNumber = $member->get('uidNumber');
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if (!$member->uidNumber) 
+			if (!$member->uidNumber)
 			{
 				return array();
-			} 
-			else 
+			}
+			else
 			{
 				$uidNumber = $member->uidNumber;
 			}
@@ -196,10 +196,10 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 		//$filters['usergroups'] = \Hubzero\User\Helper::getGroups($uidNumber, 'all');
 		$filters['usergroups'] = $member->getGroups('all');
-		
+
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
@@ -218,9 +218,9 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$cats[$normalized]['id'] = $categories[$i]->id;
 		}
 
-		if ($limit) 
+		if ($limit)
 		{
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
 				$total = 0;
 				$t = $this->_total;
@@ -229,7 +229,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 					$total += $l;
 				}
 			}
-			if ($total == 0) 
+			if ($total == 0)
 			{
 				return array();
 			}
@@ -241,7 +241,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
 			//if (count($areas) == 1 && key($areas[0]) != 'resources') {
-			if (count($areas) == 1 && !isset($areas['resources'])) 
+			if (count($areas) == 1 && !isset($areas['resources']))
 			{
 				$filters['type'] = (isset($cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
 			}
@@ -251,16 +251,16 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->alias) 
+					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
-					} 
-					else 
+					}
+					else
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
 					}
@@ -269,8 +269,8 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 			// Return the results
 			return $rows;
-		} 
-		else 
+		}
+		else
 		{
 			$filters['select'] = 'count';
 
@@ -279,24 +279,24 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$ares = $this->onMembersContributionsAreas();
 			foreach ($ares as $area => $val)
 			{
-				if (is_array($val)) 
+				if (is_array($val))
 				{
 					$i = 0;
 					foreach ($val as $a => $t)
 					{
-						if ($limitstart == -1) 
+						if ($limitstart == -1)
 						{
-							if ($i == 0) 
+							if ($i == 0)
 							{
 								$database->setQuery($rr->buildPluginQuery($filters));
 								$counts[] = $database->loadResult();
-							} 
-							else 
+							}
+							else
 							{
 								$counts[] = 0;
 							}
-						} 
-						else 
+						}
+						else
 						{
 							$filters['type'] = $cats[$a]['id'];
 
@@ -317,7 +317,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Static method for formatting results
-	 * 
+	 *
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
@@ -363,7 +363,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		}
 		$html .= ' resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>';
-		if ($authorized || $row->created_by == $juser->get('id')) 
+		if ($authorized || $row->created_by == $juser->get('id'))
 		{
 			switch ($row->state)
 			{
@@ -377,16 +377,16 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 		$html .= '</p>' . "\n";
-		if ($params->get('show_ranking')) 
+		if ($params->get('show_ranking'))
 		{
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
 
-			if ($row->category == 7) 
+			if ($row->category == 7)
 			{
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			} 
-			else 
+			}
+			else
 			{
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
@@ -397,7 +397,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t".'<div class="metadata">'."\n";
 
 			$r = (10*$row->ranking);
-			if (intval($r) < 10) 
+			if (intval($r) < 10)
 			{
 				$r = '0' . $r;
 			}
@@ -412,8 +412,8 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t\t\t" . '</dd>' . "\n";
 			$html .= "\t\t\t" . '</dl>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
-		} 
-		elseif ($params->get('show_rating')) 
+		}
+		elseif ($params->get('show_rating'))
 		{
 			switch ($row->rating)
 			{
@@ -436,16 +436,16 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '</div>' . "\n";
 		}
 		$html .= "\t\t".'<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->area);
-		if ($helper->contributors) 
+		if ($helper->contributors)
 		{
 			$html .= ' <span>|</span> ' . JText::_('PLG_MEMBERS_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
 		}
 		$html .= '</p>' . "\n";
-		if ($row->itext) 
+		if ($row->itext)
 		{
 			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->itext))."\n";
-		} 
-		else if ($row->ftext) 
+		}
+		else if ($row->ftext)
 		{
 			$html .= \Hubzero\Utility\String::truncate(stripslashes($row->ftext))."\n";
 		}
@@ -455,7 +455,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Include needed libraries and push scripts and CSS to the document
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function documents()

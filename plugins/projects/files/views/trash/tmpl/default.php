@@ -46,8 +46,8 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 				</tr>
 			</thead>
 			<tbody>
-			<?php foreach ($this->files as $filename => $file) {  
-				
+			<?php foreach ($this->files as $filename => $file) {
+
 					$dirname = dirname($filename);
 				?>
 				<tr class="mini">

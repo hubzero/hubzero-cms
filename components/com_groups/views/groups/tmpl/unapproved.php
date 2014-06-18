@@ -42,7 +42,7 @@ $this->css();
 		<?php echo $this->group->get('description'); ?>
 	</span>
 	<span class="description"><?php echo JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></span>
-	
+
 	<?php if(in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
 		<hr />
 		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>

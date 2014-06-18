@@ -20,9 +20,9 @@ class JoomlaupdateHelperSelect
 {
 	/**
 	 * Returns an HTML select element with the different extraction modes
-	 * 
+	 *
 	 * @param   string  $default  The default value of the select element
-	 * 
+	 *
 	 * @return  string
 	 *
 	 * @since   2.5.4

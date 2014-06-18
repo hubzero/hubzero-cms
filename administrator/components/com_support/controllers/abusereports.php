@@ -105,7 +105,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	public function viewTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 		$cat = JRequest::getVar('cat', '');
@@ -191,7 +191,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$this->view->title = $title;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -310,7 +310,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 				}
 			}
 		}
-		
+
 		// Remove the reported item and any other related processes that need be performed
 		$results = $dispatcher->trigger('deleteReportedItem', array(
 			$report->referenceid,
@@ -330,7 +330,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Mark abuse report as deleted	
+		// Mark abuse report as deleted
 		$report->state = 2;
 		if (!$report->store())
 		{
@@ -357,7 +357,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			// Plain text
 			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
-				'name'      => 'emails', 
+				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
 			));
 			$eview->option     = $this->_option;

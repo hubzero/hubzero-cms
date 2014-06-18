@@ -38,56 +38,56 @@ class ResourcesContributor extends JTable
 {
 	/**
 	 * varchar(50) Primary Key
-	 * 
+	 *
 	 * @var string
 	 */
 	var $subtable = NULL;
 
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $subid    = NULL;
 
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $authorid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $role     = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name     = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $organization = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,18 +98,18 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (!$this->authorid) 
+		if (!$this->authorid)
 		{
 			$this->setError(JText::_('Must have an author ID.'));
 			return false;
 		}
 
-		if (!$this->subid) 
+		if (!$this->subid)
 		{
 			$this->setError(JText::_('Must have an item ID.'));
 			return false;
@@ -120,7 +120,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $authorid Member ID
 	 * @param      integer $subid    Object ID
 	 * @param      string  $subtable Object type (resource)
@@ -128,7 +128,7 @@ class ResourcesContributor extends JTable
 	 */
 	public function loadAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
-		if (!$authorid) 
+		if (!$authorid)
 		{
 			$authorid = $this->authorid;
 		}
@@ -136,11 +136,11 @@ class ResourcesContributor extends JTable
 		{
 			return false;
 		}
-		if (!$subid) 
+		if (!$subid)
 		{
 			$subid = $this->subid;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			$subtable = $this->subtable;
 		}
@@ -149,15 +149,15 @@ class ResourcesContributor extends JTable
 		{
 			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable) . " AND authorid=" . $this->_db->Quote($authorid));
 		}
-		else 
+		else
 		{
 			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE subid=" . $this->_db->Quote($subid) . " AND subtable=" . $this->_db->Quote($subtable) . " AND authorid < 0 AND name=" . $this->_db->Quote($authorid));
 		}
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -166,19 +166,19 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Delete all associations for a user
-	 * 
+	 *
 	 * @param      integer $id User ID
 	 * @return     boolean True on success
 	 */
 	public function deleteAssociations($id=NULL)
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->authorid;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -188,7 +188,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Delete a record by user and resource
-	 * 
+	 *
 	 * @param      integer $authorid Member ID
 	 * @param      integer $subid    Object ID
 	 * @param      string  $subtable Object type (resource)
@@ -196,19 +196,19 @@ class ResourcesContributor extends JTable
 	 */
 	public function deleteAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
-		if (!$authorid) 
+		if (!$authorid)
 		{
 			$authorid = $this->authorid;
 		}
-		if (!$authorid) 
+		if (!$authorid)
 		{
 			return false;
 		}
-		if (!$subid) 
+		if (!$subid)
 		{
 			$subid = $this->subid;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			$subtable = $this->subtable;
 		}
@@ -216,14 +216,14 @@ class ResourcesContributor extends JTable
 		//if (is_numeric($authorid))
 		//{
 			$query = "DELETE FROM $this->_tbl WHERE subtable=" . $this->_db->Quote($subtable) . " AND subid=" . $this->_db->Quote($subid) . " AND authorid=" . $this->_db->Quote($authorid);
-		/*} 
-		else 
+		/*}
+		else
 		{
 			$query = "DELETE FROM $this->_tbl WHERE subtable=" . $this->_db->Quote($subtable) . " AND subid=" . $this->_db->Quote($subid) . " AND authorid=0 AND name=" . $this->_db->Quote($authorid);
 		}*/
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -233,15 +233,15 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Create a new record
-	 * 
+	 *
 	 * @return     boolean True on success
 	 */
 	public function createAssociation()
 	{
-		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization) 
+		$query = "INSERT INTO $this->_tbl (subtable, subid, authorid, ordering, role, name, organization)
 					VALUES(" . $this->_db->Quote($this->subtable) . ", " . $this->_db->Quote($this->subid) . ", " . $this->_db->Quote($this->authorid) . ", " . $this->_db->Quote($this->ordering) . ", " . $this->_db->Quote($this->role) . ", " . $this->_db->Quote($this->name) . ", " . $this->_db->Quote($this->organization) . ")";
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -251,16 +251,16 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Update a record
-	 * 
+	 *
 	 * @return     boolean True on success
 	 */
 	public function updateAssociation()
 	{
-		$query = "UPDATE $this->_tbl 
-					SET ordering=" . $this->_db->Quote($this->ordering) . ", role=" . $this->_db->Quote($this->role) . ", name=" . $this->_db->Quote($this->name) . ", organization=" . $this->_db->Quote($this->organization) . " 
+		$query = "UPDATE $this->_tbl
+					SET ordering=" . $this->_db->Quote($this->ordering) . ", role=" . $this->_db->Quote($this->role) . ", name=" . $this->_db->Quote($this->name) . ", organization=" . $this->_db->Quote($this->organization) . "
 					WHERE subtable=" . $this->_db->Quote($this->subtable) . " AND subid=" . $this->_db->Quote($this->subid) . " AND authorid=" . $this->_db->Quote($this->authorid);
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -270,26 +270,26 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get a record count for a resource
-	 * 
+	 *
 	 * @param      integer $subid    Object ID
 	 * @param      string  $subtable Object type ('resource')
 	 * @return     integer
 	 */
 	public function getCount($subid=NULL, $subtable=null)
 	{
-		if (!$subid) 
+		if (!$subid)
 		{
 			$subid = $this->subid;
 		}
-		if (!$subid) 
+		if (!$subid)
 		{
 			return null;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			$subtable = $this->subtable;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			return null;
 		}
@@ -299,26 +299,26 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get the last number in an ordering
-	 * 
+	 *
 	 * @param      integer $subid    Object ID
 	 * @param      string  $subtable Object type ('resource')
 	 * @return     integer
 	 */
 	public function getLastOrder($subid=NULL, $subtable=null)
 	{
-		if (!$subid) 
+		if (!$subid)
 		{
 			$subid = $this->subid;
 		}
-		if (!$subid) 
+		if (!$subid)
 		{
 			return null;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			$subtable = $this->subtable;
 		}
-		if (!$subtable) 
+		if (!$subtable)
 		{
 			return null;
 		}
@@ -328,7 +328,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get the record directly before or after this record
-	 * 
+	 *
 	 * @param      string $move Direction to look
 	 * @return     boolean True on success
 	 */
@@ -345,11 +345,11 @@ class ResourcesContributor extends JTable
 			break;
 		}
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -358,7 +358,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get the last ID
-	 * 
+	 *
 	 * @return     integer
 	 */
 	public function getLastUserId()
@@ -369,7 +369,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get the user ID for a name
-	 * 
+	 *
 	 * @param      string $name Name to look up
 	 * @return     integer
 	 */
@@ -400,7 +400,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -410,15 +410,15 @@ class ResourcesContributor extends JTable
 
 		$w = array();
 		$w[] = "m.subtable='resources'";
-		if (isset($filters['subid']) && $filters['subid']) 
+		if (isset($filters['subid']) && $filters['subid'])
 		{
 			$w[] = "m.subid=" . $this->_db->Quote($filters['subid']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$w[] = "m.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$w[] = "m.name LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
@@ -426,11 +426,11 @@ class ResourcesContributor extends JTable
 		$sql .= (count($w) > 0) ? "WHERE " : "";
 		$sql .= implode(" AND ", $w);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
@@ -439,7 +439,7 @@ class ResourcesContributor extends JTable
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		if (isset($filters['limit']) && $filters['limit'] != '') 
+		if (isset($filters['limit']) && $filters['limit'] != '')
 		{
 			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -449,7 +449,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -464,7 +464,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -478,7 +478,7 @@ class ResourcesContributor extends JTable
 
 	/**
 	 * Get records for a specific author
-	 * 
+	 *
 	 * @param      integer $authorid Author ID
 	 * @return     array
 	 */

@@ -189,7 +189,7 @@ class Provider extends AbstractAdapter
 		$this->set('akismetVersion', '1.1');
 
 		$this->set('user_agent', $_SERVER['HTTP_USER_AGENT']);
-		if (isset($_SERVER['HTTP_REFERER'])) 
+		if (isset($_SERVER['HTTP_REFERER']))
 		{
 			$this->set('referrer', $_SERVER['HTTP_REFERER']);
 		}
@@ -214,7 +214,7 @@ class Provider extends AbstractAdapter
 	 *
 	 * @return bool	True is if the key is valid, false if not.
 	 */
-	public function isKeyValid() 
+	public function isKeyValid()
 	{
 		// Check to see if the key is valid
 		$response = $this->_sendRequest('key=' . $this->apiKey . '&blog=' . $this->url, $this->akismetServer, '/' . $this->akismetVersion . '/verify-key');
@@ -229,7 +229,7 @@ class Provider extends AbstractAdapter
 	 * @param     string $path
 	 * @return    string
 	 */
-	private function _sendRequest($request, $host, $path) 
+	private function _sendRequest($request, $host, $path)
 	{
 		$http_request  = "POST " . $path . " HTTP/1.0\r\n";
 		$http_request .= "Host: " . $host . "\r\n";
@@ -250,19 +250,19 @@ class Provider extends AbstractAdapter
 	 *
 	 * @return  string
 	 */
-	private function _getQueryString() 
+	private function _getQueryString()
 	{
 		$this->set('comment_content', $this->getValue());
 
-		foreach ($_SERVER as $key => $value) 
+		foreach ($_SERVER as $key => $value)
 		{
-			if (!in_array($key, $this->_ignore['server'])) 
+			if (!in_array($key, $this->_ignore['server']))
 			{
-				if ($key == 'REMOTE_ADDR') 
+				if ($key == 'REMOTE_ADDR')
 				{
 					$this->set($key, $this->get('user_ip'));
-				} 
-				else 
+				}
+				else
 				{
 					$this->set($key, $value);
 				}
@@ -271,9 +271,9 @@ class Provider extends AbstractAdapter
 
 		$query_string = '';
 
-		foreach ($this->getProperties() as $key => $data) 
+		foreach ($this->getProperties() as $key => $data)
 		{
-			if (!is_array($data) && !in_array($key, $this->_ignore['querystring'])) 
+			if (!is_array($data) && !in_array($key, $this->_ignore['querystring']))
 			{
 				$query_string .= $key . '=' . urlencode(stripslashes($data)) . '&';
 			}
@@ -290,7 +290,7 @@ class Provider extends AbstractAdapter
 	 * @return   bool True if the comment is spam, false if not
 	 * @throws   Will throw an exception if the API key passed to the constructor is invalid.
 	 */
-	public function isSpam($value = null) 
+	public function isSpam($value = null)
 	{
 		if ($value)
 		{
@@ -304,7 +304,7 @@ class Provider extends AbstractAdapter
 
 		$response = $this->_sendRequest($this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
 
-		if ($response[1] == 'invalid' && !$this->isKeyValid()) 
+		if ($response[1] == 'invalid' && !$this->isKeyValid())
 		{
 			throw new Exception('The Wordpress API key passed to the Akismet adapter is invalid. Please obtain a valid one from http://wordpress.com/api-keys/');
 		}
@@ -315,10 +315,10 @@ class Provider extends AbstractAdapter
 	/**
 	 * Submit spam that is incorrectly tagged as ham.
 	 * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.  This will improve the service for everybody.
-	 * 
+	 *
 	 * @return  void
 	 */
-	public function submitSpam() 
+	public function submitSpam()
 	{
 		$this->_sendRequest($this->_getQueryString(), $this->apiKey . '.' . $this->akismetServer, '/' . $this->akismetVersion . '/submit-spam');
 	}
@@ -326,10 +326,10 @@ class Provider extends AbstractAdapter
 	/**
 	 * Submit ham that is incorrectly tagged as spam.
 	 * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.  This will improve the service for everybody.
-	 * 
+	 *
 	 * @return  void
 	 */
-	public function submitHam() 
+	public function submitHam()
 	{
 		$this->_sendRequest($this->_getQueryString(), $this->apiKey . '.' . $this->akismetServer, '/' . $this->akismetVersion . '/submit-ham');
 	}

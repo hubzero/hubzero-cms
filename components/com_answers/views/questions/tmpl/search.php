@@ -37,11 +37,11 @@ $this->css()
 $juser = JFactory::getUser();
 $jconfig = JFactory::getConfig();
 
-if (!$this->filters['filterby']) 
+if (!$this->filters['filterby'])
 {
 	$this->filters['filterby'] = 'all';
 }
-if (!$this->filters['filterby'] == 'none') 
+if (!$this->filters['filterby'] == 'none')
 {
 	$this->filters['filterby'] = 'all';
 }
@@ -146,11 +146,11 @@ if (!$this->filters['filterby'] == 'none')
 							$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 							$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-							if ($this->filters['q'] != '') 
+							if ($this->filters['q'] != '')
 							{
 								echo JText::sprintf('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), JText::_('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
-							} 
-							else 
+							}
+							else
 							{
 								echo JText::_('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby']));
 							}
@@ -164,7 +164,7 @@ if (!$this->filters['filterby'] == 'none')
 				{
 					// author name
 					$name = JText::_('COM_ANSWERS_ANONYMOUS');
-					if (!$row->get('anonymous')) 
+					if (!$row->get('anonymous'))
 					{
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->get('name'))) . '</a>';
 					}
@@ -188,10 +188,10 @@ if (!$this->filters['filterby'] == 'none')
 								</span><br />
 							<?php } ?>
 								<span class="entry-details">
-									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> 
-									<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-									<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
-									<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
+									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?>
+									<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
+									<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
+									<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span>
 									<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">
@@ -209,7 +209,7 @@ if (!$this->filters['filterby'] == 'none')
 							<td class="reward">
 							<?php if ($row->get('reward') == 1) { ?>
 								<span class="entry-reward">
-									<?php echo $row->get('points'); ?> 
+									<?php echo $row->get('points'); ?>
 									<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
 										<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
 									</a>
@@ -241,7 +241,7 @@ if (!$this->filters['filterby'] == 'none')
 			<?php } // end if (count($this->results) > 0) { ?>
 					</tbody>
 				</table>
-				<?php 
+				<?php
 				$this->pageNav->setAdditionalUrlParam('q', $this->filters['q']);
 				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);

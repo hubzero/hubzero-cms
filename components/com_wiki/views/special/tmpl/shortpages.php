@@ -45,27 +45,27 @@ $database = JFactory::getDBO();
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
-$query = "SELECT COUNT(*) 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
+$query = "SELECT COUNT(*)
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 2 
+				AND wp.access != 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
-$query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created  
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
+$query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
-				AND wp.access != 2 
+				AND wp.access != 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY length ASC";
 if ($limit && $limit != 'all')
@@ -78,8 +78,8 @@ $rows = $database->loadObjectList();
 
 jimport('joomla.html.pagination');
 $pageNav = new JPagination(
-	$total, 
-	$start, 
+	$total,
+	$start,
 	$limit
 );
 ?>
@@ -107,7 +107,7 @@ $pageNav = new JPagination(
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	foreach ($rows as $row)
 	{

@@ -40,28 +40,28 @@ class WikiModelComment extends \Hubzero\Base\Model
 {
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * WikiModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = NULL;
 
 	/**
 	 * Comment count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -94,12 +94,12 @@ class WikiModelComment extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}
@@ -109,7 +109,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isReported()
@@ -119,14 +119,14 @@ class WikiModelComment extends \Hubzero\Base\Model
 			return true;
 		}
 		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1) 
+		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
-					'id'       => $this->get('id'), 
+					'id'       => $this->get('id'),
 					'category' => 'wiki'
 				));
 				$this->set('reports', $val);
@@ -141,7 +141,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -165,7 +165,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -193,7 +193,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -252,7 +252,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     boolean
 	 */
@@ -296,7 +296,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -325,19 +325,19 @@ class WikiModelComment extends \Hubzero\Base\Model
 				{
 					$this->_comments_count = 0;
 
-					if (!$this->_comments) 
+					if (!$this->_comments)
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($this->_comments as $com)
 					{
 						$this->_comments_count++;
-						if ($com->replies()) 
+						if ($com->replies())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_comments_count++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$this->_comments_count += $rep->replies()->total();
 								}

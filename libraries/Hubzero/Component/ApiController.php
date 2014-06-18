@@ -40,28 +40,28 @@ class ApiController implements ControllerInterface
 {
 	/**
 	 * Description for '_response'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_response = null;
 
 	/**
 	 * Description for '_request'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_request = null;
 
 	/**
 	 * Description for '_provider'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_provider = null;
 
 	/**
 	 * Description for '_segments'
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $segments = array();
@@ -86,9 +86,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'setRequest'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $request Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -99,9 +99,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'getRequest'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getRequest()
@@ -111,9 +111,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'setResponse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $response Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -124,9 +124,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'getResponse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getResponse()
@@ -136,9 +136,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'setProvider'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $provider Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -149,9 +149,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'getProvider'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getProvider()
@@ -161,9 +161,9 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'setRouteSegments'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $segments Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -174,21 +174,21 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Short description for 'getRouteSegments'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	function getRouteSegments()
 	{
 		return $this->segments;
 	}
-	
+
 	function setMessage($message = null, $status = null, $reason = null)
 	{
 		$this->_response->setMessage($message, $status, $reason);
 	}
-	
+
 	function setMessageType($format)
 	{
 		$this->_response->setResponseProvides($format);

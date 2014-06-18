@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'SearchResult'
- * 
+ *
  * Long description (if any) ...
  */
 abstract class SearchResult
@@ -41,44 +41,44 @@ abstract class SearchResult
 
 	/**
 	 * Description for 'intro_excerpt_len'
-	 * 
+	 *
 	 * @var integer
 	 */
 	private static $intro_excerpt_len = 350;
 
 	/**
 	 * Description for 'types'
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $types = array();
 
 	/**
 	 * Description for 'excerpt'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $excerpt, $plugin, $canonicalized_link;
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $id, $title, $description, $tag_count, $author, $weight, $section, $date, $contributors, $contributor_ids, $children = array(), $weight_log = array();
 
 	/**
 	 * Description for 'has_parent'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $has_parent = false;
 
 	/**
 	 * Short description for 'is_in_section'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $section Parameter description (if any) ...
 	 * @param      unknown $plugin Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -105,9 +105,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_weight_log'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_weight_log()
@@ -117,9 +117,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'has_parent'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function has_parent()
@@ -129,9 +129,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'set_has_parent'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $bool Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -142,9 +142,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'add_child'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $child Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -156,9 +156,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_children'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_children()
@@ -168,9 +168,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'sort_children'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $callback Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -181,9 +181,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -194,9 +194,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_title'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_title()
@@ -206,22 +206,22 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_highlighted_title'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function get_highlighted_title() 
-	{ 
-		// return $this->title_highlighted; @FIXME: this property no longer seems to exist 
-		return $this->title; 
+	public function get_highlighted_title()
+	{
+		// return $this->title_highlighted; @FIXME: this property no longer seems to exist
+		return $this->title;
 	}
 
 	/**
 	 * Short description for 'get_raw_link'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_raw_link()
@@ -231,9 +231,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_link'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_link()
@@ -256,9 +256,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_links'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function get_links()
@@ -271,9 +271,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'set_link'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $link Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -285,9 +285,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_description'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_description()
@@ -297,9 +297,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'set_description'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $descr Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -310,9 +310,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_highlighted_description'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_highlighted_description()
@@ -322,9 +322,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_author'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_author()
@@ -334,9 +334,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_weight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     integer Return description (if any) ...
 	 */
 	public function get_weight()
@@ -346,9 +346,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_section'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_section()
@@ -358,9 +358,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_section_key'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function get_section_key()
@@ -370,9 +370,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_date'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_date()
@@ -382,9 +382,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_contributors'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_contributors()
@@ -394,9 +394,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_contributor_ids'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_contributor_ids()
@@ -406,9 +406,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'has_metadata'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function has_metadata()
@@ -418,9 +418,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_highlighted_excerpt'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_highlighted_excerpt()
@@ -430,9 +430,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'adjust_weight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $weight Parameter description (if any) ...
 	 * @param      string $reason Parameter description (if any) ...
 	 * @return     void
@@ -445,9 +445,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'scale_weight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $scale Parameter description (if any) ...
 	 * @param      string $reason Parameter description (if any) ...
 	 * @return     void
@@ -463,9 +463,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'add_weight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $weight Parameter description (if any) ...
 	 * @param      string $reason Parameter description (if any) ...
 	 * @return     void
@@ -478,9 +478,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_plugin'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_plugin()
@@ -490,9 +490,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'set_plugin'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $plg Parameter description (if any) ...
 	 * @param      boolean $skip_cleanup Parameter description (if any) ...
 	 * @return     void
@@ -508,9 +508,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'highlight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $regex Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -535,9 +535,9 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'get_excerpt'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_excerpt()
@@ -560,16 +560,16 @@ abstract class SearchResult
 
 	/**
 	 * Short description for 'to_associative'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 */
 	abstract public function to_associative();
 }
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchResultEmpty extends SearchResult
@@ -577,9 +577,9 @@ class SearchResultEmpty extends SearchResult
 
 	/**
 	 * Short description for 'to_associative'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 * @throws Exception  Exception description (if any) ...
 	 */
@@ -591,7 +591,7 @@ class SearchResultEmpty extends SearchResult
 
 /**
  * Short description for 'SearchResultAssoc'
- * 
+ *
  * Long description (if any) ...
  */
 abstract class SearchResultAssoc extends SearchResult
@@ -599,39 +599,39 @@ abstract class SearchResultAssoc extends SearchResult
 
 	/**
 	 * Short description for 'is_scalar'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 */
 	abstract public function is_scalar();
 }
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchResultAssocList extends SearchResultAssoc implements Iterator
 {
 	/**
 	 * Description for 'rows'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $rows = array();
 
 	/**
 	 * Description for 'pos'
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $pos = 0;
 
 	/**
 	 * Short description for 'is_scalar'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function is_scalar()
@@ -641,9 +641,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'set_plugin'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $plugin Parameter description (if any) ...
 	 * @param      boolean $skip_cleanup Parameter description (if any) ...
 	 * @return     void
@@ -658,9 +658,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $rows Parameter description (if any) ...
 	 * @param      unknown $plugin Parameter description (if any) ...
 	 * @return     void
@@ -691,9 +691,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'at'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $idx Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -704,9 +704,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'to_associative'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function to_associative()
@@ -716,9 +716,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'get_items'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function get_items()
@@ -728,9 +728,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'rewind'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function rewind()
@@ -740,9 +740,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'current'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function current()
@@ -752,9 +752,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'key'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function key()
@@ -764,9 +764,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'next'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function next()
@@ -776,9 +776,9 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 	/**
 	 * Short description for 'valid'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function valid()
@@ -789,7 +789,7 @@ class SearchResultAssocList extends SearchResultAssoc implements Iterator
 
 /**
  * Short description for 'SearchResultAssocScalar'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchResultAssocScalar extends SearchResult
@@ -797,23 +797,23 @@ class SearchResultAssocScalar extends SearchResult
 
 	/**
 	 * Description for 'tag_weight_modifier'
-	 * 
+	 *
 	 * @var number
 	 */
 	private static $tag_weight_modifier;
 
 	/**
 	 * Description for 'row'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $row;
 
 	/**
 	 * Short description for 'is_scalar'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function is_scalar()
@@ -823,9 +823,9 @@ class SearchResultAssocScalar extends SearchResult
 
 	/**
 	 * Short description for 'assert_keys'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $keys Parameter description (if any) ...
 	 * @param      unknown $row Parameter description (if any) ...
 	 * @return     void
@@ -844,9 +844,9 @@ class SearchResultAssocScalar extends SearchResult
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $row Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -893,9 +893,9 @@ class SearchResultAssocScalar extends SearchResult
 
 	/**
 	 * Short description for 'get_result'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_result()
@@ -905,9 +905,9 @@ class SearchResultAssocScalar extends SearchResult
 
 	/**
 	 * Short description for 'to_associative'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function to_associative()
@@ -918,16 +918,16 @@ class SearchResultAssocScalar extends SearchResult
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchResultSql extends SearchResult
 {
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $sql Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -938,9 +938,9 @@ class SearchResultSql extends SearchResult
 
 	/**
 	 * Short description for 'get_sql'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_sql()
@@ -950,9 +950,9 @@ class SearchResultSql extends SearchResult
 
 	/**
 	 * Short description for 'to_associative'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 * @throws SearchPluginError  Exception description (if any) ...
 	 */

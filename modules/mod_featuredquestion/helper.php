@@ -39,7 +39,7 @@ class modFeaturedquestion extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -61,13 +61,13 @@ class modFeaturedquestion extends \Hubzero\Module\Module
 		$mp = new AnswersTableQuestion($database);
 
 		$rows = $mp->getResults($filters);
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$row = $rows[0];
 		}
 
 		// Did we have a result to display?
-		if ($row) 
+		if ($row)
 		{
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
@@ -84,7 +84,7 @@ class modFeaturedquestion extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -74,7 +74,7 @@ $base = $this->course->offering()->link();
 					</div>
 					<div class="category category-results">
 						<div class="category-content">
-							<?php 
+							<?php
 							$threads_lastchange = '0000-00-00 00:00:00';
 							if ($this->threads)
 							{
@@ -84,7 +84,7 @@ $base = $this->course->offering()->link();
 
 							$instructors = array();
 							$inst = $this->course->instructors();
-							if (count($inst) > 0) 
+							if (count($inst) > 0)
 							{
 								foreach ($inst as $i)
 								{
@@ -124,7 +124,7 @@ $base = $this->course->offering()->link();
 							<?php
 							$juser = JFactory::getUser();
 							$anone = 1;
-							if (!$juser->get('guest')) 
+							if (!$juser->get('guest'))
 							{
 								$anon = 0;
 							}
@@ -140,11 +140,11 @@ $base = $this->course->offering()->link();
 							<p class="comment-title">
 								<strong>
 									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-								</strong> 
+								</strong>
 								<span class="permalink">
 									<span class="comment-date-at">@</span>
-									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+									<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+									<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 									<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 								</span>
 							</p>
@@ -162,7 +162,7 @@ $base = $this->course->offering()->link();
 							</label>
 
 							<label for="field-anonymous" id="comment-anonymous-label">
-								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+								<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 								<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 							</label>
 

@@ -45,7 +45,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -53,17 +53,17 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_citations')) 
+		if ($model->type->params->get('plg_citations'))
 		{
 			$areas['citations'] = JText::_('PLG_RESOURCES_CITATIONS');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -79,15 +79,15 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_citations')) 
+		if (!$model->type->params->get('plg_citations'))
 		{
 			return $arr;
 		}
@@ -105,7 +105,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		$citations = $c->getCitations('resource', $model->resource->id);
 
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -121,7 +121,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 			$view->resource  = $model->resource;
 			$view->citations = $citations;
 			$view->format    = $this->params->get('format', 'APA');
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError($this->getError());
 			}
@@ -131,7 +131,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we returning metadata?
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(

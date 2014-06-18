@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-if (!isset($this->reviews) || !$this->reviews) 
+if (!isset($this->reviews) || !$this->reviews)
 {
 	$this->reviews = array();
 }
@@ -87,9 +87,9 @@ else
 }
 
 // Display the review form if needed
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
-	if (isset($this->h->myreview) && is_object($this->h->myreview)) 
+	if (isset($this->h->myreview) && is_object($this->h->myreview))
 	{
 		$this->view('default', 'review')
 		     ->set('option', $this->option)

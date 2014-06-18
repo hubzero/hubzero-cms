@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Sam Wilson <samwilson@purdue.edu>
  */
 require_once 'PHPUnit/Extensions/SeleniumTestCase.php';

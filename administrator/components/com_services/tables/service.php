@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 /**
  * Short description for 'Service'
- * 
+ *
  * Long description (if any) ...
  */
 class Service extends JTable
@@ -41,119 +41,119 @@ class Service extends JTable
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id          	= NULL;  // @var int(11) Primary key
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title       	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'category'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $category    	= NULL;  // @var varchar(50)
 
 	/**
 	 * Description for 'alias'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $alias		 	= NULL;  // @var varchar(50)
 
 	/**
 	 * Description for 'description'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $description 	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'unitprice'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $unitprice   	= NULL;  // @var float
 
 	/**
 	 * Description for 'pointsprice'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $pointsprice   	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'currency'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $currency    	= NULL;  // @var varchar(11)
 
 	/**
 	 * Description for 'maxunits'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $maxunits 		= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'minunits'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $minunits   	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'unitsize'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $unitsize   	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'status'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $status   		= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'restricted'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $restricted   	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'ordering'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $ordering   	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'unitmeasure'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $unitmeasure    = NULL;  // @var varchar
 
 	/**
 	 * Description for 'changed'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $changed     	= NULL;  // @var datetime
 
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $params   		= NULL;  // @var text
@@ -162,9 +162,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -175,9 +175,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for 'check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function check()
@@ -195,9 +195,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for 'loadService'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $alias Parameter description (if any) ...
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -226,9 +226,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for 'getServices'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $category Parameter description (if any) ...
 	 * @param      integer $completeinfo Parameter description (if any) ...
 	 * @param      integer $active Parameter description (if any) ...
@@ -284,9 +284,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for 'getServiceCost'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @param      integer $points Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -307,9 +307,9 @@ class Service extends JTable
 
 	/**
 	 * Short description for 'getUserService'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $uid Parameter description (if any) ...
 	 * @param      string $field Parameter description (if any) ...
 	 * @param      string $category Parameter description (if any) ...

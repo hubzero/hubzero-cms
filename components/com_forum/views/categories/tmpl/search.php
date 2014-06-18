@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -72,7 +72,7 @@ $juser = JFactory::getUser();
 					<tbody>
 			<?php
 			if ($this->thread->posts('list', $this->filters)->total() > 0) {
-				foreach ($this->thread->posts() as $row) 
+				foreach ($this->thread->posts() as $row)
 				{
 					$title = $this->escape(stripslashes($row->get('title')));
 					$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
@@ -83,11 +83,11 @@ $juser = JFactory::getUser();
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 					}
 					$cls = array();
-					if ($row->get('closed')) 
+					if ($row->get('closed'))
 					{
 						$cls[] = 'closed';
 					}
-					if ($row->get('sticky')) 
+					if ($row->get('sticky'))
 					{
 						$cls[] = 'sticky';
 					}
@@ -128,11 +128,11 @@ $juser = JFactory::getUser();
 				<?php } ?>
 					</tbody>
 				</table>
-				<?php 
+				<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->thread->posts('count', $this->filters), 
-						$this->filters['start'], 
+						$this->thread->posts('count', $this->filters),
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);

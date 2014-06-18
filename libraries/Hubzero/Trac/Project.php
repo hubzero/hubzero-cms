@@ -37,35 +37,35 @@ class Project
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $id = null;
 
 	/**
 	 * Description for 'name'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $name = null;
 
 	/**
 	 * Description for '_updatedkeys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
 	 * Description for '_list_keys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_list_keys = array();
 
 	/**
 	 * Resets internal properties
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function clear()
@@ -74,17 +74,17 @@ class Project
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key => $value) 
+		foreach ($cvars as $key => $value)
 		{
-			if ($key{0} != '_') 
+			if ($key{0} != '_')
 			{
 				unset($this->$key);
 
-				if (!in_array($key, $this->_list_keys)) 
+				if (!in_array($key, $this->_list_keys))
 				{
 					$this->$key = null;
 				}
-				else 
+				else
 				{
 					$this->$key = array();
 				}
@@ -98,7 +98,7 @@ class Project
 
 	/**
 	 * Log a debug message
-	 * 
+	 *
 	 * @param      string $msg Message to log
 	 * @return     void
 	 */
@@ -110,7 +110,7 @@ class Project
 
 	/**
 	 * Output data as an array
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function toArray()
@@ -119,9 +119,9 @@ class Project
 
 		$cvars = get_class_vars(__CLASS__);
 
-		foreach ($cvars as $key=>$value) 
+		foreach ($cvars as $key=>$value)
 		{
-			if ($key{0} == '_') 
+			if ($key{0} == '_')
 			{
 				continue;
 			}
@@ -136,7 +136,7 @@ class Project
 
 	/**
 	 * Find a project
-	 * 
+	 *
 	 * @param      string $name PRoject name
 	 * @return     mixed
 	 */
@@ -153,7 +153,7 @@ class Project
 			$hztp->name = $name;
 		}
 
-		if ($hztp->read() == false) 
+		if ($hztp->read() == false)
 		{
 			return false;
 		}
@@ -163,7 +163,7 @@ class Project
 
 	/**
 	 * Find a project. Create it if one doesn't exist.
-	 * 
+	 *
 	 * @param      string $name Project name
 	 * @return     mixed
 	 */
@@ -180,7 +180,7 @@ class Project
 			$hztp->name = $name;
 		}
 
-		if ($hztp->read() == false) 
+		if ($hztp->read() == false)
 		{
 			if ($hztp->create() == false)
 			{
@@ -193,33 +193,33 @@ class Project
 
 	/**
 	 * Short description for 'create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function create()
 	{
 		$db = \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (is_numeric($this->id)) 
+		if (is_numeric($this->id))
 		{
 			$query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " . $db->Quote($this->id) . "," . $db->Quote($this->name) . ");";
 			$db->setQuery($query);
 
 			$result = $db->query();
 
-			if ($result !== false || $db->getErrorNum() == 1062) 
+			if ($result !== false || $db->getErrorNum() == 1062)
 			{
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			$query = "INSERT INTO `#__trac_project` (name) VALUES ( " . $db->Quote($this->name) . ");";
 
@@ -227,7 +227,7 @@ class Project
 
 			$result = $db->query();
 
-			if ($result === false && $db->getErrorNum() == 1062) 
+			if ($result === false && $db->getErrorNum() == 1062)
 			{
 				$query = "SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";";
 
@@ -235,7 +235,7 @@ class Project
 
 				$result = $db->loadResult();
 
-				if ($result == null) 
+				if ($result == null)
 				{
 					return false;
 				}
@@ -243,7 +243,7 @@ class Project
 				$this->id = $result;
 				return true;
 			}
-			else if ($result !== false) 
+			else if ($result !== false)
 			{
 				$this->id = $db->insertid();
 				return true;
@@ -255,9 +255,9 @@ class Project
 
 	/**
 	 * Short description for 'read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function read()
@@ -266,16 +266,16 @@ class Project
 
 		$lazyloading = false;
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (is_numeric($this->id)) 
+		if (is_numeric($this->id))
 		{
 			$query = "SELECT * FROM `#__trac_project` WHERE id = " . $db->Quote($this->id) . ";";
 		}
-		else 
+		else
 		{
 			$query = "SELECT * FROM `#__trac_project` WHERE name = " . $db->Quote($this->name) . ";";
 		}
@@ -284,16 +284,16 @@ class Project
 
 		$result = $db->loadAssoc();
 
-		if (empty($result)) 
+		if (empty($result))
 		{
 			return false;
 		}
 
 		$this->clear();
 
-		foreach ($result as $key => $value) 
+		foreach ($result as $key => $value)
 		{
-			if (property_exists(__CLASS__, $key) && $key{0} != '_') 
+			if (property_exists(__CLASS__, $key) && $key{0} != '_')
 			{
 				$this->__set($key, $value);
 			}
@@ -306,9 +306,9 @@ class Project
 
 	/**
 	 * Short description for 'update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $all Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -322,23 +322,23 @@ class Project
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value) 
+		foreach ($classvars as $property=>$value)
 		{
-			if (($property{0} == '_') || in_array($property, $this->_list_keys)) 
+			if (($property{0} == '_') || in_array($property, $this->_list_keys))
 			{
 				continue;
 			}
 
-			if (!$all && !in_array($property, $this->_updatedkeys)) 
+			if (!$all && !in_array($property, $this->_updatedkeys))
 			{
 				continue;
 			}
 
-			if (!$first) 
+			if (!$first)
 			{
 				$query .= ',';
 			}
-			else 
+			else
 			{
 				$first = false;
 			}
@@ -349,7 +349,7 @@ class Project
 			{
 				$query .= "`$property`=NULL";
 			}
-			else 
+			else
 			{
 				$query .= "`$property`=" . $db->Quote($value);
 			}
@@ -357,25 +357,25 @@ class Project
 
 		$query .= " WHERE `id`=" . $db->Quote($this->__get('id')) . ";";
 
-		if ($first == true) 
+		if ($first == true)
 		{
 			$query = '';
 		}
 
-		if (!empty($query)) 
+		if (!empty($query))
 		{
 			$db->setQuery($query);
 
 			$result = $db->query();
 
-			if ($result === false) 
+			if ($result === false)
 			{
 				return false;
 			}
 
 			$affected = $db->getAffectedRows();
 
-			if ($affected < 1) 
+			if ($affected < 1)
 			{
 				$this->create();
 
@@ -383,14 +383,14 @@ class Project
 
 				$result = $db->query();
 
-				if ($result === false) 
+				if ($result === false)
 				{
 					return false;
 				}
 
 				$affected = $db->getAffectedRows();
 
-				if ($affected < 1) 
+				if ($affected < 1)
 				{
 					return false;
 				}
@@ -402,40 +402,40 @@ class Project
 
 	/**
 	 * Short description for 'delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function delete()
 	{
-		if (!isset($this->name) && !isset($this->id)) 
+		if (!isset($this->name) && !isset($this->id))
 		{
 			return false;
 		}
 
 		$db = \JFactory::getDBO();
 
-		if (empty($db)) 
+		if (empty($db))
 		{
 			return false;
 		}
 
-		if (!isset($this->id)) 
+		if (!isset($this->id))
 		{
 			$db->setQuery("SELECT id FROM `#__trac_project` WHERE name=" . $db->Quote($this->name) . ";");
 
 			$this->id = $db->loadResult();
 		}
 
-		if (empty($this->id)) 
+		if (empty($this->id))
 		{
 			return false;
 		}
 
 		$db->setQuery("DELETE FROM `#__trac_project` WHERE id=" . $db->Quote($this->id) . ";");
 
-		if (!$db->query()) 
+		if (!$db->query())
 		{
 			return false;
 		}
@@ -450,9 +450,9 @@ class Project
 
 	/**
 	 * Short description for '__get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -460,9 +460,9 @@ class Project
 	{
 		$xlog =  \JFactory::getLogger();
 
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property)) 
+			if (empty($property))
 			{
 				$property = '(null)';
 			}
@@ -471,24 +471,24 @@ class Project
 			die();
 		}
 
-		if (in_array($property, $this->_list_keys)) 
+		if (in_array($property, $this->_list_keys))
 		{
-			if (!array_key_exists($property, get_object_vars($this))) 
+			if (!array_key_exists($property, get_object_vars($this)))
 			{
 				$db =  \JFactory::getDBO();
 
-				if (is_object($db)) 
+				if (is_object($db))
 				{
 					$query = null;
 
-					if (!empty($query)) 
+					if (!empty($query))
 					{
 						$db->setQuery($query);
 
 						$result = $db->loadResultArray();
 					}
 
-					if ($result !== false) 
+					if ($result !== false)
 					{
 						$this->__set($property, $result);
 					}
@@ -496,12 +496,12 @@ class Project
 			}
 		}
 
-		if (isset($this->$property)) 
+		if (isset($this->$property))
 		{
 			return $this->$property;
 		}
 
-		if (array_key_exists($property, get_object_vars($this))) 
+		if (array_key_exists($property, get_object_vars($this)))
 		{
 			return null;
 		}
@@ -513,18 +513,18 @@ class Project
 
 	/**
 	 * Short description for '__set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
 	 */
 	public function __set($property = null, $value = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property)) 
+			if (empty($property))
 			{
 				$property = '(null)';
 			}
@@ -533,19 +533,19 @@ class Project
 			die();
 		}
 
-		if (in_array($property, $this->_list_keys)) 
+		if (in_array($property, $this->_list_keys))
 		{
 			$value = array_diff((array) $value, array(''));
 			$value = array_unique($value);
 			$value = array_values($value);
 			$this->$property = $value;
 		}
-		else 
+		else
 		{
 			$this->$property = $value;
 		}
 
-		if (!in_array($property, $this->_updatedkeys)) 
+		if (!in_array($property, $this->_updatedkeys))
 		{
 			$this->_updatedkeys[] = $property;
 		}
@@ -553,17 +553,17 @@ class Project
 
 	/**
 	 * Short description for '__isset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
 	public function __isset($property = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property)) 
+			if (empty($property))
 			{
 				$property = '(null)';
 			}
@@ -577,17 +577,17 @@ class Project
 
 	/**
 	 * Short description for '__unset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     void
 	 */
 	public function __unset($property = null)
 	{
-		if (!property_exists(__CLASS__, $property) || $property{0} == '_') 
+		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property)) 
+			if (empty($property))
 			{
 				$property = '(null)';
 			}
@@ -603,9 +603,9 @@ class Project
 
 	/**
 	 * Short description for '_error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $message Parameter description (if any) ...
 	 * @param      integer $level Parameter description (if any) ...
 	 * @return     void
@@ -632,9 +632,9 @@ class Project
 
 	/**
 	 * Short description for 'get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -645,9 +645,9 @@ class Project
 
 	/**
 	 * Short description for 'set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
@@ -659,9 +659,9 @@ class Project
 
 	/**
 	 * Short description for 'add_user_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $user Parameter description (if any) ...
 	 * @param      unknown $action Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -670,18 +670,18 @@ class Project
 	{
 		$db =  \JFactory::getDBO();
 
-		if ($user == 'anonymous') 
+		if ($user == 'anonymous')
 		{
 			$user = '0';
 		}
 
-		if (!is_numeric($user)) 
+		if (!is_numeric($user))
 		{
 			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
-			if ($user_id === false) 
+			if ($user_id === false)
 			{
 				$this->_error("Unknown user $user");
 				return false;
@@ -696,9 +696,9 @@ class Project
 		$quoted_user_id = $db->Quote($user_id);
 		$values = '';
 
-		foreach ((array) $action as $a) 
+		foreach ((array) $action as $a)
 		{
-			if (!empty($values)) 
+			if (!empty($values))
 			{
 				$values .= ',';
 			}
@@ -713,9 +713,9 @@ class Project
 
 	/**
 	 * Short description for 'add_group_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $group Parameter description (if any) ...
 	 * @param      unknown $action Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -724,18 +724,18 @@ class Project
 	{
 		$db =  \JFactory::getDBO();
 
-		if ($group == 'authenticated') 
+		if ($group == 'authenticated')
 		{
 			$group = '0';
 		}
 
-		if (!is_numeric($group)) 
+		if (!is_numeric($group))
 		{
 			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
-			if ($group_id === false) 
+			if ($group_id === false)
 			{
 				$this->_error("Unknown group $group");
 				return false;
@@ -746,9 +746,9 @@ class Project
 		$quoted_group_id = $db->Quote($group_id);
 		$values = '';
 
-		foreach ((array) $action as $a) 
+		foreach ((array) $action as $a)
 		{
-			if (!empty($values)) 
+			if (!empty($values))
 			{
 				$values .= ',';
 			}
@@ -763,9 +763,9 @@ class Project
 
 	/**
 	 * Short description for 'remove_user_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $user Parameter description (if any) ...
 	 * @param      unknown $action Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -775,18 +775,18 @@ class Project
 		$db =  \JFactory::getDBO();
 		$all = false;
 
-		if ($user == 'anonymous') 
+		if ($user == 'anonymous')
 		{
 			$user = '0';
 		}
 
-		if (!is_numeric($user)) 
+		if (!is_numeric($user))
 		{
 			$query = "SELECT id FROM `#__users` WHERE username=" . $db->Quote($user) . ";";
 			$db->setQuery($query);
 			$user_id = $db->loadResult();
 
-			if ($user_id === false) 
+			if ($user_id === false)
 			{
 				$this->_error("Unknown user $user");
 				return false;
@@ -801,13 +801,13 @@ class Project
 		$quoted_user_id = $db->Quote($user_id);
 		$values = '';
 
-		foreach ((array) $action as $a) 
+		foreach ((array) $action as $a)
 		{
-			if ($a == '*') 
+			if ($a == '*')
 			{
 				$all = true;
 			}
-			if (!empty($values)) 
+			if (!empty($values))
 			{
 				$values .= ',';
 			}
@@ -827,9 +827,9 @@ class Project
 
 	/**
 	 * Short description for 'remove_group_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $group Parameter description (if any) ...
 	 * @param      unknown $action Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -839,18 +839,18 @@ class Project
 		$db =  \JFactory::getDBO();
 		$all = false;
 
-		if ($group == 'authenticated') 
+		if ($group == 'authenticated')
 		{
 			$group = '0';
 		}
 
-		if (!is_numeric($group)) 
+		if (!is_numeric($group))
 		{
 			$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->Quote($group) . ";";
 			$db->setQuery($query);
 			$group_id = $db->loadResult();
 
-			if ($group_id === null) 
+			if ($group_id === null)
 			{
 				$this->_error("Unknown group $group");
 				return false;
@@ -861,13 +861,13 @@ class Project
 		$quoted_group_id = $db->Quote($group_id);
 		$values = '';
 
-		foreach ((array) $action as $a) 
+		foreach ((array) $action as $a)
 		{
-			if ($a == '*') 
+			if ($a == '*')
 			{
 				$all = true;
 			}
-			if (!empty($values)) 
+			if (!empty($values))
 			{
 				$values .= ',';
 			}
@@ -887,9 +887,9 @@ class Project
 
 	/**
 	 * Short description for 'get_user_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $user Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -898,16 +898,16 @@ class Project
 		$db =  \JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
-		if ($user == "anonymous") 
+		if ($user == "anonymous")
 		{
 			$user = '0';
 		}
 		$quoted_user = $db->Quote($user);
-		if (is_numeric($user)) 
+		if (is_numeric($user))
 		{
 			$query = "SELECT action FROM `#__trac_user_permission` AS up WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
 		}
-		else 
+		else
 		{
 			$query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u WHERE up.trac_project_id=$quoted_project_id AND u.id=up.user_id AND u.username=$quoted_user;";
 		}
@@ -920,9 +920,9 @@ class Project
 
 	/**
 	 * Short description for 'get_group_permission'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $group Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -931,16 +931,16 @@ class Project
 		$db =  \JFactory::getDBO();
 		$quoted_project_id = $db->Quote($this->id);
 
-		if ($group == 'authenticated') 
+		if ($group == 'authenticated')
 		{
 			$group = '0';
 		}
 		$quoted_group = $db->Quote($group);
-		if (is_numeric($group)) 
+		if (is_numeric($group))
 		{
 			$query = "SELECT action FROM `#__trac_group_permission` AS gp WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
 		}
-		else 
+		else
 		{
 			$query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g WHERE gp.trac_project_id=$quoted_project_id AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
 		}

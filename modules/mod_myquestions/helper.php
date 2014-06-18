@@ -40,7 +40,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 {
 	/**
 	 * Format the tags
-	 * 
+	 *
 	 * @param      string  $string String of comma-separated tags
 	 * @param      number  $num    Number of tags to display
 	 * @param      integer $max    Max character length
@@ -51,7 +51,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		$out = '';
 		$tags = explode(',', $string);
 
-		if (count($tags) > 0) 
+		if (count($tags) > 0)
 		{
 			$out .= '<span class="taggi">' . "\n";
 			$counter = 0;
@@ -59,11 +59,11 @@ class modMyQuestions extends \Hubzero\Module\Module
 			for ($i=0; $i< count($tags); $i++)
 			{
 				$counter = $counter + strlen(stripslashes($tags[$i]));
-				if ($counter > $max) 
+				if ($counter > $max)
 				{
 					$num = $num - 1;
 				}
-				if ($i < $num) 
+				if ($i < $num)
 				{
 					// display tag
 					$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
@@ -71,7 +71,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
 				}
 			}
-			if ($i > $num) 
+			if ($i > $num)
 			{
 				$out .= ' (&#8230;)';
 			}
@@ -83,9 +83,9 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 	/**
 	 * Looks up a user's interests (tags)
-	 * 
+	 *
 	 * @param      integer $cloud Output as tagcloud (defaults to no)
-	 * @return     string  List of tags as either a tagcloud or comma-delimitated string 
+	 * @return     string  List of tags as either a tagcloud or comma-delimitated string
 	 */
 	private function _getInterests($cloud=0)
 	{
@@ -96,11 +96,11 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 		// Get tags of interest
 		$mt = new MembersTags($database);
-		if ($cloud) 
+		if ($cloud)
 		{
 			$tags = $mt->get_tag_cloud(0,0,$juser->get('id'));
-		} 
-		else 
+		}
+		else
 		{
 			$tags = $mt->get_tag_string($juser->get('id'));
 		}
@@ -110,7 +110,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 	/**
 	 * Retrieves a user's questions
-	 * 
+	 *
 	 * @param      string $kind The kind of results to retrieve
 	 * @param      array  $interests Array of tags
 	 * @return     array  Database results
@@ -128,7 +128,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
 		$aq = new AnswersTableQuestion($database);
-		if ($this->banking) 
+		if ($this->banking)
 		{
 			$AE = new AnswersEconomy($database);
 			$BT = new \Hubzero\Bank\Transaction($database);
@@ -159,14 +159,14 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 				$TA = new ToolAuthor($database);
 				$tools = $TA->getToolContributions($juser->get('id'));
-				if ($tools) 
+				if ($tools)
 				{
 					foreach ($tools as $tool)
 					{
 						$filters['tag'] .= 'tool'.$tool->toolname.',';
 					}
 				}
-				if (!$filters['tag']) 
+				if (!$filters['tag'])
 				{
 					$filters['filterby'] = 'none';
 				}
@@ -181,7 +181,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		}
 
 		$results = $aq->getResults($filters);
-		if ($this->banking && $results) 
+		if ($this->banking && $results)
 		{
 			$awards = array();
 
@@ -190,7 +190,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 				// Calculate max award
 				$result->marketvalue = round($AE->calculate_marketvalue($result->id, 'maxaward'));
 				$result->maxaward = round(2*(($result->marketvalue)/3));
-				if ($kind != 'mine') 
+				if ($kind != 'mine')
 				{
 					$result->maxaward = $result->maxaward + $result->reward;
 				}
@@ -211,7 +211,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 	/**
 	 * Queries the database for user's questions and preps any data for display
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -248,7 +248,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		$opencount = ($this->openquestions) ? count($this->openquestions) : 0;
 
 		// Get Questions related to user contributions
-		if ($this->show_assigned) 
+		if ($this->show_assigned)
 		{
 			$c++;
 			$this->assigned = $this->_getQuestions('assigned');
@@ -256,15 +256,15 @@ class modMyQuestions extends \Hubzero\Module\Module
 		}
 
 		// Get interest tags
-		if ($this->show_interests) 
+		if ($this->show_interests)
 		{
 			$c++;
 			$this->interests = $this->_getInterests();
-			if (!$this->interests) 
+			if (!$this->interests)
 			{
 				$this->intext = JText::_('MOD_MYQUESTIONS_NA');
-			} 
-			else 
+			}
+			else
 			{
 				$this->intext = $this->_formatTags($this->interests);
 			}

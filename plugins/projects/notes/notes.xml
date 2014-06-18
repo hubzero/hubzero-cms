@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />	
+				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
 			</fieldset>
 			<field name="enable_publinks" type="radio" default="0" label="Enable public links" description="Enable project team members to generate public links to notes and list/unlist notes on project public page">
 				<option value="0">No</option>

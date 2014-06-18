@@ -46,7 +46,7 @@ if ($this->version == 'dev') {
 				<div class="col span8">
 					<label for="acmembers">
 						<?php echo JText::_('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
-						<?php 
+						<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
 						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
@@ -62,7 +62,7 @@ if ($this->version == 'dev') {
 						<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
 						<select name="role" id="new-authors-role">
 							<option value=""><?php echo JText::_('Author'); ?></option>
-							<?php 
+							<?php
 							if ($this->roles)
 							{
 								foreach ($this->roles as $role)
@@ -123,7 +123,7 @@ if ($this->contributors) {
 			</tfoot>
 			<tbody>
 			<?php
-			foreach ($this->contributors as $contributor) 
+			foreach ($this->contributors as $contributor)
 			{
 				if ($contributor->lastname || $contributor->firstname) {
 					$name  = stripslashes($contributor->firstname) . ' ';
@@ -144,7 +144,7 @@ if ($this->contributors) {
 					<td>
 						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
 							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-							<?php 
+							<?php
 							if ($this->roles)
 							{
 								foreach ($this->roles as $role)
@@ -158,7 +158,7 @@ if ($this->contributors) {
 						</select>
 					</td>
 					<td class="u"><?php
-						if ($this->version=='dev') 
+						if ($this->version=='dev')
 						{
 							if ($i > 0 || ($i+0 > 0)) {
 							    echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';

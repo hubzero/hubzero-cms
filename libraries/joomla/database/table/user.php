@@ -240,10 +240,10 @@ class JTableUser extends JTable
 		{
 			//$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
 			//return false;
-			
+
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
-			$allow_dupes = $usersConfig->get( 'allow_duplicate_emails' );		
-			
+			$allow_dupes = $usersConfig->get( 'allow_duplicate_emails' );
+
 			if (!$allow_dupes) {
 				$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
 				return false;
@@ -318,7 +318,7 @@ class JTableUser extends JTable
 				if ($count++ > 1010)
 				{
 					$this->setError( strtolower(get_class( $this ))."::". JText::_( 'store failed' ) ."<br />" . $this->_db->getErrorMsg() );
-					return false;				
+					return false;
 				}
 
 				$this->$k = null;

@@ -35,5 +35,5 @@ defined('_JEXEC') or die('Restricted access');
 
 interface ExceptionInterface
 {
-	
+
 }

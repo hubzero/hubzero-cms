@@ -35,7 +35,7 @@ $canDo = JobsHelper::getActions('job');
 
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 JToolBarHelper::title(JText::_('Job').': '. $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -62,7 +62,7 @@ $employerid = ($this->task != 'edit') ? 1 : $this->job->employerid;
 
 $expired = $this->subscription->expires && $this->subscription->expires < $now ? 1 : 0;
 
-// Get the published status			
+// Get the published status
 	switch ($this->row->status)
 	{
 		case 0:
@@ -97,7 +97,7 @@ $expired = $this->subscription->expires && $this->subscription->expires < $now ?
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
 
@@ -106,7 +106,7 @@ function submitbutton(pressbutton)
 		form.submit();
 		return;
 	}
-	
+
 	// do field validation
 	if (form.title.value == ''){
 		alert('Job must have a title.');
@@ -170,7 +170,7 @@ function submitbutton(pressbutton)
 					foreach ($countries as $country)
 					{
 						$out .= "\t\t\t\t".' <option value="' . $this->escape($country->name) . '"';
-						if ($country->name == $this->row->companyLocationCountry) 
+						if ($country->name == $this->row->companyLocationCountry)
 						{
 							$out .= ' selected="selected"';
 						}

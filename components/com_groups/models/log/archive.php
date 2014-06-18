@@ -38,14 +38,14 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_logs = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -54,7 +54,7 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 		// create database object
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Get Instance of Page Archive
 	 *
@@ -63,17 +63,17 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 	static function &getInstance($key=null)
 	{
 		static $instances;
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new GroupsModelLogArchive();
 		}
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Get a list of group pages
 	 *

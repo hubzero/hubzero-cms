@@ -70,13 +70,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			''
 		));
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.sort', 
-			'filter_order', 
+			$this->_option . '.browse.sort',
+			'filter_order',
 			'cn'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.browse.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.browse.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
@@ -87,7 +87,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$this->view->filters['authorized'] = 'admin';
 
 		$canDo = GroupsHelper::getActions('group');
-		if (!$canDo->get('core.admin')) 
+		if (!$canDo->get('core.admin'))
 		{
 			if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == 0)
 			{
@@ -97,20 +97,20 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			if ($this->view->filters['type'][0] == 'all')
 			{
 				$this->view->filters['type'] = array(
-					//0,  No system groups 
+					//0,  No system groups
 					1,  // hub
-					2,  // project 
+					2,  // project
 					3   // super
 				);
 			}
 		}
-		
+
 		//approved filter
 		$this->view->filters['approved'] = JRequest::getVar('approved');
-		
+
 		//published filter
 		//$this->view->filters['published'] = JRequest::getVar('published', 1);
-		
+
 		//created filter
 		$this->view->filters['created'] = JRequest::getVar('created', '');
 
@@ -198,15 +198,15 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		{
 			$id = '';
 		}
-		
+
 		// determine task
 		$task = ($id == '') ? 'create' : 'edit';
 
 		$this->view->group = new \Hubzero\User\Group();
 		$this->view->group->read($id);
-		
+
 		// make sure we are organized
-		if (!$this->authorize($task, $this->view->group)) 
+		if (!$this->authorize($task, $this->view->group))
 		{
 			return;
 		}
@@ -266,7 +266,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		{
 			$isNew = true;
 
-			// Set the task - if anything fails and we re-enter edit mode 
+			// Set the task - if anything fails and we re-enter edit mode
 			// we need to know if we were creating new or editing existing
 			$this->_task = 'new';
 			$before = new \Hubzero\User\Group();
@@ -279,7 +279,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			$group->read($g['gidNumber']);
 			$before = clone($group);
 		}
-		
+
 		$task = ($this->_task == 'edit') ? 'edit' : 'create';
 		if (!$this->authorize($task, $group))
 		{
@@ -320,7 +320,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_INVALID_ID'));
 		}
-		
+
 		//only check if cn exists if we are creating or have changed the cn
 		if ($this->_task == 'new' || $group->get('cn') != $g['cn'])
 		{
@@ -329,7 +329,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				$this->setError(JText::_('COM_GROUPS_ERROR_GROUP_ALREADY_EXIST'));
 			}
 		}
-		
+
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
@@ -411,7 +411,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			'action'    => 'group_edited',
 			'comments'  => 'edited by administrator'
 		));
-		
+
 		// handle special groups
 		if ($group->isSuperGroup())
 		{
@@ -420,7 +420,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// git lab stuff
 			$this->_handSuperGroupGitlab($group);
 		}
-		
+
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -438,7 +438,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	{
 		//get the upload path for groups
 		$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
-		
+
 		// get the source path
 		$srcPath = JPATH_COMPONENT . DS . 'super' . DS . 'default' . DS . '.';
 
@@ -459,17 +459,17 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 					->enqueueMessage('Group folder ('.$uploadPath.') is not writable. Plase modify the folder permissions and try again later.', 'error');
 			return;
 		}
-		
+
 		// copy over default template recursively
 		// must have  /. at the end of source path to get all items in that directory
 		// also doesnt overwrite already existing files/folders
 		shell_exec("cp -rn $srcPath $uploadPath");
-		
+
 		// make sure files are group read and writable
 		// make sure files are all group owned properly
 		shell_exec("chmod -R 2770 $uploadPath");
 		shell_exec("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath);
-		
+
 		// create super group DB if doesnt already exist
 		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
 		if (!$this->database->query())
@@ -477,7 +477,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			JFactory::getApplication()
 				->enqueueMessage('Unable to create super group database. Please try again later.', 'error');
 		}
-		
+
 		// check to see if we have a super group db config
 		$supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
 		if (!file_exists($supergroupDbConfigFile))
@@ -485,19 +485,19 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			JFactory::getApplication()
 				->enqueueMessage('Unable to load super group config. Please try again later.', 'error');
 		}
-		
+
 		// get hub super group database config file
 		$supergroupDbConfig = include $supergroupDbConfigFile;
-		
+
 		// define username, password, and database to be written in config
 		$username = (isset($supergroupDbConfig['username'])) ? $supergroupDbConfig['username'] : '';
 		$password = (isset($supergroupDbConfig['password'])) ? $supergroupDbConfig['password'] : '';
 		$database = 'sg_' . $group->get('cn');
-				
+
 		//write db config in super group
 		$dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
 		$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);";
-		
+
 		// write db config file
 		if (!file_exists($dbConfigFile))
 		{
@@ -507,7 +507,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 					->enqueueMessage('Unable to write super group database config file. Please try again later.', 'error');
 			}
 		}
-		
+
 		// log super group change
 		GroupsModelLog::log(array(
 			'gidNumber' => $group->get('gidNumber'),
@@ -605,7 +605,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// path to group folder
 		$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
-		// build author info for making first commit 
+		// build author info for making first commit
 		$authorInfo = '"' . JFactory::getConfig()->get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>"';
 
 		// check to see if we already have git repo
@@ -613,16 +613,16 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (is_dir($uploadPath . DS . '.git'))
 		{
 			return;
-		} 
+		}
 
 		// build command to run via shell
 		// this will init the git repo, make the inital commit and push to the repo management machine
 		$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
 		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabProject['ssh_url_to_repo'] . ' 2>&1';
-		
+
 		// execute command
 		$output = shell_exec($cmd);
-		
+
 		// make sure everything went well
 		if (preg_match("/Host key verification failed/uis", $output))
 		{
@@ -677,7 +677,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				$failed[] = array('group' => $group->get('cn'), 'message' => 'Not a super group.');
 				continue;
 			}
-			
+
 			// path to group folder
 			$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
@@ -699,7 +699,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// this will run a "git pull --rebase origin master"
 			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_pull.sh ';
 			$cmd .= $uploadPath . ' 2>&1';
-			
+
 			// execute command
 			$output = shell_exec($cmd);
 
@@ -758,7 +758,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				{
 					continue;
 				}
-				if (!$this->authorize('delete', $group)) 
+				if (!$this->authorize('delete', $group))
 				{
 					continue;
 				}
@@ -800,14 +800,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				{
 					$log .= implode('', $logs);
 				}
-				
+
 				// Delete group
 				if (!$group->delete())
 				{
 					JError::raiseError(500, 'Unable to delete group');
 					return;
 				}
-				
+
 				// log publishing
 				GroupsModelLog::log(array(
 					'gidNumber' => $group->get('gidNumber'),
@@ -850,7 +850,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
@@ -874,7 +874,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				//set the group to be published and update
 				$group->set('published', 1);
 				$group->update();
-				
+
 				// log publishing
 				GroupsModelLog::log(array(
 					'gidNumber' => $group->get('gidNumber'),
@@ -945,7 +945,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			}
 		}
 	}
-	
+
 	/**
 	 * Approve a group
 	 *
@@ -961,7 +961,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		{
 			$ids = array();
 		}
-		
+
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
@@ -977,11 +977,11 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				{
 					continue;
 				}
-				
+
 				//set the group to be published and update
 				$group->set('approved', 1);
 				$group->update();
-				
+
 				// log publishing
 				GroupsModelLog::log(array(
 					'gidNumber' => $group->get('gidNumber'),
@@ -989,7 +989,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 					'comments'  => 'approved by administrator'
 				));
 			}
-			
+
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -1005,7 +1005,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 */
 	/**
 	 * Check if a group alias is valid
-	 * 
+	 *
 	 * @param 		integer 	$cname 			Group alias
 	 * @param 		boolean		$allowDashes 	Allow dashes in cn
 	 * @return 		boolean		True if valid, false if not
@@ -1020,16 +1020,16 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 		if (preg_match($regex, $cn))
 		{
-			if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0) 
+			if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0)
 			{
 				return false;
-			} 
-			else 
+			}
+			else
 			{
 				return true;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return false;
 		}
@@ -1046,10 +1046,10 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	{
 		// get users actions
 		$canDo = GroupsHelper::getActions('group');
-		
+
 		// build task name
 		$taskName = 'core.' . $task;
-		
+
 		// can user perform task
 		if (!$canDo->get($taskName) || (!$canDo->get('core.admin') && $task == 'edit' && $group->get('type') == 0))
 		{
@@ -1061,7 +1061,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			);
 			return false;
 		}
-		
+
 		return true;
 	}
 }

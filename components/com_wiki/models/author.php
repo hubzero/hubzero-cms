@@ -40,7 +40,7 @@ class WikiModelAuthor extends \Hubzero\Base\Model
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -76,12 +76,12 @@ class WikiModelAuthor extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}

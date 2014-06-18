@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$k = 1; 
+$k = 1;
 $customer = $this->customer;
 $row = $this->row;
 ?>
@@ -47,7 +47,7 @@ $row = $this->row;
 		<?php if ($this->headertext_ln2) { ?>
 		<tr><td style="font-weight: bold;"><?php echo $this->headertext_ln2; ?></td></tr>
 		<?php } ?>
-		<?php 	
+		<?php
 			for ($i=0; $i< count($this->hubaddress);$i++)
 			{
 				if ($this->hubaddress[$i]) {
@@ -59,7 +59,7 @@ $row = $this->row;
 				}
 			}
 		?>
-	
+
  </tbody>
 </table>
 <div style="height: 50px;"></div>
@@ -102,7 +102,7 @@ $row = $this->row;
 		<td><?php echo $k.'. ['.$o->category.$o->itemid.'] ' . $o->title. ' (x'.$o->quantity.')'; echo ($o->selectedsize) ? ' - size '.$o->selectedsize : ''; ?></td>
 		<td><?php echo $o->price*$o->quantity.' '.JText::_('COM_STORE_points'); ?></td>
 	</tr>
-	
+
 <?php } ?>
 	<tr>
 		<td style="font-weight: bold; text-align: right;"><?php echo JText::_('COM_STORE_Total: ') . '&nbsp;'; ?></td>

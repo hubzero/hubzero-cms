@@ -72,7 +72,7 @@ $base = $this->offering->link();
 
 <div class="notes-wrap">
 <?php if ($results) { ?>
-	<?php 
+	<?php
 	foreach ($results as $id => $notes)
 	{
 		$lecture = new CoursesModelAssetgroup($id);

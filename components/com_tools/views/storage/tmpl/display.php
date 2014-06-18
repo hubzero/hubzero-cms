@@ -80,7 +80,7 @@ $this->css('storage.css');
 				<div class="col span6 omega">
 					<label>
 						<br />
-						<input type="submit" class="option" name="action" value="Purge" /> 
+						<input type="submit" class="option" name="action" value="Purge" />
 					</label>
 				</div>
 			</div>

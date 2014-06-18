@@ -81,44 +81,44 @@ class MembersModelRegistration
 
 	/**
 	 * Description for '_registration'
-	 * 
+	 *
 	 * @var array
 	 */
 	var $_registration;
 
 	/**
 	 * Description for '_encoded'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $_encoded;
 
 	/**
 	 * Description for '_missing'
-	 * 
+	 *
 	 * @var array
 	 */
 	var $_missing;
 
 	/**
 	 * Description for '_invalid'
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $_invalid;
 
 	/**
 	 * Description for '_checked'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_checked;
 
 	/**
 	 * Short description for 'clear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function clear()
@@ -132,9 +132,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $login Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -147,9 +147,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'normalize'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function normalize()
@@ -189,9 +189,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'loadPost'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function loadPost()
@@ -202,7 +202,7 @@ class MembersModelRegistration
 		// we use this to detect when to delete data when
 		// merging registrations with profile data
 		//
-		// TODO: more cleanup 
+		// TODO: more cleanup
 
 		$coriginus_p = JRequest::getVar('corigin_us', null, 'post');
 		$corigin_p = JRequest::getVar('corigin', null, 'post');
@@ -228,7 +228,7 @@ class MembersModelRegistration
 		$racewhite_p = JRequest::getVar('racewhite', null, 'post');
 		$racerefused_p = JRequest::getVar('racerefused', null, 'post');
 		//$interests_p = JRequest::getVar('interests',null,'post');
-		
+
 		//if ($coriginus_p === null) { // field not on form
 		if ($coriginus_p || $corigin_p) { // field not on form
 			$corigin = ($coriginus_p == 'yes') ? 'US' : $corigin_p;
@@ -310,7 +310,7 @@ class MembersModelRegistration
 		{
 			$race = array();
 			$racenativetribe = null;
-			
+
 			if ($racenativeamerican_p)
 			{
 				$race[] = 'nativeamerican';
@@ -337,7 +337,7 @@ class MembersModelRegistration
 				$race = 'refused';
 			}
 		}
-		
+
 		// if ($interests_p === null) // field not on form
 		// {
 		// 	$role = null;
@@ -382,7 +382,7 @@ class MembersModelRegistration
 			$this->_registration['name'] = $nm;
 			$this->_registration['givenName'] = $name['first'];
 			$this->_registration['middleName'] = $name['middle'];
-			$this->_registration['surname'] = $name['last']; 
+			$this->_registration['surname'] = $name['last'];
 		}
 
 		$this->_registration['countryresident'] = $cresident;
@@ -434,9 +434,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'loadProfile'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $xprofile Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -447,13 +447,13 @@ class MembersModelRegistration
 		if (!is_object($xprofile)) {
 			return;
 		}
-		
+
 		//get user tags
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php' );
 		$database = JFactory::getDBO();
 		$mt = new MembersTags($database);
 		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
-		
+
 		//get member addresses
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
 		$membersAddress = new MembersAddress( JFactory::getDBO() );
@@ -495,9 +495,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'loadAccount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $juser Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -518,9 +518,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -536,9 +536,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
@@ -560,9 +560,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'registrationField'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      unknown $default Parameter description (if any) ...
 	 * @param      string $task Parameter description (if any) ...
@@ -604,10 +604,10 @@ class MembersModelRegistration
 			$configured = $default;
 		}
 		$length     = strlen($configured);
-		if ($length > $index) 
+		if ($length > $index)
 		{
 			$value = substr($configured, $index, 1);
-		} 
+		}
 		else
 		{
 			$value = substr($default, $index, 1);
@@ -642,9 +642,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $task Parameter description (if any) ...
 	 * @param      integer $id Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -653,7 +653,7 @@ class MembersModelRegistration
 	{
 		$jconfig = JFactory::getConfig();
 		$sitename = $jconfig->getValue('config.sitename');
-		
+
 		$juser = JFactory::getUser();
 
 		if ($id == 0) {
@@ -663,7 +663,7 @@ class MembersModelRegistration
 		$registration = $this->_registration;
 
 		if ($task == 'proxy')
-			$task = 'proxycreate'; 
+			$task = 'proxycreate';
 
 		$this->_missing = array();
 		$_invalid = array();
@@ -873,11 +873,11 @@ class MembersModelRegistration
 			else
 			{
 				$eid = $this->getEmailId($email);
-				
+
 				$usersConfig =  JComponentHelper::getParams( 'com_users' );
-				
+
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
-				
+
 				if (!$allow_duplicate_emails && ($eid && $eid != $id)) // TODO: RESOLVE MULTIPLE EMAIL ACCOUNT USAGE
 				{
 					$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
@@ -1015,7 +1015,7 @@ class MembersModelRegistration
 			}
 		}
 
-		if ($registrationResidency != REG_HIDE) 
+		if ($registrationResidency != REG_HIDE)
 		{
 			if (!empty($registration['countryresident']) && !MembersHelperUtility::validtext($registration['countryresident']))
 			{
@@ -1215,7 +1215,7 @@ class MembersModelRegistration
 				}
 			}
 		}
-		
+
 		if (empty($this->_missing) && empty($this->_invalid))
 			return true;
 
@@ -1224,9 +1224,9 @@ class MembersModelRegistration
 
 	/**
 	 * Short description for 'scorePassword'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $password Parameter description (if any) ...
 	 * @param      string $username Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -1291,14 +1291,14 @@ class MembersModelRegistration
 	public function checkusername($username)
 	{
 		$ret['status'] = 'error';
-		if (empty($username)) 
+		if (empty($username))
 		{
 			$ret['message'] = 'Please enter a username.';
 			return $ret;
 		}
 
 		// check the general validity
-		if (!MembersHelperUtility::validlogin($username)) 
+		if (!MembersHelperUtility::validlogin($username))
 		{
 			$ret['message'] = 'Invalid login name. Please type between 2 and 32 characters and use only lowercase alphanumeric characters.';
 			return $ret;
@@ -1313,7 +1313,7 @@ class MembersModelRegistration
 
 		$num_rows = $db->getNumRows();
 
-		if ($num_rows > 0) 
+		if ($num_rows > 0)
 		{
 			$ret['message'] = 'User login name is not available. Please select another one.';
 			return $ret;

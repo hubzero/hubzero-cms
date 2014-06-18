@@ -38,19 +38,19 @@ class ToolsHelperUtils
 {
 	/**
 	 * Return a middleware database object
-	 * 
+	 *
 	 * @return     mixed
 	 */
 	public static function getMWDBO()
 	{
 		static $instance;
 
-		if (!is_object($instance)) 
+		if (!is_object($instance))
 		{
 			$config = JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
-			if (!$enabled) 
+			if (!$enabled)
 			{
 				return null;
 			}
@@ -63,23 +63,23 @@ class ToolsHelperUtils
 			$options['database'] = $config->get('mwDBDatabase');
 			$options['prefix']   = $config->get('mwDBPrefix');
 
-			if ((!isset($options['password']) || $options['password'] == '') 
+			if ((!isset($options['password']) || $options['password'] == '')
 			 && (!isset($options['user']) || $options['user'] == '')
-			 && (!isset($options['database']) || $options['database'] == '')) 
+			 && (!isset($options['database']) || $options['database'] == ''))
 			{
 				$instance = JFactory::getDBO();
 			}
-			else 
+			else
 			{
 				$instance = JDatabase::getInstance($options);
-				if (JError::isError($instance)) 
+				if (JError::isError($instance))
 				{
 					$instance = JFactory::getDBO();
 				}
 			}
 		}
 
-		if (JError::isError($instance)) 
+		if (JError::isError($instance))
 		{
 			return null;
 		}
@@ -89,7 +89,7 @@ class ToolsHelperUtils
 
 	/**
 	 * Return the amount of disk space used
-	 * 
+	 *
 	 * @param      string $username User to look up disk space for
 	 * @return     array
 	 */
@@ -100,14 +100,14 @@ class ToolsHelperUtils
 		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
-		if ($username && $host) 
+		if ($username && $host)
 		{
 			$fp = @stream_socket_client($host, $errno, $errstr, 30);
-			if (!$fp) 
+			if (!$fp)
 			{
 				$info[] = "$errstr ($errno)\n";
-			} 
-			else 
+			}
+			else
 			{
 				$msg = '';
 				fwrite($fp, "getquota user=" . $username . "\n");
@@ -132,13 +132,13 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'makeArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $string Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public static function makeArray($string='') 
+	public static function makeArray($string='')
 	{
 		$string = preg_replace('/ /', ',', $string);
 		$arr    = explode(',', $string);
@@ -150,18 +150,18 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'cleanArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $array Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public static function cleanArray($array) 
+	public static function cleanArray($array)
 	{
-		foreach ($array as $key => $value) 
+		foreach ($array as $key => $value)
 		{
 			$value = trim($value);
-			if ($value == '') 
+			if ($value == '')
 			{
 				unset($array[$key]);
 			}
@@ -171,19 +171,19 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'check_validInput'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $field Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
 	public static function check_validInput($field)
 	{
-		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='') 
+		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='')
 		{
 			return(0);
-		} 
-		else 
+		}
+		else
 		{
 			return(1);
 		}
@@ -191,9 +191,9 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'getLicenses'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $database Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
@@ -205,25 +205,25 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'transform'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $array Parameter description (if any) ...
 	 * @param      unknown $label Parameter description (if any) ...
 	 * @param      array $newarray Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public static function transform($array, $label, $newarray=array()) 
+	public static function transform($array, $label, $newarray=array())
 	{
-		if (count($array) > 0) 
+		if (count($array) > 0)
 		{
-			foreach ($array as $a) 
+			foreach ($array as $a)
 			{
-				if (is_object($a)) 
+				if (is_object($a))
 				{
 					$newarray[] = $a->$label;
 				}
-				else 
+				else
 				{
 					$newarray[] = $a;
 				}
@@ -235,21 +235,21 @@ class ToolsHelperUtils
 
 	/**
 	 * Short description for 'getLogins'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $uids Parameter description (if any) ...
 	 * @param      array $logins Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public static function getLogins($uids, $logins = array()) 
+	public static function getLogins($uids, $logins = array())
 	{
-		if (is_array($uids)) 
+		if (is_array($uids))
 		{
-			foreach ($uids as $uid) 
+			foreach ($uids as $uid)
 			{
 				$juser = JUser::getInstance($uid);
-				if ($juser) 
+				if ($juser)
 				{
 					$logins[] = $juser->get('username');
 				}
@@ -257,43 +257,43 @@ class ToolsHelperUtils
 		}
 		return $logins;
 	}
-	
+
 	/**
 	 * Return a path to resource
 	 *
 	 * @param	$createdDate	Resource creation date
 	 * @param	$resourceId		Resource ID
 	 * @param	$versionId		Resource Version ID
-	 * 
+	 *
 	 * @return     path
 	 */
 	public static function getResourcePath( $createdDate, $resourceId, $versionId )
 	{
 		//include the resources html helper file
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		
+
 		//get resource upload path
 		$resourceParams = JComponentHelper::getParams('com_resources');
 		$path = DS . trim($resourceParams->get("uploadpath"), DS);
-		
+
 		//build path based on resource creation date and id
 		$path .= ResourcesHtml::build_path( $createdDate, $resourceId, '');
-		
+
 		//append version id if we have one
 		if($versionId)
 		{
 			$path .= DS . $versionId;
 		}
-		
+
 		return $path;
 	}
-	
+
 	/**
 	 * Return tool access
 	 *
 	 * @param	$tool	Tool name we are getting access rights to
 	 * @param	$login	User Login name
-	 * 
+	 *
 	 * @return     BOOL
 	 */
 	public static function getToolAccess( $tool, $login = '')
@@ -308,21 +308,21 @@ class ToolsHelperUtils
 		$juser		= JFactory::getUser();
 		$database 	= JFactory::getDBO();
 		$xlog 		= JFactory::getLogger();
-		
+
 		// Ensure we have a tool
-		if (!$tool) 
+		if (!$tool)
 		{
 			$access->valid = 0;
 			$access->error->message = 'No tool provided.';
 			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return $access;
 		}
-		
+
 		// Ensure we have a login
-		if ($login == '') 
+		if ($login == '')
 		{
 			$login = $juser->get('username');
-			if ($login == '') 
+			if ($login == '')
 			{
 				$access->valid = 0;
 				$access->error->message = 'Unable to grant tool access to user, no user was found.';
@@ -330,24 +330,24 @@ class ToolsHelperUtils
 				return $access;
 			}
 		}
-		
+
 		//load tool version
 		$toolVersion = new ToolVersion( $database );
 		$toolVersion->loadFromInstance( $tool );
-		if (empty($toolVersion)) 
+		if (empty($toolVersion))
 		{
 			$access->valid = 0;
 			$access->error->message = 'Unable to load the tool';
 			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return $access;
 		}
-		
+
 		//load the tool groups
 		$toolGroup = new ToolGroup( $database );
 		$query = "SELECT * FROM " . $toolGroup->getTableName() . " WHERE toolid=" . $toolVersion->toolid;
 		$database->setQuery( $query );
 		$toolgroups = $database->loadObjectList();
-		
+
 		//get users groups
 		$xgroups = \Hubzero\User\Helper::getGroups( $juser->get('id'), 'members' );
 
@@ -355,17 +355,17 @@ class ToolsHelperUtils
 		$ingroup = false;
 		$groups = array();
 		$indevgroup = false;
-		if ($xgroups) 
+		if ($xgroups)
 		{
 			foreach ($xgroups as $xgroup)
 			{
 				$groups[] = $xgroup->cn;
 			}
-			if ($toolgroups) 
+			if ($toolgroups)
 			{
 				foreach ($toolgroups as $toolgroup)
 				{
-					if (in_array($toolgroup->cn, $groups)) 
+					if (in_array($toolgroup->cn, $groups))
 					{
 						$ingroup = true;
 						if ($toolgroup->role == 1)
@@ -376,23 +376,23 @@ class ToolsHelperUtils
 				}
 			}
 		}
-		
+
 		//check to see if we are an admin
 		$admin = false;
 		$ctconfig = JComponentHelper::getParams('com_tools');
-		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups)) 
+		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups))
 		{
 			$admin = true;
 		}
-		
+
 		//get access settings
 		$exportAllowed = ToolsHelperUtils::getToolExportAccess( $toolVersion->exportControl );
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
 	    $isToolGroupControlled = ($toolVersion->toolaccess == '@GROUP');
-		
+
 		//check for dev tools
-		if ($isToolDev) 
+		if ($isToolDev)
 		{
 			//if were not in the dev group or an admin we must deny
 			if(!$indevgroup && !$admin)
@@ -445,17 +445,17 @@ class ToolsHelperUtils
 			$access->error->message = 'This tool version is not published.';
 			$xlog->debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
 		}
-		
+
 		//return access
 		return $access;
 	}
-	
-	
+
+
 	/**
 	 * Return a tool export access
 	 *
 	 * @param	$export_control 	Export control level for tool
-	 * 
+	 *
 	 * @return     BOOL
 	 */
 	public static function getToolExportAccess( $export_control )
@@ -464,13 +464,13 @@ class ToolsHelperUtils
 		$export_access = new stdClass;
 		$xlog = JFactory::getLogger();
 		$ip = JRequest::ip();
-		
+
 		//get the export control level
 		$export_control = strtolower( $export_control );
-		
+
 		//get the users country based on ip address
 		$country = \Hubzero\Geocode\Geocode::ipcountry( $ip );
-		
+
 		//if we dont know the users location and its a restricted to we have to deny access
 		if (empty($country) && in_array($export_control, array('us', 'd1', 'pu')))
 		{
@@ -479,21 +479,21 @@ class ToolsHelperUtils
 			$xlog->debug("mw::_getToolExportControl($export_control) FAILED location export control check");
 			return $export_access;
 		}
-		
+
 		//if the user is in an E1 nation
-		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip))) 
+		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
 			$xlog->debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
 			return $export_access;
 		}
-		
+
 		//run checks depending on the export ac
 		switch ($export_control)
 		{
 			case 'us':
-				if (\Hubzero\Geocode\Geocode::ipcountry( $ip ) != 'us') 
+				if (\Hubzero\Geocode\Geocode::ipcountry( $ip ) != 'us')
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
@@ -503,7 +503,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry( $ip ))) 
+				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry( $ip )))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
@@ -513,7 +513,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'pu':
-				if (!\Hubzero\Geocode\Geocode::is_iplocation( $ip, $export_control )) 
+				if (!\Hubzero\Geocode\Geocode::is_iplocation( $ip, $export_control ))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
@@ -522,18 +522,18 @@ class ToolsHelperUtils
 				}
 			break;
 		}
-		
+
 		//passed all checks
 		$export_access->valid = 1;
 		return $export_access;
 	}
-	
+
 	/**
 	 * Record Tool Usage
 	 *
 	 * @param		$tool		Alias of tool
-	 * @param		$userid		User ID 
-	 * 
+	 * @param		$userid		User ID
+	 *
 	 * @return 		BOOL
 	 */
 	public static function recordToolUsage( $tool, $userid = '' )
@@ -541,30 +541,30 @@ class ToolsHelperUtils
 		//include needed files
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
-		
+
 		//instantiate needed objects
 		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
-		
+
 		//load tool version
 		$toolVersion = new ToolVersion( $database );
 		$toolVersion->loadFromName( $tool );
-		
+
 		//make sure we have a user id
 		if(!$userid)
 		{
 			$userid = $juser->get('id');
 		}
-		
+
 		//get recent tools
 		$recentTool = new ToolRecent( $database );
 		$rows = $recentTool->getRecords( $userid );
-		
+
 		//check to see if any recently used tools are this one
 		$thisapp = 0;
 		for ($i=0, $n=count($rows); $i < $n; $i++)
 		{
-			if ($tool == trim($rows[$i]->tool)) 
+			if ($tool == trim($rows[$i]->tool))
 			{
 				$thisapp = $rows[$i]->id;
 			}
@@ -572,30 +572,30 @@ class ToolsHelperUtils
 
 		// Get the oldest entry. We may need this later.
 		$oldest = end($rows);
-		
+
 		//createed date
 		$created = JFactory::getDate()->toSql();
-		
+
 		// Check if any recent tools are the same as the one just launched
-		if ($thisapp) 
+		if ($thisapp)
 		{
 			// There was one, so just update its creation time
 			$recentTool->id 		= $thisapp;
 			$recentTool->uid 		= $userid;
 			$recentTool->tool 		= $tool;
 			$recentTool->created 	= $created;
-		} 
-		else 
+		}
+		else
 		{
 			// Check if we've reached 5 recent tools or not
-			if (count($rows) < 5) 
+			if (count($rows) < 5)
 			{
 				// Still under 5, so insert a new record
 				$recentTool->uid 		= $userid;
 				$recentTool->tool 		= $tool;
 				$recentTool->created 	= $created;
-			} 
-			else 
+			}
+			else
 			{
 				// We reached the limit, so update the oldest entry effectively replacing it
 				$recentTool->id 		= $oldest->id;
@@ -604,23 +604,23 @@ class ToolsHelperUtils
 				$recentTool->created 	= $created;
 			}
 		}
-		
+
 		//store usage
 		if(!$recentTool->store())
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Run Middleware Scripts
 	 *
 	 * @param	$comm		Command to run on middleware
 	 * @param	$output		Output to be returned from middleware
-	 * 
+	 *
 	 * @return     mixed
 	 */
 	public static function middleware($comm, &$output)
@@ -632,7 +632,7 @@ class ToolsHelperUtils
 		exec($cmd, $results, $status);
 
 		// Check exec status
-		if ($status != 0) 
+		if ($status != 0)
 		{
 			// Uh-oh. Something went wrong...
 			$retval = false;
@@ -647,12 +647,12 @@ class ToolsHelperUtils
 				$line = trim($line);
 
 				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess))
 				{
 					$retval = $sess[1];
 					$output->session = $sess[1];
-				} 
-				else 
+				}
+				else
 				{
 					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
 					{
@@ -681,7 +681,7 @@ class ToolsHelperUtils
 				}
 			}
 		}
-		else 
+		else
 		{
 			// JSON
 			$output = json_decode($results);

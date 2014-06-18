@@ -73,7 +73,7 @@ $html  = '';
 	</div>
 
 	<div class="status-msg">
-		<?php 
+		<?php
 		// Display error or success message
 		if ($this->getError())
 		{

@@ -43,7 +43,7 @@ $this->css();
 $database = JFactory::getDBO();
 $sql = "SELECT resolved
 		FROM #__support_tickets
-		WHERE open=0 
+		WHERE open=0
 		AND type='{$this->type}' ";
 		if ($this->group)
 		{
@@ -154,7 +154,7 @@ function getMonthName($month)
 				$top = 0;
 
 				$closeddata = '';
-				if ($this->closedmonths) 
+				if ($this->closedmonths)
 				{
 					$c = array();
 					foreach ($this->closedmonths as $year => $data)
@@ -169,7 +169,7 @@ function getMonthName($month)
 				}
 
 				$openeddata = '';
-				if ($this->openedmonths) 
+				if ($this->openedmonths)
 				{
 					$o = array();
 					foreach ($this->openedmonths as $year => $data)
@@ -193,8 +193,8 @@ function getMonthName($month)
 					var jq = $;
 				}
 				if (jQuery()) {
-					var $ = jq, 
-						chart, 
+					var $ = jq,
+						chart,
 						month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 						datasets = [
 							{
@@ -212,7 +212,7 @@ function getMonthName($month)
 					$(document).ready(function() {
 						var chart = $.plot($('#container'), datasets, {
 							series: {
-								lines: { 
+								lines: {
 									show: true,
 									fill: true
 								},
@@ -224,7 +224,7 @@ function getMonthName($month)
 								color: 'rgba(0, 0, 0, 0.6)',
 								borderWidth: 1,
 								borderColor: 'transparent',
-								hoverable: true, 
+								hoverable: true,
 								clickable: true
 							},
 							tooltip: true,
@@ -236,7 +236,7 @@ function getMonthName($month)
 								},
 								defaultTheme: false
 							},
-							legend: { 
+							legend: {
 								show: true,
 								noColumns: 2,
 								position: "nw",
@@ -276,8 +276,8 @@ function getMonthName($month)
 								<?php
 								$lifetime = SupportUtilities::calculateAverageLife($this->closedTickets);
 								?>
-								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span> 
-								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span> 
+								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
+								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>
 								<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_MINUTES'); ?></span>
 							</td>
 							<td class="major"><?php echo $this->opened['unassigned']; ?></td>
@@ -356,11 +356,11 @@ function getMonthName($month)
 					var $ = jq, severityPie;
 					$(document).ready(function() {
 						severityPie = $.plot($("#severities-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							legend: { 
+							legend: {
 								show: false
 							},
 							series: {
-								pie: { 
+								pie: {
 									/*innerRadius: 0.5,*/
 									show: true,
 									stroke: {
@@ -377,7 +377,7 @@ function getMonthName($month)
 				</script>
 			</fieldset>
 		</div>
-		
+
 		<div class="col width-50 fltrt">
 			<fieldset class="adminform breakdown pies">
 				<legend><span><?php echo JText::_('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span></legend>
@@ -431,11 +431,11 @@ function getMonthName($month)
 					var $ = jq, resolutionPie;
 					$(document).ready(function() {
 						resolutionPie = $.plot($("#resolutions-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							legend: { 
+							legend: {
 								show: false
 							},
 							series: {
-								pie: { 
+								pie: {
 									/*innerRadius: 0.5,*/
 									show: true,
 									stroke: {
@@ -491,7 +491,7 @@ function getMonthName($month)
 
 					$closeddata = '';
 					//$utot = 0;
-					if ($user->closed) 
+					if ($user->closed)
 					{
 						$c = array();
 						foreach ($user->closed as $year => $data)
@@ -506,7 +506,7 @@ function getMonthName($month)
 					}
 					$anon = 0;
 					$profile = \Hubzero\User\Profile::getInstance($user->id);
-					if (!$profile) 
+					if (!$profile)
 					{
 						$anon = 1;
 					}
@@ -532,14 +532,14 @@ function getMonthName($month)
 							var $ = jq, chart<?php echo $user->username; ?>;
 
 							$(document).ready(function() {
-								var chart<?php echo $user->username; ?> = $.plot($('#user-<?php echo $user->username; ?>'), 
+								var chart<?php echo $user->username; ?> = $.plot($('#user-<?php echo $user->username; ?>'),
 									[{
 										color: "#656565", //#93ACCA
 										label: "Closed",
 										data: [<?php echo $closeddata; ?>]
 									}], {
 									series: {
-										lines: { 
+										lines: {
 											show: true,
 											fill: true
 										},
@@ -551,7 +551,7 @@ function getMonthName($month)
 										color: 'rgba(0, 0, 0, 0.6)',
 										borderWidth: 1,
 										borderColor: 'transparent',
-										hoverable: true, 
+										hoverable: true,
 										clickable: true
 									},
 									tooltip: true,
@@ -563,7 +563,7 @@ function getMonthName($month)
 										},
 										defaultTheme: false
 									},
-									legend: { 
+									legend: {
 										show: false,
 									},
 									xaxis: { mode: "time", tickLength: 0, tickDecimals: 0,
@@ -592,8 +592,8 @@ function getMonthName($month)
 								<?php
 								$lifetime = SupportUtilities::calculateAverageLife($user->tickets);
 								?>
-								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span> 
-								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span> 
+								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
+								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>
 								<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_MINUTES'); ?></span>
 							</td>
 						</tr>

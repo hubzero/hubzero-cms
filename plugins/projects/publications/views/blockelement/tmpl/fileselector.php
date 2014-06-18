@@ -30,23 +30,23 @@ $projectsHelper = new ProjectsHelper( $this->database );
 $pubHelper 		= new PublicationHelper($this->database);
 
 // Load component configs
-$config = JComponentHelper::getParams( 'com_projects' );	
+$config = JComponentHelper::getParams( 'com_projects' );
 
-// Git path	
+// Git path
 $gitpath  = $config->get('gitpath', '/opt/local/bin/git');
 
-$multiZip 		= (isset($this->manifest->params->typeParams->multiZip) 
-				&& $this->manifest->params->typeParams->multiZip == 0) 
+$multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
+				&& $this->manifest->params->typeParams->multiZip == 0)
 				? false : true;
 $required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $max 	  		= $this->manifest->params->max;
-$defaultTitle	= $this->manifest->params->title 
+$defaultTitle	= $this->manifest->params->title
 				? str_replace('{pubtitle}', $this->pub->title, $this->manifest->params->title) : NULL;
 
 // Get version params and extract bundle name
-$versionParams 	= new JParameter( $this->pub->params );				
+$versionParams 	= new JParameter( $this->pub->params );
 $bundleName		= $versionParams->get($elName . 'bundlename', $defaultTitle);
 
 $error 			= $this->status->getError();
@@ -76,15 +76,15 @@ $sequence = $this->master->sequence;
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov 
-		? JRoute::_( $route) . '?active=files' . a . 'action=select' . a . 'p=' . $props 
+$selectUrl   = $prov
+		? JRoute::_( $route) . '?active=files' . a . 'action=select' . a . 'p=' . $props
 			. a . 'vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=files&action=select') .'/?p=' . $props . '&pid=' 
+		: JRoute::_( $route . '&active=files&action=select') .'/?p=' . $props . '&pid='
 			. $this->pub->id . '&vid=' . $this->pub->version_id;
-		
+
 $editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
 $nextEl  = 'element' . ($this->elementId + 1);
 
@@ -107,23 +107,23 @@ if ($handler)
 $modelAttach = new PublicationsModelAttachmentFile();
 
 // Get pub path
-$pubDir  = isset($this->manifest->params->typeParams->directory) && $this->manifest->params->typeParams->directory 
-			? $this->manifest->params->typeParams->directory : $this->pub->secret; 
-$pubPath = $pubHelper->buildPath($this->pub->id, $this->pub->version_id, '', 
+$pubDir  = isset($this->manifest->params->typeParams->directory) && $this->manifest->params->typeParams->directory
+			? $this->manifest->params->typeParams->directory : $this->pub->secret;
+$pubPath = $pubHelper->buildPath($this->pub->id, $this->pub->version_id, '',
 		   $this->manifest->params->typeParams->directory, 1);
-		
-$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id=' 
-			. $this->pub->id . '&v=' . $this->pub->version_number ) 
+
+$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+			. $this->pub->id . '&v=' . $this->pub->version_number )
 			. '?el=' . $this->elementId . '&download=1';
 
-// Allow rename? 			
+// Allow rename?
 $allowRename = isset($this->manifest->params->typeParams->allowRename)
-			 ? $this->manifest->params->typeParams->allowRename 
+			 ? $this->manifest->params->typeParams->allowRename
 			 : false;
-			
+
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
-			
+
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement fileselector<?php echo $required ? ' el-required' : ' el-optional';
@@ -166,13 +166,13 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 			<?php }
 			?>
 			<div class="block-info">
-			<?php 
+			<?php
 				$shorten = ($this->manifest->about && strlen($about) > 200) ? 1 : 0;
 
 				if ($shorten)
 				{
 					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
-					$about.= ' <a href="#more-' . $elName . '" class="more-content">' 
+					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
 					$about.= ' <div class="hidden">';
 					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
@@ -187,7 +187,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		?>
 		</div></div>
 		<?php } ?>
-	
+
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
@@ -196,52 +196,52 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
 			<ul class="itemlist">
-		<?php if (count($this->attachments) > 0) { 
+		<?php if (count($this->attachments) > 0) {
 			$i= 1; ?>
-				<?php foreach ($this->attachments as $att) { 
-				
+				<?php foreach ($this->attachments as $att) {
+
 					$data 		= new stdClass;
 					$data->path = str_replace($this->path . DS, '', $att->path);
 					$data->ext 	= strtolower(end(explode('.', $data->path)));
-				
+
 					// Set default title
 					$incNum			= $max > 1 ? ' (' . $i . ')' : '';
-					$dTitle			= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);					
+					$dTitle			= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
 					$data->title 	= $att->title && $att->title != $defaultTitle ? $att->title : $dTitle;
 					$data->ordering = $i;
 					$data->editUrl  = $editUrl;
 					$data->id		= $att->id;
 					$data->props	= $props;
-					
+
 					$data->projectPath = $this->path;
 					$data->git		   = $git;
 					$data->pubPath	   = $pubPath;
 					$data->md5		   = $att->content_hash;
 					$data->viewer	   = 'edit';
 					$data->allowRename = $allowRename;
-					
-					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id=' 
-										. $this->pub->id . '&v=' . $this->pub->version_number ) 
+
+					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+										. $this->pub->id . '&v=' . $this->pub->version_number )
 										. '?el=' . $this->elementId . a . 'a=' . $att->id . a . 'download=1';
-							
+
 					// Is attachment (image) also publication thumbnail
 					$params = new JParameter( $att->params );
 					$data->pubThumb = $params->get('pubThumb', NULL);
 
 					// Get file size
-					$data->size		= $att->vcs_hash 
+					$data->size		= $att->vcs_hash
 									? $git->gitLog($this->path, $att->path, $att->vcs_hash, 'size') : NULL;
 					$data->hash	  	= $att->vcs_hash;
 					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;
-					$data->gitStatus= $data->gone 
+					$data->gitStatus= $data->gone
 								? JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
 								: $projectsHelper->showGitInfo($gitpath, $this->path, $att->vcs_hash, $att->path);
-					
+
 					$i++;
-					
+
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams, $handler);
- 				} 
+ 				}
  			}  ?>
 				</ul>
 				<?php if ($max > count($this->attachments)) { ?>
@@ -254,8 +254,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 				<p class="element-move">
 				<?php // display error
 				 if ($error) { echo '<span class="element-error">' . $error . '</span>'; } ?>
-				<span class="button-wrapper icon-next">	
-					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>	
+				<span class="button-wrapper icon-next">
+					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
 				</span>
 				</p>
 			<?php } ?>

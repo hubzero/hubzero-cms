@@ -28,10 +28,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $project = $this->pub->_project;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
@@ -46,7 +46,7 @@ $name	  = $this->pub->_curationModel->_progress->blocks->$step->name;
 
 // Is panel content (of any kind) required?
 $required = isset($manifest->params->required) ? $manifest->params->required : 0;
-	
+
 $noElements = $manifest->elements ? false : true;
 
 $about = $manifest->adminTips ? $manifest->adminTips : $manifest->about;

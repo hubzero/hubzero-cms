@@ -42,17 +42,17 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 	{
 		//set layout
 		$this->view->setLayout('display');
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
-		
+
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
@@ -60,16 +60,16 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 		}
-		
+
 		//set view vars
 		$this->view->code     = ($this->code) ? $this->code : '';
 		$this->view->preview  = ($this->preview) ? $this->preview : '';
 		$this->view->original = ($this->original) ? $this->original : '';
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Mozify Image
 	 *
@@ -81,13 +81,13 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 		$imageFile  = JRequest::getVar('image-file','', 'files');
 		$imageUrl   = JRequest::getVar('image-url','', 'post');
 		$mosaicSize = JRequest::getInt('mosaic-size', 5, 'post');
-		
+
 		//temp upload path
 		$uploadPath = JPATH_ROOT . DS . 'tmp' . DS . 'newsletter' . DS . 'mozify';
-		
+
 		//url regex
 		$UrlPtn = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-		
+
 		//make sure we have a valid url if we passed one
 		if ($imageUrl != '' && !preg_match("/$UrlPtn/", $imageUrl))
 		{
@@ -95,7 +95,7 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 			$this->displayTask();
 			return;
 		}
-		
+
 		//do we have a file upload or just an image url
 		if (isset($imageFile) && $imageFile['tmp_name'] != '')
 		{
@@ -107,19 +107,19 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 				$this->displayTask();
 				return;
 			}
-			
+
 			//import joomla filesystem lib
 			jimport('joomla.filesystem.folder');
-			
+
 			//create path if doesnt exist
 			if (!is_dir($uploadPath))
 			{
 				JFolder::create($uploadPath);
 			}
-			
+
 			//define image
 			$image = $uploadPath.DS.$imageFile['name'];
-			
+
 			//move uploaded file
 			move_uploaded_file($imageFile['tmp_name'], $image);
 		}
@@ -127,16 +127,16 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 		{
 			$image = $imageUrl;
 		}
-		
+
 		//config for mozify
 		$config = array(
 			'imageUrl'   => $image,
 			'mosaicSize' => $mosaicSize
 		);
-		
+
 		//instantiate new hubzero image mozify object
 		$hubzeroImageMozify = new \Hubzero\Image\Mozify( $config );
-		
+
 		//return
 		$this->code     = $hubzeroImageMozify->mozify();
 		$this->preview  = $hubzeroImageMozify->mosaic();

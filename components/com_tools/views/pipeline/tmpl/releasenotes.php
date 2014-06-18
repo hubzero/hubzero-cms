@@ -38,11 +38,11 @@ $codeChoices = array(
 $licenseChoices = array(
 	'c1' => JText::_('Load a standard license')
 );
-if ($this->licenses) 
+if ($this->licenses)
 {
-	foreach ($this->licenses as $l) 
+	foreach ($this->licenses as $l)
 	{
-		if ($l->name != 'default') 
+		if ($l->name != 'default')
 		{
 			$licenseChoices[$l->name] = $l->title;
 		}
@@ -80,20 +80,20 @@ $this->css('pipeline.css')
 			</h3>
 			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
 				<fieldset class="versionfield">
-					<label><?php echo JText::_('CODE_ACCESS'); ?>:</label> 
+					<label><?php echo JText::_('CODE_ACCESS'); ?>:</label>
 					<?php echo ContribtoolHtml::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
-					
+
 					<div id="lic_cl"><?php echo JText::_('LICENSE'); ?>:</div>
 					<div class="licinput" >
 						<textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($this->license_choice['text']); ?></textarea>
-						<?php 
-						if ($this->licenses) 
+						<?php
+						if ($this->licenses)
 						{
-							foreach ($this->licenses as $l) 
+							foreach ($this->licenses as $l)
 							{
 								echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="'.stripslashes(htmlentities($l->text)).'" />' . "\n";
 							}
-						} 
+						}
 						?>
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -103,11 +103,11 @@ $this->css('pipeline.css')
 						<input type="hidden" name="action" value="<?php echo $this->action; ?>" />
 						<input type="hidden" name="toolid" value="<?php echo $this->status['toolid']; ?>" />
 						<input type="hidden" name="alias" value="<?php echo $this->status['toolname']; ?>" />
-					</div>  
+					</div>
 					<div id="lic">
-						<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>:</label> 
+						<label><?php echo JText::_('LICENSE_TEMPLATE'); ?>:</label>
 						<?php echo ContribtoolHtml::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
-					</div>     
+					</div>
 					<div id="legendnotes">
 						<p>
 							<?php echo JText::_('LICENSE_TEMPLATE_TIP'); ?>:

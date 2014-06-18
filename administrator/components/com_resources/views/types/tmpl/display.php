@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ResourcesHelperPermissions::getActions('type');
 
 JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Types'), 'addedit.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -49,7 +49,7 @@ if ($canDo->get('core.delete'))
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="Category"><?php echo JText::_('Category'); ?>:</label> 
+		<label for="Category"><?php echo JText::_('Category'); ?>:</label>
 		<?php echo ResourcesHtml::selectType($this->cats, 'category', $this->filters['category'], 'Select...', '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />

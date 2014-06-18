@@ -141,7 +141,7 @@
 					<option
 						value="rand()">MOD_ARTICLES_NEWS_FIELD_ORDERING_RANDOM</option>
 				</field>
-				
+
 				<field
 					name="direction"
 					type="list"

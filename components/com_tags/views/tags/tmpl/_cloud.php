@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 	$min_font_size = 1;
 	$max_font_size = 1.8;
 
-	if ($this->config->get('show_sizes', 0) == 1) 
+	if ($this->config->get('show_sizes', 0) == 1)
 	{
 		$retarr = array();
 		foreach ($tags as $tag)
@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		// For ever additional tagged object from min to max, we add $step to the font size.
 		$spread = $max_qty - $min_qty;
-		if (0 == $spread) 
+		if (0 == $spread)
 		{ // Divide by zero
 			$spread = 1;
 		}
@@ -73,14 +73,14 @@ defined('_JEXEC') or die('Restricted access');
 			break;
 		}
 
-		if ($this->config->get('show_sizes', 0) == 2) 
+		if ($this->config->get('show_sizes', 0) == 2)
 		{
 			$tll[$tag->get('tag')] = '<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
-		} 
-		else 
+		}
+		else
 		{
 			$tll[$tag->get('tag')]  = '<li' . $class . '>';
-			if ($this->config->get('show_sizes', 0) == 1) 
+			if ($this->config->get('show_sizes', 0) == 1)
 			{
 				$size = $min_font_size + ($tag->get('count') - $min_qty) * $step;
 
@@ -92,14 +92,14 @@ defined('_JEXEC') or die('Restricted access');
 				$tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';
 			}
 			$tll[$tag->get('tag')] .= '</a>';
-			if ($this->config->get('show_sizes') == 1) 
+			if ($this->config->get('show_sizes') == 1)
 			{
 				$tll[$tag->get('tag')] .= '</span>';
 			}
 			$tll[$tag->get('tag')] .= '</li>';
 		}
 	}
-	if ($this->config->get('show_tags_sort', 'alpha') == 'alpha') 
+	if ($this->config->get('show_tags_sort', 'alpha') == 'alpha')
 	{
 		ksort($tll);
 	}

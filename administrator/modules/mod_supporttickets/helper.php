@@ -38,7 +38,7 @@ class modSupportTickets extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -129,17 +129,17 @@ class modSupportTickets extends \Hubzero\Module\Module
 		$users = $database->loadObjectList();*/
 
 		// First ticket
-		$sql = "SELECT YEAR(created) 
+		$sql = "SELECT YEAR(created)
 				FROM `#__support_tickets`
-				WHERE report!='' 
+				WHERE report!=''
 				AND type='0' ORDER BY created ASC LIMIT 1";
 		$database->setQuery($sql);
 		$first = intval($database->loadResult());
 
 		// Opened tickets
-		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner 
+		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM `#__support_tickets`
-				WHERE report!='' 
+				WHERE report!=''
 				AND type=0 AND open=1";
 		$sql .= " AND (`group`='' OR `group` IS NULL)";
 		$sql .= " ORDER BY created ASC";
@@ -176,7 +176,7 @@ class modSupportTickets extends \Hubzero\Module\Module
 
 		// Closed tickets
 		$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
-				FROM `#__support_comments` AS c 
+				FROM `#__support_comments` AS c
 				LEFT JOIN `#__support_tickets` AS t ON c.ticket=t.id
 				WHERE t.report!=''
 				AND type=0 AND open=0";

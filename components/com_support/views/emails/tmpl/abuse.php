@@ -54,7 +54,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/plain;charset=utf-8
 
-<?php 
+<?php
 $message  = '----------------------------' . "\n";
 $message .= strtoupper(JText::_('Case #')) . ': ' . $this->report->id . "\n";
 $message .= strtoupper(JText::_('Reported')) . ': ' . $this->report->created . "\n";
@@ -292,7 +292,7 @@ Content-type: text/html;charset=utf-8";
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 														<?php
-														if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">')) 
+														if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">'))
 														{
 															$this->reported->text = str_replace("<br />", '', $this->reported->text);
 															$this->reported->text = $this->escape($this->reported->text);

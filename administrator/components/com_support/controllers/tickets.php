@@ -27,7 +27,7 @@
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * /administrator/components/com_support/controllers/tickets.php
- * 
+ *
  */
 
 // Check to ensure this file is included in Joomla!
@@ -125,8 +125,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				{
 					// Search
 					$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.search', 
-						'search', 
+						$this->_option . '.' . $this->_controller . '.search',
+						'search',
 						''
 					));
 					// Set the total for the pagination
@@ -134,13 +134,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 					// Incoming sort
 					$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sort', 
-						'filter_order', 
+						$this->_option . '.' . $this->_controller . '.sort',
+						'filter_order',
 						$query->sort
 					));
 					$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sortdir', 
-						'filter_order_Dir', 
+						$this->_option . '.' . $this->_controller . '.sortdir',
+						'filter_order_Dir',
 						$query->sort_dir
 					));
 					//$this->view->filters['sort']    = $query->sort;
@@ -160,16 +160,16 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if (!isset($this->view->filters['sort']) || !$this->view->filters['sort'])
 			{
 				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-					$this->_option . '.' . $this->_controller . '.sort', 
-					'filter_order', 
+					$this->_option . '.' . $this->_controller . '.sort',
+					'filter_order',
 					'created'
 				));
 			}
 			if (!isset($this->view->filters['sortdir']) || !$this->view->filters['sortdir'])
 			{
 				$this->view->filters['sortdir']         = trim($app->getUserStateFromRequest(
-					$this->_option . '.' . $this->_controller . '.sortdir', 
-					'filter_order_Dir', 
+					$this->_option . '.' . $this->_controller . '.sortdir',
+					'filter_order_Dir',
 					'DESC'
 				));
 			}
@@ -194,13 +194,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -368,7 +368,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$watching->load($this->view->row->id, $this->juser->get('id'));
 
 			// Not already watching
-			if (!$watching->id) 
+			if (!$watching->id)
 			{
 				// Start watching?
 				if ($watch == 'start')
@@ -403,7 +403,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and return t the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -565,7 +565,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					'after'  => SupportHtml::getStatus($row->open, $row->status)
 				);
 			}
-			if ($row->category != $old->category) 
+			if ($row->category != $old->category)
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_CATEGORY'),
@@ -619,7 +619,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					elseif (SupportUtilities::checkValidEmail($acc))
 					{
 						// Is the comment private? If so, we do NOT send e-mail to submitter
-						if ($rowc->access != 1 && strtolower($row->email) == strtolower($acc)) 
+						if ($rowc->access != 1 && strtolower($row->email) == strtolower($acc))
 						{
 							continue;
 						}
@@ -709,9 +709,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					if ($allowEmailResponses)
 					{
 						$live_site = rtrim(JURI::base(),'/');
-						
+
 						$ticketURL = $live_site . JRoute::_('index.php?option=' . $this->option);
-						
+
 						$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 						$prependtext .= "You can reply to this message, just include your reply text above this area\r\n" ;
 						$prependtext .= "Attachments (up to 2MB each) are permitted\r\n" ;
@@ -751,7 +751,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					// Plain text email
 					$eview = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
-						'name'      => 'emails', 
+						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));
 					$eview->option     = $this->_option;
@@ -786,7 +786,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$email_submitter = JRequest::getInt('email_submitter', 0);
 					if ($email_submitter == 1)
 					{
-						// Is the comment private? If so, we do NOT send e-mail to the 
+						// Is the comment private? If so, we do NOT send e-mail to the
 						// submitter regardless of the above setting
 						if ($rowc->access != 1)
 						{
@@ -817,7 +817,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								// Only build tokens in if component is configured to allow email responses to tickets and ticket comments
 								if ($allowEmailResponses)
 								{
-									// The reply-to address contains the token 
+									// The reply-to address contains the token
 									$token = $encryptor->buildEmailToken(1, 1, $zuser->get('id'), $id);
 									$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 								}
@@ -862,7 +862,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
 							if ($allowEmailResponses)
 							{
-								// The reply-to address contains the token 
+								// The reply-to address contains the token
 								$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $id);
 								$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 							}
@@ -911,13 +911,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 								if ($allowEmailResponses)
 								{
-									// The reply-to address contains the token 
+									// The reply-to address contains the token
 									$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
 									$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
 								}
 
 								// Is this the same account as the submitter? If so, ignore
-								if (strtolower($row->login) == strtolower($juser->get('username')) 
+								if (strtolower($row->login) == strtolower($juser->get('username'))
 								  || strtolower($row->email) == strtolower($juser->get('email')))
 								{
 									continue;
@@ -928,7 +928,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								{
 									$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE_USER'));
 								}
-								else 
+								else
 								{
 									// Add to log
 									$log['notifications'][] = array(
@@ -943,7 +943,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							elseif (SupportUtilities::checkValidEmail($acc))
 							{
 								// Is the comment private? If so, we do NOT send e-mail to submitter
-								if ($rowc->access != 1 && strtolower($row->email) == strtolower($acc)) 
+								if ($rowc->access != 1 && strtolower($row->email) == strtolower($acc))
 								{
 									continue;
 								}
@@ -966,7 +966,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						
+
 						if ($allowEmailResponses)
 						{
 							// In this case each item in email in an array, 1- To, 2:reply to address
@@ -976,13 +976,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 								{
 									$emaillog[] = '<li>'.JText::_('COM_SUPPORT_TICKET_EMAILED_SUBMITTER').' - '.$row->email.'</li>';
 								}
-								else 
+								else
 								{
 									$emaillog[] = '<li>' . JText::_('COM_SUPPORT_TICKET_EMAILED_CC') . ' - ' . $email[0] . '</li>';
 								}
 							}
 						}
-						else 
+						else
 						{
 							// email is just a plain 'ol string
 							if (SupportUtilities::sendEmail($email, $subject, $message, $from))
@@ -995,7 +995,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 										'address' => $row->email
 									);
 								}
-								else 
+								else
 								{
 									$log['notifications'][] = array(
 										'role'    => JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'),
@@ -1008,7 +1008,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					}
 
 					// Were there any changes?
-					if (count($log['notifications']) > 0) 
+					if (count($log['notifications']) > 0)
 					{
 						$rowc->changelog = json_encode($log);
 
@@ -1024,7 +1024,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// output messsage and redirect
-		if ($redirect) 
+		if ($redirect)
 		{
 			$filters = JRequest::getVar('filters', '');
 			$filters = str_replace('&amp;','&', $filters);
@@ -1034,14 +1034,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''),
 				JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->id)
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->setLayout('edit');
 			$this->editTask();
 		}
 	}
-	
+
 	/**
 	 * Removes a ticket and all associated records (tags, comments, etc.)
 	 *
@@ -1125,12 +1125,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			. " ORDER BY ". $order;
 
 		$this->database->setQuery($query);
-		if ($nouser) 
+		if ($nouser)
 		{
 			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
-		} 
-		else 
+		}
+		else
 		{
 			$users = $this->database->loadObjectList();
 		}
@@ -1242,11 +1242,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 					$names = explode(' ', $u->get('name'));
 					$last = trim(end($names));
-					
+
 					$users[$last] = $m;
 				}
 			}
-			
+
 			ksort($users);
 		}
 
@@ -1370,7 +1370,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$ext = strtolower(JFile::getExt($file['name']));
 
 		$filename = JFile::stripExt($file['name']);
-		while (file_exists($file_path . DS . $filename . '.' . $ext)) 
+		while (file_exists($file_path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
@@ -1390,7 +1390,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			exec("clamscan -i --no-summary --block-encrypted $finalfile", $output, $status);
 			if ($status == 1)
 			{
-				if (JFile::delete($finalfile)) 
+				if (JFile::delete($finalfile))
 				{
 					$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_SECURITY_SCAN'));
 					return '';

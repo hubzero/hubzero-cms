@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -84,7 +84,7 @@ $juser = JFactory::getUser();
 				<?php
 				$html = '';
 				// Private/Public resource access check
-				if (!$this->model->access('view-all')) 
+				if (!$this->model->access('view-all'))
 				{
 					$ghtml = array();
 					foreach ($this->model->resource->getGroups() as $allowedgroup)
@@ -96,8 +96,8 @@ $juser = JFactory::getUser();
 					<?php echo JText::_('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 				</p>
 				<?php
-				} 
-				else 
+				}
+				else
 				{
 					// get launch button
 					$firstchild = $this->model->children(0);
@@ -106,10 +106,10 @@ $juser = JFactory::getUser();
 
 					// Display some supporting documents
 					$children = $this->model->children();
-							
+
 					// Sort out supporting docs
 					$html .= $children && count($children) > 1
-						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children ) 
+						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children )
 						   : '';
 
 					//$html .= $feeds ? $feeds : '';
@@ -123,7 +123,7 @@ $juser = JFactory::getUser();
 	<aside class="aside rankarea">
 		<?php
 		// Show metadata
-		if ($this->model->params->get('show_metadata', 1)) 
+		if ($this->model->params->get('show_metadata', 1))
 		{
 			$this->view('_metadata')
 			     ->set('option', $this->option)
@@ -149,11 +149,11 @@ $juser = JFactory::getUser();
 
 			// Show related content
 			$out = $dispatcher->trigger('onResourcesSub', array($this->model->resource, $this->option, 1));
-			if (count($out) > 0) 
+			if (count($out) > 0)
 			{
 				foreach ($out as $ou)
 				{
-					if (isset($ou['html'])) 
+					if (isset($ou['html']))
 					{
 						echo $ou['html'];
 					}
@@ -161,7 +161,7 @@ $juser = JFactory::getUser();
 			}
 
 			// Show what's popular
-			if ($this->tab == 'about') 
+			if ($this->tab == 'about')
 			{
 				echo \Hubzero\Module\Helper::renderModules('extracontent');
 			}

@@ -38,7 +38,7 @@ class RecentPageMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -52,7 +52,7 @@ class RecentPageMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -61,40 +61,40 @@ class RecentPageMacro extends WikiMacro
 		$cls = '';
 		$limitstart = 0;
 
-		if ($this->args) 
+		if ($this->args)
 		{
 			$args = explode(',', $this->args);
-			if (isset($args[0])) 
+			if (isset($args[0]))
 			{
 				$args[0] = intval($args[0]);
-				if ($args[0]) 
+				if ($args[0])
 				{
 					$limit = $args[0];
 				}
 			}
-			if (isset($args[1])) 
+			if (isset($args[1]))
 			{
 				$cls = $args[1];
 			}
-			if (isset($args[2])) 
+			if (isset($args[2]))
 			{
 				$args[2] = intval($args[2]);
-				if ($args[2]) 
+				if ($args[2])
 				{
 					$limitstart = $args[2];
 				}
 			}
 		}
 
-		$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.pagehtml 
-					FROM #__wiki_version AS wv 
-					INNER JOIN #__wiki_page AS wp 
-						ON wp.id = wv.pageid 
-					WHERE wv.approved = 1 
-						AND wp.group_cn = '$this->domain' 
-						AND wp.scope = '$this->scope' 
-						AND wp.access != 1 
-						AND wp.state < 2 
+		$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.pagehtml
+					FROM #__wiki_version AS wv
+					INNER JOIN #__wiki_page AS wp
+						ON wp.id = wv.pageid
+					WHERE wv.approved = 1
+						AND wp.group_cn = '$this->domain'
+						AND wp.scope = '$this->scope'
+						AND wp.access != 1
+						AND wp.state < 2
 						AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 					ORDER BY created DESC
 					LIMIT $limitstart, $limit";
@@ -106,20 +106,20 @@ class RecentPageMacro extends WikiMacro
 		$html = '';
 
 		// Did we get a result from the database?
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $row)
 			{
-				if ($row->version > 1) 
+				if ($row->version > 1)
 				{
 					$t = JText::_('Updated');
-				} 
-				else 
+				}
+				else
 				{
 					$t = JText::_('Created');
 				}
 				$html .= '<div';
-				if ($cls) 
+				if ($cls)
 				{
 					$html .= ' class="' . $cls . '"';
 				}
@@ -131,8 +131,8 @@ class RecentPageMacro extends WikiMacro
 				$html .= '</div>' . "\n";
 			}
 
-		} 
-		else 
+		}
+		else
 		{
 			$html .= '<p class="warning">No results found.</p>' . "\n";
 		}
@@ -142,11 +142,11 @@ class RecentPageMacro extends WikiMacro
 
 	/**
 	 * Shorten a string to a max length, preserving whole words
-	 * 
+	 *
 	 * @param      string  $text      String to shorten
 	 * @param      integer $chars     Max length to allow
 	 * @param      integer $p         Wrap content in a paragraph tag?
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _shortenText($text, $chars=300, $p=1)
 	{
@@ -157,7 +157,7 @@ class RecentPageMacro extends WikiMacro
 		$text = str_replace('   ', ' ', $text);
 		$text = trim($text);
 
-		if (strlen($text) > $chars) 
+		if (strlen($text) > $chars)
 		{
 			$text = $text . ' ';
 			$text = substr($text, 0, $chars);
@@ -165,12 +165,12 @@ class RecentPageMacro extends WikiMacro
 			$text = $text . ' &#8230;';
 		}
 
-		if ($text == '') 
+		if ($text == '')
 		{
 			$text = '&#8230;';
 		}
 
-		if ($p) 
+		if ($p)
 		{
 			$text = '<p>' . $text . '</p>';
 		}

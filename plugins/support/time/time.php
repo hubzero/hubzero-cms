@@ -45,7 +45,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Called on the ticket comment form
-	 * 
+	 *
 	 * @param      object $ticket
 	 * @return     array
 	 */
@@ -100,7 +100,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Called after updating a ticket
-	 * 
+	 *
 	 * @param      object $ticket
 	 * @param      object $comment
 	 * @return     void

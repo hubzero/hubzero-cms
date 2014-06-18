@@ -34,159 +34,159 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for project databases
  */
-class ProjectDatabase extends JTable 
+class ProjectDatabase extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * Project id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $project      		= NULL;
-	
+
 	/**
 	 * Database name
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $database_name  	= NULL;
-	
+
 	/**
 	 * Database title
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $title  			= NULL;
-	
+
 	/**
 	 * Source file
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $source_file  		= NULL;
-	
+
 	/**
 	 * Source directory
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $source_dir  		= NULL;
-	
+
 	/**
 	 * Source revision
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $source_revision  	= NULL;
-	
+
 	/**
 	 * Description
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $description 		= NULL;
-	
+
 	/**
 	 * Data definition
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $data_definition  	= NULL;
-	
+
 	/**
 	 * Revision
-	 * 
+	 *
 	 * @var integer
-	 */	
-	var $revision      		= NULL;	
-			
+	 */
+	var $revision      		= NULL;
+
 	/**
 	 * Created (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $created			= NULL;
-	
+
 	/**
 	 * Created by
-	 * 
+	 *
 	 * @var integer
-	 */	
-	var $created_by      	= NULL;	
-	
+	 */
+	var $created_by      	= NULL;
+
 	/**
 	 * Updated (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $updated			= NULL;
-	
+
 	/**
 	 * Updated by
-	 * 
+	 *
 	 * @var integer
-	 */	
-	var $updated_by      	= NULL;	
-		
+	 */
+	var $updated_by      	= NULL;
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_databases', 'id', $db );
 	}
-	
+
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string 	$identifier 	database name or id
 	 * @return     object or false
 	 */
-	public function loadRecord ( $identifier = NULL ) 
+	public function loadRecord ( $identifier = NULL )
 	{
-		if ($identifier === NULL) 
+		if ($identifier === NULL)
 		{
 			return false;
 		}
 		$name = is_numeric($identifier) ? 'id' : 'database_name';
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name='$identifier' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Get items
-	 * 
+	 *
 	 * @param      integer 		$projectid
 	 * @param      array 		$filters
 	 * @param      boolean 		$skipPublished
 	 * @return     object, integer or NULL
 	 */
 	public function getItems( $projectid = NULL, $filters = array(), $skipPublished = false)
-	{		
-		if ($projectid == NULL) 
+	{
+		if ($projectid == NULL)
 		{
 		 	return false;
 		}
-		
+
 		$count  		= isset($filters['count']) ? $filters['count'] : 0;
-		
+
 		$query  = "SELECT ";
 		$query .= $count ? " COUNT(*) " : "*";
 		$query .= " FROM $this->_tbl ";
@@ -196,66 +196,66 @@ class ProjectDatabase extends JTable
 		$this->_db->setQuery( $query );
 		return $count ? $this->_db->loadResult() :  $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get items
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      array $filters
 	 * @return     object, integer or NULL
 	 */
 	public function getResource( $projectid = NULL, $id = NULL)
-	{		
-		if ($projectid == NULL || $id == NULL) 
+	{
+		if ($projectid == NULL || $id == NULL)
 		{
 		 	return false;
 		}
-		
+
 		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $projectid;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssoc();
-	}	
-	
+	}
+
 	/**
 	 * Get database list
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @return     object, integer or NULL
 	 */
 	public function getList( $projectid = NULL)
-	{		
-		if ($projectid == NULL) 
+	{
+		if ($projectid == NULL)
 		{
 		 	return false;
 		}
-		
-		$query = "SELECT db.id, db.project, db.database_name, db.title, db.source_file, 
-				db.source_dir, db.source_revision, db.description, db.data_definition, 
-				db.revision, db.created, db.created_by, c.name 
-				FROM $this->_tbl AS db LEFT JOIN #__users AS c ON (c.id=db.created_by) 
+
+		$query = "SELECT db.id, db.project, db.database_name, db.title, db.source_file,
+				db.source_dir, db.source_revision, db.description, db.data_definition,
+				db.revision, db.created, db.created_by, c.name
+				FROM $this->_tbl AS db LEFT JOIN #__users AS c ON (c.id=db.created_by)
 				WHERE project = " . $projectid . " ORDER BY db.created DESC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssocList();
 	}
-	
+
 	/**
 	 * Get used items
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @return     object, integer or NULL
 	 */
 	public function getUsedItems( $projectid = NULL)
-	{		
-		if ($projectid == NULL) 
+	{
+		if ($projectid == NULL)
 		{
 		 	return false;
 		}
-		
-		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file 
+
+		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file
 				  FROM $this->_tbl
-				  WHERE project = " . $projectid;		
+				  WHERE project = " . $projectid;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResultArray();

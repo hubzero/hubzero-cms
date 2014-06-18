@@ -141,7 +141,7 @@ JHtml::_('behavior.keepalive');
 
 			<?php //echo JHtml::_('sliders.panel', JText::_('COM_CATEGORIES_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
-				
+
 				<?php echo $this->form->getLabel('rules'); ?>
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>

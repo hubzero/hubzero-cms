@@ -38,21 +38,21 @@ class GroupsModelLog extends \Hubzero\Base\Model
 {
 	/**
 	 * GroupsTablePageCategory
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTableLog';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -60,11 +60,11 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	{
 		// create database object
 		$this->_db = JFactory::getDBO();
-		
+
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -74,10 +74,10 @@ class GroupsModelLog extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Returns array of log defaults
-	 * 
+	 *
 	 * @return    array
 	 */
 	protected static function logDefaults()
@@ -91,7 +91,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 			'actorid'   => JFactory::getUser()->get('id')
 		);
 	}
-	
+
 	/**
 	 * Log a Group action
 	 *
@@ -101,31 +101,31 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	{
 		// merge defaults with passed in options
 		$details = array_merge(self::logDefaults(), $options);
-		
+
 		// if we passed in a string lets normalize to array
 		if (is_string($details['comments']))
 		{
 			$details['comments'] = array('message' => $details['comments']);
 		}
-		
+
 		// json encode comments
 		$details['comments'] = json_encode($details['comments']);
-		
+
 		// bind log details
 		$this->bind($details);
-		
+
 		// store log details
 		if (!$this->store(true))
 		{
 			return $this->getError();
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Overloading Static Method Call
-	 * 
+	 *
 	 * Resolves instance of log model and runs method on instance with args
 	 *
 	 * @param    $method    Static method name
@@ -136,7 +136,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	{
 		// resolve instance
 		$instance = new GroupsModelLog();
-		
+
 		// run method on instance
 		switch (count($args))
 		{

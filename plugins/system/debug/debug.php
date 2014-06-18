@@ -137,16 +137,16 @@ class plgSystemDebug extends JPlugin
 		/* [!] HUBZERO - Add ability to show deubg output to specified users
 		 * zooley (2012-08-29)
 		 */
-		else 
+		else
 		{
 			$filterUsers = $this->params->get('filter_users', null);
 
-			if (!empty($filterUsers)) 
+			if (!empty($filterUsers))
 			{
 				$filterUsers = explode(',', $filterUsers);
 				$filterUsers = array_map('trim', $filterUsers);
 
-				if (!in_array(\JFactory::getUser()->get('username'), $filterUsers)) 
+				if (!in_array(\JFactory::getUser()->get('username'), $filterUsers))
 				{
 					echo $contents;
 					return;
@@ -421,7 +421,7 @@ class plgSystemDebug extends JPlugin
 			this.id = 'id';
 			this.direction = 'y';
 		}
-		debugDrag.prototype = { 
+		debugDrag.prototype = {
 			init: function(settings) {
 				for (var i in settings)
 				{
@@ -429,7 +429,7 @@ class plgSystemDebug extends JPlugin
 
 					for (var j in settings[i])
 					{
-						this[i][j] = settings[i][j]; 
+						this[i][j] = settings[i][j];
 					}
 				}
 
@@ -488,7 +488,7 @@ class plgSystemDebug extends JPlugin
 				Debugger.removeEvent(document, 'mouseup', this._event_docMouseUp);
 			},
 
-			setValuesClick: function(e) { 
+			setValuesClick: function(e) {
 				if (!Debugger.hasClass(this.container, 'open')) {
 					return;
 				}

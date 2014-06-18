@@ -51,7 +51,7 @@ if ($this->collection_id)
 					<select name="collection_id" id="field-collection_id">
 						<option value="0"><?php echo JText::_('COM_COLLECTIONS_SELECT_COLLECTION'); ?></option>
 						<optgroup label="<?php echo JText::_('COM_COLLECTIONS_MY_COLLECTIONS'); ?>">
-					<?php 
+					<?php
 					if ($this->myboards)
 					{
 						foreach ($this->myboards as $board)
@@ -67,7 +67,7 @@ if ($this->collection_id)
 					}
 					?>
 						</optgroup>
-				<?php 
+				<?php
 				if ($this->groupboards)
 				{
 					foreach ($this->groupboards as $optgroup => $boards)

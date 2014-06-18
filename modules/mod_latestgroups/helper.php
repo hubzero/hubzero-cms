@@ -37,7 +37,7 @@ class modLatestGroups extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -53,7 +53,7 @@ class modLatestGroups extends \Hubzero\Module\Module
 		$this->charlimit = $this->params->get('charlimit', 100);
 		$this->feedlink = $this->params->get('feedlink', 'yes');
 		$this->morelink = $this->params->get('morelink', '');
-		
+
 		// Get popular groups
 		$popularGroups = \Hubzero\User\Group\Helper::getPopularGroups();
 
@@ -63,10 +63,10 @@ class modLatestGroups extends \Hubzero\Module\Module
 		{
 			// Get the group
 			$group = \Hubzero\User\Group::getInstance($g->gidNumber);
-			
+
 			// Check join policy
 			$joinPolicy = $group->get('join_policy');
-			
+
 			// If group is invite only or closed check if th user is a member of the group
 			if ($joinPolicy > 1)
 			{
@@ -76,16 +76,16 @@ class modLatestGroups extends \Hubzero\Module\Module
 					continue;
 				}
 			}
-			
+
 			$groupsToDisplay[] = $g;
-			
+
 			$counter++;
 			if ($counter == $this->limit)
 			{
 				break;
 			}
 		}
-		
+
 		//set groups to view
 		$this->groups = $groupsToDisplay;
 
@@ -94,7 +94,7 @@ class modLatestGroups extends \Hubzero\Module\Module
 
 	/**
 	 * Display module
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

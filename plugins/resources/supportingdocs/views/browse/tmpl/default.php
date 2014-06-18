@@ -46,7 +46,7 @@ else
 }
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS'); ?> 
+	<?php echo JText::_('PLG_RESOURCES_SUPPORTINGDOCS'); ?>
 </h3>
 
 <div id="supportingdocs" class="supportingdocs">
@@ -58,7 +58,7 @@ else
 			$base = $this->model->params->get('uploadpath');
 			foreach ($children as $child)
 			{
-				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest'))) 
+				if ($child->access == 0 || ($child->access == 1 && !$juser->get('guest')))
 				{
 					$ftype = JFile::getExt($child->path);
 					if (substr($child->path, 0, 4) == 'http')
@@ -68,12 +68,12 @@ else
 
 					$class = '';
 					$action = '';
-					if ($child->standalone == 1) 
+					if ($child->standalone == 1)
 					{
 						$liclass = ' class="html"';
 						$title = stripslashes($child->title);
-					} 
-					else 
+					}
+					else
 					{
 						$rt = ResourcesType::getRecordInstance($child->type);
 						$tparams = new JRegistry($rt->params);
@@ -82,11 +82,11 @@ else
 						$ltparams = new JRegistry($lt->params);
 
 						// Check the link action by child's type
-						if ($child->logicaltype) 
+						if ($child->logicaltype)
 						{
 							$rtLinkAction = $ltparams->get('linkAction', 'extension');
-						} 
-						else 
+						}
+						else
 						{
 							$rtLinkAction = $tparams->get('linkAction', 'extension');
 						}
@@ -193,13 +193,13 @@ else
 					$attribs = new JRegistry($child->attribs);
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
-					if ($width > 0 && $height > 0) 
+					if ($width > 0 && $height > 0)
 					{
 						$class .= ' ' . $width . 'x' . $height;
 					}
 
-					// user guide 
-					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title))) 
+					// user guide
+					if (strtolower($title) !=  preg_replace('/user guide/', '', strtolower($title)))
 					{
 						$liclass = ' class="guide"';
 					}

@@ -38,11 +38,11 @@ if ($this->params->get('allowClose', 1))
 }
 
 $rows = $this->offering->announcements(array(
-	'limit'     => $this->params->get('display_limit', 1), 
+	'limit'     => $this->params->get('display_limit', 1),
 	'published' => true
 ));
 
-if ($rows->total() > 0) 
+if ($rows->total() > 0)
 {
 	$announcements = array();
 
@@ -65,7 +65,7 @@ if ($rows->total() > 0)
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
 				<?php echo $row->content('parsed'); ?>
 				<dl class="entry-meta">
-					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
+					<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
 					<dd class="time">
 						<time datetime="<?php echo $row->published(); ?>">
 							<?php echo $row->published('time'); ?>
@@ -77,9 +77,9 @@ if ($rows->total() > 0)
 						</time>
 					</dd>
 				</dl>
-				<?php 
+				<?php
 					$page = JRequest::getVar('REQUEST_URI', '', 'server');
-					if ($page && $this->params->get('allowClose', 1)) 
+					if ($page && $this->params->get('allowClose', 1))
 					{
 						$page .= (strstr($page, '?')) ? '&' : '?';
 						$page .= 'ancmnt' . $row->get('id') . '=closed';

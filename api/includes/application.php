@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'Hubzero_API'
- * 
+ *
  * Long description (if any) ...
  */
 class Hubzero_API extends JApplication
@@ -44,13 +44,13 @@ class Hubzero_API extends JApplication
 		$this->unregister_globals();
 		$this->fix_http_headers();
 		$this->handle_method_override();
-		
+
 		$this->_enabled = false;
 		$this->_component = false;
 		$this->_route = array();
 		$this->provider = null;
 		$this->_authn = array();
-		
+
 		$this->request = new \Hubzero\Api\Request();
 		$this->response = new \Hubzero\Api\Response();
 		$this->output = '';
@@ -58,63 +58,63 @@ class Hubzero_API extends JApplication
 		$this->checkSession();
 		return $this; // chaining
 	}
-	
+
 	/**
 	 * Description for '_authn'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_authn = array(); // authentication variables
-	
+
 	/**
 	 * Description for '_enabled'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_enabled = false; // is api server enabled
 
 	/**
 	 * Description for '_component'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_component = false; // component we are routing to
 
 	/**
 	 * Description for '_route'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_route = array(); // path segments to pass to api controller
 
 	/**
 	 * Description for 'response'
-	 * 
+	 *
 	 * @var object
 	 */
 	public $response = null;
 
 	/**
 	 * Description for 'request'
-	 * 
+	 *
 	 * @var object
 	 */
 	public $request = null;
 
-	
+
 	public $output = '';
 	/**
 	 * Description for '_provider'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_provider = null;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $config Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -126,17 +126,17 @@ class Hubzero_API extends JApplication
 		JLoader::import('joomla.environment.uri');
 		JLoader::import('Hubzero.Api.Response');
 		JLoader::import('Hubzero.Api.Request');
-		
+
 		$config['clientId'] = 4;
 
 		$this->unregister_long_arrays();
 		$this->unregister_globals();
 		$this->fix_http_headers();
-		
+
 		$this->request = new \Hubzero\Api\Request();
 		$this->response = new \Hubzero\Api\Response();
 		$this->output = '';
-        
+
         parent::__construct($config);
 	}
 
@@ -144,13 +144,13 @@ class Hubzero_API extends JApplication
 	 * For clients that can't (or programmer to lazy to) support all
 	 * HTTP methods allow the method to be specified via HTTP_X_HTTP_METHOD_OVERRIDE
 	 * header.
-	 * 
+	 *
 	 * @return     void
 	 */
 	function handle_method_override()
 	{
 		// @FIXME: should maybe only be valid if the real method is GET
-		
+
 		if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
 		{
 			$method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
@@ -164,7 +164,7 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Add some request headers that PHP suppresses by default
-	 * 
+	 *
 	 * @return     void
 	 */
 	function fix_http_headers()
@@ -189,8 +189,8 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Unset HTTP_* global variables if using a PHP installation that has these enabled 
-	 * 
+	 * Unset HTTP_* global variables if using a PHP installation that has these enabled
+	 *
 	 * @return     void
 	 */
 	function unregister_long_arrays()
@@ -209,7 +209,7 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Unset 'magic' global variables if using a PHP installation that has these enabled
-	 * 
+	 *
 	 * @return     void
 	 */
 	function unregister_globals()
@@ -263,9 +263,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'initialise'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function initialise()
@@ -280,9 +280,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'route'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function route()
@@ -342,7 +342,7 @@ class Hubzero_API extends JApplication
 			$classname = ucfirst($segments[0]) . 'ControllerApi';
 
 			if (!class_exists($classname))
-			{			
+			{
 				if (is_file($filename))
 				{
 					require($filename);
@@ -363,9 +363,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'authenticate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function authenticate()
@@ -374,7 +374,7 @@ class Hubzero_API extends JApplication
 		{
 			return;
 		}
-        
+
 		JLoader::import('Hubzero.User.Profile');
 		JLoader::import('Hubzero.User.Helper');
 		JLoader::import('Hubzero.Oauth.Provider');
@@ -406,7 +406,7 @@ class Hubzero_API extends JApplication
 					}
 				}
 			}
-			
+
 			if (!empty($postvars))
 			{
 				foreach($postvars as $key=>$value)
@@ -421,11 +421,11 @@ class Hubzero_API extends JApplication
 					}
 				}
 			}
-				
+
 			if (empty($params))
 			{
 				return false;
-			}			
+			}
 		}
 
 		$oauthp = new \Hubzero\Oauth\Provider($params);
@@ -434,7 +434,7 @@ class Hubzero_API extends JApplication
 		$oauthp->setAuthorizePath('/api/oauth/authorize');
 
 		$result = $oauthp->validateRequest($this->request->get('request'), $this->request->get('method'));
-	
+
 		if (is_array($result))
 		{
 			//$this->response->setResponseProvides('application/x-www-form-urlencoded;q=1.0,text/html;q=0.9');
@@ -444,20 +444,20 @@ class Hubzero_API extends JApplication
 		}
 
 		$this->_provider = $oauthp;
-		
+
 		$this->_authn['oauth_token'] = $oauthp->getToken();
 		$this->_authn['consumer_key'] = $oauthp->getConsumerKey();
 		$this->_authn['user_id'] = null;
-		
+
 		if ($this->_authn['oauth_token'])
 		{
 			$data = $oauthp->getTokenData();
-			
+
 			if (!empty($data->user_id))
 			{
 				$this->_authn['user_id'] = $data->user_id;
 			}
-			
+
 			$this->_authn['session_id'] = null;
 
 			JFactory::getSession()->set('user', new JUser($data->user_id));
@@ -465,27 +465,27 @@ class Hubzero_API extends JApplication
 		else
 		{
 			// well lets try to authenticate it with a session instead
-			
+
 			$session_name = md5(JUtility::getHash('site'));
 			$session_id = null;
-			
+
 			if (!empty($_COOKIE[$session_name]))
 			{
 				$session_id = $_COOKIE[$session_name];
 			}
-			
+
 			$this->_authn['session_id'] = $session_id;
 			$this->_authn['user_id'] = null;
-			
+
 			if (!empty($session_id))
 			{
 				$db = JFactory::getDBO();
 				$timeout = JFactory::getConfig()->getValue('config.timeout');
 				$query = "SELECT userid FROM #__session WHERE session_id=" . $db->Quote($session_id) . "AND " .
 					" time + " . (int) $timeout . " <= NOW() AND client_id = 0;";
-					
+
 				$db->setQuery($query);
-				
+
 				$user_id = $db->loadResult();
 
 				if (!empty($user_id))
@@ -494,31 +494,31 @@ class Hubzero_API extends JApplication
 				}
 			}
 		}
-		
+
 		$this->request->validApiKey = !empty($this->_authn['consumer_key']);
 	}
-	
+
 	function getAuthN($key = null)
 	{
 		if ($key === null)
 		{
 			return $this->_authn;
 		}
-		
+
 		if (in_array($key, array('session_id', 'user_id', 'oauth_token', 'consumer_key')))
 		{
 			if (array_key_exists($key, $this->_authn))
 				return $this->_authn[$key];
-			
+
 			return null;
 		}
 	}
 
 	/**
 	 * Short description for 'dispatch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function dispatch()
@@ -541,23 +541,23 @@ class Hubzero_API extends JApplication
 			ob_start();
 			$controller->execute();
 			$output = ob_get_clean();
-				
+
 			$this->response->appendBody($output);
-				
+
 		}
 	}
 
 	/**
 	 * Short description for 'render'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function render()
 	{
 		global $_HUBZERO_API_START;
-		
+
 		$this->response->setHeader('X-Runtime: ' . (microtime(true) - $_HUBZERO_API_START));
 
 		$this->response->send();
@@ -565,20 +565,20 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'execute'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function execute($capture = false)
 	{
 		global $_HUBZERO_API_START;
-		
+
 		if (!isset($_HUBZERO_API_START))
 		{
-			$_HUBZERO_API_START = microtime(true);		
+			$_HUBZERO_API_START = microtime(true);
 		}
-		
+
 		$this->initialise();
 
 		$this->route();
@@ -591,22 +591,22 @@ class Hubzero_API extends JApplication
 		{
 			ob_start();
 		}
-		
+
 		$this->render();
-		
+
 		if ($capture)
 		{
 			$this->output = ob_get_clean();
 		}
-		
+
 		unset($_HUBZERO_API_START);
 	}
 
 	/**
 	 * Short description for 'close'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function close()
@@ -616,9 +616,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'redirect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function redirect()
@@ -628,9 +628,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'enqueueMessage'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $msg Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
 	 * @return     void
@@ -642,9 +642,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getMessageQueue'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getMessageQueue()
@@ -656,9 +656,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getName()
@@ -668,9 +668,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getUserState'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -681,9 +681,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'setUserState'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
@@ -695,9 +695,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getUserStateFromRequest'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $key Parameter description (if any) ...
 	 * @param      unknown $request Parameter description (if any) ...
 	 * @param      unknown $default Parameter description (if any) ...
@@ -711,9 +711,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'registerEvent'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $event Parameter description (if any) ...
 	 * @param      unknown $handler Parameter description (if any) ...
 	 * @return     void
@@ -725,9 +725,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'triggerEvent'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $event Parameter description (if any) ...
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     void
@@ -739,9 +739,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'login'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $credentials Parameter description (if any) ...
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
@@ -753,9 +753,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'logout'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $userid Parameter description (if any) ...
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
@@ -767,9 +767,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getRouter'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
@@ -790,8 +790,8 @@ class Hubzero_API extends JApplication
 		}
 		return $router;
 		*/
-		
-		
+
+
 		$config = JFactory::getConfig();
 		$options['mode'] = $config->getValue('config.sef');
 		$router =& parent::getRouter('api', $options);
@@ -800,9 +800,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getPathway'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
@@ -814,9 +814,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getMenu'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      array $options Parameter description (if any) ...
 	 * @return     void
@@ -831,9 +831,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for '_createSession'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -844,9 +844,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'appendPathWay'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      unknown $link Parameter description (if any) ...
 	 * @return     void
@@ -858,9 +858,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getCustomPathWay'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getCustomPathWay()
@@ -870,9 +870,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getHead'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getHead()
@@ -882,9 +882,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'addMetaTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @param      string $prepend Parameter description (if any) ...
@@ -898,9 +898,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'appendMetaTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
@@ -912,9 +912,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'prependMetaTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $name Parameter description (if any) ...
 	 * @param      unknown $content Parameter description (if any) ...
 	 * @return     void
@@ -926,9 +926,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'addCustomHeadTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $html Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -939,9 +939,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getBlogSectionCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getBlogSectionCount( )
@@ -951,9 +951,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getBlogCategoryCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getBlogCategoryCount( )
@@ -963,9 +963,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getGlobalBlogSectionCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getGlobalBlogSectionCount( )
@@ -975,9 +975,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getStaticContentCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getStaticContentCount( )
@@ -987,9 +987,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getContentItemLinkCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getContentItemLinkCount( )
@@ -999,9 +999,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getPath'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $varname Parameter description (if any) ...
 	 * @param      unknown $user_option Parameter description (if any) ...
 	 * @return     void
@@ -1013,9 +1013,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getBasePath'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $client Parameter description (if any) ...
 	 * @param      boolean $addTrailingSlash Parameter description (if any) ...
 	 * @return     void
@@ -1027,9 +1027,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getUser'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function &getUser()
@@ -1039,9 +1039,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getItemid'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $id Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1052,9 +1052,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'setPageTitle'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $title Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -1065,9 +1065,9 @@ class Hubzero_API extends JApplication
 
 	/**
 	 * Short description for 'getPageTitle'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function getPageTitle()

@@ -30,13 +30,13 @@ $i = 1;
 <h3><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 $self = in_array($this->aid, $this->checked) ? 1 : 0;
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>">
 	<fieldset >
@@ -46,7 +46,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="no_html" value="1" />
 		<?php if($this->setup) { ?>
 		<input type="hidden" name="task" value="setup" />
-		<input type="hidden" name="step" value="1" />	
+		<input type="hidden" name="step" value="1" />
 		<?php } else { ?>
 		<input type="hidden" name="task" value="edit" />
 		<input type="hidden" name="edit" value="team" />
@@ -54,17 +54,17 @@ if (!$this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="anote"><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS_NOTE'); ?></p>
 		<p><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS_CONFIRM'); ?></p>
-		<p class="prominent"><?php foreach ($this->selected as $owner) {  
-			echo trim($owner->fullname) ? $owner->fullname : $owner->invited_email; 
-			echo ($i < count($this->selected)) ? ', ': ''; 
-			$i++; 
+		<p class="prominent"><?php foreach ($this->selected as $owner) {
+			echo trim($owner->fullname) ? $owner->fullname : $owner->invited_email;
+			echo ($i < count($this->selected)) ? ', ': '';
+			$i++;
 			echo '<input type="hidden" name="owner[]" value="'.$owner->id.'" />';
 		} ?></p>
 		<?php if($self) { ?><p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" class="btn" />
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

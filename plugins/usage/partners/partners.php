@@ -45,7 +45,7 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onUsageAreas()
@@ -57,7 +57,7 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for displaying usage data
-	 * 
+	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
 	 * @param      object $db            JDatabase
@@ -69,10 +69,10 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
 		// Check if our task is the area we want to return results for
-		if ($task) 
+		if ($task)
 		{
 			if (!in_array($task, $this->onUsageAreas())
-			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			 && !in_array($task, array_keys($this->onUsageAreas())))
 			{
 				return '';
 			}

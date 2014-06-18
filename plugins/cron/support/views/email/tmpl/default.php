@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 ?>
 This is a reminder, sent out once a month, about your <?php echo $this->sitename; ?>
-support tickets.  It includes a list of tickets, highest to 
+support tickets.  It includes a list of tickets, highest to
 lowest priority, that need to be acted upon.
 
 #   (created)   ::   Link    ::    Summary

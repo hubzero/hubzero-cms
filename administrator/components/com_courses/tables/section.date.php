@@ -34,77 +34,77 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course section table class
- * 
+ *
  */
 class CoursesTableSectionDate extends JTable
 {
 	/**
 	 * ID, primary key for course instances table
 	 * int(11)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_id = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * Start publishing date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_up = NULL;
 
 	/**
 	 * End publishing date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_down = NULL;
 
 	/**
 	 * Created date for unit
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -115,13 +115,13 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($oid=null, $scope=null, $section_id=null)
 	{
-		if ($oid === null) 
+		if ($oid === null)
 		{
 			return false;
 		}
@@ -131,18 +131,18 @@ class CoursesTableSectionDate extends JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid));
-		if ($section_id !== null) 
+		if ($section_id !== null)
 		{
 			$query .= " AND section_id=" . $this->_db->Quote(intval($section_id));
 		}
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -151,7 +151,7 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -164,7 +164,7 @@ class CoursesTableSectionDate extends JTable
 		}
 
 		$this->scope = trim($this->scope);
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			$this->setError(JText::_('Please provide a scope.'));
 			return false;
@@ -200,7 +200,7 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -211,17 +211,17 @@ class CoursesTableSectionDate extends JTable
 
 		$where = array();
 
-		if (isset($filters['section_id']) && $filters['section_id'] >= 0) 
+		if (isset($filters['section_id']) && $filters['section_id'] >= 0)
 		{
 			$where[] = "sd.section_id=" . $this->_db->Quote(intval($filters['section_id']));
 		}
 
-		if (isset($filters['scope']) && $filters['scope']) 
+		if (isset($filters['scope']) && $filters['scope'])
 		{
 			$where[] = "sd.scope=" . $this->_db->Quote($filters['scope']);
 		}
 
-		if (isset($filters['scope_id']) && $filters['scope_id'] > 0) 
+		if (isset($filters['scope_id']) && $filters['scope_id'] > 0)
 		{
 			$where[] = "sd.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
@@ -237,7 +237,7 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Get a count of course offerings
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -252,7 +252,7 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -261,20 +261,20 @@ class CoursesTableSectionDate extends JTable
 		$query  = "SELECT sd.*";
 		$query .= $this->_buildquery($filters);
 
-		if (!isset($filters['sort']) || $filters['sort'] == '') 
+		if (!isset($filters['sort']) || $filters['sort'] == '')
 		{
 			$filters['sort'] = 'sd.publish_up';
 		}
-		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), 'ASC', 'DESC')) 
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), 'ASC', 'DESC'))
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			if (!isset($filters['start'])) 
+			if (!isset($filters['start']))
 			{
 				$filters['start'] = 0;
 			}
@@ -287,7 +287,7 @@ class CoursesTableSectionDate extends JTable
 
 	/**
 	 * Get a count of course offerings
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -295,7 +295,7 @@ class CoursesTableSectionDate extends JTable
 	{
 		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
 
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

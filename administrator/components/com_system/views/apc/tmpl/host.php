@@ -39,9 +39,9 @@ $time = $this->time;
 
 <div role="navigation" class="sub-navigation">
 	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Host</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
 	</ul>
@@ -50,7 +50,7 @@ $time = $this->time;
 <script type="text/javascript">
 window.addEvent('domready', function() {
 	var clrcache = $('clearcache');
-	
+
 	clrcache.addEvent('click', function(e) {
 		var mes = confirm('Are you sure?');
 		if(!mes) {

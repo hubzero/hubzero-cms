@@ -37,49 +37,49 @@ Class GroupsTablePageHit extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pageid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $userid = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $date = NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ip = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

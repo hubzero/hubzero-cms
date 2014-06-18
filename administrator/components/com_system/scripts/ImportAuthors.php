@@ -38,22 +38,22 @@ class ImportAuthors extends SystemHelperScript
 {
 	/**
 	 * Description
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_description = 'Import user profiles from LDAP.';
 
 	/**
 	 * Options
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_options = array(array('override' => '1'));
 
 	/**
 	 * Run the script
-	 * 
-	 * @return     boolean 
+	 *
+	 * @return     boolean
 	 */
 	public function run()
 	{
@@ -63,15 +63,15 @@ class ImportAuthors extends SystemHelperScript
 			+------------------------+--------------+------+-----+---------+----------------+
 			| Field                  | Type         | Null | Key | Default | Extra          |
 			+------------------------+--------------+------+-----+---------+----------------+
-			| id                     | int(11)      | NO   | PRI | NULL    | auto_increment | 
-			| firstname              | varchar(32)  | NO   | MUL |         |                | 
-			| middlename             | varchar(32)  | NO   |     |         |                | 
-			| lastname               | varchar(32)  | NO   |     |         |                | 
-			| org                    | varchar(100) | NO   |     |         |                | 
-			| bio                    | text         | NO   |     |         |                | 
-			| url                    | varchar(250) | NO   |     |         |                | 
-			| picture                | varchar(250) | NO   |     |         |                | 
-			| principal_investigator | tinyint(1)   | NO   |     | 0       |                | 
+			| id                     | int(11)      | NO   | PRI | NULL    | auto_increment |
+			| firstname              | varchar(32)  | NO   | MUL |         |                |
+			| middlename             | varchar(32)  | NO   |     |         |                |
+			| lastname               | varchar(32)  | NO   |     |         |                |
+			| org                    | varchar(100) | NO   |     |         |                |
+			| bio                    | text         | NO   |     |         |                |
+			| url                    | varchar(250) | NO   |     |         |                |
+			| picture                | varchar(250) | NO   |     |         |                |
+			| principal_investigator | tinyint(1)   | NO   |     | 0       |                |
 			+------------------------+--------------+------+-----+---------+----------------+
 
 			Iterate through each author.
@@ -113,7 +113,7 @@ class ImportAuthors extends SystemHelperScript
 
 	/**
 	 * Convert an author into a user account with profile
-	 * 
+	 *
 	 * @param      array   $row      Associated array of author info
 	 * @param      boolean $override Force data push
 	 * @return     void

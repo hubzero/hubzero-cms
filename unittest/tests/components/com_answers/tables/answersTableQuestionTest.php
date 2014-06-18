@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the questions table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'subject', 
-		'question', 
-		'created', 
+		'id',
+		'subject',
+		'question',
+		'created',
 		'created_by',
 		'state',
 		'anonymous',
@@ -101,7 +101,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getCount
 	 */
@@ -117,7 +117,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getCount
 	 */
@@ -133,7 +133,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getCount
 	 */
@@ -149,7 +149,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getCount
 	 */
@@ -165,7 +165,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getResults
 	 */
@@ -182,7 +182,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords filtered by 'all' is an array
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getResults
 	 */
@@ -200,7 +200,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords filtered by 'mine' is an array
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getResults
 	 */
@@ -218,7 +218,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords filtered by 'open' is an array
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getResults
 	 */
@@ -236,7 +236,7 @@ class AnswersTableQuestionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords filtered by 'closed' is an array
-	 * 
+	 *
 	 * @group com_answers
 	 * @covers AnswersTableQuestion::getResults
 	 */

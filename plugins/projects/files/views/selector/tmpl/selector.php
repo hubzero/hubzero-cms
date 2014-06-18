@@ -26,21 +26,21 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-	<?php if (count($this->items) > 0) { 
-		
+	<?php if (count($this->items) > 0) {
+
 		$parents = array();
 		$openParents = array();
 		$a = 1;
-		
+
 		// Get all parents
-		foreach ($this->items as $item) 
+		foreach ($this->items as $item)
 		{
 			if ($item->type == 'folder')
 			{
 				$tempId = strtolower(ProjectsHtml::generateCode(5, 5, 0, 1, 1));
 				$parents[$item->localPath] = $tempId;
 			}
-			
+
 			// Selected item?
 			if (!empty($this->selected) && in_array($item->localPath, $this->selected))
 			{
@@ -48,67 +48,67 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					foreach ($item->parents as $i => $parent)
 					{
-						$openParents[] = $parent;							
+						$openParents[] = $parent;
 					}
 				}
 			}
 		}
-		
+
 	?>
 		<ul class="file-selector" id="file-selector">
-			<?php foreach ($this->items as $item) 
-			{ 
-					$icon = $item->type == 'folder' 
+			<?php foreach ($this->items as $item)
+			{
+					$icon = $item->type == 'folder'
 							? "/plugins/projects/files/images/folder.gif"
 							: ProjectsHtml::getFileIcon($item->ext);
-							
+
 					$level =  $item->dirname ? count(explode('/', $item->dirname)) : 0;
-					
+
 					// Get element ID
-					$liId  = ($item->type == 'folder' && isset($parents[$item->localPath])) 
-							? 'dir-' . $parents[$item->localPath] 
+					$liId  = ($item->type == 'folder' && isset($parents[$item->localPath]))
+							? 'dir-' . $parents[$item->localPath]
 							: 'item-' . $a;
-					
+
 					// Assign parent classes (for collapsing)
 					$parentCss = '';
-					if ($item->parents) 
+					if ($item->parents)
 					{
 						foreach ($item->parents as $i => $parent)
 						{
 							if (isset($parents[$parent]))
 							{
 								$parentCss .= ' parent-' . $parents[$parent];
-							}							
+							}
 						}
 					}
-					
+
 					$levelCss = $this->showLevels == true ? 'level-' . $level : 'flatlist';
 					$a++;
-					
+
 					// Is file already attached?
 					$selected = !empty($this->selected) && in_array($item->localPath, $this->selected) ? 1 : 0;
-										
+
 					// Is file type allowed?
-					$allowed = $item->type == 'file' && !empty($this->allowed) 
-							&& !in_array($item->ext, $this->allowed)  
+					$allowed = $item->type == 'file' && !empty($this->allowed)
+							&& !in_array($item->ext, $this->allowed)
 							? ' notallowed' : ' allowed';
-							
+
 					$used = !empty($this->used)
 							&& in_array($item->localPath, $this->used) ? true : false;
-					
-					// Do not allow files used in other elements		
+
+					// Do not allow files used in other elements
 					$allowed = $used ? ' notallowed' : $allowed;
-					
+
 					// No selection for folders
-					$allowed = $item->type == 'folder' ? ' freeze' : $allowed;	
-							
+					$allowed = $item->type == 'folder' ? ' freeze' : $allowed;
+
 					// Do not allow to delete previously selected items
-					$allowed = $selected ? ' freeze' : $allowed;					
-							
+					$allowed = $selected ? ' freeze' : $allowed;
+
 					// Is selection within folder? Then open this folder
 					$opened = !empty($openParents) && $item->type == 'folder'
-							&& in_array($item->localPath, $openParents) ? 1 : 0;					
-			
+							&& in_array($item->localPath, $openParents) ? 1 : 0;
+
 				?>
 				<li class="<?php echo $item->type == 'folder' ? 'type-folder' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?><?php echo $opened ? ' opened' : ''; ?>" id="<?php echo $liId; ?>">
 					<span class="item-info"><?php echo $item->type == 'file' ? $item->formattedSize : ''; ?></span>
@@ -116,7 +116,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php if($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
 						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; echo $item->type == 'file' ? ' [' . $item->mimeType . ']' : '' ?>"><?php echo ProjectsHtml::shortenFileName($item->name, 50); ?></span>
 					</span>
-					
+
 				</li>
 			<?php } ?>
 		</ul>

@@ -63,18 +63,18 @@ if ($this->sub)
 	$where = " AND wp.group_cn=" . $database->Quote(trim($parts[0])) . " ";
 }
 
-$query = "SELECT COUNT(*) 
-		FROM #__wiki_attachments AS wa 
-		INNER JOIN #__wiki_page AS wp 
+$query = "SELECT COUNT(*)
+		FROM #__wiki_attachments AS wa
+		INNER JOIN #__wiki_page AS wp
 			ON wp.id=wa.pageid
 		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' $where";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
-$query = "SELECT wa.*, wp.scope, wp.pagename 
-		FROM #__wiki_attachments AS wa 
-		INNER JOIN #__wiki_page AS wp 
+$query = "SELECT wa.*, wp.scope, wp.pagename
+		FROM #__wiki_attachments AS wa
+		INNER JOIN #__wiki_page AS wp
 			ON wp.id=wa.pageid
 		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%'
 			$where
@@ -89,8 +89,8 @@ $rows = $database->loadObjectList();
 
 jimport('joomla.html.pagination');
 $pageNav = new JPagination(
-	$total, 
-	$start, 
+	$total,
+	$start,
 	$limit
 );
 
@@ -134,7 +134,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	jimport('joomla.filesystem.file');
 
@@ -170,7 +170,7 @@ if ($rows)
 							<img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '/' . $row->pagename . '/File:' . $row->filename); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->filename)); ?>" />
 						</a>
 						<?php
-						} 
+						}
 						?>
 					</td>
 					<td>

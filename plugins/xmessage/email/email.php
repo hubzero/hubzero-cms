@@ -38,7 +38,7 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return this messaging type
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function onMessageMethods()
@@ -48,7 +48,7 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Send a message to a user
-	 * 
+	 *
 	 * @param      array   $from     Message 'from' data (e.g., name, address)
 	 * @param      object  $xmessage The message to send
 	 * @param      object  $user     User to send the message to
@@ -58,19 +58,19 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 	public function onMessage($from, $xmessage, $user, $action)
 	{
 		//make sure were supposed to be performing this action
-		if ($this->onMessageMethods() != $action) 
+		if ($this->onMessageMethods() != $action)
 		{
 			return true;
 		}
 
 		//check to make sure users account is confirmed
-		if ($user->get('emailConfirmed') <= 0) 
+		if ($user->get('emailConfirmed') <= 0)
 		{
 			return false;
 		}
 
 		//if we dont have an email stop
-		if (!$user->get('email')) 
+		if (!$user->get('email'))
 		{
 			return false;
 		}
@@ -79,11 +79,11 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 		$jconfig = JFactory::getConfig();
 
 		// if we dont have a from set the use site from name and email
-		if (!isset($from['name']) || $from['name'] == '') 
+		if (!isset($from['name']) || $from['name'] == '')
 		{
 			$from['name'] = $jconfig->getValue('config.sitename') . ' Administrator';
 		}
-		if (!isset($from['email']) || $from['email'] == '') 
+		if (!isset($from['email']) || $from['email'] == '')
 		{
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 		}
@@ -109,7 +109,7 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 		$message->addHeader('X-Component', $xmessage->component)
 		        ->addHeader('X-Component-Object', $xmessage->type);
 
-		// Want to add some extra headers? We put them into the from array 
+		// Want to add some extra headers? We put them into the from array
 		// If none are there, this breaks nothing
 		if (array_key_exists('xheaders', $from))
 		{

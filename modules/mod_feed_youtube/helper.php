@@ -38,7 +38,7 @@ class modFeedYoutubeHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -78,14 +78,14 @@ class modFeedYoutubeHelper extends \Hubzero\Module\Module
 			$items = $rssDoc->get_items();
 
 			// feed elements
-			if ($this->params->get('pick_random', 0)) 
+			if ($this->params->get('pick_random', 0))
 			{
 				// randomize items
 				shuffle($items);
 			}
 			$this->feed->items = array_slice($items, 0, $limit);
-		} 
-		else 
+		}
+		else
 		{
 			$this->feed = false;
 		}

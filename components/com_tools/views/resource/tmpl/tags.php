@@ -48,7 +48,7 @@ $showwarning = ($this->version=='current' or !$this->status['published']) ? 0 : 
 			{
 				?>
 				<label>
-					<input class="option" type="radio" name="tagfa" value="<?php echo $value; ?>"<?php if ($this->tagfa == $value) { echo ' checked="checked "'; } ?> /> 
+					<input class="option" type="radio" name="tagfa" value="<?php echo $value; ?>"<?php if ($this->tagfa == $value) { echo ' checked="checked "'; } ?> />
 					<?php echo $key; ?>
 				</label>
 				<?php

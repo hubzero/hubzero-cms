@@ -40,7 +40,7 @@ class GroupsTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Array of optional configurations
 	 * @return     void

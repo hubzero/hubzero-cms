@@ -130,7 +130,7 @@ class JFormFieldRules extends JFormField
 			$html[] = '</span></a></h3>';
 			$html[] = '<div class="panel">';
 			$html[] = '<div class="pane-slider content pane-hide">';
-			
+
 			$html[] = '<table class="group-rules">';
 			$html[] = '<thead>';
 			$html[] = '<tr>';

@@ -38,7 +38,7 @@ class RandomPageMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,7 +51,7 @@ class RandomPageMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -61,7 +61,7 @@ class RandomPageMacro extends WikiMacro
 		$a = $this->_db->loadRow();
 
 		// Did we get a result from the database?
-		if ($a) 
+		if ($a)
 		{
 			$title = ($a[2]) ? stripslashes($a[2]) : $a[0];
 

@@ -34,160 +34,160 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for project log history
  */
-class ProjectStats extends JTable 
+class ProjectStats extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
-	
+
 	/**
 	 * Datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $processed		= NULL;
-			
+
 	/**
-	 * Month 
-	 * 
+	 * Month
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $month       	= NULL;
-	
+
 	/**
 	 * Year
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $year       	= NULL;
-	
+
 	/**
 	 * Week
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $week       	= NULL;
-				
+
 	/**
 	 * Dump of all stats
-	 * 
+	 *
 	 * @var text
-	 */	
-	var $stats       	= NULL;	
-	
+	 */
+	var $stats       	= NULL;
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_stats', 'id', $db );
 	}
-	
+
 	/**
 	 * Load item
-	 * 
+	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function loadLog ( $year = NULL, $month = NULL, $week = '' ) 
+	 */
+	public function loadLog ( $year = NULL, $month = NULL, $week = '' )
 	{
 		if (!$year && !$month && !$week)
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
 		$query .= $year ? " AND year='". $year ."' " : '';
 		$query .= $month ? " AND month='". $month ."' " : '';
 		$query .= $week ? " AND week='". $week ."' " : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
-		}		
-	}	
-	
+		}
+	}
+
 	/**
 	 * Get item
-	 * 
+	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function getLog ( $year = NULL, $month = NULL, $week = '' ) 
+	 */
+	public function getLog ( $year = NULL, $month = NULL, $week = '' )
 	{
 		if (!$year && !$month)
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
 		$query .= $year ? " AND year='". $year ."' " : '';
 		$query .= $month ? " AND month='". $month ."' " : '';
 		$query .= $week ? " AND week='". $week ."' " : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Collect monthly stats
-	 * 
-	 * @param      integer 	$numMonths	
+	 *
+	 * @param      integer 	$numMonths
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function monthlyStats ( $numMonths = 3, $includeCurrent = false ) 
+	 */
+	public function monthlyStats ( $numMonths = 3, $includeCurrent = false )
 	{
 		$stats = array();
-		
+
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php');
-		
+
 		$obj  = new Project( $this->_db );
 		$objO = new ProjectOwner( $this->_db );
 		$objP = new Publication( $this->_db );
-		
+
 		$testProjects    = $obj->getTestProjects();
 		$validProjectIds = $obj->getValidProjects($testProjects, array(), NULL, false, 'id' );
-		
+
 		$n = ($includeCurrent) ? 0 : 1;
-		
-		for ($a = $numMonths; $a >= $n; $a--) 
+
+		for ($a = $numMonths; $a >= $n; $a--)
 		{
 			$yearNum  = intval(date('y', strtotime("-" . $a . " month")));
 			$monthNum = intval(date('m', strtotime("-" . $a . " month")));
-			
+
 			$log = $this->getLog($yearNum, $monthNum);
-			
+
 			if ($log)
 			{
 				$stats[date('M', strtotime("-" . $a . " month"))] = json_decode($log[0]->stats, true);
-				
+
 				// Get new users by month
 				if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['team']['new']))
 				{
 					$new = $objO->getTeamStats($testProjects, 'new', date('Y-m', strtotime("-" . $a . " month") ));
 					$stats[date('M', strtotime("-" . $a . " month"))]['team']['new'] = $new ? $new : 0;
 				}
-				
+
 				// Get publication release count by month
 				if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['pub']['new']))
 				{
 					$new = $objP->getPubStats($validProjectIds, 'released', date('Y-m', strtotime("-" . $a . " month") ) );
 					$stats[date('M', strtotime("-" . $a . " month"))]['pub']['new'] = $new ? $new : 0;
 				}
-			}						
+			}
 		}
 		return $stats;
 	}

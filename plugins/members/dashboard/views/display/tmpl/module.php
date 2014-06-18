@@ -45,11 +45,11 @@ $view->fields = $fields->getFieldset('basic');
 $settingsHtml = trim($view->loadTemplate());
 ?>
 
-<div class="module <?php echo strtolower($this->module->module); ?> draggable sortable" 
-	data-row="<?php echo $this->module->positioning->row; ?>" 
-	data-col="<?php echo $this->module->positioning->col; ?>" 
-	data-sizex="<?php echo $this->module->positioning->size_x; ?>" 
-	data-sizey="<?php echo $this->module->positioning->size_y; ?>" 
+<div class="module <?php echo strtolower($this->module->module); ?> draggable sortable"
+	data-row="<?php echo $this->module->positioning->row; ?>"
+	data-col="<?php echo $this->module->positioning->col; ?>"
+	data-sizex="<?php echo $this->module->positioning->size_x; ?>"
+	data-sizey="<?php echo $this->module->positioning->size_y; ?>"
 	data-moduleid="<?php echo $this->module->id; ?>">
 
 	<div class="module-title">

@@ -87,13 +87,13 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		);
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		// In case limit has been changed, adjust limitstart accordingly
@@ -398,7 +398,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}

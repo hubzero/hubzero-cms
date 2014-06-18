@@ -38,7 +38,7 @@ class modWhosOnline extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -46,21 +46,21 @@ class modWhosOnline extends \Hubzero\Module\Module
 		//create objects
 		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
-		
+
 		// hides Administrator or Super Administrator from list depending on usertype
 		$and = '';
 		if ( $this->juser->get('gid') == 24 )
 		{
 			$and = ' AND gid != "25"';
 		}
-		
+
 		// manager check
 		if ( $this->juser->get('gid') == 23 )
 		{
 			$and = ' AND gid != "25"';
 			$and .= ' AND gid != "24"';
 		}
-		
+
 		//get users online
 		$query = 'SELECT username, MAX(time) as time, userid, usertype, client_id'
 		. ' FROM #__session'
@@ -70,7 +70,7 @@ class modWhosOnline extends \Hubzero\Module\Module
 		. ' ORDER BY time DESC';
 		$this->database->setQuery( $query );
 		$this->rows = $this->database->loadObjectList();
-		
+
 		//add stylesheets to view
 		$this->css();
 

@@ -86,7 +86,7 @@ if ($type == 'hubpresenter')
 		// Get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
 		$media = JFolder::files($media_dir, '.mp4|.webm|.ogv|.m4v|.mp3', false, false);
 		$ext = array();
-		foreach ($media as $m) 
+		foreach ($media as $m)
 		{
 			$pieces = explode('.', $m);
 			$ext[]  = array_pop($pieces);
@@ -106,27 +106,27 @@ if ($type == 'hubpresenter')
 		$slide_video = array();
 
 		// Build array for checking slide video formats
-		foreach ($slides as $s) 
+		foreach ($slides as $s)
 		{
 			$parts = explode('.', $s);
 			$ext = array_pop($parts);
 			$name = implode('.', $parts);
 
-			if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv'))) 
+			if (in_array($ext, array('mp4', 'm4v', 'webm', 'ogv')))
 			{
 				$slide_video[$name][$ext] = $name . '.' . $ext;
 			}
 		}
 
 		// Make sure for each of the slide videos we have all three formats and has a backup image for the slide
-		foreach ($slide_video as $k => $v) 
+		foreach ($slide_video as $k => $v)
 		{
-			if (count($v) < 3) 
+			if (count($v) < 3)
 			{
 				$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
 			}
 
-			if (!file_exists($slide_path . DS . $k . '.png')) 
+			if (!file_exists($slide_path . DS . $k . '.png'))
 			{
 				$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename "' . $k . '.png".'));
 			}
@@ -249,7 +249,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							//get file modified time
 							$source = $subtitle->source;
 							$auto   = $subtitle->autoplay;
-							
+
 							//if were playing local files
 							if (substr($subtitle->source, 0, 4) != 'http')
 							{
@@ -264,7 +264,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 						<div
 							data-autoplay="<?php echo $auto; ?>"
 							data-type="subtitle"
-							data-lang="<?php echo $subtitle->name; ?>" 
+							data-lang="<?php echo $subtitle->name; ?>"
 							data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -281,7 +281,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		<div id="transcripts"></div>
 	</div>
 <?php elseif($type == 'hubpresenter') : ?>
-	<div id="presenter-shortcuts-box"> 
+	<div id="presenter-shortcuts-box">
 		<h2>Keyboard Shortcuts</h2>
 		<a href="#" id="shortcuts-close">Close</a>
 		<ul id="shortcuts-content">
@@ -309,11 +309,11 @@ if ($type == 'hubpresenter' || $type == 'html5')
 								<?php if ($slide->type == 'Image') : ?>
 									<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 								<?php else : ?>
-									<video class="slidevideo">  
+									<video class="slidevideo">
 										<?php foreach ($slide->media as $source): ?>
-											<source src="<?php echo $content_folder . DS . $source->source; ?>" /> 
+											<source src="<?php echo $content_folder . DS . $source->source; ?>" />
 										<?php endforeach; ?>
-										<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
+										<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 									</video>
 									<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
 								<?php endif; ?>
@@ -398,7 +398,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									?>
 									<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
 									<span>
-										<?php 
+										<?php
 											$num++;
 											$max = 30;
 											$elipsis = "&hellip;";
@@ -414,7 +414,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									<div class="list-progress">00:00/00:00</div>
 								</li>
 							<?php endif; ?>
-							<?php 
+							<?php
 								$last_slide_id = $slide->slide;
 								$counter++;
 							?>

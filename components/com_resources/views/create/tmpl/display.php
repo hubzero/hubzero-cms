@@ -36,8 +36,8 @@ $juser = JFactory::getUser();
 
 $submissions = null;
 if (!$juser->get('guest')) {
-	$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, 
-						AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone, 
+	$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype,
+						AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone,
 						R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 	$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
 	$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
@@ -181,7 +181,7 @@ if ($categories) {
 
 		foreach ($categories as $category)
 		{
-			if ($category->contributable != 1) 
+			if ($category->contributable != 1)
 			{
 				continue;
 			}

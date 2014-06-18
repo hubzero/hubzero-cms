@@ -132,12 +132,12 @@ $this->css('create.css');
 			<div class="container-block">
 				<h3>Frequently Asked Questions</h3>
 				<div class="entry-content">
-					<ul class="faq-list"> 
-						<li><a href="#submission">What happens now?</a></li> 
+					<ul class="faq-list">
+						<li><a href="#submission">What happens now?</a></li>
 					<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
-						<li><a href="#status">How will I know when my contribution is accepted?</a></li> 
+						<li><a href="#status">How will I know when my contribution is accepted?</a></li>
 					<?php } ?>
-						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li> 
+						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li>
 					</ul>
 				</div>
 			<?php if ($this->config->get('autoapprove', 0) != 1) { ?>

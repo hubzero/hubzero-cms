@@ -34,7 +34,7 @@ $text = ($this->row->parent ? JText::_('COM_FORUM_THREADS') : JText::_('COM_FORU
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . $text, 'forum.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::spacer();
@@ -46,13 +46,13 @@ JToolBarHelper::help('post');
 $post = new ForumModelPost($this->row);
 
 $create_date = NULL;
-if (intval( $this->row->created ) <> 0) 
+if (intval( $this->row->created ) <> 0)
 {
 	$create_date = JHTML::_('date', $this->row->created);
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -164,9 +164,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_CREATOR'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->created_by);
-						echo $this->escape($editor->get('name')); 
+						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->created_by; ?>" />
 					</td>
@@ -182,9 +182,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_FORUM_FIELD_MODIFIER'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$modifier = JUser::getInstance($this->row->modified_by);
-						echo $this->escape($modifier->get('name')); 
+						echo $this->escape($modifier->get('name'));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->modified_by; ?>" />
 					</td>

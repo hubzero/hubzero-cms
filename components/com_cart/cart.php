@@ -55,11 +55,11 @@ $controllerName = JRequest::getCmd('controller', '');
 if (empty($controllerName))
 {
 	// Load default controller if no controller provided
-	$controllerName = 'cart';	
+	$controllerName = 'cart';
 }
 elseif (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	JError::raiseError(404, JText::_('Page Not Found'));	
+	JError::raiseError(404, JText::_('Page Not Found'));
 }
 
 require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');

@@ -11,7 +11,7 @@ namespace Plugins\Content\Mollom\Service\Mollom\Exception;
  *
  * @see Mollom::handleRequest()
  */
-class MollomResponseException extends MollomException 
+class MollomResponseException extends MollomException
 {
 	/**
 	 * Overrides MollomException::$severity.

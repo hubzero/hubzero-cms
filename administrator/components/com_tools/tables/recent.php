@@ -32,35 +32,35 @@ class ToolRecent extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid     = NULL;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tool    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var stirng
 	 */
 	var $created = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -71,17 +71,17 @@ class ToolRecent extends JTable
 
 	/**
 	 * Get a list of recently used tools
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     array
 	 */
 	public function getRecords($uid=null)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			$uid = $this->uid;
 		}
-		if ($uid === null) 
+		if ($uid === null)
 		{
 			return false;
 		}

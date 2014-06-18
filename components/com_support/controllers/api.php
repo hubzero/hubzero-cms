@@ -27,7 +27,7 @@
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * /administrator/components/com_support/controllers/tickets.php
- * 
+ *
  */
 
 JLoader::import('Hubzero.Api.Controller');
@@ -55,7 +55,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$this->acl = SupportACL::getACL();
 		$this->acl->setUser(JFactory::getApplication()->getAuthn('user_id'));
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'ticket':  $this->ticket();  break;
 			case 'tickets': $this->tickets(); break;
@@ -110,19 +110,19 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 
 		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
-		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month)) 
+		if ($month <= "9"&preg_match("#(^[1-9]{1})#",$month))
 		{
 			$month = "0$month";
 		}
 		$day   = strftime("%d", time()+($this->offset*60*60));
-		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day)) 
+		if ($day <= "9"&preg_match("#(^[1-9]{1})#",$day))
 		{
 			$day = "0$day";
 		}
 
 		/*$startday = 0;
 		$numday = ((date("w",mktime(0,0,0,$month,$day,$year))-$startday)%7);
-		if ($numday == -1) 
+		if ($numday == -1)
 		{
 			$numday = 6;
 		}
@@ -141,15 +141,15 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$st = new SupportTicket($this->database);
 
 
-		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner 
+		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM #__support_tickets
-				WHERE report!='' 
+				WHERE report!=''
 				AND type=" . $type . " AND open=1";
-		if (!$group) 
+		if (!$group)
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
-		} 
-		else 
+		}
+		else
 		{
 			$sql .= " AND `group`='{$group}'";
 		}
@@ -287,21 +287,21 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		/*if ($filters['closed'])
 		{
 			$sql = "SELECT c.ticket, c.created
-					FROM #__support_comments AS c 
+					FROM #__support_comments AS c
 					LEFT JOIN #__support_tickets AS t ON c.ticket=t.id";
 
 			$where = array();
 			$where[] = "t.report != ''";
 			$where[] = $filters['type'];
-			if ($filters['group'] && $filters['group'] == '_none_') 
+			if ($filters['group'] && $filters['group'] == '_none_')
 			{
 				$where[] = "(t.`group`='' OR t.`group` IS NULL)";
-			} 
+			}
 			else if ($filters['group'])
 			{
 				$where[] = "t.`group`=" . $this->database->Quote($filters['group']);
 			}
-			if (is_array($filters['opened'])) 
+			if (is_array($filters['opened']))
 			{
 				$where[] = "c.`created` >= " . $this->_db->Quote($filters['closed'][0]);
 				$where[] = "c.`created` <= " . $this->_db->Quote($filters['closed'][1]);
@@ -416,7 +416,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 
 		// Cut suggestion at 70 characters
 		$ticket->summary   = substr($ticket->report, 0, 70);
-		if (strlen($ticket->summary) >= 70) 
+		if (strlen($ticket->summary) >= 70)
 		{
 			$ticket->summary .= '...';
 		}
@@ -437,14 +437,14 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$ticket->hostname  = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
 		// Check the data
-		if (!$ticket->check()) 
+		if (!$ticket->check())
 		{
 			$this->errorMessage(500, $ticket->getErrors());
 			return;
 		}
 
 		// Save the data
-		if (!$ticket->store()) 
+		if (!$ticket->store())
 		{
 			$this->errorMessage(500, $ticket->getErrors());
 			return;

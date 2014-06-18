@@ -38,7 +38,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of blog entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -49,8 +49,8 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 		$this->view->filters = array();
 		$this->view->filters['entry_id']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.entry_id', 
-			'entry_id', 
+			$this->_option . '.' . $this->_controller . '.entry_id',
+			'entry_id',
 			0,
 			'int'
 		));
@@ -61,27 +61,27 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		)));
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'created'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$jconfig->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$jconfig->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -123,13 +123,13 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -143,7 +143,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Recursive function to build tree
-	 * 
+	 *
 	 * @param      integer $id       Parent ID
 	 * @param      string  $indent   Indent text
 	 * @param      array   $list     List of records
@@ -161,22 +161,22 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 			{
 				$id = $v->get('id');
 
-				if ($type) 
+				if ($type)
 				{
 					$pre    = '<span class="treenode">&#8970;</span>&nbsp;';
 					$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-				} 
-				else 
+				}
+				else
 				{
 					$pre    = '- ';
 					$spacer = '&nbsp;&nbsp;';
 				}
 
-				if ($v->get('parent') == 0) 
+				if ($v->get('parent') == 0)
 				{
 					$txt = '';
-				} 
-				else 
+				}
+				else
 				{
 					$txt = $pre;
 				}
@@ -193,7 +193,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -203,7 +203,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for editing an entry
-	 * 
+	 *
 	 * @param      object $row BlogTableComment
 	 * @return     void
 	 */
@@ -217,11 +217,11 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array(0));
-			if (is_array($ids) && !empty($ids)) 
+			if (is_array($ids) && !empty($ids))
 			{
 				$id = $ids[0];
 			}
@@ -238,7 +238,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -252,7 +252,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to an entry and go back to edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -262,7 +262,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to an entry
-	 * 
+	 *
 	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
 	 * @return     void
 	 */
@@ -276,7 +276,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new BlogModelComment($fields['id']);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -284,7 +284,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -306,7 +306,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -317,7 +317,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			// Loop through all the IDs
 			foreach ($ids as $id)
@@ -340,7 +340,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancels a task and redirects to listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()

@@ -55,7 +55,7 @@ $this->css();
 	 		<p class="warning"><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
 
 			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" value="1" />
 				<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
@@ -70,7 +70,7 @@ $this->css();
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
 		<?php echo JHTML::_('form.token'); ?>
-		
+
 		<p class="submit">
 			<input type="submit" class="btn btn-danger" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 

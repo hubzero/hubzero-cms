@@ -105,7 +105,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
-			
+
 			<ul class="user-options">
 					<?php
 						//Display an harcoded logout
@@ -132,10 +132,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						endforeach;
 					?>
   			</ul>
-			
+
 			<div class="clr"></div>
 		</header><!-- / header -->
-		
+
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
@@ -143,13 +143,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<div class="clr"><!-- We need this for the drop downs --></div>
 				</div>
 			</nav><!-- / .navigation -->
-			
+
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<jdoc:include type="modules" name="title" />
 					<jdoc:include type="modules" name="toolbar" />
 				</div><!-- / #toolbar-box -->
-				
+
 				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
 					<!-- Notifications begins -->
 					<jdoc:include type="message" />
@@ -171,7 +171,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			</section><!-- / #content -->
 			<div class="clr"></div>
 		</div><!-- / #wrap -->
-		
+
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">

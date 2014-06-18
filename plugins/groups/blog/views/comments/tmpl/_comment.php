@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 
-	if (!$this->comment->get('anonymous')) 
+	if (!$this->comment->get('anonymous'))
 	{
 		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($this->comment->creator('name'))) . '</a>';
 	}
@@ -28,11 +28,11 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
-				<strong><?php echo $name; ?></strong> 
+				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
-					<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span> 
-					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-					<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span> 
+					<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span>
+					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+					<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 				</a>
 			</p>
@@ -42,30 +42,30 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?>" href="<?php echo JRoute::_($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?>" href="<?php echo JRoute::_($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_GROUPS_BLOG_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_GROUPS_BLOG_REPORT_ABUSE'); ?><!-- 
+				<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blog&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_GROUPS_BLOG_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 			</p>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SUBMIT'); ?>" /> 
+							<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>
@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
-		if ($this->depth < $this->config->get('comments_depth', 3)) 
+		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
 			$this->view('_list', 'comments')
 			     ->set('group', $this->group)

@@ -37,35 +37,35 @@ Class InviteEmail extends \JTable
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id = NULL;
 
 	/**
 	 * Description for 'email'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $email = NULL;
 
 	/**
 	 * Description for 'gidNumber'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * Description for 'token'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $token = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -76,7 +76,7 @@ Class InviteEmail extends \JTable
 
 	/**
 	 * Get a list of email invites for a group
-	 * 
+	 *
 	 * @param   integer $gid        Group ID
 	 * @param   boolean $email_only Resturn only email addresses?
 	 * @return  array
@@ -90,14 +90,14 @@ Class InviteEmail extends \JTable
 		$db->setQuery($sql);
 		$invitees = $db->loadAssocList();
 
-		if ($email_only) 
+		if ($email_only)
 		{
-			foreach ($invitees as $invitee) 
+			foreach ($invitees as $invitee)
 			{
 				$final[] = $invitee['email'];
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$final = $invitees;
 		}
@@ -107,7 +107,7 @@ Class InviteEmail extends \JTable
 
 	/**
 	 * Add a list of emails to a group as invitees
-	 * 
+	 *
 	 * @param   integer $gid    Group ID
 	 * @param   array   $emails Array of email addresses
 	 * @return  array
@@ -115,7 +115,7 @@ Class InviteEmail extends \JTable
 	public function addInvites($gid, $emails)
 	{
 		$exists = array();
-		$added  = array(); 
+		$added  = array();
 
 		$current = $this->getInviteEmails($gid, true);
 
@@ -151,7 +151,7 @@ Class InviteEmail extends \JTable
 
 	/**
 	 * Remove Invite Emails
-	 * 
+	 *
 	 * @param   integer $gid    Group ID
 	 * @param   array   $emails Array of email addresses
 	 * @return  void

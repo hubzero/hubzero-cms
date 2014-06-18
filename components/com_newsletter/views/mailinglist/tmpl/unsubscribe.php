@@ -61,14 +61,14 @@ $this->css()
 			<fieldset>
 				<legend>Unsubscribe From Mailing List</legend>
 				<p>Are you sure you want to unsubscribe from the following mailing list:</p>
-				
+
 				<p>
 					<strong><?php echo $this->mailinglist->name; ?></strong><br />
 					<span><?php echo $this->mailinglist->description; ?></span>
 					<input type="hidden" name="t" value="<?php echo JRequest::getVar('t', '') ?>" />
 					<input type="hidden" name="e" value="<?php echo JRequest::getVar('e', ''); ?>" />
 				</p>
-				
+
 				<?php if ($this->mailinglist->id == '-1' && $this->juser->get('guest') == 1) : ?>
 					<ol>
 						<li>
@@ -90,7 +90,7 @@ $this->css()
 							<option value="Other">Other</option>
 						</select>
 					</label>
-				
+
 					<label>
 						<textarea rows="4" name="reason-alt" id="reason-alt" placeholder="Enter other reason here..."></textarea>
 					</label>

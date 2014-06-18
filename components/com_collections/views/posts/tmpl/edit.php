@@ -35,7 +35,7 @@ if (!$this->no_html)
 {
 	$this->css()
 	     ->js();
-	if (JPluginHelper::isEnabled('system', 'jquery')) 
+	if (JPluginHelper::isEnabled('system', 'jquery'))
 	{
 		$this->js('jquery.fileuploader.js', 'system')
 		     ->js('fileupload.js');
@@ -175,9 +175,9 @@ if (!$dir)
 
 	<?php if ($this->entry->get('original')) { ?>
 					<div class="field-wrap" id="ajax-uploader-list">
-				<?php 
+				<?php
 					$assets = $item->assets();
-					if ($assets->total() > 0) 
+					if ($assets->total() > 0)
 					{
 						$i = 0;
 						foreach ($assets as $asset)
@@ -202,7 +202,7 @@ if (!$dir)
 								</a>
 							</span>
 						</p>
-				<?php 
+				<?php
 							$i++;
 						}
 					}
@@ -256,7 +256,7 @@ if (!$dir)
 				<div class="col span6 omega">
 				<label>
 					<?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS'); ?>
-					<?php 
+					<?php
 					if (count($tf) > 0) {
 						echo $tf[0];
 					} else { ?>

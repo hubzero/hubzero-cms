@@ -39,7 +39,7 @@ $text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
 // create toolbar
 $canDo = GroupsHelper::getActions('group');
 JToolBarHelper::title(JText::_('COM_GROUPS').': ' . $text, 'groups.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -126,7 +126,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 						0 => JText::_('Unpublished'),
 						2 => JText::_('Trashed')
 					);
-					
+
 					foreach ($states as $k => $v)
 					{
 						$sel = ($this->page->get('state') == $k) ? 'selected="selected"' : '';
@@ -163,7 +163,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 			</div>
 		</fieldset>
 	</div>
-	
+
 	<div class="col width-50 fltrt">
 		<?php if ($this->page->get('id')) : ?>
 			<table class="meta">
@@ -206,10 +206,10 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 							?>
 						</td>
 					</tr>
-				
+
 				</tbody>
 			</table>
-			
+
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('Page Versions'); ?></span></legend>
 

@@ -38,56 +38,56 @@ class KbTableCategory extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id           = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title        = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description  = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section      = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state        = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access       = NULL;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias        = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,13 +98,13 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title       = trim($this->title);
-		if ($this->title == '') 
+		if ($this->title == '')
 		{
 			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 			return false;
@@ -172,7 +172,7 @@ class KbTableCategory extends JTable
 		$assetId = null;
 		$db		= $this->getDbo();
 
-		if ($assetId === null) 
+		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
@@ -182,18 +182,18 @@ class KbTableCategory extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
+			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) 
+		if ($assetId)
 		{
 			return $assetId;
-		} 
-		else 
+		}
+		else
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
@@ -201,13 +201,13 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Alias
 	 * @return     boolean True upon success, False if errors
 	 */
 	public function load($oid=NULL, $reset = true)
 	{
-		if (empty($oid)) 
+		if (empty($oid))
 		{
 			return false;
 		}
@@ -218,11 +218,11 @@ class KbTableCategory extends JTable
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -231,7 +231,7 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Alias
 	 * @return     boolean True upon success, False if errors
 	 */
@@ -242,7 +242,7 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -259,26 +259,26 @@ class KbTableCategory extends JTable
 		}
 
 		$where = array();
-		
-		if (isset($filters['section']) && $filters['section'] >= 0) 
+
+		if (isset($filters['section']) && $filters['section'] >= 0)
 		{
 			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0) 
+		if (isset($filters['access']) && $filters['access'] >= 0)
 		{
 			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`description` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
 		}
 		if (isset($filters['empty']) && !$filters['empty'])
 		{
-			if (isset($filters['section']) && $filters['section'] > 0) 
+			if (isset($filters['section']) && $filters['section'] > 0)
 			{
 				$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id) > 0";
 			}
@@ -293,7 +293,7 @@ class KbTableCategory extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (isset($filters['sort']) && $filters['sort']) 
+		if (isset($filters['sort']) && $filters['sort'])
 		{
 			if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
 			{
@@ -314,7 +314,7 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -331,7 +331,7 @@ class KbTableCategory extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -339,33 +339,33 @@ class KbTableCategory extends JTable
 	{
 		// Make sure article count takes access and state into consideration
 		$access = '';
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0) 
+		if (isset($filters['access']) && $filters['access'] >= 0)
 		{
 			$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
 		}
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$query  = "SELECT a.*, g.`name` AS groupname, 
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles, 
+			$query  = "SELECT a.*, g.`name` AS groupname,
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
 					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 		}
 		else
 		{
-			if (isset($filters['section']) && $filters['section'] > 0) 
+			if (isset($filters['section']) && $filters['section'] > 0)
 			{
-				$query  = "SELECT a.*, g.`title` AS groupname, 
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles, 
+				$query  = "SELECT a.*, g.`title` AS groupname,
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles,
 					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 			}
 			else
 			{
-				$query  = "SELECT a.*, g.`title` AS groupname, 
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles, 
+				$query  = "SELECT a.*, g.`title` AS groupname,
+					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
 					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 			}
 		}

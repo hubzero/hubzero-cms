@@ -49,12 +49,12 @@ $this->css();
 			<tbody>
 <?php
 	if ($this->wishlist->items) {
-		foreach ($this->wishlist->items as $item) 
-		{ 
+		foreach ($this->wishlist->items as $item)
+		{
 			$item->subject = $this->escape(stripslashes($item->subject));
 
 			$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
-			
+
 			if ($item->reports) {
 				$status = 'outstanding';
 			} else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3))  {
@@ -62,10 +62,10 @@ $this->css();
 			} else {
 				$status = 'outstanding';
 			}
-			
+
 			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
 			$state .= ($item->private) ? ' private' : '' ;
-			switch ($item->status) 
+			switch ($item->status)
 			{
 				case 3:
 					$state .= ' rejected';
@@ -85,7 +85,7 @@ $this->css();
 					}
 				break;
 			}
-			
+
 			$name = JText::_('COM_WISHLIST_ANONYMOUS');
 			if (!$item->anonymous) {
 				$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->authorname) . '</a>';
@@ -99,8 +99,8 @@ $this->css();
 					<?php if (!$item->reports) { ?>
 						<a class="entry-title" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 						<span class="entry-details">
-							<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @ 
-							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('COM_WISHLIST_on'); ?> 
+							<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> @
+							<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <?php echo JText::_('COM_WISHLIST_on'); ?>
 							<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<span class="entry-details-divider">&bull;</span>
 							<span class="entry-comments"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&com=1&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo JText::_('COM_WISHLIST_COMMENTS'); ?>"><?php echo $item->numreplies; ?></a></span>
@@ -141,14 +141,14 @@ $this->css();
 					?>
 					</td>
 					<td class="ranking">
-					<?php /*if ($this->admin 
-						|| $item->status == 1 
-						|| ($item->status == 0 && $item->accepted == 1) 
-						|| $item->status == 3 
+					<?php /*if ($this->admin
+						|| $item->status == 1
+						|| ($item->status == 0 && $item->accepted == 1)
+						|| $item->status == 3
 						|| $item->status == 4
 					) { */
 						$html = '';
-						switch ($item->status) 
+						switch ($item->status)
 						{
 							case 0:
 								if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {

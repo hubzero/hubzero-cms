@@ -39,7 +39,7 @@ class FileIndex extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -52,7 +52,7 @@ class FileIndex extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -61,13 +61,13 @@ class FileIndex extends Macro
 		$live_site = rtrim(\JURI::base(), '/');
 
 		// What pages are we getting?
-		if ($et) 
+		if ($et)
 		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
 			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE '" . $this->_db->getEscaped(strtolower($et)) . "%' AND pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
-		} 
-		else 
+		}
+		else
 		{
 			// Get all pages
 			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
@@ -78,10 +78,10 @@ class FileIndex extends Macro
 		$rows = $this->_db->loadObjectList();
 
 		// Did we get a result from the database?
-		if ($rows) 
+		if ($rows)
 		{
 			$config = JComponentHelper::getParams('com_wiki');
-			if ($this->filepath != '') 
+			if ($this->filepath != '')
 			{
 				$config->set('filepath', $this->filepath);
 			}
@@ -112,8 +112,8 @@ class FileIndex extends Macro
 			$html .= '</ul>';
 
 			return $html;
-		} 
-		else 
+		}
+		else
 		{
 			// Return error message
 			//return '(TitleIndex('.$et.') failed)';

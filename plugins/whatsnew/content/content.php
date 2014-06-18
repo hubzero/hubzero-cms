@@ -45,7 +45,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onWhatsnewAreas()
@@ -57,7 +57,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
-	 * 
+	 *
 	 * @param      object  $period     Time period to pull results for
 	 * @param      mixed   $limit      Number of records to pull
 	 * @param      integer $limitstart Start of records to pull
@@ -67,17 +67,17 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			if (!isset($areas[$this->_name])
-			 && !in_array($this->_name, $areas)) 
+			 && !in_array($this->_name, $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a search term?
-		if (!is_object($period)) 
+		if (!is_object($period))
 		{
 			return array();
 		}
@@ -100,13 +100,13 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY publish_up DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if ($limit) 
+		if ($limit)
 		{
 			// Get results
 			$database->setQuery($c_fields . $c_from . " WHERE " . $c_where . $order_by);
 			$rows = $database->loadObjectList();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $key => $row)
 				{
@@ -114,45 +114,45 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 					{
 						$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
 						$menuitem = $database->loadRow();
-						if ($menuitem[1]) 
+						if ($menuitem[1])
 						{
 							$p = $this->_recursiveMenuLookup($menuitem[1]);
 							$path = implode(DS, $p);
-							if ($menuitem[0]) 
+							if ($menuitem[0])
 							{
 								$path .= DS . $menuitem[0];
-							} 
-							else if ($row->alias) 
+							}
+							else if ($row->alias)
 							{
 								$path .= DS . $row->alias;
 							}
-						} 
-						else if ($menuitem[0]) 
+						}
+						else if ($menuitem[0])
 						{
 							$path = DS . $menuitem[0];
-						} 
-						else 
+						}
+						else
 						{
 							$path = '';
-							if ($row->fsection) 
+							if ($row->fsection)
 							{
 								$path .= DS . $row->fsection;
 							}
-							if ($row->category && $row->category != $row->fsection) 
+							if ($row->category && $row->category != $row->fsection)
 							{
 								$path .= DS . $row->category;
 							}
-							if ($row->alias) 
+							if ($row->alias)
 							{
 								$path .= DS . $row->alias;
 							}
-							if (!$path) 
+							if (!$path)
 							{
 								$path = '/content/article/' . $row->id;
 							}
 						}
 					}
-					else 
+					else
 					{
 						$path = JRoute::_($row->href);
 					}
@@ -162,8 +162,8 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			}
 
 			return $rows;
-		} 
-		else 
+		}
+		else
 		{
 			// Get a count
 			$database->setQuery($c_count . $c_from . " WHERE " . $c_where);
@@ -173,7 +173,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Find the menu item alias for a page
-	 * 
+	 *
 	 * @param      integer $id       Menu item ID
 	 * @param      boolean $startnew Reset the array?
 	 * @return     array
@@ -182,7 +182,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 	{
 		static $aliases = array();
 
-		if ($startnew) 
+		if ($startnew)
 		{
 			unset($aliases);
 		}
@@ -192,7 +192,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 		$level = $database->loadRow();
 
 		$aliases[] = $level[0];
-		if ($level[1]) 
+		if ($level[1])
 		{
 			$a = $this->_recursiveMenuLookup($level[1], false);
 		}

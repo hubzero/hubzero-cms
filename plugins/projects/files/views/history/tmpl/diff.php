@@ -30,16 +30,16 @@ $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
 $url = '';
 $parent = '';
-if ($this->subdir && count($desect_path) > 0) 
+if ($this->subdir && count($desect_path) > 0)
 {
-	for ($p = 0; $p < count($desect_path); $p++) 
+	for ($p = 0; $p < count($desect_path); $p++)
 	{
 		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url 	.= DS . $desect_path[$p];
 		$path_bc .= ' &raquo; <span><a href="' . $this->url . '/?subdir='.urlencode($url)
 			.'" class="folder">'.$desect_path[$p].'</a></span> ';
 	}
-} 
+}
 
 $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
 
@@ -50,7 +50,7 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $t
 <h3><?php echo JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF'); ?></h3>
 <?php
 // Display error
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
@@ -65,20 +65,20 @@ if ($this->getError()) {
 			</h3>
 		</div>
 	<?php } ?>
-	<?php if ($this->tool && $this->tool->name && !$this->ajax) 
-	{ 
+	<?php if ($this->tool && $this->tool->name && !$this->ajax)
+	{
 		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
 	} ?>
 	<fieldset class="diff-form">
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
 		<input type="hidden" name="<?php echo $this->do ?>" value="diff" />
-		
+
 		<?php if (!$this->getError()) { ?>
 		<input type="hidden" name="old" value="<?php echo $this->old['val']; ?>" />
 		<input type="hidden" name="new" value="<?php echo $this->new['val']; ?>" />
 		<?php } ?>
-		
+
 		<?php if (!$this->getError()) { ?>
 		<div class="diff-legend">
 			<span class="prominent"><?php echo JText::_('COM_PROJECTS_FILES_DIFF'); ?>:</span>
@@ -109,7 +109,7 @@ if ($this->getError()) {
 					     ->display();
 				?>
 			</ul>
-						
+
 			<?php if ($this->mode == 'side-by-side' && !$this->getError()) { ?>
 			<table id="table-diff" class="diff diffSideBySide">
 			 <thead>
@@ -118,7 +118,7 @@ if ($this->getError()) {
 					<th colspan="2"><?php echo JText::_('COM_PROJECTS_FILES_REV') . ' @' . $this->new['rev'] . ' (' . $this->new['hash'] . ')'; ?></th>
 				</tr>
 			 </thead>
-			
+
 			<?php if ($this->diff) { echo $this->diff; } else {  ?>
 				<tr>
 					<td colspan="4"><?php echo JText::_('COM_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
@@ -126,7 +126,7 @@ if ($this->getError()) {
 			<?php } ?>
 			</table>
 			<?php } ?>
-			
+
 			<?php if ($this->mode == 'inline' && !$this->getError()) { ?>
 			<table id="table-diff" class="diff diffInline">
 			 <thead>
@@ -136,7 +136,7 @@ if ($this->getError()) {
 					<th><?php echo JText::_('COM_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
 				</tr>
 			 </thead>
-			
+
 			<?php if ($this->diff) { echo $this->diff; } else {  ?>
 				<tr>
 					<td colspan="4"><?php echo JText::_('COM_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
@@ -144,8 +144,8 @@ if ($this->getError()) {
 			<?php } ?>
 			</table>
 			<?php } ?>
-			
-			<?php if ($this->mode == 'git' && !$this->getError()) { 
+
+			<?php if ($this->mode == 'git' && !$this->getError()) {
 					$file = $this->old['fpath'] == $this->new['fpath'] ? $this->new['fpath'] : '';
 				?>
 				<div class="diffGit">
@@ -156,8 +156,8 @@ if ($this->getError()) {
 				<?php } ?>
 				</div>
 			<?php } ?>
-			
-			<?php if ($this->getError()) { 
+
+			<?php if ($this->getError()) {
 				echo ('<p class="witherror">'.$this->getError().'</p>');
 			} ?>
 		</fieldset>

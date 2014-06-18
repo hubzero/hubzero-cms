@@ -34,11 +34,11 @@ $document = JFactory::getDocument();
 
 $authIDs = array();
 ?>
-<label for="authid"><?php echo JText::_('User ID, name, or username:'); ?></label> 
+<label for="authid"><?php echo JText::_('User ID, name, or username:'); ?></label>
 <input type="text" name="authid" id="authid" value="" />
 <select name="authrole" id="authrole">
 	<option value=""><?php echo JText::_('Author'); ?></option>
-<?php 
+<?php
 if ($this->roles)
 {
 	foreach ($this->roles as $role)
@@ -53,19 +53,19 @@ if ($this->roles)
 <input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="<?php echo JText::_('Add'); ?>" />
 
 <ul id="author-list">
-<?php 
-if ($this->authnames != NULL) 
+<?php
+if ($this->authnames != NULL)
 {
 	foreach ($this->authnames as $authname)
 	{
-		if ($authname->name) 
+		if ($authname->name)
 		{
 			$name = $authname->name;
-		} 
-		else 
+		}
+		else
 		{
 			$name = $authname->givenName . ' ';
-			if ($authname->middleName != null) 
+			if ($authname->middleName != null)
 			{
 				$name .= $authname->middleName . ' ';
 			}
@@ -77,14 +77,14 @@ if ($this->authnames != NULL)
 		$org = ($authname->organization) ? $this->escape($authname->organization) : $this->attribs->get($authname->authorid, '');
 ?>
 	<li id="author_<?php echo $authname->authorid; ?>">
-		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span> 
+		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span>
 		<a class="state trash" data-parent="author_<?php echo $authname->authorid; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $authname->authorid; ?>');return false;"><span><?php echo JText::_('remove'); ?></span></a>
 		<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>)
 		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $org; ?>" />
-		
+
 		<select name="<?php echo $authname->id; ?>_role">
 			<option value=""<?php if ($authname->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-<?php 
+<?php
 	if ($this->roles)
 	{
 		foreach ($this->roles as $role)

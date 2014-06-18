@@ -40,7 +40,7 @@ $goto  = 'alias=' . $this->project->alias;
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<?php if($this->onlymanager) { ?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=edit').'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_TEAM'); ?></a>.</p>
-		<?php } else if($this->group) { 
+		<?php } else if($this->group) {
 		$group = \Hubzero\User\Group::getInstance( $this->group );
 		?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>

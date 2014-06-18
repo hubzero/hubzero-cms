@@ -55,10 +55,10 @@ $this->css();
 				<h3 data-views="common-views"><span><?php echo JText::_('COM_SUPPORT_QUERIES_COMMON'); ?></span></h3>
 				<ul id="common-views" class="views">
 			<?php if (count($this->queries['common']) > 0) { ?>
-				<?php 
+				<?php
 				$i = 0;
-				foreach ($this->queries['common'] as $query) 
-				{ 
+				foreach ($this->queries['common'] as $query)
+				{
 					?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
@@ -77,9 +77,9 @@ $this->css();
 					<?php } else if ($i > 2) { ?>
 					</li>
 					<?php } ?>
-					<?php 
+					<?php
 					$i++;
-				} 
+				}
 				?>
 			<?php } else { ?>
 					<li>
@@ -141,7 +141,7 @@ $this->css();
 						<tr>
 							<td colspan="2">
 								<fieldset id="filter-bar">
-									<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label> 
+									<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label>
 									<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
 
 									<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
@@ -270,7 +270,7 @@ $this->css();
 				$row->severity = ($row->severity) ? $row->severity : 'normal';
 
 				$row->summary = substr($row->report, 0, 200);
-				if (strlen($row->summary) >= 200) 
+				if (strlen($row->summary) >= 200)
 				{
 					$row->summary .= '...';
 				}
@@ -325,7 +325,7 @@ $this->css();
 										<?php echo $this->escape(stripslashes($row->group)); ?>
 									</span>
 								<?php } ?>
-								<?php if ($row->owner) { 
+								<?php if ($row->owner) {
 									$owner = \Hubzero\User\Profile::getInstance($row->owner);
 								?>
 									<span class="ticket-owner hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $owner->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($owner->get('username'))); ?><br /><?php echo ($owner->get('organization')) ? $this->escape(stripslashes($owner->get('organization'))) : JText::_('COM_SUPPORT_USER_ORG_UNKNOWN'); ?>">
@@ -385,7 +385,7 @@ $this->css();
 			$.get(href, {}, function(response){
 				$('#custom-views').html(response);
 			});
-			
+
 			return false;
 		});
 		$('.fltlft h3').on('click', function (e){

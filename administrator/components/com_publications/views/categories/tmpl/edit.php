@@ -53,7 +53,7 @@ JHTML::_('behavior.framework', true);
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform( pressbutton );
 	return;
@@ -114,10 +114,10 @@ function submitbutton(pressbutton)
 				<legend><?php echo JText::_('Status'); ?></legend>
 
 				<div class="input-wrap">
-					<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-state1"><?php echo JText::_('Active'); ?></label>
 					<br />
-					<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-state0"><?php echo JText::_('Inactive'); ?></label>
 				</div>
 			</fieldset>
@@ -126,10 +126,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Offer category as a catalogue choice for new publications?'); ?>">
 					<span class="hint"><?php echo JText::_('Offer category as a catalogue choice for new publications?'); ?></span>
 
-					<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-contributable1"><?php echo JText::_('Yes'); ?></label>
 					<br />
-					<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-contributable0"><?php echo JText::_('No'); ?></label>
 				</div>
 			</fieldset>
@@ -145,10 +145,10 @@ function submitbutton(pressbutton)
 				<fieldset>
 					<legend><?php echo $mt; ?></legend>
 					<div class="input-wrap">
-						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> /> 
+						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> />
 						<label for="field-type_<?php echo $mt; ?>1"><?php echo 'include as choice'; ?></label>
 						<br />
-						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> /> 
+						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> />
 						<label for="field-type_<?php echo $mt; ?>0"><?php echo 'not applicable'; ?></label>
 					</div>
 				</fieldset>
@@ -167,7 +167,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
+				<?php
 				$database = JFactory::getDBO();
 				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='publications'" );
 
@@ -227,7 +227,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</tfoot>
 				<tbody id="field-items">
-				<?php 
+				<?php
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 				$elements = new PublicationsElements('', $this->row->customFields);
 				$schema = $elements->getSchema();
@@ -302,8 +302,8 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 
-			<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script> 
-			<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script> 
+			<!-- <script type="text/javascript" src="/media/system/js/jquery.js"></script>
+			<script type="text/javascript" src="/media/system/js/jquery.noconflict.js"></script>
 			<script type="text/javascript" src="/media/system/js/jquery.ui.js"></script>  -->
 			<script type="text/javascript">
 				if (!jq) {
@@ -328,10 +328,10 @@ function submitbutton(pressbutton)
 							replaceme = null;
 
 						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++) 
+						for (var i=0;i<newField.length;i++)
 						{
 							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++) 
+							for (var k=0;k<inputs.length;k++)
 							{
 								var theName = inputs[k].name;
 								if (theName) {
@@ -365,7 +365,7 @@ function submitbutton(pressbutton)
 
 						// Make a clone of the clone. Why? Because IE 8 is dumb.
 						// IE still retains a reference to the original object for change events
-						// So, when calling onChange, the event gets fired for the clone AND the 
+						// So, when calling onChange, the event gets fired for the clone AND the
 						// original. Cloning the clone seems to fix this.
 						if (replaceme) {
 							var replace = jq(replaceme);
@@ -386,10 +386,10 @@ function submitbutton(pressbutton)
 						var newNode = tbody.rows[0].cloneNode(true);
 
 						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++) 
+						for (var i=0;i<newField.length;i++)
 						{
 							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++) 
+							for (var k=0;k<inputs.length;k++)
 							{
 								var theName = inputs[k].name;
 								if (theName) {

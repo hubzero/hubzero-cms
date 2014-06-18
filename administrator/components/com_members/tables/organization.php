@@ -55,7 +55,7 @@ class MembersTableOrganization extends JTable
 	public function check()
 	{
 		$this->organization = trim($this->organization);
-		if (!$this->organization) 
+		if (!$this->organization)
 		{
 			$this->setError(JText::_('Organization must contain text'));
 			return false;
@@ -137,7 +137,7 @@ class MembersTableOrganization extends JTable
 				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
 				$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 				}
@@ -150,21 +150,21 @@ class MembersTableOrganization extends JTable
 
 	/**
 	 * Build SQL based on filters passed
-	 * 
+	 *
 	 * @param      array $filters
 	 * @return     string
 	 */
-	private function _buildQuery($filters=array()) 
+	private function _buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl ";
 
 		$where = array();
 
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['id']) && $filters['id']) 
+		if (isset($filters['id']) && $filters['id'])
 		{
 			if (!is_array($filters['id']))
 			{
@@ -174,7 +174,7 @@ class MembersTableOrganization extends JTable
 
 			$where[] = "`id` IN (" . implode(',', $filters['state']) . ")";
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "`organization` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
 		}
@@ -196,9 +196,9 @@ class MembersTableOrganization extends JTable
 	public function getOrgs($filters = array())
 	{
 		$orgs = array();
-		if ($records = $this->find('list', $filters)) 
+		if ($records = $this->find('list', $filters))
 		{
-			foreach ($records as $record) 
+			foreach ($records as $record)
 			{
 				$orgs[] = $record->organization;
 			}

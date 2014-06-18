@@ -40,7 +40,7 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 {
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array(
@@ -49,7 +49,7 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $scope_id Scope ID (group, course, etc.)
 	 * @return     void
 	 */
@@ -68,7 +68,7 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string

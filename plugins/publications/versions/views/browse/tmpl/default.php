@@ -36,11 +36,11 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 // Add stylesheet
 $document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+$document->addStyleSheet('plugins' . DS . 'publications' . DS
 	. 'versions' . DS . 'assets' . DS . 'css' . DS . 'versions.css');
 
 // Build pub url
-$route = $this->publication->project_provisioned == 1 
+$route = $this->publication->project_provisioned == 1
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->publication->project_alias . a . 'active=publications';
 $url = JRoute::_($route . a . 'pid=' . $this->publication->id);
@@ -48,10 +48,10 @@ $url = JRoute::_($route . a . 'pid=' . $this->publication->id);
 ?>
 <h3>
 	<a name="versions"></a>
-	<?php echo JText::_('PLG_PUBLICATION_VERSIONS'); ?> 
+	<?php echo JText::_('PLG_PUBLICATION_VERSIONS'); ?>
 </h3>
 <?php if($this->authorized && $this->contributable) { ?>
-	<p class="info statusmsg"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_ONLY_PUBLIC_SHOWN'); ?> 
+	<p class="info statusmsg"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_ONLY_PUBLIC_SHOWN'); ?>
 		<a href="<?php echo $url . '?action=versions'; ?>"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VIEW_ALL'); ?></a>
 	</p>
 <?php } ?>
@@ -71,7 +71,7 @@ if ($this->versions && count($this->versions) > 0) {
 	</thead>
 	<tbody>
 <?php
-	foreach ($this->versions as $v) 
+	foreach ($this->versions as $v)
 	{
 		$handle = ($v->doi) ? $v->doi : '' ;
 

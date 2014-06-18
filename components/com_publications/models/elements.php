@@ -39,12 +39,12 @@ class PublicationsElements
 	 * @var    string  The raw params string
 	 */
 	protected $_raw = null;
-	
+
 	/**
 	 * @var    object  The XML params element
 	 */
 	protected $_schema = null;
-	
+
 	/**
 	* @var    array  Loaded elements
 	*/
@@ -54,7 +54,7 @@ class PublicationsElements
 	* @var    array  Directories, where element types can be stored
 	*/
 	protected $_elementPath = array();
-	
+
 	/**
 	 * Registry Object
 	 *
@@ -78,16 +78,16 @@ class PublicationsElements
 		$this->data = new stdClass;
 
 		// Optionally load supplied data.
-		if (is_array($data) || is_object($data)) 
+		if (is_array($data) || is_object($data))
 		{
 			$this->bindData($this->data, $data);
 		}
-		elseif (!empty($data) && is_string($data)) 
+		elseif (!empty($data) && is_string($data))
 		{
 			$this->loadString($data);
 		}
-		
-		if ($setup) 
+
+		if ($setup)
 		{
 			$this->loadSetup($setup);
 		}
@@ -136,7 +136,7 @@ class PublicationsElements
 	public function exists($path)
 	{
 		// Explode the registry path into an array
-		if ($nodes = explode('.', $path)) 
+		if ($nodes = explode('.', $path))
 		{
 			// Initialize the current node to be the registry root.
 			$node = $this->data;
@@ -144,16 +144,16 @@ class PublicationsElements
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0,$n = count($nodes); $i < $n; $i++)
 			{
-				if (isset($node->$nodes[$i])) 
+				if (isset($node->$nodes[$i]))
 				{
 					$node = $node->$nodes[$i];
-				} 
-				else 
+				}
+				else
 				{
 					break;
 				}
 
-				if ($i+1 == $n) 
+				if ($i+1 == $n)
 				{
 					return true;
 				}
@@ -175,7 +175,7 @@ class PublicationsElements
 		// Initialise variables.
 		$result = $default;
 
-		if (!strpos($path, '.')) 
+		if (!strpos($path, '.'))
 		{
 			return (isset($this->data->$path) && $this->data->$path !== null && $this->data->$path !== '') ? $this->data->$path : $default;
 		}
@@ -188,18 +188,18 @@ class PublicationsElements
 		// Traverse the registry to find the correct node for the result.
 		foreach ($nodes as $n)
 		{
-			if (isset($node->$n)) 
+			if (isset($node->$n))
 			{
 				$node = $node->$n;
 				$found = true;
-			} 
-			else 
+			}
+			else
 			{
 				$found = false;
 				break;
 			}
 		}
-		if ($found && $node !== null && $node !== '') 
+		if ($found && $node !== null && $node !== '')
 		{
 			$result = $node;
 		}
@@ -221,12 +221,12 @@ class PublicationsElements
 	{
 		static $instances;
 
-		if (!isset ($instances)) 
+		if (!isset ($instances))
 		{
 			$instances = array();
 		}
 
-		if (empty ($instances[$id])) 
+		if (empty ($instances[$id]))
 		{
 			$instances[$id] = new PublicationsElements;
 		}
@@ -305,22 +305,22 @@ class PublicationsElements
 	public function loadSetup($setup, $group = '_default')
 	{
 		$setup = trim($setup);
-		
+
 		$result = false;
 
-		if ($setup) 
+		if ($setup)
 		{
 			// Legacy support
-			if ((substr($setup, 0, 1) != '{') && (substr($setup, -1, 1) != '}')) 
+			if ((substr($setup, 0, 1) != '{') && (substr($setup, -1, 1) != '}'))
 			{
 				$obj = new stdClass();
 				$obj->fields = array();
-				
+
 				$fs = explode("\n", trim($setup));
 				foreach ($fs as $f)
 				{
 					$field = explode('=', $f);
-					
+
 					$element = new stdClass();
 					$element->name = $field[0];
 					$element->label = $field[1];
@@ -329,16 +329,16 @@ class PublicationsElements
 					$element->value = preg_replace('/<br\\s*?\/??>/i', "", end($field));
 					$element->default = '';
 					$element->description = '';
-					
+
 					$obj->fields[] = $element;
 				}
-				
+
 				$this->_schema[$group] = $obj;
 			}
-			else 
+			else
 			{
 				$handler = PublicationsElementsFormat::getInstance('JSON');
-				if ($obj = $handler->stringToObject($setup, array())) 
+				if ($obj = $handler->stringToObject($setup, array()))
 				{
 					$this->_schema[$group] = $obj;
 				}
@@ -358,12 +358,12 @@ class PublicationsElements
 	 */
 	public function merge(&$source)
 	{
-		if ($source instanceof PublicationsElements) 
+		if ($source instanceof PublicationsElements)
 		{
 			// Load the variables into the registry's default namespace.
 			foreach ($source->toArray() as $k => $v)
 			{
-				if (($v !== null) && ($v !== '')) 
+				if (($v !== null) && ($v !== ''))
 				{
 					$this->data->$k = $v;
 				}
@@ -385,7 +385,7 @@ class PublicationsElements
 		$result = null;
 
 		// Explode the registry path into an array
-		if ($nodes = explode('.', $path)) 
+		if ($nodes = explode('.', $path))
 		{
 			// Initialize the current node to be the registry root.
 			$node = $this->data;
@@ -393,7 +393,7 @@ class PublicationsElements
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++)
 			{
-				if (!isset($node->$nodes[$i]) && ($i != $n)) 
+				if (!isset($node->$nodes[$i]) && ($i != $n))
 				{
 					$node->$nodes[$i] = new stdClass;
 				}
@@ -452,23 +452,23 @@ class PublicationsElements
 	protected function bindData(&$parent, $data)
 	{
 		// Ensure the input data is an array.
-		if (is_object($data)) 
+		if (is_object($data))
 		{
 			$data = get_object_vars($data);
-		} 
-		else 
+		}
+		else
 		{
 			$data = (array) $data;
 		}
 
 		foreach ($data as $k => $v)
 		{
-			if ((is_array($v) && $this->isAssociative($v)) || is_object($v)) 
+			if ((is_array($v) && $this->isAssociative($v)) || is_object($v))
 			{
 				$parent->$k = new stdClass;
 				$this->bindData($parent->$k, $v);
-			} 
-			else 
+			}
+			else
 			{
 				$parent->$k = $v;
 			}
@@ -506,11 +506,11 @@ class PublicationsElements
 
 		foreach (get_object_vars((object) $data) as $k => $v)
 		{
-			if (is_object($v)) 
+			if (is_object($v))
 			{
 				$array[$k] = $this->asArray($v);
-			} 
-			else 
+			}
+			else
 			{
 				$array[$k] = $v;
 			}
@@ -528,27 +528,27 @@ class PublicationsElements
 	 */
 	public function render($name = 'nbtag', $group = '_default')
 	{
-		if (!isset($this->_schema[$group])) 
+		if (!isset($this->_schema[$group]))
 		{
 			return false;
 		}
 
 		$fields = $this->getElements($name);
-		
+
 		$html = array();
 
-		/*if ($description = $this->_schema[$group]->description) 
+		/*if ($description = $this->_schema[$group]->description)
 		{
 			// Add the params description to the display
 			$desc	= JText::_($description);
 			$html[]	= '<p class="paramrow_desc">'.$desc.'</p>';
 		}*/
 
-		if (count($fields) > 0) 
+		if (count($fields) > 0)
 		{
-			foreach ($fields as $field) 
+			foreach ($fields as $field)
 			{
-				if ($field->label) 
+				if ($field->label)
 				{
 					$html[] = $field->label;
 				}
@@ -585,7 +585,7 @@ class PublicationsElements
 		$element = $this->loadElement($type);
 
 		// Check for an error.
-		if ($element === false) 
+		if ($element === false)
 		{
 			return $value;
 		}
@@ -602,12 +602,12 @@ class PublicationsElements
 	 */
 	public function renderToArray($name = 'nbtag', $group = '_default')
 	{
-		if (!isset($this->_schema[$group])) 
+		if (!isset($this->_schema[$group]))
 		{
 			return false;
 		}
 		$results = array();
-		foreach ($this->_schema[$group]->fields as $element) 
+		foreach ($this->_schema[$group]->fields as $element)
 		{
 			$result = $this->getElement($element, $name, $group);
 			$results[$result->name] = $result;
@@ -623,7 +623,7 @@ class PublicationsElements
 	 */
 	public function getSchema($group = '_default')
 	{
-		if (!isset($this->_schema[$group])) 
+		if (!isset($this->_schema[$group]))
 		{
 			return false;
 		}
@@ -639,13 +639,13 @@ class PublicationsElements
 	 */
 	public function getElements($name = 'nbtag', $group = '_default')
 	{
-		if (!isset($this->_schema[$group])) 
+		if (!isset($this->_schema[$group]))
 		{
 			return false;
 		}
 
 		$results = array();
-		foreach ($this->_schema[$group]->fields as $element)  
+		foreach ($this->_schema[$group]->fields as $element)
 		{
 			$results[] = $this->getElement($element, $name, $group);
 		}
@@ -668,7 +668,7 @@ class PublicationsElements
 		$element = $this->loadElement($type);
 
 		// Check for an error.
-		if ($element === false) 
+		if ($element === false)
 		{
 			$result = new stdClass;
 			$result->label = $node->label;
@@ -703,7 +703,7 @@ class PublicationsElements
 		$element = $this->loadElement($type);
 
 		// Check for an error.
-		if ($element === false) 
+		if ($element === false)
 		{
 			$result = new stdClass;
 			$result->label = $node->label;
@@ -733,21 +733,21 @@ class PublicationsElements
 	{
 		$signature = md5($type);
 
-		if ((isset($this->_elements[$signature]) 
-			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))  
-			&& $new === false) 
+		if ((isset($this->_elements[$signature])
+			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))
+			&& $new === false)
 		{
 			return	$this->_elements[$signature];
 		}
 
 		$elementClass = 'PublicationsElement' . $type;
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
-			if (isset($this->_elementPath)) 
+			if (isset($this->_elementPath))
 			{
 				$dirs = $this->_elementPath;
-			} 
-			else 
+			}
+			else
 			{
 				$dirs = array();
 			}
@@ -755,18 +755,18 @@ class PublicationsElements
 			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file)) 
+			if ($elementFile = JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
-			} 
-			else 
+			}
+			else
 			{
 				$false = false;
 				return $false;
 			}
 		}
 
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
 			$false = false;
 			return $false;

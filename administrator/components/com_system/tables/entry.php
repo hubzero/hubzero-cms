@@ -38,42 +38,42 @@ class SefEntry extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id	     = null;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $cpt     = null;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $oldurl	 = null;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $newurl	 = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $dateadd = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,26 +84,26 @@ class SefEntry extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     True if data is valid
 	 */
 	public function check()
 	{
 		$this->oldurl = rtrim(trim($this->oldurl), DS);
-		if (!$this->oldurl) 
+		if (!$this->oldurl)
 		{
 			$this->setError(JText::_('Missing field.'));
 			return false;
 		}
 
 		$this->newurl = trim($this->newurl);
-		if (!$this->newurl) 
+		if (!$this->newurl)
 		{
 			$this->setError(JText::_('Missing field.'));
 			return false;
 		}
 
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->dateadd = JFactory::getDate()->toSql();
 		}
@@ -113,7 +113,7 @@ class SefEntry extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     integer
 	 */
@@ -127,7 +127,7 @@ class SefEntry extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     array
 	 */
@@ -141,22 +141,22 @@ class SefEntry extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to determien hwo to build query
 	 * @return     string SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl WHERE ";
-		if ($filters['ViewModeId'] == 1) 
+		if ($filters['ViewModeId'] == 1)
 		{
 			$query .= "`dateadd` > '0000-00-00' AND `newurl` = '' ";
-		} 
-		elseif ($filters['ViewModeId'] == 2) 
+		}
+		elseif ($filters['ViewModeId'] == 2)
 		{
 			$query .= "`dateadd` > '0000-00-00' AND `newurl` != '' ";
-		} 
-		else 
+		}
+		else
 		{
 			$query .= "`dateadd` = '0000-00-00'";
 		}

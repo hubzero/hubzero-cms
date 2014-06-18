@@ -41,35 +41,35 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CollectionsTablePost';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_collections.post.description';
 
 	/**
 	 * \Hubzero\User\Profile
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * CollectionsModelAdapterAbstract
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_adapter = NULL;
 
 	/**
 	 * CollectionsModelPost
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_data = null;
@@ -88,7 +88,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -106,7 +106,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid);
 		}
@@ -116,7 +116,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Bind data to the model
-	 * 
+	 *
 	 * @param      mixed $data Object or array
 	 * @return     boolean True on success, False on error
 	 */
@@ -183,7 +183,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the resource exists
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -208,12 +208,12 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the post is the original (first) post
-	 * 
+	 *
 	 * @return     boolean True if original, false if not
 	 */
 	public function original()
 	{
-		if ((int) $this->get('original') > 0) 
+		if ((int) $this->get('original') > 0)
 		{
 			return true;
 		}
@@ -222,18 +222,18 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Remove a post
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function remove()
 	{
-		if ($this->original()) 
+		if ($this->original())
 		{
 			$this->setError(JText::_('Original posts must be deleted or moved.'));
 			return false;
 		}
 
-		if (!$this->_tbl->delete($this->get('id'))) 
+		if (!$this->_tbl->delete($this->get('id')))
 		{
 			$this->setError($this->_tbl->getError());
 			return false;
@@ -244,7 +244,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Move a post
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function move($collection_id)
@@ -259,7 +259,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 		$this->set('collection_id', $collection_id);
 
-		if (!$this->_tbl->store()) 
+		if (!$this->_tbl->store())
 		{
 			$this->setError($this->_tbl->getError());
 			return false;
@@ -270,7 +270,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -294,7 +294,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
@@ -335,7 +335,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 	/**
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	private function _adapter()
@@ -364,7 +364,7 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string

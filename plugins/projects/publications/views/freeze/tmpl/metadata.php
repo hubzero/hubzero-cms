@@ -29,15 +29,15 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
-$field 			= $this->manifest->params->field;		
+$field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
 
 $class 			= $value ? ' be-complete' : '';
-$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength 
-				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';	
+$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
+				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
 			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
-			
+
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
 
 ?>
@@ -47,13 +47,13 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 	<!-- Showing status only -->
 	<div class="element_overview">
 		<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
-		<?php if ($value) { 
+		<?php if ($value) {
 			// Parse editor text
 			if ($editor)
 			{
 				$model = new PublicationsModelPublication($this->pub);
 				$value = $model->parse($aliasmap, $field, 'parsed');
-			} 
+			}
 			else
 			{
 				$value = '<p>' . $value . '</p>';

@@ -64,7 +64,7 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 ?>
 
 <script type="text/javascript">
-	function submitbutton(pressbutton) 
+	function submitbutton(pressbutton)
 	{
 		var form = document.adminForm;
 
@@ -156,9 +156,9 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 				<label for="field-action-message"><?php echo $onhold_msg; ?></label>
 			</div>
 		<?php if ($this->subscription->status == 2) { ?>
-			<?php if ($this->subscription->pendingpayment > 0) { ?> 
+			<?php if ($this->subscription->pendingpayment > 0) { ?>
 				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-refund" value="refund" /> 
+					<input type="radio" name="action" id="field-action-refund" value="refund" />
 					<label for="field-action-refund"><?php echo JText::_('Process refund / remove pending items'); ?></label>
 				</div>
 				<div class="input-wrap">
@@ -172,7 +172,7 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 			<?php } ?>
 		<?php } else { ?>
 			<div class="input-wrap">
-				<input type="radio" name="action" id="field-action-activate" value="activate" /> 
+				<input type="radio" name="action" id="field-action-activate" value="activate" />
 				<label for="field-action-activate"><?php echo JText::_('Activate/ Extend this subscription (new payment or verification received) '); ?></label>
 			</div>
 			<div class="input-wrap">
@@ -184,7 +184,7 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 				<?php if  ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now ) { ?> <input type="text" name="newunits" id="field-newunits" value="<?php echo $this->subscription->pendingunits ?>"  /> <?php } else { echo $this->subscription->pendingunits;  } ?>
 			</div>
 			<div class="input-wrap">
-				<input type="radio" name="action" id="field-action-cancelsub" value="cancelsub" /> 
+				<input type="radio" name="action" id="field-action-cancelsub" value="cancelsub" />
 				<label for="field-action-cancelsub"><?php echo JText::_('Cancel this subscription'); ?></label>
 			</div>
 		<?php } ?>

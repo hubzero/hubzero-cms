@@ -38,49 +38,49 @@ class FeedAggregatorTableFeeds extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $name = NULL;
-	
+
 	/**
 	 * varchar(255)
 	 *
 	 * @var integer
 	 */
 	var $url    = NULL;
-	
+
 	/**
 	 * date
 	 *
 	 * @var date
 	 */
 	var $created = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $description = NULL;
-		
+
 	/**
 	 * varchar(45)
 	 *
 	 * @var integer
 	 */
 	var $enabled = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 *
@@ -89,7 +89,7 @@ class FeedAggregatorTableFeeds extends JTable
 	{
 		parent::__construct('#__feedaggregator_feeds', 'id', $db);
 	}
-	
+
 	/**
 	*  Returns all source feeds
 	* @return     object list of source feeds
@@ -100,7 +100,7 @@ class FeedAggregatorTableFeeds extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 *  Returns feed as selected by ID
 	 * @param      integer $id
@@ -113,7 +113,7 @@ class FeedAggregatorTableFeeds extends JTable
 	
 		return $this->_db->loadObject();
 	}
-	
+
 	/**
 	 *  Enables or disables a feed
 	 * @param 	   integer $id of feed

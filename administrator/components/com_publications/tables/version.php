@@ -33,172 +33,172 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication version
  */
-class PublicationVersion extends JTable 
+class PublicationVersion extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       					= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_id 			= NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title						= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $description				= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $abstract					= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $metadata					= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by					= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created					= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by				= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified					= NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $published_up				= NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $published_down				= NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $submitted					= NULL;
-		
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $accepted					= NULL;
-	
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $version_label				= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version_number				= NULL;
-	
+
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $secret						= NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $doi						= NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ark						= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $license_type				= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $license_text				= NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $reviewed					= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
-	var $reviewed_by				= NULL;	
-	
+	var $reviewed_by				= NULL;
+
 	/**
 	 * Int(1)
-	 * 
+	 *
 	 * @var integer
 	 * 0 - unpublished
 	 * 1 - published
@@ -209,292 +209,292 @@ class PublicationVersion extends JTable
 	 * 6 - dark archive
 	 */
 	var $state  					= NULL;
-	
+
 	/**
 	 * Int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $main 						= NULL;
-	
+
 	/**
 	 * Int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access 					= NULL;
 
 	/**
 	 * Publication rating
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $rating				= NULL;
-	
+
 	/**
 	 * Times rated
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $times_rated        = NULL;
-	
+
 	/**
 	 * Ranking
-	 * 
+	 *
 	 * @var float
 	 */
 	var $ranking        	= NULL;
-	
+
 	/**
 	 * Params
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $params      				= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $release_notes				= NULL;
-	
+
 	/**
 	 * Original curation manifest at time of publication approval
-	 * 
+	 *
 	 * @var text
 	 */
 	var $curation					= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
-	function __construct( &$db ) 
+	 */
+	function __construct( &$db )
 	{
 		parent::__construct( '#__publication_versions', 'id', $db );
 	}
-	
+
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $version 	Version number or name
 	 * @return     mixed False if error, Object on success
-	 */	
+	 */
 	public function loadVersion ( $pid = NULL, $version = 'dev' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id ='$pid' ";
-		if ($version == 'default' or $version == 'current' && $version == 'main') 
+		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}
-		elseif ($version == 'dev') 
+		elseif ($version == 'dev')
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version)) 
+		elseif (intval($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
-		else 
+		else
 		{
 			// Error in supplied version value
 			$query.= " AND 1=2 ";
 		}
 		$query .= "LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Update record
-	 * 
+	 *
 	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $update		Column name
 	 * @param      string   $new 		Update to
 	 * @param      string   $where 		Where
 	 * @param      string   $version 	Version number or name
 	 * @return     void
-	 */	
+	 */
 	public function updateVersion ($pid = NULL, $update = '', $new = '', $where = '', $version = 'dev')
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		if (!$update or !$new ) 
+		if (!$update or !$new )
 		{
 			return false;
 		}
-		
+
 		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id = $pid ";
 		$query .= $where ? " AND ".$where : "";
-		if ($version == 'default' or $version == 'current' && $version == 'main') 
+		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}
-		elseif ($version == 'dev') 
+		elseif ($version == 'dev')
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version)) 
+		elseif (intval($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
-		else 
+		else
 		{
 			// Error in supplied version value
 			$query.= " AND 1=2 ";
 		}
 		$query .= "LIMIT 1";
 		$this->_db->setQuery( $query );
-		$this->_db->query();	
+		$this->_db->query();
 	}
-	
+
 	/**
 	 * Get used labels
-	 * 
+	 *
 	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $exclude 	Version number or name
 	 * @return     array
-	 */	
-	public function getUsedLabels ($pid = NULL, $exclude = 'dev' ) 
+	 */
+	public function getUsedLabels ($pid = NULL, $exclude = 'dev' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
 		$labels = array();
-		
+
 		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id = $pid ";
-		
-		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main') 
+
+		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main')
 		{
 			$query.= " AND main!=1 ";
 		}
-		elseif ($exclude == 'dev') 
+		elseif ($exclude == 'dev')
 		{
 			$query.= " AND state!=3 ";
 		}
-		elseif (intval($exclude)) 
+		elseif (intval($exclude))
 		{
 			$query.= " AND version_number!='".$exclude."' ";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		
-		if ($result) 
+
+		if ($result)
 		{
-			foreach ($result as $r) 
+			foreach ($result as $r)
 			{
 				$labels[] = $r->version_label;
 			}
 		}
-		
-		return $labels;		
+
+		return $labels;
 	}
-	
+
 	/**
 	 * Get attribute
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $version 	Version number or name
 	 * @param      string   $select		Select query
 	 * @return     string
-	 */	
-	public function getAttribute ($pid = NULL, $version = 'dev', $select = '' ) 
+	 */
+	public function getAttribute ($pid = NULL, $version = 'dev', $select = '' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		if (!$select) 
+		if (!$select)
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id = $pid ";
-		
-		if ($version == 'default' or $version == 'current' && $version == 'main') 
+
+		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}
-		elseif ($version == 'dev') 
+		elseif ($version == 'dev')
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version)) 
+		elseif (intval($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
-		else 
+		else
 		{
 			// Error in supplied version value
 			$query.= " AND 1=2 ";
 		}
 		$query .= " LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get records
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @param      array   $filters 	Query filters
 	 * @return     object
-	 */	
-	public function getVersions ( $pid, $filters = array() ) 
+	 */
+	public function getVersions ( $pid, $filters = array() )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		
+
 		$withdev = isset($filters['withdev']) && $filters['withdev'] == 1 ? 1 : 0;
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'v.version_number DESC';
 		$public  = isset($filters['public']) && $filters['public'] == 1 ? 1 : 0;
-		
+
 		$query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
 		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
 		$query.= " FROM $this->_tbl AS v ";
@@ -503,55 +503,55 @@ class PublicationVersion extends JTable
 		$query.= $withdev ? "" : " AND v.state!=3 ";
 		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
 		$query.= " ORDER BY ".$sortby;
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Check version
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $version 	Version number or name
 	 * @return     boolean
-	 */	
+	 */
 	public function checkVersion( $pid = NULL, $version = NULL )
 	{
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		if ($version == 'default') 
+		if ($version == 'default')
 		{
 			return true;
 		}
-		if ($version == 'dev') 
+		if ($version == 'dev')
 		{
 			$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND state = 3 LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
 		}
-		if (intval($version) > 0) 
+		if (intval($version) > 0)
 		{
 			$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND version_number= $version LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Get pub id
-	 * 
-	 * @param      integer  $vid 		Pub version ID	 
+	 *
+	 * @param      integer  $vid 		Pub version ID
 	 * @return     integer
-	 */	
+	 */
 	public function getPubId( $vid = NULL )
 	{
-		if ($vid === NULL ) 
+		if ($vid === NULL )
 		{
 			return false;
 		}
@@ -559,16 +559,16 @@ class PublicationVersion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get ID of main version
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @return     integer
-	 */	
+	 */
 	public function getMainVersionId( $pid = NULL )
 	{
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
@@ -576,16 +576,16 @@ class PublicationVersion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get published version number
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @return     integer
-	 */	
+	 */
 	public function getPublishedVersionNumber( $pid = NULL )
 	{
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
@@ -593,16 +593,16 @@ class PublicationVersion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get published version count
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @return     integer
-	 */	
+	 */
 	public function getPublishedCount( $pid = NULL )
 	{
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
@@ -610,16 +610,16 @@ class PublicationVersion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get last public release
-	 * 
-	 * @param      integer  $pid 		Pub ID	 
+	 *
+	 * @param      integer  $pid 		Pub ID
 	 * @return     object
-	 */	
+	 */
 	public function getLastPubRelease( $pid = NULL )
 	{
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
@@ -628,17 +628,17 @@ class PublicationVersion extends JTable
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
-	
+
 	/**
 	 * Remove main flag
-	 * 
+	 *
 	 * @param      integer   $vid 		Pub version ID
-	 * @param      boolean   $unpublish	
+	 * @param      boolean   $unpublish
 	 * @return     void
-	 */	
+	 */
 	public function removeMainFlag( $vid = NULL, $unpublish = 0 )
 	{
-		if ($vid === NULL || intval($vid) == 0) 
+		if ($vid === NULL || intval($vid) == 0)
 		{
 			return false;
 		}
@@ -648,17 +648,17 @@ class PublicationVersion extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get title for new draft
-	 * 
+	 *
 	 * @param      integer   $projectid  Project ID
 	 * @param      string    $title
 	 * @return     void
-	 */	
+	 */
 	public function getDefaultTitle( $projectid = 0, $title = '' )
 	{
-		if (intval($projectid) == 0) 
+		if (intval($projectid) == 0)
 		{
 			return false;
 		}
@@ -666,26 +666,26 @@ class PublicationVersion extends JTable
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
 		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " .$projectid . " AND v.state != 2";
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();
 		$result = $result ? ($result + 1) : 1;
-		
+
 		$title .= ' (' . $result . ')';
-		
-		return $title; 
+
+		return $title;
 	}
-	
+
 	/**
 	 * Create new version
-	 * 
+	 *
 	 * @param      object   $dev 				Version to duplicate
 	 * @param      integer  $state				New version status
 	 * @param      string   $secret 			New version secret
 	 * @param      integer  $version_number 	New version number
 	 * @param      integer   $main				Default?
 	 * @return     integer or False
-	 */	
+	 */
 	public function createNewVersion( $dev, $state = 1, $secret = '', $version_number = 1, $main = 1 )
 	{
 		$new =  new PublicationVersion( $this->_db );
@@ -696,109 +696,109 @@ class PublicationVersion extends JTable
 		$new->secret = $secret ? $secret : strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 		$new->version_number = $version_number;
 		$new->main = $main;
-		
-		if ($new->store()) 
+
+		if ($new->store())
 		{
 			return $new->id;
 		}
-		else 
+		else
 		{
 			return false;
-		}	
+		}
 	}
-	
+
 	/**
 	 * Get record
-	 * 
+	 *
 	 * @param      integer  $pid 		Pub ID
 	 * @param      string   $version 	Version number or name
 	 * @return     object or False
-	 */	
+	 */
 	public function getVersion ( $pid, $version = 'dev' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		
+
 		$query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
 		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		if ($version == 'default' or $version == 'current' && $version == 'main') 
+		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND v.main=1 ";
 		}
-		elseif ($version == 'dev') 
+		elseif ($version == 'dev')
 		{
 			$query.= " AND v.state=3 ";
 		}
-		elseif (intval($version)) 
+		elseif (intval($version))
 		{
 			$query.= " AND v.version_number='".$version."' ";
 		}
-		else 
+		else
 		{
 			// Error in supplied version value
 			$query.= " AND 1=2 ";
 		}
 		$query .= " LIMIT 1";
-		
+
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
-	
+
 	/**
 	 * Save version parameter
-	 * 
+	 *
 	 * @param      integer $id
 	 * @param      string  $param
 	 * @param      string  $value
 	 * @return     void
-	 */	
-	public function saveParam ( $id = NULL, $param = '', $value = 0 ) 
+	 */
+	public function saveParam ( $id = NULL, $param = '', $value = 0 )
 	{
 		if ($id === NULL)
 		{
 			$id = $this->id;
 		}
-		
-		if (!$id) 
+
+		if (!$id)
 		{
 			return false;
 		}
-		
+
 		// Clean up value
 		$value = preg_replace('/=/', '', $value);
-		
-		if ($this->load($id)) 
+
+		if ($this->load($id))
 		{
-			if ($this->params) 
+			if ($this->params)
 			{
 				$params = explode("\n", $this->params);
 				$in = '';
 				$found = 0;
-			
+
 				// Change param
-				if (!empty($params)) 
+				if (!empty($params))
 				{
-					foreach ($params as $p) 
+					foreach ($params as $p)
 					{
-						if (trim($p) != '' && trim($p) != '=') 
-						{				
+						if (trim($p) != '' && trim($p) != '=')
+						{
 							$extracted = explode('=', $p);
-							if (!empty($extracted)) 
+							if (!empty($extracted))
 							{
 								$in .= $extracted[0].'=';
 								$default = isset($extracted[1]) ? $extracted[1] : 0;
 								$in .= $extracted[0] == $param ? $value : $default;
 								$in	.= n;
-								if ($extracted[0] == $param) 
+								if ($extracted[0] == $param)
 								{
 									$found = 1;
 								}
@@ -806,41 +806,41 @@ class PublicationVersion extends JTable
 						}
 					}
 				}
-				if(!$found) 
+				if(!$found)
 				{
-					$in .= n.$param.'='.$value;	
+					$in .= n.$param.'='.$value;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$in = $param.'='.$value;
 			}
 			$this->params = $in;
 			$this->store();
 		}
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Get top-level publication version stats
-	 * 
+	 *
 	 * @param      array 	$validProjects
 	 * @param      string 	$get
 	 * @return     mixed
-	 */	
-	public function getPubStats ( $validProjects = array(), $get = 'total') 
-	{	
+	 */
+	public function getPubStats ( $validProjects = array(), $get = 'total')
+	{
 		if (empty($validProjects))
 		{
 			return NULL;
 		}
-		
-		$query  = " SELECT COUNT(v.id) as versions ";	
+
+		$query  = " SELECT COUNT(v.id) as versions ";
 		$query .= " FROM $this->_tbl as v ";
 		$query .= " JOIN #__publications as p ON p.id = v.publication_id ";
 		$query .= " WHERE v.state != 2 ";
-		
+
 		if (!empty($validProjects))
 		{
 			$query .= " AND p.project_id IN ( ";
@@ -853,13 +853,13 @@ class PublicationVersion extends JTable
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$query .= $tquery.") ";
 		}
-						
+
 		$this->_db->setQuery( $query );
-		
+
 		if ($get == 'total')
 		{
 			return $this->_db->loadResult();
-		}	
+		}
 	}
 }
 ?>

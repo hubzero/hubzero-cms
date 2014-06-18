@@ -39,7 +39,7 @@ class modQuickTips extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -64,15 +64,15 @@ class modQuickTips extends \Hubzero\Module\Module
 
 		$now = JFactory::getDate();
 
-		if ($method == 'random') 
+		if ($method == 'random')
 		{
 			$order = "RAND()";
-		} 
-		elseif($method == 'ordering') 
+		}
+		elseif($method == 'ordering')
 		{
 			$order = "a.ordering ASC";
-		} 
-		else 
+		}
+		else
 		{
 			$order = "a.publish_up DESC";
 		}

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jconfig = JFactory::getConfig();
 	$sitename = $jconfig->getValue('config.sitename');
 	$juser = JFactory::getUser();
-	
+
 	$jobsHtml = new JobsHtml();
 
 	$job = $this->job;
@@ -61,7 +61,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($juser->get('guest')) { ?> 
+		<?php if ($juser->get('guest')) { ?>
 			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -71,7 +71,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li>
 				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
 			<li><a class="add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addjob'); ?>"><?php echo JText::_('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
-		<?php } else { ?>  
+		<?php } else { ?>
 			<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
 		<?php } ?>
 		</ul>
@@ -134,7 +134,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		else {
 			if ($job->applyExternalUrl) {
-				
+
 				if (strpos($job->applyExternalUrl, "http://") !== false || strpos($job->applyExternalUrl, "https://") !== false)
 				{
 					$url = $job->applyExternalUrl;

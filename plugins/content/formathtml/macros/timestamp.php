@@ -39,14 +39,14 @@ class Timestamp extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -59,7 +59,7 @@ class Timestamp extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()

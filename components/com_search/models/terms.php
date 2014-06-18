@@ -37,7 +37,7 @@ include_once __DIR__ . '/document_metadata.php';
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchModelTerms extends JModel
@@ -45,16 +45,16 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Description for 'raw'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL, $quoted = array();
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $raw Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -69,9 +69,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'is_quoted'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $idx Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -82,9 +82,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_raw'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_raw()
@@ -94,9 +94,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_raw_without_section'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function get_raw_without_section()
@@ -108,9 +108,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_section'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_section()
@@ -120,9 +120,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_optional_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_optional_chunks()
@@ -132,9 +132,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_forbidden_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_forbidden_chunks()
@@ -144,9 +144,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_mandatory_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_mandatory_chunks()
@@ -156,9 +156,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_positive_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function get_positive_chunks()
@@ -172,9 +172,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_stemmed_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function get_stemmed_chunks()
@@ -196,9 +196,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'is_set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function is_set()
@@ -208,9 +208,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'any'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function any()
@@ -220,9 +220,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'parse_searchable_chunks'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function parse_searchable_chunks()
@@ -287,9 +287,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'add_chunk'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string &$partial Parameter description (if any) ...
 	 * @param      string &$sign Parameter description (if any) ...
 	 * @param      boolean $quoted Parameter description (if any) ...
@@ -326,9 +326,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for 'get_word_regex'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	public function get_word_regex()
@@ -340,9 +340,9 @@ class SearchModelTerms extends JModel
 
 	/**
 	 * Short description for '__toString'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function __toString()

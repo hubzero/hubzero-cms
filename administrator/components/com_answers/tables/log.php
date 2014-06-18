@@ -38,35 +38,35 @@ class AnswersTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $response_id     = NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ip      = NULL;
 
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $helpful = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,28 +77,28 @@ class AnswersTableLog extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $rid Answer ID
 	 * @param      string  $ip  IP address
 	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadByIp($rid=null, $ip=null)
 	{
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			$rid = $this->rid;
 		}
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			return false;
 		}
 		$sql  = "SELECT * FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip) . " LIMIT 1";
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -107,20 +107,20 @@ class AnswersTableLog extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->response_id = intval($this->response_id);
-		if (!$this->response_id) 
+		if (!$this->response_id)
 		{
 			$this->setError(JText::_('Missing response ID'));
 			return false;
 		}
 
 		$this->helpful = strtolower(trim($this->helpful));
-		if (!$this->helpful) 
+		if (!$this->helpful)
 		{
 			$this->setError(JText::_('Missing vote'));
 			return false;
@@ -143,18 +143,18 @@ class AnswersTableLog extends JTable
 
 	/**
 	 * Check if a vote has been registered for an answer/IP
-	 * 
+	 *
 	 * @param      integer $rid Answer ID
 	 * @param      string  $ip  IP address
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function checkVote($rid=null, $ip=null)
 	{
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			$rid = $this->response_id;
 		}
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			return false;
 		}
@@ -167,23 +167,23 @@ class AnswersTableLog extends JTable
 
 	/**
 	 * Delete a record by answer/IP
-	 * 
+	 *
 	 * @param      integer $rid Answer ID
 	 * @return     boolean True on success, false if error
 	 */
 	public function deleteLog($rid=null)
 	{
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			$rid = $this->rid;
 		}
-		if ($rid == null) 
+		if ($rid == null)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

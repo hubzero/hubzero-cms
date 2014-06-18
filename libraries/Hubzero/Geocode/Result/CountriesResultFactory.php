@@ -43,7 +43,7 @@ class CountriesResultFactory implements ResultFactoryInterface
 	final public function createFromArray(array $data)
 	{
 		$result = new \SplObjectStorage();
-		foreach ($data as $row) 
+		foreach ($data as $row)
 		{
 			$instance = $this->newInstance();
 			$instance->fromArray($row);

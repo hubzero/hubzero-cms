@@ -69,13 +69,13 @@ $rows = $database->loadObjectList();
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	foreach ($rows as $row)
 	{
 		$lngth = strlen($row->pagetext);
 		$database->setQuery("UPDATE #__wiki_version SET `length` = '" . $lngth . "' WHERE `id`='" . $row->id . "'");
-		if (!$database->query()) 
+		if (!$database->query())
 		{
 			$this->setError($database->getErrorMsg());
 		}

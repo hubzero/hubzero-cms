@@ -35,11 +35,11 @@ class DayOfMonthField extends AbstractField
 	public static function getLastDayOfMonth(DateTime $date)
 	{
 		$month = $date->format('n');
-		if ($month == 2) 
+		if ($month == 2)
 		{
 			return (bool) $date->format('L') ? 29 : 28;
-		} 
-		else 
+		}
+		else
 		{
 			$dates = array(
 				1  => 31,
@@ -74,20 +74,20 @@ class DayOfMonthField extends AbstractField
 		$target = DateTime::createFromFormat('Y-m-d', "$currentYear-$currentMonth-$tday");
 		$currentWeekday = (int) $target->format('N');
 
-		if ($currentWeekday < 6) 
+		if ($currentWeekday < 6)
 		{
 			return $target;
 		}
 
 		$lastDayOfMonth = self::getLastDayOfMonth($target);
 
-		foreach (array(-1, 1, -2, 2) as $i) 
+		foreach (array(-1, 1, -2, 2) as $i)
 		{
 			$adjusted = $targetDay + $i;
-			if ($adjusted > 0 && $adjusted <= $lastDayOfMonth) 
+			if ($adjusted > 0 && $adjusted <= $lastDayOfMonth)
 			{
 				$target->setDate($currentYear, $currentMonth, $adjusted);
-				if ($target->format('N') < 6 && $target->format('m') == $currentMonth) 
+				if ($target->format('N') < 6 && $target->format('m') == $currentMonth)
 				{
 					return $target;
 				}
@@ -101,7 +101,7 @@ class DayOfMonthField extends AbstractField
 	public function isSatisfiedBy(DateTime $date, $value)
 	{
 		// ? states that the field value is to be skipped
-		if ($value == '?') 
+		if ($value == '?')
 		{
 			return true;
 		}
@@ -109,13 +109,13 @@ class DayOfMonthField extends AbstractField
 		$fieldValue = $date->format('d');
 
 		// Check to see if this is the last day of the month
-		if ($value == 'L') 
+		if ($value == 'L')
 		{
 			return $fieldValue == self::getLastDayOfMonth($date);
 		}
 
 		// Check to see if this is the nearest weekday to a particular value
-		if (strpos($value, 'W')) 
+		if (strpos($value, 'W'))
 		{
 			// Parse the target day
 			$targetDay = substr($value, 0, strpos($value, 'W'));
@@ -131,12 +131,12 @@ class DayOfMonthField extends AbstractField
 	 */
 	public function increment(DateTime $date, $invert = false)
 	{
-		if ($invert) 
+		if ($invert)
 		{
 			$date->sub(new DateInterval('P1D'));
 			$date->setTime(23, 59, 0);
-		} 
-		else 
+		}
+		else
 		{
 			$date->add(new DateInterval('P1D'));
 			$date->setTime(0, 0, 0);

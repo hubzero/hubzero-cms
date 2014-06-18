@@ -36,7 +36,7 @@ $cls = 'even';
 $this->css();
 ?>
 <h3 class="section-header">
-	<?php echo JText::_('PLG_RESOURCES_VERSIONS'); ?> 
+	<?php echo JText::_('PLG_RESOURCES_VERSIONS'); ?>
 </h3>
 <?php if ($this->rows) { ?>
 	<table class="resource-versions">

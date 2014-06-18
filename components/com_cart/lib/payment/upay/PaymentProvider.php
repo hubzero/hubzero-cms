@@ -32,17 +32,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * UPay payment provider
- * 
+ *
  * Long description (if any) ...
  */
 class PaymentProvider
-{	
+{
 	private $buttonVars;
 	private $credentials;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param 	object transaction info
 	 * @param	string payment gateway provider
 	 * @param 	object payment gateway credentials
@@ -50,23 +50,23 @@ class PaymentProvider
 	 * @return  void
 	 */
 	public function __construct($transactionDetails, $paymentGatewayCredentials, $paymentOptions)
-	{		
+	{
 		$this->buttonVars[] = 'item_name=' . $paymentOptions->transactionName;
 		$this->buttonVars[] = 'business=' . $paymentOptions->businessName;
-		
+
 		//print_r($transactionDetails); die;
-		
+
 		$this->buttonVars[] = 'custom=' . $transactionDetails->info->tId;
-		$this->buttonVars[] = 'amount=' . $transactionDetails->info->tTotalAmount;	
-		
-		$this->credentials = $paymentGatewayCredentials;		
+		$this->buttonVars[] = 'amount=' . $transactionDetails->info->tTotalAmount;
+
+		$this->credentials = $paymentGatewayCredentials;
 	}
-	
+
 	/**
 	 * Get HTML code for payment button
 	 *
 	 */
-	public function getPaymentCode() 
+	public function getPaymentCode()
 	{
 		$code = "UPay code is coming";
 		return $code;

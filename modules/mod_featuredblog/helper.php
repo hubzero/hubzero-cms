@@ -39,7 +39,7 @@ class modFeaturedblog extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -61,7 +61,7 @@ class modFeaturedblog extends \Hubzero\Module\Module
 
 	/**
 	 * Build module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -85,13 +85,13 @@ class modFeaturedblog extends \Hubzero\Module\Module
 
 		$mp = new BlogTableEntry($database);
 		$rows = $mp->getRecords($filters);
-		if ($rows && count($rows) > 0) 
+		if ($rows && count($rows) > 0)
 		{
 			$this->row = $rows[0];
-		} 
+		}
 
 		// Did we have a result to display?
-		if ($this->row) 
+		if ($this->row)
 		{
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));

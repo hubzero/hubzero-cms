@@ -38,7 +38,7 @@ class ChartsHtml
 {
 	/**
 	 * Draw graph, create javascript function to push to the page
-	 * 
+	 *
 	 * @return string Return javascript
 	 */
 	public function drawColumn()
@@ -89,7 +89,7 @@ class ChartsHtml
 			};
 
 			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_column'));
-			
+
 			// Call the chart's getSelection() method
 			function selectHandler() {
 				var selectedItem = chart.getSelection()[0];
@@ -101,7 +101,7 @@ class ChartsHtml
 
 			// Listen for the 'select' event, and call the selectHandler() when the user selects something on the chart
 			google.visualization.events.addListener(chart, 'select', selectHandler);
-			
+
 			chart.draw(data, options);
 		}";
 
@@ -110,7 +110,7 @@ class ChartsHtml
 
 	/**
 	 * Draw graph, create javascript function to push to the page
-	 * 
+	 *
 	 * @return string Return javascript
 	 */
 	public function drawPieHubs()
@@ -164,7 +164,7 @@ class ChartsHtml
 
 	/**
 	 * Draw graph, create javascript function to push to the page
-	 * 
+	 *
 	 * @return string Return javascript
 	 */
 	public function drawPieUser($uid)
@@ -220,7 +220,7 @@ class ChartsHtml
 
 	/**
 	 * Draw graph, create javascript function to push to the page
-	 * 
+	 *
 	 * @return string Return javascript
 	 */
 	public function drawBar()

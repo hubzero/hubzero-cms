@@ -49,16 +49,16 @@ class ResourceMediaTracking extends JTable
 	var $completed 						= NULL;
 	var $total_views 					= NULL;
 	var $total_viewing_time             = NULL;
-	
+
 	//-----
-	
+
 	public function __construct(&$db)
 	{
 		parent::__construct('#__media_tracking', 'id', $db);
 	}
-	
+
 	//-----
-	
+
 	public function getTrackingInformationForUserAndResource( $user_id = '', $object_id = '', $object_type = 'resource')
 	{
 		//make sure we have a resource
@@ -66,10 +66,10 @@ class ResourceMediaTracking extends JTable
 		{
 			return;
 		}
-		
+
 		//start sequel
 		$sql  = "SELECT m.* FROM $this->_tbl AS m ";
-		
+
 		//if we dont have a user id use session id
 		if(!$user_id)
 		{
@@ -81,7 +81,7 @@ class ResourceMediaTracking extends JTable
 		{
 			$sql .= "WHERE m.user_id=" . $user_id . " ";
 		}
-		
+
 		$sql .= "AND m.object_id=" . $object_id . " AND m.object_type='" . $object_type . "'";
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObject();

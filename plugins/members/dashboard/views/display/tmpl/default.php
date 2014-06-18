@@ -56,7 +56,7 @@ if ($this->params->get('allow_customization', 1) == 0)
 </noscript>
 
 <div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo $this->juser->get('id'); ?>">
-	<?php 
+	<?php
 		foreach ($this->modules as $module)
 		{
 			// create view object

@@ -35,7 +35,7 @@ JLoader::import('Hubzero.Api.Controller');
 
 /**
  * Short description for 'OauthApiController'
- * 
+ *
  * Long description (if any) ...
  */
 class OauthControllerApi extends \Hubzero\Component\ApiController
@@ -43,9 +43,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Short description for 'execute'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function execute()
@@ -75,7 +75,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				break;
 		}
 	}
-	
+
 	private function consumer_request_test()
 	{
 		if (empty($this->_request->validApiKey))
@@ -83,7 +83,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			$this->setMessage('', 401, 'No API Key');
 			return;
 		}
-		
+
 		$this->setMessage('Consumer Request Test OK', 200, 'OK');
 	}
 
@@ -91,12 +91,12 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessage('Unsigned Request Test OK', 200, 'OK');
 	}
-	
+
 	/**
 	 * Short description for 'token_info'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function token_info()
@@ -106,9 +106,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Short description for 'not_found'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function not_found()
@@ -118,11 +118,11 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 *  Token Request Endpoint
-	 * 
+	 *
 	 *  The client obtains a set of token credentials from the server by
-	 *  making an authenticated (RFC5849 Section 3) HTTP "POST" request to 
+	 *  making an authenticated (RFC5849 Section 3) HTTP "POST" request to
 	 *  the Token Request endpoint
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function request_token()
@@ -132,15 +132,15 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			$this->setMessage('', 400, 'Bad Request');
 			return;
 		}
-		
+
 		$callback_url = JRequest::getVar('oauth_callback','');
-		
+
         $token = sha1(OAuthProvider::generateToken(20,false));
         $token_secret = sha1(OAuthProvider::generateToken(20,false));
         $verifier = sha1(OAuthProvider::generateToken(20,false));
-        
+
 		$db = JFactory::getDBO();
-		
+
 		$consumer_data = $this->_provider->getConsumerData();
 
 		if (empty($consumer_data))
@@ -148,21 +148,21 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			$this->_response->setErrorMessage(500,'Internal Server Error');
 			return;
 		}
-		
+
 		if ((empty($callback_url)) || ($callback_url == 'oob'))
 		{
 			$callback_url = $consumer_data->callback_url;
 		}
-		
+
 		$db->setQuery("INSERT INTO #__oauthp_tokens (consumer_id,user_id,state,token,token_secret,callback_url,verifier,created) VALUES (" .
-			$db->Quote($consumer_data->id) . 
-			", '0', '1', " . 
-			$db->Quote($token) . "," . 
+			$db->Quote($consumer_data->id) .
+			", '0', '1', " .
+			$db->Quote($token) . "," .
 			$db->Quote($token_secret) . ", " .
 			$db->Quote($callback_url) . ", " .
 			$db->Quote($verifier) .
-			", UTC_TIMESTAMP());"); 
-		
+			", UTC_TIMESTAMP());");
+
 		if (!$db->query())
 		{
 			$this->_response->setErrorMessage(500,'Internal Server Error');
@@ -176,61 +176,61 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Short description for 'authorize'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	private function authorize()
 	{
 		jimport('joomla.environment.request');
-		
+
 		$oauth_token = JRequest::getVar('oauth_token');
-		
+
 		if (empty($oauth_token))
 		{
 			$this->view->setLayout('notoken');
 		}
-			
+
 		$db = JFactory::getDBO();
-			
+
 		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	.
 				$db->Quote($oauth_token) .
 				" AND user_id=0 LIMIT 1;");
-			
+
 		$result = $db->loadObject();
-			
+
 		if ($result === false)
 		{
 			$this->view->setLayout('internalerror');
 		}
-			
+
 		if (empty($result))
 		{
 			$this->view->setLayout('invalidtoken');
 		}
-		
+
 		if ($_SERVER['REQUEST_METHOD'] == 'GET')
 		{
 			jimport('joomla.application.component.view');
-			
+
 			$this->view = new \Hubzero\Component\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_oauth',
 					'name' => 'authorize',
 					'layout' => 'authorize'));
-				
-			
+
+
 			$this->view->oauth_token = $oauth_token;
-			$this->view->form_action = '/api/oauth/authorize';	
+			$this->view->form_action = '/api/oauth/authorize';
 			$this->view->display();
 			return;
 		}
-		
+
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			$username = JRequest::get('username');
 			$password = JRequest::get('password');
-				
+
 			if (true)
 			{
 				// user grants application 'consumer_key' permission to act on their behalf
@@ -238,7 +238,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 				// $db->setQuery("SELECT access_token FROM #__user_accesstokens WHERE user_id=" . $db->Quote($useraccount->getUserId()) . " consumer_key=" . $db->Quote($this->_provider->consumer_key));
 
-				
+
 
 				if (!empty($result->callback_url))
 				{
@@ -258,9 +258,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Short description for 'access_token'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	private function access_token()
@@ -273,7 +273,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		JLoader::import('Hubzero.User.Password');
-		
+
 		$xauth_request = false;
 
 		$header = '';
@@ -285,9 +285,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		// @FIXME: header check is inexact and could give false positives
 		// @FIXME: pecl oauth provider doesn't handle x_auth in header
-		// @FIXME: api application should convert xauth variables in 
+		// @FIXME: api application should convert xauth variables in
 		//         header to form/query data as workaround
-		// @FIXME: this code is here for future use if/when pecl oauth 
+		// @FIXME: this code is here for future use if/when pecl oauth
 		//         provider is fixed
 		//
 		if (isset($_GET['x_auth_mode'])
@@ -369,9 +369,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				$this->_response->setErrorMessage('oauth_problem=permission_denied',400,'Bad Request');
 				return;
 			}
-			
-			$match = \Hubzero\User\Password::passwordMatches($x_auth_username, $x_auth_password, true);			
-			
+
+			$match = \Hubzero\User\Password::passwordMatches($x_auth_username, $x_auth_password, true);
+
 			if (!$match)
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
@@ -380,7 +380,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 			}
 
 			$useraccount = JFactory::getUser(JUserHelper::getUserId($x_auth_username));
-			
+
 			$db = JFactory::getDBO();
 
 			$db->setQuery("SELECT token,token_secret FROM #__oauthp_tokens WHERE consumer_id="

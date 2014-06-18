@@ -37,42 +37,42 @@ class Notify extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $method   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $priority = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -83,13 +83,13 @@ class Notify extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->uid = intval($this->uid);
-		if (!$this->uid) 
+		if (!$this->uid)
 		{
 			$this->setError(\JText::_('Please provide a user ID.'));
 			return false;
@@ -99,22 +99,22 @@ class Notify extends \JTable
 
 	/**
 	 * Get records for a user
-	 * 
+	 *
 	 * @param      integer $uid  User ID
 	 * @param      string  $type Record type
 	 * @return     mixed False if errors, array on success
 	 */
 	public function getRecords($uid=null, $type=null)
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
-		if (!$type) 
+		if (!$type)
 		{
 			$type = $this->type;
 		}
@@ -129,17 +129,17 @@ class Notify extends \JTable
 
 	/**
 	 * Clear all entries for a user
-	 * 
+	 *
 	 * @param      integer $uid  User ID
 	 * @return     boolean True on success
 	 */
 	public function clearAll($uid=null)
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
@@ -147,7 +147,7 @@ class Notify extends \JTable
 		$query  = "DELETE FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			return false;
 		}

@@ -35,27 +35,27 @@ $canDo = ResourcesHelperPermissions::getActions('resource');
 JToolBarHelper::title(JText::_('Resource Manager') . ': ' . JText::_('Child resources'), 'resources.png');
 if ($this->filters['parent_id'] > 0)
 {
-	if ($canDo->get('core.create')) 
+	if ($canDo->get('core.create'))
 	{
 		JToolBarHelper::addNew('addchild', 'Add Child');
 	}
-	if ($canDo->get('core.delete')) 
+	if ($canDo->get('core.delete'))
 	{
 		JToolBarHelper::deleteList('', 'removechild', 'Remove Child');
 	}
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -77,7 +77,7 @@ else
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -99,12 +99,12 @@ function submitbutton(pressbutton)
 
 	<!-- <fieldset id="filter">
 		<label for="search">
-			Search: 
+			Search:
 			<input type="text" name="search" id="search" value="<?php echo $this->filters['search']; ?>" />
 		</label>
 
 		<label for="sort">
-			Sort: 
+			Sort:
 			<select name="sort" id="sort">
 				<option value="ordering"<?php if($this->filters['sort'] == 'ordering') { echo ' selected="selected"'; } ?>>Ordering</option>
 				<option value="created DESC"<?php if($this->filters['sort'] == 'created') { echo ' selected="selected"'; } ?>>Date</option>
@@ -112,7 +112,7 @@ function submitbutton(pressbutton)
 				<option value="id"<?php if($this->filters['sort'] == 'id') { echo ' selected="selected"'; } ?>>ID number</option>
 			</select>
 		</label>
-	
+
 		<label for="status">
 			Status:
 			<select name="status" id="status">
@@ -360,6 +360,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="viewtask" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="pid" value="<?php echo $this->filters['parent_id']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

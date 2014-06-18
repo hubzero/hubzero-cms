@@ -12,9 +12,9 @@ defined('_JEXEC') or die;
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring bits
- * @return array 
+ * @return array
  */
 function dataviewerBuildRoute(&$query)
 {
@@ -25,15 +25,15 @@ function dataviewerBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded SEF URL
- * @return array 
+ * @return array
  */
-function dataviewerParseRoute($segments) 
+function dataviewerParseRoute($segments)
 {
 	$vars = array();
 
-	if (empty($segments)) 
+	if (empty($segments))
 	{
 		return $vars;
 	}

@@ -156,12 +156,12 @@ $this->css()
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-						</a> 
+						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_AT'); ?></span> 
-							<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
-							<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_ON'); ?></span> 
+							<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_AT'); ?></span>
+							<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
+							<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_ON'); ?></span>
 							<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						</span>
 					</p>

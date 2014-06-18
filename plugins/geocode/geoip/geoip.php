@@ -36,15 +36,15 @@ jimport('joomla.plugin.plugin');
 /**
  * Geoip plugin for geocode
  *
- * The GeoipProvider is able to geocode IPv4 and IPv6 addresses only. 
- * No need to use an HttpAdapter as it uses a local database. See the 
+ * The GeoipProvider is able to geocode IPv4 and IPv6 addresses only.
+ * No need to use an HttpAdapter as it uses a local database. See the
  * MaxMind page for more information.
  */
 class plgGeocodeGeoip extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

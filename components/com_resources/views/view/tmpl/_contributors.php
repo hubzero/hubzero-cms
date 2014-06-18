@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $database = JFactory::getDBO();
 
-if ($this->contributors) 
+if ($this->contributors)
 {
 	$html = '';
 	$names = array();
@@ -45,30 +45,30 @@ if ($this->contributors)
 
 	foreach ($this->contributors as $contributor)
 	{
-		if (strtolower($contributor->role) == 'submitter') 
+		if (strtolower($contributor->role) == 'submitter')
 		{
 			continue;
 		}
 
 		// Build the user's name and link to their profile
-		if ($contributor->name) 
+		if ($contributor->name)
 		{
 			$name = $this->escape(stripslashes($contributor->name));
-		} 
-		else if ($contributor->surname || $contributor->givenName) 
+		}
+		else if ($contributor->surname || $contributor->givenName)
 		{
 			$name = $this->escape(stripslashes($contributor->givenName)) . ' ';
-			if ($contributor->middleName != NULL) 
+			if ($contributor->middleName != NULL)
 			{
 				$name .= $this->escape(stripslashes($contributor->middleName)) . ' ';
 			}
 			$name .= $this->escape(stripslashes($contributor->surname));
-		} 
-		else 
+		}
+		else
 		{
 			$name = $this->escape(stripslashes($contributor->xname));
 		}
-		if (!$contributor->org) 
+		if (!$contributor->org)
 		{
 			$contributor->org = $contributor->xorg;
 		}
@@ -79,21 +79,21 @@ if ($this->contributors)
 		{
 			$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 		}
-		else 
+		else
 		{
 			$link  = $name;
 		}
 		$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
 
-			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 			{
 				$orgs[$i-1] = trim($contributor->org);
 				$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
 				$orgsln_s 	.= trim($contributor->org).' ';
 				$k = $i;
 				$i++;
-			} 
-			else 
+			}
+			else
 			{
 				$k = array_search(trim($contributor->org), $orgs) + 1;
 			}
@@ -108,7 +108,7 @@ if ($this->contributors)
 	}
 
 
-		if (count($names) > 0) 
+		if (count($names) > 0)
 		{
 			$html = '<p>'.ucfirst(JText::_('By')).' ';
 			//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
@@ -116,7 +116,7 @@ if ($this->contributors)
 			$html .= '</p>';
 		}
 
-		if (count($orgs) > 0) 
+		if (count($orgs) > 0)
 		{
 			$html .= '<p class="orgs">';
 			//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
@@ -124,8 +124,8 @@ if ($this->contributors)
 			$html .= '</p>';
 		}
 
-} 
-else 
+}
+else
 {
 	$html = '';
 }

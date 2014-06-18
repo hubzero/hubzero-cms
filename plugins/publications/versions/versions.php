@@ -38,7 +38,7 @@ class plgPublicationsVersions extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -46,25 +46,25 @@ class plgPublicationsVersions extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'versions' );
 		$this->_params = new JParameter( $this->_plugin->params );
 
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true) 
+	 */
+	public function &onPublicationAreas( $publication, $version = 'default', $extended = true)
 	{
-		if ($publication->_category->_params->get('plg_versions')) 
+		if ($publication->_category->_params->get('plg_versions'))
 		{
 			$areas = array(
 				'versions' => JText::_('PLG_PUBLICATION_VERSIONS')
@@ -77,40 +77,40 @@ class plgPublicationsVersions extends JPlugin
 
 	/**
 	 * Return data on a publication view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
 	 * @param      string  	$rtrn      		Data to be returned
 	 * @param      string 	$version 		Version name
 	 * @param      boolean 	$extended 		Whether or not to show panel
-	 * @param      string 	$authorized 	
+	 * @param      string 	$authorized
 	 * @return     array
-	 */	
-	public function onPublication( $publication, $option, $areas, $rtrn='all', 
+	 */
+	public function onPublication( $publication, $option, $areas, $rtrn='all',
 		$version = 'default', $extended = true, $authorized = false )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		
+
 		$database = JFactory::getDBO();
-		
+
 		// Get pub configs
 		$config = JComponentHelper::getParams( $option );
 
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			$objV = new PublicationVersion( $database );
 			$versions = $objV->getVersions( $publication->id, $filters = array('public' => 1));
@@ -123,7 +123,7 @@ class plgPublicationsVersions extends JPlugin
 					'name'=>'browse'
 				)
 			);
-			
+
 			// Are we allowing contributions
 			$view->contributable = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
@@ -133,7 +133,7 @@ class plgPublicationsVersions extends JPlugin
 			$view->versions 	= $versions;
 			$view->config 		= $config;
 			$view->authorized 	= $authorized;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError( $this->getError() );
 			}
@@ -141,7 +141,7 @@ class plgPublicationsVersions extends JPlugin
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
-		
+
 		return $arr;
 	}
 }

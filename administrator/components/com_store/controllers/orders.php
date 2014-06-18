@@ -38,7 +38,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -51,7 +51,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display all orders
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -140,7 +140,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 
 	/**
 	 * Generate a receipt
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function receiptTask()
@@ -224,10 +224,10 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		{
 			$webpath = str_replace(':/', '://', $webpath);
 		}
-		
+
 		//require_once(JPATH_ROOT . DS . 'libraries/tcpdf/tcpdf.php');
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
+
 		$receipt_title  = $this->config->get('receipt_title')  ? $this->config->get('receipt_title')  : 'Your Order' ;
 		$hubaddress = array();
 		$hubaddress[] = $this->config->get('hubaddress_ln1') ? $this->config->get('hubaddress_ln1') : '' ;
@@ -237,12 +237,12 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$hubaddress[] = $this->config->get('hubaddress_ln5') ? $this->config->get('hubaddress_ln5') : '' ;
 		$hubaddress[] = $this->config->get('hubemail') ? $this->config->get('hubemail') : '' ;
 		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '' ;
-		
+
 		$headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
 		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : $jconfig->getValue('config.sitename') ;
 		$footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!' ;
-		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;				
-		
+		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
+
 		// Get front-end template name
 		$sql = "SELECT template FROM `#__templates_menu` WHERE client_id=0";
 		$this->database->setQuery( $sql );
@@ -259,15 +259,15 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			$logo =  JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_store' . DS . 'images' . DS . 'hub-store-logo.png';
 		}
 		*/
-		
+
 		// set default header data
 		$pdf->SetHeaderData(NULL, 0, strtoupper($receipt_title). ' - #' . $id, NULL, array(84, 94, 124), array(146, 152, 169));
 		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
-		
+
 		// set header and footer fonts
 		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-		
+
 		// set margins
 		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 		$pdf->SetHeaderMargin(10);
@@ -278,12 +278,12 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-		
+
 		// Set font
 		$pdf->SetFont('dejavusans', '', 11, '', true);
-		
+
 		$pdf->AddPage();
-		
+
 		// HTML content
 		$this->view->setLayout('receipt');
 		$this->view->hubaddress     = $hubaddress;
@@ -303,10 +303,10 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$pdf->writeHTML($html, true, false, true, false, '');
 
 		// ---------------------------------------------------------
-		
+
 		$dir = JPATH_ROOT . DS . 'site' . DS . 'store' . DS . 'temp';
-		$tempFile = $dir . DS . 'receipt_' . $id . '.pdf'; 
-		
+		$tempFile = $dir . DS . 'receipt_' . $id . '.pdf';
+
 		if (!is_dir( $dir ))
 		{
 			if (!JFolder::create( $dir ))
@@ -316,10 +316,10 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-		
+
 		// Close and output PDF document
 		$pdf->Output($tempFile, 'F');
-		
+
 		if (is_file($tempFile))
 		{
 			$xserver = new \Hubzero\Content\Server();
@@ -335,13 +335,13 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		return;
 	}
 
 	/**
 	 * Display an order
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderTask()
@@ -388,7 +388,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 
 			$this->view->customer = JUser::getInstance($this->view->row->uid);
 
-			// Check available user funds		
+			// Check available user funds
 			$BTL = new \Hubzero\Bank\Teller($this->database, $this->view->row->uid);
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
@@ -451,7 +451,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 			$emailbody .= "\t".JText::_('COM_STORE_ORDER').' '.JText::_('COM_STORE_TOTAL').': '. $cost ."\r\n";
 			$emailbody .= "\t\t".JText::_('COM_STORE_PLACED').': '. JHTML::_('date', $row->ordered, JText::_('COM_STORE_DATE_FORMAT_HZ1'))."\r\n";
 			$emailbody .= "\t\t".JText::_('COM_STORE_STATUS').': ';
-			
+
 			switch ($action)
 			{
 				case 'complete_order':
@@ -460,7 +460,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 					$adjusted = $credit - $hold;
 					$BTL_Q->credit_adjustment($adjusted);
 
-					// remove hold 
+					// remove hold
 					$sql = "DELETE FROM #__users_transactions WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
 					$this->database->setQuery($sql);
 					if (!$this->database->query())
@@ -539,7 +539,7 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 					$emailbody .= JText::_('COM_STORE_EMAIL_CANCELLED').'.'."\r\n";
 					break;
 			}
-			
+
 			if ($data['message'])
 			{ // add custom message
 				$emailbody .= $data['message']."\r\n";

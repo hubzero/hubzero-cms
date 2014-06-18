@@ -58,7 +58,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of latest whiteboard entries
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function recentTask()
@@ -104,15 +104,15 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -124,7 +124,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of collections
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function collectionsTask()
@@ -167,15 +167,15 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -188,7 +188,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for creating an entry
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function aboutTask()
@@ -217,16 +217,16 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$model = CollectionsModel::getInstance();
 
 		$this->view->collections = $model->collections(array(
-			'count' => true, 
-			'access' => 0, 
-			'state' => 1, 
+			'count' => true,
+			'access' => 0,
+			'state' => 1,
 			'is_default' => 0
 		));
 
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -239,13 +239,13 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the authorization level for the user
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -272,7 +272,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($assetType == 'post' || $assetType == 'thread')
 				{

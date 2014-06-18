@@ -51,10 +51,10 @@ $title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
 
 // Main message
 $subtitle  = $this->actor->get('name') . ' ';
-if ($this->project->provisioned) 
+if ($this->project->provisioned)
 {
-	$subtitle .= $this->uid 
-			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR') 
+	$subtitle .= $this->uid
+			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
 			: JText::_('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
 	$subtitle .= ' "'.$this->pub->title.'"';
 }
@@ -66,19 +66,19 @@ else
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group 
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$owner   = $this->project->owned_by_group
+		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
 
 // Get the actual message
-$comment = '';		
-if ($this->uid) 
+$comment = '';
+if ($this->uid)
 {
-	$comment .= $this->project->provisioned 
+	$comment .= $this->project->provisioned
 			? JText::_('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT')."\n"
 			: JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
-else 
+else
 {
 	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
 	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT')."\n";
@@ -86,9 +86,9 @@ else
 $comment .= $link ."\n\n";
 
 // Extras
-$footnote = JText::_('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' ' 
+$footnote = JText::_('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' '
 	. $this->actor->get('name') . '  - ' . $this->actor->get('email') . "\n";
-	
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get project thumbnail
@@ -300,7 +300,7 @@ $bdcolor = '#e1e1e1';
 														</div>
 													</td>
 													<?php } ?>
-													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">														
+													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
 														<?php echo $this->project->alias; ?>
 													</td>
 													<td width="100%" style="padding: 8px;">
@@ -334,7 +334,7 @@ $bdcolor = '#e1e1e1';
 												<tr>
 													<td style="padding: 0 2em;">
 													<?php
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 														{
 															$comment = str_replace("<br />", '', $comment);
 															$comment = $this->escape($comment);
@@ -344,7 +344,7 @@ $bdcolor = '#e1e1e1';
 														}
 													?>
 														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></p>
-													
+
 														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 0.85em;"><?php echo $footnote; ?></p>
 													</td>
 												</tr>

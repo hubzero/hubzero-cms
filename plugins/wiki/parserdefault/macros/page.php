@@ -38,7 +38,7 @@ class PageMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,14 +51,14 @@ class PageMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -72,7 +72,7 @@ class PageMacro extends WikiMacro
 		{
 			$a = trim($a);
 
-			if ($a == 'nolink') 
+			if ($a == 'nolink')
 			{
 				$nolink = true;
 			}
@@ -80,15 +80,15 @@ class PageMacro extends WikiMacro
 
 		// Is it numeric?
 		$scope = '';
-		if (is_numeric($page)) 
+		if (is_numeric($page))
 		{
 			// Yes
 			$page = intval($page);
-		} 
-		else 
+		}
+		else
 		{
 			$page = trim($page, DS);
-			if (strstr($page, '/')) 
+			if (strstr($page, '/'))
 			{
 				$bits = explode('/', $page);
 				$page = array_pop($bits);
@@ -96,7 +96,7 @@ class PageMacro extends WikiMacro
 			}
 		}
 
-		if ($this->domain != '' && $scope == '') 
+		if ($this->domain != '' && $scope == '')
 		{
 			$scope = $this->scope;
 		}
@@ -104,23 +104,23 @@ class PageMacro extends WikiMacro
 		// No, get resource by alias
 		$g = new WikiTablePage($this->_db);
 		$g->load($page, $scope);
-		if (!$g->id) 
+		if (!$g->id)
 		{
 			return '(Page(' . $et . ') failed)';
 		}
 
-		if ($nolink) 
+		if ($nolink)
 		{
 			return stripslashes($g->title);
-		} 
-		else 
+		}
+		else
 		{
 			// Build and return the link
-			if ($g->group_cn != '' && $g->scope != '') 
+			if ($g->group_cn != '' && $g->scope != '')
 			{
 				$link = 'index.php?option=com_groups&scope=' . $g->scope . '&pagename=' . $g->pagename;
-			} 
-			else 
+			}
+			else
 			{
 				$link = 'index.php?option=com_wiki&scope=' . $g->scope . '&pagename=' . $g->pagename;
 			}

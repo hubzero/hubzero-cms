@@ -28,9 +28,9 @@ $html  = '';
 
 // Add new activity count to page title
 $document = JFactory::getDocument();
-$title = $this->project->counts['newactivity'] > 0 
-	&& $this->active == 'feed' 
-	? $this->title . ' (' . $this->project->counts['newactivity'] . ')' 
+$title = $this->project->counts['newactivity'] > 0
+	&& $this->active == 'feed'
+	? $this->title . ' (' . $this->project->counts['newactivity'] . ')'
 	: $this->title;
 $document->setTitle( $title );
 
@@ -44,16 +44,16 @@ $assets = array('files', 'databases', 'tools');
 $assetTabs = array();
 
 // Sort tabs so that asset tabs are together
-foreach ($this->tabs as $tab) 
+foreach ($this->tabs as $tab)
 {
 	if (in_array($tab['name'], $assets))
 	{
 		$assetTabs[] = $tab;
-	}	
+	}
 }
 $a = 0;
 ?>
-<div id="project-wrap">	
+<div id="project-wrap">
 	<div id="project-innerwrap">
 		<div class="main-menu">
 			<?php echo ProjectsHtml::embedProjectImage($this); ?>
@@ -66,8 +66,8 @@ $a = 0;
 					<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
 				</li>
 <?php if ($this->tabs) {
-	foreach ($this->tabs as $tab) 
-	{ 
+	foreach ($this->tabs as $tab)
+	{
 		if ($tab['name'] == 'blog')
 		{
 			continue;
@@ -76,7 +76,7 @@ $a = 0;
 		if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
 		{
 			$a++; // counter for asset tabs
-			
+
 			// Header tab
 			if ($a == 1)
 			{
@@ -92,7 +92,7 @@ $a = 0;
 				?>
 				<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
 					<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
-						<span><?php echo $aTab['title']; ?></span> 
+						<span><?php echo $aTab['title']; ?></span>
 					<?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
 						<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
 					<?php } ?>
@@ -108,7 +108,7 @@ $a = 0;
 ?>
 				<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
 					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
-						<span><?php echo $tab['title']; ?></span> 
+						<span><?php echo $tab['title']; ?></span>
 					<?php if (isset($this->project->counts[$tab['name']]) && $this->project->counts[$tab['name']] != 0) { ?>
 						<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $this->project->counts[$tab['name']]; ?></span></span>
 					<?php } ?>
@@ -122,9 +122,9 @@ $a = 0;
 			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); ?>
 			<?php echo ProjectsHtml::writeMemberOptions($this); ?>
 			<div class="status-msg" id="status-msg">
-				<?php 
+				<?php
 				// Display error or success message
-				if ($this->getError()) { 
+				if ($this->getError()) {
 					echo ('<p class="witherror">' . $this->getError().'</p>');
 				}
 				else if ($this->msg) {
@@ -133,14 +133,14 @@ $a = 0;
 			</div>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
 			<?php if ($this->notification) { echo $this->notification; } ?>
-			<?php if ($this->side_modules) { ?> 
+			<?php if ($this->side_modules) { ?>
 				<div class="aside">
 					<?php echo $this->side_modules; ?>
 				</div>
 				<div class="subject">
 			<?php } ?>
 			<?php if ($this->content) { echo $this->content; } ?>
-			<?php if ($this->active == 'info') { 
+			<?php if ($this->active == 'info') {
 					// Display project info
 					$view = new JView(
 						array(
@@ -151,7 +151,7 @@ $a = 0;
 					$view->goto = $goto;
 					echo $view->loadTemplate();
 			 } ?>
-			<?php if ($this->side_modules) { ?> 
+			<?php if ($this->side_modules) { ?>
 				</div> <!-- / .subject -->
 			<?php } ?>
 				<div class="clear"></div>

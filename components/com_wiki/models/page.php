@@ -47,77 +47,77 @@ class WikiModelPage extends \Hubzero\Base\Model
 {
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_params = null;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_config = null;
 
 	/**
 	 * WikiModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = NULL;
 
 	/**
 	 * Comment count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = NULL;
 
 	/**
 	 * Revisions count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_revisions_count = null;
 
 	/**
 	 * WikiModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_revisions = null;
 
 	/**
 	 * WikiModelRevision
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_revision = null;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = null;
 
 	/**
 	 * WikiModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_authors = null;
 
 	/**
 	 * WikiModelAdapter
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_adapter = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -179,7 +179,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -197,7 +197,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			$key = $scope . '/' . $pagename;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($pagename, $scope);
 		}
@@ -207,7 +207,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Strip punctuation, spaces, make lowercase
-	 * 
+	 *
 	 * @param      string $data Text to normalize
 	 * @return     string
 	 */
@@ -218,12 +218,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isLocked()
 	{
-		if ($this->get('state') == 1) 
+		if ($this->get('state') == 1)
 		{
 			return true;
 		}
@@ -232,12 +232,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isStatic()
 	{
-		if ($this->param('mode') == 'static') 
+		if ($this->param('mode') == 'static')
 		{
 			return true;
 		}
@@ -267,7 +267,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -293,7 +293,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get the pagename without the namespace
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function denamespaced()
@@ -304,7 +304,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Set and get a specific revision
 	 * Defaults to current revision if no version is specified
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function revision($version=null)
@@ -317,11 +317,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 		}
 
 		// If version is specified AND (no revision set or (revision is set and version doesn't match)) ...
-		if ($version 
+		if ($version
 		 && (
-		 		!isset($this->_revision) 
+		 		!isset($this->_revision)
 		 	|| (isset($this->_revision) && $version != $this->_revision->get('version'))
-		 	) 
+		 	)
 		)
 		{
 			$this->_revision = null;
@@ -377,7 +377,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get a revisions for a wiki page
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -433,7 +433,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get a revisions for a wiki page
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -490,7 +490,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list of responses
-	 * 
+	 *
 	 * @param      string $rtrn    Data type to return [count, list]
 	 * @param      array  $filters Filters to apply to query
 	 * @return     mixed Returns an integer or array depending upon format chosen
@@ -523,19 +523,19 @@ class WikiModelPage extends \Hubzero\Base\Model
 				{
 					$total = 0;
 
-					/*if (!($c = $this->get('comments'))) 
+					/*if (!($c = $this->get('comments')))
 					{
 						$c = $this->comments('list', $filters);
 					}*/
 					foreach ($this->comments('list', $filters) as $com)
 					{
 						$total++;
-						if ($com->replies()) 
+						if ($com->replies())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$total++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$total += $rep->replies()->total();
 								}
@@ -551,7 +551,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear) 
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new WikiTableComment($this->_db);
 
@@ -575,7 +575,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tags($what='cloud', $admin=0)
@@ -587,7 +587,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -600,7 +600,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     boolean
 	 */
@@ -611,7 +611,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -622,7 +622,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -633,7 +633,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -656,13 +656,13 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -724,7 +724,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get a param value
-	 * 
+	 *
 	 * @param	   string $key Property to return
 	 * @return     mixed
 	 */
@@ -739,7 +739,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Get a configuration value
-	 * 
+	 *
 	 * @param	   string $key Property to return
 	 * @return     mixed
 	 */
@@ -758,7 +758,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Set permissions for a user
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function access($action='view', $item='page')
@@ -781,7 +781,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			$juser = JFactory::getUser();
 
 			// Check if they are logged in
-			if ($juser->get('guest')) 
+			if ($juser->get('guest'))
 			{
 				// Not logged-in = can only view
 				$this->config()->set('access-check-done', true);
@@ -792,12 +792,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 			if (!$this->config('access-check-done', false))
 			{
 				// Is a group set?
-				if (trim($this->get('group_cn', ''))) 
+				if (trim($this->get('group_cn', '')))
 				{
 					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
 
 					// Is this a group manager?
-					if ($group->is_member_of('managers', $juser->get('id'))) 
+					if ($group->is_member_of('managers', $juser->get('id')))
 					{
 						// Allow access to all options
 						$this->config()->set('access-page-manage', true);
@@ -805,7 +805,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 						$this->config()->set('access-page-delete', true);
 						$this->config()->set('access-page-edit', true);
 						$this->config()->set('access-page-modify', true);
-						
+
 						$this->config()->set('access-comment-view', true);
 						$this->config()->set('access-comment-create', true);
 						$this->config()->set('access-comment-delete', true);
@@ -814,13 +814,13 @@ class WikiModelPage extends \Hubzero\Base\Model
 					else
 					{
 						// Check permissions based on the page mode (knol/wiki)
-						switch ($this->param('mode')) 
+						switch ($this->param('mode'))
 						{
 							// Knowledge article
 							// This means there's a defined set of authors
 							case 'knol':
 								if ($this->get('created_by') == $juser->get('id')
-								 || $this->isAuthor($juser->get('id'))) 
+								 || $this->isAuthor($juser->get('id')))
 								{
 									$this->config()->set('access-page-create', true);
 									$this->config()->set('access-page-delete', true);
@@ -842,7 +842,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 							// Standard wiki
 							default:
 								// 1 = private to group, 2 = ...um, can't remember
-								if ($group->is_member_of('members', $juser->get('id'))) 
+								if ($group->is_member_of('members', $juser->get('id')))
 								{
 									$this->config()->set('access-page-create', true);
 									if ($this->get('state') != 1)
@@ -860,7 +860,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 					}
 				}
 				// Check if they're a site admin (from Joomla)
-				else if ($juser->authorize($option, 'manage')) 
+				else if ($juser->authorize($option, 'manage'))
 				{
 					$this->config()->set('access-page-admin', true);
 					$this->config()->set('access-page-manage', true);
@@ -877,18 +877,18 @@ class WikiModelPage extends \Hubzero\Base\Model
 					$this->config()->set('access-check-done', true);
 				}
 				// No group = Site wiki
-				else 
+				else
 				{
 					$this->config()->set('access-page-create', true);
 
 					// Check permissions based on the page mode (knol/wiki)
-					switch ($this->param('mode')) 
+					switch ($this->param('mode'))
 					{
 						// Knowledge article
 						// This means there's a defined set of authors
 						case 'knol':
 							if ($this->get('created_by') == $juser->get('id')
-							 || $this->isAuthor($juser->get('id'))) 
+							 || $this->isAuthor($juser->get('id')))
 							{
 								$this->config()->set('access-page-delete', true);
 								$this->config()->set('access-page-edit', true);
@@ -926,14 +926,14 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Bind data to the model
-	 * 
+	 *
 	 * @param      mixed $data Object or array
 	 * @return     boolean True on success, False on error
 	 */
 	public function rename($newpagename)
 	{
 		// Are they just changing case of characters?
-		if (!trim($newpagename)) 
+		if (!trim($newpagename))
 		{
 			$this->setError(JText::_('No new name provided.'));
 			return false;
@@ -942,7 +942,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		$newpagename = $this->_tbl->normalize($newpagename);
 
 		// Are they just changing case of characters?
-		if (strtolower($this->get('pagename')) == strtolower($newpagename)) 
+		if (strtolower($this->get('pagename')) == strtolower($newpagename))
 		{
 			$this->setError(JText::_('New name matches old name.'));
 			return false;
@@ -950,7 +950,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		// Check that no other pages are using the new title
 		$p = new WikiModelPage($newpagename, $this->get('scope'));
-		if ($p->exists()) 
+		if ($p->exists())
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . JText::_('CHOOSE_ANOTHER_PAGENAME'));
 			return false;
@@ -1001,7 +1001,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
@@ -1044,7 +1044,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		$path = JPATH_ROOT . DS . trim($this->config('filepath', '/site/wiki'), DS);
 		if (is_dir($path . DS . $this->get('id')))
 		{
-			if (!JFolder::delete($path . DS . $this->get('id'))) 
+			if (!JFolder::delete($path . DS . $this->get('id')))
 			{
 				$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
 			}
@@ -1090,7 +1090,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		$log->action    = (string) $action;
 		$log->actorid   = $user->get('id');
 		$log->comments  = json_encode($data);
-		if (!$log->store()) 
+		if (!$log->store())
 		{
 			$this->setError($log->getError());
 		}
@@ -1146,8 +1146,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 			}
 
 			$this->_adapter = new $cls(
-				$this->get('pagename'), 
-				$this->get('scope'), 
+				$this->get('pagename'),
+				$this->get('scope'),
 				$this->get('group_cn')
 			);
 		}

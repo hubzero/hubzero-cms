@@ -33,77 +33,77 @@ class MwJob extends JTable
 {
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sessnum   = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $jobid     = null;
 
 	/**
 	 * bigint(20)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $superjob  = null;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $username  = null;
 
 	/**
 	 * varchar(40)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $event     = null;
 
 	/**
 	 * smallint(5)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ncpus     = null;
 
 	/**
 	 * varhcar(80)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $venue     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start     = null;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $heartbeat = null;
 
 	/**
 	 * smallint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $active    = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */

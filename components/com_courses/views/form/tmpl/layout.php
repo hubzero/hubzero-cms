@@ -62,7 +62,7 @@ $this->css('form.css')
 			<?php endif; ?>
 		</label>
 		<ol id="pages"<?php echo ($this->readonly) ? ' class="readonly"' : '' ?>>
-			<?php 
+			<?php
 				$tabs = array();
 				$layout = $this->pdf->getPageLayout();
 				$this->pdf->eachPage(function($src, $idx) use(&$tabs, $layout) {
@@ -84,7 +84,7 @@ $this->css('form.css')
 							++$qidx;
 							echo '</div>';
 						}
-					} 
+					}
 					echo '</li>';
 			}); ?>
 		</ol>

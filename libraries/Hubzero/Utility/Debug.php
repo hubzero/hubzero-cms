@@ -52,14 +52,14 @@ class Debug
 
 	/**
 	 * Map of characters to be replaced through strtr
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_nameReplacements = array(
-		'-'  => '', 
-		'_'  => '', 
-		' '  => '', 
-		'\\' => '', 
+		'-'  => '',
+		'_'  => '',
+		' '  => '',
+		'\\' => '',
 		'/'  => ''
 	);
 
@@ -81,7 +81,7 @@ class Debug
 	{
 		static $instance;
 
-		if (!$instance) 
+		if (!$instance)
 		{
 			$instance = new self();
 		}
@@ -113,7 +113,7 @@ class Debug
 
 			$invokable = __NAMESPACE__ . '\\Debug\\' . ucfirst($cName);
 
-			if (!class_exists($invokable)) 
+			if (!class_exists($invokable))
 			{
 				throw new RendererNotFoundException(sprintf(
 					'%s: failed retrieving renderer via invokable class "%s"; class does not exist',
@@ -175,9 +175,9 @@ class Debug
 		$messages = $this->_messages;
 
 		// sort messages by their timestamp
-		usort($messages, function($a, $b) 
+		usort($messages, function($a, $b)
 		{
-			if ($a['time'] === $b['time']) 
+			if ($a['time'] === $b['time'])
 			{
 				return 0;
 			}
@@ -224,7 +224,7 @@ class Debug
 	 */
 	public function render($renderer=null)
 	{
-		if (!$renderer) 
+		if (!$renderer)
 		{
 			$renderer = isset($_SERVER['argv']) && count($_SERVER['argv']) ? 'console' : 'html';
 		}

@@ -43,7 +43,7 @@ class ResourcesTableImportRun extends JTable
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -51,7 +51,7 @@ class ResourcesTableImportRun extends JTable
 	{
 		parent::__construct('#__resource_import_runs', 'id', $db);
 	}
-	
+
 	/**
 	 * [check description]
 	 * @return [type] [description]
@@ -63,10 +63,10 @@ class ResourcesTableImportRun extends JTable
 			$this->setError( JText::_('Import ID # is required for import run.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * [find description]
 	 * @param  array  $filters [description]
@@ -76,11 +76,11 @@ class ResourcesTableImportRun extends JTable
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * [_buildQuery description]
 	 * @param  array  $filters [description]
@@ -91,7 +91,7 @@ class ResourcesTableImportRun extends JTable
 		// var to hold conditions
 		$where = array();
 		$sql   = '';
-		
+
 		// which import?
 		if (isset($filters['import']))
 		{
@@ -103,13 +103,13 @@ class ResourcesTableImportRun extends JTable
 		{
 			$where[] = "dry_run=" . $this->_db->quote($filters['dry_run']);
 		}
-		
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
@@ -118,7 +118,7 @@ class ResourcesTableImportRun extends JTable
 		{
 			$sql .= " ORDER BY ran_at DESC";
 		}
-		
+
 		return $sql;
 	}
 }

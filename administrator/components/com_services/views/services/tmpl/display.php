@@ -35,7 +35,7 @@ JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager' ).': Serv
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {

@@ -139,7 +139,7 @@ $juser = JFactory::getUser();
 				$url .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 
 				$html  = '<a href="' . JRoute::_($url) . '"';
-				if ($this->filters['index'] == '') 
+				if ($this->filters['index'] == '')
 				{
 					$html .= ' class="active-index"';
 				}
@@ -149,7 +149,7 @@ $juser = JFactory::getUser();
 				foreach ($letters as $letter)
 				{
 					$html .= '<a href="' . JRoute::_($url . '&index=' . strtolower($letter)) . '"';
-					if ($this->filters['index'] == strtolower($letter)) 
+					if ($this->filters['index'] == strtolower($letter))
 					{
 						$html .= ' class="active-index"';
 					}
@@ -167,7 +167,7 @@ $juser = JFactory::getUser();
 							echo 'Search for "'.$this->escape($this->filters['search']).'" in ';
 						}
 						?>
-						<?php echo JText::_('Courses'); ?> 
+						<?php echo JText::_('Courses'); ?>
 						<?php
 						if ($this->filters['tag'] != '') {
 							echo 'with tag "'.$this->escape($this->filters['tag']).'"';
@@ -183,7 +183,7 @@ $juser = JFactory::getUser();
 
 				<ol class="courses entries">
 				<?php
-				if ($this->courses->total() > 0) 
+				if ($this->courses->total() > 0)
 				{
 					foreach ($this->courses as $course)
 					{
@@ -228,7 +228,7 @@ $juser = JFactory::getUser();
 									<dd class="instructors">
 								<?php
 									$instructors = $course->instructors();
-									if (count($instructors) > 0) 
+									if (count($instructors) > 0)
 									{
 										$names = array();
 										foreach ($instructors as $i)
@@ -249,8 +249,8 @@ $juser = JFactory::getUser();
 								</p>
 							</article>
 						</li>
-				<?php 
-					} // for loop 
+				<?php
+					} // for loop
 				} else { ?>
 						<p class="warning"><?php echo JText::_('No results found'); ?></p>
 				<?php } ?>
@@ -273,7 +273,7 @@ $juser = JFactory::getUser();
 			</div><!-- / .container -->
 			<div class="container">
 				<h3><?php echo JText::_('Popular Categories'); ?></h3>
-				<?php 
+				<?php
 				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
 				if ($tags) {
 					echo $tags;

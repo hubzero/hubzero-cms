@@ -49,9 +49,9 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATEd_POST', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')) . '">' . $this->escape(stripslashes($item->creator()->get('name'))) . '</a>'); ?>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-					<span class="time"><?php echo $item->created('time'); ?></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+					<span class="time"><?php echo $item->created('time'); ?></span>
+					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
 					<span class="date"><?php echo $item->created('date'); ?></span>
 				</span>
 			</p>
@@ -93,16 +93,16 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
-				</a> 
+				</a>
 				<?php echo JText::_('COM_COLLECTIONS_ONTO'); ?>
 				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-					<span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+					<span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
+					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
 					<span class="date"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 				</span>
 			</p>
@@ -122,13 +122,13 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>">
 						<?php echo $this->escape(stripslashes($cuser->get('name'))); ?>
-					</a> 
+					</a>
 					<?php echo JText::_('COM_COLLECTIONS_SAID'); ?>
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-						<span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
-						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+						<span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span>
+						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
 						<span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
@@ -148,16 +148,16 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<p>
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>
-					</a> 
+					</a>
 					<?php echo JText::_('COM_COLLECTIONS_USER_WILL_SAY'); ?>
 					<br />
 					<span class="entry-date">
-						<?php 
-						$now = JFactory::getDate()->toSql(); 
+						<?php
+						$now = JFactory::getDate()->toSql();
 						?>
-						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span> 
-						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
-						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span> 
+						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span>
+						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
 						<span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>

@@ -36,10 +36,10 @@ defined('_JEXEC') or die('Restricted access');
  */
 class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 {
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -47,48 +47,48 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'reviews' );
 		$this->_params = new JParameter( $this->_plugin->params );
 
 		$this->loadLanguage();
-		
+
 		$this->infolink = '/kb/points/';
 		$upconfig = JComponentHelper::getParams( 'com_members' );
 		$this->banking = $upconfig->get('bankAccounts');
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
-		if ($publication->_category->_params->get('plg_reviews') && $extended) 
+		if ($publication->_category->_params->get('plg_reviews') && $extended)
 		{
 			$areas = array(
 				'reviews' => JText::_('PLG_PUBLICATION_REVIEWS')
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$areas = array();
 		}
 
 		return $areas;
 	}
-	
+
 	/**
 	 * Rate item (AJAX)
-	 * 
-	 * @param      string $option 		
+	 *
+	 * @param      string $option
 	 * @return     array
-	 */	
+	 */
 	public function onPublicationRateItem( $option )
 	{
 		$arr = array(
@@ -100,13 +100,13 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$h->option   = $option;
 		$h->_option  = $option;
 		$h->execute();
-		
+
 		return $arr;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
@@ -114,21 +114,21 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 * @param      string 	$version 		Version name
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_reviews')) 
+				if ($publication->_category->_params->get('plg_reviews'))
 				{
 					$rtrn == 'metadata';
 				}
@@ -138,9 +138,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		
+
 		// Only applicable to latest published version
-		if (!$extended) 
+		if (!$extended)
 		{
 			return $arr;
 		}
@@ -155,17 +155,17 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$r = new PublicationReview( $database );
 		$reviews = $r->getRatings( $publication->id );
-		
+
 		// Are we returning any HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			include_once(__DIR__ . '/models/review.php');
 
 			// Did they perform an action?
 			// If so, they need to be logged in first.
-			if (!$h->loggedin) 
+			if (!$h->loggedin)
 			{
-				$rtrn = JRequest::getVar('REQUEST_URI', 
+				$rtrn = JRequest::getVar('REQUEST_URI',
 					JRoute::_('index.php?option=' . $option . '&id='.$publication->id.'&active=reviews&v=' . $publication->version_number), 'server');
 				$this->redirect(
 					JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
@@ -173,8 +173,8 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 					'warning'
 				);
 				return;
-			} 
-			else 
+			}
+			else
 			{
 				// Instantiate a view
 				$view = new \Hubzero\Plugin\View(
@@ -185,7 +185,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 					)
 				);
 			}
-			
+
 			// Pass the view some info
 			$view->option 		= $option;
 			$view->publication 	= $publication;
@@ -195,7 +195,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			$view->banking 		= $this->banking;
 			$view->infolink 	= $this->infolink;
 			$view->config   	= $this->params;
-			if ($h->getError()) 
+			if ($h->getError())
 			{
 				$view->setError( $h->getError() );
 			}
@@ -203,9 +203,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
-		
+
 		// Build the HTML meant for the "about" tab's metadata overview
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -214,13 +214,13 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 					'name'=>'metadata'
 				)
 			);
-			
-			if ($publication->alias) 
+
+			if ($publication->alias)
 			{
 				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number);
 				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
-			} 
-			else 
+			}
+			else
 			{
 				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number);
 				$url2 = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
@@ -235,10 +235,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 		return $arr;
 	}
-	
+
 	/**
 	 * Get all replies for an item
-	 * 
+	 *
 	 * @param      object  $item     Item to look for reports on
 	 * @param      string  $category Item type
 	 * @param      integer $level    Depth
@@ -253,17 +253,17 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 		$hc = new \Hubzero\Item\Comment($database);
 		$comments = $hc->find(array(
-			'parent'    => ($level == 1 ? 0 : $item->id), 
+			'parent'    => ($level == 1 ? 0 : $item->id),
 			'item_id'   => $id,
 			'item_type' => $category
 		));
 
-		if ($comments) 
+		if ($comments)
 		{
 			foreach ($comments as $comment)
 			{
 				$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
-				if ($abuse) 
+				if ($abuse)
 				{
 					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
 				}
@@ -271,14 +271,14 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		}
 		return $comments;
 	}
-	
+
 	/**
 	 * Get abuse reports for a comment
-	 * 
+	 *
 	 * @param      integer $item     Item to look for reports on
 	 * @param      string  $category Item type
 	 * @return     integer
-	 */	
+	 */
 	public function getAbuseReports($item, $category)
 	{
 		$database = JFactory::getDBO();
@@ -286,14 +286,14 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$ra = new ReportAbuse( $database );
 		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
 	}
-	
+
 	/**
 	 * Get a member thumbnail picture
-	 * 
+	 *
 	 * @param      object  $member    Member to get thumbnail for
 	 * @param      integer $anonymous User is anaonymous
 	 * @return     string
-	 */	
+	 */
 	public function getMemberPhoto( $member, $anonymous = 0 )
 	{
 		return $member->getPicture($anonymous);
@@ -307,14 +307,14 @@ class PlgPublicationsReviewsHelper extends JObject
 {
 	/**
 	 * Container for data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data  = array();
-	
+
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Property name
 	 * @param      mixed  $value    Property value
 	 * @return     void
@@ -326,13 +326,13 @@ class PlgPublicationsReviewsHelper extends JObject
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      unknown $property Property to set
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -340,56 +340,56 @@ class PlgPublicationsReviewsHelper extends JObject
 
 	/**
 	 * Redirect page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function redirect()
 	{
-		if ($this->_redirect != NULL) 
+		if ($this->_redirect != NULL)
 		{
 			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
-	
+
 	/**
 	 * Execute an action
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function execute()
 	{
 		// Incoming action
 		$action = JRequest::getVar( 'action', '' );
 
 		$this->loggedin = true;
-		
+
 		if ($action) {
 			// Check the user's logged-in status
 			$juser = JFactory::getUser();
-			if ($juser->get('guest')) 
+			if ($juser->get('guest'))
 			{
 				$this->loggedin = false;
 				return;
 			}
 		}
-		
+
 		// Perform an action
-		switch ( $action ) 
+		switch ( $action )
 		{
 			case 'addreview':    $this->editreview();   break;
 			case 'editreview':   $this->editreview();   break;
 			case 'savereview':   $this->savereview();   break;
-			case 'deletereview': $this->deletereview(); break;		
+			case 'deletereview': $this->deletereview(); break;
 			case 'savereply': 	 $this->savereply(); 	break;
-			case 'deletereply':  $this->deletereply();  break;	
+			case 'deletereply':  $this->deletereply();  break;
 			case 'rateitem':   	 $this->rateitem();  	break;
 		}
 	}
-	
+
 	/**
 	 * Save a reply
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function savereply()
@@ -400,7 +400,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$juser = JFactory::getUser();
 
 		// Is the user logged in?
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
@@ -412,7 +412,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		// Trim and addslashes all posted items
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
-		if (!$id) 
+		if (!$id)
 		{
 			// Cannot proceed
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
@@ -422,7 +422,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$database = JFactory::getDBO();
 
 		$row = new \Hubzero\Item\Comment($database);
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
 			return;
@@ -437,14 +437,14 @@ class PlgPublicationsReviewsHelper extends JObject
 		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
 
 		// Check for missing (required) fields
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return;
 		}
 
 		// Save the data
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return;
@@ -453,9 +453,9 @@ class PlgPublicationsReviewsHelper extends JObject
 
 	/**
 	 * Delete a reply
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function deletereply()
 	{
 		$database = JFactory::getDBO();
@@ -465,14 +465,14 @@ class PlgPublicationsReviewsHelper extends JObject
 		$replyid = JRequest::getInt( 'refid', 0 );
 
 		// Do we have a review ID?
-		if (!$replyid) 
+		if (!$replyid)
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID') );
 			return;
 		}
 
 		// Do we have a publication ID?
-		if (!$publication->id) 
+		if (!$publication->id)
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
@@ -482,7 +482,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$reply = new \Hubzero\Item\Comment($database);
 
 		$comments = $reply->find(array('parent'=>$replyid, 'item_type'=>'review', 'item_id' => $publication->id));
-		if (count($comments) > 0) 
+		if (count($comments) > 0)
 		{
 			foreach ($comments as $comment)
 			{
@@ -494,9 +494,9 @@ class PlgPublicationsReviewsHelper extends JObject
 
 	/**
 	 * Rate an item
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function rateitem()
 	{
 		$database = JFactory::getDBO();
@@ -509,16 +509,16 @@ class PlgPublicationsReviewsHelper extends JObject
 		$ip   = JRequest::ip();
 		$rid  = JRequest::getInt( 'rid', 0, 'get' );
 
-		if (!$id) 
+		if (!$id)
 		{
 			// Cannot proceed
 			return;
 		}
 
 		// Is the user logged in?
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', 
+			$rtrn = JRequest::getVar('REQUEST_URI',
 				JRoute::_('index.php?option=' . $this->option . '&id='.$rid.'&active=reviews'), 'server');
 			$this->redirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
@@ -526,17 +526,17 @@ class PlgPublicationsReviewsHelper extends JObject
 				'warning'
 			);
 			return;
-		} 
-		else 
+		}
+		else
 		{
 			// Load answer
 			$rev = new PublicationReview( $database );
 			$rev->load( $id );
 			$voted = $rev->getVote ($id, $cat, $juser->get('id'));
 			//&& $rev->created_by != $juser->get('id')
-			if (!$voted && $vote) 
+			if (!$voted && $vote)
 			{
-				require_once( JPATH_ROOT . DS . 'administrator' . DS 
+				require_once( JPATH_ROOT . DS . 'administrator' . DS
 					. 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
 				$v = new Vote( $database );
 				$v->referenceid = $id;
@@ -546,12 +546,12 @@ class PlgPublicationsReviewsHelper extends JObject
 				$v->voted = JFactory::getDate()->toSql();
 				$v->helpful = $vote;
 
-				if (!$v->check()) 
+				if (!$v->check())
 				{
 					$this->setError( $v->getError() );
 					return;
 				}
-				if (!$v->store()) 
+				if (!$v->store())
 				{
 					$this->setError( $v->getError() );
 					return;
@@ -559,7 +559,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			}
 
 			// update display
-			if ($ajax) 
+			if ($ajax)
 			{
 				$response = $rev->getRating( $rid, $juser->get('id'));
 				$view = new \Hubzero\Plugin\View(
@@ -573,56 +573,56 @@ class PlgPublicationsReviewsHelper extends JObject
 				$view->option = $this->_option;
 				$view->item = $response[0];
 				$view->display();
-			} 
-			else 
+			}
+			else
 			{
 				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$rid.'&active=reviews');
 			}
 		}
 	}
-	
+
 	/**
 	 * Edit a review
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function editreview()
 	{
 		// Is the user logged in?
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
-		
+
 		$publication = $this->publication;
-		
+
 		// Do we have an ID?
-		if (!$publication->id) 
+		if (!$publication->id)
 		{
 			// No - fail! Can't do anything else without an ID
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
-		
+
 		// Incoming
 		$myr = JRequest::getInt( 'myrating', 0 );
 
 		$database = JFactory::getDBO();
-		
+
 		$review = new PublicationReview( $database );
 		$review->loadUserReview( $publication->id, $juser->get('id'), $publication->version_id  );
-	
-		if (!$review->id) 
+
+		if (!$review->id)
 		{
 			// New review, get the user's ID
 			$review->created_by = $juser->get('id');
 			$review->publication_id = $publication->id;
 			$review->publication_version_id = $publication->version_id;
 			$review->tags = '';
-		} 
-		else 
+		}
+		else
 		{
 			// Editing a review, do some prep work
 			$review->comment = str_replace('<br />','',$review->comment);
@@ -637,43 +637,43 @@ class PlgPublicationsReviewsHelper extends JObject
 		$this->myreview = $review;
 		return;
 	}
-	
+
 	/**
 	 * Save a review
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function savereview()
 	{
 		// Is the user logged in?
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE') );
 			return;
 		}
-		
+
 		// Incoming
 		$publication_id = JRequest::getInt( 'publication_id', 0 );
-		
+
 		// Do we have a publication ID?
-		if (!$publication_id) 
+		if (!$publication_id)
 		{
 			// No ID - fail! Can't do anything else without an ID
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
-		
+
 		$database = JFactory::getDBO();
-		
+
 		// Bind the form data to our object
 		$row = new PublicationReview( $database );
-		if (!$row->bind( $_POST )) 
+		if (!$row->bind( $_POST ))
 		{
 			$this->setError( $row->getError() );
 			return;
 		}
-		
+
 		// Perform some text cleaning, etc.
 		$row->id        = JRequest::getInt( 'reviewid', 0 );
 		$row->comment   = \Hubzero\Utility\Sanitize::stripAll($row->comment);
@@ -681,48 +681,48 @@ class PlgPublicationsReviewsHelper extends JObject
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 		$row->created_by = $juser->get('id');
-		
+
 		// Check for missing (required) fields
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError( $row->getError() );
 			return;
 		}
 		// Save the data
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError( $row->getError() );
 			return;
 		}
-		
+
 		// Calculate the new average rating for the parent publication
 		$pub = new Publication( $database );
 		$publication = $this->publication;
 		$pub->load($publication_id);
 		$pub->calculateRating();
 		$pub->updateRating();
-		
+
 		// Process tags
 		$tags = trim(JRequest::getVar( 'review_tags', '' ));
-		if ($tags) 
+		if ($tags)
 		{
 			$rt = new PublicationTags( $database );
 			$rt->tag_object($row->created_by, $publication_id, $tags, 1, 0);
 		}
-		
-		// Instantiate a helper object 
+
+		// Instantiate a helper object
 		$helper = new PublicationHelper($database, $publication->version_id, $publication->id);
-		
+
 		// Get version authors
 		$pa = new PublicationAuthor( $database );
 		$users = $pa->getAuthors($publication->version_id, 1, 1, true );
-		
+
 		// Get the HUB configuration
 		$jconfig = JFactory::getConfig();
-		
+
 		// Build the subject
 		$subject = $jconfig->getValue('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
-		
+
 		// Message
 		$juser = JFactory::getUser();
 		$eview = new \Hubzero\Plugin\View(
@@ -737,24 +737,24 @@ class PlgPublicationsReviewsHelper extends JObject
 		$eview->publication = $publication;
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
-		
+
 		// Build the "from" data for the e-mail
 		$from = array();
 		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
-		
+
 		// Send message
 		JPluginHelper::importPlugin( 'xmessage' );
 		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger( 'onSendMessage', array( 
-				'publications_new_comment', 
-				$subject, 
-				$message, 
-				$from, 
-				$users, 
-				$this->_option 
+		if (!$dispatcher->trigger( 'onSendMessage', array(
+				'publications_new_comment',
+				$subject,
+				$message,
+				$from,
+				$users,
+				$this->_option
 			)
-		)) 
+		))
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_FAILED_TO_MESSAGE') );
 		}
@@ -762,48 +762,48 @@ class PlgPublicationsReviewsHelper extends JObject
 
 	/**
 	 * Delete a review
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	public function deletereview()
 	{
 		$database = JFactory::getDBO();
 		$publication = $this->publication;
-		
+
 		// Incoming
 		$reviewid = JRequest::getInt( 'reviewid', 0 );
-		
+
 		// Do we have a review ID?
-		if (!$reviewid) 
+		if (!$reviewid)
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_ID') );
 			return;
 		}
-		
+
 		// Do we have a publication ID?
-		if (!$publication->id) 
+		if (!$publication->id)
 		{
 			$this->setError( JText::_('PLG_PUBLICATION_REVIEWS_NO_RESOURCE_ID') );
 			return;
 		}
-		
+
 		$review = new PublicationReview( $database );
-		
+
 		// Delete the review's comments
 		$reply = new \Hubzero\Item\Comment( $database );
-		
+
 		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $publication->id));
-		if (count($comments1) > 0) 
+		if (count($comments1) > 0)
 		{
 			foreach ($comments1 as $comment1)
 			{
 				$comments2 = $reply->find(array('parent'=>$comment1->id, 'item_type'=>'review', 'item_id' => $publication->id));
-				if (count($comments2) > 0) 
+				if (count($comments2) > 0)
 				{
 					foreach ($comments2 as $comment2)
 					{
 						$comments3 = $reply->find(array('parent'=>$comment2->id, 'item_type'=>'review', 'item_id' => $publication->id));
-						if (count($comments3) > 0) 
+						if (count($comments3) > 0)
 						{
 							foreach ($comments3 as $comment3)
 							{
@@ -826,7 +826,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$pub->load($publication->id);
 		$pub->calculateRating();
 		$pub->updateRating();
-		
+
 		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id.'&active=reviews');
 		return;
 	}

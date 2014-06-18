@@ -38,7 +38,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -50,13 +50,13 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['wish']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.wish', 
-			'wish', 
+			$this->_option . '.' . $this->_controller . '.wish',
+			'wish',
 			0,
 			'int'
 		));
@@ -71,28 +71,28 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		}
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['sortby'] = $this->view->filters['sort'];
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -121,7 +121,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		}
 		$comments1 = $obj->find($filters, 1);
 		$comments = array();
-		if (count($comments1) > 0) 
+		if (count($comments1) > 0)
 		{
 			$pre    = '<span class="treenode">&#8970;</span>&nbsp;';
 			$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -133,7 +133,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 				$comments[] = $comment1;
 
 				$comments2 = $obj->find(array('item_id' => $comment1->item_id, 'item_type' => 'wish', 'parent' => $comment1->id), 1);
-				if (count($comments2) > 0) 
+				if (count($comments2) > 0)
 				{
 					foreach ($comments2 as $comment2)
 					{
@@ -142,7 +142,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 						$comments[] = $comment2;
 
 						$comments3 = $obj->find(array('item_id' => $comment2->item_id, 'item_type' => 'wish', 'parent' => $comment2->id), 1);
-						if (count($comments3) > 0) 
+						if (count($comments3) > 0)
 						{
 							foreach ($comments3 as $comment3)
 							{
@@ -161,13 +161,13 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -181,7 +181,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -191,7 +191,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -206,12 +206,12 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array(0));
 
-			if (is_array($ids) && !empty($ids)) 
+			if (is_array($ids) && !empty($ids))
 			{
 				$id = $ids[0];
 			}
@@ -230,7 +230,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -244,7 +244,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and come back to the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -254,7 +254,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @param      integer $redirect Redirect the page after saving
 	 * @return     void
 	 */
@@ -269,7 +269,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new \Hubzero\Item\Comment($this->database);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -279,7 +279,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$row->anonymous = (isset($fields['anonymous']) && $fields['anonymous']) ? 1 : 0;
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -287,14 +287,14 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect) 
+		if ($redirect)
 		{
 			// Redirect
 			$this->setRedirect(
@@ -309,7 +309,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -322,16 +322,16 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$tbl = new \Hubzero\Item\Comment($this->database);
 
 			// Loop through each ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				$id = intval($id);
 
-				if (!$tbl->delete($id)) 
+				if (!$tbl->delete($id))
 				{
 					JError::raiseError(500, $tbl->getError());
 					return;
@@ -348,17 +348,17 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to publish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unpublishTask()
@@ -368,7 +368,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state of an entry
-	 * 
+	 *
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
@@ -382,7 +382,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''),
@@ -405,7 +405,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Set message
 		switch ($state)
 		{
-			case '-1': 
+			case '-1':
 				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
 			break;
 			case '1':
@@ -425,17 +425,17 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to publish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publicizeTask()
 	{
 		$this->anonTask(0);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function anonymizeTask()
@@ -445,7 +445,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state of an entry
-	 * 
+	 *
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
@@ -459,7 +459,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : '')

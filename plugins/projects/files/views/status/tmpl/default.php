@@ -31,7 +31,7 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_FILES_GIT_STATUS'); ?></h3>
 <form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
-	<fieldset >	
+	<fieldset >
 		<?php echo $this->status; ?>
 		<p class="submitarea">
 			<?php if ($this->ajax) { ?>

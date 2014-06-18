@@ -91,20 +91,20 @@ $this->css('create.css')
 				<?php echo JText::_('COM_CONTRIBUTE_LICENSE_LABEL'); ?>
 				<select name="license" id="license">
 					<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_LICENSE'); ?></option>
-				<?php 
+				<?php
 				$l = array();
 				$c = false;
 				$preview = JText::_('COM_CONTRIBUTE_LICENSE_PREVIEW');
-				foreach ($this->licenses as $license) 
+				foreach ($this->licenses as $license)
 				{
-					if (substr($license->name, 0, 6) == 'custom') 
+					if (substr($license->name, 0, 6) == 'custom')
 					{
 					?>
 					<option value="custom"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo JText::_('Custom'); ?></option>
-					<?php 
+					<?php
 						$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
 						$c = $this->escape(nl2br($license->text));
-					} 
+					}
 				}
 				if (!$c && $this->config->get('cc_license_custom'))
 				{
@@ -114,24 +114,24 @@ $this->css('create.css')
 					$c = $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
 					$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
 				}
-				foreach ($this->licenses as $license) 
+				foreach ($this->licenses as $license)
 				{
-					if (substr($license->name, 0, 6) == 'custom') 
+					if (substr($license->name, 0, 6) == 'custom')
 					{
 						continue;
 					}
-					else 
+					else
 					{
 					?>
 					<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
 					<?php
-					} 
+					}
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
 					if ($params->get('license') == $license->name)
 					{
 						$preview = nl2br($this->escape($license->text));
 					}
-				} 
+				}
 				?>
 				</select>
 				<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
@@ -153,7 +153,7 @@ $this->css('create.css')
 			<h4><?php echo JText::_('COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT'); ?></h4>
 			<p>
 				<?php echo JText::sprintf(
-					'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_ANSWER', 
+					'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_ANSWER',
 					'<a href="' . JRoute::_('index.php?option=' . $this->option) . '">' . JText::_('resources') . '</a>',
 					'<a href="' . JRoute::_('index.php?option=com_whatsnew') . '">' . JText::_('What\'s New') . '</a>'
 				); ?>
@@ -163,16 +163,16 @@ $this->css('create.css')
 			<legend><?php echo JText::_('COM_CONTRIBUTE_AUTHORIZATION_LEGEND'); ?></legend>
 
 			<label for="authorization">
-				<input class="option" type="checkbox" name="authorization" id="authorization" value="1" /> 
-				<span class="required"><?php echo JText::_('COM_CONTRIBUTE_REQUIRED'); ?></span> 
+				<input class="option" type="checkbox" name="authorization" id="authorization" value="1" />
+				<span class="required"><?php echo JText::_('COM_CONTRIBUTE_REQUIRED'); ?></span>
 				<?php echo JText::sprintf(
-					'COM_CONTRIBUTE_AUTHORIZATION_LABEL', 
-					$jconfig->getValue('config.sitename'), 
+					'COM_CONTRIBUTE_AUTHORIZATION_LABEL',
+					$jconfig->getValue('config.sitename'),
 					$jconfig->getValue('config.sitename')
 				); ?><br /><br />
 				<?php echo JText::sprintf(
-					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE', 
-					$jconfig->getValue('config.sitename'), 
+					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
+					$jconfig->getValue('config.sitename'),
 					'<a class="popup 760x560" href="/legal/license">' . JText::_('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
 				); ?>
 			</label>
@@ -181,20 +181,20 @@ $this->css('create.css')
 				<?php echo JText::_('COM_CONTRIBUTE_LICENSE_LABEL'); ?>
 				<select name="license" id="license">
 					<option value=""><?php echo JText::_('COM_CONTRIBUTE_SELECT_LICENSE'); ?></option>
-			<?php 
+			<?php
 				$l = array();
 				$c = false;
 				$preview = JText::_('COM_CONTRIBUTE_LICENSE_PREVIEW');
-				foreach ($this->licenses as $license) 
+				foreach ($this->licenses as $license)
 				{
-					if (substr($license->name, 0, 6) == 'custom') 
+					if (substr($license->name, 0, 6) == 'custom')
 					{
 					?>
 						<option value="custom"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo JText::_('Custom'); ?></option>
-					<?php 
+					<?php
 						$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
 						$c = $this->escape(nl2br($license->text));
-					} 
+					}
 				}
 				if (!$c && $this->config->get('cc_license_custom'))
 				{
@@ -204,18 +204,18 @@ $this->css('create.css')
 					$c = $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
 					$l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(JText::_('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
 				}
-				foreach ($this->licenses as $license) 
+				foreach ($this->licenses as $license)
 				{
-					if (substr($license->name, 0, 6) == 'custom') 
+					if (substr($license->name, 0, 6) == 'custom')
 					{
 						continue;
 					}
-					else 
+					else
 					{
 					?>
 						<option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($license->title); ?></option>
 					<?php
-					} 
+					}
 					$l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
 					if ($params->get('license') == $license->name)
 					{

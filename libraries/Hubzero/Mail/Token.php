@@ -34,7 +34,7 @@ use RuntimeException;
 use HubmailConfig;
 
 /**
- * Hubzero library class for creating a unique token to 
+ * Hubzero library class for creating a unique token to
  * include in emails
  */
 class Token
@@ -51,28 +51,28 @@ class Token
 
 	/**
 	 * Description for '_currentVersion'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_currentVersion;
 
 	/**
 	 * Description for '_iv'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_iv;
 
 	/**
 	 * Description for '_key'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_key;
 
 	/**
 	 * Description for '_blocksize'
-	 * 
+	 *
 	 * @var number
 	 */
 	private $_blocksize;
@@ -93,7 +93,7 @@ class Token
 
 		$file = '/etc/hubmail_gw.conf';
 
-		if (file_exists($file)) 
+		if (file_exists($file))
 		{
 			include_once($file);
 		}
@@ -101,7 +101,7 @@ class Token
 		{
 			throw new RuntimeException(sprintf('File "%s" does not exist', $file));
 		}
-	
+
 		// HubmailConfig is defined here
 		include_once('/etc/hubmail_gw.conf');
 
@@ -146,11 +146,11 @@ class Token
 
 	/**
 	 * Build a unique email token
-	 * 
+	 *
 	 * @param  int    $version
-	 * @param  int    $action 
-	 * @param  int    $userid 
-	 * @param  int    $id     
+	 * @param  int    $action
+	 * @param  int    $userid
+	 * @param  int    $id
 	 * @return string - base 16 string representing token
 	 */
 	public function buildEmailToken($version, $action, $userid, $id)
@@ -179,7 +179,7 @@ class Token
 		$encrypted = mcrypt_generic($cipher, $binaryString);
 		mcrypt_generic_deinit($cipher);
 
-		// Prepend an unencrypted version byte and action byte (in base16) 
+		// Prepend an unencrypted version byte and action byte (in base16)
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
 
 		return $rv;

@@ -46,7 +46,7 @@ $options = "
 xaxis: { ticks: xticks },
 yaxis: { ticks: [[0, ''], [yTickSize, yTickSize]], color: 'transparent', tickDecimals:0, labelWidth: 0 },
 series: {
-	lines: { 
+	lines: {
 		show: true,
 		fill: true,
 		fillColor: fillCol
@@ -58,7 +58,7 @@ grid: {
 	color: 'rgba(0, 0, 0, 0.6)',
 	borderWidth: 0,
 	borderColor: 'transparent',
-	hoverable: hover, 
+	hoverable: hover,
 	clickable: true,
 	minBorderMargin: 10
 },
@@ -74,7 +74,7 @@ tooltip: true,
 ?>
 <div class="pubstats">
 
-<?php if ($this->pubstats) { 
+<?php if ($this->pubstats) {
 ?>
 
 <script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
@@ -86,23 +86,23 @@ tooltip: true,
 <?php if ($this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?php echo JText::_('PLG_MEMBERS_IMPACT_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_PUBLICATIONS_S') . ' ' . JText::_('PLG_MEMBERS_IMPACT_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . JText::_('PLG_MEMBERS_IMPACT_TIMES'); ?>.</p>
 <?php } ?>
-<?php	
+<?php
 	foreach ($this->pubstats as $stat)
 	{
-		$pubthumb = $this->helper->getThumb($stat->publication_id, 
-			$stat->publication_version_id, 
-			$this->pubconfig, 
-			false, 
+		$pubthumb = $this->helper->getThumb($stat->publication_id,
+			$stat->publication_version_id,
+			$this->pubconfig,
+			false,
 			$stat->cat_url
 		);
 		$toDate = strtotime($stat->first_published) > strtotime($this->firstlog) ? $stat->first_published : $this->firstlog;
-		
-		$yTickSize = max($stat->threemonth_views, $stat->twomonth_views, $stat->lastmonth_views, 
-			$stat->thismonth_views, $stat->threemonth_primary, $stat->twomonth_primary, 
+
+		$yTickSize = max($stat->threemonth_views, $stat->twomonth_views, $stat->lastmonth_views,
+			$stat->thismonth_views, $stat->threemonth_primary, $stat->twomonth_primary,
 			$stat->lastmonth_primary, $stat->thismonth_primary);
-		
+
 		$i++;
-		
+
 		?>
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
@@ -114,13 +114,13 @@ tooltip: true,
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><?php 
-						echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>'; 
+					<td><?php
+						echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
 					?></td>
-					
+
 					<td><?php echo '<span class="pubstats-label">' . JText::_('PLG_MEMBERS_IMPACT_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
-					
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, JText::_('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>					
+
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_MEMBERS_IMPACT_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_MEMBERS_IMPACT_SINCE') . ' ' .JHTML::_('date', $toDate, JText::_('DATE_FORMAT_HZ1')) . ' ' . '</span>';  ?></td>
 				</tr>
 				<tr>
 					<td class="pubstats-sh"><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
@@ -132,10 +132,10 @@ tooltip: true,
 							}
 							if (jQuery()) {
 								var $ = jq;
-								
+
 								// Detect Safari browser (interactivity doesn't work somehow)
 								var safari = false;
-								if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) 
+								if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)
 								{
 									safari = true;
 								}
@@ -156,7 +156,7 @@ tooltip: true,
 								      }).appendTo("body").fadeIn(200);
 								 }
 
-								function showLabels(graph, points, append) 
+								function showLabels(graph, points, append)
 								{
 									var graphx = $(graph).offset().left;
 									graphx 	   = graphx + 10;
@@ -171,38 +171,38 @@ tooltip: true,
 											{
 										  		if (k == 0)
 												{
-											  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
+											  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
 														points[k].data[m][1], append)
 										  		}
 												else
 												{
-											 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15, 
+											 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
-														points[k].data[m][1], append) 
+														points[k].data[m][1], append)
 										  		}
 
 											}
 										}
 									}
 								}
-															
-								var data = [[0, <?php echo $stat->threemonth_views; ?>], 
-											[1, <?php echo $stat->twomonth_views; ?>], 
+
+								var data = [[0, <?php echo $stat->threemonth_views; ?>],
+											[1, <?php echo $stat->twomonth_views; ?>],
 											[2, <?php echo $stat->lastmonth_views; ?>],
 											[3, <?php echo $stat->thismonth_views; ?>]];
-								
-								var ph = $('#view-<?php echo $stat->publication_id; ?>');	
-								var xticks 		= [<?php echo $xticks; ?>];									
+
+								var ph = $('#view-<?php echo $stat->publication_id; ?>');
+								var xticks 		= [<?php echo $xticks; ?>];
 								var fillCol 	= "#f8e7b3";
 								var yTickSize 	= <?php echo $yTickSize; ?>;
 								var tipContent 	= '%y';
-								
+
 								if (ph)
 								{
 									var chart = $.plot( ph, [data], {
 										<?php echo $options; ?>
-									}); 
+									});
 
 									// Show labels in Safari
 									if (safari)
@@ -210,11 +210,11 @@ tooltip: true,
 										var points = chart.getData();
 										showLabels(ph, points, '');
 									}
-								}									
+								}
 							}
-						</script>						
+						</script>
 					</td>
-					<td></td>					
+					<td></td>
 					<td><span class="stats-num"><?php echo $stat->thismonth_views; ?></span></td>
 					<td><span class="stats-num"><?php echo $stat->lastmonth_views; ?></span></td>
 					<td><span class="stats-num"><?php echo $stat->total_views; ?></span></td>
@@ -225,32 +225,32 @@ tooltip: true,
 					<script type="text/javascript">
 						if (jQuery()) {
 							var $ = jq;
-														
-							var data = [[0, <?php echo $stat->threemonth_primary; ?>], 
-										[1, <?php echo $stat->twomonth_primary; ?>], 
+
+							var data = [[0, <?php echo $stat->threemonth_primary; ?>],
+										[1, <?php echo $stat->twomonth_primary; ?>],
 										[2, <?php echo $stat->lastmonth_primary; ?>],
 										[3, <?php echo $stat->thismonth_primary; ?>]];
-							
-							var xticks 		= [<?php echo $xticks; ?>];							
+
+							var xticks 		= [<?php echo $xticks; ?>];
 							var ph 			= $('#access-<?php echo $stat->publication_id; ?>');
 							var fillCol 	= "#cdf0c1";
 							var yTickSize 	= <?php echo $yTickSize; ?>;
 							var tipContent 	= '%y';
-							
+
 							if (ph)
 							{
 								var chart = $.plot( ph, [data], {
 									<?php echo $options; ?>,
 									colors: ["#aed3a1"]
-								}); 
-								
+								});
+
 								// Show labels in Safari
 								if (safari)
 								{
 									var points = chart.getData();
 									showLabels(ph, points, '');
 								}
-							}								
+							}
 						}
 					</script></td>
 					<td></td>
@@ -260,7 +260,7 @@ tooltip: true,
 				</tr>
 			</table>
 <?php }
-	
+
  } else { ?>
 	<p><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_NO_INFO'); ?></p>
 <?php } ?>

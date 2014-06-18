@@ -35,15 +35,15 @@ jimport('joomla.plugin.plugin');
 
 /**
  * IpGeoBase plugin for geocode
- * 
- * The IpGeoBaseProvider named ip_geo_base is able to geocode 
+ *
+ * The IpGeoBaseProvider named ip_geo_base is able to geocode
  * IPv4 addresses only, very accurate in Russia.
  */
 class plgGeocodeIpgeobase extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

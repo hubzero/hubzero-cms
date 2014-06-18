@@ -50,7 +50,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -66,7 +66,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onMembersAreas($user, $member)
@@ -93,7 +93,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Perform actions when viewing a member profile
-	 * 
+	 *
 	 * @param      object $user   Current user
 	 * @param      object $member Current member page
 	 * @param      string $option Start of records to pull
@@ -106,10 +106,10 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -120,17 +120,17 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 
 			$this->_option = $option;
 
-			// Which view 
+			// Which view
 			$task = JRequest::getVar('action', '');
 
-			switch ($task) 
+			switch ($task)
 			{
 				case 'view':
 				default:        $arr['html'] = $this->_view($member->get('uidNumber'));   break;
@@ -146,11 +146,11 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * View entries
-	 * 
+	 *
 	 * @param      int $uid
 	 * @return     string
 	 */
-	protected function _view($uid = 0) 
+	protected function _view($uid = 0)
 	{
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -162,7 +162,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		);
 
 		// Start url
-		$route = $this->_project->provisioned 
+		$route = $this->_project->provisioned
 					? 'index.php?option=com_publications&task=submit'
 					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
 
@@ -184,7 +184,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$view->title     = $this->_area['title'];
 		$view->helper    = new PublicationHelper($this->_database);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}

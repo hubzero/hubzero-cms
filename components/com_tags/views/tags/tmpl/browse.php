@@ -67,13 +67,13 @@ $this->filters['sort'] = '';
 					<li>
 						<?php
 							$cls = ($this->filters['sortby'] == 'total') ? ' class="active"' : '';
-							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0)); 
+							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
 						?>
 						<a <?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
 							<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
 						</a>
 					</li>
-					<li> 
+					<li>
 						<?php
 							$cls = ($this->filters['sortby'] == '' || $this->filters['sortby'] == 'raw_tag') ? ' class="active"' : '';
 							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=raw_tag&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
@@ -119,7 +119,7 @@ $this->filters['sort'] = '';
 					</thead>
 					<tbody>
 				<?php
-				if ($this->rows->total()) 
+				if ($this->rows->total())
 				{
 					$cls = 'even';
 					foreach ($this->rows as $row)

@@ -35,7 +35,7 @@ $canDo = KbHelper::getActions('article');
 $text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'));
 
 JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_ARTICLE') . ': ' . $text, 'kb.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -49,16 +49,16 @@ $selected = null;
 var categories = new Array;
 <?php
 	$i = 0;
-	foreach ($this->sections as $section) 
+	foreach ($this->sections as $section)
 	{
-		foreach ($section->children('list', array('state' => -1, 'access' => -1, 'empty' => true)) as $v) 
+		foreach ($section->children('list', array('state' => -1, 'access' => -1, 'empty' => true)) as $v)
 		{
 			echo 'categories[' . $i++ . "] = new Array( '" . $section->get('id') . "','" . addslashes($v->get('id')) . "','" . addslashes($v->get('title')) . "' );\n\t\t";
 		}
 	}
 ?>
 
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -161,8 +161,8 @@ function submitbutton(pressbutton)
 					<th class="key"><?php echo JText::_('COM_KB_CREATOR'); ?>:</th>
 					<td><?php echo $this->escape($this->row->creator('name')); ?></td>
 				</tr>
-		<?php 
-		if ($this->row->exists() && $this->row->get('modified') != '0000-00-00 00:00:00') { 
+		<?php
+		if ($this->row->exists() && $this->row->get('modified') != '0000-00-00 00:00:00') {
 			$modifier = JUser::getInstance($this->row->get('modified_by'));
 		?>
 				<tr>

@@ -36,15 +36,15 @@ jimport('joomla.plugin.plugin');
 /**
  * Baidu plugin for geocode
  *
- * The BaiduProvider named baidu is able to geocode and reverse 
- * geocode street addresses, exclusively in China. A valid api 
+ * The BaiduProvider named baidu is able to geocode and reverse
+ * geocode street addresses, exclusively in China. A valid api
  * key is required.
  */
 class plgGeocodeBaidu extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

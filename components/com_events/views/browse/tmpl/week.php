@@ -128,7 +128,7 @@ $this->css();
 				<select name="category">
 					<option value=""><?php echo JText::_('EVENTS_ALL_CATEGORIES'); ?></option>
 				<?php
-				if ($this->categories) 
+				if ($this->categories)
 				{
 					foreach ($this->categories as $id=>$title)
 					{
@@ -154,8 +154,8 @@ $this->css();
 				$next_year = clone($this_date);
 				$next_year->addMonths( +12 );
 				?>
-				<a class="prv" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR'); ?>">&lsaquo;</a> 
-				<a class="nxt" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTYEAR'); ?>">&rsaquo;</a> 
+				<a class="prv" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$prev_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSYEAR'); ?>">&lsaquo;</a>
+				<a class="nxt" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$next_year->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTYEAR'); ?>">&rsaquo;</a>
 				<?php echo $this->year; ?>
 			</p>
 		</div><!-- / .calendarwrap -->
@@ -185,8 +185,8 @@ $this->css();
 				$next_week = clone($this_date);
 				$next_week->addDays( +7 );
 				?>
-				<a class="prv" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a> 
-				<a class="nxt" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a> 
+				<a class="prv" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$prev_week->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
+				<a class="nxt" href="<?php echo JRoute::_('index.php?option='.$this->option.'&'.$next_week->toDateURL($this->task)); ?>" title="<?php echo JText::_('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
 				<?php echo $this->startdate.' to '.$this->enddate; ?>
 			</p>
 		</div><!-- / .calendarwrap -->

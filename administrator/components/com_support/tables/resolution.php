@@ -42,28 +42,28 @@ class SupportResolution extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id    = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $alias = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -74,14 +74,14 @@ class SupportResolution extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
@@ -98,7 +98,7 @@ class SupportResolution extends JTable
 
 	/**
 	 * Get all resolutions
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getResolutions()
@@ -109,18 +109,18 @@ class SupportResolution extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl";
-		if (isset($filters['order']) && $filters['order'] != '') 
+		if (isset($filters['order']) && $filters['order'] != '')
 		{
 			$query .= " ORDER BY " . $filters['order'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -130,7 +130,7 @@ class SupportResolution extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -143,7 +143,7 @@ class SupportResolution extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

@@ -62,7 +62,7 @@ $this->css()
 
 		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
 			<?php
-			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
+			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
 			{
 				$this->view('_list')
 				     ->set('option', $this->option)
@@ -89,8 +89,8 @@ $this->css()
 			}
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				$this->thread->posts('count', $this->filters), 
-				$this->filters['start'], 
+				$this->thread->posts('count', $this->filters),
+				$this->filters['start'],
 				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
@@ -115,18 +115,18 @@ $this->css()
 			<div class="container">
 				<h4><?php echo JText::_('PLG_GROUPS_FORUM_PARTICIPANTS'); ?></h4>
 				<ul>
-				<?php 
+				<?php
 					$anon = false;
-					foreach ($this->thread->participants() as $participant) 
-					{ 
-						if (!$participant->anonymous) { 
+					foreach ($this->thread->participants() as $participant)
+					{
+						if (!$participant->anonymous) {
 				?>
 					<li>
 						<a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>">
 							<?php echo $this->escape(stripslashes($participant->name)); ?>
 						</a>
 					</li>
-				<?php 
+				<?php
 						} else if (!$anon) {
 							$anon = true;
 				?>
@@ -147,8 +147,8 @@ $this->css()
 			<div class="container">
 				<h4><?php echo JText::_('PLG_GROUPS_FORUM_ATTACHMENTS'); ?></h4>
 				<ul class="attachments">
-				<?php 
-				foreach ($this->thread->attachments() as $attachment) 
+				<?php
+				foreach ($this->thread->attachments() as $attachment)
 				{
 					$cls = 'file';
 					$title = $attachment->get('description', $attachment->get('filename'));
@@ -191,25 +191,25 @@ $this->css()
 				<p class="comment-title">
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-					</strong> 
+					</strong>
 					<span class="permalink">
 						<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span> 
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
-				
+
 				<label for="field_comment">
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
 					echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
 					?>
 				</label>
-				
+
 				<label>
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
-					<?php 
+					<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->thread->tags('string'))) );
@@ -220,7 +220,7 @@ $this->css()
 						}
 					?>
 				</label>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('PLG_GROUPS_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
 					<div class="grouping">
@@ -237,7 +237,7 @@ $this->css()
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 

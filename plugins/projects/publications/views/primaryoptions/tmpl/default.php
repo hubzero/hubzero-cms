@@ -31,28 +31,28 @@ if ($this->duplicateV)
 { ?>
 	<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_DUPLICATE_VERSION').' ('.$this->duplicateV.')'; ?></p>
 <?php }
-elseif ($this->used) 
+elseif ($this->used)
 { ?>
 	<p class="notice">
 		<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_USED'); ?>
-		<?php 
+		<?php
 		$other = '';
 		foreach($this->used as $used) {
-			$other .= ' <a href="' . JRoute::_('index.php?option=' . $this->option 
-				   . a . 'active=publications' . a . 'alias=' . $this->project->alias 
+			$other .= ' <a href="' . JRoute::_('index.php?option=' . $this->option
+				   . a . 'active=publications' . a . 'alias=' . $this->project->alias
 				   . a . 'pid=' . $used->id) . '/?section=content">'
-				   . stripslashes($used->title) . ' (' . $used->id . ')' . '</a>,'; 
-		} 
+				   . stripslashes($used->title) . ' (' . $used->id . ')' . '</a>,';
+		}
 		$other = substr($other,0,strlen($other) - 1);
 		echo $other . '. ';
-		
+
 		if (!$allowDuplicate) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_USED_DUPLICATE_NOT_ALLOWED'); }
 		?>
 	</p>
 	<?php if (!$allowDuplicate) { ?>
 	<input type="hidden" name="used" id="used" value="1" />
 	<?php } ?>
-<?php } 	
+<?php }
 	elseif ($this->cStatus == 2)
 	{ ?>
 		<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_INCOMPLETE_' . strtoupper($this->base)); ?></p>
@@ -72,5 +72,5 @@ elseif ($this->used)
 	<div class="po-ima"></div>
 </div>
 <?php } else { ?>
-<span></span>	
+<span></span>
 <?php } ?>

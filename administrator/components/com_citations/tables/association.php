@@ -38,42 +38,42 @@ class CitationsAssociation extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $cid   = NULL;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $oid   = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $type  = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $tbl = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,22 +84,22 @@ class CitationsAssociation extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->cid) == '') 
+		if (trim($this->cid) == '')
 		{
 			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID'));
 			return false;
 		}
-		if (trim($this->tbl) == '') 
+		if (trim($this->tbl) == '')
 		{
 			$this->setError(JText::_('Association must have a citation type.'));
 			return false;
 		}
-		if (trim($this->oid) == '') 
+		if (trim($this->oid) == '')
 		{
 			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID'));
 			return false;
@@ -109,7 +109,7 @@ class CitationsAssociation extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -118,37 +118,37 @@ class CitationsAssociation extends JTable
 		$query = "";
 
 		$ands = array();
-		if (isset($filters['cid']) && $filters['cid'] != 0) 
+		if (isset($filters['cid']) && $filters['cid'] != 0)
 		{
 			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
 		}
-		if (isset($filters['oid']) && $filters['oid'] != 0) 
+		if (isset($filters['oid']) && $filters['oid'] != 0)
 		{
 			$ands[] = "r.oid=" . $this->_db->Quote($filters['oid']);
 		}
-		if (isset($filters['type']) && $filters['type'] != '') 
+		if (isset($filters['type']) && $filters['type'] != '')
 		{
 			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
 		}
-		if (isset($filters['type']) && $filters['type'] != '') 
+		if (isset($filters['type']) && $filters['type'] != '')
 		{
 			$ands[] = "r.type=" . $this->_db->Quote($filters['type']);
 		}
-		if (isset($filters['table']) && $filters['table'] != '') 
+		if (isset($filters['table']) && $filters['table'] != '')
 		{
 			$ands[] = "r.tbl=" . $this->_db->Quote($filters['table']);
 		}
-		if (count($ands) > 0) 
+		if (count($ands) > 0)
 		{
 			//$query .= " WHERE r.published=1 AND ";
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
-		if (isset($filters['sort']) && $filters['sort'] != '') 
+		if (isset($filters['sort']) && $filters['sort'] != '')
 		{
 			$query .= " ORDER BY " . $filters['sort'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
@@ -158,7 +158,7 @@ class CitationsAssociation extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -172,7 +172,7 @@ class CitationsAssociation extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

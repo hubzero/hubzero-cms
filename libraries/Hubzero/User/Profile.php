@@ -40,7 +40,7 @@ use Hubzero\Utility\String;
 class Profile extends Object
 {
 	// properties
-	
+
 
 	/**
 	 * Description for 'uidNumber'
@@ -48,259 +48,259 @@ class Profile extends Object
 	 * @var unknown
 	 */
 	private $uidNumber = null;
-	
+
 	/**
 	 * Description for 'name'
 	 *
 	 * @var unknown
 	 */
 	private $name = null;
-	
+
 	/**
 	 * Description for 'username'
 	 *
 	 * @var unknown
 	 */
 	private $username = null;
-	
+
 	/**
 	 * Description for 'email'
 	 *
 	 * @var unknown
 	 */
 	private $email = null;
-	
+
 	/**
 	 * Description for 'registerDate'
 	 *
 	 * @var unknown
 	 */
 	private $registerDate = null;
-	
+
 	/**
 	 * Description for 'gidNumber'
 	 *
 	 * @var unknown
 	 */
 	private $gidNumber = null;
-	
+
 	/**
 	 * Description for 'homeDirectory'
 	 *
 	 * @var unknown
 	 */
 	private $homeDirectory = null;
-	
+
 	/**
 	 * Description for 'loginShell'
 	 *
 	 * @var unknown
 	 */
 	private $loginShell = null;
-	
+
 	/**
 	 * Description for 'ftpShell'
 	 *
 	 * @var unknown
 	 */
 	private $ftpShell = null;
-	
+
 	/**
 	 * Description for 'userPassword'
 	 *
 	 * @var string
 	 */
 	private $userPassword = null;
-	
+
 	/**
 	 * Description for 'shadowExpire'
 	 *
 	 * @var unknown
 	 */
 	private $shadowExpire = null;
-	
+
 	/**
 	 * Description for 'gid'
 	 *
 	 * @var unknown
 	 */
 	private $gid = null;
-	
+
 	/**
 	 * Description for 'orgtype'
 	 *
 	 * @var unknown
 	 */
 	private $orgtype = null;
-	
+
 	/**
 	 * Description for 'organization'
 	 *
 	 * @var unknown
 	 */
 	private $organization = null;
-	
+
 	/**
 	 * Description for 'countryresident'
 	 *
 	 * @var unknown
 	 */
 	private $countryresident = null;
-	
+
 	/**
 	 * Description for 'countryorigin'
 	 *
 	 * @var unknown
 	 */
 	private $countryorigin = null;
-	
+
 	/**
 	 * Description for 'gender'
 	 *
 	 * @var unknown
 	 */
 	private $gender = null;
-	
+
 	/**
 	 * Description for 'url'
 	 *
 	 * @var unknown
 	 */
 	private $url = null;
-	
+
 	/**
 	 * Description for 'reason'
 	 *
 	 * @var unknown
 	 */
 	private $reason = null;
-	
+
 	/**
 	 * Description for 'mailPreferenceOption'
 	 *
 	 * @var unknown
 	 */
 	private $mailPreferenceOption = -1;
-	
+
 	/**
 	 * Description for 'usageAgreement'
 	 *
 	 * @var unknown
 	 */
 	private $usageAgreement = null;
-	
+
 	/**
 	 * Description for 'jobsAllowed'
 	 *
 	 * @var unknown
 	 */
 	private $jobsAllowed = null;
-	
+
 	/**
 	 * Description for 'modifiedDate'
 	 *
 	 * @var unknown
 	 */
 	private $modifiedDate = null;
-	
+
 	/**
 	 * Description for 'emailConfirmed'
 	 *
 	 * @var unknown
 	 */
 	private $emailConfirmed = null;
-	
+
 	/**
 	 * Description for 'regIP'
 	 *
 	 * @var unknown
 	 */
 	private $regIP = null;
-	
+
 	/**
 	 * Description for 'regHost'
 	 *
 	 * @var unknown
 	 */
 	private $regHost = null;
-	
+
 	/**
 	 * Description for 'nativeTribe'
 	 *
 	 * @var unknown
 	 */
 	private $nativeTribe = null;
-	
+
 	/**
 	 * Description for 'phone'
 	 *
 	 * @var unknown
 	 */
 	private $phone = null;
-	
+
 	/**
 	 * Description for 'proxyPassword'
 	 *
 	 * @var unknown
 	 */
 	private $proxyPassword = null;
-	
+
 	/**
 	 * Description for 'proxyUidNumber'
 	 *
 	 * @var unknown
 	 */
 	private $proxyUidNumber = null;
-	
+
 	/**
 	 * Description for 'givenName'
 	 *
 	 * @var unknown
 	 */
 	private $givenName = null;
-	
+
 	/**
 	 * Description for 'middleName'
 	 *
 	 * @var unknown
 	 */
 	private $middleName = null;
-	
+
 	/**
 	 * Description for 'surname'
 	 *
 	 * @var unknown
 	 */
 	private $surname = null;
-	
+
 	/**
 	 * Description for 'picture'
 	 *
 	 * @var unknown
 	 */
 	private $picture = null;
-	
+
 	/**
 	 * Description for 'vip'
 	 *
 	 * @var unknown
 	 */
 	private $vip = null;
-	
+
 	/**
 	 * Description for 'public'
 	 *
 	 * @var unknown
 	 */
 	private $public = null;
-	
+
 	/**
 	 * Description for 'params'
 	 *
 	 * @var unknown
 	 */
 	private $params = null;
-	
+
 	/**
 	 * Description for 'note'
 	 *
@@ -323,63 +323,63 @@ class Profile extends Object
 	 * @var unknown
 	 */
 	private $_auxs_bio = null;
-	
+
 	/**
 	 * Description for '_auxv_disability'
 	 *
 	 * @var array
 	 */
 	private $_auxv_disability = array();
-	
+
 	/**
 	 * Description for '_auxv_hispanic'
 	 *
 	 * @var array
 	 */
 	private $_auxv_hispanic = array();
-	
+
 	/**
 	 * Description for '_auxv_race'
 	 *
 	 * @var array
 	 */
 	private $_auxv_race = array();
-	
+
 	/**
 	 * Description for '_auxv_admin'
 	 *
 	 * @var array
 	 */
 	private $_auxv_admin = array();
-	
+
 	/**
 	 * Description for '_auxv_host'
 	 *
 	 * @var array
 	 */
 	private $_auxv_host = array();
-	
+
 	/**
 	 * Description for '_auxv_edulevel'
 	 *
 	 * @var array
 	 */
 	private $_auxv_edulevel = array();
-	
+
 	/**
 	 * Description for '_auxv_role'
 	 *
 	 * @var array
 	 */
 	private $_auxv_role = array();
-	
+
 	/**
 	 * Description for '_password'
 	 *
 	 * @var string
 	 */
 	private $_password = null;
-	
+
 	/**
 	 * Description for '_params'
 	 *
@@ -397,9 +397,9 @@ class Profile extends Object
 	public function setError($error, $key = null)
 	{
 		$bt = debug_backtrace();
-		
+
 		$error = __CLASS__ . "::" . $bt[1]['function'] . "():" . $error;
-		
+
 		array_push($this->_errors, $error);
 	}
 
@@ -412,20 +412,20 @@ class Profile extends Object
 	public function clear()
 	{
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if ('_s_' == substr($property, 0, 3)) // don't touch static variables
 			{
 				continue;
 			}
-			
+
 			unset($this->$property);
 			$this->$property = $value;
 		}
-		
+
 		$objvars = get_object_vars($this);
-		
+
 		foreach ($objvars as $property=>$value)
 		{
 			if (!array_key_exists($property, $classvars))
@@ -433,7 +433,7 @@ class Profile extends Object
 				unset($this->$property);
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -447,13 +447,13 @@ class Profile extends Object
 	private function _mysql_load($user)
 	{
 		$db = \JFactory::getDBO();
-		
+
 		if (empty($user))
 		{
 			$this->setError('No user specified');
 			return false;
 		}
-		
+
 		// zooley: Removed check for >= 0 because profiles without acounts have negative IDs
 		//if (is_numeric($user) && $user >= 0)
 		if (is_numeric($user))
@@ -464,41 +464,41 @@ class Profile extends Object
 		{
 			$query = "SELECT * FROM #__xprofiles WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
 		}
-		
+
 		$db->setQuery($query);
-		
+
 		$result = $db->loadAssoc();
-		
+
 		if ($result === false)
 		{
 			$this->setError('Error retrieving data from xprofiles table: ' . $db->getErrorMsg());
 			return false;
 		}
-		
+
 		if (empty($result))
 		{
 			$this->setError('No such user [' . $user . ']');
 			return false;
 		}
-		
+
 		$this->clear();
-		
+
 		$paramsClass = '\\JParameter';
-		
+
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = '\\JRegistry';
 		}
-		
+
 		$this->_params = new $paramsClass($result['params']);
-		
+
 		foreach ($result as $property=>$value)
 		{
 			$this->set($property, $value);
 		}
-		
+
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if ('_auxv_' == substr($property, 0, 6) || '_auxs_' == substr($property, 0, 6))
@@ -506,9 +506,9 @@ class Profile extends Object
 				$this->$property = false; // this property is loaded on demand
 			}
 		}
-		
+
 		$this->_params->loadINI($this->params);
-		
+
 		return true;
 	}
 
@@ -522,29 +522,29 @@ class Profile extends Object
 	private function _mysql_author_load($authorid)
 	{
 		static $_propertyauthormap = array('uidNumber'=>'id', 'givenName'=>'firstname', 'middleName'=>'middlename', 'surname'=>'lastname', 'organization'=>'org', 'bio'=>'bio', 'url'=>'url', 'picture'=>'picture', 'vip'=>'principal_investigator');
-		
+
 		$db =  \JFactory::getDBO();
-		
+
 		$query = "SELECT * FROM #__author WHERE id=" . $db->Quote($authorid);
-		
+
 		$db->setQuery($query);
-		
+
 		$result = $db->loadAssoc();
-		
+
 		if ($result === false)
 		{
 			$this->setError('Error retrieving data from author table: ' . $db->getErrorMsg());
 			return false;
 		}
-		
+
 		if (empty($result))
 		{
 			$this->setError('No such author [' . $authorid . ']');
 			return false;
 		}
-		
+
 		$this->clear();
-		
+
 		foreach ($_propertyauthormap as $property=>$aproperty)
 		{
 			if (!empty($result[$aproperty]))
@@ -552,7 +552,7 @@ class Profile extends Object
 				$this->set($property, $result[$aproperty]);
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -566,13 +566,13 @@ class Profile extends Object
 	private function _xregistration_load($registration)
 	{
 		static $_propertyregmap = array('username'=>'login', 'name'=>'name', 'email'=>'email', 'orcid'=>'orcid', 'orgtype'=>'orgtype', 'organization'=>'org', 'countryresident'=>'countryresident', 'countryorigin'=>'countryorigin', 'gender'=>'sex', 'url'=>'web', 'reason'=>'reason', 'mailPreferenceOption'=>'mailPreferenceOption', 'usageAgreement'=>'usageAgreement', 'nativeTribe'=>'nativeTribe', 'phone'=>'phone', 'disability'=>'disability', 'hispanic'=>'hispanic', 'race'=>'race', 'admin'=>'admin', 'host'=>'host', 'edulevel'=>'edulevel', 'role'=>'role', 'givenName'=>'givenName', 'middleName'=>'middleName', 'surname'=>'surname');
-		
+
 		if (!is_object($registration))
 		{
 			$this->setError("Invalid XRegistration object");
 			return false;
 		}
-		
+
 		foreach ($_propertyregmap as $property=>$rproperty)
 		{
 			if ($registration->get($rproperty) !== null)
@@ -580,10 +580,10 @@ class Profile extends Object
 				$this->set($property, $registration->get($rproperty));
 			}
 		}
-		
+
 		$this->set('mailPreferenceOption', $this->get('mailPreferenceOption') ? $this->get('mailPreferenceOption') : '-1');
 		$this->set('usageAgreement', $this->get('usageAgreement') ? '1' : '0');
-		
+
 		return true;
 	}
 
@@ -600,9 +600,9 @@ class Profile extends Object
 		{
 			return false;
 		}
-		
+
 		$keys = array('email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName', 'orcid');
-		
+
 		foreach ($keys as $key)
 		{
 			if ($registration->get($key) !== null)
@@ -610,52 +610,52 @@ class Profile extends Object
 				$this->set($key, $registration->get($key));
 			}
 		}
-		
+
 		if ($registration->get('login') !== null)
 		{
 			$this->set('username', $registration->get('login'));
 		}
-		
+
 		if ($registration->get('password') !== null)
 		{
 			$this->set('password', $registration->get('password'));
 		}
-		
+
 		if ($registration->get('org') !== null || $registration->get('orgtext') !== null)
 		{
 			$this->set('organization', $registration->get('org'));
-			
+
 			if ($registration->get('orgtext'))
 			{
 				$this->set('organization', $registration->get('orgtext'));
 			}
 		}
-		
+
 		if ($registration->get('sex') !== null)
 		{
 			$this->set('gender', $registration->get('sex'));
 		}
-		
+
 		if ($registration->get('nativetribe') !== null)
 		{
 			$this->set('nativeTribe', $registration->get('nativetribe'));
 		}
-		
+
 		if ($registration->get('web') !== null)
 		{
 			$this->set('url', $registration->get('web'));
 		}
-		
+
 		if ($registration->get('mailPreferenceOption') !== null)
 		{
 			$this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? $registration->get('mailPreferenceOption') : '-1');
 		}
-		
+
 		if ($registration->get('usageAgreement') !== null)
 		{
 			$this->set('usageAgreement', $registration->get('usageAgreement') ? true : false);
 		}
-		
+
 		return true;
 	}
 
@@ -674,22 +674,22 @@ class Profile extends Object
 			$this->setError('Invalid storage option requested [' . $storage . ']');
 			return false;
 		}
-		
+
 		if ($storage == 'mysql')
 		{
 			return $this->_mysql_load($user);
 		}
-		
+
 		if ($storage == 'author')
 		{
 			return $this->_mysql_load_author($user);
 		}
-		
+
 		if ($storage == 'xregistration')
 		{
 			return $this->_xregistration_load($user);
 		}
-		
+
 		return true;
 	}
 
@@ -706,7 +706,7 @@ class Profile extends Object
 		{
 			return $this->load($user);
 		}
-		
+
 		return true;
 	}
 
@@ -720,17 +720,17 @@ class Profile extends Object
 	{
 		static $instances;
 		static $usernames;
-		
+
 		if (!isset($instances))
 		{
 			$instances = array();
 		}
-		
+
 		if (!isset($usernames))
 		{
 			$usernames = array();
 		}
-		
+
 		// Is this a username?
 		if (!is_numeric($id))
 		{
@@ -739,7 +739,7 @@ class Profile extends Object
 			if (!isset($usernames[$id]))
 			{
 				$user = new self($id);
-				
+
 				// Save
 				$usernames[$id] = $user->get('uidNumber');
 				$instances[$usernames[$id]] = $user;
@@ -747,20 +747,20 @@ class Profile extends Object
 			// Change the $id from username to numeric ID
 			$id = $usernames[$id];
 		}
-		
+
 		// Check for existing record
 		if (empty($instances[$id]) || $instances[$id]->get('uidNumber') != $id)
 		{
 			$user = new self($id);
 			$instances[$id] = $user;
 		}
-		
+
 		// Ensure record has data
 		if (!$instances[$id]->get('uidNumber'))
 		{
 			return false;
 		}
-		
+
 		return $instances[$id];
 	}
 
@@ -773,19 +773,19 @@ class Profile extends Object
 	public function create()
 	{
 		$db =  \JFactory::getDBO();
-		
+
 		$modifiedDate = gmdate('Y-m-d H:i:s');
-		
+
 		if (is_numeric($this->get('uidNumber')))
 		{
 			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) VALUE (" . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($this->get('username')) . ',' . $db->Quote($modifiedDate) . ");";
-			
+
 			$db->setQuery($query);
-			
+
 			if (!$db->query())
 			{
 				$errno = $db->getErrorNum();
-				
+
 				if ($errno == 1062)
 				{
 					$this->setError('uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table');
@@ -794,55 +794,55 @@ class Profile extends Object
 				{
 					$this->setError('Error inserting user data to xprofiles table: ' . $db->getErrorMsg());
 				}
-				
+
 				return false;
 			}
 		}
 		else
 		{
 			$token = uniqid();
-			
+
 			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->Quote($token) . ',' . $db->Quote($modifiedDate) . " FROM #__xprofiles;";
-			
+
 			$db->setQuery($query);
-			
+
 			if (!$db->query())
 			{
 				$this->setError('Error inserting non-user data to xprofiles table: ' . $db->getErrorMsg());
-				
+
 				return false;
 			}
-			
+
 			$query = "SELECT uidNumber from #__xprofiles WHERE username=" . $db->Quote($token) . " AND modifiedDate=" . $db->Quote($modifiedDate);
-			
+
 			$db->setQuery($query);
-			
+
 			$result = $db->loadResultArray();
-			
+
 			if ($result === false)
 			{
 				$this->setError('Error adding data to xprofiles table: ' . $db->getErrorMsg());
-				
+
 				return false;
 			}
-			
+
 			if (count($result) > 1)
 			{
 				$this->setError('Error adding data to xprofiles table: ' . $db->getErrorMsg());
-				
+
 				return false;
 			}
-			
+
 			$this->set('uidNumber', $result[0]);
 		}
-		
+
 		$this->set('modifiedDate', $modifiedDate);
-		
+
 		if ($this->update() === false)
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -887,27 +887,27 @@ class Profile extends Object
 		{
 			return false;
 		}
-		
+
 		$db =  \JFactory::getDBO();
-		
+
 		$modifiedDate = gmdate('Y-m-d H:i:s');
-		
+
 		$this->set('modifiedDate', $modifiedDate);
-		
+
 		$query = "UPDATE #__xprofiles SET ";
-		
+
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		$first = true;
 		$affected = 0;
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if ('_' == substr($property, 0, 1))
 			{
 				continue;
 			}
-			
+
 			if (!$first)
 			{
 				$query .= ',';
@@ -916,7 +916,7 @@ class Profile extends Object
 			{
 				$first = false;
 			}
-			
+
 			if($property == 'params')
 			{
 				if (is_object($this->_params))
@@ -929,7 +929,7 @@ class Profile extends Object
 				}
 				continue;
 			}
-			
+
 			if ($this->get($property) === null)
 			{
 				$query .= "$property=NULL";
@@ -939,55 +939,55 @@ class Profile extends Object
 				$query .= "$property=" . $db->Quote($this->get($property));
 			}
 		}
-		
+
 		$query .= " WHERE uidNumber=" . $db->Quote($this->get('uidNumber')) . ";";
-		
+
 		$db->setQuery($query);
-		
+
 		if (!$db->query())
 		{
 			$this->setError('Error updating data in xprofiles table: ' . $db->getErrorMsg());
 		}
-		
+
 		$affected = $db->getAffectedRows();
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if (('_auxv_' != substr($property, 0, 6)) && ('_auxs_' != substr($property, 0, 6)))
 			{
 				continue;
 			}
-			
+
 			$property = substr($property, 6);
-			
+
 			$first = true;
-			
+
 			$query = "REPLACE INTO #__xprofiles_" . $property . " (uidNumber, " . $property . ") VALUES ";
 			$query_values = "";
-			
+
 			$list = $this->get($property);
-			
+
 			if (!is_array($list))
 			{
 				$list = array($list);
 			}
-			
+
 			foreach ($list as $value)
 			{
 				if (!$first)
 				{
 					$query_values .= ',';
 				}
-				
+
 				$first = false;
-				
+
 				$query_values .= '(' . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($value) . ')';
 			}
-			
+
 			if ($query_values != '')
 			{
 				$db->setQuery($query . $query_values);
-				
+
 				if (!$db->query())
 				{
 					$this->setError("Error updating data in xprofiles $property table: " . $db->getErrorMsg());
@@ -997,25 +997,25 @@ class Profile extends Object
 					$affected += $db->getAffectedRows();
 				}
 			}
-			
+
 			if (property_exists(__CLASS__, '_auxv_' . $property))
 			{
 				foreach ($list as $key=>$value)
 				{
 					$list[$key] = $db->Quote($value);
 				}
-				
+
 				$valuelist = implode($list, ",");
-				
+
 				if (empty($valuelist))
 				{
 					$valuelist = "''";
 				}
-				
+
 				$query = "DELETE FROM #__xprofiles_" . $property . " WHERE uidNumber=" . $this->get('uidNumber') . " AND $property NOT IN ($valuelist);";
-				
+
 				$db->setQuery($query);
-				
+
 				if (!$db->query())
 				{
 					$this->setError("Error deleting data in xprofiles $property table: " . $db->getErrorMsg());
@@ -1026,13 +1026,13 @@ class Profile extends Object
 				}
 			}
 		}
-		
+
 		if ($affected > 0)
 		{
 			\JPluginHelper::importPlugin('user');
 			\JDispatcher::getInstance()->trigger('onAfterStoreProfile', array($this));
 		}
-		
+
 		return true;
 	}
 
@@ -1045,29 +1045,29 @@ class Profile extends Object
 	public function delete()
 	{
 		$db =  \JFactory::getDBO();
-		
+
 		if (!is_numeric($this->get('uidNumber')))
 		{
 			$this->setError("missing required field 'uidNumber'");
 			return false;
 		}
-		
+
 		$classvars = get_class_vars(__CLASS__);
-		
+
 		$affected = 0;
-		
+
 		foreach ($classvars as $property=>$value)
 		{
 			if ('_auxv_' != substr($property, 0, 6) && '_auxs_' != substr($property, 0, 6))
 			{
 				continue;
 			}
-			
+
 			$property = substr($property, 6);
-			
+
 			$query = "DELETE FROM #__xprofiles_$property WHERE uidNumber = '" . $this->get('uidNumber') . "'";
 			$db->setQuery($query);
-			
+
 			if (!$db->query())
 			{
 				$this->setError("Error deleting from xprofiles $property table: " . $db->getErrorMsg());
@@ -1077,10 +1077,10 @@ class Profile extends Object
 				$affected += $db->getAffectedRows();
 			}
 		}
-		
+
 		$query = "DELETE FROM #__xprofiles WHERE uidNumber = '" . $this->get('uidNumber') . "'";
 		$db->setQuery($query);
-		
+
 		if (!$db->query())
 		{
 			$this->setError("Error deleting from xprofiles table: " . $db->getErrorMsg());
@@ -1089,15 +1089,15 @@ class Profile extends Object
 		{
 			$affected += $db->getAffectedRows();
 		}
-		
+
 		if ($affected > 0)
 		{
 			\JPluginHelper::importPlugin('user');
 			\JDispatcher::getInstance()->trigger('onAfterDeleteProfile', array($this));
 		}
-		
+
 		$this->clear();
-		
+
 		return true;
 	}
 
@@ -1201,18 +1201,18 @@ class Profile extends Object
 			{
 				$this->userPassword = '';
 			}
-			
+
 			$this->_password = $value;
-			
+
 			return true;
 		}
-		
+
 		if ('_' == substr($property, 0, 1))
 		{
 			$this->setError("Can't access private properties");
 			return false;
 		}
-		
+
 		if (!property_exists(__CLASS__, $property))
 		{
 			if (property_exists(__CLASS__, '_auxs_' . $property))
@@ -1229,7 +1229,7 @@ class Profile extends Object
 				return false;
 			}
 		}
-		
+
 		if ('_auxv_' == substr($property, 0, 6))
 		{
 			if (empty($value))
@@ -1242,11 +1242,11 @@ class Profile extends Object
 				{
 					$value = array($value);
 				}
-				
+
 				$list = array_unique($value);
 				sort($list);
 				unset($value);
-				
+
 				foreach ($list as $v)
 				{
 					$value[] = strval($v);
@@ -1255,14 +1255,14 @@ class Profile extends Object
 		}
 		else
 			$value = strval($value);
-		
+
 		$this->$property = $value;
-		
+
 		if ($property == 'userPassword')
 		{
 			$this->_password = '';
 		}
-		
+
 		return true;
 	}
 
@@ -1281,43 +1281,43 @@ class Profile extends Object
 			$this->setError("Can't access private properties");
 			return false;
 		}
-		
+
 		if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, '_auxs_' . $property))
 		{
 			$this->setError("Can't add value(s) to non-array property.");
 			return false;
 		}
-		
+
 		if (!property_exists(__CLASS__, '_auxv_' . $property))
 		{
 			$this->setError("Unknown property: $property");
 			return false;
 		}
-		
+
 		if (empty($value))
 		{
 			return true;
 		}
-		
+
 		if (!is_array($value))
 		{
 			$value = array($value);
 		}
-		
+
 		$property = '_auxv_' . $property;
-		
+
 		foreach ($value as $v)
 		{
 			$v = strval($v);
-			
+
 			if (!in_array($v, $this->$property))
 			{
 				array_push($this->$property, $v);
 			}
 		}
-		
+
 		sort($this->$property);
-		
+
 		return true;
 	}
 
@@ -1336,41 +1336,41 @@ class Profile extends Object
 			$this->setError("Can't access private properties");
 			return false;
 		}
-		
+
 		if (property_exists(__CLASS__, $property) || property_exists(__CLASS__, '_auxs_' . $property))
 		{
 			$this->setError("Can't remove value(s) from non-array property.");
 			return false;
 		}
-		
+
 		if (!property_exists(__CLASS__, '_auxv_' . $property))
 		{
 			$this->setError("Unknown property: $property");
 			return false;
 		}
-		
+
 		if (!isset($value))
 		{
 			return true;
 		}
-		
+
 		if (!is_array($value))
 		{
 			$value = array($value);
 		}
-		
+
 		$property = '_auxv_' . $property;
-		
+
 		foreach ($value as $v)
 		{
 			$v = strval($v);
-			
+
 			if (in_array($v, $this->$property))
 			{
 				$this->$property = array_diff($this->$property, array($v));
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -1424,7 +1424,7 @@ class Profile extends Object
 	public function &getParameters($loadsetupfile = false, $path = null)
 	{
 		static $parampath;
-		
+
 		/*
 
                 // Set a custom parampath if defined
@@ -1450,7 +1450,7 @@ class Profile extends Object
                 }
 
 		*/
-		
+
 		return $this->_params;
 	}
 
@@ -1465,9 +1465,9 @@ class Profile extends Object
 	{
 		$this->_params = $params;
 	}
-	
+
 	/* Member Roles */
-	
+
 	/**
 	 * Short description for 'getGroupMemberRoles'
 	 * Long description (if any) ...
@@ -1481,10 +1481,10 @@ class Profile extends Object
 		$db = \JFactory::getDBO();
 		$sql = "SELECT r.id, r.name, r.permissions FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.roleid AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
-		
+
 		return $db->loadAssocList();
 	}
-	
+
 	/**
 	 * Check to see if user has permission to perform task
 	 *
@@ -1495,11 +1495,11 @@ class Profile extends Object
 	public static function userHasPermissionForGroupAction( $group, $action )
 	{
 		//get user roles
-		$roles = self::getGroupMemberRoles( 
-			\JFactory::getUser()->get('id'), 
+		$roles = self::getGroupMemberRoles(
+			\JFactory::getUser()->get('id'),
 			$group->get('gidNumber')
 		);
-		
+
 		// check to see if any of our roles for user has permission for action
 		foreach ($roles as $role)
 		{
@@ -1523,13 +1523,13 @@ class Profile extends Object
 	public function getCourseMemberRoles($uid, $gid)
 	{
 		$user_roles = '';
-		
+
 		$db =  \JFactory::getDBO();
 		$sql = "SELECT r.id, r.role FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
 		$db->setQuery($sql);
-		
+
 		$roles = $db->loadAssocList();
-		
+
 		if ($roles)
 		{
 			return $roles;
@@ -1545,12 +1545,12 @@ class Profile extends Object
 	public function getGroups($role = 'all')
 	{
 		static $groups;
-		
+
 		if (!isset($groups))
 		{
 			$groups = array('applicants'=>array(), 'invitees'=>array(), 'members'=>array(), 'managers'=>array(), 'all'=>array());
 			$groups['all'] = Helper::getGroups($this->get('uidNumber'), 'all', 1);
-			
+
 			if ($groups['all'])
 			{
 				foreach ($groups['all'] as $item)
@@ -1580,18 +1580,18 @@ class Profile extends Object
 				}
 			}
 		}
-		
+
 		if ($role)
 		{
 			return (isset($groups[$role])) ? $groups[$role] : false;
 		}
-		
+
 		return $groups;
 	}
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string

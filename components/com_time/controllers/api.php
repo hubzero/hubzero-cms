@@ -40,7 +40,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute!
-	 * 
+	 *
 	 * @return void
 	 */
 	function execute()
@@ -88,7 +88,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get time records
-	 * 
+	 *
 	 * @return array of records objects
 	 */
 	private function indexRecords()
@@ -139,7 +139,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get the time records (formatted for building reporting bills)
-	 * 
+	 *
 	 * @return 200 ok with success - include records retrieved
 	 */
 	private function indexRecordsForBill()
@@ -221,7 +221,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Save a time record
-	 * 
+	 *
 	 * @return 201 created on success
 	 */
 	private function saveRecord()
@@ -266,7 +266,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get time tasks
-	 * 
+	 *
 	 * @return array of tasks objects
 	 */
 	private function indexTasks()
@@ -315,7 +315,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get time hubs
-	 * 
+	 *
 	 * @return array of hubs objects
 	 */
 	private function indexHubs()
@@ -352,7 +352,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get single hub
-	 * 
+	 *
 	 * @return object - single hub instance
 	 */
 	private function showHub()
@@ -409,7 +409,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Save hub contact function
-	 * 
+	 *
 	 * @return 201 created on success (include newly created object in body)
 	 */
 	private function saveContact()
@@ -448,7 +448,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get the list of users in the 'time' group
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function indexTimeUsers()
@@ -485,7 +485,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Method for getting possible unique values based on table and column
-	 * 
+	 *
 	 * @return 200 on success
 	 */
 	private function getValues()
@@ -538,7 +538,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Default method - not found
-	 * 
+	 *
 	 * @return 404 error
 	 */
 	private function method_not_found()
@@ -550,7 +550,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Helper function to check whether or not someone is using oauth and in the 'time' group
-	 * 
+	 *
 	 * @return bool - true if in group, false otherwise
 	 */
 	private function authorize()

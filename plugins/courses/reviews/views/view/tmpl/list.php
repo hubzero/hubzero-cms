@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->comments) { ?>
 	<ol class="comments">
-	<?php 
+	<?php
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -42,7 +42,7 @@ if ($this->comments) { ?>
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$this->view('item')
 		     ->set('option', $this->option)

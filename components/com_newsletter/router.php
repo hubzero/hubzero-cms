@@ -34,9 +34,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 function NewsletterBuildRoute(&$query)
 {
 	$segments = array();
-    
-	if (!empty($query['id'])) 
-	{   
+
+	if (!empty($query['id']))
+	{
 		$database = JFactory::getDBO();
 		$sql = "SELECT `alias` FROM #__newsletters WHERE id=" . $database->quote( $query['id'] );
 		$database->setQuery($sql);
@@ -44,7 +44,7 @@ function NewsletterBuildRoute(&$query)
 		$segments[] = strtolower(str_replace(" ", "", $campaign));
 		unset($query['id']);
 	}
-	
+
 	if (!empty($query['task']))
 	{
 		if (in_array($query['task'], array('subscribe','unsubscribe','resendconfirmation')))
@@ -53,26 +53,26 @@ function NewsletterBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
-	
+
 	return $segments;
 }
 
 function NewsletterParseRoute($segments)
 {
 	$vars = array();
-	
+
 	if (empty($segments))
-	{	
+	{
     	return $vars;
 	}
-	
-	if (isset($segments[0])) 
+
+	if (isset($segments[0]))
 	{
 		$database = JFactory::getDBO();
 		$sql = "SELECT `id` FROM #__newsletters WHERE alias=" . $database->quote( $segments[0] );
 		$database->setQuery($sql);
 		$campaignId = $database->loadResult();
-		
+
 		if ($campaignId)
 		{
 			$vars['id'] = $campaignId;

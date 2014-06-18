@@ -325,7 +325,7 @@ class Base
 							'user'     => $config->getValue('user'),
 							'password' => $config->getValue('password'),
 							'database' => $config->getValue('db')
-						) 
+						)
 					);
 
 					$table = new \JTableMenu($database);
@@ -542,7 +542,7 @@ class Base
 						'user'     => $config->getValue('user'),
 						'password' => $config->getValue('password'),
 						'database' => $config->getValue('db')
-					) 
+					)
 				);
 
 				$table = new \JTableMenu($database);
@@ -596,7 +596,7 @@ class Base
 	 * Remove template entires from the appropriate tables
 	 *
 	 * @param $name   - (string) template element name
-	 * @param $client - (int) client id 
+	 * @param $client - (int) client id
 	 * @return bool
 	 **/
 	public function deleteTemplateEntry($element, $client=1)

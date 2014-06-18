@@ -47,9 +47,9 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 		$app->redirect( 'index.php', JText::_('ALERTNOTAUTH') );
 	}
 }
-else 
+else
 {
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	if (!JFactory::getUser()->authorise('core.manage', $option))
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}

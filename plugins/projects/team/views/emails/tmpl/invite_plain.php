@@ -50,27 +50,27 @@ else
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $message  = $this->actor->get('name') . ' ';
-if ($this->project->provisioned) 
+if ($this->project->provisioned)
 {
-	$message .= $this->uid 
-			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR') 
+	$message .= $this->uid
+			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
 			: JText::_('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
-	$message .= ' "'.$this->pub->title.'"';	
+	$message .= ' "'.$this->pub->title.'"';
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
-else 
+else
 {
 	$message .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
 	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');	
+	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 	$message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.')'."\n";
 	$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
 			 .JHTML::_('date', $this->project->created, $dateFormat, $tz).' '.JText::_('COM_PROJECTS_BY').' ';
-	$message .= $this->project->owned_by_group 
-			 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+	$message .= $this->project->owned_by_group
+			 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			 : $this->project->fullname;
 	$message .= "\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n\n";
@@ -79,13 +79,13 @@ else
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-if ($this->uid) 
+if ($this->uid)
 {
-	$message .= $this->project->provisioned 
+	$message .= $this->project->provisioned
 			? JText::_('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT')."\n"
 			: JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
-else 
+else
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT').' '.$this->hubShortName.' ';
 	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT')."\n";

@@ -38,13 +38,13 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display the database migration log
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -87,7 +87,7 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
+			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
@@ -98,7 +98,7 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 
 	/**
 	 * Perform rollback
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function migrateTask()

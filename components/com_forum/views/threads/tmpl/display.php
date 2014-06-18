@@ -53,7 +53,7 @@ $this->thread->set('category', $this->category->get('alias'));
 </header>
 
 <?php
-	foreach ($this->notifications as $notification) 
+	foreach ($this->notifications as $notification)
 	{
 		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 	}
@@ -65,7 +65,7 @@ $this->thread->set('category', $this->category->get('alias'));
 		</h3>
 		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
 			<?php
-			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0) 
+			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
 			{
 				$this->view('_list')
 				     ->set('option', $this->option)
@@ -93,8 +93,8 @@ $this->thread->set('category', $this->category->get('alias'));
 
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				$this->thread->posts('count', $this->filters), 
-				$this->filters['start'], 
+				$this->thread->posts('count', $this->filters),
+				$this->filters['start'],
 				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
@@ -112,7 +112,7 @@ $this->thread->set('category', $this->category->get('alias'));
 		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<?php
-				$anon = (!$juser->get('guest') ? 0 : 1); 
+				$anon = (!$juser->get('guest') ? 0 : 1);
 				$now  = JFactory::getDate();
 				?>
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_FORUM_USER_PHOTO'); ?>" />
@@ -125,11 +125,11 @@ $this->thread->set('category', $this->category->get('alias'));
 				<p class="comment-title">
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
-					</strong> 
+					</strong>
 					<span class="permalink">
-						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span> 
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
@@ -143,9 +143,9 @@ $this->thread->set('category', $this->category->get('alias'));
 
 				<label>
 					<?php echo JText::_('COM_FORUM_FIELD_YOUR_TAGS'); ?>
-					<?php 
+					<?php
 						$tags = $this->thread->tags('string');
-						
+
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)) );
@@ -176,7 +176,7 @@ $this->thread->set('category', $this->category->get('alias'));
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 					<?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 
@@ -226,18 +226,18 @@ $this->thread->set('category', $this->category->get('alias'));
 		<div class="container">
 			<h3><?php echo JText::_('COM_FORUM_PARTICIPANTS'); ?></h3>
 			<ul>
-			<?php 
+			<?php
 				$anon = false;
-				foreach ($this->thread->participants() as $participant) 
-				{ 
-					if (!$participant->anonymous) { 
+				foreach ($this->thread->participants() as $participant)
+				{
+					if (!$participant->anonymous) {
 			?>
 				<li>
 					<a class="member" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>">
 						<?php echo $this->escape(stripslashes($participant->name)); ?>
 					</a>
 				</li>
-			<?php 
+			<?php
 					} else if (!$anon) {
 						$anon = true;
 			?>
@@ -258,8 +258,8 @@ $this->thread->set('category', $this->category->get('alias'));
 		<div class="container">
 			<h3><?php echo JText::_('COM_FORUM_ATTACHMENTS'); ?></h3>
 			<ul class="attachments">
-			<?php 
-			foreach ($this->thread->attachments() as $attachment) 
+			<?php
+			foreach ($this->thread->attachments() as $attachment)
 			{
 				$cls = 'file';
 				$title = trim($attachment->get('description', $attachment->get('filename')));

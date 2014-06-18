@@ -37,14 +37,14 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 
 /**
  * Short description for 'ToolsController'
- * 
+ *
  * Long description (if any) ...
  */
 class ToolsControllerHosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of hosts
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -52,42 +52,42 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
-		
+
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['hostname']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.hostname', 
-			'hostname', 
+			$this->_option . '.' . $this->_controller . '.hostname',
+			'hostname',
 			''
 		));
 		$this->view->filters['hosttype']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.hosttype', 
-			'hosttype', 
+			$this->_option . '.' . $this->_controller . '.hosttype',
+			'hosttype',
 			''
 		));
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'hostname'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['limit']        = ($this->view->filters['limit'] == 'all') ? 0 : $this->view->filters['limit'];
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
@@ -109,8 +109,8 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -129,7 +129,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Check the status of a host
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function statusTask()
@@ -137,7 +137,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Incoming
 		$this->view->hostname = JRequest::getVar('hostname', '', 'get');
 
-		// $hostname is eventually used in a string passed to an exec call, we gotta 
+		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
 		$this->view->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $this->view->hostname);
 
@@ -159,7 +159,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Execute a middleware command
-	 * 
+	 *
 	 * @param      string $comm      Command to execute
 	 * @param      array  &$fnoutput Command output
 	 * @return     integer 1 = success, 0 = failure
@@ -172,7 +172,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		exec("/bin/sh ../components/" . $this->_option . "/scripts/mw $comm 2>&1 </dev/null", $output, $status);
 
 		$outln = 0;
-		if ($status != 0) 
+		if ($status != 0)
 		{
 			$retval = 0;
 		}
@@ -181,17 +181,17 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		foreach ($output as $line)
 		{
 			// If it's a new session, catch the session number...
-			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess)) 
+			if (($retval == 1) && preg_match("/^Session is ([0-9]+)/",$line,$sess))
 			{
 				$retval = $sess[1];
-			} 
-			else 
+			}
+			else
 			{
-				if ($status != 0) 
+				if ($status != 0)
 				{
 					$fnoutput[$outln] = $line;
-				} 
-				else 
+				}
+				else
 				{
 					$fnoutput[$outln] = $line;
 				}
@@ -204,7 +204,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -214,7 +214,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -230,12 +230,12 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$hostname = JRequest::getVar('hostname', '', 'get');
 
-			// $hostname is eventually used in a string passed to an exec call, we gotta 
+			// $hostname is eventually used in a string passed to an exec call, we gotta
 			// clean at least some of it. See RFC 1034 for valid character set info
 			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
@@ -248,7 +248,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		$v = new MwZones($mwdb);
 		$this->view->zones = $v->find('list');
-		
+
 		//make sure we have a hostname
 		if($this->view->row->hostname != '')
 		{
@@ -256,13 +256,13 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			$sql = "select appname, count(*) as count from session where exechost='" . $this->view->row->hostname . "' group by appname";
 			$this->database->setQuery($sql);
 			$this->view->toolCounts = $this->database->loadObjectList();
-			
+
 			//get status counts
 			$sql = "select status, count(*) as count from display where hostname='" . $this->view->row->hostname . "' group by status";
 			$this->database->setQuery($sql);
 			$this->view->statusCounts = $this->database->loadObjectList();
 		}
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -278,7 +278,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -293,19 +293,19 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		$row = new MwHost($mwdb);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		// $hostname is eventually used in a string passed to an exec call, we gotta 
+		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
 		$row->hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $row->hostname);
 		$fields['id'] = preg_replace("/[^A-Za-z0-9-.]/", '', $fields['id']);
 
-		if (!$row->hostname) 
+		if (!$row->hostname)
 		{
 			$this->addComponentMessage(Jtext::_('You must specify a valid hostname.'), 'error');
 			$this->editTask($row);
@@ -313,7 +313,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Figure out the hosttype stuff.
-		$hosttype = JRequest::getVar('hosttype', array(), 'post');	
+		$hosttype = JRequest::getVar('hosttype', array(), 'post');
 		$harr = array();
 		foreach ($hosttype as $name => $value)
 		{
@@ -328,7 +328,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			for ($i=0; $i < count($rows); $i++)
 			{
 				$arow = $rows[$i];
-				if (isset($harr[$arow->name])) 
+				if (isset($harr[$arow->name]))
 				{
 					$row->provisions += $arow->value;
 				}
@@ -336,13 +336,13 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		$insert = false;
-		if (!$fields['id']) 
+		if (!$fields['id'])
 		{
 			$insert = true;
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -350,7 +350,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store($insert, $fields['id'])) 
+		if (!$row->store($insert, $fields['id']))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -366,7 +366,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Toggle a hostname provision
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function toggleTask()
@@ -374,14 +374,14 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Incoming
 		$hostname = JRequest::getVar('hostname', '', 'get');
 		$item = JRequest::getVar('item', '', 'get');
-		// $hostname is eventually used in a string passed to an exec call, we gotta 
+		// $hostname is eventually used in a string passed to an exec call, we gotta
 		// clean at least some of it. See RFC 1034 for valid character set info
 		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
 		// Get the middleware database
 		$mwdb = MwUtils::getMWDBO();
 
-		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" . 
+		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" .
 				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
 		$mwdb->setQuery($query);
 		if (!$mwdb->queryBatch())
@@ -401,7 +401,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more hostname records
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -414,15 +414,15 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		$mwdb = MwUtils::getMWDBO();
 
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$row = new MwHost($mwdb);
 
 			// Loop through each ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				$id = preg_replace("/[^A-Za-z0-9-.]/", '', $id);
-				if (!$row->delete($id)) 
+				if (!$row->delete($id))
 				{
 					JError::raiseError(500, $row->getError());
 					return;

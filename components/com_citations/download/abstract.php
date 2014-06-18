@@ -38,21 +38,21 @@ abstract class CitationsDownloadAbstract
 {
 	/**
 	 * Mime type
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_mime = '';
 
 	/**
 	 * File extension
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_extension = '';
 
 	/**
 	 * Set the mime type
-	 * 
+	 *
 	 * @param      string $mime Value to set
 	 * @return     void
 	 */
@@ -63,7 +63,7 @@ abstract class CitationsDownloadAbstract
 
 	/**
 	 * Get the mime type
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getMimeType()
@@ -73,7 +73,7 @@ abstract class CitationsDownloadAbstract
 
 	/**
 	 * Set the file extension
-	 * 
+	 *
 	 * @param      string $ext Value to set
 	 * @return     void
 	 */
@@ -84,7 +84,7 @@ abstract class CitationsDownloadAbstract
 
 	/**
 	 * Get the file extension
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getExtension()
@@ -94,7 +94,7 @@ abstract class CitationsDownloadAbstract
 
 	/**
 	 * Format the file
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function format($row)

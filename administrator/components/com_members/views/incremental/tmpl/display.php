@@ -46,7 +46,7 @@ $groupDefs = $groups->getAllGroups();
 ?>
 <script type="text/javascript">
 	var possibleCols = <?php echo json_encode($possibleCols); ?>;
-	
+
 	function submitbutton(pressbutton) {
 		submitform(pressbutton);
 	}
@@ -56,7 +56,7 @@ $groupDefs = $groups->getAllGroups();
 		while (ul.tagName != 'UL') {
 			ul = ul.previousSibling;
 		}
-		
+
 		var sel = document.createElement('select');
 		sel.setAttribute('style', 'width: 300px');
 		var opt = document.createElement('option');
@@ -102,7 +102,7 @@ $groupDefs = $groups->getAllGroups();
 					if (buts[sidx].getAttribute('class') == 'add-field') {
 						buts[sidx].onclick = function() {
 							addField(this, idx - 1);
-							return false;	
+							return false;
 						};
 					}
 				}
@@ -125,7 +125,7 @@ $groupDefs = $groups->getAllGroups();
 		var hours = document.createElement('input');
 		hours.setAttribute('name', 'group-hours-0');
 		hours.setAttribute('style', 'width: 40px');
-		p.appendChild(hours);	
+		p.appendChild(hours);
 		var unit = document.createElement('select');
 		unit.setAttribute('name', 'group-time-unit-0');
 		unit.setAttribute('style', 'width: 100px');
@@ -141,7 +141,7 @@ $groupDefs = $groups->getAllGroups();
 		var fields = document.createElement('ul');
 		fields.setAttribute('style', 'margin-top: 0; margin-left: 40px; margin-bottom: 0');
 		var fieldLi = document.createElement('li');
-		fields.appendChild(fieldLi);	
+		fields.appendChild(fieldLi);
 		var fieldSel = document.createElement('select');
 		fieldSel.setAttribute('name', 'group-cols-0[]');
 		fieldSel.setAttribute('style', 'width: 300px');
@@ -164,20 +164,20 @@ $groupDefs = $groups->getAllGroups();
 		fieldLi.appendChild(fieldSel);
 		fieldLi.appendChild(fieldRm);
 		p.appendChild(fields);
-		
+
 		var af = document.createElement('button');
 		af.setAttribute('class', 'add-field');
 		af.appendChild(document.createTextNode('Add field'));
 		af.setAttribute('style', 'margin-left: 40px');
 		p.appendChild(af);
-		
+
 		var rm = document.createElement('button');
 		rm.setAttribute('style', 'margin-bottom: 30px');
 		rm.appendChild(document.createTextNode('Remove group'));
 		rm.onclick = function() {
 			ol.removeChild(li);
-			renumberGroups();	
-		};	
+			renumberGroups();
+		};
 		li.appendChild(rm);
 		renumberGroups();
 	}
@@ -212,8 +212,8 @@ $groupDefs = $groups->getAllGroups();
 
 			<p>Packages of profile information to prompt starting some time after registration</p>
 			<ol id="reg-groups" style="margin:0 0 0 30px;">
-				<?php 
-					foreach ($groupDefs as $idx=>$group): 
+				<?php
+					foreach ($groupDefs as $idx=>$group):
 						$unit = 'hour';
 						if ($group['hours'] % (24*7) == 0):
 							$unit = 'week';
@@ -237,7 +237,7 @@ $groupDefs = $groups->getAllGroups();
 								<select name="group-cols-<?php echo $idx; ?>[]" style="width: 300px;">
 									<option value="">Select profile field...</option>
 								<?php foreach ($possibleCols as $colName=>$colLabel): ?>
-									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) echo ' selected="selected"'; ?>><?php echo htmlentities($colLabel); ?></option>	
+									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) echo ' selected="selected"'; ?>><?php echo htmlentities($colLabel); ?></option>
 								<?php endforeach; ?>
 								</select>
 								<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
@@ -260,8 +260,8 @@ $groupDefs = $groups->getAllGroups();
 
 			<p>Time to wait before asking again after subsequent clicks of the "ask me later" button</p>
 			<ol style="margin:0 0 20px 30px;">
-				<?php 
-					foreach ($recur as $idx=>$r): 
+				<?php
+					foreach ($recur as $idx=>$r):
 						$unit = 'hour';
 						if ($r % (24*7) == 0):
 							$unit = 'week';
@@ -280,12 +280,12 @@ $groupDefs = $groups->getAllGroups();
 					</select>
 					<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
 				</li>
-				<?php 
-					endforeach; 
+				<?php
+					endforeach;
 				?>
 			</ol>
 			<p>
-				<button onclick="(function(that) { 
+				<button onclick="(function(that) {
 					var li = document.createElement('li');
 					var ol = that.previousSibling;
 					while (ol.tagName != 'OL') {

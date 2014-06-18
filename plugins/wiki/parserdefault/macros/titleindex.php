@@ -38,7 +38,7 @@ class TitleIndexMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,7 +51,7 @@ class TitleIndexMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -59,20 +59,20 @@ class TitleIndexMacro extends WikiMacro
 		$et = $this->args;
 
 		$sort = '';
-		if ($et) 
+		if ($et)
 		{
 			$et = strip_tags($et);
 
-			if (strstr($et, ',')) 
+			if (strstr($et, ','))
 			{
 				$attribs = explode(',', $et);
 				$et = trim($attribs[0]);
 				$sort = strtolower(trim($attribs[1]));
 			}
 
-			if (strtolower($et) == 'sort=modified' 
-			 || strtolower($et) == 'sort=created' 
-			 || strtolower($et) == 'sort=title') 
+			if (strtolower($et) == 'sort=modified'
+			 || strtolower($et) == 'sort=created'
+			 || strtolower($et) == 'sort=title')
 			{
 				$sort = $et;
 				$et = '';
@@ -92,26 +92,26 @@ class TitleIndexMacro extends WikiMacro
 			break;
 		}
 
-		if ($et) 
+		if ($et)
 		{
 			// Get pages with a prefix
-			if ($this->domain) 
+			if ($this->domain)
 			{
 				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group_cn`=" . $this->_db->quote($this->domain);
-			} 
-			else 
+			}
+			else
 			{
 				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND (p.`group_cn`='' OR p.`group_cn` IS NULL)";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// Get all pages
-			if ($this->domain) 
+			if ($this->domain)
 			{
 				$sql .= "p.`group_cn`=" . $this->_db->quote($this->domain);
-			} 
-			else 
+			}
+			else
 			{
 				$sql .= "(p.`group_cn`='' OR p.`group_cn` IS NULL)";
 			}
@@ -135,13 +135,13 @@ class TitleIndexMacro extends WikiMacro
 		$rows = $this->_db->loadObjectList();
 
 		// Did we get a result from the database?
-		if ($rows) 
+		if ($rows)
 		{
 			// Build and return the link
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				if ($row->pagename == $this->pagename) 
+				if ($row->pagename == $this->pagename)
 				{
 					continue;
 				}
@@ -163,8 +163,8 @@ class TitleIndexMacro extends WikiMacro
 			$html .= '</ul>';
 
 			return $html;
-		} 
-		else 
+		}
+		else
 		{
 			// Return error message
 			return '(No ' . $et . ' pages to display)';

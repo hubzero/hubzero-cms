@@ -64,7 +64,7 @@ $subtitle  = $this->subject;
 $comment = $this->message;
 
 // Parse admin comment
-if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">')) 
+if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 {
 	$comment = str_replace("<br />", '', $comment);
 	$comment = $this->escape($comment);
@@ -79,10 +79,10 @@ if ($comment)
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group 
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$owner   = $this->project->owned_by_group
+		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
-		
+
 $showThumb = $config->get('showthumbemail', 0);
 
 // Get project thumbnail

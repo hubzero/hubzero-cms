@@ -38,112 +38,112 @@ class CoursesPluginReviewTable extends JTable
 {
 	/**
 	 * int(11) primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $course_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * decimal(2,1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rating      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created_by  = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified_by  = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent   = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state   = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $positive   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $negative   = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -154,12 +154,12 @@ class CoursesPluginReviewTable extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, false if not
 	 */
 	public function check()
 	{
-		if (!$this->rating) 
+		if (!$this->rating)
 		{
 			$this->setError(JText::_('Your review must have a rating.'));
 			return false;
@@ -169,7 +169,7 @@ class CoursesPluginReviewTable extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -217,7 +217,7 @@ class CoursesPluginReviewTable extends JTable
 
 	/**
 	 * Get a count of course reviews
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -232,7 +232,7 @@ class CoursesPluginReviewTable extends JTable
 
 	/**
 	 * Get an object list of course reviews
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return array
 	 */
@@ -260,7 +260,7 @@ class CoursesPluginReviewTable extends JTable
 
 	/**
 	 * Get an object list ratings for a course
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return array
 	 */

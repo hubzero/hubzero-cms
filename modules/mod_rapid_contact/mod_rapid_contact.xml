@@ -46,7 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="subject_label" type="text" default="Subject:" label="Subject Label" description="The label next to the subject input." />
 		<param name="message_label" type="text" default="Message:" label="Message Label" description="The label next to the message text area." />
 		<param name="email_recipient" type="text" default="" label="Email Recipient" description="The recipient of the contact mail." />
-		<param name="button_text" type="text" default="Send Message" label="Button Text" description="The text on the send button" /> 
+		<param name="button_text" type="text" default="Send Message" label="Button Text" description="The text on the send button" />
 		<param name="page_text" type="text" default="Thank you for your contact." label="Thank you text" description="The text displayed to the user when he sends a message" />
 		<param name="error_text" type="text" default="Your message could not be sent. Please try again." label="Error page text" description="The text displayed to the user when the message fails to be sent" />
 		<param name="no_email" type="text" default="Please write your email" label="No Email Error Message" description="The error message when the user does not write an email" />
@@ -83,7 +83,7 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="subject_label" type="text" default="Subject:" label="Subject Label" description="The label next to the subject input." />
 				<field name="message_label" type="text" default="Message:" label="Message Label" description="The label next to the message text area." />
 				<field name="email_recipient" type="text" default="" label="Email Recipient" description="The recipient of the contact mail." />
-				<field name="button_text" type="text" default="Send Message" label="Button Text" description="The text on the send button" /> 
+				<field name="button_text" type="text" default="Send Message" label="Button Text" description="The text on the send button" />
 				<field name="page_text" type="text" default="Thank you for your contact." label="Thank you text" description="The text displayed to the user when he sends a message" />
 				<field name="error_text" type="text" default="Your message could not be sent. Please try again." label="Error page text" description="The text displayed to the user when the message fails to be sent" />
 				<field name="no_email" type="text" default="Please write your email" label="No Email Error Message" description="The error message when the user does not write an email" />

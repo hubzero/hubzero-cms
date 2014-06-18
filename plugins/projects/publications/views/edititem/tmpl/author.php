@@ -30,14 +30,14 @@ $pAuthor 	= new PublicationAuthor( $this->database );
 
 $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this->row->project_owner_id);
 
-// Get profile thumb image 				
+// Get profile thumb image
 $profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
 $thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
 
 $name = $author->name ? $author->name : $author->p_name;
 $name = trim($name) ? $name : $author->invited_name;
 
-if (trim($name)) {	
+if (trim($name)) {
 	$nameParts    = explode(" ", $name);
 	$lastname  	  = end($nameParts);
 	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
@@ -100,16 +100,16 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 						<input type="text" name="credit"  class="long" value="<?php echo htmlspecialchars($author->credit); ?>" maxlength="255"  /><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 					</label>
 				</div>
-				
+
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-					<?php if ($this->ajax) { ?>	
+					<?php if ($this->ajax) { ?>
 					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?>" />
 					<?php } else { ?>
 					<a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 					<?php } ?>
 				</p>
-			</div>	
+			</div>
 	</form>
 	<div class="clear"></div>
 </div>

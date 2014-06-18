@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,7 +34,7 @@ $database = JFactory::getDBO();
 ?>
 <div class="metadata">
 <?php
-if ($this->model->params->get('show_ranking', 0)) 
+if ($this->model->params->get('show_ranking', 0))
 {
 	$citations = $this->model->citations();
 
@@ -74,7 +74,7 @@ if ($this->model->params->get('show_ranking', 0))
 <?php
 }
 
-if ($this->model->params->get('show_audience')) 
+if ($this->model->params->get('show_audience'))
 {
 	include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.php');
 	include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.level.php');
@@ -92,7 +92,7 @@ if ($this->model->params->get('show_audience'))
 if ($this->model->params->get('supportedtag'))
 {
 	$rt = new ResourcesTags($database);
-	if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id)) 
+	if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id))
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 

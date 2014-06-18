@@ -38,7 +38,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -50,14 +50,14 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the pathway (breadcrumbs)
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildPathway()
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -75,13 +75,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the page title
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
-		if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions'))) 
+		if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions')))
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
@@ -91,7 +91,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display the main page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -110,21 +110,21 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set any messages
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
 		}
-		
+
 		// Output HTML
 		$this->view->display();
 	}
 
 	/**
 	 * Show a list of quotes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function quotesTask()
@@ -145,12 +145,12 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for sending a success story
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function storyTask($row=null)
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$here = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			$this->setRedirect(
@@ -190,7 +190,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->view->row = $row;
 
 		// Set error messages
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -204,7 +204,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show the latest poll
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function pollTask()
@@ -217,7 +217,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set error messages
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -231,12 +231,12 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a success story and show a thank you message
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function sendstoryTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
@@ -252,7 +252,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		// Initiate class and bind posted items to database fields
 		$row = new FeedbackQuotes($this->database);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
 			$this->storyTask($row);
@@ -260,7 +260,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 
 		// Check that a story was entered
-		if (!$row->quote) 
+		if (!$row->quote)
 		{
 			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_STORY'));
 			$this->storyTask($row);
@@ -273,7 +273,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$row->date  = JFactory::getDate()->toSql();
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->storyTask($row);
@@ -281,7 +281,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->storyTask($row);
@@ -292,10 +292,10 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$addedPictures = array();
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
@@ -330,7 +330,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set error messages
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -344,7 +344,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for submitting suggestions
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function suggestionsTask()

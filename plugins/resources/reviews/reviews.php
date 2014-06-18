@@ -45,7 +45,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -61,7 +61,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -69,17 +69,17 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_reviews')) 
+		if ($model->type->params->get('plg_reviews'))
 		{
 			$areas['reviews'] = JText::_('PLG_RESOURCES_REVIEWS');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Rate a resource
-	 * 
+	 *
 	 * @param      string $option Name of the component
 	 * @return     array
 	 */
@@ -108,7 +108,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -124,21 +124,21 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_reviews')) 
+		if (!$model->type->params->get('plg_reviews'))
 		{
 			return $arr;
 		}
 
 		$ar = $this->onResourcesAreas($model);
-		if (empty($ar)) 
+		if (empty($ar))
 		{
 			$rtrn = '';
 		}
@@ -162,11 +162,11 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we returning any HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Did they perform an action?
 			// If so, they need to be logged in first.
-			if (!$h->loggedin) 
+			if (!$h->loggedin)
 			{
 				// Instantiate a view
 				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $option . '&id=' . $model->resource->id . '&active=' . $this->_name, false, true), 'server');
@@ -174,7 +174,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
 				return;
-			} 
+			}
 
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -197,7 +197,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 			$view->banking  = $this->banking;
 			$view->infolink = $this->infolink;
 			$view->config   = $this->params;
-			if ($h->getError()) 
+			if ($h->getError())
 			{
 				foreach ($h->getErrors() as $error)
 				{
@@ -210,7 +210,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -234,7 +234,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get all replies for an item
-	 * 
+	 *
 	 * @param      object  $item     Item to look for reports on
 	 * @param      string  $category Item type
 	 * @param      integer $level    Depth
@@ -249,17 +249,17 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		$hc = new \Hubzero\Item\Comment($database);
 		$comments = $hc->find(array(
-			'parent'    => ($level == 1 ? 0 : $item->id), 
+			'parent'    => ($level == 1 ? 0 : $item->id),
 			'item_id'   => $id,
 			'item_type' => $category
 		));
 
-		if ($comments) 
+		if ($comments)
 		{
 			foreach ($comments as $comment)
 			{
 				$comment->replies = self::getComments($id, $comment, 'review', $level, $abuse);
-				if ($abuse) 
+				if ($abuse)
 				{
 					$comment->abuse_reports = self::getAbuseReports($comment->id, 'review');
 				}
@@ -270,7 +270,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get abuse reports for a comment
-	 * 
+	 *
 	 * @param      integer $item     Item to look for reports on
 	 * @param      string  $category Item type
 	 * @return     integer
@@ -291,12 +291,12 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 {
 	/**
 	 * Redirect page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function redirect()
 	{
-		if ($this->_redirect != NULL) 
+		if ($this->_redirect != NULL)
 		{
 			$app = JFactory::getApplication();
 			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
@@ -305,7 +305,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Execute an action
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -315,11 +315,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		$this->loggedin = true;
 
-		if ($action) 
+		if ($action)
 		{
 			// Check the user's logged-in status
 			$juser = JFactory::getUser();
-			if ($juser->get('guest')) 
+			if ($juser->get('guest'))
 			{
 				$this->loggedin = false;
 				return;
@@ -341,7 +341,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Save a reply
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function savereply()
@@ -352,7 +352,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$juser = JFactory::getUser();
 
 		// Is the user logged in?
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
 			return;
@@ -364,7 +364,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// Trim and addslashes all posted items
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
-		if (!$id) 
+		if (!$id)
 		{
 			// Cannot proceed
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
@@ -374,7 +374,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$database = JFactory::getDBO();
 
 		$row = new \Hubzero\Item\Comment($database);
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
 			return;
@@ -389,14 +389,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$row->created_by = ($row->id ? $row->created_by : $juser->get('id'));
 
 		// Check for missing (required) fields
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return;
 		}
 
 		// Save the data
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return;
@@ -405,7 +405,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Delete a reply
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletereply()
@@ -417,14 +417,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$replyid = JRequest::getInt('refid', 0);
 
 		// Do we have a review ID?
-		if (!$replyid) 
+		if (!$replyid)
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
 		// Do we have a resource ID?
-		if (!$resource->id) 
+		if (!$resource->id)
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
@@ -438,7 +438,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			'item_type' => 'review',
 			'item_id'   => $resource->id
 		));
-		if (count($comments) > 0) 
+		if (count($comments) > 0)
 		{
 			foreach ($comments as $comment)
 			{
@@ -450,7 +450,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Rate an item
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function rateitem()
@@ -465,14 +465,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$ip   = JRequest::ip();
 		$rid  = JRequest::getInt('id', 0);
 
-		if (!$id) 
+		if (!$id)
 		{
 			// Cannot proceed
 			return;
 		}
 
 		// Is the user logged in?
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_VOTE'));
 			return;
@@ -483,7 +483,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$rev->load($id);
 		$voted = $rev->getVote($id, $cat, $juser->get('id'));
 
-		if (!$voted && $vote) // && $rev->user_id != $juser->get('id')) 
+		if (!$voted && $vote) // && $rev->user_id != $juser->get('id'))
 		{
 			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new Vote($database);
@@ -493,12 +493,12 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			$v->ip          = $ip;
 			$v->voted       = JFactory::getDate()->toSql();
 			$v->helpful     = $vote;
-			if (!$v->check()) 
+			if (!$v->check())
 			{
 				$this->setError($v->getError());
 				return;
 			}
-			if (!$v->store()) 
+			if (!$v->store())
 			{
 				$this->setError($v->getError());
 				return;
@@ -506,7 +506,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// update display
-		if ($ajax) 
+		if ($ajax)
 		{
 			$response = $rev->getRating($id, $juser->get('id'));
 
@@ -531,14 +531,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Edit a review
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editreview()
 	{
 		// Is the user logged in?
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
 			return;
@@ -547,7 +547,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource =& $this->resource;
 
 		// Do we have an ID?
-		if (!$resource->id) 
+		if (!$resource->id)
 		{
 			// No - fail! Can't do anything else without an ID
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
@@ -566,8 +566,8 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			$review->user_id = $juser->get('id');
 			$review->resource_id = $resource->id;
 			$review->tags = '';
-		} 
-		else 
+		}
+		else
 		{
 			// Editing a review, do some prep work
 			$review->comment = str_replace('<br />', '', $review->comment);
@@ -585,7 +585,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Save a review
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savereview()
@@ -594,7 +594,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource_id = JRequest::getInt('resource_id', 0);
 
 		// Do we have a resource ID?
-		if (!$resource_id) 
+		if (!$resource_id)
 		{
 			// No ID - fail! Can't do anything else without an ID
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
@@ -605,7 +605,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		// Bind the form data to our object
 		$row = new ResourcesReview($database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
 			return;
@@ -619,13 +619,13 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 
 		// Check for missing (required) fields
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return;
 		}
 		// Save the data
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return;
@@ -638,7 +638,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		// Process tags
 		$tags = trim(JRequest::getVar('review_tags', ''));
-		if ($tags) 
+		if ($tags)
 		{
 			$rt = new ResourcesTags($database);
 			$rt->tag_object($row->user_id, $resource_id, $tags, 1, 0);
@@ -678,7 +678,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		// Send message
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
-		if (!$dispatcher->trigger('onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option))) 
+		if (!$dispatcher->trigger('onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option)))
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
 		}
@@ -686,7 +686,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 	/**
 	 * Delete a review
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletereview()
@@ -698,14 +698,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reviewid = JRequest::getInt('reviewid', 0);
 
 		// Do we have a review ID?
-		if (!$reviewid) 
+		if (!$reviewid)
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_ID'));
 			return;
 		}
 
 		// Do we have a resource ID?
-		if (!$resource->id) 
+		if (!$resource->id)
 		{
 			$this->setError(JText::_('PLG_RESOURCES_REVIEWS_NO_RESOURCE_ID'));
 			return;
@@ -717,17 +717,17 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$reply = new \Hubzero\Item\Comment($database);
 
 		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $resource->id));
-		if (count($comments1) > 0) 
+		if (count($comments1) > 0)
 		{
 			foreach ($comments1 as $comment1)
 			{
 				$comments2 = $reply->find(array('parent'=>$comment1->id, 'item_type'=>'review', 'item_id' => $resource->id));
-				if (count($comments2) > 0) 
+				if (count($comments2) > 0)
 				{
 					foreach ($comments2 as $comment2)
 					{
 						$comments3 = $reply->find(array('parent'=>$comment2->id, 'item_type'=>'review', 'item_id' => $resource->id));
-						if (count($comments3) > 0) 
+						if (count($comments3) > 0)
 						{
 							foreach ($comments3 as $comment3)
 							{

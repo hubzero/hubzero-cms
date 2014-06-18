@@ -54,7 +54,7 @@ $this->css()
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span> 
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span>
 					<span class="entry-date-on">on</span> <span class="date"><?php echo $item->created('date'); ?></span>
 				</span>
 			</p>
@@ -94,21 +94,21 @@ $this->css()
 			<p>
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
-				</a> 
-				onto 
+				</a>
+				onto
 				<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
 					<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span> 
+					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span>
 					<span class="entry-date-on">on</span> <span class="date"><?php echo $this->post->created('date'); ?></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
-<?php 
-if ($item->get('comments')) 
-{ 
+<?php
+if ($item->get('comments'))
+{
 	?>
 		<div class="commnts">
 	<?php
@@ -121,11 +121,11 @@ if ($item->get('comments'))
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> 
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a>
 					said
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span>
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>
@@ -133,12 +133,12 @@ if ($item->get('comments'))
 					<p><?php echo stripslashes($comment->content); ?></p>
 				</blockquote>
 			</div>
-		<?php 
+		<?php
 	}
 	?>
 		</div>
 	<?php
-} 
+}
 $now = JFactory::getDate();
 ?>
 		<div class="commnts">
@@ -147,11 +147,11 @@ $now = JFactory::getDate();
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>" />
 				</a>
 				<p>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a> 
+					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>"><?php echo $this->escape(stripslashes($this->juser->get('name'))); ?></a>
 					will say
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span> 
+						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span>
 						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
 					</span>
 				</p>

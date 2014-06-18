@@ -38,406 +38,406 @@ class CitationsCitation extends JTable
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id             	= NULL;  // @var int(11) Primary key
 
 	/**
 	 * Description for 'uid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $uid            	= NULL;  // @var varchar(200)
 
 	/**
 	 * Description for 'affiliated'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $affiliated     	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'fundedby'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $fundedby       	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'created'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $created        	= NULL;  // @var datetime
 
 	/**
 	 * Description for 'address'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $address        	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'author'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $author         	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'booktitle'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $booktitle      	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'chapter'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $chapter        	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'cite'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $cite           	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'edition'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $edition        	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'editor'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $editor         	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'eprint'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $eprint         	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'howpublished'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $howpublished   	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'institution'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $institution    	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'isbn'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $isbn           	= NULL;  // @var varchar(50)
 
 	/**
 	 * Description for 'journal'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $journal        	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'key'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $key            	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'location'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $location       	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'month'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $month          	= NULL;  // @var int(2)
 
 	/**
 	 * Description for 'note'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $note           	= NULL;  // @var text
 
 	/**
 	 * Description for 'number'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $number         	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'organization'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $organization   	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'pages'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $pages          	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'publisher'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $publisher      	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'school'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $school         	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'series'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $series         	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title          	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $type           	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'url'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $url            	= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'volume'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $volume         	= NULL;  // @var int(11)
 
 	/**
 	 * Description for 'year'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $year           	= NULL;  // @var int(4)
 
 	/**
 	 * Description for 'doi'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $doi            	= NULL;  // @var varchar(50)
 
 	/**
 	 * Description for 'ref_type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $ref_type       	= NULL;  // @var varchar(50)
 
 	/**
 	 * Description for 'date_submit'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $date_submit    	= NULL;  // @var datetime(0000-00-00 00:00:00)
 
 	/**
 	 * Description for 'date_accept'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $date_accept    	= NULL;  // @var datetime(0000-00-00 00:00:00)
 
 	/**
 	 * Description for 'date_publish'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $date_publish   	= NULL;  // @var datetime(0000-00-00 00:00:00)
 
 	/**
 	 * Description for 'software_use'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $software_use   	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'res_edu'
-	 * 
+	 *
 	 * @var unknown
 	 */
     var	$res_edu 			= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'exp_list_exp_data'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $exp_list_exp_data  = NULL;  // @var int(3)
 
 	/**
 	 * Description for 'exp_data'
-	 * 
+	 *
 	 * @var unknown
 	 */
  	var $exp_data       	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'notes'
-	 * 
+	 *
 	 * @var unknown
 	 */
  	var $notes          	= NULL;  // @var text
 
 	/**
 	 * Description for 'published'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $published      	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'abstract'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $abstract 			= NULL;
 
 	/**
 	 * Description for 'keywords'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $keywords			= NULL;
 
 	/**
 	 * Description for 'language'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $language			= NULL;
 
 	/**
 	 * Description for 'accession_number'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $accession_number	= NULL;
 
 	/**
 	 * Description for 'short_title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $short_title 		= NULL;
 
 	/**
 	 * Description for 'research_notes'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $research_notes		= NULL;
 
 	/**
 	 * Description for 'author_address'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $author_address 	= NULL;
 
 	/**
 	 * Description for 'call_number'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $call_number		= NULL;
 
 	/**
 	 * Description for 'label'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $label 				= NULL;
 
 	/**
 	 * Description for 'badges'
-	 * 
+	 *
 	 * @var unknown
 	 */
 //	var $badges				= NULL;
 
 	/**
 	 * Description for 'tags'
-	 * 
+	 *
 	 * @var unknown
 	 */
 //	var $tags				= NULL;
-	
+
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $params				= NULL;
-	
+
 	/**
 	 * Formatted citation
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $formatted			= NULL;
-	
+
 	/**
 	 * Format of saved formatted citation
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $format				= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -448,12 +448,12 @@ class CitationsCitation extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, false if not
 	 */
 	public function check()
 	{
-		if (trim($this->title) == '') 
+		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TITLE'));
 			return false;
@@ -462,16 +462,16 @@ class CitationsCitation extends JTable
 		if ($this->type == '' || !is_numeric($this->type))
 		{
 			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TYPE'));
-			return false; 
+			return false;
 		}
 		return true;
 	}
 
 	/**
 	 * Short description for 'getCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filter Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -480,13 +480,13 @@ class CitationsCitation extends JTable
 	{
 		$filter['sort'] = '';
 		$filter['limit'] = 0;
-		
+
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
 			$query  = "SELECT COUNT(b.id) FROM
 			 			(
 						SELECT r.id, COUNT(DISTINCT tag.tag) AS uniques
-						FROM $this->_tbl AS r 
+						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
 						JOIN #__tags_object as tago ON tago.objectid=r.id
@@ -495,57 +495,57 @@ class CitationsCitation extends JTable
 		else
 		{
 			$query  = "SELECT COUNT(*)
-						FROM $this->_tbl AS r 
+						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
 		}
-		
-		if (isset($filter['geo']) || isset($filter['aff'])) 
+
+		if (isset($filter['geo']) || isset($filter['aff']))
 		{
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
 			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
-			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) 
+			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$q = true;
 			}
 			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
 			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
-			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) 
+			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$q = true;
 			}
-			if ($q) 
+			if ($q)
 			{
 				$query .= ", #__citations_authors AS ca";
 			}
 		}
-		
+
 		$query .= $this->buildQuery($filter, $admin);
-		
+
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
 			$query .= ") as b";
 		}
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Short description for 'buildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filter Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -553,7 +553,7 @@ class CitationsCitation extends JTable
 	public function buildQuery($filter=array(), $admin=true)
 	{
 		$query = " WHERE r.published=1";
-		
+
 		//search term match
 		if (isset($filter['search']) && $filter['search'] != '')
 		{
@@ -578,28 +578,28 @@ class CitationsCitation extends JTable
 			{
 				$tags = array($filter['tag']);
 			}
-			
+
 			$query .= " AND tago.tbl='citations' AND tag.tag IN ('" . implode("','", $tags) . "')";
 		}
-		
+
 		//type filter
 		if (isset($filter['type']) && $filter['type'] != '')
 		{
 			$query .= " AND r.type=" . $this->_db->Quote($filter['type']);
 		}
-		
+
 		//author filter
 		if (isset($filter['author']) && $filter['author'] != '')
 		{
 			$query .= " AND r.author LIKE '%" . $this->_db->getEscaped($filter['author']) . "%'";
 		}
-		
+
 		//published in filter
 		if (isset($filter['publishedin']) && $filter['publishedin'] != '')
 		{
 			$query .= " AND (r.booktitle LIKE '%" . $this->_db->getEscaped($filter['publishedin']) . "%' OR r.journal LIKE '%" . $this->_db->getEscaped($filter['publishedin']) . "%')";
 		}
-		
+
 		//year filter
 		if (isset($filter['year_start']) && is_numeric($filter['year_start']) && $filter['year_start'] > 0)
 		{
@@ -626,9 +626,9 @@ class CitationsCitation extends JTable
 				$query .= " AND r.affiliated=0";
 			}
 		}
-		
+
 		//reference type check
-		if (isset($filter['reftype'])) 
+		if (isset($filter['reftype']))
 		{
 			// make sure its valid
 			if (!is_array($filter['reftype']))
@@ -640,138 +640,138 @@ class CitationsCitation extends JTable
 			if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
 			 && (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
 			 && (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
-			 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)) 
+			 && (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$query .= " AND";
 				$multi = 0;
 				$o = 0;
 				foreach ($filter['reftype'] as $g)
 				{
-					if ($g == 1) 
+					if ($g == 1)
 					{
 						$multi++;
 					}
 				}
-				
-				if ($multi) 
+
+				if ($multi)
 				{
 					$query .= " (";
 				}
-				if (isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1) 
+				if (isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
 				{
 					$query .= " ((ref_type LIKE '%R%' OR ref_type LIKE '%N%' OR ref_type LIKE '%S%') AND ref_type NOT LIKE '%E%')";
-					if ($multi) 
+					if ($multi)
 					{
 						$o = 1;
 					}
 				}
-				if (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1) 
+				if (isset($filter['reftype']['education']) && $filter['reftype']['education'] == 1)
 				{
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " ((ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%') AND ref_type LIKE '%E%')";
 				}
-				if (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1) 
+				if (isset($filter['reftype']['eduresearch']) && $filter['reftype']['eduresearch'] == 1)
 				{
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " (ref_type LIKE '%R%E%' OR ref_type LIKE '%E%R%' AND ref_type LIKE '%N%E%' OR ref_type LIKE '%E%N%' OR ref_type LIKE '%S%E%' OR ref_type LIKE '%E%S%')";
 				}
-				if (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1) 
+				if (isset($filter['reftype']['cyberinfrastructure']) && $filter['reftype']['cyberinfrastructure'] == 1)
 				{
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " ((ref_type LIKE '%C%' OR ref_type LIKE '%A%' OR ref_type LIKE '%HD%' OR ref_type LIKE '%I%') AND (ref_type NOT LIKE '%R%' AND ref_type NOT LIKE '%N%' AND ref_type NOT LIKE '%S%' AND ref_type NOT LIKE '%E%'))";
 				}
-				if ($multi) 
+				if ($multi)
 				{
 					$query .= ")";
 				}
 			}
 		}
-		
+
 		//author affiliation filter
-		if (isset($filter['aff'])) 
+		if (isset($filter['aff']))
 		{
 			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
 			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
-			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) 
+			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$query .= " AND ca.cid=r.id AND";
 				$multi = 0;
 				$o = 0;
 				foreach ($filter['aff'] as $g)
 				{
-					if ($g == 1) 
+					if ($g == 1)
 					{
 						$multi++;
 					}
 				}
-				if ($multi) 
+				if ($multi)
 				{
 					$query .= " (";
 				}
-				if (isset($filter['aff']['university']) && $filter['aff']['university'] == 1) 
+				if (isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
 				{
 					$query .= " (ca.orgtype LIKE '%education%' OR ca.orgtype LIKE 'university%')";
-					if ($multi) 
+					if ($multi)
 					{
 						$o = 1;
 					}
 				}
-				if (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1) 
+				if (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
 				{
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " ca.orgtype LIKE '%industry%'";
 				}
-				if (isset($filter['aff']['government']) && $filter['aff']['government'] == 1) 
+				if (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)
 				{
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " ca.orgtype LIKE '%government%'";
 				}
-				if ($multi) 
+				if ($multi)
 				{
 					$query .= ")";
 				}
 			}
 		}
-		
+
 		//author geo filter
-		if (isset($filter['geo'])) 
+		if (isset($filter['geo']))
 		{
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
 			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
-			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) 
+			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$query .= " AND ca.cid=r.id AND";
 
@@ -779,68 +779,68 @@ class CitationsCitation extends JTable
 				$o = 0;
 				foreach ($filter['geo'] as $g)
 				{
-					if ($g == 1) 
+					if ($g == 1)
 					{
 						$multi++;
 					}
 				}
-				if ($multi) 
+				if ($multi)
 				{
 					$query .= " (";
 				}
-				if (isset($filter['geo']['us']) && $filter['geo']['us'] == 1) 
+				if (isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
 				{
 					$query .= " LOWER(ca.countryresident) = 'us'";
-					if ($multi) 
+					if ($multi)
 					{
 						$o = 1;
 					}
 				}
-				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1) 
+				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 				{
 					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('na');
 					$c = implode("','",$countries);
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
 				}
-				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1) 
+				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
 				{
 					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('eu');
 					$c = implode("','", $countries);
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
 				}
-				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1) 
+				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)
 				{
 					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('as');
 					$c = implode("','", $countries);
-					if ($multi) 
+					if ($multi)
 					{
 						$query .= ($o == 1) ? " OR" : "";
 						$o = 1;
 					}
 					$query .= " LOWER(ca.countryresident) IN ('" . strtolower($c) . "')";
 				}
-				if ($multi) 
+				if ($multi)
 				{
 					$query .= ")";
 				}
 			}
 		}
-		
+
 		if(isset($filter['id']) && $filter['id'] > 0)
 		{
 			$query .= " AND r.id=" . $filter['id'];
 		}
-		
+
 		//group by
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -871,15 +871,15 @@ class CitationsCitation extends JTable
 		{
 			$query .= " LIMIT " . intval($filter['start']) . "," . intval($filter['limit']);
 		}
-		
+
 		return $query;
 	}
 
 	/**
 	 * Short description for 'getRecords'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filter Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -888,8 +888,8 @@ class CitationsCitation extends JTable
 	{
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques 
-						FROM $this->_tbl AS r 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques
+						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
 						JOIN #__tags_object as tago ON tago.objectid=r.id
@@ -897,37 +897,37 @@ class CitationsCitation extends JTable
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username
 						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
 		}
 
-		if (isset($filter['geo']) || isset($filter['aff'])) 
+		if (isset($filter['geo']) || isset($filter['aff']))
 		{
 			$q = false;
 			if ((isset($filter['geo']['us']) && $filter['geo']['us'] == 1)
 			 && (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 			 && (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
-			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)) 
+			 && (isset($filter['geo']['as']) && $filter['geo']['as'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$q = true;
 			}
 			if ((isset($filter['aff']['university']) && $filter['aff']['university'] == 1)
 			 && (isset($filter['aff']['industry']) && $filter['aff']['industry'] == 1)
-			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1)) 
+			 && (isset($filter['aff']['government']) && $filter['aff']['government'] == 1))
 			{
 				// Show all
-			} 
-			else 
+			}
+			else
 			{
 				$q = true;
 			}
-			if ($q) 
+			if ($q)
 			{
 				$query .= ", #__citations_authors AS ca";
 			}
@@ -941,9 +941,9 @@ class CitationsCitation extends JTable
 
 	/**
 	 * Short description for 'getStats'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function getStats()
@@ -966,9 +966,9 @@ class CitationsCitation extends JTable
 
 	/**
 	 * Short description for 'getCitations'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $tbl Parameter description (if any) ...
 	 * @param      string $oid Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -977,72 +977,72 @@ class CitationsCitation extends JTable
 	{
 		$ca = new CitationsAssociation($this->_db);
 
-		$sql = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username 
+		$sql = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username
 				FROM $this->_tbl AS r
 				LEFT JOIN #__users AS u ON u.id = r.uid
 				LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid, $ca->_tbl AS a
-				WHERE r.published=1 AND a.tbl=" . $this->_db->Quote($tbl) . " AND a.oid=" . $this->_db->Quote($oid) . " AND a.cid=r.id 
+				WHERE r.published=1 AND a.tbl=" . $this->_db->Quote($tbl) . " AND a.oid=" . $this->_db->Quote($oid) . " AND a.cid=r.id
 				ORDER BY affiliated ASC, year DESC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Load publication citation
-	 * 
-	 * @param      string $doi 
-	 * @param      string $oid 
+	 *
+	 * @param      string $doi
+	 * @param      string $oid
 	 * @return     object Return description (if any) ...
 	 */
 	public function loadPubCitation($doi, $oid)
 	{
 		$ca  = new CitationsAssociation($this->_db);
-		
+
 		$sql = "SELECT C.* FROM $this->_tbl AS C ";
 		$sql.= " JOIN $ca->_tbl AS a ON a.cid=C.id ";
 		$sql.= " WHERE C.doi='" . $doi . "' AND a.tbl='publication' AND a.oid=" . $oid;
 
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Load entry by DOI
-	 * 
+	 *
 	 * @param      string $doi
 	 * @return     object Return description (if any) ...
 	 */
 	public function loadByDoi($doi)
-	{		
+	{
 		$sql = "SELECT C.* FROM $this->_tbl AS C ";
 		$sql.= " WHERE C.doi='" . $doi . "' LIMIT 1";
 
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Short description for 'getLastCitationDate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $tbl Parameter description (if any) ...
 	 * @param      string $oid Parameter description (if any) ...
 	 * @return     object Return description (if any) ...

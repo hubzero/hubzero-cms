@@ -33,7 +33,7 @@ $canDo = CronHelper::getActions('component');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_CRON') . ': ' . $text, 'cron.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -46,13 +46,13 @@ JToolBarHelper::help('job');
 JHTML::_('behavior.calendar');
 
 $create_date = NULL;
-if (intval($this->row->get('created')) <> 0) 
+if (intval($this->row->get('created')) <> 0)
 {
 	$create_date = JHTML::_('date', $this->row->get('created'));
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -90,7 +90,7 @@ var Fields = {
 				month = '*',
 				dow = '*',
 				recurrence = $(this).val();
-			
+
 			switch (recurrence)
 			{
 				case '0 0 1 1 *':
@@ -157,7 +157,7 @@ var Fields = {
 			$('#field-hour-s').val($(this).val());
 			$('#field-recurrence').val('custom');
 		});
-		
+
 		$('#field-day-s').on('change', function(){
 			$('#field-day-c').val($(this).val());
 			$('#field-recurrence').val('custom');
@@ -166,7 +166,7 @@ var Fields = {
 			$('#field-day-s').val($(this).val());
 			$('#field-recurrence').val('custom');
 		});
-		
+
 		$('#field-month-s').on('change', function(){
 			$('#field-month-c').val($(this).val());
 			$('#field-recurrence').val('custom');
@@ -175,7 +175,7 @@ var Fields = {
 			$('#field-month-s').val($(this).val());
 			$('#field-recurrence').val('custom');
 		});
-		
+
 		$('#field-dayofweek-s').on('change', function(){
 			$('#field-dayofweek-c').val($(this).val());
 			$('#field-recurrence').val('custom');
@@ -266,7 +266,7 @@ jQuery(document).ready(function($){
 								$out = $param->render('params', $event['params']);
 							}
 
-							if (!$out) 
+							if (!$out)
 							{
 								$out = '<table><tbody><tr><td><i>' . JText::_('COM_CRON_NO_PARAMETERS_FOUND') . '</i></td></tr></tbody></table>';
 							}
@@ -316,11 +316,11 @@ jQuery(document).ready(function($){
 								<option value="*/15"<?php if ($this->row->get('minute') == '*/15') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
 								<option value="*/30"<?php if ($this->row->get('minute') == '*/30') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
 								<?php
-								for ($i=0, $n=60; $i < $n; $i++) 
+								for ($i=0, $n=60; $i < $n; $i++)
 								{
 								?>
 								<option value="<?php echo $i; ?>"<?php if ($this->row->get('minute') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-								<?php 
+								<?php
 								}
 								?>
 							</select>
@@ -340,11 +340,11 @@ jQuery(document).ready(function($){
 								<option value="*/6"<?php if ($this->row->get('hour') == '*/6') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
 								<option value="0"<?php if ($this->row->get('hour') == "0") { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
 								<?php
-								for ($i=1, $n=24; $i < $n; $i++) 
+								for ($i=1, $n=24; $i < $n; $i++)
 								{
 								?>
 								<option value="<?php echo $i; ?>"<?php if ($this->row->get('hour') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-								<?php 
+								<?php
 								}
 								?>
 							</select>
@@ -360,11 +360,11 @@ jQuery(document).ready(function($){
 								<option value=""<?php if ($this->row->get('day') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
 								<option value="*"<?php if ($this->row->get('day') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
 								<?php
-								for ($i=1, $n=32; $i < $n; $i++) 
+								for ($i=1, $n=32; $i < $n; $i++)
 								{
 								?>
 								<option value="<?php echo $i; ?>"<?php if ($this->row->get('day') == (string) $i) { echo ' selected="selected"'; } ?>><?php echo $i; ?></option>
-								<?php 
+								<?php
 								}
 								?>
 							</select>
@@ -433,9 +433,9 @@ jQuery(document).ready(function($){
 				<tr>
 					<th class="key"><?php echo JText::_('COM_CRON_FIELD_CREATOR'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->get('created_by'));
-						echo $this->escape($editor->get('name')); 
+						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 					</td>
@@ -451,9 +451,9 @@ jQuery(document).ready(function($){
 				<tr>
 					<th class="key"><?php echo JText::_('COM_CRON_FIELD_MODIFIER'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$modifier = JUser::getInstance($this->row->get('modified_by'));
-						echo $this->escape($modifier->get('name')); 
+						echo $this->escape($modifier->get('name'));
 						?>
 						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
 					</td>

@@ -47,7 +47,7 @@ class ToolsModelZones extends JModel
 {
 	/**
 	 * Get execution zones list
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getExecutionZones()

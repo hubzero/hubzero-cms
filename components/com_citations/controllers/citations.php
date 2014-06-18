@@ -41,25 +41,25 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
 		//disable default task - stop fallback when user enters bad task
 		$this->disableDefaultTask();
-		
+
 		//register empty task and intro as the main display task
 		$this->registerTask('', 'display');
 		$this->registerTask('intro', 'display');
-		
+
 		//execute parent function
 		parent::execute();
 	}
 
 	/**
 	 * Default component view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -98,7 +98,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$this->view->isAdmin = true;
 		}
-		
+
 		// Output HTML
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
@@ -107,7 +107,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Browse entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browseTask()
@@ -189,7 +189,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->view->filters['idlist'] = JRequest::getVar('idlist', $session->get('idlist')); 
+			$this->view->filters['idlist'] = JRequest::getVar('idlist', $session->get('idlist'));
 			$session->set('idlist', $this->view->filters['idlist']);
 		}
 
@@ -197,12 +197,12 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		if (strpos($referer, "/citations/browse") == false)
 		{
 			$this->view->filters['idlist'] = "";
-			$session->set('idlist', $this->view->filters['idlist']); 
+			$session->set('idlist', $this->view->filters['idlist']);
 		}
-		
+
 		//Convert upload dates to correct time format
 		if ($this->view->filters['startuploaddate'] == '0000-00-00'
-			|| $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00' 
+			|| $this->view->filters['startuploaddate'] == '0000-00-00 00:00:00'
 			|| $this->view->filters['startuploaddate'] == '')
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
@@ -230,9 +230,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				JText::_('The end date cannot be before the start date.'),
 				'error'
 			);
-			return; 
+			return;
 		}
-		
+
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
 
@@ -242,8 +242,8 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$total, 
-			$this->view->filters['start'], 
+			$total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -258,7 +258,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$users_ip = $this->getIP();
 
 		//get the param for ip regex to use machine ip
-		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
+		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
 
 		$use_machine_ip = false;
 		foreach ($ip_regex as $ipr)
@@ -306,9 +306,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$resolver = $xml->resolverRegistryEntry->resolver;
 		}
-		
+
 		//if we have resolver set vars for creating open urls
-		if ($resolver != null) 
+		if ($resolver != null)
 		{
 			$this->view->openurl['link'] = $resolver->baseURL;
 			$this->view->openurl['text'] = $resolver->linkText;
@@ -322,7 +322,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -340,46 +340,46 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * View a citation entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function viewTask()
 	{
 		//set vars for view
 		$this->view->database = $this->database;
-		
+
 		// get request vars
 		$id = JRequest::getInt('id', 0);
-		
+
 		//make sure we have an id
 		if(!$id || $id == 0)
 		{
 			JError::raiseError(500, JText::_('No Citation ID Specified'));
 			return;
 		}
-		
+
 		//get the citation
 		$this->view->citation = new CitationsCitation( $this->view->database );
 		$this->view->citation->load( $id );
-		
+
 		//make sure we got a citation
 		if(!isset($this->view->citation->title) || $this->view->citation->title == '')
 		{
 			JError::raiseError(500, JText::_('Unable to Load a Citation with the ID Specified.'));
 			return;
 		}
-		
+
 		//load citation associations
 		$assoc = new CitationsAssociation($this->database);
 		$this->view->associations = $assoc->getRecords(array('cid' => $id));
-		
+
 		//open url stuff
 		$this->view->openUrl = $this->openUrl();
-		
+
 		//make sure title isnt too long
 		$this->view->maxTitleLength = 50;
 		$this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength) ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;' : $this->view->citation->title;
-		
+
 		// Set the page title
 		$document = JFactory::getDocument();
 		$document->setTitle( "Citation: " . $this->view->shortenedTitle );
@@ -392,23 +392,23 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 		$pathway->addItem( "Browse", 'index.php?option=' . $this->_option . '&task=browse');
 		$pathway->addItem( $this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
-		
+
 		//get this citation type to see if we have a template override for this type
 		$citationType = new CitationsType($this->database);
 		$type = $citationType->getType( $this->view->citation->type );
 		$typeAlias = $type[0]['type'];
-		
+
 		//build paths to type specific overrides
 		$application = JFactory::getApplication();
 		$componentTypeOverride = JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
 		$tempalteTypeOverride = JPATH_ROOT . DS . 'templates' . DS . $application->getTemplate() . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
-		
+
 		//if we found an override use it
 		if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride))
 		{
 			$this->view->setLayout($typeAlias);
 		}
-		
+
 		//get any messages & display view
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->config = $this->config;
@@ -418,7 +418,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get Open URL
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function openUrl()
@@ -434,7 +434,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$userIp = $this->getIP();
 
 		//get the param for ip regex to use machine ip
-		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}'); 
+		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
 
 		$useMachineIp = false;
 		foreach ($ipRegex as $ipr)
@@ -473,7 +473,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$resolver = $xml->resolverRegistryEntry->resolver;
 
 		//if we have resolver set vars for creating open urls
-		if ($resolver != null) 
+		if ($resolver != null)
 		{
 			$openUrl['link'] = $resolver->baseURL;
 			$openUrl['text'] = $resolver->linkText;
@@ -485,18 +485,18 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get user IP
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function getIP()
 	{
-		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) 
+		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key)
 		{
-			if (array_key_exists($key, $_SERVER) === true) 
+			if (array_key_exists($key, $_SERVER) === true)
 			{
-				foreach (explode(',', $_SERVER[$key]) as $ip) 
+				foreach (explode(',', $_SERVER[$key]) as $ip)
 				{
-					if (filter_var($ip, FILTER_VALIDATE_IP) !== false) 
+					if (filter_var($ip, FILTER_VALIDATE_IP) !== false)
 					{
 						return $ip;
 					}
@@ -507,7 +507,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Redirect to login form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function loginTask()
@@ -522,7 +522,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for adding an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -532,13 +532,13 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask();
 			return;
@@ -553,7 +553,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		//are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);
-		if ($allowImport == 0 
+		if ($allowImport == 0
 		 || ($allowImport == 2 && $this->juser->get('usertype') != 'Super Administrator'))
 		{
 			// Redirect
@@ -577,7 +577,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			if (isset($type['fields']))
 			{
 				$f = $type['fields'];
-				if (strpos($f, ',') !== false) 
+				if (strpos($f, ',') !== false)
 				{
 					$f = str_replace(',', "\n", $f);
 				}
@@ -587,28 +587,28 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 				$fields[strtolower(str_replace(' ', '', $type['type_title']))] = $f;
 			}
-		} 
+		}
 
 		//add an empty value for the first type
 		array_unshift($types, array(
-			'type'       => '', 
+			'type'       => '',
 			'type_title' => ' - Select a Type &mdash;'
 		));
 
 		// Incoming - expecting an array id[]=4232
 		$id = JRequest::getInt('id', 0);
-		
+
 		// Pub author
 		$pubAuthor = false;
-		
+
 		// Load the associations object
 		$assoc = new CitationsAssociation($this->database);
-		
+
 		// Get associations
 		if ($id)
 		{
 			$this->view->assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
-			
+
 			$pubAuthor = $this->isPubAuthor($this->view->assocs);
 		}
 
@@ -624,8 +624,8 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		//make sure title isnt too long
 		$maxTitleLength = 30;
-		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength) 
-						? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;' 
+		$shortenedTitle = (strlen($this->view->row->title) > $maxTitleLength)
+						? substr($this->view->row->title, 0, $maxTitleLength) . '&hellip;'
 						: $this->view->row->title;
 
 		// Set the pathway
@@ -651,7 +651,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// No ID, so we're creating a new entry
 		// Set the ID of the creator
-		if (!$id) 
+		if (!$id)
 		{
 			$this->view->row->uid = $this->juser->get('id');
 
@@ -661,20 +661,20 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			//tags & badges
 			$this->view->tags   = array();
 			$this->view->badges = array();
-		} 
-		else 
+		}
+		else
 		{
 			//tags & badges
 			$this->view->tags = CitationFormat::citationTags($this->view->row, $this->database, false);
 			$this->view->badges = CitationFormat::citationBadges($this->view->row, $this->database, false);
 		}
-		
+
 		//get the citation types
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
-		
+
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -683,10 +683,10 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Determine if user is part of publication project and is allowed to edit citation
-	 * 
+	 *
 	 * @param      array $assocs
 	 * @return     void
 	 */
@@ -705,14 +705,14 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 
-		// Get connections to publications		
+		// Get connections to publications
 		foreach ($assocs as $entry)
 		{
 			if ($entry->tbl == 'publication')
 			{
 				$pubID = $entry->oid;
 				$objP = new Publication($this->database);
-				
+
 				if ($objP->load($pubID))
 				{
 					$objO = new ProjectOwner($this->database);
@@ -730,13 +730,13 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask();
 			return;
@@ -755,15 +755,15 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
-		if (!$row->bind($c)) 
+		if (!$row->bind($c))
 		{
 			$this->setError($row->getError());
 			$this->editTask();
 			return;
 		}
-		
+
 		// New entry so set the created date
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->created = JFactory::getDate()->toSql();
 		}
@@ -772,7 +772,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$row->url = JRequest::getVar('uri', '', 'post');
 
 		// Check content for missing required data
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->editTask();
@@ -780,7 +780,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->editTask();
@@ -803,7 +803,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
 			{
 				// Delete the row
-				if (!$assoc->delete($a['id'])) 
+				if (!$assoc->delete($a['id']))
 				{
 					$this->setError($assoc->getError());
 					$this->editTask();
@@ -813,9 +813,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			else if ($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
-				
+
 				// bind the data
-				if (!$assoc->bind($a)) 
+				if (!$assoc->bind($a))
 				{
 					$this->setError($assoc->getError());
 					$this->editTask();
@@ -823,7 +823,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				}
 
 				// Check content
-				if (!$assoc->check()) 
+				if (!$assoc->check())
 				{
 					$this->setError($assoc->getError());
 					$this->editTask();
@@ -831,7 +831,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				}
 
 				// Store new content
-				if (!$assoc->store()) 
+				if (!$assoc->store())
 				{
 					$this->setError($assoc->getError());
 					$this->editTask();
@@ -839,21 +839,21 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		
+
 		//check if we are allowing tags
-		if ($this->config->get('citation_allow_tags', 'no') == 'yes') 
+		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
 			$ct1 = new CitationTags($this->database);
 			$ct1->tag_object($this->juser->get('id'), $row->id, $tags, 1, false, '');
 		}
 
 		//check if we are allowing badges
-		if ($this->config->get('citation_allow_badges', 'no') == 'yes') 
+		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
 			$ct2 = new CitationTags($this->database);
 			$ct2->tag_object($this->juser->get('id'), $row->id, $badges, 1, false, 'badge');
 		}
-		
+
 		// Redirect
 		if ($this->config->get('citation_single_view', 1))
 		{
@@ -869,19 +869,19 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				JText::_('You have successfully saved the citation.')
 			);
 		}
-		
+
 		return;
 	}
 
 	/**
 	 * Delete one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask();
 			return;
@@ -889,13 +889,13 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have IDs to work with
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			// Loop through the IDs and delete the citation
 			$citation = new CitationsCitation($this->database);
@@ -931,7 +931,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a citation
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function downloadTask()
@@ -941,7 +941,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$format = strtolower(JRequest::getVar('format', 'bibtex', 'request'));
 
 		// Esnure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('COM_CITATIONS_NO_CITATION_ID'));
 			return;
@@ -950,7 +950,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		// Load the citation
 		$row = new CitationsCitation($this->database);
 		$row->load($id);
-		
+
 		// Set the write path
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/citations'), DS);
 
@@ -963,10 +963,10 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$file = 'download_' . $id . '.' . $formatter->getExtension();
 
 		// Ensure we have a directory to write files to
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				JError::raiseError(500, JText::_('COM_CITATIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -985,7 +985,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a batch of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadbatchTask()
@@ -999,8 +999,8 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$citations       = explode("-", $citationsString);
 
 		//return to browse mode if we really dont wanna download
-		if (strtolower($download) != 'endnote' 
-		 && strtolower($download) != 'bibtex') 
+		if (strtolower($download) != 'endnote'
+		 && strtolower($download) != 'bibtex')
 		{
 			return $this->displayTask();
 		}
@@ -1013,11 +1013,11 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$cc = new CitationsCitation($this->database);
 			$cc->load($c);
-			
+
 			//get the badges
 			$ct = new CitationTags($this->database);
 			$cc->badges = $ct->get_tag_string($cc->id, 0, 0, NULL, 0, 0, 'badge');
-			
+
 			$cd = new CitationsDownload();
 			$cd->setFormat(strtolower($download));
 			$doc .= $cd->formatReference($cc) . "\r\n\r\n";
@@ -1040,7 +1040,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if an array is empty, ignoring keys in the $ignored list
-	 * 
+	 *
 	 * @param      array $b       Array of data to check
 	 * @param      array $ignored Array of keys to bypass
 	 * @return     boolean True if empty, false if not
@@ -1049,12 +1049,12 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 	{
 		foreach ($ignored as $ignore)
 		{
-			if (array_key_exists($ignore, $b)) 
+			if (array_key_exists($ignore, $b))
 			{
 				$b[$ignore] = NULL;
 			}
 		}
-		if (array_key_exists('id', $b)) 
+		if (array_key_exists('id', $b))
 		{
 			$b['id'] = NULL;
 		}
@@ -1062,7 +1062,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$e = true;
 		foreach ($values as $v)
 		{
-			if ($v) 
+			if ($v)
 			{
 				$e = false;
 			}
@@ -1072,9 +1072,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for '_serveup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $inline Parameter description (if any) ...
 	 * @param      string $p Parameter description (if any) ...
 	 * @param      string $f Parameter description (if any) ...
@@ -1115,9 +1115,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for '_readfile_chunked'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $filename Parameter description (if any) ...
 	 * @param      boolean $retbytes Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -1128,7 +1128,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$buffer = '';
 		$cnt =0;
 		$handle = fopen($filename, 'rb');
-		if ($handle === false) 
+		if ($handle === false)
 		{
 			return false;
 		}
@@ -1136,13 +1136,13 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$buffer = fread($handle, $chunksize);
 			echo $buffer;
-			if ($retbytes) 
+			if ($retbytes)
 			{
 				$cnt += strlen($buffer);
 			}
 		}
 		$status = fclose($handle);
-		if ($retbytes && $status) 
+		if ($retbytes && $status)
 		{
 			return $cnt; // Return num. bytes delivered like readfile() does.
 		}
@@ -1151,7 +1151,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Return the citation format
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getformatTask()
@@ -1161,17 +1161,17 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 	/**
 	 * Serve up an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadimageTask()
 	{
 		// get the image we want to serve
 		$image = JRequest::getVar('image', '');
-		
+
 		// if we dont have an image were done
 		if ($image == '') return;
-		
+
 		// file details
 		$image_details = pathinfo($image);
 
@@ -1181,7 +1181,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			exit();
 		}
-		
+
 		//ouput image based on type
 		switch ($image_details['extension'])
 		{

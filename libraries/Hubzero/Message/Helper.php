@@ -39,7 +39,7 @@ class Helper extends Object
 {
 	/**
 	 * Marks action items as completed
-	 * 
+	 *
 	 * @param      string  $type      Item type
 	 * @param      array   $uids      User IDs
 	 * @param      string  $component ITem component
@@ -49,13 +49,13 @@ class Helper extends Object
 	public function takeAction($type, $uids=array(), $component='', $element=null)
 	{
 		// Do we have the proper bits?
-		if (!$element || !$component || !$type) 
+		if (!$element || !$component || !$type)
 		{
 			return false;
 		}
 
 		// Do we have any user IDs?
-		if (count($uids) > 0) 
+		if (count($uids) > 0)
 		{
 			$database = \JFactory::getDBO();
 
@@ -67,10 +67,10 @@ class Helper extends Object
 				$mids = $action->getActionItems($component, $element, $uid, $type);
 
 				// Check if the user has any action items
-				if (count($mids) > 0) 
+				if (count($mids) > 0)
 				{
 					$recipient = new Recipient($database);
-					if (!$recipient->setState(1, $mids)) 
+					if (!$recipient->setState(1, $mids))
 					{
 						$this->setError(\JText::sprintf('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
 					}
@@ -83,7 +83,7 @@ class Helper extends Object
 
 	/**
 	 * Send a message to one or more users
-	 * 
+	 *
 	 * @param      string  $type        Message type (maps to #__xmessage_component table)
 	 * @param      string  $subject     Message subject
 	 * @param      string  $message     Message to send
@@ -98,16 +98,16 @@ class Helper extends Object
 	public function sendMessage($type, $subject, $message, $from=array(), $to=array(), $component='', $element=null, $description='', $group_id=0)
 	{
 		// Do we have a message?
-		if (!$message) 
+		if (!$message)
 		{
 			return false;
 		}
 
 		// Do we have a subject line? If not, create it from the message
-		if (!$subject && $message) 
+		if (!$subject && $message)
 		{
 			$subject = substr($message, 0, 70);
-			if (strlen($subject) >= 70) 
+			if (strlen($subject) >= 70)
 			{
 				$subject .= '...';
 			}
@@ -125,7 +125,7 @@ class Helper extends Object
 		$xmessage->component  = $component;
 		$xmessage->type       = $type;
 		$xmessage->group_id   = $group_id;
-		if (!$xmessage->store()) 
+		if (!$xmessage->store())
 		{
 			return $xmessage->getError();
 		}
@@ -133,19 +133,19 @@ class Helper extends Object
 		// Does this message require an action?
 		// **DEPRECATED**
 		$action = new Action($database);
-		/*if ($element || $description) 
+		/*if ($element || $description)
 		{
 			$action->class       = $component;
 			$action->element     = $element;
 			$action->description = $description;
-			if (!$action->store()) 
+			if (!$action->store())
 			{
 				return $action->getError();
 			}
 		}*/
 
 		// Do we have any recipients?
-		if (count($to) > 0) 
+		if (count($to) > 0)
 		{
 			// Loop through each recipient
 			foreach ($to as $uid)
@@ -157,7 +157,7 @@ class Helper extends Object
 				$recipient->created  = \JFactory::getDate()->toSql();
 				$recipient->expires  = \JFactory::getDate(time() + (168 * 24 * 60 * 60))->toSql();
 				$recipient->actionid = $action->id;
-				if (!$recipient->store()) 
+				if (!$recipient->store())
 				{
 					return $recipient->getError();
 				}
@@ -173,14 +173,14 @@ class Helper extends Object
 				$dispatcher = \JDispatcher::getInstance();
 
 				// Do we have any methods?
-				if ($methods) 
+				if ($methods)
 				{
 					// Loop through each method
 					foreach ($methods as $method)
 					{
 						$action = strtolower($method->method);
 
-						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action))) 
+						if (!$dispatcher->trigger('onMessage', array($from, $xmessage, $user, $action)))
 						{
 							$this->setError(\JText::sprintf('Unable to message user %s with method %s', $uid, $action));
 						}

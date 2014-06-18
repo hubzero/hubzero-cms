@@ -38,7 +38,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 {
 	/**
 	 * Override Execute Method
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function execute()
@@ -47,39 +47,39 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		$this->cn     = JRequest::getVar('cn', '');
 		$this->active = JRequest::getVar('active', '');
 		$this->action = JRequest::getVar('action', '');
-		
+
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask('You must be logged in to customize a group.');
 			return;
 		}
-		
+
 		//check to make sure we have  cname
 		if(!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
-		
+
 		// Load the group page
 		$this->group = \Hubzero\User\Group::getInstance( $this->cn );
-		
+
 		// Ensure we found the group info
-		if (!$this->group || !$this->group->get('gidNumber')) 
+		if (!$this->group || !$this->group->get('gidNumber'))
 		{
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
-		
+
 		// Check authorization
 		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
 		{
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
-		
+
 		//continue with parent execute method
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display Page Modules
 	 *
@@ -89,7 +89,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 	{
 		$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#modules'));
 	}
-	
+
 	/**
 	 * Add Module
 	 *
@@ -99,7 +99,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 	{
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Edit Module
 	 *
@@ -109,19 +109,19 @@ class GroupsControllerModules extends GroupsControllerAbstract
 	{
 		//set to edit layout
 		$this->view->setLayout('edit');
-		
+
 		// get request vars
 		$moduleid = JRequest::getInt('moduleid', 0);
-		
+
 		// get the category object
 		$this->view->module = new GroupsModelModule( $moduleid );
-		
+
 		// are we passing a module object
 		if ($this->module)
 		{
 			$this->view->module = $this->module;
 		}
-		
+
 		// get a list of all pages for creating module menu
 		$pageArchive = GroupsModelPageArchive::getInstance();
 		$this->view->pages = $pageArchive->pages('list', array(
@@ -129,7 +129,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			'state'     => array(0,1),
 			'orderby'   => 'ordering'
 		));
-		
+
 		// get a list of all pages for creating module menu
 		$moduleArchive = GroupsModelModuleArchive::getInstance();
 		$this->view->order = $moduleArchive->modules('list', array(
@@ -138,24 +138,24 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			'state'     => array(0,1),
 			'orderby'   => 'ordering'
 		));
-		
+
 		// get stylesheets for editor
 		$this->view->stylesheets = GroupsHelperView::getPageCss($this->group);
-		
+
 		// build the title
 		$this->_buildTitle();
 
 		// build pathway
 		$this->_buildPathway();
-		
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group = $this->group;
-		
+
 		//display layout
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save Module
 	 *
@@ -169,14 +169,14 @@ class GroupsControllerModules extends GroupsControllerAbstract
 
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
-		
+
 		// clean title & position
 		$module['title']    = preg_replace("/[^-_ a-zA-Z0-9]+/", "", $module['title']);
 		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", "", $module['position']);
-		
+
 		// get the category object
 		$this->module = new GroupsModelModule( $module['id'] );
-		
+
 		// ordering change
 		$ordering = null;
 		if (isset($module['ordering']) && $module['ordering'] != $this->module->get('ordering'))
@@ -184,8 +184,8 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$ordering = $module['ordering'];
 			unset($module['ordering']);
 		}
-		
-		// if this is new module or were changing position, 
+
+		// if this is new module or were changing position,
 		// get next order possible for position
 		if (!isset($module['id']) || ($module['id'] == '')
 			|| ($module['position'] != $this->module->get('position')))
@@ -193,29 +193,29 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$ordering = null;
 			$module['ordering'] = $this->module->getNextOrder($module['position']);
 		}
-		
+
 		// did the module content change?
 		$contentChanged = false;
 		$oldContent = trim($this->module->get('content'));
 		$newContent = (isset($module['content'])) ? trim($module['content']) : '';
 		$newContent = GroupsModelModule::purify($newContent, $this->group->isSuperGroup());
-		
+
 		// is the new and old content different?
 		if ($oldContent != $newContent)
 		{
 			$contentChanged = true;
 		}
-		
+
 		// bind request vars to module model
 		if (!$this->module->bind( $module ))
 		{
 			$this->setNotification($this->module->getError(), 'error');
 			return $this->editTask();
 		}
-		
+
 		// module is approved unless contains php or scripts (checked below)
 		$this->module->set('approved', 1);
-		
+
 		// if we have php or script tags we must get module approved by admin
 		if (strpos($this->module->get('content'), '<?') !== false ||
 			strpos($this->module->get('content'), '<?php') !== false ||
@@ -231,15 +231,15 @@ class GroupsControllerModules extends GroupsControllerAbstract
 				$this->module->set('scanned', 0);
 			}
 		}
-		
+
 		// set created if new module
 		if (!$this->module->get('id'))
 		{
 			$this->module->set('created', JFactory::getDate()->toSql());
 			$this->module->set('created_by', JFactory::getUser()->get('id'));
 		}
-		
-		// set modified 
+
+		// set modified
 		$this->module->set('modified', JFactory::getDate()->toSql());
 		$this->module->set('modified_by', JFactory::getUser()->get('id'));
 
@@ -251,7 +251,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$this->editTask();
 			return;
 		}
-		
+
 		// save version settings
 		// dont run check on module store, skips onContentBeforeSave in Html format hadler
 		if (!$this->module->store(false, $this->group->isSuperGroup()))
@@ -268,20 +268,20 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$this->editTask();
 			return;
 		}
-		
+
 		// do we need to reorder
 		if ($ordering !== null)
 		{
 			$move = (int) $ordering - (int) $this->module->get('ordering');
 			$this->module->move($move, $this->module->get('position'));
 		}
-		
+
 		// send to approvers if unapproved
 		if ($this->module->get('approved', 0) == 0)
 		{
 			GroupsHelperPages::sendApproveNotification( 'module', $this->module );
 		}
-		
+
 		// Push success message and redirect
 		$this->setNotification("You have successfully updated the module.", 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules') );
@@ -290,68 +290,68 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$this->setRedirect(base64_decode($return));
 		}
 	}
-	
-	
+
+
 	/**
 	 * Publish Group Module
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function publishTask()
 	{
 		$this->setStateTask( 1, 'published' );
 	}
-	
-	
+
+
 	/**
 	 * Unpublish Group Module
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function unpublishTask()
 	{
 		$this->setStateTask( 0, 'unpubished' );
 	}
-	
-	
+
+
 	/**
 	 * Delete Module
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function deleteTask()
 	{
 		$this->setStateTask( 2, 'deleted' );
 	}
-	
+
 	/**
 	 * Set page state
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function setStateTask( $state = 1, $status = 'published' )
 	{
 		//get request vars
 		$moduleid = JRequest::getInt('moduleid', 0, 'get');
-		
+
 		// load page model
 		$module = new GroupsModelModule( $moduleid );
-		
+
 		// make sure its out page
 		if (!$module->belongsToGroup($this->group))
 		{
 			JError::raiseError(403, 'You are not authorized to modify this module.');
 		}
-		
+
 		// make sure state is a valid state
 		if (!in_array($state, array(0, 1, 2)))
 		{
 			$state = 1;
 		}
-		
+
 		// set the page state
 		$module->set('state', $state);
-		
+
 		// save
 		if (!$module->store(false))
 		{
@@ -359,7 +359,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 			$this->displayTask();
 			return;
 		}
-		
+
 		//inform user & redirect
 		$this->setNotification('The group module was successfully ' . $status . '.', 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules') );

@@ -43,7 +43,7 @@ JHtml::_('behavior.modal');
 JHtml::_('behavior.switcher', 'submenu');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -132,9 +132,9 @@ function submitbutton(pressbutton)
 
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
-					
+
 					<?php
-					if ($this->row->exists()) 
+					if ($this->row->exists())
 					{
 						$this->css('fileupload.css')
 						     ->js('jquery.fileuploader.js', 'system');
@@ -146,11 +146,11 @@ function submitbutton(pressbutton)
 							</noscript>
 						</div>
 					</div>
-						<?php 
+						<?php
 						$width = 0;
 						$height = 0;
 						$this_size = 0;
-						if ($pic = $this->row->get('picture')) 
+						if ($pic = $this->row->get('picture'))
 						{
 							$path = $this->row->logo('path');
 
@@ -208,9 +208,9 @@ function submitbutton(pressbutton)
 									multiple: true,
 									debug: true,
 									template: '<div class="qq-uploader">' +
-												'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+												'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
 												'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-												'<ul class="qq-upload-list"></ul>' + 
+												'<ul class="qq-upload-list"></ul>' +
 											   '</div>',
 									/*onSubmit: function(id, file) {
 										//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");

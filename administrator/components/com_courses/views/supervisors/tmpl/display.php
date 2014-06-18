@@ -63,8 +63,8 @@ foreach ($roles as $key => $role)
 <?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php } ?>
-						<?php 
-						foreach ($offerings as $offering) 
+						<?php
+						foreach ($offerings as $offering)
 						{
 							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
 							if (!$oroles || !count($oroles))
@@ -93,7 +93,7 @@ foreach ($roles as $key => $role)
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 	<form action="index.php" method="post" id="adminForm">
@@ -107,7 +107,7 @@ foreach ($roles as $key => $role)
 						<input type="hidden" name="section" value="<?php echo $this->model->section()->get('id'); ?>" />
 						<input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
-						
+
 						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
 					</th>
 				</tr>
@@ -125,7 +125,7 @@ foreach ($roles as $key => $role)
 			foreach ($managers as $manager)
 			{
 				$u = JUser::getInstance($manager->get('user_id'));
-				if (!is_object($u)) 
+				if (!is_object($u))
 				{
 					continue;
 				}
@@ -152,8 +152,8 @@ foreach ($roles as $key => $role)
 <?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 <?php } ?>
-						<?php 
-						foreach ($offerings as $offering) 
+						<?php
+						foreach ($offerings as $offering)
 						{
 							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
 							if (!$oroles || !count($oroles))
@@ -177,11 +177,11 @@ foreach ($roles as $key => $role)
 ?>
 			</tbody>
 		</table>
-		
+
 		<?php echo JHTML::_('form.token'); ?>
-		
+
 		<script type="text/javascript">
-			function update() 
+			function update()
 			{
 				var task = document.getElementById('task');
 				task.value = 'update';

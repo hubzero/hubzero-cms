@@ -40,56 +40,56 @@ class UsersQuotas extends JTable
 {
 	/**
 	 * ID - primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * User ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $user_id = null;
 
 	/**
 	 * Quota class ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $class_id = null;
 
 	/**
 	 * Hard files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_files = null;
 
 	/**
 	 * Soft files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_files = null;
 
 	/**
 	 * Hard blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_blocks = null;
 
 	/**
 	 * Soft blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_blocks = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -100,20 +100,20 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		// Make sure they gave numeric values
-		if (!is_numeric(trim($this->soft_files)) || !is_numeric(trim($this->hard_files)) || !is_numeric(trim($this->soft_blocks)) || !is_numeric(trim($this->hard_blocks))) 
+		if (!is_numeric(trim($this->soft_files)) || !is_numeric(trim($this->hard_files)) || !is_numeric(trim($this->soft_blocks)) || !is_numeric(trim($this->hard_blocks)))
 		{
 			$this->setError( JText::_('COM_MEMBERS_QUOTA_VALUES_MUST_BE_NUMERIC') );
 			return false;
 		}
 
 		// Make sure they gave values
-		if (is_null($this->soft_files) || is_null($this->hard_files) || is_null($this->soft_blocks) || is_null($this->hard_blocks)) 
+		if (is_null($this->soft_files) || is_null($this->hard_files) || is_null($this->soft_blocks) || is_null($this->hard_blocks))
 		{
 			$this->setError( JText::_('COM_MEMBERS_QUOTA_MISSING_VALUES') );
 			return false;
@@ -138,7 +138,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Override store to make mw call too
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function store($updateNulls = false)
@@ -163,7 +163,7 @@ class UsersQuotas extends JTable
 			exec($cmd, $results, $status);
 
 			// Check exec status
-			if (!isset($status) || $status != 0) 
+			if (!isset($status) || $status != 0)
 			{
 				// Something went wrong
 				$this->setError( JText::_('COM_MEMBERS_QUOTA_USER_FAILED_TO_SAVE_TO_FILESYSTEM') );
@@ -192,7 +192,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -219,7 +219,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Retrieve a record
-	 * 
+	 *
 	 * @param  int $id of record to return
 	 * @return object Return password rule records
 	 */
@@ -235,7 +235,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Get a count of the number of quota classes
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return count of rows
 	 */
@@ -250,7 +250,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Get the an object list of quotas classes
-	 * 
+	 *
 	 * @param  array $filters start and limit, needed for pagination
 	 * @return object Return password rule records
 	 */
@@ -270,7 +270,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Update all quotas of a certain class ID to reflect a change in class defaults
-	 * 
+	 *
 	 * @param    int $id
 	 * @return   void
 	 */
@@ -305,7 +305,7 @@ class UsersQuotas extends JTable
 
 	/**
 	 * Upon deletion of a class, restore all users of that class to the default class
-	 * 
+	 *
 	 * @param    int $id
 	 * @return   void
 	 */

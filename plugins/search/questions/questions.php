@@ -39,9 +39,9 @@ class plgSearchQuestions extends SearchPlugin
 
 	/**
 	 * Short description for 'sort_by_date'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      object $b Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -59,9 +59,9 @@ class plgSearchQuestions extends SearchPlugin
 
 	/**
 	 * Short description for 'sort_by_weight'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      mixed $b Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
@@ -73,7 +73,7 @@ class plgSearchQuestions extends SearchPlugin
 
 	/**
 	 * Build search query AND add it to the $results
-	 * 
+	 *
 	 * @param      object $request  YSearchModelRequest
 	 * @param      object &$results YSearchModelResultSet
 	 * @return     void
@@ -100,9 +100,9 @@ class plgSearchQuestions extends SearchPlugin
 
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery(
-			"SELECT 
+			"SELECT
 				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, $qweight AS qweight, null AS rweight,
-			CASE 
+			CASE
 				when q.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributors,
@@ -110,7 +110,7 @@ class plgSearchQuestions extends SearchPlugin
 				when q.anonymous > 0 then null
 				else (SELECT id FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributor_ids,
-			CASE 
+			CASE
 				when r.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributors,
@@ -118,11 +118,11 @@ class plgSearchQuestions extends SearchPlugin
 				when r.anonymous > 0 then null
 				else (SELECT id FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributor_ids
-			FROM `#__answers_questions` q 
+			FROM `#__answers_questions` q
 			LEFT JOIN `#__answers_responses` r ON r.question_id = q.id AND r.state != 2
 			WHERE $qweight > 0 AND q.state != 2
 			UNION
-			SELECT 
+			SELECT
 				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, null AS qweight, $rweight AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
@@ -132,7 +132,7 @@ class plgSearchQuestions extends SearchPlugin
 				when q.anonymous > 0 then null
 				else (SELECT id FROM `#__users` WHERE id = q.created_by)
 			END AS qcontributor_ids,
-			CASE 
+			CASE
 				when r.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributors,
@@ -140,7 +140,7 @@ class plgSearchQuestions extends SearchPlugin
 				when r.anonymous > 0 then null
 				else (SELECT id FROM `#__users` WHERE id = r.created_by)
 			END AS rcontributor_ids
-			FROM `#__answers_responses` r2 
+			FROM `#__answers_responses` r2
 			INNER JOIN `#__answers_questions` q ON q.id = r2.question_id AND q.state != 2
 			LEFT JOIN `#__answers_responses` r ON r.question_id = q.id AND r.state != 2
 			WHERE $r2weight > 0 AND r2.state != 2
@@ -182,7 +182,7 @@ class plgSearchQuestions extends SearchPlugin
 		}
 		usort($questions, array('plgSearchQuestions', 'sort_by_weight'));
 		$maxWeight = 0;
-		foreach ($questions as $question) 
+		foreach ($questions as $question)
 		{
 			$maxWeight = max($maxWeight, $question->get_weight());
 		}

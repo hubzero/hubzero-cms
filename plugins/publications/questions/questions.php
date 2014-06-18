@@ -40,7 +40,7 @@ class plgPublicationsQuestions extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -51,16 +51,16 @@ class plgPublicationsQuestions extends JPlugin
 
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true ) 
+	 */
+	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
 		if ($publication->_category->_params->get('plg_questions') && $extended) {
 			$areas = array(
@@ -74,7 +74,7 @@ class plgPublicationsQuestions extends JPlugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
@@ -82,21 +82,21 @@ class plgPublicationsQuestions extends JPlugin
 	 * @param      string 	$version 		Version name
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_questions')) 
+				if ($publication->_category->_params->get('plg_questions'))
 				{
 					$rtrn == 'metadata';
 				}
@@ -106,9 +106,9 @@ class plgPublicationsQuestions extends JPlugin
 				}
 			}
 		}
-		
+
 		// Only applicable to latest published version
-		if (!$extended) 
+		if (!$extended)
 		{
 			return $arr;
 		}
@@ -128,18 +128,18 @@ class plgPublicationsQuestions extends JPlugin
 		$this->filters['limit']    	= JRequest::getInt( 'limit', 0 );
 		$this->filters['start']    	= JRequest::getInt( 'limitstart', 0 );
 		$identifier 		 		= $this->publication->alias ? $this->publication->alias : $this->publication->id;
-		$this->filters['tag']      	= $this->publication->cat_alias == 'tool' 
+		$this->filters['tag']      	= $this->publication->cat_alias == 'tool'
 									?  'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['rawtag']   	= $this->publication->cat_alias == 'tool' 
+		$this->filters['rawtag']   	= $this->publication->cat_alias == 'tool'
 									?  'tool:' . $identifier : 'publication:' . $identifier;
 		$this->filters['q']        	= JRequest::getVar( 'q', '' );
 		$this->filters['filterby'] 	= JRequest::getVar( 'filterby', '' );
 		$this->filters['sortby']   	= JRequest::getVar( 'sortby', 'withinplugin' );
 
 		$this->count = $this->a->getCount($this->filters);
-		
+
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			switch (strtolower(JRequest::getWord('action', 'browse')))
 			{
@@ -159,7 +159,7 @@ class plgPublicationsQuestions extends JPlugin
 		}
 
 		// Are we returning metadata?
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -176,10 +176,10 @@ class plgPublicationsQuestions extends JPlugin
 		// Return output
 		return $arr;
 	}
-	
+
 	/**
 	 * Show a list of questions attached to this publication
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _browse()
@@ -211,7 +211,7 @@ class plgPublicationsQuestions extends JPlugin
 		$view->rows     = $this->a->getResults($this->filters);
 		$view->count    = $this->count;
 		$view->limit    = $this->params->get('display_limit', 10);
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -224,14 +224,14 @@ class plgPublicationsQuestions extends JPlugin
 
 	/**
 	 * Display a form for adding a question
-	 * 
+	 *
 	 * @param      object $row AnswersTableQuestion
 	 * @return     string
 	 */
 	private function _new($row=null)
 	{
 		// Login required
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$app = JFactory::getApplication();
 			$app->redirect(
@@ -273,7 +273,7 @@ class plgPublicationsQuestions extends JPlugin
 		$view->banking = $upconfig->get('bankAccounts');
 
 		$view->funds = 0;
-		if ($view->banking) 
+		if ($view->banking)
 		{
 			$juser = JFactory::getUser();
 
@@ -282,7 +282,7 @@ class plgPublicationsQuestions extends JPlugin
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -295,13 +295,13 @@ class plgPublicationsQuestions extends JPlugin
 
 	/**
 	 * Save a question and redirect to the main listing when done
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _save()
 	{
 		// Login required
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return $this->_browse();
 		}
@@ -315,16 +315,16 @@ class plgPublicationsQuestions extends JPlugin
 		$reward = JRequest::getInt('reward', 0);
 
 		// If offering a reward, do some checks
-		if ($reward) 
+		if ($reward)
 		{
 			// Is it an actual number?
-			if (!is_numeric($reward)) 
+			if (!is_numeric($reward))
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 				return;
 			}
 			// Are they offering more than they can afford?
-			if ($reward > $funds) 
+			if ($reward > $funds)
 			{
 				JError::raiseError(500, JText::_('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 				return;
@@ -335,26 +335,26 @@ class plgPublicationsQuestions extends JPlugin
 		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
 		$row = new AnswersModelQuestion($fields['id']);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
 			return $this->_new($row);
 		}
 
-		if ($reward && $this->banking) 
+		if ($reward && $this->banking)
 		{
 			$row->set('reward', 1);
 		}
 
 		// Ensure the user added a tag
-		if (!$tags) 
+		if (!$tags)
 		{
 			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->_new($row);
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$row->set('tags', $tags);
 
@@ -363,7 +363,7 @@ class plgPublicationsQuestions extends JPlugin
 		}
 
 		// Hold the reward for this question if we're banking
-		if ($reward && $this->banking) 
+		if ($reward && $this->banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
@@ -375,7 +375,7 @@ class plgPublicationsQuestions extends JPlugin
 		// Add the tag to link to the publication
 		$identifier = $this->publication->alias ? $this->publication->alias : $this->publication->id;
 		$tag      	= $this->publication->cat_alias == 'tool' ?  'tool' . $identifier : 'publication' . $identifier;
-									
+
 		$row->addTag($tag, $this->juser->get('id'), ($this->publication->cat_alias == 'tool' ? 0 : 1));
 
 		// Redirect to the question

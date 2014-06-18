@@ -39,7 +39,7 @@ class modTopTags extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -64,7 +64,7 @@ class modTopTags extends \Hubzero\Module\Module
 
 	/**
 	 * Display module
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

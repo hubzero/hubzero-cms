@@ -40,7 +40,7 @@ class WishTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class WishTags extends TagsHandler
 
 	/**
 	 * Turn a string of tags to an array
-	 * 
+	 *
 	 * @param      string $tag Tag string
 	 * @return     mixed
 	 */

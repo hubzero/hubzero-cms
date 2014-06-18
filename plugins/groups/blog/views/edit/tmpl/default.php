@@ -68,10 +68,10 @@ $this->css()
 		<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 		<?php } ?>
-		
+
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-			<?php 
+			<?php
 			echo JFactory::getEditor()->display('entry[content]', $this->escape(stripslashes($this->entry->get('content'))), '', '', 50, 30, false, 'entry_content');
 			?>
 		</label>
@@ -99,7 +99,7 @@ $this->css()
 		<div class="grid">
 			<div class="col span6">
 				<label for="field-allow_comments">
-					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+					<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 				</label>
 			</div>
@@ -114,7 +114,7 @@ $this->css()
 				</label>
 			</div>
 		</div>
-		
+
 		<div class="grid">
 			<div class="col span6">
 				<label for="field-publish_up">

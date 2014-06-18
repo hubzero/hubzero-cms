@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $option = JRequest::getCmd('option', 'com_cron');
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -46,12 +46,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('COM_CRON_JOBS'), 
-	'index.php?option=' .  $option . '&controller=jobs', 
+	JText::_('COM_CRON_JOBS'),
+	'index.php?option=' .  $option . '&controller=jobs',
 	($controllerName == 'jobs')
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_CRON_PLUGINS'), 
+	JText::_('COM_CRON_PLUGINS'),
 	'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
 );
 

@@ -135,7 +135,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -181,7 +181,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * New/Edit function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _edit($task=null)
@@ -204,7 +204,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 			// Use the prexisting object (i.e. we had an error when saving)
 			$view->row = $task;
 		}
-		else 
+		else
 		{
 			// Create a new object (i.e. we're coming in clean)
 			$task = new TimeTasks($this->db);
@@ -219,8 +219,8 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		$view->llist         = TimeHTML::buildLiaisonList($view->row->liaison, $this->active, 1);
 
 		// If viewing an entry from a page other than the first, take the user back to that page if they click "all xxx"
-		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set a few things for the vew
@@ -233,7 +233,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save new time task and redirect to the tasks page
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save()
@@ -253,8 +253,8 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		}
 
 		// If saving a task from a page other than the first, take the user back to that page after saving
-		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Success, we made it, set the redirect
@@ -267,7 +267,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete task
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _delete()
@@ -276,8 +276,8 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		$tid = JRequest::getInt('id');
 
 		// If deleting a record from a page other than the first, take the user back to that page after deletion
-		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Check if the task has any active records
@@ -311,7 +311,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Toggle a task's active status
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _toggleActive()
@@ -320,8 +320,8 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		$pid = JRequest::getInt('id');
 
 		// If delete a record from a page other than the first, take the user back to that page after toggle
-		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Create object and store new content
@@ -330,7 +330,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		$active = ($task->active == 0) ? 1 : 0;
 
 		$task->active = $active;
-		if (!$task->store()) 
+		if (!$task->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -346,7 +346,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setRedirect($url, $msg=null, $type='message')

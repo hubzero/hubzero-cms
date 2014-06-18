@@ -41,21 +41,21 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableMemberBadge';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'memberbadge';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @return     void
 	 */
@@ -76,7 +76,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 *
 	 * Member id is unique to a course and section, and badges are unique to members.
 	 * Therefore, member id also serves as a primary key of this table.
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @return     void
 	 */
@@ -98,7 +98,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 * Load by validation token
 	 *
 	 * Validation token is a unique hash that allows us to identify a users badge evidence without exposing their user id
-	 * 
+	 *
 	 * @param      string $token - badge assertion token
 	 * @return     void
 	 */
@@ -119,7 +119,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 
 	/**
 	 * Store member badge
-	 * 
+	 *
 	 * @return     bool
 	 */
 	public function store($check=true)
@@ -136,7 +136,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 
 	/**
 	 * Check whether or not a student has earned the badge
-	 * 
+	 *
 	 * @return     bool
 	 */
 	public function hasEarned()

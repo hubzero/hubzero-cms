@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 </header>
 
 <?php
-	foreach($this->notifications as $notification) 
+	foreach($this->notifications as $notification)
 	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}

@@ -37,7 +37,7 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -71,11 +71,11 @@ function submitbutton(pressbutton)
 <?php
 foreach ($this->params as $field => $values)
 {
-	if (substr($field, 0, strlen('registration')) == 'registration') 
+	if (substr($field, 0, strlen('registration')) == 'registration')
 	{
 		$title = $values[3];
 		$value = $values[4];
-		
+
 		$create = strtoupper(substr($value, 0, 1));
 		$proxy  = strtoupper(substr($value, 1, 1));
 		$update = strtoupper(substr($value, 2, 1));

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchSortCourses'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchSortCourses extends SearchPlugin
@@ -41,16 +41,16 @@ class plgSearchSortCourses extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearchSort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      object $b Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public static function onSearchSort($a, $b)
 	{
-		if ($a->get_plugin() !== 'resources' || $b->get_plugin() !== 'resources' 
+		if ($a->get_plugin() !== 'resources' || $b->get_plugin() !== 'resources'
 		 || $a->get_section() !== 'Courses' || $b->get_section() !== 'Courses')
 		{
 			return 0;

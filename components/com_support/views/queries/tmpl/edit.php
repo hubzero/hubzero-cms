@@ -35,8 +35,8 @@ $no_html = JRequest::getInt('no_html', 0);
 
 $juser = JFactory::getUser();
 ?>
-<?php 
-if (!$tmpl && !$no_html) { 
+<?php
+if (!$tmpl && !$no_html) {
 	// Push some styles to the template
 	$this->js('json2.js');
 	$this->js('condition.builder.js');
@@ -129,7 +129,7 @@ if (!$tmpl && !$no_html) {
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 	<script type="text/javascript">
-		function submitbutton(pressbutton) 
+		function submitbutton(pressbutton)
 		{
 			var $ = jq, query = {};
 
@@ -151,8 +151,8 @@ if (!$tmpl && !$no_html) {
 			Conditions.addqueryroot('.query', true);
 		});
 	</script>
-<?php 
-} else { 
+<?php
+} else {
 	if ($this->row->iscore != 0)
 	{
 		$this->row->title .= ' ' . JText::_('(copy)');
@@ -190,7 +190,7 @@ if (!$tmpl && !$no_html) {
 			     ->set('conditions', $this->conditions)
 			     ->set('row', $this->row)
 			     ->display();
-			
+
 		//}
 	}
 ?>
@@ -235,7 +235,7 @@ if (!$tmpl && !$no_html) {
 		</fieldset>
 	</form>
 	<script type="text/javascript">
-		/*function submitbutton(pressbutton) 
+		/*function submitbutton(pressbutton)
 		{
 			var $ = jq;
 

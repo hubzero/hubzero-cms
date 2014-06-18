@@ -35,296 +35,296 @@ defined('_JEXEC') or die( 'Restricted access' );
  * NOTES master type helper class
  */
 class typeNotes extends JObject
-{	
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_database       	= NULL;
-	
+
 	/**
 	 * Project
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_project      	 	= NULL;
-	
+
 	/**
 	 * Base alias
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $_base   		 	= 'notes';
 
 	/**
 	 * Attachment type
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_attachmentType 	= 'note';
-	
+
 	/**
 	 * Selection type (single/multi)
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_multiSelect 	 	= false;
-	
+
 	/**
 	 * Allow change to selection after draft is started?
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_changeAllowed  	= true;
-	
+
 	/**
 	 * Allow to create a new publication with exact same content?
-	 * 
+	 *
 	 * @var boolean
 	 */
-	var $_allowDuplicate  	= false;			
-	
+	var $_allowDuplicate  	= false;
+
 	/**
 	 * Unique attachment properties
-	 * 
+	 *
 	 * @var array
 	 */
 	var $_attProperties  	= array('object_id', 'object_revision');
-	
+
 	/**
 	 * Data
-	 * 
+	 *
 	 * @var array
 	 */
-	var $_data   		 = array();	
-	
+	var $_data   		 = array();
+
 	/**
 	 * Serve as (default value)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveas   	= 'external';
-	
+
 	/**
 	 * Serve as choices
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveChoices  = array('external');
-		
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      	 JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $project = NULL, $data = array() )
 	{
 		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
 	}
-	
+
 	/**
 	 * Set
-	 * 
+	 *
 	 * @param      string 	$property
 	 * @param      string 	$value
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
+
 	/**
 	 * Get
-	 * 
+	 *
 	 * @param      string 	$property
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
 	}
-	
+
 	/**
 	 * Dispatch task
-	 * 
-	 * @param      string  $task 
+	 *
+	 * @param      string  $task
 	 * @return     void
-	 */	
+	 */
 	public function dispatch( $task = NULL )
 	{
 		$output 		 = NULL;
-		
-		switch ( $task ) 
+
+		switch ( $task )
 		{
-			case 'getServeAs': 								
-				$output = $this->_getServeAs(); 		
+			case 'getServeAs':
+				$output = $this->_getServeAs();
 				break;
-				
-			case 'checkContent': 								
-				$output = $this->_checkContent(); 		
+
+			case 'checkContent':
+				$output = $this->_checkContent();
 				break;
-				
-			case 'checkMissing': 								
-				$output = $this->_checkMissing(); 		
+
+			case 'checkMissing':
+				$output = $this->_checkMissing();
 				break;
-				
-			case 'drawItem': 								
-				$output = $this->_drawItem(); 		
+
+			case 'drawItem':
+				$output = $this->_drawItem();
 				break;
-				
-			case 'saveAttachments': 								
-				$output = $this->_saveAttachments(); 		
+
+			case 'saveAttachments':
+				$output = $this->_saveAttachments();
 				break;
-				
+
 			case 'cleanupAttachments':
-				$output = $this->_cleanupAttachments(); 		
+				$output = $this->_cleanupAttachments();
 				break;
-				
+
 			case 'getPubTitle':
 				$output = $this->_getPubTitle();
-	
+
 			default:
 				break;
 		}
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Get serveas options (_showOptions function in plg_projects_publications)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getServeAs()
 	{
 		$result = array('serveas' => $this->_serveas, 'choices' => $this->_serveChoices);
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Get publication title for newly created draft
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getPubTitle($title = '')
 	{
 		// Incoming data
 		$item = $this->__get('item');
-		
+
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
-		
-		$config = JComponentHelper::getParams( 'com_projects' );		
+
+		$config = JComponentHelper::getParams( 'com_projects' );
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
 		$note = $projectsHelper->getSelectedNote($item, $group, $masterscope);
 		$title = $note ? $note->title : '';
-		
+
 		return $title;
-		
+
 	}
-	
+
 	/**
 	 * Check content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkContent()
 	{
 		// Incoming data
 		$attachments = $this->__get('attachments');
-		
+
 		if ($attachments && count($attachments) > 0)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Check missing content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkMissing()
 	{
 		// Incoming data
 		$item  	 = $this->__get('item');
 		$config  = $this->__get('config');
-		
+
 		if (!$item)
 		{
 			return false;
 		}
-		
-		$pageid 		= $item->object_id;		
+
+		$pageid 		= $item->object_id;
 		$masterscope 	= 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group_prefix 	= $config->get('group_prefix', 'pr-');
 		$group 			= $group_prefix . $this->_project->alias;
-		
+
 		// Get projects helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
-		
+
 		if (!$projectsHelper->getSelectedNote($pageid, $group, $masterscope))
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Draw selected item html
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _drawItem()
 	{
 		// Incoming data
 		$att   		= $this->__get('att');
 		$item   	= $this->__get('item');
-		
+
 		// Load component configs
 		$config = JComponentHelper::getParams( 'com_projects' );
-		
-		$pageid 		= $att->id ? $att->object_id : $item;		
+
+		$pageid 		= $att->id ? $att->object_id : $item;
 		$masterscope 	= 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group_prefix 	= $config->get('group_prefix', 'pr-');
 		$group 			= $group_prefix . $this->_project->alias;
-		
+
 		// Get projects helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
 		$note = $projectsHelper->getSelectedNote($pageid, $group, $masterscope);
-		
+
 		if (!$note)
 		{
 			return false;
 		}
-		
+
 		$title = $att->title ? $att->title : $note->title;
-		
+
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		$html.= '<span class="c-iteminfo"></span>';
 
 		return $html;
-	}	
-	
+	}
+
 	/**
 	 * Save picked items as publication attachments
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _saveAttachments()
 	{
 		// Incoming data
@@ -340,39 +340,39 @@ class typeNotes extends JObject
 		$state  		= $this->__get('state');
 		$secret  		= $this->__get('secret');
 		$newpub  		= $this->__get('newpub');
-		
-		if (isset($selections['notes']) && count($selections['notes']) > 0) 
+
+		if (isset($selections['notes']) && count($selections['notes']) > 0)
 		{
 			// Get helper
 			$projectsHelper = new ProjectsHelper( $this->_database );
-			
+
 			// Load component configs
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$config    = JComponentHelper::getParams( 'com_projects' );
-					
+
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;
-			
+
 			$objPA = new PublicationAttachment( $this->_database );
-			
+
 			// Attach every selected file
-			foreach ($selections['notes'] as $pageId) 
+			foreach ($selections['notes'] as $pageId)
 			{
-				// get project note						
+				// get project note
 				$note = $projectsHelper->getSelectedNote($pageId, $group, $masterscope);
-			
+
 				if (!$note)
 				{
 					// Can't proceed
 					continue;
 				}
-							
-				if ($objPA->loadAttachment($vid, $pageId, 'note')) 
+
+				if ($objPA->loadAttachment($vid, $pageId, 'note'))
 				{
 					$objPA->modified_by 			= $uid;
 					$objPA->modified 				= JFactory::getDate()->toSql();
 				}
-				else 
+				else
 				{
 					$objPA 							= new PublicationAttachment( $this->_database );
 					$objPA->publication_id 			= $pid;
@@ -382,33 +382,33 @@ class typeNotes extends JObject
 					$objPA->created_by 				= $uid;
 					$objPA->created 				= JFactory::getDate()->toSql();
 				}
-				
+
 				// Save object information
 				$objPA->object_id   	= $pageId;
 				$objPA->object_name 	= $note->pagename;
 				$objPA->object_revision = $note->version;
 				$objPA->object_instance = $note->instance;
-			
+
 				$objPA->ordering 		= $added;
 				$objPA->role 			= $primary;
 				$objPA->title 			= $note->title;
 				$objPA->params 			= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-				if ($objPA->store()) 
+
+				if ($objPA->store())
 				{
 					$added++;
-				}				
+				}
 			}
 		}
-		
+
 		return $added;
 	}
-	
+
 	/**
 	 * Cleanup publication attachments when others are picked
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _cleanupAttachments()
 	{
 		// Incoming data
@@ -418,18 +418,18 @@ class typeNotes extends JObject
 		$uid  			= $this->__get('uid');
 		$old  			= $this->__get('old');
 		$secret  		= $this->__get('secret');
-		
+
 		if (empty($selections) || !isset($selections['notes']))
 		{
 			return false;
 		}
-		
+
 		if (!in_array(trim($old->object_id), $selections['notes']))
 		{
 			$objPA = new PublicationAttachment( $this->_database );
-			$objPA->deleteAttachment($vid, $old->object_id, $old->type);	
+			$objPA->deleteAttachment($vid, $old->object_id, $old->type);
 		}
-		
+
 		return true;
 	}
 }

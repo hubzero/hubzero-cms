@@ -62,13 +62,13 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			'int'
 		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['iscore']   = array(4, 2, 1);
@@ -90,7 +90,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -150,7 +150,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		$this->view->conditions = $con->getConditions();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -185,7 +185,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -200,7 +200,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -215,7 +215,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -230,7 +230,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 				JText::_('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
 			);
 		}
-		else 
+		else
 		{
 			$this->view->setLayout('list');
 
@@ -252,7 +252,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getError() as $error)
 				{
@@ -331,7 +331,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getError() as $error)
 				{

@@ -4,19 +4,19 @@
  * @author		Shawn Rice <zooley@purdue.edu>
  * @copyright	Copyright 2005-2013 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- * 
+ *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -32,7 +32,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determine task and execute
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -44,7 +44,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of sections and their categories
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -97,7 +97,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -110,7 +110,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Saves a section and redirects to main page afterward
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -135,7 +135,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$section->store(true)) 
+		if (!$section->store(true))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
@@ -153,13 +153,13 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Deletes a section and redirects to main page afterwards
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Is the user logged in?
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option, false, true))),
@@ -173,7 +173,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		$section = $this->model->section(JRequest::getVar('section', ''));
 
 		// Make the sure the section exist
-		if (!$section->exists()) 
+		if (!$section->exists())
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
@@ -186,7 +186,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		// Check if user is authorized to delete entries
 		$this->_authorize('section', $section->get('id'));
 
-		if (!$this->config->get('access-delete-section')) 
+		if (!$this->config->get('access-delete-section'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
@@ -219,13 +219,13 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the authorization level for the user
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -269,7 +269,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 						$this->config->set('access-edit-own-' . $assetType, $val);
 					}
 				}
-				else 
+				else
 				{
 					$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
 					$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
@@ -279,7 +279,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($assetType == 'post' || $assetType == 'thread')
 				{

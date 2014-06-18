@@ -42,7 +42,7 @@ $this->css('pipeline.css')
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<?php 
+	<?php
 	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
 	$statuspath = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
 
@@ -55,9 +55,9 @@ $this->css('pipeline.css')
 
 	$rconfig = JComponentHelper::getParams( 'com_resources' );
 	$hubDOIpath = $rconfig->get('doi');
-	?> 
+	?>
 	<div class="grid">
-		<div class="col span-half">	
+		<div class="col span-half">
 			<?php if ($this->error) { ?>
 				<p class="error"><?php echo $this->error; ?></p>
 			<?php } ?>
@@ -100,7 +100,7 @@ $this->css('pipeline.css')
 				<tbody>
 				<?php
 					$i=0;
-					foreach ($this->versions as $t) 
+					foreach ($this->versions as $t)
 					{
 						// get tool access text
 						$toolaccess = ToolsHelperHtml::getToolAccess($t->toolaccess, $this->status['membergroups']);
@@ -117,7 +117,7 @@ $this->css('pipeline.css')
 						<td>
 							<span class="showcontrols">
 								<a href="javascript:void(0);" class="expand" style="border:none;" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
-							</span> 
+							</span>
 							<?php echo ($t->version) ? $t->version : JText::_('COM_TOOLS_NA'); ?>
 						</td>
 						<td>
@@ -134,14 +134,14 @@ $this->css('pipeline.css')
 							<span class="<?php echo ($t->state=='1' ? 'toolpublished' : 'toolunpublished'); ?>"></span>
 						</td>
 						<td>
-							<?php if ($t->state == 1 && $this->admin) { ?> 
+							<?php if ($t->state == 1 && $this->admin) { ?>
 								<span class="actionlink">
 									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current'); ?>"><?php echo JText::_('COM_TOOLS_EDIT'); ?></a>
 								</span>
 							<?php } else if ($t->state == 3) { ?>
 								<span class="actionlink">
 									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev'); ?>"><?php echo JText::_('COM_TOOLS_EDIT');?></a>
-								</span> 
+								</span>
 							<?php } ?>
 						</td>
 					</tr>
@@ -158,7 +158,7 @@ $this->css('pipeline.css')
 							</div>
 						</td>
 					</tr>
-				<?php 
+				<?php
 						$i++;
 					} // end foreach
 				?>

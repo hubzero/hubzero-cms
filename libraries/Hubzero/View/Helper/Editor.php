@@ -60,7 +60,7 @@ class Editor extends AbstractHelper
 		$author  = null;
 		$editor  = null;
 
-		if (!\JFactory::getApplication()->isAdmin()) 
+		if (!\JFactory::getApplication()->isAdmin())
 		{
 			$buttons = false;
 		}

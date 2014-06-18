@@ -39,21 +39,21 @@ class Column extends Macro
 {
 	/**
 	 * Number of columns to dipslay
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected static $_columns = 0;
 
 	/**
 	 * Indicator of where we are in the column count
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected static $_cursor = 0;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -66,14 +66,14 @@ class Column extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -87,12 +87,12 @@ class Column extends Macro
 			return '<div class="grid">' . "\n";
 		}
 
-		if (trim($text) == 'start') 
+		if (trim($text) == 'start')
 		{
 			$this->_cursor++;
-			
+
 			$cls = array('col');
-			
+
 			switch ($this->_columns)
 			{
 				case 6: $cls[] = 'span2';   break;
@@ -116,9 +116,9 @@ class Column extends Macro
 			{
 				$cls[] = 'omega';
 			}
-			
+
 			$atts = array();
-			if (!empty($attribs) && count($attribs) > 0) 
+			if (!empty($attribs) && count($attribs) > 0)
 			{
 				foreach ($attribs as $a)
 				{
@@ -144,7 +144,7 @@ class Column extends Macro
 			$div  = '<div class="' . implode(' ', $cls) . '"';
 			$div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
 		}
-		elseif (trim($text) == 'end') 
+		elseif (trim($text) == 'end')
 		{
 			$div  = '</div><!-- / .col -->';
 			if ($this->_cursor == $this->_columns)

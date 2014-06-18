@@ -45,14 +45,14 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
@@ -64,7 +64,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -74,16 +74,16 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas['blogs']) && !in_array('blogs', $areas)) 
+			if (!isset($areas['blogs']) && !in_array('blogs', $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -101,18 +101,18 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by, 
-					NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_blog&task=view&id=', e.id) AS href, 
-					'blogs' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1, 
+		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by,
+					NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_blog&task=view&id=', e.id) AS href,
+					'blogs' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1,
 					NULL AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$e_where .= " AND e.state=1";
-		} 
-		else 
+		}
+		else
 		{
 			$e_where .= " AND e.state>0";
 		}
@@ -129,23 +129,23 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit) 
+		if (!$limit)
 		{
 			// Get a count
 			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} 
-		else 
+		}
+		else
 		{
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				return $e_fields . $e_from . $e_where;
 			}
 
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
-				if ($this->_total == 0) 
+				if ($this->_total == 0)
 				{
 					return array();
 				}
@@ -155,7 +155,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
 			$rows = $database->loadObjectList();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $key => $row)
 				{
@@ -180,7 +180,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Static method for formatting results
-	 * 
+	 *
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
@@ -207,7 +207,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="details">' . JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1'));
 		$html .= ' <span>|</span> ' . JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . stripslashes($row->data1) . '</a></cite>');
 		$html .= '</p>'."\n";
-		if ($row->ftext) 
+		if ($row->ftext)
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
 		}

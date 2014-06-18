@@ -29,9 +29,9 @@ if ($this->publish) { ?>
 <div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
 	<p>
 		<?php echo stripslashes($this->message); ?>
-<?php 
+<?php
 	$page = JRequest::getVar('REQUEST_URI', '', 'server');
-	if ($page && $this->params->get('allowClose', 1)) 
+	if ($page && $this->params->get('allowClose', 1))
 	{
 		$this->js();
 
@@ -41,8 +41,8 @@ if ($this->publish) { ?>
 		<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('MOD_NOTICES_CLOSE_TITLE'); ?>">
 			<span><?php echo JText::_('MOD_NOTICES_CLOSE'); ?></span>
 		</a>
-<?php 
-	} 
+<?php
+	}
 ?>
 	</p>
 </div>

@@ -46,7 +46,7 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 <div id="plg-header">
 	<h3 class="inform"><?php echo JText::_('COM_PROJECTS_PROJECT_INFO'); ?></h3>
 </div>
-<?php if ($view->project->role == 1 ) { ?> 	
+<?php if ($view->project->role == 1 ) { ?>
 <p class="editing"><a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'task=edit' . a . $goto).'/?edit=info'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
 <?php } ?>
 
@@ -56,7 +56,7 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 			<tr>
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></td>
 				<td><?php echo $view->project->title; ?></td>
-				<?php if($view->config->get('grantinfo', 0) && $view->params->get( 'grant_title')) { ?>				
+				<?php if($view->config->get('grantinfo', 0) && $view->params->get( 'grant_title')) { ?>
 					<td rowspan="5" class="grantinfo">
 						<h4><?php echo JText::_('COM_PROJECTS_INFO_GRANTINFO'); ?></h4>
 						<p>

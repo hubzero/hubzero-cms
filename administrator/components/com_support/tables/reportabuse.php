@@ -38,84 +38,84 @@ class ReportAbuse extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $report   		= NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by 	= NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state      	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $referenceid    = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category		= NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $subject		= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $reviewed		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $reviewed_by    = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $note    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,12 +126,12 @@ class ReportAbuse extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->report) == '' && trim($this->subject) == JText::_('OTHER')) 
+		if (trim($this->report) == '' && trim($this->subject) == JText::_('OTHER'))
 		{
 			$this->setError(JText::_('Please describe the issue.'));
 			return false;
@@ -141,7 +141,7 @@ class ReportAbuse extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -149,27 +149,27 @@ class ReportAbuse extends JTable
 	{
 		$query = " FROM $this->_tbl AS a WHERE";
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$query .= " a.state=" . $this->_db->Quote($filters['state']);
-		} 
-		else 
+		}
+		else
 		{
 			$query .= " a.state=0";
 		}
-		if (isset($filters['id']) && $filters['id'] != '') 
+		if (isset($filters['id']) && $filters['id'] != '')
 		{
 			$query .= " AND a.referenceid=" . $this->_db->Quote($filters['id']);
 		}
-		if (isset($filters['category']) && $filters['category'] != '') 
+		if (isset($filters['category']) && $filters['category'] != '')
 		{
 			$query .= " AND a.category=" . $this->_db->Quote($filters['category']);
 		}
-		if (isset($filters['reviewed_by']) && $filters['reviewed_by'] != '') 
+		if (isset($filters['reviewed_by']) && $filters['reviewed_by'] != '')
 		{
 			$query .= " AND a.reviewed_by=" . $this->_db->Quote($filters['reviewed_by']);
 		}
-		if (isset($filters['sortby']) && $filters['sortby'] != '') 
+		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
 			$query .= " ORDER BY " . $filters['sortby'] . " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -179,7 +179,7 @@ class ReportAbuse extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -195,7 +195,7 @@ class ReportAbuse extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

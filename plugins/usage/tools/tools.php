@@ -45,7 +45,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onUsageAreas()
@@ -57,7 +57,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get the top list for a tool
-	 * 
+	 *
 	 * @param      object $database JDatabase
 	 * @param      string $period   Tiem period (quarterly, yearly, etc)
 	 * @param      string $dthis    Time (YYYY-MM)
@@ -83,20 +83,20 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '</thead>' . "\n";
 		$count = 0;
 
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				$vl = '-';
-				if ($row->rank == '0') 
+				if ($row->rank == '0')
 				{
 					$total = $row->value;
-					if ($s_top == "6" || $s_top == "7" || $s_top == "8") 
+					if ($s_top == "6" || $s_top == "7" || $s_top == "8")
 					{
 						$value = $this->time_units($row->value);
-					} 
-					else 
+					}
+					else
 					{
 						$value = number_format($row->value);
 					}
@@ -110,15 +110,15 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t" . '</tr>' . "\n";
 					$html .= "\t" . '</tfoot>' . "\n";
 					$html .= "\t" . '<tbody>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$name = preg_split('/ ~ /',$row->name);
-					if ($s_top == "6" || $s_top == "7" || $s_top == "8") 
+					if ($s_top == "6" || $s_top == "7" || $s_top == "8")
 					{
 						$value = $this->time_units($row->value);
-					} 
-					else 
+					}
+					else
 					{
 						$value = number_format($row->value);
 					}
@@ -147,8 +147,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
 				$html .= "\t\t" . '</tr>' . "\n";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t" . '<tbody>' . "\n";
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
@@ -162,9 +162,9 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'gettoprank_tools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $database Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -203,8 +203,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . $row->title . '</a></td>' . "\n";
 					$html .= "\t\t\t" . '<td>' . $ranking . '</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
@@ -227,7 +227,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Gets top cited tools
-	 * 
+	 *
 	 * @param      object $database JDatabase
 	 * @return     string HTML
 	 */
@@ -247,7 +247,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '</tr>' . "\n";
 		$html .= "\t" . '</thead>' . "\n";
 
-		if ($result) 
+		if ($result)
 		{
 			$html .= "\t" . '<tfoot>' . "\n";
 			$html .= "\t\t" . '<tr class="summary">' . "\n";
@@ -262,7 +262,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
 
-		if ($results) 
+		if ($results)
 		{
 			$cls = 'even';
 			$html .= "\t" . '<tbody>' . "\n";
@@ -274,15 +274,15 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				if ($row->published == "1") 
+				if ($row->published == "1")
 				{
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
 					$html .= "\t\t\t" . '<td class="textual-data"><a href="'.JRoute::_('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . stripslashes($row->title) . '</a></td>';
 					$html .= "\t\t\t" . '<td>' . $row->citations . '</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
@@ -305,25 +305,25 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Format time
-	 * 
+	 *
 	 * @param      mixed $time Value to format
 	 * @return     string
 	 */
 	private function time_units($time)
 	{
-		if ($time < 60) 
+		if ($time < 60)
 		{
 			$data = $time . ' seconds';
-		} 
-		else if ($time > 60 && $time < 3600) 
+		}
+		else if ($time > 60 && $time < 3600)
 		{
 			$data = number_format(($time/60), 2) . ' minutes';
-		} 
-		else if ($time >= 3600 && $time < 86400) 
+		}
+		else if ($time >= 3600 && $time < 86400)
 		{
 			$data = number_format(($time/3600), 2) . ' hours';
-		} 
-		else if ($time >= 86400) 
+		}
+		else if ($time >= 86400)
 		{
 			$data = number_format(($time/86400), 2) . ' days';
 		}
@@ -333,7 +333,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build date selectors
-	 * 
+	 *
 	 * @param      object &$db    JDatabase
 	 * @param      string $period Time period (quarterly, yearly, etc)
 	 * @param      string $s_top  Top value
@@ -359,30 +359,30 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$qtd_found && $this->check_for_data($value, 3)) 
+					if (!$qtd_found && $this->check_for_data($value, 3))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $dthis) 
+						if ($value == $dthis)
 						{
 							$html .= ' selected="selected"';
 						}
 						$html .= '>';
-						if ($key <= 3) 
+						if ($key <= 3)
 						{
 							$key = 0;
 							$html .= 'Jan';
-						} 
-						elseif ($key <= 6) 
+						}
+						elseif ($key <= 6)
 						{
 							$key = 3;
 							$html .= 'Apr';
-						} 
-						elseif ($key <= 9) 
+						}
+						elseif ($key <= 9)
 						{
 							$key = 6;
 							$html .= 'Jul';
-						} 
-						else 
+						}
+						else
 						{
 							$key = 9;
 							$html .= 'Oct';
@@ -396,10 +396,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					for ($i = 12; $i > 0; $i = $i - 3)
 					{
 						$value = $j . '-' . sprintf("%02d", $i);
-						if ($this->check_for_data($value, 3)) 
+						if ($this->check_for_data($value, 3))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $dthis) 
+							if ($value == $dthis)
 							{
 								$html .= ' selected="selected"';
 							}
@@ -431,28 +431,28 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($monthsReverse as $key => $month)
 					{
-						if ($key == '12') 
+						if ($key == '12')
 						{
 							$nextmonth = 'Jan';
-						} 
-						else 
+						}
+						else
 						{
 							$nextmonth = $arrayMonths[floor(array_search($month, $arrayMonths))+1];
 						}
 						$value = $i . '-' . $key;
-						if ($this->check_for_data($value, 12)) 
+						if ($this->check_for_data($value, 12))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $dthis) 
+							if ($value == $dthis)
 							{
 								$html .= ' selected="selected"';
 							}
 							$html .= '>' . $nextmonth . ' ';
-							if ($key == 12) 
+							if ($key == 12)
 							{
 								$html .= $i;
-							} 
-							else 
+							}
+							else
 							{
 								$html .= $i - 1;
 							}
@@ -469,10 +469,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					foreach ($monthsReverse as $key => $month)
 					{
 						$value = $i . '-' . $key;
-						if ($this->check_for_data($value, 1)) 
+						if ($this->check_for_data($value, 1))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $dthis) 
+							if ($value == $dthis)
 							{
 								$html .= ' selected="selected"';
 							}
@@ -487,10 +487,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->check_for_data($value, 0)) 
+					if (!$ytd_found && $this->check_for_data($value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $dthis) 
+						if ($value == $dthis)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -501,10 +501,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				for ($i = $cur_year - 1; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-12';
-					if ($this->check_for_data($value, 0)) 
+					if ($this->check_for_data($value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $dthis) 
+						if ($value == $dthis)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -518,20 +518,20 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->check_for_data($value, 0)) 
+					if (!$ytd_found && $this->check_for_data($value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $dthis) 
+						if ($value == $dthis)
 						{
 							$html .= ' selected="selected"';
 						}
 						$html .= '>Oct ';
-						if ($cur_month >= 9) 
+						if ($cur_month >= 9)
 						{
 							$html .= $cur_year;
 							$full_year = $cur_year;
-						} 
-						else 
+						}
+						else
 						{
 							$html .= $cur_year - 1;
 							$full_year = $cur_year - 1;
@@ -543,7 +543,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				for ($i = $full_year; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-09';
-					if ($this->check_for_data($value, 0)) 
+					if ($this->check_for_data($value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
 						if ($value == $dthis) {
@@ -564,7 +564,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Returns TRUE if there is data in the database
 	 * for the date passed to it, FALSE otherwise.
-	 * 
+	 *
 	 * @param      string $yearmonth YYYY-MM
 	 * @param      string $period    Time period
 	 * @return     boolean
@@ -577,7 +577,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 
-		if ($result && $result > 0) 
+		if ($result && $result > 0)
 		{
 			return true ;
 		}
@@ -587,7 +587,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build navigation menu
-	 * 
+	 *
 	 * @param      string $period Timeperiod
 	 * @param      string $top    Top value
 	 * @return     string HTML
@@ -597,37 +597,37 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html  = '<div id="sub-sub-menu">' . "\n";
 		$html .= "\t" . '<ul>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'prior12' || $period == '12') 
+		if ($period == 'prior12' || $period == '12')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=12&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'month' || $period == '1') 
+		if ($period == 'month' || $period == '1')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=1&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'qtr' || $period == '3') 
+		if ($period == 'qtr' || $period == '3')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=3&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'year' || $period == '0') 
+		if ($period == 'year' || $period == '0')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=0&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'fiscal' || $period == '13') 
+		if ($period == 'fiscal' || $period == '13')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=13&top=' . $top) . '"><span>' . JText::_('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == '14') 
+		if ($period == '14')
 		{
 			$html .= ' class="active"';
 		}
@@ -640,7 +640,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for displaying usage data
-	 * 
+	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
 	 * @param      object $db            JDatabase
@@ -652,10 +652,10 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
 		// Check if our task is the area we want to return results for
-		if ($task) 
+		if ($task)
 		{
 			if (!in_array($task, $this->onUsageAreas())
-			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			 && !in_array($task, array_keys($this->onUsageAreas())))
 			{
 				return '';
 			}
@@ -666,7 +666,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'stats_tops';
-		if (!in_array($table,$tables)) 
+		if (!in_array($table,$tables))
 		{
 			return '<p class="error">' . JText::_('Error: Required database table not found . ') . '</p>';
 		}
@@ -696,22 +696,22 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$sql = "SELECT * FROM #__stats_tops ORDER BY id";
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $row)
 			{
 				$top = $row->id;
 				$data[$top]['id'] = $row->id;
 				$data[$top]['name'] = $row->name;
-				if ($s_top == $top) 
+				if ($s_top == $top)
 				{
 					$html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '" selected="selected">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
 					if ($row->description)
 					{
 						$description = $row->description;
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
 				}
@@ -729,25 +729,25 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$html .= '</form>' . "\n";
 
 		$s_top_name = '';
-		if ($s_top) 
+		if ($s_top)
 		{
 			$s_top_name = $data[$s_top]['name'];
 			$html .= '<table summary="' . $s_top_name . '">' . "\n";
 			$html .= "\t" . '<caption>' . $s_top_name . '</caption>' . "\n";
 			if(!empty($description))
 			{
-				$html .= "\t" . '<p class="info">' . $description . '</p>' . "\n";	
+				$html .= "\t" . '<p class="info">' . $description . '</p>' . "\n";
 			}
 
-			if ($s_top == '9') 
+			if ($s_top == '9')
 			{
 				$html .= $this->gettopcited_tools($database);
-			} 
-			else if ($s_top == '1') 
+			}
+			else if ($s_top == '1')
 			{
 				$html .= $this->gettoprank_tools($database);
-			} 
-			else 
+			}
+			else
 			{
 				// Retrieve the header based on $s_top_name.  This is really a hack:
 				// Depends on the drop-down item being "Top Tools by ...", and selects everything after that.
@@ -755,8 +755,8 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				$html .= $this->gettoplist($database, $period, $dthis, $s_top, $table_header);
 			}
 			$html .= '</table>' . "\n";
-		} 
-		else 
+		}
+		else
 		{
 			$html .= '<p>' . JText::_('Please make a selection to view data . ') . '</p>' . "\n";
 		}

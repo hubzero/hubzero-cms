@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -37,27 +37,27 @@ class Request
 {
 	/**
 	 * Description for 'suppress_response_codes'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	public $suppress_response_codes = false;
 
 	/**
 	 * Description for 'accepts'
-	 * 
+	 *
 	 * @var string
 	 */
 	public $accepts = "text/plain";
 
 	/**
 	 * Description for 'method'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $method = 'GET';
 	/**
 	 * Description for 'path'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $scheme = 'http';
@@ -68,13 +68,13 @@ class Request
 	private $path = '';
 	private $query = '';
 	private $fragment = '';
-	
+
 	private $version = 'HTTP/1.0';
 
 	private $headers = array();
-	
+
 	private $body = '';
-	
+
 	private $_server = array();
 	private $_get = array();
 	private $_post = array();
@@ -83,14 +83,14 @@ class Request
 	private $_session = array();
 	private $_request = array();
 	private $_env = array();
-	
-	
-	
+
+
+
 	/**
 	 * Short description for 'getHeaderField'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $header Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -115,9 +115,9 @@ class Request
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function __construct($options = array())
@@ -125,7 +125,7 @@ class Request
 		if (($options == '_SERVER') || (in_array('_SERVER', $options)))
 		{
 			$this->set('request','_SERVER');
-	
+
 			if (isset($_GET['format']))
 			{
 				$this->accepts = $this->_parse_accept($_GET['format']);
@@ -138,32 +138,32 @@ class Request
 			{
 				$this->accepts = $_SERVER['HTTP_ACCEPT'];
 			}
-	
+
 			if (empty($this->accepts))
 			{
 				$format = strrchr($_SERVER['REQUEST_URI'],'.');
-	
+
 				if (strchr($format,'/') === false)
 				{
 					$this->accepts = $this->_parse_accept(substr($format,1));
 				}
 			}
-	
+
 			if (isset($_GET['suppress_response_codes']))
 			{
 				$this->suppress_response_codes = true;
 			}
-	
+
 			if (isset($_POST['suppress_response_codes']))
 			{
 				$this->suppress_response_codes = true;
 			}
-	
+
 			if (isset($_SERVER['HTTP_X_HTTP_SUPPRESS_RESPONSE_CODES']))
 			{
 				$this->suppress_response_codes = true;
 			}
-	
+
 			if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']))
 			{
 				$this->method = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
@@ -181,20 +181,20 @@ class Request
 			}
 		}
 	}
-	
+
 	function import($what = array('all'), $where = '_SYSTEM')
 	{
-		if ($where != '_SYSTEM') 
+		if ($where != '_SYSTEM')
 		{
 			return false;
 		}
-		
+
 		$what = (array) $what;
-		
+
 		if (in_array('all',$what)) {
 			$what = array_merge($what, array('method','request','version','headers','body','hostname','scheme','postdata'));
 		}
-		
+
 		foreach ($what as $item) {
 			switch($item)
 			{
@@ -209,7 +209,7 @@ class Request
 					break;
 				case 'headers':
 					$this->set('header', null);
-					
+
 					foreach($_SERVER as $key=>$value)
 					{
 						if (strncmp($key, 'HTTP_', 5) == 0)
@@ -229,7 +229,7 @@ class Request
 					$this->set('hostname', $_SERVER['HTTP_HOST']);
 					break;
 				case 'scheme':
-					if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']) 
+					if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
 					{
 						$this->set('scheme','https');
 					}
@@ -242,24 +242,24 @@ class Request
 					break;
 			}
 		}
-		
+
 	}
-	
+
 	function export($what = 'all', $where = '_SYSTEM')
 	{
 		if ($where != '_SYSTEM')
 		{
 			return false;
 		}
-		
+
 		$what = (array) $what;
-		
-		if (in_array('all',$what)) 
+
+		if (in_array('all',$what))
 		{
 			$what = array_merge($what, array('uri','get','method','version','headers','postdata'));
 		}
 
-		
+
 		// uri.... fill _SERVER: SCRIPT_*, QUERY_STRING
 		// method... fill _SERVER: REQUEST_METHOD
 		// headers... fill _SERVER HTTP_*
@@ -267,15 +267,15 @@ class Request
 		// post.... fill _POST
 		// cookies.. fill _COOKIE
 		// recompute _REQUEST if _GET or _POST changed
-		
-		foreach ($what as $item) 
+
+		foreach ($what as $item)
 		{
 			switch($item)
 			{
 				case 'version':
 					$_SERVER['SERVER_PROTOCOL'] = $this->version;
 					break;
-					
+
 				case 'uri':
 					$_SERVER['REQUEST_URI'] = '/' . $this->path;
 					$_SERVER['SCRIPT_NAME'] = '/' . $this->path;
@@ -283,33 +283,33 @@ class Request
 					$_SERVER['SCRIPT_URL'] 	= '/' . $this->path;
 
 					$request = '';
-					
+
 					if ($this->scheme)
 					{
 						$request .= $this->scheme . "://";
 					}
-					
+
 					if ($this->username && $this->password)
 					{
 						$request .= $this->username . ":" . $this->password . '@';
 					}
-					
+
 					$request .= $this->hostname;
-					
+
 					if ($this->port)
 					{
 						$request .= ":" . $this->port . "/";
 					}
-					
+
 					$request .= $this->path;
-						
+
 					$_SERVER['SCRIPT_URI'] 	= $request;
-						
+
 					if (!empty($this->query))
 					{
 						$_SERVER['REQUEST_URI'] .= '?'.rawurldecode($this->get('query'));
 					}
-					
+
 					if ($this->get('scheme') == 'https')
 					{
 						$_SERVER['HTTPS'] = 'on';
@@ -318,9 +318,9 @@ class Request
 					{
 						unset($_SERVER['HTTPS']);
 					}
-					
+
 					$_SERVER['QUERY_STRING'] = rawurldecode($this->get('query'));
-					
+
 					break;
 				case 'method':
 					$_SERVER['REQUEST_METHOD'] = $this->get('method');
@@ -349,26 +349,26 @@ class Request
 					break;
 			}
 		}
-		
+
 		$order = ini_get('request_order');
-		
+
 		if (empty($order))
 		{
 			$order = ini_get('variables_order');
 		}
-		
+
 		if (empty($order))
-		{ 
+		{
 			$order = "GP";
 		}
-		
+
 		$g = stripos($order, 'g');
 		$p = stripos($order, 'p');
-		
+
 		if ($g < $p)
 		{
 			$_REQUEST = $_GET;
-			
+
 			if (!empty($_POST))
 			{
 				foreach($_POST as $k=>$v)
@@ -377,10 +377,10 @@ class Request
 				}
 			}
 		}
-		else		
+		else
 		{
 			$_REQUEST = $_POST;
-				
+
 			if (!empty($_GET))
 			{
 				foreach($_GET as $k=>$v)
@@ -389,15 +389,15 @@ class Request
 				}
 			}
 		}
-		
+
 		$GLOBALS['_JREQUEST'] = array();
 	}
 
 	/**
 	 * Short description for 'getMethod'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     string Return description (if any) ...
 	 */
 	function getMethod()
@@ -407,9 +407,9 @@ class Request
 
 	/**
 	 * Short description for 'getSuppressResponseCodes'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	function getSuppressResponseCodes()
@@ -419,9 +419,9 @@ class Request
 
 	/**
 	 * Short description for '_parse_accept'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $input Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -446,7 +446,7 @@ class Request
 
 		return '';
 	}
-	
+
 	public function get($key, $default = '')
 	{
 		switch($key)
@@ -456,61 +456,61 @@ class Request
 			case 'method':
 				return isset($this->method) ? $this->method : $default;
 			case 'scheme':
-				return isset($this->scheme) ? $this->scheme: $default;				
+				return isset($this->scheme) ? $this->scheme: $default;
 			case 'username':
-				return isset($this->username) ? $this->username: $default;				
+				return isset($this->username) ? $this->username: $default;
 			case 'password':
-				return isset($this->password) ? $this->password: $default;				
+				return isset($this->password) ? $this->password: $default;
 			case 'hostname':
-				return isset($this->hostname) ? $this->hostname: $default;				
+				return isset($this->hostname) ? $this->hostname: $default;
 			case 'port':
-				return isset($this->port) ? $this->port: $default;				
+				return isset($this->port) ? $this->port: $default;
 			case 'path':
-				return isset($this->path) ? $this->path: $default;				
+				return isset($this->path) ? $this->path: $default;
 			case 'query':
-				return isset($this->query) ? $this->query: $default;				
+				return isset($this->query) ? $this->query: $default;
 			case 'fragment':
 				return isset($this->fragment) ? $this->fragment: $default;
 			case 'request': // @FIXME: this work should probably be cached
 
 				$request = '';
-				
+
 				if ($this->scheme)
 				{
 					$request .= $this->scheme . "://";
 				}
-				
+
 				if ($this->username && $this->password)
 				{
-					$request .= $this->username . ":" . $this->password . '@'; 
+					$request .= $this->username . ":" . $this->password . '@';
 				}
-				
+
 				$request .= $this->hostname;
-				
+
 				if ($this->port)
 				{
 					$request .= ":" . $this->port . "/";
 				}
-				
+
 				$request .= $this->path;
-				
+
 				if ($this->query)
 				{
 					$request .= "?" . $this->query;
 				}
-				
+
 				if ($this->fragment)
 				{
 					$request .= "#" . $this->fragment;
 				}
-				
+
 				return !empty($request) ? $request : $default;
-				
+
 			case 'queryvars': // @FIXME: this work should be cached
 			{
 				// can add variables to scope, so keep these braces to block out scope
 				parse_str($this->get('query'), $queryvars);
-				
+
 				return $queryvars;
 			}
 			case 'postdata':
@@ -520,16 +520,16 @@ class Request
 				{
 					return false;
 				}
-				
-				$sbs = oauth_get_sbs($this->method, $this->get('request'), $this->_post);
-				return $sbs;	
 
-			default:			
+				$sbs = oauth_get_sbs($this->method, $this->get('request'), $this->_post);
+				return $sbs;
+
+			default:
 				break;
-				
+
 		}
 	}
-	
+
 	public function setHeader($key, $value)
 	{
 		if (empty($value))
@@ -541,17 +541,17 @@ class Request
 			$this->headers[$key] = $value;
 		}
 	}
-	
+
 	public function getHeader($key, $default = '')
 	{
 		if (isset($this->headers[$key]))
 		{
 			return $this->headers[$key];
 		}
-		
+
 		return $default;
 	}
-	
+
 	public function add($property, $key, $value)
 	{
 		switch($property)
@@ -564,9 +564,9 @@ class Request
 				}
 
 				$this->query .= $key . '=' . rawurlencode($value);
-				
+
 				break;
-				 
+
 			case 'postdata':
 				if ($value === null)
 				{
@@ -578,7 +578,7 @@ class Request
 				}
 		}
 	}
-	
+
 	public function set($key, $value = null)
 	{
 		switch($key)
@@ -608,14 +608,14 @@ class Request
 				if (is_array($value))
 				{
 					$this->query = '';
-					
+
 					foreach($value as $key=>$value)
 					{
 						if (!empty($this->query))
 						{
 							$this->query .= '&';
 						}
-						  
+
 						$this->query .= $key . '=' . rawurlencode($value);
 					}
 				}
@@ -645,7 +645,7 @@ class Request
 				{
 					if ($value == '_SERVER')
 					{
-						$u = $_SERVER['SCRIPT_URI'];	
+						$u = $_SERVER['SCRIPT_URI'];
 					}
 					else
 					{
@@ -675,13 +675,13 @@ class Request
 			}
 		}
 	}
-	
+
 	public function sign($type = 'oauth', $key = '', $secret1 = '', $secret2 = '', $method = '')
 	{
 		if (empty($method))
 		{
 			$method = $this->get('method');
-			
+
 			if ($method == 'GET')
 			{
 				$qkey = 'query';
@@ -726,22 +726,22 @@ class Request
 				{
 					return false;
 				}
-				
+
 				$sbs = $this->get('sbs');
 
 				$secret = (!empty($secret1)) ? oauth_urlencode($secret1) : '';
 				$token_secret = (!empty($secret2)) ? oauth_urlencode($secret2) : '';
 				$secret = $secret . '&' . $token_secret;
-				
+
 				$signature = base64_encode( hash_hmac('sha1', $sbs, $secret, true) );
-		
+
 				$this->add($qkey, 'oauth_signature', $signature);
-				
+
 				break;
-				
+
 			default:
 				return false;
 		}
 	}
-	
-}	
+
+}

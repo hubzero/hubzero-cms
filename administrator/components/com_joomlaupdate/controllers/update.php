@@ -20,9 +20,9 @@ class JoomlaupdateControllerUpdate extends JControllerLegacy
 {
 	/**
 	 * Performs the download of the update package
-	 * 
-	 * @return void 
-	 * 
+	 *
+	 * @return void
+	 *
 	 * @since 2.5.4
 	 */
 	public function download()
@@ -90,7 +90,7 @@ class JoomlaupdateControllerUpdate extends JControllerLegacy
 
 	/**
 	 * Clean up after ourselves
-	 * 
+	 *
 	 * @return void
 	 *
 	 * @since 2.5.4
@@ -146,7 +146,7 @@ class JoomlaupdateControllerUpdate extends JControllerLegacy
 
 	/**
 	 * Applies FTP credentials to Joomla! itself, when required
-	 * 
+	 *
 	 * @return void
 	 *
 	 * @since	2.5.4
@@ -154,7 +154,7 @@ class JoomlaupdateControllerUpdate extends JControllerLegacy
 	protected function _applyCredentials()
 	{
 		jimport('joomla.client.helper');
-		
+
 		if (!JClientHelper::hasCredentials('ftp'))
 		{
 			$user = JFactory::getApplication()->getUserStateFromRequest('com_joomlaupdate.ftp_user', 'ftp_user', null, 'raw');

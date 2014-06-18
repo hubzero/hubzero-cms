@@ -63,7 +63,7 @@ var HUB = {};
 				<input type="text" name="extra_info" id="field-extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>" /></td>
 			</div>
 				<?php
-				foreach ($this->fields as $field) 
+				foreach ($this->fields as $field)
 				{
 				?>
 					<div class="input-wrap">
@@ -80,7 +80,7 @@ var HUB = {};
 						}
 						?>
 					</div>
-				<?php 
+				<?php
 				}
 				?>
 			<div class="input-wrap">
@@ -138,7 +138,7 @@ var HUB = {};
 							<td class="key" width="20%"><label for="reccurence"><?php echo JText::_('Reccurence'); ?>:</label></td>
 							<td>
 								<input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
-								<span class="hint">Must follow standard RRULE spec: <a href="http://www.kanzaki.com/docs/ical/rrule.html" target="_blank">view spec</a></span>	
+								<span class="hint">Must follow standard RRULE spec: <a href="http://www.kanzaki.com/docs/ical/rrule.html" target="_blank">view spec</a></span>
 							</td>
 						</tr>
 					</tbody>

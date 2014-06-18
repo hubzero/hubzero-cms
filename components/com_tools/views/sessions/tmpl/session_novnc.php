@@ -34,19 +34,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 $base = rtrim(JURI::base(true), '/');
 
 $cls = array();
-if ($this->app->params->get('noResize', 0)) { 
+if ($this->app->params->get('noResize', 0)) {
 	$cls[] = 'no-resize';
 }
-if ($this->app->params->get('noPopout', 0)) { 
+if ($this->app->params->get('noPopout', 0)) {
 	$cls[] = 'no-popout';
 }
-if ($this->app->params->get('noPopoutClose', 0)) { 
+if ($this->app->params->get('noPopoutClose', 0)) {
 	$cls[] = 'no-popout-close';
 }
-if ($this->app->params->get('noPopoutMaximize', 0)) { 
+if ($this->app->params->get('noPopoutMaximize', 0)) {
 	$cls[] = 'no-popout-maximize';
 }
-if ($this->app->params->get('noRefresh', 0)) { 
+if ($this->app->params->get('noRefresh', 0)) {
 	$cls[] = 'no-refresh';
 }
 ?>

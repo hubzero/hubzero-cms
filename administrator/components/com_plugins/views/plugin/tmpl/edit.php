@@ -27,7 +27,7 @@ JHtml::_('behavior.formvalidation');
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS') ?></span></legend>
 
-			<!-- 
+			<!--
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('name'); ?><br />
 				<?php echo $this->form->getInput('name'); ?>
@@ -53,7 +53,7 @@ JHtml::_('behavior.formvalidation');
 				<?php echo $this->form->getLabel('ordering'); ?><br />
 				<?php echo $this->form->getInput('ordering'); ?>
 			</div>
-			<!-- 
+			<!--
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('folder'); ?><br />
 				<?php echo $this->form->getInput('folder'); ?>
@@ -63,7 +63,7 @@ JHtml::_('behavior.formvalidation');
 				<?php echo $this->form->getLabel('element'); ?><br />
 				<?php echo $this->form->getInput('element'); ?>
 			</div>
-			
+
 			<?php if ($this->item->extension_id) : ?>
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('extension_id'); ?><br />

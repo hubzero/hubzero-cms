@@ -45,7 +45,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -64,7 +64,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -76,10 +76,10 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		$returnhtml = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -114,7 +114,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();
@@ -197,12 +197,12 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 			jimport('joomla.html.pagination');
 			$view->pageNav = new JPagination(
-				$view->total, 
-				$view->filters['start'], 
+				$view->total,
+				$view->filters['start'],
 				$view->filters['limit']
 			);
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getError() as $error)
 				{
@@ -218,22 +218,22 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Return array of html
 	 */
 	private function _getData($what='count', $who=null, $filters=array())
 	{
-		if (!isset($filters['start'])) 
+		if (!isset($filters['start']))
 		{
 			$filters['start'] = 0;
 		}
-		if (!isset($filters['limit'])) 
+		if (!isset($filters['limit']))
 		{
 			$filters['limit'] = 25;
 		}
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'enrolled';
 		}
@@ -247,8 +247,8 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			case 'student':
 				if ($what == 'count')
 				{
-					$this->database->setQuery("SELECT COUNT(*)  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT COUNT(*)
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -258,9 +258,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default, 
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, s.publish_up AS starts, s.publish_down AS ends
-							FROM #__courses AS c 
+							FROM #__courses AS c
 							JOIN #__courses_members AS m ON m.course_id=c.id
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -270,12 +270,12 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 					$results = $this->database->loadObjectList();
 				}
 			break;
-			
+
 			case 'manager':
 				if ($what == 'count')
 				{
 					$this->database->setQuery("SELECT COUNT(*)
-							FROM #__courses AS c 
+							FROM #__courses AS c
 							JOIN #__courses_members AS m ON m.course_id=c.id
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -286,24 +286,24 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$this->database->setQuery("
-						SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default, 
-							m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends  
-							FROM #__courses AS c 
+						SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+							m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
+							FROM #__courses AS c
 							JOIN #__courses_members AS m ON m.course_id=c.id
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager' 
+						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					/*$this->database->setQuery("
 						(
 							SELECT c.id, c.alias, c.title, c.created AS enrolled, NULL AS starts, NULL AS ends
-							FROM #__courses AS c 
+							FROM #__courses AS c
 							JOIN #__courses_managers AS m ON m.course_id=c.id
 							WHERE m.user_id=" . $this->member->get('uidNumber') . "
 						) UNION (
 							SELECT c.id, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends
-								FROM #__courses AS c 
+								FROM #__courses AS c
 								JOIN #__courses_offerings AS o ON o.course_id=c.id
 								JOIN #__courses_offering_sections AS s on s.offering_id=o.id
 								JOIN #__courses_members AS m ON m.section_id=s.id
@@ -317,8 +317,8 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			case 'instructor':
 				if ($what == 'count')
 				{
-					$this->database->setQuery("SELECT COUNT(*)  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT COUNT(*)
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -328,9 +328,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default, 
-						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -344,8 +344,8 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			case 'ta':
 				if ($what == 'count')
 				{
-					$this->database->setQuery("SELECT COUNT(*)  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT COUNT(*)
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -355,9 +355,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default, 
-						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -371,8 +371,8 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			default:
 				if ($what == 'count')
 				{
-					$this->database->setQuery("SELECT COUNT(*)  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT COUNT(*)
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -382,9 +382,9 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default, 
-						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends  
-						FROM #__courses AS c 
+					$this->database->setQuery("SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
+						FROM #__courses AS c
 						JOIN #__courses_members AS m ON m.course_id=c.id
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
@@ -400,7 +400,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a list of categories
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onMembersContributionsAreas()
@@ -412,15 +412,15 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build SQL for returning the count of the number of contributions
-	 * 
+	 *
 	 * @param      string $user_id  Field to join on user ID
 	 * @param      string $username Field to join on username
 	 * @return     string
 	 */
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
-		$query = "SELECT COUNT(*)  
-				FROM `#__courses` AS c 
+		$query = "SELECT COUNT(*)
+				FROM `#__courses` AS c
 				JOIN `#__courses_members` AS m ON m.course_id=c.id
 				LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 				LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
@@ -432,7 +432,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return either a count or an array of the member's contributions
-	 * 
+	 *
 	 * @param      object  $member     Current member
 	 * @param      string  $option     Component name
 	 * @param      string  $authorized Authorization level
@@ -446,10 +446,10 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas[$this->_name]) 
-			  && !in_array($this->_name, $areas) 
+			if (!isset($areas[$this->_name])
+			  && !in_array($this->_name, $areas)
 			  && !array_intersect($areas, array_keys($this->onMembersContributionsAreas())))
 			{
 				return array();
@@ -457,25 +457,25 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a member ID?
-		if ($member instanceof \Hubzero\User\Profile) 
+		if ($member instanceof \Hubzero\User\Profile)
 		{
-			if (!$member->get('uidNumber')) 
+			if (!$member->get('uidNumber'))
 			{
 				return array();
-			} 
-			else 
+			}
+			else
 			{
 				$uidNumber = $member->get('uidNumber');
 				$username  = $member->get('username');
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if (!$member->uidNumber) 
+			if (!$member->uidNumber)
 			{
 				return array();
-			} 
-			else 
+			}
+			else
 			{
 				$uidNumber = $member->uidNumber;
 				$username  = $member->username;
@@ -488,16 +488,16 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		$tbl = new CoursesTableCourse($database);
 
 		// Build query
-		if (!$limit) 
+		if (!$limit)
 		{
 			$database->setQuery($this->onMembersContributionsCount($uidNumber));
 			return $database->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			//$rows = $tbl->getUserCourses($uidNumber, $type='instructor', $limit, $limitstart);
-			$query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
-					FROM `#__courses` AS c 
+			$query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
+					FROM `#__courses` AS c
 					JOIN `#__courses_members` AS m ON m.course_id=c.id
 					LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 					LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
@@ -506,7 +506,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			$database->setQuery($query);
 			$rows = $database->loadObjectList();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $key => $row)
 				{

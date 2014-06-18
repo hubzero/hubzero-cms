@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -38,11 +38,11 @@ $this->category->set('section_alias', $this->section->get('alias'));
 $this->post->set('section', $this->section->get('alias'));
 $this->post->set('category', $this->category->get('alias'));
 
-if ($this->post->exists()) 
+if ($this->post->exists())
 {
 	$action = $this->post->link('edit');
-} 
-else 
+}
+else
 {
 	$action = $this->post->link('new');
 }
@@ -56,7 +56,7 @@ else
 </header>
 
 <?php
-	foreach ($this->notifications as $notification) 
+	foreach ($this->notifications as $notification)
 	{
 		echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 	}
@@ -86,13 +86,13 @@ else
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-sticky">
-							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
+							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_FORUM_FIELD_STICKY'); ?>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-closed">
-							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> /> 
+							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_FORUM_FIELD_CLOSED_THREAD'); ?>
 						</label>
 					</div>
@@ -135,10 +135,10 @@ else
 
 				<label>
 					<?php echo JText::_('COM_FORUM_FIELD_TAGS'); ?>:
-					<?php 
+					<?php
 						JPluginHelper::importPlugin('hubzero');
 						$tf = JDispatcher::getInstance()->trigger(
-							'onGetMultiEntry', 
+							'onGetMultiEntry',
 							array(array('tags', 'tags', 'actags', '', $this->post->tags('string')))
 						);
 
@@ -170,9 +170,9 @@ else
 						</p>
 					<?php } ?>
 				</fieldset>
-				
+
 				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('COM_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 

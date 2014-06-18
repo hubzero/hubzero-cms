@@ -134,7 +134,7 @@ JHTML::_('behavior.tooltip');
 			</tr>
 	<?php
 		$k = 1 - $k;
-	} // for loop 
+	} // for loop
 	?>
 		</tbody>
 	</table>

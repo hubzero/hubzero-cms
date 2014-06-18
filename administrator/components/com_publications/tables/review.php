@@ -33,175 +33,175 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication review
  */
-class PublicationReview extends JTable 
+class PublicationReview extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       					= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_id 			= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_version_id 	= NULL;
-	
+
 	/**
 	 * Description for 'user_id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $created_by     = NULL;  // @var int(11)
 
 	/**
 	 * Description for 'rating'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $rating      = NULL;  // @var decimal(2,1)
 
 	/**
 	 * Description for 'comment'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $comment     = NULL;  // @var text
-	
+
 	/**
 	 * Description for 'created'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
 
 	/**
 	 * Description for 'anonymous'
-	 * 
+	 *
 	 * @var unknown
 	 */
-	var $anonymous   = NULL;  // @var int(3)	
-	
+	var $anonymous   = NULL;  // @var int(3)
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_ratings', 'id', $db );
 	}
-	
+
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
-	 */	
-	public function check() 
+	 */
+	public function check()
 	{
-		if (trim( $this->rating ) == '') 
+		if (trim( $this->rating ) == '')
 		{
 			$this->setError( JText::_('Your review must have a rating.') );
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Load record
-	 * 
+	 *
 	 * @param      integer $pid       Pub ID
 	 * @param      integer $uid       User ID
 	 * @param      integer $versionid Pub version ID
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function loadUserReview( $pid, $uid, $versionid = '' ) 
+	 */
+	public function loadUserReview( $pid, $uid, $versionid = '' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=".$pid." AND created_by=".$uid;
 		$query .= $versionid ? " AND publication_version_id=".$versionid : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
-		
-		if ($result = $this->_db->loadAssoc()) 
+
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Load record
-	 * 
+	 *
 	 * @param      integer $pid       Pub ID
 	 * @param      integer $uid       User ID
 	 * @param      integer $versionid Pub version ID
 	 * @return     integer
-	 */	
-	public function loadUserRating( $pid, $uid, $versionid = '' ) 
+	 */
+	public function loadUserRating( $pid, $uid, $versionid = '' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
 		if ($pid === NULL ) {
 			return false;
 		}
-		
+
 		$query  = "SELECT rating FROM $this->_tbl WHERE publication_id=".$pid." AND created_by=".$uid;
 		$query .= $versionid ? " AND publication_version_id=".$versionid : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      integer $pid       Pub ID
 	 * @param      integer $uid       User ID
 	 * @param      integer $versionid Pub version ID
 	 * @return     object
-	 */	
+	 */
 	public function getRatings( $pid = NULL, $uid = NULL, $versionid = '' )
 	{
-			
-		if ($pid === NULL) 
+
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
-		}		
-		if (!$uid) 
+		}
+		if (!$uid)
 		{
 			$juser = JFactory::getUser();
 			$uid = $juser->get('id');
-		}	
-		
+		}
+
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
@@ -214,32 +214,32 @@ class PublicationReview extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get record
-	 * 
+	 *
 	 * @param      integer $pid       Pub ID
 	 * @param      integer $uid       User ID
 	 * @param      integer $versionid Pub version ID
 	 * @return     object
-	 */	
+	 */
 	public function getRating( $pid = NULL, $uid = NULL, $versionid = '' )
 	{
-		if ($pid === NULL) 
+		if ($pid === NULL)
 		{
 			$pid = $this->publication_id;
 		}
-		if ($pid === NULL ) 
+		if ($pid === NULL )
 		{
 			return false;
 		}
 
-		if (!$uid) 
+		if (!$uid)
 		{
 			$juser = JFactory::getUser();
 			$uid = $juser->get('id');
 		}
-				
+
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
@@ -252,27 +252,27 @@ class PublicationReview extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get vote
-	 * 
+	 *
 	 * @param      integer $id        Reference ID
 	 * @param      string  $category  Category
 	 * @param      integer $uid       User ID
 	 * @return     mixed False if error, Object on success
-	 */	
+	 */
 	public function getVote( $id, $category = 'review', $uid = NULL )
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->id;
 		}
-		
-		if ($id === NULL or $uid === NULL) 
+
+		if ($id === NULL or $uid === NULL)
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
 		$query .= "WHERE v.referenceid = '".$id."' AND v.category='".$category."' AND v.voter='".$uid."' LIMIT 1";

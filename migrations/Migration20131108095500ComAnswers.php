@@ -17,7 +17,7 @@ class Migration20131108095500ComAnswers extends Base
 	{
 		if ($this->db->tableExists('#__answers_questions'))
 		{
-			$query = "ALTER TABLE `#__answers_questions` 
+			$query = "ALTER TABLE `#__answers_questions`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `subject` `subject` VARCHAR(250)  NOT NULL  DEFAULT '',
 					CHANGE `question` `question` TEXT  NOT NULL,
@@ -45,7 +45,7 @@ class Migration20131108095500ComAnswers extends Base
 
 		if ($this->db->tableExists('#__answers_responses'))
 		{
-			$query = "ALTER TABLE `#__answers_responses` 
+			$query = "ALTER TABLE `#__answers_responses`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `qid` `qid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `created_by` `created_by` VARCHAR(50)  NOT NULL  DEFAULT '',
@@ -80,7 +80,7 @@ class Migration20131108095500ComAnswers extends Base
 
 		if ($this->db->tableExists('#__answers_questions_log'))
 		{
-			$query = "ALTER TABLE `#__answers_questions_log` 
+			$query = "ALTER TABLE `#__answers_questions_log`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `voter` `voter` INT(11)  NOT NULL  DEFAULT '0',
 					CHANGE `ip` `ip` VARCHAR(15)  NOT NULL  DEFAULT '',
@@ -106,7 +106,7 @@ class Migration20131108095500ComAnswers extends Base
 
 		if ($this->db->tableExists('#__answers_log'))
 		{
-			$query = "ALTER TABLE `#__answers_log` 
+			$query = "ALTER TABLE `#__answers_log`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `ip` `ip` VARCHAR(15)  NOT NULL  DEFAULT '',
 					CHANGE `rid` `rid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',

@@ -43,7 +43,7 @@ $message  = JText::sprintf('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->g
 $message .= $this->group->get('description')."\n\n";
 
 // extra message
-if ($this->msg) 
+if ($this->msg)
 {
 	$message .= '====================='."\n";
 	$message .= stripslashes($this->msg)."\n";

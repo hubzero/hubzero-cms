@@ -892,7 +892,7 @@ abstract class JHtml
 				);*/
 				$document->addScriptDeclaration("
 					jQuery(document).ready(function($){
-						$('#" . $id . "').datetimepicker({  
+						$('#" . $id . "').datetimepicker({
 							duration: '',
 							showTime: true,
 							constrainInput: false,

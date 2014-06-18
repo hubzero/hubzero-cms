@@ -49,98 +49,98 @@ class Announcement extends \JTable
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $priority = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var date
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var date
 	 */
 	var $publish_up = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var date
 	 */
 	var $publish_down = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sticky = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $email = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sent = NULL;
 
 	/**
 	 * Constructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -171,7 +171,7 @@ class Announcement extends \JTable
 
 	/**
 	 * Mark item as archived
-	 * 
+	 *
 	 * @return object
 	 */
 	public function archive()
@@ -202,7 +202,7 @@ class Announcement extends \JTable
 
 	/**
 	 * Get Announcement Count
-	 * 
+	 *
 	 * @param    array    $filters
 	 */
 	public function count($filters = array())
@@ -216,7 +216,7 @@ class Announcement extends \JTable
 
 	/**
 	 * Get Announcement Records
-	 * 
+	 *
 	 * @param    array    $filters
 	 */
 	public function find($filters = array())
@@ -241,7 +241,7 @@ class Announcement extends \JTable
 
 	/**
 	 * Build Query to get Announcements
-	 * 
+	 *
 	 * @param    array    $filters
 	 */
 	private function _buildQuery($filters = array())
@@ -318,7 +318,7 @@ class Announcement extends \JTable
 
 	/**
 	 * Check if date is within announcement publish up/down
-	 * 
+	 *
 	 * @param    array    $filters
 	 */
 	public function announcementPublishedForDate($announcement = null, $date = null)
@@ -358,10 +358,10 @@ class Announcement extends \JTable
 
 		return $published;
 	}
-	
+
 	/**
 	 * Email Announcement
-	 * 
+	 *
 	 * @param    array    $filters
 	 */
 	public function emailAnnouncement($announcement = null)
@@ -427,6 +427,6 @@ class Announcement extends \JTable
 				->send();
 
 		// all good
-		return true; 
+		return true;
 	}
 }

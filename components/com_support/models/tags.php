@@ -40,14 +40,14 @@ class SupportModelTags extends TagsModelCloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'support';
 
 	/**
 	 * Render a tag cloud
-	 * 
+	 *
 	 * @param      string  $rtrn    Format to render
 	 * @param      array   $filters Filters to apply
 	 * @param      boolean $clear   Clear cached data?
@@ -69,7 +69,7 @@ class SupportModelTags extends TagsModelCloud
 
 	/**
 	 * Check tag existence for tickets
-	 * 
+	 *
 	 * @param      integer $id        Resource ID
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
@@ -90,11 +90,11 @@ class SupportModelTags extends TagsModelCloud
 		$where[] = "rt.objectid IN ($id)";
 		$where[] = "rt.tbl=" . $this->_db->Quote($this->_scope);
 
-		if ($tagger_id != 0) 
+		if ($tagger_id != 0)
 		{
 			$where[] = "rt.taggerid=" . $this->_db->Quote($tagger_id);
 		}
-		if ($strength) 
+		if ($strength)
 		{
 			$where[] = "rt.strength=" . $this->_db->Quote($strength);
 		}
@@ -108,7 +108,7 @@ class SupportModelTags extends TagsModelCloud
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */

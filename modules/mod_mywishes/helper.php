@@ -39,7 +39,7 @@ class modMyWishes extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -68,7 +68,7 @@ class modMyWishes extends \Hubzero\Module\Module
 			)"
 		);
 		$this->rows = $database->loadObjectList();
-		if ($database->getErrorNum()) 
+		if ($database->getErrorNum())
 		{
 			$this->setError($database->stderr());
 			$this->rows = array();
@@ -85,7 +85,7 @@ class modMyWishes extends \Hubzero\Module\Module
 				{
 					$rows2[] = $row;
 				}
-				else 
+				else
 				{
 					$rows1[] = $row;
 				}

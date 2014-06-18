@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CitationsHelper::getActions('type');
 
 JToolBarHelper::title(JText::_('Citation Types'), 'citation.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::spacer();
 	JToolBarHelper::deleteList();
@@ -50,7 +50,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('types');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {

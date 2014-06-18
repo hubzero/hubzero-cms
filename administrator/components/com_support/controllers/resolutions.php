@@ -106,9 +106,9 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		$this->view->setLayout('edit');
-		
+
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -155,7 +155,7 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 			$this->editTask($row);
 			return;
 		}
-		
+
 		// Check content
 		if (!$row->check())
 		{

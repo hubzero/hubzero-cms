@@ -49,11 +49,11 @@ class plgSystemSupergroup extends JPlugin
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	public function __construct(& $subject) 
+	public function __construct(& $subject)
 	{
 		parent::__construct($subject, NULL);
 	}
-	
+
 	/**
 	 * Method that fires after before a super group displays a super group comonent
 	 *
@@ -65,16 +65,16 @@ class plgSystemSupergroup extends JPlugin
 		$option = JRequest::getCmd('option', '');
 		$cn     = JRequest::getVar('cn', '');
 		$active = JRequest::getVar('active', '');
-		
+
 		// make sure we in groups
 		if ($option != 'com_groups')
 		{
 			return;
 		}
-		
+
 		// load group object
 		$group  = \Hubzero\User\Group::getInstance( $cn );
-		
+
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
@@ -83,30 +83,30 @@ class plgSystemSupergroup extends JPlugin
 			$uploadPath      = JPATH_ROOT . DS . trim($groupParams->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
-	
+
 			// if we have a router
 			if (file_exists($componentRouter))
 			{
 				// include router
 				require_once $componentRouter;
-			
+
 				// build function name
 				$parseRouteFunction = ucfirst($active) . 'ParseRoute';
 				$parseRouteFunction = str_replace(array("-", "."), "", $parseRouteFunction);
-				
+
 				// if we have a build route functions, run it
 				if (function_exists($parseRouteFunction))
-				{	
+				{
 					// get current route and remove prefix
 					$currentRoute = rtrim(JURI::getInstance()->getPath(), DS);
 					$currentRoute = trim(str_replace('groups' . DS . $group->get('cn') . DS . $active, '', $currentRoute), DS);
-			
+
 					// split route into segements
 					$segments = explode('/', $currentRoute);
-					
+
 					// run segments through parser
 					$vars = $parseRouteFunction($segments);
-					
+
 					// set each var
 					foreach ($vars as $key => $var)
 					{
@@ -116,7 +116,7 @@ class plgSystemSupergroup extends JPlugin
 			}
 		}
 	}
-	
+
 	/**
 	 * Method that fires after an SEF route is built
 	 *
@@ -127,37 +127,37 @@ class plgSystemSupergroup extends JPlugin
 	{
 		// get current uri
 		$current = JURI::getInstance();
-		
+
 		// get the current segments
 		$currentSegments = explode(DS, trim($current->getPath(), DS));
-		
+
 		// make sure were building within groups
 		if (!isset($currentSegments[0]) || !isset($currentSegments[1]) || $currentSegments[0] != 'groups')
 		{
 			return;
 		}
-		
+
 		// get option from uri
 		$url         = $uri->toString();
 		$url         = str_replace('index.php', '', $url);
 		$urlSegments = explode(DS, trim($url, DS));
-		
+
 		// make sure this is not a group route.
 		if (!isset($urlSegments[0]) || $urlSegments[0] == 'groups')
 		{
 			return;
 		}
-		
+
 		// get query string
 		$query = $uri->getQuery(true);
-		
+
 		// get request options
 		$cn     = JRequest::getVar('cn', '');
 		$active = JRequest::getVar('active', '');
-		
+
 		// load group object
 		$group  = \Hubzero\User\Group::getInstance( $cn );
-		
+
 		// make sure we have all the needed stuff
 		if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active))
 		{
@@ -166,27 +166,27 @@ class plgSystemSupergroup extends JPlugin
 			$uploadPath      = JPATH_ROOT . DS . trim($groupParams->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
-	
+
 			// if we have a router
 			if (file_exists($componentRouter))
 			{
 				// include router
 				require_once $componentRouter;
-		
+
 				// build function name
 				$buildRouteFunction = ucfirst($active) . 'BuildRoute';
 				$buildRouteFunction = str_replace(array("-", "."), "", $buildRouteFunction);
-				
+
 				// if we have a build route functions, run it
 				if (function_exists($buildRouteFunction))
 				{
 					// get segments from router
 					$routeParts = $buildRouteFunction($query);
-					
+
 					// build result
 					$routeResult = implode('/', $routeParts);
 					$routeResult = DS . 'groups' . DS . $group->get('cn') . DS . $active . DS . $routeResult;
-					
+
 					// set the new uri path and query string
 					$uri->setPath($routeResult);
 					$uri->setQuery($query);

@@ -38,7 +38,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Upload an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -93,14 +93,14 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 		else
 		{
 			$ih = new StoreImgHandler();
-	
+
 			// Do we have an old file we're replacing?
-			if (($curfile = JRequest::getVar('current', ''))) 
+			if (($curfile = JRequest::getVar('current', '')))
 			{
 				// Remove old image
-				if (file_exists($path . DS . $curfile)) 
+				if (file_exists($path . DS . $curfile))
 				{
-					if (!JFile::delete($path . DS . $curfile)) 
+					if (!JFile::delete($path . DS . $curfile))
 					{
 						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
@@ -112,9 +112,9 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 				$curthumb = $ih->createThumbName($curfile);
 
 				// Remove old thumbnail
-				if (file_exists($path . DS . $curthumb)) 
+				if (file_exists($path . DS . $curthumb))
 				{
-					if (!JFile::delete($path . DS . $curthumb)) 
+					if (!JFile::delete($path . DS . $curthumb))
 					{
 						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
@@ -130,7 +130,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 			$ih->set('maxHeight', 300);
 			$ih->set('cropratio', '1:1');
 			$ih->set('outputName', $ih->createThumbName());
-			if (!$ih->process()) 
+			if (!$ih->process())
 			{
 				$this->setError($ih->getError());
 			}
@@ -142,7 +142,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -158,13 +158,13 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 			$this->displayTask($id);
 			return;
 		}
-		
+
 		// Incoming picture
 		$picture = JRequest::getVar('current', '');
 
 		// Build the file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
-		
+
 		// Attempt to delete the file
 		jimport('joomla.filesystem.folder');
 		if (!JFolder::delete($path))
@@ -173,14 +173,14 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 			$this->displayTask($id);
 			return;
 		}
-		
+
 		// Push through to the image view
 		$this->displayTask($id);
 	}
 
 	/**
 	 * Display an image
-	 * 
+	 *
 	 * @param      integer $id   Item ID
 	 * @return     void
 	 */
@@ -206,7 +206,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 		$imgs    = array();
 
 		$path = JPATH_ROOT . $this->view->path;
-		
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'store.css');

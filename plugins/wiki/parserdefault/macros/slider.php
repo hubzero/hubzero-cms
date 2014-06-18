@@ -37,7 +37,7 @@ class SliderMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -55,7 +55,7 @@ class SliderMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -64,7 +64,7 @@ class SliderMacro extends WikiMacro
 		$content = $this->args;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return;
 		}
@@ -79,7 +79,7 @@ class SliderMacro extends WikiMacro
 		$group = \Hubzero\User\Group::getInstance($gid);
 
 		//check to make sure we have a valid group
-		if (!is_object($group)) 
+		if (!is_object($group))
 		{
 			return;
 		}
@@ -94,23 +94,23 @@ class SliderMacro extends WikiMacro
 		$final_slides = array();
 
 		//check each passed in slide
-		foreach ($slides as $slide) 
+		foreach ($slides as $slide)
 		{
 			//check to see if image is external
-			if (strpos($slide, 'http') === false) 
+			if (strpos($slide, 'http') === false)
 			{
 				$slide = trim($slide);
 
 				//check if internal file actually exists
-				if (is_file(JPATH_ROOT . $base_url . DS . $slide)) 
+				if (is_file(JPATH_ROOT . $base_url . DS . $slide))
 				{
 					$final_slides[] = $base_url . DS . $slide;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$headers = get_headers($slide);
-				if (strpos($headers[0], "OK") !== false) 
+				if (strpos($headers[0], "OK") !== false)
 				{
 					$final_slides[] = $slide;
 				}
@@ -120,7 +120,7 @@ class SliderMacro extends WikiMacro
 		$html  = '';
 		$html .= '<div class="wiki_slider">';
 		$html .= '<div id="slider_' . $id . '">';
-		foreach ($final_slides as $fs) 
+		foreach ($final_slides as $fs)
 		{
 			$html .= '<img src="' . $fs . '" alt="" />';
 		}

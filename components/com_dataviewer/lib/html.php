@@ -19,7 +19,7 @@ function dv_add_script($script, $local = true)
 		$document->addScript($script);
 		return;
 	}
-	
+
 	if (file_exists(DV_PATH_HTML . DS . $script)) {
 
 		if (is_dir(DV_PATH_HTML . DS . $script)) {

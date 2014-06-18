@@ -2,11 +2,11 @@
 
 /**
  * Short description for 'file'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * PHP version 5
- * 
+ *
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
@@ -29,7 +29,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @category  CategoryName
  * @package   MathRenderer
  * @author    Author's name <author@mail.com>
@@ -75,67 +75,67 @@ define('MW_MATH_MATHML', 5);
 
 /**
  * Contain everything related to <math> </math> parsing
- * 
+ *
  * Takes LaTeX fragments, sends them to a helper program (texvc) for rendering
  * to rasterized PNG and HTML and MathML approximations. An appropriate
  * rendering form is picked and returned.
- * 
+ *
  * Based off code by Tomasz Wegrzanowski, with additions by Brion Vibber (2003, 2004)
  */
 class MathRenderer
 {
 	/**
 	 * Description for 'mode'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $mode = MW_MATH_MODERN;
 
 	/**
 	 * Description for 'tex'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tex = '';
 
 	/**
 	 * Description for 'inputhash'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $inputhash = '';
 
 	/**
 	 * Description for 'hash'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $hash = '';
 
 	/**
 	 * Description for 'html'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $html = '';
 
 	/**
 	 * Description for 'mathml'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $mathml = '';
 
 	/**
 	 * Description for 'conservativeness'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $conservativeness = 0;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string $tex    LaTeX formula
 	 * @param      array  $params Parameters (not used?)
 	 * @return     void
@@ -149,7 +149,7 @@ class MathRenderer
 
 	/**
 	 * Set the output mode (0 - 5)
-	 * 
+	 *
 	 * @param      integer $mode Output mode to set
 	 * @return     void
 	 */
@@ -160,14 +160,14 @@ class MathRenderer
 
 	/**
 	 * Create directories in a path if they don't exist
-	 * 
+	 *
 	 * @param      string  $path Path
 	 * @param      integer $mode chmod
 	 * @return     boolean False if errors, True on success
 	 */
 	private function _makePath($path, $mode=0777)
 	{
-		if (file_exists($path)) 
+		if (file_exists($path))
 		{
 		    return true;
 		}
@@ -176,19 +176,19 @@ class MathRenderer
 		$parts = explode('/', $path);
 
 		$n = count($parts);
-		if ($n < 1) 
+		if ($n < 1)
 		{
 		    return mkdir($path, $mode);
-		} 
-		else 
+		}
+		else
 		{
 			$path = '';
 			for ($i = 0; $i < $n; $i++)
 			{
 				$path .= $parts[$i] . '/';
-				if (!file_exists($path)) 
+				if (!file_exists($path))
 				{
-					if (!mkdir($path, $mode)) 
+					if (!mkdir($path, $mode))
 					{
 						return false;
 					}
@@ -202,7 +202,7 @@ class MathRenderer
 	 * Render a formula
 	 * This will return either an image tag with link to image (complicated formulas)
 	 * or html (simple)
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -219,32 +219,32 @@ class MathRenderer
 		$b = '/usr/bin'; // dirname(__FILE__);
 		$texvc = $b . DS . 'texvc';
 
-		if ($this->mode == MW_MATH_SOURCE) 
+		if ($this->mode == MW_MATH_SOURCE)
 		{
 			// No need to render or parse anything more!
 			return ('$ ' . htmlspecialchars($this->tex) . ' $');
 		}
-		if ($this->tex == '') 
+		if ($this->tex == '')
 		{
 			return;
 		}
 
-		if (!$this->_recall()) 
+		if (!$this->_recall())
 		{
 			// Ensure that the temp and output directories are available before continuing...
-			if (!file_exists($tmpDirectory)) 
+			if (!file_exists($tmpDirectory))
 			{
-				if (!$this->_makePath($tmpDirectory)) 
+				if (!$this->_makePath($tmpDirectory))
 				{
 					return $this->_error('math_bad_tmpdir');
 				}
-			} 
-			elseif (!is_dir($tmpDirectory) || !is_writable($tmpDirectory)) 
+			}
+			elseif (!is_dir($tmpDirectory) || !is_writable($tmpDirectory))
 			{
 				return $this->_error('math_bad_tmpdir');
 			}
 			// Ensure we have the texvc executable
-			if (function_exists('is_executable') && !is_executable($texvc)) 
+			if (function_exists('is_executable') && !is_executable($texvc))
 			{
 				return $this->_error('math_notexvc');
 			}
@@ -283,24 +283,24 @@ class MathRenderer
 				 %m - mathml code, without \0 characters
 			*/
 
-			if (strlen($contents) == 0) 
+			if (strlen($contents) == 0)
 			{
 				return $this->_error('math_unknown_error1');
 			}
 
 			$retval = substr($contents, 0, 1);
 			$errmsg = '';
-			if (($retval == 'C') || ($retval == 'M') || ($retval == 'L')) 
+			if (($retval == 'C') || ($retval == 'M') || ($retval == 'L'))
 			{
-				if ($retval == 'C') 
+				if ($retval == 'C')
 				{
 					$this->conservativeness = 2;
-				} 
-				else if ($retval == 'M') 
+				}
+				else if ($retval == 'M')
 				{
 					$this->conservativeness = 1;
-				} 
-				else 
+				}
+				else
 				{
 					$this->conservativeness = 0;
 				}
@@ -310,37 +310,37 @@ class MathRenderer
 
 				$this->html = substr($outdata, 0, $i);
 				$this->mathml = substr($outdata, $i+1);
-			} 
-			else if (($retval == 'c') || ($retval == 'm') || ($retval == 'l')) 
+			}
+			else if (($retval == 'c') || ($retval == 'm') || ($retval == 'l'))
 			{
 				$this->html = substr($contents, 33);
-				if ($retval == 'c') 
+				if ($retval == 'c')
 				{
 					$this->conservativeness = 2;
-				} 
-				else if ($retval == 'm') 
+				}
+				else if ($retval == 'm')
 				{
 					$this->conservativeness = 1;
-				} 
-				else 
+				}
+				else
 				{
 					$this->conservativeness = 0;
 				}
 				$this->mathml = NULL;
-			} 
-			else if ($retval == 'X') 
+			}
+			else if ($retval == 'X')
 			{
 				$this->html = NULL;
 				$this->mathml = substr ($contents, 33);
 				$this->conservativeness = 0;
-			} 
-			else if ($retval == '+') 
+			}
+			else if ($retval == '+')
 			{
 				$this->html = NULL;
 				$this->mathml = NULL;
 				$this->conservativeness = 0;
-			} 
-			else 
+			}
+			else
 			{
 				$errbit = htmlspecialchars(substr($contents, 1));
 				switch ($retval)
@@ -352,42 +352,42 @@ class MathRenderer
 				}
 			}
 
-			if (!$errmsg) 
+			if (!$errmsg)
 			{
 				 $this->hash = substr($contents, 1, 32);
 			}
 
-			if ($errmsg) 
+			if ($errmsg)
 			{
 				return $errmsg;
 			}
 
-			if (!preg_match("/^[a-f0-9]{32}$/", $this->hash)) 
+			if (!preg_match("/^[a-f0-9]{32}$/", $this->hash))
 			{
 				return $this->_error('math_unknown_error3');
 			}
 
-			if (!file_exists("$tmpDirectory/{$this->hash}.png")) 
+			if (!file_exists("$tmpDirectory/{$this->hash}.png"))
 			{
 				return $this->_error('math_image_error');
 			}
 
 			$hashpath = $this->_getHashPath();
 
-			if (!file_exists($hashpath)) 
+			if (!file_exists($hashpath))
 			{
 				//if (!@wfMkdirParents($hashpath, 0755)) {
-				if (!$this->_makePath($hashpath)) 
+				if (!$this->_makePath($hashpath))
 				{
 					return $this->_error('math_bad_output');
 				}
-			} 
-			elseif (!is_dir($hashpath) || !is_writable($hashpath)) 
+			}
+			elseif (!is_dir($hashpath) || !is_writable($hashpath))
 			{
 				return $this->_error('math_bad_output');
 			}
 
-			if (!rename("$tmpDirectory/{$this->hash}.png", "$hashpath/{$this->hash}.png")) 
+			if (!rename("$tmpDirectory/{$this->hash}.png", "$hashpath/{$this->hash}.png"))
 			{
 				return $this->_error('math_output_error');
 			}
@@ -399,14 +399,14 @@ class MathRenderer
 
 			$wm = new WikiPageMath($database);
 			$wm->loadByInput($md5_sql);
-			if (!$wm->id) 
+			if (!$wm->id)
 			{
 				$wm->inputhash        = $this->_encodeBlob($md5_sql);
 				$wm->outputhash       = $this->_encodeBlob($outmd5_sql);
 				$wm->conservativeness = $this->conservativeness;
 				$wm->html             = $this->html;
 				$wm->mathml           = $this->mathml;
-				if (!$wm->store()) 
+				if (!$wm->store())
 				{
 					return $wm->getError();
 				}
@@ -418,7 +418,7 @@ class MathRenderer
 
 	/**
 	 * Return an error message
-	 * 
+	 *
 	 * @param      string $msg    Message
 	 * @param      string $append Data to append
 	 * @return     string HTML
@@ -433,7 +433,7 @@ class MathRenderer
 
 	/**
 	 * Detect if a formula exists
-	 * 
+	 *
 	 * @return     boolean True if image exists
 	 */
 	private function _recall()
@@ -445,7 +445,7 @@ class MathRenderer
 		//$wm->loadByInput($this->_encodeBlob(pack("H32", $this->md5)));
 		$wm->loadByInput($this->_encodeBlob($this->md5));
 
-		if ($wm->id) 
+		if ($wm->id)
 		{
 			// Tailing 0x20s can get dropped by the database, add it back on if necessary:
 			//$xhash = $wm->outputhash; //$this->_decodeBlob($wm->outputhash); //unpack('H32md5', $this->_decodeBlob($wm->outputhash) . "                ");
@@ -455,7 +455,7 @@ class MathRenderer
 			$this->html = $wm->html;
 			$this->mathml = $wm->mathml;
 
-			if (file_exists($this->_getHashPath() . DS . "{$this->hash}.png")) 
+			if (file_exists($this->_getHashPath() . DS . "{$this->hash}.png"))
 			{
 				return true;
 			}
@@ -467,22 +467,22 @@ class MathRenderer
 
 	/**
 	 * Select among PNG, HTML, or MathML output depending on
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _doRender()
 	{
-		if ($this->mode == MW_MATH_MATHML && $this->mathml != '') 
+		if ($this->mode == MW_MATH_MATHML && $this->mathml != '')
 		{
 			return '<math xmlns="http://www.w3.org/1998/Math/MathML">' . $this->mathml . '</math>';
 		}
-		if (($this->mode == MW_MATH_PNG) || ($this->html == '') 
-		 || (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2)) 
-		 || (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0))) 
+		if (($this->mode == MW_MATH_PNG) || ($this->html == '')
+		 || (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2))
+		 || (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0)))
 		{
 			return $this->_linkToMathImage();
-		} 
-		else 
+		}
+		else
 		{
 			return '<span class="texhtml">' . $this->html . '</span>';
 		}
@@ -490,7 +490,7 @@ class MathRenderer
 
 	/**
 	 * Generate an image tag for displaying rendered formulas
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _linkToMathImage()
@@ -502,7 +502,7 @@ class MathRenderer
 
 	/**
 	 * Get the hash path
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _getHashPath()
@@ -513,7 +513,7 @@ class MathRenderer
 
 	/**
 	 * Encode blob
-	 * 
+	 *
 	 * @param      string $b Blob to encode
 	 * @return     string
 	 */
@@ -524,7 +524,7 @@ class MathRenderer
 
 	/**
 	 * Decode blob
-	 * 
+	 *
 	 * @param      string $b Blob to decode
 	 * @return     string
 	 */
@@ -537,7 +537,7 @@ class MathRenderer
 	 * Check of a formula exists, rendering if not
 	 * This will return either an image tag with link to image (complicated formulas)
 	 * or html (simple)
-	 * 
+	 *
 	 * @param      string $tex    LaTeX formula
 	 * @param      array  $params Parameters (not used?)
 	 * @return     string

@@ -61,15 +61,15 @@ else {
 	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
 	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";	
+	$message .= '-------------------------------'."\n";
 }
 
-$message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title 
+$message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title
 		 . ' (' . $this->project->alias.')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' ' 
+$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
 		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' . JText::_('COM_PROJECTS_BY').' ';
-$message .= $this->project->owned_by_group 
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$message .= $this->project->owned_by_group
+			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
 $message .= JText::_('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
@@ -77,11 +77,11 @@ $message .= JText::_('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-if ($this->uid) 
+if ($this->uid)
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
-else 
+else
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName.' ';
 	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT') . "\n";

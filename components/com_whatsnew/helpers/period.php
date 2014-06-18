@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'WhatsnewPeriod'
- * 
+ *
  * Long description (if any) ...
  */
 class WhatsnewPeriod extends JObject
@@ -41,21 +41,21 @@ class WhatsnewPeriod extends JObject
 
 	/**
 	 * The original search text - should NEVER BE CHANGED
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_period = NULL;
 
 	/**
 	 * Container for storing overloaded data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data   = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string $period Time period (month, week, etc)
 	 * @return     void
 	 */
@@ -84,7 +84,7 @@ class WhatsnewPeriod extends JObject
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -92,12 +92,12 @@ class WhatsnewPeriod extends JObject
 
 	/**
 	 * Processes the _period text into actual dates
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function process()
 	{
-		if (trim($this->_period) == '') 
+		if (trim($this->_period) == '')
 		{
 			return;
 		}
@@ -129,15 +129,15 @@ class WhatsnewPeriod extends JObject
 			break;
 
 			default:
-				if (substr($this->period, 0, 2) == 'c_') 
+				if (substr($this->period, 0, 2) == 'c_')
 				{
 					$tokens = preg_split('/_/', $this->period);
 					$this->period = $tokens[1];
 
 					$this->endTime   = strtotime('12/31/' . $this->period);
 					$this->startTime = strtotime('01/01/' . $this->period);
-				} 
-				else 
+				}
+				else
 				{
 					$this->endTime   = strtotime('08/31/' . $this->period);
 					$this->startTime = strtotime('09/01/' . ($this->period-1));

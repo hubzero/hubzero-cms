@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $option = 'com_blog';
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }

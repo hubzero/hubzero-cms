@@ -34,14 +34,14 @@ use Exception;
 
 /**
  * Identicon is a library which generate an identicon image based on a string.
- * 
+ *
  * - Images are generated in PNG format with transparent background.
  * - The string can be an email, an IP address, a username, an ID or something else.
  *
  * Usage:
  *
  *   $identicon = new Identicon();
- * 
+ *
  *   // Generate image and display
  *   $identicon->displayImage('foo');
  *
@@ -209,7 +209,7 @@ class Identicon
 		imagecolortransparent($image, $background);
 
 		// prepage the color
-		if (null !== $color) 
+		if (null !== $color)
 		{
 			$this->setColor($color);
 		}

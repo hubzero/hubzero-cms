@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="component_enabled" type="list" default="1" label="Enable this component?" description="Turn the whole component on/off">
 			<option value="1">yes</option>
 			<option value="0">no</option>
-		</param>		
+		</param>
 		<param name="industry" type="text" menu="hide" label="Industry name" default="" description="Name of industry where jobs are posted" />
 		<param name="admingroup" type="text" menu="hide" label="Admin group" default="" description="Name of a HUB group to have unrestricted access to job postings and resumes, in addition to Joomla site administrators" />
 		<param name="specialgroup" type="text" menu="hide" label="Special services group " default="" description="Name of a HUB group to have access to restricted-level subscriptions (usually above Premium)" />
@@ -47,7 +47,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="usonly" type="list" default="1" label="US jobs only?" description="Allow to post only US-based jobs">
 			<option value="1">allow only US jobs</option>
 			<option value="0">allow jobs from any country</option>
-		</param>		
+		</param>
 		<param name="promoline" type="text" menu="hide" label="Promo for employers" default="" description="One-liner promotional offer for employers" />
 		<param name="infolink" type="text" menu="hide" label="URL to about page" default="" description="URL to page explaining the job search process" />
 		<param name="premium_infolink" type="text" menu="hide" label="URL to premium services page" default="" description="URL to page explaining the premium services" />
@@ -56,7 +56,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="component_enabled" type="list" default="1" label="Enable this component?" description="Turn the whole component on/off">
 			<option value="1">yes</option>
 			<option value="0">no</option>
-		</field>		
+		</field>
 		<field name="industry" type="text" menu="hide" label="Industry name" default="" description="Name of industry where jobs are posted" />
 		<field name="admingroup" type="text" menu="hide" label="Admin group" default="" description="Name of a HUB group to have unrestricted access to job postings and resumes, in addition to Joomla site administrators" />
 		<field name="specialgroup" type="text" menu="hide" label="Special services group " default="" description="Name of a HUB group to have access to restricted-level subscriptions (usually above Premium)" />
@@ -72,7 +72,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="usonly" type="list" default="1" label="US jobs only?" description="Allow to post only US-based jobs">
 			<option value="1">allow only US jobs</option>
 			<option value="0">allow jobs from any country</option>
-		</field>		
+		</field>
 		<field name="promoline" type="text" menu="hide" label="Promo for employers" default="" description="One-liner promotional offer for employers" />
 		<field name="infolink" type="text" menu="hide" label="URL to about page" default="" description="URL to page explaining the job search process" />
 		<field name="premium_infolink" type="text" menu="hide" label="URL to premium services page" default="" description="URL to page explaining the premium services" />

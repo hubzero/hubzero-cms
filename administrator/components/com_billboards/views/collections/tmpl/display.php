@@ -58,7 +58,7 @@ JToolBarHelper::help('collections');
 
 <?php
 	$k = 0;
-	for ($i=0, $n=count($this->rows); $i < $n; $i++) 
+	for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row =& $this->rows[$i];
 ?>
@@ -69,7 +69,7 @@ JToolBarHelper::help('collections');
 				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>"><?php echo stripslashes($row->name); ?></a></td>
 			</tr>
 
-<?php 
+<?php
 		$k = 1 - $k;
 	}
 ?>

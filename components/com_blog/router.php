@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'BlogBuildRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -43,12 +43,12 @@ function BlogBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task']) && $query['task'] != 'feed.rss' && $query['task'] != 'feed') 
+	if (!empty($query['task']) && $query['task'] != 'feed.rss' && $query['task'] != 'feed')
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		if ($query['controller'] == 'media')
 		{
@@ -56,27 +56,27 @@ function BlogBuildRoute(&$query)
 		}
 		unset($query['controller']);
 	}
-	if (!empty($query['year'])) 
+	if (!empty($query['year']))
 	{
 		$segments[] = $query['year'];
 		unset($query['year']);
 	}
-	if (!empty($query['month'])) 
+	if (!empty($query['month']))
 	{
 		$segments[] = $query['month'];
 		unset($query['month']);
 	}
-	if (!empty($query['task']) && ($query['task'] == 'feed.rss' || $query['task'] == 'feed')) 
+	if (!empty($query['task']) && ($query['task'] == 'feed.rss' || $query['task'] == 'feed'))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['alias'])) 
+	if (!empty($query['alias']))
 	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
-	if (!empty($query['action'])) 
+	if (!empty($query['action']))
 	{
 		$segments[] = $query['action'];
 		unset($query['action']);
@@ -87,9 +87,9 @@ function BlogBuildRoute(&$query)
 
 /**
  * Short description for 'BlogParseRoute'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -102,14 +102,14 @@ function BlogParseRoute($segments)
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
-		if (is_numeric($segments[0])) 
+		if (is_numeric($segments[0]))
 		{
 			$vars['year'] = $segments[0];
 			$vars['task'] = 'browse';
-		} 
-		else 
+		}
+		else
 		{
 			if ($segments[0] == 'media')
 			{
@@ -118,36 +118,36 @@ function BlogParseRoute($segments)
 			$vars['task'] = $segments[0];
 		}
 	}
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
-		if ($segments[1] == 'feed.rss') 
+		if ($segments[1] == 'feed.rss')
 		{
 			$vars['task'] = 'feed';
 		}
-		else 
+		else
 		{
 			$vars['month'] = $segments[1];
 		}
 	}
-	if (isset($segments[2])) 
+	if (isset($segments[2]))
 	{
-		if ($segments[2] == 'feed.rss') 
+		if ($segments[2] == 'feed.rss')
 		{
 			$vars['task'] = 'feed';
-		} 
-		else 
+		}
+		else
 		{
 			$vars['alias'] = $segments[2];
 			$vars['task'] = 'entry';
 		}
 	}
-	if (isset($segments[3])) 
+	if (isset($segments[3]))
 	{
-		if ($segments[2] == 'feed.rss') 
+		if ($segments[2] == 'feed.rss')
 		{
 			$vars['task'] = 'feed';
-		} 
-		else if ($segments[3] == 'comments.rss') 
+		}
+		else if ($segments[3] == 'comments.rss')
 		{
 			$vars['task'] = 'comments';
 		}

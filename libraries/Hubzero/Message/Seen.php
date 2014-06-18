@@ -37,28 +37,28 @@ class Seen extends \JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $mid      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid      = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $whenseen = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -69,19 +69,19 @@ class Seen extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->mid = intval($this->mid);
-		if (!$this->mid) 
+		if (!$this->mid)
 		{
 			$this->setError(\JText::_('Please provide a message ID.'));
 			return false;
 		}
 		$this->uid = intval($this->uid);
-		if (!$this->uid) 
+		if (!$this->uid)
 		{
 			$this->setError(\JText::_('Please provide a user ID.'));
 			return false;
@@ -91,32 +91,32 @@ class Seen extends \JTable
 
 	/**
 	 * Load a record by message ID and user ID and bind to $this
-	 * 
+	 *
 	 * @param      integer $mid Message ID
 	 * @param      integer $uid User ID
 	 * @return     boolean True on success
 	 */
 	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid) 
+		if (!$mid)
 		{
 			$mid = $this->mid;
 		}
-		if (!$uid) 
+		if (!$uid)
 		{
 			$uid = $this->uid;
 		}
-		if (!$mid || !$uid) 
+		if (!$mid || !$uid)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -125,41 +125,41 @@ class Seen extends \JTable
 
 	/**
 	 * Save a record
-	 * 
+	 *
 	 * @param      boolean $new Create a new record? (updates by default)
 	 * @return     boolean True on success, false on errors
 	 */
 	public function store($new=false)
 	{
-		if (!$new) 
+		if (!$new)
 		{
 			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen=" . $this->_db->Quote($this->whenseen) . " WHERE mid=" . $this->_db->Quote($this->mid) . " AND uid=" . $this->_db->Quote($this->uid));
-			if ($this->_db->query()) 
+			if ($this->_db->query())
 			{
 				$ret = true;
-			} 
-			else 
-			{
-				$ret = false;
 			}
-		} 
-		else 
-		{
-			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES (" . $this->_db->Quote($this->mid) . ", " . $this->_db->Quote($this->uid). ", " . $this->_db->Quote($this->whenseen) . ")");
-			if ($this->_db->query()) 
-			{
-				$ret = true;
-			} 
-			else 
+			else
 			{
 				$ret = false;
 			}
 		}
-		if (!$ret) 
+		else
+		{
+			$this->_db->setQuery("INSERT INTO $this->_tbl (mid, uid, whenseen) VALUES (" . $this->_db->Quote($this->mid) . ", " . $this->_db->Quote($this->uid). ", " . $this->_db->Quote($this->whenseen) . ")");
+			if ($this->_db->query())
+			{
+				$ret = true;
+			}
+			else
+			{
+				$ret = false;
+			}
+		}
+		if (!$ret)
 		{
 			$this->setError(__CLASS__ . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
-		} 
+		}
 
 		return true;
 	}

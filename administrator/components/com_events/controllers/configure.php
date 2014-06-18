@@ -38,7 +38,7 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Determines task and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -51,7 +51,7 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for editing configuration values
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -59,7 +59,7 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -73,7 +73,7 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save configuration values
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -88,19 +88,19 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 			);
 
 			$row = new EventsConfig($this->database);
-			if (!$row->bind($box)) 
+			if (!$row->bind($box))
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
 			// Check content
-			if (!$row->check()) 
+			if (!$row->check())
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
 			// Store content
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				JError::raiseError(500, $row->getError() . ' ' . $row->param . ': ' . $row->value);
 				return;
@@ -114,12 +114,12 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 		$box['param'] = 'fields';
 		$box['value'] = '';
 
-		if (is_array($fields)) 
+		if (is_array($fields))
 		{
 			$txta = array();
 			foreach ($fields as $val)
 			{
-				if ($val['title']) 
+				if ($val['title'])
 				{
 					$k = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($val['title']));
 
@@ -135,19 +135,19 @@ class EventsControllerConfigure extends \Hubzero\Component\AdminController
 		$box['value'] = $field;
 
 		$row = new EventsConfig($this->database);
-		if (!$row->bind($box)) 
+		if (!$row->bind($box))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;

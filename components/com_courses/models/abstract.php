@@ -40,48 +40,48 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * Draft state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const APP_STATE_DRAFT     = 3;
 
 	/**
 	 * CoursesTableAsset
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_scope = NULL;
 
 	/**
 	 * CoursesTableInstance
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 
 	/**
-	 * Date keys coming from 
+	 * Date keys coming from
 	 * #__courses_offering_section_dates
 	 *
 	 * @var array
 	 */
 	static $_section_keys = array(
 		//'section_id',
-		'publish_up', 
+		'publish_up',
 		'publish_down'
 	);
 
 	/**
 	 * JParameter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isDraft()
@@ -90,7 +90,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 		{
 			return false;
 		}
-		if ($this->get('state') == self::APP_STATE_DRAFT) 
+		if ($this->get('state') == self::APP_STATE_DRAFT)
 		{
 			return true;
 		}
@@ -99,22 +99,22 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function started()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return false;
 		}
 
 		$now = JFactory::getDate()->toSql();
 
-		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != $this->_db->getNullDate() 
-		 && $this->get('publish_up') > $now) 
+		if ($this->get('publish_up')
+		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') > $now)
 		{
 			return false;
 		}
@@ -124,22 +124,22 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Has the offering ended?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function ended()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return true;
 		}
 
 		$now = JFactory::getDate()->toSql();
 
-		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != $this->_db->getNullDate() 
-		 && $this->get('publish_down') <= $now) 
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') <= $now)
 		{
 			return true;
 		}
@@ -149,7 +149,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the offering is available
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isAvailable()
@@ -161,7 +161,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 		}
 
 		// Make sure the item is published and within the available time range
-		if ($this->started() && !$this->ended()) 
+		if ($this->started() && !$this->ended())
 		{
 			return true;
 		}
@@ -171,7 +171,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -193,7 +193,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
@@ -239,7 +239,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 		$log->action    = $action;
 		$log->comments  = $log;
 		$log->actor_id  = $juser->get('id');
-		if (!$log->store()) 
+		if (!$log->store())
 		{
 			$this->setError($log->getError());
 		}
@@ -247,7 +247,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @return     boolean True if authorized, false if not
 	 */
 	public function config($property=null, $default=null)
@@ -265,7 +265,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */

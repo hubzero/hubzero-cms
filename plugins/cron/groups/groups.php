@@ -40,7 +40,7 @@ class plgCronGroups extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -67,7 +67,7 @@ class plgCronGroups extends JPlugin
 
 	/**
 	 * Remove unused group folders
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function cleanGroupFolders($params=null)
@@ -89,7 +89,7 @@ class plgCronGroups extends JPlugin
 		{
 			//load group object for each folder
 			$hubzeroGroup = \Hubzero\User\Group::getInstance(trim($groupFolder));
-			
+
 			//if we dont have a group object delete folder
 			if (!is_object($hubzeroGroup))
 			{
@@ -101,33 +101,33 @@ class plgCronGroups extends JPlugin
 		//job is no longer active
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Send scheduled group announcements
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function sendGroupAnnouncements($params=null)
 	{
 		// get hubzero announcement object
 		$hubzeroAnnouncement = new \Hubzero\Item\Announcement( JFactory::getDBO() );
-		
+
 		// get all announcements that are not yet sent but want to be mailed
 		$announcements = $hubzeroAnnouncement->find(array('email' => 1,'sent' => 0));
-		
+
 		// loop through each announcement
 		foreach ($announcements as $announcement)
 		{
 			// load the announcement object
 			$hubzeroAnnouncement->load($announcement->id);
-			
+
 			// check to see if we can send
 			if ($hubzeroAnnouncement->announcementPublishedForDate())
 			{
 				// email announcement
 				$hubzeroAnnouncement->emailAnnouncement();
-				
+
 				// mark as sent
 				$hubzeroAnnouncement->sent = 1;
 				$hubzeroAnnouncement->save( $hubzeroAnnouncement );

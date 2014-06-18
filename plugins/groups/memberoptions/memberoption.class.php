@@ -43,42 +43,42 @@ class GroupsTableMemberoption extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $userid = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $optionname = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $optionvalue = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db Database
 	 * @return     void
 	 */
@@ -89,7 +89,7 @@ class GroupsTableMemberoption extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid, False if not
 	 */
 	public function check()
@@ -123,7 +123,7 @@ class GroupsTableMemberoption extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      unknown $gidNumber Parameter description (if any) ...
 	 * @param      unknown $userid Parameter description (if any) ...
 	 * @param      unknown $optionname Parameter description (if any) ...

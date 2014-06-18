@@ -47,7 +47,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="text">Text-based</option>
 					<option value="image">Image-based</option>
 				</field>
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="bgColor" type="text" size="25" default="#2c8007" label="Background Color" description="Enter color(6 letter hex value )" />
 				<field name="textColor" type="text" size="25" default="#ffffff" label="Text Color" description="Enter color(6 letter hex value)" />
 				<field name="imageFunction" type="list" default="Adv" label="Select Image Function" description="Select wether you want to show distorted letters or plane letters">

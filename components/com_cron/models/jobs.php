@@ -40,28 +40,28 @@ class CronModelJobs extends \Hubzero\Base\Model
 {
 	/**
 	 * CronModelJob
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_job = null;
 
 	/**
 	 * Record count for total number of jobs
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_jobs_count = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_jobs = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function __construct()
@@ -86,7 +86,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 
 	/**
 	 * Set and get a specific job
-	 * 
+	 *
 	 * @param      integer $id Record ID
 	 * @return     object CronModelJob
 	 */
@@ -94,7 +94,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 	{
 		// If the current job isn't set
 		//    OR the ID passed doesn't equal the current job's ID or alias
-		if (!isset($this->_job) 
+		if (!isset($this->_job)
 		 || ($id !== null && (int) $this->_job->get('id') != $id && (string) $this->_job->get('alias') != $id))
 		{
 			// Reset current job
@@ -126,7 +126,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list of jobs
-	 * 
+	 *
 	 * @param      string  $rtrn    What data to fetch
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?

@@ -61,7 +61,7 @@ class WikiHelperParser extends JObservable
 	 */
 	public function __construct($parser = '')
 	{
-		if (!$parser) 
+		if (!$parser)
 		{
 			$database = JFactory::getDBO();
 			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'parser%' ORDER BY enabled DESC LIMIT 1");
@@ -86,14 +86,14 @@ class WikiHelperParser extends JObservable
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$signature = serialize($parser);
 
-		if (empty($instances[$signature])) 
+		if (empty($instances[$signature]))
 		{
 			$instances[$signature] = new self($parser);
 		}
@@ -107,7 +107,7 @@ class WikiHelperParser extends JObservable
 	public function initialise($config=array(), $getnew=false)
 	{
 		// Check if parser is already loaded
-		if (is_null($this->_parser)) 
+		if (is_null($this->_parser))
 		{
 			return;
 		}
@@ -122,7 +122,7 @@ class WikiHelperParser extends JObservable
 		$results[] = $this->_parser->update($args); //$this->_parser->onGetWikiParser($config, $getnew);
 		foreach ($results as $result)
 		{
-			if (is_object($result)) 
+			if (is_object($result))
 			{
 				$return = $result;
 			}
@@ -140,7 +140,7 @@ class WikiHelperParser extends JObservable
 	 */
 	public function parse($text, $config, $fullparse=true, $getnew=false, $params=array())
 	{
-		if (!$this->_name) 
+		if (!$this->_name)
 		{
 			return nl2br($text);
 		}
@@ -148,7 +148,7 @@ class WikiHelperParser extends JObservable
 		$this->_loadParser($params, $config, $getnew);
 
 		// Check if parser is already loaded
-		if (is_null($this->_parser)) 
+		if (is_null($this->_parser))
 		{
 			return nl2br($text);
 		}
@@ -168,7 +168,7 @@ class WikiHelperParser extends JObservable
 
 		foreach ($results as $result)
 		{
-			if (trim($result)) 
+			if (trim($result))
 			{
 				$return .= $result;
 			}
@@ -188,7 +188,7 @@ class WikiHelperParser extends JObservable
 	private function _loadParser($config=array(), $pconfig=array(), $getnew=false)
 	{
 		// Check if editor is already loaded
-		if (!$getnew && !is_null($this->_parser)) 
+		if (!$getnew && !is_null($this->_parser))
 		{
 			return;
 		}
@@ -200,7 +200,7 @@ class WikiHelperParser extends JObservable
 		$name = $input->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!JFile::exists($path)) 
+		if (!JFile::exists($path))
 		{
 			JError::raiseWarning(500, JText::_('Cannot load the parser'));
 			return false;
@@ -224,7 +224,7 @@ class WikiHelperParser extends JObservable
 
 		// Build parser plugin classname
 		$name = 'plgWiki' . $this->_name;
-		if ($this->_parser = new $name($this, (array)$plugin)) 
+		if ($this->_parser = new $name($this, (array)$plugin))
 		{
 			// Load plugin parameters
 			$this->initialise($pconfig, $getnew);

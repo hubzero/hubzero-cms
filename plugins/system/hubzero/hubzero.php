@@ -49,14 +49,14 @@ class plgSystemHubzero extends JPlugin
 	 * @param object $subject The object to observe
 	 * @since 1.5
 	 */
-	public function __construct(& $subject) 
+	public function __construct(& $subject)
 	{
 		parent::__construct($subject, NULL);
 	}
 
 	/**
 	 * Hook for after app routing
-	 * 
+	 *
 	 * @return	   void
 	 */
 	public function onAfterRoute()
@@ -69,15 +69,15 @@ class plgSystemHubzero extends JPlugin
 	}
 
 	/**
-	 * Hook for after app initialization 
-	 * 
+	 * Hook for after app initialization
+	 *
 	 * @return	   void
 	 */
 	public function onAfterInitialise()
 	{
 		// Get the application object
 		$app = JFactory::getApplication();
-		
+
 		// Get the user object
 		$user = JFactory::getUser();
 
@@ -102,7 +102,7 @@ class plgSystemHubzero extends JPlugin
 			{
 				$sstr = $crypt->decrypt($str);
 				$tracker = @unserialize($sstr);
-					
+
 				if ($tracker === false) // old tracking cookies encrypted with UA which is too short term for a tracking cookie
 				{
 					//Create the encryption key, apply extra hardening using the user agent string
@@ -112,12 +112,12 @@ class plgSystemHubzero extends JPlugin
 					$tracker = @unserialize($sstr);
 				}
 			}
-	
+
 			if (!is_array($tracker))
 			{
 				$tracker = array();
 			}
-				
+
 			if (empty($tracker['user_id']))
 			{
 				$session->clear('tracker.user_id');
@@ -126,7 +126,7 @@ class plgSystemHubzero extends JPlugin
 			{
 				$session->set('tracker.user_id', $tracker['user_id']);
 			}
-			
+
 			if (empty($tracker['username']))
 			{
 				$session->clear('tracker.username');
@@ -144,9 +144,9 @@ class plgSystemHubzero extends JPlugin
 			{
 				$session->set('tracker.psid', $tracker['sid']);
 			}
-			
+
 			$session->set('tracker.sid', $session->getId());
-				
+
 			if (empty($tracker['ssid']))
 			{
 				$session->set('tracker.ssid', $session->getId());
@@ -155,22 +155,22 @@ class plgSystemHubzero extends JPlugin
 			{
 				$session->set('tracker.ssid', $tracker['ssid']);
 			}
-				
+
 			if (empty($tracker['rsid']))
 			{
 				$session->set('tracker.rsid', $session->getId());
 			}
-			else 
+			else
 			{
 				$session->set('tracker.rsid', $tracker['rsid']);
 			}
-				
+
 			// log tracking cookie detection to auth log
-			
+
 			$username = (empty($tracker['username'])) ? '-' : $tracker['username'];
 			$user_id = (empty($tracker['user_id'])) ? 0 : $tracker['user_id'];
 			JFactory::getAuthLogger()->info( $username . ' ' . $_SERVER['REMOTE_ADDR'] . ' detect');
-	
+
 			// set new tracking cookie with current data
 			$tracker = array();
 			$tracker['user_id'] = $session->get('tracker.user_id');
@@ -182,13 +182,13 @@ class plgSystemHubzero extends JPlugin
 			$lifetime = time() + 365*24*60*60;
 			setcookie($hash, $cookie, $lifetime, '/');
 		}
-		
+
 		// all page loads set apache log data
-		
+
 		if (php_sapi_name() == 'apache')
 		{
 			apache_note('jsession', $session->getId());
-		
+
 			if ($user->get('id') != 0)
 			{
 				apache_note('auth','session');
@@ -204,9 +204,9 @@ class plgSystemHubzero extends JPlugin
 
 	/**
 	 * Hook for login failure
-	 * 
+	 *
 	 * @param	   unknown $response Parameter description (if any) ...
-	 * @return	   boolean 
+	 * @return	   boolean
 	 */
 	public function onUserLoginFailure($response)
 	{

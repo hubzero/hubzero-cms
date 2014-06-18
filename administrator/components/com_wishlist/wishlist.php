@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $option = JRequest::getCmd('option', 'com_wishlist');
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -61,7 +61,7 @@ switch ($controllerName)
 		JSubMenuHelper::addEntry(JText::_('Wishes'), 'index.php?option=' .  $option . '&controller=wishes&wishlist=-1', true);
 		JSubMenuHelper::addEntry(JText::_('Comments'), 'index.php?option=' .  $option . '&controller=comments&wish=-1');
 	break;
-	
+
 	case 'comments':
 		JSubMenuHelper::addEntry(JText::_('Lists'), 'index.php?option=' .  $option . '&controller=lists');
 		JSubMenuHelper::addEntry(JText::_('Wishes'), 'index.php?option=' .  $option . '&controller=wishes&wishlist=-1');

@@ -33,16 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = AnswersHelper::getActions('question');
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS'), 'answers.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -51,7 +51,7 @@ JToolBarHelper::help('questions');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -66,14 +66,14 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 			<input type="text" name="q" id="filter_search" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo JText::_('COM_ANSWERS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('COM_ANSWERS_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label> 
+			<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label>
 			<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
 				<option value="open"<?php if ($this->filters['filterby'] == 'open') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_OPEN'); ?></option>
 				<option value="closed"<?php if ($this->filters['filterby'] == 'closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_CLOSED'); ?></option>

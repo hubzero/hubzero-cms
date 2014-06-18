@@ -84,7 +84,7 @@ abstract class ContentHelperRoute
 		else
 		{
 			$needles = array();
-			
+
 			$link = 'index.php?option=com_content&view=category&id='.$id;
 
 			$catids = array_reverse($category->getPath());
@@ -111,7 +111,7 @@ abstract class ContentHelperRoute
 
 		return $link;
 	}
-	
+
 	protected static function buildLanguageLookup()
 	{
 		if(count(self::$lang_lookup) == 0)
@@ -146,7 +146,7 @@ abstract class ContentHelperRoute
 			$items		= $menus->getItems('component_id', $component->id);
 			foreach ($items as $item)
 			{
-				if (isset($item->query) && isset($item->query['view']) && $item->language == $language) 
+				if (isset($item->query) && isset($item->query['view']) && $item->language == $language)
 				{
 					$view = $item->query['view'];
 					if (!isset(self::$lookup[$language][$view])) {

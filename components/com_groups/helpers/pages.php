@@ -43,8 +43,8 @@ class GroupsHelperPages
 		$username  = (!is_null($username)) ? $username : JFactory::getUser()->get('username');
 		return (in_array($username, self::getPageApprovers())) ? true : false;
 	}
-	
-	
+
+
 	/**
 	 * Get page approvers
 	 *
@@ -55,8 +55,8 @@ class GroupsHelperPages
 		$approvers = JComponentHelper::getParams('com_groups')->get('approvers', '');
 		return array_map("trim", explode(',', $approvers));
 	}
-	
-	
+
+
 	/**
 	 * Get page approvers Emails and names
 	 * (used for emailing purposes)
@@ -67,7 +67,7 @@ class GroupsHelperPages
 	{
 		$emails    = array();
 		$approvers = self::getPageApprovers();
-		
+
 		foreach ($approvers as $approver)
 		{
 			$profile = \Hubzero\User\Profile::getInstance( $approver );
@@ -76,10 +76,10 @@ class GroupsHelperPages
 				$emails[$profile->get('email')] = $profile->get('name');
 			}
 		}
-		
+
 		return $emails;
 	}
-	
+
 	/**
 	 * Send mail to page approvers
 	 *
@@ -95,25 +95,25 @@ class GroupsHelperPages
 		{
 			$title = JText::sprintf('Module "%s" Requires Approval', $object->get('title'));
 		}
-		
+
 		// get approvers w/ emails
 		$approvers = self::getPageApproversEmail();
-		
+
 		// get site config
 		$jconfig =& JFactory::getConfig();
-		
+
 		// subject details
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
-		
+
 		// from details
 		$from = array(
 			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups'),
 			'email' => $jconfig->getValue('config.mailfrom')
 		);
-		
+
 		// build html email
 		$eview = new \Hubzero\Component\View(array(
-			'name'   => 'emails', 
+			'name'   => 'emails',
 			'layout' => $type
 		));
 		$eview->option     = JRequest::getCmd('option', 'com_groups');;
@@ -122,10 +122,10 @@ class GroupsHelperPages
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
-		
+
 		// create new message
 		$message = new \Hubzero\Mail\Message();
-		
+
 		// build message object and send
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
@@ -136,7 +136,7 @@ class GroupsHelperPages
 				->addPart($html, 'text/html')
 				->send();
 	}
-	
+
 	/**
 	 * Send mail that page has been approved
 	 *
@@ -152,13 +152,13 @@ class GroupsHelperPages
 		{
 			$title = JText::sprintf('Module "%s" Approved', $object->get('title'));
 		}
-		
+
 		// get \Hubzero\User\Group object
 		$group = \Hubzero\User\Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
-		
+
 		// array to hold manager emails
 		$managers = array();
-		
+
 		// get all manager email addresses
 		foreach ($group->get('managers') as $m)
 		{
@@ -168,36 +168,36 @@ class GroupsHelperPages
 				$managers[$profile->get('email')] = $profile->get('name');
 			}
 		}
-		
+
 		// get site config
 		$jconfig =& JFactory::getConfig();
-		
+
 		// subject details
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
-		
+
 		// from details
 		$from = array(
 			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups'),
 			'email' => $jconfig->getValue('config.mailfrom')
 		);
-		
+
 		// build html email
 		$eview = new \Hubzero\Component\View(array(
 			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups',
-			'name'   => 'emails', 
+			'name'   => 'emails',
 			'layout' => $type
 		));
-		
+
 		$eview->option     = JRequest::getCmd('option', 'com_groups');;
 		$eview->controller = JRequest::getCmd('controller', 'groups');
 		$eview->group      = $group;
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
-		
+
 		// create new message
 		$message = new \Hubzero\Mail\Message();
-		
+
 		// build message object and send
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
@@ -208,7 +208,7 @@ class GroupsHelperPages
 				->addPart($html, 'text/html')
 				->send();
 	}
-	
+
 	/**
 	 * Get code flags
 	 *
@@ -220,9 +220,9 @@ class GroupsHelperPages
 			'php' => array(
 				'minor'    => array(),
 				'elevated' => array(
-					'include', 
-					'require', 
-					'call_user_func', 
+					'include',
+					'require',
+					'call_user_func',
 					'curl',
 					'chgrp',
 					'chmod',
@@ -291,7 +291,7 @@ class GroupsHelperPages
 			)
 		);
 	}
-	
+
 	/**
 	 * Get page checkout details
 	 *
@@ -303,14 +303,14 @@ class GroupsHelperPages
 		// get joomla objects
 		$db   = JFactory::getDBO();
 		$user = JFactory::getUser();
-		
+
 		// get person who has page checkedout
-		$sql = "SELECT * FROM `#__xgroups_pages_checkout` 
+		$sql = "SELECT * FROM `#__xgroups_pages_checkout`
 			    WHERE `userid`<>" . $user->get('id') . " AND `pageid`=" . $db->quote($pageid) . " ORDER BY `when` LIMIT 1";
 		$db->setQuery($sql);
 		return $db->loadObject();
 	}
-	
+
 	/**
 	 * Checkout Page
 	 *
@@ -322,17 +322,17 @@ class GroupsHelperPages
 		// get needed joomla objects
 		$db   = JFactory::getDBO();
 		$user = JFactory::getUser();
-		
+
 		// check in other pages
 		self::checkinForUser();
-		
+
 		// mark page as checked out
-		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`) 
+		$sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`)
 			    VALUES(".$db->quote($pageid).",".$db->quote($user->get('id')).", '".JFactory::getDate()->toSql()."');";
 		$db->setQuery($sql);
 		$db->query();
 	}
-	
+
 	/**
 	 * Checkin Page
 	 *
@@ -343,13 +343,13 @@ class GroupsHelperPages
 	{
 		// get joomla objects
 		$db = JFactory::getDBO();
-		
+
 		// check in page
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `pageid`=" . $db->quote($pageid);
 		$db->setQuery($sql);
 		$db->query();
 	}
-	
+
 	/**
 	 * Checkin all pages for user
 	 *
@@ -360,14 +360,14 @@ class GroupsHelperPages
 		// get joomla objects
 		$user = JFactory::getUser();
 		$db   = JFactory::getDBO();
-		
+
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `userid`=" . $db->quote($user->get('id'));
 		$db->setQuery($sql);
 		$db->query();
 	}
-	
-	
+
+
 	/**
 	 * Checkin in all abondoned checkouts
 	 *
@@ -377,13 +377,13 @@ class GroupsHelperPages
 	{
 		// get joomla objects
 		$db   = JFactory::getDBO();
-		
+
 		// check in all pages for this user
 		$sql = "DELETE FROM `#__xgroups_pages_checkout` WHERE `when` < NOW() - INTERVAL 12 HOUR";
 		$db->setQuery($sql);
 		$db->query();
 	}
-	
+
 	/**
 	 * Display Group Page
 	 *
@@ -398,27 +398,27 @@ class GroupsHelperPages
 			'name'   => 'pages',
 			'layout' => '_view'
 		));
-		
+
 		// get needed vars
 		$database    = JFactory::getDBO();
 		$juser       = JFactory::getUser();
 		$authorized  = GroupsHelperView::authorize($group);
 		$version     = ($page) ? $page->approvedVersion() : null;
-		
+
 		// stops from displaying pages that dont exist
 		if ($page === null)
 		{
 			JError::raiseError(404, 'Group Page Not Found');
 			return;
 		}
-		
+
 		// stops from displaying unpublished pages
 		// make sure we have approved version to display
 		if ($page->get('state') == $page::APP_STATE_UNPUBLISHED || $version === null)
 		{
 			// determine which layout to use
 			$layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
-			
+
 			// show unpublished or no version layout
 			if ($authorized == 'manager')
 			{
@@ -428,12 +428,12 @@ class GroupsHelperPages
 				$view->version = $version;
 				return $view->loadTemplate();
 			}
-			
+
 			// show 404
 			JError::raiseError(404, 'Group Page Not Found');
 			return;
 		}
-		
+
 		// build page hit object
 		// mark page hit
 		if ($markHit)
@@ -447,28 +447,28 @@ class GroupsHelperPages
 			$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
 			$groupsTablePageHit->save( $pageHit );
 		}
-		
+
 		// parse old wiki content
 		//$content = self::parseWiki($group, $version->get('content'));
 		$content = $version->get('content');
-		
+
 		// parse php tags and modules
 		$content = self::parse($group, $page, $content);
-			
+
 		// set content
 		$version->set('content', $content);
-		
+
 		// set vars to view
 		$view->juser      = $juser;
 		$view->group      = $group;
 		$view->page       = $page;
 		$view->version    = $version;
 		$view->authorized = $authorized;
-		
+
 		// return rendered template
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Parse Wiki content
 	 *
@@ -507,34 +507,34 @@ class GroupsHelperPages
 		//return content
 		return $content;
 	}
-	
-	
+
+
 	/**
 	 *  Parse Page Includes & php
-	 * 
+	 *
 	 * @return 		void
 	 */
 	private static function parse( $group, $page, $document )
 	{
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
-	
+
 		// strip out scripts & php tags if not super group
 		if (!$group->isSuperGroup())
 		{
 			$document = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $document);
 			$document = preg_replace('/<\?[\s\S]*?\?>/', '', $document);
 		}
-		
+
 		//get config
 		$config = JComponentHelper::getParams('com_groups');
-	
+
 		// are we allowed to display group modules
 		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
-	
+
 		// set group doc needed props
 		// parse and render content
 		$groupDocument->set('group', $group)
@@ -542,10 +542,10 @@ class GroupsHelperPages
 			          ->set('document', $document)
 			          ->parse()
 			          ->render();
-	
+
 		// get doc content
 		$document = $groupDocument->output();
-	
+
 		// only parse php if Super Group
 		if ($group->isSuperGroup())
 		{
@@ -560,12 +560,12 @@ class GroupsHelperPages
 			};
 			$document = $eval();
 		}
-	
+
 		// return content
 		return $document;
 	}
-	
-	
+
+
 	/**
 	 * Generate Group Page Preview
 	 *
@@ -577,29 +577,29 @@ class GroupsHelperPages
 		// get groups
 		$gidNumber = $page->get('gidNumber');
 		$group     = \Hubzero\User\Group::getInstance($gidNumber);
-		
+
 		//get config
 		$config = JComponentHelper::getParams('com_groups');
-		
+
 		// load page version
 		$content = $page->version($version)->get('content');
-		
+
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
-		
+
 		// strip out scripts & php tags if not super group
 		if (!$group->isSuperGroup())
 		{
 			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
 			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
 		}
-		
+
 		// are we allowed to display group modules
 		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
-		
+
 		// set group doc needed props
 		// parse and render content
 		$groupDocument->set('group', $group)
@@ -607,10 +607,10 @@ class GroupsHelperPages
 			          ->set('document', $content)
 			          ->parse()
 			          ->render();
-		
+
 		// get doc content
 		$content = $groupDocument->output();
-		
+
 		// only parse php if Super Group
 		if ($group->isSuperGroup())
 		{
@@ -625,17 +625,17 @@ class GroupsHelperPages
 			};
 			$content = $eval();
 		}
-		
-		// get group css 
+
+		// get group css
 		$pageCss = GroupsHelperView::GetPageCss($group);
-		
+
 		$css = '';
 		foreach($pageCss as $p)
 		{
 			$p = rtrim(JURI::root(), DS) . DS . ltrim($p, DS);
 			$css .= '<link rel="stylesheet" href="'.$p.'" />';
 		}
-		
+
 		// output html
 		$html = '<!DOCTYPE html>
 				<html>
@@ -647,7 +647,7 @@ class GroupsHelperPages
 						'. $content .'
 					</body>
 				</html>';
-				
+
 		// return html
 		return $html;
 	}

@@ -45,7 +45,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -56,7 +56,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -66,10 +66,10 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
@@ -83,9 +83,9 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
-			if ($rtrn == 'all' || $rtrn == 'metadata') 
+			if ($rtrn == 'all' || $rtrn == 'metadata')
 			{
 				$view = new \Hubzero\Plugin\View(
 					array(
@@ -112,7 +112,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set an item's favorite status
-	 * 
+	 *
 	 * @param      string $option Component name
 	 * @return     void
 	 */
@@ -136,7 +136,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 		$this->resource->load($rid);
 
 		$arr = array('html' => '');
-		if ($rid) 
+		if ($rid)
 		{
 			$arr['html'] = $this->fav();
 		}
@@ -145,7 +145,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Un/favorite an item
-	 * 
+	 *
 	 * @param      integer $oid Resource to un/favorite
 	 * @return     void
 	 */
@@ -172,12 +172,12 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 				$b->title       = $this->resource->title;
 				$b->description = $this->resource->introtext;
 				$b->url         = JRoute::_('index.php?option=com_resources&id=' . $this->resource->id);
-				if (!$b->check()) 
+				if (!$b->check())
 				{
 					$this->setError($b->getError());
 				}
 				// Store new content
-				if (!$b->store()) 
+				if (!$b->store())
 				{
 					$this->setError($b->getError());
 				}
@@ -218,7 +218,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 				$view->display();
 				exit;
 			}
-			else 
+			else
 			{
 				return $view->loadTemplate();
 			}
@@ -252,10 +252,10 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
 				$stick->description   = JRequest::getVar('description', '', 'none', 2);
-				if ($stick->check()) 
+				if ($stick->check())
 				{
 					// Store new content
-					if (!$stick->store()) 
+					if (!$stick->store())
 					{
 						$this->setError($stick->getError());
 					}

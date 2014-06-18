@@ -39,13 +39,13 @@ $this->css()
 
 	<div id="filters">
 		<input type="hidden" name="inaction" value="trash" />
-		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?> 
+		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?>
 		<select class="option" name="filter">
 			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 			<?php
-				if ($this->components) 
+				if ($this->components)
 				{
-					foreach ($this->components as $component) 
+					foreach ($this->components as $component)
 					{
 						$component = substr($component, 4);
 						$sbjt  = "\t\t\t".'<option value="'.$component.'"';
@@ -55,7 +55,7 @@ $this->css()
 					}
 				}
 			?>
-		</select> 
+		</select>
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
 
@@ -65,7 +65,7 @@ $this->css()
 			<option value="sendtoinbox"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_INBOX'); ?></option>
 			<option value="sendtoarchive"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
 			<option value="delete"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_DELETE'); ?></option>
-		</select> 
+		</select>
 		<input type="hidden"name="activetab" value="trash" />
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
@@ -93,37 +93,37 @@ $this->css()
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 						$check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";
-					
+
 						//get the message status
 						$status = ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "<span class=\"read\">read</span>" : "<span class=\"unread\">unread</span>";
-				
+
 						//get the component that created message
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
-					
+
 						//url to view message
 						$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
-					
+
 						//get the message subject
 						$subject = $row->subject;
-						
+
 						//support - special
 						if ($component == 'support') {
 							$fg = explode(' ',$row->subject);
 							$fh = array_pop($fg);
 							$subject = implode(' ',$fg);
 						}
-					
+
 						//get the message
 						$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(stripslashes($row->message)) : "";
-					
+
 						//subject link
 						$subject_cls = "message-link";
 						$subject_cls .= ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
-						
+
 						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
 						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
 						$subject .= "</a>";
-					
+
 						//get who the message is from
 						if (substr($row->type, -8) == '_message') {
 							$u = JUser::getInstance($row->created_by);
@@ -131,10 +131,10 @@ $this->css()
 						} else {
 							$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
 						}
-					
+
 						//date received
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
-					
+
 						//special action
 						/*if ($row->actionid) {
 							$xma = new \Hubzero\Message\Action( $database );
@@ -142,7 +142,7 @@ $this->css()
 							if ($xma) {
 								$url = JRoute::_(stripslashes($xma->description));
 							}
-						
+
 							if($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00') {
 								//we dont want them to be able to move
 								$check = "";

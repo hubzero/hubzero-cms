@@ -38,7 +38,7 @@ class TimeFilters
 {
 	/**
 	 * Get filters from request
-	 * 
+	 *
 	 * @param  $plugin  - plugin calling this method
 	 * @return $filters - array of filters
 	 */
@@ -112,7 +112,7 @@ class TimeFilters
 
 	/**
 	 * Get column names
-	 * 
+	 *
 	 * @param  array $table   - table to get column names for
 	 * @param  array $exclude - array of columns to exclude
 	 * @return $columns       - array of column names
@@ -152,7 +152,7 @@ class TimeFilters
 
 	/**
 	 * Highlight search text
-	 * 
+	 *
 	 * @param  object $obj    - object list in which to highlight text
 	 * @param  array $filters - array of filters (search included)
 	 * @return object $obj    - object to return
@@ -176,7 +176,7 @@ class TimeFilters
 
 	/**
 	 * Build the operators html
-	 * 
+	 *
 	 * @return string $html - html for operators select box
 	 */
 	public static function buildSelectOperators()
@@ -196,7 +196,7 @@ class TimeFilters
 
 	/**
 	 * Setup pagination
-	 * 
+	 *
 	 * @param  int $total  - total number of records
 	 * @param  int $start  - start of query
 	 * @param  int $limit  - limit of query
@@ -216,11 +216,11 @@ class TimeFilters
 
 	/**
 	 * Augment query filters
-	 * 
+	 *
 	 * Here we're basically modifying what we get from the database,
 	 * either by changing the display column (ex: 'user_id' => 'User'),
 	 * or by changing the display value (ex: '1' to 'yes', or '1000' to Sam Wilson)
-	 * 
+	 *
 	 * @param  $q - query arguments
 	 * @return void
 	 */
@@ -334,9 +334,9 @@ class TimeFilters
 
 	/**
 	 * Override default filter values
-	 * 
+	 *
 	 * ex: change hub_id to Hub
-	 * 
+	 *
 	 * @param  $vals   - incoming values
 	 * @param  $column - incoming column for which values pertain
 	 * @return $return - outgoing values
@@ -397,7 +397,7 @@ class TimeFilters
 
 	/**
 	 * Translate operators from form value to database operator
-	 * 
+	 *
 	 * @param  $o - operator of interest
 	 * @return void
 	 */
@@ -436,7 +436,7 @@ class TimeFilters
 
 	/**
 	 * Map operator symbol to text equivalent (ex: '>' = 'is greater than')
-	 * 
+	 *
 	 * @param  $o - operator of interest
 	 * @return string - value of operator
 	 */

@@ -40,21 +40,21 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 {
 	/**
 	 * Mime type
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_mime = 'application/x-endnote-refer';
 
 	/**
 	 * File extension
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_extension = 'enw';
 
 	/**
 	 * Format the file
-	 * 
+	 *
 	 * @param      object $row Record to format
 	 * @return     string
 	 */
@@ -96,9 +96,9 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		$types = $ct->getType();
 
 		$type = '';
-		foreach($types as $t) 
+		foreach($types as $t)
 		{
-			if ($t['id'] == $row->type) 
+			if ($t['id'] == $row->type)
 			{
 				$type = $t['type_title'];
 			}
@@ -110,13 +110,13 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		//set the type
 		$doc .= "%0 {$type}" . "\r\n";
 
-		if ($row->booktitle && !in_array('booktitle', $exclude)) 
+		if ($row->booktitle && !in_array('booktitle', $exclude))
 		{
 			$bt = html_entity_decode($row->booktitle);
 			$bt = (!preg_match('!\S!u', $bt)) ? utf8_encode($bt) : $bt;
 			$doc .= "%B " . $bt . "\r\n";
 		}
-		if ($row->journal && !in_array('journal', $exclude)) 
+		if ($row->journal && !in_array('journal', $exclude))
 		{
 			$j = html_entity_decode($row->journal);
 			$j = (!preg_match('!\S!u', $j)) ? utf8_encode($j) : $j;
@@ -136,12 +136,12 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		{
 			$author = html_entity_decode($row->author);
 			$author = (!preg_match('!\S!u', $author)) ? utf8_encode($author) : $author;
-			
+
 			$author_array = explode(';', stripslashes($author));
 			foreach ($author_array as $auth)
 			{
 				$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
-				if (!strstr($auth, ',')) 
+				if (!strstr($auth, ','))
 				{
 					$bits = explode(' ', $auth);
 					$n = array_pop($bits) . ', ';
@@ -155,18 +155,18 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		{
 			$doc .= "%C " . htmlspecialchars_decode(trim(stripslashes($row->address))) . "\r\n";
 		}
-		if ($row->editor && !in_array('editor', $exclude)) 
+		if ($row->editor && !in_array('editor', $exclude))
 		{
 			$editor = html_entity_decode($row->editor);
 			$editor = (!preg_match('!\S!u', $editor)) ? utf8_encode($editor) : $editor;
-			
+
 			$author_array = explode(';', stripslashes($editor));
 			foreach ($author_array as $auth)
 			{
 				$doc .= "%E " . trim($auth) . "\r\n";
 			}
 		}
-		if ($row->publisher && !in_array('publisher', $exclude)) 
+		if ($row->publisher && !in_array('publisher', $exclude))
 		{
 			$p = html_entity_decode($row->publisher);
 			$p = (!preg_match('!\S!u', $p)) ? utf8_encode($p) : $p;
@@ -262,12 +262,12 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 			$st = (!preg_match('!\S!u', $st)) ? utf8_encode($st) : $st;
 			$doc .= "%! " . htmlspecialchars_decode(trim($st)) . "\r\n";
 		}
-		
+
 		//get the endnote import params
 		//we want to get the endnote key used for importing badges to export them
 		$endnote_import_plugin_params = \Hubzero\Plugin\Plugin::getParams( 'endnote', 'citation' );
 		$custom_tags = explode("\n", $endnote_import_plugin_params->get('custom_tags'));
-		
+
 		$citation_endnote_tags = array();
 		$citation_badges_key = "";
 		foreach($custom_tags  as $ct)
@@ -282,13 +282,13 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 				$citation_badges_key = $cet[1];
 			}
 		}
-	
+
 		//if we found a key to export badges then add to export
 		if($row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
 		{
 			$doc .= $citation_badges_key . " " . $row->badges;
 		}
-		
+
 		$doc .= "\r\n";
 		return $doc;
 	}

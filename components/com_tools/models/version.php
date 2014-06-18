@@ -38,238 +38,238 @@ class ToolsModelVersion
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $id = null;				 //						jos_tool_version
 
 	/**
 	 * Description for 'toolname'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $toolname = null;		   //						jos_tool_version
 
 	/**
 	 * Description for 'instance'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $instance = null;		   // tool					jos_tool_version
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $title = null;			  // cn					jos_tool_version
 
 	/**
 	 * Description for 'description'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $description = null;		// description			jos_tool_version
 
 	/**
 	 * Description for 'fulltxt'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $fulltxt = null;		   //						jos_tool_version
 
 	/**
 	 * Description for 'version'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $version = null;			// version				jos_tool_version
 
 	/**
 	 * Description for 'revision'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $revision = null;		   // revision				jos_tool_version
 
 	/**
 	 * Description for 'toolaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $toolaccess = null;		 // public				jos_tool_version
 
 	/**
 	 * Description for 'codeaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $codeaccess = null;		 // sourcePublic			jos_tool_version
 
 	/**
 	 * Description for 'wikiaccess'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $wikiaccess = null;		 // projectPublic		jos_tool_version
 
 	/**
 	 * Description for 'state'
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $state = null;			  // state				jos_tool_version
 
 	/**
 	 * Description for 'released_by'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $released_by = null;		//						jos_tool_version
 
 	/**
 	 * Description for 'released'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $released = null;		   // publishDate			jos_tool_version
 
 	/**
 	 * Description for 'unpublished'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $unpublished = null;		// unpublishDate		jos_tool_version
 
 	/**
 	 * Description for 'exportControl'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $exportControl = null;	  // exportControl		jos_tool_version
 
 	/**
 	 * Description for 'license'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $license = null;			// usageAgreementText   jos_tool_version
 
 	/**
 	 * Description for 'vnc_geometry'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $vnc_geometry = null;	   // vncGeometry			jos_tool_version
 
 	/**
 	 * Description for 'vnc_depth'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $vnc_depth = null;		  // vncDepth				jos_tool_version
 
 	/**
 	 * Description for 'vnc_timeout'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $vnc_timeout = null;		// vncTimeout			jos_tool_version
 
 	/**
 	 * Description for 'vnc_command'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $vnc_command = null;		// vncCommand			jos_tool_version
 
 	/**
 	 * Description for 'mw'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $mw = null;				 // defaultMiddleware	jos_tool_version
 
 	/**
 	 * Description for 'priority'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $priority = null;		   // priority				jos_tool_version
 
 	/**
 	 * Description for 'toolid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $toolid = null;			 //						jos_tool_version
 
 	/**
 	 * Description for 'toolid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $params = null;			 //						jos_tool_version
 
 	/**
 	 * Description for 'alias'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $alias = array();		   // alias [array]		jos_tool_aliases
 
 	/**
 	 * Description for 'middleware'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $middleware = array();	  // middleware [array]	jos_tool_middleware
 
 	/**
 	 * Description for 'hostreq'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $hostreq = array();		 // vncHostReq [array]	jos_tool_hostreq
 
 	/**
 	 * Description for 'author'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $author = array();		  // author [array]		jos_tool_authors
 
 	/**
 	 * Description for 'member'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $member = array();		  // member [array]		jos_tool_groups
 
 	/**
 	 * Description for 'owner'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $owner = array();		   // owner [array]		jos_tool_groups
 
 	/**
 	 * Description for '_list_keys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_list_keys = array('alias', 'middleware', 'hostreq', 'author', 'member', 'owner');
 
 	/**
 	 * Description for '_updateAll'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_updateAll = false;
 
 	/**
 	 * Description for '_propertyattrmap'
-	 * 
+	 *
 	 * @var array
 	 */
 	static $_propertyattrmap = array('title'=>'cn', 'description'=>'description',
@@ -283,16 +283,16 @@ class ToolsModelVersion
 
 	/**
 	 * Description for '_updatedkeys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 void
 	 */
 	private function __construct()
@@ -301,9 +301,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'clear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 void
 	 */
 	public function clear()
@@ -335,9 +335,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'logDebug'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $msg Parameter description (if any) ...
 	 * @return	 void
 	 */
@@ -349,9 +349,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'getTool_VersionNames'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $tool Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
@@ -403,9 +403,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'toArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 mixed Return description (if any) ...
 	 */
 	public function toArray()
@@ -429,9 +429,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'getInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $instance Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
@@ -449,9 +449,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'createInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @param	  unknown $instance Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
@@ -482,9 +482,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '_mysql_create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	private function _mysql_create()
@@ -548,9 +548,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function create()
@@ -570,9 +570,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '_mysql_read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	private function _mysql_read()
@@ -635,9 +635,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $instance Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -682,9 +682,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '_mysql_update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -926,9 +926,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'sync'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 unknown Return description (if any) ...
 	 */
 	public function sync()
@@ -939,9 +939,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function update()
@@ -968,9 +968,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '_mysql_delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	private function _mysql_delete()
@@ -1032,9 +1032,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function delete()
@@ -1058,9 +1058,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '__get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -1148,9 +1148,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '__set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @param	  array $value Parameter description (if any) ...
 	 * @return	 void
@@ -1227,9 +1227,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '__isset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -1249,9 +1249,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '__unset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 void
 	 */
@@ -1273,9 +1273,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for '_error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $message Parameter description (if any) ...
 	 * @param	  integer $level Parameter description (if any) ...
 	 * @return	 void
@@ -1302,9 +1302,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
@@ -1315,9 +1315,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  unknown $value Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
@@ -1329,9 +1329,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'add'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  array $value Parameter description (if any) ...
 	 * @return	 void
@@ -1343,9 +1343,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'remove'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  array $value Parameter description (if any) ...
 	 * @return	 void
@@ -1357,9 +1357,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'getDevelopmentGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  boolean $byid Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
@@ -1382,9 +1382,9 @@ class ToolsModelVersion
 
 	/**
 	 * Short description for 'getVersionInfo'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $id Parameter description (if any) ...
 	 * @param	  string $version Parameter description (if any) ...
 	 * @param	  string $toolname Parameter description (if any) ...
@@ -1397,24 +1397,24 @@ class ToolsModelVersion
 		// data comes from mysql
 		$query  = "SELECT v.*, d.doi_label as doi ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
-		if ($id) 
+		if ($id)
 		{
 			$query .= "WHERE v.id = '".$id."' ";
 		}
-		else if ($version && $toolname) 
+		else if ($version && $toolname)
 		{
-			if (is_array($toolname)) 
+			if (is_array($toolname))
 			{
 				$query .= "LEFT JOIN #__tool_version AS v2 ON v2.revision < v.revision AND v2.toolname=v.toolname ";
 				$query .= "WHERE v.toolname IN ('".implode("','", $toolname)."') ";
-			} 
-			else 
+			}
+			else
 			{
 				$query.= "WHERE v.toolname='".$toolname."' ";
 			}
-			switch ($version) 
+			switch ($version)
 			{
-				case 'current': 
+				case 'current':
 					$query .= "AND v.state=1 ORDER BY v.revision DESC";
 					if (!is_array($toolname))
 					{
@@ -1433,7 +1433,7 @@ class ToolsModelVersion
 				break;
 			}
 		}
-		else if ($instance) 
+		else if ($instance)
 		{
 			$query.= "WHERE v.instance='".$instance."' ";
 		}

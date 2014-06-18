@@ -36,13 +36,13 @@ class modTools extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		$this->database = JFactory::getDBO();
-		
+
 		$this->registered = 0;
 		$this->created    = 0;
 		$this->uploaded   = 0;
@@ -52,9 +52,9 @@ class modTools extends \Hubzero\Module\Module
 		$this->published  = 0;
 		$this->retired    = 0;
 		$this->abandoned  = 0;
-		
-		$query = "SELECT f.state FROM #__tool as f 
-				JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 
+
+		$query = "SELECT f.state FROM #__tool as f
+				JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3
 				WHERE f.id != 0 ORDER BY f.state_changed DESC";
 
 		$this->database->setQuery($query);

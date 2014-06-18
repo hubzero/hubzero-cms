@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -63,7 +63,7 @@ $juser = JFactory::getUser();
 <?php
 foreach ($this->sections as $section)
 {
-	if (!$section->exists() && $section->categories()->total()) 
+	if (!$section->exists() && $section->categories()->total())
 	{
 		continue;
 	}
@@ -115,7 +115,7 @@ foreach ($this->sections as $section)
 				<tbody>
 			<?php if ($section->categories()->total() > 0) { ?>
 				<?php foreach ($section->categories() as $row) { ?>
-					<?php 
+					<?php
 					$row->set('section_alias', $section->get('alias'));
 					?>
 					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
@@ -168,8 +168,8 @@ foreach ($this->sections as $section)
 				</tbody>
 			</table>
 		</div>
-<?php 
-} 
+<?php
+}
 ?>
 	</div><!-- /.subject -->
 	<aside class="aside">
@@ -196,20 +196,20 @@ foreach ($this->sections as $section)
 			<h3><?php echo JText::_('COM_FORUM_LAST_POST'); ?></h3>
 			<p>
 			<?php
-			if ($this->model->lastActivity()->exists()) 
+			if ($this->model->lastActivity()->exists())
 			{
 				$post = $this->model->lastActivity();
 
 				$lname = JText::_('COM_FORUM_ANONYMOUS');
-				if (!$post->get('anonymous')) 
+				if (!$post->get('anonymous'))
 				{
 					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
 				}
 				foreach ($this->sections as $section)
 				{
-					if ($section->categories()->total() > 0) 
+					if ($section->categories()->total() > 0)
 					{
-						foreach ($section->categories() as $row) 
+						foreach ($section->categories() as $row)
 						{
 							if ($row->get('id') == $post->get('category_id'))
 							{
@@ -223,8 +223,8 @@ foreach ($this->sections as $section)
 				?>
 				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
 					<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
-					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span> 
-					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span> 
+					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 					<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
 				</a>
 				<span class="entry-author">

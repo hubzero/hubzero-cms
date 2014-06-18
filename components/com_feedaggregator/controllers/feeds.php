@@ -88,7 +88,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		$id = JRequest::getVar('id');
 		$model = new FeedAggregatorModelFeeds;
 		$feed = $model->loadbyId($id);
-		
+
 		$this->view->feed = $feed;
 		$this->view->user = $this->juser;
 		$this->view->title = JText::_('Edit Feeds');
@@ -144,7 +144,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 			);
 		}
 	}
-	
+
 	/**
 	 * Save Source Feed form
 	 *

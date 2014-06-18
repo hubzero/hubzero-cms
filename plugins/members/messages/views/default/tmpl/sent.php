@@ -55,36 +55,36 @@ $this->css()
 			<?php if ($this->rows) : ?>
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
-					
+
 						//get the component that created message
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
-					
+
 						//url to view message
 						$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
-					
+
 						//get the message subject
 						$subject = $row->subject;
-						
+
 						//support - special
 						if ($component == 'support') {
 							$fg = explode(' ',$row->subject);
 							$fh = array_pop($fg);
 							$subject = implode(' ',$fg);
 						}
-					
+
 						//get the message
 						$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(stripslashes($row->message)) : "";
-					
+
 						//subject link
 						$subject_cls = "message-link";
-						
+
 						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
 						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
 						$subject .= "</a>";
-					
+
 						//get who the message is to
 						$to = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$row->uid) . "\">" . $row->name . "</a>";
-					
+
 						//date received
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 					?>

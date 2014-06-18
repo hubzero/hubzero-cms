@@ -56,8 +56,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-		
-		<param type="spacer" /> 
+
+		<param type="spacer" />
 		<param name="intro_mycourses" type="list" default="1" label="Show My Courses" description="Display list of my courses on course landing page?">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

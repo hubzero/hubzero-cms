@@ -42,7 +42,7 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
-		if (!$this->page->isStatic()) 
+		if (!$this->page->isStatic())
 		{
 			$this->view('authors', 'page')
 			     ->setBasePath($this->base_path)

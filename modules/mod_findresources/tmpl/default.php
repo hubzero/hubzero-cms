@@ -70,7 +70,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
-<?php 
+<?php
 	}
 ?>
 		<a href="<?php echo JRoute::_('index.php?option=com_resources'); ?>" class="showmore"><?php echo JText::_('MOD_FINDRESOURCES_ALL_CATEGORIES'); ?></a>

@@ -40,7 +40,7 @@ class plgSupportKb extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      unknown &$subject Parameter description (if any) ...
 	 * @param      unknown $config Parameter description (if any) ...
 	 * @return     void
@@ -52,7 +52,7 @@ class plgSupportKb extends JPlugin
 
 	/**
 	 * Get items reported as abusive
-	 * 
+	 *
 	 * @param      integer $refid    Comment ID
 	 * @param      string  $category Item type (kb)
 	 * @param      integer $parent   Parent ID
@@ -60,17 +60,17 @@ class plgSupportKb extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'kb') 
+		if ($category != 'kb')
 		{
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category, 
-					s.alias AS section, c.alias AS category, f.alias AS article 
+		$query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category,
+					s.alias AS section, c.alias AS category, f.alias AS article
 					FROM #__faq_comments AS rc
-					LEFT JOIN #__faq AS f 
+					LEFT JOIN #__faq AS f
 						ON f.id = rc.entry_id
-					LEFT JOIN #__faq_categories AS s 
+					LEFT JOIN #__faq_categories AS s
 						ON s.id = f.section
 					LEFT JOIN #__faq_categories AS c
 						ON c.id = f.category
@@ -79,7 +79,7 @@ class plgSupportKb extends JPlugin
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $key => $row)
 			{
@@ -95,7 +95,7 @@ class plgSupportKb extends JPlugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -104,7 +104,7 @@ class plgSupportKb extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if ($category != 'kb') 
+		if ($category != 'kb')
 		{
 			return null;
 		}

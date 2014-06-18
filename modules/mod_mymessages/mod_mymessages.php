@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //-------------------------------------------------------------
 // Joomla module
 // "My Messages"
-//    This module displays unread messages for the 
+//    This module displays unread messages for the
 //    user currently logged in.
 //-------------------------------------------------------------
 

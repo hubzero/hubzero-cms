@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -35,28 +35,28 @@ function JobsBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
-		if ($query['task'] != 'all') 
+		if ($query['task'] != 'all')
 		{
 			$segments[] = $query['task'];
 		}
 		unset($query['task']);
 	}
 
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
 
-	if (!empty($query['code'])) 
+	if (!empty($query['code']))
 	{
 		$segments[] = $query['code'];
 		unset($query['code']);
 	}
 
-	if (!empty($query['employer'])) 
+	if (!empty($query['employer']))
 	{
 		$segments[] = $query['employer'];
 		unset($query['employer']);
@@ -66,7 +66,7 @@ function JobsBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -77,14 +77,14 @@ function JobsParseRoute($segments)
 	// Count route segments
 	$count = count($segments);
 
-	if (empty($segments[0])) 
+	if (empty($segments[0]))
 	{
 		// default to all jobs
 		$vars['task'] = 'all';
 		return $vars;
 	}
 
-	if (!intval($segments[0]) && empty($segments[1])) 
+	if (!intval($segments[0]) && empty($segments[1]))
 	{
 		// some general task
 		$vars['task'] = $segments[0];

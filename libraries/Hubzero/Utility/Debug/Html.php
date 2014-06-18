@@ -45,7 +45,7 @@ class Html extends AbstractRenderer
 
 	/**
 	 * Render a list of messages
-	 * 
+	 *
 	 * @param   array  $messages
 	 * @return  string
 	 */
@@ -76,7 +76,7 @@ class Html extends AbstractRenderer
 
 	/**
 	 * Render a list of messages
-	 * 
+	 *
 	 * @param   array  $messages
 	 * @return  string
 	 */

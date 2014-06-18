@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the Knowledge Base category table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,20 +15,20 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'title', 
-		'alias', 
-		'description', 
+		'id',
+		'title',
+		'alias',
+		'description',
 		'section',
 		'state',
 		'access',
 		'asset_id'
 	);
 	var $mock       = array(
-		'id'           => null, 
-		'title'        => 'Hubzero Help', 
+		'id'           => null,
+		'title'        => 'Hubzero Help',
 		'alias'        => '',
-		'description'  => 'Help for HUBzero installs.', 
+		'description'  => 'Help for HUBzero installs.',
 		'section'      => 0,
 		'state'        => 1,
 		'access'       => 0,
@@ -97,7 +97,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCategoriesCount with filters returns number
-	 * 
+	 *
 	 * @group com_kb
 	 * @covers KbTableCategory::getCategoriesCount
 	 */
@@ -114,7 +114,7 @@ class KbTableCategoryTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCategoriesAll
-	 * 
+	 *
 	 * @group com_kb
 	 * @covers KbTableCategory::getCategoriesAll
 	 */

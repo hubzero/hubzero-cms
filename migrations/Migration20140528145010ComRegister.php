@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for merging com_register data into com_members 
+ * Migration script for merging com_register data into com_members
  * and removing com_register component entry
  **/
 class Migration20140528145010ComRegister extends Base
@@ -77,7 +77,7 @@ class Migration20140528145010ComRegister extends Base
 						'user'     => $config->getValue('user'),
 						'password' => $config->getValue('password'),
 						'database' => $config->getValue('db')
-					) 
+					)
 				);
 
 				$table = new \JTableMenu($database);

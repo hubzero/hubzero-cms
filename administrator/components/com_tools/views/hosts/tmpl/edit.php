@@ -12,7 +12,7 @@ JToolBarHelper::help('host');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 							{
 								?>
 								<option<?php if ($zone->id == $this->row->zone_id) { echo ' selected="selected"'; } ?> value="<?php echo $zone->id; ?>"><?php echo $this->escape(stripslashes($zone->zone)); ?></option>
-								<?php 
+								<?php
 							}
 						}
 					?>
@@ -98,7 +98,7 @@ function submitbutton(pressbutton)
 				</table>
 			</fieldset>
 		<?php endif; ?>
-		
+
 		<?php if (isset($this->statusCounts) && count($this->statusCounts) > 0) : ?>
 			<fieldset class="adminform">
 				<legend>

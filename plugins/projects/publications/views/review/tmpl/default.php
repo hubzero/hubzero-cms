@@ -42,23 +42,23 @@ $republish = $this->task == 'republish' ? 1 : 0;
 $txt = '';
 $doi_txt = '';
 
-switch ($this->task) 
+switch ($this->task)
 {
 	case 'publish':
-	default: 			
+	default:
 		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_IT');
-		$doi_txt =  JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_DOI');		
+		$doi_txt =  JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_DOI');
 		break;
-	case 'republish': 			
+	case 'republish':
 		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_REPUBLISH');
 		break;
-	case 'post': 
+	case 'post':
 		$class .= ' posting';
-		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_NO_DOI');		
+		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_NO_DOI');
 		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SAVE_IT');
 		break;
-	case 'archive': 
-		$class .= ' darkarchive';			
+	case 'archive':
+		$class .= ' darkarchive';
 		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_ARCHIVE_IT');
 		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_ARCHIVE_NO_DOI');
 		break;
@@ -69,11 +69,11 @@ $class .= ($this->task == 'publish' || $this->task == 'republish') ? ' publishin
 $serveas = 'download';
 
 // Are we allowed to publish?
-$canpublish = ($this->pub->state == 1 
-				|| $this->pub->state == 5 
+$canpublish = ($this->pub->state == 1
+				|| $this->pub->state == 5
 				|| $this->pub->state == 0
-				|| $this->pub->state == 6 
-				|| $this->authorized == 3 
+				|| $this->pub->state == 6
+				|| $this->authorized == 3
 			  ) ? 0 : 1;
 
 // Do we have panels enabled?
@@ -90,19 +90,19 @@ $sitename = $jconfig->getValue('config.sitename');
 
 // Get access info
 if($show_access) {
-	switch ($this->pub->access) 
+	switch ($this->pub->access)
 	{
-		case 0: default: 	
+		case 0: default:
 			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC');
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION'); 		
+			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION');
 			break;
-		case 1: 			
-			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); 
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION'); 		
+		case 1:
+			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED');
+			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION');
 			break;
-		case 2: case 3:		
-			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); 
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION'); 		
+		case 2: case 3:
+			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED');
+			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION');
 			break;
 	}
 }
@@ -121,29 +121,29 @@ if($this->access_groups && ($this->pub->access == 2 || $this->pub->access == 3))
 $append  = ' <span class="indlist">&raquo; ' . JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->row->version_label . ' ';
 $append .= ($this->row->state == 1) ? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW') : JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW');
 $append .= '</span>';
-?>	
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form">	
-	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />				
+?>
+<form action="<?php echo $this->url; ?>" method="post" id="plg-form">
+	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 	<input type="hidden" name="action" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="confirm" value="1" />
-	<?php echo $this->project->provisioned == 1 
+	<?php echo $this->project->provisioned == 1
 				? PublicationHelper::showPubTitleProvisioned( $this->pub, $this->route, $append)
 				: PublicationHelper::showPubTitle( $this->pub, $this->route, $this->title, $append); ?>
 
 <?php if ($canpublish) { ?>
-<p class="mini"><?php echo ($this->row->state == 1) 
+<p class="mini"><?php echo ($this->row->state == 1)
 	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) . ' '
 	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')) . ' '; ?>
 	<?php if($this->row->state != 1 && !$this->publication_allowed) {
-		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> '; 
+		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> ';
 	}
-	elseif ($this->publication_allowed) 
+	elseif ($this->publication_allowed)
 	{
 		if ($post)
 		{
-			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL_POST'); 	
+			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL_POST');
 		}
-		else 
+		else
 		{
 			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL');
 		}
@@ -152,7 +152,7 @@ $append .= '</span>';
 <?php } ?>
 
 <?php if($this->publication_allowed && $canpublish) { ?>
-<div class="review-controls">	
+<div class="review-controls">
 	<div class="next_action">
 		<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_WHAT_TO_EXPECT'); ?></h5>
 		<ul class="toexpect">
@@ -160,8 +160,8 @@ $append .= '</span>';
 			<li><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED_REPUBLISH'); ?></li>
 			<?php } ?>
 			<?php if(!$archive && !$republish && !$post) { ?>
-			<li><?php 
-					echo ($this->pubconfig->get('autoapprove', 0) || $post) 
+			<li><?php
+					echo ($this->pubconfig->get('autoapprove', 0) || $post)
 					? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED')
 					: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NEEDED'); ?>
 			</li>
@@ -172,12 +172,12 @@ $append .= '</span>';
 			<li>
 				<?php if($show_access) { ?>
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS_IS').' <strong>'.strtolower($access).'</strong> - '.$access_tip; ?>.
-				<?php } else { 
-					if ($this->task == 'publish' || $republish) 
+				<?php } else {
+					if ($this->task == 'publish' || $republish)
 					{
-					 	echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');	
+					 	echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');
 					}
-					else 
+					else
 					{
 						echo $this->project->provisioned == 1
 							? JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_NOOPTIONS_PROV')
@@ -188,14 +188,14 @@ $append .= '</span>';
 		</ul>
 		<p class="ipadded">
 			<input class="option" name="agree" type="radio" value="1" />
-			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO') . ' <a href="' 
-			. $this->pubconfig->get('deposit_terms', 'https://localhost:5000/legal/termsofdeposit?no_html=1'). '" class="popup">' 
+			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO') . ' <a href="'
+			. $this->pubconfig->get('deposit_terms', 'https://localhost:5000/legal/termsofdeposit?no_html=1'). '" class="popup">'
 			. $sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT') . '</a>.'; ?>
 		</p>
 		<?php if ($this->task == 'publish') { ?>
-			
+
 		<p class="pubdate">
-			<?php if (isset($this->submitter)) { 
+			<?php if (isset($this->submitter)) {
 				// Do we have a submitter choice?
 				$submitter = $this->submitter->name;
 				$submitter.= $this->submitter->organization ? ', ' . $this->submitter->organization : '';
@@ -203,12 +203,12 @@ $append .= '</span>';
 				if ($this->submitter->uid != $this->uid)
 				{
 					$submitter  = '<select name="submitter">' . "\n";
-					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . $this->juser->get('name') 
+					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . $this->juser->get('name')
 						. '</option>' . "\n";
 					$submitter .= '<option value="' . $this->submitter->uid . '">' . $this->submitter->name . '</option>' . "\n";
 					$submitter .= '</select>';
 				}
-				
+
 			?>
 			<label class="block">
 				<span class="review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
@@ -217,7 +217,7 @@ $append .= '</span>';
 			<label>
 				<span class="review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
 				<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-				<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>				
+				<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 			</label>
 		</p>
 		<?php } ?>
@@ -244,20 +244,20 @@ else if ($this->authorized == 3)
 <div id="review-wrap">
 	<div class="pub-review-content">
 		<?php
-		
-		if ($this->authorized != 3) 
+
+		if ($this->authorized != 3)
 		{
 			// Draw status bar
-			PublicationContribHelper::drawStatusBar($this, NULL, false, 1);	
+			PublicationContribHelper::drawStatusBar($this, NULL, false, 1);
 		}
-		
+
 		$model = new PublicationsModelPublication($this->pub);
 		$description = '';
-		if ($this->pub->description) 
+		if ($this->pub->description)
 		{
 			$description = $model->description('parsed');
 		}
-		
+
 		// Process metadata
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
@@ -272,7 +272,7 @@ else if ($this->authorized == 3)
 		);
 
 		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, $parser, $wikiconfig, 0);
-	
+
 		?>
 		<div class="two columns first">
 		 <div id="pub-card">
@@ -288,7 +288,7 @@ else if ($this->authorized == 3)
 			<?php
 				// Show gallery
 				if ($this->shots) {
-					$html  = ' <div class="sscontainer">'."\n";					
+					$html  = ' <div class="sscontainer">'."\n";
 					$html .= $this->shots;
 					$html .= ' </div><!-- / .sscontainer -->'."\n";
 					echo $html;
@@ -300,13 +300,13 @@ else if ($this->authorized == 3)
 			<?php } ?>
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION'); ?></p>
 			<?php echo $description ? $description  : '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
-			<?php 
+			<?php
 				if($show_metadata )
 				{
 					// Show metadata
-					echo $metadata['html'] 
-					? $metadata['html'] 
-					: '<p class="pub-review-label">'.JText::_('PLG_PROJECTS_PUBLICATIONS_METADATA').'</p><p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';	
+					echo $metadata['html']
+					? $metadata['html']
+					: '<p class="pub-review-label">'.JText::_('PLG_PROJECTS_PUBLICATIONS_METADATA').'</p><p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 			?>
 			<?php if($show_notes) { ?>
@@ -336,7 +336,7 @@ else if ($this->authorized == 3)
 		</div>
 		<div class="two columns second">
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?> - <span class="dark"><strong><?php echo  JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TYPE_'.strtoupper($this->pub->base)); ?></strong></span></p>
-			<?php if (count($this->primary) > 0) { 
+			<?php if (count($this->primary) > 0) {
 				$gitpath = $this->config->get('gitpath', '/opt/local/bin/git');
 				$primaryParams = new JParameter($this->primary[0]->params );
 				$serveas = $primaryParams->get('serveas', 'download');
@@ -345,13 +345,13 @@ else if ($this->authorized == 3)
 				<ul class="c-list">
 					<li>
 				<?php	foreach($this->primary as $att) {
-					
+
 						// Draw item
-						$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+						$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem',
 						$data = array(
-								'att' 		=> $att, 
+								'att' 		=> $att,
 								'item'		=> NULL,
-								'canedit' 	=> 0, 
+								'canedit' 	=> 0,
 								'pid' 		=> $this->pub->id,
 								'vid'		=> $this->row->id,
 								'url'		=> $this->url,
@@ -360,10 +360,10 @@ else if ($this->authorized == 3)
 								'role'		=> 1,
 								'path'		=> $this->prefix . $this->fpath
 						));
-						echo $itemHtml;			
+						echo $itemHtml;
 				 } ?>
 					</li>
-				</ul>	
+				</ul>
 			</div>
 			<div class="three columns third summary">
 				<span class="arrow-right"></span>
@@ -382,11 +382,11 @@ else if ($this->authorized == 3)
 					<li>
 				<?php	foreach($this->secondary as $att) {
 					// Draw item
-					$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem', 
+					$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem',
 					$data = array(
-							'att' 		=> $att, 
+							'att' 		=> $att,
 							'item'		=> NULL,
-							'canedit' 	=> 0, 
+							'canedit' 	=> 0,
 							'pid' 		=> $this->pub->id,
 							'vid'		=> $this->row->id,
 							'url'		=> $this->url,
@@ -397,27 +397,27 @@ else if ($this->authorized == 3)
 					));
 					echo $itemHtml;
 				 } ?>
-				</ul>	
+				</ul>
 				<?php if($this->version == 'dev') { ?>
 					<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?></p>
 				<?php } ?>
 				<?php } else { echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; } ?>
-				
+
 				<?php if($show_license) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE')); ?></p>
-					<?php echo $this->license 
+					<?php echo $this->license
 								? PublicationsHtml::showLicense( $this->pub, $this->version, 'com_publications', $this->license )
 								: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 				<?php } ?>
-			
+
 				<?php if($this->pubconfig->get('show_audience')) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE')); ?></p>
 					<?php
 						$ra 		= new PublicationAudience( $this->database );
 						$audience 	= $ra->getAudience($this->pub->id, $this->pub->version_id , $getlabels = 1, $numlevels = 4);
-						echo $audience 
-						? PublicationsHtml::showSkillLevel($audience, $numlevels = 4) 
-						: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';				
+						echo $audience
+						? PublicationsHtml::showSkillLevel($audience, $numlevels = 4)
+						: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 					?>
 				<?php } ?>
 				<?php if($show_access) { ?>

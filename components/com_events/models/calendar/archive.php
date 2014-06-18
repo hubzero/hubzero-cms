@@ -38,14 +38,14 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_calendars = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -64,16 +64,16 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self();
 		}
-		
+
 		return $instances[$key];
 	}
 
@@ -110,7 +110,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 
 	/**
 	 * Subscribe to group calendars
-	 * 
+	 *
 	 * @return void
 	 */
 	public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
@@ -118,16 +118,16 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		// get request varse
 		$calendarIds = JRequest::getVar('calendar_id','','get');
 		$calendarIds = array_map("intval", explode(',', $calendarIds));
-		
+
 		// array to hold events
 		$events = new \Hubzero\Base\ItemList();
-		
+
 		// loop through and get each calendar
 		foreach ($calendarIds as $k => $calendarId)
 		{
 			// load calendar model
 			$eventsCalendar = new EventsModelCalendar($calendarId);
-			
+
 			// make sure calendar is published
 			if (!$eventsCalendar->get('published') && $calendarId != 0)
 			{
@@ -141,7 +141,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 				'calendar_id' => $calendarId,
 				'state'       => array(1)
 			));
-			
+
 			// merge with full events list
 			$events = $events->merge($rawEvents);
 		}
@@ -183,7 +183,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		$output .= "DTSTART:" . $daylightEnd->format('Ymd\THis') . "\r\n";
 		$output .= "END:STANDARD\r\n";
 		$output .= "END:VTIMEZONE\r\n";
-		
+
 		// loop through events
 		foreach ($events as $event)
 		{
@@ -195,27 +195,27 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			$url      = $event->get('extra_info');
 
 			// get event timezone setting
-			// use this in "DTSTART;TZID=" 
+			// use this in "DTSTART;TZID="
 			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
 			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
-		
+
 			// get publish up/down dates in UTC
 			$publishUp   = new DateTime($event->get('publish_up'), new DateTimezone('UTC'));
 			$publishDown = new DateTime($event->get('publish_down'), new DateTimezone('UTC'));
-		
+
 			// Set eastern timezone as publish up/down date timezones
-			// since all event date/times are stores relative to eastern 
+			// since all event date/times are stores relative to eastern
 			// ----------------------------------------------------------------------------------
-			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
 			// adjust date/time display according to that timezone and their systems timezone setting
 			$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
 			$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-			
+
 			// create now, created, and modified vars
 			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
 			$created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
 			$modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T' . gmdate('His', strtotime($event->get('modified'))) . 'Z';
-			
+
 			// start output
 			$output .= "BEGIN:VEVENT\r\n";
 			$output .= "UID:{$uid}\r\n";
@@ -256,7 +256,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 
 		// close calendar
 		$output .= "END:VCALENDAR";
-		
+
 		// set headers and output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename="'. $name .'.ics"');

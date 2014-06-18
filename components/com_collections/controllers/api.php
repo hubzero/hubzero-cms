@@ -27,7 +27,7 @@
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * /administrator/components/com_support/controllers/tickets.php
- * 
+ *
  */
 
 ini_set('display_errors', 1);
@@ -54,7 +54,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 		$this->config   = JComponentHelper::getParams('com_blog');
 		$this->database = JFactory::getDBO();
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'collections': $this->collectionsTask(); break;
 			case 'collection':  $this->collectionTask();  break;

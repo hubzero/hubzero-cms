@@ -38,7 +38,7 @@ class plgSearchEvents extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -58,18 +58,18 @@ class plgSearchEvents extends SearchPlugin
 			$addtl_where[] = "(e.title NOT LIKE '%$forb%' AND e.content NOT LIKE '%$forb%')";
 		}
 
-		// Commenting out Access check as it was never used and column was removed from table 
+		// Commenting out Access check as it was never used and column was removed from table
 		// during events refactoring
-		// 
+		//
 		// @author Chris Smoak
 		// @date   4/20/2014
-		// 
+		//
 		// $user = JFactory::getUser();
 		// if (version_compare(JVERSION, '1.6', 'ge'))
 		// {
 		// 	$addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 		// }
-		// else 
+		// else
 		// {
 		// 	if ($user->guest)
 		// 	{
@@ -82,7 +82,7 @@ class plgSearchEvents extends SearchPlugin
 		// }
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				e.title,
 				e.content AS description,
 				e.scope,
@@ -92,16 +92,16 @@ class plgSearchEvents extends SearchPlugin
 				publish_up AS date,
 				'Events' AS section
 			FROM #__events e
-			WHERE 
-				state = 1 AND 
+			WHERE
+				state = 1 AND
 				approved AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		);
-		
+
 		foreach ($rows->to_associative() as $row)
 		{
-			if (!$row) 
+			if (!$row)
 			{
 				continue;
 			}
@@ -121,12 +121,12 @@ class plgSearchEvents extends SearchPlugin
 				// get group calendar access
 				$juser  = JFactory::getUser();
 				$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'calendar');
-				
+
 				// is calendar off
 				// is calendar for registered users & not logged in
 				// is calendar for members only and we are not a member
-				if ($access == 'nobody' 
-					|| ($access == 'registered' && $juser->get('guest')) 
+				if ($access == 'nobody'
+					|| ($access == 'registered' && $juser->get('guest'))
 					|| ($access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
 				{
 					continue;
@@ -140,9 +140,9 @@ class plgSearchEvents extends SearchPlugin
 
 	/**
 	 * Short description for 'onBeforeSearchRenderEvents'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */

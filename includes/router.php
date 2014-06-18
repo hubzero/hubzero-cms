@@ -28,7 +28,7 @@ class JRouterSite extends JRouter
 	public function parse(&$uri)
 	{
 		$vars = array();
-		
+
 		// Get the application
 		$app = JApplication::getInstance('site');
 
@@ -148,7 +148,7 @@ class JRouterSite extends JRouter
 						$o 	= JRequest::getVar('option', '');
 						$t 	= JRequest::getVar('task', '');
 						$nh = JRequest::getInt('no_html', 0);
-						
+
 						//are we trying to use the tag autocompletor when forcing registration update?
 						if ($o == 'com_tags' && $t == 'autocomplete' && $nh)
 						{
@@ -373,7 +373,7 @@ class JRouterSite extends JRouter
 	{
 		$vars	= array();
 		$app	= JApplication::getInstance('site');
-		
+
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onBeforeParseSefRoute', array($uri));
 
@@ -494,7 +494,7 @@ class JRouterSite extends JRouter
 						// If menu route exactly matches url route,
 						// redirect (if necessary) to menu link
 						if (trim($item->route,"/") == trim($route,"/")) {
-							if (trim($item->route,"/") != trim($item->link,"/") 
+							if (trim($item->route,"/") != trim($item->link,"/")
 							 && trim($uri->base(true) . '/' . $item->route,"/") != trim($item->link,"/") // Added because it would cause redirect loop for instals not in top-level webroot
 							 && trim($uri->base(true) . '/index.php/' . $item->route,"/") != trim($item->link,"/")) { // Added because it would cause redirect loop for instals not in top-level webroot
 								$app->redirect($item->link);
@@ -623,7 +623,7 @@ class JRouterSite extends JRouter
 					/*
 					$segments = $this->_decodeSegments($segments);
 					 */
-					if ($component == "com_content") { 
+					if ($component == "com_content") {
 						$segments = $this->_decodeSegments($segments);
 					}
 					/* END: HUBzero Extension: don't do : to - conversion except in com_content */
@@ -669,7 +669,7 @@ class JRouterSite extends JRouter
 				$vars = $item->query;
 			}
 		}
-		
+
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onAfterParseSefRoute', array($vars));
 
@@ -685,7 +685,7 @@ class JRouterSite extends JRouter
 		if (!empty($vars['id']))
 			apache_note('action',$vars['id']);
 		/* END: HUBzero Extension to pass common query parameters to apache (for logging) */
-		
+
 		return $vars;
 	}
 
@@ -697,7 +697,7 @@ class JRouterSite extends JRouter
 	{
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onBeforeBuildSefRoute', array($uri));
-		
+
 		// Get the route
 		$route = $uri->getPath();
 
@@ -820,7 +820,7 @@ class JRouterSite extends JRouter
 		//Set query again in the URI
 		$uri->setQuery($query);
 		$uri->setPath($route);
-		
+
 		// Call System plugin to before parsing sef route
 		JDispatcher::getInstance()->trigger('onAfterBuildSefRoute', array($uri));
 	}

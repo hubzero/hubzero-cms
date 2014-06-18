@@ -38,77 +38,77 @@ class PublicationUsage
 {
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_db      = NULL;
 
 	/**
 	 * Publication ID
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_pubid   = NULL;
 
 	/**
 	 * Publication master type
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $_type    = NULL;
 
 	/**
 	 * Resource rating
-	 * 
+	 *
 	 * @var string
 	 */
 	var $rating   = NULL;
 
 	/**
 	 * Number of users
-	 * 
+	 *
 	 * @var string
 	 */
 	var $users    = 'unavailable';
 
 	/**
 	 * Description for 'datetime'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $datetime = NULL;
 
 	/**
 	 * Number of citations
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $cites    = NULL;
 
 	/**
 	 * Last citation date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $lastcite = NULL;
 
 	/**
 	 * Date format
-	 * 
+	 *
 	 * @var string
 	 */
 	var $dateFormat = NULL;
 
 	/**
 	 * Time zone flag
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tz = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      JDatabase
 	 * @param      integer $pubid    Resource ID
 	 * @param      integer $type     Resource type
@@ -137,7 +137,7 @@ class PublicationUsage
 
 	/**
 	 * Fetch data for a particular time range
-	 * 
+	 *
 	 * @param      string $disp Data time range ti display
 	 * @return     array
 	 */
@@ -167,7 +167,7 @@ class PublicationUsage
 			break;
 		}
 
-		$sql = "SELECT * FROM #__publication_stats WHERE publication_id=" . $this->_pubid . " 
+		$sql = "SELECT * FROM #__publication_stats WHERE publication_id=" . $this->_pubid . "
 			AND period=" . (int) $period . " ORDER BY datetime DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);
@@ -180,7 +180,7 @@ class PublicationUsage
 
 	/**
 	 * Display formatted results for a given time range
-	 * 
+	 *
 	 * @param      string $disp Time range [curr, last, year, all]
 	 * @return     string
 	 */
@@ -191,7 +191,7 @@ class PublicationUsage
 
 	/**
 	 * Display a table for ancillary data
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function display_substats()
@@ -201,7 +201,7 @@ class PublicationUsage
 		$html .= ' <tfoot>' . "\n";
 		$html .= '  <tr>' . "\n";
 		$html .= '   <td colspan="2">Google/IEEE';
-		if ($this->lastcite) 
+		if ($this->lastcite)
 		{
 			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat, $this->tz);
 		}
@@ -224,7 +224,7 @@ class PublicationUsage
 
 	/**
 	 * Push database results to $this for internal use
-	 * 
+	 *
 	 * @param      array &$result Database records
 	 * @return     boolean False if errors, true on success
 	 */
@@ -235,27 +235,27 @@ class PublicationUsage
 
 	/**
 	 * Format a value
-	 * 
+	 *
 	 * @param      mixed $val Parameter description (if any) ...
 	 * @return     mixed
 	 */
 	public function valfmt($val)
 	{
-		if ($val != 'unavailable') 
+		if ($val != 'unavailable')
 		{
-			if ($val <= 60) 
+			if ($val <= 60)
 			{
 				$val = ceil($val) . ' secs';
-			} 
-			else if ($val > 60 && $val <= 3600) 
+			}
+			else if ($val > 60 && $val <= 3600)
 			{
 				$val = ceil($val/60) . ' mins';
-			} 
-			else if ($val > 3600 && $val <= 86400) 
+			}
+			else if ($val > 3600 && $val <= 86400)
 			{
 				$val = ceil($val/3600) . ' hours';
-			} 
-			else 
+			}
+			else
 			{
 				$val = ceil($val/84600) . ' days';
 			}
@@ -265,9 +265,9 @@ class PublicationUsage
 
 	/**
 	 * Get the classname for a rating value
-	 * 
+	 *
 	 * @param      integer $rating Rating (out of 5 total)
-	 * @return     string 
+	 * @return     string
 	 */
 	public function getRatingClass($rating=0)
 	{
@@ -303,28 +303,28 @@ class AndmoreStats extends PublicationUsage
 {
 	/**
 	 * Number of views
-	 * 
+	 *
 	 * @var string
 	 */
 	var $views    = 'unavailable';
 
 	/**
 	 * Average view time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $avg_view = 'unavailable';
 
 	/**
 	 * Total views
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tot_view = 'unavailable';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      JDatabase
 	 * @param      integer $pubid    Resource ID
 	 * @param      integer $type     Resource type
@@ -340,7 +340,7 @@ class AndmoreStats extends PublicationUsage
 
 	/**
 	 * Display formatted results for a given time range
-	 * 
+	 *
 	 * @param      string $disp Time range [curr, last, year, all]
 	 * @return     string
 	 */
@@ -348,26 +348,26 @@ class AndmoreStats extends PublicationUsage
 	{
 		list($caption, $period) = $this->fetch($disp);
 
-		if ($this->_type == 'apps') 
+		if ($this->_type == 'apps')
 		{
 			$vlabel  = JText::_('Views');
 			$avlabel = JText::_('Avg. view time');
-		} 
-		else 
+		}
+		else
 		{
 			$vlabel = JText::_('Downloads');
 			$avlabel = JText::_('Avg. downloads');
 		}
 
 		$html = '';
-		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable') 
+		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
 		{
 			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this publication') . '">' . "\n";
 			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime) 
+			if ($this->datetime)
 			{
 				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
 			}
@@ -375,21 +375,21 @@ class AndmoreStats extends PublicationUsage
 			$html .= '  </tr>' . "\n";
 			$html .= ' </tfoot>' . "\n";
 			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable') 
+			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			/*if ($this->views != 'unavailable') 
+			/*if ($this->views != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
 				$html .= '   <td>'.$this->views.'</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			if ($this->avg_view != 'unavailable') 
+			if ($this->avg_view != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
@@ -406,13 +406,13 @@ class AndmoreStats extends PublicationUsage
 
 	/**
 	 * Push database results to $this for internal use
-	 * 
+	 *
 	 * @param      array &$result Database results
 	 * @return     void
 	 */
 	public function process($result)
 	{
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $row)
 			{

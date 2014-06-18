@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n')) 
+if (!defined('n'))
 {
 	/**
 	 * Description for '"t"'
@@ -66,7 +66,7 @@ class MembersHtml
 {
 	/**
 	 * Generate a select list for access levels
-	 * 
+	 *
 	 * @param      string  $name  Select name
 	 * @param      integer $value Value to preselect
 	 * @param      string  $class Class to add to the element
@@ -77,7 +77,7 @@ class MembersHtml
 	{
 		$arr = array(
 			0 => JText::_('Public') . JText::_(' (anyone can see)'),
-			1 => JText::_('Registered users') . JText::_(' (only logged in members can see)'), 
+			1 => JText::_('Registered users') . JText::_(' (only logged in members can see)'),
 			2 => JText::_('Private') . JText::_(' (only you can see)')
 		);
 
@@ -98,9 +98,9 @@ class MembersHtml
 
 	/**
 	 * Output a response for a single option field
-	 * 
+	 *
 	 * @param      string $response Normalized response code
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function propercase_singleresponse($response)
 	{
@@ -117,34 +117,34 @@ class MembersHtml
 
 	/**
 	 * Output a response for a multi-option field
-	 * 
+	 *
 	 * @param      array $response_array Response codes
 	 * @return     string
 	 */
 	public static function propercase_multiresponse($response_array)
 	{
 		$html = '';
-		if (count($response_array) == 0) 
+		if (count($response_array) == 0)
 		{
 			$html .= JText::_('n/a');
-		} 
-		else 
+		}
+		else
 		{
 			for ($i = 0; $i < count($response_array); $i++)
 			{
-				if ($i > 0) 
+				if ($i > 0)
 				{
 					$html .= ', ';
 				}
-				if ($response_array[$i] == 'no') 
+				if ($response_array[$i] == 'no')
 				{
 					$html .= JText::_('None');
-				} 
-				elseif ($response_array[$i] == 'refused') 
+				}
+				elseif ($response_array[$i] == 'refused')
 				{
 					$html .= JText::_('Declined Response');
-				} 
-				else 
+				}
+				else
 				{
 					$html .= htmlentities(ucfirst($response_array[$i]), ENT_COMPAT, 'UTF-8');
 				}
@@ -155,9 +155,9 @@ class MembersHtml
 
 	/**
 	 * Obfuscate an email address
-	 * 
+	 *
 	 * @param      string $email Email address
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function obfuscate($email)
 	{
@@ -173,13 +173,13 @@ class MembersHtml
 
 	/**
 	 * Transform a date to an epoch
-	 * 
+	 *
 	 * @param      string $datestr Datetime (0000-00-00 00:00:00)
 	 * @return     integer
 	 */
 	public static function date2epoch($datestr)
 	{
-		if (empty($datestr)) 
+		if (empty($datestr))
 		{
 			return null;
 		}
@@ -191,24 +191,24 @@ class MembersHtml
 
 	/**
 	 * Format a value
-	 * 
+	 *
 	 * @param      number  $value  Value to format
 	 * @param      integer $format Format to apply
 	 * @return     mixed
 	 */
 	public static function valformat($value, $format)
 	{
-		if ($format == 1) 
+		if ($format == 1)
 		{
 			return(number_format($value));
-		} 
-		elseif ($format == 2 || $format == 3) 
+		}
+		elseif ($format == 2 || $format == 3)
 		{
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				$min = round($value / 60);
-			} 
-			else 
+			}
+			else
 			{
 				$min = floor($value / 60);
 				$sec = $value - ($min * 60);
@@ -217,28 +217,28 @@ class MembersHtml
 			$min -= ($hr * 60);
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
-			if ($day == 1) 
+			if ($day == 1)
 			{
 				$day = '1 day, ';
-			} 
-			elseif ($day > 1) 
+			}
+			elseif ($day > 1)
 			{
 				$day = number_format($day) . ' days, ';
-			} 
-			else 
+			}
+			else
 			{
 				$day = '';
 			}
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			} 
-			else 
+			}
+			else
 			{
 				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return($value);
 		}

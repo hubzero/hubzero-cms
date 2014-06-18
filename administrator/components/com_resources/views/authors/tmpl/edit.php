@@ -33,7 +33,7 @@ $canDo = ResourcesHelperPermissions::getActions('contributor');
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Authors') . ': ' . $text, 'forum.png');
-JToolBarHelper::spacer();	
+JToolBarHelper::spacer();
 if ($canDo->get('core.edit')) {
 	JToolBarHelper::save();
 }
@@ -41,7 +41,7 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -88,7 +88,7 @@ function submitbutton(pressbutton)
 						<td>
 							<select name="fields[<?php echo $i; ?>][role]">
 								<option value=""<?php if ($row->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-						<?php 
+						<?php
 						if ($this->roles)
 						{
 							foreach ($this->roles as $role)

@@ -10,7 +10,7 @@ $path->addItem($title, $_SERVER['REQUEST_URI']);
 ?>
 <h2>Deployment: <?= htmlentities($title) ?></h2>
 <p class="distribution-link">Link to distribute: <a href="<?= $dep->getLink() ?>"><?= $dep->getLink() ?></a><span class="state <?= $dep->getState() ?>"><?= $dep->getState() ?></span></p>
-<form action="/pdf2form" method="post" id="deployment">	
+<form action="/pdf2form" method="post" id="deployment">
 	<? require 'deployment_form.php'; ?>
 	<fieldset>
 		<input type="hidden" name="task" value="updateDeployment" />

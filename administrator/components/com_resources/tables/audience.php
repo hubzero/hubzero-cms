@@ -37,91 +37,91 @@ class ResourceAudience extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rid 		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $versionid 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level0 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level1 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level2 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level3 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level4 	= NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $level5 	= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $comments 	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $addedBy	= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $added		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -132,12 +132,12 @@ class ResourceAudience extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->rid) == '') 
+		if (trim($this->rid) == '')
 		{
 			$this->setError(JText::_('Missing resource ID'));
 			return false;
@@ -147,7 +147,7 @@ class ResourceAudience extends JTable
 
 	/**
 	 * Get the audience for a resource
-	 * 
+	 *
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Resource version ID
 	 * @param      integer $getlabels Get labels or not (1 = yes, 0 = no)
@@ -156,13 +156,13 @@ class ResourceAudience extends JTable
 	 */
 	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{
-		if ($rid === NULL) 
+		if ($rid === NULL)
 		{
 			return false;
 		}
 
 		$sql = "SELECT a.* ";
-		if ($getlabels) 
+		if ($getlabels)
 		{
 			$sql .=", L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
 			$sql .= $numlevels == 5 ? ", L5.title as label5  " : "";
@@ -170,14 +170,14 @@ class ResourceAudience extends JTable
 			$sql .= $numlevels == 5 ? ", L5.description as desc5  " : "";
 		}
 		$sql .= " FROM $this->_tbl AS a ";
-		if ($getlabels) 
+		if ($getlabels)
 		{
 			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L0 on L0.label='level0' ";
 			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L1 on L1.label='level1' ";
 			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L2 on L2.label='level2' ";
 			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L3 on L3.label='level3' ";
 			$sql .= " JOIN #__resource_taxonomy_audience_levels AS L4 on L4.label='level4' ";
-			if ($numlevels == 5) 
+			if ($numlevels == 5)
 			{
 				$sql .= " JOIN #__resource_taxonomy_audience_levels AS L5 on L5.label='level5' ";
 			}

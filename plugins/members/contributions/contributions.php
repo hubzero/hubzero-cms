@@ -45,7 +45,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Perform actions when viewing a member profile
-	 * 
+	 *
 	 * @param      object $user   Current user
 	 * @param      object $member Current member page
 	 * @param      string $option Start of records to pull
@@ -63,7 +63,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -75,10 +75,10 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		$returnhtml = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -111,11 +111,11 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 		// Get the active category
 		$area = JRequest::getVar('area', '');
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			$limit = 5;
 			$activeareas = $areas;
@@ -123,7 +123,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 
 		// If we're just returning metadata, we set the limitstart to -1 to use as a flag
 		// This allows us to reduce the overall number of queries
-		if (!$returnhtml) 
+		if (!$returnhtml)
 		{
 			$limitstart = -1;
 		}
@@ -148,7 +148,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 			$cats[$i]['category'] = $c;
 
 			// Do sub-categories exist?
-			if (is_array($t) && !empty($t)) 
+			if (is_array($t) && !empty($t))
 			{
 				// They do - do some processing
 				$cats[$i]['title'] = ucfirst($c);
@@ -159,7 +159,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
-					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) 
+					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
 					{
 						// Add to the parent category's total
 						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
@@ -170,8 +170,8 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 					}
 					$z++;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				// No sub-categories - this should be easy
 				$cats[$i]['title'] = $t;
@@ -184,7 +184,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$limit = ($limit == 0) ? 'all' : $limit;
 
@@ -199,11 +199,11 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 			);
 
 			// Do we have an active area?
-			if (count($activeareas) == 1 && !is_array(current($activeareas))) 
+			if (count($activeareas) == 1 && !is_array(current($activeareas)))
 			{
 				$active = current($activeareas);
-			} 
-			else 
+			}
+			else
 			{
 				$active = '';
 			}
@@ -226,7 +226,7 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 			$view->total   = $total;
 			$view->member  = $member;
 			$view->sort    = $sort;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError($this->getError());
 			}
@@ -243,17 +243,17 @@ class plgMembersContributions extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 
 		//count all members contributions
-		foreach ($cats as $cat) 
+		foreach ($cats as $cat)
 		{
 			$total += $cat['total'];
 		}
 
 		//do we have a total?
-		if ($total > 0) 
+		if ($total > 0)
 		{
 			$prefix = ($juser->get('id') == $member->get("uidNumber")) ? "I have" : $member->get("name") . " has";
 			$title = $prefix . " {$total} resources.";
-			$arr['metadata']['count'] = $total;  
+			$arr['metadata']['count'] = $total;
 		}
 
 		return $arr;

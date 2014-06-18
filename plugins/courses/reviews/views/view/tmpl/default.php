@@ -95,7 +95,7 @@ $edit = JRequest::getInt('editcomment', 0);
 					<span class="comment-anchor"></span>
 					<?php
 					$anonymous = 1;
-					if (!$this->juser->get('guest')) 
+					if (!$this->juser->get('guest'))
 					{
 						$jxuser = new \Hubzero\User\Profile();
 						$jxuser->load($this->juser->get('id'));
@@ -106,19 +106,19 @@ $edit = JRequest::getInt('editcomment', 0);
 				</p>
 				<fieldset>
 				<?php
-				if (!$this->juser->get('guest')) 
+				if (!$this->juser->get('guest'))
 				{
-					if (($replyto = JRequest::getInt('replyto', 0))) 
+					if (($replyto = JRequest::getInt('replyto', 0)))
 					{
 						$reply = new \Hubzero\Item\Comment($this->database);
 						$reply->load($replyto);
 
 						$name = JText::_('COM_KB_ANONYMOUS');
-						if (!$reply->anonymous) 
+						if (!$reply->anonymous)
 						{
 							$xuser = new \Hubzero\User\Profile();
 							$xuser->load($reply->created_by);
-							if (is_object($xuser) && $xuser->get('name')) 
+							if (is_object($xuser) && $xuser->get('name'))
 							{
 								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $reply->created_by) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 							}
@@ -126,10 +126,10 @@ $edit = JRequest::getInt('editcomment', 0);
 					?>
 					<blockquote cite="c<?php echo $this->replyto->id; ?>">
 						<p>
-							<strong><?php echo $name; ?></strong> 
-							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
-							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+							<strong><?php echo $name; ?></strong>
+							<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+							<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $reply->created; ?>"><?php echo JHTML::_('date', $reply->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 						</p>
 						<p><?php echo \Hubzero\Utility\String::truncate(stripslashes($reply->content), 300); ?></p>
@@ -139,7 +139,7 @@ $edit = JRequest::getInt('editcomment', 0);
 				}
 
 				$comment->parent = JRequest::getInt('replyto', 0);
-				if ($edit) 
+				if ($edit)
 				{
 					$comment->load($edit);
 					/*if ($comment->created_by != $this->juser->get('id'))
@@ -149,9 +149,9 @@ $edit = JRequest::getInt('editcomment', 0);
 					?>
 					<p class="warning">
 						<?php echo JText::_('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
-						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span> 
-						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span> 
+						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_REVIEWS_AT'); ?></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_REVIEWS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					</p>
 					<?php
@@ -165,31 +165,31 @@ $edit = JRequest::getInt('editcomment', 0);
 					<fieldset class="rating">
 						<legend><?php echo JText::_('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
 
-						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->rating == 5) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_5">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
 						</label>
 
-						<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->rating == 4) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_4">
 							&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
 						</label>
 
-						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->rating == 3) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_3">
 							&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
 						</label>
 
-						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->rating == 2) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_2">
 							&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
 						</label>
 
-						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->rating == 1) { echo ' checked="checked"'; } ?> />
 						<label for="review_rating_1">
 							&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
 							<?php echo JText::_('PLG_COURSES_REVIEWS_RATING_POOR'); ?>

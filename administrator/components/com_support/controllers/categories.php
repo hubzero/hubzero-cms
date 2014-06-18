@@ -62,13 +62,13 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 			'int'
 		);
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.categories.sort', 
-			'filter_order', 
+			$this->_option . '.categories.sort',
+			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.categories.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.categories.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
@@ -89,7 +89,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -169,7 +169,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 
 		// Initiate class and bind posted items to database fields
 		$row = new SupportCategory($this->database);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			JError::raiseError(500, $row->getError());
 			return;

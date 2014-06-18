@@ -39,35 +39,35 @@ class Teller extends Object
 {
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_db      = NULL;
 
 	/**
 	 * User ID
-	 * 
+	 *
 	 * @var string
 	 */
 	var $uid      = NULL;
 
 	/**
 	 * Current point balance
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $balance  = NULL;
 
 	/**
 	 * Lifetime point earnings
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $earnings = NULL;
 
 	/**
-	 * Credit point balance 
-	 * 
+	 * Credit point balance
+	 *
 	 * @var mixed
 	 */
 	var $credit   = NULL;
@@ -76,7 +76,7 @@ class Teller extends Object
 	 * Constructor
 	 * Find the balance from the most recent transaction.
 	 * If no balance is found, create an initial transaction.
-	 * 
+	 *
 	 * @param      object  &$db JDatabase
 	 * @param      integer $uid User ID
 	 * @return     void
@@ -88,13 +88,13 @@ class Teller extends Object
 
 		$BA = new Account($this->_db);
 
-		if ($BA->load_uid($this->uid)) 
+		if ($BA->load_uid($this->uid))
 		{
 			$this->balance  = $BA->balance;
 			$this->earnings = $BA->earnings;
 			$this->credit   = $BA->credit;
-		} 
-		else 
+		}
+		else
 		{
 			// no points are given initially
 			$this->balance  = 0;
@@ -106,7 +106,7 @@ class Teller extends Object
 
 	/**
 	 * Get the current balance
-	 * 
+	 *
 	 * @return     integer
 	 */
 	public function summary()
@@ -116,7 +116,7 @@ class Teller extends Object
 
 	/**
 	 * Get the current credit balance
-	 * 
+	 *
 	 * @return     integer
 	 */
 	public function credit_summary()
@@ -126,7 +126,7 @@ class Teller extends Object
 
 	/**
 	 * Add points
-	 * 
+	 *
 	 * @param      integer $amount Amount to deposit
 	 * @param      string  $desc   Transaction description
 	 * @param      string  $cat    Transaction category
@@ -137,7 +137,7 @@ class Teller extends Object
 	{
 		$amount = $this->_amountCheck($amount);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			echo $this->getError();
 			return;
@@ -146,7 +146,7 @@ class Teller extends Object
 		$this->balance  += $amount;
 		$this->earnings += $amount;
 
-		if (!$this->_save('deposit', $amount, $desc, $cat, $ref)) 
+		if (!$this->_save('deposit', $amount, $desc, $cat, $ref))
 		{
 			echo $this->getError();
 		}
@@ -154,7 +154,7 @@ class Teller extends Object
 
 	/**
 	 * Withdraw (spend) points
-	 * 
+	 *
 	 * @param      number  $amount Amount to withdraw
 	 * @param      string  $desc   Transaction description
 	 * @param      string  $cat    Transaction category
@@ -165,22 +165,22 @@ class Teller extends Object
 	{
 		$amount = $this->_amountCheck($amount);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			echo $this->getError();
 			return;
 		}
 
-		if ($this->_creditCheck($amount)) 
+		if ($this->_creditCheck($amount))
 		{
 			$this->balance -= $amount;
 
-			if (!$this->_save('withdraw', $amount, $desc, $cat, $ref)) 
+			if (!$this->_save('withdraw', $amount, $desc, $cat, $ref))
 			{
 				echo $this->getError();
 			}
-		} 
-		else 
+		}
+		else
 		{
 			echo $this->getError();
 		}
@@ -188,7 +188,7 @@ class Teller extends Object
 
 	/**
 	 * Set points aside (credit)
-	 * 
+	 *
 	 * @param      integer $amount Amount to put on hold
 	 * @param      string  $desc   Transaction description
 	 * @param      string  $cat    Transaction category
@@ -199,29 +199,29 @@ class Teller extends Object
 	{
 		$amount = $this->_amountCheck($amount);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			echo $this->getError();
 			return;
 		}
 
 		// Current order processing workflow (which requires manual order fulfillment on the backend) prevents race
-		// condition with the check and update below from corrupting user point balance, but if 
+		// condition with the check and update below from corrupting user point balance, but if
 		// but if workflow is ever changed, a table/row level lock would need to be added to this function
 		// and error code added to deal with multiple orders with insufficient balances.
 		//
 		// See https://hubzero.org/support/ticket/234 for details
 
-		if ($this->_creditCheck($amount)) 
+		if ($this->_creditCheck($amount))
 		{
 			$this->credit += $amount;
 
-			if (!$this->_save('hold', $amount, $desc, $cat, $ref)) 
+			if (!$this->_save('hold', $amount, $desc, $cat, $ref))
 			{
 				echo $this->getError();
 			}
-		} 
-		else 
+		}
+		else
 		{
 			echo $this->getError();
 		}
@@ -229,7 +229,7 @@ class Teller extends Object
 
 	/**
 	 * Make credit adjustment
-	 * 
+	 *
 	 * @param      integer $amount Amount to credit
 	 * @return     void
 	 */
@@ -242,14 +242,14 @@ class Teller extends Object
 
 	/**
 	 * Get a history of transactions
-	 * 
+	 *
 	 * @param      integer $limit Number of records to return
 	 * @return     array
 	 */
 	public function history($limit=20)
 	{
 		$lmt = "";
-		if ($limit > 0) 
+		if ($limit > 0)
 		{
 			$lmt .= " LIMIT " . $limit;
 		}
@@ -259,7 +259,7 @@ class Teller extends Object
 
 	/**
 	 * Check that they have enough in their account to perform the transaction.
-	 * 
+	 *
 	 * @param      number $amount Amount to subtract from balance
 	 * @return     boolean True if they have enough credit
 	 */
@@ -270,11 +270,11 @@ class Teller extends Object
 		$c = $this->credit;
 		$ccheck = $b - $c;
 
-		if ($b >= 0 && $ccheck >= 0) 
+		if ($b >= 0 && $ccheck >= 0)
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError('Not enough points in user account to process transaction.');
 			return false;
@@ -283,14 +283,14 @@ class Teller extends Object
 
 	/**
 	 * Check if an amount is greater than 0
-	 * 
+	 *
 	 * @param      integer $amount Amount to check
-	 * @return     integer 
+	 * @return     integer
 	 */
 	public function _amountCheck($amount)
 	{
 		$amount = intval($amount);
-		if ($amount == 0) 
+		if ($amount == 0)
 		{
 			$this->setError('Cannot process transaction with 0 points.');
 		}
@@ -299,7 +299,7 @@ class Teller extends Object
 
 	/**
 	 * Save a record
-	 * 
+	 *
 	 * @param      string  $type   Record type (inserting or updating)
 	 * @param      integer $amount Amount to process
 	 * @param      string  $desc   Transaction description
@@ -309,11 +309,11 @@ class Teller extends Object
 	 */
 	public function _save($type, $amount, $desc, $cat, $ref)
 	{
-		if (!$this->_saveBalance($type)) 
+		if (!$this->_saveBalance($type))
 		{
 			return false;
 		}
-		if (!$this->_saveTransaction($type, $amount, $desc, $cat, $ref)) 
+		if (!$this->_saveTransaction($type, $amount, $desc, $cat, $ref))
 		{
 			return false;
 		}
@@ -323,26 +323,26 @@ class Teller extends Object
 
 	/**
 	 * Save the current balance
-	 * 
+	 *
 	 * @param      string  $type   Record type (inserting or updating)
 	 * @return     boolean True on success
 	 */
 	public function _saveBalance($type)
 	{
-		if ($type == 'creation') 
+		if ($type == 'creation')
 		{
 			$query = "INSERT INTO `#__users_points` (uid, balance, earnings, credit) VALUES('" . $this->uid . "','" . $this->balance . "','" . $this->earnings . "','" . $this->credit . "')";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "UPDATE `#__users_points` SET balance='" . $this->balance . "', earnings='" . $this->earnings . "', credit='" . $this->credit . "' WHERE uid=" . $this->uid;
 		}
 		$this->_db->setQuery($query);
-		if ($this->_db->query()) 
+		if ($this->_db->query())
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -352,7 +352,7 @@ class Teller extends Object
 
 	/**
 	 * Record the transaction
-	 * 
+	 *
 	 * @param      string  $type   Record type (inserting or updating)
 	 * @param      integer $amount Amount to process
 	 * @param      string  $desc   Transaction description
@@ -373,17 +373,17 @@ class Teller extends Object
 		$data['balance']     = $this->balance;
 
 		$BT = new Transaction($this->_db);
-		if (!$BT->bind($data)) 
+		if (!$BT->bind($data))
 		{
 			$this->setError($BT->getError());
 			return false;
 		}
-		if (!$BT->check()) 
+		if (!$BT->check())
 		{
 			$this->setError($BT->getError());
 			return false;
 		}
-		if (!$BT->store()) 
+		if (!$BT->store())
 		{
 			$this->setError($BT->getError());
 			return false;

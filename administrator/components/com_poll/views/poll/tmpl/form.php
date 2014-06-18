@@ -8,7 +8,7 @@
 	$text = ( $edit ? JText::_( 'JACTION_EDIT' ) : JText::_( 'JACTION_CREATE' ) );
 
 	JToolBarHelper::title(  JText::_( 'COM_POLL' ).': ' . $text, 'poll.png');
-	if ($this->poll->id) 
+	if ($this->poll->id)
 	{
 		JToolBarHelper::Preview('index.php?option=com_poll&controller=poll&cid[]='.$cid[0]);
 		JToolBarHelper::spacer();

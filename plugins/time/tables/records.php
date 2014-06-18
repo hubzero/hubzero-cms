@@ -37,56 +37,56 @@ Class TimeRecords extends JTable
 {
 	/**
 	 * id, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * task id
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $task_id = null;
 
 	/**
 	 * user id
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $user_id = null;
 
 	/**
 	 * time
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $time = null;
 
 	/**
 	 * date
-	 * 
+	 *
 	 * @var date
 	 */
 	var $date = null;
 
 	/**
 	 * description
-	 * 
+	 *
 	 * @var longtext
 	 */
 	var $description = null;
 
 	/**
 	 * billed
-	 * 
+	 *
 	 * @var int(1)
 	 */
 	var $billed = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   database object
 	 * @return  void
 	 */
@@ -97,7 +97,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Override check function to perform validation
-	 * 
+	 *
 	 * @return boolean true if all checks pass, else false
 	 */
 	public function check()
@@ -122,7 +122,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Build query function
-	 * 
+	 *
 	 * @return $query
 	 */
 	public function buildQuery()
@@ -139,7 +139,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get count of records, mainly used for pagination
-	 * 
+	 *
 	 * @param  $filters of rows to return (filters: pid, startdate, enddate, id_range, orderby, orderdir, start, limit, user, task, query)
 	 * @return result number of records
 	 */
@@ -199,7 +199,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get list of records
-	 * 
+	 *
 	 * @param  $filters of rows to return (filters: pid, startdate, enddate, id_range, orderby, orderdir, start, limit, user, task, query)
 	 * @return object list of collections
 	 */
@@ -292,7 +292,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get single record (not just using load because we need to do some joins)
-	 * 
+	 *
 	 * @param  $id of row to return
 	 * @return single result
 	 */
@@ -332,7 +332,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get summary hours for overview column chart
-	 * 
+	 *
 	 * @param  $limit of rows to return
 	 * @return object list of 'task=>hours'
 	 */
@@ -354,7 +354,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get summary hours by hub for overview pie chart
-	 * 
+	 *
 	 * @param  $limit of rows to return
 	 * @return object list of 'task=>hours'
 	 */
@@ -376,7 +376,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get summary hours by hub for overview pie chart
-	 * 
+	 *
 	 * @param  $limit of rows to return
 	 * @return object list of 'task=>hours'
 	 */
@@ -397,7 +397,7 @@ Class TimeRecords extends JTable
 
 	/**
 	 * Get total hours for overview chart and reports
-	 * 
+	 *
 	 * @param  $filters of rows to return (filters: id_range)
 	 * @return result for total hours
 	 */

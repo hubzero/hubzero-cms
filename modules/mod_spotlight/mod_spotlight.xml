@@ -115,8 +115,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="7">7</option>
 		</param>
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />	
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
+		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="minranking" type="text" default="6.0" label="Minimum Ranking" description="A minimum ranking for resources that can be selected" />
 		<param name="tag" type="text" default="" label="Tag" description="A tag to be the pool that resources entries are drawn from" />
 		<param name="@spacer" type="spacer" default="" label="" description="" />
@@ -220,8 +220,8 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="7">7</option>
 				</field>
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />	
-				<field name="@spacer" type="spacer" default="" label="" description="" />	
+				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
 				<field name="minranking" type="text" default="6.0" label="Minimum Ranking" description="A minimum ranking for resources that can be selected" />
 				<field name="tag" type="text" default="" label="Tag" description="A tag to be the pool that resources entries are drawn from" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />

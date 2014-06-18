@@ -33,21 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WishlistHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('Wishlist Manager') . ': ' . JText::_('Comments'), 'wishlist.png');
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -55,7 +55,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('comments');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -69,7 +69,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
@@ -82,8 +82,8 @@ function submitbutton(pressbutton)
 			<tr>
 				<th colspan="7">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist->id; ?>">
-						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; 
-						<?php echo $this->escape(stripslashes($this->wishlist->title)); ?> &nbsp;&rsaquo;&nbsp; 
+						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp;
+						<?php echo $this->escape(stripslashes($this->wishlist->title)); ?> &nbsp;&rsaquo;&nbsp;
 					</a>
 					<?php echo $this->escape(stripslashes($this->wish->subject)); ?>
 				</th>
@@ -129,13 +129,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		break;
 	}
 
-	if ($row->anonymous) 
+	if ($row->anonymous)
 	{
 		$aclass = 'publish';
 		$atask = 'publicize';
 		$aalt = JText::_('Anonymous');
-	} 
-	else 
+	}
+	else
 	{
 		$aclass = 'unpublish';
 		$atask = 'anonymize';
@@ -143,7 +143,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	$comment = substr(strip_tags(stripslashes($row->content)), 0, 50);
-	if (strlen($row->content) >= 50) 
+	if (strlen($row->content) >= 50)
 	{
 		$comment .= '...';
 	}

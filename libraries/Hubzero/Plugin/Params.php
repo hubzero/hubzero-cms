@@ -37,42 +37,42 @@ class Params extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $object_id = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $folder    = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $element   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -83,27 +83,27 @@ class Params extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->object_id = intval($this->object_id);
-		if (!$this->object_id) 
+		if (!$this->object_id)
 		{
 			$this->setError(\JText::_('Entry must have an object ID'));
 			return false;
 		}
 
 		$this->folder = trim($this->folder);
-		if (!$this->folder) 
+		if (!$this->folder)
 		{
 			$this->setError(\JText::_('Entry must have a folder'));
 			return false;
 		}
 
 		$this->element = trim($this->element);
-		if (!$this->element) 
+		if (!$this->element)
 		{
 			$this->setError(\JText::_('Entry must have an element'));
 			return false;
@@ -113,7 +113,7 @@ class Params extends \JTable
 
 	/**
 	 * Load a record and binf to $this
-	 * 
+	 *
 	 * @param      integer $oid     Object ID (eg, group ID)
 	 * @param      string  $folder  Plugin folder
 	 * @param      string  $element Plugin name
@@ -121,28 +121,28 @@ class Params extends \JTable
 	 */
 	public function loadPlugin($oid=null, $folder=null, $element=NULL)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->object_id;
 		}
-		if (!$folder) 
+		if (!$folder)
 		{
 			$folder = $this->folder;
 		}
-		if (!$element) 
+		if (!$element)
 		{
 			$element = $this->element;
 		}
-		if (!$oid || !$element || !$folder) 
+		if (!$oid || !$element || !$folder)
 		{
 			return false;
 		}
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -151,7 +151,7 @@ class Params extends \JTable
 
 	/**
 	 * Get the custom parameters for a plugin
-	 * 
+	 *
 	 * @param      integer $oid     Object ID (eg, group ID)
 	 * @param      string  $folder  Plugin folder
 	 * @param      string  $element Plugin name
@@ -159,19 +159,19 @@ class Params extends \JTable
 	 */
 	public function getCustomParams($oid=null, $folder=null, $element=null)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->object_id;
 		}
-		if (!$folder) 
+		if (!$folder)
 		{
 			$folder = $this->folder;
 		}
-		if (!$element) 
+		if (!$element)
 		{
 			$element = $this->element;
 		}
-		if (!$oid || !$folder || !$element) 
+		if (!$oid || !$folder || !$element)
 		{
 			return null;
 		}
@@ -191,22 +191,22 @@ class Params extends \JTable
 
 	/**
 	 * Get the default parameters for a plugin
-	 * 
+	 *
 	 * @param      string  $folder  Plugin folder
 	 * @param      string  $element Plugin name
 	 * @return     object
 	 */
 	public function getDefaultParams($folder=null, $element=null)
 	{
-		if (!$folder) 
+		if (!$folder)
 		{
 			$folder = $this->folder;
 		}
-		if (!$element) 
+		if (!$element)
 		{
 			$element = $this->element;
 		}
-		if (!$folder || !$element) 
+		if (!$folder || !$element)
 		{
 			return null;
 		}
@@ -225,7 +225,7 @@ class Params extends \JTable
 	/**
 	 * Get the parameters for a plugin
 	 * Merges default params and custom params (take precedence)
-	 * 
+	 *
 	 * @param      integer $oid     Object ID (eg, group ID)
 	 * @param      string  $folder  Plugin folder
 	 * @param      string  $element Plugin name

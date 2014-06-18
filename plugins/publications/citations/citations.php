@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-	
+
 /**
  * Publications Plugin class for citations
  */
@@ -40,7 +40,7 @@ class plgPublicationsCitations extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -48,34 +48,34 @@ class plgPublicationsCitations extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'citations' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		// Load component configs
 		$this->_config 		= JComponentHelper::getParams('com_publications');
 
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true)
 	{
-		if ($publication->_category->_params->get('plg_citations')) 
+		if ($publication->_category->_params->get('plg_citations'))
 		{
 			$areas = array(
 				'citations' => JText::_('PLG_PUBLICATION_CITATIONS')
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$areas = array();
 		}
@@ -84,7 +84,7 @@ class plgPublicationsCitations extends JPlugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
@@ -92,22 +92,22 @@ class plgPublicationsCitations extends JPlugin
 	 * @param      string 	$version 		Version name
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
-	 */	
-	public function onPublication( $publication, $option, $areas, 
+	 */
+	public function onPublication( $publication, $option, $areas,
 		$rtrn='all', $version = 'default', $extended = true  )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_citations')) 
+				if ($publication->_category->_params->get('plg_citations'))
 				{
 					$rtrn == 'metadata';
 				}
@@ -117,25 +117,25 @@ class plgPublicationsCitations extends JPlugin
 				}
 			}
 		}
-				
+
 		$database = JFactory::getDBO();
 
 		// Get a needed library
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 
 		// Get citations for this publication
 		$c = new CitationsCitation( $database );
 		$citations = $c->getCitations( 'publication', $publication->id );
-		
+
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -151,7 +151,7 @@ class plgPublicationsCitations extends JPlugin
 			$view->publication 	= $publication;
 			$view->citations 	= $citations;
 			$view->format 		= $this->_config->get('citation_format', 'apa');
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError( $this->getError() );
 			}
@@ -161,17 +161,17 @@ class plgPublicationsCitations extends JPlugin
 		}
 
 		// Are we returning metadata?
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			if ($publication->alias) 
+			if ($publication->alias)
 			{
 				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=citations&v=' . $publication->version_number);
-			} 
-			else 
+			}
+			else
 			{
 				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=citations&v=' . $publication->version_number);
 			}
-			
+
 			$arr['metadata']  = '<p class="citation"><a href="'.$url.'">'.JText::sprintf('PLG_PUBLICATION_CITATIONS_COUNT',count($citations)).'</a></p>';
 		}
 

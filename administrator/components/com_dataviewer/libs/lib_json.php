@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 // http://www.php.net/manual/en/function.json-encode.php#80339
-function json_format($json) 
+function json_format($json)
 {
 	$tab = "\t";
 	$new_json = "";
@@ -67,7 +67,7 @@ function json_format($json)
 				}
 			default:
 				$new_json .= $char;
-				break;				   
+				break;
 		}
 	}
 

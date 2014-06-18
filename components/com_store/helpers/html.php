@@ -38,7 +38,7 @@ class StoreHtml
 {
 	/**
 	 * Get a default image for the store item
-	 * 
+	 *
 	 * @param      string $option   Component name
 	 * @param      string $item     Item ID
 	 * @param      string $root     Root path
@@ -49,7 +49,7 @@ class StoreHtml
 	 */
 	public static function productimage($option, $item, $root, $wpath, $alt, $category)
 	{
-		if ($wpath) 
+		if ($wpath)
 		{
 			$wpath = DS . trim($wpath, DS) . DS;
 		}
@@ -59,28 +59,28 @@ class StoreHtml
 		$images = array();
 		$html = '';
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($root . $wpath . $item . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') 
+				if (is_file($root . $wpath . $item . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) 
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
 				}
 			}
 			$d->close();
-		} 
-		else 
+		}
+		else
 		{
-			if ($category == 'service') 
+			if ($category == 'service')
 			{
 				$html = '<img src="/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
-			} 
-			else 
+			}
+			else
 			{
 				$html = '<img src="/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
@@ -94,25 +94,25 @@ class StoreHtml
 		for ($i=0, $n=count($images); $i < $n; $i++)
 		{
 			jimport('joomla.filesystem.file');
-			
+
 			$ext = JFile::getExt($images[$i]);
 			$tn  = JFile::stripExt($images[$i]) . '-tn.';
-			
-			if (!is_file($root . $wpath . $item . DS . $tn . $ext)) 
+
+			if (!is_file($root . $wpath . $item . DS . $tn . $ext))
 			{
-				$ext = 'gif'; 
+				$ext = 'gif';
 			}
-			
+
 			$tn = $tn . $ext;
 
-			if (is_file($root . $wpath . $item . DS . $tn)) 
+			if (is_file($root . $wpath . $item . DS . $tn))
 			{
 				$k++;
 				$els .= '<a rel="lightbox" href="' . $wpath . $item . '/' . $images[$i] . '" title="' . $alt . '"><img src="' . $wpath . $item . '/' . $tn . '" alt="' . $alt . '" /></a>';
 			}
 		}
 
-		if ($els) 
+		if ($els)
 		{
 			$html .= $els;
 		}

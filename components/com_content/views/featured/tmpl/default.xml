@@ -23,7 +23,7 @@
 			description="COM_CONTENT_FEATURED_CATEGORIES_DESC" >
 			<option value="">JOPTION_ALL_CATEGORIES</option>
 			</field>
-			
+
 			<field name="layout_type"
 				type="hidden"
 				default="blog"

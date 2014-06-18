@@ -37,7 +37,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $juri = JURI::getInstance();
 
 $sef = JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias);
-if (substr($sef,0,1) == '/') 
+if (substr($sef,0,1) == '/')
 {
 	$sef = substr($sef,1,strlen($sef));
 }
@@ -51,11 +51,11 @@ if ($this->project->provisioned == 1)
 }
 
 $message .= ')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' ' 
-		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' 
+$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
+		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' '
 		 . JText::_('COM_PROJECTS_BY') . ' ';
-$message .= $this->project->owned_by_group 
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$message .= $this->project->owned_by_group
+			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
 

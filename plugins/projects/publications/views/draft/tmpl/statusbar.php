@@ -34,10 +34,10 @@ $active 		= $this->active ? $this->active : 'status';
 $activenum 		= $this->activenum ? $this->activenum : NULL;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 // Are we in draft flow?
 $move = ($this->pub->state == 3 || $this->pub->state == 4) ? '&move=continue' : '';
@@ -65,12 +65,12 @@ $i = 1;
 	{
 		return false;
 	}
-?>	
+?>
 	<ul id="status-bar" <?php if ($move) { echo 'class="moving"'; } ?>>
-		<?php foreach ($blocks as $sequence => $block ) { 
-			
+		<?php foreach ($blocks as $sequence => $block ) {
+
 			$blockname = $block->name;
-			$status    = $block->review ? $block->review->status : $block->status->status; 
+			$status    = $block->review ? $block->review->status : $block->status->status;
 			$updated   = $block->review ? $block->review->lastupdate : NULL;
 
 			if ($status == 2)
@@ -85,18 +85,18 @@ $i = 1;
 			{
 				$class = $status > 0 ? 'c_passed' : 'c_failed';
 			}
-			
+
 			if (($move && $sequence > $activenum) && $this->active)
 			{
 				$class = 'c_pending';
 			}
-			
+
 			if ($sequence == $activenum)
 			{
 				$class = '';
 			}
 			$i++;
-			
+
 			// Hide review block until in review
 			if ($blockname == 'review' && ($sequence != $activenum))
 			{
@@ -104,7 +104,6 @@ $i = 1;
 			}
 		?>
 		<li<?php if ($sequence == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_( $pubRoute . '&section=' . $blockname . '&step=' . $sequence . '&move=continue&version=' . $version); ?>" class="<?php echo $class; ?>"><?php echo $block->manifest->label; ?></a></li>
-			
+
 	<?php } ?>
 	</ul>
-		

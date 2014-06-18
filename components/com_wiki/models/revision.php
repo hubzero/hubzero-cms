@@ -40,14 +40,14 @@ class WikiModelRevision extends \Hubzero\Base\Model
 {
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -84,7 +84,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -102,7 +102,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 			$key = $oid;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $page_id);
 		}
@@ -112,7 +112,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -136,7 +136,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -161,13 +161,13 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer

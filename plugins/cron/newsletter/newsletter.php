@@ -40,7 +40,7 @@ class plgCronNewsletter extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -61,14 +61,14 @@ class plgCronNewsletter extends JPlugin
 				'params' => ''
 			)
 		);
-		
+
 		return $obj;
 	}
-	
-	
+
+
 	/**
 	 * Processes any queued newsletter mailings.
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function processMailings( $params = null )
@@ -76,11 +76,11 @@ class plgCronNewsletter extends JPlugin
 		//load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
-		
+
 		//needed vars
 		$limit     = 25;
 		$processed = array();
-		
+
 		//do we have a param defined limit
 		if (is_object($params) && $params->get('newsletter_queue_limit'))
 		{
@@ -90,10 +90,10 @@ class plgCronNewsletter extends JPlugin
 				$limit = $paramDefinedLimit;
 			}
 		}
-		
+
 		//create needed objects
 		$database = JFactory::getDBO();
-		
+
 		//get all queued mailing recipients
 		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking
 				FROM `#__newsletter_mailings` AS nm, `#__newsletter_mailing_recipients` AS nmr
@@ -105,41 +105,41 @@ class plgCronNewsletter extends JPlugin
 				LIMIT {$limit}";
 		$database->setQuery( $sql );
 		$queuedEmails = $database->loadObjectList();
-		
+
 		//loop through each newsletter recipient, prepare and mail
 		foreach ($queuedEmails as $queuedEmail)
 		{
 			//get tracking & unsubscribe token
 			$emailToken = NewsletterHelper::generateMailingToken( $queuedEmail );
-			
+
 			//if tracking is on add it to email
 			if ($queuedEmail->tracking)
 			{
 				$queuedEmail->html_body = NewsletterHelper::addTrackingToEmailMessage( $queuedEmail->html_body, $emailToken );
 			}
-			
+
 			//create unsubscribe link
 			$unsubscribeMailtoLink = '';
 			$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . $queuedEmail->email . '&t=' . $emailToken;
-			
+
 			//add unsubscribe link - placeholder & in header (must do after adding tracking!!)
 			$queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);
 			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
 			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_MAILTO_LINK}}", $unsubscribeMailtoLink, $queuedEmail->headers);
-			
+
 			//add mailing id to header
 			$queuedEmail->headers  = str_replace("{{CAMPAIGN_MAILING_ID}}", $queuedEmail->mailingid, $queuedEmail->headers);
-			
+
 			// create new message
 			$message = new \Hubzero\Mail\Message();
-			
+
 			// add headers
 			foreach (explode("\r\n", $queuedEmail->headers) as $header)
 			{
 				$parts = array_map("trim", explode(':', $header));
 				$message->addHeader($parts[0], $parts[1]);
 			}
-	
+
 			// build message object and send
 			$message->setSubject($queuedEmail->subject)
 					->setTo($queuedEmail->email)
@@ -151,50 +151,50 @@ class plgCronNewsletter extends JPlugin
 			{
 				//add to process email array
 				$processed[] = $queuedEmail->email;
-				
+
 				//load recipient object
 				$newsletterMailingRecipient = new NewsletterMailingRecipient( $database );
 				$newsletterMailingRecipient->load( $queuedEmail->mailing_recipientid );
-				
+
 				//mark as sent and save
 				$newsletterMailingRecipient->status    = 'sent';
 				$newsletterMailingRecipient->date_sent = JFactory::getDate()->toSql();
 				$newsletterMailingRecipient->save( $newsletterMailingRecipient );
 			}
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Processes newsletter mailing actions (clicks, opens, etc) IP addresses into location data for stats
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function processIps( $params = null )
 	{
 		//load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
-		
+
 		//get db
 		$database = JFactory::getDBO();
-		
+
 		//get actions
 		$newsletterMailingRecipientAction = new NewsletterMailingRecipientAction( $database );
 		$unconvertedActions = $newsletterMailingRecipientAction->getUnconvertedActions();
-		
+
 		//convert all unconverted actions
 		foreach ($unconvertedActions as $action)
 		{
 			// attempt to locate
 			$location = Hubzero\Geocode\Geocode::locate($action->ip);
-			
+
 			//if we got a valid result lets update our action with location info
 			if (is_object($location) && $location['latitude'] != '' && $location['longitude'] != '-')
 			{
 				$sql = "UPDATE `#__newsletter_mailing_recipient_actions`
-						SET 
+						SET
 							countrySHORT=" . $database->quote( $location['countryCode'] ) . ",
 							countryLONG=" . $database->quote( $location['country'] ) . ",
 							ipREGION=" . $database->quote( $location['region'] ) . ",

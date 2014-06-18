@@ -40,21 +40,21 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	public $_tbl_name = 'CollectionsTableAsset';
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid     ID, string, array, or object
 	 * @param      integer $item_id ID of the item asset is attached
 	 * @return     void
@@ -86,7 +86,7 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -104,7 +104,7 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 			$key = $oid['id'] . '_' . $item_id;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new CollectionsModelAsset($oid, $item_id);
 		}
@@ -114,7 +114,7 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -171,7 +171,7 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 	 * Update content
 	 *
 	 * @param     string $field  Field name
-	 * @param     string $before 
+	 * @param     string $before
 	 * @param     string $after
 	 * @return    boolean True on success, false if errors
 	 */
@@ -201,10 +201,10 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 
 			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
 
-			if (!is_dir($path)) 
+			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path)) 
+				if (!JFolder::create($path))
 				{
 					$this->setError(JText::_('Error uploading. Unable to create path.'));
 					return false;
@@ -220,7 +220,7 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 			$file['name'] = str_replace(' ', '_', $file['name']);
 
 			// Upload new files
-			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
 				$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $file['name']);
 				return false;

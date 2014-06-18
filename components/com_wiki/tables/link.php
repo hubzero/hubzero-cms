@@ -38,56 +38,56 @@ class WikiTableLink extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $page_id   = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $timestamp = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $url      = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $link    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,20 +98,20 @@ class WikiTableLink extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, false if not
 	 */
 	public function check()
 	{
 		$this->page_id = intval($this->page_id);
-		if (!$this->page_id) 
+		if (!$this->page_id)
 		{
 			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 			return false;
 		}
 
 		$this->scope = strtolower($this->scope);
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_SCOPE'));
 			return false;
@@ -127,17 +127,17 @@ class WikiTableLink extends JTable
 
 	/**
 	 * Retrieve all entries for a specific page
-	 * 
+	 *
 	 * @param      integer $pid Page ID
 	 * @return     array
 	 */
 	public function find($page_id=null)
 	{
-		if (!$page_id) 
+		if (!$page_id)
 		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) 
+		if (!$page_id)
 		{
 			return null;
 		}
@@ -148,23 +148,23 @@ class WikiTableLink extends JTable
 
 	/**
 	 * Delete all entries for a specific page
-	 * 
+	 *
 	 * @param      integer $pid Page ID
 	 * @return     boolean True on success
 	 */
 	public function deleteByPage($page_id=null)
 	{
-		if (!$page_id) 
+		if (!$page_id)
 		{
 			$page_id = $this->page_id;
 		}
-		if (!$page_id) 
+		if (!$page_id)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -174,7 +174,7 @@ class WikiTableLink extends JTable
 
 	/**
 	 * Delete all entries for a specific page
-	 * 
+	 *
 	 * @param      integer $pid Page ID
 	 * @return     boolean True on success
 	 */
@@ -192,19 +192,19 @@ class WikiTableLink extends JTable
 		$inserts = array();
 		foreach ($links as $link)
 		{
-			$inserts[] = "(" . $this->_db->Quote($link['page_id']) . "," . 
-								$this->_db->Quote($timestamp) . "," . 
-								$this->_db->Quote($link['scope']) . "," . 
-								$this->_db->Quote($link['scope_id']) . "," . 
-								$this->_db->Quote($link['link']) . "," . 
-								$this->_db->Quote($link['url']) . 
+			$inserts[] = "(" . $this->_db->Quote($link['page_id']) . "," .
+								$this->_db->Quote($timestamp) . "," .
+								$this->_db->Quote($link['scope']) . "," .
+								$this->_db->Quote($link['scope_id']) . "," .
+								$this->_db->Quote($link['link']) . "," .
+								$this->_db->Quote($link['url']) .
 							")";
 		}
 
 		$query .= implode(',', $inserts) . ";";
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -214,7 +214,7 @@ class WikiTableLink extends JTable
 
 	/**
 	 * Update entries
-	 * 
+	 *
 	 * @param      integer $pid   Page ID
 	 * @param      array   $links Entries
 	 * @return     boolean True on success

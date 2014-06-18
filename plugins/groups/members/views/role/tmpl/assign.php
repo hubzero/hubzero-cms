@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 
-<form action="index.php" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>"> 
+<form action="index.php" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
@@ -48,9 +48,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				$current_roles = array();
 				$roles = $u->getGroupMemberRoles($u->get('uidNumber'), $this->group->get('gidNumber'));
-				if ($roles) 
+				if ($roles)
 				{
-					foreach ($roles as $role) 
+					foreach ($roles as $role)
 					{
 						$current_roles[] = $role['name'];
 					}

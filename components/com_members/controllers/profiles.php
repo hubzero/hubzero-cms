@@ -40,7 +40,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -52,7 +52,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$task = strtolower(JRequest::getVar('task', ''));
 
 		$id = JRequest::getInt('id', 0);
-		if ($id && !$task) 
+		if ($id && !$task)
 		{
 			JRequest::setVar('task', 'view');
 		}
@@ -60,8 +60,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$parts = explode('/', $_SERVER['REQUEST_URI']);
 		$file = array_pop($parts);
 
-		if (substr(strtolower($file), 0, 5) == 'image' 
-		 || substr(strtolower($file), 0, 4) == 'file') 
+		if (substr(strtolower($file), 0, 5) == 'image'
+		 || substr(strtolower($file), 0, 4) == 'file')
 		{
 			$this->setRedirect(
 				JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=donwload'), 'server')
@@ -77,7 +77,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Opt out of a promotion
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function incremOptOutTask()
@@ -102,12 +102,12 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Return results for autocompleter
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function autocompleteTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
@@ -118,21 +118,21 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 			$xgroups = $profile->getGroups('all');
 			$usersgroups = array();
-			if (!empty($xgroups)) 
+			if (!empty($xgroups))
 			{
 				foreach ($xgroups as $group)
 				{
-					if ($group->regconfirmed) 
+					if ($group->regconfirmed)
 					{
 						$usersgroups[] = $group->gidNumber;
 					}
 				}
 			}
-			
+
 			$members = null;
 			if (!empty($usersgroups))
 			{
-				$query = "SELECT DISTINCT uidNumber 
+				$query = "SELECT DISTINCT uidNumber
 						FROM #__xgroups_members
 						WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
@@ -153,7 +153,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
 
 		// allow search of name by pieces
-		$searchWhere  = ""; 
+		$searchWhere  = "";
 		$searchPieces = explode(' ', $filters['search']);
 		switch (count($searchPieces))
 		{
@@ -174,16 +174,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Fetch results
-		/*$query = "SELECT u.id, u.name, u.username 
-				FROM #__users AS u 
-				WHERE LOWER(u.name) LIKE '%".$filters['search']."%' 
+		/*$query = "SELECT u.id, u.name, u.username
+				FROM #__users AS u
+				WHERE LOWER(u.name) LIKE '%".$filters['search']."%'
 				OR LOWER(u.username) LIKE '%".$filters['search']."%'
 				OR LOWER(u.email) LIKE '%".$filters['search']."%'
 				ORDER BY u.name ASC";*/
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
-				FROM #__xprofiles AS xp 
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
+				FROM #__xprofiles AS xp
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE $searchWhere AND xp.emailConfirmed>0 $restrict 
+				WHERE $searchWhere AND xp.emailConfirmed>0 $restrict
 				ORDER BY xp.name ASC
 				LIMIT " . $filters['start'] . "," . $filters['limit'];
 		$this->database->setQuery($query);
@@ -191,7 +191,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Output search results in JSON format
 		$json = array();
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
 			$default = \Hubzero\User\Profile\Helper::thumbit($default);
@@ -231,7 +231,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display main page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -246,15 +246,15 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the document pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -269,7 +269,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of members
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browseTask()
@@ -306,12 +306,12 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Build the page title
-		if ($this->view->filters['show'] == 'contributors') 
+		if ($this->view->filters['show'] == 'contributors')
 		{
 			$this->view->title = JText::_('CONTRIBUTORS');
 			$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'contributions'));
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->title = JText::_('MEMBERS');
 		}
@@ -328,30 +328,30 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the document pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		// Was a specific index (letter) set?
-		if ($this->view->filters['index']) 
+		if ($this->view->filters['index'])
 		{
 			// Add to the pathway
 			$pathway->addItem(
-				strtoupper($this->view->filters['index']), 
+				strtoupper($this->view->filters['index']),
 				'index.php?option=' . $this->_option . '&index=' . $this->view->filters['index']
 			);
 		}
 
 		// Check authorization
 		$this->view->authorized = $this->_authorize();
-		if ($this->view->authorized === 'admin') 
+		if ($this->view->authorized === 'admin')
 		{
 			$admin = true;
-		} 
-		else 
+		}
+		else
 		{
 			$admin = false;
 		}
@@ -377,20 +377,20 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Get records
 		$this->view->rows = $c->getRecords($this->view->filters, $admin);
-		
+
 		//get newly registered members (past day)
 		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 DAY'))->toSql() . "'");
 		$this->view->past_day_members = $stats->past_day_members; //$this->database->loadResult();
-		
+
 		//get newly registered members (past month)
 		//$this->database->setQuery("SELECT COUNT(*) FROM #__xprofiles WHERE registerDate > '" . JFactory::getDate(strtotime('-1 MONTH'))->toSql() . "'");
 		$this->view->past_month_members = $stats->past_month_members; //$this->database->loadResult();
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -398,7 +398,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 		$this->view->view = $this->_view;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -411,7 +411,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Calculate stats
-	 * 
+	 *
 	 * @return     object
 	 */
 	public function stats()
@@ -439,12 +439,12 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * A shortcut task for displaying a logged-in user's account page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function myaccountTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=myaccount'))),
@@ -452,7 +452,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				'warning'
 			);
 			return;
-		} 
+		}
 
 		JRequest::setVar('id', $this->juser->get('id'));
 		$this->viewTask();
@@ -461,22 +461,22 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a user profile
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function viewTask()
 	{
 		$this->view->setLayout('view');
 
-		// Build the page title 
+		// Build the page title
 		$this->view->title  = JText::_(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . JText::_(strtoupper($this->_task)) : '';
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -490,10 +490,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$dispatcher = JDispatcher::getInstance();
 
 		// Ensure we have an ID
-		if (!$id) 
+		if (!$id)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
@@ -507,10 +507,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
-		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname'))) 
+		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname')))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NOT_FOUND'));
@@ -518,10 +518,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Check subscription to Employer Services
-		//   NOTE: This must occur after the initial plugins import and 
+		//   NOTE: This must occur after the initial plugins import and
 		//   do not specifically call JPluginHelper::importPlugin('members', 'resume');
 		//   Doing so can have negative affects.
-		if ($this->config->get('employeraccess') && $tab == 'resume') 
+		if ($this->config->get('employeraccess') && $tab == 'resume')
 		{
 			$checkemp   = $dispatcher->trigger('isEmployer', array());
 			$emp        = is_array($checkemp) ? $checkemp[0] : 0;
@@ -529,10 +529,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Check if the profile is public/private and the user has access
-		if ($profile->get('public') != 1 && !$this->view->authorized) 
+		if ($profile->get('public') != 1 && !$this->view->authorized)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 			JError::raiseError(403, JText::_('MEMBERS_NOT_PUBLIC'));
@@ -540,7 +540,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Check for name
-		if (!$profile->get('name')) 
+		if (!$profile->get('name'))
 		{
 			$name  = $profile->get('givenName') . ' ';
 			$name .= ($profile->get('middleName')) ? $profile->get('middleName') . ' ' : '';
@@ -555,13 +555,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		foreach ($this->view->cats as $cat)
 		{
 			$name = key($cat);
-			if ($name != '') 
+			if ($name != '')
 			{
 				$available[] = $name;
 			}
 		}
 
-		if ($tab != 'profile' && !in_array($tab, $available)) 
+		if ($tab != 'profile' && !in_array($tab, $available))
 		{
 			$tab = 'profile';
 		}
@@ -586,7 +586,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway->addItem(
-			stripslashes($profile->get('name')), 
+			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
 
@@ -596,7 +596,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->profile = $profile;
 		$this->view->overwrite_content = '';
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -609,7 +609,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for changing user password
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function changepasswordTask()
@@ -629,10 +629,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -641,7 +641,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=changepassword'), 'server');
 			$this->setRedirect(
@@ -650,16 +650,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->juser->get('id');
 		}
 
 		// Ensure we have an ID
-		if (!$id) 
+		if (!$id)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
@@ -668,10 +668,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Check authorization
 		$authorized = $this->_authorize($id);
-		if (!$authorized) 
+		if (!$authorized)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(403, JText::_('MEMBERS_NOT_AUTH'));
@@ -682,10 +682,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$profile = \Hubzero\User\Profile::getInstance($id);
 
 		// Ensure we have a member
-		if (!$profile->get('name')) 
+		if (!$profile->get('name'))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NOT_FOUND'));
@@ -694,16 +694,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Add to the pathway
 		$pathway->addItem(
-			stripslashes($profile->get('name')), 
+			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)), 
+			JText::_(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
 
 		// Load some needed libraries
-		if (\Hubzero\User\Helper::isXDomainUser($this->juser->get('id'))) 
+		if (\Hubzero\User\Helper::isXDomainUser($this->juser->get('id')))
 		{
 			JError::raiseError(403, JText::_('MEMBERS_PASS_CHANGE_LINKED_ACCOUNT'));
 			return;
@@ -733,19 +733,19 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		$this->view->password_rules = array();
 
-		foreach ($password_rules as $rule) 
+		foreach ($password_rules as $rule)
 		{
-			if (!empty($rule['description'])) 
+			if (!empty($rule['description']))
 			{
 				$this->view->password_rules[] = $rule['description'];
 			}
 		}
 
-		if (!empty($newpass)) 
+		if (!empty($newpass))
 		{
 			$msg = \Hubzero\Password\Rule::validate($newpass, $password_rules, $profile->get('username'));
 		}
-		else 
+		else
 		{
 			$msg = array();
 		}
@@ -764,25 +764,25 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		$passrules = false;
 
-		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true)) 
+		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true))
 		{
 			$this->setError(JText::_('MEMBERS_PASS_INCORRECT'));
-		} 
-		elseif (!$newpass || !$newpass2) 
+		}
+		elseif (!$newpass || !$newpass2)
 		{
 			$this->setError(JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
-		} 
-		elseif ($newpass != $newpass2) 
+		}
+		elseif ($newpass != $newpass2)
 		{
 			$this->setError(JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
-		} 
+		}
 		elseif ($oldpass == $newpass)
 		{
 			// make sure the current password and new password are not the same
 			// this should really be done in the password rules validation step
 			$this->setError(JText::_('Your new password must be different from your current password'));
 		}
-		elseif (!empty($msg)) 
+		elseif (!empty($msg))
 		{
 			$this->setError(JText::_('Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.'));
 			$this->view->validated = $msg;
@@ -794,10 +794,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$change = array();
 			$change['_missing']['password'] = $this->getError();
 
-			if (!empty($msg) && $passrules) 
+			if (!empty($msg) && $passrules)
 			{
 				$change['_missing']['password'] .= '<ul>';
-				foreach ($msg as $m) 
+				foreach ($msg as $m)
 				{
 					$change['_missing']['password'] .= '<li>';
 					$change['_missing']['password'] .= $m;
@@ -860,7 +860,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for raising a user's allowed sessions, storage, etc.
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function raiselimitTask()
@@ -874,10 +874,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -886,7 +886,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=raiselimit'), 'server');
 			$this->setRedirect(
@@ -896,10 +896,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have an ID
-		if (!$id) 
+		if (!$id)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
@@ -908,10 +908,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Check authorization
 		$this->view->authorized = $this->_authorize($id);
-		if (!$this->view->authorized) 
+		if (!$this->view->authorized)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(403, JText::_('MEMBERS_NOT_AUTH'));
@@ -925,7 +925,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if (!$profile->get('name'))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NOT_FOUND'));
@@ -936,11 +936,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Add to the pathway
 		$pathway->addItem(
-			stripslashes($profile->get('name')), 
+			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)), 
+			JText::_(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
 
@@ -948,10 +948,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$request = JRequest::getVar('request', null, 'post');
 		$raiselimit = JRequest::getVar('raiselimit', null, 'post');
 
-		if ($raiselimit) 
+		if ($raiselimit)
 		{
 			$k = '';
-			if (is_array($raiselimit)) 
+			if (is_array($raiselimit))
 			{
 				$k = key($raiselimit);
 			}
@@ -964,13 +964,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 					$resourcemessage = 'session limit from '. $oldlimit .' to '. $newlimit .' sessions ';
 
-					if ($this->view->authorized == 'admin') 
+					if ($this->view->authorized == 'admin')
 					{
 						$profile->set('jobsAllowed', $newlimit);
 						$profile->update();
 						$resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
-					} 
-					else if ($request === null) 
+					}
+					else if ($request === null)
 					{
 						$this->view->resource = $k;
 						$this->view->setLayout('select');
@@ -985,14 +985,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 					$resourcemessage = ' storage limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($this->view->authorized == 'admin') 
+					if ($this->view->authorized == 'admin')
 					{
 						// $profile->set('quota', $newlimit);
 						// $profile->update();
 
 						$resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
-					} 
-					else 
+					}
+					else
 					{
 						$this->view->resource = $k;
 						$this->view->setLayout('select');
@@ -1007,14 +1007,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 					$resourcemessage = ' meeting limit has been raised from '. $oldlimit .' to '. $newlimit .'.';
 
-					if ($this->view->authorized == 'admin') 
+					if ($this->view->authorized == 'admin')
 					{
 						// $profile->set('max_meetings', $newlimit);
 						// $profile->update();
 
 						$resourcemessage = 'The meeting limit for [' . $profile->get('username') . '] has been raised from '. $oldlimit .' to '. $newlimit .'.';
-					} 
-					else 
+					}
+					else
 					{
 						$this->view->resource = $k;
 						$this->view->setLayout('select');
@@ -1032,7 +1032,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Do we need to email admin?
-		if ($request !== null && !empty($resourcemessage)) 
+		if ($request !== null && !empty($resourcemessage))
 		{
 			$juri = JURI::getInstance();
 			$jconfig = JFactory::getConfig();
@@ -1044,7 +1044,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 			// Email message
 			$message = 'Name: ' . $profile->get('name');
-			if ($profile->get('organization')) 
+			if ($profile->get('organization'))
 			{
 				$message .= " / " . $profile->get('organization');
 			}
@@ -1054,11 +1054,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$message .= 'Has requested an increases in their ' . $hubName;
 			$message .= $resourcemessage . "\r\n\r\n";
 			$message .= "Reason: ";
-			if (empty($request)) 
+			if (empty($request))
 			{
 				$message .= "NONE GIVEN\r\n\r\n";
-			} 
-			else 
+			}
+			else
 			{
 				$message .= $request . "\r\n\r\n";
 			}
@@ -1093,8 +1093,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$this->view->setLayout('success');
 			$this->view->display();
 			return;
-		} 
-		else if ($this->view->authorized == 'admin' && !empty($resourcemessage)) 
+		}
+		else if ($this->view->authorized == 'admin' && !empty($resourcemessage))
 		{
 			// Output the view
 			$this->view->resourcemessage = $resourcemessage;
@@ -1105,7 +1105,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Output the view
 		$this->view->resource = null;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1117,7 +1117,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing a profile
-	 * 
+	 *
 	 * @param      object $xregistration MembersModelRegistration
 	 * @param      object $profile       \Hubzero\User\Profile
 	 * @return     void
@@ -1133,10 +1133,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)), 
+				JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -1145,7 +1145,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=activity'), 'server');
 			$this->setRedirect(
@@ -1155,10 +1155,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have an ID
-		if (!$id) 
+		if (!$id)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NO_ID'));
@@ -1169,7 +1169,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if ($id != $this->juser->get('id'))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(403, JText::_('MEMBERS_NOT_AUTH'));
@@ -1178,16 +1178,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Initiate profile class if we don't already have one and load info
 		// Note: if we already have one then we just came from $this->save()
-		if (!is_object($profile)) 
+		if (!is_object($profile))
 		{
 			$profile = \Hubzero\User\Profile::getInstance($id);
 		}
 
 		// Ensure we have a member
-		if (!$profile->get('name') && !$profile->get('surname')) 
+		if (!$profile->get('name') && !$profile->get('surname'))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_task)), 
+				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
 			JError::raiseError(404, JText::_('MEMBERS_NOT_FOUND'));
@@ -1200,17 +1200,17 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Add to the pathway
 		$pathway->addItem(
-			stripslashes($profile->get('name')), 
+			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)), 
+			JText::_(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
 
 		// Instantiate an xregistration object if we don't already have one
 		// Note: if we already have one then we just came from $this->save()
-		if (!is_object($xregistration)) 
+		if (!is_object($xregistration))
 		{
 			$xregistration = new MembersModelRegistration();
 		}
@@ -1244,7 +1244,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->profile = $profile;
 		$this->view->registration = $registration;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1261,7 +1261,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 *  O = optional
 	 *  R = required
 	 *  U = read only
-	 * 
+	 *
 	 * @param      string $name    Field name
 	 * @param      string $default Default setting
 	 * @param      string $task    Task being executed
@@ -1283,16 +1283,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
-		if (empty($configured)) 
+		if (empty($configured))
 		{
 			$configured = $default;
 		}
 		$length = strlen($configured);
-		if ($length > $index) 
+		if ($length > $index)
 		{
 			$value = substr($configured, $index, 1);
-		} 
-		else 
+		}
+		else
 		{
 			$value = substr($default, $index, 1);
 		}
@@ -1311,16 +1311,16 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	/**
 	 * Save changes to a profile
 	 * Outputs JSON when called via AJAX, redirects to profile otherwise
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function saveTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
-		} 
+		}
 
 		$no_html = JRequest::getVar("no_html", 0);
 
@@ -1328,7 +1328,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0, 'post');
 
 		// Do we have an ID?
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
 			return;
@@ -1368,7 +1368,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (isset($p['public'])) 
+		if (isset($p['public']))
 		{
 			$profile->set('public', $p['public']);
 		}
@@ -1391,7 +1391,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$profile->set('email', $xregistration->_registration['email']);
 
 			// Unconfirm if the email address changed
-			if ($oldemail != $xregistration->_registration['email']) 
+			if ($oldemail != $xregistration->_registration['email'])
 			{
 				// Get a new confirmation code
 				$confirm = MembersHelperUtility::genemailconfirm();
@@ -1415,10 +1415,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$profile->set('nativeTribe', $xregistration->_registration['nativetribe']);
 		}
 
-		if ($xregistration->_registration['org'] != '') 
+		if ($xregistration->_registration['org'] != '')
 		{
 			$profile->set('organization', $xregistration->_registration['org']);
-		} 
+		}
 		elseif ($xregistration->_registration['orgtext'] != '')
 		{
 			$profile->set('organization', $xregistration->_registration['orgtext']);
@@ -1473,9 +1473,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			$profile->set('orcid', $xregistration->_registration['orcid']);
 		}
-		
+
 		$field_to_check = JRequest::getVar("field_to_check", array());
-		
+
 		// Check that required fields were filled in properly
 		if (!$xregistration->check('edit', $profile->get('uidNumber'), $field_to_check))
 		{
@@ -1505,7 +1505,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$profile->set('modifiedDate', JFactory::getDate()->toSql());
 
 		// Save the changes
-		if (!$profile->update()) 
+		if (!$profile->update())
 		{
 			JError::raiseError(500, $profile->getError());
 			return false;
@@ -1522,22 +1522,22 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$name  = $profile->get('name');
 
 		// Make sure certain changes make it back to the Joomla user table
-		if ($id > 0) 
+		if ($id > 0)
 		{
 			$juser = JUser::getInstance($id);
 			$jname = $juser->get('name');
 			$jemail = $juser->get('email');
-			if ($name != trim($jname)) 
+			if ($name != trim($jname))
 			{
 				$juser->set('name', $name);
 			}
-			if ($email != trim($jemail)) 
+			if ($email != trim($jemail))
 			{
 				$juser->set('email', $email);
 			}
-			if ($name != trim($jname) || $email != trim($jemail)) 
+			if ($name != trim($jname) || $email != trim($jemail))
 			{
-				if (!$juser->save()) 
+				if (!$juser->save())
 				{
 					JError::raiseError(500, JText::_($juser->getError()));
 					return false;
@@ -1546,7 +1546,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
-		if ($email != $oldemail) 
+		if ($email != $oldemail)
 		{
 			$this->_message = $this->_sendConfirmationCode($profile->get('username'), $email, $confirm);
 		}
@@ -1577,11 +1577,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Send a confirmation code to a user's email address
-	 * 
+	 *
 	 * @param      strong $login   Username
 	 * @param      string $email   User email address
 	 * @param      string $confirm Confirmation code
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _sendConfirmationCode($login, $email, $confirm)
 	{
@@ -1613,11 +1613,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		    ->setBody($message);
 
 		// Send the email
-		if ($msg->send()) 
+		if ($msg->send())
 		{
 			$msg = 'A confirmation email has been sent to "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'". You must click the link in that email to re-activate your account.';
-		} 
-		else 
+		}
+		else
 		{
 			$msg = 'An error occurred emailing "'. htmlentities($email,ENT_COMPAT,'UTF-8') .'" your confirmation.';
 		}
@@ -1627,14 +1627,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save profile field access
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveaccessTask()
 	{
 		// Check if they are logged in
 		$juser = JFactory::getUser();
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
@@ -1643,7 +1643,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Do we have an ID?
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
 			return;
@@ -1651,7 +1651,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Incoming profile edits
 		$p = JRequest::getVar('access', array(), 'post');
-		if (is_array($p)) 
+		if (is_array($p))
 		{
 			// Load the profile
 			$profile = \Hubzero\User\Profile::getInstance($id);
@@ -1662,7 +1662,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			}
 
 			// Save the changes
-			if (!$profile->update()) 
+			if (!$profile->update())
 			{
 				JError::raiseWarning('', $profile->getError());
 				return false;
@@ -1675,7 +1675,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show the current user activity
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function activityTask()
@@ -1686,7 +1686,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -1699,7 +1699,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=activity'), 'server');
 			$this->setRedirect(
@@ -1719,20 +1719,20 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$user  = array();
 		$users = array();
 
-		$sql = "SELECT s.username, s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle 
-				FROM #__session AS s WHERE s.username <> '' 
+		$sql = "SELECT s.username, s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle
+				FROM #__session AS s WHERE s.username <> ''
 				ORDER BY username, ip, idle DESC";
 
 		$this->database->setQuery($sql);
 		$result = $this->database->loadObjectList();
 
-		if ($result && count($result) > 0) 
+		if ($result && count($result) > 0)
 		{
 			foreach ($result as $row)
 			{
-				if ($prevuser != $row->username) 
+				if ($prevuser != $row->username)
 				{
-					if ($user) 
+					if ($user)
 					{
 						$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
 
@@ -1747,7 +1747,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				}
 				array_push($user, array('ip' => $row->ip, 'idle' => $row->idle));
 			}
-			if ($user) 
+			if ($user)
 			{
 				$xprofile = \Hubzero\User\Profile::getInstance($prevuser);
 
@@ -1760,15 +1760,15 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		$guests = array();
-		$sql = "SELECT s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle 
-				FROM #__session AS s WHERE s.username = '' 
+		$sql = "SELECT s.ip, (UNIX_TIMESTAMP(UTC_TIMESTAMP()) - s.time) AS idle
+				FROM #__session AS s WHERE s.username = ''
 				ORDER BY ip, idle DESC";
 
 		$this->database->setQuery($sql);
 		$result = $this->database->loadObjectList();
-		if ($result) 
+		if ($result)
 		{
-			if (count($result) > 0) 
+			if (count($result) > 0)
 			{
 				foreach($result as $row)
 				{
@@ -1782,7 +1782,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->users = $users;
 		$this->view->guests = $guests;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1795,7 +1795,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 	/**
 	 * Cancel a task and redirect to profile
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -1820,7 +1820,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	protected function _authorize($uid=0, $assetType='component', $assetId=null)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
@@ -1837,7 +1837,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				return 'admin';
 			}
 		}
-		else 
+		else
 		{
 			if ($this->juser->authorize($this->_option, 'manage'))
 			{
@@ -1848,14 +1848,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Check if they're the member
 		if (is_numeric($uid))
 		{
-			if ($this->juser->get('id') == $uid) 
+			if ($this->juser->get('id') == $uid)
 			{
 				return true;
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if ($this->juser->get('username') == $uid) 
+			if ($this->juser->get('username') == $uid)
 			{
 				return true;
 			}

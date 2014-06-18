@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="slider">
 	<div class="banner" id="<?php echo $modbillboards->collection; ?>">
-		<?php foreach ($modbillboards->slides as $slide) { 
+		<?php foreach ($modbillboards->slides as $slide) {
 			if ($slide->learn_more_location == 'relative')
 			{
 				$tag = '<p class="relative">';

@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the log table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -15,9 +15,9 @@ class AnswersTableLogTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'rid', 
-		'ip', 
+		'id',
+		'rid',
+		'ip',
 		'helpful'
 	);
 	var $mock       = array(

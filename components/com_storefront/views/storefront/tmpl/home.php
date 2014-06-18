@@ -40,13 +40,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 <section class="main section">
 	<div class="section-inner">
 		<?php
-		
+
 		if (sizeof($this->categories))
 		{
 			echo '<h3>Product categories</h3>';
 			echo '<ul>';
-		
-			foreach ($this->categories as $category) 
+
+			foreach ($this->categories as $category)
 			{
 				echo '<li>';
 				echo '<a href="';
@@ -54,14 +54,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 				echo '">' . $category->cName . '</a>';
 				echo '</li>';
 			}
-			
-			echo '</ul>';			
+
+			echo '</ul>';
 		}
 		else
 		{
-			echo '<p>No product categories are set up yet.';	
+			echo '<p>No product categories are set up yet.';
 		}
-		
+
 		?>
 	</div>
 </section>

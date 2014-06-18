@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'FixNames'
- * 
+ *
  * Long description (if any) ...
  */
 class Test extends SystemHelperScript
@@ -41,16 +41,16 @@ class Test extends SystemHelperScript
 
 	/**
 	 * Description for '_description'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_description = 'Test.';
 
 	/**
 	 * Short description for 'run'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function run()

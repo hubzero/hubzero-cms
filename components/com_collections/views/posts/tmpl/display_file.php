@@ -37,7 +37,7 @@ if ($item->get('title')) { ?>
 		<h4>
 			<?php echo $this->escape(stripslashes($item->get('title'))); ?>
 		</h4>
-<?php } 
+<?php }
 
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
 $href = 'index.php?option=com_collections&controller=media&post=';

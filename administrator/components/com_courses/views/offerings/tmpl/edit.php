@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Offering'), 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -47,15 +47,15 @@ $base = str_replace('/administrator', '', JURI::base(true));
 $this->css();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('field-alias').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
@@ -150,7 +150,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
 
 			<?php
-			if ($this->row->exists()) 
+			if ($this->row->exists())
 			{
 				$logo = $this->row->params('logo');
 				?>
@@ -161,11 +161,11 @@ function submitbutton(pressbutton)
 						</noscript>
 					</div>
 				</div>
-					<?php 
+					<?php
 					$width  = 0;
 					$height = 0;
 					$this_size = 0;
-					if ($logo) 
+					if ($logo)
 					{
 						$path = $this->row->logo('path');
 
@@ -229,9 +229,9 @@ function submitbutton(pressbutton)
 								multiple: true,
 								debug: true,
 								template: '<div class="qq-uploader">' +
-											'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+											'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
 											'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-											'<ul class="qq-upload-list"></ul>' + 
+											'<ul class="qq-upload-list"></ul>' +
 										   '</div>',
 								onComplete: function(id, file, response) {
 									if (response.success) {
@@ -300,7 +300,7 @@ function submitbutton(pressbutton)
 						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 					);
 					$out = $param->render('params', 'onOfferingEdit');
-					if (!$out) 
+					if (!$out)
 					{
 						continue;
 					}

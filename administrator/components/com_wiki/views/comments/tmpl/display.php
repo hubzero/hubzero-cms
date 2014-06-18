@@ -35,15 +35,15 @@ $canDo = WikiHelper::getActions('comment');
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') . ': ' . JText::_('COM_WIKI_COMMENTS'), 'wiki.png');
 
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('', 'delete');
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
@@ -53,7 +53,7 @@ JToolBarHelper::help('comments');
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" />
@@ -106,20 +106,20 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 {
 	$row =& $rows[$i];
 
-	if (!$row->anonymous) 
+	if (!$row->anonymous)
 	{
 		$calt2  = JText::_('JOFF');
 		$cls2   = 'off';
 		$state2 = 1;
-	} 
-	else 
+	}
+	else
 	{
 		$calt2  = JText::_('JON');
 		$cls2   = 'on';
 		$state2 = 0;
 	}
 
-	switch ($row->status) 
+	switch ($row->status)
 	{
 		case 2:
 			$calt1  = JText::_('JTRASHED');
@@ -139,7 +139,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 			$cls1   = 'publish';
 			$state1 = 'unpublish';
 		break;
-	} 
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

@@ -47,7 +47,7 @@ JHTML::_('behavior.tooltip');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -157,7 +157,7 @@ $row = &$this->rows[$i];
 
 					$pages = $p->getCount(array('event_id'=>$row->id));
 
-					if ($times) { 
+					if ($times) {
 				?>
 					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
 						<span><?php echo $alt; ?></span>

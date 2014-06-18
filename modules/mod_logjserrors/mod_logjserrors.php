@@ -2,12 +2,12 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$log = array();
-	array_map(function($k) use(&$log) { 
+	array_map(function($k) use(&$log) {
 		if (!array_key_exists($k, $_POST)) {
 			header('HTTP/1.1 422 Unprocessable Entity');
 			exit();
 		}
-		$log[$k] = $_POST[$k]; 
+		$log[$k] = $_POST[$k];
 	}, array('message', 'file', 'line', 'url', 'navigator'));
 	$fh = fopen('/var/log/hubzero/client_error.log', 'a');
 	fwrite($fh, print_r($log, 1));

@@ -43,7 +43,7 @@ $this->js('posts')
 		<div class="grid">
 			<div class="col span-half">
 				<h3>What is the Feed Aggregator?</h3>
-				<p>The Feed Aggregator is a component which allows feed managers 
+				<p>The Feed Aggregator is a component which allows feed managers
 				to collect articles from several RSS feeds and to selectively combine them into one site-sponsored RSS feed.</p>
 			</div>
 			<div class="col span-half omega">

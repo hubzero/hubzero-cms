@@ -38,26 +38,26 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
-		if (isset($config['base_path'])) 
+		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
 		}
 
 		$this->_sub = false;
-		if (isset($config['sub'])) 
+		if (isset($config['sub']))
 		{
 			$this->_sub = $config['sub'];
 		}
 
 		$this->_group = false;
-		if (isset($config['group'])) 
+		if (isset($config['group']))
 		{
 			$this->_group = $config['group'];
 		}
@@ -74,7 +74,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -86,7 +86,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		if (!$this->book->pages('count'))
 		{
-			if ($result = $this->book->scribe($this->_option)) 
+			if ($result = $this->book->scribe($this->_option))
 			{
 				$this->setError($result);
 			}
@@ -111,7 +111,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a history of the current wiki page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -123,7 +123,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->view->base_path = $this->_base_path;
 		$this->view->sub       = $this->_sub;
 
-		// Prep the pagename for display 
+		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');
 
@@ -133,7 +133,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -151,7 +151,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		$this->view->message = $this->_message;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -164,7 +164,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 	/**
 	 * Compare two versions of a wiki page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function compareTask()
@@ -181,13 +181,13 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$diff  = JRequest::getInt('diff', 0);
 
 		// Do some error checking
-		if (!$diff) 
+		if (!$diff)
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_MISSING_VERSION'));
 			$this->displayTask();
 			return;
 		}
-		if ($diff == $oldid) 
+		if ($diff == $oldid)
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_SAME_VERSIONS'));
 			$this->displayTask();
@@ -208,7 +208,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$formatter = new TableDiffFormatter();
 		$this->view->content = $formatter->format(new Diff($ota, $nta));
 
-		// Prep the pagename for display 
+		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');
 
@@ -218,7 +218,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -238,7 +238,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->view->message = $this->_message;
 		$this->view->name    = JText::_(strtoupper($this->_name));
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -251,13 +251,13 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a revision
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
@@ -269,7 +269,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		// Incoming
 		$id = JRequest::getInt('oldid', 0);
 
-		if (!$id || !$this->page->access('delete')) 
+		if (!$id || !$this->page->access('delete'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->page->link('history'))
@@ -281,7 +281,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		//$revision->load($id);
 
 		// Get a count of all approved revisions
-		if ($revision->getRevisionCount() <= 1) 
+		if ($revision->getRevisionCount() <= 1)
 		{
 			// Can't delete - it's the only approved version!
 			$this->setRedirect(
@@ -298,13 +298,13 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_($this->page->link('history')),
-				JText::_('Error occurred while removing revision.'), 
+				JText::_('Error occurred while removing revision.'),
 				'error'
 			);
 			return;
 		}
 
-		// If we're deleting the current revision, set the current 
+		// If we're deleting the current revision, set the current
 		// revision number to the previous available revision
 		//if ($id == $this->page->version_id)
 		//{
@@ -321,7 +321,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = 'revision_removed';
 		$log->actorid   = $this->juser->get('id');
-		if (!$log->store()) 
+		if (!$log->store())
 		{
 			$this->setError($log->getError());
 		}*/
@@ -333,13 +333,13 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 	/**
 	 * Approve a revision
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function approveTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
@@ -351,7 +351,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		// Incoming
 		$id = JRequest::getInt('oldid', 0);
 
-		if (!$id || !$this->page->access('manage')) 
+		if (!$id || !$this->page->access('manage'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->page->link())
@@ -362,7 +362,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		// Load the revision, approve it, and save
 		$revision = new WikiModelRevision($id);
 		$revision->set('approved', 1);
-		if (!$revision->store()) 
+		if (!$revision->store())
 		{
 			JError::raiseWarning(500, $revision->getError());
 			return;
@@ -389,7 +389,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$log->timestamp = date('Y-m-d H:i:s', time());
 		$log->action    = 'revision_approved';
 		$log->actorid   = $this->juser->get('id');
-		if (!$log->store()) 
+		if (!$log->store())
 		{
 			$this->setError($log->getError());
 		}*/

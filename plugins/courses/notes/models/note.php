@@ -41,28 +41,28 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableMemberNote';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'note';
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_notes = null;
 
 	/**
 	 * Serialized string of filers
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_filters = null;
@@ -77,12 +77,12 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CoursesPluginModelNote($oid);
 		}
@@ -92,7 +92,7 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 
 	/**
 	 * Get a list or count of notes
-	 * 
+	 *
 	 * @param      array $filters Filters to apply
 	 * @return     object CoursesModelIterator
 	 */

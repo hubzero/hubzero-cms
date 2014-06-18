@@ -95,11 +95,11 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div id="header-wrap">
 				<h1>
 					<a href="." title="<?php echo $config->getValue('config.sitename'); ?>">
-						<?php echo $config->getValue('config.sitename'); ?> 
+						<?php echo $config->getValue('config.sitename'); ?>
 						<span id="tagline">A HUBzero site</span>
 					</a>
 				</h1>
-		
+
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 <?php
 	if (!$juser->get('guest')) {
@@ -160,9 +160,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 						<form method="get" action="/search">
 							<fieldset>
-								<?php echo JText::_('Please try the'); ?> <a href="/index.php" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span> 
+								<?php echo JText::_('Please try the'); ?> <a href="/index.php" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span>
 								<label>
-									<?php echo JText::_('Search:'); ?> 
+									<?php echo JText::_('Search:'); ?>
 									<input type="text" name="searchword" value="" />
 								</label>
 								<input type="submit" value="<?php echo JText::_('Go'); ?>" />

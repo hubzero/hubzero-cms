@@ -37,7 +37,7 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform( pressbutton );
 	return;
@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('Short description of license'); ?>">
 				<label for="field-info"><?php echo JText::_('About'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
-				<?php 
+				<?php
 					$editor = JFactory::getEditor();
 					echo $editor->display('fields[info]', stripslashes($this->row->info), '', '', '50', '4', false, 'field-info');
 				?>
@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-text"><?php echo JText::_('Content'); ?>:</label></td>
-				<?php 
+				<?php
 					$editor = JFactory::getEditor();
 					echo $editor->display('fields[text]', stripslashes($this->row->text), '', '', '50', '10', false, 'field-text');
 				?>
@@ -120,10 +120,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?>">
 					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?></span>
 
-					<input class="option" name="active" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="active" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-active1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
 					<br />
-					<input class="option" name="active" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="active" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-active0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
 				</div>
 			</fieldset>
@@ -134,10 +134,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Do we allow users to customize license text?'); ?>">
 					<span class="hint"><?php echo JText::_('Do we allow users to customize license text?'); ?></span>
 
-					<input class="option" name="customizable" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="customizable" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-customizable1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
 					<br />
-					<input class="option" name="customizable" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="customizable" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-customizable0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
 				</div>
 			</fieldset>
@@ -148,10 +148,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Do we require publication authors to agree to license terms?'); ?>">
 					<span class="hint"><?php echo JText::_('Do we require publication authors to agree to license terms?'); ?></span>
 
-					<input class="option" name="agreement" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="agreement" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-agreement1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
 					<br />
-					<input class="option" name="agreement" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="agreement" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-agreement0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
 				</div>
 			</fieldset>
@@ -162,10 +162,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Is this license applicable to apps publications only?'); ?>">
 					<span class="hint"><?php echo JText::_('Is this license applicable to apps publications only?'); ?></span>
 
-					<input class="option" name="apps_only" id="field-apps_only1" type="radio" value="1" <?php echo $this->row->apps_only == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="apps_only" id="field-apps_only1" type="radio" value="1" <?php echo $this->row->apps_only == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-apps_only1"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_YES'); ?></label>
 					<br />
-					<input class="option" name="apps_only" id="field-apps_only0" type="radio" value="0" <?php echo $this->row->apps_only == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="apps_only" id="field-apps_only0" type="radio" value="0" <?php echo $this->row->apps_only == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-apps_only0"><?php echo JText::_('COM_PUBLICATIONS_LICENSE_NO'); ?></label>
 				</div>
 			</fieldset>

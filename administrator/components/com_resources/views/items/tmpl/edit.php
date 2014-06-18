@@ -35,7 +35,7 @@ $canDo = ResourcesHelperPermissions::getActions('resource');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') . ' #' . $this->row->id : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('Resource') . ': ' . $text, 'resources.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::spacer();
 	JToolBarHelper::save();
@@ -51,7 +51,7 @@ if ($this->row->standalone == 1)
 
 	$data = array();
 	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
-	if (count($matches) > 0) 
+	if (count($matches) > 0)
 	{
 		foreach ($matches as $match)
 		{
@@ -82,7 +82,7 @@ $time = strtotime($time) === false ? NULL : $time;
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -131,7 +131,7 @@ function doFileoptions()
 				//var filepath = fform.elements['listdir'];
 				var slctdfiles = fform.slctdfile;
 				if(slctdfiles.length > 1) {
-					for(var i = 0; i < slctdfiles.length; i++) 
+					for(var i = 0; i < slctdfiles.length; i++)
 					{
 						if(slctdfiles[i].checked) {
 							var filepath = slctdfiles[i].value;
@@ -169,7 +169,7 @@ function doFileoptions()
 		}
 	}
 }
-function popratings() 
+function popratings()
 {
 	window.open('index.php?option=<?php echo $this->option; ?>&task=ratings&id=<?php echo $this->row->id; ?>&no_html=1', 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
 	return false;
@@ -323,7 +323,7 @@ function popratings()
 					<td>
 						<?php echo $this->row->ranking; ?>/10
 						<?php if ($this->row->ranking != '0') { ?>
-							<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" /> 
+							<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
 						<?php } ?>
 					</td>
 				</tr>
@@ -332,7 +332,7 @@ function popratings()
 					<td>
 						<?php echo $this->row->rating.'/5.0 ('.$this->row->times_rated.' reviews)'; ?>
 						<?php if ($this->row->rating != '0.0') { ?>
-							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" /> 
+							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
 							<a onclick="popratings();" href="#">View ratings</a>
 						<?php } ?>
 					</td>
@@ -367,7 +367,7 @@ function popratings()
 	?>
 		<div class="paramlist">
 			<div class="input-wrap">
-				<input type="checkbox" name="standalone" id="field-standalone" value="1" <?php echo ($this->row->standalone ==1) ? 'checked="checked"' : ''; ?> /> 
+				<input type="checkbox" name="standalone" id="field-standalone" value="1" <?php echo ($this->row->standalone ==1) ? 'checked="checked"' : ''; ?> />
 				<label for="field-standalone">Standalone (appears in searches, lists)</label>
 			</div>
 			<div class="input-wrap">

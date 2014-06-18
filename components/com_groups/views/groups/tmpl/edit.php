@@ -73,7 +73,7 @@ else
 }
 
 //if we are in edit mode we want to redirect back to group
-if ($this->task == "edit") 
+if ($this->task == "edit")
 {
 	$link = JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn'));
 	$title = "Back to Group";
@@ -107,7 +107,7 @@ else
 			<?php echo JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?>
 		</p>
 	<?php endif; ?>
-	
+
 	<form action="index.php" method="post" id="hubForm" class="full stepper">
 		<div class="grid">
 			<div class="col span8">
@@ -119,7 +119,7 @@ else
 					<?php else : ?>
 						<label class="group_cn_label">
 							<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
-							<input name="cn" id="group_cn_field" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" /> 
+							<input name="cn" id="group_cn_field" type="text" size="35" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" />
 							<span class="hint"><?php echo JText::_('COM_GROUPS_DETAILS_FIELD_CN_HINT'); ?></span>
 						</label>
 					<?php endif; ?>
@@ -153,7 +153,7 @@ else
 						?>
 					</label>
 				</fieldset>
-				
+
 				<?php if ($this->task != 'new' && !$this->group->isSuperGroup()) : ?>
 					<fieldset>
 						<legend>Logo</legend>
@@ -162,7 +162,7 @@ else
 							<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
 								<option value="">Select a group logo...</option>
 								<?php foreach($this->logos as $logo) { ?>
-									<?php 
+									<?php
 										$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
@@ -183,19 +183,19 @@ else
 						</label>
 					</fieldset>
 				<?php endif; ?>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_TITLE'); ?></legend>
 					<p><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_DESC'); ?></p>
 					<fieldset>
 						<legend><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
 						<label>
-							<input type="radio" class="option" name="join_policy" value="0"<?php if ($this->group->get('join_policy') == 0) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="join_policy" value="0"<?php if ($this->group->get('join_policy') == 0) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC'); ?></span>
 						</label>
 						<label>
-							<input type="radio" class="option" name="join_policy" value="1"<?php if ($this->group->get('join_policy') == 1) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="join_policy" value="1"<?php if ($this->group->get('join_policy') == 1) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC'); ?></span>
 						</label>
@@ -205,35 +205,35 @@ else
 							<textarea name="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></textarea>
 						</label>
 						<label>
-							<input type="radio" class="option" name="join_policy" value="2"<?php if ($this->group->get('join_policy') == 2) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="join_policy" value="2"<?php if ($this->group->get('join_policy') == 2) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC'); ?></span>
 						</label>
 						<label>
-							<input type="radio" class="option" name="join_policy" value="3"<?php if ($this->group->get('join_policy') == 3) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="join_policy" value="3"<?php if ($this->group->get('join_policy') == 3) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC'); ?></span>
 						</label>
 					</fieldset>
 				</fieldset>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('COM_GROUPS_PRIVACY_SETTINGS_TITLE'); ?></legend>
 					<p><?php echo JText::_('COM_GROUPS_PRIVACY_SETTINGS_DESC'); ?></p>
 					<fieldset>
 						<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span></legend>
 						<label>
-							<input type="radio" class="option" name="discoverability" value="0"<?php if ($this->group->get('discoverability') == 0) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="discoverability" value="0"<?php if ($this->group->get('discoverability') == 0) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC'); ?></span>
 						</label>
 						<label>
-							<input type="radio" class="option" name="discoverability" value="1"<?php if ($this->group->get('discoverability') == 1) { echo ' checked="checked"'; } ?> /> 
+							<input type="radio" class="option" name="discoverability" value="1"<?php if ($this->group->get('discoverability') == 1) { echo ' checked="checked"'; } ?> />
 							<strong><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING'); ?></strong>
 							<br /><span class="indent"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC'); ?></span>
 						</label>
 					</fieldset>
-					
+
 					<fieldset>
 						<legend><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_TITLE'); ?></legend>
 						<p><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_DESC'); ?></p>
@@ -262,7 +262,7 @@ else
 						</fieldset>
 					</fieldset>
 				</fieldset>
-				
+
 				<?php if ($allowEmailResponses) : ?>
 					<fieldset>
 					<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
@@ -271,7 +271,7 @@ else
 							<legend><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span></legend>
 							<label>
 								<input type="checkbox" class="option" name="discussion_email_autosubscribe" value="1"
-									<?php if ($this->group->get('discussion_email_autosubscribe') == 1 || $autoEmailResponses) { echo ' checked="checked"'; } ?> /> 
+									<?php if ($this->group->get('discussion_email_autosubscribe') == 1 || $autoEmailResponses) { echo ' checked="checked"'; } ?> />
 								<strong><?php echo JText::_('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE'); ?></strong> <br />
 								<span class="indent">
 									<?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
@@ -281,7 +281,7 @@ else
 					</fieldset>
 				<?php endif; ?>
 			</div>
-			
+
 			<div class="col span4 omega floating-iframe-col">
 				<?php if ($this->group->get('gidNumber')) : ?>
 					<div class="floating-iframe-container">
@@ -292,11 +292,11 @@ else
 				<?php endif; ?>
 			</div>
 		</div>
-		
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
 		</p>
-		
+
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
 		<input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

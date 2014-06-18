@@ -33,172 +33,172 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication master type
  */
-class PublicationMasterType extends JTable 
+class PublicationMasterType extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       			= NULL;
-		
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type				= NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias				= NULL;
-	
+
 	/**
 	 * Text
-	 * 
+	 *
 	 * @var text
 	 */
 	var $description		= NULL;
-	
+
 	/**
 	 * Offer as category choice in publication primary content contributions
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $contributable      = NULL;
-		
+
 	/**
 	 * Offer as category choice in publication supporting docs
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $supporting     	= NULL;
-	
+
 	/**
 	 * Ordering
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $ordering     		= NULL;
-	
+
 	/**
 	 * Params
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $params      		= NULL;
-	
+
 	/**
 	 * Curation group id
-	 * 
+	 *
 	 * @var int(11)
-	 */	
+	 */
 	var $curatorgroup      	= NULL;
-	
+
 	/**
 	 * Curation flow
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $curation      		= NULL;
-		
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_master_types', 'id', $db );
 	}
-	
+
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
-	 */	
-	public function check() 
+	 */
+	public function check()
 	{
-		if (trim( $this->type ) == '') 
+		if (trim( $this->type ) == '')
 		{
 			$this->setError( JText::_('Your publication master type must contain text.') );
 			return false;
 		}
-		if (trim( $this->alias ) == '') 
+		if (trim( $this->alias ) == '')
 		{
 			$this->setError( JText::_('Your publication master type alias must contain text.') );
 			return false;
 		}
 		return true;
 	}
-		
+
 	/**
 	 * Get record by alias name or ID
-	 * 
+	 *
 	 * @param      string 	$id
 	 * @return     object or false
-	 */	
-	public function getType( $id = '' ) 
+	 */
+	public function getType( $id = '' )
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			return false;
 		}
 		$field = is_numeric($id) ? 'id' : 'alias';
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field='".$id."' LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
-	
+
 	/**
 	 * Get record id by alias name
-	 * 
+	 *
 	 * @param      string 		$alias
 	 * @return     integer
-	 */	
-	public function getTypeId( $alias='' ) 
+	 */
+	public function getTypeId( $alias='' )
 	{
-		if (!$alias) 
+		if (!$alias)
 		{
 			return false;
 		}
 		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias='".$alias."' LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get record alias by id
-	 * 
+	 *
 	 * @param      integer 		$id
 	 * @return     integer
-	 */	
-	public function getTypeAlias( $id='' ) 
+	 */
+	public function getTypeAlias( $id='' )
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			return false;
 		}
 		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id='".$id."' LIMIT 1" );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get curator groups
-	 * 
+	 *
 	 * @return     array
-	 */	
-	public function getCuratorGroups() 
+	 */
+	public function getCuratorGroups()
 	{
 		$groups = array();
-		
-		$query = "SELECT curatorgroup FROM $this->_tbl WHERE contributable=1 
+
+		$query = "SELECT curatorgroup FROM $this->_tbl WHERE contributable=1
 				  AND curatorgroup !=0 AND curatorgroup IS NOT NULL";
-		
+
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
 
@@ -212,19 +212,19 @@ class PublicationMasterType extends JTable
 				}
 			}
 		}
-		
+
 		return $groups;
 	}
-	
+
 	/**
 	 * Get types for which user is authorized (curation)
-	 * 
+	 *
 	 * @return     array
-	 */	
-	public function getAuthTypes( $usergroups = array(), $curatorgroup = '', $authorized = false ) 
+	 */
+	public function getAuthTypes( $usergroups = array(), $curatorgroup = '', $authorized = false )
 	{
 		$types = array();
-		
+
 		if (empty($usergroups))
 		{
 			return false;
@@ -236,9 +236,9 @@ class PublicationMasterType extends JTable
 		}
 		else
 		{
-			$query = "SELECT id FROM $this->_tbl WHERE contributable=1 
+			$query = "SELECT id FROM $this->_tbl WHERE contributable=1
 					  AND curatorgroup !=0 AND curatorgroup IS NOT NULL ";
-			
+
 			$tquery = '';
 			foreach ($usergroups as $g)
 			{
@@ -247,7 +247,7 @@ class PublicationMasterType extends JTable
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$query .= " AND (curatorgroup IN (" . $tquery . ") ) ";
 		}
-				
+
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
 
@@ -261,40 +261,40 @@ class PublicationMasterType extends JTable
 				}
 			}
 		}
-		
+
 		return $types;
 	}
-	
+
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      string  $select 				Select query
 	 * @param      integer $contributable		Contributable?
 	 * @param      integer $supporting 			Supporting?
 	 * @param      string  $orderby 			Order by
 	 * @param      string  $config
 	 * @return     array
-	 */	
-	public function getTypes( $select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '') 
+	 */
+	public function getTypes( $select = '*', $contributable = 0, $supporting = 0, $orderby = 'id', $config = '')
 	{
 		$query  = "SELECT $select FROM $this->_tbl ";
-		if ($contributable) 
+		if ($contributable)
 		{
 			$query .= "WHERE contributable=1 ";
 		}
-		elseif ($supporting) 
+		elseif ($supporting)
 		{
 			$query .= "WHERE supporting=1 ";
 		}
-			
+
 		$query .= "ORDER BY ".$orderby;
-		
+
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
-		if ($select == 'alias') 
+		if ($select == 'alias')
 		{
 			$types = array();
-			if ($results) 
+			if ($results)
 			{
 				foreach($results as $result)
 				{
@@ -305,10 +305,10 @@ class PublicationMasterType extends JTable
 		}
 		return $results;
 	}
-	
+
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     array
 	 */
@@ -317,17 +317,17 @@ class PublicationMasterType extends JTable
 		$query  = "SELECT c.*";
 		$query .= $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'id';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
@@ -335,11 +335,11 @@ class PublicationMasterType extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get record counts
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     array
 	 */
@@ -352,19 +352,19 @@ class PublicationMasterType extends JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-		
+
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     string SQL
-	 */	
+	 */
 	protected function _buildQuery($filters = array())
 	{
 		$query  = "FROM $this->_tbl AS c";
 
 		$where = array();
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -373,76 +373,76 @@ class PublicationMasterType extends JTable
 
 		return $query;
 	}
-	
+
 	/**
 	 * Check type usage
-	 * 
+	 *
 	 * @param      integer 		$id		type id
 	 * @return     integer
-	 */	
-	public function checkUsage( $id = NULL ) 
+	 */
+	public function checkUsage( $id = NULL )
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->id;
 		}
-		if (!$id) 
+		if (!$id)
 		{
 			return false;
 		}
-		
+
 		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_publications'.DS.'tables'.DS.'publication.php' );
-		
+
 		$p = new Publication( $this->_db );
-		
+
 		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=".$id);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Load by ordering
-	 * 
+	 *
 	 * @param      mixed $ordering Integer or string (alias)
 	 * @return     mixed False if error, Object on success
 	 */
 	public function loadByOrder($ordering = NULL)
 	{
-		if ($ordering === NULL) 
+		if ($ordering === NULL)
 		{
 			return false;
 		}
-				
+
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering='$ordering' LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Change order
-	 * 
-	 * @param      integer $dir 
+	 *
+	 * @param      integer $dir
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function changeOrder ( $dir ) 
+	 */
+	public function changeOrder ( $dir )
 	{
 		$newOrder = $this->ordering + $dir;
-		
+
 		// Load record in prev position
 		$old = new PublicationMasterType( $this->_db );
-		
+
 		if ($old->loadByOrder($newOrder))
 		{
 			$old->ordering  = $this->ordering;
 			$old->store();
-		} 		
-		
+		}
+
 		$this->ordering = $newOrder;
 		$this->store();
 

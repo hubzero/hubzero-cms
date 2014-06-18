@@ -51,13 +51,13 @@ class PublicationsElementsFormatXML extends PublicationsElementsFormat
 		// Iterate over the object members.
 		foreach ((array) $object as $k => $v)
 		{
-			if (is_scalar($v)) 
+			if (is_scalar($v))
 			{
 				$n = $root->addChild($nodeName, $v);
 				$n->addAttribute('name', $k);
 				$n->addAttribute('type', gettype($v));
-			} 
-			else 
+			}
+			else
 			{
 				$n = $root->addChild($nodeName);
 				$n->addAttribute('name', $k);
@@ -149,13 +149,13 @@ class PublicationsElementsFormatXML extends PublicationsElementsFormat
 		// Iterate over the object members.
 		foreach ((array) $var as $k => $v)
 		{
-			if (is_scalar($v)) 
+			if (is_scalar($v))
 			{
 				$n = $node->addChild($nodeName, $v);
 				$n->addAttribute('name', $k);
 				$n->addAttribute('type', gettype($v));
-			} 
-			else 
+			}
+			else
 			{
 				$n = $node->addChild($nodeName);
 				$n->addAttribute('name', $k);

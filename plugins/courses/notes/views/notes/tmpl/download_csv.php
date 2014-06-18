@@ -62,10 +62,10 @@ $base = $this->offering->link();
 			{
 				echo '#' . $note->get('id');
 
-				if ($note->get('timestamp') != '00:00:00') 
+				if ($note->get('timestamp') != '00:00:00')
 				{
-					echo ' video time: ' . $this->escape($note->get('timestamp')); 
-				} 
+					echo ' video time: ' . $this->escape($note->get('timestamp'));
+				}
 				echo "\n";
 				echo $this->escape(stripslashes($note->get('content')));
 				echo "\n";

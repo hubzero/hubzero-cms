@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -41,23 +41,23 @@ function CitationsBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['format'])) 
+	if (!empty($query['format']))
 	{
 		$segments[] = $query['format'];
 		unset($query['format']);
 	}
 	/*
-	if (!empty($query['area'])) 
+	if (!empty($query['area']))
 	{
 		$segments[] = $query['area'];
 		unset($query['area']);
@@ -68,7 +68,7 @@ function CitationsBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -81,7 +81,7 @@ function CitationsParseRoute($segments)
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		$vars['task'] = $segments[0];
 		switch ($vars['task'])
@@ -94,7 +94,7 @@ function CitationsParseRoute($segments)
 			case 'import_upload':
 			case 'import_review':
 			case 'import_save':
-			case 'import_saved': 
+			case 'import_saved':
 				$vars['controller'] = 'import';
 				$vars['task'] = str_replace('import_', '', $vars['task']);
 			break;
@@ -104,17 +104,17 @@ function CitationsParseRoute($segments)
 			break;
 		}
 	}
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
 		$vars['id'] = $segments[1];
 		/*
-		if (isset($segments[2])) 
+		if (isset($segments[2]))
 		{
 			$vars['area'] = $segments[2];
 		}
 		*/
 	}
-	if (isset($segments[2])) 
+	if (isset($segments[2]))
 	{
 		$vars['format'] = $segments[2];
 	}

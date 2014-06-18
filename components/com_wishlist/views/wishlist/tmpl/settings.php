@@ -69,7 +69,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 				<legend><?php echo JText::_('COM_WISHLIST_INFORMATION'); ?></legend>
 
 				<label for="field-title">
-					<?php echo JText::_('COM_WISHLIST_TITLE'); ?>: 
+					<?php echo JText::_('COM_WISHLIST_TITLE'); ?>:
 			<?php if ($this->wishlist->get('category') == 'resource') { ?>
 					<span class="highighted"><?php echo $this->wishlist->get('title'); ?></span>
 					<input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
@@ -81,14 +81,14 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			<?php } ?>
 
 				<label for="field-description">
-					<?php echo JText::_('COM_WISHLIST_DESC'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>): 
+					<?php echo JText::_('COM_WISHLIST_DESC'); ?> (<?php echo JText::_('COM_WISHLIST_OPTIONAL'); ?>):
 					<textarea name="fields[description]" id="field-description" rows="10" cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
 				</label>
 
 				<fieldset>
 					<legend><?php echo JText::_('COM_WISHLIST_THIS_LIST_IS'); ?>:</legend>
 					<label for="field-public-yes">
-						<input class="option" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php 
+						<input class="option" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php
 						if ($this->wishlist->get('public') == 1) {
 							echo ' checked="checked"';
 						}
@@ -98,7 +98,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					</label>
 
 					<label for="field-public-no">
-						<input class="option" type="radio" name="fields[public]" id="field-public-no" value="0" <?php 
+						<input class="option" type="radio" name="fields[public]" id="field-public-no" value="0" <?php
 						if ($this->wishlist->get('public') == 0) {
 							echo ' checked="checked"';
 						}
@@ -109,7 +109,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 				</fieldset>
 			</fieldset>
 			<div class="clear"></div>
-			
+
 			<div class="explaination">
 				<p><?php echo JText::_('COM_WISHLIST_SETTINGS_EDIT_GROUPS'); ?></p>
 			</div>
@@ -129,10 +129,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					<?php
 					$allmembers = array();
 					$groups = $this->wishlist->owners('groups');
-					if (count($groups) > 0) 
+					if (count($groups) > 0)
 					{
 						$k = 1;
-						for ($i = 0, $n = count($groups); $i < $n; $i++) 
+						for ($i = 0, $n = count($groups); $i < $n; $i++)
 						{
 							$instance = \Hubzero\User\Group::getInstance($groups[$i]);
 
@@ -148,7 +148,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 									<?php echo ($n>1 && !in_array($groups[$i], $this->wishlist->owners('groups', 1))) ? '<a href="'.JRoute::_($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.JText::_('COM_WISHLIST_OPTION_REMOVE').'</a>' : '' ; ?>
 								</td>
 							</tr>
-							<?php 
+							<?php
 							$k++;
 						}
 					} else { ?>
@@ -161,7 +161,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 				</div>
 
 				<label for="field_newgroups">
-					<?php echo JText::_('COM_WISHLIST_SETTINGS_ADD_GROUPS'); ?>: 
+					<?php echo JText::_('COM_WISHLIST_SETTINGS_ADD_GROUPS'); ?>:
 					<?php
 					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('groups', 'newgroups', 'field_newgroups', '', '')));
 					if (count($mc) > 0) {
@@ -190,18 +190,18 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 							</tr>
 						</thead>
 						<tbody>
-					<?php 
+					<?php
 					$allmembers = array_unique($allmembers);
 
 					$individuals = $this->wishlist->owners('individuals');
 
 					// if we have people outside of groups
-					if (count($individuals) > count($allmembers)) 
+					if (count($individuals) > count($allmembers))
 					{
 						$k = 1;
-						for ($i = 0, $n = count($individuals); $i < $n; $i++) 
+						for ($i = 0, $n = count($individuals); $i < $n; $i++)
 						{
-							if (!in_array($individuals[$i], $allmembers)) 
+							if (!in_array($individuals[$i], $allmembers))
 							{
 								$kuser = \Hubzero\User\Profile::getInstance($individuals[$i]);
 							?>
@@ -225,9 +225,9 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						</tbody>
 					</table>
 				</div>
-				
+
 				<label for="field_newowners">
-					<?php echo JText::_('COM_WISHLIST_ADD_IND'); ?>: 
+					<?php echo JText::_('COM_WISHLIST_ADD_IND'); ?>:
 					<?php
 					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'newowners', 'field_newowners', '', '')));
 					if (count($mc) > 0) {
@@ -260,13 +260,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					<?php
 					// if we have people outside of groups
 					$advisory = $this->wishlist->owners('advisory');
-					if (count($advisory) > 0) 
+					if (count($advisory) > 0)
 					{
 						$k=1;
 
-						for ($i=0, $n=count($advisory); $i < $n; $i++) 
+						for ($i=0, $n=count($advisory); $i < $n; $i++)
 						{
-							if (!in_array($advisory[$i], $allmembers)) 
+							if (!in_array($advisory[$i], $allmembers))
 							{
 								$quser = \Hubzero\User\Profile::getInstance($advisory[$i]);
 							?>
@@ -290,9 +290,9 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						</tbody>
 					</table>
 				</div>
-				
+
 				<label for="field_newadvisory">
-					<?php echo JText::_('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>: 
+					<?php echo JText::_('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
 					<?php
 					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
 					if (count($mc) > 0) {

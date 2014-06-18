@@ -15,7 +15,7 @@
 		</p>
 		<p>
 			<label>
-				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?= htmlentities(($val = $dep->getEndTime()) ? $val : '') ?>" />			
+				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?= htmlentities(($val = $dep->getEndTime()) ? $val : '') ?>" />
 			</label>
 			<? if ($showErrors && $dep->hasErrors('endTime')): ?>
 			<ul class="error">
@@ -28,7 +28,7 @@
 		<p>
 			<label>
 				<span>Time limit:</span><input type="number" class="minutes" name="deployment[timeLimit]" value="<?= htmlentities(($val = $dep->getTimeLimit()) ? $val : '') ?>" /> minutes
-			</label>			
+			</label>
 			<? if ($showErrors && $dep->hasErrors('timeLimit')): ?>
 			<ul class="error">
 				<? foreach ($dep->getErrors('timeLimit') as $err): ?>
@@ -40,7 +40,7 @@
 		<p class="info">If this deployment is timed, a landing page will be shown before the form to prevent users from triggering the countdown before they are ready.</p>
 	</fieldset>
 	<fieldset>
-		<? 
+		<?
 			$resultPages = array(
 				'open' => $dep->getResultsOpen(),
 				'closed' => $dep->getResultsClosed()

@@ -44,7 +44,7 @@ else
 ?>
 
 <form action="<?php echo JRoute::_($this->course->link() . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 	<input type="hidden" name="task" value="savememberoptions" />
@@ -55,16 +55,16 @@ else
 	</div>
 
 	<p><?php echo JText::_('COURSE_MEMBEROPTIONS_DESC'); ?></p>
-	
+
 	<?php if ($allowEmailResponses) { ?>
 		<div style="padding-top:25px;">
-			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> > 
+			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if($this->recvEmailOptionValue == 1) echo "checked"; else echo "";?> >
 			<label for="recvpostemail"><?php echo JText::_('COURSE_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
 		</div>
 	<?php
 	}
 	?>
-	
+
 	<?php if ($atLeastOneOption) { ?>
 		<div style="padding-top:25px;">
 			<input type="submit" value="Save">
@@ -75,6 +75,6 @@ else
 		echo JText::_('COURSE_MEMBEROPTIONS_NONE');
 	}
 	?>
-	
+
 </form>
-	
+

@@ -43,7 +43,7 @@ $content = $this->module->get('content');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'markscanned')
 	{
@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" method="post" name="adminForm" id="item-form">
-	
+
 	<?php
 		unset($this->issues->count);
 		$severe = $elevated = $minor = array();
@@ -77,19 +77,19 @@ function submitbutton(pressbutton)
 			<?php echo JText::sprintf('The following issues are considered <strong>SEVERE</strong> and should be address before approving: <br/><br > %s', implode('<br />', $severe)); ?>
 		</p>
 	<?php endif; ?>
-	
+
 	<?php if (count($elevated) > 0) : ?>
 		<p class="warning">
 			<?php echo JText::sprintf('The following issues are considered <strong>ELEVATED</strong> and should be address before approving: <br/><br > %s', implode('<br />', $elevated)); ?>
 		</p>
 	<?php endif; ?>
-	
+
 	<?php if (count($minor) > 0) : ?>
 		<p class="info">
 			<?php echo JText::sprintf('The following issues are considered <strong>MINOR</strong> and should be address before approving: <br/><br > %s', implode('<br />', $elevated)); ?>
 		</p>
 	<?php endif; ?>
-	
+
 	<h3><?php echo JText::_('View Raw Code'); ?></h3>
 	<div class="code">
 		<?php
@@ -109,10 +109,10 @@ function submitbutton(pressbutton)
 			</tr>
 		</table>
 	</div>
-	
+
 	<h3><?php echo JText::_('Update Content'); ?></h3>
 	<textarea name="module[content]" rows="40"><?php echo $content; ?></textarea>
-	
+
 	<input type="hidden" name="module[id]" value="<?php echo $this->module->get('id'); ?>">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

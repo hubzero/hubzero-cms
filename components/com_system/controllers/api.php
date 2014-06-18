@@ -26,7 +26,7 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * 
+ *
  */
 
 /**
@@ -47,7 +47,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$this->config = JComponentHelper::getParams('com_system');
 		$this->database = JFactory::getDBO();
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'info':               $this->infoTask();               break;
 			case 'overview':           $this->infoTask();               break;
@@ -106,11 +106,11 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		if (isset($_SERVER['SERVER_SOFTWARE'])) 
+		if (isset($_SERVER['SERVER_SOFTWARE']))
 		{
 			$sf = $_SERVER['SERVER_SOFTWARE'];
 		}
-		else 
+		else
 		{
 			$sf = getenv('SERVER_SOFTWARE');
 		}

@@ -38,56 +38,56 @@ class OrderItem extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $oid    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $itemid     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $price    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $quantity   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $selections = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,19 +98,19 @@ class OrderItem extends JTable
 
 	/**
 	 * Get all items for an order
-	 * 
+	 *
 	 * @param      integer $oid Order ID
 	 * @return     mixed
 	 */
 	public function getOrderItems($oid)
 	{
-		if ($oid == null) 
+		if ($oid == null)
 		{
 			return false;
 		}
-		$sql = "SELECT r.*, s.* 
-				FROM $this->_tbl AS r 
-				LEFT JOIN #__store AS s ON s.id=r.itemid 
+		$sql = "SELECT r.*, s.*
+				FROM $this->_tbl AS r
+				LEFT JOIN #__store AS s ON s.id=r.itemid
 				WHERE r.oid=" . $oid;
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -118,19 +118,19 @@ class OrderItem extends JTable
 
 	/**
 	 * Count all items for an order
-	 * 
+	 *
 	 * @param      integer $oid Order ID
 	 * @return     mixed
 	 */
 	public function countAllItemOrders($oid)
 	{
-		if ($oid == null) 
+		if ($oid == null)
 		{
 			return false;
 		}
-		$sql = "SELECT count(*) 
-				FROM $this->_tbl AS r, #__store AS s 
-				WHERE s.id=r.itemid 
+		$sql = "SELECT count(*)
+				FROM $this->_tbl AS r, #__store AS s
+				WHERE s.id=r.itemid
 				AND r.oid=" . $oid;
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -138,21 +138,21 @@ class OrderItem extends JTable
 
 	/**
 	 * Count all active items for an order
-	 * 
+	 *
 	 * @param      integer $oid Order ID
 	 * @return     mixed
 	 */
 	public function countActiveItemOrders($oid)
 	{
-		if ($oid == null) 
+		if ($oid == null)
 		{
 			return false;
 		}
-		$sql = "SELECT count(*) 
-				FROM $this->_tbl AS r, #__store AS s, #__orders AS o 
-				WHERE o.status=0 
-				AND s.id=r.itemid 
-				AND o.id=r.oid 
+		$sql = "SELECT count(*)
+				FROM $this->_tbl AS r, #__store AS s, #__orders AS o
+				WHERE o.status=0
+				AND s.id=r.itemid
+				AND o.id=r.oid
 				AND r.itemid=" . $oid;
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();

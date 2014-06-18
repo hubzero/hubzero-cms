@@ -38,7 +38,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display member quotas
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -69,7 +69,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -83,7 +83,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new quota class
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -94,7 +94,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a member quota
-	 * 
+	 *
 	 * @param      integer $id ID of user to edit
 	 * @return     void
 	 */
@@ -127,10 +127,10 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$selected   = '';
 		$options[]  = JHTML::_('select.option', '0', JText::_('custom'), 'value', 'text');
 
-		foreach($classes as $class) 
+		foreach($classes as $class)
 		{
 			$options[] = JHTML::_('select.option', $class->id, JText::_($class->alias), 'value', 'text');
-			if ($class->id == $this->view->row->class_id) 
+			if ($class->id == $this->view->row->class_id)
 			{
 				$selected = $class->id;
 			}
@@ -140,7 +140,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->du = $this->getQuotaUsageTask('array', $this->view->row->id);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -154,7 +154,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Apply changes to a user quota
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -165,7 +165,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save user quota
-	 * 
+	 *
 	 * @param      integer $redirect - whether or not to redirect after save
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -218,7 +218,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				JText::_('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
 				'message'
 			);
-		} 
+		}
 		else
 		{
 			$this->view->setLayout('edit');
@@ -229,7 +229,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Restore member to default quota class
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function restoreDefaultTask()
@@ -307,7 +307,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display quota classes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayClassesTask()
@@ -330,15 +330,15 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -352,7 +352,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new quota class
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addClassTask()
@@ -363,7 +363,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a quota class
-	 * 
+	 *
 	 * @param      integer $id ID of class to edit
 	 * @return     void
 	 */
@@ -395,7 +395,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -409,7 +409,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Apply changes to a quota class item
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyClassTask()
@@ -420,7 +420,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save quota class
-	 * 
+	 *
 	 * @param      integer $redirect - whether or not to redirect after save
 	 * @return     void
 	 */
@@ -458,7 +458,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				JText::_('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'),
 				'message'
 			);
-		} 
+		}
 		else
 		{
 			$this->view->setLayout('editClass');
@@ -469,7 +469,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Removes class(es)
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteClassTask()
@@ -583,14 +583,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$config = JComponentHelper::getParams('com_tools');
 		$host = $config->get('storagehost');
 
-		if ($username && $host) 
+		if ($username && $host)
 		{
 			$fp = @stream_socket_client($host, $errno, $errstr, 30);
-			if (!$fp) 
+			if (!$fp)
 			{
 				$info[] = "$errstr ($errno)\n";
-			} 
-			else 
+			}
+			else
 			{
 				$msg = '';
 				fwrite($fp, "getquota user=" . $username . "\n");
@@ -636,7 +636,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display quota import page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function importTask()
@@ -648,7 +648,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -662,7 +662,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Process quota import
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function processImportTask()
@@ -773,7 +773,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 	/**
 	 * Check for registered users without quota entries and add them
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function importMissingTask()

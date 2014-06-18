@@ -26,36 +26,36 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if ($this->version == 'dev') 
+if ($this->version == 'dev')
 {
-	$ptitle = $this->last_idx > $this->current_idx  
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_RELEASE_NOTES')) 
+	$ptitle = $this->last_idx > $this->current_idx
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_RELEASE_NOTES'))
 		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_RELEASE_NOTES')) ;
 }
-else 
+else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_NOTES'));	
+	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_NOTES'));
 }
 
 $published = $this->pub->versions > 0 ? 1 : 0;
 
 // Are we allowed to edit?
 $canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
+	$this->pub->state == 3
+	|| $this->pub->state == 4
+	|| $this->pub->state == 5
+	|| in_array($this->active, $this->mayupdate))
 	? 1 : 0;
 
 ?>
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-	<?php echo $this->project->provisioned == 1 
+<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-		<input type="hidden" name="active" value="publications" />					
+		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 		<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -102,20 +102,20 @@ $canedit = (
 				<?php if($this->pub->state != 1 && !$this->move && $this->publication_allowed && $canedit) { echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; } ?>
 			</span>
 			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>: </h5>
-			<?php 
+			<?php
 			$model = new PublicationsModelPublication($this->pub);
-			if ($canedit) 
+			if ($canedit)
 			{
 				echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 15, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
 			}
-			else 
+			else
 			{
 				// Show notes
-				if ($notes = $model->notes('parsed')) 
+				if ($notes = $model->notes('parsed'))
 				{
 					echo $notes;
 				}
-				else 
+				else
 				{
 					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
@@ -146,7 +146,7 @@ $canedit = (
 					<td>
 						<label>
 							<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
-							<?php 
+							<?php
 							echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 20, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
 							?>
 						</label>
@@ -157,11 +157,11 @@ $canedit = (
 		<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_NOTES'); ?></p>
 		<?php } else {
 				// Show notes
-				if ($notes = $model->notes('parsed')) 
+				if ($notes = $model->notes('parsed'))
 				{
 					echo $notes;
 				}
-				else 
+				else
 				{
 					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}

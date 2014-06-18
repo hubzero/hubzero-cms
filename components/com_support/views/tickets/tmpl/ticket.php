@@ -46,16 +46,16 @@ $name = JText::_('Unknown');
 $usertype = JText::_('Unknown');
 
 $submitter = new \Hubzero\User\Profile();
-if ($this->row->login) 
+if ($this->row->login)
 {
 	//$juseri = JUser::getInstance($comment->created_by);
 	$submitter->load($this->row->login);
-	if (is_object($submitter) && $submitter->get('name')) 
+	if (is_object($submitter) && $submitter->get('name'))
 	{
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
 			$usertype = JUser::getInstance($submitter->get('uidNumber'))->get('usertype');
-		} 
+		}
 		else
 		{
 			jimport( 'joomla.user.helper' );
@@ -64,15 +64,15 @@ if ($this->row->login)
 
 		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($this->row->login)) . ')</a>';
 		$unknown = 0;
-	} 
-	else 
+	}
+	else
 	{
 		$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
 		$name .= ($this->row->login) ? $this->escape(stripslashes($this->row->name)) . ' (' . $this->escape(stripslashes($this->row->login)) . ')' : $this->escape(stripslashes($this->row->name));
 		$name .= '</a>';
 	}
-} 
-else 
+}
+else
 {
 	$name  = '<a rel="email" href="mailto:'. $this->row->email .'">';
 	$name .= ($this->row->login) ? $this->escape(stripslashes($this->row->name)) . ' (' . $this->escape(stripslashes($this->row->login)) . ')' : $this->escape(stripslashes($this->row->name));
@@ -177,9 +177,9 @@ $cc = array();
 			</p><!-- / .entry-member-photo -->
 			<div class="entry-content">
 				<p class="entry-title">
-					<strong><?php echo $name; ?></strong> 
-					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span> 
+					<strong><?php echo $name; ?></strong>
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=ticket&id=' . $this->row->id); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>"><span class="entry-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> <span class="entry-date-on"><?php echo JText::_('on'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->row->created; ?>"><?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</a>
 				</p><!-- / .entry-title -->
@@ -264,22 +264,22 @@ $cc = array();
 			// Is the comment private?
 			// If so, does the user have access to read private comments?
 			//   If not, skip it
-			if (!$this->acl->check('read', 'private_comments') && $comment->isPrivate()) 
+			if (!$this->acl->check('read', 'private_comments') && $comment->isPrivate())
 			{
 				continue;
 			}
 			$i++;
 
 			// Set the CSS class
-			if ($comment->isPrivate()) 
+			if ($comment->isPrivate())
 			{
 				$access = 'private';
-			} 
-			else 
+			}
+			else
 			{
 				$access = 'public';
 			}
-			if ($comment->get('created_by') == $this->row->login && !$comment->isPrivate()) 
+			if ($comment->get('created_by') == $this->row->login && !$comment->isPrivate())
 			{
 				$access = 'submitter';
 			}
@@ -287,7 +287,7 @@ $cc = array();
 			$name = JText::_('Unknown');
 			$cite = $name;
 
-			if ($comment->creator()) 
+			if ($comment->creator())
 			{
 				$cite = $this->escape(stripslashes($comment->creator('name')));
 				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $comment->creator('id')) . '">' . $cite . '</a>';
@@ -305,9 +305,9 @@ $cc = array();
 							<?php echo $name; ?>
 						</strong>
 						<a class="permalink" href="<?php echo JRoute::_($comment->link()); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">
-							<span class="comment-date-at">@</span> 
-							<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span> 
-							<span class="comment-date-on"><?php echo JText::_('on'); ?></span> 
+							<span class="comment-date-at">@</span>
+							<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
+							<span class="comment-date-on"><?php echo JText::_('on'); ?></span>
 							<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
 						</a>
 					</p><!-- / .comment-head -->
@@ -321,19 +321,19 @@ $cc = array();
 						<?php
 						foreach ($comment->attachments() as $attachment)
 						{
-							if ($attachment->isImage()) 
+							if ($attachment->isImage())
 							{
-								if ($attachment->width() > 400) 
+								if ($attachment->width() > 400)
 								{
 									$img = '<p><a href="' . JRoute::_($attachment->link()) . '"><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
-								} 
-								else 
+								}
+								else
 								{
 									$img = '<p><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
 								}
 								echo $img;
-							} 
-							else 
+							}
+							else
 							{
 								echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description', $this->get('filename')) . '</a></p>';
 							}
@@ -408,7 +408,7 @@ $cc = array();
 
 					<label>
 						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
-						<?php 
+						<?php
 						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '',$this->lists['tags'])));
 
 						if (count($tf) > 0) {
@@ -422,7 +422,7 @@ $cc = array();
 						<div class="col span6">
 							<label>
 								<?php echo JText::_('COMMENT_GROUP'); ?>:
-								<?php 
+								<?php
 								$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'ticket[group]', 'acgroup', '',$this->row->group, '', 'ticketowner')));
 								if (count($gc) > 0) {
 									echo $gc[0];
@@ -457,7 +457,7 @@ $cc = array();
 								<option value="1"<?php if ($this->row->open && $this->row->status == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="Closed">
 									<option value="noresolution"<?php if (!$this->row->open && $this->row->resolved == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-									<?php 
+									<?php
 									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') {
 										foreach ($this->lists['resolutions'] as $anode)
 										{
@@ -481,7 +481,7 @@ $cc = array();
 						<select name="ticket[category]" id="ticket-field-category">
 							<option value=""><?php echo JText::_('[ none ]'); ?></option>
 							<?php
-							foreach ($this->lists['categories'] as $category) 
+							foreach ($this->lists['categories'] as $category)
 							{
 								?>
 								<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->category == $category->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
@@ -562,7 +562,7 @@ $cc = array();
 						</label>
 					</div> -->
 
-					<?php 
+					<?php
 					$tmp = ('-' . time());
 					$this->js('jquery.fileuploader.js', 'system');
 					$jbase = rtrim(JURI::getInstance()->base(true), '/');
@@ -587,18 +587,18 @@ $cc = array();
 					<legend><?php echo JText::_('COMMENT_LEGEND_EMAIL'); ?>:</legend>
 					<div class="grouping">
 						<label for="email_submitter">
-							<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" /> 
+							<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
 							<?php echo JText::_('COMMENT_SEND_EMAIL_SUBMITTER'); ?>
 						</label>
 						<label for="email_owner">
-							<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" /> 
+							<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
 							<?php echo JText::_('COMMENT_SEND_EMAIL_OWNER'); ?>
 						</label>
 					</div>
 					<div class="clear"></div>
 
 					<label>
-						<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
+						<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php
 						if (isset($comment))
 						{
 							$cc = $comment->changelog()->get('cc');

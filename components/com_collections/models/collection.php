@@ -41,63 +41,63 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 {
 	/**
 	 * Resource ID
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_authorized = false;
 
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CollectionsTableCollection';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_collections.collection.description';
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_posts = null;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_post = null;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_item = null;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_following = null;
 
 	/**
 	 * User object
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -144,14 +144,14 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$key = $oid . '_' . $object_id . '_' . $object_type;
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $object_id, $object_type);
 		}
@@ -161,7 +161,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the course exists
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -172,7 +172,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -196,7 +196,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
@@ -238,7 +238,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		}
 
 		// Create an Item entry
-		// This is because even collections can be reposted. 
+		// This is because even collections can be reposted.
 		// Thus, there needs to be an item entry to "repost"
 		$item = new CollectionsTableItem($this->_db);
 		$item->loadType($this->get('id'), 'collection');
@@ -249,12 +249,12 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 			$item->title       = $this->get('title');
 			$item->description = $this->get('description');
 
-			if (!$item->check()) 
+			if (!$item->check())
 			{
 				$this->setError($item->getError());
 			}
 			// Store new content
-			if (!$item->store()) 
+			if (!$item->store())
 			{
 				$this->setError($item->getError());
 			}
@@ -265,7 +265,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Get the item entry for a collection
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function item()
@@ -281,12 +281,12 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				$item->title       = $this->get('title');
 				$item->description = $this->get('description');
 
-				if (!$item->check()) 
+				if (!$item->check())
 				{
 					$this->setError($item->getError());
 				}
 				// Store new content
-				if (!$item->store()) 
+				if (!$item->store())
 				{
 					$this->setError($item->getError());
 				}
@@ -299,7 +299,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Set and get a specific offering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reposts()
@@ -312,14 +312,14 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Set and get a specific offering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function post($id=null)
 	{
 		// If the current post isn't set
 		//    OR the ID passed doesn't equal the current post's ID
-		if (!isset($this->_post) 
+		if (!isset($this->_post)
 		 || ($id !== null && (int) $this->_post->get('id') != $id))
 		{
 			// Reset current offering
@@ -351,9 +351,9 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list of posts in this collection
-	 *   Accepts an array of filters for database query 
+	 *   Accepts an array of filters for database query
 	 *   that retrieves results
-	 * 
+	 *
 	 * @param      array $filters
 	 * @return     object
 	 */
@@ -422,7 +422,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 						$results[$key]->item()->addAsset(null);
 					}
 
-					if (isset($tags[$results[$key]->get('item_id')])) 
+					if (isset($tags[$results[$key]->get('item_id')]))
 					{
 						$results[$key]->item()->addTag($tags[$results[$key]->get('item_id')]);
 					}
@@ -445,7 +445,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Get a count of data associated with this collection
-	 * 
+	 *
 	 * @param      string $what What to count
 	 * @return     integer
 	 */
@@ -506,7 +506,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Check if someone or a group is following this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -533,7 +533,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Unfollow this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -559,7 +559,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Follow this collection
-	 * 
+	 *
 	 * @param      integer $follower_id   ID of the follower
 	 * @param      string  $follower_type Type of the follower [member, group]
 	 * @return     boolean
@@ -609,7 +609,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string

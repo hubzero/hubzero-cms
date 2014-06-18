@@ -91,15 +91,15 @@ $no_html = JRequest::getVar("no_html", 0);
 	<br class="clear" />
 
 	<div id="messages-container">
-		<?php 
+		<?php
 			foreach($this->notifications as $n) {
 				echo "<p class=\"{$n['type']}\">{$n['message']}</p>";
 			}
 		?>
 <?php endif; ?>
-		
+
 		<?php echo $this->body; ?>
-		
+
 <?php if(!$no_html) : ?>
 	</div>
 </div>

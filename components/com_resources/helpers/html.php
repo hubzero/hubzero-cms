@@ -40,7 +40,7 @@ class ResourcesHtml
 {
 	/**
 	 * Generate a select form
-	 * 
+	 *
 	 * @param      string $name  Field name
 	 * @param      array  $array Data to populate select with
 	 * @param      mixed  $value Value to select
@@ -65,7 +65,7 @@ class ResourcesHtml
 	/**
 	 * Format an ID by prefixing 0s.
 	 * This is used for directory naming
-	 * 
+	 *
 	 * @param      integer $someid ID to format
 	 * @return     string
 	 */
@@ -76,7 +76,7 @@ class ResourcesHtml
 
 	/**
 	 * Build the path to resources files from the creating date
-	 * 
+	 *
 	 * @param      string  $date Timestamp (0000-00-00 00:00:00)
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
@@ -85,12 +85,12 @@ class ResourcesHtml
 	public static function build_path($date='', $id, $base)
 	{
 		$dir_id = self::niceidformat($id);
-		
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = JFactory::getDate($date)->format('Y');
 			$dir_month = JFactory::getDate($date)->format('m');
@@ -100,8 +100,8 @@ class ResourcesHtml
 				$dir_year  = JHTML::_('date', $date, 'Y');
 				$dir_month = JHTML::_('date', $date, 'm');
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');
@@ -109,16 +109,16 @@ class ResourcesHtml
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 	}
-	
+
 	/**
 	 * Display certain supporting docs and/or link to more
-	 * 
+	 *
 	 * @param      object  $publication   	Publication object
 	 * @param      string  $option 			Component name
-	 * @param      object  $children 		Publication attachments	
+	 * @param      object  $children 		Publication attachments
 	 * @return     string HTML
 	 */
-	public static function sortSupportingDocs( $publication, $option, $children ) 
+	public static function sortSupportingDocs( $publication, $option, $children )
 	{
 		// Set counts
 		$docs 	= 0;
@@ -130,7 +130,7 @@ class ResourcesHtml
 
 		if ($children)
 		{
-			foreach ($children as $child) 
+			foreach ($children as $child)
 			{
 				$docs++;
 				$child->title = $child->title ? stripslashes($child->title) : '';
@@ -138,17 +138,17 @@ class ResourcesHtml
 				$child->title = str_replace( '&amp;', '&', $child->title );
 				$child->title = str_replace( '&', '&amp;', $child->title );
 				$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
-				
+
 				$title = ($child->logicaltitle)
 						? stripslashes($child->logicaltitle)
 						: stripslashes($child->title);
-						
+
 				$params = new JRegistry( $child->params );
-				
+
 				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
 				$doctitle = $params->get('title', $title);
-				
+
 				// Things we want to highlight
 				$toShow = array('User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo');
 
@@ -157,8 +157,8 @@ class ResourcesHtml
 
 				foreach ($toShow as $item)
 				{
-					if (strtolower($doctitle) !=  preg_replace('/' . strtolower($item) . '/', '', strtolower($doctitle)) 
-					 && !in_array($item, $shown)) 
+					if (strtolower($doctitle) !=  preg_replace('/' . strtolower($item) . '/', '', strtolower($doctitle))
+					 && !in_array($item, $shown))
 					{
 						$class = str_replace(' ', '', strtolower($item));
 						$childParams  = new JRegistry($child->params);
@@ -186,33 +186,33 @@ class ResourcesHtml
 					}
 				}
 			}
-		}	
-		
+		}
+
 		$sdocs = count( $supli ) > 2 ? 2 : count( $supli );
 		$otherdocs = $docs - $sdocs;
 
-		for ($i=0; $i < count( $supli ); $i++) 
+		for ($i=0; $i < count( $supli ); $i++)
 		{
 			$supln .=  $i < 2 ? $supli[$i] : '';
 			$supln .=  $i == 2 && !$otherdocs ? $supli[$i] : '';
 		}
-		
-		// View more link?			
-		if ($docs > 0 && $otherdocs > 0) 
+
+		// View more link?
+		if ($docs > 0 && $otherdocs > 0)
 		{
-			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option 
+			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option
 				. '&id=' . $publication->id . '&active=supportingdocs')
-				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">' 
+				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">'
 				. $otherdocs . ' ' . JText::_('more') . ' &rsaquo;</a></li>' . "\n";
 		}
-		 
-		if (!$sdocs && $docs > 0) 
+
+		if (!$sdocs && $docs > 0)
 		{
-			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option=' 
-				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">' 
+			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option='
+				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">'
 				. JText::_('Additional materials available') . ' (' . $docs .')</a></p>'."\n";
 		}
-		
+
 		$supln .= '</ul>'."\n";
 		$html .= $sdocs ? $supln : '';
 		return $html;
@@ -220,7 +220,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a thumbnail name from a file name
-	 * 
+	 *
 	 * @param      string $pic File name
 	 * @return     string
 	 */
@@ -232,7 +232,7 @@ class ResourcesHtml
 
 	/**
 	 * Display a link to the license associated with this resource
-	 * 
+	 *
 	 * @param      array $license License name
 	 * @return     string HTML
 	 */
@@ -257,13 +257,13 @@ class ResourcesHtml
 				{
 					$html .= ' according to <a rel="license" href="' . $rl->url . '" title="' . $rl->title . '">this deed</a>';
 				}
-				else 
+				else
 				{
 					$html .= ' under ' . $rl->title;
 				}
 				$html .= '.</p>';
 			}
-			else 
+			else
 			{
 				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . JRoute::_('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
 			}
@@ -273,7 +273,7 @@ class ResourcesHtml
 
 	/**
 	 * Display resource sub view content
-	 * 
+	 *
 	 * @param      array  $sections Active plugins' content
 	 * @param      array  $cats     Active plugins' names
 	 * @param      string $active   Current plugin name
@@ -285,7 +285,7 @@ class ResourcesHtml
 	{
 		$html = '';
 
-		if (!$sections) 
+		if (!$sections)
 		{
 			return $html;
 		}
@@ -294,7 +294,7 @@ class ResourcesHtml
 
 		foreach ($sections as $section)
 		{
-			if ($section['html'] != '') 
+			if ($section['html'] != '')
 			{
 				/*
 				if (!isset($cats[$k]) || !$cats[$k])
@@ -303,7 +303,7 @@ class ResourcesHtml
 				}
 				*/
 				$cls  = ($c) ? $c . ' ' : '';
-				//if (key($cats[$k]) != $active) 
+				//if (key($cats[$k]) != $active)
 				if ($section['area'] != $active)
 				{
 					$cls .= ($h) ? $h . ' ' : '';
@@ -318,7 +318,7 @@ class ResourcesHtml
 
 	/**
 	 * Output tab controls for resource plugins (sub views)
-	 * 
+	 *
 	 * @param      string $option Component name
 	 * @param      string $id     Resource ID
 	 * @param      array  $cats   Active plugins' names
@@ -333,23 +333,23 @@ class ResourcesHtml
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
-			if ($name != '') 
+			if ($name != '')
 			{
-				if ($alias) 
+				if ($alias)
 				{
 					$url = JRoute::_('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
-				} 
-				else 
+				}
+				else
 				{
 					$url = JRoute::_('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
 				}
-				if (strtolower($name) == $active) 
+				if (strtolower($name) == $active)
 				{
 					$app = JFactory::getApplication();
 					$pathway = $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 
-					if ($active != 'about') 
+					if ($active != 'about')
 					{
 						$document = JFactory::getDocument();
 						$title = $document->getTitle();
@@ -369,7 +369,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate COins microformat
-	 * 
+	 *
 	 * @param      object $cite     Resource citation data
 	 * @param      object $resource ResourcesResource
 	 * @param      object $config   Component config
@@ -379,7 +379,7 @@ class ResourcesHtml
 	//public static function citationCOins($cite, $resource, $config, $helper)
 	public static function citationCOins($cite, $model)
 	{
-		if (!$cite) 
+		if (!$cite)
 		{
 			return '';
 		}
@@ -411,33 +411,33 @@ class ResourcesHtml
 		{
 			//$helper->getToolAuthors($model->resource->alias, $model->resource->revision);
 			$author_array = $model->contributors('tool');
-		} 
-		else 
+		}
+		else
 		{
 			//$helper->getCons();
 			$author_array = $model->contributors();
 		}
 		//$author_array = $helper->_contributors;
 
-		if ($author_array) 
+		if ($author_array)
 		{
 			for ($i = 0; $i < count($author_array); $i++)
 			{
-				if ($author_array[$i]->surname || $author_array[$i]->givenName) 
+				if ($author_array[$i]->surname || $author_array[$i]->givenName)
 				{
 					$name = stripslashes($author_array[$i]->givenName) . ' ';
-					if ($author_array[$i]->middleName != NULL) 
+					if ($author_array[$i]->middleName != NULL)
 					{
 						$name .= stripslashes($author_array[$i]->middleName) . ' ';
 					}
 					$name .= stripslashes($author_array[$i]->surname);
-				} 
-				else 
+				}
+				else
 				{
 					$name = $author_array[$i]->name;
 				}
 
-				if ($i==0) 
+				if ($i==0)
 				{
 					$lastname  = $author_array[$i]->surname  ? $author_array[$i]->surname  : $author_array[$i]->name;
 					$firstname = $author_array[$i]->givenName ? $author_array[$i]->givenName : $author_array[$i]->name;
@@ -453,7 +453,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a citation for a resource
-	 * 
+	 *
 	 * @param      string  $option    Component name
 	 * @param      object  $cite      Citation data
 	 * @param      string  $id        Resource ID
@@ -475,12 +475,12 @@ class ResourcesHtml
 			$html .= "\t" . '</li>' . "\n";
 			$html .= '</ul>' . "\n";
 		}
-		if ($cite) 
+		if ($cite)
 		{
 			$html .= '<ul class="citations results">' . "\n";
 			$html .= "\t" . '<li>' . "\n";
 			$html .= CitationFormat::formatReference($cite);
-			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev')) 
+			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev'))
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
 				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
@@ -489,10 +489,10 @@ class ResourcesHtml
 			}
 			$html .= "\t" . '</li>' . "\n";
 			$html .= '</ul>' . "\n";
-			
+
 		}
-		
-		/*if ($type == 7) 
+
+		/*if ($type == 7)
 		{
 			$html .= '<p>'.JText::_('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
 			$html .= '<ul class="citations results">' . "\n";
@@ -506,9 +506,9 @@ class ResourcesHtml
 
 	/**
 	 * Get the classname for a rating value
-	 * 
+	 *
 	 * @param      integer $rating Rating (out of 5 total)
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getRatingClass($rating=0)
 	{
@@ -532,7 +532,7 @@ class ResourcesHtml
 
 	/**
 	 * Get the extension of a file
-	 * 
+	 *
 	 * @param      string $url File path/name
 	 * @return     string
 	 */
@@ -544,7 +544,7 @@ class ResourcesHtml
 
 	/**
 	 * Determine the final URL for the primary resource child
-	 * 
+	 *
 	 * @param      string  $option Component name
 	 * @param      object  $item   Child resource
 	 * @param      integer $pid    Parent resource ID
@@ -561,21 +561,21 @@ class ResourcesHtml
 		$rt = ResourcesType::getRecordInstance($item->type);
 		$type = $rt->alias;
 
-		if ($item->standalone == 1) 
+		if ($item->standalone == 1)
 		{
 			$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
-		} 
-		else 
+		}
+		else
 		{
 			switch ($type)
 			{
 				case 'ilink':
-					if ($item->path) 
+					if ($item->path)
 					{
 						// internal link, not a resource
 						$url = $item->path;
-					} 
-					else 
+					}
+					else
 					{
 						// internal link but a resource
 						$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
@@ -595,17 +595,17 @@ class ResourcesHtml
 				break;
 
 				default:
-					if ($action == 2) 
+					if ($action == 2)
 					{
 						$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
-					} 
-					else 
+					}
+					else
 					{
-						if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms') 
+						if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms')
 						{
 							$url = $item->path;
-						} 
-						else 
+						}
+						else
 						{
 							$url = JRoute::_('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
 						}
@@ -620,12 +620,12 @@ class ResourcesHtml
 	 * Display the primary child
 	 * For most resources, this will be the first child of a standalone resource
 	 * Tools are the only exception in which case the button launches a tool session
-	 * 
+	 *
 	 * @param      string $option     Component name
 	 * @param      object $resource   ResourcesResource
 	 * @param      object $firstChild First resource child
 	 * @param      string $xact       Extra parameters to add
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
@@ -645,7 +645,7 @@ class ResourcesHtml
 
 				// Ensure we have a connection to the middleware
 				if (!$mconfig->get('mw_on')
-				 || ($mconfig->get('mw_on') > 1 && !$authorized)) 
+				 || ($mconfig->get('mw_on') > 1 && !$authorized))
 				{
 					$pop   = '<p class="warning">' . JText::_('Session invocation is currently disabled.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
@@ -654,7 +654,7 @@ class ResourcesHtml
 
 				//are we on the iPad
 				$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-				
+
 				//get tool params
 				$params = JComponentHelper::getParams('com_tools');
 				$launchOnIpad = $params->get('launch_ipad', 0);
@@ -665,9 +665,9 @@ class ResourcesHtml
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 
-				if (in_array($table,$tables)) 
+				if (in_array($table,$tables))
 				{
-					if (isset($resource->revision) && $resource->toolpublished) 
+					if (isset($resource->revision) && $resource->toolpublished)
 					{
 
 						$sess = $resource->tool ? $resource->tool : $resource->alias . '_r' . $resource->revision;
@@ -680,9 +680,9 @@ class ResourcesHtml
 						{
 							$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=' . $v;
 						}
-						
-					} 
-					elseif (!isset($resource->revision) or $resource->revision=='dev') 
+
+					}
+					elseif (!isset($resource->revision) or $resource->revision=='dev')
 					{ // serve dev version
 						if($isiPad && $launchOnIpad)
 						{
@@ -693,8 +693,8 @@ class ResourcesHtml
 							$lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=dev';
 						}
 					}
-				} 
-				else 
+				}
+				else
 				{
 					if($isiPad && $launchOnIpad)
 					{
@@ -711,7 +711,7 @@ class ResourcesHtml
 				// Create some tool objects
 				$hztv = ToolsModelVersion::getInstance($resource->tool);
 				$ht = ToolsModelTool::getInstance($hztv->toolid);
-				if ($ht) 
+				if ($ht)
 				{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
 					$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
 				}
@@ -720,17 +720,17 @@ class ResourcesHtml
 				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 				$ingroup = false;
 				$groups = array();
-				if ($xgroups) 
+				if ($xgroups)
 				{
 					foreach ($xgroups as $xgroup)
 					{
 						$groups[] = $xgroup->cn;
 					}
-					if ($toolgroups) 
+					if ($toolgroups)
 					{
 						foreach ($toolgroups as $toolgroup)
 						{
-							if (in_array($toolgroup->cn, $groups)) 
+							if (in_array($toolgroup->cn, $groups))
 							{
 								$ingroup = true;
 							}
@@ -738,16 +738,16 @@ class ResourcesHtml
 					}
 				}
 
-				if (!$juser->get('guest') && !$ingroup && $toolgroups) 
+				if (!$juser->get('guest') && !$ingroup && $toolgroups)
 				{ // see if tool is restricted to a group and if current user is in that group
 					$pop = '<p class="warning">' . JText::_('
 						WARNING: This tool is currently restricted to authorized members of the hub.
 						If you need access, please submit a ticket to that effect and include the reason for your request.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
-				} 
-				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) 
+				}
+				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision))
 				{ // dev or published tool
-					//if ($juser->get('guest')) { 
+					//if ($juser->get('guest')) {
 						// Not logged-in = show message
 						//$html .= self::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
 						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
@@ -756,8 +756,8 @@ class ResourcesHtml
 						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('Warning: This tool version is under development and may not be run until it is installed.') . '</p>' : $pop;
 						$html .= self::primaryButton('launchtool', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop);
 					//}
-				} 
-				else 
+				}
+				else
 				{ // tool unpublished
 					$pop   = '<p class="warning">' . JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
@@ -787,7 +787,7 @@ class ResourcesHtml
 				{
 					$paramsClass = 'JRegistry';
 				}
-				
+
 				$firstChild->title = str_replace('"', '&quot;', $firstChild->title);
 				$firstChild->title = str_replace('&amp;', '&', $firstChild->title);
 				$firstChild->title = str_replace('&', '&amp;', $firstChild->title);
@@ -807,11 +807,11 @@ class ResourcesHtml
 				$rt = ResourcesType::getRecordInstance($firstChild->type);
 				$tparams = new $paramsClass($rt->params);
 
-				if ($firstChild->logicaltype) 
+				if ($firstChild->logicaltype)
 				{
 					$rtLinkAction = $ltparams->get('linkAction', 'extension');
-				} 
-				else 
+				}
+				else
 				{
 					$rtLinkAction = $tparams->get('linkAction', 'extension');
 				}
@@ -848,27 +848,27 @@ class ResourcesHtml
 						//$downtypes = array('60','59','57','55');
 						$downtypes = array('thesis','handout','manual','software_download');
 
-						if (in_array($lt->alias, $downtypes)) 
+						if (in_array($lt->alias, $downtypes))
 						{
 							$mesg  = 'Download';
 							$class = 'download';
-						} 
-						elseif (in_array($rt->alias, $mediatypes)) 
+						}
+						elseif (in_array($rt->alias, $mediatypes))
 						{
 							$mesg  = 'View Presentation';
 							$mediatypes = array('flash_paper','breeze','32','26');
-							if (in_array($firstChild->type, $mediatypes)) 
+							if (in_array($firstChild->type, $mediatypes))
 							{
 								$class = 'play';
 							}
-						} 
-						else 
+						}
+						else
 						{
 							$mesg  = 'Download';
 							$class = 'download';
 						}
 
-						if ($firstChild->standalone == 1) 
+						if ($firstChild->standalone == 1)
 						{
 							$mesg  = 'View Resource';
 							$class = ''; //'play';
@@ -882,7 +882,7 @@ class ResourcesHtml
 						 || substr($firstChild->path, 0, 7) == 'file://'
 						 || substr($firstChild->path, 0, 7) == 'news://'
 						 || substr($firstChild->path, 0, 7) == 'feed://'
-						 || substr($firstChild->path, 0, 6) == 'mms://') 
+						 || substr($firstChild->path, 0, 6) == 'mms://')
 						{
 							$mesg  = 'View Link';
 						}
@@ -890,13 +890,13 @@ class ResourcesHtml
 				}
 
 				// IF (not a simulator) THEN show the first child as the primary button
-				if ($firstChild->access==1 && $juser->get('guest')) 
+				if ($firstChild->access==1 && $juser->get('guest'))
 				{
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>' . "\n";
 					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
-				} 
-				else 
+				}
+				else
 				{
 					$childParams = new $paramsClass($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
@@ -930,7 +930,7 @@ class ResourcesHtml
 					$attribs = new $paramsClass($firstChild->attribs);
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
-					if ($width > 0 && $height > 0) 
+					if ($width > 0 && $height > 0)
 					{
 						$class .= ' ' . $width . 'x' . $height;
 					}
@@ -945,23 +945,23 @@ class ResourcesHtml
 					//$rt->load($firstChild->type);
 
 					//if we are a hubpresenter resource type, do not show file type in button
-					if ($rt->alias == 'hubpresenter') 
+					if ($rt->alias == 'hubpresenter')
 					{
 						//$xtra = "";
 						//$class = "play 1000x600";
 						$class = 'hubpresenter';
-					} 
-					else 
+					}
+					else
 					{
 						$mesg .= ' ' . self::getFileAttribs($firstChild->path);
 					}
 
-					if ($rt->alias == 'video') 
+					if ($rt->alias == 'video')
 					{
 						$class = 'video' . $class;
 					}
 
-					if ($xact) 
+					if ($xact)
 					{
 						$action = $xact;
 					}
@@ -976,7 +976,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate the primary resources button
-	 * 
+	 *
 	 * @param      string  $class    Class to add
 	 * @param      string  $href     Link url
 	 * @param      string  $msg      Link text
@@ -1008,7 +1008,7 @@ class ResourcesHtml
 
 	/**
 	 * Display the file type and size for a file
-	 * 
+	 *
 	 * @param      string  $path      File path
 	 * @param      string  $base_path Path to prepend
 	 * @param      integer $fsize     Format the filesize?
@@ -1018,12 +1018,12 @@ class ResourcesHtml
 	{
 		//$path = '/www/myhub/components';
 		// Return nothing if no path provided
-		if (!$path) 
+		if (!$path)
 		{
 			return '';
 		}
 
-		if ($base_path) 
+		if ($base_path)
 		{
 			$base_path = DS . trim($base_path, DS);
 		}
@@ -1043,11 +1043,11 @@ class ResourcesHtml
 		{
 			$path = DS . trim($path, DS);
 			// Ensure a starting slash
-			if (substr($path, 0, strlen($base_path)) == $base_path) 
+			if (substr($path, 0, strlen($base_path)) == $base_path)
 			{
 				// Do nothing
-			} 
-			else 
+			}
+			else
 			{
 				$path = $base_path . $path;
 			}
@@ -1058,7 +1058,7 @@ class ResourcesHtml
 			$type = strtoupper(JFile::getExt($path));
 
 			//check to see if we have a json file (HUBpresenter)
-			if ($type == 'JSON') 
+			if ($type == 'JSON')
 			{
 				$type = 'HTML5';
 			}
@@ -1072,7 +1072,7 @@ class ResourcesHtml
 		}
 
 		$html  = '<span class="caption">(' . $type;
-		if ($fs) 
+		if ($fs)
 		{
 			switch ($type)
 			{
@@ -1099,7 +1099,7 @@ class ResourcesHtml
 
 	/**
 	 * Format a filesize to more understandable Gb/Mb/Kb/b
-	 * 
+	 *
 	 * @param      integer $fileSize File size to format
 	 * @return     string
 	 */

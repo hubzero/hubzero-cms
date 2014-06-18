@@ -61,13 +61,13 @@ $dep  = $this->dep;
 		This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
 		<form action="<?php echo JRoute::_($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
-			View another attempt: 
+			View another attempt:
 			<select name="attempt">
 				<?php for ($i = 1; $i <= $this->dep->getAllowedAttempts(); $i++) { ?>
 					<?php
 						if ($i == $attempt) :
 							continue;
-						endif; 
+						endif;
 					?>
 					<option value="<?php echo $i ?>"><?php echo FormHelper::toOrdinal($i) ?> attempt</option>
 				<?php } ?>

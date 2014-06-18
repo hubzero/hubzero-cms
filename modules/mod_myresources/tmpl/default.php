@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
-if (!$this->no_html) { 
+if (!$this->no_html) {
 ?>
 	<form method="get" action="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>" data-module="<?php echo $this->module->id; ?>" id="myresources-form" enctype="multipart/form-data">
 		<fieldset>
@@ -85,7 +85,7 @@ if (!$this->no_html) {
 						<?php echo $thedate . ' &nbsp; ' . $this->escape(stripslashes($this->contributions[$i]->typetitle)); ?>
 					</span>
 				</li>
-			<?php 
+			<?php
 				}
 			?>
 			</ul>

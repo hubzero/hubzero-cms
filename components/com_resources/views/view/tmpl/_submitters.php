@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2) 
+ * @license   GNU General Public License, version 2 (GPLv2)
  */
 
 // Check to ensure this file is included in Joomla!
@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $database = JFactory::getDBO();
 
-if ($this->contributors) 
+if ($this->contributors)
 {
 	$html = '';
 	$names = array();
@@ -44,8 +44,8 @@ if ($this->contributors)
 	$orgsln_s = '';
 
 	$types = array(
-		'manager'       => 'manager', 
-		'administrator' => 'administrator', 
+		'manager'       => 'manager',
+		'administrator' => 'administrator',
 		'super users'   => 'super administrator',
 		'publisher'     => 'publisher',
 		'editor'        => 'editor'
@@ -54,30 +54,30 @@ if ($this->contributors)
 
 	foreach ($this->contributors as $contributor)
 	{
-		if (strtolower($contributor->role) != 'submitter') 
+		if (strtolower($contributor->role) != 'submitter')
 		{
 			continue;
 		}
 
 		// Build the user's name and link to their profile
-		if ($contributor->name) 
+		if ($contributor->name)
 		{
 			$name = $contributor->name;
-		} 
-		else if ($contributor->surname || $contributor->givenName) 
+		}
+		else if ($contributor->surname || $contributor->givenName)
 		{
 			$name = stripslashes($contributor->givenName) . ' ';
-			if ($contributor->middleName != NULL) 
+			if ($contributor->middleName != NULL)
 			{
 				$name .= stripslashes($contributor->middleName) . ' ';
 			}
 			$name .= stripslashes($contributor->surname);
-		} 
-		else 
+		}
+		else
 		{
 			$name = $contributor->xname;
 		}
-		if (!$contributor->org) 
+		if (!$contributor->org)
 		{
 			$contributor->org = $contributor->xorg;
 		}
@@ -87,17 +87,17 @@ if ($this->contributors)
 		{
 			$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 		}
-		else 
+		else
 		{
 			$link  = $name;
 		}
 
-		//if ($newstyle) 
+		//if ($newstyle)
 		//{
-			if ($this->badges) 
+			if ($this->badges)
 			{
 				$xuser = JUser::getInstance($contributor->id);
-				if (is_object($xuser) && $xuser->get('name')) 
+				if (is_object($xuser) && $xuser->get('name'))
 				{
 					// get users groups
 					// in reverse to get the highest levels first
@@ -108,22 +108,22 @@ if ($this->contributors)
 					// use the users first group
 					$gid = isset($groups[0]) ? strtolower($groups[0]) : null;
 
-					if (isset($types[$gid])) 
+					if (isset($types[$gid]))
 					{
 						$link .= ' <span class="badge">' . str_replace(' ', '-', $types[$gid]) . '</span>';
 					}
 				}
 			}
 
-			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs)) 
+			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 			{
 				$orgs[$i-1] = trim($contributor->org);
 				$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
 				$orgsln_s 	.= trim($contributor->org).' ';
 				$k = $i;
 				$i++;
-			} 
-			else 
+			}
+			else
 			{
 				$k = array_search(trim($contributor->org), $orgs) + 1;
 			}
@@ -133,8 +133,8 @@ if ($this->contributors)
 				$link .= '<sup>' . $k . '</sup>';
 			}
 			$names_s[] = $link_s;
-		/*} 
-		else 
+		/*}
+		else
 		{
 			$orgs[trim($contributor->org)][] = $link;
 		}*/
@@ -143,21 +143,21 @@ if ($this->contributors)
 	}
 
 
-		if (count($names) > 0) 
+		if (count($names) > 0)
 		{
 			$html  = '<p>';
 			$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 			$html .= '</p>';
 		}
-		if ($this->showorgs && count($orgs) > 0) 
+		if ($this->showorgs && count($orgs) > 0)
 		{
 			$html .= '<p class="orgs">';
 			$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 			$html .= '</p>';
 		}
 
-} 
-else 
+}
+else
 {
 	$html = '';
 }

@@ -44,14 +44,14 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
@@ -63,7 +63,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -74,16 +74,16 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas['members']) && !in_array('members', $areas)) 
+			if (!isset($areas['members']) && !in_array('members', $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -100,15 +100,15 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.uidNumber) FROM (SELECT a.uidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.uidNumber AS id, a.name AS title, a.username as alias, NULL AS itext, b.bio AS ftext, a.emailConfirmed AS state, a.registerDate AS created, 
-					a.uidNumber AS created_by, NULL AS modified, a.registerDate AS publish_up, a.picture AS publish_down, 
-					CONCAT('index.php?option=com_members&id=', a.uidNumber) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount, 
+		$f_fields = "SELECT a.uidNumber AS id, a.name AS title, a.username as alias, NULL AS itext, b.bio AS ftext, a.emailConfirmed AS state, a.registerDate AS created,
+					a.uidNumber AS created_by, NULL AS modified, a.registerDate AS publish_up, a.picture AS publish_down,
+					CONCAT('index.php?option=com_members&id=', a.uidNumber) AS href, 'members' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.params, NULL AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
 		$f_from = " FROM #__xprofiles AS a LEFT JOIN #__xprofiles_bio AS b ON a.uidNumber=b.uidNumber, #__tags_object AS t
-					WHERE a.public=1 
-					AND a.uidNumber=t.objectid 
-					AND t.tbl='xprofiles' 
+					WHERE a.public=1
+					AND a.uidNumber=t.objectid
+					AND t.tbl='xprofiles'
 					AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.uidNumber HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
@@ -122,24 +122,24 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
 		// Execute the query
-		if (!$limit) 
+		if (!$limit)
 		{
 			$database->setQuery($f_count . $f_from . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} 
-		else 
+		}
+		else
 		{
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				\Hubzero\Document\Assets::addComponentStylesheet('com_members');
 
 				return $f_fields . $f_from;
 			}
 
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
-				if ($this->_total == 0) 
+				if ($this->_total == 0)
 				{
 					return array();
 				}
@@ -149,7 +149,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
@@ -165,7 +165,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Include needed libraries and push scripts and CSS to the document
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function documents()
@@ -175,7 +175,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Static method for formatting results
-	 * 
+	 *
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
@@ -183,7 +183,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	{
 		$member = \Hubzero\User\Profile::getInstance($row->id);
 
-		if (strstr($row->href, 'index.php')) 
+		if (strstr($row->href, 'index.php'))
 		{
 			$row->href = JRoute::_($row->href);
 		}
@@ -192,7 +192,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		$html  = "\t" . '<li class="member">' . "\n";
 		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->getPicture() . '" alt="" /></p>' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($row->ftext) 
+		if ($row->ftext)
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}

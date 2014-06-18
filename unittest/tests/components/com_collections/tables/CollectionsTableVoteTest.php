@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the collections vote table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,14 +15,14 @@ class CollectionsTableVoteTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'user_id', 
-		'item_id', 
+		'id',
+		'user_id',
+		'item_id',
 		'voted'
 	);
 	var $mock       = array(
-		'id'           => null, 
-		'user_id'      => 123, 
+		'id'           => null,
+		'user_id'      => 123,
 		'item_id'      => 1,
 		'voted'        => '2013-09-29 14:16:39'
 	);

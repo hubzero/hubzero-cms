@@ -39,7 +39,7 @@ class modTwitterFeed extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

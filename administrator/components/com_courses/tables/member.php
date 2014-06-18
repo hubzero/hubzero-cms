@@ -38,84 +38,84 @@ class CoursesTableMember extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $course_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $role_id = NULL;
 
 	/**
 	 * mediumtext
-	 * 
+	 *
 	 * @var string
 	 */
 	var $permissions = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $enrolled = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $student = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $first_visit = NULL;
 
 	/**
 	 * varchar(23)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $token = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -126,13 +126,13 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($uid=null, $cid=NULL, $oid=NULL, $sid=NULL, $student=NULL)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			return false;
 		}
@@ -146,8 +146,8 @@ class CoursesTableMember extends JTable
 			return parent::load($uid);
 		}
 
-		$query = "SELECT * 
-				FROM $this->_tbl 
+		$query = "SELECT *
+				FROM $this->_tbl
 				WHERE ";
 		if ($student !== null)
 		{
@@ -168,11 +168,11 @@ class CoursesTableMember extends JTable
 		$query .= implode(" AND ", $where) . " ORDER BY student ASC, section_id ASC, offering_id ASC LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -181,13 +181,13 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function loadBySection($uid=null, $oid=NULL)
 	{
-		if ($uid === NULL || $oid === NULL) 
+		if ($uid === NULL || $oid === NULL)
 		{
 			return false;
 		}
@@ -195,11 +195,11 @@ class CoursesTableMember extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `section_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -208,7 +208,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Load a record by member id (i.e. primary key of this table)
-	 * 
+	 *
 	 * @param      int $member_id
 	 * @return     boolean True on success
 	 */
@@ -219,13 +219,13 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function loadByOffering($uid=null, $oid=NULL)
 	{
-		if ($uid === NULL || $oid === NULL) 
+		if ($uid === NULL || $oid === NULL)
 		{
 			return false;
 		}
@@ -233,11 +233,11 @@ class CoursesTableMember extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE `user_id`=" . $this->_db->Quote((int) $uid) . " AND `offering_id`=" . $this->_db->Quote((int) $oid) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -246,7 +246,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True on success
 	 */
 	public function check()
@@ -296,13 +296,13 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Check if a token exists
-	 * 
+	 *
 	 * @param      string $token
 	 * @return     integer
 	 */
 	public function tokenExists($token)
 	{
-		if (!$token) 
+		if (!$token)
 		{
 			$this->setError(JText::_('No token provided.'));
 			return 0;
@@ -316,7 +316,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Store data
-	 * 
+	 *
 	 * @return     boolean True on success
 	 */
 	/*public function store()
@@ -326,16 +326,16 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Save data
-	 * 
+	 *
 	 * @return     boolean True on success
 	 */
 	/*public function save()
 	{
-		$this->_db->setQuery("UPDATE $this->_tbl 
-			SET `role_id`=" . $this->_db->Quote($this->role_id) . ", `permissions`=" . $this->_db->Quote($this->permissions) . " 
-			WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . " 
+		$this->_db->setQuery("UPDATE $this->_tbl
+			SET `role_id`=" . $this->_db->Quote($this->role_id) . ", `permissions`=" . $this->_db->Quote($this->permissions) . "
+			WHERE `offering_id`=" . $this->_db->Quote($this->offering_id) . "
 			AND `user_id`=" . $this->_db->Quote($this->user_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -345,13 +345,13 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = " FROM $this->_tbl AS m 
+		$query = " FROM $this->_tbl AS m
 				JOIN #__users AS u ON u.id=m.user_id
 				LEFT JOIN #__courses_roles AS r ON r.id=m.role_id";
 
@@ -403,7 +403,7 @@ class CoursesTableMember extends JTable
 				$where[] = "r.`alias`=" . $this->_db->Quote($filters['role']);
 			}
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$q  = "(LOWER(u.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 			if (is_numeric($filters['search']))
@@ -428,7 +428,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -443,7 +443,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -486,7 +486,7 @@ class CoursesTableMember extends JTable
 
 	/**
 	 * Get a count of course offerings
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -494,7 +494,7 @@ class CoursesTableMember extends JTable
 	{
 		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
 
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

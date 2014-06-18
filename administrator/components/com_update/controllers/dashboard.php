@@ -38,13 +38,13 @@ class UpdateControllerDashboard extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display the update dashboard
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

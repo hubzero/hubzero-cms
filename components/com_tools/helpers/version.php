@@ -40,9 +40,9 @@ class ToolsHelperVersion
 {
 	/**
 	 * Short description for 'iterate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $func Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -57,7 +57,7 @@ class ToolsHelperVersion
 			$db->setQuery($query);
 
 			$result = $db->loadResultArray();
-			
+
 			if ($result === false)
 			{
 				return false;
@@ -74,9 +74,9 @@ class ToolsHelperVersion
 
 	/**
 	 * Short description for 'getCurrentToolVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -109,9 +109,9 @@ class ToolsHelperVersion
 
 	/**
 	 * Short description for 'getDevelopmentToolVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -144,9 +144,9 @@ class ToolsHelperVersion
 
 	/**
 	 * Short description for 'getToolRevision'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolid Parameter description (if any) ...
 	 * @param	  string $revision Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...

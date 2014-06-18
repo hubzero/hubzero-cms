@@ -35,97 +35,97 @@ defined('_JEXEC') or die( 'Restricted access' );
  * Image manipulation class
  */
 class ProjectsImgHandler extends JObject
-{	
+{
 	/**
 	 * Description for 'path'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $path = NULL;
 
 	/**
 	 * Description for 'image'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $image = NULL;
 
 	/**
 	 * Description for 'maxWidth'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $maxWidth = 186;
 
 	/**
 	 * Description for 'maxHeight'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $maxHeight = 186;
 
 	/**
 	 * Description for 'cropratio'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $cropratio = NULL;
 
 	/**
 	 * Description for 'quality'
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $quality = 90;
 
 	/**
 	 * Description for 'color'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $color = false;
-	
+
 	/**
 	 * Description for 'copyto'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $copyto = NULL;
 
 	/**
 	 * Description for 'overwrite'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $overwrite = true;
-	
+
 	/**
 	 * Description for 'force'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $force = true;
 
 	/**
 	 * Description for 'outputName'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $outputName = NULL;
 
 	/**
 	 * Description for '_MEMORY_TO_ALLOCATE'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_MEMORY_TO_ALLOCATE = '100M';
 
 	/**
 	 * Process an image
-	 * 
+	 *
 	 * @return     boolean True if no errors
-	 */	
-	public function process() 
+	 */
+	public function process()
 	{
 		$docRoot 	= $this->path;
 		$copyto 	= $this->copyto;
@@ -134,81 +134,81 @@ class ProjectsImgHandler extends JObject
 		$quality 	= $this->quality;
 		$color 		= $this->color;
 		$force 		= $this->force;
-		
+
 		// Make sure that the requested file is actually an image
-		if (!$image) 
+		if (!$image)
 		{
 			$this->setError( JText::_('No image set.') );
 			return false;
 		}
-		
+
 		// Make sure that the requested file is actually an image
-		if (!$docRoot) 
+		if (!$docRoot)
 		{
 			$this->setError( JText::_('No image path set.') );
 			return false;
 		}
-				
+
 		// Strip the possible trailing slash off the document root
 		//$docRoot = preg_replace('/\/$/', '', $docRoot);
-		
-		if (!is_file($docRoot . $image)) 
+
+		if (!is_file($docRoot . $image))
 		{
 			$this->setError( JText::_('File/path not found.') );
 			return false;
 		}
-		
+
 		// Get the size and MIME type of the requested image
 		$size = GetImageSize($docRoot . $image);
 		$mime = $size['mime'];
 
 		// Make sure that the requested file is actually an image
-		if (substr($mime, 0, 6) != 'image/') 
+		if (substr($mime, 0, 6) != 'image/')
 		{
 			$this->setError( JText::_('File is not an image.') );
 			return false;
 		}
-		
+
 		$width  = $size[0];
 		$height = $size[1];
 
 		$maxWidth = $this->maxWidth;
 		$maxHeight = $this->maxHeight;
-		
-		if ($maxWidth >= $width && $maxHeight >= $height && $force == false) 
+
+		if ($maxWidth >= $width && $maxHeight >= $height && $force == false)
 		{
 			return true;
 		}
-		
-		if ($color) 
+
+		if ($color)
 		{
 			$color = preg_replace('/[^0-9a-fA-F]/', '', (string) $color);
-		} 
-		else 
+		}
+		else
 		{
 			$color = FALSE;
 		}
-		
+
 		// Ratio cropping
 		$offsetX = 0;
 		$offsetY = 0;
 
-		if ($cropratio) 
+		if ($cropratio)
 		{
 			$cropRatio = explode(':', (string) $cropratio);
-			if (count($cropRatio) == 2) 
+			if (count($cropRatio) == 2)
 			{
 				$ratioComputed = $width / $height;
 				$cropRatioComputed = (float) $cropRatio[0] / (float) $cropRatio[1];
 
-				if ($ratioComputed < $cropRatioComputed) 
+				if ($ratioComputed < $cropRatioComputed)
 				{
 					// Image is too tall so we will crop the top and bottom
 					$origHeight	= $height;
 					$height	= $width / $cropRatioComputed;
 					$offsetY = ($origHeight - $height) / 2;
-				} 
-				else if ($ratioComputed > $cropRatioComputed) 
+				}
+				else if ($ratioComputed > $cropRatioComputed)
 				{
 					// Image is too wide so we will crop off the left and right sides
 					$origWidth = $width;
@@ -223,13 +223,13 @@ class ProjectsImgHandler extends JObject
 		$xRatio	= $maxWidth / $width;
 		$yRatio	= $maxHeight / $height;
 
-		if ($xRatio * $height < $maxHeight) 
+		if ($xRatio * $height < $maxHeight)
 		{
 			// Resize the image based on width
 			$tnHeight = ceil($xRatio * $height);
 			$tnWidth  = $maxWidth;
-		} 
-		else 
+		}
+		else
 		{
 			// Resize the image based on height
 			$tnWidth  = ceil($yRatio * $width);
@@ -242,7 +242,7 @@ class ProjectsImgHandler extends JObject
 
 		// We store our cached image filenames as a hash of the dimensions and the original filename
 		$resizedImageSource	= $tnWidth . 'x' . $tnHeight . 'x' . $quality;
-		if ($cropratio) 
+		if ($cropratio)
 		{
 			$resizedImageSource	.= 'x' . (string) $cropratio;
 		}
@@ -285,47 +285,47 @@ class ProjectsImgHandler extends JObject
 				$doSharpen			= TRUE;
 			break;
 		}
-		
+
 		// Read in the original image
 		$src = $creationFunction($docRoot . $image);
 
-		if (in_array($size['mime'], array('image/gif', 'image/png'))) 
+		if (in_array($size['mime'], array('image/gif', 'image/png')))
 		{
-			if (!$color) 
+			if (!$color)
 			{
 				// If this is a GIF or a PNG, we need to set up transparency
 				imagealphablending($dst, false);
 				imagesavealpha($dst, true);
-			} 
-			else 
+			}
+			else
 			{
 				// Fill the background with the specified color for matting purposes
-				if ($color[0] == '#') 
+				if ($color[0] == '#')
 				{
 					$color = substr($color, 1);
 				}
 
 				$background	= FALSE;
 
-				if (strlen($color) == 6) 
+				if (strlen($color) == 6)
 				{
 					$background	= imagecolorallocate($dst, hexdec($color[0].$color[1]), hexdec($color[2].$color[3]), hexdec($color[4].$color[5]));
-				} 
-				else if (strlen($color) == 3) 
+				}
+				else if (strlen($color) == 3)
 				{
 					$background	= imagecolorallocate($dst, hexdec($color[0].$color[0]), hexdec($color[1].$color[1]), hexdec($color[2].$color[2]));
 				}
-				if ($background) 
+				if ($background)
 				{
 					imagefill($dst, 0, 0, $background);
 				}
 			}
 		}
-		
+
 		// Resample the original image into the resized canvas we set up earlier
 		ImageCopyResampled($dst, $src, 0, 0, $offsetX, $offsetY, $tnWidth, $tnHeight, $width, $height);
 
-		if ($doSharpen) 
+		if ($doSharpen)
 		{
 			// Sharpen the image based on two things:
 			//	(1) the difference between the original size and the final size
@@ -339,15 +339,15 @@ class ProjectsImgHandler extends JObject
 			);
 			$divisor = $sharpness;
 			$offset  = 0;
-			if (function_exists('imageconvolution')) 
+			if (function_exists('imageconvolution'))
 			{
 				imageconvolution($dst, $sharpenMatrix, $divisor, $offset);
 			}
 		}
-		
+
 		// Write the resized image to the cache
 		$outputFunction($dst, $resized, $quality);
-		
+
 		// Yes - remove it
 		$overwrite = $this->overwrite;
 		if ($overwrite) {
@@ -355,115 +355,115 @@ class ProjectsImgHandler extends JObject
 			if ($outputName) {
 				$image = $outputName;
 			}
-			
+
 			jimport('joomla.filesystem.file');
-			if (file_exists($resized)) 
+			if (file_exists($resized))
 			{
-				if (file_exists($docRoot.$image)) 
+				if (file_exists($docRoot.$image))
 				{
-					if (!JFile::delete($docRoot.$image)) 
+					if (!JFile::delete($docRoot.$image))
 					{
 						$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
 						return false;
 					}
 				}
-				if (!JFile::move($resized, $docRoot.$image)) 
+				if (!JFile::move($resized, $docRoot.$image))
 				{
 					$this->setError( JText::_('UNABLE_TO_DELETE_FILE') );
 					return false;
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Create a thumbnail name
-	 * 
+	 *
 	 * @param      string $image Image name
 	 * @param      string $tn    Thumbnail prefix
-	 * @param      string $ext  
+	 * @param      string $ext
 	 * @return     string
 	 */
 	public function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
-		if (!$image) 
+		if (!$image)
 		{
 			$image = $this->image;
 		}
-		if (!$image) 
+		if (!$image)
 		{
 			$this->setError( JText::_('No image set.') );
 			return false;
 		}
-		
+
 		$image = explode('.',$image);
 		$n = count($image);
-		
-		if ($n > 1) 
+
+		if ($n > 1)
 		{
 			$image[$n-2] .= $tn;
 			$end = array_pop($image);
-			if ($ext) 
+			if ($ext)
 			{
 				$image[] = $ext;
 			}
-			else 
+			else
 			{
 				$image[] = $end;
 			}
-			
+
 			$thumb = implode('.',$image);
 		}
-		else 
+		else
 		{
 			// No extension
 			$thumb = $image[0];
 			$thumb .= $tn;
-			if ($ext) 
+			if ($ext)
 			{
 				$thumb .= '.'.$ext;
 			}
-		}	
+		}
 		return $thumb;
 	}
-	
+
 	/**
 	 * Append timestamp (or random string) to file name
-	 * 
+	 *
 	 * @param      string $file
 	 * @param      string $stamp
 	 * @return     string
 	 */
 	public function appendTimeStamp ( $file = null, $stamp = '' )
 	{
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError( JText::_('No filename set.') );
 			return false;
 		}
-		if (!$stamp) 
+		if (!$stamp)
 		{
 			$stamp = strtotime("now");
 		}
-		
+
 		$file = explode('.',$file);
 		$n = count($file);
 		$file[$n-2] .= '_'.$stamp;
 		$end = array_pop($file);
 		$file[] = $end;
 		$new = implode('.',$file);
-		
+
 		return $new;
 	}
-	
+
 	/**
 	 * Sharpen the image based on two things:
-	 * 
+	 *
 	 * (1) the difference between the original size and the final size
 	 * (2) the final size
-	 * 
+	 *
 	 * @param      number $orig  Original size
 	 * @param      number $final Final size
 	 * @return     integer
@@ -474,9 +474,9 @@ class ProjectsImgHandler extends JObject
 		$a = 52;
 		$b = -0.27810650887573124;
 		$c = .00047337278106508946;
-		
+
 		$result = $a + $b * $final + $c * $final * $final;
-		
+
 		return max(round($result), 0);
 	}
 }

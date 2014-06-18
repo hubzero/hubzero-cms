@@ -44,28 +44,28 @@ class Processor extends Object
 	 * @var string
 	 */
 	private $source = NULL;
-	
+
 	/**
 	 * Manipulated image data
 	 *
 	 * @var string
 	 */
 	private $resource = NULL;
-	
+
 	/**
 	 * Image type (png, gif, jpg)
 	 *
 	 * @var string
 	 */
 	private $image_type = IMAGETYPE_PNG;
-	
+
 	/**
 	 * EXIF image data
 	 *
 	 * @var string
 	 */
 	private $exif_data = NULL;
-	
+
 	/**
 	 * Configuration options
 	 *
@@ -75,7 +75,7 @@ class Processor extends Object
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string $image_source Path to image
 	 * @param      array  $config       Optional configurations
 	 * @return     void
@@ -113,7 +113,7 @@ class Processor extends Object
 
 	/**
 	 * Set the image type
-	 * 
+	 *
 	 * @param      string $type Image type to set
 	 * @return     void
 	 */
@@ -133,7 +133,7 @@ class Processor extends Object
 
 	/**
 	 * Check if a required package is installed
-	 * 
+	 *
 	 * @param      integer $package Package name
 	 * @return     boolean True on success
 	 */
@@ -156,13 +156,13 @@ class Processor extends Object
 
 	/**
 	 * Open an image and get it's type (png, jpg, gif)
-	 * 
+	 *
 	 * @return     bool
 	 */
 	private function openImage()
 	{
 		$image_atts = getimagesize($this->source);
-		if (empty($image_atts)) 
+		if (empty($image_atts))
 		{
 			return false;
 		}
@@ -197,7 +197,7 @@ class Processor extends Object
 			$this->autoRotate();
 		}
 
-		if (!empty($this->resource)) 
+		if (!empty($this->resource))
 		{
 			return true;
 		}
@@ -205,7 +205,7 @@ class Processor extends Object
 
 	/**
 	 * Image Rotation
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function autoRotate()
@@ -226,7 +226,7 @@ class Processor extends Object
 					case 2: $this->flip(true, false); break;
 					case 3: $this->rotate(180);       break;
 					case 4: $this->flip(false, true); break;
-					case 5: $this->rotate(270); 
+					case 5: $this->rotate(270);
 							$this->flip(true, false); break;
 					case 6: $this->rotate(270);       break;
 					case 7: $this-rotate(90);
@@ -239,7 +239,7 @@ class Processor extends Object
 
 	/**
 	 * Image Flip
-	 * 
+	 *
 	 * @param      integer $rotation   Degrees to rotate
 	 * @param      integer $background Point to rotate from
 	 * @return     void
@@ -253,7 +253,7 @@ class Processor extends Object
 
 	/**
 	 * Image Flip
-	 * 
+	 *
 	 * @param      boolean $flip_horizontal Flip the image horizontally?
 	 * @param      boolean $flip_vertical   Flip the image vertically?
 	 * @return     void
@@ -269,15 +269,15 @@ class Processor extends Object
 		{
 			for ($y=0 ; $y<$height ; $y++)
 			{
-				if ($flip_horizontal && $flip_vertical) 
+				if ($flip_horizontal && $flip_vertical)
 				{
 					imagecopy($new_resource, $resource, $width-$x-1, $height-$y-1, $x, $y, 1, 1);
 				}
-				else if ($flip_horizontal) 
+				else if ($flip_horizontal)
 				{
 					imagecopy($new_resource, $resource, $width-$x-1, $y, $x, $y, 1, 1);
 				}
-				else if ($flip_vertical) 
+				else if ($flip_vertical)
 				{
 					imagecopy($new_resource, $resource, $x, $height-$y-1, $x, $y, 1, 1);
 				}
@@ -290,7 +290,7 @@ class Processor extends Object
 
 	/**
 	 * Image Crop
-	 * 
+	 *
 	 * @param      integer $top    Top point to crop from
 	 * @param      integer $right  Right point to crop from
 	 * @param      integer $bottom Bottom point to crop from
@@ -313,7 +313,7 @@ class Processor extends Object
 
 	/**
 	 * Image Resize
-	 * 
+	 *
 	 * @param      integer $new_dimension Size to resize image to
 	 * @param      boolean $use_height    Use the height as the baseline? (uses width by default)
 	 * @param      boolean $squared       Make the image square?
@@ -329,7 +329,7 @@ class Processor extends Object
 		$h       = $height;
 		$x       = 0;
 		$y       = 0;
-		
+
 		if (($new_dimension > $width && !$use_height) || ($new_dimension > $height && $use_height))
 		{
 			return;
@@ -373,12 +373,12 @@ class Processor extends Object
 			{
 				// find whatever is larger and use it for resizing
 				$use_height = false;
-				if ($height > $width) 
+				if ($height > $width)
 				{
 					$use_height = true;
 				}
 			}
-			
+
 			if (!$use_height)
 			{
 				$new_w = $new_dimension;
@@ -392,9 +392,9 @@ class Processor extends Object
 		}
 
 		$resource = imagecreatetruecolor($new_w,$new_h);
-		
-		if ($this->image_type == IMAGETYPE_PNG) 
-		{		
+
+		if ($this->image_type == IMAGETYPE_PNG)
+		{
 			imagealphablending($resource, false);
 			imagesavealpha($resource,true);
 			$transparent = imagecolorallocatealpha($resource, 255, 255, 255, 127);
@@ -416,7 +416,7 @@ class Processor extends Object
 
 	/**
 	 * Image Geo Location Data
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getGeoLocation()
@@ -441,12 +441,12 @@ class Processor extends Object
 			$latitude_formatted  = $this->geo_pretty_fracs2dec($lat) . $lat_dir;
 			$longitude_formatted = $this->geo_pretty_fracs2dec($long) . $long_dir;
 
-			if ($lat_dir == 'S') 
+			if ($lat_dir == 'S')
 			{
-				$latitude *= -1; 
+				$latitude *= -1;
 			}
 
-			if ($long_dir == 'W') 
+			if ($long_dir == 'W')
 			{
 				$longitude *= -1;
 			}
@@ -468,11 +468,11 @@ class Processor extends Object
 
 	/**
 	 * Convert a fraction to decimal
-	 * 
+	 *
 	 * @param      string $str Fraction to convert
 	 * @return     integer
 	 */
-	private function geo_frac2dec($str) 
+	private function geo_frac2dec($str)
 	{
 		list($n, $d) = explode('/', $str);
 
@@ -486,41 +486,41 @@ class Processor extends Object
 
 	/**
 	 * Convert fractions to decimals with formatting
-	 * 
+	 *
 	 * @param      array $fracs Fractions to convert
 	 * @return     string
 	 */
-	private function geo_pretty_fracs2dec($fracs) 
+	private function geo_pretty_fracs2dec($fracs)
 	{
 		return $this->geo_frac2dec($fracs[0]) . '&deg; ' . $this->geo_frac2dec($fracs[1]) . '&prime; ' . $this->geo_frac2dec($fracs[2]) . '&Prime; ';
 	}
 
 	/**
 	 * Convert fractions to decimals
-	 * 
+	 *
 	 * @param      array $fracs Fractions to convert
 	 * @return     integer
 	 */
-	private function geo_single_fracs2dec($fracs) 
+	private function geo_single_fracs2dec($fracs)
 	{
 		return $this->geo_frac2dec($fracs[0]) + $this->geo_frac2dec($fracs[1]) / 60 + $this->geo_frac2dec($fracs[2]) / 3600;
 	}
 
 	/**
 	 * Display an image
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		$image_atts = getimagesize($this->source);
 		header('Content-type: ' . $image_atts['mime']);
-		$this->output(null); 
+		$this->output(null);
 	}
 
 	/**
 	 * Save an image
-	 * 
+	 *
 	 * @param      string  $save_path  Path to save image
 	 * @param      boolean $make_paths Allow for path generation?
 	 * @return     void
@@ -545,14 +545,14 @@ class Processor extends Object
 			}
 
 			$path = $save_path;
-		} 
+		}
 
 		$this->output($path);
 	}
 
 	/**
 	 * Generate an image and save to a location
-	 * 
+	 *
 	 * @param      string $save_path Path to save image
 	 * @return     void
 	 */

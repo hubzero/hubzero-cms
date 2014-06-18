@@ -107,7 +107,7 @@ $base = $this->course->offering()->link();
 						</form>
 					</div>
 					<div class="unit-prerequisites">
-						<?php 
+						<?php
 							$this->view('_prerequisites')
 							     ->set('scope', 'unit')
 							     ->set('scope_id', $unit->get('id'))

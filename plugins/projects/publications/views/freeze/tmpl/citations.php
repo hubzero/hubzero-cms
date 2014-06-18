@@ -47,27 +47,27 @@ $elName = "citationsPick";
 
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">	
-<?php if (count($this->pub->_citations) > 0) { 
-	$i= 1; 
+echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
+<?php if (count($this->pub->_citations) > 0) {
+	$i= 1;
 	$formatter = new CitationFormat;
 	$formatter->setTemplate($this->pub->_citationFormat);
 	?>
 	<div class="list-wrapper">
 		<ul class="itemlist" id="citations-list">
-		<?php foreach ($this->pub->_citations as $cite) { 
-				
-				$citeText = $cite->formatted 
-							? '<p>' . $cite->formatted . '</p>' 
+		<?php foreach ($this->pub->_citations as $cite) {
+
+				$citeText = $cite->formatted
+							? '<p>' . $cite->formatted . '</p>'
 							: CitationFormat::formatReference($cite, '');
 			 ?>
 			<li>
 				<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
-			</li>	
+			</li>
 	<?php	$i++; } ?>
 		</ul>
 	</div>
 	<?php  } else {
 		echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
-	} ?>			
+	} ?>
 </div>

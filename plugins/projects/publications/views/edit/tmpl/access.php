@@ -26,22 +26,22 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if ($this->version == 'dev') 
+if ($this->version == 'dev')
 {
-	$ptitle = $this->last_idx > $this->current_idx  
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS')) 
+	$ptitle = $this->last_idx > $this->current_idx
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS'))
 		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SPECIFY_ACCESS')) ;
 }
-else 
+else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_ACCESS'));	
+	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_ACCESS'));
 }
 
 // Which access is selected?
 $access = $this->row->access;
 // 0 - public; 1 - registered; 2 - restricted; 3 - private
 
-switch ($access) 
+switch ($access)
 {
 	case 0: default: 	$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); 		break;
 	case 1: 			$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); 	break;
@@ -50,10 +50,10 @@ switch ($access)
 
 // Restricted to group?
 $groups = '';
-if ($this->access_groups) 
+if ($this->access_groups)
 {
 	$i = 1;
-	foreach ($this->access_groups as $gr) 
+	foreach ($this->access_groups as $gr)
 	{
 		$groups .= $gr->cn;
 		$i++;
@@ -62,21 +62,21 @@ if ($this->access_groups)
 }
 
 $canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
+	$this->pub->state == 3
+	|| $this->pub->state == 4
+	|| $this->pub->state == 5
+	|| in_array($this->active, $this->mayupdate))
 	? 1 : 0;
 
 ?>
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-	<?php echo $this->project->provisioned == 1 
+<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-		<input type="hidden" name="active" value="publications" />					
+		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 		<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -105,7 +105,7 @@ $row = $this->row;
 		 <div class="c-inner">
 			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT'); ?></p>				
+			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT'); ?></p>
 			<div id="c-show">
 				<ul id="c-browser">
 					<li id="access-public" class="c-radio"><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); ?></span>: <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION'); ?> (<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RECOMMENDED'); ?>)</li>
@@ -138,13 +138,13 @@ $row = $this->row;
 				<div id="extra-2" class="c-extra<?php if($access != 2 && $access != 3) { echo ' hidden'; } ?>">
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO'); ?></h5>
 					<label>
-						<input type="checkbox" checked="checked" disabled="disabled" name="sysgroup" value="1" />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO_SYSGROUP'); ?>				
+						<input type="checkbox" checked="checked" disabled="disabled" name="sysgroup" value="1" />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO_SYSGROUP'); ?>
 					</label>
 					<p class="and"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AND'); ?> <span class="optional">(<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?>)</span></p>
 					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT_GROUPS'); ?>
 						<input type="text" name="access_group" id="access-group" value="<?php echo $groups; ?>" class="block long" />
 					</label>
-					<label><input type="checkbox" name="private" value="1" <?php echo $access == 3 ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_ALL_PRIVATE'); ?>	
+					<label><input type="checkbox" name="private" value="1" <?php echo $access == 3 ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_ALL_PRIVATE'); ?>
 					</label>
 				</div>
 		 </div>

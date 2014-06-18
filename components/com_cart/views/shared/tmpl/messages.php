@@ -37,9 +37,9 @@ if (!empty($errors))
 {
 	if (!is_array($errors))
 	{
-		$errors = array($errors);	
+		$errors = array($errors);
 	}
-	
+
 	echo '<div class="messages errors">';
 		foreach ($errors as $error)
 		{

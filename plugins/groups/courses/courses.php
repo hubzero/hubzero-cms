@@ -45,7 +45,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -62,7 +62,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -89,9 +89,9 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$return = 'metadata';
 			}
@@ -112,7 +112,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 		$arr['metadata']['count'] = $model->courses($filters);
 
 		// Build the HTML
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			$this->app = JFactory::getApplication();
 			$this->jconfig = JFactory::getConfig();

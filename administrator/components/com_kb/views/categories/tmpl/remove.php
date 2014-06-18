@@ -35,10 +35,10 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -55,13 +55,13 @@ function submitbutton(pressbutton)
 		<tbody>
 			<tr>
 				<td>
-					<input type="radio" name="action" id="action_delete" value="deletefaqs" checked="checked" /> 
+					<input type="radio" name="action" id="action_delete" value="deletefaqs" checked="checked" />
 					<label for="action_delete"><?php echo JText::_('COM_KB_DELETE_ALL'); ?></label>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="radio" name="action" id="action_remove" value="removefaqs" /> 
+					<input type="radio" name="action" id="action_remove" value="removefaqs" />
 					<label for="action_remove"><?php echo JText::_('COM_KB_DELETE_ONLY_CATEGORY'); ?></label>
 				</td>
 			</tr>
@@ -70,11 +70,11 @@ function submitbutton(pressbutton)
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>">
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

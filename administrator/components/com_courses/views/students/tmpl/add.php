@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Student'), 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::spacer();
@@ -58,15 +58,15 @@ foreach ($roles as $role)
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if (document.getElementById('acmembers').value == '') {
 		alert('<?php echo JText::_('Please input one or more usernames or IDs.'); ?>');
@@ -101,7 +101,7 @@ function submitbutton(pressbutton)
 					<span class="hint">Enter usernames, IDs, or look up users by name</span>
 					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
 					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
-					<?php 
+					<?php
 					/*JPluginHelper::importPlugin('hubzero');
 					$dispatcher = JDispatcher::getInstance();
 
@@ -148,7 +148,7 @@ function submitbutton(pressbutton)
 						}
 			?>
 						</optgroup>
-			<?php 
+			<?php
 					}
 				}
 			?>

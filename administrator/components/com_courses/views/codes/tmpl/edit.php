@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Coupon Codes') . ': ' . $text, 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -44,7 +44,7 @@ JToolBarHelper::cancel();
 JHTML::_('behavior.calendar');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 								{
 					?>
 									<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($offering->get('title'))); ?>">
-						<?php 
+						<?php
 									foreach ($offering->sections() as $section)
 									{
 						?>
@@ -109,7 +109,7 @@ function submitbutton(pressbutton)
 								}
 					?>
 								</optgroup>
-					<?php 
+					<?php
 							}
 						}
 					?>
@@ -185,7 +185,7 @@ function submitbutton(pressbutton)
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>

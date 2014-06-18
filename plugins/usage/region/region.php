@@ -45,7 +45,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onUsageAreas()
@@ -57,7 +57,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Print Region List from Database
-	 * 
+	 *
 	 * @param      object &$db     JDatabase
 	 * @param      string $region  Parameter description (if any) ...
 	 * @param      mixed  $t       Parameter description (if any) ...
@@ -68,11 +68,11 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	{
 		// Set region list parameters...
 		$hub = 1;
-		if (!$enddate) 
+		if (!$enddate)
 		{
 			$dtmonth = date("m") - 1;
 			$dtyear = date("Y");
-			if (!$dtmonth) 
+			if (!$dtmonth)
 			{
 				$dtmonth = 12;
 				$dtyear = $dtyear - 1;
@@ -85,14 +85,14 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . $db->Quote($region) . "'";
 		$db->setQuery($sql);
 		$result = $db->loadRow();
-		if ($result) 
+		if ($result)
 		{
 			$regionname = $result[0];
 			$valfmt = $result[1];
 			$size = $result[2];
 		}
 		$html = '';
-		if ($regionname) 
+		if ($regionname)
 		{
 			// Prepare some date ranges...
 			$enddate .= "-00";
@@ -101,7 +101,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
 			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
 			$dtyearnext = $dtyear + 1;
-			if ($dtmonthnext > 12) 
+			if ($dtmonthnext > 12)
 			{
 				$dtmonthnext = 1;
 				$dtyearnext++;
@@ -126,15 +126,15 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND regionvals.datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) 
+				if ($results)
 				{
 					foreach ($results as $row)
 					{
 						$formattedval = UsageHelper::valformat($row->value, $valfmt);
-						if (strstr($formattedval, "day") !== FALSE) 
+						if (strstr($formattedval, "day") !== FALSE)
 						{
 							$chopchar = strrpos($formattedval, ',');
-							if ($chopchar !== FALSE) 
+							if ($chopchar !== FALSE)
 							{
 								$formattedval = substr($formattedval, 0, $chopchar) . '+';
 							}
@@ -142,7 +142,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 						array_push($regionlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
 					}
 				}
-				if (!count($regionlistset)) 
+				if (!count($regionlistset))
 				{
 					array_push($regionlistset, array("n/a", 0, "n/a", "n/a"));
 				}
@@ -152,11 +152,11 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->Quote($hub) . "' AND regions.region = '" . $db->Quote($region) . "' AND datetime = '" . $db->Quote($dt) . "' AND regionvals.period = '" . $db->Quote($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
-				if ($results) 
+				if ($results)
 				{
 					foreach ($results as $row)
 					{
-						if ($row->rank > 0 && (!$size || $row->rank <= $size)) 
+						if ($row->rank > 0 && (!$size || $row->rank <= $size))
 						{
 							while ($rank < $row->rank)
 							{
@@ -164,19 +164,19 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 								$rank++;
 							}
 							$formattedval = UsageHelper::valformat($row->value, $valfmt);
-							if (strstr($formattedval, 'day') !== FALSE) 
+							if (strstr($formattedval, 'day') !== FALSE)
 							{
 								$chopchar = strrpos($formattedval, ',');
-								if ($chopchar !== FALSE) 
+								if ($chopchar !== FALSE)
 								{
 									$formattedval = substr($formattedval, 0, $chopchar) . '+';
 								}
 							}
-							if ($regionlistset[0][1] > 0) 
+							if ($regionlistset[0][1] > 0)
 							{
 								array_push($regionlistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $regionlistset[0][1]))));
-							} 
-							else 
+							}
+							else
 							{
 								array_push($regionlistset, array($row->name, $row->value, $formattedval, 'n/a'));
 							}
@@ -190,7 +190,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 					$rank++;
 				}
 				array_push($regionlist, $regionlistset);
-				if ($rank > $maxrank) 
+				if ($rank > $maxrank)
 				{
 					$maxrank = $rank;
 				}
@@ -253,7 +253,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for displaying usage data
-	 * 
+	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
 	 * @param      object $db            JDatabase
@@ -265,10 +265,10 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
 		// Check if our task is the area we want to return results for
-		if ($task) 
+		if ($task)
 		{
 			if (!in_array($task, $this->onUsageAreas())
-			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			 && !in_array($task, array_keys($this->onUsageAreas())))
 			{
 				return '';
 			}

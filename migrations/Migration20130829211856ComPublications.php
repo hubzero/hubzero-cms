@@ -105,17 +105,17 @@ class Migration20130829211856ComPublications extends Base
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 			// Set audience level defaults
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 						  VALUES ('level0','K12','Middle/High School')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 						  VALUES ('level1','Easy','Freshmen/Sophomores')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 						  VALUES ('level2','Intermediate','Juniors/Seniors')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 				    	  VALUES ('level3','Advanced','Graduate Students')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 						  VALUES ('level4','Expert','PhD Experts')";
-			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`) 
+			$queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
 						  VALUES ('level5','Professional','Beyond PhD')";
 		}
 
@@ -189,19 +189,19 @@ class Migration20130829211856ComPublications extends Base
 			  UNIQUE KEY `alias` (`alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('File(s)','files','uploaded material','1','1','1','peer_review=1')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Link','links','external content','0','0','3','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Wiki','notes','from project notes','0','0','5','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Application','apps','simulation tool','0','0','4','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Series','series','publication collection','0','0','6','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Gallery','gallery','image/photo gallery','0','0','7','')";
-			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) 
+			$queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
 						  VALUES ('Databases','databases','project database','0','0','2','')";
 		}
 

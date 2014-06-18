@@ -57,7 +57,7 @@ class Migration20130926143200Core extends Base
 	{
 		if ($this->db->tableExists('#__template_styles'))
 		{
-			$query = "INSERT INTO `#__template_styles` VALUES 
+			$query = "INSERT INTO `#__template_styles` VALUES
 				(2, 'bluestork', '1', '0', 'Bluestork - Default', '{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'),
 				(3, 'atomic', '0', '0', 'Atomic - Default', '{}'),
 				(4, 'beez_20', 0, 0, 'Beez2 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/joomla_black.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"templatecolor\":\"personal\",\"html5\":\"0\"}'),

@@ -68,7 +68,7 @@ foreach ($menus as $menu)
 			<div class="col span9">
 				<fieldset>
 					<legend><?php echo JText::_('Details')?></legend>
-					
+
 					<label for="field-title">
 						<strong>Title:</strong> <span class="required">Required</span>
 						<input type="text" name="module[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->module->get('title'))); ?>" />
@@ -80,7 +80,7 @@ foreach ($menus as $menu)
 							$allowScripts  = true;
 							$startupMode   = 'wysiwyg';
 							$showSourceBtn = true;
-					
+
 							// only allow super groups to use php & scrips
 							// strip out php and scripts if somehow it made it through
 							if (!$this->group->isSuperGroup())
@@ -90,7 +90,7 @@ foreach ($menus as $menu)
 								$content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $this->module->get('content'));
 								$content      = preg_replace('/<\?[\s\S]*?\?>/', '', $this->module->get('content'));
 							}
-					
+
 							// open in source mode if contains php or scripts
 							if (strstr(stripslashes($this->module->get('content')), '<script>') ||
 								strstr(stripslashes($this->module->get('content')), '<?php'))
@@ -98,7 +98,7 @@ foreach ($menus as $menu)
 								$startupMode  = 'source';
 								//$showSourceBtn = false;
 							}
-				
+
 							//build config
 							$config = array(
 								'startupMode'                 => $startupMode,
@@ -110,14 +110,14 @@ foreach ($menus as $menu)
 								'allowPhpTags'                => $allowPhp,
 								'allowScriptTags'             => $allowScripts
 							);
-					
+
 							// if super group add to templates
 							if ($this->group->isSuperGroup())
 							{
 								$config['templates_replace'] = false;
 								$config['templates_files']   = array('pagelayouts' => '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
-					
+
 							// display with ckeditor
 							jimport( 'joomla.html.editor' );
 							$editor = JEditor::getInstance( 'ckeditor' );
@@ -125,7 +125,7 @@ foreach ($menus as $menu)
 						?>
 					</label>
 				</fieldset>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('Menu Assignment')?></legend>
 					<label for="field-assignment">
@@ -135,7 +135,7 @@ foreach ($menus as $menu)
 							<option <?php if (!in_array(0, $activeMenu)) { echo 'selected="selected"'; } ?> value=""><?php echo JText::_('Only on pages selected'); ?></option>
 						</select>
 					</label>
-					
+
 					<label for="field-assignment-menu"><strong>Menu Selection:</strong> <span class="optional">Optional</span></label>
 					<fieldset class="assignment" <?php if (in_array(0, $activeMenu)) : ?>disabled="disabled"<?php endif; ?>>
 						<label>
@@ -154,7 +154,7 @@ foreach ($menus as $menu)
 			<div class="col span3 omega">
 				<fieldset>
 					<legend><?php echo JText::_('Publish'); ?></legend>
-					
+
 					<label for="field-state">
 						<strong>Status:</strong> <span class="optional">Optional</span>
 						<select name="module[state]" id="field-state" class="fancy-select">
@@ -167,7 +167,7 @@ foreach ($menus as $menu)
 					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo JText::_('Cancel'); ?></a>
 					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo JText::_('Save Module'); ?></button>
 				</div>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('Settings'); ?></legend>
 					<label for="field-position">

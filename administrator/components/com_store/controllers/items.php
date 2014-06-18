@@ -38,7 +38,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -262,7 +262,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to set entry to available
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function availableTask()
@@ -272,7 +272,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to set entry to unavailable
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unavailableTask()
@@ -282,7 +282,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to publish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
@@ -292,7 +292,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to unpublish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unpublishTask()
@@ -302,7 +302,7 @@ class StoreControllerItems extends \Hubzero\Component\AdminController
 
 	/**
 	 * Sets the state of one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function stateTask()

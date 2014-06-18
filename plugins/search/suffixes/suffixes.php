@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchSuffixes'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchSuffixes extends SearchPlugin
@@ -41,9 +41,9 @@ class plgSearchSuffixes extends SearchPlugin
 
 	/**
 	 * Short description for 'onSearchExpandTerms'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array &$terms Parameter description (if any) ...
 	 * @return     void
 	 */

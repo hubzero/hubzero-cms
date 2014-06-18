@@ -41,56 +41,56 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var strong
 	 */
 	protected $_tbl_name = 'CollectionsTableItem';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_collections.item.description';
 
 	/**
 	 * CoursesTableInstance
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * CoursesTableInstance
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_modifier = NULL;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_assets = null;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_tags = null;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_comments = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -131,7 +131,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -149,7 +149,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid);
 		}
@@ -172,19 +172,19 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		switch (strtolower($property))
 		{
 			case 'reposts':
-				if (!isset($this->_tbl->$property)) 
+				if (!isset($this->_tbl->$property))
 				{
 					$this->set($property, $this->_tbl->getReposts());
 				}
 			break;
 			case 'voted':
-				if (!isset($this->_tbl->$property)) 
+				if (!isset($this->_tbl->$property))
 				{
 					$this->set($property, $this->_tbl->getVote());
 				}
 			break;
 			case 'comments':
-				if (!isset($this->_tbl->$property)) 
+				if (!isset($this->_tbl->$property))
 				{
 					$this->comments();
 				}
@@ -197,7 +197,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     boolean
 	 */
@@ -221,7 +221,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
@@ -249,7 +249,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get the modifier of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
@@ -273,7 +273,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get the comments on an item
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function comments()
@@ -289,12 +289,12 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 				foreach ($results as $com)
 				{
 					$total++;
-					if ($com->replies) 
+					if ($com->replies)
 					{
 						foreach ($com->replies as $rep)
 						{
 							$total++;
-							if ($rep->replies) 
+							if ($rep->replies)
 							{
 								$total += count($rep->replies);
 							}
@@ -315,7 +315,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the resource exists
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -349,7 +349,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Add an asset to the list
-	 * 
+	 *
 	 * @param      object $asset
 	 * @return     void
 	 */
@@ -371,7 +371,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Remove an asset from the list
-	 * 
+	 *
 	 * @param      integer $asset
 	 * @return     void
 	 */
@@ -396,7 +396,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			}
 		}
 
-		// Reset the asset list so the next time assets 
+		// Reset the asset list so the next time assets
 		// are called, the list if fresh
 		$this->_assets = null;
 
@@ -405,7 +405,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get tags on an item
-	 * 
+	 *
 	 * @param      string $as How to return data
 	 * @return     mixed Returns an array of tags by default
 	 */
@@ -457,7 +457,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Add an asset to the list
-	 * 
+	 *
 	 * @param      object $asset
 	 * @return     void
 	 */
@@ -482,7 +482,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Vote for this item
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function vote()
@@ -599,10 +599,10 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			// Build the upload path if it doesn't exist
 			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
 
-			if (!is_dir($path)) 
+			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path)) 
+				if (!JFolder::create($path))
 				{
 					$this->setError(JText::_('Error uploading. Unable to create path.'));
 					return false;
@@ -622,12 +622,12 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 					$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
 
 					// Upload new files
-					if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) 
+					if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
 					{
 						$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
 					}
-					// File was uploaded 
-					else 
+					// File was uploaded
+					else
 					{
 						$asset = new CollectionsModelAsset();
 						//$asset->set('_file', $file);
@@ -671,7 +671,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -731,7 +731,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 	/**
 	 * Get the item type
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function type()

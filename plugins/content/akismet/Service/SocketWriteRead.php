@@ -34,7 +34,7 @@ use Exception;
 
 /**
  *	Utility class used by Akismet
- * 
+ *
  *  This class is used by Akismet to do the actual sending and receiving of data.  It opens a connection to a remote host, sends some data and the reads the response and makes it available to the calling program.
  *  The code that makes up this class originates in the Akismet WordPress plugin, which is {@link http://akismet.com/download/ available on the Akismet website}.
  *	N.B. It is not necessary to call this class directly to use the Akismet class.  This is included here mainly out of a sense of completeness.
@@ -102,7 +102,7 @@ class SocketWriteRead
 	 *	@param	string	$request		The data to send.
 	 *	@param	int		$responseLength	The amount of data to read.  Defaults to 1160 bytes.
 	 */
-	public function __construct($host, $port, $request, $responseLength = 1160) 
+	public function __construct($host, $port, $request, $responseLength = 1160)
 	{
 		$this->host           = $host;
 		$this->port           = $port;
@@ -117,22 +117,22 @@ class SocketWriteRead
 	 *
 	 * @throws	An exception is thrown if a connection cannot be made to the remote host.
 	 */
-	public function send() 
+	public function send()
 	{
 		$this->response = '';
 
 		$fs = fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, 3);
 
-		if ($this->errorNumber != 0) 
+		if ($this->errorNumber != 0)
 		{
 			throw new Exception('Error connecting to host: ' . $this->host . ' Error number: ' . $this->errorNumber . ' Error message: ' . $this->errorString);
 		}
 
-		if ($fs !== false) 
+		if ($fs !== false)
 		{
 			@fwrite($fs, $this->request);
 
-			while (!feof($fs)) 
+			while (!feof($fs))
 			{
 				$this->response .= fgets($fs, $this->responseLength);
 			}
@@ -146,7 +146,7 @@ class SocketWriteRead
 	 *
 	 *  @return	string
 	 */
-	public function getResponse() 
+	public function getResponse()
 	{
 		return $this->response;
 	}
@@ -158,7 +158,7 @@ class SocketWriteRead
 	 *
 	 *	@return int
 	 */
-	public function getErrorNumner() 
+	public function getErrorNumner()
 	{
 		return $this->errorNumber;
 	}
@@ -170,7 +170,7 @@ class SocketWriteRead
 	 *
 	 *	@return string
 	 */
-	public function getErrorString() 
+	public function getErrorString()
 	{
 		return $this->errorString;
 	}

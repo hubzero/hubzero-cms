@@ -31,7 +31,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JFactory::getApplication()->redirect( 
+JFactory::getApplication()->redirect(
 	JRoute::_(
 		'index.php?option=com_users&task=user.logout&return=' . $this->return,
 		false

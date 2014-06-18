@@ -35,11 +35,11 @@ $this->css();
 
 $title = ($this->admin) ? JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 
-if (count($this->wishlist->items) > 0 && $this->items > $this->filters['limit']) 
+if (count($this->wishlist->items) > 0 && $this->items > $this->filters['limit'])
 {
 	$title .= ' <span>(<a href="'.JRoute::_('index.php?option=com_wishlist&task=wishlist&category='. $this->wishlist->category.'&rid='.$this->wishlist->referenceid).'">'.JText::_('PLG_GROUPS_WISHLIST_VIEW_ALL') .' '.$this->items.'</a>)</span>';
 }
-else 
+else
 {
 	$title .= ' <span>('.$this->items.')</span>';
 }
@@ -66,31 +66,31 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 			<table class="ideas entries">
 				<caption><?php echo $title; ?></caption>
 				<tbody>
-		<?php 
-		if ($this->wishlist->items) 
+		<?php
+		if ($this->wishlist->items)
 		{
-			foreach ($this->wishlist->items as $item) 
+			foreach ($this->wishlist->items as $item)
 			{
 				$item->subject = $this->escape(stripslashes($item->subject));
 
 				$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 
-				if ($item->reports) 
+				if ($item->reports)
 				{
 					$status = 'outstanding';
-				} 
-				else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3)) 
+				}
+				else if (isset($item->ranked) && !$item->ranked && $item->status!=1 && $item->status!=3 && $item->status!=4 && ($this->admin==2 or $this->admin==3))
 				{
 					$status = 'unranked';
-				} 
-				else 
+				}
+				else
 				{
 					$status = 'outstanding';
 				}
 
 				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
 				$state .= ($item->private) ? ' private' : '' ;
-				switch ($item->status) 
+				switch ($item->status)
 				{
 					case 3:
 						$state .= ' rejected';
@@ -103,11 +103,11 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 					break;
 					case 0:
 					default:
-						if ($item->accepted == 1) 
+						if ($item->accepted == 1)
 						{
 							$state .= ' accepted';
-						} 
-						else 
+						}
+						else
 						{
 							$state .= ' pending';
 						}
@@ -115,7 +115,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 				}
 
 				$name = JText::_('PLG_GROUPS_WISHLIST_ANONYMOUS');
-				if (!$item->anonymous) 
+				if (!$item->anonymous)
 				{
 					$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->authorname) . '</a>';
 				}
@@ -128,10 +128,10 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 						<?php if (!$item->reports) { ?>
 							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 							<span class="entry-details">
-								<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?> 
-								<span class="entry-time-at"><?php echo JText::_('COM_WISHLIST_DATETIME_AT'); ?></span> 
-								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="entry-time-on"><?php echo JText::_('COM_WISHLIST_DATETIME_ON'); ?></span> 
+								<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
+								<span class="entry-time-at"><?php echo JText::_('COM_WISHLIST_DATETIME_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-time-on"><?php echo JText::_('COM_WISHLIST_DATETIME_ON'); ?></span>
 								<span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo JHTML::_('date', $item->proposed, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<span class="entry-details-divider">&bull;</span>
 								<span class="entry-comments">
@@ -167,7 +167,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 						<td class="voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(
-									'name'      => 'wishlist', 
+									'name'      => 'wishlist',
 									'layout'    => '_vote',
 									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wishlist'
 								));
@@ -182,15 +182,15 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 							?>
 						</td>
 						<td class="ranking">
-							<?php 
-							/*if ($this->admin 
-								|| $item->status == 1 
-								|| ($item->status == 0 && $item->accepted == 1) 
-								|| $item->status == 3 
+							<?php
+							/*if ($this->admin
+								|| $item->status == 1
+								|| ($item->status == 0 && $item->accepted == 1)
+								|| $item->status == 3
 								|| $item->status == 4
 							) { */
 								$html = '';
-								switch ($item->status) 
+								switch ($item->status)
 								{
 									case 0:
 										if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {

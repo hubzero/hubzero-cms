@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title(JText::_('COM_GROUPS').': ' . $text, 'groups.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -51,15 +51,15 @@ $membership_control   = $gparams->get('membership_control', 1);
 $display_system_users = $gparams->get('display_system_users', 'global');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('#field-description').val() == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
@@ -143,7 +143,7 @@ function submitbutton(pressbutton)
 			<?php if ($this->group->created_by) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->group->created_by);
 					echo $this->escape($creator->get('name')); ?></td>
 				</tr>

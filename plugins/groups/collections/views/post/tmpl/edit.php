@@ -128,9 +128,9 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 			<div id="post-file" class="fieldset">
 			<?php if ($this->entry->get('original')) { ?>
 				<div class="field-wrap" id="ajax-uploader-list">
-					<?php 
+					<?php
 						$assets = $item->assets();
-						if ($assets->total() > 0) 
+						if ($assets->total() > 0)
 						{
 							$i = 0;
 							foreach ($assets as $asset)
@@ -156,7 +156,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 							<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
 						</span>
 					</p>
-					<?php 
+					<?php
 								$i++;
 							}
 						}
@@ -209,7 +209,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 			<div class="col span6 omega">
 				<label>
 					<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
-					<?php 
+					<?php
 					if (count($tf) > 0) {
 						echo $tf[0];
 					} else { ?>

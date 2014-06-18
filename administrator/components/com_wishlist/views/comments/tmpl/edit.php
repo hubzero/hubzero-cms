@@ -35,7 +35,7 @@ $canDo = WishlistHelper::getActions('list');
 $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 
 JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_WISH') . ': ' . $text, 'wishlist.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -48,7 +48,7 @@ JToolBarHelper::help('comment');
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
@@ -109,9 +109,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('Created by'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->created_by);
-						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown'); 
+						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->created_by); ?>" />
 					</td>
@@ -138,7 +138,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">

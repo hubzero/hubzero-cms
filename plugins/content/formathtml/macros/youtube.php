@@ -39,7 +39,7 @@ class Youtube extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -63,7 +63,7 @@ class Youtube extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -74,12 +74,12 @@ class Youtube extends Macro
 		//declare the partial youtube embed url
 		$youtube_url = 'https://www.youtube.com/embed/';
 
-		//defaults 
+		//defaults
 		$default_width = 640;
 		$default_height = 380;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return '';
 		}
@@ -92,9 +92,9 @@ class Youtube extends Macro
 		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
 
 		//check is user entered full youtube url or just Video Id
-		if (strstr($url, 'http')) 
+		if (strstr($url, 'http'))
 		{
-			//split the string into two parts 
+			//split the string into two parts
 			//uri and query string
 			$full_url_parts = explode('?', $url);
 
@@ -104,17 +104,17 @@ class Youtube extends Macro
 			//foreach query string parts
 			//explode at equals sign
 			//check to see if v is the first part and if it is set the second part to the video id
-			foreach ($query_string_parts as $qsp) 
+			foreach ($query_string_parts as $qsp)
 			{
 				$pairs_parts = explode("%3D", $qsp);
-				if ($pairs_parts[0] == 'v') 
+				if ($pairs_parts[0] == 'v')
 				{
 					$video_id = $pairs_parts[1];
 					break;
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$video_id = $url;
 		}

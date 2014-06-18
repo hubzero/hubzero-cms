@@ -34,7 +34,7 @@ $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . JText::_('Group Page Categories') . ' ]</small></small>', 'groups.png');
 
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -42,7 +42,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }
@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 									0 => JText::_('Unpublished'),
 									2 => JText::_('Trashed')
 								);
-								
+
 								foreach ($states as $k => $v)
 								{
 									$sel = ($this->module->get('state') == $k) ? 'selected="selected"' : '';
@@ -124,7 +124,7 @@ function submitbutton(pressbutton)
 						<td>
 							<fieldset class="adminform">
 								<legend><?php echo JText::_('Menu Selection'); ?></legend>
-								
+
 								<?php foreach($this->pages as $page) : ?>
 									<label>
 										<?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
@@ -167,7 +167,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo JText::_('Last Modified'); ?></th>
 						<td>
-							<?php 
+							<?php
 								$modified = '--';
 								if ($this->module->get('modified_by') != null)
 								{
@@ -194,7 +194,7 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		<?php endif; ?>
-		
+
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Module Content'); ?></span></legend>
 			<table class="admintable">

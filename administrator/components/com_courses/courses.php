@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $option = 'com_courses';
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -49,23 +49,23 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_COURSES'), 
-	'index.php?option=' .  $option . '&controller=courses', 
+	JText::_('COM_COURSES_COURSES'),
+	'index.php?option=' .  $option . '&controller=courses',
 	(!in_array($controllerName, array('students', 'roles', 'pages')))
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_PAGES'), 
-	'index.php?option=' .  $option . '&controller=pages&course=0', 
+	JText::_('COM_COURSES_PAGES'),
+	'index.php?option=' .  $option . '&controller=pages&course=0',
 	$controllerName == 'pages'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_STUDENTS'), 
-	'index.php?option=' .  $option . '&controller=students&offering=0&section=0', 
+	JText::_('COM_COURSES_STUDENTS'),
+	'index.php?option=' .  $option . '&controller=students&offering=0&section=0',
 	$controllerName == 'students'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_ROLES'), 
-	'index.php?option=' .  $option . '&controller=roles', 
+	JText::_('COM_COURSES_ROLES'),
+	'index.php?option=' .  $option . '&controller=roles',
 	$controllerName == 'roles'
 );
 JSubMenuHelper::addEntry(

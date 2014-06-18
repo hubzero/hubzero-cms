@@ -243,7 +243,7 @@ class Migration20130924000000ComCategories extends Base
 					$query .= $this->db->Quote($r->published).",";         # published
 					$query .= $this->db->Quote($r->checked_out).",";       # checked_out
 					$query .= $this->db->Quote($r->checked_out_time).",";  # checked_out_time
-					$query .= $this->db->Quote($r->access).",";            # access 
+					$query .= $this->db->Quote($r->access).",";            # access
 					$query .= $this->db->Quote($r->params).",";            # params
 					$query .= '"",';                                 # metadesc
 					$query .= '"",';                                 # metakey

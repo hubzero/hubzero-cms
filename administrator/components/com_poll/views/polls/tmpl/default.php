@@ -5,22 +5,22 @@
 	$canDo = PollHelper::getActions('component');
 
 	JToolBarHelper::title(  JText::_( 'COM_POLL' ), 'poll.png' );
-	if ($canDo->get('core.edit.state')) 
+	if ($canDo->get('core.edit.state'))
 	{
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::spacer();
 	}
-	if ($canDo->get('core.delete')) 
+	if ($canDo->get('core.delete'))
 	{
 		JToolBarHelper::deleteList();
 		JToolBarHelper::spacer();
 	}
-	if ($canDo->get('core.edit')) 
+	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::editListX();
 	}
-	if ($canDo->get('core.create')) 
+	if ($canDo->get('core.create'))
 	{
 		JToolBarHelper::addNewX();
 	}
@@ -31,7 +31,7 @@
 <form action="index.php?option=com_poll" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->lists['search']); ?>" placeholder="<?php echo JText::_('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
 
 			<button onclick="this.form.submit();"><?php echo JText::_('COM_POLL_GO'); ?></button>
@@ -93,7 +93,7 @@
 
 			//$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 			//$published 	= JHTML::_('grid.published', $row, $i );
-			
+
 			$task  = $row->published ? 'unpublish' : 'publish';
 			$class = $row->published ? 'published' : 'unpublished';
 			$alt   = $row->published ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');

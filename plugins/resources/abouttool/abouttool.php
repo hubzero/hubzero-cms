@@ -45,7 +45,7 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -53,17 +53,17 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_abouttool', 0)) 
+		if ($model->type->params->get('plg_abouttool', 0))
 		{
 			$areas['about'] = JText::_('PLG_RESOURCES_ABOUT');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -79,22 +79,22 @@ class plgResourcesAbouttool extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
 
 		$ar = $this->onResourcesAreas($model);
-		if (empty($ar)) 
+		if (empty($ar))
 		{
 			$rtrn = '';
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(

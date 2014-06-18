@@ -40,7 +40,7 @@ class plgCronUsers extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -62,7 +62,7 @@ class plgCronUsers extends JPlugin
 
 	/**
 	 * Remove user accounts with negative, numeric, usernames
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function cleanAuthTempAccounts($params=null)

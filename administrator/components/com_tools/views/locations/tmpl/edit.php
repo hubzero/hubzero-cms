@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
-if (!$this->tmpl) 
+if (!$this->tmpl)
 {
 	JToolBarHelper::title(JText::_('Tools') . ': ' . JText::_('Zones') . ': ' . JText::_('Location') . ': ' . $text, 'tools.png');
 	JToolBarHelper::save();
@@ -300,14 +300,14 @@ $i = 0;
 if ($countries)
 {
 	echo 'continentcountry[' . $i++ . "] = new Array( '','','" . JText::_('- Select -') . "' );\n\t\t";
-	foreach ($countries as $k => $items) 
+	foreach ($countries as $k => $items)
 	{
 		echo 'continentcountry[' . $i++ . "] = new Array( '" . $items['continent'] . "','" . addslashes($items['code']) . "','" . addslashes($items['name']) . "' );\n\t\t";
 	}
 }
 ?>
 
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -315,7 +315,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	submitform(pressbutton);
 }
@@ -388,7 +388,7 @@ function saveAndUpdate()
 							<select name="fields[countrySHORT]" id="field-countrySHORT">
 								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>>- Select -</option>
 								<?php
-								//if ($countries = \Hubzero\Geocode\Geocode::countries()) 
+								//if ($countries = \Hubzero\Geocode\Geocode::countries())
 								if ($countries)
 								{
 									if (!$this->row->get('continent'))
@@ -402,7 +402,7 @@ function saveAndUpdate()
 											continue;
 										}
 										echo '<option value="' . $country['code'] . '"';
-										if (strtoupper($this->row->get('countrySHORT')) == $country['code']) 
+										if (strtoupper($this->row->get('countrySHORT')) == $country['code'])
 										{
 											echo ' selected="selected"';
 										}

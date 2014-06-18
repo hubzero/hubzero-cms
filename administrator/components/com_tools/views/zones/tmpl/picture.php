@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="tmpl" value="component" />
 						<input type="hidden" name="id" value="<?php echo $this->zone->get('id'); ?>" />
 						<input type="hidden" name="task" value="upload" />
-						
+
 						<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
 						<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
 					</td>
@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tbody>
 		</table>
 	<?php
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			echo '<p class="error">' . $this->getError() . '</p>';
 		}
@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');
 			$path = $zone->logo('path');
 			$file = $zone->get('picture');
 
-			if ($file && file_exists($path . DS . $file)) 
+			if ($file && file_exists($path . DS . $file))
 			{
 				$this_size = filesize($path . DS . $file);
 				list($width, $height, $type, $attr) = getimagesize($path . DS . $file);

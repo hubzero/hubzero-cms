@@ -32,19 +32,19 @@ $remoteControl = $this->remote && $this->remote['converted'] == 1 ? 1 : 0;
 <h3><?php echo $remoteControl ? JText::_('COM_PROJECTS_UNSHARE_PROJECT_FILES') : JText::_('COM_PROJECTS_SHARE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
-	
+
 <form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
 	<p class="notice">
 	<?php echo $remoteControl ? JText::_('COM_PROJECTS_UNSHARE_FILES_CONFIRM') : JText::_('COM_PROJECTS_SHARE_FILES_CONFIRM');  ?>
 	</p>
-	
+
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="shareit" />
@@ -68,31 +68,31 @@ if (!$this->getError()) {
 				     ->display();
 			?>
 		</ul>
-		
-		<?php if ($remoteControl) 
-		{ 
+
+		<?php if ($remoteControl)
+		{
 			if ($this->remote['service'] == 'google')
-			{	
+			{
 				$ext = '';
-				
+
 				// Get original file
 				$original = $this->remote['original_path'];
-								
+
 				if ($original)
 				{
 					// Get file extention
 					$ext = ProjectsGoogleHelper::getImportExt($original);
 				}
-				
+
 				$formats = ProjectsGoogleHelper::getGoogleConversionFormat($this->remote['mimeType'], false, false, true, $ext);
-				
+
 				$first = isset($formats[$ext]) ? 0 : 1;
-									
+
 				if (!empty($formats))
-				{ 
+				{
 			?>
 				<h4><?php echo JText::_('COM_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
-				<div class="sharing-option-extra">		
+				<div class="sharing-option-extra">
 			<?php
 				$i = 0;
 						foreach ($formats as $key => $value)
@@ -102,23 +102,23 @@ if (!$this->getError()) {
 					<input type="radio" name="format" value="<?php echo $key; ?>" <?php if (($first && $i == 0) || $ext == $key) { echo 'checked="checked"'; } ?> />
 					<?php echo $value; ?> <?php if ($ext == $key) { echo '<span class="hint mini rightfloat"> [original format]</span>'; } ?>
 				</label>
-			<?php	
+			<?php
 						$i++;
 						}
 			?>
 				</div>
 			<?php
-				}				
+				}
 			 }
-		} 
- 		?>	
+		}
+ 		?>
 		<p class="submitarea">
-			<?php echo $this->type == 'folder' 
+			<?php echo $this->type == 'folder'
 				? '<input type="hidden" name="folder" value="'.$this->item.'" />'
 				: '<input type="hidden" name="asset" value="'.$this->item.'" />'; ?>
 			<input type="submit" value="<?php echo $remoteControl ? JText::_('COM_PROJECTS_FILES_ACTION_UNSHARE') : JText::_('COM_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

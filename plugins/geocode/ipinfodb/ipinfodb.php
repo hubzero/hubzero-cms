@@ -35,15 +35,15 @@ jimport('joomla.plugin.plugin');
 
 /**
  * IpInfoDb plugin for geocode
- * 
- * The IpInfoDbProvider is able to geocode IPv4 addresses 
+ *
+ * The IpInfoDbProvider is able to geocode IPv4 addresses
  * only. A valid api key is required.
  */
 class plgGeocodeIpinfodb extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

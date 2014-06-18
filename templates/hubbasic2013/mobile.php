@@ -64,7 +64,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 	<body>
 		<jdoc:include type="modules" name="notices" />
 		<jdoc:include type="modules" name="helppane" />
-		
+
 		<div id="top" class="mobile-top">
 			<header id="masthead" role="banner">
 				<div class="inner">

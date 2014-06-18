@@ -38,35 +38,35 @@ class ResourcesAssoc extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $child_id  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $grouping  = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,12 +77,12 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->child_id) == '') 
+		if (trim($this->child_id) == '')
 		{
 			$this->setError(JText::_('Your resource association must have a child.'));
 			return false;
@@ -92,7 +92,7 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Load a record by parent/child association and bind to $this
-	 * 
+	 *
 	 * @param      integer $pid Parent ID
 	 * @param      integer $cid Child ID
 	 * @return     boolean True on success
@@ -100,11 +100,11 @@ class ResourcesAssoc extends JTable
 	public function loadAssoc($pid, $cid)
 	{
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -113,7 +113,7 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Get the record directly before or after this record
-	 * 
+	 *
 	 * @param      string $move Direction to look
 	 * @return     boolean True on success
 	 */
@@ -130,11 +130,11 @@ class ResourcesAssoc extends JTable
 			break;
 		}
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -143,13 +143,13 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Get the last number in an ordering
-	 * 
+	 *
 	 * @param      integer $pid Parent ID
 	 * @return     integer
 	 */
 	public function getLastOrder($pid=NULL)
 	{
-		if (!$pid) 
+		if (!$pid)
 		{
 			$pid = $this->parent_id;
 		}
@@ -159,27 +159,27 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $pid Parent ID
 	 * @param      integer $cid Child ID
 	 * @return     boolean True on success
 	 */
 	public function delete($pid=NULL, $cid=NULL)
 	{
-		if (!$pid) 
+		if (!$pid)
 		{
 			$pid = $this->parent_id;
 		}
-		if (!$cid) 
+		if (!$cid)
 		{
 			$cid = $this->child_id;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
-		if ($this->_db->query()) 
+		if ($this->_db->query())
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			$this->_error = $this->_db->getErrorMsg();
 			return false;
@@ -189,34 +189,34 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Store a record
 	 * Defaults to update unless forcing an insert
-	 * 
+	 *
 	 * @param      boolean $new Create new?
 	 * @return     boolean True on success
 	 */
 	public function store($new=false)
 	{
-		if (!$new) 
+		if (!$new)
 		{
 			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($this->ordering) . ", grouping=" . $this->_db->Quote($this->grouping) . " WHERE child_id=" . $this->_db->Quote($this->child_id) . " AND parent_id=" . $this->_db->Quote($this->parent_id));
-			if ($this->_db->query()) 
+			if ($this->_db->query())
 			{
 				$ret = true;
-			} 
-			else 
+			}
+			else
 			{
 				$ret = false;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -224,17 +224,17 @@ class ResourcesAssoc extends JTable
 
 	/**
 	 * Get a record count for a parent
-	 * 
+	 *
 	 * @param      integer $pid Parent ID
 	 * @return     itneger
 	 */
 	public function getCount($pid=NULL)
 	{
-		if (!$pid) 
+		if (!$pid)
 		{
 			$pid = $this->parent_id;
 		}
-		if (!$pid) 
+		if (!$pid)
 		{
 			return null;
 		}

@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Add stylesheet
 $document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+$document->addStyleSheet('plugins' . DS . 'publications' . DS
 	. 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
 
 ?>

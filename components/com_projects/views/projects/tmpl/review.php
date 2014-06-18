@@ -27,19 +27,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if($this->reviewer == 'sponsored')
 {
-	$title = JText::_('COM_PROJECTS_REVIEW_PROJECT_SPS');			
+	$title = JText::_('COM_PROJECTS_REVIEW_PROJECT_SPS');
 	$approved = $this->params->get('grant_approval') || $this->params->get('grant_status') == 1 ? 1 : 0;
-	
+
 	$b_action = $approved ?
 			JText::_('COM_PROJECTS_SAVE_SPS_APPROVED') :
-			JText::_('COM_PROJECTS_SAVE_SPS') ;	
+			JText::_('COM_PROJECTS_SAVE_SPS') ;
 }
 else {
-	$title = $this->project->state == 5 
-			? JText::_('COM_PROJECTS_REVIEW_PROJECT_HIPAA') 
+	$title = $this->project->state == 5
+			? JText::_('COM_PROJECTS_REVIEW_PROJECT_HIPAA')
 			: JText::_('COM_PROJECTS_REVIEW_PROJECT_HIPAA_SAVE');
-	$b_action = $this->project->state == 5  
-			? JText::_('COM_PROJECTS_SAVE_HIPAA') 
+	$b_action = $this->project->state == 5
+			? JText::_('COM_PROJECTS_SAVE_HIPAA')
 			: JText::_('COM_PROJECTS_SAVE');
 }
 
@@ -58,15 +58,15 @@ $notes = ProjectsHtml::getAdminNotes($this->project->admin_notes, $this->reviewe
 <?php } ?>
 <?php
 // Display error  message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
 <?php if($this->project->id) { ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
 
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="task" value="process" />
@@ -85,13 +85,13 @@ if ($this->getError()) {
 		</div>
 	</div>
 
-	<?php if($this->reviewer == 'sponsored') 
-	{ 
+	<?php if($this->reviewer == 'sponsored')
+	{
 	?>
 	<div id="spsinfo" class="faded mini">
 		<table>
 			<tr>
-				<td>	
+				<td>
 					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
 					 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>"  />
 					</label>
@@ -104,7 +104,7 @@ if ($this->getError()) {
 				</td>
 			</tr>
 			<tr>
-				<td>	
+				<td>
 					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
 					 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>"  />
 					</label>
@@ -117,9 +117,9 @@ if ($this->getError()) {
 				</td>
 			</tr>
 			<tr>
-				<td>	
-					<label class="<?php if($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved 
-						? ucfirst(JText::_('COM_PROJECTS_APPROVAL_CODE_APPROVED')) 
+				<td>
+					<label class="<?php if($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
+						? ucfirst(JText::_('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
 						: JText::_('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
 					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
 					<?php if(!$approved) { ?>
@@ -132,7 +132,7 @@ if ($this->getError()) {
 					<?php if(!$approved) { ?>
 					<label class="dark">
 						 <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if($this->params->get('grant_status') == 2) { echo 'checked="checked"'; } ?> />
-						<?php echo $this->params->get('grant_status') == 2 ? JText::_('COM_PROJECTS_SPS_REJECTED_KEEP') : JText::_('COM_PROJECTS_SPS_REJECT'); ?>  
+						<?php echo $this->params->get('grant_status') == 2 ? JText::_('COM_PROJECTS_SPS_REJECTED_KEEP') : JText::_('COM_PROJECTS_SPS_REJECT'); ?>
 					</label>
 					<?php } ?>
 				</td>
@@ -140,12 +140,12 @@ if ($this->getError()) {
 		</table>
 	</div>
 	<?php } ?>
-	<?php if($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>	
+	<?php if($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>
 	 <div>
 		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(JText::_('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
 	 </div>
 	<?php } ?>
-	
+
 	<div id="newadmincomment">
 		<h4><?php echo ucfirst(JText::_('COM_PROJECTS_ADD_ADMIN_COMMENT')); ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
 		<label>
@@ -165,8 +165,8 @@ if ($this->getError()) {
 		<?php echo $notes; ?>
 	<?php } else {  ?>
 		<p class="noresults">No comments found</p>
-	<?php } ?>	
-	</div>	
+	<?php } ?>
+	</div>
 </form>
 <?php } ?>
 </div>

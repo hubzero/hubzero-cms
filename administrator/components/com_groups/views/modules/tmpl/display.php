@@ -38,15 +38,15 @@ JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . 
 
 //add buttons to toolbar
 $canDo = GroupsHelper::getActions('group');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('Delete page Modules?', 'delete');
 }
@@ -60,7 +60,7 @@ JHtml::_('behavior.modal', 'a.version, a.preview', array('handler' => 'iframe', 
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }
@@ -122,7 +122,7 @@ function submitbutton(pressbutton)
 									<?php echo JText::_('Scan Content'); ?>
 								</a>
 							</li>
-							
+
 						</ol>
 					</td>
 					<td width="20%">
@@ -200,7 +200,7 @@ function submitbutton(pressbutton)
 <?php endif; ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />

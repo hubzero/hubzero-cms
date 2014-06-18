@@ -45,7 +45,7 @@ class SupportControllerIndex extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -53,7 +53,7 @@ class SupportControllerIndex extends \Hubzero\Component\SiteController
 			);
 		}
 	}
-	
+
 	/**
 	 * Method to build and set the document title
 	 *
@@ -69,7 +69,7 @@ class SupportControllerIndex extends \Hubzero\Component\SiteController
 
 	/**
 	 * Displays the main page for support
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -83,7 +83,7 @@ class SupportControllerIndex extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

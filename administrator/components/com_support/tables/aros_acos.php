@@ -38,56 +38,56 @@ class SupportAroAco extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $aro_id  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $aco_id  = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $action_create = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $action_read   = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $action_update = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $action_delete = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,17 +98,17 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->aro_id) == '') 
+		if (trim($this->aro_id) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
 			return false;
 		}
-		if (trim($this->aco_id) == '') 
+		if (trim($this->aco_id) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
 			return false;
@@ -119,19 +119,19 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Delete records by ARO
-	 * 
+	 *
 	 * @param      integer $aro_id ARO ID
 	 * @return     boolean True on success
 	 */
 	public function deleteRecordsByAro($aro_id=0)
 	{
-		if (!$aro_id) 
+		if (!$aro_id)
 		{
 			$this->setError(JText::_('Missing ARO ID'));
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=" . $this->_db->Quote($aro_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -141,19 +141,19 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Delete records by ACO
-	 * 
+	 *
 	 * @param      integer $aco_id ACO ID
 	 * @return     boolean True on success
 	 */
 	public function deleteRecordsByAco($aco_id=0)
 	{
-		if (!$aco_id) 
+		if (!$aco_id)
 		{
 			$this->setError(JText::_('Missing ACO ID'));
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=" . $this->_db->Quote($aco_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -163,14 +163,14 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -180,7 +180,7 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -193,7 +193,7 @@ class SupportAroAco extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

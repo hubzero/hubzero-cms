@@ -41,51 +41,51 @@ class Provider
 
 	/**
 	 * Description for '_provider'
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_provider = null;
 
 	/**
 	 * Description for '_consumer_data'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_consumer_data = null;
 
 	/**
 	 * Description for '_token_data'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_token_data = null;
 
 	/**
 	 * Description for '_request_token_path'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_request_token_path = null;
 
 	/**
 	 * Description for '_access_token_path'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_access_token_path = null;
 
 	/**
 	 * Description for '_authorize_path'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $_authorize_path = null;
 
 	/**
 	 * Short description for 'setRequestTokenPath'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $path Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -96,9 +96,9 @@ class Provider
 
 	/**
 	 * Short description for 'setAccessTokenPath'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $path Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -109,9 +109,9 @@ class Provider
 
 	/**
 	 * Short description for 'setAuthorizePath'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $path Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -122,15 +122,15 @@ class Provider
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	function __construct($params = array())
 	{
 		$this->_provider = new OAuthProvider($params);
-		
+
 		$this->_provider->consumerHandler(array($this,'consumerHandler'));
 		$this->_provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
 		$this->_provider->tokenHandler(array($this, 'tokenHandler'));
@@ -140,9 +140,9 @@ class Provider
 
 	/**
 	 * Short description for 'validateRequest'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $uri Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -159,11 +159,11 @@ class Provider
 		{
 			$method = $_SERVER['REQUEST_METHOD'];
 		}
-		
+
 		$parts = parse_url($uri);
 
 		$path = trim($parts['path'],'/');
-				
+
 		if ($path == $this->_request_token_path)
 		{
 			$this->_provider->isRequestTokenEndpoint(true);
@@ -179,9 +179,9 @@ class Provider
 
 			// @FIXME: header check is inexact and could give false positives
 			// @FIXME: pecl oauth provider doesn't handle x_auth in header
-			// @FIXME: api application should convert xauth variables in 
+			// @FIXME: api application should convert xauth variables in
 			//         header to form/query data as workaround
-			// @FIXME: this code is here for future use if/when pecl oauth 
+			// @FIXME: this code is here for future use if/when pecl oauth
 			//         provider is fixed
 
 			if (isset($_GET['x_auth_mode'])
@@ -204,7 +204,7 @@ class Provider
 		try
 		{
 			$this->_provider->checkOAuthRequest($uri,$method);
-			
+
 			return true;
 		}
 		catch (OAuthException $E)
@@ -243,12 +243,12 @@ class Provider
 				return true;
 			}
 		}
-		
+
 		$message = OAuthProvider::reportProblem($E, false);
-		
+
 		// request signed without token is allowed to pass
 		if ($message == "oauth_problem=token_rejected")
-		{		
+		{
 			if ( ($this->_provider->consumer_key !== null)
 				&& ($this->_provider->consumer_secret !== null)
 				&& ($this->_provider->nonce !== null)
@@ -263,7 +263,7 @@ class Provider
 				return true;
 			}
 		}
-				
+
 		$status = 401;
 		$reason = 'Unauthorized';
 
@@ -286,15 +286,15 @@ class Provider
 		$result['message'] = $message;
 		$result['status'] = $status;
 		$result['reason'] = $reason;
-		
+
 		return $result;
 	}
 
 	/**
 	 * Short description for 'getToken'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	function getToken()
@@ -304,9 +304,9 @@ class Provider
 
 	/**
 	 * Short description for 'getConsumerKey'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	function getConsumerKey()
@@ -316,9 +316,9 @@ class Provider
 
 	/**
 	 * Short description for 'getConsumerData'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getConsumerData()
@@ -328,9 +328,9 @@ class Provider
 
 	/**
 	 * Short description for 'getTokenData'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	function getTokenData()
@@ -340,16 +340,16 @@ class Provider
 
 	/**
 	 * OAuthProvider consumerHandler Callback
-	 * 
+	 *
 	 * Lookup requested consumer key secret
-	 * 
+	 *
 	 * Result is stored in OAuthProvider instance's consumer_secret property
 	 * Consumer data record is stored in _consumer_data property
-	 * 
+	 *
 	 * @return  OAUTH_OK on success
 	 * 		If consumer_key doesn't exist returns OAUTH_CONSUMER_KEY_UNKNOWN
 	 * 		If consumer_key is expired or otherwise invalid returns OAUTH_CONSUMER_KEY_REFUSED
-	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
  	function consumerHandler()
 	{
@@ -387,13 +387,13 @@ class Provider
 
 	/**
 	 * OAuthProvider timestampNonceHandler Callback
-	 * 
+	 *
 	 * Validate timestamp and nonce assocaited with OAuthProvider instance
-	 * 
+	 *
 	 * @return  OAUTH_OK on success
 	 * 		If timestamp is invalid (expired) returns OAUTH_BAD_TIMESTAMP
 	 * 		If nonce has been seen before returns OAUTH_BAD_NONCE
-	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
 	function timestampNonceHandler()
 	{
@@ -412,10 +412,10 @@ class Provider
 		}
 
 		$db->setQuery("INSERT INTO #__oauthp_nonces (nonce,stamp,created) "
-				. " VALUES (" . 
-				$db->Quote($this->_provider->nonce) . 
+				. " VALUES (" .
+				$db->Quote($this->_provider->nonce) .
 				"," .
-				$db->Quote($this->_provider->timestamp) . 
+				$db->Quote($this->_provider->timestamp) .
 				", UTC_TIMESTAMP());");
 
 		if (($db->query() === false) && ($db->getErrorNum() != 1062)) // duplicate row error ok (well expected anyway)
@@ -433,21 +433,21 @@ class Provider
 
 	/**
 	 * OAuthProvider tokenHandler Callback
-	 * 
+	 *
 	 * Lookup token data associated with OAuthProvider instance
-	 * 
+	 *
 	 * If token is valid stores full token record in _token_data property
-	 * 
+	 *
 	 * @return  OAUTH_OK on success
 	 * 		If token not found returns OAUTH_TOKEN_REJECTED
 	 * 		If token has expired or is otherwise unusable returns OAUTH_TOKEN_REJECTED
 	 * 		If request verifier doesn't match token's verifier returns OAUTH_VERIFIER_INVALID
-	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR 
+	 * 		If lookup process failed for some reason returns OAUTH_ERR_INTERNAL_ERROR
 	 */
 	function tokenHandler()
 	{
 		$db = \JFactory::getDBO();
-			
+
 		if (!is_object($db))
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;
@@ -456,7 +456,7 @@ class Provider
 		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	. $db->Quote($this->_provider->token) . " LIMIT 1;");
 
 		$result = $db->loadObject();
-		
+
 		if ($result === false) // query failed
 		{
 			return OAUTH_ERR_INTERNAL_ERROR;

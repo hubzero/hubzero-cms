@@ -129,7 +129,7 @@ $this->css('pipeline.css')
 
 			<table class="tools entries">
 				<caption>
-					<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?> 
+					<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?>
 					<span>
 						(<?php echo ($this->filters['start'] + 1); ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $this->pageNav->total; ?>)
 					</span>
@@ -154,7 +154,7 @@ $this->css('pipeline.css')
 
 					$row->state_changed = ($row->state_changed != '0000-00-00 00:00:00') ? $row->state_changed : $row->registered;
 					$row->title .= ($row->version) ? ' v' . $row->version : '';
-					
+
 					ToolsHelperHtml::getStatusName($row->state, $status);
 				?>
 					<tr class="<?php echo strtolower($status); if (!$this->admin) { echo (' user-submitted'); } ?>">
@@ -218,7 +218,7 @@ $this->css('pipeline.css')
 				</tbody>
 			</table>
 
-			<?php 
+			<?php
 			$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 			$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);

@@ -202,15 +202,15 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 												</tr>
 											</thead>
 											<tbody>
-								<?php 
+								<?php
 								if (isset($this->tickets))
 								{
-									foreach ($this->tickets as $ticket) 
+									foreach ($this->tickets as $ticket)
 									{
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
-											if (strlen($ticket->summary) >= 70) 
+											if (strlen($ticket->summary) >= 70)
 											{
 												$ticket->summary .= '...';
 											}

@@ -29,7 +29,7 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $max 	  		= $this->manifest->params->max;
-$defaultTitle	= $this->manifest->params->title 
+$defaultTitle	= $this->manifest->params->title
 				? str_replace('{pubtitle}', $this->pub->title, $this->manifest->params->title) : NULL;
 
 $error 			= $this->status->getError();
@@ -44,15 +44,15 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 	<div class="element_overview">
 		<div>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?> </h5>
-						
+
 		<?php if (count($this->attachments) > 0) { ?>
 		<div class="list-wrapper">
 			<ul class="itemlist">
 		<?php	$i= 1; ?>
-				<?php foreach ($this->attachments as $att) { 
-					
+				<?php foreach ($this->attachments as $att) {
+
 					$i++;
-					
+
 					$data 			= new stdClass;
 					$data->row 		= $att;
 					$data->ordering = $i;
@@ -69,11 +69,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 		<?php } else {  ?>
 			<p class="noresults">No user input</p>
 		<?php } ?>
-		
+
 			<?php if ($error || ($required && !$complete)) { ?>
 				<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
 			<?php } else { ?>
-			
+
 			<?php } ?>
 		</div>
 	</div>

@@ -18,7 +18,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 		$this->db->setQuery("SELECT extension_id, params FROM `#__extensions` WHERE `name`='plg_members_dashboard' LIMIT 1");
 		$dashboardPlugin = $this->db->loadObject();
 		$params = json_decode($dashboardPlugin->params);
-		
+
 		$newDefaults = array();
 		if (isset($params->defaults))
 		{
@@ -28,7 +28,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			{
 				$newDefault  = array();
 				$oldDefaults = array_map('trim', explode(',', $oldCol));
-				
+
 				foreach ($oldDefaults as $row => $pref)
 				{
 					$newDefault['module'] = $pref;
@@ -65,7 +65,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 		$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote('"'.json_encode($params).'"') . " WHERE `extension_id`=" . $this->db->quote($dashboardPlugin->extension_id);
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 		// create dashboard prefs table
 		$query = "CREATE TABLE IF NOT EXISTS `jos_xprofiles_dashboard_preferences` (
 					  `uidNumber` int(11) unsigned NOT NULL,
@@ -75,12 +75,12 @@ class Migration20140508120000PlgMembersDashboard extends Base
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$this->db->setQuery($query);
 		$this->db->query();
-		
+
 
 		// move over exxisting preferences
 		$this->db->setQuery("SELECT * FROM `#__myhub`");
 		$preferences = $this->db->loadObjectList();
-		
+
 		$newpreferences = array();
 		foreach ($preferences as $preference)
 		{
@@ -91,7 +91,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			{
 				$newPref = array();
 				$oldPrefs = array_map('trim', explode(',', $oldCol));
-				
+
 				foreach ($oldPrefs as $row => $pref)
 				{
 					$newPref['module'] = $pref;
@@ -99,7 +99,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 					$newPref['row']    = ($row*2) + 1;
 					$newPref['size_x'] = 1;
 					$newPref['size_y'] = 2;
-					
+
 					$newPrefCols[] = $newPref;
 				}
 
@@ -107,7 +107,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
 			$newpreferences[] = "(".$preference->uid.",'".json_encode($newPrefCols)."','".$preference->modified."')";
 		}
-		
+
 		// if we have some prefs to move over
 		if (count($newpreferences) > 0)
 		{
@@ -115,7 +115,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// drop old myhub tables
 		$query = "DROP TABLE IF EXISTS `#__myhub`;";
 		$this->db->setQuery($query);

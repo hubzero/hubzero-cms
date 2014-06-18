@@ -35,7 +35,7 @@ class ActivitiesCollection extends Collection{
         $response =  $this->CTCTRequest->makeRequest($this->uri, 'POST', $postString, 'application/x-www-form-urlencoded');
 		return ($response['info']['http_code'] == 204) ? true : false;
     }
-    
+
 }
 
 class ListsCollection extends Collection{
@@ -65,7 +65,7 @@ class ListsCollection extends Collection{
             if($systemLists == false && !in_array((string)$entry->content->ContactList->Name, $ignoreArray)){
                 $listsCollection['lists'][] = new ContactList(ContactList::createStruct($entry));
             } elseif($systemLists == true) {
-                $listsCollection['lists'][] = new ContactList(ContactList::createStruct($entry)); 
+                $listsCollection['lists'][] = new ContactList(ContactList::createStruct($entry));
             }
         }
         $listsCollection['nextLink'] = Utility::findNextLink($parsedResponse);
@@ -159,7 +159,7 @@ class ContactsCollection extends Collection{
             $contactsCollection['contacts'][] = new Contact(Contact::createStruct($entry));
         }
         $contactsCollection['nextLink'] = Utility::findNextLink($parsedResponse);
-        return $contactsCollection;    
+        return $contactsCollection;
     }
 
     /**
@@ -323,7 +323,7 @@ class CampaignsCollection extends Collection{
         $campaignsCollection = array('campaigns' => array(), 'nextLink' => '');
         try{
             if(!in_array($status, $statusList)){throw new CTCTException("Campaign status '".$status."' is not a valid option");}
-			$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri.'?status='.$status; 
+			$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri.'?status='.$status;
             $response = $this->CTCTRequest->makeRequest($url, 'GET');
             $parsedResponse = simplexml_load_string($response['xml']);
             foreach ($parsedResponse->entry as $entry){

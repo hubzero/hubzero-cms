@@ -154,9 +154,9 @@ class PdfForm
 		$dbh = self::getDbh();
 
 		$dbh->setQuery(
-			'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM #__courses_form_questions WHERE form_id = pf.id) AS updated 
-			FROM #__courses_forms pf  
-			WHERE title IS NOT NULL AND title != \'\' AND active = 1 
+			'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM #__courses_form_questions WHERE form_id = pf.id) AS updated
+			FROM #__courses_forms pf
+			WHERE title IS NOT NULL AND title != \'\' AND active = 1
 			ORDER BY title'
 		);
 
@@ -213,7 +213,7 @@ class PdfForm
 	 **/
 	public function getErrors()
 	{
-		return $this->errors; 
+		return $this->errors;
 	}
 
 	/**
@@ -352,7 +352,7 @@ class PdfForm
 			switch ($_FILES[$name]['error'])
 			{
 				case UPLOAD_ERR_INI_SIZE: case UPLOAD_ERR_FORM_SIZE:
-					$pdf->errors[] = 'Upload failed, the file exceeds the maximum allowable size'; 
+					$pdf->errors[] = 'Upload failed, the file exceeds the maximum allowable size';
 				break;
 				case UPLOAD_ERR_PARTIAL:
 					$pdf->errors[] = 'The upload did not complete. Please try again';
@@ -589,8 +589,8 @@ class PdfForm
 		$fid = $this->getId();
 
 		$dbh->setQuery(
-			'SELECT pfq.id, pfa.id AS answer_id 
-			FROM #__courses_form_questions pfq 
+			'SELECT pfq.id, pfa.id AS answer_id
+			FROM #__courses_form_questions pfq
 			INNER JOIN #__courses_form_answers pfa ON pfa.question_id = pfq.id AND pfa.correct
 			WHERE form_id = '.$fid.' AND version = (SELECT max(version) FROM #__courses_form_questions WHERE form_id = '.$fid.')');
 

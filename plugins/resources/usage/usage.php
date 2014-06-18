@@ -43,26 +43,26 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
-	public function &onResourcesAreas($model) 
+	public function &onResourcesAreas($model)
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_' . $this->_name) && $model->isTool()) 
+		if ($model->type->params->get('plg_' . $this->_name) && $model->isTool())
 		{
 			// Only show tab for tools
 			$areas['usage'] = JText::_('PLG_RESOURCES_USAGE');
-		} 
+		}
 
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -78,21 +78,21 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($model)) 
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			if (!array_intersect($areas, $this->onResourcesAreas($model))
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_usage')) 
+		if (!$model->type->params->get('plg_usage'))
 		{
 			return $arr;
 		}
 
 		// Display only for tools
-		if (!$model->isTool()) 
+		if (!$model->isTool())
 		{
 			//return $arr;
 			$rtrn == 'metadata';
@@ -106,7 +106,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 		$url = JRoute::_('index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : 'id=' . $model->resource->id) . '&active=' . $this->_name);
 
-		if (!in_array($table, $tables)) 
+		if (!in_array($table, $tables))
 		{
 			$arr['html'] = '<p class="error">'. JText::_('PLG_RESOURCES_USAGE_MISSING_TABLE') . '</p>';
 			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::_('PLG_RESOURCES_USAGE_DETAILED') . '</a></p>';
@@ -118,11 +118,11 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$period = JRequest::getInt('period', $this->params->get('period', 14));
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
-		if ($model->isTool()) 
+		if ($model->isTool())
 		{
 			$stats = new ResourcesStatsTools($database);
-		} 
-		else 
+		}
+		else
 		{
 			$stats = new ResourcesStats($database);
 		}
@@ -132,7 +132,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		$clusters->loadStats($model->resource->id);
 
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			$action = JRequest::getVar('action', '');
 			if ($action == 'top')
@@ -164,7 +164,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			$view->dthis      = $dthis;
 			$view->period     = $period;
 			$view->params     = $this->params;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError($this->getError());
 			}
@@ -173,21 +173,21 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			if (!$stats->users)
 			{
 				$stats->users = 0;
 			}
-			if ($model->isTool()) 
+			if ($model->isTool())
 			{
 				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $stats->users) . '</a></p>';
-			} 
-			else 
+			}
+			else
 			{
 				$arr['metadata'] = '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
 			}
-			if ($clusters->users && $clusters->classes) 
+			if ($clusters->users && $clusters->classes)
 			{
 				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
 			}
@@ -198,25 +198,25 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Round time into nearest second/minutes/hours/days
-	 * 
+	 *
 	 * @param      integer $time Time
 	 * @return     string
 	 */
-	public static function timeUnits($time) 
+	public static function timeUnits($time)
 	{
-		if ($time < 60) 
+		if ($time < 60)
 		{
 			$data = JText::sprintf('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
-		} 
-		else if ($time > 60 && $time < 3600) 
+		}
+		else if ($time > 60 && $time < 3600)
 		{
 			$data = JText::sprintf('PLG_RESOURCES_USAGE_MINUTES', round(($time/60), 2));
-		} 
-		else if ($time >= 3600 && $time < 86400) 
+		}
+		else if ($time >= 3600 && $time < 86400)
 		{
 			$data = JText::sprintf('PLG_RESOURCES_USAGE_HOURS', round(($time/3600), 2));
-		} 
-		else if ($time >= 86400) 
+		}
+		else if ($time >= 86400)
 		{
 			$data = JText::sprintf('PLG_RESOURCES_USAGE_DAYS', round(($time/86400), 2));
 		}
@@ -226,7 +226,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get overview data
-	 * 
+	 *
 	 * @param      integer $id  Resource ID
 	 * @return     array
 	 */
@@ -234,9 +234,9 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = "SELECT * 
-				FROM `#__resource_stats_tools` 
-				WHERE resid = '$id' 
+		$sql = "SELECT *
+				FROM `#__resource_stats_tools`
+				WHERE resid = '$id'
 				AND period = '$period'
 				ORDER BY `datetime` ASC";
 		$database->setQuery($sql);
@@ -245,7 +245,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check for data for a given time period
-	 * 
+	 *
 	 * @param      integer $id  Resource ID
 	 * @param      integer $top Value type (1 = country, 2 = domain, 3 = org)
 	 * @param      integer $tid Stats ID for that tool
@@ -261,10 +261,10 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			return array();
 		}
 
-		$sql = "SELECT v.*, t.datetime, t.`processed_on` 
+		$sql = "SELECT v.*, t.datetime, t.`processed_on`
 				FROM `#__resource_stats_tools` AS t
 				LEFT JOIN `#__resource_stats_tools_topvals` AS v ON v.id=t.id
-				WHERE t.resid = '$id' 
+				WHERE t.resid = '$id'
 				AND t.period = '$prd'
 				AND t.datetime = '" . $datetime . "-00 00:00:00'
 				AND t.id = $tid
@@ -278,7 +278,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the stats ID for a specific resource
 	 * Getting this now allows for faster data pulling later on
-	 * 
+	 *
 	 * @param      integer $id       Resource ID
 	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
@@ -295,7 +295,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get data for orgs, countries, domains for a given time period
 	 * (1 = country, 2 = domain, 3 = org)
-	 * 
+	 *
 	 * @param      integer $id       Resource ID
 	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
@@ -339,7 +339,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get data for orgs, countries, domains for a given time period
 	 * (1 = country, 2 = domain, 3 = org)
-	 * 
+	 *
 	 * @param      integer $id       Resource ID
 	 * @param      string  $datetime Timestamp YYYY-MM-DD
 	 * @return     array
@@ -385,7 +385,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			foreach ($orgs as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs))
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}
@@ -428,11 +428,11 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			foreach ($countries as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs))
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}
-	
+
 				if (!isset($r[$ky]))
 				{
 					$i = 0;
@@ -464,7 +464,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			foreach ($domains as $row)
 			{
 				$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) 
+				if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs))
 				{
 					$ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
 				}

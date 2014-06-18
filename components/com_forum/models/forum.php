@@ -40,14 +40,14 @@ class ForumModel extends ForumModelAbstract
 {
 	/**
 	 * Container for interally cached data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cache = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string  $scope    Forum scope [site, group, course]
 	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
 	 * @return     void
@@ -73,14 +73,14 @@ class ForumModel extends ForumModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$key = $scope . '_' . $scope_id;
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new ForumModel($scope, $scope_id);
 		}
@@ -97,7 +97,7 @@ class ForumModel extends ForumModelAbstract
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		if (isset($this->_tbl->$property))
 		{
 			return $this->_tbl->$property;
 		}
@@ -120,7 +120,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Populate the forum with defaulta section and category
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function setup()
@@ -162,12 +162,12 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Set and get a specific section
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function section($id=null)
 	{
-		if (!isset($this->_cache['section']) 
+		if (!isset($this->_cache['section'])
 		 || ($id !== null && (int) $this->_cache['section']->get('id') != $id && (string) $this->_cache['section']->get('alias') != $id))
 		{
 			$this->_cache['section'] = null;
@@ -200,7 +200,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Get a list of sections for a forum
-	 * 
+	 *
 	 * @param      string  $rtrn    What data to return [count, list, first]
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -269,7 +269,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Get a list or count of posts for a forum
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear cached results?
@@ -326,7 +326,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string  $action    Action to check
 	 * @param      string  $assetType Type of asset to check
 	 * @param      integer $assetId   ID of item to check access on
@@ -340,7 +340,7 @@ class ForumModel extends ForumModelAbstract
 		{
 			$this->config()->set('access-view-' . $assetType, true);
 
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
 				if (version_compare(JVERSION, '1.6', 'ge'))
 				{
@@ -367,7 +367,7 @@ class ForumModel extends ForumModelAbstract
 					$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
 					$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 				}
-				else 
+				else
 				{
 					if ($assetType == 'post' || $assetType == 'thread')
 					{
@@ -394,7 +394,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Return a count for the type of data specified
-	 * 
+	 *
 	 * @param      string $what What to count
 	 * @return     integer
 	 */
@@ -445,7 +445,7 @@ class ForumModel extends ForumModelAbstract
 
 	/**
 	 * Get the most recent post made in the forum
-	 * 
+	 *
 	 * @return     ForumModelPost
 	 */
 	public function lastActivity()

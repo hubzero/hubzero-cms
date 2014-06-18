@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $option = JRequest::getCmd('option', 'com_resources');
 $task = JRequest::getWord('task', '');
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }

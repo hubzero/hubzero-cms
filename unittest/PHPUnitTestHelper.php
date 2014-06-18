@@ -58,5 +58,5 @@ class PHPUnitTestHelper
 		}
 
 		return $db;
-	}	
+	}
 }

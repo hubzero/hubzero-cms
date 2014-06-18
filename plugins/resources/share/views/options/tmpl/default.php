@@ -142,7 +142,7 @@ $metadata .= "\t\t\t".JText::_('PLG_RESOURCES_SHARE_RESOURCE')."\n";
 $metadata .= "\t\t".'</p>'."\n";
 $metadata .= "\t\t".'<div>'."\n";
 $metadata .= $popup;
-//$metadata .= "\t\t".'<div class="clear"></div>'."\n";		
+//$metadata .= "\t\t".'<div class="clear"></div>'."\n";
 $metadata .= "\t\t".'</div>'."\n";
 $metadata .= "\t".'</dd>'."\n";
 $metadata .= '</dl>'."\n";

@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring
  */
 function CartBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		unset($query['controller']);
 	}
@@ -50,20 +50,20 @@ function CartBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route
- * @return array 
+ * @return array
  */
 function CartParseRoute($segments)
 {
 	$vars = array();
-	
+
 	$vars['controller'] = $segments[0];
 	if (!empty($segments[1]))
 	{
 		$vars['task'] = $segments[1];
 	}
-	
+
 	foreach ($segments as $index => $value)
 	{
 		// skip first two segments -- these are controller and task
@@ -74,9 +74,9 @@ function CartParseRoute($segments)
 		else
 		{
 			$vars['p' . ($index - 2)]	= $value;
-		}		
+		}
 	}
-	
+
 	//print_r($vars);
 	return $vars;
 }

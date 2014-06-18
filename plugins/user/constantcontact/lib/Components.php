@@ -14,10 +14,10 @@ abstract class CCObject{
 			}
 		} catch (CTCTException $e){
 			$e->generateError();
-		}	
+		}
 	}
 }
-	
+
 
 
 class ContactList extends CCObject{
@@ -83,14 +83,14 @@ class ContactList extends CCObject{
         $listNode->addChild("SortOrder", $this->sortOrder);
         return $xml->asXML();
     }
-	
+
 	public static function createMemberStruct($parsedResponse){
 		$contact['link'] = (string) $parsedResponse->link->Attributes()->href;
 		$contact['id'] = (string) $parsedResponse->id;
 		$contact['updated'] = (string) $parsedResponse->updated;
 		$contact['emailAddress'] = (string) $parsedResponse->content->ContactListMember->EmailAddress;
 		$contact['fullName'] = (string) $parsedResponse->content->ContactListMember->Name;
-		return $contact;		
+		return $contact;
 	}
 }
 
@@ -312,7 +312,7 @@ class Contact extends CCObject{
         $contactlists_node = $contact_node->addChild("ContactLists");
         foreach($this->lists as $list){
             $listNode = $contactlists_node->addChild("ContactList");
-            $listNode->addAttribute("id", $list);                  
+            $listNode->addAttribute("id", $list);
         }
 
         $entry = $xml_object->asXML();
@@ -1371,7 +1371,7 @@ class Schedule extends CCObject{
         $this->time = (isset($params['time'])) ? $params['time'] : '';
         $this->campaign = (isset($params['campaign'])) ? $params['campaign'] : '';
     }
-    
+
     public function createXml(){
     	$this->validate(array('time'));
         $xml = simplexml_load_string("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><entry xmlns='http://www.w3.org/2005/Atom'/>");

@@ -44,14 +44,14 @@ class Service
 
 	/**
 	 * Map of characters to be replaced through strtr
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_canonicalNamesReplacements = array(
-		'-'  => '', 
-		'_'  => '', 
-		' '  => '', 
-		'\\' => '', 
+		'-'  => '',
+		'_'  => '',
+		' '  => '',
+		'\\' => '',
 		'/'  => ''
 	);
 
@@ -74,7 +74,7 @@ class Service
 	 */
 	public function __construct($adapter = null)
 	{
-		if (null !== $adapter) 
+		if (null !== $adapter)
 		{
 			$this->setAdapter($adapter);
 		}
@@ -95,7 +95,7 @@ class Service
 	/**
 	 * Sets the authentication adapter
 	 *
-	 * @param     mixed $adapter string or Adapter\AdapterInterface 
+	 * @param     mixed $adapter string or Adapter\AdapterInterface
 	 * @return    Service
 	 */
 	public function setAdapter($adapter)
@@ -104,11 +104,11 @@ class Service
 		{
 			$cName = $this->canonicalizeName($adapter);
 
-			if (isset($this->_invokableClasses[$cName])) 
+			if (isset($this->_invokableClasses[$cName]))
 			{
 				$invokable = $this->_invokableClasses[$cName];
 
-				if (!class_exists($invokable)) 
+				if (!class_exists($invokable))
 				{
 					throw new Exception\AdapterNotFoundException(sprintf(
 						'%s: failed retrieving adapter via invokable class "%s"; class does not exist',
@@ -188,7 +188,7 @@ class Service
 	 */
 	public function isSpam($value)
 	{
-		if (!$adapter = $this->getAdapter()) 
+		if (!$adapter = $this->getAdapter())
 		{
 			throw new Exception\AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
 		}
@@ -206,7 +206,7 @@ class Service
 	 */
 	protected function canonicalizeName($name)
 	{
-		if (isset($this->canonicalNames[$name])) 
+		if (isset($this->canonicalNames[$name]))
 		{
 			return $this->canonicalNames[$name];
 		}

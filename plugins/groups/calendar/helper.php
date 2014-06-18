@@ -38,7 +38,7 @@ class plgGroupsCalendarHelper
 {
 	/**
 	 * Link string patterns that ook like URLs or email addresses
-	 * 
+	 *
 	 * @param      string $text Text to autolink
 	 * @return     string
 	 */
@@ -46,10 +46,10 @@ class plgGroupsCalendarHelper
 	{
 		//replace email links
 		$text = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $text);
-		
+
 		//replace url links
 		$text = preg_replace('#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#', '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
-		
+
 		//return auto-linked text
 		return $text;
 	}
@@ -57,7 +57,7 @@ class plgGroupsCalendarHelper
 	/**
 	 * Gets an array of timezone abbreviation and name
 	 * based on supplied offset (to UTC) value
-	 * 
+	 *
 	 * @param      string $timezone Timezone offset
 	 * @return     array
 	 */

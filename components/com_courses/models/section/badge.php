@@ -42,21 +42,21 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableSectionBadge';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'sectionbadge';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @return     void
 	 */
@@ -83,7 +83,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Load by section id
-	 * 
+	 *
 	 * @param      integer $id  Section id
 	 * @return     void
 	 */
@@ -112,7 +112,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Load by provider badge id
-	 * 
+	 *
 	 * @param      integer $id  Provider badge id
 	 * @return     void
 	 */
@@ -132,7 +132,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Store
-	 * 
+	 *
 	 * @param      bool $check
 	 * @return     void
 	 */
@@ -155,7 +155,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Get badge claim url
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getClaimUrl()
@@ -165,7 +165,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Get badge denied url
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getDeniedUrl()
@@ -175,7 +175,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Get badges url
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function getBadgesUrl()
@@ -185,7 +185,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Get url
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function getUrl($type='Claim')
@@ -200,7 +200,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 
 	/**
 	 * Check to see if a badge meets all requirements of being available
-	 * 
+	 *
 	 * @return     bool
 	 */
 	public function isAvailable()

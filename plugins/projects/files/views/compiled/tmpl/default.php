@@ -35,7 +35,7 @@ if ($this->getError()) { ?>
 	<h3><?php echo JText::_('COM_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
 	<?php
 	echo ('<p class="witherror">'.$this->getError().'</p>');
-	
+
 	echo '<div class="witherror"><pre>';
 	if ($this->log)
 	{
@@ -45,7 +45,7 @@ if ($this->getError()) { ?>
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <ul class="sample">
 	<?php
@@ -56,7 +56,7 @@ if (!$this->getError()) {
 		$view->remote		= $this->remote;
 		$view->type			= 'file';
 		$view->action		= 'compile';
-		$view->multi		= NULL;	
+		$view->multi		= NULL;
 
 		if ($this->ext == 'tex' && is_file(JPATH_ROOT . $this->outputDir . DS . $this->embed))
 		{
@@ -69,8 +69,8 @@ if (!$this->getError()) {
 	?>
 </ul>
 <?php } ?>
-<?php if ($this->data && !$this->binary && $this->cType != 'application/pdf') { 
-	
+<?php if ($this->data && !$this->binary && $this->cType != 'application/pdf') {
+
 	// Clean up data from Windows characters - important!
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
 

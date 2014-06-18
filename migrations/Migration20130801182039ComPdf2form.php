@@ -77,7 +77,7 @@ class Migration20130801182039ComPdf2form extends Base
 				'jos_pdf_form_answers_question_id_idx on jos_pdf_form_answers',
 				'jos_pdf_form_respondents_user_id_idx on jos_pdf_form_respondents',
 				'jos_pdf_form_respondents_deployment_id_idx on jos_pdf_form_respondents'
-			) as $query) 
+			) as $query)
 			{
 				$this->db->setQuery("drop index $query");
 				$this->db->query();

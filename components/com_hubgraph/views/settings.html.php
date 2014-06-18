@@ -1,5 +1,5 @@
-<? 
-$settings = HubgraphConfiguration::instance(); 
+<?
+$settings = HubgraphConfiguration::instance();
 ?>
 <form action="/hubgraph" method="post">
 	<? foreach ($settings as $k=>$v): ?>

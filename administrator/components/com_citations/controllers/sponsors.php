@@ -38,7 +38,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -47,7 +47,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		$this->view->sponsors = $cs->getSponsor();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -61,7 +61,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -72,7 +72,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -85,7 +85,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		{
 			$this->view->type = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -95,7 +95,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -106,10 +106,10 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -120,7 +120,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		$s = JRequest::getVar('sponsor', array(), 'post');
 
 		$row = new CitationsSponsor($this->database);
-		if (!$row->bind($s)) 
+		if (!$row->bind($s))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->view->setLayout('edit');
@@ -128,7 +128,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->view->setLayout('edit');
@@ -137,8 +137,8 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		//if (!$row->save($type)) 
-		if (!$row->store()) 
+		//if (!$row->save($type))
+		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->view->setLayout('edit');
@@ -154,7 +154,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -166,7 +166,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Ensure we have an ID to work with
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,

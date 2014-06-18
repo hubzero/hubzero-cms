@@ -44,7 +44,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -60,7 +60,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Reorder screenshots
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask()
@@ -69,7 +69,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$pid = JRequest::getInt('pid', 0);
 		$version = JRequest::getVar('version', 'dev');
 
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
@@ -81,7 +81,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
-		if (!$this->check_access($this->_toolid)) 
+		if (!$this->check_access($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -91,7 +91,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$objV = new ToolVersion($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL) 
+		if ($vid == NULL)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
@@ -113,19 +113,19 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$shot2 = $ss->getScreenshot($file_toleft, $pid, $vid);
 
 		// Do we have information stored?
-		if ($shot1) 
+		if ($shot1)
 		{
 			$ss->saveScreenshot($file_toright, $pid, $vid, $neworder_toright);
 		}
-		else 
+		else
 		{
 			$ss->saveScreenshot($file_toright, $pid, $vid, $neworder_toright, true);
 		}
-		if ($shot1) 
+		if ($shot1)
 		{
 			$ss->saveScreenshot($file_toleft, $pid, $vid, $neworder_toleft);
 		}
-		else 
+		else
 		{
 			$ss->saveScreenshot($file_toleft, $pid, $vid, $neworder_toleft, true);
 		}
@@ -138,7 +138,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Edit a screenshot
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
@@ -146,7 +146,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		// Incoming parent ID
 		$pid = JRequest::getInt('pid', 0);
 		$version = JRequest::getVar('version', 'dev');
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
@@ -155,7 +155,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Incoming child ID
 		$this->view->file = JRequest::getVar('filename', '');
-		if (!$this->view->file) 
+		if (!$this->view->file)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid, $version);
@@ -166,11 +166,11 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$row = new ResourcesResource($this->database);
 		$row->load($pid);
 
-		// Get version id	
+		// Get version id
 		$objV = new ToolVersion($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL) 
+		if ($vid == NULL)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
@@ -199,7 +199,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->version = $version;
 		$this->view->vid = $vid;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -213,7 +213,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save changes to a screenshot
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -222,7 +222,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$pid = JRequest::getInt('pid', 0);
 		$version = JRequest::getVar('version', 'dev');
 		$vid = JRequest::getInt('vid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
@@ -238,12 +238,12 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$shot = $ss->getScreenshot($file, $pid, $vid);
 		$files = $ss->getFiles($pid, $vid);
 
-		if ($shot) 
+		if ($shot)
 		{
 			// update entry
 			$ss->loadFromFilename($file, $pid, $vid);
-		} 
-		else 
+		}
+		else
 		{
 			// make new entry
 			$ss->versionid = $vid;
@@ -254,7 +254,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 		$ss->title = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $title);
 
-		if (!$ss->store()) 
+		if (!$ss->store())
 		{
 			$this->setError($ss->getError());
 		}
@@ -265,7 +265,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a screenshot
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -273,7 +273,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		// Incoming parent ID
 		$pid = JRequest::getInt('pid', 0);
 		$version = JRequest::getVar('version', 'dev');
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
@@ -282,7 +282,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Incoming child ID
 		$file = JRequest::getVar('filename', '');
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid, $version);
@@ -300,7 +300,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$objV = new ToolVersion($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL) 
+		if ($vid == NULL)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
@@ -315,27 +315,27 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Check if the folder even exists
-		if (!is_dir($path) or !$path) 
+		if (!is_dir($path) or !$path)
 		{
 			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->displayTask($pid, $version);
 			return;
-		} 
-		else 
+		}
+		else
 		{
-			if (!JFile::exists($path . DS . $file)) 
+			if (!JFile::exists($path . DS . $file))
 			{
 				$this->displayTask($pid, $version);
 				return;
 			}
 
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($pid, $version);
 				return;
 			}
-			else 
+			else
 			{
 				// Delete thumbnail
 				$tn = ResourcesHtml::thumbnail($file);
@@ -355,14 +355,14 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a screenshot
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid, $version);
@@ -373,7 +373,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$title = preg_replace('/\s+/', ' ',JRequest::getVar('title', ''));
 		$allowed = array('.gif','.jpg','.png','.bmp');
 		$changing_version = JRequest::getInt('changing_version', 0);
-		if ($changing_version) 
+		if ($changing_version)
 		{
 			// reload screen
 			$this->displayTask($pid, $version);
@@ -386,7 +386,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid, $version);
@@ -402,18 +402,18 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$file_ext      = substr($file['name'], strripos($file['name'], '.'));
 
 		// Make sure we have an allowed format
-		if (!in_array(strtolower($file_ext), $allowed)) 
+		if (!in_array(strtolower($file_ext), $allowed))
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_WRONG_FILE_FORMAT'));
 			$this->displayTask($pid, $version);
 			return;
 		}
 
-		// Get version id	
+		// Get version id
 		$objV = new ToolVersion($this->database);
 		$vid = $objV->getVersionIdFromResource($pid, $version);
 
-		if ($vid == NULL) 
+		if ($vid == NULL)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
 			$this->displayTask($pid, $version);
@@ -425,12 +425,12 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Check if file with the same name already exists
 		$files = $row->getFiles($pid, $vid);
-		if (count($files) > 0) 
+		if (count($files) > 0)
 		{
 			$files = ToolsHelperUtils::transform($files, 'filename');
-			foreach ($files as $f) 
+			foreach ($files as $f)
 			{
-				if ($f == $file['name']) 
+				if ($f == $file['name'])
 				{
 					// append extra characters in the end
 					$file['name'] = $file_basename . '_' . time() . $file_ext;
@@ -447,7 +447,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$row->resourceid = $pid;
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid, $version);
@@ -461,10 +461,10 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
 				$this->displayTask($pid, $version);
@@ -473,21 +473,21 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
 		}
-		else 
+		else
 		{
 			// Store new content
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				$this->setError($row->getError());
 				$this->displayTask($pid, $version);
 				return;
 			}
 
-			if (!$row->id) 
+			if (!$row->id)
 			{
 				$row->id = $row->insertid();
 			}
@@ -497,18 +497,18 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			$ss_width  = (intval($this->config->get('screenshot_maxwidth', 91)) > 80)  ? intval($this->config->get('screenshot_maxwidth', 91))  : 91;
 
 			$tn = ResourcesHtml::thumbnail($file['name']);
-			if ($file_ext != '.swf') 
+			if ($file_ext != '.swf')
 			{
 				$this->_createThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
 			}
-			else 
+			else
 			{
 				//$this->_createAnimThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
 			}
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid, $version);
@@ -523,7 +523,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create a thumbnail for an animation
-	 * 
+	 *
 	 * @param      string  $tmpname   Uploaded file name
 	 * @param      integer $maxwidth  Max image width
 	 * @param      integer $maxheight Max image height
@@ -545,13 +545,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		$im = imagecreate($av, $ah);
 		$im = imagecreatetruecolor($av, $ah);
-		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y)) 
+		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif($im, $save_dir . $save_name)) 
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
-			else 
+			else
 			{
 				return false;
 			}
@@ -560,7 +560,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create a thumbnail from a picture
-	 * 
+	 *
 	 * @param      string  $tmpname   Uploaded file name
 	 * @param      integer $maxwidth  Max image width
 	 * @param      integer $maxheight Max image height
@@ -600,13 +600,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		$im = imagecreate($av, $ah);
 		$im = imagecreatetruecolor($av, $ah);
-		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y)) 
+		if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y))
 		{
-			if (imagegif($im, $save_dir . $save_name)) 
+			if (imagegif($im, $save_dir . $save_name))
 			{
 				return true;
 			}
-			else 
+			else
 			{
 				return false;
 			}
@@ -615,7 +615,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Copy files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function copyTask()
@@ -636,15 +636,15 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 		$toolid = $obj->getToolIdFromResource($rid);
 
-		if ($from == 0 or $to == 0 or $rid == 0) 
+		if ($from == 0 or $to == 0 or $rid == 0)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_Missing ids'));
 			return;
 		}
 
-		if ($toolid && $this->_checkAccess($toolid)) 
+		if ($toolid && $this->_checkAccess($toolid))
 		{
-			if ($this->transfer($from, $to, $rid)) 
+			if ($this->transfer($from, $to, $rid))
 			{
 				// Push through to the screenshot view
 				$this->displayTask($rid, $version);
@@ -654,7 +654,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Move files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function moveTask()
@@ -667,15 +667,15 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		// get admin priviliges
 		$this->_authorize();
 
-		if ($this->config->get('access-admin-component') or $this->_task == 'copy') 
+		if ($this->config->get('access-admin-component') or $this->_task == 'copy')
 		{
-			if ($from == 0 or $to == 0 or $rid == 0) 
+			if ($from == 0 or $to == 0 or $rid == 0)
 			{
 				JError::raiseError(500, JText::_('COM_TOOLS_Missing ids'));
 				return;
 			}
 
-			if ($this->transfer($from, $to, $rid)) 
+			if ($this->transfer($from, $to, $rid))
 			{
 				if ($this->_task == 'copy')
 				{
@@ -683,17 +683,17 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 					// Push through to the screenshot view
 					$this->displayTask($rid, $version);
 				}
-				else 
+				else
 				{
 					echo JText::_('COM_TOOLS_Success!');
 				}
 			}
-			else if ($this->_task != 'copy') 
+			else if ($this->_task != 'copy')
 			{
 				$this->setError(JText::_('COM_TOOLS_Didn\'t work. There were some problems...'));
 			}
 		}
-		else 
+		else
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
@@ -703,7 +703,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Transfer files from one version to another
-	 * 
+	 *
 	 * @param      string  $sourceid Source version ID
 	 * @param      string  $destid   Destination version ID
 	 * @param      integer $rid      Resource ID
@@ -734,9 +734,9 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		jimport('joomla.filesystem.folder');
 
 		// Make sure the path exist
-		if (!is_dir($src)) 
+		if (!is_dir($src))
 		{
-			if (!JFolder::create($src)) 
+			if (!JFolder::create($src))
 			{
 				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return false;
@@ -747,15 +747,15 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		// do we have files to transfer?
 		$files = JFolder::files($src, '.', false, true, array());
 		$xlog->debug(__FUNCTION__ . "() $files");
-		if (!empty($files)) 
+		if (!empty($files))
 		{
 			// Copy directory
 			$xlog->debug(__FUNCTION__ . "() copying $src to $dest");
-			if (!JFolder::copy($src, $dest, '', true)) 
+			if (!JFolder::copy($src, $dest, '', true))
 			{
 				return false;
 			}
-			else 
+			else
 			{
 				// Update screenshot information for this resource
 				$ss->updateFiles($rid, $sourceid, $destid, $copy=1);
@@ -772,7 +772,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of screenshots for this entry
-	 * 
+	 *
 	 * @param      integer $rid     Resource ID
 	 * @param      string  $version Tool version
 	 * @return     void
@@ -780,19 +780,19 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	public function displayTask($rid=NULL, $version=NULL)
 	{
 		$this->view->setLayout('display');
-		
+
 		// Incoming
-		if (!$rid) 
+		if (!$rid)
 		{
 			$rid = JRequest::getInt('rid', 0);
 		}
-		if (!$version) 
+		if (!$version)
 		{
 			$version = JRequest::getVar('version', 'dev');
 		}
 
 		// Ensure we have an ID to work with
-		if (!$rid) 
+		if (!$rid)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return;
@@ -801,7 +801,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$resource = new ResourcesResource($this->database);
 		$resource->load($rid);
 
-		// Get version id	
+		// Get version id
 		$objV = new ToolVersion($this->database);
 		$vid = $objV->getVersionIdFromResource($rid, $version);
 
@@ -818,7 +818,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$path = ResourcesHtml::build_path($resource->created, $rid, '');
 		$this->view->upath = JPATH_ROOT . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
-		if ($vid) 
+		if ($vid)
 		{
 			$this->view->upath .= DS . $vid;
 			$this->view->wpath .= DS . $vid;
@@ -829,7 +829,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->version = $version;
 		$this->view->rid = $rid;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -843,14 +843,14 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Construct a path to upload files to
-	 * 
+	 *
 	 * @param      string $listdir Base directory
 	 * @param      string $subdir  Sub-directory
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = DS . trim($subdir, DS);
 		}
@@ -859,7 +859,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$rconfig = JComponentHelper::getParams('com_resources');
 
 		$base_path = $rconfig->get('uploadpath');
-		if ($base_path) 
+		if ($base_path)
 		{
 			// Make sure the path doesn't end with a slash
 			$base_path = DS . trim($base_path, DS);
@@ -867,13 +867,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Make sure the path doesn't end with a slash
 		$listdir = DS . trim($listdir, DS);
-		
+
 		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base_path)) == $base_path) 
+		if (substr($listdir, 0, strlen($base_path)) == $base_path)
 		{
 			// Yes - ... this really shouldn't happen
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$listdir = $base_path . $listdir;
@@ -885,7 +885,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get the resource child type from the file extension
-	 * 
+	 *
 	 * @param      string $filename File to check
 	 * @return     integer Numerical file type
 	 */
@@ -914,7 +914,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the current user has access to this tool
-	 * 
+	 *
 	 * @param      unknown $toolid       Tool ID
 	 * @param      integer $allowAdmins  Allow admins access?
 	 * @param      boolean $allowAuthors Allow authors access?
@@ -926,17 +926,17 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// allow to view if admin
-		if ($this->config->get('access-manage-component') && $allowAdmins) 
+		if ($this->config->get('access-manage-component') && $allowAdmins)
 		{
 			return true;
 		}
 
 		// check if user in tool dev team
-		if ($developers = $obj->getToolDevelopers($toolid)) 
+		if ($developers = $obj->getToolDevelopers($toolid))
 		{
-			foreach ($developers as $dv) 
+			foreach ($developers as $dv)
 			{
-				if ($dv->uidNumber == $this->juser->get('id')) 
+				if ($dv->uidNumber == $this->juser->get('id'))
 				{
 					return true;
 				}
@@ -944,7 +944,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// allow access to tool authors
-		if ($allowAuthors) 
+		if ($allowAuthors)
 		{
 			// Nothing here?
 		}
@@ -954,7 +954,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorization checks
-	 * 
+	 *
 	 * @param      string $assetType Asset type
 	 * @param      string $assetId   Asset id to check against
 	 * @return     void
@@ -962,23 +962,23 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
 		// if no admin group is defined, allow superadmin to act as admin
 		// otherwise superadmins can only act if they are also a member of the component admin group
-		if (($admingroup = trim($this->config->get('admingroup', '')))) 
+		if (($admingroup = trim($this->config->get('admingroup', ''))))
 		{
 			// Check if they're a member of admin group
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				$admingroup = strtolower($admingroup);
 				foreach ($ugs as $ug)
 				{
-					if (strtolower($ug->cn) == $admingroup) 
+					if (strtolower($ug->cn) == $admingroup)
 					{
 						$this->config->set('access-manage-' . $assetType, true);
 						$this->config->set('access-admin-' . $assetType, true);
@@ -989,7 +989,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		else 
+		else
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -1016,7 +1016,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

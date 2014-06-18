@@ -97,47 +97,47 @@ $permalink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($page->link() . '&v
 
 <div class="wiki-box">
 	<h3>Citation styles for "<?php echo $this->escape(stripslashes($page->get('title'))); ?>"</h3>
-	
+
 	<h4>APA style</h4>
 	<p>
 		<?php echo $this->escape(stripslashes($page->get('title'))); ?>. (<?php echo JHTML::_('date', $revision->get('created'), $apaFormat); ?>). In <i><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></i>. Retrieved <?php echo JHTML::_('date', $now, $apaFormatRetrieved); ?>, from <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
 	</p>
-	
+
 	<h4>MLA style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?> contributors. "<?php echo $this->escape(stripslashes($page->get('title'))); ?>." <i><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></i>. <?php echo $this->escape($jconfig->getValue('config.sitename')); ?>, <?php echo JHTML::_('date', $revision->get('created'), $apaFormat); ?>. Web. <?php echo JHTML::_('date', $now, $mlaFormatRetrieved); ?>
 	</p>
-	
+
 	<h4>MHRA style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?> contributors, '<?php echo $this->escape(stripslashes($page->get('title'))); ?>,' <i><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></i>, <?php echo JHTML::_('date', $revision->get('created'), $mhraFormat); ?>, &lt;<a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>&gt; [accessed <?php echo JHTML::_('date', $now, $mhraFormatRetrieved); ?>]
 	</p>
-	
+
 	<h4>Chicago style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?> contributors, "<?php echo $this->escape(stripslashes($page->get('title'))); ?>," <i><?php echo $this->escape($jconfig->getValue('config.sitename')); ?></i>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (accessed <?php echo JHTML::_('date', $now, $mhraFormatRetrieved); ?>).
 	</p>
-	
+
 	<h4>CBE/CSE style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?> contributors. <?php echo $this->escape(stripslashes($page->get('title'))); ?> [Internet]. <?php echo $this->escape($jconfig->getValue('config.sitename')); ?>; <?php echo JHTML::_('date', $revision->get('created'), $bluebookFormat); ?> [cited <?php echo JHTML::_('date', $now, $cbeFormat); ?>]. Available from: <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>.
 	</p>
-	
+
 	<h4>Bluebook style</h4>
 	<p>
 		<?php echo $this->escape(stripslashes($page->get('title'))); ?>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (last visited <?php echo JHTML::_('date', $now, $bluebookFormat); ?>).
 	</p>
-	
+
 	<h4>Bluebook: Harvard JOLT style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?>, <i><?php echo $this->escape(stripslashes($page->get('title'))); ?></i>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (optional description here) (as of <?php echo JHTML::_('date', $now, $bluebookFormat); ?>).
 	</p>
-	
+
 	<h4>AMA style</h4>
 	<p>
 		<?php echo $this->escape($jconfig->getValue('config.sitename')); ?> contributors. <?php echo $this->escape(stripslashes($page->get('title'))); ?>. <?php echo $this->escape($jconfig->getValue('config.sitename')); ?>. <?php echo JHTML::_('date', $revision->get('created'), $amaFormat); ?>. Available at <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>. Accessed <?php echo JHTML::_('date', $now, $amaFormatRetrieved); ?>.
 	</p>
-	
+
 	<h4>BibTeX entry</h4>
 <pre>
 @misc{ wiki:xxx,

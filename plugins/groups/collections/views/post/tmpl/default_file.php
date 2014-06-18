@@ -112,11 +112,11 @@ if ($assets->total() > 0)
 				<?php if ($asset->get('type') != 'link') { ?>
 							<?php echo \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . $path . DS . ltrim($asset->get('filename'), DS))); ?>
 				<?php } else { ?>
-							<?php 
+							<?php
 							$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
 							           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
-							if (preg_match("/$UrlPtn/", $asset->get('filename'))) 
+							if (preg_match("/$UrlPtn/", $asset->get('filename')))
 							{
 								echo JText::_('external link');
 							}

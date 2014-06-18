@@ -35,41 +35,41 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 
 class StorefrontModelCourseOffering extends StorefrontModelSku
 {
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		//$this->setAllowMultiple(0);
 		$this->setTrackInventory(0);
 	}
-	
+
 	public function setCourseId($courseId)
 	{
-		$this->data->courseId = $courseId;		
+		$this->data->courseId = $courseId;
 		$this->data->meta['courseId'] = $courseId;
 	}
-	
+
 	public function setOfferingId($offeringId)
 	{
-		$this->data->offeringId = $offeringId;		
+		$this->data->offeringId = $offeringId;
 		$this->data->meta['offeringId'] = $offeringId;
 	}
-	
+
 	public function getCourseId()
 	{
 		return $this->data->meta['courseId'];
 	}
-		
+
 	public function verify()
 	{
 		parent::verify();
-		
+
 		// Each course has to have a course ID
 		if (empty($this->data->courseId))
 		{
-			throw new Exception(JText::_('No course id'));	
-		}	
+			throw new Exception(JText::_('No course id'));
+		}
 	}
-	
+
 }

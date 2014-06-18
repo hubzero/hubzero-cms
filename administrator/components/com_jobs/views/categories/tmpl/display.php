@@ -34,16 +34,16 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = JobsHelper::getActions('category');
 
 JToolBarHelper::title(JText::_('Jobs Manager') . ': Categories', 'addedit.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
 JToolBarHelper::save('saveorder', 'Save Order');
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }

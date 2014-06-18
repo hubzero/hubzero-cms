@@ -38,49 +38,49 @@ class Shortlist extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $emp		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $seeker		= NULL;
 
 	/**
 	 * varchar (job / resume)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $jobid		= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $added		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,18 +91,18 @@ class Shortlist extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval($this->emp) == 0) 
+		if (intval($this->emp) == 0)
 		{
 			$this->setError(JText::_('ERROR_MISSING_EMPLOYER_ID'));
 			return false;
 		}
 
-		if (trim($this->seeker) == 0) 
+		if (trim($this->seeker) == 0)
 		{
 			$this->setError(JText::_('ERROR_MISSING_JOB_SEEKER_ID'));
 			return false;
@@ -113,7 +113,7 @@ class Shortlist extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $emp      Employer ID
 	 * @param      integer $seeker   Seeker ID
 	 * @param      string  $category Category
@@ -121,14 +121,14 @@ class Shortlist extends JTable
 	 */
 	public function loadEntry($emp, $seeker, $category = 'resume')
 	{
-		if ($emp === NULL or $seeker === NULL) 
+		if ($emp === NULL or $seeker === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE emp=" . $this->_db->Quote($emp) . " AND seeker=" . $this->_db->Quote($seeker) . " AND category=" . $this->_db->Quote($category) . " LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}

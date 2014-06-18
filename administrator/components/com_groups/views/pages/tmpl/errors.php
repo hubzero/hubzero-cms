@@ -41,11 +41,11 @@ $content = $this->page->version()->get('content');
 ?>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" method="post" name="adminForm" id="item-form">
-	
+
 	<p class="error">
-		<?php echo JText::sprintf('The following errors were discovered on the "%s" page: <br /><br /> %s' , $this->page->get('title'), $this->error); ?> 
+		<?php echo JText::sprintf('The following errors were discovered on the "%s" page: <br /><br /> %s' , $this->page->get('title'), $this->error); ?>
 	</p>
-	
+
 	<h3><?php echo JText::_('View Raw Code'); ?></h3>
 	<div class="code">
 		<?php
@@ -65,10 +65,10 @@ $content = $this->page->version()->get('content');
 			</tr>
 		</table>
 	</div>
-	
+
 	<h3><?php echo JText::_('Update Content'); ?></h3>
 	<textarea name="page[content]" rows="40"><?php echo $content; ?></textarea>
-	
+
 	<input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

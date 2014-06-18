@@ -38,7 +38,7 @@ $type->load( $this->row->type );
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -115,7 +115,7 @@ $this->css('create.css')
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_COMPOSE_DETAILS'); ?></legend>
-			<?php 
+			<?php
 			echo $fields;
 			?>
 		</fieldset><div class="clear"></div>

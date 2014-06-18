@@ -38,30 +38,30 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 {
 	/**
 	 * GroupsTablePageCategory
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTablePageCategory';
-	
+
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_pages = null;
-	
+
 	private $_pages_count = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -69,11 +69,11 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 	{
 		// create database object
 		$this->_db = JFactory::getDBO();
-		
+
 		// create page cateogry jtable object
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -83,18 +83,18 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	public function getPages( $rtrn = 'list', $clear = false )
 	{
 		// create page jtable
 		$tbl = new GroupsTablePage($this->_db);
-		
+
 		// build array of filters
 		$filters = array(
 			'gidNumber' => $this->get('gidNumber'),
 			'category'  => $this->get('id')
 		);
-		
+
 		switch(strtolower($rtrn))
 		{
 			case 'count':
@@ -117,6 +117,6 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 				return $this->_pages;
 			break;
 		}
-	} 
-	
+	}
+
 }

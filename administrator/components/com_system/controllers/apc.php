@@ -37,9 +37,9 @@ defined('_JEXEC') or die('Restricted access');
 class SystemControllerApc extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Controller execute method, used for selecting the correct function based on task.  
+	 * Controller execute method, used for selecting the correct function based on task.
 	 * Defaults to the host stats view
-	 * 
+	 *
 	 * @return void
 	 */
 	public function execute()
@@ -213,7 +213,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View host stats
-	 * 
+	 *
 	 * @return void
 	 */
 	public function errorTask()
@@ -221,7 +221,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -233,7 +233,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View host stats
-	 * 
+	 *
 	 * @return void
 	 */
 	public function hostTask()
@@ -265,7 +265,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$this->view->insert_rate_user = round(($cache_user['num_inserts'])/($time-$cache_user['start_time']), 2);
 		$this->view->apcversion       = phpversion('apc');
 		$this->view->phpversion       = phpversion();
-		$this->view->number_files     = $cache['num_entries']; 
+		$this->view->number_files     = $cache['num_entries'];
 		$this->view->size_files       = $this->_bsize($cache['mem_size']);
 		$this->view->number_vars      = $cache_user['num_entries'];
 		$this->view->size_vars        = $this->_bsize($cache_user['mem_size']);
@@ -281,7 +281,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -293,7 +293,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View system cache entries
-	 * 
+	 *
 	 * @return void
 	 */
 	public function systemTask()
@@ -312,7 +312,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -324,7 +324,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View version info
-	 * 
+	 *
 	 * @return void
 	 */
 	public function versionTask()
@@ -336,7 +336,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -348,7 +348,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View user cache entries
-	 * 
+	 *
 	 * @return void
 	 */
 	public function userTask()
@@ -366,7 +366,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -378,7 +378,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * View directory cache entries
-	 * 
+	 *
 	 * @return void
 	 */
 	public function dircacheTask()
@@ -396,7 +396,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -408,7 +408,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * Clear cache
-	 * 
+	 *
 	 * @return void
 	 */
 	public function clrcacheTask()
@@ -424,7 +424,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * define if not defined
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _defaults($d, $v)
@@ -434,7 +434,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * Pretty printer for byte values
-	 * 
+	 *
 	 * @param    integer $s Byte value
 	 * @return   string
 	 */
@@ -450,7 +450,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * Make timestamp human readable
-	 * 
+	 *
 	 * @param    integer $ts Time stamp
 	 * @return   string
 	 */
@@ -480,7 +480,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * Check if GD extension is loaded
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private function graphics_avail()
@@ -490,7 +490,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create graphics
-	 * 
+	 *
 	 * @return void
 	 */
 	public function mkimageTask()
@@ -583,7 +583,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 						$py=$placeindex*12+6;
 						imagefilledrectangle($im, $px+90, $py+3, $px+90-4, $py-3, $color2);
 						imageline($im,$x,$y+$h/2,$px+90,$py,$color2);
-						imagestring($im,2,$px,$py-6,$text,$color1);	
+						imagestring($im,2,$px,$py-6,$text,$color1);
 					}
 					else
 					{
@@ -690,7 +690,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 			case 2:
 				$s=$cache['num_hits']+$cache['num_misses'];
 				$a=$cache['num_hits'];
-		
+
 				fill_box($image, 30,$size,50,-$a*($size-21)/$s,$col_black,$col_green,sprintf("%.1f%%",$cache['num_hits']*100/$s));
 				fill_box($image,130,$size,50,-max(4,($s-$a)*($size-21)/$s),$col_black,$col_red,sprintf("%.1f%%",$cache['num_misses']*100/$s));
 				break;
@@ -743,7 +743,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 				}
 				break;
 
-			case 4: 
+			case 4:
 				$s=$cache['num_hits']+$cache['num_misses'];
 				$a=$cache['num_hits'];
 

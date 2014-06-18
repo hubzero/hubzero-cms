@@ -37,14 +37,14 @@ $this->css()
      ->js('vote.js');
 
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
-if (!$this->question->get('anonymous')) 
+if (!$this->question->get('anonymous'))
 {
 	$user = $this->question->creator();
-	if (is_object($user)) 
+	if (is_object($user))
 	{
 		$name = $user->get('name');
-	} 
-	else 
+	}
+	else
 	{
 		$name = JText::_('COM_ANSWERS_UNKNOWN');
 	}
@@ -102,11 +102,11 @@ if (!$this->question->get('anonymous'))
 			<?php } ?>
 
 				<p class="entry-title">
-					<strong><?php echo $name; ?></strong> 
+					<strong><?php echo $name; ?></strong>
 					<a class="permalink" href="<?php echo JRoute::_($this->question->link()); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
-						<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-						<span class="icon-time time"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('time'); ?></time></span> 
-						<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
+						<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
+						<span class="icon-time time"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('time'); ?></time></span>
+						<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span>
 						<span class="icon-date date"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('date'); ?></time></span>
 					</a>
 				</p><!-- / .question-title -->
@@ -182,7 +182,7 @@ if (!$this->question->get('anonymous'))
 	<aside class="aside">
 		<div class="container">
 			<div class="status_display">
-				<?php 
+				<?php
 				if ($this->question->isOpen() && !$this->question->isReported()) {
 					$status = 'open';
 				} else if ($this->question->isReported()) {
@@ -218,7 +218,7 @@ if (!$this->question->get('anonymous'))
 					{
 						?>
 						<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . JRoute::_('index.php?option=com_resources&' . $resource) . '">' . JText::_('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
-						<?php 
+						<?php
 						break;
 					}
 				}
@@ -342,7 +342,7 @@ if (!$this->question->get('anonymous'))
 							</label>
 
 							<label for="answer-anonymous" id="answer-anonymous-label">
-								<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" /> 
+								<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
 								<?php echo JText::_('COM_ANSWERS_POST_ANON'); ?>
 							</label>
 
@@ -438,7 +438,7 @@ if (!$this->question->get('anonymous'))
 			<div class="aside">
 				<?php if ($this->question->isOpen() && $this->responding!=1 && !$this->question->isReported() && $this->question->get('created_by') != $this->juser->get('id')) { ?>
 					<div class="container">
-						<p><a class="icon-add add btn" href="<?php 
+						<p><a class="icon-add add btn" href="<?php
 						$route = JRoute::_($this->question->link('answer'), false, true);
 						echo ($this->juser->get('guest') ? JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
 						?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>

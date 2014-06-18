@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchWeightContributor'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchWeightContributor
@@ -41,9 +41,9 @@ class plgSearchWeightContributor
 
 	/**
 	 * Short description for 'onSearchWeightAll'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $terms Parameter description (if any) ...
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     float Return description (if any) ...

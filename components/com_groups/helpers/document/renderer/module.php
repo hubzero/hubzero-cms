@@ -42,10 +42,10 @@ class GroupsHelperDocumentRendererModule extends GroupsHelperDocumentRenderer
 	{
 		// var to hold content
 		$content = '';
-		
+
 		// get the page id
 		$pageid = ($this->page) ? $this->page->get('id') : null;
-		
+
 		// get the list of modules
 		$groupModuleArchive = GroupsModelModuleArchive::getInstance();
 		$modules = $groupModuleArchive->modules('list', array(
@@ -55,22 +55,22 @@ class GroupsHelperDocumentRendererModule extends GroupsHelperDocumentRenderer
 			'title'     => $this->params->title,
 			'orderby'   => 'ordering DESC'
 		));
-		
+
 		// make sure we have a module
 		if ($modules->count() < 1)
 		{
 			return $content;
 		}
-		
+
 		// get first module
 		$module = $modules->first();
-		
+
 		// make sure module can be displayed
 		if ($module->displayOnPage($pageid))
 		{
 			$content .= $module->content('parsed');
 		}
-	
+
 		//return final output
 		return $content;
 	}

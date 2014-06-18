@@ -112,7 +112,7 @@ class Structures_BibTex
      * Array with the BibTex Data
      *
      * @access public
-     * @var    array 
+     * @var    array
      */
     var $data;
     /**
@@ -126,21 +126,21 @@ class Structures_BibTex
      * Array with possible Delimiters for the entries
      *
      * @access private
-     * @var    array  
+     * @var    array
      */
     var $_delimiters;
     /**
      * Array to store warnings
      *
      * @access public
-     * @var    array 
+     * @var    array
      */
     var $warnings;
     /**
      * Run-time configuration options
      *
      * @access private
-     * @var    array  
+     * @var    array
      */
     var $_options;
     /**
@@ -161,7 +161,7 @@ class Structures_BibTex
      * Array with the "allowed" types
      *
      * @access public
-     * @var    array 
+     * @var    array
      */
     var $allowedTypes;
     /**
@@ -176,7 +176,7 @@ class Structures_BibTex
      * Constructor
      *
      * @access public
-     * @return void  
+     * @return void
      */
     function Structures_BibTex($options = array())
     {
@@ -289,7 +289,7 @@ class Structures_BibTex
     /**
      * Parses what is stored in content and clears the content if the parsing is successfull.
      *
-     * @access public 
+     * @access public
      * @return boolean true on success and PEAR_Error if there was a problem
      */
     function parse()
@@ -854,7 +854,7 @@ class Structures_BibTex
      * @access private
      * @param  string  $entry      The entry aka one line which which should be validated
      * @param  string  $wholeentry The whole BibTex Entry which the one line is part of
-     * @return void   
+     * @return void
      */
     function _validateValue($entry, $wholeentry)
     {
@@ -1056,7 +1056,7 @@ class Structures_BibTex
      *
      * @access public
      * @param  array  $newentry The new data to add
-     * @return void  
+     * @return void
      */
     function addEntry($newentry)
     {

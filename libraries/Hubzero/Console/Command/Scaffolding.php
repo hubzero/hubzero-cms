@@ -539,8 +539,8 @@ class Scaffolding implements CommandInterface
 			array( 'person', 'people'   )
 		);
 
-		$uncountable = array( 
-			'sheep', 
+		$uncountable = array(
+			'sheep',
 			'fish',
 			'series',
 			'species',

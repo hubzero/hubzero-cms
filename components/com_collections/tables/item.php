@@ -38,98 +38,98 @@ class CollectionsTableItem extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $title      = NULL;
 
 	/**
 	 * text
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $modified    = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $modified_by = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $url   = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state      = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access     = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $positive   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $negative   = NULL;
 
 	/**
 	 * varchar(150)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $type   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $object_id  = NULL;
@@ -147,7 +147,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
@@ -156,15 +156,15 @@ class CollectionsTableItem extends JTable
 		$this->description = trim($this->description);
 		$this->url = trim($this->url);
 
-		if ($this->type != 'image' && $this->type != 'file' 
-		 && (!$this->title && !$this->description && !$this->url)) 
+		if ($this->type != 'image' && $this->type != 'file'
+		 && (!$this->title && !$this->description && !$this->url))
 		{
 			$this->setError(JText::_('Please provide some content'));
 			return false;
 		}
 
 		$juser = JFactory::getUser();
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
@@ -185,7 +185,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Description
 	 * @return     boolean True on success
 	 */
@@ -200,7 +200,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Title
 	 * @return     boolean True on success
 	 */
@@ -215,13 +215,13 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Load a record by its alias and bind data to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadType($object_id=null, $object_type=null)
 	{
-		if (!$object_id || !$object_type) 
+		if (!$object_id || !$object_type)
 		{
 			return false;
 		}
@@ -231,11 +231,11 @@ class CollectionsTableItem extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($object_type) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -244,7 +244,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
@@ -252,20 +252,20 @@ class CollectionsTableItem extends JTable
 	{
 		$query  = " FROM $this->_tbl AS b";
 		$query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
-		if (!isset($filters['collection_id']) || !$filters['collection_id']) 
+		if (!isset($filters['collection_id']) || !$filters['collection_id'])
 		{
 			$query .= " INNER JOIN #__collections AS d ON s.collection_id=d.id";
 		}
 		$query .= " LEFT JOIN #__users AS u ON s.created_by=u.id";
 
-		if (isset($filters['user_id']) && $filters['user_id']) 
+		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id AND v.user_id=" . $this->_db->Quote($filters['user_id']);
 		}
 
 		$where = array();
 
-		if (isset($filters['collection_id']) && $filters['collection_id']) 
+		if (isset($filters['collection_id']) && $filters['collection_id'])
 		{
 			if (is_array($filters['collection_id']))
 			{
@@ -279,7 +279,7 @@ class CollectionsTableItem extends JTable
 		}
 		else
 		{
-			if (isset($filters['created_by']) && $filters['created_by']) 
+			if (isset($filters['created_by']) && $filters['created_by'])
 			{
 				$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
 			}
@@ -294,7 +294,7 @@ class CollectionsTableItem extends JTable
 			}
 		}
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			if (is_array($filters['state']))
 			{
@@ -306,7 +306,7 @@ class CollectionsTableItem extends JTable
 				$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
 			}
 		}
-		/*if (isset($filters['access'])) 
+		/*if (isset($filters['access']))
 		{
 			if (is_array($filters['access']))
 			{
@@ -319,25 +319,25 @@ class CollectionsTableItem extends JTable
 			}
 		}*/
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(b.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(b.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(b.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $where);
 		}
-		
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			if (!isset($filters['sort']) || !$filters['sort']) 
+			if (!isset($filters['sort']) || !$filters['sort'])
 			{
 				$filters['sort'] = 'posted';
 			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 			{
 				$filters['sort_Dir'] = 'DESC';
 			}
@@ -349,7 +349,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -365,16 +365,16 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id, 
+		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
 				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
 				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
-		if (isset($filters['user_id']) && $filters['user_id']) 
+		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= ", v.id AS voted ";
 		}
@@ -384,7 +384,7 @@ class CollectionsTableItem extends JTable
 		}
 		$query .= $this->buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if ($filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}
@@ -395,7 +395,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -412,14 +412,14 @@ class CollectionsTableItem extends JTable
 		}
 
 		$query = "SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
-		
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -445,7 +445,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get a total of all likes
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -461,7 +461,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get a total of all dislikes
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -477,7 +477,7 @@ class CollectionsTableItem extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
@@ -487,13 +487,13 @@ class CollectionsTableItem extends JTable
 		$query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
 				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
 				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
-		if (isset($filters['user_id']) && $filters['user_id']) 
+		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= ", v.id AS voted ";
 		}
 		$query .= $this->buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if ($filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}

@@ -64,7 +64,7 @@ if ($this->a->get('type') == 'video')
 		<span class="next-step-publish">
 			<label class="published-label" for="published">
 				<span class="published-label-text"><?= ($this->a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published' ?></span>
-				<input 
+				<input
 					class="uniform published-checkbox"
 					name="published"
 					type="checkbox"

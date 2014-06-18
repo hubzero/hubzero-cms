@@ -42,19 +42,19 @@ class ForumModelThread extends ForumModelPost
 {
 	/**
 	 * Container for data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cache = array();
 
 	/**
 	 * Is the thread closed?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isClosed()
 	{
-		if ($this->get('closed') == 1) 
+		if ($this->get('closed') == 1)
 		{
 			return true;
 		}
@@ -63,12 +63,12 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Is the thread sticky?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isSticky()
 	{
-		if ($this->get('sticky') == 1) 
+		if ($this->get('sticky') == 1)
 		{
 			return true;
 		}
@@ -85,7 +85,7 @@ class ForumModelThread extends ForumModelPost
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -103,7 +103,7 @@ class ForumModelThread extends ForumModelPost
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new ForumModelThread($oid);
 		}
@@ -113,13 +113,13 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Set and get a specific post
-	 * 
+	 *
 	 * @param      integer $id Post ID
 	 * @return     void
 	 */
 	public function post($id=null)
 	{
-		if (!isset($this->_cache['post']) 
+		if (!isset($this->_cache['post'])
 		 || ($id !== null && $this->_cache['post']->get('id') != $id && $this->_cache['post']->get('alias') != $id))
 		{
 			$this->_cache['post'] = null;
@@ -151,7 +151,7 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Get a list of posts in this thread
-	 * 
+	 *
 	 * @param      string  $rtrn    What data to return?
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -230,7 +230,7 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Recursive function to build tree
-	 * 
+	 *
 	 * @param      array   $children Container for parent/children mapping
 	 * @param      array   $list     List of records
 	 * @param      integer $maxlevel Maximum levels to descend
@@ -258,7 +258,7 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Get a list of participants in this thread
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Clear cached data?
 	 * @return     object \Hubzero\Base\ItemList
@@ -283,7 +283,7 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Get a list of attachments in this thread
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     object \Hubzero\Base\ItemList
 	 */
@@ -326,7 +326,7 @@ class ForumModelThread extends ForumModelPost
 
 	/**
 	 * Get the most recent post mad ein the forum
-	 * 
+	 *
 	 * @return     ForumModelPost
 	 */
 	public function lastActivity()

@@ -39,7 +39,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all versions for a specific entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -54,62 +54,62 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		// Get Filters
 		$this->view->filters = array();
 		$this->view->filters['id']          = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.id', 
-			'id', 
+			$this->_option . '.' . $this->_controller . '.versions.id',
+			'id',
 			0,
 			'int'
 		);
 
 		// Get filters
 		/*$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search',
+			'search',
 			''
 		));
 		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search_field', 
-			'search_field', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'search_field',
+			'search_field',
 			'all'
 		));*/
-		
+
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sort',
+			'filter_order',
 			'toolname'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.versions.' . $this->view->filters['id'] . 'limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
-		
+
 		$this->view->tool = ToolsModelTool::getInstance($this->view->filters['id']);
 		$this->view->total = count($this->view->tool->version);
 		$this->view->rows = $this->view->tool->getToolVersionSummaries($this->view->filters, true);
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -128,19 +128,19 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry version
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function editTask()
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		// Incoming instance ID
 		$id = JRequest::getInt('id', 0);
 		$version = JRequest::getInt('version', 0);
 
 		// Do we have an ID?
-		if (!$id || !$version) 
+		if (!$id || !$version)
 		{
 			$this->cancelTask();
 			return;
@@ -165,7 +165,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry version and show the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -175,7 +175,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry version
-	 * 
+	 *
 	 * @param      boolean $redirect Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -185,7 +185,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Do we have an ID?
-		if (!$fields['version']) 
+		if (!$fields['version'])
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -194,7 +194,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		$row = ToolsModelVersion::getInstance(intval($fields['version']));
 		if (!$row)
 		{
@@ -232,14 +232,14 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$row->hostreq = $hostreq;
 		$row->update();
 
-		if ($this->_task == 'apply') 
+		if ($this->_task == 'apply')
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version']
 			);
 			return;
 		}
-		else 
+		else
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,

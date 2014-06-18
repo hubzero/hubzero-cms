@@ -37,77 +37,77 @@ Class GroupsTablePage extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $gidNumber = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category = NULL;
-	
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $template = NULL;
-	
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
-	
+
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = 1;
 
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $privacy = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $home   = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -115,7 +115,7 @@ Class GroupsTablePage extends JTable
 	{
 		parent::__construct('#__xgroups_pages', 'id', $db);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -127,28 +127,28 @@ Class GroupsTablePage extends JTable
 			$this->setError( JText::_('Must provide group id.') );
 			return false;
 		}
-		
+
 		// need page title
 		if ($this->get('title') == null)
 		{
 			$this->setError( JText::_('Must provide page title.') );
 			return false;
 		}
-		
+
 		// need page alias
 		if ($this->get('alias') == null)
 		{
 			$this->setError( JText::_('Must provide page alias.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Find all pages matching filters
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     array
 	 */
@@ -156,15 +156,15 @@ Class GroupsTablePage extends JTable
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get count of pages matching filters
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     int
 	 */
@@ -172,15 +172,15 @@ Class GroupsTablePage extends JTable
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
-	
-	
+
+
 	/**
 	 * Build query string for getting list or count of pages
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     string
 	 */
@@ -189,36 +189,36 @@ Class GroupsTablePage extends JTable
 		// var to hold conditions
 		$where = array();
 		$sql   = '';
-		
+
 		// published
 		if (isset($filters['gidNumber']))
 		{
 			$where[] = "gidNumber=" . $this->_db->quote( $filters['gidNumber'] );
 		}
-		
+
 		// published
 		if (isset($filters['state']) && is_array($filters['state']))
 		{
 			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
 		}
-		
+
 		// category
 		if (isset($filters['category']))
 		{
 			$where[] = "category=" . $this->_db->quote( $filters['category'] );
 		}
-		
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the Knowledge Base comment table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'entry_id', 
-		'content', 
-		'created', 
+		'id',
+		'entry_id',
+		'content',
+		'created',
 		'created_by',
 		'anonymous',
 		'parent',
@@ -27,9 +27,9 @@ class KbTableCommentTest extends PHPUnit_Framework_TestCase
 		'nothelpful'
 	);
 	var $mock       = array(
-		'id'         => null, 
-		'entry_id'   => 1, 
-		'content'    => 'Nullam quis risus eget urna mollis ornare vel eu leo.', 
+		'id'         => null,
+		'entry_id'   => 1,
+		'content'    => 'Nullam quis risus eget urna mollis ornare vel eu leo.',
 		'created'    => '2013-05-06 12:13:04',
 		'created_by' => 123,
 		'anonymous'  => 0,

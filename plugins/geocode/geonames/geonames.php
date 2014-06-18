@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * Geonames plugin for geocode
  *
- * The GeonamesProvider named geonames is able to geocode and 
+ * The GeonamesProvider named geonames is able to geocode and
  * reverse geocode places. A valid username is required.
  */
 class plgGeocodeGeonames extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

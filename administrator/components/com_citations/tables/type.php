@@ -38,49 +38,49 @@ class CitationsType extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type        = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type_title  = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type_desc   = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type_export = NULL;
-	
+
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $fields      = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -92,7 +92,7 @@ class CitationsType extends JTable
 	/**
 	 * Load citation type(s)
 	 * If ID is passed, it loads only one record
-	 * 
+	 *
 	 * @param      integer $id Type ID
 	 * @return     array
 	 */

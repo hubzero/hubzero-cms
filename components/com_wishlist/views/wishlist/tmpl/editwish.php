@@ -34,12 +34,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
-if ($this->wishlist->exists()) 
+if ($this->wishlist->exists())
 {
 	$login = JText::_('COM_WISHLIST_UNKNOWN');
 
 	// what is submitter name?
-	if ($this->task == 'editwish') 
+	if ($this->task == 'editwish')
 	{
 		$login = $this->wish->proposer('username');
 	}
@@ -86,7 +86,7 @@ if ($this->wishlist->exists())
 			<?php } ?>
 
 				<label for="field-anonymous">
-					<input class="option" type="checkbox" name="anonymous" id="field-anonymous" value="1" <?php echo ($this->wish->get('anonymous')) ? 'checked="checked"' : ''; ?>/> 
+					<input class="option" type="checkbox" name="anonymous" id="field-anonymous" value="1" <?php echo ($this->wish->get('anonymous')) ? 'checked="checked"' : ''; ?>/>
 					<?php echo JText::_('COM_WISHLIST_WISH_POST_ANONYMOUSLY'); ?>
 				</label>
 
@@ -111,7 +111,7 @@ if ($this->wishlist->exists())
 				</label>
 
 				<label for="field_about">
-					<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>: 
+					<?php echo JText::_('COM_WISHLIST_WISH_EXPLAIN_IN_DETAIL'); ?>:
 					<?php
 						echo JFactory::getEditor()->display('about', $this->escape($this->wish->content('raw')), '', '', 35, 10, false, 'field_about', null, null, array('class' => 'minimal no-footer'));
 					?>
@@ -119,7 +119,7 @@ if ($this->wishlist->exists())
 
 				<label>
 					<?php echo JText::_('COM_WISHLIST_WISH_ADD_TAGS'); ?>: <br />
-					<?php 
+					<?php
 					// Tag editor plug-in
 					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher = JDispatcher::getInstance();
@@ -134,7 +134,7 @@ if ($this->wishlist->exists())
 			<?php if ($this->banking && $this->task != 'editwish') { ?>
 				<label for="field-reward">
 					<?php echo JText::_('COM_WISHLIST_ASSIGN_REWARD'); ?>:<br />
-					<input type="text" name="reward" id="field-reward" value="" size="5"<?php if ($this->funds <= 0 ) { echo ' disabled="disabled"'; } ?> /> 
+					<input type="text" name="reward" id="field-reward" value="" size="5"<?php if ($this->funds <= 0 ) { echo ' disabled="disabled"'; } ?> />
 					<span class="subtext"><?php echo JText::_('COM_WISHLIST_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_WISHLIST_POINTS_TO_SPEND'); ?>.</span>
 				</label>
 				<input type="hidden"  name="funds" value="<?php echo $this->escape($this->funds); ?>" />

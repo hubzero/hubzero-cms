@@ -38,49 +38,49 @@ class KbTableVote extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $object_id = NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ip        = NULL;
 
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $vote      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id   = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type      = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,20 +91,20 @@ class KbTableVote extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->object_id = intval($this->object_id);
-		if (!$this->object_id) 
+		if (!$this->object_id)
 		{
 			$this->setError(JText::_('COM_KB_ERROR_MISSING_ARTICLE_ID'));
 			return false;
 		}
 
 		$this->type = strtolower(trim($this->type));
-		if (!in_array($this->type, array('entry', 'comment'))) 
+		if (!in_array($this->type, array('entry', 'comment')))
 		{
 			$this->setError(JText::_('COM_KB_ERROR_UNKNOWN_TYPE'));
 			return false;
@@ -115,7 +115,7 @@ class KbTableVote extends JTable
 
 	/**
 	 * Get the vote for a specific object/type combination and user
-	 * 
+	 *
 	 * @param      integer $object_id Object ID
 	 * @param      integer $user_id   User ID
 	 * @param      string  $ip        IP Address
@@ -124,19 +124,19 @@ class KbTableVote extends JTable
 	 */
 	public function getVote($object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL)
 	{
-		if ($object_id == NULL) 
+		if ($object_id == NULL)
 		{
 			$object_id = $this->object_id;
 		}
-		if ($user_id == NULL) 
+		if ($user_id == NULL)
 		{
 			$user_id = $this->user_id;
 		}
-		if ($ip == NULL) 
+		if ($ip == NULL)
 		{
 			$ip = $this->ip;
 		}
-		if ($type == NULL) 
+		if ($type == NULL)
 		{
 			$type = $this->type;
 		}
@@ -146,26 +146,26 @@ class KbTableVote extends JTable
 
 	/**
 	 * Delete a record for a specific object/user combination
-	 * 
+	 *
 	 * @param      integer $object_id Object ID
 	 * @param      integer $user_id   User ID
 	 * @return     boolean True upon success
 	 */
 	public function deleteVote($object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL)
 	{
-		if ($object_id == NULL) 
+		if ($object_id == NULL)
 		{
 			$object_id = $this->object_id;
 		}
-		if ($user_id == NULL) 
+		if ($user_id == NULL)
 		{
 			$user_id = $this->user_id;
 		}
-		if ($ip == NULL) 
+		if ($ip == NULL)
 		{
 			$ip = $this->ip;
 		}
-		if ($type == NULL) 
+		if ($type == NULL)
 		{
 			$type = $this->type;
 		}
@@ -174,11 +174,11 @@ class KbTableVote extends JTable
 		$sql .= ($user_id || $ip) ? " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")" : "";
 
 		$this->_db->setQuery($sql);
-		if ($this->_db->query()) 
+		if ($this->_db->query())
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

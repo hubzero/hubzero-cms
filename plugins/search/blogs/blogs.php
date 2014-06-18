@@ -43,7 +43,7 @@ class plgSearchBlogs extends SearchPlugin
 
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @param      object $authz    SearchAuthorization
@@ -82,7 +82,7 @@ class plgSearchBlogs extends SearchPlugin
 		$addtl_where[] = "(be.publish_down = '0000-00-00 00:00:00' OR (be.publish_down != '0000-00-00 00:00:00' AND be.publish_down > '$now'))";
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				be.id,
 				be.title,
 				be.content AS description,

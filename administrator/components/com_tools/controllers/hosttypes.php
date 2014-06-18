@@ -35,16 +35,16 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 
 /**
  * Short description for 'ToolsController'
- * 
+ *
  * Long description (if any) ...
  */
 class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Short description for 'type_display'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function displayTask()
@@ -57,26 +57,26 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$this->view->filters = array();
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'value'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
@@ -105,8 +105,8 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -125,7 +125,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -135,7 +135,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row = null)
@@ -153,17 +153,17 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			$this->view->row = new MwHosttype($mwdb);
 			$this->view->row->load($item);
 		}
 
-		if ($this->view->row->value > 0) 
+		if ($this->view->row->value > 0)
 		{
 			$this->view->bit = log($this->view->row->value)/log(2);
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->bit = '';
 		}
@@ -182,19 +182,19 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Display results
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Short description for 'hosttype_refs'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
 	private function _refs($value)
 	{
 		$refs = 0;
-		
+
 		// Get the middleware database
 		$mwdb = MwUtils::getMWDBO();
 		$mwdb->setQuery("SELECT count(*) AS count FROM host WHERE provisions & " . $mwdb->Quote($value) . " != 0");
@@ -207,10 +207,10 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		return $refs;
 	}
-	
+
 	/**
 	 * Save changes to a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -224,7 +224,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 
 		$row = new MwHosttype($mwdb);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -237,19 +237,19 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 			$insert = true;
 		}
 
-		if (!$fields['value']) 
+		if (!$fields['value'])
 		{
 			$rows = $row->getRecords();
 
 			$value = 1;
 			for ($i=0; $i<count($rows); $i++)
 			{
-				if ($value == $rows[$i]->value) 
+				if ($value == $rows[$i]->value)
 				{
 					$value = $value * 2;
 				}
 				// Double check that the hosttype doesn't already exist
-				if ($row->name == $rows[$i]->name) 
+				if ($row->name == $rows[$i]->name)
 				{
 					$insert = false;
 				}
@@ -259,7 +259,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -267,7 +267,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store($insert)) 
+		if (!$row->store($insert))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -283,7 +283,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a hostname record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -296,14 +296,14 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		$mwdb = MwUtils::getMWDBO();
 
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$row = new MwHosttype($mwdb);
-			
+
 			// Loop through each ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
-				if (!$row->delete($id)) 
+				if (!$row->delete($id))
 				{
 					JError::raiseError(500, $row->getError());
 					return;

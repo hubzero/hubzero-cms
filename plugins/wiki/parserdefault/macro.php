@@ -39,56 +39,56 @@ class WikiMacro
 {
 	/**
 	 * Name of the macro
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_name  = NULL;
 
 	/**
 	 * Container for internal data
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_data  = array();
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_db    = NULL;
 
 	/**
 	 * Container for errors
-	 * 
+	 *
 	 * @var unknown
 	 */
 	protected $_error = NULL;
 
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = false;
 
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $linkLog = array();
 
 	/**
 	 * Instance of a macro
-	 * 
+	 *
 	 * @var object
 	 */
 	static protected $thisInstance = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Configuration options
 	 * @return     void
 	 */
@@ -99,16 +99,16 @@ class WikiMacro
 		$this->args = '';
 
 		// Set the controller name
-		if (empty($this->_name)) 
+		if (empty($this->_name))
 		{
-			if (isset($config['name'])) 
+			if (isset($config['name']))
 			{
 				$this->_name = $config['name'];
-			} 
-			else 
+			}
+			else
 			{
 				$r = null;
-				if (!preg_match('/(.*)Macro/i', get_class($this), $r)) 
+				if (!preg_match('/(.*)Macro/i', get_class($this), $r))
 				{
 					echo 'Controller::__construct() : Can\'t get or parse class name.';
 				}
@@ -119,7 +119,7 @@ class WikiMacro
 
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
@@ -131,13 +131,13 @@ class WikiMacro
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -145,19 +145,19 @@ class WikiMacro
 
 	/**
 	 * Get an instance of this macro, creating it if not found
-	 * 
+	 *
 	 * @param      array $config Configuration parameters
-	 * @return     object 
+	 * @return     object
 	 */
 	static public function getInstance($config=array())
 	{
-		if (self::$thisInstance == null) 
+		if (self::$thisInstance == null)
 		{
-			if (isset($config['name'])) 
+			if (isset($config['name']))
 			{
 				$name = $config['name'];
-			} 
-			else 
+			}
+			else
 			{
 				$name = get_class();
 			}
@@ -169,7 +169,7 @@ class WikiMacro
 	/**
 	 * Render macro output
 	 * this should be overriden by extended classes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function render()
@@ -180,7 +180,7 @@ class WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * this should be overriden by extended classes
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()

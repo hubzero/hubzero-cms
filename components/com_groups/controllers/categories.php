@@ -38,7 +38,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 {
 	/**
 	 * Override Execute Method
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function execute()
@@ -47,39 +47,39 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		$this->cn     = JRequest::getVar('cn', '');
 		$this->active = JRequest::getVar('active', '');
 		$this->action = JRequest::getVar('action', '');
-		
+
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask('You must be logged in to customize a group.');
 			return;
 		}
-		
+
 		//check to make sure we have  cname
 		if(!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
-		
+
 		// Load the group page
 		$this->group = \Hubzero\User\Group::getInstance( $this->cn );
-		
+
 		// Ensure we found the group info
-		if (!$this->group || !$this->group->get('gidNumber')) 
+		if (!$this->group || !$this->group->get('gidNumber'))
 		{
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
-		
+
 		// Check authorization
-		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages')) 
+		if ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))
 		{
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
-		
+
 		//continue with parent execute method
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display Page Categories
 	 *
@@ -89,7 +89,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	{
 		$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#categories'));
 	}
-	
+
 	/**
 	 * Add Page Category
 	 *
@@ -99,7 +99,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	{
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Edit Page Category
 	 *
@@ -109,33 +109,33 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	{
 		//set to edit layout
 		$this->view->setLayout('edit');
-		
+
 		// get request vars
 		$categoryid = JRequest::getInt('categoryid', 0);
-		
+
 		// get the category object
 		$this->view->category = new GroupsModelPageCategory( $categoryid );
-		
+
 		// are we passing a category object
 		if ($this->category)
 		{
 			$this->view->category = $this->category;
 		}
-		
+
 		// build the title
 		$this->_buildTitle();
 
 		// build pathway
 		$this->_buildPathway();
-		
+
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group = $this->group;
-		
+
 		//display layout
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save Page Category
 	 *
@@ -145,34 +145,34 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	{
 		// get request vars
 		$category = JRequest::getVar('category', array(), 'post');
-		
+
 		// add group id to category
 		$category['gidNumber'] = $this->group->get('gidNumber');
-		
+
 		// load category object
 		$this->category = new GroupsModelPageCategory( $category['id'] );
-		
+
 		// bind to our new results
-		if (!$this->category->bind($category)) 
+		if (!$this->category->bind($category))
 		{
 			$this->setNotification($this->category->getError(), 'error');
 			$this->editTask();
 			return;
 		}
-		
+
 		// Store new content
-		if (!$this->category->store(true)) 
+		if (!$this->category->store(true))
 		{
 			$this->setNotification($this->category->getError(), 'error');
 			$this->editTask();
 			return;
 		}
-		
+
 		//inform user & redirect
 		$this->setNotification('The page category was successfully saved.', 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 	}
-	
+
 	/**
 	 * Delete Page Category
 	 *
@@ -182,10 +182,10 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 	{
 		// get request vars
 		$categoryid = JRequest::getInt('categoryid', 0);
-		
+
 		// load category object
 		$category = new GroupsModelPageCategory( $categoryid );
-		
+
 		// make sure this is our groups cat
 		if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 		{
@@ -193,7 +193,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 			return;
 		}
-		
+
 		// delete row
 		if (!$category->delete())
 		{
@@ -201,7 +201,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 			return;
 		}
-		
+
 		//inform user & redirect
 		$this->setNotification('The page category was successfully deleted.', 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );

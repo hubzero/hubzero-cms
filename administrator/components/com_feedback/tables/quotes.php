@@ -37,98 +37,98 @@ class FeedbackQuotes extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $fullname = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $org = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $quote = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $date = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publish_ok = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $contact_ok = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $notes = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $short_quote = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $miniquote = NULL;
 
 	/**
 	* int(1)
-	* 
+	*
 	* @var integer
 	*/
 	var $admin_rating = NULL;
 
 	/**
 	* int(1)
-	* 
+	*
 	* @var integer
 	*/
 	var $notable_quote  = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -139,13 +139,13 @@ class FeedbackQuotes extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->quote = trim($this->quote);
-		if ($this->quote == '') 
+		if ($this->quote == '')
 		{
 			$this->setError(JText::_('Quote must contain text.'));
 			return false;
@@ -157,7 +157,7 @@ class FeedbackQuotes extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -172,7 +172,7 @@ class FeedbackQuotes extends JTable
 			$where[] = "notable_quote=" . $this->_db->Quote($filters['notable_quote']);
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$words = explode(' ', $filters['search']);
 			$sqlsearch = array();
@@ -185,7 +185,7 @@ class FeedbackQuotes extends JTable
 			$where[] = "(" . implode(" OR ", $sqlsearch) . ")";
 		}
 
-		if (isset($filters['id']) && $filters['id'] != 0) 
+		if (isset($filters['id']) && $filters['id'] != 0)
 		{
 			$where[] = "id=" . $this->_db->Quote($filters['id']);
 		}
@@ -195,16 +195,16 @@ class FeedbackQuotes extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (empty($filters['sortby'])) 
+		if (empty($filters['sortby']))
 		{
 			$filters['sortby'] = 'date';
 		}
 
 		$query .= " ORDER BY " . $filters['sortby'] . " DESC";
 
-		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0)
 		{
-			if (!isset($filters['start'])) 
+			if (!isset($filters['start']))
 			{
 				$filters['start'] = 0;
 			}
@@ -216,7 +216,7 @@ class FeedbackQuotes extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -232,7 +232,7 @@ class FeedbackQuotes extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -284,9 +284,9 @@ class FeedbackQuotes extends JTable
 
 		foreach ($files as $file)
 		{
-			(is_dir("$dir/$file")) ? $this->_delTree("$dir/$file") : unlink("$dir/$file"); 
-		} 
-		rmdir($dir); 
+			(is_dir("$dir/$file")) ? $this->_delTree("$dir/$file") : unlink("$dir/$file");
+		}
+		rmdir($dir);
 	}
 }
 

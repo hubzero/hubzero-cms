@@ -35,7 +35,7 @@ $canDo = WishlistHelper::getActions('list');
 $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 
 JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -48,7 +48,7 @@ $editor = JEditor::getInstance();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton =='resethits') {
 		if (confirm(<?php echo JText::_('COM_WISHLIST_RESET_HITS_WARNING'); ?>)){
@@ -128,10 +128,10 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
 					<td>
-						<?php  
+						<?php
 						$creator = $this->row->created_by ? $this->row->created_by : $this->juser->get('id');
 						$editor  = JUser::getInstance($creator);
-						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');  
+						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');
 						?>
 						<input type="hidden" name="fields[create_by]" id="field-created_by" value="<?php echo $editor; ?>" />
 					</td>

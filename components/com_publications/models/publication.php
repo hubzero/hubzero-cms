@@ -40,7 +40,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'Publication';
@@ -55,7 +55,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -73,17 +73,17 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 			$key = $oid;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid);
 		}
 
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
@@ -95,13 +95,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -109,7 +109,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
@@ -133,7 +133,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -155,13 +155,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -170,7 +170,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	{
 		$as = strtolower($as);
 		$options = array();
-		
+
 		switch ($as)
 		{
 			case 'parsed':
@@ -222,13 +222,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -287,7 +287,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Get the content of nbtag in metadata field
 	 *
@@ -296,30 +296,30 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	public function getNbtag ($aliasmap = '')
 	{
 		$data = array();
-		
+
 		// Parse data
 		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			foreach ($matches as $match)
 			{
 				$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
 			}
 		}
-		
+
 		$value = isset($data[$aliasmap]) ? $data[$aliasmap] : NULL;
-		
-		return $value;		
+
+		return $value;
 	}
-	
+
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -328,12 +328,12 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	{
 		$as = strtolower($as);
 		$options = array();
-		
+
 		if (!$this->get($field, ''))
 		{
 			return false;
 		}
-				
+
 		switch ($as)
 		{
 			case 'parsed':
@@ -355,15 +355,15 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 					{
 						$content = (string) stripslashes($this->getNbtag($aliasmap));
 					}
-					
+
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_publications.publication.' . $field,
 						&$this,
 						&$config
 					));
-					
+
 					$parsed = (string) stripslashes($this->get($field, ''));
-					
+
 					if ($field == 'metadata')
 					{
 						$parsed = (string) stripslashes($this->getNbtag($aliasmap));

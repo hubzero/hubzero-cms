@@ -45,7 +45,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onUsageAreas()
@@ -57,14 +57,14 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Strip Usage GET variables
-	 * 
+	 *
 	 * @param      string $url URL
 	 * @return     string
 	 */
 	private function _usageurlstrip($url)
 	{
 		$pvar = strpos($url, 'period=');
-		if ($pvar) 
+		if ($pvar)
 		{
 			$pvar--;
 			$url = substr($url, 0, $pvar);
@@ -75,7 +75,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 	/**
 	 * Returns TRUE if there is data in the database
 	 * for the date passed to it, FALSE otherwise.
-	 * 
+	 *
 	 * @param      object &$db Parameter description (if any) ...
 	 * @param      unknown $yearmonth Parameter description (if any) ...
 	 * @param      unknown $period Parameter description (if any) ...
@@ -87,7 +87,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$db->setQuery($sql);
 		$result = $db->loadResult();
 
-		if ($result && $result > 0) 
+		if ($result && $result > 0)
 		{
 			return true;
 		}
@@ -96,7 +96,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Write a row of data as a table row
-	 * 
+	 *
 	 * @param      object &$db Parameter description (if any) ...
 	 * @param      string $id Parameter description (if any) ...
 	 * @param      string $period Parameter description (if any) ...
@@ -110,14 +110,14 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid='$id' AND period='$period' AND datetime='$datetime' ORDER BY colid";
 		$db->setQuery($sql);
 		$results = $db->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			$i = 0;
 			foreach ($results as $row)
 			{
 				$i++;
 				$cls = ($i >= 7) ? ' class="group"' : '';
-				if ($i == 1) 
+				if ($i == 1)
 				{
 					$cls = ' class="highlight"';
 				}
@@ -154,7 +154,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t\t" . '<td' . $cls . '>' . trim($this->_fmt_result($val, $row->valfmt)) . '</td>' . "\n";
 			}
 		}
-		if ($i == 1) 
+		if ($i == 1)
 		{
 			$html .= $this->_empty_rows(10);
 		}
@@ -163,12 +163,12 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Generate a sparkline (inline chart)
-	 * 
+	 *
 	 * @param      object  $db       JDatabase
 	 * @param      integer $id       Row ID
 	 * @param      string  $period   Time period
 	 * @param      string  $datetime Timestamp
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _getSparkline($db, $id, $period, $datetime)
 	{
@@ -184,7 +184,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$db->setQuery($sql);
 		$results = $db->loadObjectList();
 
-		if ($results) 
+		if ($results)
 		{
 			// Reverse the array (we'll be getting back data in DESC order, we need it in ASC order)
 			$results = array_reverse($results);
@@ -199,7 +199,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 			$highest = array_pop($vals);
 
-			// Generate the sparkline	
+			// Generate the sparkline
 			$sparkline .= '<span class="sparkline">' . "\n";
 			foreach ($results as $result)
 			{
@@ -218,7 +218,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Generate empty table cells
-	 * 
+	 *
 	 * @param      integer $n Number of cells
 	 * @return     string
 	 */
@@ -236,7 +236,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Format a result
-	 * 
+	 *
 	 * @param      mixed   $value Value to format
 	 * @param      integer $fmt   Format to use
 	 * @return     mixed
@@ -252,49 +252,49 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$valfmt[6] = 'hours';
 		$valfmt[7] = ''; // text data. display as is
 
-		if ($fmt == 0) 
+		if ($fmt == 0)
 		{
 			return $valfmt[0];
-		} 
-		else if ($fmt == 1) 
+		}
+		else if ($fmt == 1)
 		{
 			$value = number_format($value) . $valfmt[$fmt];
 			return $value;
-		} 
-		else if ($fmt == 2) 
+		}
+		else if ($fmt == 2)
 		{
 			$value = number_format($value) . $valfmt[$fmt];
 			return $value;
-		} 
-		else if ($fmt == 5) 
+		}
+		else if ($fmt == 5)
 		{
-			if ($value < '60') 
+			if ($value < '60')
 			{
 				$val = number_format($value) . ' seconds';
-			} 
-			else if ($value >= '60' && $value < '3600') 
+			}
+			else if ($value >= '60' && $value < '3600')
 			{
 				$val = number_format($value/60) . ' minutes';
-			} 
-			else if ($value >= '3600'  && $value < '86400') 
+			}
+			else if ($value >= '3600'  && $value < '86400')
 			{
 				$val = number_format($value/3600) . ' hours';
-			} 
-			else if ($value >= '86400') 
+			}
+			else if ($value >= '86400')
 			{
 				$val = number_format($value/86400) . ' days';
-			} 
-			else 
+			}
+			else
 			{
 				$val = number_format($value);
 			}
 			return $val;
-		} 
-		else if ($fmt == 6) 
+		}
+		else if ($fmt == 6)
 		{
 			return $value;
-		} 
-		else 
+		}
+		else
 		{
 			$value = number_format($value) . ' ' . $valfmt[$fmt];
 			return $value;
@@ -303,7 +303,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Generate navigation links
-	 * 
+	 *
 	 * @param      string $option Component name
 	 * @param      string $task   Component task
 	 * @param      string $period Time period
@@ -314,31 +314,31 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$html  = '<div id="sub-sub-menu">' . "\n";
 		$html .= "\t" . '<ul>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'prior12') 
+		if ($period == 'prior12')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=prior12') . '"><span>' . JText::_('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'month') 
+		if ($period == 'month')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=month') . '"><span>' . JText::_('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'qtr') 
+		if ($period == 'qtr')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=qtr') . '"><span>' . JText::_('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'year') 
+		if ($period == 'year')
 		{
 			$html .= ' class="active"';
 		}
 		$html .= '><a href="'.JRoute::_('index.php?option=' . $option . '&task=' . $task . '&period=year') . '"><span>' . JText::_('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
 		$html .= "\t\t" . '<li';
-		if ($period == 'fiscal') 
+		if ($period == 'fiscal')
 		{
 			$html .= ' class="active"';
 		}
@@ -351,7 +351,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for displaying usage data
-	 * 
+	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
 	 * @param      object $db            JDatabase
@@ -363,10 +363,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
 		// Check if our task is the area we want to return results for
-		if ($task) 
+		if ($task)
 		{
 			if (!in_array($task, $this->onUsageAreas())
-			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			 && !in_array($task, array_keys($this->onUsageAreas())))
 			{
 				return '';
 			}
@@ -378,16 +378,16 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$period = JRequest::getVar('period', 'prior12');
 		$selectedPeriod = JRequest::getVar('selectedPeriod', '');
 
-		if (!$selectedPeriod) 
+		if (!$selectedPeriod)
 		{
 			$db->setQuery("SELECT MAX(datetime) FROM summary_misc_vals");
 			$lastdate = $db->loadResult();
-			if ($lastdate) 
+			if ($lastdate)
 			{
 				$defaultMonth = substr($lastdate, 5, 2);
 				$defaultYear  = substr($lastdate, 0, 4);
-			} 
-			else 
+			}
+			else
 			{
 				$defaultMonth = date("m");
 				$defaultYear  = date("Y");
@@ -396,30 +396,30 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		}
 		$checkyear  = substr($selectedPeriod, 0, 4);
 		$checkmonth = substr($selectedPeriod, 5, 2);
-		if ($checkyear <= '2007') 
+		if ($checkyear <= '2007')
 		{
-			if ($checkyear < '2007') 
+			if ($checkyear < '2007')
 			{
 				$page = 'old';
-			} 
-			else if ($checkyear == '2007') 
+			}
+			else if ($checkyear == '2007')
 			{
-				if ($checkmonth < '10') 
+				if ($checkmonth < '10')
 				{
 					$page = 'old';
-				} 
-				else 
+				}
+				else
 				{
 					$page = 'new';
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$page = 'new';
 		}
 
-		if ($period == 'nice') 
+		if ($period == 'nice')
 		{
 			$page = 'old';
 			$selectedPeriod = '2007-09';
@@ -455,28 +455,28 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				{
 					foreach ($monthsReverse as $key => $month)
 					{
-						if ($key == '12') 
+						if ($key == '12')
 						{
 							$nextmonth = 'Jan';
-						} 
-						else 
+						}
+						else
 						{
 							$nextmonth = $arrayMonths[floor(array_search($month, $arrayMonths))+1];
 						}
 						$value = $i . '-' . $key;
-						if ($this->_check_for_data($db, $value, 12)) 
+						if ($this->_check_for_data($db, $value, 12))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $selectedPeriod) 
+							if ($value == $selectedPeriod)
 							{
 								$html .= ' selected="selected"';
 							}
 							$html .= '>' . $nextmonth . ' ';
-							if ($key == 12) 
+							if ($key == 12)
 							{
 								$html .= $i;
-							} 
-							else 
+							}
+							else
 							{
 								$html .= $i - 1;
 							}
@@ -496,10 +496,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 					foreach ($monthsReverse as $key => $month)
 					{
 						$value = $i . '-' . $key;
-						if ($this->_check_for_data($db, $value, 1)) 
+						if ($this->_check_for_data($db, $value, 1))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $selectedPeriod) 
+							if ($value == $selectedPeriod)
 							{
 								$html .= ' selected="selected"';
 							}
@@ -518,30 +518,30 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$qtd_found && $this->_check_for_data($db, $value, 3)) 
+					if (!$qtd_found && $this->_check_for_data($db, $value, 3))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $selectedPeriod) 
+						if ($value == $selectedPeriod)
 						{
 							$html .= ' selected="selected"';
 						}
 						$html .= '>';
-						if ($key <= 3) 
+						if ($key <= 3)
 						{
 							$key = 0;
 							$html .= 'Jan';
-						} 
-						elseif ($key <= 6) 
+						}
+						elseif ($key <= 6)
 						{
 							$key = 3;
 							$html .= 'Apr';
-						} 
-						elseif ($key <= 9) 
+						}
+						elseif ($key <= 9)
 						{
 							$key = 6;
 							$html .= 'Jul';
-						} 
-						else 
+						}
+						else
 						{
 							$key = 9;
 							$html .= 'Oct';
@@ -555,50 +555,50 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				{
 					for ($i = 12; $i > 0; $i = $i - 3)
 					{
-						if ($qtr_found && $key) 
+						if ($qtr_found && $key)
 						{
 							$i = $key;
 							$qtd_found = 0;
 						}
 						$value = $j . '-' . sprintf("%02d", $i);
-						if ($this->_check_for_data($db, $value, 3)) 
+						if ($this->_check_for_data($db, $value, 3))
 						{
 							$html .= '<option value="' . $value . '"';
-							if ($value == $selectedPeriod) 
+							if ($value == $selectedPeriod)
 							{
 								$html .= ' selected="selected"';
 							}
 							$html .= '>';
-							if ($i == 3) 
+							if ($i == 3)
 							{
 								$html .= 'Jan';
-							} 
-							elseif ($i == 6) 
+							}
+							elseif ($i == 6)
 							{
 								$html .= 'Apr';
-							} 
-							elseif ($i == 9) 
+							}
+							elseif ($i == 9)
 							{
 								$html .= 'Jul';
-							} 
-							else 
+							}
+							else
 							{
 								$html .= 'Oct';
 							}
 							$html .= ' ' . $j . ' - ';
-							if ($i == 3) 
+							if ($i == 3)
 							{
 								$html .= 'Mar';
-							} 
-							elseif ($i == 6) 
+							}
+							elseif ($i == 6)
 							{
 								$html .= 'Jun';
-							} 
-							elseif ($i == 9) 
+							}
+							elseif ($i == 9)
 							{
 								$html .= 'Sep';
-							} 
-							else 
+							}
+							else
 							{
 								$html .= 'Dec';
 							}
@@ -618,20 +618,20 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) 
+					if (!$ytd_found && $this->_check_for_data($db, $value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $selectedPeriod) 
+						if ($value == $selectedPeriod)
 						{
 							$html .= ' selected="selected"';
 						}
 						$html .= '>Oct ';
-						if ($cur_month >= 9) 
+						if ($cur_month >= 9)
 						{
 							$html .= $cur_year;
 							$full_year = $cur_year;
-						} 
-						else 
+						}
+						else
 						{
 							$html .= $cur_year - 1;
 							$full_year = $cur_year - 1;
@@ -643,10 +643,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				for ($i = $full_year; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-09';
-					if ($this->_check_for_data($db, $value, 0)) 
+					if ($this->_check_for_data($db, $value, 0))
 					{
 						$html .= '<option value="' . $value . '"';
-						if ($value == $selectedPeriod) 
+						if ($value == $selectedPeriod)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -666,10 +666,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $cur_year . '-' . $key;
-					if (!$ytd_found && $this->_check_for_data($db, $value, 0)) 
+					if (!$ytd_found && $this->_check_for_data($db, $value, 0))
 					{
 						$html .= '<option value="'. $value .'"';
-						if ($value == $selectedPeriod) 
+						if ($value == $selectedPeriod)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -680,10 +680,10 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				for ($i = $cur_year - 1; $i >= $year_data_start; $i--)
 				{
 					$value = $i . '-12';
-					if ($this->_check_for_data($db, $value, 0)) 
+					if ($this->_check_for_data($db, $value, 0))
 					{
 						$html .= '<option value="' . $value .'"';
-						if ($value == $selectedPeriod) 
+						if ($value == $selectedPeriod)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -722,14 +722,14 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$db->setQuery("SELECT id, label, plot FROM summary_user WHERE id IN (1,2,3,4,5) ORDER BY id");
 		$results = $db->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			$i = 0;
 			$cls = 'even';
 			foreach ($results as $row)
 			{
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				if ($i == 0) 
+				if ($i == 0)
 				{
 					$cls = 'summary';
 				}
@@ -740,27 +740,27 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 				$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 				$html .= "\t\t\t" . '<th scope="row">' . trim($label) . '</th>' . "\n";
-				if ($row->plot == '1') 
+				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
-					if (is_file(JPATH_ROOT . DS . $img . '.gif')) 
+					if (is_file(JPATH_ROOT . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users1' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users1' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
-					} 
-					else if (isset($sparkline)) 
+					}
+					else if (isset($sparkline))
 					{
 						$html .= "\t\t\t" . '<td>' . $sparkline . '</td>' . "\n";
-					} 
-					else 
+					}
+					else
 					{
 						$html .= "\t\t\t" . '<td>&nbsp;</td>' . "\n";
 					}
-				} 
-				else if (isset($sparkline)) 
+				}
+				else if (isset($sparkline))
 				{
 					$html .= "\t\t\t" . '<td>' . $sparkline . '</td>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t\t" . '<td>&nbsp;</td>' . "\n";
 				}
@@ -768,8 +768,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t" . '</tr>' . "\n";
 				$i++;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
 			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
@@ -785,7 +785,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$db->setQuery("SELECT a.label,b.value,b.valfmt,a.plot,a.id FROM summary_simusage AS a, summary_simusage_vals AS b WHERE a.id=b.rowid AND b.period = '$period' AND b.datetime = '$datetime' ORDER BY a.id");
 		$results = $db->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			$cls = 'even';
 			foreach ($results as $row)
@@ -799,23 +799,23 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 				$html .= "\t\t\t" . '<th scope="row">' . trim($label) . '</th>' . "\n";
 				$html .= "\t\t\t" . '<td>'. $this->_fmt_result($row->value, $row->valfmt) .'</td>' . "\n";
-				if ($row->plot == '1') 
+				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-s' . $row->id;
-					if (is_file(JPATH_ROOT . DS . $img . '.gif')) 
+					if (is_file(JPATH_ROOT . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:sim' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="sim' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
 					//} else if (isset($sparkline)) {
 					//	$html .= "\t\t\t" . '<td>'.$sparkline.'</td>' . "\n";
-					} 
-					else 
+					}
+					else
 					{
 						$html .= "\t\t\t" . '<td>&nbsp;</td>' . "\n";
 					}
 				//} else if (isset($sparkline)) {
 				//	$html .= "\t\t\t" . '<td>'.$sparkline.'</td>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t\t" . '<td>&nbsp;</td>' . "\n";
 				}
@@ -823,8 +823,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 				$i++;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
 			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
@@ -840,7 +840,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$db->setQuery("SELECT a.label,b.value,b.valfmt FROM summary_misc AS a, summary_misc_vals AS b WHERE a.id=b.rowid AND b.period = '$period' AND b.datetime = '$datetime' ORDER BY a.id");
 		$results = $db->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			$cls = 'even';
 			foreach ($results as $row)
@@ -856,8 +856,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t\t" . '<td>'. $this->_fmt_result($row->value, $row->valfmt) . '</td>' . "\n";
 				$html .= "\t\t" . '</tr>' . "\n";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
 			$html .= "\t\t\t" . '<td colspan="2" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";
@@ -866,7 +866,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$html .= "\t" . '</tbody>' . "\n";
 		$html .= '</table>' . "\n";
 
-	/*	
+	/*
 		// "and more" Usage
 		$html .= '<table summary="' . JText::_('&quot;and more&quot; Usage') . '">' . "\n";
 		$html .= "\t" . '<caption>' . JText::_('Table '.++$tbl_cnt.': &quot;and more&quot; Usage') . '</caption>' . "\n";
@@ -884,18 +884,18 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$id = 1;
 		$trows = '';
 		$cls = 'even';
-		while ($id < 9) 
+		while ($id < 9)
 		{
 			$sql = "SELECT a.id, a.label, b.value,b.colid,b.valfmt FROM summary_andmore a, summary_andmore_vals b WHERE a.id=b.rowid AND period='".$period."' AND datetime='".$datetime."' AND a.id='".$id."' ORDER BY b.colid";
 			$db->setQuery($sql);
-			$results = $db->loadObjectList();   	
+			$results = $db->loadObjectList();
 			if ($results) {
 				foreach ($results as $row)
 				{
 					//$label = str_replace('{','<sup>',$row->label);
 					//$label = str_replace('}','</sup>',$label);
 					$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-					
+
 					$col = $row->colid;
 					if ($col == 1) {
 	               		$value1 = $this->_fmt_result($row->value,$row->valfmt);
@@ -914,7 +914,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		    $id++;
 		}
 		$id = 9;
-		while ($id < 13) 
+		while ($id < 13)
 		{
 			$sql = "SELECT a.id, a.label, b.value,b.colid,b.valfmt FROM summary_andmore a, summary_andmore_vals b WHERE a.id=b.rowid AND period='".$period."' AND datetime='".$datetime."' AND a.id='".$id."' ORDER BY b.colid";
 		    $db->setQuery($sql);
@@ -925,7 +925,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 					//$label = str_replace('{','<sup>',$row->label);
 					//$label = str_replace('}','</sup>',$label);
 					$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-					
+
 					$col = $row->colid;
 	                if ($col == 1) {
 	                	$value1 = $this->_fmt_result($row->value,$row->valfmt);
@@ -970,7 +970,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				//$label = str_replace('{','<sup>',$row->label);
 				//$label = str_replace('}','</sup>',$label);
 				$label = preg_replace('/\{(.*)\}/','<sup><a href="#fn\\1">\\1</a></sup>',$row->label);
-				
+
 	       		$html .= "\t\t" . '<tr class="'.$cls.'">' . "\n";
 	            $html .= "\t\t\t" . '<th scope="row">'.trim($label).'</th>' . "\n";
 	            $html .= "\t\t\t" . '<td>'. $this->_fmt_result($row->value,$row->valfmt) .'</td>' . "\n";
@@ -1012,7 +1012,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 		$db->setQuery("SELECT id, label, plot FROM summary_user WHERE id IN (1,6,7,8) ORDER BY id");
 		$results = $db->loadObjectList();
-		if ($results) 
+		if ($results)
 		{
 			$i = 5;
 			$cls = 'even';
@@ -1023,7 +1023,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$label = preg_replace('/\{(.*)\}/', '<sup><a href="#fn\\1">\\1</a></sup>', $row->label);
 
 				$cls = ($cls == 'even') ? 'odd' : 'even';
-				if ($i == 5) 
+				if ($i == 5)
 				{
 					$cls = 'summary';
 				}
@@ -1032,27 +1032,27 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
 				$html .= "\t\t" . '<tr class="'.$cls.'">' . "\n";
 				$html .= "\t\t\t" . '<th scope="row">'.trim($label).'</th>' . "\n";
-				if ($row->plot == '1') 
+				if ($row->plot == '1')
 				{
 					$img = $config->get('charts_path') . DS . substr($datetime, 0, 7) . '-' . $period . '-u' . $row->id;
-					if (is_file(JPATH_ROOT . DS . $img . '.gif')) 
+					if (is_file(JPATH_ROOT . DS . $img . '.gif'))
 					{
 						$html .= "\t\t\t" . '<td><a href="' . $img . '.gif" title="DOM:users2' . $i . '" class="fixedImgTip" rel="external"><img src="' . $img . 'thumb.gif" alt="" /></a><br /><div style="display:none;" id="users2' . $i . '"><img src="' . $img . '.gif" alt="" /></div></td>' . "\n";
-					} 
-					else if (isset($sparkline)) 
+					}
+					else if (isset($sparkline))
 					{
 						$html .= "\t\t\t" . '<td>' . $sparkline . '</td>' . "\n";
-					} 
-					else 
+					}
+					else
 					{
 						$html .= "\t\t\t" . '<td>&nbsp;</td>' . "\n";
 					}
-				} 
-				else if (isset($sparkline)) 
+				}
+				else if (isset($sparkline))
 				{
 					$html .= "\t\t\t" . '<td>'.$sparkline.'</td>' . "\n";
-				} 
-				else 
+				}
+				else
 				{
 					$html .= "\t\t\t" . '<td>&nbsp;</td>';
 				}
@@ -1060,8 +1060,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t" . '</tr>' . "\n";
 				$i++;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
 			$html .= "\t\t\t" . '<td colspan="13" class="textual-data">' . JText::_('No data found.') . '</td>' . "\n";

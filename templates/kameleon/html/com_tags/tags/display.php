@@ -44,7 +44,7 @@ $this->css('introduction.css', 'system')
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<?php 
+					<?php
 					JPluginHelper::importPlugin('hubzero');
 					$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags','','')));
 
@@ -83,7 +83,7 @@ $this->css('introduction.css', 'system')
 			{
 				echo $cloud;
 			}
-			else 
+			else
 			{
 				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}
@@ -105,7 +105,7 @@ $this->css('introduction.css', 'system')
 			{
 				echo $cloud;
 			}
-			else 
+			else
 			{
 				echo '<p class="warning">' . JText::_('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			}

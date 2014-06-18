@@ -46,21 +46,21 @@ class NewsletterHelper
 		{
 			return false;
 		}
-		
+
 		//include joomla simple crypt
 		jimport('joomla.utilities.simplecrypt');
-		
+
 		//instantiate simple crypt object
 		$crypt = new JSimpleCrypt();
-		
+
 		//encrypt campaign id and current timestamp
 		$token = $crypt->encrypt( $mailingRecipientObject->mailingid . ':' . $mailingRecipientObject->email);
-		
+
 		//url encode and base64 encode token
 		return urlencode(base64_encode($token));
 	}
-	
-	
+
+
 	/**
 	 * Generate Confirmation Token
 	 *
@@ -75,21 +75,21 @@ class NewsletterHelper
 		{
 			return false;
 		}
-		
+
 		//include joomla simple crypt
 		jimport('joomla.utilities.simplecrypt');
-		
+
 		//instantiate simple crypt object
 		$crypt = new JSimpleCrypt();
-		
+
 		//encrypt campaign id and current timestamp
 		$token = $crypt->encrypt( $mailinglistObject->id . ':' . $emailAddress );
-		
+
 		//url encode and base64 encode token
 		return urlencode(base64_encode($token));
 	}
-	
-	
+
+
 	/**
 	 * Parse Mailing Token - For Open Tracker, Click Tracker, & Unsubscribe Link
 	 *
@@ -103,56 +103,56 @@ class NewsletterHelper
 		{
 			return false;
 		}
-		
+
 		//include joomla simple crypt
 		jimport('joomla.utilities.simplecrypt');
-		
+
 		//instantiate simple crypt object
 		$crypt = new JSimpleCrypt();
-		
+
 		//url decode token
 		$mailingToken = urldecode( $mailingToken );
-		
+
 		//base64 decode token
 		$mailingToken = base64_decode( $mailingToken );
-		
+
 		//decrypt token
 		$mailingToken = $crypt->decrypt( $mailingToken );
-		
+
 		//split token
 		$mailingTokenParts = explode(':', $mailingToken);
-		
+
 		//get the mailing id and email from parts
 		$mailingId 	= (isset($mailingTokenParts[0])) ? $mailingTokenParts[0] : '';
 		$email 		= (isset($mailingTokenParts[1])) ? $mailingTokenParts[1] : '';
-		
+
 		//make sure we have a mailing id and email
 		if ($mailingId == '' || $email == '')
 		{
 			return false;
 		}
-		
+
 		//instantiate database
 		$database = JFactory::getDBO();
-		
+
 		//try to load mailing recipient object to validate
-		$sql = "SELECT * FROM #__newsletter_mailing_recipients 
+		$sql = "SELECT * FROM #__newsletter_mailing_recipients
 				WHERE mid=" . $database->quote( $mailingId ) . "
 				AND email=" . $database->quote( $email );
 		$database->setQuery( $sql );
 		$recipient = $database->loadObject();
-		
+
 		//return mailing recipient object which contains (mailing id, email, and mailing status)
 		//let invidual methods handle from here
 		return $recipient;
 	}
-	
-	
+
+
 	/**
 	 * Parse Confirmation Email & Token to make sure its was a valid combination
 	 *
 	 * @param 	$email		Confirmation Email Address
-	 * @param 	$token 		Confirmation Token 
+	 * @param 	$token 		Confirmation Token
 	 * @return 	array()
 	 */
 	public static function parseConfirmationToken( $confirmationToken )
@@ -162,49 +162,49 @@ class NewsletterHelper
 		{
 			return false;
 		}
-		
+
 		//include joomla simple crypt
 		jimport('joomla.utilities.simplecrypt');
-		
+
 		//instantiate simple crypt object
 		$crypt = new JSimpleCrypt();
-		
+
 		//url decode token
 		$confirmationToken = urldecode( $confirmationToken );
-		
+
 		//base64 decode token
 		$confirmationToken = base64_decode( $confirmationToken );
-		
+
 		//descrypt token
 		$confirmationToken = $crypt->decrypt( $confirmationToken );
-		
+
 		//parse token
 		$confirmationTokenParts = array_map( "trim", explode( ':', $confirmationToken ) );
-		
+
 		//get mailing list id & email
 		$mailinglistId 	= (isset($confirmationTokenParts[0])) ? $confirmationTokenParts[0] : '';
 		$email 			= (isset($confirmationTokenParts[1])) ? $confirmationTokenParts[1] : '';
-		
+
 		//make sure we have a mailing list and email
 		if ($mailinglistId == '' || $email == '')
 		{
 			return false;
 		}
-		
+
 		//instantiate database
 		$database = JFactory::getDBO();
-		
+
 		//attempt to load mailing list email object
 		$sql = "SELECT * FROM #__newsletter_mailinglist_emails AS mle
 				WHERE mle.mid=" . $database->quote( $mailinglistId ) . "
 				AND mle.email=" . $database->quote( $email );
 		$database->setQuery( $sql );
 		$mailinglistEmail = $database->loadObject();
-		
+
 		return $mailinglistEmail;
 	}
-	
-	
+
+
 	/**
 	 * Creates empty GIF image
 	 *
@@ -221,8 +221,8 @@ class NewsletterHelper
 		imagegif($im);
 		imagedestroy($im);
 	}
-	
-	
+
+
 	/**
 	 * Send confirmation Email to user
 	 *
@@ -235,25 +235,25 @@ class NewsletterHelper
 	{
 		//get site config
 		$hubConfig = JFactory::getConfig();
-		
+
 		// create from details
 		$from = array(
 			'name'  => $hubConfig->getValue('sitename') . ' Mailing Lists',
 			'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
 		);
-		
+
 		// create replyto details
 		$replyto = array(
 			'name'  => 'DO NOT REPLY',
 			'email' => 'do-not-reply@' . $_SERVER['HTTP_HOST']
 		);
-		
+
 		//build subject
 		$subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . $hubConfig->getValue('sitename');
-		
+
 		//get token
 		$token = self::generateConfirmationToken( $emailAddress, $mailinglistObject );
-		
+
 		//build body
 		if ($addedByAdmin)
 		{
@@ -273,10 +273,10 @@ class NewsletterHelper
 		$body .= "Click this link to REMOVE this email from the mailing list:" . PHP_EOL;
 		$body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e=' . $emailAddress . '&t=' . $token . PHP_EOL . PHP_EOL;
 		$body .= "========================================================================";
-		
+
 		// create new message
 		$message = new \Hubzero\Mail\Message();
-		
+
 		// build message object and send
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
@@ -288,11 +288,11 @@ class NewsletterHelper
 				->addHeader('X-Component-ObjectId', $mailinglistObject->id)
 				->addPart($body, 'text/plain')
 				->send();
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Helper Function to add all tracking methods to email message
 	 *
@@ -308,8 +308,8 @@ class NewsletterHelper
 		$emailMessage = self::addForwardingToEmailMessage( $emailMessage, $emailToken );
 		return $emailMessage;
 	}
-	
-	
+
+
 	/**
 	 * Get protocol for tracking
 	 *
@@ -319,12 +319,12 @@ class NewsletterHelper
 	{
 		//get params for com newsletter
 		$params = JComponentHelper::getParams('com_newsletter');
-		
+
 		//return protocol
 		return $params->get('email_tracking_protocol', 'http');
 	}
-	
-	
+
+
 	/**
 	 * Add Click Tracking to Email Message
 	 *
@@ -336,10 +336,10 @@ class NewsletterHelper
 	{
 		//get protocol to track with
 		$protocol = self::getNewsletterTrackingProtocol();
-		
+
 		//get all links in email body
 		preg_match_all('/<a.*href="([^"]+)"[^>]*>/', $emailMessage, $urls);
-		
+
 		//add clicking to each link
 		if ($urls && count($urls[1]) > 0)
 		{
@@ -356,11 +356,11 @@ class NewsletterHelper
 				}
 			}
 		}
-		
+
 		return $emailMessage;
 	}
-	
-	
+
+
 	/**
 	 * Add Open Tracking to Email Message
 	 *
@@ -372,18 +372,18 @@ class NewsletterHelper
 	{
 		//get protocol to track with
 		$protocol = self::getNewsletterTrackingProtocol();
-		
+
 		//create open tracker img
 		$openTracker = '<img src="'.$protocol.'://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/open?t='.$emailToken.'" width="1" height="1" />';
-		
+
 		//add to the end of the message body
 		$emailMessage = str_replace('</body>', $openTracker . '</body>', $emailMessage);
-		
+
 		//return message body
 		return $emailMessage;
 	}
-	
-	
+
+
 	/**
 	 * Add Print Tracking to Email Message
 	 *
@@ -395,7 +395,7 @@ class NewsletterHelper
 	{
 		//get protocol to track with
 		$protocol = self::getNewsletterTrackingProtocol();
-		
+
 		//create print tracker
 		$printTracker = "<style>
 							@media print {
@@ -409,15 +409,15 @@ class NewsletterHelper
 							}
 						</style>";
 		$printTracker .= "<div id=\"_print\"></div>";
-		
+
 		//add to the end of the message body
 		$emailMessage = str_replace('</body>', $printTracker . '</body>', $emailMessage);
-		
+
 		//return message body
 		return $emailMessage;
 	}
-	
-	
+
+
 	/**
 	 * Add Forwarding Tracking to Email Message
 	 *
@@ -429,11 +429,11 @@ class NewsletterHelper
 	{
 		//get protocol to track with
 		$protocol = self::getNewsletterTrackingProtocol();
-		
+
 		//create forward tracker
 		$forwardTracker = "<style>
-							div.OutlookMessageHeader, 
-							table.moz-email-headers-table, 
+							div.OutlookMessageHeader,
+							table.moz-email-headers-table,
 							blockquote #_forward,
 							.gmail_quote #_forward {
 								width:1px;
@@ -444,10 +444,10 @@ class NewsletterHelper
 							}
 						</style>";
 		$forwardTracker .= "<div id=\"_forward\"></div>";
-		
+
 		//add to the end of the message body
 		$emailMessage = str_replace('</body>', $forwardTracker . '</body>', $emailMessage);
-		
+
 		//return message body
 		return $emailMessage;
 	}

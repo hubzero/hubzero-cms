@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'MemberOptionHelper'
- * 
+ *
  * Long description (if any) ...
  */
 class MemberOptionHelper

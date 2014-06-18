@@ -40,7 +40,7 @@ $type->load(7);
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->status['fulltxt'], $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -57,7 +57,7 @@ $elements = new ResourcesElements($data, $type->customFields);
 $fields = $elements->render();
 
 ?>
-	<div class="explaination"> 
+	<div class="explaination">
 		<p class="help"><?php echo $this->dev ? JText::_('COM_TOOLS_SIDE_EDIT_PAGE') : JText::_('COM_TOOLS_SIDE_EDIT_PAGE_CURRENT'); ?></p>
 		<p><?php echo JText::_('COM_TOOLS_COMPOSE_ABSTRACT_HINT'); ?></p>
 	</div>
@@ -95,6 +95,6 @@ $fields = $elements->render();
 	</div>
 	<fieldset>
 		<legend><?php echo JText::_('COM_TOOLS_COMPOSE_DETAILS'); ?></legend>
-<?php 
+<?php
 echo $fields;
 ?>

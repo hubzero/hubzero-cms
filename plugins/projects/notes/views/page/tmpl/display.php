@@ -70,7 +70,7 @@ echo $this->page->event->beforeDisplayContent;
 
 if (!$this->page->isStatic()) {
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));

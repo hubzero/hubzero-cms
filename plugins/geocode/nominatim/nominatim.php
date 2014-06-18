@@ -36,15 +36,15 @@ jimport('joomla.plugin.plugin');
 /**
  * Nominatim plugin for geocode
  *
- * The NominatimProvider is able to geocode and reverse geocode 
- * street addresses. Access to a Nominatim server is required. 
+ * The NominatimProvider is able to geocode and reverse geocode
+ * street addresses. Access to a Nominatim server is required.
  * See the Nominatim Wiki Page for more information.
  */
 class plgGeocodeNominatim extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

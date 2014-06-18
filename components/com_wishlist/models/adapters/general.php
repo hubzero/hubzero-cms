@@ -40,7 +40,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 {
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array(
@@ -49,7 +49,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $referenceid Scope ID (group, course, etc.)
 	 * @return     void
 	 */
@@ -62,7 +62,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 
 	/**
 	 * Retrieve a property from the internal item object
-	 * 
+	 *
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
@@ -87,7 +87,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 
 	/**
 	 * Does the item exists?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function exists()
@@ -97,7 +97,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 
 	/**
 	 * Generate and return the title for this wishlist
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function title()
@@ -108,7 +108,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
@@ -302,7 +302,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 	/**
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
-	 * 
+	 *
 	 * @param      string $title Breadcrumb title
 	 * @param      string $url   Breadcrumb URL
 	 * @return     string
@@ -314,14 +314,14 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_('Wishlists'), 
+				JText::_('Wishlists'),
 				'index.php?option=' . $this->get('option')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				$title, 
+				$title,
 				$url
 			);
 		}

@@ -51,7 +51,7 @@ $this->css('introduction.css', 'system')
 </header>
 
 <?php
-	foreach($this->notifications as $notification) 
+	foreach($this->notifications as $notification)
 	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
@@ -98,7 +98,7 @@ $this->css('introduction.css', 'system')
 			</ul>
 		</div>
 	<?php endif; ?>
-		
+
 	<?php if (isset($this->mygroups['applicants']) && count($this->mygroups['applicants']) > 0) : ?>
 		<div class="requests">
 			<div class="header">
@@ -112,7 +112,7 @@ $this->css('introduction.css', 'system')
 			</ul>
 		</div>
 	<?php endif; ?>
-	
+
 	<div class="grid">
 		<div class="col span3">
 			<h2>
@@ -144,7 +144,7 @@ $this->css('introduction.css', 'system')
 			</div><!-- / .col span6 -->
 		</div><!-- / .col span9 -->
 	</div><!-- / .grid -->
-	
+
 	<?php if (!$this->juser->get("guest")) : ?>
 		<?php if ($this->config->get("intro_mygroups", 1)) : ?>
 			<div class="grid mygroups">
@@ -189,7 +189,7 @@ $this->css('introduction.css', 'system')
 			</div><!-- / .col span9 omega -->
 		</div><!-- / .grid -->
 	<?php endif; ?>
-	
+
 	<?php if ($this->config->get("intro_featuredgroups", 1) && count($this->featuredgroups) > 0) : ?>
 		<div class="grid featuredgroups">
 			<div class="col span3">

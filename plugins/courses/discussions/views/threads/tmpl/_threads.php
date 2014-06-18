@@ -26,7 +26,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $lastchange = '0000-00-00 00:00:00';
-if ($this->threads && is_array($this->threads)) 
+if ($this->threads && is_array($this->threads))
 {
 	$lastchange = $this->threads[0]->created;
 }
@@ -37,8 +37,8 @@ if (!isset($this->category))
 ?>
 <ul class="discussions" id="<?php echo $this->category; ?>" data-lastchange="<?php echo $lastchange; ?>">
 <?php
-if ($this->threads && is_array($this->threads)) 
-{ 
+if ($this->threads && is_array($this->threads))
+{
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -53,7 +53,7 @@ if ($this->threads && is_array($this->threads))
 	}
 
 	$subs = array();
-	foreach ($this->threads as $thread) 
+	foreach ($this->threads as $thread)
 	{
 		$view = $this->view('_thread');
 		$view->set('option', $this->option)
@@ -76,11 +76,11 @@ if ($this->threads && is_array($this->threads))
 		{
 			$view->set('instructors', $this->instructors);
 		}
-		if (isset($this->prfx)) 
+		if (isset($this->prfx))
 		{
 			$view->set('prfx', $this->prfx);
 		}
-		
+
 		$view->display();
 	}
 

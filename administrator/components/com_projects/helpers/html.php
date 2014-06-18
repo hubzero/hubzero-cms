@@ -48,13 +48,13 @@ if (!defined('n')) {
 	define('a','&amp;');
 }
 
-class ProjectsHtml 
+class ProjectsHtml
 {
 	/**
 	 * Short description for 'error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -63,10 +63,10 @@ class ProjectsHtml
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
-	
+
 	/**
 	 * Get project thumbnail
-	 * 
+	 *
 	 * @param      int $id
 	 * @param      string $alias
 	 * @param      string $picname
@@ -74,107 +74,107 @@ class ProjectsHtml
 	 * @return     string HTML
 	 */
 	public static function getThumbSrc( $id, $alias, $picname = '', $config )
-	{		
+	{
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
-		
+
 		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
 		{
 			return $path . DS . 'thumb.png';
 		}
-	
-		if ($picname) 
+
+		if ($picname)
 		{
 			$thumb = ProjectsHtml::createThumbName($picname);
 			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  '';
 		}
-		if (!$src) 
+		if (!$src)
 		{
 			$src = $config->get('defaultpic');
 		}
-		
+
 		return $src;
 	}
-	
+
 	/**
 	 * Create a thumbnail name
-	 * 
+	 *
 	 * @param      string $image Image name
 	 * @param      string $tn    Thumbnail prefix
-	 * @param      string $ext  
+	 * @param      string $ext
 	 * @return     string
 	 */
 	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
 	{
-		if (!$image) 
+		if (!$image)
 		{
 			$this->setError( JText::_('No image set.') );
 			return false;
 		}
-		
+
 		$image = explode('.',$image);
 		$n = count($image);
-		
-		if ($n > 1) 
+
+		if ($n > 1)
 		{
 			$image[$n-2] .= $tn;
 			$end = array_pop($image);
-			if ($ext) 
+			if ($ext)
 			{
 				$image[] = $ext;
 			}
-			else 
+			else
 			{
 				$image[] = $end;
 			}
-			
+
 			$thumb = implode('.',$image);
 		}
-		else 
+		else
 		{
 			// No extension
 			$thumb = $image[0];
 			$thumb .= $tn;
-			if ($ext) 
+			if ($ext)
 			{
 				$thumb .= '.'.$ext;
 			}
-		}	
+		}
 		return $thumb;
 	}
-	
+
 	//----------------------------------------------------------
 	// Date/time management
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Time elapsed from moment
-	 * 
+	 *
 	 * @param      string $timestamp
 	 * @return     string
 	 */
-	public static function timeAgo($timestamp) 
+	public static function timeAgo($timestamp)
 	{
 		$text = JHTML::_('date.relative', $timestamp);
-		
+
 		$parts = explode(' ',$text);
 
 		$text  = $parts[0].' '.$parts[1];
-		if ($text == '0 seconds') 
+		if ($text == '0 seconds')
 		{
 			$text = JText::_('COM_PROJECTS_JUST_A_MOMENT');
 		}
 
 		return $text;
 	}
-	
+
 	//----------------------------------------------------------
 	// File management
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Get file attributes
-	 * 
+	 *
 	 * @param      string $path
 	 * @param      string $base_path
 	 * @param      string $get
@@ -183,39 +183,39 @@ class ProjectsHtml
 	 */
 	public static function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
 	{
-		if (!$path) 
+		if (!$path)
 		{
 			return '';
 		}
-				
+
 		// Get extension
-		if ($get == 'ext') 
+		if ($get == 'ext')
 		{
 			$ext = explode('.', basename($path));
 			$ext = count($ext) > 1 ? end($ext) : '';
 			return strtoupper($ext);
 		}
-		
+
 		$path = DS . trim($path, DS);
 		if ($base_path)
 		{
-			$base_path = DS . trim($base_path, DS);	
+			$base_path = DS . trim($base_path, DS);
 		}
-		
-		if (substr($path, 0, strlen($base_path)) == $base_path) 
+
+		if (substr($path, 0, strlen($base_path)) == $base_path)
 		{
 			// Do nothing
-		} 
-		else 
+		}
+		else
 		{
 			$path = $base_path . $path;
 		}
 		$path = $prefix . $path;
-	
+
 		$fs = '';
-		
+
 		// Get the file size if the file exist
-		if (file_exists( $path )) 
+		if (file_exists( $path ))
 		{
 			try
 			{
@@ -224,80 +224,80 @@ class ProjectsHtml
 			catch (Exception $e)
 			{
 				// could not get file size
-			}			
+			}
 		}
 		$fs = ProjectsHtml::formatSize($fs);
 		return ($fs) ? $fs : '';
 	}
-	
+
 	/**
 	 * Format size
-	 * 
+	 *
 	 * @param      int $file_size
 	 * @param      int $round
 	 * @return     string
 	 */
-	public static function formatSize($file_size, $round = 0) 
+	public static function formatSize($file_size, $round = 0)
 	{
-		if ($file_size >= 1073741824) 
+		if ($file_size >= 1073741824)
 		{
 			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
-		} 
-		elseif ($file_size >= 1048576) 
+		}
+		elseif ($file_size >= 1048576)
 		{
 			$file_size = round(($file_size / 1048576 * 100), $round) / 100 . 'MB';
-		} 
-		elseif ($file_size >= 1024) 
+		}
+		elseif ($file_size >= 1024)
 		{
 			$file_size = round(($file_size / 1024 * 100) / 100, $round) . 'KB';
-		} 
-		elseif ($file_size < 1024) 
+		}
+		elseif ($file_size < 1024)
 		{
 			$file_size = $file_size . 'b';
 		}
 
 		return $file_size;
 	}
-	
+
 	/**
 	 * Convert file size
-	 * 
+	 *
 	 * @param      int $file_size
 	 * @param      string $from
 	 * @param      string $to
 	 * @param      string $round
 	 * @return     string
 	 */
-	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
+	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
-		if($from == 'b') 
+		if($from == 'b')
 		{
-			if ($to == 'GB') 
+			if ($to == 'GB')
 			{
 				$file_size = round(($file_size / 1073741824 * 100), $round) / 100;
-			} 
-			elseif ($to == 'MB') 
+			}
+			elseif ($to == 'MB')
 			{
 				$file_size = round(($file_size / 1048576 * 100), $round) / 100 ;
-			} 
-			elseif ($to == 'KB') 
+			}
+			elseif ($to == 'KB')
 			{
 				$file_size = round(($file_size / 1024 * 100) / 100, $round);
-			} 
+			}
 		}
-		elseif ($from == 'GB') 
+		elseif ($from == 'GB')
 		{
-			if ($to == 'b') 
+			if ($to == 'b')
 			{
 				$file_size = $file_size * 1073741824;
-			} 
-			if ($to == 'KB') 
+			}
+			if ($to == 'KB')
 			{
 				$file_size = $file_size * 1048576;
 			}
-			if ($to == 'MB') 
+			if ($to == 'MB')
 			{
 				$file_size = $file_size * 1024;
 			}

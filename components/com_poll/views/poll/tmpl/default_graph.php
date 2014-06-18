@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 		</thead>
 		<tbody>
-	<?php foreach ($this->votes as $vote) : ?> 
+	<?php foreach ($this->votes as $vote) : ?>
 			<tr class="sectiontableentry<?php echo $vote->odd; ?>">
 				<td>
 					<div class="graph">

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 //-------------------------------------------------------------
 // Joomla module
 // "My Points"
-//    This module displays a point total and latest transactions 
+//    This module displays a point total and latest transactions
 //-------------------------------------------------------------
 
 // Include the logic only once

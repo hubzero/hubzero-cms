@@ -7,6 +7,6 @@ namespace Plugins\Content\Mollom\Service\Mollom\Exception;
  *
  * Thrown in case API keys or other authentication parameters are invalid.
  */
-class MollomAuthenticationException extends MollomException 
+class MollomAuthenticationException extends MollomException
 {
 }

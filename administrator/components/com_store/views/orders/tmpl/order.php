@@ -34,7 +34,7 @@ $canDo = StoreHelper::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -61,7 +61,7 @@ switch ($this->row->status)
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_STORE_ITEMS'); ?>:</label><br />
-				<p><?php 
+				<p><?php
 					$k=1;
 					foreach ($this->orderitems as $o)
 					{
@@ -150,21 +150,21 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_STORE_CURRENT_BALANCE'); ?>:</label><br />
 				<strong><?php echo $this->funds ?></strong> points
-			</div> 
+			</div>
 
 		<?php if ($this->row->status == 0) { ?>
 			<fieldset>
 				<legend><?php echo JText::_('COM_STORE_MANAGE_ORDER'); ?></legend>
 				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-message" value="message" /> 
+					<input type="radio" name="action" id="field-action-message" value="message" />
 					<label for="field-action-message"><?php echo JText::_('COM_STORE_ORDER_ON_HOLD'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-complete_order" value="complete_order" /> 
+					<input type="radio" name="action" id="field-action-complete_order" value="complete_order" />
 					<label for="field-action-complete_order"><?php echo JText::_('COM_STORE_PROCESS_TRANSACTION'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<input type="radio" name="action" id="field-action-cancel_order" value="cancel_order" /> 
+					<input type="radio" name="action" id="field-action-cancel_order" value="cancel_order" />
 					<label for="field-action-cancel_order"><?php echo JText::_('COM_STORE_RELEASE_FUNDS'); ?></label>
 				</div>
 			</fieldset>

@@ -38,7 +38,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display the repository details
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -108,7 +108,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
+			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
@@ -128,7 +128,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 
 	/**
 	 * Perform update
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateTask()
@@ -168,7 +168,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 
 	/**
 	 * Perform rollback
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function rollbackTask()

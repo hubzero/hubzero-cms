@@ -324,17 +324,17 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calls stateTask to publish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unpublishTask()
@@ -344,7 +344,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state of an entry
-	 * 
+	 *
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
@@ -352,13 +352,13 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array(0);
 		}
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
@@ -380,7 +380,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 		// Set message
 		switch ($state)
 		{
-			case '-1': 
+			case '-1':
 				$message = JText::sprintf('COM_COURSES_ARCHIVED', count($ids));
 			break;
 			case '1':
@@ -400,7 +400,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderupTask()
@@ -410,7 +410,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderdownTask()
@@ -420,7 +420,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a plugin
-	 * 
+	 *
 	 * @param      integer $access Access level to set
 	 * @return     void
 	 */

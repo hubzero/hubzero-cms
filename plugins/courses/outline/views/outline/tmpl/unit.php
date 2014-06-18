@@ -44,7 +44,7 @@ if (!$unit)
 if (!$this->course->offering()->access('view')) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
-	
+
 	<?php echo $unit->get('title'); ?>
-	
+
 <?php } ?>

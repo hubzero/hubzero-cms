@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_PAGES'), 'courses.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -50,7 +50,7 @@ JToolBarHelper::help('pages');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }
@@ -58,7 +58,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
@@ -72,14 +72,14 @@ function submitbutton(pressbutton)
 				<?php if ($this->course->exists()) { ?>
 					(<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					</a>) 
+					</a>)
 					<a href="index.php?option=<?php echo $this->option; ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
 					<?php if ($this->offering->exists()) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
-					</a>: 
+					</a>:
 					<?php } ?>
 				<?php } else { ?>
 					<?php echo JText::_('COM_COURSES_PAGES_USER_GUIDE'); ?>:
@@ -102,11 +102,11 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php if (count($this->rows) > 0) { ?>
-	<?php 
+	<?php
 
 	$i = 0;
 	$rows = array();
-	foreach ($this->rows as $key => $page) 
+	foreach ($this->rows as $key => $page)
 	{
 		$rows[$i] = $page;
 		$i++;
@@ -168,9 +168,9 @@ function submitbutton(pressbutton)
 					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>
 				</td>
 			</tr>
-	<?php 
+	<?php
 		$i++;
-	} 
+	}
 	?>
 <?php } else { ?>
 			<tr>

@@ -38,42 +38,42 @@ class MembersAssociation extends JTable
 {
 	/**
 	 * varchar(50) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $subtable = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $subid    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $authorid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $role     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,18 +84,18 @@ class MembersAssociation extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (!$this->authorid) 
+		if (!$this->authorid)
 		{
 			$this->setError(JText::_('Must have an author ID.'));
 			return false;
 		}
 
-		if (!$this->subid) 
+		if (!$this->subid)
 		{
 			$this->setError(JText::_('Must have an item ID.'));
 			return false;
@@ -106,19 +106,19 @@ class MembersAssociation extends JTable
 
 	/**
 	 * Delete records for a user
-	 * 
+	 *
 	 * @param      integer $id User ID
 	 * @return     boolean True on success
 	 */
 	public function deleteAssociations($id=NULL)
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->authorid;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE authorid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

@@ -45,14 +45,14 @@ class HelperManager
 {
 	/**
 	 * Map of characters to be replaced through strtr
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_canonicalNamesReplacements = array(
-		'-'  => '', 
-		'_'  => '', 
-		' '  => '', 
-		'\\' => '', 
+		'-'  => '',
+		'_'  => '',
+		' '  => '',
+		'\\' => '',
 		'/'  => ''
 	);
 
@@ -108,11 +108,11 @@ class HelperManager
 	{
 		$method = $this->canonicalizeName($method);
 
-		if (!isset($this->_instances[$method])) 
+		if (!isset($this->_instances[$method]))
 		{
 			$this->_instances[$method] = $this->get($method); //, $argv);
 		}
-		if (is_callable($this->_instances[$method])) 
+		if (is_callable($this->_instances[$method]))
 		{
 			return call_user_func_array($this->_instances[$method], $argv);
 		}
@@ -135,14 +135,14 @@ class HelperManager
 	{
 		$cName = $this->canonicalizeName($name);
 
-		if (isset($this->_instances[$cName])) 
+		if (isset($this->_instances[$cName]))
 		{
 			return $this->_instances[$cName];
 		}
 
 		$instance = null;
 
-		if (isset($this->_invokableClasses[$cName])) 
+		if (isset($this->_invokableClasses[$cName]))
 		{
 			$invokable = $this->_invokableClasses[$cName];
 		}
@@ -158,7 +158,7 @@ class HelperManager
 			$invokable2 = ucfirst(substr(\JRequest::getCmd('option'), 4)) . 'Helper' . ucfirst($name);
 		}
 
-		if (class_exists($invokable)) 
+		if (class_exists($invokable))
 		{
 			if (!$this->has($name))
 			{
@@ -166,7 +166,7 @@ class HelperManager
 			}
 			$instance = new $invokable($options);
 		}
-		else if (class_exists($invokable2)) 
+		else if (class_exists($invokable2))
 		{
 			if (!$this->has($name))
 			{
@@ -205,7 +205,7 @@ class HelperManager
 	{
 		$cName = $this->canonicalizeName($name);
 
-		if ($this->has(array($cName, $name))) 
+		if ($this->has(array($cName, $name)))
 		{
 			throw new InvalidHelperException(\JText::sprintf(
 				'A service by the name or alias "%s" already exists and cannot be overridden; please use an alternate name',
@@ -220,25 +220,25 @@ class HelperManager
 
 	/**
 	 * Check if a class exists
-	 * 
+	 *
 	 * @param   mixed $name string|array
 	 * @return  bool
 	 */
 	public function has($name)
 	{
-		if (is_array($name)) 
+		if (is_array($name))
 		{
 			list($cName, $rName) = $name;
-		} 
-		else 
+		}
+		else
 		{
 			$rName = $name;
 
-			if (isset($this->_canonicalNames[$rName])) 
+			if (isset($this->_canonicalNames[$rName]))
 			{
 				$cName = $this->_canonicalNames[$name];
-			} 
-			else 
+			}
+			else
 			{
 				$cName = $this->canonicalizeName($name);
 			}
@@ -286,7 +286,7 @@ class HelperManager
 	public function injectView($helper)
 	{
 		$view = $this->getView();
-		if (null === $view) 
+		if (null === $view)
 		{
 			return;
 		}
@@ -301,7 +301,7 @@ class HelperManager
 	 */
 	protected function canonicalizeName($name)
 	{
-		if (isset($this->_canonicalNames[$name])) 
+		if (isset($this->_canonicalNames[$name]))
 		{
 			return $this->_canonicalNames[$name];
 		}
@@ -323,7 +323,7 @@ class HelperManager
 	 */
 	public function validate($helper)
 	{
-		if ($helper instanceof HelperInterface) 
+		if ($helper instanceof HelperInterface)
 		{
 			// we're okay
 			return;

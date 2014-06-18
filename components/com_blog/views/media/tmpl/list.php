@@ -78,13 +78,13 @@ jimport('joomla.filesystem.file');
 				{
 					$num_files = 0;
 
-					if (is_dir(JPATH_ROOT . DS . $folder)) 
+					if (is_dir(JPATH_ROOT . DS . $folder))
 					{
 						$d = @dir(JPATH_ROOT . DS . $folder);
 
 						while (false !== ($entry = $d->read()))
 						{
-							if (substr($entry,0,1) != '.') 
+							if (substr($entry,0,1) != '.')
 							{
 								$num_files++;
 							}

@@ -37,27 +37,27 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 /**
  *
  * Storefront course product class
- * 
+ *
  */
 class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 {
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Create SKU automatically
 		$this->setSku(new StorefrontModelSku());
 	}
-	
+
 	/**
 	 * Set SKU price
-	 * 
+	 *
 	 * @param	double		price
 	 * @return	bool		true on success, exception otherwise
 	 */
@@ -66,10 +66,10 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 		$this->getSku()->setPrice($productPrice);
 		return true;
 	}
-	
+
 	/**
 	 * Get SKU price
-	 * 
+	 *
 	 * @param	void
 	 * @return	double		price
 	 */
@@ -77,16 +77,16 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 	{
 		return $this->defaultSku->getPrice();
 	}
-	
-	public function getSku() 
+
+	public function getSku()
 	{
 		$skus = $this->getSkus();
 		return $skus[0];
 	}
-	
+
 	/*
 	 * Set time to live
-	 * 
+	 *
 	 * @param	strng		expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
 	 * @return	bool		SKU status
 	*/
@@ -94,15 +94,15 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 	{
 		$this->getSku()->setTimeToLive($ttl);
 	}
-	
+
 	public function getTimeToLive()
 	{
 		$this->getSku()->getTimeToLive();
 	}
-	
+
 	/**
 	 * Update product info
-	 * 
+	 *
 	 * @param  void
 	 * @return object	info
 	 */
@@ -112,23 +112,23 @@ class StorefrontModelSingleSkuProduct extends StorefrontModelProduct
 		// Find the SKU ID for this product and save
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
-		
+
 		$sku = $warehouse->getProductSkus($this->data->id);
-		
+
 		// Must be just one SKU
 		if (sizeof($sku) != 1)
 		{
 			throw new Exception(JText::_('Only one SKU is allowed'));
 		}
-		
+
 		$skuId = $sku[0];
-		
+
 		// save product sku with the current ID to resave the changes with this ID
 		$sku = $this->getSku()->setId($skuId);
 
-		return parent::update();	
+		return parent::update();
 	}
-	
+
 	public function addSku($sku)
 	{
 		$this->setSku($sku);

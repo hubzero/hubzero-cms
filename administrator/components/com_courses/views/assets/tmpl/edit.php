@@ -35,21 +35,21 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CoursesHelper::getActions();
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
-if (!$this->tmpl) 
+if (!$this->tmpl)
 {
 	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Assets') . ': ' . $text, 'courses.png');
-	if ($canDo->get('core.edit')) 
+	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::save();
 	}
 	JToolBarHelper::cancel();
 }
 
-if ($this->row->get('id')) 
+if ($this->row->get('id'))
 {
 	$id = $this->row->get('id');
-} 
-else 
+}
+else
 {
 	$id = 'tmp' . time() . rand(0, 10000);
 }
@@ -57,7 +57,7 @@ else
 //$editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('field-title').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -131,7 +131,7 @@ function saveAndUpdate()
 	<?php } ?>
 	<?php if ($this->row->get('created_by')) { ?>
 						<th><?php echo JText::_('Creator'); ?></th>
-						<td><?php 
+						<td><?php
 						$creator = JUser::getInstance($this->row->get('created_by'));
 						echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 	<?php } ?>

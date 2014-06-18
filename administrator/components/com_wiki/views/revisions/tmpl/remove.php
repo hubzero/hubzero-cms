@@ -7,10 +7,10 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
@@ -33,6 +33,6 @@ function submitbutton(pressbutton)
 <?php } ?>
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

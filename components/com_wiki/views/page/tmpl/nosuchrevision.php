@@ -40,7 +40,7 @@ $this->js();
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 	<?php
-	if (!$this->page->isStatic()) 
+	if (!$this->page->isStatic())
 	{
 		$this->view('authors', 'page')
 		     ->setBasePath($this->base_path)
@@ -51,7 +51,7 @@ $this->js();
 </header><!-- /#content-header -->
 
 <?php
-if ($this->page->exists()) 
+if ($this->page->exists())
 {
 	$this->view('submenu', 'page')
 	     ->setBasePath($this->base_path)

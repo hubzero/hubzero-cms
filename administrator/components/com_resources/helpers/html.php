@@ -38,7 +38,7 @@ class ResourcesHtml
 {
 	/**
 	 * Display a message and go back tot he previous page
-	 * 
+	 *
 	 * @param      string $msg Message
 	 * @return     string Javascript
 	 */
@@ -49,7 +49,7 @@ class ResourcesHtml
 
 	/**
 	 * Display a key for various resource statuses
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function statusKey()
@@ -71,7 +71,7 @@ class ResourcesHtml
 
 	/**
 	 * Format an ID by prepending 0
-	 * 
+	 *
 	 * @param      integer $someid ID to format
 	 * @return     integer
 	 */
@@ -86,7 +86,7 @@ class ResourcesHtml
 
 	/**
 	 * Build the path to resource files from the creation date
-	 * 
+	 *
 	 * @param      string  $date Resource creation date
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
@@ -94,16 +94,16 @@ class ResourcesHtml
 	 */
 	public static function build_path($date, $id, $base='')
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');
@@ -118,9 +118,9 @@ class ResourcesHtml
 
 	/**
 	 * Short description for 'writeRating'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $rating Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -147,7 +147,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a select access list
-	 * 
+	 *
 	 * @param      array  $as    Access levels
 	 * @param      string $value Value to select
 	 * @return     string HTML
@@ -159,7 +159,7 @@ class ResourcesHtml
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
 			$html .= "\t" . '<option value="' . $i . '"';
-			if ($value == $i) 
+			if ($value == $i)
 			{
 				$html .= ' selected="selected"';
 			}
@@ -171,7 +171,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a select list for groups
-	 * 
+	 *
 	 * @param      array  $groups Groups to populate list
 	 * @param      string $value  Value to select
 	 * @return     string HTML
@@ -179,18 +179,18 @@ class ResourcesHtml
 	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
 	{
 		$html  = '<select class="'.$class.'" name="'.$name.'"';
-		if (!$groups) 
+		if (!$groups)
 		{
 			$html .= ' disabled="disabled"';
 		}
 		$html .= ' style="max-width: 15em;">' . "\n";
 		$html .= ' <option value="">' . JText::_('Select group ...') . '</option>' . "\n";
-		if ($groups) 
+		if ($groups)
 		{
 			foreach ($groups as $group)
 			{
 				$html .= ' <option value="' . $group->cn . '"';
-				if ($value == $group->cn) 
+				if ($value == $group->cn)
 				{
 					$html .= ' selected="selected"';
 				}
@@ -203,7 +203,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a section select list
-	 * 
+	 *
 	 * @param      string  $name  Name of the field
 	 * @param      array   $array Values to populate list
 	 * @param      integer $value Value to select
@@ -231,7 +231,7 @@ class ResourcesHtml
 
 	/**
 	 * Generate a type select list
-	 * 
+	 *
 	 * @param      array  $arr      Values to populate list
 	 * @param      string $name     Name of the field
 	 * @param      mixed  $value    Value to select
@@ -245,23 +245,23 @@ class ResourcesHtml
 	{
 		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
-		if ($shownone != '') 
+		if ($shownone != '')
 		{
 			$html .= "\t" . '<option value=""';
 			$html .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
 			$html .= '>' . $shownone . '</option>' . "\n";
 		}
-		if ($skip) 
+		if ($skip)
 		{
 			$skips = explode(',', $skip);
-		} 
-		else 
+		}
+		else
 		{
 			$skips = array();
 		}
 		foreach ($arr as $anode)
 		{
-			if (!in_array($anode->id, $skips)) 
+			if (!in_array($anode->id, $skips))
 			{
 				$selected = ($value && ($anode->id == $value || $anode->type == $value))
 					  ? ' selected="selected"'
@@ -275,13 +275,13 @@ class ResourcesHtml
 
 	/**
 	 * Convert a date to a path
-	 * 
+	 *
 	 * @param      string $date Date to convert (0000-00-00 00:00:00)
 	 * @return     string
 	 */
 	public static function dateToPath($date)
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}

@@ -33,22 +33,22 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = TagsHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS'), 'tags.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::custom('pierce', 'copy', '', 'COM_TAGS_PIERCE', false);
 	JToolBarHelper::custom('merge', 'forward', '', 'COM_TAGS_MERGE', false);
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -56,7 +56,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('entries');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_TAGS_SEARCH'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('COM_TAGS_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
 
 			<input type="submit" name="filter_submit" value="<?php echo JText::_('COM_TAGS_GO'); ?>" />
@@ -110,13 +110,13 @@ $k = 0;
 $i = 0;
 foreach ($this->rows as $row)
 {
-	if ($row->get('admin')) 
+	if ($row->get('admin'))
 	{
 		$calt = JText::_('JYES');
 		$cls2 = 'yes';
 		$state = 0;
-	} 
-	else 
+	}
+	else
 	{
 		$calt = JText::_('JNO');
 		$cls2 = 'no';

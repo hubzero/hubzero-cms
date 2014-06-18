@@ -39,14 +39,14 @@ class MoveTagAlias extends SystemHelperScript
 {
 	/**
 	 * Description for '_description'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_description = 'Move tag alias to substitution tbl';
 
 	/**
 	 * Run the script
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -70,7 +70,7 @@ class MoveTagAlias extends SystemHelperScript
 					{
 						$this->setError($sub->getError());
 					}
-					else 
+					else
 					{
 						$i++;
 					}
@@ -82,7 +82,7 @@ class MoveTagAlias extends SystemHelperScript
 		{
 			echo '<p class="passed">' . $i . 'tags successfully moved.</p>';
 		}
-		else 
+		else
 		{
 			echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 		}

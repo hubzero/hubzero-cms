@@ -45,27 +45,27 @@ class Import extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'ResourcesTableImport';
-	
+
 	/**
 	 * List of import runs
 	 * @var \Hubzero\Base\ItemList
 	 */
 	protected $_runs;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @access public
 	 * @param  ResourcesTableImport Object Id
 	 * @return void
@@ -74,11 +74,11 @@ class Import extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -88,7 +88,7 @@ class Import extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Return raw import data
 	 *
@@ -100,7 +100,7 @@ class Import extends \Hubzero\Base\Model
 		// retun file contents
 		return file_get_contents($this->getDataPath());
 	}
-	
+
 	/**
 	 * Return path to imports data file
 	 *
@@ -112,27 +112,27 @@ class Import extends \Hubzero\Base\Model
 		// make sure we have file
 		if (!$file = $this->get('file'))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_REQUIRED_FILE')); 
+			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_REQUIRED_FILE'));
 		}
-		
+
 		// build path to file
 		$filePath = $this->fileSpacePath() . DS . $file;
-		
+
 		// make sure file exists
 		if (!file_exists($filePath))
 		{
-			throw new Exception(JText::sprintf('COM_RESOURCES_IMPORT_MODEL_FILE_MISSING', $filePath)); 
+			throw new Exception(JText::sprintf('COM_RESOURCES_IMPORT_MODEL_FILE_MISSING', $filePath));
 		}
-		
+
 		// make sure we can read the file
 		if (!is_readable($filePath))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_FILE_NOTREADABLE')); 
+			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_FILE_NOTREADABLE'));
 		}
-		
+
 		return $filePath;
 	}
-	
+
 	/**
 	 * Return imports filespace path
 	 *
@@ -143,15 +143,15 @@ class Import extends \Hubzero\Base\Model
 	{
 		// get com resources params
 		$params = JComponentHelper::getParams('com_resources');
-		
+
 		// build upload path
 		$uploadPath = $params->get('import_uploadpath', '/site/resources/import');
 		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
-		
+
 		// return path
 		return $uploadPath;
 	}
-	
+
 	/**
 	 * Return import runs
 	 *
@@ -169,7 +169,7 @@ class Import extends \Hubzero\Base\Model
 				}
 				return $this->_runs->first();
 			break;
-			
+
 			case 'list':
 			default:
 				if (!($this->_runs instanceof \Hubzero\Base\ItemList) || $clear)
@@ -190,7 +190,7 @@ class Import extends \Hubzero\Base\Model
 
 	/**
 	 * Mark Import Run
-	 * 
+	 *
 	 * @param  integer  $dryRun  Dry run mode
 	 * @return void
 	 */

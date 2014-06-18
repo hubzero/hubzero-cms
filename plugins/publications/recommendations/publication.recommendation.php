@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'PublicationRecommendation'
- * 
+ *
  * Long description (if any) ...
  */
 class PublicationRecommendation extends JTable
@@ -45,42 +45,42 @@ class PublicationRecommendation extends JTable
 
 	/**
 	 * Description for 'fromID'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $fromID       = NULL;  // @var int(11) Primary key
 
 	/**
 	 * Description for 'toID'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $toID         = NULL;  // @var int(11)
 
 	/**
 	 * Description for 'contentScore'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $contentScore = NULL;  // @var float
 
 	/**
 	 * Description for 'tagScore'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tagScore     = NULL;  // @var float
 
 	/**
 	 * Description for 'titleScore'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $titleScore   = NULL;  // @var float
 
 	/**
 	 * Description for 'timestamp'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $timestamp    = NULL;  // @var datetime (0000-00-00 00:00:00)
@@ -89,9 +89,9 @@ class PublicationRecommendation extends JTable
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -102,18 +102,18 @@ class PublicationRecommendation extends JTable
 
 	/**
 	 * Short description for 'getResults'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
 	public function getResults( $filters=array() )
 	{
-		$query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score 
-		FROM #__recommendation AS rec, #__publications AS P 
-		WHERE (rec.fromID ='".$filters['id']."' AND P.id = rec.toID) 
-		OR (rec.toID ='".$filters['id']."' AND P.id = rec.fromID) having rec_score > ".$filters['threshold']." 
+		$query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score
+		FROM #__recommendation AS rec, #__publications AS P
+		WHERE (rec.fromID ='".$filters['id']."' AND P.id = rec.toID)
+		OR (rec.toID ='".$filters['id']."' AND P.id = rec.fromID) having rec_score > ".$filters['threshold']."
 		ORDER BY rec_score DESC LIMIT ".$filters['limit'];
 
 		$this->_db->setQuery( $query );

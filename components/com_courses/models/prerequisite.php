@@ -42,14 +42,14 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTablePrerequisites';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'prerequisite';
@@ -84,7 +84,7 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param  (int) $section_id
 	 * @param  (obj) $gradebook
 	 * @param  (int) $member_id

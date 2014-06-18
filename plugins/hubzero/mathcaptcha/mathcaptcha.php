@@ -45,7 +45,7 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a CAPTCHA question
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function onGetCaptcha()
@@ -71,7 +71,7 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Compare answer to key
-	 * 
+	 *
 	 * @return     boolean True if answer is valid
 	 */
 	public function onValidateCaptcha()
@@ -80,7 +80,7 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 		$answer = JRequest::getInt('captcha_answer', 0);
 		$answer = $this->_generateHash($answer, date('j'));
 
-		if ($answer == $key) 
+		if ($answer == $key)
 		{
 			return true;
 		}
@@ -89,7 +89,7 @@ class plgHubzeroMathcaptcha extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Generate an answer key
-	 * 
+	 *
 	 * @param      string $input CAPTCHA answer
 	 * @param      string $day   Current day
 	 * @return     string

@@ -36,9 +36,9 @@ $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
 $url = '';
 $parent = '';
-if ($this->subdir && count($desect_path) > 0) 
+if ($this->subdir && count($desect_path) > 0)
 {
-	for ($p = 0; $p < count($desect_path); $p++) 
+	for ($p = 0; $p < count($desect_path); $p++)
 	{
 		$parent   = count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url  	 .= DS . $desect_path[$p];
@@ -53,10 +53,10 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 
 // Check used space against quota (percentage)
 $inuse = round(($this->dirsize * 100 ) / $this->quota);
-if ($inuse < 1) 
+if ($inuse < 1)
 {
 	$inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
-	if ($inuse < 0.1) 
+	if ($inuse < 0.1)
 	{
 		$inuse = 0.0;
 	}
@@ -81,23 +81,23 @@ $connected = $this->oparams->get('google_token') ? true : false;
 	<input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->filters['sortdir']; ?>" />
 	<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="sync" id="sync" value="<?php echo $this->sync; ?>" />
-	<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />	
+	<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 	<input type="hidden" name="sharing" id="sharing" value="<?php echo $this->sharing; ?>" />
-<?php if ($this->sharing && !empty($this->services)) { 
+<?php if ($this->sharing && !empty($this->services)) {
 		foreach ($this->services as $service)
-		{ 
+		{
 			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
 				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($lastsync, false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
 			}
 			?>
-	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />	
-	<input type="hidden" name="sync-lock-<?php echo $service; ?>" id="sync-lock-<?php echo $service; ?>" value="<?php echo $this->params->get($service . '_sync_lock'); ?>" />	
-	<?php }		
+	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />
+	<input type="hidden" name="sync-lock-<?php echo $service; ?>" id="sync-lock-<?php echo $service; ?>" value="<?php echo $this->params->get($service . '_sync_lock'); ?>" />
+	<?php }
 	 } ?>
-	
-	<?php if ($this->case == 'files') 
+
+	<?php if ($this->case == 'files')
 	{ ?>
 	<div id="plg-header">
 		<h3 class="<?php echo $class; ?>">
@@ -107,15 +107,15 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			<?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>
 		</h3>
 	</div>
-	<?php 
+	<?php
 	} ?>
-	
-	<?php if ($this->tool && $this->tool->name ) 
-	{ 
+
+	<?php if ($this->tool && $this->tool->name )
+	{
 		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
 	} ?>
 	<?php if (!$this->tool) { ?>
-		<?php 
+		<?php
 			// NEW: connections to external services
 			$this->view('link', 'connect')
 			     ->set('option', $this->option)
@@ -135,15 +135,15 @@ $connected = $this->oparams->get('google_token') ? true : false;
 				<a href="<?php echo $this->url . '/?' . $this->do . '=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo JText::_('COM_PROJECTS_UPLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_UPLOAD'); ?></span></a>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo JText::_('COM_PROJECTS_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?></span></a>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=download' . $subdirlink; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('COM_PROJECTS_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DOWNLOAD'); ?></span></a>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>		
+				<a href="<?php echo $this->url . '/?' . $this->do . '=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DELETE'); ?></span></a>
 				<?php if ($this->sharing && in_array('google', $this->services) && $connected) { ?>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=share' . $subdirlink; ?>" id="a-share" title="<?php echo JText::_('COM_PROJECTS_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo JText::_('COM_PROJECTS_FILES_SHARE'); ?></span></a>
 				<?php } ?>
-				<?php if ($this->fileparams->get('latex')) { ?>				
+				<?php if ($this->fileparams->get('latex')) { ?>
 				<a href="<?php echo $this->url . '/?' . $this->do . '=compile' . $subdirlink; ?>" class="fmanage js" id="a-compile" title="<?php echo JText::_('COM_PROJECTS_COMPILE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_COMPILE'); ?></span></a>
 				<?php } ?>
-			</span>	
+			</span>
 				<noscript>
 					<span class="faded ipadded">Enable JavaScript in your browser for advanced file management.</span>
 				</noscript>
@@ -182,8 +182,8 @@ $connected = $this->oparams->get('google_token') ? true : false;
 				<?php } ?>
 			</tr>
 		</thead>
-		<tbody>			
-			<?php 
+		<tbody>
+			<?php
 			if ($this->task == 'newdir') { ?>
 				<tr class="newfolder">
 					<td></td>
@@ -198,12 +198,12 @@ $connected = $this->oparams->get('google_token') ? true : false;
 								<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
 								<span class="btn btncancel mini"><a href="<?php echo $this->url . '/?' . $this->do . '=view' . $subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 							</fieldset>
-					</td>				
-				</tr>	
+					</td>
+				</tr>
 			<?php } ?>
-			<?php 
+			<?php
 			// Go back one level to parent directory
-			if ($this->subdir) 
+			if ($this->subdir)
 			{ ?>
 				<tr>
 					<td></td>
@@ -211,21 +211,21 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						<a href="<?php echo $this->url . '/?' . $this->do . '=browse' . a . 'subdir=' . $parent; ?>" class="uptoparent"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
-			<?php 
+			<?php
 			}
-			
+
 			// Display contents
-			if (count($this->items) > 0) 
+			if (count($this->items) > 0)
 			{
 				$c = 1;
-				foreach ($this->items as $item) 
+				foreach ($this->items as $item)
 				{
 					$type = $item['type'];
-					
+
 					if ($type == 'folder')
 					{
 						$dir = $item['item'];
-						
+
 						// Folder view
 						$this->view('folder', 'item')
 						     ->set('subdir', $this->subdir)
@@ -246,7 +246,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 					elseif ($type == 'document')
 					{
 						$file = $item['item'];
-						
+
 						// Hide gitignore file
 						if($file['name'] == '.gitignore')
 						{
@@ -256,7 +256,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 							}
 							continue;
 						}
-						
+
 						// Document view
 						$this->view('document', 'item')
 						     ->set('subdir', $this->subdir)
@@ -275,7 +275,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->display();
 					}
 					elseif ($type == 'remote')
-					{						
+					{
 						// Remote file
 						$this->view($item['remote'], 'item')
 						     ->set('subdir', $this->subdir)
@@ -296,24 +296,24 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			 		$c++;
 				}
 			}
-			
-			// Show directory as empty			
+
+			// Show directory as empty
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
 					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">
-						<?php if ($this->subdir || $this->tool) 
-							{ 
-								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY'); 
+						<?php if ($this->subdir || $this->tool)
+							{
+								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY');
 								if (!$this->tool)
 								{
-									echo ' <a href="' . $this->url . '/?' . $this->do . '=deletedir' . a 
-									. 'dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">' 
+									echo ' <a href="' . $this->url . '/?' . $this->do . '=deletedir' . a
+									. 'dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">'
 									. JText::_('COM_PROJECTS_DELETE_THIS_DIRECTORY') . '</a>';
 								}
 							}
-							else 
+							else
 							{
-								echo JText::_('COM_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); 
+								echo JText::_('COM_PROJECTS_FILES_PROJECT_HAS_NO_FILES');
 							}
 						?>
 					</td>
@@ -332,7 +332,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		<?php } ?>
 		<span class="rightfloat">
 			<a href="<?php echo $this->url . '/?' . $this->do . '=trash'; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
-			|	
+			|
 			<a href="<?php echo $this->url . '/?' . $this->do . '=status'; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_FILES_GIT_STATUS'); ?></a>
 		</span>
 	</p>

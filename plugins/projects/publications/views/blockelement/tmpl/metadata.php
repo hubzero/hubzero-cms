@@ -30,7 +30,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'mo
 // Parse data
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -42,12 +42,12 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
-$field 			= $this->manifest->params->field;		
+$field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
-$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength 
-				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';	
+$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
+				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
-			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';			
+			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
@@ -82,13 +82,13 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
 			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo JText::_('[edit]'); ?></a></span>
 			</h5>
-			<?php if (!$coming && $value) { 
+			<?php if (!$coming && $value) {
 				// Parse editor text
 				if ($editor)
 				{
 					$model = new PublicationsModelPublication($this->pub);
 					$value = $model->parse($aliasmap, $this->manifest->params->field, 'parsed');
-				} 
+				}
 				?>
 				<div class="element-value"><?php echo $value; ?></div>
 			<?php } ?>
@@ -97,14 +97,14 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
 		<div class="block-aside">
-			<div class="block-info"><?php 
-			
+			<div class="block-info"><?php
+
 			$shorten = ($this->manifest->about && strlen($this->manifest->about) > 200) ? 1 : 0;
 
 			if ($shorten)
 			{
 				$about = \Hubzero\Utility\String::truncate($this->manifest->about, 200);
-				$about.= ' <a href="#more-' . $elName . '" class="more-content">' 
+				$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
 				$about.= ' <div class="hidden">';
 				$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $this->manifest->about . '</div>';
@@ -123,9 +123,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
 				<?php echo $this->manifest->label; ?>
 				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
-				<?php 
-				$output = '  <span class="field-wrap' . $class . '">';		
-				switch ($this->manifest->params->input) 
+				<?php
+				$output = '  <span class="field-wrap' . $class . '">';
+				switch ($this->manifest->params->input)
 				{
 					case 'editor':
 
@@ -149,14 +149,14 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 
 					break;
 				}
-				$output .= '  </span>'; 
+				$output .= '  </span>';
 				echo $output; ?>
 			</label>
 			<?php // Navigate to next element
 				if ($active && !$last && $this->collapse) { ?>
 				<p class="element-move">
-				<span class="button-wrapper icon-next">	
-					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>	
+				<span class="button-wrapper icon-next">
+					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
 				</span>
 				</p>
 			<?php } ?>

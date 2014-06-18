@@ -59,22 +59,22 @@ $message  = 'Here is the monthly update on your recent publications usage' . "\n
 $message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'."\n\n";
 
 for ($a = 0; $a < count($this->pubstats); $a++)
-{	
+{
 	// Check against limit
 	if ($a >= $this->limit)
 	{
 		break;
 	}
-	
+
 	$stat = $this->pubstats[$a];
-	
+
 	$sefManage 	= $baseManage . DS . $stat->publication_id . $append;
 	$sefView 	= $baseView . DS . $stat->publication_id . $append;
-	
+
 	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
 	$message .= 'View publication:          ' . $base . DS . trim($sefView, DS) . "\n";
 	$message .= 'Manage publication:        ' . $base . DS . trim($sefManage, DS) . "\n\n";
-	
+
 	$message .= 'Usage in the past month... ' . "\n";
 	$message .= 'Page views:                ' . $stat->monthly_views. "\n";
 	$message .= 'Downloads:  				' . $stat->monthly_primary. "\n";

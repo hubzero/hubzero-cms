@@ -55,8 +55,8 @@ $offerings = $this->course->offerings();
 						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 						<?php } ?>
-						<?php 
-						foreach ($offerings as $offering) 
+						<?php
+						foreach ($offerings as $offering)
 						{
 							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
 							if (!$oroles || !count($oroles))
@@ -84,7 +84,7 @@ $offerings = $this->course->offerings();
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 	<form action="index.php" method="post" id="adminForm">
@@ -97,7 +97,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="tmpl" value="component" />
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
-						
+
 						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
 					</th>
 				</tr>
@@ -105,13 +105,13 @@ $offerings = $this->course->offerings();
 			<tbody>
 <?php
 		$managers = $this->course->managers(array(), true);
-		if (count($managers) > 0) 
+		if (count($managers) > 0)
 		{
 			$i = 0;
 			foreach ($managers as $manager)
 			{
 				$u = JUser::getInstance($manager->get('user_id'));
-				if (!is_object($u)) 
+				if (!is_object($u))
 				{
 					continue;
 				}
@@ -139,8 +139,8 @@ $offerings = $this->course->offerings();
 						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 						<?php } ?>
-						<?php 
-						foreach ($offerings as $offering) 
+						<?php
+						foreach ($offerings as $offering)
 						{
 							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
 							if (!$oroles || !count($oroles))
@@ -164,11 +164,11 @@ $offerings = $this->course->offerings();
 ?>
 			</tbody>
 		</table>
-		
+
 		<?php echo JHTML::_('form.token'); ?>
-		
+
 		<script type="text/javascript">
-			function update() 
+			function update()
 			{
 				var task = document.getElementById('task');
 				task.value = 'update';

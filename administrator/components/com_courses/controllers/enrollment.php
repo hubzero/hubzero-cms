@@ -40,7 +40,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Short description for 'addmanager'
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -50,7 +50,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
@@ -107,7 +107,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more users from the course manager list
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -117,7 +117,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
@@ -174,7 +174,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display a list of 'manager' for a specific course
-	 * 
+	 *
 	 * @param      object $profile \Hubzero\User\Profile
 	 * @return     void
 	 */
@@ -183,7 +183,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$course) 
+		if (!$course)
 		{
 			$id = JRequest::getInt('id', 0, 'get');
 
@@ -193,7 +193,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 		$this->view->course = $course;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

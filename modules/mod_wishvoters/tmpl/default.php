@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } else { ?>
 	<ul class="voterslist">
 		<li class="title">
-			<?php echo JText::_('Name (login)'); ?> 
+			<?php echo JText::_('Name (login)'); ?>
 			<span><?php echo JText::_('wishes ranked'); ?></span>
 		</li>
 <?php
@@ -49,7 +49,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		{
 			$name = JText::_('UNKNOWN');
 			$auser = JUser::getInstance($row->userid);
-			if (is_object($auser)) 
+			if (is_object($auser))
 			{
 				$name  = $auser->get('name');
 				$login = $auser->get('username');
@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 		<li>
 			<span class="lnum"><?php echo $k; ?>.</span>
-			<?php echo stripslashes($name); ?> 
+			<?php echo stripslashes($name); ?>
 			<span class="wlogin">(<?php echo stripslashes($login); ?>)</span>
 			<span><?php echo $row->times; ?></span>
 		</li>

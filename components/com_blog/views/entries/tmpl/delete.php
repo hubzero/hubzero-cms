@@ -57,25 +57,25 @@ $this->css()
 			</div>
 			<fieldset>
 				<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
-	
+
 				<p class="warning">
 					<?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
 				</p>
-	
+
 				<label for="confirmdel">
-					<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
+					<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
 					<?php echo JText::_('COM_BLOG_DELETE_CONFIRM'); ?>
 				</label>
 			</fieldset>
 			<div class="clear"></div>
-	
+
 			<input type="hidden" name="id" value="<?php echo $this->entry->get('id'); ?>" />
 			<input type="hidden" name="task" value="delete" />
 			<input type="hidden" name="process" value="1" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	
+
 			<?php echo JHTML::_('form.token'); ?>
-	
+
 			<p class="submit">
 				<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_BLOG_DELETE'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">

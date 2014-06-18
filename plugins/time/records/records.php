@@ -134,7 +134,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -178,7 +178,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * New/Edit function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _edit($record=null)
@@ -201,7 +201,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 			// Use the prexisting object (i.e. we had an error when saving)
 			$view->row = $record;
 		}
-		else 
+		else
 		{
 			// Create a new object (i.e. we're coming in clean)
 			$record = new TimeRecords($this->db);
@@ -272,8 +272,8 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// If viewing a record from a page other than the first, take the user back to that page if they click "all records"
-		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set a few things for the vew
@@ -286,7 +286,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Readonly view of single record
-	 * 
+	 *
 	 * @return view
 	 */
 	private function _read_only()
@@ -314,8 +314,8 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$view->row = $record->getRecord($rid);
 
 		// If viewing a record from a page other than the first, take the user back to that page if they click "all records"
-		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$view->start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set a few things for the vew
@@ -329,7 +329,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save new time record and redirect to the records page
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save()
@@ -371,8 +371,8 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// If saving a record from a page other than the first, take the user back to that page after saving
-		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Set the redirect
@@ -385,7 +385,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete records
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _delete()
@@ -394,8 +394,8 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$record = JRequest::getInt('id');
 
 		// If delete a record from a page other than the first, take the user back to that page after deletion
-		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0) 
-			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start") 
+		$start = ($this->mainframe->getUserState("$this->option.$this->active.start") != 0)
+			? '&start='.$this->mainframe->getUserState("$this->option.$this->active.start")
 			: '';
 
 		// Create object and store new content
@@ -437,7 +437,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	private function setRedirect($url, $msg=null, $type='message')

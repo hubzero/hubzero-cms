@@ -34,7 +34,7 @@ JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 
 //is the autocompleter disabled
-$disabled = ($this->tos) ? true : false; 
+$disabled = ($this->tos) ? true : false;
 
 //get autocompleter
 $tos = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'mbrs', 'members', '', $this->tos, '', $disabled)) );
@@ -46,17 +46,17 @@ $this->css();
 		<div class="cont">
 			<h3><?php echo JText::_('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
 			<label<?php if ($this->no_html) { echo ' class="width-65"'; } ?>>
-				<?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?> 
+				<?php echo JText::_('PLG_MEMBERS_MESSAGES_TO'); ?>
 				<span class="required"><?php echo JText::_('PLG_MEMBERS_MESSAGES_REQUIRED'); ?></span>
-				<?php 
-					if (count($tos) > 0) 
+				<?php
+					if (count($tos) > 0)
 					{
 						echo $tos[0];
-					} 
-					else 
-					{ 
+					}
+					else
+					{
 						echo '<input type="text" name="mbrs" id="members" value="" />';
-					} 
+					}
 				?>
 			</label>
 			<label>

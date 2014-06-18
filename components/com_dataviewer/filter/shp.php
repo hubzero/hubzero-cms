@@ -18,7 +18,7 @@ function filter($res, &$dd)
 	if (!isset($dd['maps'])) {
 		return;
 	}
-	
+
 	$uid = uniqid('dv_shp_' . session_id());
 	$path = '/tmp/' . $uid;
 	mkdir($path);
@@ -78,7 +78,7 @@ function filter($res, &$dd)
 	$z->addFile("$file_name.shx", 'data.shx');
 	$z->addFile("$file_name.dbf", 'data.dbf');
 	$z->close();
-	
+
 	unlink("$file_name.csv");
 	unlink("$file_name.vrt");
 	unlink("$file_name.shp");

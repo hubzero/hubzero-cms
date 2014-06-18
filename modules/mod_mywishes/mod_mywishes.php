@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 //-------------------------------------------------------------
 // Joomla module
 // "My Wishes"
-//    This module displays wishes submitted by/assigned to the 
+//    This module displays wishes submitted by/assigned to the
 //    user currently logged in.
 // Wish List component "com_wishlist" REQUIRED
 //-------------------------------------------------------------

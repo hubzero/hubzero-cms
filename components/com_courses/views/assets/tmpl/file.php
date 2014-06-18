@@ -44,7 +44,7 @@ if ($d != "inline" && $d != "attachment")
 $path = $this->model->path($this->course->get('id'));
 
 // Ensure we have a path
-if (empty($path)) 
+if (empty($path))
 {
 	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
 	return;
@@ -54,7 +54,7 @@ if (empty($path))
 $filename = JPATH_ROOT . $path;
 
 // Ensure the file exist
-if(!file_exists($filename)) 
+if(!file_exists($filename))
 {
 	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
 	return;
@@ -75,12 +75,12 @@ $xserver->filename($filename);
 $xserver->disposition($d);
 $xserver->acceptranges(false); // @TODO fix byte range support
 
-if (!$xserver->serve()) 
+if (!$xserver->serve())
 {
 	// Should only get here on error
 	JError::raiseError(500, JText::_('COM_COURSES_SERVER_ERROR'));
-} 
-else 
+}
+else
 {
 	// Just exit (i.e. no template)
 	exit;

@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the blog comment table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -15,19 +15,19 @@ class BlogTableCommentTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'entry_id', 
-		'content', 
-		'created', 
+		'id',
+		'entry_id',
+		'content',
+		'created',
 		'created_by',
 		'anonymous',
 		'parent'
 	);
 	var $mock       = array(
-		'id' => 0, 
-		'entry_id' => 1, 
-		'content' => 'My comment is amazing', 
-		'created' => '', 
+		'id' => 0,
+		'entry_id' => 1,
+		'content' => 'My comment is amazing',
+		'created' => '',
 		'created_by' => 1001,
 		'anonymous' => 0,
 		'parent' => 0

@@ -39,7 +39,7 @@ class modToolList extends \Hubzero\Module\Module
 {
 	/**
 	 * Get a list of applications that the user might invoke.
-	 * 
+	 *
 	 * @param      array $lst Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -52,18 +52,18 @@ class modToolList extends \Hubzero\Module\Module
 		// Create a Tool object
 		$database = JFactory::getDBO();
 
-		if (is_array($lst)) 
+		if (is_array($lst))
 		{
 			$tools = array();
 			// Check if the list is empty or not
-			if (!empty($lst)) 
+			if (!empty($lst))
 			{
 				ksort($lst);
 				$items = array();
 				// Get info for tools in the list
 				foreach ($lst as $item)
 				{
-					if (strstr($item, '_r')) 
+					if (strstr($item, '_r'))
 					{
 						$bits = explode('_r', $item);
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
@@ -71,7 +71,7 @@ class modToolList extends \Hubzero\Module\Module
 					}
 					/*$thistool = ToolsModelVersion::getVersionInfo('', 'current', $item, '');
 
-					if (is_array($thistool) && isset($thistool[0])) 
+					if (is_array($thistool) && isset($thistool[0]))
 					{
 						$t = $thistool[0];
 						$tools[] = $t;
@@ -79,13 +79,13 @@ class modToolList extends \Hubzero\Module\Module
 					$items[] = $item;
 				}
 				$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
-			} 
-			else 
+			}
+			else
 			{
 				return array();
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// Get all available tools
 			$tools = ToolsModelTool::getMyTools();
@@ -96,7 +96,7 @@ class modToolList extends \Hubzero\Module\Module
 		// Turn it into an App array.
 		foreach ($tools as $tool)
 		{
-			if (!in_array(strtolower($tool->toolname), $toolnames)) 
+			if (!in_array(strtolower($tool->toolname), $toolnames))
 			{
 				// include only one version
 				$toollist[strtolower($tool->instance)] = new MwModApp(
@@ -118,7 +118,7 @@ class modToolList extends \Hubzero\Module\Module
 
 	/**
 	 * Convert quote marks
-	 * 
+	 *
 	 * @param      string $txt Text to convert quotes in
 	 * @return     string
 	 */
@@ -131,18 +131,18 @@ class modToolList extends \Hubzero\Module\Module
 
 	/**
 	 * Build the HTML for a list of tools
-	 * 
+	 *
 	 * @param      array  &$toollist List of tools to format
 	 * @param      string $type      Type of list being formatted
 	 * @return     string HTML
 	 */
 	public function buildList($toollist, $type='all')
 	{
-		if ($type == 'favs') 
+		if ($type == 'favs')
 		{
 			$favs = array();
-		} 
-		elseif ($type == 'all') 
+		}
+		elseif ($type == 'all')
 		{
 			$favs = $this->favs;
 		}
@@ -150,16 +150,16 @@ class modToolList extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 
 		$html  = "\t\t" . '<ul>' . "\n";
-		if (count($toollist) <= 0) 
+		if (count($toollist) <= 0)
 		{
 			$html .= "\t\t" . ' <li>' . JText::_('MOD_MYTOOLS_NONE_FOUND') . '</li>' . "\n";
-		} 
-		else 
+		}
+		else
 		{
 			foreach ($toollist as $tool)
 			{
 				// Make sure we have some info before attempting to display it
-				if (!empty($tool->caption)) 
+				if (!empty($tool->caption))
 				{
 					// Prep the text for XHTML output
 					$tool->caption = $this->_prepText($tool->caption);
@@ -171,14 +171,14 @@ class modToolList extends \Hubzero\Module\Module
 
 					// from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-					
+
 					//are we on the iPad
 					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-					
+
 					//get tool params
 					$params = JComponentHelper::getParams('com_tools');
 					$launchOnIpad = $params->get('launch_ipad', 0);
-					
+
 					//if we are on the ipad and we want to launch nanohub app
 					if($isiPad && $launchOnIpad)
 					{
@@ -193,17 +193,17 @@ class modToolList extends \Hubzero\Module\Module
 					// Build the HTML
 					$html .= "\t\t" . ' <li id="'.$tool->name.'"';
 					// If we're in the 'all tools' pane ...
-					if ($type == 'all') 
+					if ($type == 'all')
 					{
 						// Highlight tools on the user's favorites list
-						if (in_array($tool->name,$favs)) 
+						if (in_array($tool->name,$favs))
 						{
 							$cls = 'favd';
 						}
 					}
-					if ($this->supportedtag) 
+					if ($this->supportedtag)
 					{
-						if (in_array($tool->toolname, $this->supportedtagusage)) 
+						if (in_array($tool->toolname, $this->supportedtagusage))
 						{
 							$cls .= ($cls) ? ' supported' : 'supported';
 						}
@@ -215,24 +215,24 @@ class modToolList extends \Hubzero\Module\Module
 					$html .= "\t\t\t" . ' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>' . "\n";
 
 					// Only add the "favorites" button to the all tools list
-					if ($type == 'all') 
+					if ($type == 'all')
 					{
 						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>' . "\n";
 					}
 
 					// Launch tool link
-					if ($this->can_launch && $tool->middleware != 'download') 
+					if ($this->can_launch && $tool->middleware != 'download')
 					{
-						
-						
+
+
 						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
 				}
 				// If we're in the 'favorites' pane ...
-				// Add the tool's name to an array for the 'all tools' 
+				// Add the tool's name to an array for the 'all tools'
 				// pane to use in highlighting favorite tools
-				if ($type == 'favs') 
+				if ($type == 'favs')
 				{
 					$favs[] = $tool->name;
 				}
@@ -240,7 +240,7 @@ class modToolList extends \Hubzero\Module\Module
 		}
 		$html .= "\t\t" . '</ul>' . "\n";
 
-		if ($type == 'favs') 
+		if ($type == 'favs')
 		{
 			$this->favs = $favs;
 		}
@@ -249,7 +249,7 @@ class modToolList extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -275,7 +275,7 @@ class modToolList extends \Hubzero\Module\Module
 		// Ensure we have a connection to the middleware
 		$this->can_launch = true;
 		if (!$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage'))) 
+		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage')))
 		{
 			$this->can_launch = false;
 		}
@@ -289,14 +289,14 @@ class modToolList extends \Hubzero\Module\Module
 		$this->supportedtag = $rconfig->get('supportedtag');
 
 		$database = JFactory::getDBO();
-		if ($this->supportedtag) 
+		if ($this->supportedtag)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 			$this->rt = new ResourcesTags($database);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
 
-		if ($this->fav || $this->no_html) 
+		if ($this->fav || $this->no_html)
 		{
 			// We have a string of tools! This means we're updating the
 			// favorite tools pane of the module via AJAX
@@ -304,8 +304,8 @@ class modToolList extends \Hubzero\Module\Module
 			$favs = array_map('trim', $favs);
 
 			$this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
-		} 
-		else 
+		}
+		else
 		{
 			$juser = JFactory::getUser();
 
@@ -317,7 +317,7 @@ class modToolList extends \Hubzero\Module\Module
 			$rows = $rt->getRecords($juser->get('id'));
 
 			$recent = array();
-			if (!empty($rows)) 
+			if (!empty($rows))
 			{
 				foreach ($rows as $row)
 				{
@@ -327,11 +327,11 @@ class modToolList extends \Hubzero\Module\Module
 
 			// Get the user's list of favorites
 			$fav = $params->get('myhub_favs');
-			if ($fav) 
+			if ($fav)
 			{
 				$favs = explode(',', $fav);
-			} 
-			else 
+			}
+			else
 			{
 				$favs = array();
 			}

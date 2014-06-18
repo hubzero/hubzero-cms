@@ -47,77 +47,77 @@ class AnswersModelQuestion extends AnswersModelAbstract
 {
 	/**
 	 * Open state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const ANSWERS_STATE_OPEN   = 0;
 
 	/**
 	 * Closed state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const ANSWERS_STATE_CLOSED = 1;
 
 	/**
 	 * Deleted
-	 * 
+	 *
 	 * @var integer
 	 */
 	const ANSWERS_STATE_DELETE = 2;
 
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'AnswersTableQuestion';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_answers.question.question';
 
 	/**
 	 * Class scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'question';
 
 	/**
 	 * AnswersModelComment
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comment = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = null;
 
 	/**
 	 * Comment count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = null;
 
 	/**
 	 * Flag for if authorization checks have been run
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_authorized = false;
 
 	/**
 	 * URL for this entry
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = 'index.php?option=com_answers';
@@ -135,12 +135,12 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new AnswersModelQuestion($oid);
 		}
@@ -150,12 +150,12 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Is the question closed?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isClosed()
 	{
-		if ($this->get('state') == static::ANSWERS_STATE_CLOSED) 
+		if ($this->get('state') == static::ANSWERS_STATE_CLOSED)
 		{
 			return true;
 		}
@@ -164,12 +164,12 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Is the question open?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isOpen()
 	{
-		if ($this->get('state') == static::ANSWERS_STATE_OPEN) 
+		if ($this->get('state') == static::ANSWERS_STATE_OPEN)
 		{
 			return true;
 		}
@@ -178,7 +178,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Is there a reward?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function reward($val='reward')
@@ -194,7 +194,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
 
 			$AE = new AnswersEconomy($this->_db);
-			
+
 			$this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
 			$this->set('maxaward', round(2* $this->get('marketvalue', 0)/3 + $this->get('reward', 0)));
 
@@ -209,12 +209,12 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Set and get a specific comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function comment($id=null)
 	{
-		if (!isset($this->_comment) 
+		if (!isset($this->_comment)
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
@@ -244,7 +244,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Get a list of responses
-	 * 
+	 *
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
@@ -280,19 +280,19 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				{
 					$total = 0;
 
-					if (!($c = $this->get('comments'))) 
+					if (!($c = $this->get('comments')))
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($c as $com)
 					{
 						$total++;
-						if ($filters['replies'] && $com->replies()->total()) 
+						if ($filters['replies'] && $com->replies()->total())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$total++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$total += $rep->replies()->total();
 								}
@@ -308,7 +308,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear) 
+				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->getResults($filters))
 					{
@@ -330,7 +330,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Get a list of chosen responses
-	 * 
+	 *
 	 * @param      string $rtrn    Data type to return [count, list]
 	 * @param      array  $filters Filters to apply to query
 	 * @return     mixed Returns an integer or array depending upon format chosen
@@ -384,7 +384,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
-	 * 
+	 *
 	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
 	 * @param      integer $admin Include amdin tags? (defaults to no)
 	 * @return     mixed
@@ -415,7 +415,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -427,7 +427,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Add a single tag to the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function addTag($tag=null, $user_id=0, $admin=0)
@@ -439,7 +439,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string $as Format to return state in [text, number]
 	 * @return     mixed String or Integer
 	 */
@@ -469,7 +469,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */
@@ -514,13 +514,13 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -584,7 +584,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 	/**
 	 * Get the subject in various formats
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -661,7 +661,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			// See if a person from this IP has already voted in the last week
 			$aql = new AnswersTableQuestionsLog($this->_db);
 			$this->set(
-				'voted', 
+				'voted',
 				$aql->checkVote($this->get('id'), JRequest::ip(), $juser->get('id'))
 			);
 		}
@@ -703,7 +703,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			return false;
 		}
 
-		if ($this->get('created_by') == $juser->get('username')) 
+		if ($this->get('created_by') == $juser->get('username'))
 		{
 			$this->setError(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
 			return false;
@@ -711,19 +711,19 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		$this->set('helpful', (int) $this->get('helpful') + 1);
 
-		if (!$this->store()) 
+		if (!$this->store())
 		{
 			return false;
 		}
 
 		$al->expires = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
 
-		if (!$al->check()) 
+		if (!$al->check())
 		{
 			$this->setError($al->getError());
 			return false;
 		}
-		if (!$al->store()) 
+		if (!$al->store())
 		{
 			$this->setError($al->getError());
 			return false;
@@ -755,7 +755,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		}
 		// Mark it at the chosen one
 		$answer->set('state', 1);
-		if (!$answer->store(true)) 
+		if (!$answer->store(true))
 		{
 			$this->setError($answer->getError());
 			return false;
@@ -780,14 +780,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 				$BTL_Q = new \Hubzero\Bank\Teller($this->_db, JFactory::getUser()->get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
-			else 
+			else
 			{
 				// Calculate and distribute earned points
 				$AE = new AnswersEconomy($this->_db);
 				$AE->distribute_points(
-					$this->get('id'), 
-					$this->get('created_by'), 
-					$answer->get('created_by'), 
+					$this->get('id'),
+					$this->get('created_by'),
+					$answer->get('created_by'),
 					'closure'
 				);
 			}
@@ -843,7 +843,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		}
 
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}

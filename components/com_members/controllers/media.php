@@ -38,7 +38,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -47,8 +47,8 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		$file = array_pop($parts);
 
-		if (substr(strtolower($file), 0, 5) == 'image' 
-		 || substr(strtolower($file), 0, 4) == 'file') 
+		if (substr(strtolower($file), 0, 5) == 'image'
+		 || substr(strtolower($file), 0, 4) == 'file')
 		{
 			JRequest::setVar('task', 'download');
 		}
@@ -60,7 +60,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for uploading a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function ajaxuploadTask()
@@ -78,7 +78,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		//instantiate view and pass needed vars
 		$this->view->setLayout('upload');
 		$this->view->config = $this->config;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -90,7 +90,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the profile via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function doajaxuploadTask()
@@ -146,12 +146,12 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array('error' => 'File is empty'));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
@@ -170,14 +170,14 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// don't overwrite previous files that were uploaded
-		while (file_exists($uploadDirectory . $filename . '.' . $ext)) 
+		while (file_exists($uploadDirectory . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
 
 		$file = $uploadDirectory . $filename . '.' . $ext;
 		$final_file = $uploadDirectory . 'profile.png';
-		$final_thumb = $uploadDirectory . 'thumb.png'; 
+		$final_thumb = $uploadDirectory . 'thumb.png';
 
 		if ($stream)
 		{
@@ -197,7 +197,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		{
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
-		
+
 		//resize image to max 400px and rotate in case user didnt before uploading
 		$hi = new \Hubzero\Image\Processor($file);
 		if (count($hi->getErrors()) == 0)
@@ -230,20 +230,20 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		unlink($file);
 
 		echo json_encode(array(
-			'success'   => true, 
-			'file'      => str_replace($uploadDirectory, '', $final_file), 
+			'success'   => true,
+			'file'      => str_replace($uploadDirectory, '', $final_file),
 			'directory' => str_replace(JPATH_ROOT, '', $uploadDirectory)
 		));
 	}
 
 	/**
 	 * Set the picture of a profile
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function ajaxuploadsaveTask()
 	{
-		//get the user id 
+		//get the user id
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
@@ -274,7 +274,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get the size, width, height, and src attributes for a file
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function getfileattsTask()
@@ -288,7 +288,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		$size = filesize(JPATH_ROOT . $dir . $file);
-		list($width, $height) = getimagesize(JPATH_ROOT . $dir . $file); 
+		list($width, $height) = getimagesize(JPATH_ROOT . $dir . $file);
 
 		$result = array();
 		$result['src']    = $dir . $file;
@@ -302,20 +302,20 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('MEMBERS_NO_ID'));
 			$this->displayTask('', $id);
@@ -324,7 +324,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('MEMBERS_NO_FILE'));
 			$this->displayTask('', $id);
@@ -335,10 +335,10 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
@@ -355,32 +355,32 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$curfile = JRequest::getVar('currentfile', '');
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
 			$file = $curfile;
-		} 
-		else 
+		}
+		else
 		{
 			$ih = new MembersImgHandler();
 
-			if ($curfile != '') 
+			if ($curfile != '')
 			{
 				// Yes - remove it
-				if (file_exists($path . DS . $curfile)) 
+				if (file_exists($path . DS . $curfile))
 				{
-					if (!JFile::delete($path . DS . $curfile)) 
+					if (!JFile::delete($path . DS . $curfile))
 					{
 						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
 						return;
 					}
 				}
-				
+
 				$curthumb = $ih->createThumbName($curfile);
-				if (file_exists($path . DS . $curthumb)) 
+				if (file_exists($path . DS . $curthumb))
 				{
-					if (!JFile::delete($path . DS . $curthumb)) 
+					if (!JFile::delete($path . DS . $curthumb))
 					{
 						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -392,7 +392,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			// Instantiate a profile, change some info and save
 			$profile = \Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', $file['name']);
-			if (!$profile->update()) 
+			if (!$profile->update())
 			{
 				$this->setError($profile->getError());
 			}
@@ -402,7 +402,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			$ih->set('path', $path . DS);
 			$ih->set('maxWidth', 186);
 			$ih->set('maxHeight', 186);
-			if (!$ih->process()) 
+			if (!$ih->process())
 			{
 				$this->setError($ih->getError());
 			}
@@ -412,7 +412,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			$ih->set('maxHeight', 50);
 			$ih->set('cropratio', '1:1');
 			$ih->set('outputName', $ih->createThumbName());
-			if (!$ih->process()) 
+			if (!$ih->process())
 			{
 				$this->setError($ih->getError());
 			}
@@ -426,20 +426,20 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file in the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('MEMBERS_NO_ID'));
 			$this->displayTask('', $id);
@@ -447,7 +447,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('file', '');
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError(JText::_('MEMBERS_NO_FILE'));
 			$this->displayTask('', $id);
@@ -457,17 +457,17 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			$ih = new MembersImgHandler();
 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
@@ -475,9 +475,9 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			}
 
 			$curthumb = $ih->createThumbName($file);
-			if (file_exists($path . DS . $curthumb)) 
+			if (file_exists($path . DS . $curthumb))
 			{
-				if (!JFile::delete($path . DS . $curthumb)) 
+				if (!JFile::delete($path . DS . $curthumb))
 				{
 					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file, $id);
@@ -488,7 +488,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			// Instantiate a profile, change some info and save
 			$profile = \Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', '');
-			if (!$profile->update()) 
+			if (!$profile->update())
 			{
 				$this->setError($profile->getError());
 			}
@@ -502,7 +502,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a user's profile picture
-	 * 
+	 *
 	 * @param      string  $file File name
 	 * @param      integer $id   User ID
 	 * @return     void
@@ -510,13 +510,13 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 	public function displayTask($file='', $id=0)
 	{
 		// Incoming
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('id', 0, 'get');
 		}
 		$this->view->id = $id;
 
-		if (!$file) 
+		if (!$file)
 		{
 			$file = JRequest::getVar('file', '', 'get');
 		}
@@ -533,7 +533,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 		$this->view->file_path = $path;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -555,7 +555,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return false;
 		}
@@ -572,7 +572,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 				return 'admin';
 			}
 		}
-		else 
+		else
 		{
 			if ($this->juser->authorize($this->_option, 'manage'))
 			{
@@ -585,7 +585,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadTask()
@@ -594,7 +594,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		//check to make sure we have an id
-		if (!$id || $id == 0) 
+		if (!$id || $id == 0)
 		{
 			return;
 		}
@@ -603,7 +603,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$member = \Hubzero\User\Profile::getInstance($id);
 
 		// check to make sure we have member profile
-		if (!$member) 
+		if (!$member)
 		{
 			return;
 		}
@@ -612,11 +612,11 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$filename = array_pop($parts);
 
 		//get the file name
-		if (substr(strtolower($filename), 0, 5) == 'image') 
+		if (substr(strtolower($filename), 0, 5) == 'image')
 		{
 			$file = substr($filename, 6);
-		} 
-		elseif (substr(strtolower($filename), 0, 4) == 'file') 
+		}
+		elseif (substr(strtolower($filename), 0, 4) == 'file')
 		{
 			$file = substr($filename, 5);
 		}
@@ -625,19 +625,19 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$file = urldecode($file);
 
 		//if we are on the blog
-		if (JRequest::getVar('active', 'profile') == 'blog') 
+		if (JRequest::getVar('active', 'profile') == 'blog')
 		{
 			// @FIXME Check still needs to occur for non-public entries
 			//authorize checks
-			/*if ($this->_authorize() != 'admin') 
+			/*if ($this->_authorize() != 'admin')
 			{
-				if ($this->juser->get('id') != $member->get('uidNumber')) 
+				if ($this->juser->get('id') != $member->get('uidNumber'))
 				{
 					JError::raiseError(403, JText::_('You are not authorized to download the file: ') . ' ' . $file);
 					return;
 				}
 			}*/
-			
+
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -656,7 +656,7 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$file_path = $base_path . DS . $file;
 
 		// Ensure the file exist
-		if (!file_exists(JPATH_ROOT . DS . $file_path)) 
+		if (!file_exists(JPATH_ROOT . DS . $file_path))
 		{
 			JError::raiseError(404, JText::_('The requested file could not be found: ') . ' ' . $file);
 			return;
@@ -669,12 +669,12 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		//serve up file
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('An error occured while trying to output the file'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}

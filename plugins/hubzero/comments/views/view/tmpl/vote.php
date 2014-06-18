@@ -38,12 +38,12 @@ if (!strstr($this->url, 'index.php'))
 {
 	$this->url .= '?';
 }
-else 
+else
 {
 	$this->url .= '&';
 }
 
-if ($vote = $this->item->get('vote')) 
+if ($vote = $this->item->get('vote'))
 {
 	switch ($vote)
 	{
@@ -65,20 +65,20 @@ if ($vote = $this->item->get('vote'))
 			$dcls = ' chosen';
 		break;
 	}
-} 
-else 
+}
+else
 {
 	$this->item->set('vote', null);
 }
 
 $juser = JFactory::getUser();
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$like_title    = JText::sprintf('PLG_HUBZERO_COMMENTS_VOTE_UP', $this->item->get('positive', 0));
 	$dislike_title = JText::sprintf('PLG_HUBZERO_COMMENTS_VOTE_DOWN', $this->item->get('negative', 0));
 	$cls = ' tooltips';
-} 
-else 
+}
+else
 {
 	$like_title    = JText::_('PLG_HUBZERO_COMMENTS_VOTE_UP_LOGIN');
 	$dislike_title = JText::_('PLG_HUBZERO_COMMENTS_VOTE_DOWN_LOGIN');

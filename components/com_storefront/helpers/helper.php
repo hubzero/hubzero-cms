@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Shop helper functions
- * 
+ *
  */
 class StorefrontHelper
 {
@@ -42,7 +42,7 @@ class StorefrontHelper
 
 /**
  * Dump system message (debugging function)
- * 
+ *
  * @param      mixed var: whatever needs to be ptinted
  * @return     void
  */

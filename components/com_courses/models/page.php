@@ -41,28 +41,28 @@ class CoursesModelPage extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTablePage';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_courses.page.content';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'page';
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -137,7 +137,7 @@ class CoursesModelPage extends CoursesModelAbstract
 
 	/**
 	 * Copy an entry and associated data
-	 * 
+	 *
 	 * @param   integer $course_id   New course to copy to
 	 * @param   integer $offering_id New offering to copy to
 	 * @param   integer $section_id  New section to copy to

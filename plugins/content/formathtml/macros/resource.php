@@ -39,14 +39,14 @@ class Resource extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -59,7 +59,7 @@ class Resource extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -68,7 +68,7 @@ class Resource extends Macro
 
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -84,26 +84,26 @@ class Resource extends Macro
 		{
 			$a = trim($a);
 
-			if (substr($a,0,11) == 'screenshots') 
+			if (substr($a,0,11) == 'screenshots')
 			{
 				$bits = explode('=', $a);
 				$num = intval(end($bits));
 				$scrnshts = true;
-			} 
-			elseif ($a == 'nolink') 
+			}
+			elseif ($a == 'nolink')
 			{
 				$nolink = true;
 			}
 		}
 
 		// Is it numeric?
-		if (is_numeric($resource)) 
+		if (is_numeric($resource))
 		{
 			// Yes, then get resource by ID
 			$id = intval($resource);
 			$sql = "SELECT id, title, alias FROM #__resources WHERE id=" . $id;
-		} 
-		else 
+		}
+		else
 		{
 			// No, get resource by alias
 			$sql = "SELECT id, title, alias FROM #__resources WHERE alias=" . $this->_db->quote(trim($resource));
@@ -114,41 +114,41 @@ class Resource extends Macro
 		$r = $this->_db->loadRow();
 
 		// Did we get a result from the database?
-		if ($r) 
+		if ($r)
 		{
-			if ($scrnshts && $r[2]) 
+			if ($scrnshts && $r[2])
 			{
 				return $this->screenshots($r[2], $num);
 			}
 
 			// Build and return the link
-			if ($r[2]) 
+			if ($r[2])
 			{
 				$link = 'index.php?option=com_resources&amp;alias=' . $r[2];
-			} 
-			else 
+			}
+			else
 			{
 				$link = 'index.php?option=com_resources&amp;id=' . $id;
 			}
 
 			$this->linkLog[] = array(
-				'link'     => '[[Resource(' . $et . ')]]', 
-				'url'      => $link, 
+				'link'     => '[[Resource(' . $et . ')]]',
+				'url'      => $link,
 				'page_id'  => $this->pageid,
 				'scope'    => 'resource',
 				'scope_id' => $r[0]
 			);
 
-			if ($nolink) 
+			if ($nolink)
 			{
 				return stripslashes($r[1]);
-			} 
-			else 
+			}
+			else
 			{
 				return '<a href="' . \JRoute::_($link) . '">' . stripslashes($r[1]) . '</a>';
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// Return error message
 			return '(Resource(' . $et . ') failed)';
@@ -157,10 +157,10 @@ class Resource extends Macro
 
 	/**
 	 * Get a list of screenshots
-	 * 
+	 *
 	 * @param      string  $alias Resource alias
 	 * @param      integer $num   Number of screenshots to show
-	 * @return     string 
+	 * @return     string
 	 */
 	public function screenshots($alias, $num=1)
 	{
@@ -171,14 +171,14 @@ class Resource extends Macro
 		$d = @dir(JPATH_ROOT . $path . DS . $alias);
 		$images = array();
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) 
+					if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
@@ -190,7 +190,7 @@ class Resource extends Macro
 
 		$html = '';
 
-		if (count($images) > 0) 
+		if (count($images) > 0)
 		{
 			$k = 0;
 			for ($i=0, $n=count($images); $i < $n; $i++)
@@ -198,7 +198,7 @@ class Resource extends Macro
 				$tn = $this->thumbnail($images[$i]);
 				$type = explode('.', $images[$i]);
 
-				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $tn) && $k < $num) 
+				if (is_file(JPATH_ROOT . $path . DS . $alias . DS . $tn) && $k < $num)
 				{
 					$k++;
 
@@ -213,7 +213,7 @@ class Resource extends Macro
 
 	/**
 	 * Generate a thumbnail name from a picture name
-	 * 
+	 *
 	 * @param      string $pic Picture name
 	 * @return     string
 	 */

@@ -31,7 +31,7 @@ namespace Hubzero\Auth;
 
 /**
  * Short description for 'Hubzero\Auth\Domain'
- * 
+ *
  * Long description (if any) ...
  */
 class Domain
@@ -39,58 +39,58 @@ class Domain
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $id;
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $type;
 
 	/**
 	 * Description for 'authenticator'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $authenticator;
 
 	/**
 	 * Description for 'domain'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $domain;
 
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $params;
 
 	/**
 	 * Description for '_updatedkeys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
 	 * Description for '_updateAll'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_updateAll = false;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function __construct()
@@ -99,9 +99,9 @@ class Domain
 
 	/**
 	 * Short description for 'clear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function clear()
@@ -126,9 +126,9 @@ class Domain
 
 	/**
 	 * Short description for 'logDebug'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $msg Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -140,9 +140,9 @@ class Domain
 
 	/**
 	 * Short description for 'getInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $type Parameter description (if any) ...
 	 * @param      unknown $authenticator Parameter description (if any) ...
 	 * @param      unknown $domain Parameter description (if any) ...
@@ -166,9 +166,9 @@ class Domain
 
 	/**
 	 * Short description for 'createInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $type Parameter description (if any) ...
 	 * @param      unknown $authenticator Parameter description (if any) ...
 	 * @param      unknown $domain Parameter description (if any) ...
@@ -210,9 +210,9 @@ class Domain
 
 	/**
 	 * Short description for 'create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function create()
@@ -277,9 +277,9 @@ class Domain
 
 	/**
 	 * Short description for 'read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function read()
@@ -328,9 +328,9 @@ class Domain
 
 	/**
 	 * Short description for 'update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $all Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -401,9 +401,9 @@ class Domain
 
 	/**
 	 * Short description for 'delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      boolean $deletelinks Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
@@ -454,9 +454,9 @@ class Domain
 
 	/**
 	 * Short description for '__get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -490,9 +490,9 @@ class Domain
 
 	/**
 	 * Short description for '__set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     void
@@ -518,9 +518,9 @@ class Domain
 
 	/**
 	 * Short description for '__isset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -540,9 +540,9 @@ class Domain
 
 	/**
 	 * Short description for '__unset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $property Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -564,9 +564,9 @@ class Domain
 
 	/**
 	 * Short description for '_error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $message Parameter description (if any) ...
 	 * @param      integer $level Parameter description (if any) ...
 	 * @return     void
@@ -593,9 +593,9 @@ class Domain
 
 	/**
 	 * Short description for 'find_or_create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $type Parameter description (if any) ...
 	 * @param      unknown $authenticator Parameter description (if any) ...
 	 * @param      unknown $domain Parameter description (if any) ...

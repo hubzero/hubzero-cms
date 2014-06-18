@@ -64,7 +64,7 @@ class Helper
 	/**
 	 * Render modules for a position
 	 * Alias method for renderModules()
-	 * 
+	 *
 	 * @param      string  $position Position to render modules for
 	 * @param      integer $style    Module style (deprecated?)
 	 * @return     string HTML
@@ -77,7 +77,7 @@ class Helper
 	/**
 	 * Render a specific module
 	 * Alias method for renderModule()
-	 * 
+	 *
 	 * @param      string  $name  Module name
 	 * @param      integer $style Module style (deprecated?)
 	 * @return     void
@@ -89,7 +89,7 @@ class Helper
 
 	/**
 	 * Render a specific module
-	 * 
+	 *
 	 * @param      string  $name  Module name
 	 * @param      integer $style Module style (deprecated?)
 	 * @return     string HTML
@@ -105,7 +105,7 @@ class Helper
 
 	/**
 	 * Render modules for a position
-	 * 
+	 *
 	 * @param      string  $position Position to render modules for
 	 * @param      integer $style    Module style (deprecated?)
 	 * @return     string HTML
@@ -119,7 +119,7 @@ class Helper
 		$contents = '';
 		foreach (\JModuleHelper::getModules($position) as $mod)
 		{
-			if ($mod->showtitle != 0) 
+			if ($mod->showtitle != 0)
 			{
 				$contents .= '<h3>' . stripslashes($mod->title) . '</h3>';
 			}
@@ -131,7 +131,7 @@ class Helper
 
 	/**
 	 * Get the parameters for a module
-	 * 
+	 *
 	 * @param      integer $id Module ID
 	 * @return     object
 	 */

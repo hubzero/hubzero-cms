@@ -38,126 +38,126 @@ class CronTableJob extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id           = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title        = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state        = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $plugin       = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $event        = NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $last_run     = NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $next_run     = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $recurrence   = NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created      = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by   = NULL;
-	
+
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by  = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $active       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering     = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_up     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_down     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -168,23 +168,23 @@ class CronTableJob extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->title) == '') 
+		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_CRON_ERROR_EMPTY_TITLE'));
 			return false;
 		}
-		
-		if (!$this->recurrence) 
+
+		if (!$this->recurrence)
 		{
 			$this->setError(JText::_('COM_CRON_ERROR_EMPTY_RECURRENCE'));
 			return false;
 		}
-		
+
 		$this->recurrence = preg_replace('/[\s]{2,}/', ' ', $this->recurrence);
 
 		if (preg_match('/[^-,*\/ \\d]/', $this->recurrence) !== 0)
@@ -218,7 +218,7 @@ class CronTableJob extends JTable
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
-		else 
+		else
 		{
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
@@ -239,7 +239,7 @@ class CronTableJob extends JTable
 
 	/**
 	 * Build a query
-	 * 
+	 *
 	 * @param      array $filters Parameters to build query from
 	 * @return     string SQL
 	 */
@@ -249,21 +249,21 @@ class CronTableJob extends JTable
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['next_run']) && $filters['next_run'] != '') 
+		if (isset($filters['next_run']) && $filters['next_run'] != '')
 		{
 			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
 
-		if (isset($filters['available']) && $filters['available']) 
+		if (isset($filters['available']) && $filters['available'])
 		{
 			$now = JFactory::getDate()->toSql();
 
@@ -282,7 +282,7 @@ class CronTableJob extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Parameters to build query from
 	 * @return     integer
 	 */
@@ -298,7 +298,7 @@ class CronTableJob extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Parameters to build query from
 	 * @return     array
 	 */
@@ -307,17 +307,17 @@ class CronTableJob extends JTable
 		$query  = "SELECT c.*";
 		$query .= " " . $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'ordering';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
@@ -328,7 +328,7 @@ class CronTableJob extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Parameters to build query from
 	 * @return     array
 	 */
@@ -338,12 +338,12 @@ class CronTableJob extends JTable
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
 
-		if (isset($filters['next_run']) && $filters['next_run'] != '') 
+		if (isset($filters['next_run']) && $filters['next_run'] != '')
 		{
 			$where[] = "c.next_run <= " . $this->_db->Quote($filters['next_run']);
 		}

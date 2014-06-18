@@ -45,28 +45,28 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Resource types and "all" category
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource types
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Results total
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -81,18 +81,18 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onWhatsnewAreas()
 	{
-		if (is_array($this->_areas)) 
+		if (is_array($this->_areas))
 		{
 			return $this->_areas;
 		}
 
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			// Get categories
 			$database = JFactory::getDBO();
@@ -117,7 +117,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
-	 * 
+	 *
 	 * @param      object  $period     Time period to pull results for
 	 * @param      mixed   $limit      Number of records to pull
 	 * @param      integer $limitstart Start of records to pull
@@ -127,11 +127,11 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			$ars = $this->onWhatsnewAreas();
-			if (!isset($areas[$this->_name]) 
-			 && !in_array($this->_name, $areas) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)
 			 && !array_intersect($areas, array_keys($ars['resources'])))
 			{
 				return array();
@@ -139,7 +139,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a time period?
-		if (!is_object($period)) 
+		if (!is_object($period))
 		{
 			return array();
 		}
@@ -154,7 +154,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		$filters['startdate'] = $period->cStartDate;
 		$filters['enddate']   = $period->cEndDate;
 		$filters['sortby']    = 'date';
-		if (count($tagids) > 0) 
+		if (count($tagids) > 0)
 		{
 			$filters['tags'] = $tagids;
 		}
@@ -164,7 +164,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
@@ -181,9 +181,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 		$filters['authorized'] = false;
 
-		if ($limit) 
+		if ($limit)
 		{
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
 				$total = 0;
 				$t = $this->_total;
@@ -191,7 +191,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 				{
 					$total += $l;
 				}
-				if ($total == 0) 
+				if ($total == 0)
 				{
 					return array();
 				}
@@ -203,7 +203,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			if (count($areas) == 1 && isset($areas[0]) && $areas[0] != 'resources') 
+			if (count($areas) == 1 && isset($areas[0]) && $areas[0] != 'resources')
 			{
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
@@ -213,24 +213,24 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->alias) 
+					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
-					} 
-					else 
+					}
+					else
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
 					}
-					if ($row->itext) 
+					if ($row->itext)
 					{
 						$rows[$key]->text = $rows[$key]->itext;
-					} 
-					else if ($row->ftext) 
+					}
+					else if ($row->ftext)
 					{
 						$rows[$key]->text = $rows[$key]->ftext;
 					}
@@ -238,8 +238,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			}
 
 			return $rows;
-		} 
-		else 
+		}
+		else
 		{
 			$filters['select'] = 'count';
 
@@ -248,7 +248,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$ares = $this->onWhatsnewAreas();
 			foreach ($ares as $area => $val)
 			{
-				if (is_array($val)) 
+				if (is_array($val))
 				{
 					foreach ($val as $a=>$t)
 					{
@@ -267,7 +267,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Push styles and scripts to the document
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function documents()
@@ -281,7 +281,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Special formatting for results
-	 * 
+	 *
 	 * @param      object $row    Database row
 	 * @param      string $period Time period
 	 * @return     string
@@ -321,16 +321,16 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		// Start building HTML
 		$html  = "\t" . '<li class="resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($rparams->get('show_ranking', $config->get('show_ranking'))) 
+		if ($rparams->get('show_ranking', $config->get('show_ranking')))
 		{
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
 
-			if ($row->area == 'Tools') 
+			if ($row->area == 'Tools')
 			{
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			} 
-			else 
+			}
+			else
 			{
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
@@ -341,7 +341,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
 
 			$r = (10*$row->ranking);
-			if (intval($r) < 10) 
+			if (intval($r) < 10)
 			{
 				$r = '0' . $r;
 			}
@@ -356,8 +356,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t\t\t" . '</dd>' . "\n";
 			$html .= "\t\t\t" . '</dl>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
-		} 
-		elseif ($rparams->get('show_rating', $config->get('show_rating'))) 
+		}
+		elseif ($rparams->get('show_rating', $config->get('show_rating')))
 		{
 			switch ($row->rating)
 			{
@@ -380,16 +380,16 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '</div>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($helper->contributors) 
+		if ($helper->contributors)
 		{
 			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $helper->contributors;
 		}
 		$html .= '</p>' . "\n";
-		if ($row->itext) 
+		if ($row->itext)
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
-		} 
-		else if ($row->ftext) 
+		}
+		else if ($row->ftext)
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}

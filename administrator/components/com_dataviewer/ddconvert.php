@@ -48,11 +48,11 @@ $op = trim($opt['o']);
 
 if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSION) == 'json') {
 	define('_JEXEC', 'true');
-	
+
 	require_once($ip);
 	$func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
 	$dd_arr = $func();
-	
+
 	file_put_contents($op, json_format(json_encode($dd_arr)));
 
 	if (isset($opt['v'])) {
@@ -64,7 +64,7 @@ if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSI
 
 
 // http://www.php.net/manual/en/function.json-encode.php#80339
-function json_format($json) 
+function json_format($json)
 {
 	$tab = "\t";
 	$new_json = "";
@@ -120,10 +120,10 @@ function json_format($json)
 				}
 			default:
 				$new_json .= $char;
-				break;				   
+				break;
 		}
 	}
 
 	return $new_json;
-} 
+}
 ?>

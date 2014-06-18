@@ -80,12 +80,12 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-if(substr($sef,-1,1) == DS) 
+if(substr($sef,-1,1) == DS)
 {
 	$sef = rtrim($sef, DS);
 }
 
-$message .= $juri->base().$sef."?return=".base64_encode($return)."\n\n\n"; 
+$message .= $juri->base().$sef."?return=".base64_encode($return)."\n\n\n";
 
 $message .= "--------------------------------------------\n\n";
 $message .= JText::sprintf('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";

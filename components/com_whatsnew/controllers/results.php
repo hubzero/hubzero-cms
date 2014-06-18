@@ -38,7 +38,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -50,7 +50,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of new item's
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -85,13 +85,13 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		$area = trim(JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
-		if ($this->view->period != NULL) 
+		if ($this->view->period != NULL)
 		{
 			$searchstring = strtolower($this->view->period);
 			foreach ($areas as $c => $t)
 			{
 				$regexp = '/' . $c . ':/';
-				if (strpos($searchstring, $c . ':') !== false) 
+				if (strpos($searchstring, $c . ':') !== false)
 				{
 					// We found an active category
 					// NOTE: this will override any category sent in the querystring
@@ -101,13 +101,13 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					break;
 				}
 				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t)) 
+				if (is_array($t) && !empty($t))
 				{
 					// It does - loop through them and perform the same check
 					foreach ($t as $sc=>$st)
 					{
 						$regexp = '/' . $sc . ':/';
-						if (strpos($searchstring, $sc . ':') !== false) 
+						if (strpos($searchstring, $sc . ':') !== false)
 						{
 							// We found an active category
 							// NOTE: this will override any category sent in the querystring
@@ -123,11 +123,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		}
 
 		// Get the active category
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			$limit = 5;
 			$activeareas = $areas;
@@ -143,7 +143,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Get the search result totals
 		$this->view->totals = $dispatcher->trigger(
-			'onWhatsnew', 
+			'onWhatsnew',
 			array(
 				$p,
 				0,
@@ -156,7 +156,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Get the search results
 		$this->view->results = $dispatcher->trigger(
-			'onWhatsnew', 
+			'onWhatsnew',
 			array(
 				$p,
 				$this->view->limit,
@@ -174,7 +174,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 			$this->view->cats[$i]['category'] = $c;
 
 			// Do sub-categories exist?
-			if (is_array($t) && !empty($t)) 
+			if (is_array($t) && !empty($t))
 			{
 				// They do - do some processing
 				$this->view->cats[$i]['title'] = ucfirst($c);
@@ -185,9 +185,9 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
-					if (is_array($this->view->totals[$i]) 
-					 && !empty($this->view->totals[$i]) 
-					 && isset($this->view->totals[$i][$z])) 
+					if (is_array($this->view->totals[$i])
+					 && !empty($this->view->totals[$i])
+					 && isset($this->view->totals[$i][$z]))
 					{
 						// Add to the parent category's total
 						$this->view->cats[$i]['total'] = $this->view->cats[$i]['total'] + $this->view->totals[$i][$z];
@@ -198,8 +198,8 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					}
 					$z++;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				// No sub-categories - this should be easy
 				$this->view->cats[$i]['title'] = JText::_($t);
@@ -213,7 +213,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Do we have an active area?
 		$this->view->active = '';
-		if (count($activeareas) == 1) 
+		if (count($activeareas) == 1)
 		{
 			$this->view->active = $activeareas[0];
 		}
@@ -226,15 +226,15 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			$this->_jtext($this->view->period), 
+			$this->_jtext($this->view->period),
 			'index.php?option=' . $this->_option . '&period=' . $this->view->period
 		);
 
@@ -248,20 +248,20 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		$thisyear = strftime("%Y",time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
-			if (time() >= strtotime('10/1/' . $y)) 
+			if (time() >= strtotime('10/1/' . $y))
 			{
 				$this->view->periodlist[] = JHTMLSelect::option($y, JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
 			}
 		}
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
-			if (time() >= strtotime('01/01/' . $y)) 
+			if (time() >= strtotime('01/01/' . $y))
 			{
 				$this->view->periodlist[] = JHTMLSelect::option('c_' . $y, JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
 			}
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -274,7 +274,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 	/**
 	 * Generate an RSS feed
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function feedTask()
@@ -308,13 +308,13 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		$area = trim(JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
-		if ($period != NULL) 
+		if ($period != NULL)
 		{
 			$searchstring = strtolower($period);
 			foreach ($areas as $c=>$t)
 			{
 				$regexp = '/' . $c . ':/';
-				if (strpos($searchstring, $c . ':') !== false) 
+				if (strpos($searchstring, $c . ':') !== false)
 				{
 					// We found an active category
 					// NOTE: this will override any category sent in the querystring
@@ -324,13 +324,13 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					break;
 				}
 				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t)) 
+				if (is_array($t) && !empty($t))
 				{
 					// It does - loop through them and perform the same check
 					foreach ($t as $sc=>$st)
 					{
 						$regexp = '/' . $sc . ':/';
-						if (strpos($searchstring, $sc . ':') !== false) 
+						if (strpos($searchstring, $sc . ':') !== false)
 						{
 							// We found an active category
 							// NOTE: this will override any category sent in the querystring
@@ -346,11 +346,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		}
 
 		// Get the active category
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			$limit = 5;
 			$activeareas = $areas;
@@ -366,7 +366,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Fetch results
 		$results = $dispatcher->trigger(
-			'onWhatsNew', 
+			'onWhatsNew',
 			array(
 				$p,
 				$limit,
@@ -379,11 +379,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if (is_array($result) && !empty($result)) 
+				if (is_array($result) && !empty($result))
 				{
 					$rows = $result;
 					break;
@@ -399,7 +399,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		$doc->category    = JText::_('COM_WHATSNEW_RSS_CATEGORY');
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 
@@ -411,13 +411,13 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 				// URL link to article
 				$row->href = DS . ltrim($row->href, DS);
-				if (strstr($row->href, 'view')) 
+				if (strstr($row->href, 'view'))
 				{
 					// tests to see if itemid has already been included - this occurs for typed content items
-					if (!strstr($row->href, 'Itemid')) 
+					if (!strstr($row->href, 'Itemid'))
 					{
 						$temp = explode('id=', $row->href);
-						if (isset($temp[1])) 
+						if (isset($temp[1]))
 						{
 							$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
 						}
@@ -436,7 +436,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
-				if (isset($row->ranking) || isset($row->rating)) 
+				if (isset($row->ranking) || isset($row->rating))
 				{
 					$resourceEx = new ResourcesHelper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
@@ -466,9 +466,9 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for '_jtext'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $period Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
@@ -484,9 +484,9 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				$thisyear = strftime("%Y", time());
 				for ($y = $thisyear; $y >= 2002; $y--)
 				{
-					if (time() >= strtotime('10/1/' . $y)) 
+					if (time() >= strtotime('10/1/' . $y))
 					{
-						if ($y == $period) 
+						if ($y == $period)
 						{
 							return JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
 						}
@@ -494,9 +494,9 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				}
 				for ($y = $thisyear; $y >= 2002; $y--)
 				{
-					if (time() >= strtotime('01/01/' . $y)) 
+					if (time() >= strtotime('01/01/' . $y))
 					{
-						if ('c_' . $y == $period) 
+						if ('c_' . $y == $period)
 						{
 							return JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
 						}
@@ -508,15 +508,15 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for '_getAreas'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	private function _getAreas()
 	{
 		// Do we already have an array of areas?
-		if (!isset($this->searchareas) || empty($this->searchareas)) 
+		if (!isset($this->searchareas) || empty($this->searchareas))
 		{
 			// No - so we'll need to get it
 			$areas = array();

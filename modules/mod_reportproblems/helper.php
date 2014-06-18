@@ -39,7 +39,7 @@ class modReportProblems extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -47,10 +47,10 @@ class modReportProblems extends \Hubzero\Module\Module
 		$this->juser = JFactory::getUser();
 
 		$this->verified = 0;
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
+			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
 			{
 				$this->verified = 1;
 			}

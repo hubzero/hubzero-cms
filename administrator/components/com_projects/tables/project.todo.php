@@ -38,109 +38,109 @@ class ProjectTodo extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * Project id
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $projectid       	= NULL;
-	
+
 	/**
 	 * Name of to-do list
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $todolist       	= NULL;
-	
+
 	/**
 	 * Created date, datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $created			= NULL;
-	
+
 	/**
 	 * Created by user (user id), int(11)
-	 * 
+	 *
 	 * @var int
 	 */
 	var $created_by			= NULL;
-	
+
 	/**
 	 * Due date, datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $duedate			= NULL;
-	
+
 	/**
 	 * Closed, datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $closed				= NULL;
-	
+
 	/**
 	 * Closed by user (user id), int(11)
-	 * 
+	 *
 	 * @var int
 	 */
 	var $closed_by			= NULL;
-	
+
 	/**
 	 * Assigned to user (user id), int(11)
-	 * 
+	 *
 	 * @var int
 	 */
 	var $assigned_to		= NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * 0 open
 	 * 1 closed
 	 * 2 deleted
-	 * 
+	 *
 	 * @var int
-	 */	
+	 */
 	var $state				= NULL;
-	
+
 	/**
 	 * Milestone
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $milestone       	= NULL;
-	
+
 	/**
 	 * Private
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $private       		= NULL;
-	
+
 	/**
 	 * Details
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $details       		= NULL;
-	
+
 	/**
 	 * Content, varchar(255)
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $content       		= NULL;
-	
+
 	/**
 	 * Color name of to-do list
-	 * 
+	 *
 	 * black
 	 * blue
 	 * green
@@ -152,63 +152,63 @@ class ProjectTodo extends JTable
 	 * yellow
 	 *
 	 * @var string
-	 */	
+	 */
 	var $color      		= NULL;
-	
+
 	/**
 	 * ID of created activity
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $activityid       	= NULL;
-		
+
 	/**
 	 * Private
-	 * 
+	 *
 	 * @var integer
-	 */	
+	 */
 	var $priority      		= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_todo', 'id', $db );
 	}
-	
+
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $projectid
 	 * @param      integer $id
 	 * @return     boolean False or object
 	 */
-	function loadTodo ( $projectid = NULL, $id = 0 ) 
+	function loadTodo ( $projectid = NULL, $id = 0 )
 	{
-		if ($projectid == NULL or $id == 0) 
+		if ($projectid == NULL or $id == 0)
 		{
 		 	return false;
-		}		
+		}
 
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE projectid='$projectid' AND id='$id' LIMIT 1" );
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      array $filters
 	 * @param      integer $id
@@ -216,12 +216,12 @@ class ProjectTodo extends JTable
 	 */
 	public function getTodos ( $projectid = NULL, $filters = array(), $id = 0 )
 	{
-		if ($projectid == NULL) 
+		if ($projectid == NULL)
 		{
 		 	return false;
 		}
-		
-		$count  		= isset($filters['count']) ? $filters['count'] : 0;		
+
+		$count  		= isset($filters['count']) ? $filters['count'] : 0;
 		$sortby  		= isset($filters['sortby']) ? $filters['sortby'] : 'p.id';
 		$limit   		= isset($filters['limit']) ? $filters['limit'] : 0;
 		$limitstart 	= isset($filters['start']) ? $filters['start'] : 0;
@@ -230,41 +230,41 @@ class ProjectTodo extends JTable
 		$assignedto 	= isset($filters['assignedto']) ? $filters['assignedto'] : '';
 		$state 			= isset($filters['state']) ? intval($filters['state']) : 0;
 		$activityid 	= isset($filters['activityid']) ? intval($filters['activityid']) : 0;
-				
+
 		$query  = "SELECT ";
 		$query .= $count ? " COUNT(*) " : "*, xp.name AS authorname, xpp.name AS assignedname, xppp.name AS closedbyname, IF (p.duedate ='0000-00-00 00:00:00' OR p.duedate IS NULL, 0, 1 ) as due ";
-		if (!$count) 
+		if (!$count)
 		{
 			$query .= ", (SELECT COUNT(*) FROM #__project_comments as c WHERE c.itemid=p.id AND c.tbl='todo' AND c.state!=2) as comments ";
 		}
 		$query .= "FROM $this->_tbl AS p  ";
-		if (!$count) 
+		if (!$count)
 		{
 			$query .= "JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
 			$query .= "LEFT JOIN #__xprofiles AS xpp ON xpp.uidNumber=p.assigned_to ";
 			$query .= "LEFT JOIN #__xprofiles AS xppp ON xppp.uidNumber=p.closed_by ";
 		}
 		$query .= "WHERE p.projectid = '".$projectid."' ";
-		if ($id) 
+		if ($id)
 		{
 			$query .= " AND p.id = '".$id."' ";
-		} 
-		else 
+		}
+		else
 		{
 			$query .= $color ? " AND p.color='".$color."' " : " ";
 			$query .= $assignedto ? " AND p.assigned_to='".$assignedto."' " : " ";
 			$query .= isset($filters['milestone']) ? " AND p.milestone='".$milestone."' " : " ";
 			$query .= " AND p.state='".$state."' ";
-			if ($activityid) 
+			if ($activityid)
 			{
 				$query .= " AND p.activityid='".$activityid."' ";
 			}
 		}
-	
-		if (!$count) 
+
+		if (!$count)
 		{
 			$query .= "ORDER BY $sortby ";
-			if (isset ($limit) && $limit!=0) 
+			if (isset ($limit) && $limit!=0)
 			{
 				$query.= " LIMIT " . $limitstart . ", " . $limit;
 			}
@@ -272,21 +272,21 @@ class ProjectTodo extends JTable
 		$this->_db->setQuery( $query );
 		return $count ? $this->_db->loadResult() :  $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get lists
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      array $filters
 	 * @return     object or NULL
 	 */
 	public function getTodoLists ( $projectid = NULL, $filters = array() )
 	{
-		if ($projectid == NULL) 
+		if ($projectid == NULL)
 		{
 		 return false;
 		}
-						
+
 		$query  = "SELECT ";
 		$query .= isset($filters['count']) && $filters['count'] == 1 ? " COUNT(*) " : "DISTINCT todolist, color ";
 		$query .= "FROM $this->_tbl ";
@@ -295,30 +295,30 @@ class ProjectTodo extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get list name by color
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      string $color
 	 * @return     string or NULL
 	 */
 	public function getListName ( $projectid = NULL, $color = '' )
 	{
-		if ($projectid == NULL or $color == '') 
+		if ($projectid == NULL or $color == '')
 		{
 		 return false;
 		}
-						
+
 		$query  = "SELECT todolist FROM $this->_tbl ";
 		$query .= "WHERE projectid = '".$projectid."' AND color = '$color' ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Delete list
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      string $color
 	 * @param      boolean $all
@@ -327,50 +327,50 @@ class ProjectTodo extends JTable
 	 */
 	public function deleteList ( $projectid = NULL, $color = '', $all = 0, $permanent = 0 )
 	{
-		if ($projectid == NULL or $color == '') 
+		if ($projectid == NULL or $color == '')
 		{
 		 return false;
 		}
-		if ($all) 
+		if ($all)
 		{
-			$query  = "DELETE FROM $this->_tbl WHERE projectid = '".$projectid."' AND color = '$color'";	
+			$query  = "DELETE FROM $this->_tbl WHERE projectid = '".$projectid."' AND color = '$color'";
 		}
-		else 
+		else
 		{
 			$query  = "UPDATE $this->_tbl SET color = '', todolist = '' WHERE projectid = '".$projectid."' AND color = '$color'";
-		}				
-		
+		}
+
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get last item order
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @return     integer
 	 */
 	public function getLastOrder ( $projectid = NULL )
 	{
-		if ($projectid === NULL) 
+		if ($projectid === NULL)
 		{
 		 return false;
 		}
-						
+
 		$query  = "SELECT priority FROM $this->_tbl ";
 		$query .= "WHERE projectid = '".$projectid."' ORDER BY priority DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Delete items
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      string $todolist
 	 * @param      boolean $permanent
@@ -378,27 +378,27 @@ class ProjectTodo extends JTable
 	 */
 	public function deleteTodos ( $projectid, $todolist = '', $permanent = 0 )
 	{
-		if ($projectid == NULL) 
+		if ($projectid == NULL)
 		{
 		 return false;
 		}
-		if ($permanent) 
+		if ($permanent)
 		{
 			$query  = "DELETE FROM $this->_tbl WHERE projectid='$projectid'" ;
 		}
-		else 
+		else
 		{
 			$query  = "UPDATE $this->_tbl SET state = 2 WHERE projectid = '".$projectid."' ";
 		}
-				
+
 		$query.= $todolist ? " AND color='$todolist'" : "";
 		$this->_db->setQuery( $query );
-		$this->_db->query();		
-	}	
-	
+		$this->_db->query();
+	}
+
 	/**
 	 * Delete item
-	 * 
+	 *
 	 * @param      integer $projectid
 	 * @param      integer $todoid
 	 * @param      boolean $permanent
@@ -406,23 +406,23 @@ class ProjectTodo extends JTable
 	 */
 	public function deleteTodo ( $projectid, $todoid = 0, $permanent = 0 )
 	{
-		if ($projectid == NULL) 
+		if ($projectid == NULL)
 		{
 		 	return false;
 		}
-		
-		if ($permanent) 
+
+		if ($permanent)
 		{
 			$query  = "DELETE FROM $this->_tbl WHERE projectid='$projectid'" ;
 		}
-		else 
+		else
 		{
 			$query  = "UPDATE $this->_tbl SET state = 2 WHERE projectid = '".$projectid."' ";
 		}
-		
+
 		$query .= " AND id='$todoid'";
 		$this->_db->setQuery( $query );
 		$this->_db->query();
-		return true;		
+		return true;
 	}
 }

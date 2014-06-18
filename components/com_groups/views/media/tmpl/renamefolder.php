@@ -41,7 +41,7 @@ $info = pathinfo($this->folder);
 		<label>
 			<?php echo JText::_('Current Name: '); ?><br />
 			<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
-			
+
 			<input type="text" name="name" value="<?php echo $info['basename']; ?>" />
 		</label>
 		<p class="controls">

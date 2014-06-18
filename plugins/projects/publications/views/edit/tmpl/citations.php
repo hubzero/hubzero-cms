@@ -37,7 +37,7 @@ $config = JComponentHelper::getParams( 'com_citations' );
 $allow_import = $config->get('citation_import', 1);
 
 ?>
-<?php echo $this->project->provisioned == 1 
+<?php echo $this->project->provisioned == 1
 			? $this->helper->showPubTitleProvisioned( $this->pub, $this->route, $this->title)
 			: $this->helper->showPubTitle( $this->pub, $this->route); ?>
 <?php
@@ -51,11 +51,11 @@ $allow_import = $config->get('citation_import', 1);
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?> 
+			<h4><?php echo $ptitle; ?>
 				<?php if (in_array($this->active, $this->required)) { ?><span class="required">
 					<?php echo JText::_('REQUIRED'); ?></span><?php } ?>
 			</h4>
-			
+
 			<form action="<?php echo JRoute::_($this->route . a . 'active=publications'); ?>" method="post" id="addmember-form">
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -65,7 +65,7 @@ $allow_import = $config->get('citation_import', 1);
 					<input type="hidden" name="active" value="links" />
 					<input type="hidden" name="action" value="addcitation" />
 					<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
-					<input type="hidden" name="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />				
+					<input type="hidden" name="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<div class="c-panel-citations">
 					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ENTER_DOI'); ?>
 						<input name="citation-doi" id="citation-doi" maxlength="200" size="35" type="text" value="" class="long pubinput" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_PLACEHOLDER'); ?>" />
@@ -78,16 +78,16 @@ $allow_import = $config->get('citation_import', 1);
 			<p class="centeralign"><a href="citations/add?publication=<?php echo $this->pid; ?>" class="btn" rel="external"><?php echo JText::_('Enter manually'); ?></a></p>
 			<?php } ?>
 			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
-			
+
 		 </div>
 		</div>
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
-			<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-				<fieldset>	
+			<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+				<fieldset>
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 					<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-					<input type="hidden" name="active" value="publications" />					
+					<input type="hidden" name="active" value="publications" />
 					<input type="hidden" name="action" value="save" />
 					<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 					<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -108,26 +108,26 @@ $allow_import = $config->get('citation_import', 1);
 				<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
 				<ul id="c-citations" class="c-list">
 					<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
-				<?php if ($this->citations) { 
-					
+				<?php if ($this->citations) {
+
 					$formatter = new CitationFormat;
 					$formatter->setTemplate($this->format);
-					
-					foreach ($this->citations as $cite) { 
-						$citeText = $cite->formatted 
-							? $cite->formatted 
+
+					foreach ($this->citations as $cite) {
+						$citeText = $cite->formatted
+							? $cite->formatted
 							: CitationFormat::formatReference($cite, '');
 					?>
-					<li id="citation-<?php echo $cite->id; ?>" class="c-drag">	
+					<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
 						<span class="c-citation"><?php echo $citeText; ?></span>
-						
+
 						<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
 						<?php if (!$cite->formatted) { ?>
 						<span class="c-edit"><a href="<?php echo JRoute::_('index.php?option=com_citations&task=edit&id=' . $cite->id); ?>" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
-						<?php } ?>				
+						<?php } ?>
 					</li>
-					<?php 				
-					}				
+					<?php
+					}
 				} ?>
 				</ul>
 			</form>

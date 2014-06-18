@@ -51,7 +51,7 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 {
 	$size = filesize(JPATH_ROOT . $path . $pic);
 	list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . $pic);
-	 
+
 	$picture->src = $path . $pic;
 	$picture->name = $pic;
 	$picture->size = \Hubzero\Utility\Number::formatBytes( $size );
@@ -96,7 +96,7 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 			<button class="section-edit-cancel">Cancel</button>
 			<button class="section-edit-submit">Save Changes</button>
 		</div><!-- /#ajax-upload-actions -->
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="ajaxuploadsave" />
@@ -104,4 +104,4 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 	<input type="hidden" name="profile[picture]" id="profile-picture" value="<?php echo $this->profile->get("picture"); ?>" />
 	<input type="hidden" name="no_html" value="1" />
 	</form>
-</div><!-- /#ajax-upload-container -->	
+</div><!-- /#ajax-upload-container -->

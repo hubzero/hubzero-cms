@@ -54,7 +54,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 			Delete
-		</a> 
+		</a>
 		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 			Edit
 		</a>

@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'UpdateWikiPageAuthor'
- * 
+ *
  * Long description (if any) ...
  */
 class UpdateWikiPageAuthor extends SystemHelperScript
@@ -41,16 +41,16 @@ class UpdateWikiPageAuthor extends SystemHelperScript
 
 	/**
 	 * Description for '_description'
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_description = 'Transitions wiki page "authors" string to table of user IDs.';
 
 	/**
 	 * Short description for 'run'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()

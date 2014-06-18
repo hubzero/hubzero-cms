@@ -33,42 +33,42 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring
  */
 function HelpBuildRoute(&$query)
 {
 	$segments = array();
-	
+
 	//do we have a component
-	if (!empty($query['component'])) 
+	if (!empty($query['component']))
 	{
 		$segments[] = $query['component'];
 		unset($query['component']);
 	}
-	
+
 	//do we have an extension
-	if (!empty($query['extension'])) 
+	if (!empty($query['extension']))
 	{
 		$segments[] = $query['extension'];
 		unset($query['extension']);
 	}
-	
+
 	//do we have a page
-	if (!empty($query['page'])) 
+	if (!empty($query['page']))
 	{
 		$segments[] = $query['page'];
 		unset($query['page']);
 	}
-	
+
 	return $segments;
 }
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route
- * @return array 
+ * @return array
  */
 function HelpParseRoute($segments)
 {
@@ -78,13 +78,13 @@ function HelpParseRoute($segments)
 	{
 		return $vars;
 	}
-	
+
 	//do we have a component
 	if (isset($segments[0]))
 	{
 		$vars['component'] = 'com_' . $segments[0];
 	}
-	
+
 	//if we have segements it easy
 	if (count($segments) > 2)
 	{
@@ -95,7 +95,7 @@ function HelpParseRoute($segments)
 	{
 		$vars['page'] = $segments[1];
 	}
-	
+
 	return $vars;
 }
 

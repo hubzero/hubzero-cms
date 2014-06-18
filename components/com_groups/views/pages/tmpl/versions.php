@@ -62,7 +62,7 @@ $this->css()
 				<?php $cls = ($k == 0) ? 'current' : ''; ?>
 				<tr class="<?php echo $cls; ?>">
 					<td>
-						<?php 
+						<?php
 							echo $pageVersion->get('version');
 							echo ($k == 0) ? ' (current)' : '';
 						?>
@@ -74,7 +74,7 @@ $this->css()
 							{
 								$created = JHTML::_('date', $pageVersion->get('created'), 'F d, Y @ g:ia');
 							}
-							
+
 							$created_by = 'n/a';
 							if ($pageVersion->get('created_by') == 1000)
 							{
@@ -94,7 +94,7 @@ $this->css()
 							<span class="created-by"><?php echo $created_by; ?></span>
 						</div>
 					</td>
-					
+
 					<td>
 						<?php
 							$approved_on = 'n/a';
@@ -102,7 +102,7 @@ $this->css()
 							{
 								$approved_on = JHTML::_('date', $pageVersion->get('approved_on'), 'F d, Y @ g:ia');
 							}
-							
+
 							$approved_by = 'n/a';
 							if ($pageVersion->get('approved_by') == 1000)
 							{
@@ -122,7 +122,7 @@ $this->css()
 							<span class="approved-by"><?php echo $approved_by; ?></span>
 						</div>
 					</td>
-					
+
 					<td width="100px">
 						<a target="_blank" class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=raw&pageid='.$this->page->get('id').'&version='.$pageVersion->get('version')); ?>">
 							View Raw

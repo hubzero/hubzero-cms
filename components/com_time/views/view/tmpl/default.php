@@ -42,8 +42,8 @@ $this->css() //->css('jquery-ui-1.8.6.custom.css', 'system')
 <div id="time_container">
 	<div id="time_sidebar">
 		<ul id="time_menu">
-			<?php 
-				foreach ($this->time_plugins as $plugin) 
+			<?php
+				foreach ($this->time_plugins as $plugin)
 				{
 					if ($plugin['return'] == 'html')
 					{

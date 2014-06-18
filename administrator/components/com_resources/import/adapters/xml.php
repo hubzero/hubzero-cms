@@ -42,7 +42,7 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	 * @var string
 	 */
 	private $key = 'record';
-	
+
 	/**
 	 * Array to hold processed data
 	 * @var array
@@ -54,7 +54,7 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	 * @var int
 	 */
 	private $data_count = 0;
-	
+
 	/**
 	 * Does this adapter respond to a mime type
 	 *
@@ -65,7 +65,7 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	{
 		return $mime == 'application/xml' ? true : false;
 	}
-	
+
 	/**
 	 * Count Import data
 	 *
@@ -76,14 +76,14 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	{
 		// instantiate iterator
 		$xmlIterator = new \Resources\Import\Iterators\Xml($import->getDatapath(), $this->key);
-		
+
 		// count records
 		$this->data_count = iterator_count($xmlIterator);
 
 		// return count
 		return $this->data_count;
 	}
-	
+
 	/**
 	 * Process Import data
 	 *
@@ -100,7 +100,7 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 
 		// get the mode
 		$mode = $import->get('mode', 'UPDATE');
-		
+
 		// loop through each item
 		foreach ($iterator as $index => $record)
 		{
@@ -115,23 +115,23 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 
 			// run resource check & store
 			$resource->check()->store($dryRun);
-			
+
 			// do we have a post convert callback ?
 			$resource = $this->map($resource, $callbacks['postconvert'], $dryRun);
 
 			// add to data array
 			array_push($this->data, $resource);
-			
-			// mark record processed		
+
+			// mark record processed
 			$import->runs('current')->processed(1);
 		}
-		
+
 		return $this->data;
 	}
 
 	/**
 	 * Run Callbacks on Record
-	 * 
+	 *
 	 * @param  object $record    Resource Record
 	 * @param  array  $callbacks Array of Callbacks
 	 * @param  bool   $dryRun    Dry Run mode?

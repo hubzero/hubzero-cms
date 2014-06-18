@@ -43,7 +43,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onMembersAreas($user, $member)
@@ -57,7 +57,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Perform actions when viewing a member profile
-	 * 
+	 *
 	 * @param      object $user   Current user
 	 * @param      object $member Current member page
 	 * @param      string $option Start of records to pull
@@ -69,10 +69,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$returnhtml = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onMembersAreas($user, $member)) 
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -88,7 +88,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Get our model
 		$this->model = new BlogModel('member', $member->get('uidNumber'));
 
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$this->user    = $user;
 			$this->member  = $member;
@@ -118,7 +118,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 					case 2:
 					case 1:
-						if (is_numeric($bits[0])) 
+						if (is_numeric($bits[0]))
 						{
 							$this->task = 'browse';
 						}
@@ -130,33 +130,33 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				$this->task = $task;
 			}
 
-			switch ($this->task) 
+			switch ($this->task)
 			{
 				// Feeds
 				case 'feed.rss': $this->_feed();   break;
 				case 'feed':     $this->_feed();   break;
 				//case 'comments.rss': $this->_commentsFeed();   break;
 				//case 'comments':     $this->_commentsFeed();   break;
-				
+
 				// Settings
 				case 'savesettings': $arr['html'] = $this->_savesettings(); break;
 				case 'settings':     $arr['html'] = $this->_settings();     break;
-				
+
 				// Comments
 				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
 				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
 				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
 				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
-				
+
 				// Entries
 				case 'save':   $arr['html'] = $this->_save();   break;
 				case 'new':    $arr['html'] = $this->_new();    break;
 				case 'edit':   $arr['html'] = $this->_edit();   break;
 				case 'delete': $arr['html'] = $this->_delete(); break;
 				case 'entry':  $arr['html'] = $this->_entry();  break;
-				
+
 				case 'archive':
-				case 'browse': 
+				case 'browse':
 				default: $arr['html'] = $this->_browse(); break;
 			}
 		}
@@ -169,17 +169,17 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$filters['state'] = 'public';
-		} 
+		}
 		// Logged-in non-owner
-		else if ($juser->get('id') != $member->get('uidNumber')) 
+		else if ($juser->get('id') != $member->get('uidNumber'))
 		{
 			$filters['state'] = 'registered';
 		}
 		// Owner of the blog
-		else 
+		else
 		{
 			$filters['state'] = 'all';
 			$filters['authorized'] = $member->get('uidNumber');
@@ -194,7 +194,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Parse an SEF URL into its component bits
 	 * stripping out the path leading up to the blog plugin
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _parseUrl()
@@ -252,10 +252,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of latest blog entries
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _browse() 
+	private function _browse()
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -287,7 +287,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// See what information we can get from the path
 		$juri = JURI::getInstance();
 		$path = $juri->getPath();
-		if (strstr($path, '/')) 
+		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
 
@@ -297,17 +297,17 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Check logged-in status
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$view->filters['state'] = 'public';
-		} 
+		}
 		// Logged-in non-owner
-		else if ($juser->get('id') != $this->member->get('uidNumber')) 
+		else if ($juser->get('id') != $this->member->get('uidNumber'))
 		{
 			$view->filters['state'] = 'registered';
 		}
 		// Owner of the blog
-		else 
+		else
 		{
 			$view->filters['state'] = 'all';
 		}
@@ -320,7 +320,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->month  = $view->filters['month'];
 		$view->search = $view->filters['search'];
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -332,12 +332,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display an RSS feed of latest entries
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _feed() 
+	private function _feed()
 	{
-		if (!$this->params->get('feeds_enabled', 1)) 
+		if (!$this->params->get('feeds_enabled', 1))
 		{
 			$this->_browse();
 			return;
@@ -369,7 +369,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		$path = JURI::getInstance()->getPath();
-		if (strstr($path, '/')) 
+		if (strstr($path, '/'))
 		{
 			$bits = $this->_parseUrl();
 
@@ -389,7 +389,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$rows = $this->model->entries('list', $filters);
 
 		// Start outputing results if any found
-		if ($rows->total() > 0) 
+		if ($rows->total() > 0)
 		{
 			foreach ($rows as $row)
 			{
@@ -398,7 +398,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
 				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
-				if ($this->params->get('feed_entries') == 'partial') 
+				if ($this->params->get('feed_entries') == 'partial')
 				{
 					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
@@ -421,10 +421,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a blog entry
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _entry() 
+	private function _entry()
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -438,15 +438,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->config = $this->params;
 		$view->model  = $this->model;
 
-		if (isset($this->entry) && is_object($this->entry)) 
+		if (isset($this->entry) && is_object($this->entry))
 		{
 			$view->row = $this->entry;
-		} 
-		else 
+		}
+		else
 		{
 			$path = JURI::getInstance()->getPath();
 			$alias = '';
-			if (strstr($path, '/')) 
+			if (strstr($path, '/'))
 			{
 				$bits = $this->_parseUrl();
 
@@ -456,15 +456,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$view->row = $this->model->entry($alias);
 		}
 
-		if (!$view->row->exists()) 
+		if (!$view->row->exists())
 		{
 			return $this->_browse();
 		}
 
 		// Check authorization
 		$juser = JFactory::getUser();
-		if (($view->row->get('state') == 2 && $juser->get('guest')) 
-		 || ($view->row->get('state') == 0 && $juser->get('id') != $this->member->get('uidNumber'))) 
+		if (($view->row->get('state') == 2 && $juser->get('guest'))
+		 || ($view->row->get('state') == 0 && $juser->get('id') != $this->member->get('uidNumber')))
 		{
 			JError::raiseError(403, JText::_('PLG_MEMBERS_BLOG_NOT_AUTH'));
 			return;
@@ -479,19 +479,19 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'created_by' => $this->member->get('uidNumber')
 		);
 
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$view->filters['state'] = 'public';
-		} 
-		else 
+		}
+		else
 		{
-			if ($juser->get('id') != $this->member->get('uidNumber')) 
+			if ($juser->get('id') != $this->member->get('uidNumber'))
 			{
 				$view->filters['state'] = 'registered';
 			}
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -503,34 +503,34 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a warning message
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _login() 
+	private function _login()
 	{
 		return '<p class="warning">' . JText::_('You must be logged in to perform this action.') . '</p>';
 	}
 
 	/**
 	 * Display a form for creating an entry
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _new() 
+	private function _new()
 	{
 		return $this->_edit();
 	}
 
 	/**
 	 * Display a form for editing an entry
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _edit($row=null) 
+	private function _edit($row=null)
 	{
 		// Login check
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
@@ -560,13 +560,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		{
 			$view->entry = $row;
 		}
-		else 
+		else
 		{
 			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
 		}
 
 		// Does it exist?
-		if (!$view->entry->exists()) 
+		if (!$view->entry->exists())
 		{
 			// Set some defaults
 			$view->entry->set('allow_comments', 1);
@@ -576,7 +576,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Pass any errors on to the view
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -590,14 +590,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
-	private function _save() 
+	private function _save()
 	{
 		// Login check
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
@@ -610,29 +610,29 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
-		
+
 		// make sure we dont want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
-		
+
 		// Instantiate model
 		$row = $this->model->entry($entry['id']);
 
 		// Bind data
-		if (!$row->bind($entry)) 
+		if (!$row->bind($entry))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
 		}
 
 		// Process tags
-		if (!$row->tag(JRequest::getVar('tags', ''))) 
+		if (!$row->tag(JRequest::getVar('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->_edit($row);
@@ -645,13 +645,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete an entry
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _delete() 
+	private function _delete()
 	{
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return;
@@ -665,7 +665,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$id = JRequest::getInt('entry', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->_browse();
 		}
@@ -677,9 +677,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$entry = $this->model->entry($id);
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel) 
+		if (!$process || !$confirmdel)
 		{
-			if ($process && !$confirmdel) 
+			if ($process && !$confirmdel)
 			{
 				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_CONFIRM_DELETION'));
 			}
@@ -699,7 +699,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$view->entry  = $entry;
 			$view->authorized = true;
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -711,7 +711,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Delete the entry itself
 		$entry->set('state', -1);
-		if (!$entry->store()) 
+		if (!$entry->store())
 		{
 			$this->setError($entry->getError());
 		}
@@ -724,14 +724,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save a comment
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _savecomment() 
+	private function _savecomment()
 	{
 		// Ensure the user is logged in
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return $this->_login();
@@ -742,21 +742,21 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Instantiate a new comment object and pass it the data
 		$row = new BlogModelComment($comment['id']);
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
 		}
 
 		/*
-		if ($row->get('created_by') != $this->member->get('uidNumber)) 
+		if ($row->get('created_by') != $this->member->get('uidNumber))
 		{
 			$this->entry = new BlogModelEntry($row->get('entry_id'));
 
@@ -779,7 +779,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			// Send the message
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option))) 
+			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option)))
 			{
 				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}
@@ -791,14 +791,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a comment
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _deletecomment() 
+	private function _deletecomment()
 	{
 		// Ensure the user is logged in
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return;
@@ -806,7 +806,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$id = JRequest::getInt('comment', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->_entry();
 		}
@@ -818,7 +818,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->store()) 
+		if (!$comment->store())
 		{
 			$this->setError($comment->getError());
 		}
@@ -829,13 +829,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display blog settings
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _settings() 
+	private function _settings()
 	{
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('GROUPS_LOGIN_NOTICE'));
 			return;
@@ -864,7 +864,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', $this->_name);
 
 		$view->message  = (isset($this->message)) ? $this->message : '';
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -876,13 +876,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save blog settings
-	 * 
+	 *
 	 * @return     void
 	 */
-	private function _savesettings() 
+	private function _savesettings()
 	{
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			$this->setError(JText::_('MEMBERS_LOGIN_NOTICE'));
 			return;
@@ -897,7 +897,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$settings = JRequest::getVar('settings', array(), 'post');
 
 		$row = new \Hubzero\Plugin\Params($this->database);
-		if (!$row->bind($settings)) 
+		if (!$row->bind($settings))
 		{
 			$this->setError($row->getError());
 			return $this->_entry();
@@ -909,14 +909,14 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$row->params = $p->toString();
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return $this->_settings();

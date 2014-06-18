@@ -42,21 +42,21 @@ class ForumModelPost extends ForumModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'ForumTablePost';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_forum.post.comment';
 
 	/**
 	 * ForumModelAttachment
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_attachment = null;
@@ -71,7 +71,7 @@ class ForumModelPost extends ForumModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -89,7 +89,7 @@ class ForumModelPost extends ForumModelAbstract
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new ForumModelPost($oid);
 		}
@@ -99,7 +99,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Set and get a specific offering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function attachment()
@@ -113,7 +113,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -137,7 +137,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Determine if record was modified
-	 * 
+	 *
 	 * @return     boolean True if modified, false if not
 	 */
 	public function wasModified()
@@ -179,7 +179,7 @@ class ForumModelPost extends ForumModelAbstract
 			if ($old->get('category_id') != $this->get('category_id'))
 			{
 				$this->_tbl->updateReplies(array(
-					'category_id' => $this->get('category_id'), 
+					'category_id' => $this->get('category_id'),
 					$this->get('id')
 				));
 			}
@@ -191,7 +191,7 @@ class ForumModelPost extends ForumModelAbstract
 		/**
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
-	 * 
+	 *
 	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
 	 * @param      integer $admin Include amdin tags? (defaults to no)
 	 * @return     boolean
@@ -222,7 +222,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -235,7 +235,7 @@ class ForumModelPost extends ForumModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
@@ -247,7 +247,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Get the adapter
-	 * 
+	 *
 	 * @return  object
 	 */
 	public function adapter()
@@ -279,7 +279,7 @@ class ForumModelPost extends ForumModelAbstract
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -316,8 +316,8 @@ class ForumModelPost extends ForumModelAbstract
 
 					$this->set('content.parsed', (string) $this->get('comment', ''));
 					$this->set('content.parsed', $this->get('content.parsed') . $attach->getAttachment(
-						$this->get('id'), 
-						$this->link('download'), 
+						$this->get('id'),
+						$this->link('download'),
 						$this->_config
 					));
 					$this->set('comment', $content);

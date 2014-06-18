@@ -60,10 +60,10 @@ $this->css()
 				<input type="hidden" name="phone" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : ''; ?>" />
 				<input type="hidden" name="email" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->juser->get('email'); ?>" />
 				<input type="hidden" name="comments" value="<?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?>" />
-				
+
 				<legend><?php echo JText::_('COM_STORE_ORDER_WILL_SHIP'); ?></legend>
 				<pre><?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>
-				 
+
 <?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?>
 
 <?php echo (isset($this->posted['country'])) ? $this->escape($this->posted['country']) : $this->escape(\Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'))); ?></pre>
@@ -110,7 +110,7 @@ $this->css()
 <?php } ?>
 				<span><?php echo ($item->price*$item->quantity); ?></span>
 			</p>
-<?php 
+<?php
 	}
 ?>
 			<p><?php echo JText::_('COM_STORE_SHIPPING'); ?>: <span>0</span></p>

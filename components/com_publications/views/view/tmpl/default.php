@@ -1,7 +1,7 @@
-<?php 
+<?php
 /**
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * @license	GNU General Public License, version 2 (GPLv2) 
+ * @license	GNU General Public License, version 2 (GPLv2)
  *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
@@ -24,7 +24,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Non-Tool Publication page view  */
-	
+
 	$option 		= $this->option;
 	$config 		= $this->config;
 	$publication 	= $this->publication;
@@ -41,24 +41,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$authors 		= $this->authors;
 	$filters 		= $this->filters;
 	$version 	    = $this->version;
-	
+
 	$juser = JFactory::getUser();
 
-	$html  = '<section class="main upperpane">'."\n";	
+	$html  = '<section class="main upperpane">'."\n";
 	$html .= '<div class="aside rankarea">'."\n";
 
 	// Show stats
 	$statshtml = '';
 	$helper->getCitations();
 	$helper->getLastCitationDate();
-	$stats = new AndmoreStats($database, $publication->id, 
+	$stats = new AndmoreStats($database, $publication->id,
 		$publication->master_rating, count($helper->citations), $helper->lastCitationDate);
 	$statshtml = $stats->display();
-	
+
 	$xtra = '';
 
 	// Show audience
-	if ($params->get('show_audience')) 
+	if ($params->get('show_audience'))
 	{
 		$ra 		= new PublicationAudience( $database );
 		$audience 	= $ra->getAudience($publication->id, $publication->version_id , $getlabels = 1, $numlevels = 4);
@@ -73,7 +73,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$rt = new PublicationTags( $database );
 	$supported = $rt->checkTagUsage( $config->get('supportedtag'), $publication->id );
 
-	if ($supported) 
+	if ($supported)
 	{
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
 		$tag = new TagsTableTag( $database );
@@ -103,32 +103,32 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$html .= '</div>'."\n";
 		}
 	}
-	
+
 	// Display mini abstract
 	$html .= '<p class="ataglance">';
 	$html .= $publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
 	$html .= '</p>'."\n";
-	
+
 	// Show published date and category
 	$html .= PublicationsHtml::showSubInfo( $publication, $option );
-	
+
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
 	$html .= ' <div class="aside launcharea">'."\n";
 	$feeds = '';
-	
+
 	$useBlocks = $this->config->get('curation', 0);
-		
+
 	// Sort out primary files and draw a launch button
 	if ($useBlocks && $tab != 'play')
-	{		
+	{
 		// Get primary elements
 		$elements = $this->publication->_curationModel->getElements(1);
-		
+
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->database);
-		
+
 		$authorized = ($restricted && !$authorized) ? false : true;
-				
+
 		if ($elements)
 		{
 			foreach ($elements as $element)
@@ -136,36 +136,36 @@ defined('_JEXEC') or die( 'Restricted access' );
 				// Draw button
 				$launcher = $attModel->drawLauncher(
 					$element->manifest->params->type,
-					$this->publication, 
+					$this->publication,
 					$element,
 					$authorized
 				);
-				
+
 				$html .= $launcher;
 			}
 		}
 	}
-	elseif ($content['primary'] && count($content['primary']) > 0 && $tab != 'play') 
-	{	
+	elseif ($content['primary'] && count($content['primary']) > 0 && $tab != 'play')
+	{
 		$primaryParams 	 = new JParameter( $content['primary'][0]->params );
 		$serveas 		 = $primaryParams->get('serveas');
 		$html 			.=  PublicationsHtml::drawPrimaryButton( $option, $publication, $version, $content, $this->path, $serveas, $restricted, $authorized );
 	}
-	elseif ($tab != 'play' && $publication->state != 0) 
+	elseif ($tab != 'play' && $publication->state != 0)
 	{
 		$html .= '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
 	}
 
 	// Sort out supporting docs
 	$html .= $tab != 'play' && $publication->state != 0
-		   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath ) 
+		   ? PublicationsHtml::sortSupportingDocs( $publication, $version, $option, $content['secondary'], $restricted, $this->archPath )
 		   : '';
 
 	// Show version information
 	$html .=  $tab != 'play' ? PublicationsHtml::showVersionInfo( $publication, $version, $option, $config, $this->lastPubRelease ) : '';
-	
+
 	// Show license information
-	$html .= $tab != 'play' && $this->license && $this->license->name != 'standard' 
+	$html .= $tab != 'play' && $this->license && $this->license->name != 'standard'
 			? PublicationsHtml::showLicense( $publication, $version, $option, $this->license, 'play' ) : '';
 
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";
@@ -173,55 +173,55 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$editurl = JRoute::_('index.php?option=com_projects&alias='
 		. $publication->project_alias . '&active=publications&pid=' . $publication->id);
 	$editurl.= '?version='.$version;
-	
+
 	// Build pub url
 	$route = $publication->project_provisioned == 1
 				? 'index.php?option=com_publications&task=submit'
 				: 'index.php?option=com_projects&alias=' . $publication->project_alias . '&active=publications';
 	$editurl = JRoute::_($route . '&pid=' . $publication->id).'?version='.$version;
-	
+
 	// Show status for authorized users
 	if($this->contributable)
 	{
-		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );	
+		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );
 	}
-	
+
 	$html .= '</div><!-- / .subject -->'."\n";
 	if ($publication->access == 2 && (!$authorized && $restricted)) {
 		// show nothing else
-		$html .= '</section><!-- / .main section -->'."\n";		
+		$html .= '</section><!-- / .main section -->'."\n";
 	} else {
-		$html .= '<div class="clear sep"></div>'."\n";	
-		$html .= '</section><!-- / .main section -->'."\n";		
+		$html .= '<div class="clear sep"></div>'."\n";
+		$html .= '</section><!-- / .main section -->'."\n";
 		$html .= '<section class="main section noborder">'."\n";
 		$html .= ' <div class="subject tabbed">'."\n";
 		$html .= PublicationsHtml::tabs( $option, $publication->id, $cats, $tab, $publication->alias, $version );
-		$html .= PublicationsHtml::sections( $sections, $cats, $tab, 'hide', 'main' );	
+		$html .= PublicationsHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
 		$html .= '</div><!-- / .subject -->'."\n";
 		$html .= ' <div class="aside extracontent">'."\n";
-		
+
 		// Get Related Resources plugin
 		JPluginHelper::importPlugin( 'resources', 'related' );
 		$dispatcher = JDispatcher::getInstance();
-		
+
 		// Show related content
 		$out = $dispatcher->trigger( 'onPublicationSub', array($publication, $option, 1) );
 		if (count($out) > 0) {
-			foreach ($out as $ou) 
+			foreach ($out as $ou)
 			{
 				if (isset($ou['html'])) {
 					$html .= $ou['html'];
 				}
 			}
 		}
-				
+
 		// Show what's popular
 		if ($tab == 'about') {
 			$html .= \Hubzero\Module\Helper::renderModules('extracontent');
-		}		
+		}
 		$html .= ' </div><!-- / .aside extracontent -->'."\n";
 		$html .= '</section><!-- / .main section -->'."\n";
 	}
 	$html .= '<div class="clear"></div>'."\n";
-	
+
 	echo $html;

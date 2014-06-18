@@ -53,7 +53,7 @@ class MozifyHelper
 			foreach ($matches as $match)
 			{
 				$config = array(
-					'imageUrl'   => $match[1], 
+					'imageUrl'   => $match[1],
 					'mosaicSize' => $mosaicSize
 				);
 				$him = new Mozify($config);

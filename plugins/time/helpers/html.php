@@ -38,7 +38,7 @@ class TimeHtml
 {
 	/**
 	 * Build a select list of hubs
-	 * 
+	 *
 	 * @param  $tab          - currently active tab (default: none)
 	 * @param  $hub_id       - id of currently selected collection (default: 0 - no active hub)
 	 * @param  $active       - whether to pull all hubs, or only active hubs (default: 1 - only include active hubs)
@@ -68,10 +68,10 @@ class TimeHtml
 		}
 
 		// Go through all the hubs and add a select option for each
-		foreach($hubs as $hub) 
+		foreach($hubs as $hub)
 		{
 			$options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name), 'value', 'text');
-			if ($hub->id == $hub_id) 
+			if ($hub->id == $hub_id)
 			{
 				$selected = $hub->id;
 			}
@@ -83,7 +83,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of tasks
-	 * 
+	 *
 	 * @param  $task_id      - id of currently selected task (default: none)
 	 * @param  $tab          - currently selected tab (default: none)
 	 * @param  $hub_id       - id of hub to limit tasks list to (default: null)
@@ -117,10 +117,10 @@ class TimeHtml
 		if(count($tasks) > 0)
 		{
 			// Go through all the tasks and add a select option for each
-			foreach($tasks as $task) 
+			foreach($tasks as $task)
 			{
 				$options[] = JHTML::_('select.option', $task->id, JText::_($task->name), 'value', 'text');
-				if ($task->id == $task_id) 
+				if ($task->id == $task_id)
 				{
 					$selected = $task->id;
 				}
@@ -139,7 +139,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of support levels (currently only used in the hub edit view)
-	 * 
+	 *
 	 * @param  $sl of currently selected support level (default: Classic Support)
 	 * @return $slist
 	 */
@@ -160,7 +160,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of time hours (currently only used in the records edit view)
-	 * 
+	 *
 	 * @param  $time of currently selected collection
 	 * @return $tlist
 	 */
@@ -184,7 +184,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of time minutes (currently only used in the records edit view)
-	 * 
+	 *
 	 * @param  $time of currently selected collection
 	 * @return $tlist
 	 */
@@ -203,7 +203,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list users
-	 * 
+	 *
 	 * @param  $id    - currently selected user (default: 0)
 	 * @param  $tab   - currently selected tab (default: none)
 	 * @param  $empty - what type of item to use for first entry (ex: none, all, etc...)
@@ -257,7 +257,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of liaisons
-	 * 
+	 *
 	 * @param  $id    - currently selected user (default: 0)
 	 * @param  $tab   - currently selected tab (default: none)
 	 * @param  $empty - what type of item to use for first entry (ex: none, all, etc...)
@@ -299,7 +299,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of priorities
-	 * 
+	 *
 	 * @param  $priority - priority of currently selected task
 	 * @param  $active   - currently active tab
 	 * @param  $empty    - whether to include empty select "all" option
@@ -327,7 +327,7 @@ class TimeHtml
 
 	/**
 	 * Build a select list of subordinates
-	 * 
+	 *
 	 * @param  $id    - currently selected user (default: 0)
 	 * @param  $subs  - array of subordinates
 	 * @return $ulist
@@ -353,7 +353,7 @@ class TimeHtml
 
 	/**
 	 * Check if user is a manager
-	 * 
+	 *
 	 * @param  $id of active user
 	 * @return void
 	 */

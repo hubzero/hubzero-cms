@@ -294,7 +294,7 @@
 		</field>
 	</fieldset>
 	<fieldset name="editinglayout" label="COM_CONTENT_EDITING_LAYOUT"
-				description="COM_CONTENT_CONFIG_EDITOR_LAYOUT">	
+				description="COM_CONTENT_CONFIG_EDITOR_LAYOUT">
 		<field
 			name="show_publishing_options"
 			type="radio"
@@ -306,7 +306,7 @@
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
-		</field>	
+		</field>
 		<field
 			name="show_article_options"
 			type="radio"
@@ -318,7 +318,7 @@
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
-		</field>		
+		</field>
 		<field
 			name="show_urls_images_frontend"
 			type="radio"
@@ -330,7 +330,7 @@
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
-		</field>		
+		</field>
 		<field
 			name="show_urls_images_backend"
 			type="radio"
@@ -342,7 +342,7 @@
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
-		</field>	
+		</field>
 		<field
 			name="spacer3"
 			type="spacer"
@@ -392,7 +392,7 @@
 			type="spacer"
 			hr="true"
 			/>
-			
+
 		<field
 			name="float_intro"
 			type="list"
@@ -400,7 +400,7 @@
 			description="COM_CONTENT_FLOAT_DESC">
 				<option value="right">COM_CONTENT_RIGHT</option>
 				<option value="left">COM_CONTENT_LEFT</option>
-				<option value="none">COM_CONTENT_NONE</option>	
+				<option value="none">COM_CONTENT_NONE</option>
 		</field>
 		<field
 			name="float_fulltext"
@@ -433,7 +433,7 @@
 			default="1">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
-		</field>	
+		</field>
 		<field name="show_category_title" type="radio"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
 				description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"

@@ -38,70 +38,70 @@ class ResourcesSponsor extends JTable
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id       		= NULL;  // @var int(11) Primary key
-	
+
 	/**
 	 * Description for 'alias'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $alias	  		= NULL;	 // @var varchar(100)
 
 	/**
 	 * Description for 'type'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title     		= NULL;  // @var varchar(250)
 
 	/**
 	 * Description for 'state'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $state 		= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $created = NULL;  // @var text
-	
+
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $created_by = NULL;  // @var text
-	
+
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $modified = NULL;  // @var text
-	
+
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $modified_by = NULL;  // @var text
 
 	/**
 	 * Description for 'description'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $description 	= NULL;  // @var text
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -112,7 +112,7 @@ class ResourcesSponsor extends JTable
 
 	/**
 	 * Data validation
-	 * 
+	 *
 	 * @return     boolean True on success, False on error
 	 */
 	public function check()
@@ -120,7 +120,7 @@ class ResourcesSponsor extends JTable
 		$this->title = trim($this->title);
 		$this->description = trim($this->description);
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
 			return false;
@@ -133,12 +133,12 @@ class ResourcesSponsor extends JTable
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
 		$juser = JFactory::getUser();
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
@@ -149,13 +149,13 @@ class ResourcesSponsor extends JTable
 
 	/**
 	 * Load a record by the alias
-	 * 
+	 *
 	 * @param      string  $oid Alias
 	 * @return     boolean True on success, False on error
 	 */
 	public function load($keys = NULL, $reset = true)
 	{
-		if ($keys === NULL) 
+		if ($keys === NULL)
 		{
 			return false;
 		}
@@ -168,11 +168,11 @@ class ResourcesSponsor extends JTable
 		$oid = trim($keys);
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -181,7 +181,7 @@ class ResourcesSponsor extends JTable
 
 	/**
 	 * Get record count
-	 * 
+	 *
 	 * @param      array $filters Filters to apply to query
 	 * @return     integer
 	 */
@@ -199,17 +199,17 @@ class ResourcesSponsor extends JTable
 
 	/**
 	 * Get a list of records
-	 * 
+	 *
 	 * @param      array $filters Filters to apply to query
 	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}

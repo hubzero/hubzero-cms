@@ -38,49 +38,49 @@ class MembersQuotasClasses extends JTable
 {
 	/**
 	 * ID - primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * Alias
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $alias = null;
 
 	/**
 	 * Hard files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_files = null;
 
 	/**
 	 * Soft files limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_files = null;
 
 	/**
 	 * Hard blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hard_blocks = null;
 
 	/**
 	 * Soft blocks limit
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $soft_blocks = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,20 +91,20 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		// Make sure they gave an alias
-		if (trim($this->alias) == '') 
+		if (trim($this->alias) == '')
 		{
 			$this->setError( JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_ALIAS') );
 			return false;
 		}
 
 		// Make sure the alias isn't 'custom'
-		if (trim($this->alias) == 'custom') 
+		if (trim($this->alias) == 'custom')
 		{
 			$this->setError( JText::_('COM_MEMBERS_QUOTA_CLASS_CUSTOM') );
 			return false;
@@ -129,7 +129,7 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Override store to add logging
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function store($updateNulls = false)
@@ -161,7 +161,7 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Override delete to add logging
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function delete($pk = null)
@@ -192,7 +192,7 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -205,7 +205,7 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Get a count of the number of quota classes
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return count of rows
 	 */
@@ -220,7 +220,7 @@ class MembersQuotasClasses extends JTable
 
 	/**
 	 * Get the an object list of quotas classes
-	 * 
+	 *
 	 * @param  array $filters start and limit, needed for pagination
 	 * @return object Return password rule records
 	 */

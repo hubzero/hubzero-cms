@@ -39,22 +39,22 @@ class modNewsletter extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		//instantiate database object
 		$this->database = JFactory::getDBO();
-		
+
 		//instantiate user object
 		$this->juser = JFactory::getUser();
-		
+
 		//get mailing list details that we are wanting users to sign up for
 		$sql = "SELECT * FROM #__newsletter_mailinglists WHERE deleted=0 AND private=0 AND id=" . $this->database->quote( $this->params->get('mailinglist', 0) );
 		$this->database->setQuery( $sql );
 		$this->mailinglist = $this->database->loadObject();
-		
+
 		//get mailing list subscription if not guest
 		$this->subscription   = null;
 		$this->subscriptionId = null;
@@ -64,18 +64,18 @@ class modNewsletter extends \Hubzero\Module\Module
 			$this->database->setQuery( $sql );
 			$this->subscription = $this->database->loadObject();
 		}
-		
-		//if we are unsubscribed 
+
+		//if we are unsubscribed
 		if (is_object($this->subscription) && $this->subscription->status == 'unsubscribed')
 		{
 			$this->subscriptionId = $this->subscription->id;
 			$this->subscription   = null;
 		}
-		
+
 		//add stylesheets and scripts
 		$this->css();
 		$this->js();
-		
+
 		//display module
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

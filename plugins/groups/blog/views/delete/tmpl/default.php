@@ -60,7 +60,7 @@ $this->css()
 	 		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
 
 			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
 				<?php echo JText::_('PLG_GROUPS_BLOG_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

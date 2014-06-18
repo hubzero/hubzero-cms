@@ -38,28 +38,28 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Holds the parser for re-use
-	 * 
+	 *
 	 * @var object
 	 */
 	public $parser;
 
 	/**
 	 * Get the wiki parser, creating a new one if not already existing or $getnew is set
-	 * 
+	 *
 	 * @param      array   $config Options for initializing a parser
 	 * @param      boolean $getnew Init a new parser?
 	 * @return     object
 	 */
 	public function onGetWikiParser($config, $getnew=false)
 	{
-		if (!is_object($this->parser) || $getnew) 
+		if (!is_object($this->parser) || $getnew)
 		{
 			$path = dirname(__FILE__);
-			if (is_file($path . DS . 'parser.php')) 
+			if (is_file($path . DS . 'parser.php'))
 			{
 				include_once($path . DS . 'parser.php');
-			} 
-			else 
+			}
+			else
 			{
 				return null;
 			}
@@ -79,7 +79,7 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Turns wiki markup to HTML
-	 * 
+	 *
 	 * @param      string  $text      Text to convert
 	 * @param      array   $config    Options for initializing a parser
 	 * @param      boolean $fullparse Do a full parse or ignore some things like macros?

@@ -55,7 +55,7 @@ else
 }
 
 //if we are in edit mode we want to redirect back to course
-if ($this->task == 'edit') 
+if ($this->task == 'edit')
 {
 	$link = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'));
 	$title = 'Back to Course';
@@ -134,7 +134,7 @@ This course is intended to be broadly accessible to those with a background in '
 <?php } else { ?>
 			<label class="course_alias_label" for="course_alias_field">
 				<?php echo JText::_('Course identifier'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
-				<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" /> 
+				<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" />
 				<span class="hint"><?php echo JText::_('This is a short identifier used for URLs, catalogs, etc. Allowed characters are letters, numbers, dashes, underscores, and periods. Example: biology101, chem.501'); ?></span>
 			</label>
 <?php } ?>
@@ -154,7 +154,7 @@ This course is intended to be broadly accessible to those with a background in '
 
 			<label for="field_description">
 				<?php echo JText::_('Overview'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
-				
+
 				<?php
 					echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
 				?>
@@ -171,7 +171,7 @@ This course is intended to be broadly accessible to those with a background in '
 
 			<label for="actags">
 				<?php echo JText::_('Tags'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
-				
+
 				<?php if (count($tf) > 0) {
 					echo $tf[0];
 				} else { ?>

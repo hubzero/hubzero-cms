@@ -40,14 +40,14 @@ class plgCronCache extends JPlugin
 {
 	/**
 	 * Path to cache directory
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_path = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -61,7 +61,7 @@ class plgCronCache extends JPlugin
 
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -88,7 +88,7 @@ class plgCronCache extends JPlugin
 
 	/**
 	 * Trash all expired cache data
-	 * 
+	 *
 	 * @param     $params object JRegistry
 	 * @return    boolean
 	 */
@@ -107,7 +107,7 @@ class plgCronCache extends JPlugin
 
 	/**
 	 * Clean out old system CSS files
-	 * 
+	 *
 	 * @param     $params object JRegistry
 	 * @return    boolean
 	 */

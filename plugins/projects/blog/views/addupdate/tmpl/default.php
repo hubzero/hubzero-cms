@@ -32,12 +32,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<p id="blog-submitarea">
 				<span id="counter_number_blog" class="leftfloat mini"></span>
 				<input type="hidden" name="task" value="view" />
-				<input type="hidden" name="active" value="feed" />	
+				<input type="hidden" name="active" value="feed" />
 				<input type="hidden" name="action" value="save" />
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
-				<input type="hidden" name="managers_only" value="0" />	
+				<input type="hidden" name="managers_only" value="0" />
 				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
 			</p>
 		</fieldset>
-	</form>	
+	</form>
 </div>

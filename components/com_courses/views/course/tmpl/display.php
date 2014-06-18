@@ -35,7 +35,7 @@ $field  = strtolower(JRequest::getWord('field', ''));
 $action = strtolower(JRequest::getWord('action', ''));
 
 $offerings = $this->course->offerings(array(
-	'available' => false, 
+	'available' => false,
 	'sort'      => 'publish_up'
 ), true);
 
@@ -70,7 +70,7 @@ $this->css('course.css')
 				<label for="actags">
 					<?php echo JText::_('Tags'); ?>
 
-					<?php 
+					<?php
 					JPluginHelper::importPlugin( 'hubzero' );
 					$dispatcher = JDispatcher::getInstance();
 					$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
@@ -185,16 +185,16 @@ $this->css('course.css')
 				foreach ($this->cats as $cat)
 				{
 					$name = key($cat);
-					if ($name != '') 
+					if ($name != '')
 					{
 						$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
 
-						if (strtolower($name) == $this->active) 
+						if (strtolower($name) == $this->active)
 						{
 							$pathway = JFactory::getApplication()->getPathway();
 							$pathway->addItem($cat[$name], $url);
 
-							if ($this->active != 'overview') 
+							if ($this->active != 'overview')
 							{
 								$document = JFactory::getDocument();
 								$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
@@ -226,7 +226,7 @@ $this->css('course.css')
 		</ul>
 
 		<?php
-		foreach ($this->notifications as $notification) 
+		foreach ($this->notifications as $notification)
 		{
 			echo '<p class="' . $notification['type'] . '">' . $notification['message'] . '</p>';
 		}
@@ -290,7 +290,7 @@ $this->css('course.css')
 			$k = 0;
 			foreach ($this->sections as $section)
 			{
-				if ($section['html'] != '') 
+				if ($section['html'] != '')
 				{
 					?>
 					<div class="inner-section" id="<?php echo $section['name']; ?>-section">
@@ -307,7 +307,7 @@ $this->css('course.css')
 						<?php } ?>
 						<?php echo $section['html']; ?>
 					</div><!-- / .inner-section -->
-					<?php 
+					<?php
 				}
 				$k++;
 			}
@@ -323,7 +323,7 @@ $this->css('course.css')
 
 			if ($this->course->isManager())
 			{
-				foreach ($offerings as $offering) 
+				foreach ($offerings as $offering)
 				{
 					if ($offering->isDeleted())
 					{
@@ -357,8 +357,8 @@ $this->css('course.css')
 								<a class="btn" href="<?php echo JRoute::_($offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($dflt->get('title'))); ?></a>
 								<span class="btn dropdown-toggle"></span>
 								<ul class="dropdown-menu">
-								<?php 
-								foreach ($offering->sections() as $section) 
+								<?php
+								foreach ($offering->sections() as $section)
 								{
 									// Skip the default
 									if ($section->get('alias') == $dflt->get('alias') || $section->isDeleted())
@@ -401,7 +401,7 @@ $this->css('course.css')
 			}
 			else
 			{
-				foreach ($offerings as $offering) 
+				foreach ($offerings as $offering)
 				{
 					if (!$offering->isAvailable())
 					{
@@ -482,7 +482,7 @@ $this->css('course.css')
 		}
 		?>
 		<?php
-		if ($this->course->access('edit', 'course')) 
+		if ($this->course->access('edit', 'course'))
 		{
 			?>
 			<div class="manager-options">
@@ -494,7 +494,7 @@ $this->css('course.css')
 			<?php
 		}
 		$instructors = $this->course->instructors();
-		if (count($instructors) > 0) 
+		if (count($instructors) > 0)
 		{
 		?>
 		<div class="course-instructors" data-bio-length="200">
@@ -527,7 +527,7 @@ $this->css('course.css')
 		{
 			foreach ($this->sections as $section)
 			{
-				if ($section['metadata'] != '') 
+				if ($section['metadata'] != '')
 				{
 					echo $section['metadata'];
 				}

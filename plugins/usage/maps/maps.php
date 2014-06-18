@@ -45,7 +45,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onUsageAreas()
@@ -57,7 +57,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get hosts data
-	 * 
+	 *
 	 * @param      object &$db      JDatabase
 	 * @param      array  $location Longitude/latitude
 	 * @return     string
@@ -70,7 +70,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		$rows = $db->loadObjectList();
 
 		$info = '';
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $row)
 			{
@@ -82,7 +82,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      object &$db      JDatabase
 	 * @param      string $domain   Domain
 	 * @param      array  $location Longitude/latitude
@@ -96,7 +96,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		$users = $db->loadResult();
 
 		$info = '';
-		if ($users) 
+		if ($users)
 		{
 			$info .= '_br_ - Users: ' . $users;
 		}
@@ -106,7 +106,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		$db->setQuery($query);
 		$guests = $db->loadResult();
 
-		if ($guests) 
+		if ($guests)
 		{
 			$info .= '_br_ - Guests: ' . $guests;
 		}
@@ -116,17 +116,17 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		$db->setQuery($query);
 		$bots = $db->loadResult();
 
-		if ($bots) 
+		if ($bots)
 		{
 			$info .= '_br_ - Bots: ' . $bots;
 		}
 
-		if ($info) 
+		if ($info)
 		{
 			$info = $info . '_br_';
 			return $info;
-		} 
-		else 
+		}
+		else
 		{
 			return '_br_';
 		}
@@ -134,7 +134,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check if the location is from a bot
-	 * 
+	 *
 	 * @param      object &$db      JDatabase
 	 * @param      array  $location Longitude/latitude
 	 * @return     integer
@@ -151,7 +151,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get data for a type
-	 * 
+	 *
 	 * @param      string $type Data type
 	 * @return     void
 	 */
@@ -169,7 +169,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$rows = $db->loadObjectList();
 
 				$html .= '<locations>' . "\n";
-				if ($rows) 
+				if ($rows)
 				{
 					foreach ($rows as $row)
 					{
@@ -183,13 +183,13 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$date = JRequest::getVar('period', '2008-03-00');
 				$local = JRequest::getVar('local', '');
 
-				if ($local == 'us') 
+				if ($local == 'us')
 				{
 					$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
 					//$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
 					$query = 'SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < "' . $date . '" AND (countrySHORT = "US" OR countrySHORT = "PR") GROUP BY ipLAT, ipLONG ORDER BY ips';
-				} 
-				else 
+				}
+				else
 				{
 					$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
 					#$sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
@@ -200,7 +200,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$rows = $db->loadObjectList();
 
 				$html .= '<markers>' . "\n";
-				if ($rows) 
+				if ($rows)
 				{
 					foreach ($rows as $row)
 					{
@@ -217,7 +217,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$db->setQuery($query);
 				$rows = $db->loadObjectList();
 
-				if ($rows) 
+				if ($rows)
 				{
 					foreach ($rows as $row)
 					{
@@ -257,7 +257,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call for displaying usage data
-	 * 
+	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
 	 * @param      object $db            JDatabase
@@ -269,10 +269,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
 		// Check if our task is the area we want to return results for
-		if ($task) 
+		if ($task)
 		{
 			if (!in_array($task, $this->onUsageAreas())
-			 && !in_array($task, array_keys($this->onUsageAreas()))) 
+			 && !in_array($task, array_keys($this->onUsageAreas())))
 			{
 				return '';
 			}
@@ -282,11 +282,11 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		$lat  = JRequest::getVar('lat', '35');
 		$long = JRequest::getVar('long', '-90');
 		$zoom = JRequest::getVar('zoom', '');
-		if ($lat != '35' && $long != '-90') 
+		if ($lat != '35' && $long != '-90')
 		{
 			$zoom = '14';
-		} 
-		else 
+		}
+		else
 		{
 			$zoom = '4';
 		}
@@ -296,15 +296,15 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 		$type = str_replace(':', '-', $type);
 
-		if ($no_html) 
+		if ($no_html)
 		{
 			$data = JRequest::getVar('data','');
 
-			if ($data) 
+			if ($data)
 			{
 				$this->getData($data);
-			} 
-			else 
+			}
+			else
 			{
 				$config = JComponentHelper::getParams($option);
 

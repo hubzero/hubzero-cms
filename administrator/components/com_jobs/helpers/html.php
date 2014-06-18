@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'JobsHtml'
- * 
+ *
  * Long description (if any) ...
  */
 class JobsHtml
@@ -41,9 +41,9 @@ class JobsHtml
 
 	/**
 	 * Short description for 'error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -55,9 +55,9 @@ class JobsHtml
 
 	/**
 	 * Short description for 'warning'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -69,9 +69,9 @@ class JobsHtml
 
 	/**
 	 * Short description for 'alert'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -82,9 +82,9 @@ class JobsHtml
 
 	/**
 	 * Short description for 'formSelect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $name Parameter description (if any) ...
 	 * @param      array $array Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
@@ -108,9 +108,9 @@ class JobsHtml
 
 	/**
 	 * Short description for 'txt_unpee'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */

@@ -42,19 +42,19 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="task" value="add" />
 
-						<input type="text" name="host" value="" /> 
+						<input type="text" name="host" value="" />
 						<input type="submit" value="<?php echo JText::_('ADD_HOST'); ?>" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<br />
-		
+
 		<table class="paramlist admintable">
 			<tbody>
 <?php
-		if (count($this->rows) > 0) 
+		if (count($this->rows) > 0)
 		{
 			foreach ($this->rows as $row)
 			{

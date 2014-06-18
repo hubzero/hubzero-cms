@@ -45,7 +45,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -59,7 +59,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      integer $miniview  View style
@@ -76,26 +76,26 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext, 
-					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn` 
-				FROM `#__wiki_page` AS w 
+		$sql1 = "SELECT v.id, v.pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext,
+					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section, w.`group_cn`
+				FROM `#__wiki_page` AS w
 				JOIN `#__wiki_version` AS v ON w.id=v.pageid
 				JOIN `#__wiki_page_links` AS wl ON wl.page_id=w.id
 				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->Quote($resource->id);
 
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
-			if ($juser->authorize('com_resources', 'manage') 
-			 || $juser->authorize('com_groups', 'manage')) 
+			if ($juser->authorize('com_resources', 'manage')
+			 || $juser->authorize('com_groups', 'manage'))
 			{
 				$sql1 .= '';
-			} 
-			else 
+			}
+			else
 			{
 				$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 				$groups = array();
-				if ($ugs && count($ugs) > 0) 
+				if ($ugs && count($ugs) > 0)
 				{
 					foreach ($ugs as $ug)
 					{
@@ -106,8 +106,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND (w.group_cn IN ($g) OR w.created_by='" . $juser->get('id') . "'))) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$sql1 .= "AND w.access!=1 ";
 		}
@@ -120,19 +120,19 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 			 . " JOIN #__resource_assoc AS a ON r.id=a.parent_id"
 			 . " LEFT JOIN #__resource_types AS t ON r.logical_type=t.id"
 			 . " WHERE r.published=1 AND a.child_id=" . $resource->id . " AND r.type=rt.id AND r.type!=8 ";
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
-			if ($juser->authorize('com_resources', 'manage') 
-			 || $juser->authorize('com_groups', 'manage')) 
+			if ($juser->authorize('com_resources', 'manage')
+			 || $juser->authorize('com_groups', 'manage'))
 			{
 				$sql2 .= '';
-			} 
-			else 
+			}
+			else
 			{
 				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND (r.group_owner IN ($g) OR r.created_by='" . $juser->get('id') . "'))) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$sql2 .= "AND r.access=0 ";
 		}
@@ -151,16 +151,16 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		));
 
 		// Instantiate a view
-		if ($miniview) 
+		if ($miniview)
 		{
 			$view->setLayout('mini');
-		} 
+		}
 
 		// Pass the view some info
 		$view->option   = $option;
 		$view->resource = $resource;
 		$view->related  = $database->loadObjectList();
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

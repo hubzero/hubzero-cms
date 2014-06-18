@@ -38,28 +38,28 @@ class CoursesModelIterator implements Countable, Iterator
 {
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_pos = 0;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_total = 0;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $data Array of data
 	 * @return     void
 	 */
@@ -78,7 +78,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 * @param      mixed $value
 	 * @return     void
 	 */
-	public function add($value) 
+	public function add($value)
 	{
 		$this->_data[$this->_total++] = $value;
 	}
@@ -88,20 +88,20 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     void
 	 */
-	public function rewind() 
+	public function rewind()
 	{
 		$this->_pos = 0;
 	}
 
 	/**
 	 * Fetch an array value
-	 * Accepts either a numerical index value or string for 
+	 * Accepts either a numerical index value or string for
 	 * previous or next record based on current cursor position
 	 *
 	 * @param      mixed $key Numeric index or string [first, last, prev, next]
 	 * @return     mixed
 	 */
-	public function fetch($key) 
+	public function fetch($key)
 	{
 		// Get cursor position
 		$cur = $this->_pos;
@@ -156,19 +156,19 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     boolean
 	 */
-	public function isFirst() 
+	public function isFirst()
 	{
 		return !isset($this->_data[$this->_pos - 1]);
-	} 
+	}
 
 	/**
 	 * Is the current position the last one?
 	 *
 	 * @return     boolean
 	 */
-	public function isLast() 
+	public function isLast()
 	{
-		return !isset($this->_data[$this->_pos + 1]); 
+		return !isset($this->_data[$this->_pos + 1]);
 	}
 
 	/**
@@ -177,7 +177,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function current() 
+	public function current()
 	{
 		if ($this->valid())
 		{
@@ -191,7 +191,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     integer
 	 */
-	public function total() 
+	public function total()
 	{
 		return $this->_total;
 	}
@@ -201,7 +201,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     integer
 	 */
-	public function count() 
+	public function count()
 	{
 		return $this->_total;
 	}
@@ -211,7 +211,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function first() 
+	public function first()
 	{
 		$this->rewind();
 	}
@@ -221,7 +221,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function last() 
+	public function last()
 	{
 		$this->_pos = ($this->_total - 1);
 	}
@@ -231,7 +231,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function key($idx=null) 
+	public function key($idx=null)
 	{
 		if ($idx !== null)
 		{
@@ -250,7 +250,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function prev() 
+	public function prev()
 	{
 		--$this->_pos;
 	}
@@ -260,7 +260,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function next() 
+	public function next()
 	{
 		++$this->_pos;
 	}
@@ -270,7 +270,7 @@ class CoursesModelIterator implements Countable, Iterator
 	 *
 	 * @return     mixed
 	 */
-	public function valid() 
+	public function valid()
 	{
 		return isset($this->_data[$this->_pos]);
 	}

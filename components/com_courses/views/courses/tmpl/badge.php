@@ -66,12 +66,12 @@ switch ($this->action)
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false);
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}

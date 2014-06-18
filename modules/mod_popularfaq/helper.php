@@ -39,7 +39,7 @@ class modPopularFaq extends \Hubzero\Module\Module
 {
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -60,7 +60,7 @@ class modPopularFaq extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

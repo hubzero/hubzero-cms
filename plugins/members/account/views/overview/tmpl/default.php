@@ -55,7 +55,7 @@ $com_user    = 'com_users';
 		<h4><?php echo JText::_('PLG_MEMBERS_LINKED_ACCOUNTS'); ?></h4>
 		<div class="clear"></div>
 		<div class="sub-section-content auth">
-			<?php 
+			<?php
 			if ($this->hzalaccounts)
 			{
 				echo "<h5>" . JText::_('PLG_MEMBERS_ACCOUNT_ACTIVE_PROVIDERS') . ":</h5>";
@@ -67,7 +67,7 @@ $com_user    = 'com_users';
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
-						<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php 
+						<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php
 							echo JRoute::_('index.php?option=' .
 								$this->option . '&id=' .
 								$this->member->get('uidNumber') .
@@ -109,7 +109,7 @@ $com_user    = 'com_users';
 <?php } // close linked accounts subsection check ?>
 
 	<div class="sub-section">
-		<h4><?php 
+		<h4><?php
 			if ($this->passtype == 'changelocal')
 			{
 				echo JText::_('PLG_MEMBERS_CHANGE_LOCAL_PASSWORD');
@@ -144,7 +144,7 @@ $com_user    = 'com_users';
 						<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CONFIRM_NEW_PASSWORD'); ?> <input type="password" name="newpass2" id="newpass2" class="input-text" />
 					</label>
 
-					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_SAVE'); ?>" id="password-change-save" /> 
+					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_SAVE'); ?>" id="password-change-save" />
 					<input type="reset" class="cancel" id="pass-cancel" value="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>" />
 				</div>
 

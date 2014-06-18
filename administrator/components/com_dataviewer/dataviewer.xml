@@ -362,7 +362,7 @@
 		<filename>tasks/html/dataview_list.js</filename>
 		<filename>tasks/list.php</filename>
 		</files>
-	
+
 	</administration>
 	<params>
 		<param name="record_display_limit" default="10" />

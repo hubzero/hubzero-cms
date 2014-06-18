@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the collections table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class CollectionsTableCollectionTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'title', 
-		'alias', 
-		'object_id', 
+		'id',
+		'title',
+		'alias',
+		'object_id',
 		'object_type',
 		'created',
 		'created_by',
@@ -30,9 +30,9 @@ class CollectionsTableCollectionTest extends PHPUnit_Framework_TestCase
 		'negative'
 	);
 	var $mock       = array(
-		'id'          => null, 
-		'title'       => 'Maecenas sed diam eget risus varius blandit sit amet non magna.', 
-		'alias'       => '', 
+		'id'          => null,
+		'title'       => 'Maecenas sed diam eget risus varius blandit sit amet non magna.',
+		'alias'       => '',
 		'object_id'   => 0,
 		'object_type' => '',
 		'created'     => '2013-05-06 12:13:04',
@@ -107,7 +107,7 @@ class CollectionsTableCollectionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTableCollection::count
 	 */
@@ -123,7 +123,7 @@ class CollectionsTableCollectionTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTableCollection::find
 	 */

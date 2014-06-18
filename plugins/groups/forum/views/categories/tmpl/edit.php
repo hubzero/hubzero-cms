@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die( 'Restricted access' );
 $juser = JFactory::getUser();
 
@@ -45,7 +45,7 @@ $this->css()
 				<div class="col span-half omega">
 					<label for="field-closed" id="comment-anonymous-label">
 						<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
-						<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
 					</label>
 				</div>

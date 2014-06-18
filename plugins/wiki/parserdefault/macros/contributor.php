@@ -38,7 +38,7 @@ class ContributorMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,20 +51,20 @@ class ContributorMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
 		$id = 0;
 		// Is it numeric?
-		if (is_numeric($et)) 
+		if (is_numeric($et))
 		{
 			// Yes, then get contributor by ID
 			$id = intval($et);
@@ -74,38 +74,38 @@ class ContributorMacro extends WikiMacro
 			$a = $this->_db->loadRow();
 
 			// Did we get a result from the database?
-			if ($a) 
+			if ($a)
 			{
 				$id = ($id) ? $id : $a[0];
 				// Build and return the link
-				if ($a[4] != '') 
+				if ($a[4] != '')
 				{
 					$name = $a[4];
-				} 
-				else 
+				}
+				else
 				{
 					$name  = $a[1] . ' ';
 					$name .= ($a[2]) ? $a[2] . ' ' : '';
 					$name .= $a[3] . ' ';
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// No, it could be username or name
 			$n = trim($et);
 			// Is there a space in it inidcating name ("First Last")?
-			if (!strpos($n,' ')) 
+			if (!strpos($n,' '))
 			{
 				// No, then we must have a username
 				// Get user's name
 				$cuser = JUser::getInstance($n);
-				if (is_object($cuser)) 
+				if (is_object($cuser))
 				{
 					$name = $cuser->get('name');
 					$id   = $cuser->get('id');
-				} 
-				else 
+				}
+				else
 				{
 					return '(contributor:' . $et . ' not found)';
 				}
@@ -117,15 +117,15 @@ class ContributorMacro extends WikiMacro
 				$a = $this->_db->loadRow();
 
 				// Did we get a result from the database?
-				if ($a) 
+				if ($a)
 				{
 					$id = ($id) ? $id : $a[0];
 					// Build and return the link
-					if ($a[4] != '') 
+					if ($a[4] != '')
 					{
 						$name = $a[4];
-					} 
-					else 
+					}
+					else
 					{
 						$name  = $a[1] . ' ';
 						$name .= ($a[2]) ? $a[2] . ' ' : '';
@@ -136,12 +136,12 @@ class ContributorMacro extends WikiMacro
 		}
 
 		// Did we get a result from the database?
-		if ($name && $id) 
+		if ($name && $id)
 		{
 			return '<a href="' . JRoute::_('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
 			//return '['.JRoute::_('index.php?option=com_members&id='.$id).' '.$name.']';
-		} 
-		else 
+		}
+		else
 		{
 			// Return error message
 			return '(contributor:' . $et . ' not found)';

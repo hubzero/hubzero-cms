@@ -90,11 +90,11 @@ class CategoriesControllerCategories extends JControllerAdmin
  	public function delete()
  	{
  		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
- 		
+
  		// Get items to remove from the request.
  		$cid = JRequest::getVar('cid', array(), '', 'array');
  		$extension = JRequest::getVar('extension', null);
- 
+
  		if (!is_array($cid) || count($cid) < 1)
  		{
  			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
@@ -103,11 +103,11 @@ class CategoriesControllerCategories extends JControllerAdmin
  		{
  			// Get the model.
  			$model = $this->getModel();
- 
+
  			// Make sure the item ids are integers
  			jimport('joomla.utilities.arrayhelper');
  			JArrayHelper::toInteger($cid);
- 
+
  			// Remove the items.
  			if ($model->delete($cid))
  			{
@@ -118,7 +118,7 @@ class CategoriesControllerCategories extends JControllerAdmin
  				$this->setMessage($model->getError());
  			}
  		}
- 
+
  		$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&extension=' . $extension, false));
- 	} 
+ 	}
 }

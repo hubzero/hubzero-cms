@@ -26,24 +26,24 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
-if ($this->version == 'dev') 
+if ($this->version == 'dev')
 {
 	$ptitle = $this->last_idx > $this->current_idx  ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CHOOSE_LICENSE')) ;
 }
-else 
+else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_LICENSE'));	
+	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_LICENSE'));
 }
 
 ?>
-<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">	
-	<?php echo $this->project->provisioned == 1 
+<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-		<input type="hidden" name="active" value="publications" />					
+		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 		<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -65,10 +65,10 @@ else
 	$this->contribHelper->drawStatusBar($this);
 
 	$canedit = (
-		$this->pub->state == 3 
-		|| $this->pub->state == 4 
-		|| $this->pub->state == 5 
-		|| in_array($this->active, $this->mayupdate)) 
+		$this->pub->state == 3
+		|| $this->pub->state == 4
+		|| $this->pub->state == 5
+		|| in_array($this->active, $this->mayupdate))
 		? 1 : 0;
 
 // Section body starts:
@@ -79,7 +79,7 @@ else
 		 	<div class="c-inner">
 				<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SELECT'); ?></p>				
+				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SELECT'); ?></p>
 				<div id="c-show">
 					<?php if(!$this->licenses) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_FOUND').'</p>'; } else { ?>
 					<ul id="c-browser">
@@ -108,11 +108,11 @@ else
 				<li id="nosel" <?php if($this->license) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_SELECTED'); ?></li>
 				<li id="c-sel-license" class="prominent<?php if(!$this->license) { echo ' hidden'; } ?>"><?php echo $this->license ? $this->license->title : ''; ?></li>
 			</ul>
-			
+
 			<?php foreach ($this->licenses as $lic) { ?>
 			<div id="extra-<?php echo strtolower(urlencode($lic->name)); ?>" class="c-extra<?php if(!$this->license or $lic->id != $this->row->license_type) { echo ' hidden'; } ?>">
-				<?php if($lic->info) { 
-					$info = $lic->info; 
+				<?php if($lic->info) {
+					$info = $lic->info;
 					if($lic->url) {
 						 $info .= ' <a href="'.$lic->url.'" rel="external">Read license terms &rsaquo;</a>';
 					}
@@ -128,14 +128,14 @@ else
 					<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_REMOVE_DEFAULTS'); ?></p>
 					<span class="mini pub-edit" id="reload-<?php echo strtolower(urlencode($lic->name)); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT'); ?></span>
 				<?php } ?>
-				<?php if ($lic->agreement == 1 && $canedit) { 
+				<?php if ($lic->agreement == 1 && $canedit) {
 					$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED').' '.$lic->title.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE');
 					if($lic->url) {
 						 $txt = preg_replace("/license terms/", '<a href="'.$lic->url.'" rel="external">license terms</a>', $txt);
 					}
 					$txt = preg_replace("/".$lic->title."/", '<strong>'.$lic->title.'</strong>', $txt);
 					?>
-					<label class="agreement"><input type="checkbox" name="agree[<?php echo strtolower(urlencode($lic->name)); ?>]" value="1" id="agree-<?php echo strtolower(urlencode($lic->name)); ?>" <?php echo $lic->id == $this->row->license_type ? 'checked="checked"' : '';  ?> />	<?php echo $txt; ?>.	
+					<label class="agreement"><input type="checkbox" name="agree[<?php echo strtolower(urlencode($lic->name)); ?>]" value="1" id="agree-<?php echo strtolower(urlencode($lic->name)); ?>" <?php echo $lic->id == $this->row->license_type ? 'checked="checked"' : '';  ?> />	<?php echo $txt; ?>.
 					</label>
 				<?php } ?>
 			</div>

@@ -38,70 +38,70 @@ class MembersPasswordRules extends JTable
 {
 	/**
 	 * ID - primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * Class
-	 * 
+	 *
 	 * @var char(255)
 	 */
 	var $class = null;
 
 	/**
 	 * Description
-	 * 
+	 *
 	 * @var char(255)
 	 */
 	var $description = null;
 
 	/**
 	 * Enabled
-	 * 
+	 *
 	 * @var tinyint(1)
 	 */
 	var $enabled = null;
 
 	/**
 	 * Failure message
-	 * 
+	 *
 	 * @var char(255)
 	 */
 	var $failuremsg = null;
 
 	/**
 	 * Group
-	 * 
+	 *
 	 * @var char(32)
 	 */
 	var $grp = null;
 
 	/**
 	 * Ordering
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $ordering = null;
 
 	/**
 	 * Rule
-	 * 
+	 *
 	 * @var char(255)
 	 */
 	var $rule = null;
 
 	/**
 	 * Value
-	 * 
+	 *
 	 * @var char(255)
 	 */
 	var $value = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -112,7 +112,7 @@ class MembersPasswordRules extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -125,7 +125,7 @@ class MembersPasswordRules extends JTable
 
 	/**
 	 * Get a count of the number of password rules (used mainly for pagination)
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return count of rows
 	 */
@@ -140,7 +140,7 @@ class MembersPasswordRules extends JTable
 
 	/**
 	 * Get the an object list of password rules
-	 * 
+	 *
 	 * @param  array $filters start and limit, needed for pagination
 	 * @return object Return password rule records
 	 */

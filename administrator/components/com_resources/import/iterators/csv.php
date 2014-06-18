@@ -51,7 +51,7 @@ class Csv implements \Iterator
         $this->file      = fopen($file, 'r');
         $this->delimiter = $delimiter;
     }
-    
+
     /**
      * Get the current XML node
      * @return object XML node as a stdClass
@@ -93,11 +93,11 @@ class Csv implements \Iterator
                 $object->$header = $row[$k];
             }
         }
-        
+
         // return as object
         return $object;
     }
-    
+
     /**
      * Get our current position while iterating
      * @return int Current position
@@ -106,7 +106,7 @@ class Csv implements \Iterator
     {
         return $this->position;
     }
-    
+
     /**
      * Go to the next Node that matches our key
      * @return void
@@ -115,7 +115,7 @@ class Csv implements \Iterator
     {
         return !feof($this->file);
     }
-    
+
     /**
      * Move to the first node that matches our key
      * @return void
@@ -125,7 +125,7 @@ class Csv implements \Iterator
         $this->position = 0;
         rewind($this->file);
     }
-    
+
     /**
      * Is our current node valid
      * @return bool Is valid?

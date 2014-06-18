@@ -58,8 +58,8 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 		<?php } ?>
 		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=files') . '?action=connect'; ?>"><?php echo JText::_('Connect!'); ?></a>
 		<?php } ?>
-		
-		<?php 
+
+		<?php
 			// Connected to Google
 			if ($this->oparams->get('google_token') && $active) {  ?>
 				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=files') . '?action=connect'; ?>">[&raquo;]</a></span>

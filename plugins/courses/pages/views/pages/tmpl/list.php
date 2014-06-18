@@ -83,10 +83,10 @@ if (!$no_html) { ?>
 			<table>
 				<tbody>
 				<?php
-				if ($this->docs) 
+				if ($this->docs)
 				{
 					jimport('joomla.filesystem.file');
-					
+
 					foreach ($this->docs as $path => $name)
 					{
 						$ext = JFile::getExt($name);

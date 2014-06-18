@@ -37,49 +37,49 @@ Class TimeContacts extends JTable
 {
 	/**
 	 * id, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * hub name
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = null;
 
 	/**
 	 * phone number
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $phone = null;
 
 	/**
 	 * email address
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $email = null;
 
 	/**
 	 * role
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $role = null;
 
 	/**
 	 * hub_id that contact is associated with
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hub_id = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   database object
 	 * @return  void
 	 */
@@ -90,7 +90,7 @@ Class TimeContacts extends JTable
 
 	/**
 	 * Override check function to perform validation
-	 * 
+	 *
 	 * @return boolean true if all checks pass, else false
 	 */
 	public function check()
@@ -107,7 +107,7 @@ Class TimeContacts extends JTable
 
 	/**
 	 * Build query
-	 * 
+	 *
 	 * @param  $filters (not needed yet...)
 	 * @return $query
 	 */
@@ -120,7 +120,7 @@ Class TimeContacts extends JTable
 
 	/**
 	 * Get count of contacts
-	 * 
+	 *
 	 * @return query result number of contacts
 	 */
 	public function getCount($filters=array())
@@ -134,7 +134,7 @@ Class TimeContacts extends JTable
 
 	/**
 	 * Get set of contacts
-	 * 
+	 *
 	 * @param  $filters (examples: hub_id)
 	 * @return object list of contacts
 	 */

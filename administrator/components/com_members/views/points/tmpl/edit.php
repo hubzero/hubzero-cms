@@ -40,7 +40,7 @@ JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -81,7 +81,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 		<fieldset>
 			<legend><span>New Transaction</span></legend>
-		
+
 				<table class="adminform">
 			 <tbody>
 			  <tr>
@@ -157,7 +157,7 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

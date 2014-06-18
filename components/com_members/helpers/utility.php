@@ -32,14 +32,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Helper class for registration. 
+ * Helper class for registration.
  * Use primarily for input validation.
  */
 class MembersHelperUtility
 {
 	/**
 	 * Validate organization type
-	 * 
+	 *
 	 * @param      string $org
 	 * @return     boolean 1 = valid, 0 = invalid
 	 */
@@ -57,7 +57,7 @@ class MembersHelperUtility
 
 	/**
 	 * Check validity of login
-	 * 
+	 *
 	 * @param      string $login                      - login name to check
 	 * @param      bool   $allowNumericFirstCharacter - whether or not to allow first character as number (used for grandfathered accounts)
 	 * @return     integer Return
@@ -85,7 +85,7 @@ class MembersHelperUtility
 
 	/**
 	 * Check if an integer is positive
-	 * 
+	 *
 	 * @param      integer $x
 	 * @return     boolean 1 = valid, 0 = invalid
 	 */
@@ -100,7 +100,7 @@ class MembersHelperUtility
 
 	/**
 	 * Validate a password
-	 * 
+	 *
 	 * @param      unknown $password
 	 * @return     boolean 1 = valid, 0 = invalid
 	 */
@@ -115,7 +115,7 @@ class MembersHelperUtility
 
 	/**
 	 * Validate an email address
-	 * 
+	 *
 	 * @param      unknown $email
 	 * @return     boolean 1 = valid, 0 = invalid
 	 */
@@ -130,7 +130,7 @@ class MembersHelperUtility
 
 	/**
 	 * Validate a URL
-	 * 
+	 *
 	 * @param      string $url
 	 * @return     integer 1 = valid, 0 = invalid
 	 */
@@ -146,7 +146,7 @@ class MembersHelperUtility
 
 	/**
 	 * Validate a phone number
-	 * 
+	 *
 	 * @param      string $phone
 	 * @return     integer 1 = valid, 0 = invalid
 	 */
@@ -161,13 +161,13 @@ class MembersHelperUtility
 
 	/**
 	 * Validate text
-	 * 
+	 *
 	 * @param      string $text Text to validate
 	 * @return     integer 1 = valid, 0 = invalid
 	 */
 	public static function validtext($text)
 	{
-		if (!strchr($text, "	")) 
+		if (!strchr($text, "	"))
 		{
 			return(1);
 		}
@@ -176,7 +176,7 @@ class MembersHelperUtility
 
 	/**
 	 * Validate ORCID
-	 * 
+	 *
 	 * @param      string $orcid ORCID
 	 * @return     integer 1 = valid, 0 = invalid
 	 */
@@ -191,21 +191,21 @@ class MembersHelperUtility
 
 	/**
 	 * Short description for 'genemailconfirm'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     integer Return description (if any) ...
 	 */
 	public static function genemailconfirm()
 	{
-		return(-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max 
+		return(-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max
 	}
 
 	/**
 	 * Short description for 'userpassgen'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $length Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -227,7 +227,7 @@ class MembersHelperUtility
 
 	/**
 	 * Check to see if the email confirmation code is still an active code
-	 * 
+	 *
 	 * @param      $code - (int) email confirmation code
 	 * @return     bool
 	 */

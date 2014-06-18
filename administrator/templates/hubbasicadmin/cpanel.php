@@ -100,7 +100,7 @@ $juser = JFactory::getUser();
 		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
-			
+
 			<ul class="user-options">
 					<?php
 						//Display an harcoded logout
@@ -127,10 +127,10 @@ $juser = JFactory::getUser();
 						endforeach;
 					?>
   			</ul>
-			
+
 			<div class="clr"></div>
 		</header><!-- / header -->
-		
+
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
@@ -138,13 +138,13 @@ $juser = JFactory::getUser();
 					<div class="clr"><!-- We need this for the drop downs --></div>
 				</div>
 			</nav><!-- / .navigation -->
-			
+
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<jdoc:include type="modules" name="title" />
 					<jdoc:include type="modules" name="toolbar" />
 				</div><!-- / #toolbar-box -->
-				
+
 				<?php if (!JRequest::getInt('hidemainmenu') && $this->countModules('submenu') > 1): ?>
 				<nav role="navigation" class="sub-navigation">
 					<jdoc:include type="modules" name="submenu" />
@@ -174,7 +174,7 @@ $juser = JFactory::getUser();
 				</section><!-- / #main -->
 			</section><!-- / #content -->
 		</div><!-- / #wrap -->
-		
+
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">

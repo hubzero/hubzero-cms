@@ -53,15 +53,15 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 
 <?php if (count($this->content) > 0) { ?>
 	<ul>
-		<?php 
-		foreach ($this->content as $item) 
+		<?php
+		foreach ($this->content as $item)
 		{
 			$url = DS . $item->catpath . DS . $item->alias;
 
 			// get associated image
 			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext , $match);
-			$img = count($match) > 1 
-			     ? trim(stripslashes($match[1])) 
+			$img = count($match) > 1
+			     ? trim(stripslashes($match[1]))
 			     : $this->params->get('default_image', 'modules/mod_announcements/default.gif');
 		?>
 		<li>
@@ -81,7 +81,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 			<?php } ?>
 			<?php if ($this->params->get('show_desc', '')) { ?>
 				<span class="a-desc">
-					<?php 
+					<?php
 					// get cleaned article body text
 					$desc = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>.*?<\/a>/is', '\2', $item->introtext);
 					$desc = preg_replace( '/<span([^"]+)"[^>]*>.*?<\/span>/is', '\2', $desc);

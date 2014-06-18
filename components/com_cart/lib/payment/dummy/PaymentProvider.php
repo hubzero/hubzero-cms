@@ -32,51 +32,51 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * UPay payment provider
- * 
+ *
  * Long description (if any) ...
  */
 class PaymentProvider
-{	
+{
 	private $buttonVars;
 	private $credentials;
-	
+
 	/**
 	 * Set transaction details
 	 *
 	 */
-	public function setTransactionDetails($transactionDetails) 
+	public function setTransactionDetails($transactionDetails)
 	{
 		$this->buttonVars['custom'] = $transactionDetails->token . '-' . $transactionDetails->info->tId;
 	}
-	
+
 	/**
 	 * Get HTML code for payment button
 	 *
 	 */
-	public function getPaymentCode() 
+	public function getPaymentCode()
 	{
 		$code  = '<form method="post" action="' . JURI::root() . 'cart/test/pay">';
 		$code .= '<input type="hidden" value="dodummypayment" name="cmd">';
-		
+
 		foreach ($this->buttonVars as $k => $v)
 		{
 			$code .= '<input type="hidden" value="' . $v . '" name="' . $k . '">';
 		}
-		
+
 		$code .= '<input type="submit" value="PAY">';
 		$code .= '</form>';
 		return $code;
 	}
-	
+
 	/* ------------------------ Postback functions ---------------------------- */
-	
+
 	/**
 	 * Set postback info ($_POST)
 	 *
 	 * @param 	array $_POST
 	 * @return 	int associated transaction ID if $_POST data is valid, false otherwise
 	 */
-	public function setPostBack($postMessage) 
+	public function setPostBack($postMessage)
 	{
 		// Get transaction ID
 		$customData = explode('-', $postMessage['custom']);
@@ -84,7 +84,7 @@ class PaymentProvider
 		$tId = $customData[1];
 		return $tId;
 	}
-	
+
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
 	 *
@@ -95,5 +95,5 @@ class PaymentProvider
 	{
 		return true;
 	}
-	
+
 }

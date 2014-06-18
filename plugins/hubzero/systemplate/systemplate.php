@@ -38,7 +38,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return information about this hub
-	 * 
+	 *
 	 * @return  array
 	 */
 	public function onSystemOverview()
@@ -61,7 +61,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 
 		$db->setQuery($query);
 		$templates = $db->loadObjectList('id');
-		foreach ($templates as $template) 
+		foreach ($templates as $template)
 		{
 			if ($template->home == 1)
 			{
@@ -96,7 +96,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Assign label and data to an object
-	 * 
+	 *
 	 * @param   string $label
 	 * @param   mixed  $value
 	 * @return  object

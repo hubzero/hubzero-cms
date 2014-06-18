@@ -117,7 +117,7 @@ class LanguagesModelLanguages extends JModelList
 		// Join over the asset groups.
 		$query->select('ag.title AS access_level');
 		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-		
+
 		// Select the language home pages
 		$query->select('l.home AS home');
 		$query->join('LEFT', $db->quoteName('#__menu') . ' AS l  ON  l.language = a.lang_code AND l.home=1  AND l.language <> ' . $db->quote('*'));

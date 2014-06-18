@@ -38,7 +38,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute function
-	 * 
+	 *
 	 * @return void
 	 */
 	public function execute()
@@ -57,7 +57,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set notifications
-	 * 
+	 *
 	 * @param  string $message
 	 * @param  string $type
 	 * @return void
@@ -76,7 +76,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get notifications
-	 * 
+	 *
 	 * @return $messages if they exist
 	 */
 	public function getNotifications()
@@ -93,7 +93,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the "trail"
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function _buildPathway()
@@ -127,7 +127,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the title for this component
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function _buildTitle()
@@ -146,7 +146,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Main/default view.  Just call all our plugins
-	 * 
+	 *
 	 * @return void
 	 */
 	public function viewTask()
@@ -203,7 +203,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Ajax method
-	 * 
+	 *
 	 * @return void
 	 */
 	public function ajaxTask()
@@ -221,7 +221,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorize current user
-	 * 
+	 *
 	 * @return true or false
 	 */
 	protected function _authorize()

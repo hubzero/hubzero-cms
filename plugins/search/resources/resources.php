@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'ResourceChildSorter'
- * 
+ *
  * Long description (if any) ...
  */
 class ResourceChildSorter
@@ -41,16 +41,16 @@ class ResourceChildSorter
 
 	/**
 	 * Description for 'order'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $order;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $order Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -61,9 +61,9 @@ class ResourceChildSorter
 
 	/**
 	 * Short description for 'sort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      object $b Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -89,7 +89,7 @@ class ResourceChildSorter
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchResources extends SearchPlugin
@@ -97,9 +97,9 @@ class plgSearchResources extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $request Parameter description (if any) ...
 	 * @param      object &$results Parameter description (if any) ...
 	 * @param      object $authz Parameter description (if any) ...
@@ -122,12 +122,12 @@ class plgSearchResources extends SearchPlugin
 				$group_list = '(\'' . join('\', \'', $groups) . '\')';
 				$access = '(access IN (' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
 			}
-			else 
+			else
 			{
 				$access = '(access IN (' . $viewlevels . '))';
 			}
 		}
-		else 
+		else
 		{
 			if ($authz->is_guest())
 			{
@@ -209,19 +209,19 @@ class plgSearchResources extends SearchPlugin
 				$weight AS weight,
 				r.publish_up AS date,
 				rt.type AS section,
-				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
 				AS contributors,
-				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id)
 				AS contributor_ids,
-				(select group_concat(concat(parent_id, '|', ordering)) 
-					from #__resource_assoc ra2 
-					left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone 
+				(select group_concat(concat(parent_id, '|', ordering))
+					from #__resource_assoc ra2
+					left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone
 					where ra2.child_id = r.id) AS parents
 			FROM #__resources r
-			LEFT JOIN #__resource_types rt 
+			LEFT JOIN #__resource_types rt
 				ON rt.id = r.type
-			WHERE 
-				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND UTC_TIMESTAMP() > r.publish_up) AND (NOT r.publish_down OR UTC_TIMESTAMP() < r.publish_down) 
+			WHERE
+				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND UTC_TIMESTAMP() > r.publish_up) AND (NOT r.publish_down OR UTC_TIMESTAMP() < r.publish_down)
 				AND ($weight > 0)" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
@@ -258,9 +258,9 @@ class plgSearchResources extends SearchPlugin
 						r.publish_up AS date,
 						0.5 as weight,
 						rt.type AS section,
-						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id) 
+						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
 							AS contributors,
-						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id) 
+						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id)
 							AS contributor_ids,
 						(select group_concat(concat(parent_id, '|', ordering))
 							from #__resource_assoc ra2

@@ -38,63 +38,63 @@ class MwZones extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $zone;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $state;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $master;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $mw_version;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ssh_key_path;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $picture;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -105,29 +105,29 @@ class MwZones extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean False if invalid data, true on success
 	 */
 	public function check()
 	{
 		$this->zone = preg_replace("/[^A-Za-z0-9\-\_\.]/", '', $this->zone);
-		if (!$this->zone) 
+		if (!$this->zone)
 		{
 			$this->setError(JText::_('No zone provided'));
 			return false;
 		}
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->title = $this->zone;
 		}
 		$this->master = trim($this->master);
-		if (!$this->master) 
+		if (!$this->master)
 		{
 			$this->setError(JText::_('No master provided'));
 			return false;
 		}
 		$this->state = strtolower(trim($this->state));
-		if (!$this->state) 
+		if (!$this->state)
 		{
 			$this->setError(JText::_('No state provided.'));
 			return false;
@@ -150,7 +150,7 @@ class MwZones extends JTable
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = $oid;
 		}
@@ -167,7 +167,7 @@ class MwZones extends JTable
 
 	/**
 	 * Construct an SQL statement based on the array of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build SQL from
 	 * @return     string SQL
 	 */
@@ -175,19 +175,19 @@ class MwZones extends JTable
 	{
 		$where = array();
 
-		if (isset($filters['state']) && $filters['state'] != '') 
+		if (isset($filters['state']) && $filters['state'] != '')
 		{
 			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['master']) && $filters['master'] != '') 
+		if (isset($filters['master']) && $filters['master'] != '')
 		{
 			$where[] = "c.`master`=" . $this->_db->Quote($filters['master']);
 		}
-		if (isset($filters['zone']) && $filters['zone'] != '') 
+		if (isset($filters['zone']) && $filters['zone'] != '')
 		{
 			$where[] = "c.`zone`=" . $this->_db->Quote($filters['zone']);
 		}
-		if (isset($filters['id'])) 
+		if (isset($filters['id']))
 		{
 			if (!is_array($filters['id']))
 			{
@@ -200,45 +200,45 @@ class MwZones extends JTable
 			}
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(c.`zone`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.`master`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
 		$query = "FROM $this->_tbl AS c";
-		if (isset($filters['ip']) || isset($filters['ipFROM']) || isset($filters['ipTO']) 
-		 || isset($filters['continent']) || isset($filters['countrySHORT']) 
-		 || isset($filters['ipREGION']) || isset($filters['ipCITY'])) 
+		if (isset($filters['ip']) || isset($filters['ipFROM']) || isset($filters['ipTO'])
+		 || isset($filters['continent']) || isset($filters['countrySHORT'])
+		 || isset($filters['ipREGION']) || isset($filters['ipCITY']))
 		{
 			$query .= " JOIN `zone_locations` AS t ON c.`id`=t.`zone_id`";
 			//$where[] = "t.`id` = " . $this->_db->Quote($this->view->filters['location']);
-			if (isset($filters['ipFROM']) && $filters['ipFROM'] != '') 
+			if (isset($filters['ipFROM']) && $filters['ipFROM'] != '')
 			{
 				$where[] = "t.`ipFROM`= INET_ATON(" . $this->_db->Quote($filters['ipFROM']) . ")";
 			}
-			if (isset($filters['ipTO']) && $filters['ipTO'] != '') 
+			if (isset($filters['ipTO']) && $filters['ipTO'] != '')
 			{
 				$where[] = "t.`ipTO`= INET_ATON(" . $this->_db->Quote($filters['ipTO']) . ")";
 			}
 			// If we just have an IP address
-			if (isset($filters['ip']) && $filters['ip'] != '') 
+			if (isset($filters['ip']) && $filters['ip'] != '')
 			{
 				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
 				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->Quote($filters['ip']) . ")";
 			}
-			if (isset($filters['continent']) && $filters['continent'] != '') 
+			if (isset($filters['continent']) && $filters['continent'] != '')
 			{
 				$where[] = "LOWER(t.`continent`)=" . $this->_db->Quote(strtolower($filters['continent']));
 			}
-			if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '') 
+			if (isset($filters['countrySHORT']) && $filters['countrySHORT'] != '')
 			{
 				$where[] = "LOWER(t.`countrySHORT`)=" . $this->_db->Quote(strtolower($filters['countrySHORT']));
 			}
-			if (isset($filters['ipREGION']) && $filters['ipREGION'] != '') 
+			if (isset($filters['ipREGION']) && $filters['ipREGION'] != '')
 			{
 				$where[] = "LOWER(t.`ipREGION`)=" . $this->_db->Quote(strtolower($filters['ipREGION']));
 			}
-			if (isset($filters['ipCITY']) && $filters['ipCITY'] != '') 
+			if (isset($filters['ipCITY']) && $filters['ipCITY'] != '')
 			{
 				$where[] = "LOWER(t.`ipCITY`)=" . $this->_db->Quote(strtolower($filters['ipCITY']));
 			}
@@ -255,7 +255,7 @@ class MwZones extends JTable
 
 	/**
 	 * Get a list of records
-	 * 
+	 *
 	 * @param      string $what    Data to return
 	 * @param      array  $filters Filters to build SQL from
 	 * @return     mixed
@@ -282,17 +282,17 @@ class MwZones extends JTable
 			default:
 				$query  = "SELECT c.* " . $this->_buildQuery($filters);
 
-				if (!isset($filters['sort']) || !$filters['sort']) 
+				if (!isset($filters['sort']) || !$filters['sort'])
 				{
 					$filters['sort'] = 'zone';
 				}
-				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 				{
 					$filters['sort_Dir'] = 'ASC';
 				}
 				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				if (isset($filters['limit']) && $filters['limit'] != 0)
 				{
 					$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 				}

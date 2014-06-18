@@ -32,12 +32,12 @@ $juri = JURI::getInstance();
 <h3><?php echo JText::_('COM_PROJECTS_NOTES_SHARING'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 	<fieldset >
@@ -45,13 +45,13 @@ if (!$this->getError()) {
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="p" value="<?php echo $this->page->id; ?>" />
-		
+
 		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_TO_NOTE') . ' &ldquo;' . $this->page->title . '&rdquo;:'; ?></h4>
 		<p class="publink"><?php echo trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $this->pubStamp; ?></p>
 		<p class="about"><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_ABOUT'); ?></p>
-		
+
 		<?php if ($this->project->private == 0) { ?>
-		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>	
+		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>
 		<label>
 		<input type="radio" name="action" value="<?php echo 'publist'; ?>" <?php if ($this->listed) { echo 'checked="checked"'; } ?> /><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LIST'); ?>
 		</label>
@@ -71,7 +71,7 @@ if (!$this->getError()) {
 		<?php } elseif ($this->ajax) { ?>
 			<p class="submitarea">
 			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CLOSE_THIS'); ?>" />
-			</p>	
+			</p>
 		<?php } ?>
 	</fieldset>
 </form>

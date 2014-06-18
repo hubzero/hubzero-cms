@@ -53,7 +53,7 @@ else {
 	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
 	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";	
+	$message .= '-------------------------------'."\n";
 }
 
 $message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.')'."\n";

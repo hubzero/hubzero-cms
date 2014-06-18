@@ -39,13 +39,13 @@ $this->css()
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post">
 	<div id="filters">
 		<input type="hidden" name="inaction" value="inbox" />
-		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?> 
+		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?>
 		<select class="option" name="filter">
 			<option value=""><?php echo JText::_('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
 			<?php
-				if ($this->components) 
+				if ($this->components)
 				{
-					foreach ($this->components as $component) 
+					foreach ($this->components as $component)
 					{
 						$component = substr($component, 4);
 						$sbjt  = '<option value="'.$component.'"';
@@ -55,7 +55,7 @@ $this->css()
 					}
 				}
 			?>
-		</select> 
+		</select>
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
 	</div>
 
@@ -66,7 +66,7 @@ $this->css()
 			<option value="markasunread"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD'); ?></option>
 			<option value="sendtoarchive"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
 			<option value="sendtotrash"><?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
-		</select> 
+		</select>
 		<input type="hidden"name="activetab" value="inbox" />
 		<input class="option" type="submit" value="<?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
 	</div>
@@ -107,7 +107,7 @@ $this->css()
 						$subject = $row->subject;
 
 						//support - special
-						if ($component == 'support') 
+						if ($component == 'support')
 						{
 							$fg = explode(' ', $row->subject);
 							$fh = array_pop($fg);
@@ -139,12 +139,12 @@ $this->css()
 						</td>
 						<td>
 							<?php
-							if (substr($row->type, -8) == '_message') 
+							if (substr($row->type, -8) == '_message')
 							{
 								$u = JUser::getInstance($row->created_by);
 								echo '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
-							} 
-							else 
+							}
+							else
 							{
 								echo JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
 							}

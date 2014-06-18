@@ -377,7 +377,7 @@ class Migration20130924000009ComMenus extends Base
 						'user'     => $config->getValue('user'),
 						'password' => $config->getValue('password'),
 						'database' => $config->getValue('db')
-					) 
+					)
 				);
 
 				$table = new \JTableMenu($database);

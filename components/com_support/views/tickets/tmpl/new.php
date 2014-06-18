@@ -89,12 +89,12 @@ $group = JRequest::getVar('group', '');
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_SUPPORT_TROUBLE_USER_INFORMATION'); ?></legend>
-			
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 			<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
-			
+
 			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->problem['referer']); ?>" />
 			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->problem['tool']); ?>" />
 			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->problem['osver']); ?>" />
@@ -182,7 +182,7 @@ $group = JRequest::getVar('group', '');
 
 				<label>
 					<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
-					<?php 
+					<?php
 					JPluginHelper::importPlugin('hubzero');
 					$dispatcher = JDispatcher::getInstance();
 				$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
@@ -198,7 +198,7 @@ $group = JRequest::getVar('group', '');
 					<div class="col span6">
 						<label>
 							<?php echo JText::_('COMMENT_GROUP'); ?>:
-							<?php 
+							<?php
 							$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', '', '', 'ticketowner')));
 							if (count($gc) > 0) {
 								echo $gc[0];
@@ -231,9 +231,9 @@ $group = JRequest::getVar('group', '');
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
 									<?php
-									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
 									{
-										foreach ($this->lists['resolutions'] as $anode) 
+										foreach ($this->lists['resolutions'] as $anode)
 										{
 											?>
 											<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
@@ -253,7 +253,7 @@ $group = JRequest::getVar('group', '');
 					<select name="problem[category]" id="ticket-field-category">
 						<option value=""><?php echo JText::_('[ none ]'); ?></option>
 						<?php
-						foreach ($this->lists['categories'] as $category) 
+						foreach ($this->lists['categories'] as $category)
 						{
 							?>
 							<option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
@@ -265,7 +265,7 @@ $group = JRequest::getVar('group', '');
 				<?php } ?>
 
 				<label>
-					<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php 
+					<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php
 					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
 					if (count($mc) > 0) {
 						echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];

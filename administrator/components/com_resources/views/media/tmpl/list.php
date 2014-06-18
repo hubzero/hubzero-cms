@@ -99,7 +99,7 @@ for ($i=0; $i<count($folders); $i++)
 	{
 		$this->listdir = '';
 	}
-	
+
 	if (!isset($subdir) || $subdir == null)
 	{
 		$subdir = '';

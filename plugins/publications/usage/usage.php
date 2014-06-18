@@ -38,7 +38,7 @@ class plgPublicationsUsage extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -46,43 +46,43 @@ class plgPublicationsUsage extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'usage' );
 		$this->_params = new JParameter( $this->_plugin->params );
 
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true ) 
+	 */
+	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
-		if ($publication->_category->_params->get('plg_usage') && $extended) 
+		if ($publication->_category->_params->get('plg_usage') && $extended)
 		{
 			$areas = array(
 				'usage' => JText::_('PLG_PUBLICATION_USAGE')
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$areas = array();
 		}
-		
-		// Temp - do not show the actual panel yet 
+
+		// Temp - do not show the actual panel yet
 		$areas = array();
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
@@ -90,21 +90,21 @@ class plgPublicationsUsage extends JPlugin
 	 * @param      string 	$version 		Version name
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_usage')) 
+				if ($publication->_category->_params->get('plg_usage'))
 				{
 					$rtrn == 'metadata';
 				}
@@ -114,57 +114,57 @@ class plgPublicationsUsage extends JPlugin
 				}
 			}
 		}
-		
+
 		// Only applicable to latest published version
-		if (!$extended) 
+		if (!$extended)
 		{
 			return $arr;
 		}
-				
+
 		// Display panel only for tools
-		if ($publication->base != 'apps') 
+		if ($publication->base != 'apps')
 		{
 			$rtrn == 'metadata';
 		}
 
 		// Check if we have a needed database table
 		$database = JFactory::getDBO();
-		
+
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'publication_stats';
 
-		if ($publication->alias) 
+		if ($publication->alias)
 		{
 			$url = JRoute::_('index.php?option=' . $option . '&alias=' . $publication->alias . '&active=usage');
-		} 
-		else 
+		}
+		else
 		{
 			$url = JRoute::_('index.php?option=' . $option . '&id=' . $publication->id . '&active=usage');
 		}
 
-		if (!in_array($table,$tables)) 
+		if (!in_array($table,$tables))
 		{
 			$arr['html'] 	 = '<p class="error">' . JText::_('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
-			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' 
+			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">'
 							. JText::_('PLG_PUBLICATION_USAGE_DETAILED') . '</a></p>';
 			return $arr;
 		}
-		
+
 		// Get/set some variables
 		$dthis  = JRequest::getVar('dthis', date('Y') . '-' . date('m'));
 		$period = JRequest::getInt('period', $this->_params->get('period', 14));
 
 		include_once( JPATH_ROOT . DS . 'administrator' .DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
-		
+
 		$stats = new PublicationStats( $database );
 		$stats->loadStats( $publication->id, $period, $dthis );
 
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			\Hubzero\Document\Assets::addComponentStylesheet('com_usage');
-			
+
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -173,7 +173,7 @@ class plgPublicationsUsage extends JPlugin
 					'name'=>'browse'
 				)
 			);
-			
+
 			// Get usage helper
 			$view->helper = new PublicationUsage($database, $publication->id, $publication->base);
 
@@ -185,7 +185,7 @@ class plgPublicationsUsage extends JPlugin
 			$view->map_path 	= $this->_params->get('map_path','');
 			$view->dthis 		= $dthis;
 			$view->period 		= $period;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError( $this->getError() );
 			}
@@ -195,41 +195,41 @@ class plgPublicationsUsage extends JPlugin
 
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
-		{			
+		if ($rtrn == 'all' || $rtrn == 'metadata')
+		{
 			$stats->loadStats( $publication->id, $period );
-			if ($stats->users) 
+			if ($stats->users)
 			{
 				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
-				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s user(s)',$stats->users) 
+				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s user(s)',$stats->users)
 					. ' | ' . JText::sprintf($action, $stats->downloads) . '</p>';
 			}
 		}
 
 		return $arr;
 	}
-	
+
 	/**
 	 * Round time into nearest second/minutes/hours/days
-	 * 
+	 *
 	 * @param      integer $time Time
 	 * @return     string
-	 */	
-	public function timeUnits($time) 
+	 */
+	public function timeUnits($time)
 	{
-		if ($time < 60) 
+		if ($time < 60)
 		{
 			$data = round($time,2). ' ' .JText::_('PLG_PUBLICATION_USAGE_SECONDS');
-		} 
-		else if ($time > 60 && $time < 3600) 
+		}
+		else if ($time > 60 && $time < 3600)
 		{
 			$data = round(($time/60), 2) . ' ' .JText::_('PLG_PUBLICATION_USAGE_MINUTES');
-		} 
-		else if ($time >= 3600 && $time < 86400) 
+		}
+		else if ($time >= 3600 && $time < 86400)
 		{
 			$data = round(($time/3600), 2). ' ' .JText::_('PLG_PUBLICATION_USAGE_HOURS');
-		} 
-		else if ($time >= 86400) 
+		}
+		else if ($time >= 86400)
 		{
 			$data = round(($time/86400),2). ' ' .JText::_('PLG_PUBLICATION_USAGE_DAYS');
 		}

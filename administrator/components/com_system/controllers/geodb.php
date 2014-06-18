@@ -38,15 +38,15 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Default view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error) 
+			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
@@ -58,7 +58,7 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 
 	/**
 	 * Import the hub configuration
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function importHubconfigTask()

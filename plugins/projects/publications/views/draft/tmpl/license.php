@@ -36,14 +36,14 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov 
+$selectUrl   = $prov
 		? JRoute::_( $route) . '?active=publications&action=select'
-		: JRoute::_( $route . '&active=publications&action=select') .'/?p=' . $props . '&pid=' 
+		: JRoute::_( $route . '&active=publications&action=select') .'/?p=' . $props . '&pid='
 		. $this->pub->id . '&vid=' . $this->pub->version_id;
-		
+
 $editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
@@ -55,7 +55,7 @@ $required 		= $this->manifest->params->required;
 $elName = "licensePick";
 
 // Get version params and extract agreement
-$versionParams 	= new JParameter( $this->pub->params );				
+$versionParams 	= new JParameter( $this->pub->params );
 $agreed			= $versionParams->get('licenseagreement', 0);
 
 // Get curator status
@@ -74,8 +74,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 				<span class="edit-choice"><a href="<?php echo $selectUrl; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE_CHOICE'); ?></a></span><?php } ?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
-				<?php if ($this->license) { 
-						$info = $this->license->info; 
+				<?php if ($this->license) {
+						$info = $this->license->info;
 						if ($this->license->url) {
 							 $info .= ' <a href="' . $this->license->url . '" class="popup">Read license terms &rsaquo;</a>';
 						} ?>
@@ -94,19 +94,19 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 						<span class="mini pub-edit" id="reload"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT'); ?></span>
 					</div>
 					<?php } ?>
-					<?php if ($this->license->agreement == 1) { 
+					<?php if ($this->license->agreement == 1) {
 							$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED') . ' ' . $this->license->title.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE');
 							if ($this->license->url) {
 								 $txt = preg_replace("/license terms/", '<a href="' . $this->license->url . '" rel="external">license terms</a>', $txt);
 							}
 							$txt = preg_replace("/" . $this->license->title . "/", '<strong>' . $this->license->title . '</strong>', $txt);
 							?>
-						<div class="agreements">	
-							<label><span class="required"><?php echo JText::_('Required'); ?></span><input type="checkbox" name="agree" value="1" class="check-required" id="agreement" <?php echo $agreed ? 'checked="checked"' : '';  ?> /><?php echo $txt; ?>.	
+						<div class="agreements">
+							<label><span class="required"><?php echo JText::_('Required'); ?></span><input type="checkbox" name="agree" value="1" class="check-required" id="agreement" <?php echo $agreed ? 'checked="checked"' : '';  ?> /><?php echo $txt; ?>.
 							</label>
 						</div>
 						<?php } ?>
-				</div>				
+				</div>
 				<?php } else { ?>
 				<div class="list-wrapper">
 				<ul class="itemlist" id="license-list">

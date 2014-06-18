@@ -51,21 +51,21 @@ class CronModelJob extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CronTableJob';
 
 	/**
 	 * JProfiler
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_profiler = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Record ID, array, or object
 	 * @return     void
 	 */
@@ -95,12 +95,12 @@ class CronModelJob extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CronModelJob($oid);
 		}
@@ -110,7 +110,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -157,7 +157,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Get a cron expression
-	 * 
+	 *
 	 * @return     object
 	 */
 	public function expression()
@@ -171,7 +171,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the job is available
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isAvailable()
@@ -183,7 +183,7 @@ class CronModelJob extends \Hubzero\Base\Model
 		}
 
 		// Make sure the item is published and within the available time range
-		if ($this->started() && !$this->ended()) 
+		if ($this->started() && !$this->ended())
 		{
 			return true;
 		}
@@ -193,21 +193,21 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Has the job started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function started()
 	{
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return false;
 		}
 
 		$now = \JHTML::_('date', \JFactory::getDate(), 'Y-m-d H:i:s'); //\JFactory::getDate()->toSql();
 
-		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != $this->_db->getNullDate() 
-		 && $this->get('publish_up') > $now) 
+		if ($this->get('publish_up')
+		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') > $now)
 		{
 			return false;
 		}
@@ -217,21 +217,21 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Has the job ended?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function ended()
 	{
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return true;
 		}
 
 		$now = \JHTML::_('date', \JFactory::getDate(), 'Y-m-d H:i:s'); //\JFactory::getDate()->toSql();
 
-		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != $this->_db->getNullDate() 
-		 && $this->get('publish_down') <= $now) 
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') <= $now)
 		{
 			return true;
 		}
@@ -241,7 +241,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Get the last run timestamp
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function lastRun($format='Y-m-d H:i:s')
@@ -251,7 +251,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Get the next run timestamp
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function nextRun($format='Y-m-d H:i:s')
@@ -261,7 +261,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Mark a time
-	 * 
+	 *
 	 * @param      string $label
 	 * @return     boolean
 	 */
@@ -285,7 +285,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 	/**
 	 * Return data about this job, icluding profile info as an array
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function toArray()

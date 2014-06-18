@@ -36,7 +36,7 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 
 // Get all parents
 $dirs = array();
-foreach ($this->list as $item) 
+foreach ($this->list as $item)
 {
 	if ($item->type == 'folder')
 	{
@@ -49,12 +49,12 @@ foreach ($this->list as $item)
 <h3><?php echo JText::_('COM_PROJECTS_MOVE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 	<fieldset >
@@ -67,23 +67,23 @@ if (!$this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p><?php echo JText::_('COM_PROJECTS_MOVE_FILES_CONFIRM'); ?></p>
 
-		<ul class="sample"> 
-		<?php foreach ($this->items as $element) 
-		{ 
+		<ul class="sample">
+		<?php foreach ($this->items as $element)
+		{
 			$remote = NULL;
 			$skip 	= false;
 			foreach ($element as $type => $item)
 			{
 				// Get type and item name
-			} 
-			
+			}
+
 			// Remote file?
 			if (!empty($this->services))
 			{
 				foreach ($this->services as $servicename)
-				{		
-					// Get stored remote connection to file	
-					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item; 		
+				{
+					// Get stored remote connection to file
+					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item;
 					$remote = $objRFile->getConnection($this->project->id, '', $servicename, $fpath);
 					if ($remote)
 					{
@@ -91,7 +91,7 @@ if (!$this->getError()) {
 					}
 				}
 			}
-							
+
 			// Display list item with file data
 			$this->view('default', 'selected')
 			     ->set('skip', $skip)
@@ -103,7 +103,7 @@ if (!$this->getError()) {
 			     ->display();
 		} ?>
 		</ul>
-		
+
 		<div id="dirs" class="dirs">
 			<h4><?php echo JText::_('COM_PROJECTS_MOVE_WHERE'); ?></h4>
 			<?php if (count($dirs) > 0) {  echo '<ul class="dirtree">';
@@ -111,8 +111,8 @@ if (!$this->getError()) {
 				<li>
 					<input type="radio" name="newpath" value="" <?php if(!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo JText::_('COM_PROJECTS_HOME_DIRECTORY'); ?></span>
 				</li>
-			<?php 
-			for ($i= 0; $i < count($dirs); $i++) { 
+			<?php
+			for ($i= 0; $i < count($dirs); $i++) {
 					$dir = $dirs[$i];
 					// Remove full path
 					$dir 			= trim(str_replace($this->path, "", $dir), DS);
@@ -120,20 +120,20 @@ if (!$this->getError()) {
 					$level 			= count($desect_path);
 					$dirname 		= end($desect_path);
 					$maxlevel 		= $level > $maxlevel ? $level : $maxlevel;
-					
+
 					$leftMargin = ($level * 15) . 'px';
 				 ?>
 				<li style="margin-left:<?php echo $leftMargin; ?>">
 					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
 				</li>
-			<?php } 
-			echo '</ul>'; } 
+			<?php }
+			echo '</ul>'; }
 			if ($maxlevel <= 100) { ?>
 			<?php if (count($dirs) > 0) { ?>
 				<div class="or"><?php echo JText::_('COM_PROJECTS_OR'); ?></div>
 			<?php }  ?>
 			<label><span class="block"><?php echo JText::_('COM_PROJECTS_MOVE_TO_NEW_DIRECTORY'); ?></span>
-				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir.DS : ''; ?></span> 
+				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir.DS : ''; ?></span>
 				<input type="text" name="newdir" maxlength="50" value="" />
 			</label>
 			<?php }  ?>
@@ -147,7 +147,7 @@ if (!$this->getError()) {
 					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 				</span>
 			<?php } ?>
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

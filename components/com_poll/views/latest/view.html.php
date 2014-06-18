@@ -39,7 +39,7 @@ class PollViewLatest extends JView
 		$poll = $model->getLatest();
 
 		// if id value is passed and poll not published then exit
-		if ($poll->id > 0 && $poll->published != 1) 
+		if ($poll->id > 0 && $poll->published != 1)
 		{
 			JError::raiseError(403, JText::_('Access Forbidden'));
 			return;
@@ -56,15 +56,15 @@ class PollViewLatest extends JView
 
 		// because the application sets a default page title, we need to get it
 		// right from the menu item itself
-		if (is_object($menu)) 
+		if (is_object($menu))
 		{
 			$menu_params = new JParameter($menu->params);
-			if (!$menu_params->get('page_title')) 
+			if (!$menu_params->get('page_title'))
 			{
 				$params->set('page_title', $poll->title);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$params->set('page_title', $poll->title);
 		}

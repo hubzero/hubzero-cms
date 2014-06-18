@@ -42,32 +42,32 @@ JToolBarHelper::spacer();
 switch ($this->filters['status'])
 {
 	case 'invitee':
-		//if ($canDo->get('core.edit')) 
+		//if ($canDo->get('core.edit'))
 		//{
 			//JToolBarHelper::custom('accept', 'publish', JText::_('Accept'), JText::_('Accept'), false, false);
 		//}
-		if ($canDo->get('core.delete')) 
+		if ($canDo->get('core.delete'))
 		{
 			JToolBarHelper::custom('uninvite', 'unpublish', JText::_('Uninvite'), JText::_('Uninvite'), false, false);
 		}
 	break;
 	case 'applicant':
-		if ($canDo->get('core.edit')) 
+		if ($canDo->get('core.edit'))
 		{
 			JToolBarHelper::custom('approve', 'publish', JText::_('Approve'), JText::_('Approve'), false, false);
 		}
-		if ($canDo->get('core.delete')) 
+		if ($canDo->get('core.delete'))
 		{
 			JToolBarHelper::custom('deny', 'unpublish', JText::_('Deny'), JText::_('Deny'), false, false);
 		}
 	break;
 	default:
-		if ($canDo->get('core.edit')) 
+		if ($canDo->get('core.edit'))
 		{
 			JToolBarHelper::custom('promote', 'promote', JText::_('Promote'), JText::_('Promote'), false, false);
 			JToolBarHelper::custom('demote', 'demote', JText::_('Demote'), JText::_('Demote'), false, false);
 		}
-		if ($canDo->get('core.delete')) 
+		if ($canDo->get('core.delete'))
 		{
 			JToolBarHelper::deleteList('delete', 'delete');
 		}
@@ -84,7 +84,7 @@ $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS 
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -98,10 +98,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
-		
-		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label> 
+
+		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label>
 		<select name="status" id="filter-status">
 			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('User status...'); ?></option>
 			<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
@@ -109,11 +109,11 @@ function submitbutton(pressbutton)
 			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
 			<option value="invitee"<?php echo ($this->filters['status'] == 'invitee') ? ' selected="selected"' : ''; ?>>Invitee</option>
 		</select>
-		
+
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -145,12 +145,12 @@ foreach ($this->rows as $row)
 		$reason = new GroupsReason($database);
 		$reason->loadReason($row->username, $this->filters['gidNumber']);
 		$reasonforjoin = '';
-		if ($reason) 
+		if ($reason)
 		{
 			$reasonforjoin = stripslashes( $reason->reason );
 		}
 	}
-	
+
 	$status = $row->role;
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -188,7 +188,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 <?php if ($canDo->get('core.edit')) { ?>
-	<?php 
+	<?php
 	switch ($status)
 	{
 		case 'invitee':
@@ -199,7 +199,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 				<td>
-					
+
 	<?php
 		break;
 		case 'applicant':

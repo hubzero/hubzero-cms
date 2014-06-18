@@ -141,7 +141,7 @@ if (!$no_html)
 			<?php endif; ?>
 			<ul id="page_menu">
 				<?php foreach ($this->cats as $k => $c) : ?>
-					<?php 
+					<?php
 						$key = key($c);
 						if (!$key)
 						{
@@ -154,7 +154,7 @@ if (!$no_html)
 
 						$metadata = $this->sections[$k]['metadata'];
 						$meta_count = (isset($metadata['count']) && $metadata['count'] != "") ? $metadata['count'] : "";
-						if (isset($metadata['alert']) && $metadata['alert'] != "") 
+						if (isset($metadata['alert']) && $metadata['alert'] != "")
 						{
 							$meta_alert = $metadata['alert'];
 							$cls .= ' with-alert';
@@ -178,7 +178,7 @@ if (!$no_html)
 								<span class="count"><?php echo $meta_count; ?></span>
 							<?php endif; ?>
 						</span>
-						<?php echo $meta_alert; ?> 
+						<?php echo $meta_alert; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul><!-- /#page_menu -->

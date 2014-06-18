@@ -43,10 +43,10 @@ $weeklater = JFactory::getDate(mktime(0, 0, 0, $month, $day+7, $year));
 
 $database = JFactory::getDBO();
 
-$query  = "SELECT sd.* 
+$query  = "SELECT sd.*
 		FROM #__courses_offering_section_dates AS sd
 		WHERE sd.section_id=" . $this->offering->section()->get('id') . "
-		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($weeklater) . ") 
+		AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($weeklater) . ")
 		AND sd.scope!='asset'
 		ORDER BY sd.publish_up LIMIT 20";
 
@@ -60,7 +60,7 @@ $base = $this->offering->link();
 		<a name="dashboard"></a>
 		<?php echo JText::_('PLG_COURSES_DASHBOARD'); ?>
 	</h3>
-	
+
 	<div class="sub-section">
 		<div class="sub-section-overview">
 			<h3>
@@ -103,8 +103,8 @@ $base = $this->offering->link();
 				</div>
 			<?php if ($rows) { ?>
 				<ul class="dashboard-timeline">
-				<?php 
-				foreach ($rows as $i => $row) 
+				<?php
+				foreach ($rows as $i => $row)
 				{
 					switch ($row->scope)
 					{
@@ -136,7 +136,7 @@ $base = $this->offering->link();
 							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</span>
 					</li>
-					<?php 
+					<?php
 					if ($i > 0 && $row->scope == 'unit')
 					{
 						break;

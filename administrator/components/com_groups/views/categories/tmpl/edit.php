@@ -34,7 +34,7 @@ $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
 
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -42,7 +42,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }

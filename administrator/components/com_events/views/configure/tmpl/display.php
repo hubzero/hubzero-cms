@@ -37,7 +37,7 @@ JToolBarHelper::cancel();
 <form action="index.php" method="post" name="adminForm">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG'); ?></span></legend>
-		
+
 		<table class="admintable">
 			<tbody>
 				<tr>
@@ -67,7 +67,7 @@ JToolBarHelper::cancel();
 					$viewm[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $viewm, 'config[mailview]', '', 'value', 'text', $this->config->mailview, false, false );
 					?></td>
-				</tr>      
+				</tr>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></td>
 					<td><?php
@@ -130,7 +130,7 @@ JToolBarHelper::cancel();
 	</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_EVENTS_CAL_LANG_CUSTOM_FIELDS'); ?></span></legend>
-		
+
 		<table class="admintable">
 			<thead>
 				<tr>
@@ -141,7 +141,7 @@ JToolBarHelper::cancel();
 				</tr>
 			</thead>
 			<tbody>
-			<?php 
+			<?php
 			$fields = $this->config->fields;
 			$r = count($fields);
 			if ($r > 10) {

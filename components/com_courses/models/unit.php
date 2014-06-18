@@ -46,56 +46,56 @@ class CoursesModelUnit extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableUnit';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'unit';
 
 	/**
 	 * CoursesModelAssetgroup
-	 * 
+	 *
 	 * @var object
 	 */
 	public $group = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	public $assetgroups = NULL;
 
 	/**
 	 * CoursesModelAsset
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_asset = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_assets = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_siblings = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -137,12 +137,12 @@ class CoursesModelUnit extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid . '_' . $offering_id])) 
+		if (!isset($instances[$oid . '_' . $offering_id]))
 		{
 			$instances[$oid . '_' . $offering_id] = new self($oid, $offering_id);
 		}
@@ -159,11 +159,11 @@ class CoursesModelUnit extends CoursesModelAbstract
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		if (isset($this->_tbl->$property))
 		{
 			return $this->_tbl->$property;
 		}
-		else if (isset($this->_tbl->{'__' . $property})) 
+		else if (isset($this->_tbl->{'__' . $property}))
 		{
 			return $this->_tbl->{'__' . $property};
 		}
@@ -187,7 +187,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function assetgroup($id=null)
 	{
-		if (!isset($this->group) 
+		if (!isset($this->group)
 		 || ($id !== null && (int) $this->group->get('id') != $id && (string) $this->group->get('alias') != $id))
 		{
 			$this->group = null;
@@ -221,7 +221,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 	/**
 	 * Reset the asset groups to top level
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function resetAssetgroups($idx=null, $filters=array())
@@ -235,7 +235,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -334,7 +334,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @return     boolean
 	 */
-	public function siblings(&$siblings) 
+	public function siblings(&$siblings)
 	{
 		if ($siblings instanceof CoursesModelIterator)
 		{
@@ -351,21 +351,21 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @return     boolean
 	 */
-	public function isFirst() 
+	public function isFirst()
 	{
 		if (!$this->_siblings)
 		{
 			return true;
 		}
 		return $this->_siblings->isFirst();
-	} 
+	}
 
 	/**
 	 * Is the current position the last one?
 	 *
 	 * @return     boolean
 	 */
-	public function isLast() 
+	public function isLast()
 	{
 		if (!$this->_siblings)
 		{
@@ -379,7 +379,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @return     mixed
 	 */
-	public function key() 
+	public function key()
 	{
 		return $this->_siblings->key();
 	}
@@ -389,7 +389,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @return     mixed
 	 */
-	public function sibling($dir='next') 
+	public function sibling($dir='next')
 	{
 		$dir = strtolower(trim($dir));
 		switch ($dir)
@@ -400,7 +400,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			break;
 
 			default:
-				
+
 			break;
 		}
 		return null;
@@ -414,7 +414,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function asset($id=null)
 	{
-		if (!isset($this->_asset) 
+		if (!isset($this->_asset)
 		 || ($id !== null && (int) $this->_asset->get('id') != (int) $id))
 		{
 			$this->_asset = null;
@@ -434,7 +434,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Get a list of assets for a unit
 	 *   Accepts an array of filters to apply to the list of assets
-	 * 
+	 *
 	 * @param      array $filters Filters to apply
 	 * @return     object CoursesModelIterator
 	 */
@@ -519,7 +519,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 	/**
 	 * Delete an entry and associated data
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
@@ -562,7 +562,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 	/**
 	 * Copy an entry and associated data
-	 * 
+	 *
 	 * @param   integer $offering_id New offering to copy to
 	 * @param   boolean $deep        Copy associated data?
 	 * @return  boolean True on success, false on error

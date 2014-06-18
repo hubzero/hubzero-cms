@@ -19,7 +19,7 @@ function filter($res, $dd)
 	$db_id = $dd['db_id']['id'];
 	$dv_id = $dd['dv_id'];
 	$dv_link = "/$com_name/view/$db_id/$dv_id/";
-	
+
 	$data = $res['data'];
 	$total = $res['total'];
 	$found = $res['found'];
@@ -239,7 +239,7 @@ function filter($res, $dd)
 						foreach($list as $l) {
 							$link_label = $l;
 							$link = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . $l;
-							
+
 							$title = $l;
 							$missing = '';
 							if (isset($dd['cols'][$key]['file-verify'])) {
@@ -250,7 +250,7 @@ function filter($res, $dd)
 									$link_label = $link_label . '&nbsp;[missing]';
 								}
 							}
-							
+
 							if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
 								$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $l;
 								$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $l;
@@ -263,8 +263,8 @@ function filter($res, $dd)
 					} else {
 						$link_label = $val;
 						$link = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . $val;
-						
-						
+
+
 						$title = $val;
 						$missing = '';
 						if (isset($dd['cols'][$key]['file-verify'])) {
@@ -275,7 +275,7 @@ function filter($res, $dd)
 								$link_label = $link_label . '&nbsp;[missing]';
 							}
 						}
-						
+
 						if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
 							$small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $val;
 							$medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $val;
@@ -471,7 +471,7 @@ function filter($res, $dd)
 					$mi = explode('|', $dd['cols'][$key][$mode]);
 					$mi_dv_id = $mi[0];
 					$id = (isset($mi[1]))? $rec[$mi[1]] : '';
-					
+
 					$link = "/$com_name/data/$db_id/$mi_dv_id/json/?id=$id";
 
 					if (isset($dd['cols'][$key]['compare']) && !$single_record) {
@@ -482,7 +482,7 @@ function filter($res, $dd)
 					} else {
 						$new_val = '<a title="Click to view more information about this item" class="' . $mode . '" href="' . $link . '">' . $val . '</a>';
 					}
-					
+
 					$val = $new_val;
 				}
 
@@ -520,7 +520,7 @@ function filter($res, $dd)
 					if (isset($dd['cols'][$key]['link_label'])) {
 						$ll = array_key_exists($ll, $rec)? $rec[$ll]: $ll;
 					}
-					
+
 					$append_to_url = isset($dd['cols'][$key]['custom_field_link']['append_to_url'])? $dd['cols'][$key]['custom_field_link']['append_to_url']: '';
 
 					$check = '<input type="checkbox" class="dv-custom-field-link" data-url-append=' . $append_to_url . ' data-col-id="dv-' . str_replace('.', '_', $key) . '" value="' . $v . '" style="float: right;" />';
@@ -563,7 +563,7 @@ function filter($res, $dd)
 				}
 
 				if(isset($dd['cols'][$key]['width'])) {
-					
+
 					$nowrap = '';
 					if (isset($dd['cols'][$key]['nowrap'])) {
 						$nowrap = 'white-space: nowrap;';
@@ -682,7 +682,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 	if (!$label || isset($dd['cols'][$key]['full_url'])) {
 		$label = $link;
 	}
-	
+
 	if (!$title) {
 		$title = $link;
 	}
@@ -699,7 +699,7 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
 		}
 
 		$win_features = isset($dd['cols'][$key]['popup']['features']) ? $dd['cols'][$key]['popup']['features'] : '';
-		
+
 		$popup_data = "data-popup-name='$win_name' data-popup-features='$win_features'";
 		$popup_class = 'dv-popup';
 	}

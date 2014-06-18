@@ -22,7 +22,7 @@ class JoomlaupdateHelper
 	 * Gets a list of the actions that can be performed.
 	 *
 	 * @return	JObject
-	 * 
+	 *
 	 * @since	2.5.4
 	 */
 	public static function getActions()

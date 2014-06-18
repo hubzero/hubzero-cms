@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -43,46 +43,46 @@ class OAuthControllerAuthorize extends \Hubzero\Component\SiteController
 		{
 			JError::raiseError(403, 'Forbidden');
 		}
-		
+
 		$db = JFactory::getDBO();
-				
+
 		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	.
 			$db->Quote($oauth_token) .
 			" AND user_id=0 LIMIT 1;");
-		
+
 		$result = $db->loadObject();
-		
+
 		if ($result === false)
 		{
 			JError:raiseError(500, 'Internal Server Error');
 		}
-		
+
 		if (empty($result))
 		{
 			JError::raiseError(403, 'Forbidden');
 		}
-		
+
 		if (JRequest::getMethod() == 'GET')
 		{
 			$this->view->oauth_token = $oauth_token;
 			$this->view->display();
 			return;
 		}
-		
+
 		if (JRequest::getMethod() == 'POST')
 		{
 			$token = JRequest::get('token',''.'post');
-			
+
 			if ($token != sha1($this->verifier))
 			{
 				JError::raiseError(403, 'Forbidden');
 			}
-			
+
 			echo "posted";
-			
+
 			return;
 		}
-		
+
 		JError::raiseError(405, 'Method Not Allowed');
 	}
 }

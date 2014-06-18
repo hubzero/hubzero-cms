@@ -38,21 +38,21 @@ class JobType extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -63,7 +63,7 @@ class JobType extends JTable
 
 	/**
 	 * Get all records
-	 * 
+	 *
 	 * @param      string $sortby  Sort by field
 	 * @param      string $sortdir Sort direction ASC/DESC
 	 * @return     array
@@ -75,7 +75,7 @@ class JobType extends JTable
 		$query  = "SELECT id, category FROM $this->_tbl ORDER BY $sortby $sortdir ";
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $r)
 			{
@@ -88,18 +88,18 @@ class JobType extends JTable
 
 	/**
 	 * Load a record from the database
-	 * 
+	 *
 	 * @param      integer $id      Type ID
 	 * @param      string  $default Default value to return
 	 * @return     string
 	 */
 	public function getType($id = NULL, $default = 'unspecified')
 	{
-		if ($id === NULL) 
+		if ($id === NULL)
 		{
 			 return false;
 		}
-		if ($id == 0) 
+		if ($id == 0)
 		{
 			return $default;
 		}

@@ -56,7 +56,7 @@ $params = new $paramsClass($this->row->params);
 
 // Available panels and default config
 $panels = array(
-	'content' 		=> 2, 
+	'content' 		=> 2,
 	'description' 	=> 2,
 	'authors'		=> 2,
 	'audience'		=> 0,
@@ -73,7 +73,7 @@ $required = array('content', 'description', 'authors');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform( pressbutton );
 	return;
@@ -164,10 +164,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Offered as choice for primary content?'); ?>">
 					<span class="hint"><?php echo JText::_('Offered as choice for primary content?'); ?></span>
 
-					<input class="option" name="fields[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="fields[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-contributable1"><?php echo JText::_('Yes'); ?></label>
 					<br />
-					<input class="option" name="fields[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="fields[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-contributable0"><?php echo JText::_('No'); ?></label>
 				</div>
 			</fieldset>
@@ -178,10 +178,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Offered as choice for supporting content?'); ?>">
 					<span class="hint"><?php echo JText::_('Offered as choice for supporting content?'); ?></span>
 
-					<input class="option" name="fields[supporting]" id="field-supporting1" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="fields[supporting]" id="field-supporting1" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> />
 					<label for="field-supporting1"><?php echo JText::_('Yes*'); ?></label>
 					<br />
-					<input class="option" name="fields[supporting]" id="field-supporting0" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" name="fields[supporting]" id="field-supporting0" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> />
 					<label for="field-supporting0"><?php echo JText::_('No'); ?></label>
 
 					<span class="hint"><?php echo JText::_('*May be unsupported in the current version of hub code'); ?></span>
@@ -194,13 +194,13 @@ function submitbutton(pressbutton)
 				<div class="input-wrap" data-hint="<?php echo JText::_('Is DOI required/optional/inapplicable for this type?'); ?>">
 					<span class="hint"><?php echo JText::_('Is DOI required/optional/inapplicable for this type?'); ?></span>
 
-					<input class="option" name="params[issue_doi]" id="field-issue_doi1" type="radio" value="1" <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?> /> 
+					<input class="option" name="params[issue_doi]" id="field-issue_doi1" type="radio" value="1" <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?> />
 					<label for="field-issue_doi1"><?php echo JText::_('Required'); ?></label>
 					<br />
-					<input class="option" name="params[issue_doi]" id="field-issue_doi2" type="radio" value="2" <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?> /> 
+					<input class="option" name="params[issue_doi]" id="field-issue_doi2" type="radio" value="2" <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?> />
 					<label for="field-issue_doi2"><?php echo JText::_('Optional (submitter may decide)'); ?></label>
 					<br />
-					<input class="option" name="params[issue_doi]" id="field-issue_doi0" type="radio" value="0" <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?> /> 
+					<input class="option" name="params[issue_doi]" id="field-issue_doi0" type="radio" value="0" <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?> />
 					<label for="field-issue_doi0"><?php echo JText::_('No DOI (inapplicable)'); ?></label>
 				</div>
 			</fieldset>

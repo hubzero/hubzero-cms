@@ -38,7 +38,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Recursively parse XML
-	 * 
+	 *
 	 * @param   object $root
 	 * @param   array  $fields
 	 * @return  void
@@ -60,7 +60,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Parse an XML tree and pull results
-	 * 
+	 *
 	 * @param   object $root
 	 * @return  array
 	 */
@@ -90,7 +90,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Search ORCID by name
-	 * 
+	 *
 	 * @param   string $fname
 	 * @param   string $lname
 	 * @return  string
@@ -118,24 +118,24 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		}
 
 		$initedCurl = curl_init();
-		curl_setopt($initedCurl, CURLOPT_URL, $url); 
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml')); 
+		curl_setopt($initedCurl, CURLOPT_URL, $url);
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml'));
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
 		echo '<br />';
-		$curlData = curl_exec($initedCurl); 
+		$curlData = curl_exec($initedCurl);
 
 		if (!curl_errno($initedCurl))
 		{
-			$info = curl_getinfo($initedCurl); 
+			$info = curl_getinfo($initedCurl);
 		}
 		else
 		{
-			echo 'Curl error: ' . curl_error($initedCurl); 
-		} 
+			echo 'Curl error: ' . curl_error($initedCurl);
+		}
 
-		curl_close($initedCurl); 
+		curl_close($initedCurl);
 
 		try
 		{
@@ -150,7 +150,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Format ORCID search results
-	 * 
+	 *
 	 * @param   array  $records
 	 * @param   string $callbackPrefix
 	 * @return  string
@@ -169,7 +169,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Parse response headers
-	 * 
+	 *
 	 * @param   string $header
 	 * @return  string
 	 */
@@ -198,7 +198,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Call service to create an ORCID
-	 * 
+	 *
 	 * @param   string $first_name
 	 * @param   string $last_name
 	 * @param   string $email
@@ -207,7 +207,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	private function _create($first_name, $last_name, $email)
 	{
 		$xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'.
-					'<orcid-message'. 
+					'<orcid-message'.
 						' xmlns="http://www.orcid.org/ns/orcid"'.
 						' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'.
 						' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd">'.
@@ -234,7 +234,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($initedCurl, CURLOPT_HEADER, 1); 
+		curl_setopt($initedCurl, CURLOPT_HEADER, 1);
 		$curl_response = curl_exec($initedCurl);
 		curl_close($initedCurl);
 
@@ -244,7 +244,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$orcid = '';
 		if (count($pathComponents) > 0 && !empty($pathComponents[0]))
 		{
-			$orcid = $pathComponents[0]; 
+			$orcid = $pathComponents[0];
 		}
 		else
 		{
@@ -256,15 +256,15 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an ORCID to a profile
-	 * 
+	 *
 	 * @param   string $orcid
 	 * @return  boolean
 	 */
 	private function _save($orcid)
 	{
-		$juser = JFactory::getUser(); 
+		$juser = JFactory::getUser();
 
-		// Instantiate a new profile object  
+		// Instantiate a new profile object
 		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 		$profile->set('orcid', $orcid);
 
@@ -273,7 +273,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Fetch...
-	 * 
+	 *
 	 * @param   boolean $is_return
 	 * @return  void
 	 */
@@ -321,7 +321,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for uploading a file
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function displayTask()
@@ -333,12 +333,12 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Associate an ID
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function associateTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
@@ -353,7 +353,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create an ID
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function createTask()

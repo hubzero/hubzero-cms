@@ -50,10 +50,10 @@ if (JRequest::getInt('force_fix', 0))
 	$database->query();
 }
 
-$query = "SELECT wv.pageid, wv.id AS versionid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.version, wv.created_by, wv.created  
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
+$query = "SELECT wv.pageid, wv.id AS versionid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.version, wv.created_by, wv.created
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
 			WHERE wp.version_id = '0'
 				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY created DESC";
@@ -88,12 +88,12 @@ $rows = $database->loadObjectList();
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	foreach ($rows as $row)
 	{
 		$database->setQuery("UPDATE #__wiki_page SET `version_id` = '" . $row->versionid . "', `modified`='" . $row->created . "' WHERE `id`='" . $row->pageid . "'");
-		if (!$database->query()) 
+		if (!$database->query())
 		{
 			$this->setError($database->getErrorMsg());
 		}

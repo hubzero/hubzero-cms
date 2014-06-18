@@ -164,7 +164,7 @@ class MediaModelManager extends JModelLegacy
 				continue;
 			}
 			list($data, $rel, $parent) = $mkData($file);
-	
+
 			// find a place to put the node by walking through parents
 			$pos =& $path;
 			if (($parents = explode(DIRECTORY_SEPARATOR, $parent))) {

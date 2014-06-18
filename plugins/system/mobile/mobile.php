@@ -37,35 +37,35 @@ jimport('joomla.event.plugin');
 
 class plgSystemMobile extends JPlugin
 {
-	public function __construct(& $subject) 
+	public function __construct(& $subject)
 	{
 		parent::__construct($subject, NULL);
 	}
-	
+
 	public function onAfterDispatch()
 	{
 		$session = JFactory::getSession();
 		$tmpl = JRequest::getVar("tmpl","");
-		
+
 		if($tmpl == "mobile")
 		{
 			$session->set("mobile", true);
 		}
 		else
-		{	
+		{
 			if($session->get("mobile"))
 			{
 				JRequest::setVar("tmpl", "mobile");
 			}
 		}
-		
-		
+
+
 		//are we requesting to view full site again
 		if($tmpl == "fullsite")
 		{
 			$session->set("mobile", false);
 			JRequest::setVar("tmpl", "");
-			
+
 			$app = JFactory::getApplication();
 			$app->redirect($_SERVER['SCRIPT_URI'] . '?' . str_replace('tmpl=fullsite', '', $_SERVER['QUERY_STRING']));
 		}

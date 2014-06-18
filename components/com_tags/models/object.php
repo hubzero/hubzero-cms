@@ -40,21 +40,21 @@ class TagsModelObject extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'TagsTableObject';
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid       Redord ID or object or array
 	 * @param      integer $scope_id  ID of tagged object
 	 * @param      integer $tag_id    Tag ID
@@ -97,7 +97,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -115,7 +115,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 			$key = $oid['id'] . $scope_id . $tag_id . $tagger_id;
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new TagsModelObject($oid, $scope_id, $tag_id, $tagger_id);
 		}
@@ -125,7 +125,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -147,7 +147,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */

@@ -330,7 +330,7 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 	 */
 	protected function _getCountry($code)
 	{
-		if ($code) 
+		if ($code)
 		{
 			$code = strtoupper($code);
 
@@ -372,7 +372,7 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 
 		foreach (self::$countries as $row)
 		{
-			if (strtolower($row['continent']) == $address) 
+			if (strtolower($row['continent']) == $address)
 			{
 				array_push($countries, $row);
 			}

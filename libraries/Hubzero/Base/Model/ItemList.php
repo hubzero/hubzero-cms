@@ -40,7 +40,7 @@ class ItemList extends \Hubzero\Base\ItemList
 	 *
 	 * @param  $key    Object Key
 	 * @param  $value  Object Value
-	 * @return mixed 
+	 * @return mixed
 	 */
 	public function fetch($key, $value)
 	{
@@ -56,7 +56,7 @@ class ItemList extends \Hubzero\Base\ItemList
 
 	/**
 	 * Lists a specific key from the item list
-	 * 
+	 *
 	 * @param  string $key      Key to grab from item
 	 * @param  string $default  Default value if key is empty
 	 * @return array            Array of keys

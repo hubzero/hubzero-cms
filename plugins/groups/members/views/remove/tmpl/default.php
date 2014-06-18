@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo JText::_('PLG_GROUPS_MEMBERS_REMOVE_MEMBERSHIP'); ?></legend>
 
-<?php 
+<?php
 $names = array();
 foreach ($this->users as $user)
 {

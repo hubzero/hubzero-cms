@@ -52,11 +52,11 @@ class GroupsTableModule extends JTable
 	var $approved_by    = null;
 	var $checked_errors = null;
 	var $scanned        = null;
-	
-	
+
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -64,10 +64,10 @@ class GroupsTableModule extends JTable
 	{
 		parent::__construct('#__xgroups_modules', 'id', $db);
 	}
-	
+
 	/**
 	 * Overload check method to make sure we have needed vars
-	 * 
+	 *
 	 * @return     BOOL
 	 */
 	public function check()
@@ -78,27 +78,27 @@ class GroupsTableModule extends JTable
 			$this->setError( JText::_('Must provide group id.') );
 			return false;
 		}
-		
+
 		// need module title
 		if ($this->get('title') == null)
 		{
 			$this->setError( JText::_('Must provide module title.') );
 			return false;
 		}
-		
+
 		// need module content
 		if ($this->get('content') == null)
 		{
 			$this->setError( JText::_('Must provide module content.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Find all modules matching filters
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     array
 	 */
@@ -106,15 +106,15 @@ class GroupsTableModule extends JTable
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get count of modules matching filters
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     int
 	 */
@@ -122,15 +122,15 @@ class GroupsTableModule extends JTable
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
-	
-	
+
+
 	/**
 	 * Build query string for getting list or count of pages
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     string
 	 */
@@ -139,48 +139,48 @@ class GroupsTableModule extends JTable
 		// var to hold conditions
 		$where = array();
 		$sql   = '';
-		
+
 		// published
 		if (isset($filters['gidNumber']))
 		{
 			$where[] = "gidNumber=" . $this->_db->quote( $filters['gidNumber'] );
 		}
-		
+
 		// title
 		if (isset($filters['title']))
 		{
 			$where[] = "title=" . $this->_db->quote( $filters['title'] );
 		}
-		
+
 		// position
 		if (isset($filters['position']))
 		{
 			$where[] = "position=" . $this->_db->quote( $filters['position'] );
 		}
-		
+
 		// state
 		if (isset($filters['state']) && is_array($filters['state']))
 		{
 			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
 		}
-		
+
 		// approved
 		if (isset($filters['approved']) && is_array($filters['approved']))
 		{
 			$where[] = "approved IN (" . implode(',', $filters['approved']) . ")";
 		}
-		
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
 }

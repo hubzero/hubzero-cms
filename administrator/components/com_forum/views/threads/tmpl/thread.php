@@ -31,22 +31,22 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ForumHelper::getActions('thread');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_POSTS'), 'forum.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -67,7 +67,7 @@ function submitbutton(pressbutton) {
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label> 
+		<label><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
 			<option value="-1"><?php echo JText::_('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
 		<?php foreach ($this->sections as $group => $sections) { ?>
@@ -110,10 +110,10 @@ function submitbutton(pressbutton) {
 if ($this->results)
 {
 	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->results ); $i < $n; $i++)
 	{
 		$row =& $this->results[$i];
-		switch ($row->state) 
+		switch ($row->state)
 		{
 			case '2':
 				$task = 'publish';
@@ -185,6 +185,6 @@ if ($this->results)
 	<input type="hidden" name="thread" value="<?php echo $this->filters['thread']; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

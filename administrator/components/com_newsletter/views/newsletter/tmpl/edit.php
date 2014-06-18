@@ -45,7 +45,7 @@ JToolBarHelper::cancel();
 
 //primary and secondary stories
 $primary = $this->newsletter_primary;
-$secondary = $this->newsletter_secondary; 
+$secondary = $this->newsletter_secondary;
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
@@ -56,7 +56,7 @@ $editor = JEditor::getInstance();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform( pressbutton );
 }
@@ -123,7 +123,7 @@ function submitbutton(pressbutton)
 									<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 										<?php echo $t->name; ?>
 									</option>
-								<?php endforeach; ?> 
+								<?php endforeach; ?>
 							</select>
 						</td>
 					</tr>
@@ -161,7 +161,7 @@ function submitbutton(pressbutton)
 								</option>
 							</select>
 							<span class="hint">
-								<?php echo JText::_('What is email tracking?'); ?> 
+								<?php echo JText::_('What is email tracking?'); ?>
 								<a target="_blank" href="<?php echo $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works'); ?>">
 									<?php echo JText::_('Click here'); ?>
 								</a>
@@ -173,7 +173,7 @@ function submitbutton(pressbutton)
 			</table>
 		</fieldset>
 	</div>
-	
+
 	<div class="col width-50 fltrt">
 		<?php if ($this->newsletter->id) : ?>
 			<table class="meta">
@@ -187,7 +187,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 					<?php endif; ?>
-				
+
 					<?php if ($this->newsletter->created) : ?>
 						<tr>
 							<th><?php echo JText::_('Created Date:'); ?></th>
@@ -197,7 +197,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 					<?php endif; ?>
-				
+
 					<?php if ($this->newsletter->created_by) : ?>
 						<tr>
 							<th><?php echo JText::_('Created By:'); ?></th>
@@ -210,7 +210,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 					<?php endif; ?>
-				
+
 					<?php if ($this->newsletter->modified) : ?>
 						<tr>
 							<th><?php echo JText::_('Last Modified On:'); ?></th>
@@ -220,7 +220,7 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 					<?php endif; ?>
-				
+
 					<?php if ($this->newsletter->modified_by) : ?>
 						<tr>
 							<th><?php echo JText::_('Last Modified By:'); ?></th>
@@ -235,7 +235,7 @@ function submitbutton(pressbutton)
 					<?php endif; ?>
 				</tbody>
 			</table>
-			
+
 			<?php
 				$params = new JParameter( $this->newsletter->params );
 			?>
@@ -276,10 +276,10 @@ function submitbutton(pressbutton)
 			</p>
 		<?php endif; ?>
 	</div>
-	
-	<br class="clear" /> 
+
+	<br class="clear" />
 	<hr />
-	
+
 	<div class="col width-100">
 		<?php if($this->newsletter->id != null) : ?>
 			<?php if($this->newsletter->template == '-1' || (!$this->newsletter->template && $this->newsletter->content != '')) : ?>
@@ -306,7 +306,7 @@ function submitbutton(pressbutton)
 				<a name="primary-stories"></a>
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('Newsletter Primary Stories'); ?>  
+						<?php echo JText::_('Newsletter Primary Stories'); ?>
 						<a class="fltrt" style="padding-right:15px" href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=primary'); ?>">
 							<?php echo JText::_('Add Primary Story'); ?>
 						</a>
@@ -320,7 +320,7 @@ function submitbutton(pressbutton)
 											<td colspan="2">
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=primary&sid='.$primary[$i]->id); ?>">
 													<?php echo JText::_('Edit Story'); ?>
-												</a> | 
+												</a> |
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=primary&sid='.$primary[$i]->id); ?>">
 													<?php echo JText::_('Delete Story'); ?>
 												</a>
@@ -333,8 +333,8 @@ function submitbutton(pressbutton)
 										<tr>
 											<td class="key" width='20%'><?php echo JText::_('Order:'); ?></td>
 											<td>
-												<input type="text" readonly="readonly" value="<?php echo $primary[$i]->order; ?>" style="width:30px;text-align:center;" /> 
-												
+												<input type="text" readonly="readonly" value="<?php echo $primary[$i]->order; ?>" style="width:30px;text-align:center;" />
+
 												<?php if ($primary[$i]->order > 1) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=primary&sid='.$primary[$i]->id); ?>">
 														<?php echo JText::_('Move Up &uarr;'); ?>
@@ -379,7 +379,7 @@ function submitbutton(pressbutton)
 											<td colspan="2">
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=secondary&sid='.$secondary[$i]->id); ?>">
 													<?php echo JText::_('Edit Story'); ?>
-												</a> | 
+												</a> |
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary[$i]->id); ?>">
 													<?php echo JText::_('Delete Story'); ?>
 												</a>
@@ -392,13 +392,13 @@ function submitbutton(pressbutton)
 										<tr>
 											<td class="key"><?php echo JText::_('Order:'); ?></td>
 											<td>
-												<input type="text" readonly="readonly" value="<?php echo $secondary[$i]->order; ?>" style="width:30px;text-align:center;" /> 
+												<input type="text" readonly="readonly" value="<?php echo $secondary[$i]->order; ?>" style="width:30px;text-align:center;" />
 												<?php if ($secondary[$i]->order > 1) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary[$i]->id); ?>">
 														<?php echo JText::_('Move Up &uarr;'); ?>
 													</a>
 												<?php endif; ?>
-												
+
 												<?php if ($secondary[$i]->order < $this->newsletter_secondary_highest_order) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary[$i]->id); ?>">
 														<?php echo JText::_('Move Down &darr;'); ?>
@@ -423,7 +423,7 @@ function submitbutton(pressbutton)
 			<?php endif; ?>
 		<?php endif; ?>
 	</div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

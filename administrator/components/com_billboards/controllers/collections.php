@@ -38,7 +38,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Browse billboards collections (collections are used to display multiple billboards via mod_billboards)
-	 * 
+	 *
 	 * @return void
 	 */
 	public function displayTask()
@@ -50,15 +50,15 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// Get paging variables
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.collections.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.collections.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.collections.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.collections.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -74,13 +74,13 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -91,7 +91,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a billboards collection
-	 * 
+	 *
 	 * @return void
 	 */
 	public function editTask()
@@ -101,7 +101,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$id = JRequest::getVar('id', array(0));
-		if (!is_array($id)) 
+		if (!is_array($id))
 		{
 			$id = array(0);
 		}
@@ -112,7 +112,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		$this->view->row->load($cid);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -123,7 +123,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a billboard collection
-	 * 
+	 *
 	 * @return void
 	 */
 	public function saveTask()
@@ -137,17 +137,17 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Initiate class and bind posted items to database fields
 		$row = new BillboardsCollection($this->database);
-		if (!$row->bind($collection)) 
+		if (!$row->bind($collection))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -162,7 +162,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a billboard collection
-	 * 
+	 *
 	 * @return void
 	 */
 	public function deleteTask()
@@ -172,7 +172,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array(0);
 		}
@@ -195,7 +195,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel out of editing a billboard collection (i.e. just redirect back to the collections view)
-	 * 
+	 *
 	 * @return void
 	 */
 	public function cancelTask()
@@ -208,25 +208,25 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 	/**
 	 * Build the select list for ordering of a specified Table
-	 * 
+	 *
 	 * @return $ordering
 	 */
 	protected function ordering(&$row, $id, $query, $neworder = 0)
 	{
 		$db = JFactory::getDBO();
 
-		if ($id) 
+		if ($id)
 		{
 			$order = JHTML::_('list.genericordering', $query);
 			$ordering = JHTML::_('select.genericlist', $order, 'billboard[ordering]', 'class="inputbox" size="1"', 'value', 'text', intval($row->ordering));
-		} 
-		else 
+		}
+		else
 		{
-			if ($neworder) 
+			if ($neworder)
 			{
 				$text = JText::_('descNewItemsFirst');
-			} 
-			else 
+			}
+			else
 			{
 				$text = JText::_('descNewItemsLast');
 			}

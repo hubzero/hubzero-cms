@@ -38,7 +38,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of all categories
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -53,26 +53,26 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 			'access' => -1
 		);
 		$this->view->filters['collection_id']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.collection_id', 
-			'collection_id', 
+			$this->_option . '.' . $this->_controller . '.collection_id',
+			'collection_id',
 			0,
 			'int'
 		);
 		$this->view->filters['item_id']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.item_id', 
-			'item_id', 
+			$this->_option . '.' . $this->_controller . '.item_id',
+			'item_id',
 			0,
 			'int'
 		);
 
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'created'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
@@ -83,15 +83,15 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -111,7 +111,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new collection
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -121,7 +121,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a collection
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -134,12 +134,12 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
 
-			if (is_array($id) && !empty($id)) 
+			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
@@ -149,7 +149,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -163,7 +163,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a category and come back to the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -173,7 +173,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @param      boolean $redirect Redirect after save?
 	 * @return     void
 	 */
@@ -187,7 +187,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new CollectionsModelPost($fields['id']);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -195,7 +195,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -220,7 +220,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -231,7 +231,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			// Loop through all the IDs
 			foreach ($ids as $id)

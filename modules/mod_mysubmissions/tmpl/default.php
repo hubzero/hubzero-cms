@@ -46,7 +46,7 @@ if ($juser->get('guest')) { ?>
 ?>
 	<div class="submission">
 		<h4>
-			<?php echo $this->escape(stripslashes($row->title)); ?> 
+			<?php echo $this->escape(stripslashes($row->title)); ?>
 			<a class="edit" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
 				<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
 			</a>

@@ -38,42 +38,42 @@ class CoursesTableRole extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias = NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $permissions   = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,13 +84,13 @@ class CoursesTableRole extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $offering_id=null)
 	{
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
@@ -101,18 +101,18 @@ class CoursesTableRole extends JTable
 		$oid = trim($oid);
 
 		$query  = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
-		if (!is_null($offering_id)) 
+		if (!is_null($offering_id))
 		{
 			$query .= " AND offering_id=" . $this->_db->Quote(intval($offering_id));
 		}
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -121,13 +121,13 @@ class CoursesTableRole extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Missing title'));
 			return false;
@@ -144,7 +144,7 @@ class CoursesTableRole extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -192,7 +192,7 @@ class CoursesTableRole extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -207,7 +207,7 @@ class CoursesTableRole extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */

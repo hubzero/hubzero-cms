@@ -38,56 +38,56 @@ class JobStats extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $itemid			= NULL;
 
 	/**
 	 * varchar(11) job / seeker  / employer
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $total_viewed	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $total_shared	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $viewed_today	= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $lastviewed		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,18 +98,18 @@ class JobStats extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (intval($this->itemid) == 0) 
+		if (intval($this->itemid) == 0)
 		{
 			$this->setError(JText::_('Missing item id.'));
 			return false;
 		}
 
-		if (intval($this->category) == '') 
+		if (intval($this->category) == '')
 		{
 			$this->setError(JText::_('Missing category.'));
 			return false;
@@ -120,7 +120,7 @@ class JobStats extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $itemid   Job ID
 	 * @param      string  $category Job type
 	 * @param      string  $type     Record type
@@ -128,7 +128,7 @@ class JobStats extends JTable
 	 */
 	public function loadStat($itemid = NULL, $category = NULL, $type = "viewed")
 	{
-		if ($itemid === NULL or $category === NULL) 
+		if ($itemid === NULL or $category === NULL)
 		{
 			return false;
 		}
@@ -139,7 +139,7 @@ class JobStats extends JTable
 
 		$this->_db->setQuery($query);
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
@@ -148,9 +148,9 @@ class JobStats extends JTable
 
 	/**
 	 * Short description for 'getStats'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $itemid   Job ID
 	 * @param      string  $category Job type
 	 * @param      integer $admin    Admin access?
@@ -158,7 +158,7 @@ class JobStats extends JTable
 	 */
 	public function getStats($itemid = NULL, $category = 'employer', $admin = 0)
 	{
-		if ($itemid === NULL) 
+		if ($itemid === NULL)
 		{
 			return false;
 		}
@@ -182,7 +182,7 @@ class JobStats extends JTable
 		$stats['total_resumes'] = $row->countSeekers($filters);
 
 		// get stats for employer
-		if ($category == 'employer') 
+		if ($category == 'employer')
 		{
 			$filters['filterby'] = 'shortlisted';
 			$stats['shortlisted'] = $row->countSeekers($filters, $itemid);
@@ -193,7 +193,7 @@ class JobStats extends JTable
 		}
 
 		// get stats for seeker
-		if ($category == 'seeker') 
+		if ($category == 'seeker')
 		{
 			$stats['totalviewed']      = $this->getView($itemid, $category);
 			$stats['viewed_today']     = $this->getView($itemid, $category, 'viewed', 'today');
@@ -207,7 +207,7 @@ class JobStats extends JTable
 
 	/**
 	 * Get a view
-	 * 
+	 *
 	 * @param      integer $itemid   Job ID
 	 * @param      string  $category Job type
 	 * @param      string  $type     Record type
@@ -221,11 +221,11 @@ class JobStats extends JTable
 		$today     = JFactory::getDate(time() - (24 * 60 * 60))->format('Y-m-d H:i:s');
 
 		$query  = "SELECT ";
-		if ($type == 'viewed') 
+		if ($type == 'viewed')
 		{
 			$query .= $when ? " SUM(viewed_today) AS times " : " MAX(total_viewed) AS times ";
-		} 
-		else 
+		}
+		else
 		{
 			$query .= " MAX(p.total_shared) AS times ";
 		}
@@ -259,7 +259,7 @@ class JobStats extends JTable
 
 	/**
 	 * Save view
-	 * 
+	 *
 	 * @param      integer $itemid   Job ID
 	 * @param      string  $category Job type
 	 * @param      string  $type     Record type
@@ -267,16 +267,16 @@ class JobStats extends JTable
 	 */
 	public function saveView($itemid=NULL, $category=NULL, $type='viewed')
 	{
-		if ($itemid=== NULL) 
+		if ($itemid=== NULL)
 		{
 			$itemid = $this->itemid;
 		}
-		if ($category === NULL) 
+		if ($category === NULL)
 		{
 			$category = $this->category;
 		}
 
-		if ($itemid === NULL or $category === NULL) 
+		if ($itemid === NULL or $category === NULL)
 		{
 			return false;
 		}
@@ -288,14 +288,14 @@ class JobStats extends JTable
 		$this->loadStat($itemid, $category);
 
 		// create new entry for another day
-		if (substr($this->lastviewed, 0, 10) != $today) 
+		if (substr($this->lastviewed, 0, 10) != $today)
 		{
 			$this->id = 0;
 			$this->itemid = $itemid;
 			$this->category = $category;
 			$this->viewed_today = 1;
-		} 
-		else 
+		}
+		else
 		{
 			$this->viewed_today = $this->viewed_today + 1;
 		}
@@ -303,16 +303,16 @@ class JobStats extends JTable
 		$this->total_viewed = $this->total_viewed + 1;
 
 		// avoid duplicates
-		if ($this->lastviewed != $now) 
+		if ($this->lastviewed != $now)
 		{
 			$this->lastviewed = $now;
 
-			if (!$this->store()) 
+			if (!$this->store())
 			{
 				$this->setError(JText::_('Failed to store item view.'));
 				return false;
-			} 
-			else 
+			}
+			else
 			{
 				// clean-up views older than 30 days
 				$this->cleanup();
@@ -322,7 +322,7 @@ class JobStats extends JTable
 
 	/**
 	 * Remove records before a certaind ate
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cleanup()
@@ -334,14 +334,14 @@ class JobStats extends JTable
 
 	/**
 	 * Delete records for an item
-	 * 
+	 *
 	 * @param      integer $itemid   Job ID
 	 * @param      string  $category Job category
 	 * @return     boolean True upon success
 	 */
 	public function deleteStats($itemid, $category)
 	{
-		if ($itemid === NULL or $category === NULL) 
+		if ($itemid === NULL or $category === NULL)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;

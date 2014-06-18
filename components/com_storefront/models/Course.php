@@ -38,30 +38,30 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 /**
  *
  * Storefront course product class
- * 
+ *
  */
 class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
-{	
+{
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Set type course
 		$this->setType('course');
-				
+
 		// Override SKU
 		$this->setSku(new StorefrontModelCourseOffering());
 	}
-	
+
 	/**
-	 * Set the course ID associated with product 
-	 * 
+	 * Set the course ID associated with product
+	 *
 	 * @param  string		courseId (alias)
 	 * @return bool			true on sucess
 	 */
@@ -70,10 +70,10 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		$this->getSku()->setCourseId($courseId);
 		return true;
 	}
-	
+
 	/**
-	 * Set the course ID associated with product 
-	 * 
+	 * Set the course ID associated with product
+	 *
 	 * @param  string		offeringId (alias)
 	 * @return bool			true on sucess
 	 */
@@ -82,21 +82,21 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		$this->getSku()->setOfferingId($offeringId);
 		return true;
 	}
-	
+
 	/**
-	 * Get the course ID associated with product 
-	 * 
+	 * Get the course ID associated with product
+	 *
 	 * @param	void
 	 * @return 	string			course id/alias
 	 */
 	public function getCourseId()
 	{
-		return $this->getSku()->getCourseId();		
+		return $this->getSku()->getCourseId();
 	}
-	
+
 	/**
-	 * Verify course 
-	 * 
+	 * Verify course
+	 *
 	 * @param  string		action (optional)
 	 * @return bool			true on sucess
 	 */
@@ -107,14 +107,14 @@ class StorefrontModelCourse extends StorefrontModelSingleSkuProduct
 		{
 			$warehouse = new StorefrontModelWarehouse();
 			$courseIdExists = $warehouse->getCourseByAlias($this->getCourseId());
-			
+
 			if ($courseIdExists)
 			{
-				throw new Exception(JText::_('Course with this alias already exists.'));	
+				throw new Exception(JText::_('Course with this alias already exists.'));
 			}
 		}
-		
-		parent::verify($action);			
+
+		parent::verify($action);
 	}
-		
+
 }

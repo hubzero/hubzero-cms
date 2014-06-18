@@ -43,7 +43,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of hosts
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -55,47 +55,47 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['username']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.username', 
-			'username', 
+			$this->_option . '.' . $this->_controller . '.username',
+			'username',
 			''
 		));
 		$this->view->filters['appname']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.appname', 
-			'appname', 
+			$this->_option . '.' . $this->_controller . '.appname',
+			'appname',
 			''
 		));
 		$this->view->filters['exechost']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.exechost', 
-			'exechost', 
+			$this->_option . '.' . $this->_controller . '.exechost',
+			'exechost',
 			''
 		));
 		// Sorting
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'start'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
-		
+
 		// Get the middleware database
 		$mwdb = MwUtils::getMWDBO();
 
@@ -108,8 +108,8 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -128,7 +128,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more hostname records
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -141,7 +141,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		$mwdb = MwUtils::getMWDBO();
 
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$row = new MwSession($mwdb);
 
@@ -150,7 +150,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 			$dispatcher = JDispatcher::getInstance();
 
 			// Loop through each ID
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				$id = intval($id);
 				if (!$row->load($id))
@@ -164,7 +164,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 				// Stop the session
 				$status = $this->middleware("stop $id", $output);
-				if ($status) 
+				if ($status)
 				{
 					$msg = 'Stopping ' . $id . '<br />';
 					foreach ($output as $line)
@@ -188,7 +188,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 	/**
 	 * Invoke the Python script to do real work.
-	 * 
+	 *
 	 * @param      string  $comm Parameter description (if any) ...
 	 * @param      array   &$output Parameter description (if any) ...
 	 * @return     integer Session ID
@@ -202,7 +202,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		exec($cmd, $results, $status);
 
 		// Check exec status
-		if ($status != 0) 
+		if ($status != 0)
 		{
 			// Uh-oh. Something went wrong...
 			$retval = false;
@@ -218,12 +218,12 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				$line = trim($line);
 
 				// If it's a new session, catch the session number...
-				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess)) 
+				if ($retval && preg_match("/^Session is ([0-9]+)/", $line, $sess))
 				{
 					$retval = $sess[1];
 					$output->session = $sess[1];
-				} 
-				else 
+				}
+				else
 				{
 					if (preg_match("/width=\"(\d+)\"/i", $line, $param))
 					{
@@ -252,7 +252,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				}
 			}
 		}
-		else 
+		else
 		{
 			// JSON
 			$output = json_decode($results);

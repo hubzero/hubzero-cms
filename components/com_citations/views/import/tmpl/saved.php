@@ -87,7 +87,7 @@ if ($label == "none") {
 					<tr>
 						<?php if($label != "none") : ?>
 							<td class="citation-label <?php echo $citations_label_class; ?>">
-								<?php 
+								<?php
 									$type = "";
 									foreach($this->types as $t) {
 										if($t['id'] == $cite->type) {
@@ -114,7 +114,7 @@ if ($label == "none") {
 						<?php endif; ?>
 						<td class="citation-container">
 							<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
-						
+
 							<?php if($rollover == "yes" && $cite->abstract != "") : ?>
 								<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
 							<?php endif; ?>
@@ -123,11 +123,11 @@ if ($label == "none") {
 					<tr>
 						<td colspan="<?php if($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
 							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
-						
+
 							<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
 								<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
-							
+
 							<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
 								<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 							<?php endif; ?>

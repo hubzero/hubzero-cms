@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * GoogleMaps plugin for geocode
  *
- * The GoogleMapsProvider is able to geocode and reverse geocode 
+ * The GoogleMapsProvider is able to geocode and reverse geocode
  * street addresses.
  */
 class plgGeocodeGooglemaps extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

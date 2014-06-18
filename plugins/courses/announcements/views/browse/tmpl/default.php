@@ -76,7 +76,7 @@ $base = $this->offering->link() . '&active=announcements';
 			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
 				<?php echo $row->content('parsed'); ?>
 				<dl class="entry-meta">
-					<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
+					<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
 					<?php if ($manager) { ?>
 						<dd class="entry-author">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
@@ -111,11 +111,11 @@ $base = $this->offering->link() . '&active=announcements';
 			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 	<?php } ?>
 
-			<?php 
+			<?php
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				$total, 
-				$this->filters['start'], 
+				$total,
+				$this->filters['start'],
 				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));

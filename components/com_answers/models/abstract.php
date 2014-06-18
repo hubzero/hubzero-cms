@@ -38,28 +38,28 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 {
 	/**
 	 * Item scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = NULL;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     string
 	 */
@@ -83,7 +83,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -110,7 +110,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Was the entry reported?
-	 * 
+	 *
 	 * @return     boolean True if reported, False if not
 	 */
 	public function isReported()
@@ -120,14 +120,14 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 			return true;
 		}
 		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1) 
+		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php')) 
+			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
-					'id'       => $this->get('id'), 
+					'id'       => $this->get('id'),
 					'category' => $this->_scope,
 					'state'    => 0
 				));
@@ -144,7 +144,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
-	 * 
+	 *
 	 * @param      string $key Config property to retrieve
 	 * @return     mixed
 	 */
@@ -167,7 +167,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */

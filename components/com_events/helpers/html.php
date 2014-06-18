@@ -38,7 +38,7 @@ class EventsHtml
 {
 	/**
 	 * Auto-link strings matching URL patterns
-	 * 
+	 *
 	 * @param      array $matches Strings matching URL pattern
 	 * @return     string
 	 */
@@ -46,7 +46,7 @@ class EventsHtml
 	{
 		$href = $matches[0];
 
-		if (substr($href, 0, 1) == '!') 
+		if (substr($href, 0, 1) == '!')
 		{
 			return substr($href, 1);
 		}
@@ -56,12 +56,12 @@ class EventsHtml
 		$href = str_replace('&#8221','', $href);
 
 		$h = array('h', 'm', 'f', 'g', 'n');
-		if (!in_array(substr($href, 0, 1), $h)) 
+		if (!in_array(substr($href, 0, 1), $h))
 		{
 			$href = substr($href, 1);
 		}
 		$name = trim($href);
-		if (substr($name, 0, 7) == 'mailto:') 
+		if (substr($name, 0, 7) == 'mailto:')
 		{
 			$name = substr($name, 7, strlen($name));
 			$name = Eventshtml::obfuscate($name);
@@ -78,9 +78,9 @@ class EventsHtml
 
 	/**
 	 * Obfuscate an email address
-	 * 
+	 *
 	 * @param      string $email Email address
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function obfuscate($email)
 	{
@@ -96,9 +96,9 @@ class EventsHtml
 
 	/**
 	 * Short description for 'buildRadioOption'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $arr Parameter description (if any) ...
 	 * @param      string $tag_name Parameter description (if any) ...
 	 * @param      string $tag_attribs Parameter description (if any) ...
@@ -116,19 +116,19 @@ class EventsHtml
 			$t = $arr[$i]->$text;
 
 			$sel = '';
-			if (is_array($selected)) 
+			if (is_array($selected))
 			{
 				foreach ($selected as $obj)
 				{
 					$k2 = $obj->$key;
-					if ($k == $k2) 
+					if ($k == $k2)
 					{
 						$sel = ' checked="checked"';
 						break;
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$sel = ($k == $selected ? ' checked="checked"' : '');
 			}
@@ -139,9 +139,9 @@ class EventsHtml
 
 	/**
 	 * Short description for 'buildReccurDaySelect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $reccurday Parameter description (if any) ...
 	 * @param      unknown $tag_name Parameter description (if any) ...
 	 * @param      unknown $args Parameter description (if any) ...
@@ -170,7 +170,7 @@ class EventsHtml
 
 	/**
 	 * Build a month select list
-	 * 
+	 *
 	 * @param      unknown $month Parameter description (if any) ...
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
@@ -180,7 +180,7 @@ class EventsHtml
 		for ($a=1; $a<13; $a++)
 		{
 			$mnh = $a;
-			if ($mnh<="9"&preg_match("/(^[0-9]{1})/", $mnh)) 
+			if ($mnh<="9"&preg_match("/(^[0-9]{1})/", $mnh))
 			{
 				$mnh="0" . $mnh;
 			}
@@ -193,7 +193,7 @@ class EventsHtml
 
 	/**
 	 * Build a day select list
-	 * 
+	 *
 	 * @param      unknown $year Parameter description (if any) ...
 	 * @param      unknown $month Parameter description (if any) ...
 	 * @param      unknown $day Parameter description (if any) ...
@@ -206,7 +206,7 @@ class EventsHtml
 		for ($a=1; $a<=$nbdays; $a++)
 		{
 			$dys = $a;
-			if ($dys<="9"&preg_match("/(^[1-9]{1})/", $dys)) 
+			if ($dys<="9"&preg_match("/(^[1-9]{1})/", $dys))
 			{
 				$dys = "0" . $dys;
 			}
@@ -218,7 +218,7 @@ class EventsHtml
 
 	/**
 	 * Build a select list for year
-	 * 
+	 *
 	 * @param      unknown $year Parameter description (if any) ...
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     string
@@ -226,7 +226,7 @@ class EventsHtml
 	public static function buildYearSelect($year, $args)
 	{
 		$y = date("Y");
-		if ($year<$y-2) 
+		if ($year<$y-2)
 		{
 			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
         }
@@ -234,7 +234,7 @@ class EventsHtml
 		{
 			$yearslist[] = JHTML::_('select.option', $i, $i, 'value', 'text');
         }
-		if ($year>$y+5) 
+		if ($year>$y+5)
 		{
 			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
 		}
@@ -244,7 +244,7 @@ class EventsHtml
 
 	/**
 	 * Build a view select list
-	 * 
+	 *
 	 * @param      unknown $viewtype Parameter description (if any) ...
 	 * @param      unknown $args Parameter description (if any) ...
 	 * @return     string
@@ -263,7 +263,7 @@ class EventsHtml
 
 	/**
 	 * Build an hour select list
-	 * 
+	 *
 	 * @param      integer $start       Parameter description (if any) ...
 	 * @param      integer $end         Parameter description (if any) ...
 	 * @param      integer $inc         Parameter description (if any) ...
@@ -282,18 +282,18 @@ class EventsHtml
 		$tmpi  = '';
 		for ($i=$start; $i <= $end; $i+=$inc)
 		{
-			if (_CAL_CONF_DATEFORMAT == 1) 
+			if (_CAL_CONF_DATEFORMAT == 1)
 			{ // US time
-				if ($i > 11) 
+				if ($i > 11)
 				{
 					$tmpi = ($i-12) . ' pm';
-				} 
-				else 
+				}
+				else
 				{
 					$tmpi = $i . ' am';
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$tmpi = $format ? sprintf("$format", $i) : "$i";
 			}
@@ -305,7 +305,7 @@ class EventsHtml
 
 	/**
 	 * Build a select for categories
-	 * 
+	 *
 	 * @param      integer $catid  Category ID
 	 * @param      array   $args   Arguments to add to select element
 	 * @param      integer $gid    Group ID
@@ -338,7 +338,7 @@ class EventsHtml
 
 	/**
 	 * Build a time zone select list for events
-	 * 
+	 *
 	 * @param      $tzselected - currently selected time zone
 	 * @param      $args - styles for field
 	 * @return     Return - select list of time zones, with current time zone selected (if applicable)
@@ -393,7 +393,7 @@ class EventsHtml
 
 	/**
 	 * Get text/name for time zone offset number
-	 * 
+	 *
 	 * @param      string $tz Time zone of which to retrieve name
 	 * @return     string Time zone name for offset given
 	 */
@@ -443,15 +443,15 @@ class EventsHtml
 		);
 
 		if(array_key_exists($tz, $timezones)) {
-			return $timezones[$tz];	
+			return $timezones[$tz];
 		}
 		return('(timezone n/a)');
-		
+
 	}
 
 	/**
 	 * Build checkboxes for each day of the week
-	 * 
+	 *
 	 * @param      string $reccurweekdays Week day recursion
 	 * @param      string $args           Arguments to add to element
 	 * @return     string
@@ -468,12 +468,12 @@ class EventsHtml
 			JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
 		);
 		$tosend = '';
-		if ($reccurweekdays == '') 
+		if ($reccurweekdays == '')
 		{
 			$split = array();
 			$countsplit = 0;
-		} 
-		else 
+		}
+		else
 		{
 			$split = explode('|', $reccurweekdays);
 			$countsplit = count($split);
@@ -484,7 +484,7 @@ class EventsHtml
 			$checked = '';
 			for ($x = 0; $x < $countsplit; $x++)
 			{
-				if ($split[$x] == $a) 
+				if ($split[$x] == $a)
 				{
 					$checked = 'checked="checked"';
 				}
@@ -496,10 +496,10 @@ class EventsHtml
 
 	/**
 	 * Build checkboxes for each week of a month
-	 * 
+	 *
 	 * @param      string $reccurweeks Weekly recursion
 	 * @param      string $args        Arguments to add to element
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function buildWeeksCheck($reccurweeks, $args)
 	{
@@ -514,12 +514,12 @@ class EventsHtml
 		$tosend = '';
 		$checked = '';
 
-		if ($reccurweeks == '') 
+		if ($reccurweeks == '')
 		{
 			$split = array();
 			$countsplit = 0;
-		} 
-		else 
+		}
+		else
 		{
 			$split = explode('|', $reccurweeks);
 			$countsplit = count($split);
@@ -528,13 +528,13 @@ class EventsHtml
 		for ($a=1; $a<6; $a++)
 		{
 			$checked = '';
-			if ($reccurweeks == '') 
+			if ($reccurweeks == '')
 			{
 				$checked = 'checked="checked"';
 			}
 			for ($x = 0; $x < $countsplit; $x++)
 			{
-				if ($split[$x] == $a) 
+				if ($split[$x] == $a)
 				{
 					$checked = 'checked="checked"';
 				}
@@ -546,7 +546,7 @@ class EventsHtml
 
 	/**
 	 * Generate a mailto link for a user
-	 * 
+	 *
 	 * @param      integer $agid   Access group ID
 	 * @param      integer $userid User ID
 	 * @return     string
@@ -554,32 +554,32 @@ class EventsHtml
     public static function getUserMailtoLink($agid, $userid)
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
-		if ($userid) 
+		if ($userid)
 		{
 			$juser = JUser::getInstance($userid);
 
-			if ($juser) 
+			if ($juser)
 			{
-				if (($juser->get('email')) && ($agenda_viewmail=='YES')) 
+				if (($juser->get('email')) && ($agenda_viewmail=='YES'))
 				{
 					$contactlink = '<a href="mailto:' . $juser->get('email') . '">' . $juser->get('name') . '</a>';
-				} 
-				else 
+				}
+				else
 				{
 					$contactlink = $juser->get('username');
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$database = JFactory::getDBO();
 			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
 			$userdet = $database->loadResult();
-			if ($userdet) 
+			if ($userdet)
 			{
 				$contactlink = $userdet;
-			} 
-			else 
+			}
+			else
 			{
 				$contactlink = JText::_('EVENTS_CAL_LANG_ANONYME');
 			}
@@ -590,9 +590,9 @@ class EventsHtml
 
 	/**
 	 * Get the month name from the numerical value
-	 * 
+	 *
 	 * @param      string $month Numerical month value (01-12)
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getMonthName($month)
 	{
@@ -617,7 +617,7 @@ class EventsHtml
 
 	/**
 	 * Get the day name from the numerical value
-	 * 
+	 *
 	 * @param      string $daynb Numerical day value (0-6)
 	 * @return     string
 	 */
@@ -639,16 +639,16 @@ class EventsHtml
 
 	/**
 	 * Generate the date format
-	 * 
+	 *
 	 * @param      integer $year  Year
 	 * @param      integer $month Month
 	 * @param      integer $day   Day
 	 * @param      string  $type  Format type
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getDateFormat($year, $month, $day, $type)
 	{
-		if (empty($year)) 
+		if (empty($year))
 		{
 			$year = 0;
 		}
@@ -673,17 +673,17 @@ class EventsHtml
 		switch ($type)
 		{
 			case '0':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : Monday 23 Juillet 2003
 					$newdate = EventsHtml::getLongDayName($numero_jour) . '&nbsp;' . $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : Monday, July 23 2003
 					$newdate = EventsHtml::getLongDayName($numero_jour) . ',&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $jour_fr . '&nbsp;' . $annee;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : Montag, 23 Juli 2003
 					$newdate = EventsHtml::getLongDayName($numero_jour) . ',&nbsp;' . $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
@@ -691,17 +691,17 @@ class EventsHtml
 			break;
 
 			case '1':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : 23 Juillet 2003
 					$newdate = $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : July 23, 2003
 					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $jour_fr . ',&nbsp;' . $annee;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : 23. Juli 2003
 					$newdate = $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
@@ -709,17 +709,17 @@ class EventsHtml
 			break;
 
 			case '2':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : 23 Juillet
 					$newdate = $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0);
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : Juillet, 23
 					$newdate = EventsHtml::getMonthName($mois_0) . ',&nbsp;' . $jour_fr;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : 23. Juli
 					$newdate = $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0);
@@ -727,17 +727,17 @@ class EventsHtml
 			break;
 
 			case '3':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : Juillet 2003
 					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : Juillet 2003
 					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : Juli 2003
 					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
@@ -745,17 +745,17 @@ class EventsHtml
 			break;
 
 			case '4':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : 23/07/2003
 					$newdate = $jour_fr . '/' . $mois_0 . '/' . $annee;
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : 07/23/2003
 					$newdate = $mois_0 . '/' . $jour_fr . '/' . $annee;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : 23.07.2003
 					$newdate = $jour_fr . '.' . $mois_0 . '.' . $annee;
@@ -763,17 +763,17 @@ class EventsHtml
 			break;
 
 			case '5':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : 23/07
 					$newdate = $jour_fr . '/' . $mois_0;
-				} 
+				}
 				else if ($format_type == 1)
 				{
 					// Us style : 07/23
 					$newdate = $mois_0 . '/' . $jour_fr;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : 23.07.
 					$newdate = $jour_fr . '.' . $mois_0 . '.';
@@ -781,17 +781,17 @@ class EventsHtml
 			break;
 
 			case '6':
-				if ($format_type == 0) 
+				if ($format_type == 0)
 				{
 					// Fr style : 07/2003
 					$newdate = $mois_0 . '/' . $annee;
-				} 
-				else if ($format_type == 1) 
+				}
+				else if ($format_type == 1)
 				{
 					// Us style : 07/2003
 					$newdate = $mois_0 . '/' . $annee;
-				} 
-				else 
+				}
+				else
 				{
 					// De style : 07/2003
 					$newdate = $mois_0 . '/' . $annee;

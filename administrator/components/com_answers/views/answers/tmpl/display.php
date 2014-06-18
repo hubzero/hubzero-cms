@@ -33,16 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = AnswersHelper::getActions('answer');
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_RESPONSES'), 'answers.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 	JToolBarHelper::spacer();
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label> 
+		<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label>
 		<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
 			<option value="all"<?php if ($this->filters['filterby'] == 'all') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
 			<option value="accepted"<?php if ($this->filters['filterby'] == 'accepted') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<th colspan="6">
 				<?php if ($this->question->exists()) { ?>
-					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> - 
+					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->question->get('id'); ?>">
 						<?php echo $this->escape($this->question->subject('clean')); ?>
 					</a>
@@ -150,7 +150,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				<?php } ?>
 				</td>
 				<td>
-					<span class="vote like" style="color:green;">+<?php echo $row->get('helpful', 0); ?></span> 
+					<span class="vote like" style="color:green;">+<?php echo $row->get('helpful', 0); ?></span>
 					<span class="vote dislike" style="color:red;">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
@@ -168,6 +168,6 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
-	
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

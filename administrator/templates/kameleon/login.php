@@ -36,12 +36,12 @@ $app = JFactory::getApplication();
 // Load base styles
 $this->addStyleSheet('templates/' . $this->template . '/css/login.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/login.css'));
 // Load theme
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 // Load language direction CSS
-if ($this->direction == 'rtl') 
+if ($this->direction == 'rtl')
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
@@ -72,7 +72,7 @@ $browser = new \Hubzero\Browser\Detector();
 			jQuery(document).ready(function($){
 				(function worker() {
 					$.ajax({
-						url: 'index.php', 
+						url: 'index.php',
 						complete: function() {
 							setTimeout(worker, 3540000);
 						}

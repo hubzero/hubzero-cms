@@ -43,7 +43,7 @@ $this->css('create.css');
 					<div class="col span8">
 						<label>
 							<?php echo JText::_('COM_CONTRIBUTE_AUTHORS_ENTER_LOGINS'); ?>
-							<?php 
+							<?php
 							JPluginHelper::importPlugin('hubzero');
 							$dispatcher = JDispatcher::getInstance();
 							$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
@@ -59,7 +59,7 @@ $this->css('create.css');
 							<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
 							<select name="role" id="new-authors-role">
 								<option value=""><?php echo JText::_('Author'); ?></option>
-<?php 
+<?php
 		if ($this->roles)
 		{
 			foreach ($this->roles as $role)
@@ -87,7 +87,7 @@ $this->css('create.css');
 				<input type="hidden" name="task" value="save" />
 			</fieldset>
 		</form>
-<?php	
+<?php
 // Do we have any contributors associated with this resource?
 if ($this->contributors) {
 	$i = 0;
@@ -138,7 +138,7 @@ if ($this->contributors) {
 					<td>
 						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
 							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
-<?php 
+<?php
 					if ($this->roles)
 					{
 						foreach ($this->roles as $role)

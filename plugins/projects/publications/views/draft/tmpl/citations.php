@@ -36,14 +36,14 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-		
-$selectUrl   = $prov 
-		? JRoute::_( $route) . '?active=links' . a . 'action=select' . a . 'p=' . $props 
+
+$selectUrl   = $prov
+		? JRoute::_( $route) . '?active=links' . a . 'action=select' . a . 'p=' . $props
 			. a . 'vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=links&action=select') .'/?p=' . $props . '&pid=' 
+		: JRoute::_( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
 			. $this->pub->id . '&vid=' . $this->pub->version_id;
 
 $delUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
@@ -74,17 +74,17 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
-			<?php if (count($this->pub->_citations) > 0) { 
-				$i= 1; 
-				
+			<?php if (count($this->pub->_citations) > 0) {
+				$i= 1;
+
 				$formatter = new CitationFormat;
 				$formatter->setTemplate($this->pub->_citationFormat);
 				?>
 					<ul class="itemlist" id="citations-list">
-					<?php foreach ($this->pub->_citations as $cite) { 
-							
-							$citeText = $cite->formatted 
-										? '<p>' . $cite->formatted . '</p>' 
+					<?php foreach ($this->pub->_citations as $cite) {
+
+							$citeText = $cite->formatted
+										? '<p>' . $cite->formatted . '</p>'
 										: CitationFormat::formatReference($cite, '');
 						 ?>
 						<li>
@@ -93,7 +93,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 									<a href="<?php echo $delUrl . '/?action=deleteitem&cid=' . $cite->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
-						</li>	
+						</li>
 				<?php	$i++; } ?>
 					</ul>
 				<?php  }  ?>

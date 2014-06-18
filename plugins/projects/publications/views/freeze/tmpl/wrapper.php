@@ -30,10 +30,10 @@ $project = $this->pub->_project;
 $prov = $this->pub->_project->provisioned ? 1 : 0;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
@@ -49,7 +49,7 @@ $title = $this->manifest->title;
 			<div class="block-aside">
 				<div class="block-info">
 					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
-					<?php if ($this->pub->state == 1) { 
+					<?php if ($this->pub->state == 1) {
 						echo ' <a href="'.$url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; } ?>
 					</p>
 				</div>

@@ -38,7 +38,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Add a host entry for a member
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -48,7 +48,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('MEMBERS_NO_ID'));
 			$this->displayTask();
@@ -61,7 +61,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Incoming host
 		$host = JRequest::getVar('host', '');
-		if (!$host) 
+		if (!$host)
 		{
 			$this->setError(JText::_('MEMBERS_NO_HOST'));
 			$this->displayTask($id);
@@ -73,7 +73,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Update the hosts list
 		$profile->set('host', $hosts);
-		if (!$profile->update()) 
+		if (!$profile->update())
 		{
 			$this->setError($profile->getError());
 		}
@@ -84,7 +84,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove a host entry for a member
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -94,7 +94,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('MEMBERS_NO_ID'));
 			$this->displayTask();
@@ -107,7 +107,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Incoming host
 		$host = JRequest::getVar('host', '');
-		if (!$host) 
+		if (!$host)
 		{
 			$this->setError(JText::_('MEMBERS_NO_HOST'));
 			$this->displayTask($profile);
@@ -118,7 +118,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		$a = array();
 		foreach ($hosts as $h)
 		{
-			if ($h != $host) 
+			if ($h != $host)
 			{
 				$a[] = $h;
 			}
@@ -126,7 +126,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 		// Update the hosts list
 		$profile->set('host', $a);
-		if (!$profile->update()) 
+		if (!$profile->update())
 		{
 			$this->setError($profile->getError());
 		}
@@ -137,16 +137,16 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display host entries for a member
-	 * 
+	 *
 	 * @param      object $profile \Hubzero\User\Profile
 	 * @return     void
 	 */
 	public function displayTask($profile=null)
 	{
 		$this->view->setLayout('display');
-		
+
 		// Incoming
-		if (!$profile) 
+		if (!$profile)
 		{
 			$id = JRequest::getInt('id', 0, 'get');
 
@@ -160,7 +160,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		$this->view->id = $profile->get('uidNumber');
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}

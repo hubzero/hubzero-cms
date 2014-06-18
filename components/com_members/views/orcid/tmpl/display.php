@@ -37,7 +37,7 @@ $email = JRequest::getVar('email', '');
 
 $returnOrcid = JRequest::getInt('return', 0);
 
-$juser = JFactory::getUser(); 
+$juser = JFactory::getUser();
 
 $isRegister = $returnOrcid == 1;
 
@@ -52,7 +52,7 @@ else
 
 if (!$isRegister)
 {
-	// Instantiate a new profile object  
+	// Instantiate a new profile object
 	$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
 	$fname = $fname ?: $profile->get('givenName');

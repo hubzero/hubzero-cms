@@ -40,7 +40,7 @@ if (!$this->sub)
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
-		if (!$this->page->isStatic()) 
+		if (!$this->page->isStatic())
 		{
 			$this->view('authors', 'page')
 			     ->setBasePath($this->base_path)
@@ -98,7 +98,7 @@ if (!$this->sub)
 			$filters['version'] = 'AND version=' . $this->v;
 		}
 
-		if ($this->page->comments('list', $filters)->total()) 
+		if ($this->page->comments('list', $filters)->total())
 		{
 			$this->view('_list', 'comments')
 			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
@@ -111,14 +111,14 @@ if (!$this->sub)
 			     ->set('version', $this->v)
 			     ->set('cls', 'odd')
 			     ->display();
-		} 
-		else 
+		}
+		else
 		{
-			if ($this->v) 
+			if ($this->v)
 			{
 				echo '<p>No comments found for this version.</p>';
-			} 
-			else 
+			}
+			else
 			{
 				echo '<p>No comments found. Be the first to add a comment!</p>';
 			}
@@ -160,7 +160,7 @@ if (!$this->sub)
 				<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
 			</h3>
 			<p class="comment-member-photo">
-				<?php 
+				<?php
 				$juser = JFactory::getUser();
 				$anon = (!$juser->get('guest')) ? 0 : 1;
 				?>

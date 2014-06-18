@@ -24,15 +24,15 @@ class AuthSignature {
 		$acc_req->sign_request($sig_method,$authConsumer, $authToken);
 		return  OAuthutil::parseQueryString($acc_req);
 	}
-	
+
 	public static function generateFullAuthString($key, $secret, $token, $tokenSecret, $httpMethod, $endpoint) {
 		$authSignature = new AuthSignature();
 		$response = $authSignature->genSign($key, $secret, $token, $tokenSecret, $httpMethod, $endpoint);
-		return "token=" . $token . 
+		return "token=" . $token .
 			   ",signature=" . $response['oauth_signature'] .
-		       ",timestamp=" . $response['oauth_timestamp'];		
+		       ",timestamp=" . $response['oauth_timestamp'];
 	}
-	
+
 }
 //PayPal specific modification ends
 /* Generic exception class
@@ -486,7 +486,7 @@ class OAuthRequest {
 
 
 	public function sign_request($signature_method,$consumer, $token) {
-			
+
 		$empty=false;
 		$msg=array();
 		if( $token->key==null){
@@ -809,8 +809,8 @@ class OAuthUtil {
 			return $tmp;
 			/*$tmp1=str_replace('%7E', '~', rawurlencode($input));
 			 $tmp2= str_replace(".","%2E",$tmp1);
-			 	
-			 	
+
+
 			 return $tmp;*/
 		}
 		else {

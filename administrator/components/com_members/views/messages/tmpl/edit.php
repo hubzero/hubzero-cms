@@ -35,7 +35,7 @@ $canDo = MembersHelper::getActions('component');
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
 JToolBarHelper::title(JText::_('MEMBER').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -43,15 +43,15 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	submitform(pressbutton);
 }
 </script>
@@ -60,14 +60,14 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Message Action'); ?></span></legend>
-			
+
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
-			
+
 			<table class="admintable">
-			 <tbody> 
+			 <tbody>
 			<tr>
 			   <td class="key"><label for="field-component"><?php echo JText::_('Component'); ?>:</label></td>
 			   <td><input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" /></td>

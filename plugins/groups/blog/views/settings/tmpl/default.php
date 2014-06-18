@@ -65,7 +65,7 @@ $this->css()
 					<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?></option>
 				</select>
 			</label>
-			
+
 			<p class="help">
 				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_HELP'); ?>
 			</p>
@@ -80,7 +80,7 @@ $this->css()
 					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_ENABLED'); ?></option>
 				</select>
 			</label>
-			
+
 			<label for="param-feeds_entries">
 				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
 				<select name="params[feed_entries]" id="param-feeds_entries">
@@ -88,24 +88,24 @@ $this->css()
 					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>><?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_PARTIAL'); ?></option>
 				</select>
 			</label>
-			
+
 			<p class="help">
 				<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS_FEED_HELP'); ?>
 			</p>
-			
+
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
 			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
 			<input type="hidden" name="settings[folder]" value="groups" />
 			<input type="hidden" name="settings[element]" value="blog" />
 		</fieldset>
 		<div class="clear"></div>
-		
+
 		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="action" value="savesettings" />
-		
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
 

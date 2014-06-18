@@ -32,57 +32,57 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for forum attachments
  */
-class ForumTableAttachment extends JTable 
+class ForumTableAttachment extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent      = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $post_id     = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $filename    = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct(&$db) 
+	public function __construct(&$db)
 	{
 		parent::__construct('#__forum_attachments', 'id', $db);
 	}
 
 	/**
 	 * Loads a record from the database and populates the current object with DB data
-	 * 
+	 *
 	 * @param      integer $post_id ID of post the file was attached to
 	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
 	 */
@@ -93,7 +93,7 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Loads a record from the database and populates the current object with DB data
-	 * 
+	 *
 	 * @param      integer $parent   Thread the file was posted in
 	 * @param      integer $filename Name of file
 	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
@@ -110,19 +110,19 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
-	public function check() 
+	public function check()
 	{
 		$this->post_id = intval($this->post_id);
-		if (!$this->post_id) 
+		if (!$this->post_id)
 		{
 			$this->setError(JText::_('COM_FORUM_ERROR_NO_POST_ID'));
 			return false;
 		}
 		$this->filename = trim($this->filename);
-		if (!$this->filename) 
+		if (!$this->filename)
 		{
 			$this->setError(JText::_('COM_FORUM_ERROR_NO_FILENAME'));
 			return false;
@@ -133,10 +133,10 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Get the ID of a record
-	 * 
+	 *
 	 * @return     integer
 	 */
-	public function getID() 
+	public function getID()
 	{
 		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->Quote($this->filename) . " AND description=" . $this->_db->Quote($this->description) . " AND post_id=" . $this->_db->Quote(intval($this->post_id)));
 		$this->id = $this->_db->loadResult();
@@ -145,7 +145,7 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Get all attachments for a thread
-	 * 
+	 *
 	 * @param      integer $parent Thread ID
 	 * @return     array
 	 */
@@ -157,7 +157,7 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Generate the upload path for files
-	 * 
+	 *
 	 * @param      integer $id     Record ID
 	 * @param      string  $url    URL to this post
 	*  @param      object  $config Component config
@@ -174,19 +174,19 @@ class ForumTableAttachment extends JTable
 		$type = 'file';
 
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
-		if ($this->filename && file_exists($path)) 
+		if ($this->filename && file_exists($path))
 		{
 			$url = JRoute::_($url . $this->filename);
 
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 
-			if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $this->filename)) 
+			if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $this->filename))
 			{
 				$type = 'img';
 				$html  = '<span class="figure">';
 				$size = getimagesize($path);
 
-				if ($size[0] > 400) 
+				if ($size[0] > 400)
 				{
 					$ratio = $size[0] / $size[1];
 
@@ -205,8 +205,8 @@ class ForumTableAttachment extends JTable
 					$html .= '<a href="' . $url . '" title="'. JText::_('Click for larger version') . '">';
 					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $targetWidth . '" height="' . $targetHeight . '" />';
 					$html .= '</a>';
-				} 
-				else 
+				}
+				else
 				{
 					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $size[0] . '" height="' . $size[1] . '" />';
 				}
@@ -215,15 +215,15 @@ class ForumTableAttachment extends JTable
 					$html .= '<span class="figcaption">' . $this->description . '</span>';
 				}
 				$html .= '</span>';
-			} 
-			else 
+			}
+			else
 			{
 				$html  = '<a href="' . $url . '">';
 				$html .= ($this->description) ? $this->description : $this->filename;
 				$html .= '</a>';
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return '';
 		}
@@ -233,7 +233,7 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Generate the upload path for files
-	 * 
+	 *
 	 * @param      integer $id     Record ID
 	 * @param      object  $config Component config
 	 * @return     integer
@@ -254,15 +254,15 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Deletea record based on filename and post ID
-	 * 
+	 *
 	 * @param      string  $filename Filename
 	 * @param      integer $post_id  Post ID
 	 * @return     boolean True on success
 	 */
-	public function deleteAttachment($filename, $post_id) 
+	public function deleteAttachment($filename, $post_id)
 	{
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND post_id= " . $this->_db->Quote(intval($post_id)));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			return $this->_db->getErrorMsg();
 		}
@@ -271,18 +271,18 @@ class ForumTableAttachment extends JTable
 
 	/**
 	 * Load a record based on filename and post ID
-	 * 
+	 *
 	 * @param      string  $filename Filename
 	 * @param      integer $post_id  Post ID
 	 * @return     object
 	 */
 	public function loadAttachment($filename=NULL, $post_id=NULL)
 	{
-		if ($filename === NULL) 
+		if ($filename === NULL)
 		{
 			return false;
 		}
-		if ($post_id === NULL) 
+		if ($post_id === NULL)
 		{
 			return false;
 		}

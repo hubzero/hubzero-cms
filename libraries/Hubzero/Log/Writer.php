@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Hubzero\Log;
 
@@ -7,7 +7,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Handler\RotatingFileHandler;
 
-class Writer 
+class Writer
 {
 	/**
 	 * The Monolog logger instance.

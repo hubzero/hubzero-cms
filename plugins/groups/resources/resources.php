@@ -48,28 +48,28 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Resource areas
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource categories
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -86,7 +86,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -111,9 +111,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$return = 'metadata';
 			}
@@ -131,15 +131,15 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		if ($return == 'html')
 		{
 			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody') 
+			if ($group_plugin_acl == 'nobody')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest') 
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+			if ($juser->get('guest')
+			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$area = JRequest::getWord('area', 'resource');
 				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
@@ -153,9 +153,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) 
-			 && $group_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
+			if (!in_array($juser->get('id'), $members)
+			 && $group_plugin_acl == 'members'
+			 && $authorized != 'admin')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
@@ -196,13 +196,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$access = JRequest::getVar('access', 'all');
 
 		$config = JComponentHelper::getParams('com_resources');
-		if ($return == 'metadata') 
+		if ($return == 'metadata')
 		{
-			if ($config->get('show_ranking')) 
+			if ($config->get('show_ranking'))
 			{
 				$sort = 'ranking';
-			} 
-			elseif ($config->get('show_rating')) 
+			}
+			elseif ($config->get('show_rating'))
 			{
 				$sort = 'rating';
 			}
@@ -213,21 +213,21 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Get the active category
 		$area = JRequest::getWord('area', 'resources');
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			$limit = 5;
 			$activeareas = $rareas;
 		}
 
-		if ($return == 'metadata') 
+		if ($return == 'metadata')
 		{
 			$ls = -1;
-		} 
-		else 
+		}
+		else
 		{
 			$ls = $limitstart;
 		}
@@ -253,7 +253,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$cats[$i]['category'] = $c;
 
 			// Do sub-categories exist?
-			if (is_array($t) && !empty($t)) 
+			if (is_array($t) && !empty($t))
 			{
 				// They do - do some processing
 				$cats[$i]['title'] = ucfirst($c);
@@ -264,7 +264,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				foreach ($t as $s=>$st)
 				{
 					// Ensure a matching array of totals exist
-					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) 
+					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
 					{
 						// Add to the parent category's total
 						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
@@ -275,8 +275,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					}
 					$z++;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				// No sub-categories - this should be easy
 				$cats[$i]['title'] = $t;
@@ -289,11 +289,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have an active area?
-		if (count($activeareas) == 1 && !is_array(current($activeareas))) 
+		if (count($activeareas) == 1 && !is_array(current($activeareas)))
 		{
 			$active = $activeareas[0];
-		} 
-		else 
+		}
+		else
 		{
 			$active = '';
 		}
@@ -336,7 +336,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				$view->total = $total;
 				$view->sort = $sort;
 				$view->access = $access;
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					foreach ($this->getErrors() as $error)
 					{
@@ -360,7 +360,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Remove any associated resources when group is deleted
-	 * 
+	 *
 	 * @param      object $group Group being deleted
 	 * @return     string Log of items removed
 	 */
@@ -371,7 +371,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Start the log text
 		$log = JText::_('PLG_GROUPS_RESOURCES_LOG') . ': ';
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$database = JFactory::getDBO();
 
@@ -388,8 +388,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 				// Add the page ID to the log
 				$log .= $id->id . ' ' . "\n";
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$log .= JText::_('PLG_GROUPS_RESOURCES_NONE') . "\n";
 		}
@@ -400,7 +400,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return a count of items that will be removed when group is deleted
-	 * 
+	 *
 	 * @param      object $group Group to delete
 	 * @return     string
 	 */
@@ -411,13 +411,13 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a list of resource IDs associated with this group
-	 * 
+	 *
 	 * @param      string $gid Group alias
 	 * @return     array
 	 */
 	private function getResourceIDs($gid=NULL)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return array();
 		}
@@ -431,19 +431,19 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a list of resource categories (types)
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getResourcesAreas()
 	{
 		$areas = $this->_areas;
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			return $areas;
 		}
 
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			// Get categories
 			$database = JFactory::getDBO();
@@ -473,7 +473,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items associated with this group
-	 * 
+	 *
 	 * @param      object  $group      Group that owns the records
 	 * @param      unknown $authorized Authorization level
 	 * @param      mixed   $limit      SQL record limit
@@ -486,11 +486,11 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 	public function getResources($group, $authorized, $limit=0, $limitstart=0, $sort='date', $access='all', $areas=null)
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			$ars = $this->getResourcesAreas();
-			if (!isset($areas[$this->_name]) 
-			 && !in_array($this->_name, $areas) 
+			if (!isset($areas[$this->_name])
+			 && !in_array($this->_name, $areas)
 			 && !array_intersect($areas, array_keys($ars['resources'])))
 			{
 				return array();
@@ -498,7 +498,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have a member ID?
-		if (!$group->get('cn')) 
+		if (!$group->get('cn'))
 		{
 			return array();
 		}
@@ -518,7 +518,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
@@ -536,9 +536,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$cats[$normalized]['id'] = $categories[$i]->id;
 		}
 
-		if ($limit) 
+		if ($limit)
 		{
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
 				$total = 0;
 				$t = $this->_total;
@@ -547,7 +547,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 					$total += $l;
 				}
 			}
-			if ($total == 0) 
+			if ($total == 0)
 			{
 				return array();
 			}
@@ -558,7 +558,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') 
+			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources')
 			{
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
@@ -568,16 +568,16 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->alias) 
+					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
-					} 
-					else 
+					}
+					else
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
 					}
@@ -586,8 +586,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
 			// Return the results
 			return $rows;
-		} 
-		else 
+		}
+		else
 		{
 			$filters['select'] = 'count';
 
@@ -596,24 +596,24 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$ares = $this->getResourcesAreas();
 			foreach ($ares as $area=>$val)
 			{
-				if (is_array($val)) 
+				if (is_array($val))
 				{
 					$i = 0;
 					foreach ($val as $a=>$t)
 					{
-						if ($limitstart == -1) 
+						if ($limitstart == -1)
 						{
-							if ($i == 0) 
+							if ($i == 0)
 							{
 								$database->setQuery($rr->buildPluginQuery($filters));
 								$counts[] = $database->loadResult();
-							} 
-							else 
+							}
+							else
 							{
 								$counts[] = 0;
 							}
-						} 
-						else 
+						}
+						else
 						{
 							$filters['type'] = $cats[$a]['id'];
 

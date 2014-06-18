@@ -38,7 +38,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -50,38 +50,38 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['category']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.category', 
-			'category', 
+			$this->_option . '.' . $this->_controller . '.category',
+			'category',
 			''
 		));
 		// Get sorting variables
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'title'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -96,8 +96,8 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -107,7 +107,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -117,7 +117,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -130,12 +130,12 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array(0));
 
-			if (is_array($ids) && !empty($ids)) 
+			if (is_array($ids) && !empty($ids))
 			{
 				$id = $ids[0];
 			}
@@ -152,23 +152,23 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		}*/
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
 		}
-		
+
 		$this->view->juser = $this->juser;
 
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save an entry and come back to the edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -178,7 +178,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @param      integer $redirect Redirect the page after saving
 	 * @return     void
 	 */
@@ -193,7 +193,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new Wishlist($this->database);
-		if (!$row->bind($fields)) 
+		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -203,7 +203,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		$row->public = (isset($fields['public'])) ? 1 : 0;
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -211,14 +211,14 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect) 
+		if ($redirect)
 		{
 			// Redirect
 			$this->setRedirect(
@@ -226,14 +226,14 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 				JText::_('COM_WISHLIST_LIST_SAVED')
 			);
 			return;
-		} 
+		}
 
 		$this->editTask($row);
 	}
 
 	/**
 	 * Remove an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -245,7 +245,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Make sure we have an ID to work with
-		if (!count($ids)) 
+		if (!count($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -288,30 +288,30 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			);
 		}
 	}
-	
+
 	/**
 	 * Set the access level of an article to 'public'
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accesspublicTask()
 	{
 		return $this->accessTask(0);
 	}
-	
+
 	/**
 	 * Set the access level of an article to 'registered'
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accessregisteredTask()
 	{
 		return $this->accessTask(1);
 	}
-	
+
 	/**
 	 * Set the access level of an article to 'special'
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accessspecialTask()
@@ -321,7 +321,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the access level of an article
-	 * 
+	 *
 	 * @param      integer $access Access level to set
 	 * @return     void
 	 */
@@ -334,7 +334,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -350,7 +350,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		$row->public = $access;
 
 		// Check and store the changes
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -359,7 +359,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -374,20 +374,20 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
-	
+
 	/**
 	 * Calls stateTask to publish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Calls stateTask to unpublish entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unpublishTask()
@@ -397,7 +397,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state of an entry
-	 * 
+	 *
 	 * @param      integer $state State to set
 	 * @return     void
 	 */
@@ -406,13 +406,13 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		// Incoming
 		$cid = JRequest::getInt('cid', 0);
 		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array(0);
 		}
 
 		// Check for an ID
-		if (count($ids) < 1) 
+		if (count($ids) < 1)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -435,7 +435,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 		// Set message
 		switch ($state)
 		{
-			case '-1': 
+			case '-1':
 				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
 			break;
 			case '1':

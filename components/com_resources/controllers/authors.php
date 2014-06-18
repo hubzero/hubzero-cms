@@ -45,12 +45,12 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			JError::raiseError(403, JText::_('You must be logged in to access.'));
 			return;
@@ -65,7 +65,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save one or more authors
-	 * 
+	 *
 	 * @param      integer $show       Display author list when done?
 	 * @param      integer $id         Resource ID
 	 * @param      array   $authorsNew Authors to add
@@ -74,11 +74,11 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	public function saveTask($show = 1, $id = 0, $authorsNew = array())
 	{
 		// Incoming resource ID
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('pid', 0);
 		}
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
 			if ($show)
@@ -105,27 +105,27 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		$order = $rc->getLastOrder($id, 'resources');
 		$order = $order + 1; // new items are always last
 
-		if (!$authid && isset($_POST['author'])) 
+		if (!$authid && isset($_POST['author']))
 		{
 			$this->database->setQuery('SELECT id FROM #__users WHERE username = ' . $this->database->quote($_POST['author']));
 			$authid = $this->database->loadResult();
 		}
 
 		// Was there an ID? (this will come from the author <select>)
-		if ($authid) 
+		if ($authid)
 		{
 			// Check if they're already linked to this resource
 			$rc->loadAssociation($authid, $id, 'resources');
-			if ($rc->authorid) 
+			if ($rc->authorid)
 			{
 				$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rc->name));
 			}
-			else 
+			else
 			{
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
 				$xprofile = new \Hubzero\User\Profile();
 				$xprofile->load($authid);
-				if ($xprofile) 
+				if ($xprofile)
 				{
 					$this->_authorCheck($authid);
 
@@ -143,7 +143,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		}
 		$xprofile = null;
 		// Do we have new authors?
-		if (!empty($authorsNew)) 
+		if (!empty($authorsNew))
 		{
 			jimport('joomla.user.helper');
 
@@ -156,11 +156,11 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 				{
 					$uid = intval($cid);
 				}
-				else 
+				else
 				{
 					// Find the user's account info
 					$uid = JUserHelper::getUserId(strtolower($cid));
-					if (!$uid) 
+					if (!$uid)
 					{
 						$cid = addslashes(trim($cid));
 						// No account
@@ -194,7 +194,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 				// We should only get to this part if the author is also a site member
 				$juser = JUser::getInstance($uid);
-				if (!is_object($juser)) 
+				if (!is_object($juser))
 				{
 					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 					continue;
@@ -202,7 +202,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 				$uid = $juser->get('id');
 
-				if (!$uid) 
+				if (!$uid)
 				{
 					$this->setError(JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 					continue;
@@ -211,7 +211,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 				// Check if they're already linked to this resource
 				$rcc = new ResourcesContributor($this->database);
 				$rcc->loadAssociation($uid, $id, 'resources');
-				if ($rcc->authorid) 
+				if ($rcc->authorid)
 				{
 					$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rcc->name));
 					continue;
@@ -227,7 +227,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 				$rcc->name         = $xprofile->get('name');
 				$rcc->role         = $role;
 				$rcc->organization = $xprofile->get('organization');
-				if (!$rcc->createAssociation()) 
+				if (!$rcc->createAssociation())
 				{
 					$this->setError($rcc->getError());
 				}
@@ -236,7 +236,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if ($show) 
+		if ($show)
 		{
 			// Push through to the authors view
 			$this->displayTask($id);
@@ -245,24 +245,24 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Split a user's name into its parts if not already done
-	 * 
+	 *
 	 * @param      integer $id User ID
 	 * @return     void
 	 */
 	private function _authorCheck($id)
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($id);
-		if ($xprofile->get('givenName') == '' 
-		 && $xprofile->get('middleName') == '' 
-		 && $xprofile->get('surname') == '') 
+		if ($xprofile->get('givenName') == ''
+		 && $xprofile->get('middleName') == ''
+		 && $xprofile->get('surname') == '')
 		{
 			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
-			if (count($bits) >= 1) 
+			if (count($bits) >= 1)
 			{
 				$xprofile->set('givenName', array_shift($bits));
 			}
-			if (count($bits) >= 1) 
+			if (count($bits) >= 1)
 			{
 				$xprofile->set('middleName', implode(' ', $bits));
 			}
@@ -271,7 +271,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Remove an author from an item
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -281,7 +281,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		$pid = JRequest::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask();
@@ -289,10 +289,10 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have the contributor's ID ($id)
-		if ($id) 
+		if ($id)
 		{
 			$rc = new ResourcesContributor($this->database);
-			if (!$rc->deleteAssociation($id, $pid, 'resources')) 
+			if (!$rc->deleteAssociation($id, $pid, 'resources'))
 			{
 				$this->setError($rc->getError());
 			}
@@ -304,7 +304,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Update information for a resource author
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateTask()
@@ -314,7 +314,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		$pid = JRequest::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
@@ -322,7 +322,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have the contributor's ID ($id)
-		if ($ids) 
+		if ($ids)
 		{
 			foreach ($ids as $id => $data)
 			{
@@ -340,7 +340,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Reorder the list of authors
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask()
@@ -351,7 +351,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		$move = 'order' . JRequest::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
@@ -359,7 +359,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have a parent ID to work with
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -405,7 +405,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of authors
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     void
 	 */
@@ -414,13 +414,13 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('id', 0);
 		}
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
 			return;
@@ -448,7 +448,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 		$this->view->roles = $rt->getRolesForType($resource->type);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

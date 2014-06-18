@@ -39,7 +39,7 @@ class Feed extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -59,7 +59,7 @@ class Feed extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -73,7 +73,7 @@ class Feed extends Macro
 		// get feed details
 		$limit = $this->_getFeedLimit($args, 5);
 		$class = $this->_getFeedClass($args);
-		
+
 		// get feed
 		$feed = \JFactory::getFeedParser($url);
 
@@ -94,13 +94,13 @@ class Feed extends Macro
 		{
 			$html .= '<p>' . $desc . '</p>';
 		}
-		
+
 		// add each item
 		foreach ($feed->get_items(0, $limit) as $item)
 		{
 			$html .= $this->_renderItem($item);
 		}
-		
+
 		// close feed
 		$html .= '</div>';
 
@@ -125,7 +125,7 @@ class Feed extends Macro
 
 	/**
 	 * Pull Feed url from args passed in
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */
@@ -144,7 +144,7 @@ class Feed extends Macro
 
 	/**
 	 * Get feed item limit
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */
@@ -166,7 +166,7 @@ class Feed extends Macro
 
 	/**
 	 * Get feed class
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */

@@ -15,9 +15,9 @@ class Migration20140108233319ComGroups extends Base
 		// import needed libraries
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-		
+
 		$old = umask(0);
-		
+
 		// define base path
 		$base = JPATH_ROOT . DS . 'site' . DS . 'groups';
 
@@ -26,21 +26,21 @@ class Migration20140108233319ComGroups extends Base
 		{
 			return;
 		}
-		
+
 		// get group folders
 		$groupFolders = \JFolder::folders( $base, '.', false, true );
-		
+
 		// make sure we have one!
 		if (count($groupFolders) < 1)
 		{
 			return;
 		}
-		
+
 		// loop through group folders
 		foreach ($groupFolders as $groupFolder)
 		{
 			$groupUploadFolder = $groupFolder . DS . 'uploads';
-			
+
 			// make sure we havent already moved files
 			if (!is_dir( $groupUploadFolder ))
 			{
@@ -54,7 +54,7 @@ class Migration20140108233319ComGroups extends Base
 					return $return;
 				}
 			}
-			
+
 			//get group files
 			$groupFiles = \JFolder::files( $groupFolder );
 
@@ -73,12 +73,12 @@ class Migration20140108233319ComGroups extends Base
 				}
 			}
 		}
-		
+
 		umask($old);
 	}
-	
+
 	public function down()
 	{
-		
+
 	}
 }

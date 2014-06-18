@@ -44,14 +44,14 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
@@ -63,7 +63,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -74,16 +74,16 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas['groups']) && !in_array('groups', $areas)) 
+			if (!isset($areas['groups']) && !in_array('groups', $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -108,15 +108,15 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.gidNumber) FROM (SELECT a.gidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created, 
-					a.created_by, NULL AS modified, NULL AS publish_up, 
-					NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques, 
+		$f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created,
+					a.created_by, NULL AS modified, NULL AS publish_up,
+					NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques,
 					a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
-		$f_from = " FROM #__xgroups AS a $from 
+		$f_from = " FROM #__xgroups AS a $from
 					JOIN #__tags_object AS t
 					WHERE a.type=1 AND a.discoverability=0
-					AND a.gidNumber=t.objectid 
-					AND t.tbl='groups' 
+					AND a.gidNumber=t.objectid
+					AND t.tbl='groups'
 					AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.gidNumber HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
@@ -130,22 +130,22 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
 		// Execute the query
-		if (!$limit) 
+		if (!$limit)
 		{
 			$database->setQuery($f_count . $f_from . ") AS f");
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} 
-		else 
+		}
+		else
 		{
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				return $f_fields . $f_from;
 			}
 
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
-				if ($this->_total == 0) 
+				if ($this->_total == 0)
 				{
 					return array();
 				}
@@ -155,7 +155,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)

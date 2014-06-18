@@ -33,7 +33,7 @@ $canDo = ForumHelper::getActions('section');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_SECTIONS') . ': ' . $text, 'forum.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -44,13 +44,13 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('section');
 
 $create_date = NULL;
-if (intval($this->row->get('created')) <> 0) 
+if (intval($this->row->get('created')) <> 0)
 {
 	$create_date = JHTML::_('date', $this->row->get('created'));
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

@@ -60,16 +60,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
 		// Check logged in status
-		if (JFactory::getUser()->get('guest')) 
+		if (JFactory::getUser()->get('guest'))
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' 
-				. $this->_option . '&controller=' . $this->_controller . '&task=' 
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option='
+				. $this->_option . '&controller=' . $this->_controller . '&task='
 				. JRequest::getWord('task', ''), false, true), 'server'));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . $return)
@@ -92,7 +92,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Tool Development Pipeline
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function pipelineTask()
@@ -106,11 +106,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->filters = array();
 		$this->view->filters['filterby'] = trim(JRequest::getVar('filterby', 'all'));
 		$this->view->filters['search'] = trim(urldecode(JRequest::getVar('search', '')));
-		if (!$this->config->get('access-admin-component')) 
+		if (!$this->config->get('access-admin-component'))
 		{
 			$this->view->filters['sortby'] = trim(trim(JRequest::getVar('sortby', 'f.state, f.registered')));
 		}
-		else 
+		else
 		{
 			$this->view->filters['sortby'] = trim(trim(JRequest::getVar('sortby', 'f.state_changed DESC')));
 		}
@@ -131,28 +131,28 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Initiate paging class
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('COM_TOOLS_PIPELINE'), 
+			JText::_('COM_TOOLS_PIPELINE'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
 
 		$this->view->config = $this->config;
 		$this->view->admin = $this->config->get('access-admin-component');
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -164,14 +164,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display the status of the current app
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function statusTask()
 	{
 		$this->view->setLayout('status');
 
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -180,16 +180,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// Couldn't get ID, exit
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
@@ -197,17 +197,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = '';
 		}
-		if (!$this->_msg) 
+		if (!$this->_msg)
 		{
 			$this->_msg = JRequest::getVar('msg', '', 'post');
 		}
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -216,17 +216,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// get tool status
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
-		if (!$status) 
+		if (!$status)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
 		}
 
 		// get tickets/wishes/questions
-		if ($status['published']) 
+		if ($status['published'])
 		{
 			$status['questions'] = 'N/A';
-			if (JComponentHelper::isEnabled('com_answers')) 
+			if (JComponentHelper::isEnabled('com_answers'))
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
@@ -242,7 +242,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 
 			$status['wishes'] = 'N/A';
-			if (JComponentHelper::isEnabled('com_wishlist')) 
+			if (JComponentHelper::isEnabled('com_wishlist'))
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
@@ -250,20 +250,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$objWishlist = new Wishlist($this->database);
 				$objWish = new Wish($this->database);
 				$listid = $objWishlist->get_wishlistID($status['resourceid'], 'resource');
-				if ($listid) 
+				if ($listid)
 				{
 					$controller = new WishlistController();
 					$filters = $controller->getFilters(1);
 					$wishes = $objWish->get_wishes($listid, $filters, 1, $this->juser);
 					$status['wishes'] = count($wishes);
 				}
-				else 
+				else
 				{
 					$status['wishes']= 0;
 				}
 			}
 		}
-		
+
 		$this->view->status = $status;
 		$this->view->msg    = (isset($this->_msg)) ? $this->_msg : '';
 		$this->view->config = $this->config;
@@ -276,23 +276,23 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('COM_TOOLS_PIPELINE'), 
+			JText::_('COM_TOOLS_PIPELINE'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)) . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
+			JText::_(strtoupper($this->_task)) . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'],
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=status&app=' . $status['toolname']
 		);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -304,14 +304,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of versions for a tool
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function versionsTask()
 	{
 		$this->view->setLayout('versions');
 
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -320,16 +320,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// Couldn't get ID, exit
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
@@ -338,17 +338,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// get vars
-		if (!$this->_action) 
+		if (!$this->_action)
 		{
 			$this->_action = JRequest::getVar('action', 'dev');
 		}
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = JRequest::getVar('error', '');
 		}
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -382,21 +382,21 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $this->view->status['toolname'], 
+			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $this->view->status['toolname'],
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=status&app=' . $this->view->status['toolname']
 		);
-		if ($this->_action != 'confirm') 
+		if ($this->_action != 'confirm')
 		{
 			$pathway->addItem(
-				JText::_('COM_TOOLS_TASK_VERSIONS'), 
+				JText::_('COM_TOOLS_TASK_VERSIONS'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=versions&app=' . $this->view->status['toolname']
 			);
 		}
@@ -406,7 +406,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->action = $this->_action;
 		$this->view->versions = $versions;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -418,14 +418,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Finalize the version
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function finalizeTask()
 	{
 		$this->view->setLayout('finalize');
 
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -434,16 +434,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// Couldn't get ID, exit
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
@@ -451,13 +451,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = JRequest::getVar('error', '');
 		}
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -466,7 +466,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// get tool status
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
-		if (!$status) 
+		if (!$status)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
@@ -478,22 +478,22 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
+			JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'],
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 		);
 
 		$this->view->config = $this->config;
 		$this->view->status = $status;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -505,7 +505,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form to apply a license
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function licenseTask()
@@ -513,7 +513,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->setLayout('license');
 
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -522,25 +522,25 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
-		if (!$this->_action) 
+		if (!$this->_action)
 		{
 			$this->_action = JRequest::getVar('action', 'dev');
 		}
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = JRequest::getVar('error', '');
 		}
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -549,22 +549,22 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Create a Tool object
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
-		if (!$status) 
+		if (!$status)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
 			return;
 		}
 
 		// get license
-		if (!isset($this->view->license_choice)) 
+		if (!isset($this->view->license_choice))
 		{
 			$this->view->license_choice = array(
-				'text'     => $status['license'], 
+				'text'     => $status['license'],
 				'template' => 'c1'
 			);
 		}
 
-		if (!isset($this->view->code)) 
+		if (!isset($this->view->code))
 		{
 			$this->view->code = $status['code'];
 		}
@@ -581,23 +581,23 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1) 
+		if (count($pathway->getPathWay()) <= 1)
 		{
 			$pathway->addItem(
-				JText::_('COM_TOOLS_STATUS').' '.JText::_('COM_TOOLS_FOR').' '.$status['toolname'], 
+				JText::_('COM_TOOLS_STATUS').' '.JText::_('COM_TOOLS_FOR').' '.$status['toolname'],
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 			);
-			if ($this->_action != 'confirm') 
+			if ($this->_action != 'confirm')
 			{
 				$pathway->addItem(
-					JText::_('COM_TOOLS_TASK_LICENSE'), 
+					JText::_('COM_TOOLS_TASK_LICENSE'),
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=license&app=' . $this->_toolid
 				);
 			}
@@ -608,7 +608,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->action = $this->_action;
 		$this->view->status = $status;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -620,14 +620,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Apply a license
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savelicenseTask()
 	{
 		$id 	= JRequest::getInt('toolid', 0, 'post');
 		$error 	= '';
-		
+
 		if (!$id)
 		{
 			$this->setRedirect(
@@ -645,17 +645,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$hztv->codeaccess = JRequest::getVar('t_code', '@OPEN');
 		$action 		  = JRequest::getWord('action', 'dev');
-		
+
 		// Closed source
 		if ($hztv->codeaccess == '@DEV')
 		{
 			$reason = JRequest::getVar('reason', '');
-			
+
 			if (!$reason)
 			{
 				$this->view->license_choice = $this->license_choice;
 				$this->view->code			= $hztv->codeaccess;
-				
+
 				// display license page with error
 				$this->setError(JText::_('COM_TOOLS_LICENSE_CLOSED_SOURCE_NEED_REASON'));
 				$this->licenseTask();
@@ -665,7 +665,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			{
 				jimport('joomla.filesystem.folder');
 				$path = DS . 'site/protected';
-				if (is_dir( JPATH_ROOT . $path )) 
+				if (is_dir( JPATH_ROOT . $path ))
 				{
 					$log  = 'By: ' . $this->juser->get('name') . ' (' . $this->juser->get('username') . ') ' . "\n";
 					$log .= 'Tool: ' . $hztv->toolname . ' (id #' . $id . ')' . ' - ' . $hztv->instance . "\n";
@@ -675,9 +675,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					$log .= '-----------------------------------------' . "\n";
 
 					// Log reason for closed source
-					$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);	
+					$this->_writeToFile($log, JPATH_ROOT . $path . DS . 'closed_source_reasons.txt', true);
 				}
-				
+
 				// code for saving license
 				$hztv->license = NULL;
 
@@ -685,20 +685,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$hztv->update(); //@FIXME: look
 
 				$this->_setTracAccess($hztv->toolname, $hztv->codeaccess, null);
-				
-				if ($action != 'confirm') 
+
+				if ($action != 'confirm')
 				{
 					$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
 					$this->statusTask();
 				}
-				else 
+				else
 				{
 					$this->finalizeTask();
 				}
 				return;
 			}
 		}
-		
+
 		// Open source
 		if (ToolsModelTool::validateLicense($this->license_choice, $hztv->codeaccess, $error))
 		{
@@ -710,21 +710,21 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 			$this->_setTracAccess($hztv->toolname, $hztv->codeaccess, null);
 
-			if ($action != 'confirm') 
+			if ($action != 'confirm')
 			{
 				$this->_msg = JText::_('COM_TOOLS_NOTICE_CHANGE_LICENSE_SAVED');
 				$this->statusTask();
 			}
-			else 
+			else
 			{
 				$this->finalizeTask();
 			}
 		}
-		else 
+		else
 		{
 			$this->view->code			= $hztv->codeaccess;
 			$this->view->license_choice = $this->license_choice;
-			
+
 			// display license page with error
 			$this->setError($error);
 			$this->licenseTask();
@@ -733,13 +733,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Write sync status to file
-	 * 
+	 *
 	 * @return   void
 	 */
-	protected function _writeToFile($content = '', $file = '', $append = false ) 
+	protected function _writeToFile($content = '', $file = '', $append = false )
 	{
 		$place   = $append == true ? 'a' : 'w';
-		$content = $append ? $content . "\n" : $content; 
+		$content = $append ? $content . "\n" : $content;
 
 		$handle  = fopen($file, $place);
 		fwrite($handle, $content);
@@ -748,7 +748,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for a new entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function createTask()
@@ -778,14 +778,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1) 
+		if (count($pathway->getPathWay()) <= 1)
 		{
 			$pathway->addItem(
 				JText::_('COM_TOOLS_TASK_CREATE_NEW_TOOL'),
@@ -799,7 +799,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->editversion = 'dev';
 		//$this->view->error = $this->_error;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -811,7 +811,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show an edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($tool = null)
@@ -819,7 +819,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->setLayout('edit');
 
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -828,9 +828,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
@@ -840,7 +840,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev'; // do not allow to edit all versions just yet, will default to dev
 
 		// check access rights
-		if ($this->_toolid && !$this->_checkAccess($this->_toolid)) 
+		if ($this->_toolid && !$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -849,7 +849,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// get tool status
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $this->view->editversion);
 
-		if ($this->_toolid && !$status) 
+		if ($this->_toolid && !$status)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
 			return;
@@ -861,21 +861,21 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)), 
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1) 
+		if (count($pathway->getPathWay()) <= 1)
 		{
 			$pathway->addItem(
-				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'], 
+				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'],
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']
 			);
 			$pathway->addItem(
-				JText::_('COM_TOOLS_TASK_EDIT_TOOL'), 
+				JText::_('COM_TOOLS_TASK_EDIT_TOOL'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $status['toolname']
 			);
 		}
@@ -886,7 +886,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$this->view->defaults = (is_array($tool)) ? $tool : $status;
 		$this->view->id       = $this->_toolid;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -898,7 +898,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the access for TRAC
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @param      string $codeaccess Parameter description (if any) ...
 	 * @param      string $wikiaccess Parameter description (if any) ...
@@ -906,12 +906,12 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
 	{
-		if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) 
+		if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname)))
 		{
 			return false;
 		}
 
-		if ($codeaccess == '@OPEN') 
+		if ($codeaccess == '@OPEN')
 		{
 			$hztrac->add_user_permission(0, array(
 				'BROWSER_VIEW',
@@ -919,7 +919,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				'FILE_VIEW'
 			));
 		}
-		elseif ($codeaccess == '@DEV') 
+		elseif ($codeaccess == '@DEV')
 		{
 			$hztrac->remove_user_permission(0, array(
 				'BROWSER_VIEW',
@@ -928,7 +928,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			));
 		}
 
-		if ($wikiaccess == '@OPEN') 
+		if ($wikiaccess == '@OPEN')
 		{
 			$hztrac->add_user_permission(0, array(
 				'WIKI_VIEW',
@@ -937,7 +937,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				'SEARCH_VIEW'
 			));
 		}
-		elseif ($wikiaccess == '@DEV') 
+		elseif ($wikiaccess == '@DEV')
 		{
 			$hztrac->remove_user_permission(0, array(
 				'WIKI_VIEW',
@@ -952,7 +952,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -994,10 +994,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// Create a Tool object
 		$obj = new Tool($this->database);
 
-		if ($id) 
+		if ($id)
 		{
 			// make sure user is authorized to go further
-			if (!$this->_checkAccess($id)) 
+			if (!$this->_checkAccess($id))
 			{
 				JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 				return;
@@ -1017,7 +1017,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					$this->setError($error);
 				}
 			}
-			else 
+			else
 			{
 				$this->setError($err);
 			}
@@ -1070,7 +1070,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$oldstatus['toolstate'] = $hzt->state;
 			$oldstatus['membergroups'] = $tool['membergroups'];
 
-			if ($id) 
+			if ($id)
 			{
 				$oldstatus['developers'] = $obj->getToolDevelopers($id);
 			}
@@ -1088,7 +1088,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$oldstatus['membergroups'] = $tool['membergroups'];
 			}
 
-			if ($id) 
+			if ($id)
 			{
 				$oldstatus['developers'] = $obj->getToolDevelopers($id);
 			}
@@ -1127,7 +1127,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$hztv->wikiaccess    = $tool['wiki'];
 				$hztv->vnc_geometry  = $tool['vncGeometry'];
 				$hztv->exportControl = $exportmap[$tool['exec']];
-				
+
 				$hzt->add('version', $hztv->instance);
 			}
 		}
@@ -1196,11 +1196,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 			// Run add repo
 			$this->_addRepo($output, array(
-				'toolname'    => $tool['toolname'], 
-				'title'       => $tool['title'], 
+				'toolname'    => $tool['toolname'],
+				'title'       => $tool['title'],
 				'description' => $tool['description']
 			));
-			if ($output['class'] != 'error') 
+			if ($output['class'] != 'error')
 			{
 				$hzt->state = 2;
 				$hzt->update();
@@ -1226,7 +1226,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			// save authors by default
 			//$objA = new ToolAuthor($this->database);
 			//if(!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
-			if (!$id) 
+			if (!$id)
 			{
 				require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'authors.php');
 
@@ -1267,42 +1267,42 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Add repo
-	 * 
+	 *
 	 * @param      array &$output  Messages to be returned
 	 * @param      array $toolinfo Tool information
 	 * @return     boolean False if errors, True on success
 	 */
 	protected function _addRepo(&$output, $toolinfo = array())
 	{
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			return false;
 		}
 
 		// Create a Tool object
-		if (empty($toolinfo)) 
+		if (empty($toolinfo))
 		{
 			$obj = new Tool($this->database);
 			$obj->getToolStatus($this->_toolid, $this->_option, $toolinfo, 'dev');
 		}
 
-		if (!empty($toolinfo)) 
+		if (!empty($toolinfo))
 		{
             $ldap_params = JComponentHelper::getParams('com_system');
             $pw = $ldap_params->get('ldap_searchpw','');
-                
+
 			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
 
-			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output)) 
+			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'), $output))
 			{
 				return false;
 			}
-			else 
+			else
 			{
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			$output['class'] = 'error';
 			$output['msg'] = JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE');
@@ -1312,13 +1312,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a version
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveversionTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -1327,16 +1327,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -1347,11 +1347,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$access      = JRequest::getInt('access', 0);
 		$newversion  = JRequest::getVar('newversion', '');
 		$editversion = JRequest::getVar('editversion', 'dev');
-		if (!$this->_action) 
+		if (!$this->_action)
 		{
 			$this->_action = JRequest::getVar('action', 'dev');
 		}
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = JRequest::getVar('error', '');
 		}
@@ -1360,7 +1360,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$hzt = ToolsModelTool::getInstance($this->_toolid);
 		$hztv = $hzt->getRevision($editversion);
 
-		if ($newstate && !intval($newstate)) 
+		if ($newstate && !intval($newstate))
 		{
 			$newstate = ToolsHelperHtml::getStatusNum($newstate);
 		}
@@ -1407,13 +1407,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save notes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savenotesTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -1422,16 +1422,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -1439,14 +1439,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$action = JRequest::getVar('action', '');
 
-		if ($action != 'confirm') 
+		if ($action != 'confirm')
 		{
 			$this->_msg = JText::_('Release notes saved.');
 			//$this->_task = 'status';
 			$this->statusTask();
 			return;
 		}
-		else 
+		else
 		{
 			$this->finalizeTask();
 			return;
@@ -1455,13 +1455,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Finalize a tool version
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function finalizeversionTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -1470,16 +1470,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -1497,7 +1497,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
 		$oldstatus['toolstate'] = $hzt->state;
 
-		if ($newstate && !intval($newstate)) 
+		if ($newstate && !intval($newstate))
 		{
 			$newstate = ToolsHelperHtml::getStatusNum($newstate);
 		}
@@ -1521,13 +1521,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Update a tool version
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
@@ -1536,14 +1536,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
-		if (!$this->_error) 
+		if (!$this->_error)
 		{
 			$this->_error = JRequest::getVar('error', '');
 		}
@@ -1551,7 +1551,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		//$id = $this->_toolid;
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -1572,12 +1572,12 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$oldstatus = ($hztv) ? $hztv->toArray() : array();
 		$oldstatus['toolstate'] = $hzt->state;
 
-		if ($newstate && !intval($newstate)) 
+		if ($newstate && !intval($newstate))
 		{
 			$newstate = ToolsHelperHtml::getStatusNum($newstate);
 		}
 
-		if (intval($newstate) && $newstate != $oldstatus['toolstate']) 
+		if (intval($newstate) && $newstate != $oldstatus['toolstate'])
 		{
 			$xlog->debug(__FUNCTION__ . "() state changing");
 
@@ -1590,7 +1590,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$this->versionsTask();
 				return;
 			}
-			else if ($newstate == ToolsHelperHtml::getStatusNum('Approved')) 
+			else if ($newstate == ToolsHelperHtml::getStatusNum('Approved'))
 			{
 				$this->_error = $error;
 				$xlog->debug(__FUNCTION__ . "() state changing to approved, action new");
@@ -1599,7 +1599,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$this->versionsTask();
 				return;
 			}
-			else if ($newstate == ToolsHelperHtml::getStatusNum('Published')) 
+			else if ($newstate == ToolsHelperHtml::getStatusNum('Published'))
 			{
 				$xlog->debug(__FUNCTION__ . "() state changing to published");
 				$hzt->published = '1';
@@ -1607,7 +1607,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->_error = $error;
 
 			// update dev screenshots of a published tool changes status
-			if ($oldstatus['state'] == ToolsHelperHtml::getStatusNum('Published')) 
+			if ($oldstatus['state'] == ToolsHelperHtml::getStatusNum('Published'))
 			{
 				// Create a Tool Version object
 				$objV = new ToolVersion($this->database);
@@ -1623,7 +1623,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$current_hztv = $hzt->getRevision('current');
 
 				$xlog->debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
-				if ($to && $from) 
+				if ($to && $from)
 				{
 					require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'screenshots.php');
 
@@ -1637,8 +1637,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$hzt->state_changed = JFactory::getDate()->toSql();
 		}
 
-		// if priority changes 
-		if (intval($priority) && $priority != $oldstatus['priority']) 
+		// if priority changes
+		if (intval($priority) && $priority != $oldstatus['priority'])
 		{
 			$hzt->priority = $priority;
 		}
@@ -1666,21 +1666,21 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set ticket update
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function messageTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
 
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				// Create a Tool object
 				$obj = new Tool($this->database);
@@ -1689,7 +1689,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -1699,7 +1699,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$access   = JRequest::getInt('access', 0);
 		$comment  = JRequest::getVar('comment', '', 'post', 'none', 2);
 
-		if ($newstate && !intval($newstate)) 
+		if ($newstate && !intval($newstate))
 		{
 			$newstate = ToolsHelperHtml::getStatusNum($newstate);
 		}
@@ -1719,7 +1719,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Send an email to one or more users
-	 * 
+	 *
 	 * @param      string $toolid   Tool ID
 	 * @param      string $summary  Message subject
 	 * @param      string $comment  Message
@@ -1738,7 +1738,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 		$obj->getToolStatus($toolid, $this->_option, $status, 'dev');
 
-		if (empty($status) && !empty($toolinfo)) 
+		if (empty($status) && !empty($toolinfo))
 		{
 			$status = $toolinfo;
 		}
@@ -1748,24 +1748,24 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		// Get admins
 		$admins = array();
-		if ($this->config->get('access-admin-component')) 
+		if ($this->config->get('access-admin-component'))
 		{
 			$admins[] = $this->juser->get('username');
 		}
 		$admingroup = $this->config->get('admingroup', '');
 
 		$group = \Hubzero\User\Group::getInstance($admingroup);
-		if (is_object($group)) 
+		if (is_object($group))
 		{
 			$members  = $group->get('members');
 			$managers = $group->get('managers');
 			$members  = array_merge($members, $managers);
-			if ($members) 
+			if ($members)
 			{
-				foreach ($members as $member) 
+				foreach ($members as $member)
 				{
 					$muser = \Hubzero\User\Profile::getInstance($member);
-					if (is_object($muser)) 
+					if (is_object($muser))
 					{
 						$admins[] = $member;
 					}
@@ -1824,19 +1824,19 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$subject = JText::_(strtoupper($this->_option)) . ', ' . JText::_('COM_TOOLS_TOOL') . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
 		$from    = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_TOOLS_CONTRIBTOOL');
 		$hub     = array(
-			'email' => $jconfig->getValue('config.mailfrom'), 
+			'email' => $jconfig->getValue('config.mailfrom'),
 			'name'  => $from
 		);
-		
+
 		$live_site = rtrim(JURI::base(),'/');
-		
+
 		// Compose Message
 		$message  = strtoupper(JText::_('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_WHEN')) . ' ' . JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')) . "\r\n";
 		$message .= strtoupper(JText::_('COM_TOOLS_BY')) . ': ' . $this->juser->get('username') . "\r\n";
 		$message .= '----------------------------' . "\r\n\r\n";
-		if ($comment) 
+		if ($comment)
 		{
 			$message .= strtoupper(JText::_('COM_TOOLS_MESSAGE')) . ': ' . "\r\n";
 			$message .= $comment . "\r\n";
@@ -1846,11 +1846,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$message .= $live_site.JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']) . "\r\n";
 
 		// fire off message
-		if ($summary or $comment) 
+		if ($summary or $comment)
 		{
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option))) 
+			if (!$dispatcher->trigger('onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option)))
 			{
 				$this->addComponentMessage(JText::_('COM_TOOLS_FAILED_TO_MESSAGE'), 'error');
 			}
@@ -1859,7 +1859,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Add an update of changes to a support ticket
-	 * 
+	 *
 	 * @param      integer $toolid    Tool ID
 	 * @param      integer $ticketid  Ticket ID
 	 * @param      array   $oldstuff  Information before any changes
@@ -1882,9 +1882,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		);
 
 		// see what changed
-		if ($oldstuff != $newstuff) 
+		if ($oldstuff != $newstuff)
 		{
-			if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname']) 
+			if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
@@ -1892,7 +1892,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					'after'  => $newstuff['toolname']
 				);
 			}
-			if ($oldstuff['title'] != $newstuff['title']) 
+			if ($oldstuff['title'] != $newstuff['title'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
@@ -1901,7 +1901,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				);
 				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
-			if ($oldstuff['version'] != '' && $oldstuff['version'] != $newstuff['version']) 
+			if ($oldstuff['version'] != '' && $oldstuff['version'] != $newstuff['version'])
 			{
 				$log['changes'][] = array(
 					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
@@ -1911,7 +1911,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
-			else if ($oldstuff['version'] == '' && $newstuff['version'] != '') 
+			else if ($oldstuff['version'] == '' && $newstuff['version'] != '')
 			{
 				$log['changes'][] = array(
 					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
@@ -1919,7 +1919,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					'after'  => $newstuff['version']
 				);
 			}
-			if ($oldstuff['description'] != $newstuff['description']) 
+			if ($oldstuff['description'] != $newstuff['description'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
@@ -1929,14 +1929,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
-			if ($oldstuff['toolaccess'] != $newstuff['toolaccess']) 
+			if ($oldstuff['toolaccess'] != $newstuff['toolaccess'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
 					'before' => $oldstuff['toolaccess'],
 					'after'  => $newstuff['toolaccess']
 				);
-				if ($newstuff['toolaccess'] == '@GROUP') 
+				if ($newstuff['toolaccess'] == '@GROUP')
 				{
 					$log['changes'][] = array(
 						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
@@ -1947,7 +1947,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_TOOL_ACCESS'));
 			}
-			if ($oldstuff['codeaccess'] != $newstuff['codeaccess']) 
+			if ($oldstuff['codeaccess'] != $newstuff['codeaccess'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
@@ -1957,7 +1957,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
-			if ($oldstuff['wikiaccess'] != $newstuff['wikiaccess']) 
+			if ($oldstuff['wikiaccess'] != $newstuff['wikiaccess'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
@@ -1967,7 +1967,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
-			if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']) 
+			if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
@@ -1977,7 +1977,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
-			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers']) 
+			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
@@ -1989,14 +1989,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 
 			// end of tool information changes
-			if ($summary) 
+			if ($summary)
 			{
 				$summary .= ' ' . JText::_('COM_TOOLS_INFO_CHANGED');
 				$action = 1;
 			}
 
 			// tool status/priority changes
-			if ($oldstuff['priority'] != $newstuff['priority']) 
+			if ($oldstuff['priority'] != $newstuff['priority'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_PRIORITY'),
@@ -2005,7 +2005,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				);
 				$email = 0; // do not send email about priority changes
 			}
-			if ($oldstuff['toolstate'] != $newstuff['toolstate']) 
+			if ($oldstuff['toolstate'] != $newstuff['toolstate'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_STATUS'),
@@ -2017,27 +2017,27 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$action  = 2;
 			}
 		}
-		
+
 		// Make sure ticket is tied to the tool group
 		$row = new SupportTicket($this->database);
 		if ($row->load($ticketid) && isset($newstuff['toolname']))
 		{
 			//$config = JComponentHelper::getParams($this->_option);
 			$row->group = $this->config->get('group_prefix', 'app-') . $newstuff['toolname'];
-			$row->store();	
+			$row->store();
 		}
 
 		$rowc = new SupportComment($this->database);
 		$rowc->ticket = $ticketid;
 
-		if ($comment) 
+		if ($comment)
 		{
 			//$action = $action==2 ? $action : 3;
 			$email = 1;
 			$rowc->comment = nl2br($comment);
 			$rowc->comment = str_replace('<br>', '<br />', $rowc->comment);
 		}
-		
+
 		if (!empty($log['changes']) || $comment)
 		{
 			$rowc->created    = JFactory::getDate()->toSql();
@@ -2045,13 +2045,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = $access;
 			$xlog->debug(__FUNCTION__ . '() storing ticket');
-			if (!$rowc->store()) 
+			if (!$rowc->store())
 			{
 				$this->_error = $rowc->getError();
 				return false;
 			}
 
-			if ($email) 
+			if ($email)
 			{
 				$xlog->debug(__FUNCTION__ . '() emailing notifications');
 				// send notification emails
@@ -2064,7 +2064,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Update a support ticket
-	 * 
+	 *
 	 * @param      integer $toolid    Tool ID
 	 * @param      array   $oldstuff  Information before any changes
 	 * @param      array   $newstuff  Information after changes
@@ -2085,9 +2085,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		);
 
 		// see what changed
-		if ($oldstuff != $newstuff) 
+		if ($oldstuff != $newstuff)
 		{
-			if ($oldstuff['toolname'] != $newstuff['toolname']) 
+			if ($oldstuff['toolname'] != $newstuff['toolname'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
@@ -2095,7 +2095,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					'after'  => $newstuff['toolname']
 				);
 			}
-			if ($oldstuff['title'] != $newstuff['title']) 
+			if ($oldstuff['title'] != $newstuff['title'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
@@ -2104,7 +2104,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				);
 				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
-			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version']) 
+			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version'])
 			{
 				$log['changes'][] = array(
 					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
@@ -2114,7 +2114,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
-			else if ($oldstuff['version']=='' && $newstuff['version']!='') 
+			else if ($oldstuff['version']=='' && $newstuff['version']!='')
 			{
 				$log['changes'][] = array(
 					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
@@ -2122,7 +2122,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 					'after'  => $newstuff['version']
 				);
 			}
-			if ($oldstuff['description'] != $newstuff['description']) 
+			if ($oldstuff['description'] != $newstuff['description'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
@@ -2132,14 +2132,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
-			if ($oldstuff['exec'] != $newstuff['exec']) 
+			if ($oldstuff['exec'] != $newstuff['exec'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
 					'before' => $oldstuff['exec'],
 					'after'  => $newstuff['exec']
 				);
-				if ($newstuff['exec']=='@GROUP') 
+				if ($newstuff['exec']=='@GROUP')
 				{
 					$log['changes'][] = array(
 						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
@@ -2150,7 +2150,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_TOOL_ACCESS'));
 			}
-			if ($oldstuff['code'] != $newstuff['code']) 
+			if ($oldstuff['code'] != $newstuff['code'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
@@ -2160,7 +2160,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
-			if ($oldstuff['wiki'] != $newstuff['wiki']) 
+			if ($oldstuff['wiki'] != $newstuff['wiki'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
@@ -2170,7 +2170,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
-			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry']) 
+			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
@@ -2180,7 +2180,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
-			if ($oldstuff['developers'] != $newstuff['developers']) 
+			if ($oldstuff['developers'] != $newstuff['developers'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
@@ -2192,14 +2192,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 
 			// end of tool information changes
-			if ($summary) 
+			if ($summary)
 			{
 				$summary .= ' ' . JText::_('COM_TOOLS_INFO_CHANGED');
 				$action = 1;
 			}
 
 			// tool status/priority changes
-			if ($oldstuff['priority'] != $newstuff['priority']) 
+			if ($oldstuff['priority'] != $newstuff['priority'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_PRIORITY'),
@@ -2208,7 +2208,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				);
 				$email = 0; // do not send email about priority changes
 			}
-			if ($oldstuff['state'] != $newstuff['state']) 
+			if ($oldstuff['state'] != $newstuff['state'])
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_TOOLS_TICKET_CHANGED_FROM'),
@@ -2224,7 +2224,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$rowc = new SupportComment($this->database);
 		$rowc->ticket = $obj->getTicketId($toolid);
 
-		if ($comment) 
+		if ($comment)
 		{
 			//$action = $action==2 ? $action : 3;
 			$email = 1;
@@ -2236,13 +2236,13 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$rowc->changelog  = json_encode($log);
 		$rowc->access     = $access;
 
-		if (!$rowc->store()) 
+		if (!$rowc->store())
 		{
 			$this->setError($rowc->getError());
 			return false;
 		}
 
-		if ($email) 
+		if ($email)
 		{
 			// send notification emails
 			$summary = $summary ? $summary : $comment;
@@ -2254,7 +2254,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Creates a support ticket for a tool
-	 * 
+	 *
 	 * @param      integer $toolid Tool ID
 	 * @param      array   $tool   Array of tool info
 	 * @return     mixed False if errors, integer on success
@@ -2283,17 +2283,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$row->email    = $this->juser->get('email');
 		$row->name     = $this->juser->get('name');
 
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return false;
 		}
-		else 
+		else
 		{
 			// Checkin ticket
 			$row->checkin();
 
-			if ($row->id) 
+			if ($row->id)
 			{
 				// save tag
 				$st->tag_object($this->juser->get('id'), $row->id, 'tool:' . $tool['toolname'], 0, 0);
@@ -2312,31 +2312,31 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Cancel a tool contribution
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
 	{
 		// get vars
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			$this->_toolid = JRequest::getInt('toolid', 0);
 		}
-		
+
 		// Create a Tool object
 		$obj = new Tool($this->database);
-		
+
 		// do we have an alias?
-		if ($this->_toolid == 0) 
+		if ($this->_toolid == 0)
 		{
-			if (($alias = JRequest::getVar('app', ''))) 
+			if (($alias = JRequest::getVar('app', '')))
 			{
 				$this->_toolid = $obj->getToolId($alias);
 			}
 		}
 
 		// check access rights
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -2345,17 +2345,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// get tool status
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
-		if (!$status) 
+		if (!$status)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
 			return;
 		}
-		if ($status['state'] == ToolsHelperHtml::getStatusNum('Abandoned')) 
+		if ($status['state'] == ToolsHelperHtml::getStatusNum('Abandoned'))
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_ALREADY_CANCELLED'));
 			return;
 		}
-		if ($status['published'] == 1) 
+		if ($status['published'] == 1)
 		{
 			JError::raiseError(404, JText::_('COM_TOOLS_ERR_CANNOT_CANCEL_PUBLISHED_TOOL'));
 			return;
@@ -2382,7 +2382,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the license for a tool
-	 * 
+	 *
 	 * @param      string $toolname Tool name
 	 * @return     void
 	 */
@@ -2398,11 +2398,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$command = '/usr/bin/sudo -u apps /usr/bin/licensetool -hubdir ' . JPATH_ROOT . ' -type raw -license ' . $fname . ' ' . $toolname;
 
-		if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output)) 
+		if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_LICENSE_CHECKED_IN'), $output))
 		{
 			return false;
 		}
-		else 
+		else
 		{
 			unlink($fname);
 			return true;
@@ -2411,7 +2411,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a script
-	 * 
+	 *
 	 * @param      string  $command    Command to execute
 	 * @param      string  $successmsg Message to set upon success
 	 * @param      array   &$output    Output data
@@ -2425,14 +2425,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		exec($command . ' 2>&1 </dev/null', $rawoutput, $status);
 
-		if ($status != 0) 
+		if ($status != 0)
 		{
 			$output['class'] = 'error';
 			$output['msg'] = JText::_('COM_TOOLS_ERR_OPERATION_FAILED');
 			$success = 0;
 		}
 
-		if ($success) 
+		if ($success)
 		{
 			$output['msg'] = JText::_('COM_TOOLS_SUCCESS') . ': ' . $successmsg;
 		}
@@ -2450,7 +2450,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the current user has access to this tool
-	 * 
+	 *
 	 * @param      integer $toolid       Tool ID
 	 * @param      integer $allowAdmins  Allow admins access?
 	 * @param      boolean $allowAuthors Allow authors access?
@@ -2462,17 +2462,17 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// allow to view if admin
-		if ($this->config->get('access-manage-component') && $allowAdmins) 
+		if ($this->config->get('access-manage-component') && $allowAdmins)
 		{
 			return true;
 		}
 
 		// check if user in tool dev team
-		if ($developers = $obj->getToolDevelopers($toolid)) 
+		if ($developers = $obj->getToolDevelopers($toolid))
 		{
-			foreach ($developers as $dv) 
+			foreach ($developers as $dv)
 			{
-				if ($dv->uidNumber == $this->juser->get('id')) 
+				if ($dv->uidNumber == $this->juser->get('id'))
 				{
 					return true;
 				}
@@ -2480,7 +2480,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// allow access to tool authors
-		if ($allowAuthors) 
+		if ($allowAuthors)
 		{
 			// Nothing here?
 		}
@@ -2490,7 +2490,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorization checks
-	 * 
+	 *
 	 * @param      string $assetType Asset type
 	 * @param      string $assetId   Asset id to check against
 	 * @return     void
@@ -2498,23 +2498,23 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
 		// if no admin group is defined, allow superadmin to act as admin
 		// otherwise superadmins can only act if they are also a member of the component admin group
-		if (($admingroup = trim($this->config->get('admingroup', '')))) 
+		if (($admingroup = trim($this->config->get('admingroup', ''))))
 		{
 			// Check if they're a member of admin group
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				$admingroup = strtolower($admingroup);
 				foreach ($ugs as $ug)
 				{
-					if (strtolower($ug->cn) == $admingroup) 
+					if (strtolower($ug->cn) == $admingroup)
 					{
 						$this->config->set('access-manage-' . $assetType, true);
 						$this->config->set('access-admin-' . $assetType, true);
@@ -2525,7 +2525,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		else 
+		else
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -2552,7 +2552,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

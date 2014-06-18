@@ -125,7 +125,7 @@ class plgEditorCkeditor extends JPlugin
 	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
 	{
 		// make sure we have an id too
-		if (empty($id)) 
+		if (empty($id))
 		{
 			$id = $name;
 		}
@@ -182,7 +182,7 @@ class plgEditorCkeditor extends JPlugin
 			}
 			$atts[] = $key .'="' . $value . '"';
 		}
-		
+
 		// output html and script
 		$editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
 		if (JFactory::getApplication()->isAdmin())
@@ -253,13 +253,13 @@ class plgEditorCkeditor extends JPlugin
 	 * @param   string $input
 	 * @return  array
 	 */
-	private function _split($delimiter, $input) 
+	private function _split($delimiter, $input)
 	{
 		$even = array();
 
 		if (is_array($input))
 		{
-			foreach ($input as $el) 
+			foreach ($input as $el)
 			{
 				$even = array_merge($even, $this->_split($delimiter, $el));
 			}
@@ -281,9 +281,9 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	private function _buildConfig($params = array())
 	{
-		// merge incoming params with 
+		// merge incoming params with
 		$this->params->loadArray($params);
-		
+
 		// object to hold our final config
 		$config                                = new stdClass;
 		$config->startupMode                   = 'wysiwyg';
@@ -400,7 +400,7 @@ class plgEditorCkeditor extends JPlugin
 			$config->scayt_autoStartup = $this->params->get('spellCheckAutoStart');
 		}
 
-		// spell check max suggesstions 
+		// spell check max suggesstions
 		if (is_numeric($this->params->get('spellCheckMaxSuggesstions')))
 		{
 			$config->scayt_maxSuggestions = $this->params->get('spellCheckMaxSuggesstions');
@@ -427,11 +427,11 @@ class plgEditorCkeditor extends JPlugin
 			$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
 			$template = $db->loadResult();
 
-			// vars to hold css	
+			// vars to hold css
 			$css         = array();
 			$siteCss     = '/cache/site.css';
 			$templateCss = '/templates/' . $template . '/css/main.css';
-			
+
 			// do we have a site.css
 			if (file_exists(JPATH_ROOT . $siteCss))
 			{
@@ -443,7 +443,7 @@ class plgEditorCkeditor extends JPlugin
 			{
 				array_push($css, $templateCss);
 			}
-			
+
 			// add already added stylesheets
 			foreach ($doc->_styleSheets as $sheet => $attribs)
 			{
@@ -517,7 +517,7 @@ class plgEditorCkeditor extends JPlugin
 			$config->protectedSource[] = '/<\?[\s\S]*?\?>/g';
 			$config->codemirror->mode = 'application/x-httpd-php';
 		}
-		
+
 		return $config;
 	}
 }

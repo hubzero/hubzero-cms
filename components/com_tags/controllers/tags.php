@@ -38,7 +38,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -61,7 +61,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display the main page for this component
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -77,7 +77,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_buildPathway(null);
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -89,7 +89,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * View items tagged with this tag
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function viewTask()
@@ -100,7 +100,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$addtag = trim(JRequest::getVar('addtag', ''));
 
 		// Ensure we were passed a tag
-		if (!$tagstring && !$addtag) 
+		if (!$tagstring && !$addtag)
 		{
 			if (JRequest::getWord('task', '', 'get'))
 			{
@@ -113,19 +113,19 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if ($tagstring) 
+		if ($tagstring)
 		{
 			// Break the string into individual tags
 			$tgs = explode(',', $tagstring);
 			$tgs = array_map('trim', $tgs);
-		} 
-		else 
+		}
+		else
 		{
 			$tgs = array();
 		}
 
 		// See if we're adding any tags to the search list
-		if ($addtag && !in_array($addtag, $tgs)) 
+		if ($addtag && !in_array($addtag, $tgs))
 		{
 			$tgs[] = $addtag;
 		}
@@ -139,7 +139,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			// Load the tag
 			$tagobj = TagsModelTag::getInstance($tag);
 
-			if (in_array($tagobj->get('tag'), $added)) 
+			if (in_array($tagobj->get('tag'), $added))
 			{
 				continue;
 			}
@@ -147,7 +147,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->exists()) 
+			if ($tagobj->exists())
 			{
 				$tags[] = $tagobj;
 				$rt[]   = $tagobj->get('raw_tag');
@@ -155,7 +155,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we loaded the tag's info from the database
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			JError::raiseError(404, JText::_('COM_TAGS_NOT_FOUND'));
 			return;
@@ -184,11 +184,11 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Get the active category
 		$area = JRequest::getVar('area', '');
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			//$limit = 5;
 			$activeareas = $areas;
@@ -216,10 +216,10 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			)
 		);
 
-		if (count($activeareas) > 1) 
+		if (count($activeareas) > 1)
 		{
 			$query = '';
-			if ($this->view->results) 
+			if ($this->view->results)
 			{
 				$s = array();
 				foreach ($this->view->results as $sql)
@@ -228,7 +228,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					{
 						continue;
 					}
-					if (trim($sql) != '') 
+					if (trim($sql) != '')
 					{
 						$s[] = $sql;
 					}
@@ -243,7 +243,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					case 'date':
 					default:      $query .= 'publish_up DESC, title'; break;
 				}
-				if ($this->view->filters['limit'] != 'all' 
+				if ($this->view->filters['limit'] != 'all'
 				 && $this->view->filters['limit'] > 0)
 				{
 					$query .= " LIMIT " . $this->view->filters['start'] . "," . $this->view->filters['limit'];
@@ -262,7 +262,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$cats[$i]['category'] = $c;
 
 			// Do sub-categories exist?
-			if (is_array($t) && !empty($t)) 
+			if (is_array($t) && !empty($t))
 			{
 				// They do - do some processing
 				$cats[$i]['title'] = ucfirst($c);
@@ -273,7 +273,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				foreach ($t as $s => $st)
 				{
 					// Ensure a matching array of totals exist
-					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z])) 
+					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
 					{
 						// Add to the parent category's total
 						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
@@ -284,8 +284,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					}
 					$z++;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				// No sub-categories - this should be easy
 				$cats[$i]['title'] = $t;
@@ -300,21 +300,21 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->cats   = $cats;
 
 		// Do we have an active area?
-		if (count($activeareas) == 1 && isset($activeareas[0])) 
+		if (count($activeareas) == 1 && isset($activeareas[0]))
 		{
 			$active = $activeareas[0];
-		} 
-		else 
+		}
+		else
 		{
 			$active = '';
 		}
 
 		$related = null;
-		if (count($tags) == 1) 
+		if (count($tags) == 1)
 		{
 			$this->view->tagstring = $tags[0]->get('tag');
-		} 
-		else 
+		}
+		else
 		{
 			$tagstring = array();
 			foreach ($tags as $tag)
@@ -331,7 +331,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_buildTitle($tags);
 
 		// Output HTML
-		if (JRequest::getVar('format', '') == 'xml') 
+		if (JRequest::getVar('format', '') == 'xml')
 		{
 			$this->view->setLayout('view_xml');
 		}
@@ -340,7 +340,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->active = $active;
 		$this->view->search = implode(', ', $rt);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -354,7 +354,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Returns results (JSON format) for a search string
 	 * Used for autocompletion scripts called via AJAX
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function autocompleteTask()
@@ -375,7 +375,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Output search results in JSON format
 		$json = array();
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			foreach ($rows as $row)
 			{
@@ -394,7 +394,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Generate an RSS feed
-	 * 
+	 *
 	 * @return     string RSS
 	 */
 	public function feedTask()
@@ -416,7 +416,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
 
 		// Ensure we were passed a tag
-		if (!$tagstring) 
+		if (!$tagstring)
 		{
 			JError::raiseError(404, JText::_('COM_TAGS_NO_TAG'));
 			return;
@@ -433,7 +433,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			// Load the tag
 			$tagobj = TagsModelTag::getInstance($tag);
 
-			if (in_array($tagobj->get('tag'), $added)) 
+			if (in_array($tagobj->get('tag'), $added))
 			{
 				continue;
 			}
@@ -441,7 +441,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$added[] = $tagobj->get('tag');
 
 			// Ensure we loaded the tag's info from the database
-			if ($tagobj->exists()) 
+			if ($tagobj->exists())
 			{
 				$tags[] = $tagobj;
 			}
@@ -469,19 +469,19 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$area = JRequest::getVar('area', '');
 		$sort = JRequest::getVar('sort', '');
 
-		if ($area) 
+		if ($area)
 		{
 			$activeareas = array($area);
-		} 
-		else 
+		}
+		else
 		{
 			$activeareas = $areas;
 		}
 
 		// Get the search results
-		if (count($activeareas) > 1) 
+		if (count($activeareas) > 1)
 		{
-			$sqls = $dispatcher->trigger('onTagView', 
+			$sqls = $dispatcher->trigger('onTagView',
 				array(
 					$tags,
 					$limit,
@@ -490,7 +490,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					$activeareas
 				)
 			);
-			if ($sqls) 
+			if ($sqls)
 			{
 				$s = array();
 				foreach ($sqls as $sql)
@@ -499,7 +499,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					{
 						continue;
 					}
-					if (trim($sql) != '') 
+					if (trim($sql) != '')
 					{
 						$s[] = $sql;
 					}
@@ -518,10 +518,10 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			}
 			$this->database->setQuery($query);
 			$results = array($this->database->loadObjectList());
-		} 
-		else 
+		}
+		else
 		{
-			$results = $dispatcher->trigger('onTagView', 
+			$results = $dispatcher->trigger('onTagView',
 				array(
 					$tags,
 					$limit,
@@ -536,11 +536,11 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if (is_array($result) && !empty($result)) 
+				if (is_array($result) && !empty($result))
 				{
 					$rows = $result;
 					break;
@@ -552,7 +552,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$title = JText::_(strtoupper($this->_option)) . ': ';
 		for ($i=0, $n=count($tags); $i < $n; $i++)
 		{
-			if ($i > 0) 
+			if ($i > 0)
 			{
 				$title .= '+ ';
 			}
@@ -567,7 +567,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$doc->category    = JText::_('COM_TAGS_RSS_CATEGORY');
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
 
@@ -585,7 +585,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
-				if (isset($row->data3) || isset($row->rcount)) 
+				if (isset($row->data3) || isset($row->rcount))
 				{
 					$resourceEx = new ResourcesHelper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
@@ -615,13 +615,13 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Browse the list of tags
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browseTask()
 	{
 		// Instantiate a new view
-		if (JRequest::getVar('format', '') == 'xml') 
+		if (JRequest::getVar('format', '') == 'xml')
 		{
 			$this->view->setLayout('browse_xml');
 		}
@@ -641,8 +641,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			'int'
 		);
 		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['sortby'] = $app->getUserStateFromRequest(
@@ -661,7 +661,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$t = new TagsModelCloud();
 
 		$order = JRequest::getVar('order', '');
-		if ($order == 'usage') 
+		if ($order == 'usage')
 		{
 			$limit = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
@@ -678,8 +678,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				'sort_Dir' => 'DESC',
 				'by'       => 'user'
 			));
-		} 
-		else 
+		}
+		else
 		{
 			// Record count
 			$this->view->total = $t->tags('count', $this->view->filters);
@@ -697,8 +697,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			// Initiate paging
 			jimport('joomla.html.pagination');
 			$this->view->pageNav = new JPagination(
-				$this->view->total, 
-				$this->view->filters['start'], 
+				$this->view->total,
+				$this->view->filters['start'],
 				$this->view->filters['limit']
 			);
 		}
@@ -712,7 +712,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -724,7 +724,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create a new tag
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function createTask()
@@ -734,7 +734,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing a task
-	 * 
+	 *
 	 * @param      object $tag TagsTableTag
 	 * @return     void
 	 */
@@ -743,18 +743,18 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->setLayout('edit');
 
 		// Check that the user is authorized
-		if (!$this->config->get('access-edit-tag')) 
+		if (!$this->config->get('access-edit-tag'))
 		{
 			JError::raiseWarning(403, JText::_('ALERTNOTAUTH'));
 			return;
 		}
 
 		// Load a tag object if one doesn't already exist
-		if (is_object($tag)) 
+		if (is_object($tag))
 		{
 			$this->view->tag = $tag;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$this->view->tag = new TagsModelTag(intval(JRequest::getInt('id', 0, 'request')));
@@ -773,7 +773,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Pass error messages to the view
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -786,7 +786,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Cancel a task and redirect to the main listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -800,7 +800,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a tag
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -809,7 +809,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Check that the user is authorized
-		if (!$this->config->get('access-edit-tag')) 
+		if (!$this->config->get('access-edit-tag'))
 		{
 			JError::raiseWarning(403, JText::_('ALERTNOTAUTH'));
 			return;
@@ -819,7 +819,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Bind incoming data
 		$row = new TagsModelTag(intval($tag['id']));
-		if (!$row->bind($tag)) 
+		if (!$row->bind($tag))
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -827,7 +827,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
 			$this->editTask($row);
@@ -847,13 +847,13 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete one or more tags
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Check that the user is authorized
-		if (!$this->config->get('access-delete-tag')) 
+		if (!$this->config->get('access-delete-tag'))
 		{
 			JError::raiseWarning(403, JText::_('ALERTNOTAUTH'));
 			return;
@@ -861,13 +861,13 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=browse')
@@ -906,7 +906,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to set the document path
-	 * 
+	 *
 	 * @param      array $tags Tags currently viewing
 	 * @return     void
 	 */
@@ -914,21 +914,21 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'view' && $this->_task != 'display') 
+		if ($this->_task && $this->_task != 'view' && $this->_task != 'display')
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
-		if (is_array($tags) && count($tags) > 0) 
+		if (is_array($tags) && count($tags) > 0)
 		{
 			$t = array();
 			$l = array();
@@ -947,18 +947,18 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to build and set the document title
-	 * 
+	 *
 	 * @param      array $tags Tags currently viewing
 	 * @return     void
 	 */
 	protected function _buildTitle($tags=null)
 	{
 		$this->view->title = JText::_(strtoupper($this->_option));
-		if ($this->_task && $this->_task != 'view' && $this->_task != 'display') 
+		if ($this->_task && $this->_task != 'view' && $this->_task != 'display')
 		{
 			$this->view->title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		if (is_array($tags) && count($tags) > 0) 
+		if (is_array($tags) && count($tags) > 0)
 		{
 			$t = array();
 			foreach ($tags as $tag)
@@ -980,7 +980,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	{
 		$this->config->set('access-view-' . $assetType, true);
 
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -1007,7 +1007,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

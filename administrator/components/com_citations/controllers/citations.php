@@ -38,7 +38,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List citations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -51,27 +51,27 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 		// Get paging variables
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
 		// Get filters
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'sort', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'sort',
 			'created DESC'
 		));
 		$this->view->filters['search']     = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		)));
 
@@ -86,8 +86,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -96,7 +96,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		$this->view->types = $ct->getType();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -110,7 +110,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new citation
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -120,54 +120,54 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a citation
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
 	{
 		//stop menu from working?
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		//force edit layout
 		$this->view->setLayout('edit');
-		
+
 		//get request vars - expecting an array id[]=4232
 		$id = JRequest::getVar('id', array());
 		$id = (is_array($id) && !empty($id)) ? $id[0] : 0;
-		
+
 		//get all citations sponsors
 		$cs = new CitationsSponsor($this->database);
 		$this->view->sponsors = $cs->getSponsor();
-		
+
 		//get all citation types
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
-		
+
 		//empty citation object
 		$this->view->row = new CitationsCitation($this->database);
-		
+
 		//params class object
 		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-		
+
 		//if we have an id load that citation data
 		if (isset($id) && $id != '' && $id != 0)
 		{
 			// Load the citation object
 			$this->view->row->load( $id );
-			
+
 			// Get the associations
 			$assoc = new CitationsAssociation($this->database);
 			$this->view->assocs = $assoc->getRecords(array('cid' => $id));
-			
+
 			//get sponsors for citation
 			$this->view->row_sponsors = $cs->getCitationSponsor($this->view->row->id);
-			
+
 			//get the citations tags
 			$this->view->tags = CitationFormat::citationTags($this->view->row, JFactory::getDBO(), false);
 
 			//get the badges
 			$this->view->badges = CitationFormat::citationBadges($this->view->row, JFactory::getDBO(), false);
-			
+
 			//parse citation params
 			$this->view->params = new $paramsClass($this->view->row->params);
 		}
@@ -175,27 +175,27 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		{
 			//set the creator
 			$this->view->row->uid = $this->juser->get('id');
-			
+
 			// It's new - no associations to get
 			$this->view->assocs = array();
-			
+
 			//array of sponsors - empty
 			$this->view->row_sponsors = array();
-			
+
 			//empty tags and badges arrays
 			$this->view->tags = array();
 			$this->view->badges = array();
-			
+
 			//empty params object
 			$this->view->params = new $paramsClass('');
 		}
-		
+
 		//are we padding back the citation data
 		if (isset($this->row))
 		{
 			$this->view->row = $this->row;
 		}
-		
+
 		//are we passing back the tags from edit
 		if ($this->tags != '')
 		{
@@ -205,7 +205,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 				$this->view->tags[]['raw_tag'] = $tag;
 			}
 		}
-		
+
 		//are we passing back the tags from edit
 		if ($this->badges != '')
 		{
@@ -215,23 +215,23 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 				$this->view->badges[]['raw_tag'] = $badge;
 			}
 		}
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//set vars for view
 		$this->view->config = $this->config;
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
 
 	/**
 	 * Display stats for citations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function statsTask()
@@ -241,7 +241,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		$this->view->stats = $row->getStats();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -255,52 +255,52 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a citation
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		$citation = array_map('trim', JRequest::getVar('citation', array(), 'post'));
 		$exclude = JRequest::getVar('exclude', '', 'post');
 		$rollover = JRequest::getInt("rollover", 0);
 		$this->tags = trim(JRequest::getVar('tags', ''));
 		$this->badges = trim(JRequest::getVar('badges', ''));
 		$this->sponsors = JRequest::getVar('sponsors', array(), 'post');
-		
+
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
-		if (!$row->bind($citation)) 
+		if (!$row->bind($citation))
 		{
 			$this->row = $row;
 			$this->setError( $row->getError() );
 			$this->editTask();
 			return;
 		}
-		
+
 		//params class object
 		$paramsClass = 'JParameter';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$paramsClass = 'JRegistry';
 		}
-		
+
 		//set params
 		$cparams = new $paramsClass($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->params = $cparams->toString();
-		
+
 		// New entry so set the created date
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->created = JFactory::getDate()->toSql();
 		}
 
 		// Check content for missing required data
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->row = $row;
 			$this->setError( $row->getError() );
@@ -309,7 +309,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->row = $row;
 			$this->setError( $row->getError() );
@@ -323,15 +323,15 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		foreach ($arr as $a)
 		{
 			$a = array_map('trim',$a);
-			
+
 			// Initiate extended database class
 			$assoc = new CitationsAssociation($this->database);
-			
+
 			//check to see if we should delete
 			if(isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
 			{
 				// Delete the row
-				if (!$assoc->delete($a['id'])) 
+				if (!$assoc->delete($a['id']))
 				{
 					JError::raiseError(500, $assoc->getError());
 					return;
@@ -340,42 +340,42 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			else if($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
-				
+
 				// bind the data
-				if (!$assoc->bind($a)) 
+				if (!$assoc->bind($a))
 				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 
 				// Check content
-				if (!$assoc->check()) 
+				if (!$assoc->check())
 				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 
 				// Store new content
-				if (!$assoc->store()) 
+				if (!$assoc->store())
 				{
 					JError::raiseError(500, $assoc->getError());
 					return;
 				}
 			}
 		}
-		
+
 		//save sponsors on citation
 		if ($this->sponsors)
 		{
 			$cs = new CitationsSponsor($this->database);
 			$cs->addSponsors($row->id, $this->sponsors);
 		}
-		
-		//add tags & badges 
+
+		//add tags & badges
 		$ct = new CitationTags($this->database);
 		$ct->tag_object($this->juser->get("id"), $row->id, $this->tags, 1, false, "");
 		$ct->tag_object($this->juser->get("id"), $row->id, $this->badges, 1, false, "badge");
-		
+
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -385,7 +385,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Check if an array has any values set other than $ignored values
-	 * 
+	 *
 	 * @param      array $b       Array to check
 	 * @param      array $ignored Values to ignore
 	 * @return     boolean True if empty
@@ -394,12 +394,12 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 	{
 		foreach ($ignored as $ignore)
 		{
-			if (array_key_exists($ignore, $b)) 
+			if (array_key_exists($ignore, $b))
 			{
 				$b[$ignore] = NULL;
 			}
 		}
-		if (array_key_exists('id',$b)) 
+		if (array_key_exists('id',$b))
 		{
 			$b['id'] = NULL;
 		}
@@ -407,7 +407,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		$e = true;
 		foreach ($values as $v)
 		{
-			if ($v) 
+			if ($v)
 			{
 				$e = false;
 			}
@@ -417,20 +417,20 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more citations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
 	{
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have IDs to work with
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			// Loop through the IDs and delete the citation
 			$citation = new CitationsCitation($this->database);
@@ -461,8 +461,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			}
 
 			$message = JText::_('CITATION_REMOVED');
-		} 
-		else 
+		}
+		else
 		{
 			$message = JText::_('NO_SELECTION');
 		}
@@ -473,7 +473,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$message
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

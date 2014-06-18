@@ -38,7 +38,7 @@ class ChildrenMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -58,7 +58,7 @@ class ChildrenMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -66,37 +66,37 @@ class ChildrenMacro extends WikiMacro
 		$depth = 1;
 		$description = 0;
 
-		if ($this->args) 
+		if ($this->args)
 		{
 			$args = explode(',', $this->args);
-			if (is_array($args)) 
+			if (is_array($args))
 			{
 				foreach ($args as $arg)
 				{
 					$arg = trim($arg);
-					if (substr($arg, 0, 6) == 'depth=') 
+					if (substr($arg, 0, 6) == 'depth=')
 					{
 						$bits = preg_split('#=#', $arg);
 						$depth = intval(trim(end($bits)));
 						continue;
 					}
-					if (substr($arg, 0, 12) == 'description=') 
+					if (substr($arg, 0, 12) == 'description=')
 					{
 						$bits = preg_split('#=#', $arg);
 						$description = intval(trim(end($bits)));
 						continue;
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$arg = trim($args);
-				if (substr($arg, 0, 6) == 'depth=') 
+				if (substr($arg, 0, 6) == 'depth=')
 				{
 					$bits = preg_split('#=#', $arg);
 					$depth = intval(trim(end($bits)));
 				}
-				if (substr($arg, 0, 12) == 'description=') 
+				if (substr($arg, 0, 12) == 'description=')
 				{
 					$bits = preg_split('#=#', $arg);
 					$description = intval(trim(end($bits)));
@@ -111,7 +111,7 @@ class ChildrenMacro extends WikiMacro
 
 	/**
 	 * List children of a page
-	 * 
+	 *
 	 * @param      integer $currentDepth How far down the tree we are
 	 * @param      integer $targetDepth  How far down the tree to go
 	 * @param      string  $scope        Page scope
@@ -121,14 +121,14 @@ class ChildrenMacro extends WikiMacro
 	{
 		$html = '';
 
-		if ($currentDepth > $targetDepth) 
+		if ($currentDepth > $targetDepth)
 		{
 			return $html;
 		}
 
 		$rows = $this->getchildren($scope);
 
-		if ($rows) 
+		if ($rows)
 		{
 			$html = '<ul>';
 			foreach ($rows as $row)
@@ -149,8 +149,8 @@ class ChildrenMacro extends WikiMacro
 				$html .= '</li>'."\n";
 			}
 			$html .= '</ul>';
-		} 
-		elseif ($currentDepth == 1) 
+		}
+		elseif ($currentDepth == 1)
 		{
 			// Return error message
 			//return '(TitleIndex('.$et.') failed)';
@@ -162,7 +162,7 @@ class ChildrenMacro extends WikiMacro
 
 	/**
 	 * Get the children of a page
-	 * 
+	 *
 	 * @param      string $scope Page scope
 	 * @return     array
 	 */

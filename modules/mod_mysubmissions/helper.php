@@ -39,7 +39,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 {
 	/**
 	 * Check if the type selection step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
@@ -50,7 +50,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Check if the compose step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
@@ -61,19 +61,19 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Check if the attach step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
 	public function step_attach_check($id)
 	{
-		if ($id) 
+		if ($id)
 		{
 			$database = JFactory::getDBO();
 			$ra = new ResourcesAssoc($database);
 			$total = $ra->getCount($id);
-		} 
-		else 
+		}
+		else
 		{
 			$total = 0;
 		}
@@ -82,19 +82,19 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Check if the authors step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
 	public function step_authors_check($id)
 	{
-		if ($id) 
+		if ($id)
 		{
 			$database = JFactory::getDBO();
 			$rc = new ResourcesContributor($database);
 			$contributors = $rc->getCount($id, 'resources');
-		} 
-		else 
+		}
+		else
 		{
 			$contributors = 0;
 		}
@@ -104,7 +104,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Check if the tags step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
@@ -115,11 +115,11 @@ class modMySubmissions extends \Hubzero\Module\Module
 		$rt = new ResourcesTags($database);
 		$tags = $rt->getTags($id);
 
-		if (count($tags) > 0) 
+		if (count($tags) > 0)
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			return false;
 		}
@@ -127,7 +127,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Check if the review step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean True if step completed
 	 */
@@ -138,13 +138,13 @@ class modMySubmissions extends \Hubzero\Module\Module
 
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			return false;
 		}
@@ -159,14 +159,14 @@ class modMySubmissions extends \Hubzero\Module\Module
 		$rr = new ResourcesResource($database);
 		$rt = new ResourcesType($database);
 
-		$query = "SELECT r.*, t.type AS typetitle 
-			FROM " . $rr->getTableName() . " AS r 
-			LEFT JOIN " . $rt->getTableName() . " AS t ON r.type=t.id 
+		$query = "SELECT r.*, t.type AS typetitle
+			FROM " . $rr->getTableName() . " AS r
+			LEFT JOIN " . $rt->getTableName() . " AS t ON r.type=t.id
 			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=" . $juser->get('id');
 		$database->setQuery($query);
 		$this->rows = $database->loadObjectList();
 
-		if ($this->rows) 
+		if ($this->rows)
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');

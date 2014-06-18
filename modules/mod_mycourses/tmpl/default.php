@@ -61,14 +61,14 @@ $total = count($this->courses);
 			<?php if ($course->section_title) { ?>
 			<small><strong><?php echo JText::_('MOD_MYCOURSES_SECTION'); ?></strong> <?php echo $this->escape($course->section_title); ?></small>
 			<?php } ?>
-			<?php 
-			switch ($course->state) 
+			<?php
+			switch ($course->state)
 			{
 				case 3: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_DRAFT'); ?></small><?php break;
 				case 2: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_DELETED'); ?></small><?php break;
 				case 1: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_PUBLISHED'); ?></small><?php break;
 				case 0: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_UNPUBLISHED'); ?></small><?php break;
-			} 
+			}
 			?>
 			<span><span class="<?php echo $this->escape($course->role); ?> status"><?php echo $this->escape($course->role); ?></span></span>
 		</li>

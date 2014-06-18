@@ -38,63 +38,63 @@ class CoursesTableMemberBadge extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $member_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_badge_id = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $earned = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $earned_on = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action_on = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $validation_token = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -105,7 +105,7 @@ class CoursesTableMemberBadge extends JTable
 
 	/**
 	 * Load by member id
-	 * 
+	 *
 	 * @param      int $id - member id
 	 * @return     void
 	 */

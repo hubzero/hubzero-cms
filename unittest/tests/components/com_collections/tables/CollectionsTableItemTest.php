@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,13 +15,13 @@ class CollectionsTableItemTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'title', 
-		'description', 
+		'id',
+		'title',
+		'description',
 		'url',
-		'created', 
+		'created',
 		'created_by',
-		'modified', 
+		'modified',
 		'modified_by',
 		'state',
 		'access',
@@ -31,9 +31,9 @@ class CollectionsTableItemTest extends PHPUnit_Framework_TestCase
 		'object_id'
 	);
 	var $mock       = array(
-		'id'          => null, 
-		'title'       => 'Nullam quis risus', 
-		'description' => 'Nullam quis risus eget urna mollis ornare vel eu leo.', 
+		'id'          => null,
+		'title'       => 'Nullam quis risus',
+		'description' => 'Nullam quis risus eget urna mollis ornare vel eu leo.',
 		'url'         => '',
 		'created'     => '2013-05-06 12:13:04',
 		'created_by'  => 123,

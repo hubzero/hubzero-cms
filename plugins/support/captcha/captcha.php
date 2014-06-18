@@ -189,7 +189,7 @@ class plgSupportCaptcha extends JPlugin
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -202,10 +202,10 @@ class plgSupportCaptcha extends JPlugin
 
 		$juser = JFactory::getUser();
 
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3) 
+			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
 			{
 				$this->_verified = true;
 			}
@@ -380,7 +380,7 @@ class plgSupportCaptcha extends JPlugin
 	private function _generateHash($input, $day)
 	{
 		$jconfig = JFactory::getConfig();
-		
+
 		// Add date:
 		$input .= $jconfig->getValue('config.secret') . $day . date('ny');
 
@@ -438,15 +438,15 @@ class plgSupportCaptcha extends JPlugin
 		$currentSession = JFactory::getSession();
 		$securiy_code = $currentSession->get('securiy_code' . $instanceNo);
 
-		if ($hash && $word == $hash) 
+		if ($hash && $word == $hash)
 		{
 			return true;
-		} 
-		else if ($word == $securiy_code) 
+		}
+		else if ($word == $securiy_code)
 		{
 			return true;
-		} 
-		else 
+		}
+		else
 		{
 			return false;
 		}
@@ -761,7 +761,7 @@ class plgSupportCaptcha extends JPlugin
 		// Let's generate a totally random string using md5
 		$md5_hash = md5(rand(0,999));
 
-		// We don't need a 32 character long string so we trim it down to 5 
+		// We don't need a 32 character long string so we trim it down to 5
 		$security_code = str_replace(array("0", "O", "o"), array("p"), substr($md5_hash, 15, 5));
 		$security_code = $this->_generateHash($security_code, date('j'));
 
@@ -781,7 +781,7 @@ class plgSupportCaptcha extends JPlugin
 		$black = imagecolorallocate($image, $background_color[0], $background_color[1], $background_color[2]);
 		$grey = imagecolorallocate($image, 204, 204, 204);
 
-		// Make the background black 
+		// Make the background black
 		imagefill($image, 0, 0, $black);
 
 		$size = 10;

@@ -35,7 +35,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 if ($tmpl != 'component')
 {
 	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Coupon Codes') . ': ' . JText::_('Generate'), 'course.png');
-	if ($canDo->get('core.edit')) 
+	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::save();
 	}
@@ -55,15 +55,15 @@ $nextMonth = date("m", mktime(0, 0, 0, $month+1, $day, $year));
 $nextDay   = date("d", mktime(0, 0, 0, $month+1, $day, $year));
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if (form.num.value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');

@@ -40,7 +40,7 @@ class WikiModelAdapterGroups extends WikiModelAdapterAbstract
 {
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array(
@@ -50,7 +50,7 @@ class WikiModelAdapterGroups extends WikiModelAdapterAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string

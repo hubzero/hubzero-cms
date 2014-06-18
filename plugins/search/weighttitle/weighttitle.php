@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchWeightTitle'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchWeightTitle
@@ -41,9 +41,9 @@ class plgSearchWeightTitle
 
 	/**
 	 * Short description for 'onSearchWeightAll'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $terms Parameter description (if any) ...
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     number Return description (if any) ...
@@ -58,7 +58,7 @@ class plgSearchWeightTitle
 		}
 
 		$title_stems = self::stem_list($title);
-		if (!($title_len = count($title_stems))) 
+		if (!($title_len = count($title_stems)))
 		{
 			return 0.5;
 		}
@@ -83,7 +83,7 @@ class plgSearchWeightTitle
 			}
 		}
 		$term_stems = array_unique($term_stems);
-		if (!($term_len = count($term_stems))) 
+		if (!($term_len = count($term_stems)))
 		{
 			return $quoted_weight ? $quoted_weight : 0.5;
 		}
@@ -94,9 +94,9 @@ class plgSearchWeightTitle
 
 	/**
 	 * Short description for 'stem_list'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $str Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */

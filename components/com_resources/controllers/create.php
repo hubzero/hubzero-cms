@@ -40,14 +40,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Container for steps
-	 * 
+	 *
 	 * @var array
 	 */
 	public $steps = array('Type', 'Compose', 'Attach', 'Authors', 'Tags', 'Review');
 
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -62,12 +62,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Get the task at hand
 		$task = JRequest::getVar('task', '');
 		$this->step = JRequest::getInt('step', 0);
-		if ($this->step && !$task) 
+		if ($this->step && !$task)
 		{
 			JRequest::setVar('task', 'draft');
 		}
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			JRequest::setVar('task', 'login');
 		}
@@ -97,7 +97,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -118,14 +118,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&task=new'
 			);
 		}
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$pathway->addItem(
 				JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
-		if ($this->step) 
+		if ($this->step)
 		{
 			$pathway->addItem(
 				JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step])),
@@ -150,11 +150,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			$this->_title .= JText::_('COM_CONTRIBUTE_NEW');
 		}
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$this->_title .= ': ' . JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task));
 		}
-		if ($this->step) 
+		if ($this->step)
 		{
 			$this->_title .= ': ' . JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
 		}
@@ -165,7 +165,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Redirect to the login page with the return set
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function loginTask()
@@ -179,13 +179,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Component landing page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		$this->view->title = $this->_title;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -197,7 +197,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check how many steps have been completed for a resource
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     void
 	 */
@@ -213,15 +213,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$check = 'step_' . $steps[$i] . '_check';
 			$stepchecks[$steps[$i]] = $this->$check($id);
 
-			if ($stepchecks[$steps[$i]]) 
+			if ($stepchecks[$steps[$i]])
 			{
 				$progress[$steps[$i]] = 1;
-				if ($i == $laststep) 
+				if ($i == $laststep)
 				{
 					$progress['submitted'] = 1;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$progress[$steps[$i]] = 0;
 			}
@@ -231,7 +231,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Call the current step
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function draftTask()
@@ -239,7 +239,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Determine the current step
 		$steps = $this->steps;
 		$step  = $this->step;
-		if ($step > count($steps)) 
+		if ($step > count($steps))
 		{
 			$step = count($steps);
 		}
@@ -263,14 +263,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		// Is it a POST and the step field was set?
 		// If so, it means we're at least past step 1
-		if (isset($_POST['step'])) 
+		if (isset($_POST['step']))
 		{
 			// Perform any preprocessing
 			$this->$preprocess();
 		}
 
 		// Any errors?
-		if (!$this->getError()) 
+		if (!$this->getError())
 		{
 			// Check the progress
 			$this->_checkProgress(JRequest::getInt('id', 0));
@@ -284,7 +284,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of contributable resource types and let the user pick
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_type()
@@ -298,7 +298,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->types = $rt->getMajorTypes();
 
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -310,7 +310,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for composing the title, abstract, etc.
-	 * 
+	 *
 	 * @param      object $row ResourcesResource
 	 * @return     void
 	 */
@@ -319,7 +319,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$group = JRequest::getVar('group', '');
 		$type = JRequest::getVar('type', '');
 
-		if ($type == '7') 
+		if ($type == '7')
 		{
 			$app = JFactory::getApplication();
 			$app->redirect(JRoute::_('index.php?option=com_tools&task=create'), '', 'message', true);
@@ -334,12 +334,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			// Instantiate a new resource object
 			$row = new ResourcesResource($this->database);
-			if ($this->view->id) 
+			if ($this->view->id)
 			{
 				// Load the resource
 				$row->load($this->view->id);
-			} 
-			else 
+			}
+			else
 			{
 				// Load the type and set the state
 				$row->type = $type;
@@ -364,7 +364,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->row  = $row;
 		$this->view->task = 'draft';
 		$this->view->progress = $this->progress;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -376,7 +376,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show form for adding attachments to a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_attach()
@@ -388,7 +388,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id) 
+		if (!$this->view->id)
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
@@ -401,7 +401,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->next_step = $this->step + 1;
 		$this->view->task = 'draft';
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -413,7 +413,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show form for adding authors to a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_authors()
@@ -422,7 +422,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id) 
+		if (!$this->view->id)
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
@@ -445,7 +445,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$this->view->progress = $this->progress;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -457,25 +457,25 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Recursive method for loading hierarchical focus areas (tags)
-	 * 
+	 *
 	 * @param      integer $id           Resource type ID
 	 * @param      array   $labels       Tags
 	 * @param      integer $parent_id    Tag ID
 	 * @param      string  $parent_label Tag
 	 * @return     void
 	 */
-	private function _loadFocusAreas($type, $labels = null, $parent_id = NULL, $parent_label = NULL) 
+	private function _loadFocusAreas($type, $labels = null, $parent_id = NULL, $parent_label = NULL)
 	{
-		if (is_null($labels)) 
+		if (is_null($labels))
 		{
 			$this->database->setQuery(
-				'SELECT DISTINCT tag 
-				FROM #__focus_area_resource_type_rel fr 
+				'SELECT DISTINCT tag
+				FROM #__focus_area_resource_type_rel fr
 				INNER JOIN #__focus_areas f ON f.id = fr.focus_area_id
 				INNER JOIN #__tags t ON t.id = f.tag_id
 				WHERE fr.resource_type_id = ' . $type
 			);
-			if (!($labels = $this->database->loadResultArray())) 
+			if (!($labels = $this->database->loadResultArray()))
 			{
 				return array();
 			}
@@ -483,33 +483,33 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		$this->database->setQuery(
-			$parent_id 
+			$parent_id
 				// get tags labeled focus area and parented by the tag identified by $parent_id
-				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag 
+				? 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag
 					FROM #__tags t
 					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.tagid = t.id AND to1.label = \'label\'
-					INNER JOIN #__tags_object to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid 
-						AND to2.tagid = ' . $parent_id . ' 
+					INNER JOIN #__tags_object to2 ON to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = to1.objectid
+						AND to2.tagid = ' . $parent_id . '
 					INNER JOIN #__tags t2 ON t2.id = to1.objectid
 					WHERE t.raw_tag = ' . $this->database->quote($parent_label) . '
 					ORDER BY CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
 				// get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus area
-				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag 
+				: 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag
 					FROM #__tags t
 					LEFT JOIN #__tags_object to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
 					INNER JOIN #__tags t2 ON t2.id = to1.objectid
 					WHERE t.tag IN (' . $labels . ') AND (
-						SELECT COUNT(*) 
+						SELECT COUNT(*)
 						FROM #__tags_object to2
 						INNER JOIN #__tags_object to3 ON to3.tbl = \'tags\' AND to3.label = \'label\' AND to3.objectid = to2.tagid
 						INNER JOIN #__tags t3 ON t3.id = to3.tagid AND t3.tag IN (' . $labels . ')
-						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id 
+						WHERE to2.tbl = \'tags\' AND to2.label = \'parent\' AND to2.objectid = t2.id
 						LIMIT 1
 					) = 0
 					ORDER BY t.tag, CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
 		);
 		$fas = $this->database->loadAssocList('raw_tag');
-		foreach ($fas as &$fa) 
+		foreach ($fas as &$fa)
 		{
 			$fa['children'] = $this->_loadFocusAreas($type, $labels, $fa['id'], $fa['label']);
 		}
@@ -518,10 +518,10 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show form for adding tags to an entry
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function step_tags($existing = array()) 
+	public function step_tags($existing = array())
 	{
 		if ($this->view->getName() != 'steps')
 		{
@@ -531,7 +531,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id) 
+		if (!$this->view->id)
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
@@ -552,9 +552,9 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->database->setQuery('SELECT type FROM #__resources WHERE id = ' . $this->view->id);
 		$fas = $this->_loadFocusAreas($this->database->loadResult());
 		$this->view->fas = array();
-		foreach ($fas as $tag => $fa) 
+		foreach ($fas as $tag => $fa)
 		{
-			if (!isset($this->view->fas[$fa['label']])) 
+			if (!isset($this->view->fas[$fa['label']]))
 			{
 				$this->view->fas[$fa['label']] = array();
 			}
@@ -567,19 +567,19 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$tags_men = $tagcloud->get_tags_on_object($this->view->id, 0, 0, 0, 0);
 
 		$mytagarray = array();
-		foreach ($tags_men as $tag_men) 
+		foreach ($tags_men as $tag_men)
 		{
 			$mytagarray[] = $tag_men['raw_tag'];
 		}
 		$tags = implode(', ', $mytagarray);
 
 		$etags = JRequest::getVar('tags', '');
-		if (!$tags) 
+		if (!$tags)
 		{
 			$tags = $etags;
 		}
 
-		if (($err = JRequest::getInt('err', 0))) 
+		if (($err = JRequest::getInt('err', 0)))
 		{
 			$this->setError(JText::_('Please select one of the focus areas.'));
 		}
@@ -589,7 +589,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->next_step = $this->step + 1;
 		$this->view->task      = 'draft';
 		$this->view->existing  = $existing;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -601,7 +601,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show final review form for setting license and agreeing to terms of submission
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_review()
@@ -624,7 +624,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$this->view->id) 
+		if (!$this->view->id)
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
@@ -638,13 +638,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->resource = new ResourcesResource($this->database);
 		$this->view->resource->load($this->view->id);
 
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
 			// Get the groups the user has access to
 			$this->view->usersgroups = $this->_getUsersGroups($xgroups);
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->usersgroups = array();
 		}
@@ -656,7 +656,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$rl = new ResourcesLicense($this->database);
 		$this->view->licenses = $rl->getLicenses($this->view->id);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -668,18 +668,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Generate an array of just group aliases
-	 * 
+	 *
 	 * @param      array $groups Array of group objects
 	 * @return     array
 	 */
 	private function _getUsersGroups($groups)
 	{
 		$arr = array();
-		if (!empty($groups)) 
+		if (!empty($groups))
 		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$arr[] = $group->cn;
 				}
@@ -690,7 +690,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Process the type step
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_type_process()
@@ -700,14 +700,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Process the compose step
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_compose_process()
 	{
 		// Initiate extended database class
 		$row = new ResourcesResource($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -718,11 +718,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->created_by = ($row->created_by) ? $row->created_by : $this->juser->get('id');
 
 		// Set status to "composing"
-		if ($isNew) 
+		if ($isNew)
 		{
 			$row->published = 2;
-		} 
-		else 
+		}
+		else
 		{
 			$row->published = ($row->published) ? $row->published : 2;
 		}
@@ -733,8 +733,8 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->access	   = 0;
 
 		$row->fulltxt   = trim($row->fulltxt);
-		$row->introtext = $row->introtext 
-						? \Hubzero\Utility\String::truncate(strip_tags($row->introtext), 500) 
+		$row->introtext = $row->introtext
+						? \Hubzero\Utility\String::truncate(strip_tags($row->introtext), 500)
 						: \Hubzero\Utility\String::truncate(strip_tags($row->fulltxt), 500);
 		$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
@@ -779,7 +779,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					$f = 'found';
 				}
 			}
-			else 
+			else
 			{
 				$f = trim($tagcontent);
 				if ($f)
@@ -789,7 +789,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			}
 			$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
 
-			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required) 
+			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required)
 			{
 				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 			}
@@ -810,7 +810,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->title = $this->_txtClean($row->title);
 
 		// Strip any scripting there may be
-		if (trim($row->fulltxt)) 
+		if (trim($row->fulltxt))
 		{
 			$row->fulltxt   = $this->_txtClean($row->fulltxt);
 			//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
@@ -818,7 +818,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 		}
@@ -840,7 +840,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError(JText::_('Error: Failed to store changes.'));
 			$this->step--;
@@ -877,10 +877,10 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->checkin();
 
 		// Is it a new resource?
-		if ($isNew) 
+		if ($isNew)
 		{
 			// Get the resource ID
-			if (!$row->id) 
+			if (!$row->id)
 			{
 				$row->id = $row->insertid();
 			}
@@ -898,7 +898,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Process the attach step
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_attach_process()
@@ -908,7 +908,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Process the authors step
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function step_authors_process()
@@ -917,7 +917,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			return;
 		}
@@ -930,7 +930,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->group_owner = JRequest::getVar('group_owner', '');
 		$row->access = JRequest::getInt('access', 0);
 
-		if ($row->access > 0 && !$row->group_owner) 
+		if ($row->access > 0 && !$row->group_owner)
 		{
 			$this->setError(JText::_('Please select a group to restrict access to.'));
 			$this->step--;
@@ -941,7 +941,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->step--;
@@ -952,7 +952,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError(JText::_('Error: Failed to store changes.'));
 			$this->step--;
@@ -965,10 +965,10 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Process the tags step
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function step_tags_process() 
+	public function step_tags_process()
 	{
 		$id = JRequest::getInt('id', 0);
 
@@ -977,12 +977,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			$this->database->setQuery(
 				'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
-				UNION 
+				UNION
 				SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . $this->juser->id . ' OR modified_by = ' . $this->juser->id . ')
 				UNION
-				SELECT 1 FROM #__users u 
-				INNER JOIN #__core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id 
-				INNER JOIN #__core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id 
+				SELECT 1 FROM #__users u
+				INNER JOIN #__core_acl_aro caa ON caa.section_value = \'users\' AND caa.value = u.id
+				INNER JOIN #__core_acl_groups_aro_map cagam ON cagam.aro_id = caa.id
 				INNER JOIN #__core_acl_aro_groups caag ON caag.id = cagam.group_id AND (caag.name = \'Super Administrator\' OR caag.name = \'Administrator\')
 				WHERE u.id = ' . $this->juser->id
 			);
@@ -991,16 +991,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			$this->database->setQuery(
 				'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
-				UNION 
+				UNION
 				SELECT 1 FROM #__resources WHERE id = ' . $id . ' AND (created_by = ' . $this->juser->id . ' OR modified_by = ' . $this->juser->id . ')
 				UNION
-				SELECT 1 FROM #__users u 
-				INNER JOIN #__user_usergroup_map cagam ON cagam.user_id = u.id 
+				SELECT 1 FROM #__users u
+				INNER JOIN #__user_usergroup_map cagam ON cagam.user_id = u.id
 				INNER JOIN #__usergroups caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
 				WHERE u.id = ' . $this->juser->id
 			);
 		}
-		if (!$this->database->loadResult()) 
+		if (!$this->database->loadResult())
 		{
 			JError::raiseError(403, 'Forbidden');
 			return;
@@ -1020,32 +1020,32 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			WHERE fa.mandatory_depth IS NOT NULL AND fa.mandatory_depth > 0'
 		);
 		$fas = $this->database->loadAssocList('raw_tag');
-		foreach ($_POST as $k => $vs) 
+		foreach ($_POST as $k => $vs)
 		{
-			if (!preg_match('/^tagfa/', $k)) 
+			if (!preg_match('/^tagfa/', $k))
 			{
 				continue;
 			}
-			if (!is_array($vs)) 
+			if (!is_array($vs))
 			{
 				$vs = array($vs);
 			}
-			foreach ($vs as $v) 
+			foreach ($vs as $v)
 			{
 				$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($v));
-				if (isset($map[$norm_tag])) 
+				if (isset($map[$norm_tag]))
 				{
 					continue;
 				}
 				$this->database->setQuery(
-					'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id 
+					'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id
 					FROM #__tags t
 					INNER JOIN #__tags_object to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
 					INNER JOIN #__tags t2 ON t2.id = to1.tagid
 					INNER JOIN #__focus_areas fa ON fa.tag_id = to1.tagid
 					WHERE t.tag = ' . $this->database->quote($norm_tag)
 				);
-				if (($row = $this->database->loadAssoc())) 
+				if (($row = $this->database->loadAssoc()))
 				{
 					$push[] = array($v, $norm_tag, $row['fa'], $row['id'], $row['label_id']);
 					$map[$norm_tag] = true;
@@ -1055,7 +1055,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		$filtered = array();
 		// only accept focus areas with parents if their parent is also checked
-		foreach ($push as $idx => $tag) 
+		foreach ($push as $idx => $tag)
 		{
 			$this->database->setQuery(
 				'SELECT t.tag, t.id
@@ -1067,26 +1067,26 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$any_match = false;
 			$parent = array();
 			$possible_parents = $this->database->loadAssocList();
-			foreach ($possible_parents as $par) 
+			foreach ($possible_parents as $par)
 			{
-				if (isset($map[$par['tag']])) 
+				if (isset($map[$par['tag']]))
 				{
 					$parent[] = $par;
 					$any_match = true;
 				}
 			}
-			if (!$possible_parents || $any_match) 
+			if (!$possible_parents || $any_match)
 			{
 				$filtered[] = $tag;
 				$parent_id = array();
-				foreach ($parent as $par) 
+				foreach ($parent as $par)
 				{
 					$parent_id[] = $par['id'];
 				}
-				if (isset($fas[$tag[2]]) && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth']) 
+				if (isset($fas[$tag[2]]) && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth'])
 				{
 					// count depth if necessary to determine whether focus area constraints are satisified
-					for ($depth = $parent ? 2 : 1; $parent_id && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth'] && $depth < $fas[$tag[2]]['minimum_depth']; ++$depth) 
+					for ($depth = $parent ? 2 : 1; $parent_id && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth'] && $depth < $fas[$tag[2]]['minimum_depth']; ++$depth)
 					{
 						$this->database->setQuery(
 							'SELECT t.id
@@ -1100,39 +1100,39 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					$fas[$tag[2]]['actual_depth'] = max($depth, $fas[$tag[2]]['actual_depth']);
 				}
 			}
-			else 
+			else
 			{
 				unset($map[$tag[1]]);
 			}
 		}
 		$push = $filtered;
 
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag));
 
-			if (!$norm_tag || isset($map[$norm_tag])) 
+			if (!$norm_tag || isset($map[$norm_tag]))
 			{
 				continue;
 			}
 			$push[] = array($tag, $norm_tag, null);
 			$map[$norm_tag] = true;
 		}
-		foreach ($push as $idx => $tag) 
+		foreach ($push as $idx => $tag)
 		{
 			$this->database->setQuery("SELECT raw_tag FROM `#__tags` WHERE tag = " . $this->database->quote($tag[1]));
-			if (($raw_tag = $this->database->loadResult())) 
+			if (($raw_tag = $this->database->loadResult()))
 			{
 				$push[$idx][0] = $raw_tag;
 			}
 		}
 
-		foreach ($fas as $lbl => $fa) 
+		foreach ($fas as $lbl => $fa)
 		{
-			if ($fa['actual_depth'] < $fa['minimum_depth']) 
+			if ($fa['actual_depth'] < $fa['minimum_depth'])
 			{
 				$this->setError(
-					$fa['minimum_depth'] == 1 
+					$fa['minimum_depth'] == 1
 						? 'Please ensure you have made a ' . $lbl . ' selection'
 						: 'Please make selections for "' . $lbl . '" to a depth of at least ' . $fa['minimum_depth']
 				);
@@ -1144,7 +1144,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		$tags = array();
-		foreach ($push as $tag) 
+		foreach ($push as $tag)
 		{
 			$tags[] = $tag[0];
 		}
@@ -1154,14 +1154,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 		$this->database->setQuery('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		$this->database->execute();
-		foreach ($push as $tag) 
+		foreach ($push as $tag)
 		{
 			/*$this->database->setQuery('SELECT id FROM #__tags WHERE tag = ' . $this->database->quote($tag[1]));
-			if (!($tid = $this->database->loadResult())) 
+			if (!($tid = $this->database->loadResult()))
 			{
 				$this->database->setQuery('SELECT tag_id FROM #__tags_substitute WHERE tag = ' . $this->database->quote($tag[1]));
 				$tid = $this->database->loadResult();
-				if (!($tid = $this->database->loadResult())) 
+				if (!($tid = $this->database->loadResult()))
 				{
 					$this->database->setQuery('INSERT INTO #__tags(tag, raw_tag) VALUES (' . $this->database->quote($tag[1]) . ', ' . $this->database->quote($tag[0]) . ')');
 					$this->database->execute();
@@ -1177,7 +1177,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Final submission
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function submitTask()
@@ -1186,7 +1186,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
 			return;
@@ -1198,14 +1198,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		// Set a flag for if the resource was already published or not
 		$published = 0;
-		if ($resource->published != 2) 
+		if ($resource->published != 2)
 		{
 			$published = 1;
 		}
 
 		// Check if a newly submitted resource was authorized to be published
 		$authorized = JRequest::getInt('authorization', 0);
-		if (!$authorized && !$published) 
+		if (!$authorized && !$published)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
@@ -1214,27 +1214,27 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Is this a newly submitted resource?
-		if (!$published) 
+		if (!$published)
 		{
 			// 0 = unpublished, 1 = published, 2 = composing, 3 = pending (submitted), 4 = deleted
 			// Are submissions auto-approved?
-			if ($this->config->get('autoapprove') == 1) 
+			if ($this->config->get('autoapprove') == 1)
 			{
 				// Set status to published
 				$resource->published = 1;
-			} 
-			else 
+			}
+			else
 			{
 				$apu = $this->config->get('autoapproved_users');
 				$apu = explode(',', $apu);
 				$apu = array_map('trim', $apu);
 
-				if (in_array($this->juser->get('username'), $apu)) 
+				if (in_array($this->juser->get('username'), $apu))
 				{
 					// Set status to published
 					$resource->published = 1;
-				} 
-				else 
+				}
+				else
 				{
 					// Set status to pending review (submitted)
 					$resource->published = 3;
@@ -1247,7 +1247,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 			$contributors = $helper->_contributors;
 
-			if (!$contributors || count($contributors) <= 0) 
+			if (!$contributors || count($contributors) <= 0)
 			{
 				$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
@@ -1257,16 +1257,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Is this resource licensed under Creative Commons?
-		if ($this->config->get('cc_license')) 
+		if ($this->config->get('cc_license'))
 		{
 			$license = JRequest::getVar('license', '');
-			
+
 			if ($license == 'custom')
 			{
 				$license .= $resource->id;
 
 				$licenseText = JRequest::getVar('license-text', '');
-				if ($licenseText == '[ENTER LICENSE HERE]') 
+				if ($licenseText == '[ENTER LICENSE HERE]')
 				{
 					$this->setError(JText::_('Please enter a license.'));
 					$this->_checkProgress($id);
@@ -1284,7 +1284,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$rl->check();
 				$rl->store();
 			}
-			
+
 			// set license
 			$params = new JParameter($resource->params);
 			$params->set('license', $license);
@@ -1296,13 +1296,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$resource->checkin();
 
 		// If a previously published resource, redirect to the resource page
-		if ($published == 1) 
+		if ($published == 1)
 		{
-			if ($resource->alias) 
+			if ($resource->alias)
 			{
 				$url = JRoute::_('index.php?option=com_resources&alias=' . $resource->alias);
-			} 
-			else 
+			}
+			else
 			{
 				$url = JRoute::_('index.php?option=com_resources&id=' . $resource->id);
 			}
@@ -1315,7 +1315,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->title    = $this->_title;
 		$this->view->config   = $this->config;
 		$this->view->resource = $resource;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1327,7 +1327,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a confirmation form for deleting a contribution
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -1336,7 +1336,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=new')
@@ -1365,7 +1365,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$this->view->steps    = $this->steps;
 				$this->view->id       = $id;
 				$this->view->progress = $this->progress;
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					foreach ($this->getErrors() as $error)
 					{
@@ -1380,7 +1380,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$confirm = JRequest::getVar('confirm', '', 'post');
 
 				// Did they confirm the deletion?
-				if ($confirm != 'confirmed') 
+				if ($confirm != 'confirmed')
 				{
 					$this->setError(JText::_('Please confirm.'));
 
@@ -1398,7 +1398,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					$this->view->steps    = $this->steps;
 					$this->view->id       = $id;
 					$this->view->progress = $this->progress;
-					if ($this->getError()) 
+					if ($this->getError())
 					{
 						foreach ($this->getErrors() as $error)
 						{
@@ -1414,19 +1414,19 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$resource->load($id);
 
 				// Check if the resource was "published"
-				if ($resource->published == 1) 
+				if ($resource->published == 1)
 				{
 					// It was, so we can only mark it as "deleted"
-					if (!$this->_markRemovedContribution($id)) 
+					if (!$this->_markRemovedContribution($id))
 					{
 						JError::raiseError(500, $this->getError());
 						return;
 					}
-				} 
-				else 
+				}
+				else
 				{
 					// It wasn't. Attempt to delete the resource
-					if (!$this->_deleteContribution($id)) 
+					if (!$this->_deleteContribution($id))
 					{
 						JError::raiseError(500, $this->getError());
 						return;
@@ -1443,7 +1443,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Retract a submission
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function retractTask()
@@ -1452,7 +1452,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=new')
@@ -1465,7 +1465,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$resource->load($id);
 
 		// Check if it's in pending status
-		if ($resource->published == 3) 
+		if ($resource->published == 3)
 		{
 			// Set it back to "draft" status
 			$resource->published = 2;
@@ -1481,14 +1481,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the state on an item to "deleted" (4)
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean False if errors, True on success
 	 */
 	private function _markRemovedContribution($id)
 	{
 		// Make sure we have a record to pull
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
@@ -1500,7 +1500,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		// Mark resource as deleted
 		$row->published = 4;
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			return false;
@@ -1512,14 +1512,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a contribution and associated content
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     boolean False if errors, True on success
 	 */
 	private function _deleteContribution($id)
 	{
 		// Make sure we have a record to pull
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
@@ -1537,23 +1537,23 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$children = $helper->children;
 
 		// Were there any children?
-		if ($children) 
+		if ($children)
 		{
 			// Loop through each child and delete its files and associations
 			foreach ($children as $child)
 			{
 				// Skip standalone children
-				if ($child->standalone == 1) 
+				if ($child->standalone == 1)
 				{
 					continue;
 				}
 
 				// Get path and delete directories
-				if ($child->path != '') 
+				if ($child->path != '')
 				{
 					$listdir = $child->path;
-				} 
-				else 
+				}
+				else
 				{
 					// No stored path, derive from created date
 					$listdir = $this->_buildPathFromDate($child->created, $child->id, '');
@@ -1567,13 +1567,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$baseM = $baseY . '/' . JFactory::getDate($child->created)->format("m");
 
 				// Check if the folder even exists
-				if (!is_dir($path) or !$path) 
+				if (!is_dir($path) or !$path)
 				{
 					$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
-				} 
-				else 
+				}
+				else
 				{
-					if ($path == $base 
+					if ($path == $base
 					 || $path == $baseY
 					 || $path == $baseM)
 					{
@@ -1582,7 +1582,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					else
 					{
 						// Attempt to delete the folder
-						if (!JFolder::delete($path)) 
+						if (!JFolder::delete($path))
 						{
 							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
@@ -1598,13 +1598,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Get path and delete directories
-		if ($row->path != '') 
+		if ($row->path != '')
 		{
 			$listdir = $row->path;
-		} 
-		else 
+		}
+		else
 		{
-			// No stored path, derive from created date		
+			// No stored path, derive from created date
 			$listdir = $this->_buildPathFromDate($row->created, $id, '');
 		}
 
@@ -1612,14 +1612,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Check if the folder even exists
-		if (!is_dir($path) or !$path) 
+		if (!is_dir($path) or !$path)
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the folder
-			if (!JFolder::delete($path)) 
+			if (!JFolder::delete($path))
 			{
 				$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -1639,14 +1639,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the absolute path to a resource's file upload
-	 * 
+	 *
 	 * @param      string $listdir Primary upload directory
 	 * @param      string $subdir  Sub directory of $listdir
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = DS . trim($subdir, DS);
 		}
@@ -1658,11 +1658,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$listdir = DS . trim($listdir, DS);
 
 		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base) 
+		if (substr($listdir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$listdir = $base . $listdir;
@@ -1674,7 +1674,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the type step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     void
 	 */
@@ -1685,7 +1685,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the compose step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     integer # > 1 = step completed, 0 = not completed
 	 */
@@ -1696,18 +1696,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the attach step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     integer # > 1 = step completed, 0 = not completed
 	 */
 	public function step_attach_check($id)
 	{
-		if ($id) 
+		if ($id)
 		{
 			$ra = new ResourcesAssoc($this->database);
 			$total = $ra->getCount($id);
-		} 
-		else 
+		}
+		else
 		{
 			$total = 0;
 		}
@@ -1716,18 +1716,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the authors step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     integer # > 1 = step completed, 0 = not completed
 	 */
 	public function step_authors_check($id)
 	{
-		if ($id) 
+		if ($id)
 		{
 			$rc = new ResourcesContributor($this->database);
 			$contributors = $rc->getCount($id, 'resources');
-		} 
-		else 
+		}
+		else
 		{
 			$contributors = 0;
 		}
@@ -1737,7 +1737,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the tags step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     integer 1 = step completed, 0 = not completed
 	 */
@@ -1746,11 +1746,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$rt = new ResourcesTags($this->database);
 		$tags = $rt->getTags($id);
 
-		if (count($tags) > 0) 
+		if (count($tags) > 0)
 		{
 			return 1;
-		} 
-		else 
+		}
+		else
 		{
 			return 0;
 		}
@@ -1758,7 +1758,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if the review step is completed
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     integer 1 = step completed, 0 = not completed
 	 */
@@ -1767,11 +1767,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row = new ResourcesResource($this->database);
 		$row->load($id);
 
-		if ($row->published == 1) 
+		if ($row->published == 1)
 		{
 			return 1;
-		} 
-		else 
+		}
+		else
 		{
 			return 0;
 		}
@@ -1780,7 +1780,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	/**
 	 * Convert Microsoft characters and strip disallowed content
 	 * This includes script tags, HTML comments, xhubtags, and style tags
-	 * 
+	 *
 	 * @param      string &$text Text to clean
 	 * @return     string
 	 */
@@ -1804,17 +1804,17 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	/**
 	 * Try to determine and convert groups of text to paragraphs
 	 * Performs a little entity conversion first to normalize everything to UTF8
-	 * 
+	 *
 	 * @param      string  $pee Text to convert
 	 * @param      integer $br  Preserve break tags?
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _txtAutoP($pee, $br = 1)
 	{
 		$trans_tbl = get_html_translation_table(HTML_ENTITIES);
 		foreach ($trans_tbl as $k => $v)
 		{
-			if ($k != '<' && $k != '>' && $k != '"' && $k != "'") 
+			if ($k != '<' && $k != '>' && $k != '"' && $k != "'")
 			{
 				$ttr[utf8_encode($k)] = $v;
 			}
@@ -1841,10 +1841,10 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
 		$pee = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $pee); // Space things out a little
 		$pee = preg_replace('!(</(?:table|ul|ol|li|pre|form|blockquote|h[1-6])>)!', "$1\n", $pee); // Space things out a little
-		$pee = preg_replace("/(\r\n|\r)/", "\n", $pee); // cross-platform newlines 
+		$pee = preg_replace("/(\r\n|\r)/", "\n", $pee); // cross-platform newlines
 		$pee = preg_replace("/\n\n+/", "\n\n", $pee); // take care of duplicates
-		$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "<p>$1</p>\n", $pee); // make paragraphs, including one at the end 
-		$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace 
+		$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "<p>$1</p>\n", $pee); // make paragraphs, including one at the end
+		$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace
 		$pee = preg_replace("|<p>(<li.+?)</p>|", "$1", $pee); // problem with nested lists
 		$pee = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee);
 		$pee = str_replace('</blockquote></p>', '</p></blockquote>', $pee);
@@ -1863,7 +1863,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Remove paragraph tags and break tags
-	 * 
+	 *
 	 * @param      string $pee Text to unparagraph
 	 * @return     string
 	 */
@@ -1880,7 +1880,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build a path from a creation date (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @param      string  $date Resource created date
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
@@ -1888,16 +1888,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	private function _buildPathFromDate($date, $id, $base='')
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = JFactory::getDate($date)->format('Y');
 			$dir_month = JFactory::getDate($date)->format('m');
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');

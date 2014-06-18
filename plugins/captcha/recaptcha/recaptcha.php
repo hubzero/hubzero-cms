@@ -223,7 +223,7 @@ class plgCaptchaRecaptcha extends JPlugin
 		{
 			return "lang : '" . $tag . "',";
 		}
-		
+
 		// If the default language is not available, let's search for a custom translation
 		if ($language->hasKey('PLG_RECAPTCHA_CUSTOM_LANG'))
 		{

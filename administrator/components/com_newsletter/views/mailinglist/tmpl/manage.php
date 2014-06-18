@@ -44,7 +44,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -65,7 +65,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label>Status: 
+		<label>Status:
 			<select name="status">
 				<option value="all" <?php if ($this->filters['status'] == 'all') { echo 'selected="selected"'; } ?>>All Statuses</option>
 				<option value="active" <?php if ($this->filters['status'] == 'active') { echo 'selected="selected"'; } ?>>Active</option>
@@ -140,8 +140,8 @@ function submitbutton(pressbutton)
 							<?php echo ucfirst($le->status); ?>
 						</td>
 						<td>
-							<?php 
-								if ($le->confirmed) 
+							<?php
+								if ($le->confirmed)
 								{
 									echo 'Yes';
 								}

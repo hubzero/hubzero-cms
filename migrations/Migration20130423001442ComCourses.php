@@ -32,7 +32,7 @@ class Migration20130423001442ComCourses extends Base
 						UPDATE `#__courses_assets` SET `type` = 'url' WHERE `type` = 'link';";
 
 			$query .= 'UPDATE `#__courses_grade_policies`
-						SET 
+						SET
 						`description` = \'Scores are based on the average of all exams.  An average exam score of 70% or greater is required to pass.\',
 						`grade_criteria` = \'{"select":[{"value":"IF(score >= 70, TRUE, FALSE) as passing"}],"from":[],"where":[{"field":"cgb.scope","operator":"=","value":"course"}],"group":[],"having":[]}\',
 						`score_criteria` = \'{"select":[{"value":"AVG(cgb.score) as average"}],"from":[],"where":[{"field":"ca.subtype","operator":"=","value":"exam"},{"field":"cgb.scope","operator":"=","value":"asset"}],"group":[],"having":[]}\'

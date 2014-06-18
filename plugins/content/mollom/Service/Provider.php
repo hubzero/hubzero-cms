@@ -99,7 +99,7 @@ class Provider extends AbstractAdapter
 	public function __construct($properties = null)
 	{
 		$this->set('user_agent', $_SERVER['HTTP_USER_AGENT']);
-		if (isset($_SERVER['HTTP_REFERER'])) 
+		if (isset($_SERVER['HTTP_REFERER']))
 		{
 			$this->set('referrer', $_SERVER['HTTP_REFERER']);
 		}
@@ -124,7 +124,7 @@ class Provider extends AbstractAdapter
 	 * @param    string $value Conent to test
 	 * @return   bool True if the comment is spam, false if not
 	 */
-	public function isSpam($value = null) 
+	public function isSpam($value = null)
 	{
 		if ($value)
 		{
@@ -151,13 +151,13 @@ class Provider extends AbstractAdapter
 			'authorId'   => $this->get('user_id'), // If the author is logged in.
 		));
 
-		if (!is_array($result) || !isset($result['id'])) 
+		if (!is_array($result) || !isset($result['id']))
 		{
 			throw new Exception('The content moderation system is currently unavailable. Please try again later.');
 		}
 
 		// Check the final spam classification.
-		switch ($result['spamClassification']) 
+		switch ($result['spamClassification'])
 		{
 			case 'ham':
 				// Do nothing. (Accept content.)
@@ -177,7 +177,7 @@ class Provider extends AbstractAdapter
 					'contentId' => $result['id'],
 					'type'      => 'image',
 				));
-				if (!is_array($captcha) || !isset($captcha['id'])) 
+				if (!is_array($captcha) || !isset($captcha['id']))
 				{
 					print "The content moderation system is currently unavailable. Please try again later.";
 					die();

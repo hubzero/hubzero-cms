@@ -153,56 +153,56 @@ class Item extends Object
 
 	/**
 	 * Description for 'itunes_summary'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_summary = '';
 
 	/**
 	 * Description for 'itunes_explicit'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_explicit = "no";
 
 	/**
 	 * Description for 'itunes_keywords'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_keywords = '';
 
 	/**
 	 * Description for 'itunes_author'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_author = '';
 
 	/**
 	 * Description for 'itunes_image'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_image = '';
 
 	/**
 	 * Description for 'itunes_duration'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_duration = '';
 
 	/**
 	 * Description for 'itunes_category'
-	 * 
+	 *
 	 * @public string
 	 */
 	public $itunes_category = '';
 
 	/**
 	 * Description for 'itunes_subcategories'
-	 * 
+	 *
 	 * @public unknown
 	 */
 	public $itunes_subcategories = null;

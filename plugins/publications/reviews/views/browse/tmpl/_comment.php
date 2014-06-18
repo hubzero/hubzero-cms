@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
@@ -8,10 +8,10 @@ defined('_JEXEC') or die('Restricted access');
 	$name = JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS');
 	$huser = new \Hubzero\User\Profile;
 
-	if (!$this->comment->get('anonymous')) 
+	if (!$this->comment->get('anonymous'))
 	{
 		$huser = \Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
-		if (is_object($huser) && $huser->get('name')) 
+		if (is_object($huser) && $huser->get('name'))
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 		}
@@ -73,9 +73,9 @@ defined('_JEXEC') or die('Restricted access');
 				$view->type   = 'review';
 				$view->vote   = '';
 				$view->id     = '';
-				if (!$juser->get('guest')) 
+				if (!$juser->get('guest'))
 				{
-					if ($this->comment->get('created_by') == $juser->get('username')) 
+					if ($this->comment->get('created_by') == $juser->get('username'))
 					{
 						$view->vote = $this->comment->get('vote');
 						$view->id   = $this->comment->get('id');
@@ -87,11 +87,11 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 
 			<p class="comment-title">
-				<strong><?php echo $name; ?></strong> 
+				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
-					<span class="comment-date-on"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ON'); ?></span> 
+					<span class="comment-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+					<span class="comment-date-on"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 				</a>
 			</p>
@@ -133,7 +133,7 @@ defined('_JEXEC') or die('Restricted access');
 					</label>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" /> 
+						<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
 					</p>
 				</fieldset>
 			</form>
@@ -144,28 +144,28 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
 				<?php /*if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!--
 					--></a>
 				<?php }*/ ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?><!--
 					--></a>
 			<?php } ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 		<?php } ?>
@@ -209,7 +209,7 @@ defined('_JEXEC') or die('Restricted access');
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" /> 
+							<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>
@@ -219,7 +219,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
-		if ($this->depth < $this->config->get('comments_depth', 3)) 
+		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))

@@ -77,10 +77,10 @@ $this->css()
 											echo ' - <span title="NOT Confirmed :: Confirm your email subscription to this mailing list." class="unconfirmed tooltips">NOT Confirmed</span> <span class="unconfirmed-link">(<a href="'.JRoute::_('index.php?option=com_newsletter&task=resendconfirmation&mid='.$mylist->mailinglistid).'" class="">Click here to resend confirmation email</a>)</span>';
 										}
 									}
-									else if ($mylist->status == 'unsubscribed') 
-									{ 
-										echo ' - <span class="unsubscribed">Currently Unsubscribed</span>'; 
-									} 
+									else if ($mylist->status == 'unsubscribed')
+									{
+										echo ' - <span class="unsubscribed">Currently Unsubscribed</span>';
+									}
 								?>
 								<span class="desc">
 									<?php echo ($mylist->description) ? nl2br($mylist->description) : '(No description available.)'; ?>

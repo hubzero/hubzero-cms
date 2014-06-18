@@ -86,11 +86,11 @@ $this->css('resource.css')
 	<form action="index.php" method="post" id="hubForm">
 		<input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
 		<input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="pipeline" />
 		<input type="hidden" name="task" value="status" />
-		
+
 		<input type="hidden" name="msg" value="<?php echo JText::_('COM_TOOLS_NOTICE_RES_UPDATED'); ?>" />
 		<input type="hidden" name="step" value="6" />
 		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />

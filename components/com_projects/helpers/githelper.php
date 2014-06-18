@@ -34,53 +34,53 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Projects Git helper class
  */
-class ProjectsGitHelper extends JObject 
+class ProjectsGitHelper extends JObject
 {
 	/**
 	 * Git path
-	 * 
+	 *
 	 * @var syring
 	 */
 	private $_gitpath 		= NULL;
-	
+
 	/**
 	 * User ID
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_uid 			= NULL;
-	
+
 	/**
 	 * Prefix to project Git repo paths
-	 * 
+	 *
 	 * @var syring
 	 */
 	private $_prefix 		= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string 	$gitpath 	Path to git
 	 * @param      integer 	$userid 	User ID
 	 * @param      string 	$prefix 	Repo path prefix
 	 * @return     void
-	 */	
+	 */
 	public function __construct( $gitpath = NULL, $userid = 0, $prefix = NULL)
 	{
 		$this->_gitpath = $gitpath;
 		$this->_uid 	= $userid;
 		$this->_prefix 	= $prefix;
-		
+
 		if (!$userid)
 		{
 			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
-		}		
+		}
 	}
-		
+
 	/**
 	 * Get author for Git commits
-	 * 
+	 *
 	 * @param      string 	$name	Author name
 	 * @param      string 	$email 	Author email
 	 *
@@ -101,32 +101,32 @@ class ProjectsGitHelper extends JObject
 			$name    = $profile->get('name');
 			$email   = $profile->get('email');
 		}
-		
+
 		$author  = escapeshellarg($name . ' <' . $email . '> ');
-		
+
 		return $author;
 	}
-	
+
 	/**
 	 * Init Git repository
-	 * 
+	 *
 	 * @param      string	$path	Repo path
 	 *
 	 * @return     string
 	 */
-	public function iniGit( $path = '') 
-	{							
+	public function iniGit( $path = '')
+	{
 		if (!$path)
 		{
 			return false;
 		}
-		
+
 		// Build .git repo
 		$gitRepoBase = $this->_prefix . $path . DS . '.git';
-			
+
 		// Need to create .git repository if not yet there
-		if (!is_dir($gitRepoBase)) 
-		{	
+		if (!is_dir($gitRepoBase))
+		{
 			if (!is_dir($this->_prefix . $path))
 			{
 				return false;
@@ -134,47 +134,47 @@ class ProjectsGitHelper extends JObject
 			chdir($this->_prefix . $path);
 			exec($this->_gitpath . ' init 2>&1', $out);
 		}
-							
-		return true;			
+
+		return true;
 	}
-	
+
 	/**
 	 * Show text content
-	 * 
+	 *
 	 * @param      string  	$fpath		file name or commit hash
 	 *
 	 * @return     string
 	 */
 	public function showTextContent($fpath = '', $max = 10000)
-	{		
+	{
 		if (!$fpath)
 		{
 			return false;
 		}
-		
+
 		$content = '';
-		
-		// Get non-binary object content			
+
+		// Get non-binary object content
 		exec($this->_gitpath . ' show  HEAD:' . escapeshellarg($fpath) . ' 2>&1', $out);
-				
+
 		// Reformat text content
-		if (count($out) > 0) 
+		if (count($out) > 0)
 		{
 			// Cut number of lines
 			if (count($out) > $max)
 			{
 				$out = array_slice($out, 0, $max);
 			}
-			
-			$content = ProjectsGitHelper::filterASCII($out, false, false, $max);			
+
+			$content = ProjectsGitHelper::filterASCII($out, false, false, $max);
 		}
-		
+
 		return $content;
 	}
-	
+
 	/**
 	 * Diff revisions
-	 * 
+	 *
 	 * @param      string  	$path
 	 * @param      array  	$old
 	 * @param      array  	$new
@@ -182,21 +182,21 @@ class ProjectsGitHelper extends JObject
 	 * @return     string
 	 */
 	public function gitDiff ($path = '', $old = array(), $new = array())
-	{		
+	{
 		if (!$path || !isset($old['hash']) || !isset($new['hash']) || !isset($new['fpath']))
 		{
 			return false;
 		}
-		
+
 		$file = $new['fpath'] == $old['fpath'] ? ' -- ' . escapeshellarg($new['fpath']) : '';
-		
+
 		exec($this->_gitpath . ' diff --name-status ' . $old['hash'] . '^ ' .  ' 2>&1 ', $oCount  );
 		exec($this->_gitpath . ' diff --name-status ' . $new['hash'] . '^ ' .  ' 2>&1 ', $nCount  );
-		
+
 		// Get file content
 		if (count($oCount) <= 2 && count($nCount) <= 2)
 		{
-			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ' ' 
+			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ' '
 			. $new['hash'] . ' 2>&1 ', $out);
 		}
 		else
@@ -204,13 +204,13 @@ class ProjectsGitHelper extends JObject
 			exec($this->_gitpath . ' diff -M -C ' . $old['hash'] . ':' . $old['fpath'] . ' '
 			. $new['hash'] . ':' . $new['fpath'] . ' 2>&1 ', $out);
 		}
-				
+
 		return $out;
 	}
-		
+
 	/**
 	 * Get file content
-	 * 
+	 *
 	 * @param      string  	$file		file path
 	 * @param      string  	$hash		Git hash
 	 * @param      string  	$temppath	Output content to temp path
@@ -218,40 +218,40 @@ class ProjectsGitHelper extends JObject
 	 * @return     void
 	 */
 	public function getContent($file = '', $hash = '', $temppath = '')
-	{		
+	{
 		if (!$file || !$hash || !$temppath)
 		{
 			return false;
 		}
-		
+
 		// Get file content
-		exec($this->_gitpath . ' show  ' . $hash . ':' . escapeshellarg($file) 
+		exec($this->_gitpath . ' show  ' . $hash . ':' . escapeshellarg($file)
 			. ' > ' . escapeshellarg($temppath) . ' 2>&1 ', $out);
-			
+
 		return true;
 	}
-	
+
 	/**
 	 * Show logs in subdir
-	 * 
+	 *
 	 * @param      string	$path		repository path
 	 * @param      string  	$file		file path
 	 *
 	 * @return     string
 	 */
-	public function gitLogAll ($path = '', $subdir = '') 
+	public function gitLogAll ($path = '', $subdir = '')
 	{
 		chdir($this->_prefix . $path);
 		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H" --name-only ' . $subdir;
-		
+
 		// Exec command
 		exec($this->_gitpath . ' '. $exec . ' 2>&1', $out1);
-		
+
 		$collector = array();
 		$entry 	   = array();
-		
+
 		foreach ($out1 as $line)
-		{	
+		{
 			if (substr($line, 0, 3) == '>>>')
 			{
 				$line = str_replace('>>>', '', $line);
@@ -261,20 +261,20 @@ class ProjectsGitHelper extends JObject
 				$entry['date']  	= $data[0];
 				$entry['author'] 	= $data[1];
 				$entry['email'] 	= $data[2];
-				$entry['hash'] 		= $data[3];				
+				$entry['hash'] 		= $data[3];
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
 				$collector[$line] = $entry;
 			}
 		}
-				
+
 		return $collector;
 	}
-	
+
 	/**
 	 * Show commit log detail
-	 * 
+	 *
 	 * @param      string	$path		repository path
 	 * @param      string  	$file		file path
 	 * @param      string  	$hash		Git hash
@@ -282,13 +282,13 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function gitLog ($path = '', $file = '', $hash = '', $return = 'date') 
+	public function gitLog ($path = '', $file = '', $hash = '', $return = 'date')
 	{
 		chdir($this->_prefix . $path);
 		$what = '';
 
 		// Set exec command for retrieving different commit information
-		switch ( $return ) 
+		switch ( $return )
 		{
 			case 'combined':
 				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%s" --name-only ';
@@ -370,7 +370,7 @@ class ProjectsGitHelper extends JObject
 		}
 		if ($return == 'combined')
 		{
-			$arr  = explode("\t", $out[0]);			
+			$arr  = explode("\t", $out[0]);
 			$data = explode("||", $arr[0]);
 
 			$entry = array();
@@ -385,7 +385,7 @@ class ProjectsGitHelper extends JObject
 		if ($return == 'content' || $return == 'blob')
 		{
 			return $out;
-		}		
+		}
 		if ($return == 'date')
 		{
 			$arr = explode("\t", $out[0]);
@@ -403,7 +403,7 @@ class ProjectsGitHelper extends JObject
 		}
 		elseif ($return == 'rename')
 		{
-			if (count($out) > 0) 
+			if (count($out) > 0)
 			{
 				$names = array();
 				$hashes = array();
@@ -419,7 +419,7 @@ class ProjectsGitHelper extends JObject
 					{
 						$names[] = $o;
 					}
-					$k++;			
+					$k++;
 				}
 
 				return array_combine($hashes, $names);
@@ -430,38 +430,38 @@ class ProjectsGitHelper extends JObject
 			}
 		}
 		else
-		{	
+		{
 			$arr = explode("\t", $out[0]);
 			return $arr[0];
 		}
 	}
-	
+
 	/**
 	 * Make Git call
-	 * 
+	 *
 	 * @param      string	$path
-	 * @param      string	$call	
+	 * @param      string	$call
 	 *
 	 * @return     array to be parsed
 	 */
-	public function callGit ($path = '', $call = '') 
+	public function callGit ($path = '', $call = '')
 	{
 		$out = array();
-		
+
 		if (!$call)
 		{
 			return false;
 		}
-		
+
 		chdir($this->_prefix . $path);
 		exec($this->_gitpath . ' ' . $call . '  2>&1', $out);
-		
+
 		return $out;
 	}
-	
+
 	/**
 	 * Git commit
-	 * 
+	 *
 	 * @param      string	$path
 	 * @param      string	$commitMsg
 	 * @param      string	$author
@@ -469,7 +469,7 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     void
 	 */
-	public function gitCommit ($path = '', $commitMsg = '', $author = '', $date = '' ) 
+	public function gitCommit ($path = '', $commitMsg = '', $author = '', $date = '' )
 	{
 		// Get author profile
 		$author  = $author ? $author : $this->getGitAuthor();
@@ -478,38 +478,38 @@ class ProjectsGitHelper extends JObject
 		$date = $date ? ' --date="' . $date . '"' : '';
 		exec($this->_gitpath . ' commit -a -m "' . $commitMsg . '" --author="' . $author . '"' . $date . '  2>&1', $out);
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Add/update local repo item
-	 * 
+	 *
 	 * @param      string	$path
 	 * @param      string	$item		file path
 	 * @param      string	&$commitMsg
-	 * @param      boolean	$new		
+	 * @param      boolean	$new
 	 *
 	 * @return     void
 	 */
-	public function gitAdd ($path = '', $item = '', &$commitMsg = '', $new = true ) 
+	public function gitAdd ($path = '', $item = '', &$commitMsg = '', $new = true )
 	{
 		if (!$path || !$item)
 		{
 			return false;
 		}
-				
+
 		chdir($this->_prefix . $path);
 		exec($this->_gitpath . ' add ' . escapeshellarg($item) . ' 2>&1', $out);
-		
+
 		$commitMsg .= $new == true ? 'Added' : 'Updated';
 		$commitMsg .= ' file '.escapeshellarg($item) . "\n";
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Delete item from local repo
-	 * 
+	 *
 	 * @param      string	$path
 	 * @param      string	$item		file path
 	 * @param      string	$type		'file' or 'folder'
@@ -517,20 +517,20 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     array to be parsed
 	 */
-	public function gitDelete ($path = '', $item = '', $type = 'file', &$commitMsg = '' ) 
+	public function gitDelete ($path = '', $item = '', $type = 'file', &$commitMsg = '' )
 	{
 		if (!$path || !$item)
 		{
 			return false;
 		}
-		
+
 		$deleted = 0;
-		
+
 		chdir($this->_prefix . $path);
-		
+
 		if ($type == 'folder')
 		{
-			if ($item != '' && is_dir($this->_prefix . $path . DS . $item)) 
+			if ($item != '' && is_dir($this->_prefix . $path . DS . $item))
 			{
 				exec($this->_gitpath . ' rm -r ' . escapeshellarg($item) . ' 2>&1', $out);
 				$deleted++;
@@ -539,20 +539,20 @@ class ProjectsGitHelper extends JObject
 		}
 		elseif ($type == 'file')
 		{
-			if ($item != '' && file_exists($this->_prefix . $path . DS . $item)) 
+			if ($item != '' && file_exists($this->_prefix . $path . DS . $item))
 			{
 				exec($this->_gitpath . ' rm ' . escapeshellarg($item) . ' 2>&1', $out);
 				$deleted++;
 				$commitMsg .= 'Deleted file '.escapeshellarg($item) . "\n";
 			}
 		}
-		
+
 		return $deleted;
 	}
-	
+
 	/**
 	 * Move/rename item
-	 * 
+	 *
 	 * @param      string	$path		Repo path
 	 * @param      string	$from		From file path
 	 * @param      string	$where		To file path
@@ -561,23 +561,23 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     integer
 	 */
-	public function gitMove ($path = '', $from = '', $where = '', $type = 'file', &$commitMsg = '' ) 
+	public function gitMove ($path = '', $from = '', $where = '', $type = 'file', &$commitMsg = '' )
 	{
 		if (!$path || !$from || !$where)
 		{
 			return false;
 		}
-		
+
 		$moved = 0;
-		
+
 		chdir($this->_prefix . $path);
-		
+
 		if ($type == 'folder' && $from != '' && $from != $where  && is_dir($this->_prefix . $path . DS . $from))
 		{
 			exec($this->_gitpath . ' mv ' . escapeshellarg($from)
 				. ' ' . escapeshellarg($where) . ' -f 2>&1', $out);
 			$commitMsg .= 'Moved folder '.escapeshellarg($from) .' to ' . escapeshellarg($where) . "\n";
-			$moved++;	
+			$moved++;
 		}
 		elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->_prefix . $path . DS . $from))
 		{
@@ -586,61 +586,61 @@ class ProjectsGitHelper extends JObject
 			$commitMsg .= 'Moved file '.escapeshellarg($from) .' to ' . escapeshellarg($where) . "\n";
 			$moved++;
 		}
-		
+
 		return $moved;
 	}
-	
+
 	/**
 	 * Git checkout
-	 * 
+	 *
 	 * @param      string	$path
 	 * @param      string	$item
-	 * @param      string	$hash	
+	 * @param      string	$hash
 	 *
 	 * @return     boolean
 	 */
-	public function gitCheckout ($path = '', $item = '' , $hash = '') 
+	public function gitCheckout ($path = '', $item = '' , $hash = '')
 	{
 		if (!$path || !$item || !$hash)
 		{
 			return false;
 		}
-		
+
 		chdir($this->_prefix . $path);
 		exec($this->_gitpath . ' checkout ' . $hash . ' -- ' . escapeshellarg($item) . ' 2>&1', $out);
-					
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Ls files
-	 * 
+	 *
 	 * @param      string	$path			Repo path
 	 * @param      string	$subdir			Local directory path
 	 * @param      boolean	$showUntracked	Show/hide untracked files
 	 *
 	 * @return     array
 	 */
-	public function getFiles ($path = '', $subdir = '', $showUntracked = false) 
+	public function getFiles ($path = '', $subdir = '', $showUntracked = false)
 	{
-		$call = $showUntracked 
+		$call = $showUntracked
 			? ' ls-files --others --exclude-standard ' . escapeshellarg($subdir)
 			: ' ls-files --exclude-standard ' . escapeshellarg($subdir);
-		
+
 		// Get Git status
 		$out = $this->callGit($path, $call );
-				
+
 		return $out && substr($out[0], 0, 5) == 'fatal' ? array() : $out;
 	}
-	
+
 	/**
 	 * List deleted files
-	 * 
-	 * @param      string	$path	
+	 *
+	 * @param      string	$path
 	 *
 	 * @return     array to be parsed
 	 */
-	public function listDeleted ($path = '') 
+	public function listDeleted ($path = '')
 	{
 		$out = array();
 
@@ -658,7 +658,7 @@ class ProjectsGitHelper extends JObject
 
 		$collector = array();
 		foreach ($out as $line)
-		{	
+		{
 			if (substr($line, 0, 3) == '>>>')
 			{
 				$line = str_replace('>>>', '', $line);
@@ -667,9 +667,9 @@ class ProjectsGitHelper extends JObject
 				$entry = array();
 				$entry['date']  	= $data[0];
 				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];	
-				$entry['hash'] 		= $data[3];	
-				$entry['message']	= $data[4];			
+				$entry['email'] 	= $data[2];
+				$entry['hash'] 		= $data[3];
+				$entry['message']	= $data[4];
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
@@ -697,7 +697,7 @@ class ProjectsGitHelper extends JObject
 			}
 
 			// File renamed/moved - skip
-			if (strstr(strtolower($gitData['message']), 'moved file ') 
+			if (strstr(strtolower($gitData['message']), 'moved file ')
 				|| strstr(strtolower($gitData['message']), 'moved folder '))
 			{
 				continue;
@@ -714,49 +714,49 @@ class ProjectsGitHelper extends JObject
 
 		return $files;
 	}
-				
+
 	/**
 	 * Get changes for sync
-	 * 
+	 *
 	 * @param      string	$path		Repo path
 	 *
 	 * @return     array
 	 */
-	public function getChanges ($path = '', $localPath = '', $synced = '', 
-		$localDir = '', &$localRenames, $connections) 
+	public function getChanges ($path = '', $localPath = '', $synced = '',
+		$localDir = '', &$localRenames, $connections)
 	{
 		// Collector array
 		$locals = array();
-		
-		// MIME types		
+
+		// MIME types
 		$mt = new \Hubzero\Content\Mimetypes();
-		
+
 		// Initial sync
 		if ($synced == 1)
 		{
 			$files = $this->callGit( $path, 'ls-files --full-name ' . escapeshellarg($localDir));
 			$files = $files && substr($files[0], 0, 5) == 'fatal' ? array() : $files;
-			
+
 			if (empty($files))
 			{
 				return $locals;
 			}
-			
+
 			foreach ($files as $filename)
 			{
 				$type = 'file';
-								
+
 				// We are only interested in last local change on the file
 				if (!isset($locals[$filename]))
-				{	
+				{
 					$time = strtotime(date('c', time() )); // Important! needs to be local time, NOT UTC
-					
-					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
+
+					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
 					$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);
-					
+
 					$locals[$filename] = array(
-						'status' 		=> 'A', 
-						'time' 			=> $time, 
+						'status' 		=> 'A',
+						'time' 			=> $time,
 						'type' 			=> $type,
 						'remoteid' 		=> 0,
 						'converted' 	=> 0,
@@ -764,7 +764,7 @@ class ProjectsGitHelper extends JObject
 						'local_path'	=> $filename,
 						'title'			=> basename($filename),
 						'author'		=> NULL,
-						'modified'		=> gmdate('Y-m-d H:i:s', $time), 
+						'modified'		=> gmdate('Y-m-d H:i:s', $time),
 						'synced'		=> NULL,
 						'fullPath' 		=> $localPath . DS . $filename,
 						'mimeType'		=> $mimeType,
@@ -772,32 +772,32 @@ class ProjectsGitHelper extends JObject
 						'rename'		=> NULL
 					);
 				}
-			}			
+			}
 		}
 		// Repeat sync
 		else
 		{
-			// Collect 
+			// Collect
 			$since 			= $synced != 1 ? ' --since="' . $synced . '"' : '';
 			$where 			= $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
 			$changes 		= $this->callGit( $path, 'rev-list ' . $where . $since);
-			
+
 			// Empty repo or no changes?
 			if (empty($changes) || trim(substr($changes[0], 0, 5)) == 'usage')
 			{
 				$changes = array();
 			}
-			
+
 			// Parse Git file list to find which items changed since last sync
-			if (count($changes) > 0) 
+			if (count($changes) > 0)
 			{
 				$timestamps = array();
 
 				// Get files involved in each commit
-				foreach ($changes as $hash) 
-				{															
+				foreach ($changes as $hash)
+				{
 					// Get time and author of commit
-					$time   = $this->gitLog($path, '', $hash, 'timestamp');			
+					$time   = $this->gitLog($path, '', $hash, 'timestamp');
 					$author = $this->gitLog($path, '', $hash, 'author');
 
 					// Get filename and change
@@ -816,7 +816,7 @@ class ProjectsGitHelper extends JObject
 					}
 
 					// Go through files
-					foreach ($fileinfo as $line) 
+					foreach ($fileinfo as $line)
 					{
 						$n = substr($line, 0, 1);
 
@@ -825,13 +825,13 @@ class ProjectsGitHelper extends JObject
 							// First file in repository
 							$finfo = $this->callGit( $path, 'log --pretty=oneline --name-status ' . $hash );
 							$status = 'A';
-							$filename = trim(substr($finfo[1], 1));	
+							$filename = trim(substr($finfo[1], 1));
 							break;
 						}
 						else
 						{
 							$status = $n;
-							$filename = trim(substr($line, 1));	
+							$filename = trim(substr($line, 1));
 						}
 
 						$type = 'file';
@@ -847,7 +847,7 @@ class ProjectsGitHelper extends JObject
 							$rename = $this->getRename($path, $filename, $hash, $since);
 
 							if ($rename && $status == 'A')
-							{			
+							{
 								// Rename or move?
 								if (basename($rename) == basename($filename))
 								{
@@ -858,13 +858,13 @@ class ProjectsGitHelper extends JObject
 									$status = 'R';
 								}
 
-								$localRenames[$filename] = $rename;						
+								$localRenames[$filename] = $rename;
 							}
 						}
 
 						// Hidden file in local directory - treat as directory
 						if (preg_match("/.gitignore/", $filename))
-						{ 
+						{
 							$filename = dirname($filename);
 
 							// Skip home directory
@@ -889,27 +889,27 @@ class ProjectsGitHelper extends JObject
 							$found 	= isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
 						}
 
-						$remoteid 	= $found ? $found['remote_id'] : NULL;					
+						$remoteid 	= $found ? $found['remote_id'] : NULL;
 						$converted 	= $found ? $found['converted']: 0;
 						$rParent	= $found ? $found['rParent'] : NULL;
 						$syncT		= $found ? $found['synced'] : NULL;
 
-						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename) 
+						$md5Checksum = $type == 'file' && file_exists($localPath . DS . $filename)
 							? hash_file('md5', $localPath . DS . $filename) : NULL;
 
 						$mimeType = NULL;
 						if ($type == 'file')
 						{
-							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));	
-							$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);							
+							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
+							$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);
 						}
 
 						// We are only interested in last local change on the file
 						if (!isset($locals[$lFilename]))
-						{	
+						{
 							$locals[$lFilename] = array(
-								'status' 		=> $status, 
-								'time' 			=> $time, 
+								'status' 		=> $status,
+								'time' 			=> $time,
 								'type' 			=> $type,
 								'remoteid' 		=> $remoteid,
 								'converted' 	=> $converted,
@@ -927,111 +927,111 @@ class ProjectsGitHelper extends JObject
 
 							$timestamps[] = $time;
 						}
-					}			
+					}
 				}
 
-				// Sort by time, most recent first	
+				// Sort by time, most recent first
 				array_multisort($timestamps, SORT_DESC, $locals);
 			}
-			
+
 		}
-								
-		return $locals;		
+
+		return $locals;
 	}
-	
+
 	/**
 	 * Run Git status
-	 * 
+	 *
 	 * @param      string	$path
-	 * @param      string	$status	
+	 * @param      string	$status
 	 *
 	 * @return     string
 	 */
-	public function gitStatus ($path = '', $status = '') 
+	public function gitStatus ($path = '', $status = '')
 	{
 		chdir($this->_prefix . $path);
-		
-		// Clean up 
+
+		// Clean up
 		exec('rm .DS_Store 2>&1', $out9);
-		
+
 		// Get Git status
 		$out = $this->callGit($path, 'status');
-		
-		if (count($out) > 0 && $out[0] != '') 
+
+		if (count($out) > 0 && $out[0] != '')
 		{
-			foreach ($out as $line) 
+			foreach ($out as $line)
 			{
 				$status.=  '<br />' . $line;
 			}
 		}
-				
+
 		return $status;
 	}
-	
+
 	/**
 	 * Make Git recognize empty folder
-	 * 
+	 *
 	 * @param      string	$path
-	 * @param      string	$dir		
+	 * @param      string	$dir
 	 *
 	 * @return     array to be parsed
 	 */
-	public function makeEmptyFolder ($path = '', $dir = '' ) 
+	public function makeEmptyFolder ($path = '', $dir = '' )
 	{
 		chdir($this->_prefix . $path);
-		
-		// Clean up 
+
+		// Clean up
 		exec('rm .DS_Store 2>&1', $out9);
-		
+
 		// Create an empty file
 		exec('touch ' . escapeshellarg($dir) . '/.gitignore ' . ' 2>&1', $out);
 
 		// Git add
 		exec($this->_gitpath . ' add ' . escapeshellarg($dir) . ' 2>&1', $out);
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Get local file history
-	 * 
+	 *
 	 * @param      string	$path
-	 * @param      string	$file		
-	 * @param      string	$rev	
-	 * @param      string	$since	
+	 * @param      string	$file
+	 * @param      string	$rev
+	 * @param      string	$since
 	 *
 	 * @return     array of hashes
 	 */
 	public function getLocalFileHistory($path, $file = '', $rev = '', $since = '')
-	{		
+	{
 		chdir($this->_prefix . $path);
-				
+
 		// Get local file history
-		exec($this->_gitpath . ' log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' ' 
+		exec($this->_gitpath . ' log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' '
 			. escapeshellarg($file) . '  2>&1', $out);
-		
+
 		$hashes = array();
-		
+
 		// Get all commit hashes
-		if (count($out) > 0 && $out[0] != '') 
+		if (count($out) > 0 && $out[0] != '')
 		{
 			$r = 0;
-			foreach ($out as $line) 
+			foreach ($out as $line)
 			{
-				if (preg_match("/[a-zA-Z0-9]/", $line) && strlen($line) == 40) 
+				if (preg_match("/[a-zA-Z0-9]/", $line) && strlen($line) == 40)
 				{
 					$hashes[]  = $line;
 				}
 				$r++;
 			}
 		}
-		
+
 		return $hashes;
 	}
-	
+
 	/**
 	 * Get details on file history
-	 * 	
+	 *
 	 * @param      string	$local_path			file path
 	 * @param      string	$path				Repo path
 	 * @param      array 	&$versions			Versions collector array
@@ -1040,7 +1040,7 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     array of version info
 	 */
-	public function sortLocalRevisions($local_path = '', $path, 
+	public function sortLocalRevisions($local_path = '', $path,
 		&$versions = array(), &$timestamps = array(), $original = 0 )
 	{
 		// Get local file history
@@ -1050,7 +1050,7 @@ class ProjectsGitHelper extends JObject
 		$binary = $this->isBinary($this->_prefix . $path . DS . $local_path);
 
 		// Get info for each commit
-		if (!empty($hashes)) 
+		if (!empty($hashes))
 		{
 			$h = 1;
 
@@ -1059,8 +1059,8 @@ class ProjectsGitHelper extends JObject
 			$currentName	= $local_path;
 			$rename			= 0;
 
-			foreach ($hashes as $hash) 
-			{										
+			foreach ($hashes as $hash)
+			{
 				$order 	= $h == 1 ? 'first' : '';
 				$order 	= $h == count($hashes) ? 'last' : $order;
 
@@ -1077,7 +1077,7 @@ class ProjectsGitHelper extends JObject
 					$currentName = $name;
 				}
 
-				$gitData 	= $this->gitLog($path, $name, $hash, 'combined');				
+				$gitData 	= $this->gitLog($path, $name, $hash, 'combined');
 				$date		= isset($gitData['date']) ? $gitData['date'] : NULL;
 				$author 	= isset($gitData['author']) ? $gitData['author'] : NULL;
 				$email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
@@ -1117,7 +1117,7 @@ class ProjectsGitHelper extends JObject
 				if (in_array($revision['commitStatus'], array('A', 'M', 'R')) && $content)
 				{
 					$revision['content'] = $this->filterASCII($content, false, false, 10000);
-				}				
+				}
 
 				$versions[] 	= $revision;
 				$timestamps[]	= strtotime($date);
@@ -1125,26 +1125,26 @@ class ProjectsGitHelper extends JObject
 			}
 		}
 	}
-	
+
 	/**
 	 * Check if file is binary
-	 * 
+	 *
 	 * @param      string	$file
 	 *
 	 * @return     integer
 	 */
-	public function isBinary($file) 
-	{ 
-		// MIME types		
+	public function isBinary($file)
+	{
+		// MIME types
 		$mt = new \Hubzero\Content\Mimetypes();
 		$mime = $mt->getMimeType( $file );
 
 		return substr($mime, 0, 4) == 'text' ? false : true;
 	}
-	
+
 	/**
 	 * Filter ASCII
-	 * 
+	 *
 	 * @param      array	$out
 	 * @param      boolean	$diff	Format as diff?
 	 * @param      boolean	$color	Color changes?
@@ -1152,27 +1152,27 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function filterASCII($out = array(), $diff = false, $color = false, $max = 200) 
-	{		
+	public function filterASCII($out = array(), $diff = false, $color = false, $max = 200)
+	{
 		$text = '';
 		$o = 1;
 		$found = 0;
-		
+
 		// Cut number of lines
 		if (count($out) > $max)
 		{
 			$out = array_slice($out, 0, $max);
 		}
-		
-		foreach ($out as $line) 
-		{			
+
+		foreach ($out as $line)
+		{
 			$encoding = mb_detect_encoding($line);
-			
-			if ($encoding != "ASCII") 
+
+			if ($encoding != "ASCII")
 			{
 				break;
 			}
-			else 
+			else
 			{
 				if ($diff)
 				{
@@ -1181,12 +1181,12 @@ class ProjectsGitHelper extends JObject
 						$found = 1;
 						continue;
 					}
-					
+
 					if ($found == 0)
 					{
 						continue;
 					}
-					
+
 					if ($color)
 					{
 						if (substr($line, 0, 1) == '+')
@@ -1204,7 +1204,7 @@ class ProjectsGitHelper extends JObject
 					{
 						$line = htmlentities($line);
 					}
-					
+
 					$line = trim($line, '+');
 					$line = trim($line, '-');
 				}
@@ -1212,70 +1212,70 @@ class ProjectsGitHelper extends JObject
 				{
 					$line = htmlentities($line);
 				}
-				
+
 				$text.=  $line != '' ? $line . "\n" : "\n";
 			}
-			
+
 			$o++;
 		}
 
 		$text = preg_replace("/\\\ No newline at end of file/", "", $text);
-				
+
 		return trim($text);
 	}
-	
+
 	/**
 	 * Determine if last change was a rename
-	 * 
+	 *
 	 * @param      string	$path		repo path
 	 * @param      string	$file		file path
 	 * @param      string	$hash		Git hash
-	 * @param      string	$since		
+	 * @param      string	$since
 	 *
 	 * @return     array to be parsed
 	 */
-	public function getRename ($path = '', $file = '', $hash = '', $since = '' ) 
+	public function getRename ($path = '', $file = '', $hash = '', $since = '' )
 	{
 		$renames = $this->gitLog($path, $file, '', 'rename');
 		$rename = '';
-		
+
 		$hashes = $this->getLocalFileHistory($path, $file);
 		$new	= $this->getLocalFileHistory($path, $file, '', $since);
 		$fetch  = 1;
-		
+
 		if (count($renames) > 0)
 		{
 			foreach ($hashes as $h)
-			{				
+			{
 				// get commit message
 				if ($since && in_array($h, $new))
 				{
 					$message = $this->gitLog($path, $file, $h, 'message');
-					
+
 					if (!preg_match("/Moved/", $message))
 					{
 						$fetch = 0;
 					}
-				}			
-				
+				}
+
 				$abbr = substr($h, 0, 7);
-				
+
 				if (isset($renames[$abbr]) && $renames[$abbr] != $file)
 				{
 					$rename = $renames[$abbr];
-					
+
 					// Hidden file in local directory - treat as directory
 					if (preg_match("/.gitignore/", $rename))
-					{ 
+					{
 						$rename = dirname($rename);
-						
+
 						// Skip home directory
 						if ($rename == '.')
 						{
 							continue;
 						}
 					}
-					
+
 					return $fetch == 1 ? $rename : NULL;
 				}
 			}
@@ -1285,39 +1285,39 @@ class ProjectsGitHelper extends JObject
 			return NULL;
 		}
 	}
-	
+
 	/**
 	 * Get status for each file revision
 	 *
-	 * @param      array	$versions	Array of file version data 
+	 * @param      array	$versions	Array of file version data
 	 * @return     array
-	 */	
+	 */
 	public function getVersionStatus( $versions = array())
 	{
 		if (count($versions) == 0)
 		{
 			return $versions;
 		}
-						
+
 		// Go through versions in reverse (from oldest to newest)
-		for ($k = (count($versions) - 1); $k >= 0; $k--) 
-		{			
+		for ($k = (count($versions) - 1); $k >= 0; $k--)
+		{
 			$current 	= $versions[$k];
 			$previous 	= ($k - 1) >= 0 ? $versions[$k - 1] : NULL;
 			$next 		= ($k + 1) <= (count($versions) - 1) ? $versions[$k + 1] : NULL;
-			
+
 			// Deleted?
 			if ($current['commitStatus'] == 'D')
 			{
 				$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_DELETED');
 			}
-			
+
 			// First sdded?
 			if ($current['commitStatus'] == 'A' && $k == (count($versions) - 1))
 			{
 				$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_ADDED');
 			}
-								
+
 			// Modified?
 			if ($current['commitStatus'] == 'M')
 			{
@@ -1328,9 +1328,9 @@ class ProjectsGitHelper extends JObject
 					$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_MODIFIED');
 				}
 			}
-			
+
 			// Check renames
-			if ($versions[$k]['rename'] == 1 
+			if ($versions[$k]['rename'] == 1
 				&& $previous && $previous['commitStatus'] == 'A'
 			)
 			{
@@ -1344,28 +1344,28 @@ class ProjectsGitHelper extends JObject
 				}
 				$versions[$k - 1]['commitStatus'] = 'R';
 			}
-			
+
 			if (preg_match("/\bRenamed\b/", $current['message']) && $current['commitStatus'] == 'A')
 			{
 				$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_RENAMED');
 				$current['commitStatus'] = 'R';
 			}
-						
+
 			// Check restored after deletion
-			if ($versions[$k]['commitStatus'] == 'D' 
+			if ($versions[$k]['commitStatus'] == 'D'
 				&& ($k - 1) >= 0 && $versions[$k - 1]['commitStatus'] == 'A'
 				&& $versions[$k]['local'] && $versions[$k - 1]['local']
 			)
 			{
 				$versions[$k - 1]['change'] = JText::_('COM_PROJECTS_FILE_STATUS_RESTORED');
 			}
-						
+
 			if (preg_match("/" . JText::_('COM_PROJECTS_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next)
 			{
 				$versions[$k + 1]['change']  = JText::_('COM_PROJECTS_FILE_STATUS_SENT_REMOTE');
 				$versions[$k + 1]['movedTo'] = 'remote';
 				$versions[$k + 1]['author']	 = $current['author'];
-				$current['hide'] = 1;			
+				$current['hide'] = 1;
 			}
 			if (preg_match("/" . JText::_('COM_PROJECTS_FILES_SHARE_IMPORTED') . "/", $current['message']))
 			{
@@ -1376,10 +1376,10 @@ class ProjectsGitHelper extends JObject
 			{
 				$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_MODIFIED');
 			}
-			
-			$versions[$k] = $current;			
+
+			$versions[$k] = $current;
 		}
-		
-		return $versions;		
-	}	
+
+		return $versions;
+	}
 }

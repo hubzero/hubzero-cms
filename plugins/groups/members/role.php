@@ -38,35 +38,35 @@ class GroupsMembersRole extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name = NULL;
-	
+
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $permissions  = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,33 +77,33 @@ class GroupsMembersRole extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		// make sure we have group id
-		if (trim($this->gidNumber) == '') 
+		if (trim($this->gidNumber) == '')
 		{
 			$this->setError(JText::_('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
-		
+
 		// make sure we ahve role name
-		if (trim($this->name) == '') 
+		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('PLG_GROUPS_MEMBERS_ROLE_MUST_HAVE_ROLE_NAME'));
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public function getPermissions()
 	{
 		return $this->permissions;
 	}
-	
+
 	public function hasPermission($permission = '')
 	{
 		// get role permissions & json decode
@@ -113,6 +113,6 @@ class GroupsMembersRole extends JTable
 		{
 			return $permissions->$permission;
 		}
-		return null;	
+		return null;
 	}
 }

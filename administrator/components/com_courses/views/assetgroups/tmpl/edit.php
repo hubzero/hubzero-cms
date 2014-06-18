@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Asset group'), 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -47,15 +47,15 @@ jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('field-alias').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -138,7 +138,7 @@ window.addEvent("domready", function() {
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
@@ -188,7 +188,7 @@ window.addEvent("domready", function() {
 					}
 					$out = $param->render('params', 'onAssetgroupEdit');
 
-					if (!$out) 
+					if (!$out)
 					{
 						continue;
 					}

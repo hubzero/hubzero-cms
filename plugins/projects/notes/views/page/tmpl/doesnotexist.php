@@ -40,7 +40,7 @@ $scope   = JRequest::getVar('scope', '');
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));

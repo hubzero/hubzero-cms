@@ -49,7 +49,7 @@ $this->css();
 </header>
 
 <?php
-	foreach ($this->notifications as $notification) 
+	foreach ($this->notifications as $notification)
 	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
@@ -139,7 +139,7 @@ $this->css();
 							echo 'Search for "'.$this->filters['search'].'" in ';
 						}
 						?>
-						<?php echo JText::_('Groups'); ?> 
+						<?php echo JText::_('Groups'); ?>
 						<?php if ($this->filters['index']) { ?>
 							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
@@ -169,10 +169,10 @@ $this->css();
 							$applicants = $g->get('applicants');
 							$members = $g->get('members');
 							$managers = $g->get('managers');
-							
+
 							//get status
 							$status = '';
-							
+
 							//determine group status
 							if($g->get('published') && in_array($this->juser->get('id'), $managers))
 							{
@@ -234,8 +234,8 @@ $this->css();
 								?></span>
 							</td>
 						</tr>
-					<?php 
-						} // for loop 
+					<?php
+						} // for loop
 					} else {
 					?>
 						<tr>
@@ -264,7 +264,7 @@ $this->css();
 				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_TWO'); ?></p>
 				<p><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_ONE_DEATAILS_THREE'); ?></p>
 			</div><!-- / .container -->
-			
+
 			<div class="container">
 				<h3><?php echo JText::_('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
 				<p><?php echo JText::sprintf('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', JRoute::_('index.php?option=com_members')); ?></p>

@@ -17,7 +17,7 @@ class Migration20131113143500ComSupport extends Base
 	{
 		if ($this->db->tableExists('#__support_acl_acos'))
 		{
-			$query = "ALTER TABLE `#__support_acl_acos` 
+			$query = "ALTER TABLE `#__support_acl_acos`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `model` `model` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `foreign_key` `foreign_key` INT(11)  NOT NULL  DEFAULT '0'
@@ -28,7 +28,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_acl_aros'))
 		{
-			$query = "ALTER TABLE `#__support_acl_aros` 
+			$query = "ALTER TABLE `#__support_acl_aros`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `foreign_key` `foreign_key` INT(11)  NOT NULL  DEFAULT '0',
 					CHANGE `alias` `alias` VARCHAR(255)  NOT NULL  DEFAULT '',
@@ -47,7 +47,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_acl_aros_acos'))
 		{
-			$query = "ALTER TABLE `#__support_acl_aros_acos` 
+			$query = "ALTER TABLE `#__support_acl_aros_acos`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `aro_id` `aro_id` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `aco_id` `aco_id` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
@@ -76,7 +76,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_attachments'))
 		{
-			$query = "ALTER TABLE `#__support_attachments` 
+			$query = "ALTER TABLE `#__support_attachments`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `ticket` `ticket` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `filename` `filename` VARCHAR(255)  DEFAULT '',
@@ -95,7 +95,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_comments'))
 		{
-			$query = "ALTER TABLE `#__support_comments` 
+			$query = "ALTER TABLE `#__support_comments`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `ticket` `ticket` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `created_by` `created_by` VARCHAR(50)  NOT NULL  DEFAULT '',
@@ -122,7 +122,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_messages'))
 		{
-			$query = "ALTER TABLE `#__support_messages` 
+			$query = "ALTER TABLE `#__support_messages`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `title` `title` VARCHAR(250)  NOT NULL  DEFAULT '',
 					CHANGE `message` `message` TEXT  NOT NULL
@@ -133,7 +133,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_queries'))
 		{
-			$query = "ALTER TABLE `#__support_queries` 
+			$query = "ALTER TABLE `#__support_queries`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `title` `title` VARCHAR(250)  NOT NULL  DEFAULT '',
 					CHANGE `conditions` `conditions` TEXT  NOT NULL,
@@ -162,7 +162,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_resolutions'))
 		{
-			$query = "ALTER TABLE `#__support_resolutions` 
+			$query = "ALTER TABLE `#__support_resolutions`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `title` `title` VARCHAR(100)  NOT NULL  DEFAULT '',
 					CHANGE `alias` `alias` VARCHAR(100)  NOT NULL  DEFAULT ''
@@ -173,7 +173,7 @@ class Migration20131113143500ComSupport extends Base
 
 		if ($this->db->tableExists('#__support_tickets'))
 		{
-			$query = "ALTER TABLE `#__support_tickets` 
+			$query = "ALTER TABLE `#__support_tickets`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT
 			;";
 			$this->db->setQuery($query);

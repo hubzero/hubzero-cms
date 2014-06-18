@@ -37,77 +37,77 @@ Class CoursesTablePage extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $course_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $section_id = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $url = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $active = NULL;
 
 	/**
 	 * varchar(10)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $privacy = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -118,19 +118,19 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Missing title'));
 			return false;
 		}
 
-		if (!$this->content) 
+		if (!$this->content)
 		{
 			$this->setError(JText::_('Missing content'));
 			return false;
@@ -148,11 +148,11 @@ Class CoursesTablePage extends JTable
 
 		if (!$this->id)
 		{
-			$sql = "SELECT id FROM $this->_tbl 
-					WHERE course_id=" . $this->_db->Quote($this->course_id) . " 
-					AND offering_id=" . $this->_db->Quote($this->offering_id) . " 
-					AND section_id=" . $this->_db->Quote($this->section_id) . " 
-					AND url=" . $this->_db->Quote($this->url) . " 
+			$sql = "SELECT id FROM $this->_tbl
+					WHERE course_id=" . $this->_db->Quote($this->course_id) . "
+					AND offering_id=" . $this->_db->Quote($this->offering_id) . "
+					AND section_id=" . $this->_db->Quote($this->section_id) . "
+					AND url=" . $this->_db->Quote($this->url) . "
 					LIMIT 1";
 			$this->_db->setQuery($sql);
 			if ($this->_db->loadResult())
@@ -171,7 +171,7 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -248,7 +248,7 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -263,7 +263,7 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Get pages for a course
-	 * 
+	 *
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @param      boolean $active Parameter description (if any) ...
 	 * @return     array
@@ -272,17 +272,17 @@ Class CoursesTablePage extends JTable
 	{
 		$sql = "SELECT r.*" . $this->_buildquery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'ordering';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$sql .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			if (!isset($filters['start']))
 			{
@@ -297,7 +297,7 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Get the last page in the ordering
-	 * 
+	 *
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
@@ -310,7 +310,7 @@ Class CoursesTablePage extends JTable
 
 	/**
 	 * Record a page hit
-	 * 
+	 *
 	 * @param      integer $pid Page ID
 	 * @return     void
 	 */

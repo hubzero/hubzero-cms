@@ -33,9 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="overlay"></div>
 <div id="questions">
-	<p>Thank you! 
+	<p>Thank you!
 	<?php if ($award): ?>
-		You have been awarded <strong><?php echo $award; ?></strong> for your participation. 
+		You have been awarded <strong><?php echo $award; ?></strong> for your participation.
 	<?php endif; ?>
 	 You will be directed back where you were in a few seconds.</p>
 	<a href="<?php echo JRequest::getVar('REQUEST_URI', JRequest::getVar('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>">Click here if you are not redirected</a>

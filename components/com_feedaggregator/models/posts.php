@@ -44,7 +44,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	protected $_tbl_name = 'FeedAggregatorTablePosts';
-	
+
 	/**
 	 * Get all posts with respect to the limit of posts per page
 	 *
@@ -56,7 +56,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	{
 		return $this->_tbl->getAllPosts($limit, $offset);
 	}
-		
+
 	/**
 	 * Get a single post by its ID
 	 *
@@ -67,9 +67,9 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	 */
 	public function loadPostById($id = NULL)
 	{
-		return $this->_tbl->getPostById($id);	
+		return $this->_tbl->getPostById($id);
 	}
-	
+
 	/**
 	 * Update the status of a single post
 	 *
@@ -81,7 +81,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	{
 		return $this->_tbl->updateStatus($id, $status);
 	}
-	
+
 	/**
 	 * Get all posts with respect to the limit of posts per page AND status category
 	 *
@@ -94,7 +94,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	{
 		return $this->_tbl->getPostsByStatus($limit, $offset, $status);
 	}
-	
+
 	/**
 	 * Get posts with the specified feed id
 	 *
@@ -105,7 +105,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	{
 		return $this->_tbl->getPostsbyFeedId($id);
 	}
-	
+
 	/**
 	 * Returns an array of post URLs
 	 *
@@ -115,7 +115,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	{
 		return $this->_tbl->getURLs();
 	}
-	
+
 	/**
 	 *  Counts the number of posts in a specified category.
 	 * @param      integer $status of category

@@ -38,21 +38,21 @@ class Order extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid    			= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $total      		= NULL;
@@ -68,42 +68,42 @@ class Order extends JTable
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $details  			= NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $email    			= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ordered  			= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $status_changed  	= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $notes  			= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -114,18 +114,18 @@ class Order extends JTable
 
 	/**
 	 * Get the ID of an order for a user from a certain date
-	 * 
+	 *
 	 * @param      integer $uid     User ID
 	 * @param      string  $ordered Timestamp
 	 * @return     mixed
 	 */
 	public function getOrderID($uid, $ordered)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
-		if ($ordered == null) 
+		if ($ordered == null)
 		{
 			return false;
 		}
@@ -137,7 +137,7 @@ class Order extends JTable
 
 	/**
 	 * Get all orders
-	 * 
+	 *
 	 * @param      string  $rtrn    Data return type (record count or array of records)
 	 * @param      array   $filters Filters to build query from
 	 * @return     mixed
@@ -164,25 +164,25 @@ class Order extends JTable
 		// build count query (select only ID)
 		$query_count  = "SELECT count(*) FROM $this->_tbl AS m WHERE " . $where;
 
-		$query_fetch = "SELECT m.id, m.uid, m.total, m.status, m.ordered, m.status_changed,  
+		$query_fetch = "SELECT m.id, m.uid, m.total, m.status, m.ordered, m.status_changed,
 				(SELECT count(*) FROM #__order_items AS r WHERE r.oid=m.id) AS items"
 			. "\n FROM $this->_tbl AS m"
 			. "\n WHERE " . $where
 			. "\n ORDER BY " . $filters['sortby'];
 
-		if ($filters['limit'] && $filters['start']) 
+		if ($filters['limit'] && $filters['start'])
 		{
 			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
 		$result = NULL;
-		if ($rtrn == 'count') 
+		if ($rtrn == 'count')
 		{
 			$this->_db->setQuery($query_count);
 			$results = $this->_db->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			$this->_db->setQuery($query_fetch);
 			$result = $this->_db->loadObjectList();

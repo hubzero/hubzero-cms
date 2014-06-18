@@ -111,7 +111,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			
+
 			$list = $this->view->course->pages(array('active' => array(0, 1)));
 		}
 
@@ -276,7 +276,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more types
-	 * 
+	 *
 	 * @return     void Redirects back to main listing
 	 */
 	public function removeTask()
@@ -347,7 +347,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Build file path
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function _buildUploadPath($listdir=0)
@@ -366,7 +366,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxUploadTask()
@@ -375,7 +375,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -383,7 +383,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getVar('listdir', 0);
-		/*if (!$listdir) 
+		/*if (!$listdir)
 		{
 			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
 			return;
@@ -421,10 +421,10 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		}
 
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
 				return;
@@ -438,12 +438,12 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array('error' => JText::_('File is empty')));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
@@ -461,7 +461,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
@@ -489,7 +489,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'id'        => $listdir
@@ -498,7 +498,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Upload a file or create a new folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -551,8 +551,8 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 				}
 			}
 			// Directory created
-		} 
-		else 
+		}
+		else
 		{
 			// Make sure the upload path exist
 			if (!is_dir($path))
@@ -600,7 +600,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a folder and contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefolderTask()
@@ -656,7 +656,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Deletes a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefileTask()
@@ -709,7 +709,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display an upload form and file listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function filesTask()
@@ -774,7 +774,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Lists all files and folders for a given directory
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listTask()
@@ -848,7 +848,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Scans directory and builds multi-dimensional array of all files and sub-directories
-	 * 
+	 *
 	 * @param      string $base Directory to scan
 	 * @return     array
 	 */
@@ -876,7 +876,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderupTask()
@@ -886,7 +886,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderdownTask()
@@ -896,7 +896,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reorder a plugin
-	 * 
+	 *
 	 * @param      integer $access Access level to set
 	 * @return     void
 	 */
@@ -953,7 +953,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}

@@ -33,17 +33,17 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Offerings'), 'courses.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 	JToolBarHelper::spacer();
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('delete', 'delete');
 }
@@ -53,7 +53,7 @@ JToolBarHelper::help('offerings');
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="10">
-					(<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>) 
+					(<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>)
 					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 				</th>
 			</tr>
@@ -118,7 +118,7 @@ foreach ($this->rows as $row)
 	}
 
 	$students = $row->members(array(
-					'count' => true, 
+					'count' => true,
 					'student' => 1,
 					'section_id' => $sids
 				));

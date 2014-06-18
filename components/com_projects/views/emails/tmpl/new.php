@@ -37,13 +37,13 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $juri = JURI::getInstance();
 
 $sef = JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias);
-if (substr($sef,0,1) == '/') 
+if (substr($sef,0,1) == '/')
 {
 	$sef = substr($sef,1,strlen($sef));
 }
 
 $sef_browse = JRoute::_('index.php?option=' . $this->option . a . 'task=browse');
-if (substr($sef_browse,0,1) == '/') 
+if (substr($sef_browse,0,1) == '/')
 {
 	$sef_browse = substr($sef_browse,1,strlen($sef_browse));
 }
@@ -52,11 +52,11 @@ $message  = $this->project->fullname. ' ' .JText::_('COM_PROJECTS_EMAIL_STARTED_
 $message .= ' "' . $this->project->title. '"' ."\n";
 $message .= '-------------------------------' ."\n";
 $message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' ' 
-		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' 
+$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
+		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' '
 		 . JText::_('COM_PROJECTS_BY') . ' ';
-$message .= $this->project->owned_by_group 
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$message .= $this->project->owned_by_group
+			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
 
@@ -66,22 +66,22 @@ if($this->project->private == 0)
 }
 $message .= '-------------------------------' ."\n\n";
 $message .= JText::_('COM_PROJECTS_EMAIL_PRIVACY') . ': ';
-$message .= $this->project->private == 1 
+$message .= $this->project->private == 1
 			? JText::_('COM_PROJECTS_EMAIL_PRIVATE') ."\n"
 			: JText::_('COM_PROJECTS_EMAIL_PUBLIC') ."\n";
-			
-if($this->config->get('restricted_data', 0)) 
+
+if($this->config->get('restricted_data', 0))
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') ."\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') ."\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') ."\n";
 	if($this->params->get('followup'))
 	{
-		$message .= JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') ."\n";	
+		$message .= JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') ."\n";
 	}
 	$message .= '-------------------------------' ."\n\n";
 }
-if($this->config->get('grantinfo', 0)) 
+if($this->config->get('grantinfo', 0))
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') ."\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->params->get('grant_PI') ."\n";
@@ -90,13 +90,13 @@ if($this->config->get('grantinfo', 0))
 }
 $message .= '-------------------------------' ."\n\n";
 
-if($this->config->get('ginfo_group', 0)) 
+if($this->config->get('ginfo_group', 0))
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_LINK_SPS') ."\n";
 	$message .= $juri->base() . $sef_browse . '?reviewer=sponsored' . "\n\n";
 }
 
-if($this->config->get('sdata_group', 0)) 
+if($this->config->get('sdata_group', 0))
 {
 	$message .= JText::_('COM_PROJECTS_EMAIL_LINK_HIPAA') ."\n";
 	$message .= $juri->base() . $sef_browse . '?reviewer=sensitive' . "\n";

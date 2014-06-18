@@ -55,7 +55,7 @@ $this->css()
 			<p><strong>Are you sure you want to delete?</strong></p>
 			<p>Deleting a course will permanently remove the course and all data associated with that course.</p>
 			<p>&nbsp;</p>
-			
+
 			<p><strong>Alternative to deleting</strong></p>
 			<p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
 			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
@@ -79,7 +79,7 @@ $this->css()
 			</label>
 
 			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" value="1" />
 				<?php echo JText::_('COURSES_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>

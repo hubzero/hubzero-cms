@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -67,14 +67,14 @@ $juser = JFactory::getUser();
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
-							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_up'), JFactory::getDBO()->getDateFormat())) : ''); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_up'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
 							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-publish_down" id="priority-publish_down">
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
-							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_down'), JFactory::getDBO()->getDateFormat())) : ''); ?>" /> 
+							<input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->model->get('publish_down'), JFactory::getDBO()->getDateFormat())) : ''); ?>" />
 							<span class="hint"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
@@ -82,7 +82,7 @@ $juser = JFactory::getUser();
 			</fieldset>
 
 			<label for="field-priority" id="priority-label">
-				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->model->get('priority')) { echo ' checked="checked"'; } ?> /> 
+				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->model->get('priority')) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 			</label>
 		</fieldset>

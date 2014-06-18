@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the collections asset table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class CollectionsTableAssetTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'item_id', 
-		'created', 
-		'created_by', 
+		'id',
+		'item_id',
+		'created',
+		'created_by',
 		'filename',
 		'description',
 		'state',

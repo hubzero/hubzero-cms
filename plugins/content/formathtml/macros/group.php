@@ -67,7 +67,7 @@ class GroupMacro extends Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 * this should be overriden by extended classes
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()

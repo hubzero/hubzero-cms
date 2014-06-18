@@ -26,7 +26,7 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * 
+ *
  */
 
 ini_set('display_errors', 1);
@@ -53,7 +53,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 		$this->config   = JComponentHelper::getParams('com_wiki');
 		$this->database = JFactory::getDBO();
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'search':    $this->pagesTask();     break;
 			case 'pages':     $this->pagesTask();     break;

@@ -36,28 +36,28 @@ $exclude = explode(',', $this->exclude);
 $exclude = array_map('trim', $exclude);
 
 $tl = array();
-if (count($tags) > 0) 
+if (count($tags) > 0)
 {
 	$html  = '<ol class="tags">' . "\n";
 	foreach ($tags as $tag)
 	{
-		if (!in_array($tag->raw_tag, $exclude)) 
+		if (!in_array($tag->raw_tag, $exclude))
 		{
 			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag='.$this->escape($tag->tag)) . '">' . $this->escape($tag->raw_tag) . '</a></li>'; // <span>' . $tag->tcount . '</span>
 		}
 	}
-	if ($this->sortby == 'alphabeta') 
+	if ($this->sortby == 'alphabeta')
 	{
 		ksort($tl);
 	}
 	$html .= implode("\n", $tl);
 	$html .= '</ol>' . "\n";
-	if ($this->morelnk) 
+	if ($this->morelnk)
 	{
 		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags') . '">' . JText::_('MOD_TOPTAGS_MORE') . '</a></p>' . "\n";
 	}
-} 
-else 
+}
+else
 {
 	$html  = '<p>' . $this->message . '</p>' . "\n";
 }

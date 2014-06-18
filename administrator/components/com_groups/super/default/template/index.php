@@ -2,7 +2,7 @@
 /**
  * Basic Template
  *
- * Template used for Special Groups. Will now be auto-created 
+ * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
  * @author 		Christopher Smoak
@@ -30,10 +30,10 @@ JFactory::getDocument()
 <div class="super-group-body-wrap group-<?php echo $this->group->get('cn'); ?>">
 	<div class="super-group-body">
 		<?php include_once 'includes/header.php'; ?>
-		
+
 		<div class="super-group-content-wrap">
 			<div class="super-group-content group_<?php echo $this->tab; ?>">
-				<?php 
+				<?php
 					$show = array('members', 'resources', 'wiki', 'forum', 'blog', 'calendar', 'usage', 'wishlist', 'announcements');
 					if (in_array($this->tab, $show)) : ?>
 					<h2><?php echo ($this->tab == 'forum') ? 'Discussions' : ucfirst($this->tab); ?></h2>
@@ -45,7 +45,7 @@ JFactory::getDocument()
 <?php if (!$no_html) : ?>
 			</div>
 		</div>
-		
+
 		<?php include_once 'includes/footer.php'; ?>
 	</div>
 </div>

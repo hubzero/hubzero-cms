@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $img = $this->remote && $this->remote['converted'] == 1
 	? ProjectsHtml::getGoogleIcon($this->remote['mimeType'])
 	: ProjectsHtml::getFileIcon($this->ext);
-	
+
 $alt = $this->ext;
 
 $filesize = $this->filesize;
@@ -42,12 +42,12 @@ $ext = count($ext) > 1 ? end($ext) : '';
 if ($this->remote && $this->title != $this->remote['title'])
 {
 	$append = ProjectsHtml::getAppendedNumber($this->title);
-	
+
 	if ($append > 0)
 	{
 		$ext = explode('.', $this->title);
 		$ext = count($ext) > 1 ? end($ext) : '';
-		
+
 		$name = ProjectsHtml::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
 	}
 }
@@ -58,20 +58,20 @@ if (in_array($ext, $native))
 {
 	$name = preg_replace("/.".$ext."\z/", "", $name);
 }
-	
+
 ?>
 	<h4><img src="<?php echo $img; ?>" alt="<?php echo $alt; ?>" /> <?php echo $name; ?></h4>
 	<ul class="filedata">
 		<?php echo $this->ext && $this->remote['converted'] == 0 ? '<li>' . strtoupper($this->ext) . '</li>' : ''; ?>
-		<?php echo $this->remote && $this->remote['converted'] == 1 ? '<li>' . JText::_('COM_PROJECTS_FILES_REMOTE_FILE_GOOGLE') . '</li>' : ''; ?> 
-		<?php if ($this->remote['converted'] == 1 && $this->remote['original_path']) { echo '<li>From ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</li>'; } ?>  
-		<?php echo $this->filesize ? '<li>' . strtoupper($filesize) . '</li>' : ''; ?> 
+		<?php echo $this->remote && $this->remote['converted'] == 1 ? '<li>' . JText::_('COM_PROJECTS_FILES_REMOTE_FILE_GOOGLE') . '</li>' : ''; ?>
+		<?php if ($this->remote['converted'] == 1 && $this->remote['original_path']) { echo '<li>From ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</li>'; } ?>
+		<?php echo $this->filesize ? '<li>' . strtoupper($filesize) . '</li>' : ''; ?>
 	</ul>
-	
+
 	<?php if ($this->image && is_file(JPATH_ROOT.$this->image)) { ?>
 		<div id="preview-image"><img src="<?php echo $this->image; ?>" alt="<?php echo JText::_('COM_PROJECTS_FILES_LOADING_PREVIEW'); ?>" /></div>
-	<?php } 
+	<?php }
 	elseif ($this->content) { ?>
 	<pre><?php echo $this->content; ?></pre>
 	<?php } ?>
-	
+

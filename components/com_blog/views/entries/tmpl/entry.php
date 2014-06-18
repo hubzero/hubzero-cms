@@ -46,11 +46,11 @@ if ($filters['scope'] == 'both')
 {
 	$filters['scope'] = '';
 }
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	$filters['state'] = 'registered';
 
-	if ($this->config->get('access-manage-component')) 
+	if ($this->config->get('access-manage-component'))
 	{
 		$filters['state'] = 'all';
 		$filters['authorized'] = true;
@@ -80,14 +80,14 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
-	
+
 	<?php if ($this->row) { ?>
 			<div class="entry" id="e<?php echo $this->row->get('id'); ?>">
-	
+
 				<h2 class="entry-title">
 					<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>
 				</h2>
-	
+
 				<dl class="entry-meta">
 					<dt>
 						<span>
@@ -131,16 +131,16 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					</dd>
 				<?php } ?>
 				</dl>
-	
+
 				<div class="entry-content">
 					<?php echo $this->row->content('parsed'); ?>
 					<?php echo $this->row->tags('cloud'); ?>
 				</div>
-	
-				<?php 
-				if ($this->config->get('show_authors')) 
+
+				<?php
+				if ($this->config->get('show_authors'))
 				{
-					if (is_object($this->row->creator())) 
+					if (is_object($this->row->creator()))
 					{
 				?>
 					<div class="entry-author">
@@ -180,11 +180,11 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				</a>
 			</p>
 		<?php } ?>
-	
+
 			<div class="container blog-entries-years">
 				<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
-			<?php 
+			<?php
 			if ($first->exists()) {
 				$start = intval(substr($first->get('publish_up'), 0, 4));
 				$now = JFactory::getDate()->format("Y");
@@ -230,13 +230,13 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					</ol>
 			<?php } ?>
 				</li>
-			<?php 
+			<?php
 				}
 			}
 			?>
 				</ol>
 			</div><!-- / .blog-entries-years -->
-	
+
 			<div class="container blog-popular-entries">
 				<h4><?php echo JText::_('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
@@ -264,9 +264,9 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<h3>
 				<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
-	
+
 		<?php if ($this->row->comments('count') > 0) { ?>
-			<?php 
+			<?php
 				$this->view('_list')
 					 ->set('parent', 0)
 					 ->set('option', $this->option)
@@ -282,11 +282,11 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<?php echo JText::_('COM_BLOG_NO_COMMENTS'); ?>
 			</p>
 		<?php } ?>
-	
+
 			<h3>
 				<?php echo JText::_('COM_BLOG_POST_COMMENT'); ?>
 			</h3>
-	
+
 			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
@@ -303,15 +303,15 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<fieldset>
 				<?php
 				$replyto = $this->row->comment(JRequest::getInt('reply', 0));
-				if (!$juser->get('guest')) 
+				if (!$juser->get('guest'))
 				{
-					if ($replyto->exists()) 
+					if ($replyto->exists())
 					{
 						$name = JText::_('COM_BLOG_ANONYMOUS');
-						if (!$replyto->get('anonymous')) 
+						if (!$replyto->get('anonymous'))
 						{
 							$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
-							if (is_object($xuser) && $xuser->get('name')) 
+							if (is_object($xuser) && $xuser->get('name'))
 							{
 								$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . stripslashes($xuser->get('name')) . '</a>';
 							}
@@ -319,10 +319,10 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					?>
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
-							<strong><?php echo $name; ?></strong> 
-							<span class="comment-date-at"><?php echo JText::_('COM_BLOG_AT'); ?></span> 
-							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span> 
-							<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span> 
+							<strong><?php echo $name; ?></strong>
+							<span class="comment-date-at"><?php echo JText::_('COM_BLOG_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+							<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p>
@@ -342,18 +342,18 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					</label>
 					<?php } else { ?>
 					<input type="hidden" name="comment[content]" id="commentcontent" value="" />
-	
+
 					<p class="warning">
 						<?php echo JText::sprintf('COM_BLOG_MUST_LOG_IN', '<a href="' . JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('COM_BLOG_LOG_IN') . '</a>'); ?>
 					</p>
 					<?php } ?>
-	
+
 				<?php if (!$juser->get('guest')) { ?>
 					<label id="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 						<?php echo JText::_('COM_BLOG_POST_ANONYMOUS'); ?>
 					</label>
-	
+
 					<p class="submit">
 						<input type="submit" name="submit" value="<?php echo JText::_('COM_BLOG_SUBMIT'); ?>" />
 					</p>
@@ -365,9 +365,9 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
-	
+
 					<?php echo JHTML::_('form.token'); ?>
-	
+
 					<div class="sidenote">
 						<p>
 							<strong><?php echo JText::_('COM_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
@@ -386,11 +386,11 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<p>
 					<?php
 						$feed = JRoute::_($this->row->link() . '/comments.rss');
-						if (substr($feed, 0, 4) != 'http') 
+						if (substr($feed, 0, 4) != 'http')
 						{
 							$jconfig = JFactory::getConfig();
 							$live_site = rtrim(JURI::base(), '/');
-							
+
 							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 						}
 						$feed = str_replace('https:://', 'http://', $feed);

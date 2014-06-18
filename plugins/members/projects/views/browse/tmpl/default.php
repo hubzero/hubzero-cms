@@ -64,7 +64,7 @@ $this->css();
 		</ul>
 	</div>
 	<div id="myprojects">
-	<?php 
+	<?php
 		if ($this->which == 'all')
 		{
 			// Show owned projects first

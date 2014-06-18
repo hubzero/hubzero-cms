@@ -62,7 +62,7 @@ $this->css()
 
 			$sheader = '';
 			$lang    = JFactory::getLanguage();
-			foreach ($this->components as $component) 
+			foreach ($this->components as $component)
 			{
 				if ($component->name != $sheader) {
 					$sheader = $component->name;

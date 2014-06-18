@@ -36,14 +36,14 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov 
+$selectUrl   = $prov
 		? JRoute::_( $route) . '?active=team&action=select' . '&p=' . $props . '&vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid=' 
+		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid='
 		. $this->pub->id . '&vid=' . $this->pub->version_id;
-		
+
 $editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
@@ -71,10 +71,10 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 		</label>
 		<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 	<div class="list-wrapper">
-	<?php if (count($this->pub->_authors) > 0) { 
+	<?php if (count($this->pub->_authors) > 0) {
 		$i= 1; ?>
 			<ul class="itemlist" id="author-list">
-			<?php foreach ($this->pub->_authors as $author) { 
+			<?php foreach ($this->pub->_authors as $author) {
 					$org = $author->organization ? $author->organization : $author->p_organization;
 					$name = $author->name ? $author->name : $author->p_name;
 					$name = trim($name) ? $name : $author->invited_name;
@@ -82,9 +82,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 
 					$active 	= in_array($author->project_owner_id, $this->teamids) ? true : false;
 					$confirmed 	= $author->user_id ? true : false;
-					
+
 					$details = $author->credit ? stripslashes($author->credit) : NULL;
-					
+
 					if (!$active)
 					{
 						$details .= $details ? ' | ' : '';
@@ -97,14 +97,14 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 							<?php if (count($this->pub->_authors) > 1) { ?>
 							<span class="hint-reorder"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER'); ?></span>
 							<?php } ?>
-							<a href="<?php echo $editUrl . '/?action=editauthor&aid=' . $author->id . '&p=' . $props; ?>" class="showinbox item-edit" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>  
+							<a href="<?php echo $editUrl . '/?action=editauthor&aid=' . $author->id . '&p=' . $props; ?>" class="showinbox item-edit" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
 							<a href="<?php echo $editUrl . '/?action=deleteitem&aid=' . $author->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 						</span>
 					</span>
 					<span class="item-order"><?php echo $i; ?></span>
 					<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
 					<span class="item-details"><?php echo $details; ?></span>
-				</li>	
+				</li>
 		<?php	$i++; } ?>
 			</ul>
 		<?php  }  ?>
@@ -112,20 +112,20 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS'); ?></a></span>
 			</div>
 		</div>
-			
+
 		<?php if (count($this->pub->_authors) > 1) { ?>
 		<p class="hint">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 		<?php } ?>
-		
+
 		<?php
 			// Showing submitter?
 			if ($showSubmitter && $this->pub->_submitter)
 			{ ?>
-				
+
 			<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
 				<?php echo $this->pub->_submitter->name; ?><?php echo $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : ''; ?>
 				<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
-			</p>					
+			</p>
 		<?php }
 		?>
 	</div>

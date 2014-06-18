@@ -37,35 +37,35 @@ Class TimeReports extends JTable
 {
 	/**
 	 * id, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * report_type
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $report_type = null;
 
 	/**
 	 * user_id
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $user_id = null;
 
 	/**
 	 * time_stamp
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $time_stamp = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   unknown &$db Parameter description (if any) ...
 	 * @return  void
 	 */
@@ -76,7 +76,7 @@ Class TimeReports extends JTable
 
 	/**
 	 * Build query
-	 * 
+	 *
 	 * @return $query
 	 */
 	public function buildQuery($filters=array())
@@ -89,7 +89,7 @@ Class TimeReports extends JTable
 
 	/**
 	 * Get list of reports
-	 * 
+	 *
 	 * @return object list of reports
 	 */
 	public function getRecords($filters=array())
@@ -112,7 +112,7 @@ Class TimeReports extends JTable
 
 	/**
 	 * Get list of id's associated with a report
-	 * 
+	 *
 	 * @return array of id's per given report instance
 	 */
 	public function getRecordIDs($filters=array())

@@ -40,10 +40,10 @@ class plgProjectsBlog extends JPlugin
 {
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas() 
+	public function &onProjectAreas()
 	{
 		$area = array(
 			'name'  => 'blog',
@@ -54,7 +54,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Event call to return data for a specific project
-	 * 
+	 *
 	 * @param      object  $project 		Project
 	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
@@ -80,26 +80,26 @@ class plgProjectsBlog extends JPlugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
 				return;
 			}
 		}
 
 		// Check authorization
-		if (!$authorized && !$project->owner) 
+		if (!$authorized && !$project->owner)
 		{
 			return $arr;
 		}
 
 		// Do we have a project ID?
-		if (!is_object($project) or !$project->id) 
+		if (!is_object($project) or !$project->id)
 		{
 			return $arr;
 		}
-		else 
+		else
 		{
 			$this->_project = $project;
 		}
@@ -109,7 +109,7 @@ class plgProjectsBlog extends JPlugin
 		$this->_path    = NULL;
 
 		// Are we returning HTML?
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			// Load language file
 			$this->loadLanguage();
@@ -128,13 +128,13 @@ class plgProjectsBlog extends JPlugin
 			$this->_option = $option;
 			$this->_authorized = $authorized;
 			$this->_msg = $msg;
-			if ($error) 
+			if ($error)
 			{
 				$this->setError($error);
 			}
 
 			$this->_uid = $uid;
-			if (!$this->_uid) 
+			if (!$this->_uid)
 			{
 				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
@@ -142,24 +142,24 @@ class plgProjectsBlog extends JPlugin
 
 			switch ($this->_task)
 			{
-				case 'page': 
-				default: 
-					$arr['html'] = $this->view(); 
+				case 'page':
+				default:
+					$arr['html'] = $this->view();
 					break;
 				case 'delete':
-					$arr['html'] = $this->_delete(); 
+					$arr['html'] = $this->_delete();
 					break;
 				case 'save':
-					$arr['html'] = $this->_save(); 
+					$arr['html'] = $this->_save();
 					break;
 				case 'savecomment':
-					$arr['html'] = $this->_saveComment(); 
+					$arr['html'] = $this->_saveComment();
 					break;
 				case 'deletecomment':
-					$arr['html'] = $this->_deleteComment(); 
+					$arr['html'] = $this->_deleteComment();
 					break;
-				case 'update': 
-					$arr['html'] = $this->updateFeed(); 
+				case 'update':
+					$arr['html'] = $this->updateFeed();
 					break;
 			}
 		}
@@ -177,10 +177,10 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * View of project updates
-	 * 
+	 *
 	 * @return     string
 	 */
-	public function view() 
+	public function view()
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -212,7 +212,7 @@ class plgProjectsBlog extends JPlugin
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
@@ -225,7 +225,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Save new blog entry
-	 * 
+	 *
 	 * @return     void, redirect
 	 */
 	protected function _save()
@@ -239,7 +239,7 @@ class plgProjectsBlog extends JPlugin
 
 		// Instantiate project microblog entry
 		$objM = new ProjectMicroblog($this->_database);
-		if ($entry) 
+		if ($entry)
 		{
 			$objM->projectid = $this->_project->id;
 			$objM->blogentry = $entry;
@@ -248,35 +248,35 @@ class plgProjectsBlog extends JPlugin
 			$objM->posted_by = $this->_uid;
 
 			// Save new blog entry
-			if (!$objM->store()) 
+			if (!$objM->store())
 			{
 				$this->setError($objM->getError());
 			}
-			else 
+			else
 			{
 				$this->_msg = JText::_('COM_PROJECTS_NEW_BLOG_ENTRY_SAVED');
 			}
 
 			// Get new entry ID
-			if (!$objM->id) 
+			if (!$objM->id)
 			{
 				$objM->checkin();
 			}
 
 			// Record activity
 			$objAA = new ProjectActivity($this->_database);
-			if ($objM->id) 
+			if ($objM->id)
 			{
 				$aid = $objAA->recordActivity(
-					$this->_project->id, 
-					$this->_uid, 
-					JText::_('COM_PROJECTS_SAID'), 
-					$objM->id, '', '', 'blog', 1 
+					$this->_project->id,
+					$this->_uid,
+					JText::_('COM_PROJECTS_SAID'),
+					$objM->id, '', '', 'blog', 1
 				);
 			}
 
 			// Store activity ID
-			if ($aid) 
+			if ($aid)
 			{
 				$objM->activityid = $aid;
 				$objM->store();
@@ -284,14 +284,14 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Pass success or error message
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->_message = array(
 				'message' => $this->getError(),
 				'type'    => 'error'
 			);
 		}
-		elseif (isset($this->_msg) && $this->_msg) 
+		elseif (isset($this->_msg) && $this->_msg)
 		{
 			$this->_message = array(
 				'message' => $this->_msg,
@@ -306,7 +306,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Delete blog entry
-	 * 
+	 *
 	 * @return     void, redirect
 	 */
 	protected function _delete()
@@ -316,11 +316,11 @@ class plgProjectsBlog extends JPlugin
 		$eid = JRequest::getInt('eid', 0);
 
 		// Are we deleting a blog entry?
-		if ($tbl == 'blog') 
+		if ($tbl == 'blog')
 		{
 			$objM = new ProjectMicroblog($this->_database);
 
-			if ($eid && $objM->load($eid)) 
+			if ($eid && $objM->load($eid))
 			{
 				// Get associated commenting activities
 				$objC = new ProjectComment($this->_database);
@@ -328,7 +328,7 @@ class plgProjectsBlog extends JPlugin
 				$activities[] = $objM->activityid;
 
 				// Delete blog entry
-				if ($objM->deletePost()) 
+				if ($objM->deletePost())
 				{
 					$this->_msg = JText::_('COM_PROJECTS_ENTRY_DELETED');
 
@@ -336,7 +336,7 @@ class plgProjectsBlog extends JPlugin
 					$comments = $objC->deleteComments($eid, $tbl);
 
 					// Delete all associated activities
-					foreach ($activities as $a) 
+					foreach ($activities as $a)
 					{
 						$objAA = new ProjectActivity($this->_database);
 						$objAA->loadActivity($a, $this->_project->id);
@@ -346,18 +346,18 @@ class plgProjectsBlog extends JPlugin
 			}
 		}
 		// Are we deleting activity?
-		if ($tbl == 'activity') 
+		if ($tbl == 'activity')
 		{
 			$objAA = new ProjectActivity($this->_database);
 			$objAA->loadActivity($eid, $this->_project->id);
 
-			if ($this->_project->role == 1 or $this->_authorized or $objAA->userid == $this->_uid) 
+			if ($this->_project->role == 1 or $this->_authorized or $objAA->userid == $this->_uid)
 			{
 				// Get associated commenting activities
 				$objC = new ProjectComment($this->_database);
 				$activities = $objC->collectActivities($eid, $tbl);
 
-				if ($objAA->deleteActivity()) 
+				if ($objAA->deleteActivity())
 				{
 					$this->_msg = JText::_('COM_PROJECTS_ENTRY_DELETED');
 
@@ -365,7 +365,7 @@ class plgProjectsBlog extends JPlugin
 					$comments = $objC->deleteComments($eid, $tbl);
 
 					// Delete all associated activities
-					foreach ($activities as $a) 
+					foreach ($activities as $a)
 					{
 						$objAA = new ProjectActivity($this->_database);
 						$objAA->loadActivity($a, $this->_project->id);
@@ -373,7 +373,7 @@ class plgProjectsBlog extends JPlugin
 					}
 				}
 			}
-			else 
+			else
 			{
 				// unauthorized
 				$this->setError(JText::_('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
@@ -381,14 +381,14 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Pass success or error message
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->_message = array(
 				'message' => $this->getError(),
 				'type'   => 'error'
 			);
 		}
-		elseif (isset($this->_msg) && $this->_msg) 
+		elseif (isset($this->_msg) && $this->_msg)
 		{
 			$this->_message = array(
 				'message' => $this->_msg,
@@ -407,7 +407,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Update activity feed (load more entries)
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function updateFeed()
@@ -437,7 +437,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Collect activity data
-	 * 
+	 *
 	 * @param      array 	$filters    Query filters
 	 * @param      integer  $limit 		Number of entries
 	 *
@@ -461,12 +461,12 @@ class plgProjectsBlog extends JPlugin
 		$prep = array();
 
 		// Loop through activities
-		if (count($activities) > 0) 
+		if (count($activities) > 0)
 		{
-			foreach ($activities as $a) 
+			foreach ($activities as $a)
 			{
 				// Is this a comment?
-				if ($a->class == 'quote') 
+				if ($a->class == 'quote')
 				{
 					// Get comment
 					$c = $objC->getComments(NULL, NULL, $a->id, $this->_project->lastvisit);
@@ -475,7 +475,7 @@ class plgProjectsBlog extends JPlugin
 					$needle = array('id' => $c->parent_activity);
 					$key = ProjectsHtml::myArraySearch($needle, $activities);
 					$shown[] = $a->id;
-					if (!$key) 
+					if (!$key)
 					{
 						// get and add parent activity
 						$filters['id'] = $c->parent_activity;
@@ -485,21 +485,21 @@ class plgProjectsBlog extends JPlugin
 							$a = $pa[0];
 						}
 					}
-					else 
+					else
 					{
 						$a = $activities[$key];
 					}
 					$a->new = isset($c->newcount) ? $c->newcount : 0;
 				}
 
-				if (!in_array($a->id, $shown)) 
+				if (!in_array($a->id, $shown))
 				{
 					$shown[] = $a->id;
 					$class = $a->class ? $a->class : 'activity';
 					$new = $this->_project->lastvisit && $this->_project->lastvisit <= $a->recorded ? true : false;
 
 					// Display hyperlink
-					if ($a->highlighted && $a->url) 
+					if ($a->highlighted && $a->url)
 					{
 						$a->activity = str_replace($a->highlighted, '<a href="'.$a->url.'">'.$a->highlighted.'</a>', $a->activity);
 					}
@@ -511,10 +511,10 @@ class plgProjectsBlog extends JPlugin
 					$deletable = 0;
 
 					// Get blog entry
-					if ($class == 'blog') 
+					if ($class == 'blog')
 					{
 						$blog = $objM->getEntries($this->_project->id, $bfilters = array('activityid' => $a->id), $a->referenceid);
-						if (!$blog) 
+						if (!$blog)
 						{
 							continue;
 						}
@@ -525,10 +525,10 @@ class plgProjectsBlog extends JPlugin
 					}
 
 					// Get todo item
-					if ($class == 'todo') 
+					if ($class == 'todo')
 					{
 						$todo = $objTD->getTodos($this->_project->id, $tfilters = array('activityid' => $a->id), $a->referenceid);
-						if (!$todo) 
+						if (!$todo)
 						{
 							continue;
 						}
@@ -548,24 +548,24 @@ class plgProjectsBlog extends JPlugin
 					$deletable = $deletable && ($a->userid == $this->_uid or $this->_project->role == 1) ? 1 : 0;
 
 					$prep[] = array(
-						'activity' => $a, 'eid' => $eid, 'etbl' => $etbl, 
-						'body' => $ebody, 'deletable' => $deletable, 
-						'comments' => $comments, 'class' => $class, 'new' => $new 
+						'activity' => $a, 'eid' => $eid, 'etbl' => $etbl,
+						'body' => $ebody, 'deletable' => $deletable,
+						'comments' => $comments, 'class' => $class, 'new' => $new
 					);
 				}
 			}
 		}
 
 		return $prep;
-	} 
+	}
 
 	/**
 	 * Display 'more' link if text is too long
-	 * 
+	 *
 	 * @param      string	$body   	Text body to shorten
 	 * @param      object	$activity   Individual activity
 	 * @return     HTML
-	 */	
+	 */
 	public function drawBodyText($body = NULL)
 	{
 		if (!$body)
@@ -600,16 +600,16 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Get preview
-	 * 
+	 *
 	 * @param      string	$type    	Item type (files, notes etc.)
 	 * @param      object	$activity   Individual activity
 	 * @return     HTML
-	 */	
+	 */
 	public function getItemPreview($type = NULL, $activity = NULL, $body = NULL)
 	{
 		$ref = $activity->referenceid;
 
-		if ($body) 
+		if ($body)
 		{
 			return $this->drawBodyText($body);
 		}
@@ -641,7 +641,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Get Tool Preview
-	 * 
+	 *
 	 * @param      object	$activity   Individual activity
 	 * @return     void, redirect
 	 */
@@ -673,7 +673,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Get Note Previews
-	 * 
+	 *
 	 * @param      string	$ref   	 	 Reference to note
 	 * @return     void, redirect
 	 */
@@ -688,7 +688,7 @@ class plgProjectsBlog extends JPlugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 		$page = new WikiTablePage($this->_database);
-		if ($page->loadById($ref)) 
+		if ($page->loadById($ref))
 		{
 			$revision = $page->getCurrentRevision();
 			// TBD
@@ -700,7 +700,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Get File Previews
-	 * 
+	 *
 	 * @param      string 	$ref    Reference to files
 	 * @return     void, redirect
 	 */
@@ -730,7 +730,7 @@ class plgProjectsBlog extends JPlugin
 		$this->getGitHelper();
 
 		// Include image handler
-		$ih = new ProjectsImgHandler();	
+		$ih = new ProjectsImgHandler();
 
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
@@ -783,7 +783,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Save comment
-	 * 
+	 *
 	 * @return     void, redirect
 	 */
 	protected function _saveComment()
@@ -799,7 +799,7 @@ class plgProjectsBlog extends JPlugin
 
 		// Instantiate comment
 		$objC = new ProjectComment($this->_database);
-		if ($comment) 
+		if ($comment)
 		{
 			$objC->itemid 			= $itemid;
 			$objC->tbl 				= $tbl;
@@ -807,11 +807,11 @@ class plgProjectsBlog extends JPlugin
 			$objC->comment 			= $comment;
 			$objC->created 			= JFactory::getDate()->toSql();
 			$objC->created_by 		= $this->_uid;
-			if (!$objC->store()) 
+			if (!$objC->store())
 			{
 				$this->setError($objC->getError());
 			}
-			else 
+			else
 			{
 				$this->_msg = JText::_('COM_PROJECTS_COMMENT_POSTED');
 			}
@@ -822,21 +822,21 @@ class plgProjectsBlog extends JPlugin
 
 			// Record activity
 			$objAA = new ProjectActivity($this->_database);
-			if ($objC->id) 
+			if ($objC->id)
 			{
 				$what = $tbl == 'blog' ? JText::_('COM_PROJECTS_BLOG_POST') : JText::_('COM_PROJECTS_AN_ACTIVITY');
 				$what = $tbl == 'todo' ? JText::_('COM_PROJECTS_TODO_ITEM') : $what;
 				$url = '#tr_'.$parent_activity; // same-page link
 				$aid = $objAA->recordActivity(
-					$this->_project->id, 
-					$this->_uid, 
-					JText::_('COM_PROJECTS_COMMENTED').' '.JText::_('COM_PROJECTS_ON').' '.$what, 
-					$objC->id, $what, $url, 'quote', 0 
+					$this->_project->id,
+					$this->_uid,
+					JText::_('COM_PROJECTS_COMMENTED').' '.JText::_('COM_PROJECTS_ON').' '.$what,
+					$objC->id, $what, $url, 'quote', 0
 				);
 			}
 
 			// Store activity ID
-			if ($aid) 
+			if ($aid)
 			{
 				$objC->activityid = $aid;
 				$objC->store();
@@ -844,14 +844,14 @@ class plgProjectsBlog extends JPlugin
 		}
 
 		// Pass success or error message
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->_message = array(
 				'message' => $this->getError(),
 				'type'    => 'error'
 			);
 		}
-		elseif (isset($this->_msg) && $this->_msg) 
+		elseif (isset($this->_msg) && $this->_msg)
 		{
 			$this->_message = array(
 				'message' => $this->_msg,
@@ -866,7 +866,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Delete comment
-	 * 
+	 *
 	 * @return     void, redirect
 	 */
 	protected function _deleteComment()
@@ -877,33 +877,33 @@ class plgProjectsBlog extends JPlugin
 		// Instantiate comment
 		$objC = new ProjectComment($this->_database);
 
-		if ($objC->load($cid)) 
+		if ($objC->load($cid))
 		{
 			$activityid = $objC->activityid;
 
 			// delete comment
-			if ($objC->deleteComment()) 
+			if ($objC->deleteComment())
 			{
 				$this->_msg = JText::_('COM_PROJECTS_COMMENT_DELETED');
 			}
 
 			// delete associated activity
 			$objAA = new ProjectActivity($this->_database);
-			if ($activityid && $objAA->load($activityid)) 
+			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();
 			}
 		}
 
 		// Pass success or error message
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->_message = array(
 				'message' => $this->getError(),
 				'type'    => 'error'
 			);
 		}
-		elseif (isset($this->_msg) && $this->_msg) 
+		elseif (isset($this->_msg) && $this->_msg)
 		{
 			$this->_message = array(
 				'message' => $this->_msg,
@@ -918,7 +918,7 @@ class plgProjectsBlog extends JPlugin
 
 	/**
 	 * Get Git helper
-	 * 
+	 *
 	 *
 	 * @return     void
 	 */
@@ -929,7 +929,7 @@ class plgProjectsBlog extends JPlugin
 			// Git helper
 			include_once(JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php');
 			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'), 
+				$this->_config->get('gitpath', '/opt/local/bin/git'),
 				0,
 				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
 			);

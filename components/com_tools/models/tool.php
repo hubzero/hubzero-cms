@@ -40,112 +40,112 @@ class ToolsModelTool
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $id = null;
 
 	/**
 	 * Description for 'toolname'
-	 * 
+	 *
 	 * @var string
 	 */
 	private $toolname = null;
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $title = null;
 
 	/**
 	 * Description for 'version'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $version = array();
 
 	/**
 	 * Description for 'registered'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $registered = null;
 
 	/**
 	 * Description for 'registered_by'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $registered_by = null;
 
 	/**
 	 * Description for 'state_changed'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $state_changed = null;
 
 	/**
 	 * Description for 'ticketid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $ticketid = null;
 
 	/**
 	 * Description for 'published'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $published = null;
 
 	/**
 	 * Description for 'state'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $state = null;
 
 	/**
 	 * Description for 'priority'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $priority = null;
 
 	/**
 	 * Description for '_list_keys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_list_keys = array('version');
 
 	/**
 	 * Description for '_updateAll'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_updateAll = false;
 
 	/**
 	 * Description for '_propertyattrmap'
-	 * 
+	 *
 	 * @var array
 	 */
 	static $_propertyattrmap = array('toolname' => 'toolName', 'title' => 'cn', 'version' => 'member');
 
 	/**
 	 * Description for '_updatedkeys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return    void
 	 */
 	private function __construct()
@@ -154,9 +154,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'clear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 void
 	 */
 	public function clear()
@@ -188,7 +188,7 @@ class ToolsModelTool
 
 	/**
 	 * Log a debug message
-	 * 
+	 *
 	 * @param     string $msg Message to log
 	 * @return    void
 	 */
@@ -200,7 +200,7 @@ class ToolsModelTool
 
 	/**
 	 * Get the names of all tools
-	 * 
+	 *
 	 * @return    array
 	 */
 	public function getToolNames()
@@ -213,9 +213,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'toArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $format Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
@@ -240,9 +240,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $instance Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
@@ -260,9 +260,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'createInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $name Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
@@ -287,9 +287,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '_mysql_create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function _mysql_create()
@@ -352,9 +352,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function create()
@@ -376,9 +376,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '_mysql_read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	private function _mysql_read()
@@ -432,9 +432,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -479,9 +479,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '_mysql_update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -652,9 +652,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'sync'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 unknown Return description (if any) ...
 	 */
 	public function sync()
@@ -665,9 +665,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function update()
@@ -690,9 +690,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '_mysql_delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function _mysql_delete()
@@ -737,9 +737,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function delete()
@@ -761,9 +761,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '__get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -830,9 +830,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '__set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @param	  unknown $value Parameter description (if any) ...
 	 * @return	 void
@@ -867,9 +867,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '__isset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -891,9 +891,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '__unset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 void
 	 */
@@ -917,9 +917,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for '_error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $message Parameter description (if any) ...
 	 * @param	  integer $level Parameter description (if any) ...
 	 * @return	 void
@@ -946,9 +946,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
@@ -959,9 +959,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  unknown $value Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
@@ -973,9 +973,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'add'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  array $value Parameter description (if any) ...
 	 * @return	 void
@@ -987,9 +987,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'remove'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $key Parameter description (if any) ...
 	 * @param	  array $value Parameter description (if any) ...
 	 * @return	 void
@@ -1001,9 +1001,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getCurrentVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 unknown Return description (if any) ...
 	 */
 	public function getCurrentVersion()
@@ -1013,9 +1013,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getDevelopmentVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 unknown Return description (if any) ...
 	 */
 	public function getDevelopmentVersion()
@@ -1025,9 +1025,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getRevision'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $revision Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -1038,9 +1038,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getDevelopmentGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function getDevelopmentGroup()
@@ -1064,9 +1064,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'unpublishVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $instance Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -1111,9 +1111,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'unpublishAllVersions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function unpublishAllVersions()
@@ -1155,9 +1155,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'buildQueryLimit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
@@ -1194,9 +1194,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'buildQuerySort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
@@ -1220,9 +1220,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'buildQuerySearch'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
@@ -1275,9 +1275,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'buildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
@@ -1289,9 +1289,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return	 object Return description (if any) ...
@@ -1311,9 +1311,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolSummaries'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return    array
@@ -1337,9 +1337,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolVersionSummaries'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  boolean $admin Parameter description (if any) ...
 	 * @return    array
@@ -1360,9 +1360,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolContributions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $userid Parameter description (if any) ...
 	 * @return    mixed False on error, array on success
 	 */
@@ -1386,9 +1386,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getResourceId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @param	  unknown $id Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
@@ -1448,9 +1448,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'validate'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array &$tool Parameter description (if any) ...
 	 * @param	  array &$err Parameter description (if any) ...
 	 * @param	  unknown $id Parameter description (if any) ...
@@ -1485,7 +1485,7 @@ class ToolsModelTool
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
 		jimport('joomla.filesystem.folder');
-		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname']))) 
+		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
 		{
 			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
@@ -1591,9 +1591,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'validateVersion'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $newversion Parameter description (if any) ...
 	 * @param	  string &$err Parameter description (if any) ...
 	 * @param	  unknown $id Parameter description (if any) ...
@@ -1605,7 +1605,7 @@ class ToolsModelTool
 		$xlog =  JFactory::getLogger();
 
 		$err = '';
-		
+
 		if (empty($newversion))
 		{
 			$err = JText::_('COM_TOOLS_ERR_VERSION_BLANK');
@@ -1632,9 +1632,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'validateLicense'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $license Parameter description (if any) ...
 	 * @param	  string $code Parameter description (if any) ...
 	 * @param	  unknown &$err Parameter description (if any) ...
@@ -1646,19 +1646,19 @@ class ToolsModelTool
 
 		$result = 0;
 
-		if (!$license['text']) 
+		if (!$license['text'])
 		{
 			$err = JText::_('COM_TOOLS_ERR_LICENSE_EMPTY') ;
 		}
-		else if ($bingo) 
+		else if ($bingo)
 		{
 			$err = JText::_('COM_TOOLS_ERR_LICENSE_DEFAULTS') ;
 		}
-		else if (!$license['authorize'] && $code=='@OPEN') 
+		else if (!$license['authorize'] && $code=='@OPEN')
 		{
 			$err = JText::_('COM_TOOLS_ERR_LICENSE_AUTH_MISSING') ;
 		}
-		else 
+		else
 		{
 			$result = 1;
 		}
@@ -1668,21 +1668,21 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getMyTools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 object Return description (if any) ...
 	 */
 	public static function getMyTools()
 	{
 		$db =  JFactory::getDBO();
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
-				FROM #__resources AS r, #__tool_version AS v	
-				WHERE r.published=1 
-				AND r.type=7 
-				AND r.standalone=1 
+				FROM #__resources AS r, #__tool_version AS v
+				WHERE r.published=1
+				AND r.type=7
+				AND r.standalone=1
 				AND r.access!=4
-				AND r.alias=v.toolname 
+				AND r.alias=v.toolname
 				AND v.state=1
 				ORDER BY v.title, v.toolname, v.revision DESC";
 
@@ -1692,16 +1692,16 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $toolname Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
 	public static function getToolId($toolname=NULL)
 	{
 		$db =  JFactory::getDBO();
-		if ($toolname=== NULL) 
+		if ($toolname=== NULL)
 		{
 			return false;
 		}
@@ -1711,9 +1711,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolDevelopers'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 unknown Return description (if any) ...
 	 */
@@ -1732,9 +1732,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getToolGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @param	  array $groups Parameter description (if any) ...
 	 * @return	 array Return description (if any) ...
@@ -1753,13 +1753,13 @@ class ToolsModelTool
 
 	/**
 	 * Returns the list of groups to which the launching of a tool is restricted
-	 * 
+	 *
 	 * @FIXME: This should really be a part of the above function, getToolGroups.  The problem seems to be related to the jos_tool_groups table.
-	 *		 If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a jos_tool_groups entry.  
-	 *		 The above function will grab that restriction and undoly say that the tool is restricted to a group.  The solution seems to be 
+	 *		 If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a jos_tool_groups entry.
+	 *		 The above function will grab that restriction and undoly say that the tool is restricted to a group.  The solution seems to be
 	 *		 removing the jos_tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
 	 *		 checks to ensure that toolaccess='@GROUP' from the jos_tool_version table
-	 * 
+	 *
 	 * @param	  string $toolid is the tool id
 	 * @param	  string $instance is the tool version instance
 	 * @return	 array Return list of groups
@@ -1778,9 +1778,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'saveTicketId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @param	  string $ticketid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
@@ -1788,13 +1788,13 @@ class ToolsModelTool
 	public static function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
 		$db =  JFactory::getDBO();
-		if ($toolid=== NULL or $ticketid=== NULL) 
+		if ($toolid=== NULL or $ticketid=== NULL)
 		{
 			return false;
 		}
 		$query = "UPDATE #__tool SET ticketid='" . $ticketid . "' WHERE id=" . $toolid;
 		$db->setQuery($query);
-		if ($db->query()) 
+		if ($db->query())
 		{
 			return true;
 		}
@@ -1803,16 +1803,16 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'getTicketId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
  	public static function getTicketId($toolid=NULL)
 	{
 		$db =  JFactory::getDBO();
-		if ($toolid=== NULL) 
+		if ($toolid=== NULL)
 		{
 			return false;
 		}
@@ -1822,9 +1822,9 @@ class ToolsModelTool
 
 	/**
 	 * Short description for 'xbuildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  array $filters Parameter description (if any) ...
 	 * @param	  unknown $admin Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
@@ -1843,33 +1843,33 @@ class ToolsModelTool
 			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
 			case 'all':       $filter .= " ";														break;
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$search = $filters['search'];
-			if (intval($search)) 
+			if (intval($search))
 			{
 				$filter .= " AND f.id='%$search%' ";
 			}
-			else 
+			else
 			{
 				$filter .= " AND LOWER(f.toolname) LIKE '%$search%' ";
 			}
 		}
-		if (!$admin) 
+		if (!$admin)
 		{
 			$filter .= " AND m.uidNumber='" . $juser->get('id') . "' ";
 			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
 		}
-		else 
-		{ 
-			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC'; 
+		else
+		{
+			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC';
 		}
 
 		$query = "#__tool as f "
 				."JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "
 				."JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
 				."JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		if (!$admin) 
+		if (!$admin)
 		{
 			$query .="JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		}
@@ -1881,7 +1881,7 @@ class ToolsModelTool
 
 	/**
 	 * Get a list of tools
-	 * 
+	 *
 	 * @param     array   $filters Filters to build query from
 	 * @param     boolean $admin   Admin access?
 	 * @return    array
@@ -1893,7 +1893,7 @@ class ToolsModelTool
 
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
 				. " FROM $filter";
-		if (isset($filters['start']) && isset($filters['limit'])) 
+		if (isset($filters['start']) && isset($filters['limit']))
 		{
 			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}

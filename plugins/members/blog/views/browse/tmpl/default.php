@@ -70,14 +70,14 @@ $this->css()
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->search))); ?>" placeholder="<?php echo JText::_('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
-		
+
 			<div class="container">
 				<h3>
 					<?php if (isset($this->search) && $this->search) { ?>
 						<?php echo JText::sprintf('PLG_MEMBERS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
 					<?php } else if (!isset($this->year) || !$this->year) { ?>
 						<?php echo JText::_('PLG_MEMBERS_BLOG_LATEST_ENTRIES'); ?>
-					<?php } else { 
+					<?php } else {
 						$archiveDate  = $this->year;
 						$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
 						$archiveDate .= '-01 00:00:00';
@@ -96,7 +96,7 @@ $this->css()
 						$path .= ($this->year)  ? '&year=' . $this->year   : '';
 						$path .= ($this->month) ? '&month=' . $this->month : '';
 						$feed = JRoute::_($path);
-						if (substr($feed, 0, 4) != 'http') 
+						if (substr($feed, 0, 4) != 'http')
 						{
 							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 						}
@@ -110,7 +110,7 @@ $this->css()
 
 		<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
 				<ol class="blog-entries">
-			<?php 
+			<?php
 			$cls = 'even';
 			foreach ($rows as $row)
 			{
@@ -180,20 +180,20 @@ $this->css()
 					<div class="entry-content">
 				<?php if ($this->config->get('cleanintro', 1)) { ?>
 						<p>
-							<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?> 
+							<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
 						</p>
 				<?php } else { ?>
-						<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?> 
+						<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
 				<?php } ?>
 					</div>
 				</li>
 			<?php } ?>
 				</ol>
-				<?php 
+				<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->model->entries('count', $this->filters), 
-						$this->filters['start'], 
+						$this->model->entries('count', $this->filters),
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 					$pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
@@ -222,7 +222,7 @@ $this->css()
 			<div class="container">
 				<h4><?php echo JText::_('PLG_MEMBERS_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ul>
-					<?php 
+					<?php
 						$start = intval(substr($first->get('publish_up'), 0, 4));
 						$now = date("Y");
 						$m = array(
@@ -263,8 +263,8 @@ $this->css()
 			</div>
 		<?php } ?>
 
-		<?php 
-		$limit = $this->filters['limit']; 
+		<?php
+		$limit = $this->filters['limit'];
 		$this->filters['limit'] = 5;
 		?>
 			<div class="container blog-popular-entries">
@@ -301,7 +301,7 @@ $this->css()
 			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
 		<?php
-		$this->filters['limit'] = $limit; 
+		$this->filters['limit'] = $limit;
 		?>
 		</aside><!-- / .aside -->
 	</section>

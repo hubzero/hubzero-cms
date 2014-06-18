@@ -40,7 +40,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all organizations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -52,21 +52,21 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		// Get paging variables
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -81,13 +81,13 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -98,7 +98,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add a new organization
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -108,7 +108,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an organization
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($model=null)
@@ -121,13 +121,13 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		{
 			$this->view->model = $model;
 		}
-		else 
+		else
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
 
 			// Get the single ID we're working with
-			if (is_array($id)) 
+			if (is_array($id))
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
@@ -138,7 +138,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -149,7 +149,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an organization
-	 * 
+	 *
 	 * @return     unknown Return description (if any) ...
 	 */
 	public function saveTask()
@@ -159,15 +159,15 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 		// Load the tag object and bind the incoming data to it
 		$model = new MembersTableOrganization($this->database);
-		
-		if (!$model->bind($_POST)) 
+
+		if (!$model->bind($_POST))
 		{
 			JError::raiseError(500, $model->getError());
 			return;
 		}
 
 		// Check content
-		if (!$model->check()) 
+		if (!$model->check())
 		{
 			$this->setError($model->getError());
 			$this->editTask($model);
@@ -175,7 +175,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->setError($model->getError());
 			$this->editTask($model);
@@ -191,7 +191,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove an organization
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -203,18 +203,18 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array(), 'post');
 
 		// Get the single ID we're working with
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Do we have any IDs?
-		if (!empty($ids)) 
+		if (!empty($ids))
 		{
 			$model = new MembersTableOrganization($this->database);
 
 			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id) 
+			foreach ($ids as $id)
 			{
 				// Remove the organization type
 				$model->delete(intval($id));

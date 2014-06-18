@@ -360,13 +360,13 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 
 		// Rename the temporary upload directory if it exist
 		$lid = $fields['lid'];
-		if ($lid != $row->get('id')) 
+		if ($lid != $row->get('id'))
 		{
 			$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
-			if (is_dir($path . DS . $lid)) 
+			if (is_dir($path . DS . $lid))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::move($path . DS . $lid, $path . DS . $row->get('id'))) 
+				if (!JFolder::move($path . DS . $lid, $path . DS . $row->get('id')))
 				{
 					$this->setError(JFolder::move($path . DS . $lid, $path . DS . $row->get('id')));
 				}

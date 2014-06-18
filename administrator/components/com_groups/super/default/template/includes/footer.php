@@ -2,7 +2,7 @@
 /**
  * Footer
  *
- * Template used for Special Groups. Will now be auto-created 
+ * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
  * @author 		Christopher Smoak

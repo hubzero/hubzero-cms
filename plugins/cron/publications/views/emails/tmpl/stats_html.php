@@ -68,16 +68,16 @@ $boxBgColor 	 = '#f6eddd';
 $append = '?from=' . $this->juser->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
-if ($this->profilePic) 
+if ($this->profilePic)
 {
 	$profileThumb = $ih->createThumbName($this->profilePic);
 	$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . $profileThumb;
-	
+
 	if (!is_file(JPATH_ROOT . DS . $profileThumb))
 	{
 		$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . 'thumb.png';
 	}
-	
+
 	if (!is_file(JPATH_ROOT . DS . $profileThumb))
 	{
 		$profileThumb = NULL;
@@ -102,10 +102,10 @@ $more = count($this->pubstats) - $this->limit;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Publication Stats Update</title>
 		<style type="text/css">
-		
-		/* Client-specific Styles */		
+
+		/* Client-specific Styles */
 		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: <?php echo $backgroundColor; ?> !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
-		
+
 		/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
 		.ExternalClass { width:100%; } /* Force Hotmail to display emails at full width */
 		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; } /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
@@ -127,7 +127,7 @@ $more = count($this->pubstats) - $this->limit;
 
 		/* Outlook 07, 10 Padding issue */
 		table td, table tr { border-collapse: collapse; }
-		
+
 		tbody { border: none; }
 
 		/* Remove spacing around Outlook 07, 10 tables */
@@ -198,7 +198,7 @@ $more = count($this->pubstats) - $this->limit;
 							<tbody>
 								<tr>
 									<td>
-										
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>;border-color: <?php echo $backgroundColor; ?>">
 										<tbody>
@@ -208,7 +208,7 @@ $more = count($this->pubstats) - $this->limit;
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
-											
+
 									<!-- ====== Header Table ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $headerBgColor; ?>; color: <?php echo $headerTextColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>; border-top: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $headerBgColor; ?>">
 										<tbody>
@@ -239,7 +239,7 @@ $more = count($this->pubstats) - $this->limit;
 											</tr>
 										</tbody>
 									</table>
-									
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 										<tbody>
@@ -249,7 +249,7 @@ $more = count($this->pubstats) - $this->limit;
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
-									
+
 									<!-- ====== Start Content Table ====== -->
 									<?php if ($more > 1)
 									{ ?>
@@ -261,35 +261,35 @@ $more = count($this->pubstats) - $this->limit;
 											</tr>
 										</tbody>
 									</table>
-									<?php } 
+									<?php }
 									?>
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
-										<tbody>											
-											<?php 
+										<tbody>
+											<?php
 												$i = 0;
-												foreach ($this->pubstats as $stat) { 
+												foreach ($this->pubstats as $stat) {
 												// Get pub image
 												$pubthumb = $this->helper->getThumb(
-													$stat->publication_id, 
-													$stat->publication_version_id, 
-													$this->config, 
-													false, 
+													$stat->publication_id,
+													$stat->publication_version_id,
+													$this->config,
+													false,
 													$stat->cat_url
 												);
-												
+
 												$i++;
-												
+
 												if ($i > $this->limit)
 												{
 													break;
 												}
-												
+
 												$sefManage 	= $baseManage . DS . $stat->publication_id;
 												$sefView 	= $baseView . DS . $stat->publication_id;
-												
+
 												$thumb = $base . DS . trim($pubthumb, DS);
 												$link  = $base . DS . trim($sefView, DS) . $append;
-												$manageLink  = $base . DS . trim($sefManage, DS) . $append;															
+												$manageLink  = $base . DS . trim($sefManage, DS) . $append;
 											?>
 											<tr>
 												<td width="25"></td>
@@ -300,23 +300,23 @@ $more = count($this->pubstats) - $this->limit;
 													<p style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><a href="<?php echo $link; ?>" style="color: <?php echo $titleLinkColor; ?>; text-decoration: none;"><?php echo $stat->title; ?></a></p>
 													<table cellpadding="0" cellspacing="0" border="0" style="font-size: 12px; padding: 0; margin: 0;">
 				                                        <tbody>
-															<tr style="padding: 0; margin: 0;">															
+															<tr style="padding: 0; margin: 0;">
 																<td width="265">Page views last month:</td>
-																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_views; ?></td>		
+																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_views; ?></td>
 																<td width="30"></td>
-																<td width="200"></td>																																									
+																<td width="200"></td>
 															</tr>
 															<tr>
 																<td height="10" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 10px !important; visibility: hidden;">&nbsp;</div></td>
 															</tr>
 															<tr style="padding: 0; margin: 0;">
-															
+
 																<td width="265">Downloads last month:</td>
-																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_primary; ?></td>	
+																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->monthly_primary; ?></td>
 																<td width="30"></td>
 																<td width="200" style="padding: 0; margin: 0;">
 																</td>
-																			
+
 															</tr>
 															<tr>
 																<td height="10" style="color: <?php echo $backgroundColor; ?> !important;background-color: <?php echo $backgroundColor; ?>;"><div style="height: 10px !important; visibility: hidden;">&nbsp;</div></td>
@@ -325,15 +325,15 @@ $more = count($this->pubstats) - $this->limit;
 																<td></td>
 															</tr>
 															<tr style="padding: 0; margin: 0;">
-																
+
 																<td width="265">Total downloads to date:</td>
-																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->total_primary; ?></td>	
+																<td width="50" style="color: <?php echo $titleLinkColor; ?>; font-weight:bold;"><?php echo $stat->total_primary; ?></td>
 																<td width="30"></td>
 																<td width="200" style="color: #777; font-style: italic;text-align: right;"><a href="<?php echo $link;  ?>" style="color: <?php echo $linkColor; ?>;">View publication</a> | <a href="<?php echo $manageLink; ?>" style="color: <?php echo $linkColor; ?>;">Manage</a></td>
-																			
+
 															</tr>
 				                                    	</tbody>
-													</table>	
+													</table>
 												</td>
 												<td width="25"></td>
 											</tr>
@@ -346,8 +346,8 @@ $more = count($this->pubstats) - $this->limit;
 											<?php } ?>
 										</tbody>
 									</table>
-									<!-- ====== End Content Table ====== -->	
-									
+									<!-- ====== End Content Table ====== -->
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 										<tbody>
@@ -357,7 +357,7 @@ $more = count($this->pubstats) - $this->limit;
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
-									
+
 										<!-- ====== All datasets table ====== -->
 										<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 											<tbody>
@@ -367,7 +367,7 @@ $more = count($this->pubstats) - $this->limit;
 											</tbody>
 										</table>
 										<!-- ====== End All datasets table ====== -->
-								
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 										<tbody>
@@ -377,7 +377,7 @@ $more = count($this->pubstats) - $this->limit;
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
-								
+
 									<!-- ====== Summary table ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>">
 										<tbody>
@@ -393,7 +393,7 @@ $more = count($this->pubstats) - $this->limit;
 											</tr>
 										</tbody>
 									</table>
-																		
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>;border-color: <?php echo $backgroundColor; ?>">
 										<tbody>
@@ -403,10 +403,10 @@ $more = count($this->pubstats) - $this->limit;
 										</tbody>
 									</table>
 									<!-- ====== End Spacer ====== -->
-									
+
 									<!-- ====== Footer Table ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="-webkit-font-smoothing: antialiased; background-color: <?php echo $footerBgColor; ?>; color: <?php echo $borderColor; ?>; border-right: 1px solid <?php echo $borderColor; ?>; border-left: 1px solid <?php echo $borderColor; ?>; border-bottom: 1px solid <?php echo $borderColor; ?>;" bgcolor="<?php echo $footerBgColor; ?>">
-										<tbody>										
+										<tbody>
 											<tr>
 												<td width="25"></td>
 												<td width="620"><p style="text-align: right; font-size: 12px; color: <?php echo $footerTextColor; ?>; margin: 15px 0; ">To unsubscribe, adjust "Receive monthly usage reports and other news" setting on your profile at <a href="<?php echo $profileLink . '/profile' . $append; ?>" style="color: <?php echo $linkColor; ?>;"><?php echo $base; ?></a></p></td>
@@ -414,7 +414,7 @@ $more = count($this->pubstats) - $this->limit;
 											</tr>
 										</tbody>
 									</table>
-									
+
 									<!-- ====== Start Spacer ====== -->
 									<table width="670" cellpadding="0" cellspacing="0" border="0" style="background-color: <?php echo $backgroundColor; ?>;" bgcolor="<?php echo $backgroundColor; ?>;border-color: <?php echo $backgroundColor; ?>">
 										<tbody>

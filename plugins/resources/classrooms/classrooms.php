@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     hubzero-cms
- * @author      Steven Snyder <snyder13@purdue.edu> 
+ * @author      Steven Snyder <snyder13@purdue.edu>
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
@@ -36,7 +36,7 @@ class plgResourcesClassrooms extends JPlugin
 {
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -54,7 +54,7 @@ class plgResourcesClassrooms extends JPlugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      string $alias
 	 * @return     integer
 	 */
@@ -91,7 +91,7 @@ class plgResourcesClassrooms extends JPlugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -107,21 +107,21 @@ class plgResourcesClassrooms extends JPlugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_classrooms')) 
+		if (!$model->type->params->get('plg_classrooms'))
 		{
 			return $arr;
 		}
 
 		// Are we returning HTML?
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			$arr['html'] = array('<div id="no-usage"><p class="warning">' . JText::_('PLG_RESOURCES_CLASSROOMS_NO_DATA_FOUND') . '</p></div>');
 
@@ -133,7 +133,7 @@ class plgResourcesClassrooms extends JPlugin
 
 				$dbh = JFactory::getDBO();
 				$dbh->setQuery(
-					"SELECT DISTINCT 
+					"SELECT DISTINCT
 						sc2.toolname AS tool,
 						sc2.clustersize AS size,
 						YEAR(sc2.cluster_start) AS year,
@@ -142,10 +142,10 @@ class plgResourcesClassrooms extends JPlugin
 						sc2.first_use,
 						SUBSTRING_INDEX(sc2.cluster, '|', 1) AS semester,
 						CONCAT(SUBSTRING_INDEX(sc2.cluster, '|', 1), '|', SUBSTRING_INDEX(sc2.cluster, '|', -2)) AS cluster,
-						SHA1(CONCAT(sc2.uidNumber, " . $dbh->quote(uniqid()) . ")) AS uid  
-					FROM #__resource_stats_clusters sc1 
-					LEFT JOIN #__resource_stats_clusters sc2 ON sc2.cluster = sc1.cluster 
-					WHERE sc1.toolname = " . $dbh->quote($model->resource->alias) . " 
+						SHA1(CONCAT(sc2.uidNumber, " . $dbh->quote(uniqid()) . ")) AS uid
+					FROM #__resource_stats_clusters sc1
+					LEFT JOIN #__resource_stats_clusters sc2 ON sc2.cluster = sc1.cluster
+					WHERE sc1.toolname = " . $dbh->quote($model->resource->alias) . "
 					ORDER BY cluster_start, first_use"
 				);
 

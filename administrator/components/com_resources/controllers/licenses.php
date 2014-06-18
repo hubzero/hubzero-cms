@@ -38,7 +38,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -127,7 +127,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add a new type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -137,7 +137,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -183,7 +183,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a record
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -202,8 +202,8 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 			$this->editTask($row);
 			return;
 		}
-		
-		if (!$row->id) 
+
+		if (!$row->id)
 		{
 			$row->ordering = $row->getNextOrder();
 		}
@@ -233,7 +233,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more types
-	 * 
+	 *
 	 * @return     void Redirects back to main listing
 	 */
 	public function removeTask()
@@ -287,7 +287,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Move an item down up the ordering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderupTask()
@@ -297,7 +297,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 	/**
 	 * Move an item down in the ordering
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderdownTask()
@@ -308,7 +308,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	/**
 	 * Reorders a resource child
 	 * Redirects to parent resource's children listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask($dir = 0)

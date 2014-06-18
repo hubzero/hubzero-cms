@@ -38,19 +38,19 @@ class GroupsTableModuleMenu extends JTable
 {
 	var $moduleid = null;
 	var $pageid   = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	
+
 	public function __construct(&$db)
 	{
 		parent::__construct('#__xgroups_modules_menu', 'id', $db);
 	}
-	
+
 	/**
 	 * Get pages of module menu
 	 *
@@ -62,13 +62,13 @@ class GroupsTableModuleMenu extends JTable
 		{
 			return;
 		}
-		
+
 		$sql = "SELECT * FROM {$this->_tbl} as m WHERE m.`moduleid`=" . $this->_db->quote( $filters['moduleid'] );
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Create menus matching module ID
 	 *
@@ -83,14 +83,14 @@ class GroupsTableModuleMenu extends JTable
 		{
 			$values[] = '('.$this->_db->quote($moduleid).','.$this->_db->quote($pageid).')';
 		}
-		
+
 		// make sure we have at least one menu item
 		if (count($values) < 1)
 		{
 			$this->setError('Module must have at least one menu assignment.');
 			return false;
 		}
-		
+
 		// add menu items for each page
 		$sql = "INSERT INTO {$this->_tbl}(`moduleid`,`pageid`) VALUES " . implode(',', $values);
 		$this->_db->setQuery($sql);
@@ -99,11 +99,11 @@ class GroupsTableModuleMenu extends JTable
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		
+
 		// everything went smoothly
 		return true;
 	}
-	
+
 	/**
 	 * Delete menus matching module ID
 	 *
@@ -118,7 +118,7 @@ class GroupsTableModuleMenu extends JTable
 			$this->setError('You must supply a module ID.');
 			return false;
 		}
-		
+
 		// delete any menu items matching module id
 		$sql = "DELETE FROM {$this->_tbl} WHERE `moduleid`=" . $this->_db->quote( $moduleid );
 		$this->_db->setQuery( $sql );
@@ -127,7 +127,7 @@ class GroupsTableModuleMenu extends JTable
 			$this->setError($this->_db->getError());
 			return false;
 		}
-		
+
 		// everything went smoothly
 		return true;
 	}

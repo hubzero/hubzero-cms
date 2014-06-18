@@ -47,7 +47,7 @@ if (substr($base, -13) == 'administrator')
 else
 {
 	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id=' 
+	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id='
 				. $this->row->publication_id . '&v=' . $this->row->version_number);
 }
 

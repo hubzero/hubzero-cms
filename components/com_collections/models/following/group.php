@@ -40,35 +40,35 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 {
 	/**
 	 * \Hubzero\User\Group
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_image = NULL;
 
 	/**
 	 * URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_baselink = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	//private $_db = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Group ID
 	 * @return     void
 	 */
@@ -94,12 +94,12 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CollectionsModelFollowingGroup($oid);
 		}
@@ -121,7 +121,7 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 			{
 				$this->_image = DS . trim($config->get('uploadpath', '/site/groups'), DS) . DS . $this->_obj->get('gidNumber') . DS . $this->_obj->get('logo');
 			}
-			else 
+			else
 			{
 				$this->_image = '/components/com_groups/assets/img/group_default_logo.png';
 			}

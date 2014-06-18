@@ -35,15 +35,15 @@ jimport('joomla.plugin.plugin');
 
 /**
  * GeocoderCA plugin for geocode
- * 
- * The GeocoderCaProvider is able to geocode and reverse 
+ *
+ * The GeocoderCaProvider is able to geocode and reverse
  * geocode street addresses, exclusively in USA & Canada.
  */
 class plgGeocodeGeocoderca extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

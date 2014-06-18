@@ -14,7 +14,7 @@ $path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['R
 </label>
 <h2>Layout</h2>
 <ol id="pages">
-	<? 
+	<?
 		$tabs = array();
 		$layout = $pdf->getPageLayout();
 		$pdf->eachPage(function($src, $idx) use(&$tabs, $layout) {
@@ -35,7 +35,7 @@ $path->addItem(($title ? htmlentities($title) : 'Layout: new form'), $_SERVER['R
 					++$qidx;
 					echo '</div>';
 				}
-			} 
+			}
 			echo '</li>';
 	}); ?>
 </ol>

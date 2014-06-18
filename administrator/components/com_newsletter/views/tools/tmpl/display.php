@@ -36,7 +36,7 @@ JToolBarHelper::title(JText::_( 'Newsletter Tools' ), 'tools.png');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	// do field validation
 	submitform( pressbutton );
@@ -123,7 +123,7 @@ function submitbutton(pressbutton)
 					//get iframe and mozified code
 					var previewIframe = $('#preview-iframe'),
 						previewCode = $('#preview-code').find('table').first();
-					
+
 					//set iframe height and width
 					//add preview code to iframe
 					previewIframe

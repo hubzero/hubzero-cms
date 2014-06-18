@@ -38,21 +38,21 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
 
 	/**
 	 * Display the autocompleter. Defaults to multi-entry for tags
-	 * 
+	 *
 	 * @param      array $atts Attributes for setting up the autocomplete
 	 * @return     string HTML
 	 */
 	public function onGetAutocompleter($atts)
 	{
 		// Ensure we have an array
-		if (!is_array($atts)) 
+		if (!is_array($atts))
 		{
 			$atts = array();
 		}
@@ -74,18 +74,18 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 		$datascript = $base . '/index.php';
 		// Push some needed scripts and stylings to the template but ensure we do it only once
-		if ($this->_pushscripts) 
+		if ($this->_pushscripts)
 		{
 			$scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 
 			$app = JFactory::getApplication();
 			$templatecss = DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
 			$plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.css';
-			if (file_exists(JPATH_SITE . $templatecss)) 
+			if (file_exists(JPATH_SITE . $templatecss))
 			{
 				$scripts .= $base . $templatecss . '?v=' . filemtime(JPATH_SITE . $templatecss);
-			} 
-			else 
+			}
+			else
 			{
 				$scripts .= $base . $plugincss . '?v=' . filemtime(JPATH_SITE . $plugincss);
 			}
@@ -104,7 +104,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$html .= ($dsabl) ? ' readonly="readonly"'          : '';
 		$html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" data-script="' . $datascript . '" />' . "\n";
 		$html .= $scripts;
-		
+
 		/*$json = '';
 		if ($value)
 		{
@@ -115,10 +115,10 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 			{
 				if ($type != 'tags')
 				{
-					if (preg_match('/(.*)\((.*)\)/U', $item, $matched)) { 
+					if (preg_match('/(.*)\((.*)\)/U', $item, $matched)) {
 						$itemId = htmlentities(stripslashes($matched[2]), ENT_COMPAT, 'UTF-8');
 						$itemName = htmlentities(stripslashes($matched[1]), ENT_COMPAT, 'UTF-8');
-					} else { 
+					} else {
 						$itemId = htmlentities(stripslashes($item), ENT_COMPAT, 'UTF-8');
 						$itemName = $itemId;
 					}
@@ -127,7 +127,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 			}
 			$json = '['.implode(',',$items).']';
 		}
-		
+
 		$html .= '<input type="hidden" name="pre-'.$name.'" rel="'.$id.'"';
 		$html .= ($id)    ? ' id="pre-'.$id.'"'       : '';
 		$html .= ($class) ? ' class="pre-'.trim($class).'"' : '';
@@ -139,13 +139,13 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display the autocompleter for a multi-entry field
-	 * 
+	 *
 	 * @param      array $atts Attributes for setting up the autocomplete
 	 * @return     string HTML
 	 */
 	public function onGetMultiEntry($atts)
 	{
-		if (!is_array($atts)) 
+		if (!is_array($atts))
 		{
 			$atts = array();
 		}
@@ -165,13 +165,13 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display the autocompleter for a single entry field
-	 * 
+	 *
 	 * @param      array $atts Attributes for setting up the autocomplete
 	 * @return     string HTML
 	 */
 	public function onGetSingleEntry($atts)
 	{
-		if (!is_array($atts)) 
+		if (!is_array($atts))
 		{
 			$atts = array();
 		}
@@ -191,13 +191,13 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display the autocompleter for a single entry field with accompanying select
-	 * 
+	 *
 	 * @param      array $atts Attributes for setting up the autocomplete
 	 * @return     string HTML
 	 */
 	public function onGetSingleEntryWithSelect($atts)
 	{
-		if (!is_array($atts)) 
+		if (!is_array($atts))
 		{
 			$atts = array();
 		}

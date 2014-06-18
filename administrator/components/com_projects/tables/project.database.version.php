@@ -34,61 +34,61 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for project database versions
  */
-class ProjectDatabaseVersion extends JTable 
-{	
+class ProjectDatabaseVersion extends JTable
+{
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
-	
+
 	/**
 	 * Database name
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $database_name  	= NULL;
-		
+
 	/**
 	 * Version
-	 * 
+	 *
 	 * @var integer
-	 */	
-	var $version      		= NULL;	
-			
+	 */
+	var $version      		= NULL;
+
 	/**
 	 * Data definition
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $data_definition  	= NULL;
-		
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_database_versions', 'id', $db );
 	}
-	
+
 	/**
 	 * Get max version number
-	 * 
+	 *
 	 * @param      string 		$dbname
-	 * 
+	 *
 	 * @return     integer or NULL
 	 */
 	public function getMaxVersion( $dbname = '')
-	{		
-		if ($dbname === NULL) 
+	{
+		if ($dbname === NULL)
 		{
 		 	return false;
 		}
-		
+
 		$query = "SELECT MAX(version) as version FROM $this->_tbl
 		 			WHERE database_name='$dbname'";
 

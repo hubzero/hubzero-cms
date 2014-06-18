@@ -80,9 +80,9 @@ if ($this->citations)
 }
 ?>
 <h3>
-	<?php echo JText::_('PLG_RESOURCES_CITATIONS'); ?> 
+	<?php echo JText::_('PLG_RESOURCES_CITATIONS'); ?>
 	<span>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#nonaffiliated'); ?>"><?php echo JText::_('PLG_RESOURCES_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> | 
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#nonaffiliated'); ?>"><?php echo JText::_('PLG_RESOURCES_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> |
 		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#affiliated'); ?>"><?php echo JText::_('PLG_RESOURCES_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
 	</span>
 </h3>

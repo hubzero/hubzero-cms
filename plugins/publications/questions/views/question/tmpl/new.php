@@ -58,7 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<input type="hidden" name="question[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
 
 			<label for="field-anonymous">
-				<input class="option" type="checkbox" name="question[anonymous]" id="field-anonymous" value="1" /> 
+				<input class="option" type="checkbox" name="question[anonymous]" id="field-anonymous" value="1" />
 				<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 			</label>
 
@@ -91,7 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($this->banking) { ?>
 			<label for="field-reward">
 				<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-				<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/> 
+				<input type="text" name="question[reward]" id="field-reward" value="" size="5" <?php if ((int) $this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
 				<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
 			</label>
 		<?php } else { ?>

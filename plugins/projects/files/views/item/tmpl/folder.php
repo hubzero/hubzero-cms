@@ -24,8 +24,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$dirpath = $this->subdir ? $this->subdir . DS . $this->item : $this->item;	
-		
+$dirpath = $this->subdir ? $this->subdir . DS . $this->item : $this->item;
+
 ?>
 
 <tr class="mini faded mline">
@@ -38,8 +38,8 @@ $dirpath = $this->subdir ? $this->subdir . DS . $this->item : $this->item;
 	<td></td>
 	<td></td>
 	<td></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir) 
-	. a . 'folder[]='.urlencode($this->item); ?>" 
+	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir)
+	. a . 'folder[]='.urlencode($this->item); ?>"
 	 title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
 	<?php if ($this->publishing) { ?>
 	<td></td>

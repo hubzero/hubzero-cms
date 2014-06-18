@@ -42,7 +42,7 @@ class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
 	{
 		// get the page id
 		$pageid = ($this->page) ? $this->page->get('id') : 0;
-		
+
 		// get the list of modules
 		$groupModuleArchive = GroupsModelModuleArchive::getInstance();
 		$modules = $groupModuleArchive->modules('list', array(
@@ -52,7 +52,7 @@ class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
 			'position'  => $this->params->position,
 			'orderby'   => 'ordering ASC'
 		));
-		
+
 		// loop through each module to display
 		$content = '';
 		foreach ($modules as $module)
@@ -63,7 +63,7 @@ class GroupsHelperDocumentRendererModules extends GroupsHelperDocumentRenderer
 				$content .= $module->content('parsed');
 			}
 		}
-		
+
 		//return final output
 		return $content;
 	}

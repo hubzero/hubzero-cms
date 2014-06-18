@@ -38,7 +38,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display imports
-	 * 
+	 *
 	 * @access    public
 	 * @return     void
 	 */
@@ -46,7 +46,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		// set layout
 		$this->view->setLayout('display');
-		
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -55,20 +55,20 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 				$this->view->setError($error);
 			}
 		}
-		
+
 		// get all imports from archive
 		$hooksArchive = \Resources\Model\Import\Hook\Archive::getInstance();
 		$this->view->hooks = $hooksArchive->hooks('list', array(
 			'state' => array(1)
 		));
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Add an Import
-	 * 
+	 *
 	 * @access    public
 	 * @return     void
 	 */
@@ -76,10 +76,10 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		$this->editTask();
 	}
-	
+
 	/**
 	 * Edit an Import
-	 * 
+	 *
 	 * @access    public
 	 * @return     void
 	 */
@@ -87,14 +87,14 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		// set layout
 		$this->view->setLayout('edit');
-		
+
 		// get request vars
 		$ids = JRequest::getVar('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		// get the import object
 		$this->view->hook = new Resources\Model\Import\Hook( $id );
-		
+
 		// Set any errors
 		if ($this->getErrors())
 		{
@@ -103,14 +103,14 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 				$this->view->setError($error);
 			}
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	/**
 	 * Save an Import
-	 * 
+	 *
 	 * @access    public
 	 * @return     void
 	 */
@@ -118,7 +118,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		// check token
 		JSession::checkToken() or die( 'Invalid Token' );
-		
+
 		// get request vars
 		$hook = JRequest::getVar('hook', array());
 		$file = JRequest::getVar('file', array(), 'FILES');
@@ -138,7 +138,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		if (!$this->hook->get('id'))
 		{
 			$isNew = true;
-			
+
 			// set the created by/at
 			$this->hook->set('created_by', JFactory::getUser()->get('id'));
 			$this->hook->set('created', JFactory::getDate()->toSql());
@@ -190,7 +190,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		// get path to file
 		$file = $this->hook->fileSpacePath() . DS . $this->hook->get('file');
-		
+
 		// default contents
 		$contents = '';
 
@@ -200,15 +200,15 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 			// get contents of file
 			$contents = file_get_contents($file);
 		}
-		
-		// output contents of hook file	
+
+		// output contents of hook file
 		highlight_string($contents);
 		exit();
 	}
-	
+
 	/**
 	 * Delete Import
-	 * 
+	 *
 	 * @access    public
 	 * @return     void
 	 */
@@ -216,7 +216,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		// check token
 		JSession::checkToken() or die( 'Invalid Token' );
-		
+
 		// get request vars
 		$ids = JRequest::getVar('id', array());
 
@@ -228,7 +228,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 			{
 				continue;
 			}
-			
+
 			// attempt to delete hook
 			$hook->set('state', 2);
 			if (!$hook->store(true))
@@ -241,7 +241,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-		
+
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
@@ -261,13 +261,13 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	{
 		// upload path
 		$uploadPath = $hook->fileSpacePath();
-		
+
 		// if we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
 			JFolder::create($uploadPath, 0775);
 		}
-		
+
 		// all set
 		return true;
 	}

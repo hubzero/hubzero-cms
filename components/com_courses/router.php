@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Querystring
  */
 function CoursesBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		if ($query['controller'] == 'certificate')
 		{
@@ -49,20 +49,20 @@ function CoursesBuildRoute(&$query)
 		unset($query['controller']);
 	}
 
-	if (!empty($query['gid'])) 
+	if (!empty($query['gid']))
 	{
 		$segments[] = $query['gid'];
 		unset($query['gid']);
 	}
-	if (!empty($query['offering'])) 
+	if (!empty($query['offering']))
 	{
 		$segments[] = $query['offering'];
 		unset($query['offering']);
 	}
-	if (!empty($query['active'])) 
+	if (!empty($query['active']))
 	{
 		$segments[] = $query['active'];
-		if ($query['active'] == '' && !empty($query['task'])) 
+		if ($query['active'] == '' && !empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
@@ -83,17 +83,17 @@ function CoursesBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
-	if (!empty($query['unit'])) 
+	if (!empty($query['unit']))
 	{
 		$segments[] = $query['unit'];
 		unset($query['unit']);
 	}
-	if (!empty($query['b'])) 
+	if (!empty($query['b']))
 	{
 		$segments[] = $query['b'];
 		unset($query['b']);
 	}
-	if (!empty($query['c'])) 
+	if (!empty($query['c']))
 	{
 		$segments[] = $query['c'];
 		unset($query['c']);
@@ -104,9 +104,9 @@ function CoursesBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route
- * @return array 
+ * @return array
  */
 function CoursesParseRoute($segments)
 {
@@ -117,9 +117,9 @@ function CoursesParseRoute($segments)
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
-		if (in_array($segments[0], array('intro', 'browse', 'badge'))) 
+		if (in_array($segments[0], array('intro', 'browse', 'badge')))
 		{
 			$vars['controller'] = 'courses';
 			$vars['task'] = $segments[0];
@@ -143,7 +143,7 @@ function CoursesParseRoute($segments)
 		else if ($segments[0] == 'certificate')
 		{
 			$vars['controller'] = $segments[0];
-			if (isset($segments[1])) 
+			if (isset($segments[1]))
 			{
 				$vars['course'] = $segments[1];
 			}
@@ -184,7 +184,7 @@ function CoursesParseRoute($segments)
 		}
 	}*/
 
-	if (isset($segments[1])) 
+	if (isset($segments[1]))
 	{
 		$vars['controller'] = 'course';
 		switch ($segments[1])
@@ -282,7 +282,7 @@ function CoursesParseRoute($segments)
 		}
 	}
 
-	if (isset($segments[2])) 
+	if (isset($segments[2]))
 	{
 		if ($segments[2] == 'form.index'
 			|| $segments[2] == 'form.layout'
@@ -323,19 +323,19 @@ function CoursesParseRoute($segments)
 			$vars['controller'] = 'offering';
 		}
 	}
-	if (isset($segments[3])) 
+	if (isset($segments[3]))
 	{
 		$vars['unit'] = $segments[3];
 	}
-	if (isset($segments[4])) 
+	if (isset($segments[4]))
 	{
 		$vars['group'] = $segments[4];
 	}
-	if (isset($segments[5])) 
+	if (isset($segments[5]))
 	{
 		$vars['asset'] = $segments[5];
 	}
-	if (isset($segments[6])) 
+	if (isset($segments[6]))
 	{
 		$vars['d'] = $segments[6];
 	}

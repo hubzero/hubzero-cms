@@ -38,7 +38,7 @@ class plgSearchProjects extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -57,7 +57,7 @@ class plgSearchProjects extends SearchPlugin
 				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group AND m.uidNumber=" . $juser->get('id');
 			}
 		}
-		
+
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{

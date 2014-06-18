@@ -38,42 +38,42 @@ class GroupsReason extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uidNumber = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $reason   = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $date     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,23 +84,23 @@ class GroupsReason extends JTable
 
 	/**
 	 * Load a record based on group ID and user ID and bind to $this
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @param      integer $gid Group ID
 	 * @return     boolean True on success
 	 */
 	public function loadReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL) 
+		if ($uid === NULL || $gid === NULL)
 		{
 			return false;
 		}
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid' LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -109,19 +109,19 @@ class GroupsReason extends JTable
 
 	/**
 	 * Delete an entry based on group ID and user ID
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @param      integer $gid Group ID
 	 * @return     boolean True on success
 	 */
 	public function deleteReason($uid, $gid)
 	{
-		if ($uid === NULL || $gid === NULL) 
+		if ($uid === NULL || $gid === NULL)
 		{
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE uidNumber='$uid' AND gidNumber='$gid'");
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 		}
@@ -130,18 +130,18 @@ class GroupsReason extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->gidNumber) == '') 
+		if (trim($this->gidNumber) == '')
 		{
 			$this->setError(JText::_('GROUPS_REASON_MUST_HAVE_GROUPID'));
 			return false;
 		}
 
-		if (trim($this->uidNumber) == '') 
+		if (trim($this->uidNumber) == '')
 		{
 			$this->setError(JText::_('GROUPS_REASON_MUST_HAVE_USERNAME'));
 			return false;

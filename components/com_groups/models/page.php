@@ -36,42 +36,42 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_g
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.hit.php';
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
 
-// include models 
+// include models
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version' . DS . 'archive.php';
 
 class GroupsModelPage extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'GroupsTablePage';
-	
+
 	/**
 	 * Versions List
-	 * 
+	 *
 	 * @var \Hubzero\Base\ItemList
 	 */
 	protected $_versions = null;
-	
+
 	/**
 	 * Versions Count
-	 * 
+	 *
 	 * @var int
 	 */
 	protected $_versions_count = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -79,11 +79,11 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -92,7 +92,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		{
 			$this->bind( $oid );
 		}
-		
+
 		// load versions
 		$pageVersionArchive = new GroupsModelPageVersionArchive();
 		$this->_versions = $pageVersionArchive->versions('list', array(
@@ -100,8 +100,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 			'orderby' => 'version DESC'
 		));
 	}
-	
-	
+
+
 	/**
 	 * Get Page Versions
 	 *
@@ -110,8 +110,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		return $this->_versions;
 	}
-	
-	
+
+
 	/**
 	 * Load Page Version
 	 *
@@ -122,7 +122,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		// var to hold version
 		$version = new GroupsModelPageVersion();
-		
+
 		// make sure we have versions to return
 		if ($this->_versions->count() > 0)
 		{
@@ -136,11 +136,11 @@ class GroupsModelPage extends \Hubzero\Base\Model
 				$version = $this->_versions->fetch('version', $vid);
 			}
 		}
-		
+
 		//return version
 		return $version;
 	}
-	
+
 	/**
 	 * Load Page Category
 	 *
@@ -150,12 +150,12 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		// var to hold version
 		$category = new GroupsModelPageCategory($this->get('category'));
-		
+
 		//return version
 		return $category;
 	}
-	
-	
+
+
 	/**
 	 * Load Approved Page version
 	 *
@@ -165,8 +165,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		return $this->_versions->fetch('approved', 1);
 	}
-	
-	
+
+
 	/**
 	 * Check to see if group owns page
 	 *
@@ -181,10 +181,10 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Generate a unique page alias or slug
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function uniqueAlias()
@@ -195,13 +195,13 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		{
 			$alias = str_replace(' ', '_', $this->get('title'));
 		}
-		
+
 		// force lowercase letters
 		$alias = strtolower($alias);
-		
+
 		// allow only alpha numeric chars, dashes, and underscores
 		$alias = preg_replace("/[^-_a-z0-9]+/", "", $alias);
-		
+
 		// make sure alias isnt a reserved term
 		$group   = \Hubzero\User\Group::getInstance( $this->get('gidNumber') );
 		$plugins = \Hubzero\User\Group\Helper::getPluginAccess( $group );
@@ -210,11 +210,11 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		{
 			$alias .= '_page';
 		}
-		
+
 		// get current page
 		$page = new GroupsModelPage( $this->get('id') );
 		$currentAlias = $page->get('alias');
-		
+
 		// only against our pages if alias has changed
 		if ($currentAlias != $alias)
 		{
@@ -225,21 +225,21 @@ class GroupsModelPage extends \Hubzero\Base\Model
 				'gidNumber' => $group->get('gidNumber'),
 				'state' => array(0,1)
 			));
-			
+
 			// Append random number if page already exists
 			while (in_array($alias, $aliases))
 			{
 				$alias .= mt_rand(1, 9);
 			}
 		}
-		
+
 		// return sanitized alias
 		return $alias;
 	}
-	
+
 	/**
 	 * Get the next page order
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getNextOrder( $gidNumber )
@@ -248,7 +248,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$order = $this->_tbl->getNextOrder($where);
 		return $order;
 	}
-	
+
 	/**
 	 * Reorder page
 	 *
@@ -259,7 +259,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	{
 		// build where statement
 		$where = "gidNumber=" . $this->_db->quote($gidNumber);
-		
+
 		// determine if we need to move up or down
 		$dir = '';
 		if ($move < 0)
@@ -267,7 +267,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 			$dir = '-';
 			$move = substr($move, 1);
 		}
-		
+
 		// move the number of times different
 		for ($i=0; $i < $move; $i++)
 		{

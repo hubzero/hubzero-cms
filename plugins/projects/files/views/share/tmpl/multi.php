@@ -33,12 +33,12 @@ $sendTo = $this->sendTo;
 <h3><?php echo $sendTo == 'local' ? JText::_('COM_PROJECTS_UNSHARE_PROJECT_FILES') : JText::_('COM_PROJECTS_SHARE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
 	<fieldset >
@@ -49,21 +49,21 @@ if (!$this->getError()) {
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="remotedir" value="<?php echo $this->remotedir; ?>" />
-		<input type="hidden" name="remoteid" value="<?php echo $this->remoteid; ?>" />	
+		<input type="hidden" name="remoteid" value="<?php echo $this->remoteid; ?>" />
 		<input type="hidden" name="sendto" value="<?php echo $sendTo; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="send_to"><span class="<?php echo $sendTo == 'local' ? 'send_to_local' : 'send_to_remote'; ?>">
 			<span>&nbsp;</span></span>
 		</p>
-		
-		<ul class="sample"> 
-		<?php foreach ($this->items as $element) 
-		{ 
+
+		<ul class="sample">
+		<?php foreach ($this->items as $element)
+		{
 			$remote = NULL;
 			foreach ($element as $type => $item)
 			{
 				// Get type and item name
-			} 
+			}
 
 			// Remote file?
 			foreach ($this->services as $servicename)
@@ -76,9 +76,9 @@ if (!$this->getError()) {
 					$remotes[] = $remote;
 				}
 			}
-			
+
 			// Cam only send remote to local or local to remote
-			if ($sendTo == 'remote' && $remote) 
+			if ($sendTo == 'remote' && $remote)
 			{
 				continue;
 			}
@@ -98,25 +98,25 @@ if (!$this->getError()) {
 			     ->display();
 		} ?>
 		</ul>
-		
-		<?php if ($sendTo == 'remote') 
-			{ 
+
+		<?php if ($sendTo == 'remote')
+			{
 				$i = 0;
-				
-				// Local files 
+
+				// Local files
 				foreach ($this->services as $servicename)
 				{
 					$configs = $this->connect->getConfigs($servicename);
 		?>
 			<label class="sharing-option">
 				<input type="radio" name="service" value="<?php echo $servicename; ?>" <?php if($i == 0) { echo 'checked="checked"'; } ?> />
-				<?php echo JText::_('COM_PROJECTS_SHARE_FILES_WITH') 
+				<?php echo JText::_('COM_PROJECTS_SHARE_FILES_WITH')
 					. ' <span class="' . $servicename . '">' . $configs['servicename'] . '</span>'; ?>
 			</label>
-			
-			<?php 
+
+			<?php
 			// Extra options for Google
-			if ($servicename == 'google') { 
+			if ($servicename == 'google') {
 			?>
 			<div class="sharing-option-extra">
 				<label class="sharing-option">
@@ -129,26 +129,26 @@ if (!$this->getError()) {
 					<?php echo JText::_('COM_PROJECTS_FILES_SHARE_GOOGLE_NO_CONVERT'); ?>
 				</label>
 			</div>
-			<?php } 
+			<?php }
 				$i++;
-			} 
+			}
 		}
-		elseif (count($remotes) == 1) { 
+		elseif (count($remotes) == 1) {
 			$remote = $remotes[0];
 			$remote_resource = json_decode($remote->remote_resource);
-			
+
 			if ($remote->service == 'google')
-			{	
+			{
 				// Do we deal with Google format?
 				if ($remote_resource->googleFormat)
 				{
 					// Get all available export formats for the MIME type
 					$formats = ProjectsGoogleHelper::getGoogleConversionFormat($remote_resource->mimeType, true);
 					if (!empty($formats))
-					{ 
+					{
 			?>
 				<h4><?php echo JText::_('COM_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
-				<div class="sharing-option-extra">			
+				<div class="sharing-option-extra">
 			<?php
 						$i = 0;
 						foreach ($formats as $format)
@@ -158,24 +158,24 @@ if (!$this->getError()) {
 								<input type="radio" name="format" value="<?php echo $format; ?>" <?php if($i == 0) { echo 'checked="checked"'; }?> />
 								<?php echo $format; ?>
 							</label>
-			<?php	
+			<?php
 						$i++;
 						}
 			?>
 				</div>
 			<?php
 					}
-				}				
+				}
 	 		}
 		 } else { // multiple ?>
 			<p class="notice"><?php echo JText::_('COM_PROJECTS_FILES_SHARING_MULTIPLE_NOTE_CONVERSION'); ?></p>
 		<?php } ?>
 		<p class="submitarea">
-			<input type="submit" value="<?php echo $sendTo == 'local' 
-			? JText::_('COM_PROJECTS_FILES_ACTION_UNSHARE') 
+			<input type="submit" value="<?php echo $sendTo == 'local'
+			? JText::_('COM_PROJECTS_FILES_ACTION_UNSHARE')
 			: JText::_('COM_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
 			<input type="reset" id="cancel-action"  class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

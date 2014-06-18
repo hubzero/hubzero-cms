@@ -297,14 +297,14 @@ class Mozify
 	 *
 	 * @return  string
 	 */
-	private function _rgb2hex(array $rgb) 
+	private function _rgb2hex(array $rgb)
 	{
 		if (isset($rgb['alpha']))
 		{
 			unset($rgb['alpha']);
 		}
 		$out = "";
-		foreach ($rgb as $c) 
+		foreach ($rgb as $c)
 		{
 			$hex = base_convert($c, 10, 16);
 			$out .= ($c < 16) ? ("0" . $hex) : $hex;

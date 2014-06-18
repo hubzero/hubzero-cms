@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
-	if (!$this->comment->get('anonymous')) 
+	if (!$this->comment->get('anonymous'))
 	{
 		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($this->comment->creator('name'))) . '</a>';
 	}
@@ -31,11 +31,11 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 	if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id'))
 	{
-		if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) 
+		if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student'))
 		{
 			$cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
-		} 
-		else if (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) 
+		}
+		else if (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section'))
 		{
 			$cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
 		}
@@ -57,17 +57,17 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
-				<strong><?php echo $name; ?></strong> 
+				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
-					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+					<span class="comment-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+					<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
 						&mdash; <?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
-						<span class="comment-date-at">@</span> 
-						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+						<span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
 					<?php } ?>
 				</a>
@@ -91,30 +91,30 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php if ($this->config->get('access-edit-thread')) { ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!-- 
-						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!-- 
+					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
+						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!-- 
-						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!-- 
+					<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!--
+						--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php } ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('base')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('base')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?><!-- 
+				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 			</p>
@@ -162,15 +162,15 @@ defined('_JEXEC') or die('Restricted access');
 
 						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 					<?php if ($this->config->get('comments_anon', 1)) { ?>
-							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" /> 
+							<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
 							<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 					<?php } else { ?>
-							&nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" /> 
+							&nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" />
 					<?php } ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" /> 
+							<input type="submit" value="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>
@@ -178,7 +178,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
-		if ($this->depth < $this->config->get('comments_depth', 3)) 
+		if ($this->depth < $this->config->get('comments_depth', 3))
 		{
 			$this->view('list')
 			     ->set('parent', $this->comment->get('id'))

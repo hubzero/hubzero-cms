@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * IGNOpenLS plugin for geocode
  *
- * The IGNOpenLSProvider is able to geocode street addresses only, 
+ * The IGNOpenLSProvider is able to geocode street addresses only,
  * exclusively in France. A valid OpenLS api key is required.
  */
 class plgGeocodeIgnopenls extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

@@ -38,15 +38,15 @@ JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group 
 
 // create toolbar buttons
 $canDo = GroupsHelper::getActions('group');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('Delete group page(s)?', 'delete');
 }
@@ -62,14 +62,14 @@ JHtml::_('behavior.modal', 'a.version, a.preview', array('handler' => 'iframe', 
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	submitform(pressbutton);
 }
 </script>
 
-<?php 
-	require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; 
+<?php
+	require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php';
 ?>
 
 <?php if ($this->needsAttention->count() > 0) : ?>
@@ -126,7 +126,7 @@ function submitbutton(pressbutton)
 									<?php echo JText::_('Scan Content'); ?>
 								</a>
 							</li>
-							
+
 						</ol>
 					</td>
 					<td width="20%">
@@ -190,7 +190,7 @@ function submitbutton(pressbutton)
 					?>
 				</td>
 				<td>
-					<?php 
+					<?php
 						if ($page->get('home'))
 						{
 							echo '<span class="home">Yes</span>';

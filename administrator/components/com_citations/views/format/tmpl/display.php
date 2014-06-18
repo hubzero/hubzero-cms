@@ -43,7 +43,7 @@ $cf = new CitationFormat();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
@@ -58,14 +58,14 @@ var $jQ = jQuery.noConflict();
 $jQ(document).ready(function(e) {
 	var formatSelector = $jQ('#format-selector'),
 		formatBox = $jQ('#format-string');
-	
+
 	//when we change format box
 	formatSelector.on('change', function(event) {
 		var value  = $jQ(this).val(),
 			format = $jQ(this).find(':selected').attr('data-format');
 		formatBox.val(format);
 	});
-	
+
 	//when we customize the format
 	formatBox.on('keyup', function(event) {
 		var customOption = formatSelector.find('option[value=custom]');
@@ -108,8 +108,8 @@ $jQ(document).ready(function(e) {
 					<?php
 						// get the keys
 						$keys = $cf->getTemplateKeys();
-						
-						foreach ($keys as $k => $v) 
+
+						foreach ($keys as $k => $v)
 						{
 							echo "<tr><td>{$v}</td><td>{$k}</td></tr>";
 						}

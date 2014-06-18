@@ -44,14 +44,14 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
@@ -63,7 +63,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -74,16 +74,16 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!isset($areas['wiki']) && !in_array('wiki', $areas)) 
+			if (!isset($areas['wiki']) && !in_array('wiki', $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a member ID?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -108,29 +108,29 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		$filters['authorized'] = $this->_authorize();
 
 		// Execute the query
-		if (!$limit) 
+		if (!$limit)
 		{
 			$filters['select'] = 'count';
 
 			$database->setQuery($this->_buildPluginQuery($filters));
 			$this->_total = $database->loadResult();
 			return $this->_total;
-		} 
-		else 
+		}
+		else
 		{
 			$filters['select'] = 'records';
 			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
 			$filters['limitstart'] = $limitstart;
 
 			$query = $this->_buildPluginQuery($filters);
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				return $query;
 			}
 
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
-				if ($this->_total == 0) 
+				if ($this->_total == 0)
 				{
 					return array();
 				}
@@ -140,7 +140,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
@@ -157,7 +157,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build a database query
-	 * 
+	 *
 	 * @param      array $filters Options for building the query
 	 * @return     string SQL
 	 */
@@ -165,57 +165,57 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	{
 		$juser = JFactory::getUser();
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query = "SELECT COUNT(f.id) FROM (SELECT v.pageid AS id, COUNT(DISTINCT t.tagid) AS uniques ";
-			} 
-			else 
+			}
+			else
 			{
 				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
-			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by, 
-						v.created AS modified, v.created AS publish_up, NULL AS publish_down,  
-						CASE 
+			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
+						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
+						CASE
 							WHEN w.group_cn != '' THEN CONCAT('index.php?option=com_groups&scope=', w.scope, '&pagename=', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
-						END AS href, 
+						END AS href,
 						'wiki' AS section ";
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
 			$query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
 		}
 		$query .= "FROM #__wiki_page AS w, #__wiki_version AS v ";
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
 		}
 		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND w.state < 2 ";
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$ids = implode(',', $filters['tags']);
 			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
 		}
 
 		$query .= "GROUP BY pageid ";
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= "HAVING uniques=" . count($filters['tags']) . " ";
 		}
-		if (isset($filters['select']) && $filters['select'] != 'count') 
+		if (isset($filters['select']) && $filters['select'] != 'count')
 		{
-			if (isset($filters['sortby'])) 
+			if (isset($filters['sortby']))
 			{
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
@@ -231,12 +231,12 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 					default:          $query .= 'created DESC';   break;
 				}
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			if (isset($filters['limit']) && $filters['limit'] != 'all')
 			{
 				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
 			}
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
 			$query .= ") AS f";
 		}
@@ -245,14 +245,14 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check if a user is logged in
-	 * 
+	 *
 	 * @return     boolean True if logged in
 	 */
 	private function _authorize()
 	{
 		// Check if they are logged in
 		$juser = JFactory::getUser();
-		if ($juser->get('guest')) 
+		if ($juser->get('guest'))
 		{
 			return false;
 		}

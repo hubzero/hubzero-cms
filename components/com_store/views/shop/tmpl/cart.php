@@ -83,16 +83,16 @@ $this->css()
 					foreach ($this->rows as $row)
 					{
 						$price = $row->price*$row->quantity;
-						if ($row->available) 
+						if ($row->available)
 						{ // do not add if not available
 							$total = $total+$price;
 						}
 						$sizes = array(); // build size options
-						if ($row->sizes && count($row->sizes) > 0) 
+						if ($row->sizes && count($row->sizes) > 0)
 						{
 							foreach ($row->sizes as $rs)
 							{
-								if (trim($rs) != '') 
+								if (trim($rs) != '')
 								{
 									$sizes[$rs] = $rs;
 								}
@@ -119,7 +119,7 @@ $this->css()
 						<?php if ($row->category!='service') { ?>
 							<input type="text" name="num<?php echo $row->itemid; ?>" id="num<?php echo $row->itemid; ?>" value="<?php echo $row->quantity; ?>" size="1" maxlength = "1" class="quantity" />
 						<?php } else { ?>
-							1 
+							1
 						<?php } ?>
 							<span class="removeitem"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=remove&item=' . $row->itemid); ?>" title="<?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?>"><?php echo JText::_('COM_STORE_REMOVE_FROM_CART'); ?></a></span>
 						</td>

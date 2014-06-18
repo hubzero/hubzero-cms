@@ -38,7 +38,7 @@ class CitationsControllerFormat extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -48,43 +48,43 @@ class CitationsControllerFormat extends \Hubzero\Component\AdminController
 		$this->view->currentFormat = $citationsFormat->getDefaultFormat();
 		//$this->view->currentStyle = $currentFormat->style;
 		//$this->view->currentFormat = $currentFormat->format;
-		
+
 		//get formatter object
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
 		$cf = new CitationFormat();
 		$this->view->apaFormat = $cf->getDefaultFormat('apa');
 		$this->view->ieeeFormat = $cf->getDefaultFormat('ieee');
-		
+
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
 				$this->view->setError($error);
 			}
 		}
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Save a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-		
+
 		//get format
 		$format = JRequest::getVar('format', array());
-		
+
 		$citationsFormat = new CitationsFormat( $this->database );
 		$citationsFormat->save($format);
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('Citation format successfully saved')

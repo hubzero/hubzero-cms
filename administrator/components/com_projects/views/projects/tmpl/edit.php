@@ -33,30 +33,30 @@ $profile = \Hubzero\User\Profile::getInstance($this->obj->created_by_user);
 // Determine status & options
 $status = '';
 $row = $this->obj;
-if ($row->state == 1 && $row->setup_stage >= $setup_complete) 
+if ($row->state == 1 && $row->setup_stage >= $setup_complete)
 {
 	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
 }
-elseif ($row->state == 2) 
+elseif ($row->state == 2)
 {
 	$status  = '<span class="deleted">'.JText::_('COM_PROJECTS_DELETED').'</span> ';
 }
-elseif ($row->setup_stage < $setup_complete) 
+elseif ($row->setup_stage < $setup_complete)
 {
 	$status  = '<span class="setup">'.JText::_('Setup').'</span> '.JText::_('in progress');
 }
-elseif ($row->state == 0) 
+elseif ($row->state == 0)
 {
 	$text = $this->suspended ? JText::_('COM_PROJECTS_SUSPENDED') : JText::_('COM_PROJECTS_INACTIVE');
 	$status = '<span class="inactive">'.$text.'</span> ';
-	if ($this->suspended) 
+	if ($this->suspended)
 	{
-		$status .= $this->suspended == 1 
-			? ' (' . JText::_('COM_PROJECTS_BY_ADMIN') .')' 
+		$status .= $this->suspended == 1
+			? ' (' . JText::_('COM_PROJECTS_BY_ADMIN') .')'
 			: ' (' . JText::_('COM_PROJECTS_BY_PROJECT_MANAGER').')';
 	}
 }
-elseif ($row->state == 5) 
+elseif ($row->state == 5)
 {
 	$status  = '<span class="inactive">'.JText::_('COM_PROJECTS_PENDING_APPROVAL').'</span> ';
 }
@@ -73,26 +73,26 @@ $dispatcher = JDispatcher::getInstance();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	if(pressbutton == 'delete') {
 		form.admin_action.value = 'delete';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'suspend') {
 		form.admin_action.value = 'suspend';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'reinstate') {
 		form.admin_action.value = 'reinstate';
 		submitform( 'save' );
@@ -129,7 +129,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="tags"><?php echo JText::_('COM_PROJECTS_TAGS'); ?>:</label>
-				<?php 
+				<?php
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 
 				if (count($tf) > 0) {
@@ -143,8 +143,8 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<?php echo JText::_('COM_PROJECTS_TYPE'); ?>
 					<select name="type">
-						<?php foreach($this->types as $type) { 
-							if(($type->id == 3 && !$this->publishing) || 
+						<?php foreach($this->types as $type) {
+							if(($type->id == 3 && !$this->publishing) ||
 							($type->id == 2 && !JPluginHelper::isEnabled('projects', 'apps'))) {
 								continue;
 							}
@@ -158,23 +158,23 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<?php echo JText::_('COM_PROJECTS_OWNER'); ?>:
-				<?php 
-				if ($this->obj->owned_by_group) 
+				<?php
+				if ($this->obj->owned_by_group)
 				{
 					$group = \Hubzero\User\Group::getInstance( $this->obj->owned_by_group );
-					if ($group) 
+					if ($group)
 					{
 						$ownedby = '<span class="i_group">'.$group->get('cn').'</span>';
 					}
-					else 
+					else
 					{
 						$ownedby = '<span class="pale">'.JText::_('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
 					}
 				}
-				else 
+				else
 				{
 					$profile = \Hubzero\User\Profile::getInstance($this->obj->owned_by_user);
-					$ownedby = $profile->get('name') ? $profile->get('name') : JText::_('COM_PROJECTS_INFO_UNKNOWN_USER'); 
+					$ownedby = $profile->get('name') ? $profile->get('name') : JText::_('COM_PROJECTS_INFO_UNKNOWN_USER');
 					$ownedby = '<span class="i_user">'.$ownedby.'</span>';
 				}
 				echo $ownedby;
@@ -278,7 +278,7 @@ function submitbutton(pressbutton)
 
 				<?php if ($cEnabled) { ?>
 					<div class="input-wrap">
-						<?php echo JText::_('Connections'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp; 
+						<?php echo JText::_('Connections'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
 						<?php if ($connected) { ?>
 							<a href="index.php?option=com_projects&amp;task=fixsync&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('download sync log'); ?></a> &nbsp; [<?php echo JText::_('Also fixes stalled sync'); ?>]
 						<?php } ?>
@@ -328,7 +328,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
-					<td><?php if($this->last_activity) { 
+					<td><?php if($this->last_activity) {
 						$activity = preg_replace('/said/', "posted an update", $this->last_activity->activity);
 						$activity = preg_replace('/&#58;/', "", $activity);
 						?>
@@ -351,7 +351,7 @@ function submitbutton(pressbutton)
 				<?php echo JText::_('COM_PROJECTS_OPTIONS'); ?>:<br />
 
 					<input type="hidden" name="admin_action" value="" />
-					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span> 
+					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
 				<?php if($row->state == 1 && $row->setup_stage >= $setup_complete) { ?>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" onclick="javascript: submitbutton('suspend')" />
 				<?php } else if($row->state == 2 || ($row->state == 0 && $row->setup_stage >= $setup_complete)) { ?>

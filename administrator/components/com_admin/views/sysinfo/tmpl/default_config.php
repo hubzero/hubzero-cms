@@ -34,7 +34,7 @@ defined('_JEXEC') or die;
 							<?php echo $key;?>
 						</td>
 						<td>
-							<?php 
+							<?php
 							if (is_array($value))
 							{
 								foreach ($value as $ky => $val)

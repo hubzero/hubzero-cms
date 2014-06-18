@@ -111,7 +111,7 @@ $this->css('usage', 'com_usage');
 			$cls = 'even';
 			$sum_simcount_12 = 0;
 			$sum_simcount_14 = 0;
-			foreach ($this->tool_stats as $row) 
+			foreach ($this->tool_stats as $row)
 			{
 				$sim_count_12 = plgMembersUsage::get_simcount($row->id, 12);
 				$sim_count_14 = plgMembersUsage::get_simcount($row->id, 14);
@@ -166,12 +166,12 @@ $this->css('usage', 'com_usage');
 			</tr>
 		</thead>
 		<tbody>
-		<?php 
+		<?php
 		if ($this->andmore_stats)
 		{
 			$cls = 'even';
 			$count = 1;
-			foreach ($this->andmore_stats as $row) 
+			foreach ($this->andmore_stats as $row)
 			{
 			?>
 			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
@@ -179,7 +179,7 @@ $this->css('usage', 'com_usage');
 				<td class="textual-data"><a href="<?php echo JRoute::_('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
 				<td><?php $result = plgMembersUsage::get_usercount($row->id,12);
 				echo (is_numeric($result)) ? number_format($result) : $result; ?></td>
-				<td><?php 
+				<td><?php
 				$result = plgMembersUsage::get_usercount($row->id,14);
 				echo (is_numeric($result)) ? number_format($result) : $result; ?></td>
 				<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>

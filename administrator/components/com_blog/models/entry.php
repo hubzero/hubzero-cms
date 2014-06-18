@@ -34,7 +34,7 @@ class BlogModelEntry extends JModelAdmin
 
 		// Get the pk of the record from the request.
 		$pk = JRequest::getVar($key, array());
-		if (!empty($pk)) 
+		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
 		}
@@ -57,7 +57,7 @@ class BlogModelEntry extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_blog.entry', 'entry', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
@@ -74,7 +74,7 @@ class BlogModelEntry extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Post', $prefix = 'Forum', $config = array()) 
+	public function getTable($type = 'Post', $prefix = 'Forum', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -89,7 +89,7 @@ class BlogModelEntry extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_blog.edit.entry.data', array());
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = $this->getItem();
 		}

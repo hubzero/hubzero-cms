@@ -34,48 +34,48 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course asset associations table class
- * 
+ *
  */
 class CoursesTableAssetAssociation extends JTable
 {
 	/**
 	 * ID, primary key for course asset grouping table
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * Course asset id (references #__course_assets.id)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $asset_id = NULL;
 
 	/**
 	 * Course asset group id (references #__course_asset_groups.id)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * Association scope (i.e. is it associated with the course, a unit directly, or a asset grouping?)
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -87,27 +87,27 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		$this->asset_id = intval($this->asset_id);
-		if (!$this->asset_id) 
+		if (!$this->asset_id)
 		{
 			$this->setError(JText::_('COM_COURSES_MUST_HAVE_ASSET_ID'));
 			return false;
 		}
 
 		$this->scope_id = intval($this->scope_id);
-		if (!$this->scope_id) 
+		if (!$this->scope_id)
 		{
 			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE_ID'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE'));
 			return false;
@@ -124,7 +124,7 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $asset_id Asset ID
 	 * @param      integer $scope_id Scope ID
 	 * @param      string  $scope    Scope
@@ -132,7 +132,7 @@ class CoursesTableAssetAssociation extends JTable
 	 */
 	public function loadByAssetScope($asset_id=NULL, $scope_id=NULL, $scope=NULL)
 	{
-		if ($asset_id === NULL || $scope_id === NULL || $scope === NULL) 
+		if ($asset_id === NULL || $scope_id === NULL || $scope === NULL)
 		{
 			return false;
 		}
@@ -140,11 +140,11 @@ class CoursesTableAssetAssociation extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->Quote(intval($asset_id)) . " AND scope_id=" . $this->_db->Quote(intval($scope_id)) . " AND scope=" . $this->_db->Quote($scope);
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -153,7 +153,7 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Get the last page in the ordering
-	 * 
+	 *
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
@@ -166,7 +166,7 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -199,7 +199,7 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Get a count of records
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return integer
 	 */
@@ -214,7 +214,7 @@ class CoursesTableAssetAssociation extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */

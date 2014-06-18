@@ -35,7 +35,7 @@ $canDo = CoursesHelper::getActions();
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_PAGES') . ': ' . $text, 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();

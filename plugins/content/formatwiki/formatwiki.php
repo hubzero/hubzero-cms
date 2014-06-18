@@ -62,7 +62,7 @@ class plgContentFormatwiki extends JPlugin
 
 		if (!strstr($content, '</'))
 		{
-			
+
 			if ($this->params->get('applyFormat'))
 			{
 				$content = '<!-- {FORMAT:WIKI} -->' . $content;
@@ -166,7 +166,7 @@ class plgContentFormatwiki extends JPlugin
 		$content = trim($content);
 
 		// First, remove <pre> tags
-		//   This is in case the content is HTML but contains a block of 
+		//   This is in case the content is HTML but contains a block of
 		//   sample wiki markup.
 		$content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
 

@@ -38,28 +38,28 @@ class JobCategory extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * varchar(150)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description	= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,7 +70,7 @@ class JobCategory extends JTable
 
 	/**
 	 * Get all records
-	 * 
+	 *
 	 * @param      string  $sortby    Field to sort by
 	 * @param      string  $sortdir   Sort direction (ASC/DESC)
 	 * @param      integer $getobject Return records as objects?
@@ -84,12 +84,12 @@ class JobCategory extends JTable
 		$query .= "FROM $this->_tbl ORDER BY $sortby $sortdir";
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($getobject) 
+		if ($getobject)
 		{
 			return $result;
 		}
 
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $r)
 			{
@@ -102,18 +102,18 @@ class JobCategory extends JTable
 
 	/**
 	 * Get a category
-	 * 
+	 *
 	 * @param      itneger $id      Category ID
 	 * @param      string  $default Default value if no record found
 	 * @return     mixed False if errors, String upon success
 	 */
 	public function getCat($id = NULL, $default = 'unspecified')
 	{
-		if ($id === NULL) 
+		if ($id === NULL)
 		{
 			 return false;
 		}
-		if ($id == 0) 
+		if ($id == 0)
 		{
 			return $default;
 		}
@@ -125,21 +125,21 @@ class JobCategory extends JTable
 
 	/**
 	 * Update the ordering of records
-	 * 
+	 *
 	 * @param      integer $id       Category ID
 	 * @param      integer $ordernum ORder number to make it
 	 * @return     boolean True upon success
 	 */
 	public function updateOrder($id = NULL, $ordernum = 1)
 	{
-		if ($id === NULL or !intval($ordernum)) 
+		if ($id === NULL or !intval($ordernum))
 		{
 			 return false;
 		}
 
 		$query  = "UPDATE $this->_tbl SET ordernum=" . $this->_db->Quote($ordernum) . " WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

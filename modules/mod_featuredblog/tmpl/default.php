@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->getError()) 
+if ($this->getError())
 {
 	?>
 	<p class="error"><?php echo JText::_('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
-	<?php 
-} 
-else if ($this->row) 
+	<?php
+}
+else if ($this->row)
 {
 	$row = new BlogModelEntry($this->row);
 	$base = rtrim(JURI::getInstance()->base(true), '/');
@@ -51,7 +51,7 @@ else if ($this->row)
 		<p>
 			<a href="<?php echo JRoute::_($row->link()); ?>">
 				<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-			</a>: 
+			</a>:
 		<?php if ($row->get('content')) { ?>
 			<?php echo $row->content('clean', $this->txt_length); ?>
 		<?php } ?>

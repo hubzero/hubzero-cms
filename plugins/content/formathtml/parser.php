@@ -37,14 +37,14 @@ class Parser
 {
 	/**
 	 * A unique token
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_token = null;
 
 	/**
 	 * Configuration options
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_config = array(
@@ -59,7 +59,7 @@ class Parser
 
 	/**
 	 * Data store
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data = array(
@@ -70,7 +70,7 @@ class Parser
 
 	/**
 	 * Parsed content temp storage
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_tokens = array(
@@ -81,7 +81,7 @@ class Parser
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Configuration options
 	 * @return     void
 	 */
@@ -131,7 +131,7 @@ class Parser
 
 	/**
 	 * Get the unique string
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function token()
@@ -141,7 +141,7 @@ class Parser
 
 	/**
 	 * Get the raw input
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function input()
@@ -151,7 +151,7 @@ class Parser
 
 	/**
 	 * Get the parsed output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function output()
@@ -161,8 +161,8 @@ class Parser
 
 	/**
 	 * Generate a unique prefix
-	 * 
-	 * @return     integer 
+	 *
+	 * @return     integer
 	 */
 	private function _randomString()
 	{
@@ -172,7 +172,7 @@ class Parser
 	/**
 	 * Where all the magic takes place
 	 * Turns raw wiki text to HTML
-	 * 
+	 *
 	 * @param      string  $text      Raw wiki markup
 	 * @param      boolean $fullparse Full or limited parse? Limited does not parse macros
 	 * @param      integer $linestart Parameter description (if any) ...
@@ -228,9 +228,9 @@ class Parser
 
 	/**
 	 * Strip <pre> and <code> blocks from text
-	 * 
+	 *
 	 * @param      string $text Wiki markup
-	 * @return     string 
+	 * @return     string
 	 */
 	private function strip($text)
 	{
@@ -244,7 +244,7 @@ class Parser
 	/**
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
-	 * 
+	 *
 	 * @param      string $val Content to store
 	 * @return     integer Unique ID
 	 */
@@ -268,7 +268,7 @@ class Parser
 	/**
 	 * Store an item in the shelf
 	 * Returns a unique ID as a placeholder for content retrieval later on
-	 * 
+	 *
 	 * @param      string $val Content to store
 	 * @return     integer Unique ID
 	 */
@@ -290,7 +290,7 @@ class Parser
 
 	/**
 	 * Put <pre> blocks back into the main content flow
-	 * 
+	 *
 	 * @param      string  $text Wiki markup
 	 * @param      boolean $html Escape HTML?
 	 * @return     string
@@ -308,7 +308,7 @@ class Parser
 
 	/**
 	 * Restores <pre></pre> blocks to their actual content
-	 * 
+	 *
 	 * @param      array $matches Parameter description (if any) ...
 	 * @return     string
 	 */
@@ -319,7 +319,7 @@ class Parser
 
 	/**
 	 * Restores <pre></pre> blocks to their actual content
-	 * 
+	 *
 	 * @param      array $matches Parameter description (if any) ...
 	 * @return     string
 	 */
@@ -331,19 +331,19 @@ class Parser
 	/**
 	 * Parse macro tags
 	 * [[MacroName(args)]]
-	 * 
+	 *
 	 * @param      string $text Raw wiki markup
 	 * @return     string
 	 */
 	private function macros($text)
 	{
 		$path = __DIR__;
-		if (is_file($path . DS . 'macro.php')) 
+		if (is_file($path . DS . 'macro.php'))
 		{
 			// Include abstract macro class
 			include_once($path . DS . 'macro.php');
-		} 
-		else 
+		}
+		else
 		{
 			// Abstract macro class not found
 			// Proceed no further
@@ -358,7 +358,7 @@ class Parser
 
 	/**
 	 * Attempt to load a specific macro class and return its contents
-	 * 
+	 *
 	 * @param      array $matches Result form [[Macro()]] pattern matching
 	 * @return     string
 	 */
@@ -366,7 +366,7 @@ class Parser
 	{
 		static $_macros;
 
-		if (isset($matches[1]) && $matches[1] != '') 
+		if (isset($matches[1]) && $matches[1] != '')
 		{
 			// split macro by . (dot) char
 			$macroPieces = explode('.', strtolower($matches[1]));
@@ -377,18 +377,18 @@ class Parser
 			//build macro path
 			$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 
-			if (!isset($_macros[$matches[1]])) 
+			if (!isset($_macros[$matches[1]]))
 			{
-				if (is_file($macropath)) 
+				if (is_file($macropath))
 				{
 					include_once($macropath);
 				}
-				else 
+				else
 				{
 					return '';
 				}
 
-				if (class_exists($macroname)) 
+				if (class_exists($macroname))
 				{
 					$macro = new $macroname();
 
@@ -398,24 +398,24 @@ class Parser
 					}
 
 					$_macros[$matches[1]] =& $macro;
-				} 
-				else 
+				}
+				else
 				{
 					$_macros[$matches[1]] = false;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$macro =& $_macros[$matches[1]];
 			}
 
-			if (!is_object($macro)) 
+			if (!is_object($macro))
 			{
 				return '';
 			}
 
 			$macro->args = null;
-			if (isset($matches[3]) && $matches[3]) 
+			if (isset($matches[3]) && $matches[3])
 			{
 				$macro->args = $matches[3];
 			}
@@ -424,11 +424,11 @@ class Parser
 			$macro->pagename   = $this->get('pagename');
 			$macro->domain     = $this->get('domain');
 			$macro->uniqPrefix = $this->token();
-			if ($this->get('pageid') > 0) 
+			if ($this->get('pageid') > 0)
 			{
 				$macro->pageid = $this->get('pageid');
-			} 
-			else 
+			}
+			else
 			{
 				$macro->pageid = \JRequest::getInt('lid', 0, 'post');
 			}
@@ -455,7 +455,7 @@ class Parser
 
 	/**
 	 * Put macro output back into the text
-	 * 
+	 *
 	 * @param      string $txt
 	 * @return     string
 	 */

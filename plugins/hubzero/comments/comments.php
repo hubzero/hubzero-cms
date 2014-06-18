@@ -45,23 +45,23 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * List of allowed extensions
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_allowedExtensions = null;
 
 	/**
 	 * Display comments on an object
-	 * 
+	 *
 	 * @param      type    $objType    Object type to pull comments for
 	 * @param      integer $objId      Object ID to pull comments for
 	 * @param      string  $authorized Authorization level
 	 * @return     string HTML
 	 */
-	public function onAfterDisplayContent($obj, $option, $url=null, $allowedExtensions = array()) 
+	public function onAfterDisplayContent($obj, $option, $url=null, $allowedExtensions = array())
 	{
 		// Ensure we have needed vars
-		if (!is_object($obj)) 
+		if (!is_object($obj))
 		{
 			return '';
 		}
@@ -92,10 +92,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// defaults to set of image extensions defined in \Hubzero\Item\Comment
 		$this->comment = new \Hubzero\Item\Comment($this->database);
 		$this->comment->setAllowedExtensions( $allowedExtensions );
-		
+
 		$this->view->task     = $this->task    = JRequest::getVar('action', '');
 
-		switch ($this->task) 
+		switch ($this->task)
 		{
 			// Feeds
 			case 'feed.rss': $this->_feed();   break;
@@ -112,7 +112,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			default:         $this->_view();   break;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -126,7 +126,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set permissions
-	 * 
+	 *
 	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
 	 * @param      integer $assetId   Specific object to check permissions for
 	 * @return     void
@@ -141,7 +141,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Logged in?
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			// Set comments to viewable
 			$this->params->set('access-view-' . $assetType, true);
@@ -163,7 +163,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				// Are they an admin?
 				$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
 				$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				if ($this->params->get('access-admin-' . $assetType) 
+				if ($this->params->get('access-admin-' . $assetType)
 				 || $this->params->get('access-manage-' . $assetType))
 				{
 					$this->params->set('access-create-' . $assetType, true);
@@ -172,7 +172,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					return;
 				}
 			}
-			else 
+			else
 			{
 				// Joomla 1.5
 
@@ -191,15 +191,15 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					return;
 				}
 			}
-			if (isset($this->obj->publish_up) && $this->obj->publish_up) 
+			if (isset($this->obj->publish_up) && $this->obj->publish_up)
 			{
 				$d = $this->obj->publish_up;
 			}
-			/*else if (isset($this->obj->modified) && $this->obj->modified) 
+			/*else if (isset($this->obj->modified) && $this->obj->modified)
 			{
 				$d = $this->obj->modified;
 			}*/
-			else 
+			else
 			{
 				$d = $this->obj->created;
 			}
@@ -234,8 +234,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$today = JFactory::getDate()->toSql();
 
 			// Can users create comments?
-			if ($this->params->get('comments_close', 'never') == 'never' 
-			 || ($this->params->get('comments_close', 'never') != 'now' && $today < $pdt)) 
+			if ($this->params->get('comments_close', 'never') == 'never'
+			 || ($this->params->get('comments_close', 'never') != 'now' && $today < $pdt))
 			{
 				$this->params->set('access-create-' . $assetType, true);
 			}
@@ -266,7 +266,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$msg = ($msg) ? $msg : '';
 		$msgType = ($msgType) ? $msgType : 'message';
 
-		if ($url) 
+		if ($url)
 		{
 			$app = JFactory::getApplication();
 			$app->redirect($url, $msg, $msgType);
@@ -278,10 +278,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return    void
 	 */
-	protected function _vote() 
+	protected function _vote()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setError(JText::_('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'));
 			return $this->_login();
@@ -298,7 +298,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($item_id = JRequest::getInt('voteup', 0))
 		{
 			$v->vote    = 1;
-		} 
+		}
 		else if ($item_id = JRequest::getInt('votedown', 0))
 		{
 			$v->vote    = -1;
@@ -306,23 +306,23 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$v->item_id    = $item_id;
 
 		// Check content
-		if (!$v->check()) 
+		if (!$v->check())
 		{
 			$this->setError($v->getError());
 		}
-		else 
+		else
 		{
 			// Store new content
-			if (!$v->store()) 
+			if (!$v->store())
 			{
 				$this->setError($v->getError());
 			}
 		}
 
-		if ($this->getError() && !$no_html) 
+		if ($this->getError() && !$no_html)
 		{
 			$this->redirect(
-				$this->url, 
+				$this->url,
 				$this->getError(),
 				'error'
 			);
@@ -337,11 +337,11 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		{
 			$this->view->item->positive++;
 		}
-		else 
+		else
 		{
 			$this->view->item->negative++;
 		}
-		if (!$this->view->item->store()) 
+		if (!$this->view->item->store())
 		{
 			$this->setError($this->view->item->getError());
 		}
@@ -350,14 +350,14 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if (!$no_html)
 		{
 			$this->redirect(
-				$this->url, 
+				$this->url,
 				JText::_('PLG_HUBZERO_COMMENTS_VOTE_SAVED'),
 				'message'
 			);
 			return;
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -376,19 +376,19 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return    void
 	 */
-	protected function _view() 
+	protected function _view()
 	{
 		$this->view->comments = $this->comment->getComments(
-			$this->obj_type, 
+			$this->obj_type,
 			$this->obj->id,
 			0,
 			$this->params->get('comments_limit', 25)
 		);
-		
+
 		// get the accepted file types
 		$this->view->extensions = $this->comment->getAllowedExtensions();
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -402,13 +402,13 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return    void
 	 */
-	protected function _save() 
+	protected function _save()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 				JText::_('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -426,10 +426,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$row = new plgHubzeroCommentsModelComment($this->comment);
 
 		// pass data to comment object
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->redirect(
-				$this->url, 
+				$this->url,
 				$row->getError(),
 				'error'
 			);
@@ -437,10 +437,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 		$row->set('uploadDir', $this->params->get('comments_uploadpath', '/site/comments'));
 
-		if ($row->exists() && !$this->params->get('access-edit-comment')) 
+		if ($row->exists() && !$this->params->get('access-edit-comment'))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 				JText::_('PLG_HUBZERO_COMMENTS_NOTAUTH'),
 				'warning'
 			);
@@ -448,22 +448,22 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$key   = 'failed_comment';
 			$value = $row->content('raw');
 			JFactory::getApplication()->setUserState($key, $value);
 
 			$this->redirect(
-				$this->url, 
+				$this->url,
 				$row->getError(),
 				'error'
 			);
 			return;
 		}
-		
+
 		$this->redirect(
-			$this->url, 
+			$this->url,
 			JText::_('PLG_HUBZERO_COMMENTS_SAVED'),
 			'message'
 		);
@@ -475,13 +475,13 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return    void
 	 */
-	protected function _delete() 
+	protected function _delete()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)), 
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 				JText::_('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -490,7 +490,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$id = JRequest::getInt('comment', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->_redirect();
 		}
@@ -499,21 +499,21 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$comment = new \Hubzero\Item\Comment($this->database);
 		$comment->load($id);
 
-		if ($this->juser->get('id') != $comment->created_by 
-		 && !$this->params->get('access-delete-comment')) 
+		if ($this->juser->get('id') != $comment->created_by
+		 && !$this->params->get('access-delete-comment'))
 		{
 			$this->redirect($this->url);
 			return;
 		}
 
 		// Delete the entry itself
-		if (!$comment->setState($id, 2)) 
+		if (!$comment->setState($id, 2))
 		{
 			$this->setError($comment->getError());
 		}
 
 		$this->redirect(
-			$this->url, 
+			$this->url,
 			JText::_('PLG_HUBZERO_COMMENTS_REMOVED'),
 			'message'
 		);
@@ -524,9 +524,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return    void
 	 */
-	protected function _feed() 
+	protected function _feed()
 	{
-		if (!$this->params->get('comments_feeds')) 
+		if (!$this->params->get('comments_feeds'))
 		{
 			$this->action = 'view';
 			$this->_view();
@@ -572,7 +572,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		//$doc->title .= ($month) ? ': ' . sprintf("%02d",$month) : '';
 		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
 		$doc->title .= ': ' . JText::_('Comments');
-		
+
 		$doc->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION',$jconfig->getValue('config.sitename'), stripslashes($entry->title));
 		$doc->copyright   = JText::sprintf('COM_KB_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 		//$doc->category = JText::_('COM_BLOG_RSS_CATEGORY');
@@ -589,7 +589,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				'pagename' => $entry->alias,
 				'pageid'   => $entry->id,
 				'filepath' => '',
-				'domain'   => '' 
+				'domain'   => ''
 			);
 
 			$result = $dispatcher->trigger('onGetWikiParser', array($wikiconfig, true));
@@ -626,7 +626,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				}*/
 
 				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
-				
+
 				// Load individual item creator class
 				$item = new JFeedItem();
 				$item->title       = $title;
@@ -638,10 +638,10 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 				// Loads item info into rss array
 				$doc->addItem($item);
-				
+
 				// Check for any replies
 				if ($row->replies) {
-					foreach ($row->replies as $reply) 
+					foreach ($row->replies as $reply)
 					{
 						// URL link to article
 						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
@@ -685,9 +685,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 						// Loads item info into rss array
 						$doc->addItem($item);
 
-						if ($reply->replies) 
+						if ($reply->replies)
 						{
-							foreach ($reply->replies as $response) 
+							foreach ($reply->replies as $response)
 							{
 								// URL link to article
 								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);

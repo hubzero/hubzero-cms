@@ -126,7 +126,7 @@ class FormAssetHandler extends ContentAssetHandler
 			$oid = JRequest::getVar('offering');
 
 			// Build our JavaScript to return to the view to be executed
-			$js = 
+			$js =
 				"// Open up forms in a lightbox
 				$.fancybox({
 					fitToView: false,

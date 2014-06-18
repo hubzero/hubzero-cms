@@ -34,51 +34,51 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for project types
  */
-class ProjectType extends JTable 
+class ProjectType extends JTable
 {
-	
+
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * Type name
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $type      			= NULL;
-	
+
 	/**
 	 * Params
-	 * 
+	 *
 	 * @var text
-	 */	
+	 */
 	var $params       		= NULL;
-	
+
 	/**
 	 * Description, varchar(255)
-	 * 
+	 *
 	 * @var string
-	 */	
+	 */
 	var $description      		= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct( &$db ) 
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__project_types', 'id', $db );
 	}
-	
+
 	/**
 	 * Get params
-	 * 
+	 *
 	 * @param      integer $type
 	 * @return     string or NULL
 	 */
@@ -87,10 +87,10 @@ class ProjectType extends JTable
 		$this->_db->setQuery( "SELECT params FROM $this->_tbl WHERE id=$type " );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get types
-	 * 
+	 *
 	 * @return     object or NULL
 	 */
 	public function getTypes ()
@@ -98,10 +98,10 @@ class ProjectType extends JTable
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl ");
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get type title
-	 * 
+	 *
 	 * @param      integer $id
 	 * @return     string or NULL
 	 */
@@ -110,10 +110,10 @@ class ProjectType extends JTable
 		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=$id ");
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get ID by type title
-	 * 
+	 *
 	 * @param      string $type
 	 * @return     string or NULL
 	 */

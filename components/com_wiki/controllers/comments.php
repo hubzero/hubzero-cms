@@ -38,26 +38,26 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
-		if (isset($config['base_path'])) 
+		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
 		}
 
 		$this->_sub = false;
-		if (isset($config['sub'])) 
+		if (isset($config['sub']))
 		{
 			$this->_sub = $config['sub'];
 		}
 
 		$this->_group = false;
-		if (isset($config['group'])) 
+		if (isset($config['group']))
 		{
 			$this->_group = $config['group'];
 		}
@@ -74,7 +74,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -86,7 +86,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		if (!$this->book->pages('count'))
 		{
-			if ($result = $this->book->scribe($this->_option)) 
+			if ($result = $this->book->scribe($this->_option))
 			{
 				$this->setError($result);
 			}
@@ -115,7 +115,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display comments for a wiki page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -143,7 +143,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
 
-		// Prep the pagename for display 
+		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');
 
@@ -153,7 +153,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_name)),
@@ -173,7 +173,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$this->view->juser = $this->juser;
 		$this->view->message = $this->_message;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -186,7 +186,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function newTask()
@@ -196,14 +196,14 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Edit a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
 	{
 		// Is the user logged in?
 		// If not, then we need to stop everything else and display a login form
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
@@ -219,7 +219,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		// This is how comments() knows if it needs to display a form or not
 		$this->view->mycomment = new WikiModelComment($id);
 
-		if (!$id) 
+		if (!$id)
 		{
 			// No ID, so we're creating a new comment
 			// In that case, we'll need to set some data...
@@ -236,7 +236,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -248,7 +248,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		// Bind the form data to our object
 		$this->view->mycomment = new WikiModelComment($fields['id']);
-		if (!$this->view->mycomment->bind($fields)) 
+		if (!$this->view->mycomment->bind($fields))
 		{
 			$this->setError($this->view->mycomment->getError());
 			$this->displayTask();
@@ -261,19 +261,19 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$this->view->mycomment->set('created', ($this->view->mycomment->get('created') ? $this->view->mycomment->get('created') : date("Y-m-d H:i:s")));
 
 		// Save the data
-		if (!$this->view->mycomment->store(true)) 
+		if (!$this->view->mycomment->store(true))
 		{
 			$this->setError($this->view->mycomment->getError());
 			$this->displayTask();
 			return;
 		}
 
-		// Did they rate the page? 
+		// Did they rate the page?
 		// If so, update the page with the new average rating
-		if ($this->view->mycomment->get('rating')) 
+		if ($this->view->mycomment->get('rating'))
 		{
 			$this->page->calculateRating();
-			if (!$this->page->store()) 
+			if (!$this->page->store())
 			{
 				$this->setError($this->page->getError());
 			}
@@ -287,7 +287,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Remove a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -296,10 +296,10 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if (($id = JRequest::getInt('id', 0))) 
+		if (($id = JRequest::getInt('id', 0)))
 		{
 			// Make sure they're authorized to delete (must be an author)
-			if ($this->page->access('delete', 'comment')) 
+			if ($this->page->access('delete', 'comment'))
 			{
 				$comment = new WikiModelComment($id);
 				$comment->set('status', 2);
@@ -307,8 +307,8 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 				{
 					$msg = JText::_('COM_WIKI_COMMENT_DELETED');
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$msg = JText::_('COM_WIKI_ERROR_NOTAUTH');
 				$cls = 'error';
@@ -325,13 +325,13 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Flag a comment as abusive
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reportTask()
 	{
 		// Make sure we have a comment to report
-		if (($id = JRequest::getInt('id', 0, 'request'))) 
+		if (($id = JRequest::getInt('id', 0, 'request')))
 		{
 			$comment = new WikiModelComment($id);
 			$comment->report();

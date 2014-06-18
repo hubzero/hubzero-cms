@@ -38,7 +38,7 @@ class GroupsHelperDocumentRenderer
 	public $content = null;
 	public $name    = null;
 	public $params  = null;
-	
+
 	public function __construct()
 	{}
 }

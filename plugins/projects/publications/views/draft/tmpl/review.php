@@ -37,14 +37,14 @@ $manifest = $this->pub->_curationModel->_manifest;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov 
+$selectUrl   = $prov
 		? JRoute::_( $route) . '?active=team&action=select'
-		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid=' 
+		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid='
 		. $this->pub->id . '&vid=' . $this->pub->version_id;
-		
+
 $editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
@@ -63,8 +63,8 @@ $juser = JFactory::getUser();
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
-$site 	 = $jconfig->getValue('config.live_site') 
-	? $jconfig->getValue('config.live_site') 
+$site 	 = $jconfig->getValue('config.live_site')
+	? $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 $sitename = $jconfig->getValue('config.sitename');
 
@@ -78,7 +78,7 @@ if ($this->pub->doi)
 	$cite 		 	= new stdClass();
 	$cite->title 	= $this->pub->title;
 	$date 			= ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00')
-					? $this->pub->published_up : $this->pub->submitted; 
+					? $this->pub->published_up : $this->pub->submitted;
 	$cite->year  	= JHTML::_('date', $date, 'Y');
 	$cite->location = '';
 	$cite->date 	= '';
@@ -109,8 +109,8 @@ $termsUrl = $config->get('deposit_terms', '');
 		<a href="<?php echo $editUrl; ?>/?action=continue&version=dev" class="btn mini btn-success icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
 	</div>
 	<?php } ?>
-	
-	<?php if ($complete) { 
+
+	<?php if ($complete) {
 		//Intructions for previewing page
 	?>
 	<div class="blockelement" id="review-preview">
@@ -128,18 +128,18 @@ $termsUrl = $config->get('deposit_terms', '');
 		</div>
 	 </div>
 
-	<?php // File list (archive package) 
-		if ($showArchival) { 
-			
+	<?php // File list (archive package)
+		if ($showArchival) {
+
 			// Get publication path for principal content
 			$pubPath = $this->pub->_helpers->pubHelper->buildPath(
-				$this->pub->id, 
-				$this->pub->version_id, 
-				'', 
-				$this->pub->secret, 
+				$this->pub->id,
+				$this->pub->version_id,
+				'',
+				$this->pub->secret,
 				1
 			);
-			
+
 			// Get all the file names
 			$files = array();
 			if (is_dir($pubPath))
@@ -166,27 +166,27 @@ $termsUrl = $config->get('deposit_terms', '');
 							else
 							{
 								$trClass = $i % 2 == 0 ? ' even' : ' odd';
-							
+
 								$parts = explode('.', $file);
 								$ext   = count($parts) > 1 ? array_pop($parts) : '';
 								$ext   = strtolower($ext);
-							
-								echo '<li class="' . $trClass . '"><img alt="" src="' . ProjectsHtml::getFileIcon($ext) . '" /> <span>' 
+
+								echo '<li class="' . $trClass . '"><img alt="" src="' . ProjectsHtml::getFileIcon($ext) . '" /> <span>'
 									. str_replace($pubPath . DS, '', $file) . '</span></li>';
-							
+
 								$i++;
 							}
 						} ?>
 					<?php } ?>
 					</ul>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>
 	 </div>
 	<?php } ?>
-	<?php // DOI block 	
-		if ($requireDoi == 1 || $this->pub->doi) { 
+	<?php // DOI block
+		if ($requireDoi == 1 || $this->pub->doi) {
 	?>
 	 <div class="blockelement" id="review-doi">
 		<div class="element_editing">
@@ -210,10 +210,10 @@ $termsUrl = $config->get('deposit_terms', '');
 					<label>
 						<span class="review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
 						<input type="text" id="publish_date" name="publish_date" value="<?php echo $pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-						<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>				
+						<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 					</label>
-					
-					<?php if (isset($this->pub->_submitter)) { 
+
+					<?php if (isset($this->pub->_submitter)) {
 						// Do we have a submitter choice?
 						$submitter = $this->pub->_submitter->name;
 						$submitter.= $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : '';
@@ -221,7 +221,7 @@ $termsUrl = $config->get('deposit_terms', '');
 						if ($this->pub->_submitter->user_id != $juser->get('id'))
 						{
 							$submitter  = '<select name="submitter">' . "\n";
-							$submitter .= '<option value="' . $juser->get('id') . '" selected="selected">' . $juser->get('name') 
+							$submitter .= '<option value="' . $juser->get('id') . '" selected="selected">' . $juser->get('name')
 								. '</option>' . "\n";
 							$submitter .= '<option value="' . $this->pub->_submitter->user_id . '">' . $this->pub->_submitter->name . '</option>' . "\n";
 							$submitter .= '</select>';
@@ -245,7 +245,7 @@ $termsUrl = $config->get('deposit_terms', '');
 						<span class="hint block ipadded"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
 					</label>
 					<?php } else { ?>
-					<input type="hidden" name="action" value="publish" />	
+					<input type="hidden" name="action" value="publish" />
 					<?php } ?>
 				</div>
 			</div>
@@ -260,23 +260,23 @@ $termsUrl = $config->get('deposit_terms', '');
 				<div class="element-instructions">
 					<label><span class="required"><?php echo JText::_('Required'); ?></span>
 						<input class="option" name="agree" type="checkbox" value="1" />
-						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO'); if ($termsUrl) { echo ' <a href="' 
-						. $termsUrl . '" class="popup">'; } echo 
+						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO'); if ($termsUrl) { echo ' <a href="'
+						. $termsUrl . '" class="popup">'; } echo
 						$sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT'); if ($termsUrl) { echo '</a>.'; }  ?>
 					</label>
 				</div>
 			</div>
 		</div>
 	 </div>
-	
+
 	<?php // Submission ?>
 	<div class="submitarea" id="submit-area">
 		<span class="submit-question"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
-		<span class="button-wrapper icon-apply">								
-			<input type="submit" value="<?php echo $this->pub->state == 7 ? JText::_('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />	
-		</span>						
+		<span class="button-wrapper icon-apply">
+			<input type="submit" value="<?php echo $this->pub->state == 7 ? JText::_('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+		</span>
 	</div>
 	<?php } ?>
-	<input type="hidden" name="version" value="<?php echo $this->pub->version; ?>" />				
+	<input type="hidden" name="version" value="<?php echo $this->pub->version; ?>" />
 	<input type="hidden" name="confirm" value="1" />
 </div>

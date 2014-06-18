@@ -39,7 +39,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -56,7 +56,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -81,15 +81,15 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$return = '';
 			}
 		}
 
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
@@ -101,15 +101,15 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$members = $group->get('members');
 
 			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody') 
+			if ($group_plugin_acl == 'nobody')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest') 
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+			if ($juser->get('guest')
+			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
@@ -118,9 +118,9 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) 
-			 && $group_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
+			if (!in_array($juser->get('id'), $members)
+			 && $group_plugin_acl == 'members'
+			 && $authorized != 'admin')
 			{
 				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
@@ -161,13 +161,13 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$end = JRequest::getVar('end', date("Y-m-d 23:59:59"));
 
 			//make sure start date is a full php datetime
-			if (strlen($start) != 19) 
+			if (strlen($start) != 19)
 			{
 				$start .= " 00:00:00";
 			}
 
 			//make sure end date is a full php datetime
-			if (strlen($end) != 19) 
+			if (strlen($end) != 19)
 			{
 				$end .= " 23:59:59";
 			}
@@ -199,7 +199,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$view->start = $start;
 			$view->end = $end;
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -215,14 +215,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all resources
-	 * 
+	 *
 	 * @param      integer $gid        Group ID
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
 	public static function getResourcesCount($gid=NULL, $authorized)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -237,14 +237,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all wiki pages
-	 * 
+	 *
 	 * @param      integer $gid        Group ID
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
 	public static function getWikipageCount($gid=NULL, $authorized)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -256,14 +256,14 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all wiki attachments
-	 * 
+	 *
 	 * @param      integer $gid        Group ID
 	 * @param      string  $authorized Authorization level
 	 * @return     integer
 	 */
 	public static function getWikifileCount($gid=NULL, $authorized)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -271,7 +271,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$database->setQuery("SELECT id FROM `#__wiki_page` AS p WHERE p.scope=" . $database->quote($gid . DS . 'wiki') . " AND p.group_cn=" . $database->quote($gid));
 		$pageids = $database->loadObjectList();
-		if ($pageids) 
+		if ($pageids)
 		{
 			$ids = array();
 			foreach ($pageids as $pageid)
@@ -281,8 +281,8 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 			$database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE pageid IN (" . implode(',', $ids) . ")");
 			return $database->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			return 0;
 		}
@@ -290,7 +290,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all forum posts
-	 * 
+	 *
 	 * @param      integer $gid        Group ID
 	 * @param      string  $authorized Authorization level
 	 * @param      string  $state      State of threads
@@ -298,7 +298,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getForumCount($gid=NULL, $authorized, $state='')
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -330,17 +330,17 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all the group pages
-	 * 
+	 *
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
 	public static function getGroupPagesCount($gid)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
-		
+
 		// get group pages if any
 		$pageArchive = GroupsModelPageArchive::getInstance();
 		$pages = $pageArchive->pages('list', array(
@@ -353,7 +353,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a list of all page views over a time period
-	 * 
+	 *
 	 * @param      string $gid    Group ID
 	 * @param      string $pageid Page ID
 	 * @param      string $start  Start date
@@ -364,11 +364,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		if ($pageid != '') 
+		if ($pageid != '')
 		{
 			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " AND `pageid`=" . $database->quote($pageid) . " GROUP BY ip ORDER BY `date` ASC";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " GROUP BY ip ORDER BY `date` ASC";
 		}
@@ -385,7 +385,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$page_views = array();
 
-		for ($i=0; $i < $diff; $i++) 
+		for ($i=0; $i < $diff; $i++)
 		{
 			$count = 0;
 			$date = date("M d, Y", strtotime("-{$i} DAYS", strtotime($end)));
@@ -393,11 +393,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			$day_s = date("Y-m-d 00:00:00", strtotime("-{$i} DAYS", strtotime($end)));
 			$day_e = date("Y-m-d 23:59:59", strtotime("-{$i} DAYS", strtotime($end)));
 
-			foreach ($views as $view) 
+			foreach ($views as $view)
 			{
 				$t = $view['date'];
 
-				if ($t >= $day_s && $t <= $day_e) 
+				if ($t >= $day_s && $t <= $day_e)
 				{
 					$count++;
 				}
@@ -411,15 +411,15 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Draw a chart of page views over time for a specific page
-	 * 
+	 *
 	 * @param      integer $pid   Page ID
 	 * @param      string  $start Start date
 	 * @param      string  $end   End date
-	 * @return     string 
+	 * @return     string
 	 */
 	public function drawChart($pid, $start, $end)
 	{
-		//vars used 
+		//vars used
 		$jsObj = '';
 		$script = '';
 
@@ -427,11 +427,11 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		$page_views = $this->getGroupPageViews($this->group->get('gidNumber'), $pid, $start, $end);
 		$total = count($page_views);
 		$count = 0;
-		foreach ($page_views as $d => $c) 
+		foreach ($page_views as $d => $c)
 		{
 			$count++;
 			$jsObj .= "[\"{$d}\", {$c}]";
-			if ($count < $total) 
+			if ($count < $total)
 			{
 				$jsObj .= ", \n \t\t\t\t";
 			}
@@ -484,13 +484,13 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all blog entries
-	 * 
+	 *
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
 	public static function getGroupBlogCount($gid)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -512,13 +512,13 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all blog comments
-	 * 
+	 *
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */
 	public static function getGroupBlogCommentCount($gid)
 	{
-		if (!$gid) 
+		if (!$gid)
 		{
 			return 0;
 		}
@@ -534,7 +534,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a count of all the group calendar events
-	 * 
+	 *
 	 * @param      string $gid Group alias
 	 * @return     integer
 	 */

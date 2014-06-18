@@ -54,10 +54,10 @@ class Record extends \Hubzero\Base\Object
 	private $_options;
 	private $_database;
 	private $_user;
-	
+
 	/**
 	 * Resource Import Record Constructor
-	 * 
+	 *
 	 * @param mixes  $raw     Raw Resource data
 	 * @param array  $options Import options
 	 */
@@ -81,7 +81,7 @@ class Record extends \Hubzero\Base\Object
 		$this->record->contributors = array();
 		$this->record->custom       = new stdClass;
 
-		// message bags for user 
+		// message bags for user
 		$this->record->errors       = array();
 		$this->record->notices      = array();
 
@@ -91,12 +91,12 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Bind all raw data
-	 * 
+	 *
 	 * @return $this Current object
 	 */
 	public function bind()
 	{
-		// wrap type mapping in separate try catch to allow resource 
+		// wrap type mapping in separate try catch to allow resource
 		// data to still be mapped even if there is no id.
 		try
 		{
@@ -131,7 +131,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Check Data integrity
-	 * 
+	 *
 	 * @return $this Current object
 	 */
 	public function check()
@@ -152,7 +152,7 @@ class Record extends \Hubzero\Base\Object
 				if ($field->required && (!isset($value) || $value == ''))
 				{
 					array_push($this->record->errors, \JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_MISSING_REQUIREDCUSTOMFIELDS', $field->label));
-				} 
+				}
 			}
 		}
 
@@ -162,7 +162,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Store Resource Data
-	 * 
+	 *
 	 * @param  integer $dryRun Dry Run mode
 	 * @return $this Current object
 	 */
@@ -189,7 +189,7 @@ class Record extends \Hubzero\Base\Object
 
 			// save tags
 			$this->_saveTagsData();
-		} 
+		}
 		catch (Exception $e)
 		{
 			array_push($this->record->errors, $e->getMessage());
@@ -201,12 +201,12 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Map Resource Type
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _mapTypeData()
 	{
-		// make sure we have a type 
+		// make sure we have a type
 		if (!isset($this->raw->type))
 		{
 			throw new Exception(JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_MUSTHAVETYPE'));
@@ -224,7 +224,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Map Resource Data
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _mapResourceData()
@@ -232,8 +232,8 @@ class Record extends \Hubzero\Base\Object
 		// do we want to do a title match?
 		if ($this->_options['titlematch'] == 1 && isset($this->record->type->id))
 		{
-			$sql = 'SELECT id, title, LEVENSHTEIN( title, '.$this->_database->quote($this->raw->title).' ) as titleDiff 
-			        FROM `#__resources` 
+			$sql = 'SELECT id, title, LEVENSHTEIN( title, '.$this->_database->quote($this->raw->title).' ) as titleDiff
+			        FROM `#__resources`
 			        WHERE `type`=' . $this->record->type->id . ' HAVING titleDiff < ' . self::TITLE_MATCH;
 			$this->_database->setQuery($sql);
 			$results = $this->_database->loadObjectList('id');
@@ -251,7 +251,7 @@ class Record extends \Hubzero\Base\Object
 				// set our id to the matched resource
 				$resource = reset($results);
 				$this->raw->id = $resource->id;
-				
+
 				// add a notice with link to resource matched
 				$resourceLink = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'resources' . DS . $resource->id;
 				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
@@ -303,10 +303,10 @@ class Record extends \Hubzero\Base\Object
 		{
 			$this->raw->access = (int) $this->_options['access'];
 		}
-		
+
 		// bind resource data
 		$this->record->resource->bind($this->raw);
-		
+
 		// resource params
 		$params = new JParameter();
 		$params->bind($this->record->resource->params);
@@ -334,7 +334,7 @@ class Record extends \Hubzero\Base\Object
 		{
 			$resourcesElements = new \ResourcesElements((array) $this->raw->custom_fields, $this->record->type->customFields);
 			$customFieldsHtml  = $resourcesElements->toDatabaseHtml();
-			
+
 			// add all custom fields to custom object
 			foreach ($resourcesElements->getSchema()->fields as $field)
 			{
@@ -342,7 +342,7 @@ class Record extends \Hubzero\Base\Object
 				$fieldName  = $field->name;
 				$value      = (isset($this->raw->custom_fields->$fieldName)) ? $this->raw->custom_fields->$fieldName : null;
 
-				if ($field->type == 'hidden') 
+				if ($field->type == 'hidden')
 				{
 					$value = (isset($field->options[0])) ? $field->options[0]->value : $value;
 				}
@@ -374,7 +374,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Map Child Resources
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _mapChildData()
@@ -388,7 +388,7 @@ class Record extends \Hubzero\Base\Object
 				$childResource = new \ResourcesResource($this->_database);
 				$childResource->bind($child);
 
-				// add this child to 
+				// add this child to
 				array_push($this->record->children, $childResource);
 			}
 		}
@@ -396,7 +396,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Save Child Resources
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _saveChildData()
@@ -415,7 +415,7 @@ class Record extends \Hubzero\Base\Object
 				//get file info
 				$info = pathinfo($file);
 				$directory = $info['dirname'];
-				
+
 				if ($child->type == 13 && file_exists($file))
 				{
 					shell_exec('rm ' . $file);
@@ -434,11 +434,11 @@ class Record extends \Hubzero\Base\Object
 
 			// delete all child resources
 			$sql = "DELETE FROM `#__resources` WHERE `id` IN (
-						SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id) . 
+						SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id) .
 					")";
 			$this->_database->setQuery($sql);
 			$this->_database->query();
-			
+
 			// delete all child resource associations
 			$sql = "DELETE FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id);
 			$this->_database->setQuery($sql);
@@ -471,7 +471,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Map Resource Contributors
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _mapContributorData()
@@ -513,13 +513,13 @@ class Record extends \Hubzero\Base\Object
 
 			// load name
 			if ($authorid != null)
-			{	
+			{
 				if ($profile = \Hubzero\User\Profile::getInstance($authorid))
 				{
 					$resourceContributor->authorid = $profile->get('uidNumber');
 				}
 			}
-			
+
 			$resourceContributor->name         = (isset($contributor->name)) ? $contributor->name : '';
 			$resourceContributor->organization = (isset($contributor->organization)) ? $contributor->organization : '';
 			$resourceContributor->role         = (isset($contributor->role) && in_array($contributor->role, $existingRoles)) ? $contributor->role : '';
@@ -557,7 +557,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Map Resource Tags
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _mapTagsData()
@@ -579,7 +579,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Save Resource Tags
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _saveTagsData()
@@ -591,7 +591,7 @@ class Record extends \Hubzero\Base\Object
 
 	/**
 	 * Output object of string
-	 * 
+	 *
 	 * @return toString() method
 	 */
 	public function __toString()
@@ -603,7 +603,7 @@ class Record extends \Hubzero\Base\Object
 	 * To String object
 	 *
 	 * Removes private properties before returning
-	 * 
+	 *
 	 * @return string
 	 */
 	public function toString()
@@ -620,6 +620,6 @@ class Record extends \Hubzero\Base\Object
 		}
 
 		// output as json
-		return json_encode($this);	
+		return json_encode($this);
 	}
 }

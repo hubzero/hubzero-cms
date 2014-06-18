@@ -71,7 +71,7 @@ class JSessionStorageDatabase extends JSessionStorage
 		{
 			return true; // skip session write on api and command line calls
 		}
-		
+
 		// Get the database connection object and verify its connected.
 		$db = JFactory::getDbo();
 		if (!$db->connected())

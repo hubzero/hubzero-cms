@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'StoreHtml'
- * 
+ *
  * Long description (if any) ...
  */
 class StoreHtml
@@ -41,9 +41,9 @@ class StoreHtml
 
 	/**
 	 * Short description for 'alert'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */

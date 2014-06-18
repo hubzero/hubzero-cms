@@ -38,7 +38,7 @@ define("COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION", "receive-forum-emai
 
 /**
  * Short description for 'courses_MemberOption'
- * 
+ *
  * Long description (if any) ...
  */
 class courses_MemberOption extends JTable
@@ -46,35 +46,35 @@ class courses_MemberOption extends JTable
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id				= NULL;		// int
 
 	/**
 	 * Description for 'gidNumber'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $gidNumber		= NULL;		// int
 
 	/**
 	 * Description for 'userid'
-	 * 
+	 *
 	 * @var unknown
 	 */
-	var $userid			= NULL;		// int		
+	var $userid			= NULL;		// int
 
 	/**
 	 * Description for 'optionname'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $optionname		= NULL;		// varchar(100)
 
 	/**
 	 * Description for 'optionvalue'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $optionvalue	= NULL;		// varchar(100)
@@ -83,9 +83,9 @@ class courses_MemberOption extends JTable
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -96,9 +96,9 @@ class courses_MemberOption extends JTable
 
 	/**
 	 * Short description for 'check'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function check()
@@ -129,9 +129,9 @@ class courses_MemberOption extends JTable
 
 	/**
 	 * Short description for 'loadRecord'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $gidNumber Parameter description (if any) ...
 	 * @param      unknown $userid Parameter description (if any) ...
 	 * @param      unknown $optionname Parameter description (if any) ...

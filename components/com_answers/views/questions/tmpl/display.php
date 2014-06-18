@@ -34,11 +34,11 @@ defined('_JEXEC') or die('Restricted access');
 $jconfig = JFactory::getConfig();
 $juser = JFactory::getUser();
 
-if (!$this->filters['filterby']) 
+if (!$this->filters['filterby'])
 {
 	$this->filters['filterby'] = 'all';
 }
-if (!$this->filters['filterby'] == 'none') 
+if (!$this->filters['filterby'] == 'none')
 {
 	$this->filters['filterby'] = 'all';
 }
@@ -81,7 +81,7 @@ if (!$this->filters['filterby'] == 'none')
 <section class="main section">
 	<div class="subject">
 		<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
-			
+
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_ANSWERS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
@@ -175,7 +175,7 @@ if (!$this->filters['filterby'] == 'none')
 						<span>(<?php echo JText::sprintf('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 					</caption>
 					<tbody>
-<?php 
+<?php
 	if (count($this->results) > 0) {
 		foreach ($this->results as $row)
 		{
@@ -207,10 +207,10 @@ if (!$this->filters['filterby'] == 'none')
 								</span><br />
 							<?php } ?>
 								<span class="entry-details">
-									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?> 
-									<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span> 
-									<span class="entry-time"><time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-									<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span> 
+									<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?>
+									<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
+									<span class="entry-time"><time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+									<span class="entry-date-on"><?php echo JText::_('COM_ANSWERS_DATETIME_ON'); ?></span>
 									<span class="entry-date"><time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 									<span class="entry-details-divider">&bull;</span>
 									<span class="entry-state">
@@ -228,7 +228,7 @@ if (!$this->filters['filterby'] == 'none')
 							<td class="reward">
 							<?php if (isset($row->reward) && $row->reward == 1 && $this->banking && $row->points) { ?>
 								<span class="entry-reward">
-									<?php echo $row->points; ?> 
+									<?php echo $row->points; ?>
 									<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
 										<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
 									</a>
@@ -250,7 +250,7 @@ if (!$this->filters['filterby'] == 'none')
 								</span>
 							</td>
 						</tr>
-<?php 
+<?php
 	} // end foreach
 ?>
 <?php } else { ?>
@@ -262,7 +262,7 @@ if (!$this->filters['filterby'] == 'none')
 <?php } // end if (count($this->results) > 0) { ?>
 					</tbody>
 				</table>
-				<?php 
+				<?php
 				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 				$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);

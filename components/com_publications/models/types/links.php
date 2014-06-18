@@ -35,261 +35,261 @@ defined('_JEXEC') or die( 'Restricted access' );
  * LINKS (external content) master type helper class
  */
 class typeLinks extends JObject
-{	
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_database       	= NULL;
-	
+
 	/**
 	 * Project
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_project      	 	= NULL;
-	
+
 	/**
 	 * Base alias
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $_base   		 	= 'links';
 
 	/**
 	 * Attachment type
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_attachmentType 	= 'link';
-	
+
 	/**
 	 * Selection type (single/multi)
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_multiSelect 	 	= false;
-	
+
 	/**
 	 * Allow change to selection after draft is started?
-	 * 
+	 *
 	 * @var boolean
 	 */
 	var $_changeAllowed  	= true;
-	
+
 	/**
 	 * Allow to create a new publication with exact same content?
-	 * 
+	 *
 	 * @var boolean
 	 */
-	var $_allowDuplicate  	= false;			
-	
+	var $_allowDuplicate  	= false;
+
 	/**
 	 * Unique attachment properties
-	 * 
+	 *
 	 * @var array
 	 */
 	var $_attProperties  	= array('path', 'object_name');
-	
+
 	/**
 	 * Data
-	 * 
+	 *
 	 * @var array
 	 */
-	var $_data   		 = array();	
-	
+	var $_data   		 = array();
+
 	/**
 	 * Serve as (default value)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveas   	= 'external';
-	
+
 	/**
 	 * Serve as choices
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_serveChoices  = array('external', 'citation');
-		
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      	 JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db, $project = NULL, $data = array() )
 	{
 		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
 	}
-	
+
 	/**
 	 * Set
-	 * 
+	 *
 	 * @param      string 	$property
 	 * @param      string 	$value
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __set($property, $value)
 	{
 		$this->_data[$property] = $value;
 	}
-	
+
 	/**
 	 * Get
-	 * 
+	 *
 	 * @param      string 	$property
-	 * @return     mixed	
-	 */	
+	 * @return     mixed
+	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
 	}
-	
+
 	/**
 	 * Dispatch task
-	 * 
-	 * @param      string  $task 
+	 *
+	 * @param      string  $task
 	 * @return     void
-	 */	
+	 */
 	public function dispatch( $task = NULL )
 	{
 		$output 		 = NULL;
-		
-		switch ( $task ) 
+
+		switch ( $task )
 		{
-			case 'getServeAs': 								
-				$output = $this->_getServeAs(); 		
+			case 'getServeAs':
+				$output = $this->_getServeAs();
 				break;
-				
-			case 'checkContent': 								
-				$output = $this->_checkContent(); 		
+
+			case 'checkContent':
+				$output = $this->_checkContent();
 				break;
-				
-			case 'checkMissing': 								
-				$output = $this->_checkMissing(); 		
+
+			case 'checkMissing':
+				$output = $this->_checkMissing();
 				break;
-				
-			case 'drawItem': 								
-				$output = $this->_drawItem(); 		
+
+			case 'drawItem':
+				$output = $this->_drawItem();
 				break;
-				
-			case 'saveAttachments': 								
-				$output = $this->_saveAttachments(); 		
+
+			case 'saveAttachments':
+				$output = $this->_saveAttachments();
 				break;
-				
+
 			case 'cleanupAttachments':
-				$output = $this->_cleanupAttachments(); 		
+				$output = $this->_cleanupAttachments();
 				break;
-				
+
 			case 'getPubTitle':
 				$output = $this->_getPubTitle();
-		
+
 			default:
 				break;
 		}
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Get serveas options (_showOptions function in plg_projects_publications)
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getServeAs()
 	{
 		$result = array('serveas' => $this->_serveas, 'choices' => $this->_serveChoices);
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Get publication title for newly created draft
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _getPubTitle($title = '')
 	{
 		// Incoming data
 		$item = $this->__get('item');
-		
+
 		// TBD
-				
+
 		return $title;
-		
-	}	
-	
+
+	}
+
 	/**
 	 * Check content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkContent()
 	{
 		// Incoming data
 		$attachments = $this->__get('attachments');
-		
+
 		if ($attachments && count($attachments) > 0)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Check missing content
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _checkMissing()
 	{
 		// Incoming data
 		$item  	 = $this->__get('item');
 		$config  = $this->__get('config');
-		
+
 		if (!$item)
 		{
 			return false;
 		}
 
 		// TBD check if link still works
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Draw selected item html
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _drawItem()
 	{
 		// Incoming data
 		$att   		= $this->__get('att');
 		$item   	= $this->__get('item');
-				
+
 		$title   = $att->title ? $att->title : $att->path;
 		$subinfo = $att->title ? $att->path : '';
-		
+
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		$html.= '<span class="c-iteminfo">' . $subinfo . '</span>';
 
 		return $html;
-	}	
-	
+	}
+
 	/**
 	 * Save picked items as publication attachments
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _saveAttachments()
 	{
 		// Incoming data
@@ -305,21 +305,21 @@ class typeLinks extends JObject
 		$state  		= $this->__get('state');
 		$secret  		= $this->__get('secret');
 		$newpub  		= $this->__get('newpub');
-		
-		if (isset($selections[$this->_base]) && count($selections[$this->_base]) > 0) 
+
+		if (isset($selections[$this->_base]) && count($selections[$this->_base]) > 0)
 		{
 			$objPA = new PublicationAttachment( $this->_database );
-			
+
 			// Attach every selected file
-			foreach ($selections[$this->_base] as $link) 
+			foreach ($selections[$this->_base] as $link)
 			{
-								
-				if ($objPA->loadAttachment($vid, $link, 'link')) 
+
+				if ($objPA->loadAttachment($vid, $link, 'link'))
 				{
 					$objPA->modified_by 			= $uid;
 					$objPA->modified 				= JFactory::getDate()->toSql();
 				}
-				else 
+				else
 				{
 					$objPA 							= new PublicationAttachment( $this->_database );
 					$objPA->publication_id 			= $pid;
@@ -330,26 +330,26 @@ class typeLinks extends JObject
 					$objPA->created 				= JFactory::getDate()->toSql();
 					$objPA->title 					= NULL;
 				}
-							
+
 				$objPA->ordering 					= $added;
 				$objPA->role 						= $primary;
 				$objPA->params 						= $primary  == 1 && $serveas ? 'serveas='.$serveas : $objPA->params;
-			
-				if ($objPA->store()) 
+
+				if ($objPA->store())
 				{
 					$added++;
-				}				
+				}
 			}
 		}
-		
+
 		return $added;
 	}
-	
+
 	/**
 	 * Cleanup publication attachments when others are picked
-	 * 
+	 *
 	 * @return     void
-	 */	
+	 */
 	protected function _cleanupAttachments()
 	{
 		// Incoming data
@@ -359,18 +359,18 @@ class typeLinks extends JObject
 		$uid  			= $this->__get('uid');
 		$old  			= $this->__get('old');
 		$secret  		= $this->__get('secret');
-		
+
 		if (empty($selections) || !isset($selections[$this->_base]))
 		{
 			return false;
 		}
-		
+
 		if (!in_array(trim($old->path), $selections[$this->_base]))
 		{
 			$objPA = new PublicationAttachment( $this->_database );
-			$objPA->deleteAttachment($vid, $old->path, $old->type);	
+			$objPA->deleteAttachment($vid, $old->path, $old->type);
 		}
-		
+
 		return true;
 	}
 }

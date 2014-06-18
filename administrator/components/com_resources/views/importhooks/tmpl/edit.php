@@ -40,7 +40,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELDSET_FILE'); ?></legend>
 			<table class="admintable">
@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
-		
+
 	</div>
 	<div class="col width-30 fltrt">
 		<?php if ($this->hook->get('id')) : ?>
@@ -143,7 +143,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_CREATEDBY'); ?></th>
 						<td>
-							<?php 
+							<?php
 								if ($created_by = Hubzero\User\Profile::getInstance($this->hook->get('created_by')))
 								{
 									echo $created_by->get('name');

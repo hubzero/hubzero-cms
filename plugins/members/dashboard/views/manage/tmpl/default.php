@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="member_dashboard">
 
 	<div class="modules customizable">
-		<?php 
+		<?php
 			foreach ($this->modules as $module)
 			{
 				// create view object

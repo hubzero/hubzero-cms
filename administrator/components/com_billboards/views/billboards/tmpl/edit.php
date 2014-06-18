@@ -56,7 +56,7 @@ function submitbutton(pressbutton) {
 		return;
 	}
 
-	// Do field validation: 
+	// Do field validation:
 	// Make sure there's a billboard name and that there's a css class if there's CSS
 	if ($('billboardname').value == "") {
 		alert("<?php echo JText::_('COM_BILLBOARDS_MUST_HAVE_A_NAME', true); ?>");

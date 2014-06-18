@@ -47,7 +47,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onCourseAreas()
@@ -64,7 +64,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     object
 	 */
 	public function onSectionEdit()
@@ -74,7 +74,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onAssetgroupEdit()
@@ -84,7 +84,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Update any category associated with the assetgroup
-	 * 
+	 *
 	 * @param      object  $model CoursesModelAssetgroup
 	 * @return     mixed
 	 */
@@ -178,7 +178,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting an assetgroup
-	 * 
+	 *
 	 * @param      object  $model CoursesModelAssetgroup
 	 * @return     void
 	 */
@@ -225,7 +225,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Update any section associated with the unit
-	 * 
+	 *
 	 * @param      object  $model CoursesModelUnit
 	 * @return     mixed
 	 */
@@ -255,7 +255,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting a unit
-	 * 
+	 *
 	 * @param      object  $model CoursesModelUnit
 	 * @return     void
 	 */
@@ -295,7 +295,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $course      Current course
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -322,9 +322,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				//return $arr;
 				$return = 'metadata';
@@ -344,7 +344,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->params->merge(new $paramsClass($offering->section()->get('params')));
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			$this->_active = $this->_name;
 
@@ -353,7 +353,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			$this->section = new ForumTableSection($this->database);
 			$this->sections = $this->section->getRecords(array(
-				'state'    => 1, 
+				'state'    => 1,
 				'scope'    => 'course',
 				'scope_id' => $this->offering->get('id'),
 				'sort_Dir' => 'DESC',
@@ -443,7 +443,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			$pathway = JFactory::getApplication()->getPathway();
 			$pathway->addItem(
-				JText::_('PLG_COURSES_' . strtoupper($this->_name)), 
+				JText::_('PLG_COURSES_' . strtoupper($this->_name)),
 				$this->base
 			);
 
@@ -492,7 +492,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @param      object $msg  Message to send
 	 * @return     void
@@ -759,7 +759,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->notifications = $this->getPluginMessage();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -772,7 +772,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a list of instructors for this course
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _instructors()
@@ -782,7 +782,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$this->_instructors = array();
 
 			$inst = $this->course->instructors();
-			if (count($inst) > 0) 
+			if (count($inst) > 0)
 			{
 				foreach ($inst as $i)
 				{
@@ -790,13 +790,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		
+
 		return $this->_instructors;
 	}
 
 	/**
 	 * Get an entire thread
-	 * 
+	 *
 	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
@@ -857,7 +857,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->depth      = 0;
 		$view->cls        = 'odd';
 		$view->base       = $this->base . '&thread=' . $post->id . ($filters['search'] ? '&action=search&search=' . $filters['search'] : '');
-		
+
 		$view->unit       = '';
 		$view->lecture    = '';
 		if ($this->_active == 'outline')
@@ -879,7 +879,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a filtered list of threads
-	 * 
+	 *
 	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
@@ -932,7 +932,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$cview->cls         = 'odd';
 			$cview->search      = $srch; // Pass the search term along so it can be highlighted in text
 			$cview->base        = $this->base;
-			
+
 			$cview->unit       = '';
 			$cview->lecture    = '';
 			if ($this->_active == 'outline')
@@ -954,7 +954,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a filtered list of threads
-	 * 
+	 *
 	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
@@ -976,11 +976,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($results as $key => $row)
 			{
-				$threads->lastid = $row->id > $threads->lastid 
-								 ? $row->id 
+				$threads->lastid = $row->id > $threads->lastid
+								 ? $row->id
 								 : $threads->lastid;
-				$threads->lastchange = ($row->created > $threads->lastchange) 
-									 ? $row->created 
+				$threads->lastchange = ($row->created > $threads->lastchange)
+									 ? $row->created
 									 : $threads->lastchange;
 
 				$cview = new \Hubzero\Plugin\View(
@@ -1018,7 +1018,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get a filtered list of posts for a thread
-	 * 
+	 *
 	 * @param      object $post    ForumTablePost
 	 * @param      array  $filters Filters to apply
 	 * @return     void
@@ -1036,8 +1036,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($results as $key => $row)
 			{
-				$thread->lastchange = ($row->created > $thread->lastchange) 
-									? $row->created 
+				$thread->lastchange = ($row->created > $thread->lastchange)
+									? $row->created
 									: $thread->lastchange;
 
 				$results[$key]->replies = null;
@@ -1081,7 +1081,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Recursive function to build tree
-	 * 
+	 *
 	 * @param      integer $id       Parent ID
 	 * @param      string  $indent   Indent text
 	 * @param      array   $list     List of records
@@ -1108,7 +1108,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      string $url  URL to redirect to
 	 * @param      string $msg  Message to send
 	 * @param      string $type Message type (message, error, warning, info)
@@ -1125,7 +1125,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set permissions
-	 * 
+	 *
 	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
 	 * @param      integer $assetId   Specific object to check permissions for
 	 * @return     void
@@ -1133,7 +1133,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->params->set('access-view', true);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			$this->offering->members();
 			/*$this->params->set('access-view-' . $assetType, false);
@@ -1197,7 +1197,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show sections in this forum
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function panel()
@@ -1349,7 +1349,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$view->sections = $this->section->getRecords(array(
 				'state'    => $view->filters['state'],
-				'scope'    => $view->filters['scope'], 
+				'scope'    => $view->filters['scope'],
 				'scope_id' => $view->filters['scope_id'],
 				'sort_Dir' => 'DESC',
 				'sort'     => 'ordering ASC, created ASC, title'
@@ -1393,7 +1393,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$view->sections[$key]->threads = 0;
 			$view->sections[$key]->categories = isset($categories[$section->id]) ? $categories[$section->id] :  array(); //$model->getRecords($view->filters);
 
-			if ((!$view->sections[$key]->categories || !count($view->sections[$key]->categories)) 
+			if ((!$view->sections[$key]->categories || !count($view->sections[$key]->categories))
 			 && $view->sections[$key]->object_id)
 			{
 				$view->sections[$key]->categories = array();
@@ -1430,7 +1430,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
@@ -1440,7 +1440,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display content for dashboard
-	 * 
+	 *
 	 * @param      object $course   CoursesModelCourse
 	 * @param      object $offering CoursesModelOffering
 	 * @return     string
@@ -1500,7 +1500,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->section = new ForumTableSection($this->database);
 		$view->sections = $this->section->getRecords(array(
 				'state'    => $view->filters['state'],
-				'scope'    => $view->filters['scope'], 
+				'scope'    => $view->filters['scope'],
 				'scope_id' => $view->filters['scope_id']
 			));
 
@@ -1533,7 +1533,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->data = null;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
@@ -1543,12 +1543,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show sections in this forum
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function sections()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1577,7 +1577,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Get Sections
 		$view->sections = $this->section->getRecords(array(
 			'state'    => $view->filters['state'],
-			'scope'    => $view->filters['scope'], 
+			'scope'    => $view->filters['scope'],
 			'scope_id' => $view->filters['scope_id'],
 			'sort'     => 'ordering',
 			'sort_Dir' => 'ASC'
@@ -1620,7 +1620,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->notifications = $this->getPluginMessage();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}
@@ -1630,12 +1630,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Saves a section and redirects to main page afterward
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savesection()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1655,7 +1655,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check content
-		if ($model->check()) 
+		if ($model->check())
 		{
 			// Store new content
 			$model->store();
@@ -1669,12 +1669,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Deletes a section and redirects to main page afterwards
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletesection()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1687,7 +1687,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$model->loadByAlias($alias, $this->offering->get('id'), 'course');
 
 		// Make the sure the section exist
-		if (!$model->id) 
+		if (!$model->id)
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -1699,7 +1699,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('section', $model->id);
-		if (!$this->params->get('access-delete-section')) 
+		if (!$this->params->get('access-delete-section'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -1713,7 +1713,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$cModel = new ForumTableCategory($this->database);
 		$categories = $cModel->getRecords(array(
 			'section_id' => $model->id,
-			'scope'      => 'course', 
+			'scope'      => 'course',
 			'scope_id'   => $this->offering->get('id')
 		));
 		if ($categories)
@@ -1727,21 +1727,21 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			// Set all the threads/posts in all the categories to "deleted"
 			$tModel = new ForumTablePost($this->database);
-			if (!$tModel->setStateByCategory($cats, 2))  // 0 = unpublished, 1 = published, 2 = deleted 
+			if (!$tModel->setStateByCategory($cats, 2))  // 0 = unpublished, 1 = published, 2 = deleted
 			{
 				$this->setError($tModel->getError());
 			}
 
 			// Set all the categories to "deleted"
-			if (!$cModel->setStateBySection($model->id, 2))  // 0 = unpublished, 1 = published, 2 = deleted 
+			if (!$cModel->setStateBySection($model->id, 2))  // 0 = unpublished, 1 = published, 2 = deleted
 			{
 				$this->setError($cModel->getError());
 			}
 		}
 
 		// Set the section to "deleted"
-		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted 
-		if (!$model->store()) 
+		$model->state = 2;  // 0 = unpublished, 1 = published, 2 = deleted
+		if (!$model->store())
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -1761,12 +1761,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'topics'
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function categories()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1796,7 +1796,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$view->filters['parent']   = 0;
 		//$view->filters['sticky'] = false;
 		$view->filters['sort_Dir'] = 'ASC';
-		
+
 		$view->section = new ForumTableSection($this->database);
 		$view->section->loadByAlias($view->filters['section'], $this->offering->get('id'), 'course');
 		$view->filters['section_id'] = $view->section->id;
@@ -1841,13 +1841,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->total, 
-			$view->filters['start'], 
+			$view->total,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1860,12 +1860,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show a form for editing a category
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function editcategory($model=null)
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1881,7 +1881,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$category = JRequest::getVar('category', '');
 		$section = JRequest::getVar('section', '');
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$return = JRoute::_($this->base . '&unit=manage');
 			$this->setRedirect(
@@ -1898,7 +1898,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->view->model = $model;
 		}
-		else 
+		else
 		{
 			$this->view->model = new ForumTableCategory($this->database);
 			$this->view->model->loadByAlias($category, $sModel->id, $this->offering->get('id'), 'course');
@@ -1906,12 +1906,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$this->_authorize('category', $this->view->model->id);
 
-		if (!$this->view->model->id) 
+		if (!$this->view->model->id)
 		{
 			$this->view->model->created_by = $this->juser->get('id');
 			$this->view->model->section_id = ($this->view->model->section_id) ? $this->view->model->section_id : $sModel->id;
 		}
-		elseif ($this->view->model->created_by != $this->juser->get('id') && !$this->params->get('access-create-category')) 
+		elseif ($this->view->model->created_by != $this->juser->get('id') && !$this->params->get('access-create-category'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage')
@@ -1944,7 +1944,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->view->option = $this->option;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -1957,7 +1957,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savecategory()
@@ -1965,7 +1965,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -1990,14 +1990,14 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 		$model->closed = (isset($fields['closed']) && $fields['closed']) ? 1 : 0;
 		// Check content
-		if (!$model->check()) 
+		if (!$model->check())
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
 		}
 
 		// Store new content
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);
@@ -2011,19 +2011,19 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a category
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletecategory()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
 
 		// Incoming
 		$category = JRequest::getVar('category', '');
-		if (!$category) 
+		if (!$category)
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -2032,7 +2032,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
-		
+
 		$section = JRequest::getVar('section', '');
 		$sModel = new ForumTableSection($this->database);
 		$sModel->loadByAlias($section, $this->offering->get('id'), 'course');
@@ -2043,7 +2043,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('category', $model->id);
-		if (!$this->params->get('access-delete-category')) 
+		if (!$this->params->get('access-delete-category'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -2062,7 +2062,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Set the category to "deleted"
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
@@ -2082,12 +2082,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show a thread
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function threads()
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -2170,7 +2170,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			//$children[0][] = $v;
 			//$children[$v->id] = $v->children();
-			
+
 			//$v->set('name', '');
 			$pt      = $v->get('parent');
 			$list    = @$children[$pt] ? $children[$pt] : array();
@@ -2219,7 +2219,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Get attachments
 		$view->attach = new ForumTableAttachment($this->database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
-		
+
 		// Get tags on this article
 		$view->tModel = new ForumModelTags($view->post->id);
 		$view->tags = $view->tModel->tags('cloud');
@@ -2237,13 +2237,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->total, 
-			$view->filters['start'], 
+			$view->total,
+			$view->filters['start'],
 			$view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -2256,7 +2256,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Recursive function to build tree
-	 * 
+	 *
 	 * @param      integer $id       Parent ID
 	 * @param      string  $indent   Indent text
 	 * @param      array   $list     List of records
@@ -2274,22 +2274,22 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			{
 				$id = $v->get('id');
 
-				//if ($type) 
+				//if ($type)
 				//{
 					$pre    = ' treenode';
 					$spacer = ' indent' . $level;
-				/*} 
-				else 
+				/*}
+				else
 				{
 					$pre    = '- ';
 					$spacer = '&nbsp;&nbsp;';
 				}*/
 
-				if ($v->get('parent') == 0) 
+				if ($v->get('parent') == 0)
 				{
 					$txt = '';
-				} 
-				else 
+				}
+				else
 				{
 					$txt = $pre;
 				}
@@ -2307,7 +2307,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Show a form for editing a post
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function editthread($post=null)
@@ -2326,7 +2326,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$category = JRequest::getVar('category', '');
 		$sectionAlias = JRequest::getVar('section', '');
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$return = JRoute::_($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=new');
 			if ($id)
@@ -2347,7 +2347,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->view->post = $post;
 		}
-		else 
+		else
 		{
 			$this->view->post = new ForumTablePost($this->database);
 			$this->view->post->load($id);
@@ -2356,11 +2356,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Get authorization
 		$this->_authorize('thread', $id);
 
-		if (!$id) 
+		if (!$id)
 		{
 			$this->view->post->created_by = $this->juser->get('id');
 		}
-		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->params->get('access-edit-thread')) 
+		elseif ($this->view->post->created_by != $this->juser->get('id') && !$this->params->get('access-edit-thread'))
 		{
 			$this->setRedirect(JRoute::_($this->base . '&unit=manage&b=' . $section . '&c=' . $category));
 			return;
@@ -2368,7 +2368,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		$sModel = new ForumTableSection($this->database);
 		$this->view->sections = $sModel->getRecords(array(
-			'state'    => 1, 
+			'state'    => 1,
 			'scope'    => 'course',
 			'scope_id' => $this->offering->get('id')
 		));
@@ -2408,7 +2408,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->view->notifications = $this->getPluginMessage();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -2418,10 +2418,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		return $this->view->loadTemplate();
 	}
-	
+
 	/**
 	 * Saves posted data for a new/edited forum thread post
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savethread()
@@ -2430,7 +2430,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Must be logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . base64_encode(JRoute::_($this->base, false, true)))
@@ -2448,7 +2448,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->_authorize('thread', intval($fields['id']));
 		$asset = 'thread';
 
-		if (($fields['id'] && !$this->params->get('access-edit-thread')) 
+		if (($fields['id'] && !$this->params->get('access-edit-thread'))
 		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
 		{
 			$this->setRedirect(
@@ -2467,7 +2467,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Bind data
 		$model = new ForumTablePost($this->database);
-		if (!$model->bind($fields)) 
+		if (!$model->bind($fields))
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
@@ -2480,7 +2480,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$query .= " LIMIT 1";
 
 		$this->database->setQuery($query);
-		if ($result = $this->database->loadAssoc()) 
+		if ($result = $this->database->loadAssoc())
 		{
 			$model->bind($result);
 		}
@@ -2494,14 +2494,14 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check content
-		if (!$model->check()) 
+		if (!$model->check())
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
 		}
 
 		// Store new content
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editthread($model);
@@ -2580,7 +2580,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Remove a thread
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletethread($id=0, $redirect=true)
@@ -2589,7 +2589,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$category = JRequest::getVar('category', '');
 
 		// Is the user logged in?
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_($this->base), // . '&unit=' . $section . '&b=' . $category),
@@ -2607,7 +2607,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$model->load($id);
 
 		// Make the sure the category exist
-		if (!$model->id) 
+		if (!$model->id)
 		{
 			$this->setRedirect(
 				JRoute::_($this->base), //forum&unit=' . $section . '&b=' . $category),
@@ -2640,7 +2640,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Delete the topic itself
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->setRedirect(
 				JRoute::_($this->base), //forum&unit=' . $section . '&b=' . $category),
@@ -2664,19 +2664,19 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
-	 * 
+	 *
 	 * @param      string $listdir Directory to upload files to
 	 * @return     string A string that gets appended to messages
 	 */
 	public function upload($listdir, $post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('PLG_COURSES_DISCUSSIONS_NO_UPLOAD_DIRECTORY'));
 			return;
@@ -2684,7 +2684,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			return;
 		}
@@ -2700,10 +2700,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the path if it doesn't exist
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('PLG_COURSES_DISCUSSIONS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -2717,12 +2717,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$ext = strtolower(JFile::getExt($file['name']));
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('PLG_COURSES_DISCUSSIONS_ERROR_UPLOADING'));
 			return;
-		} 
-		else 
+		}
+		else
 		{
 			// File was uploaded
 			// Create database entry
@@ -2734,17 +2734,17 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				'filename'    => $file['name'],
 				'description' => $description
 			));
-			if (!$row->check()) 
+			if (!$row->check())
 			{
 				$this->setError($row->getError());
 			}
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				$this->setError($row->getError());
 			}
 		}
 	}
-	
+
 	/**
 	 * Serves up files only after passing access checks
 	 *
@@ -2760,7 +2760,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$file = JRequest::getVar('file', '');
 
 		// Check logged in status
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$return = JRoute::_($this->offering->link() . '&active=' . $this->_name . '&unit=download&b=' . $thread . '&file=' . $file); // . '&unit=' . $category . '&b=' . $thread . '&c=' . $post . '&file=' . $file);
 			$this->setRedirect(
@@ -2770,7 +2770,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Ensure we have a database object
-		if (!$this->database) 
+		if (!$this->database)
 		{
 			JError::raiseError(500, JText::_('PLG_COURSES_DISCUSSIONS_DATABASE_NOT_FOUND'));
 			return;
@@ -2782,12 +2782,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$attach->loadByThread($thread, $file);
 		}
-		else 
+		else
 		{
 			$attach->loadByPost($post);
 		}
 
-		if (!$attach->filename) 
+		if (!$attach->filename)
 		{
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
 			return;
@@ -2798,7 +2798,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->model = new ForumTablePost($this->database);
 		$this->model->load($attach->post_id);
 
-		if (!$this->model->id) 
+		if (!$this->model->id)
 		{
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_POST_NOT_FOUND'));
 			return;
@@ -2808,7 +2808,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->_authorize('thread', $this->model->id);
 
 		// Ensure the user is authorized to view this file
-		//if (!$this->params->get('access-view-thread')) 
+		//if (!$this->params->get('access-view-thread'))
 		if (!$this->course->access('view'))
 		{
 			JError::raiseError(403, JText::_('PLG_COURSES_DISCUSSIONS_NOT_AUTH_FILE'));
@@ -2816,7 +2816,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Ensure we have a path
-		if (empty($file)) 
+		if (empty($file))
 		{
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
 			return;
@@ -2826,15 +2826,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$basePath  = DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS  . $attach->parent . DS . $attach->post_id;
 
 		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS) 
+		if (substr($file, 0, 1) != DS)
 		{
 			$file = DS . $file;
 			// Does the beginning of the $attachment->filename match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath) 
+			if (substr($file, 0, strlen($basePath)) == $basePath)
 			{
 				// Yes - this means the full path got saved at some point
-			} 
-			else 
+			}
+			else
 			{
 				// No - append it
 				$file = $basePath . $file;
@@ -2845,7 +2845,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$filename = JPATH_ROOT . $file;
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_FILE_NOT_FOUND'));
 			return;
@@ -2857,12 +2857,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('PLG_COURSES_DISCUSSIONS_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -2871,7 +2871,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderup()
@@ -2881,7 +2881,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Reorder a record up
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function orderdown()
@@ -2891,13 +2891,13 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Reorder a plugin
-	 * 
+	 *
 	 * @param      integer $access Access level to set
 	 * @return     void
 	 */
 	public function reorder($inc=1)
 	{
-		if (!$this->course->access('manage', 'offering')) 
+		if (!$this->course->access('manage', 'offering'))
 		{
 			return $this->panel();
 		}
@@ -2922,7 +2922,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Remove all items associated with the gorup being deleted
-	 * 
+	 *
 	 * @param      object $course Course being deleted
 	 * @return     string Log of items removed
 	 */
@@ -2956,10 +2956,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do we have any IDs?
-		if (count($sections) > 0) 
+		if (count($sections) > 0)
 		{
 			// Loop through each ID
-			foreach ($sections as $section) 
+			foreach ($sections as $section)
 			{
 				// Get the categories in this section
 				$cModel = new ForumTableCategory($this->database);
@@ -2997,7 +2997,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				// Set the section to "deleted"
 				$sModel->load($section->id);
 				$sModel->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-				if (!$sModel->store()) 
+				if (!$sModel->store())
 				{
 					$this->setError($sModel->getError());
 					return '';
@@ -3005,7 +3005,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				$log .= 'forum.section.' . $section->id . ' ' . "\n";
 			}
 		}
-		else 
+		else
 		{
 			$log .= JText::_('PLG_COURSES_DISCUSSIONS_NO_RESULTS')."\n";
 		}

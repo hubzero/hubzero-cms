@@ -47,7 +47,7 @@ class ToolsModelTools extends JModel
 {
 	/**
 	 * Get application tools
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getApplicationTools()
@@ -59,9 +59,9 @@ class ToolsModelTools extends JModel
 		{
 			while (($file = readdir($dh)) !== false)
 			{
-				if (is_dir('/opt/trac/tools/' . $file)) 
+				if (is_dir('/opt/trac/tools/' . $file))
 				{
-					if (strncmp($file, '.', 1) != 0) 
+					if (strncmp($file, '.', 1) != 0)
 					{
 						$result[] = $file;
 					}
@@ -72,14 +72,14 @@ class ToolsModelTools extends JModel
 
 			sort($result);
 
-			if (count($result) > 0) 
+			if (count($result) > 0)
 			{
 				$aliases = implode("','", $result);
 
 				$database = JFactory::getDBO();
 
-				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state 
-							FROM #__tool as t, #__tool_version as v 
+				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state
+							FROM #__tool as t, #__tool_version as v
 							WHERE v.toolname IN ('" . $aliases . "') AND t.id=v.toolid
 							AND (v.state='1' OR v.state='3')
 							GROUP BY toolname

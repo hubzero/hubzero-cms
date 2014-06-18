@@ -41,7 +41,7 @@ JToolBarHelper::help('messages');
 $jconfig = JFactory::getConfig();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -80,10 +80,10 @@ function submitbutton(pressbutton)
 		<dl>
 			<dt>{ticket#}</dt>
 			<dd><?php echo JText::_('COM_SUPPORT_MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
-			
+
 			<dt>{sitename}</dt>
 			<dd><?php echo $jconfig->getValue('config.sitename'); ?></dd>
-			
+
 			<dt>{siteemail}</dt>
 			<dd><?php echo $jconfig->getValue('config.mailfrom'); ?></dd>
 		</dl>

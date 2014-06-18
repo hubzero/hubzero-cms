@@ -45,7 +45,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onWhatsnewAreas()
@@ -57,7 +57,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
-	 * 
+	 *
 	 * @param      object  $period     Time period to pull results for
 	 * @param      mixed   $limit      Number of records to pull
 	 * @param      integer $limitstart Start of records to pull
@@ -67,17 +67,17 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			if (!isset($areas[$this->_name])
-			 && !in_array($this->_name, $areas)) 
+			 && !in_array($this->_name, $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a search term?
-		if (!is_object($period)) 
+		if (!is_object($period))
 		{
 			return array();
 		}
@@ -100,13 +100,13 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 		$order_by  = " ORDER BY created DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit) 
+		if (!$limit)
 		{
 			// Get a count
 			$database->setQuery($f_count . $f_from . " WHERE " . $f_where);
 			return $database->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			// Get results
 			$database->setQuery($f_fields . $f_from . " WHERE " . $f_where . $order_by);

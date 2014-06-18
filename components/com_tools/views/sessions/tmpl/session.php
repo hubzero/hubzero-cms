@@ -111,8 +111,8 @@ if (!$this->app->sess) {
 			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
-			<?php 
-			if ($this->config->get('show_storage')) 
+			<?php
+			if ($this->config->get('show_storage'))
 			{
 				$this->view('diskusage', 'storage')
 				     ->set('option', $this->option)
@@ -125,7 +125,7 @@ if (!$this->app->sess) {
 				     ->set('total', $this->total)
 				     ->display();
 
-				if ($this->app->percent >= 100 && isset($this->app->remaining)) 
+				if ($this->app->percent >= 100 && isset($this->app->remaining))
 				{
 					$this->view('warning', 'storage')
 					     ->set('sec', $this->app->remaining)
@@ -133,7 +133,7 @@ if (!$this->app->sess) {
 					     ->set('option', $this->option)
 					     ->display();
 				}
-			} 
+			}
 			?>
 		</div><!-- #app-footer -->
 	<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
@@ -156,8 +156,8 @@ if (!$this->app->sess) {
 							<?php echo JText::_('Run elsewhere:'); ?>
 							<select name="zone" id="field-zone">
 								<option value=""><?php echo JText::_('Select ...'); ?></option>
-							<?php 
-							foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) 
+							<?php
+							foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
 							{
 								if ($zone->get('id') == $this->zone->get('id'))
 								{
@@ -201,12 +201,12 @@ if (!$this->app->sess) {
 
 					<label for="field-username">
 						<?php echo JText::_('Share session with:'); ?>
-						<?php 
+						<?php
 						JPluginHelper::importPlugin('hubzero');
 						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
 						if (count($mc) > 0) {
 							echo '<span class="hint">'.JText::_('(supports usernames, user IDs, and e-mails)').'</span>'.$mc[0];
-						} else { ?> 
+						} else { ?>
 						<span class="hint"><?php echo JText::_('(enter usernames or user IDs separated by spaces or commas)'); ?></span>
 						<input type="text" name="username" id="field-username" value="" />
 						<?php } ?>
@@ -221,7 +221,7 @@ if (!$this->app->sess) {
 						</select>
 					</label>
 					<label for="field-readonly" id="readonly-label">
-						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" /> 
+						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
 						<?php echo JText::_('Read-Only? (only you control the session)'); ?>
 					</label>
 
@@ -256,8 +256,8 @@ if (!$this->app->sess) {
 				<?php } else {
 					foreach ($this->shares as $row)
 					{
-						if ($row->viewuser != $juser->get('username')) 
-						{ 
+						if ($row->viewuser != $juser->get('username'))
+						{
 							$user = \Hubzero\User\Profile::getInstance($row->viewuser);
 
 							$id = ($user->get('uidNumber') < 0) ? 'n' . -$user->get('uidNumber') : $user->get('uidNumber');
@@ -307,25 +307,25 @@ if (!$this->app->sess) {
 
 	<?php
 	$output = $dispatcher->trigger(
-		'onSessionView', 
+		'onSessionView',
 		array(
-			$this->option, 
+			$this->option,
 			$this->toolname,
 			$this->app->sess
 		)
 	);
 
-	if (count($output) > 0) 
+	if (count($output) > 0)
 	{
 		?>
 		<div id="app-info">
 			<h2>App info</h2>
 			<div id="app-info-content">
-				<?php 
-				foreach ($output as $out) 
+				<?php
+				foreach ($output as $out)
 				{
 					echo $out;
-				} 
+				}
 				?>
 			</div>
 		</div><!-- #app-info -->

@@ -35,7 +35,7 @@ $canDo = AnswersHelper::getActions('answer');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -46,7 +46,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('response');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -108,8 +108,8 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('COM_ANSWERS_FIELD_HELPFUL'); ?>:</th>
 					<td>
-						<span class="votes up">+<?php echo $this->row->get('helpful'); ?></span> 
-						<span class="votes down">-<?php echo $this->row->get('nothelpful'); ?></span> 
+						<span class="votes up">+<?php echo $this->row->get('helpful'); ?></span>
+						<span class="votes down">-<?php echo $this->row->get('nothelpful'); ?></span>
 						<?php if ( $this->row->get('helpful') > 0 || $this->row->get('nothelpful') > 0 ) { ?>
 							<input type="button" name="reset_helpful" value="<?php echo JText::_('COM_ANSWERS_FIELD_RESET'); ?>" onclick="submitbutton('reset');" />
 						<?php } ?>

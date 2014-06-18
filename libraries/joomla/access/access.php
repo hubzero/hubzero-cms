@@ -450,7 +450,7 @@ class JAccess
 	 * @deprecated  12.3  Use JAccess::getActionsFromFile or JAccess::getActionsFromData instead.
 	 *
 	 * @codeCoverageIgnore
-	 * 
+	 *
 	 */
 	public static function getActions($component, $section = 'component')
 	{

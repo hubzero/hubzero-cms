@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
  */
 function modChrome_cpanel($module, &$params, &$attribs)
 {
-	if ($module->content) 
+	if ($module->content)
 	{
 		?>
 		<div class="mod"<?php if (isset($attribs['id']) && $attribs['id']) { echo ' id="' . $attribs['id'] . '"'; } ?>>

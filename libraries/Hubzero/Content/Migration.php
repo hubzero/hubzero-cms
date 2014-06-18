@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
 * HUBzero Database migrations class
-* 
+*
 * @TODO: add flag to ignore development scripts?
 */
 class Migration
@@ -375,7 +375,7 @@ class Migration
 					$ignore = true;
 				}
 			}
-			catch (\PDOException $e) 
+			catch (\PDOException $e)
 			{
 				$ignore = false;
 			}

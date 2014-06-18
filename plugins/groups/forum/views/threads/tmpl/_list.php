@@ -34,8 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
-if ($this->comments && $this->comments->total() > 0) 
-{ 
+if ($this->comments && $this->comments->total() > 0)
+{
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -49,7 +49,7 @@ if ($this->comments && $this->comments->total() > 0)
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$this->view('_comment')
 		     ->set('option', $this->option)

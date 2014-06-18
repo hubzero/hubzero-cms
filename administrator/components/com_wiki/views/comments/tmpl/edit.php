@@ -35,7 +35,7 @@ $canDo = WikiHelper::getActions('comment');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') . ': ' . JText::_('COM_WIKI_COMMENTS') . ': ' . $text, 'wiki.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
@@ -46,7 +46,7 @@ JToolBarHelper::help('comment');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -86,9 +86,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->get('created_by'));
-						echo $this->escape($editor->get('name')); 
+						echo $this->escape($editor->get('name'));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 					</td>

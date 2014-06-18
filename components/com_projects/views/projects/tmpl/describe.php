@@ -46,7 +46,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	<div class="clear"></div>
 
 	<div class="status-msg">
-		<?php 
+		<?php
 		// Display error or success message
 		if ($this->getError())
 		{
@@ -64,7 +64,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.'<div class="explaination">'.n;
 	$html .= t.t.'<h4>'.JText::_('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT').'</h4>'.n;
 	$html .= t.t.'<p>'.JText::_('COM_PROJECTS_HOWTO_NAME_PROJECT').'</p>'.n;
-	$html .= t.'</div>'.n;	
+	$html .= t.'</div>'.n;
 	$html .= t.t.'<fieldset class="oldstyle">'.n;
 	$html .= t.t.'<h2>'.JText::_('COM_PROJECTS_PICK_NAME').'</h2>'.n;
 	$html .= t.t.t.'<input type="hidden"  name="task" value="setup" />'.n;
@@ -73,18 +73,18 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.t.'<input type="hidden" id="option" name="option" value="'.$this->option.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="pid" name="id" value="'.$this->project->id.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" name="pid" value="'.$this->project->id.'" />'.n;
-	$html .= t.t.t.'<input type="hidden" id="tempid" name="tempid" value="'.$this->tempid.'" />'.n;	
+	$html .= t.t.t.'<input type="hidden" id="tempid" name="tempid" value="'.$this->tempid.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="gid" name="gid" value="'.$this->gid.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" name="restricted" value="'.$this->restricted.'" />'.n;
 	$html .= t.t.t.'<input type="hidden" id="verified" name="verified" value="'.$this->verified.'" />'.n;
-	$html .= t.t.t.'<input type="hidden" id="extended" name="extended" value="0" />'.n;	
+	$html .= t.t.t.'<input type="hidden" id="extended" name="extended" value="0" />'.n;
 	$html .= t.t.t.'<div id="verificationarea_title"></div>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_TITLE').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
 	$html .= t.t.t.'<input name="title" maxlength="250" id="ptitle" type="text" value="'.$this->project->title.'" /></label>'.n;
 	$html .= t.t.t.'<p class="hint">'.JText::_('COM_PROJECTS_HINTS_TITLE').'</p>'.n;
 	$html .= t.t.t.'<div id="verificationarea">';
 	if ($this->project->id) {
-		$html .= t.t.t.t.'<p class="verify_passed">'.JText::_('COM_PROJECTS_NAME_RESERVED').' &rarr;</p>';	
+		$html .= t.t.t.t.'<p class="verify_passed">'.JText::_('COM_PROJECTS_NAME_RESERVED').' &rarr;</p>';
 	}
 	$html .= t.t.t.'</div>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_ALIAS_NAME').': <span class="required">'.JText::_('REQUIRED').'</span>'.n;
@@ -132,7 +132,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	}
 	$html .= t.t.t.'</label>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_THUMBNAIL').':'.n;
-	$html .= t.t.t.'<iframe class="filer filerMini" frameBorder="0" src="' . JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?file='.stripslashes($this->project->picture).'&no_html=1&tempid='.$this->tempid .'"></iframe>'."\n";			
+	$html .= t.t.t.'<iframe class="filer filerMini" frameBorder="0" src="' . JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?file='.stripslashes($this->project->picture).'&no_html=1&tempid='.$this->tempid .'"></iframe>'."\n";
 	$html .= t.t.t.'</label>'.n;
 	// Privacy
 	$html .= t.t.'<h2 class="setup-h">'.JText::_('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH').'</h2>'.n;
@@ -144,7 +144,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.t.t.'<input class="option" name="private" type="radio" value="0" ';
 	$html .= $this->project->private == 0 ? 'checked="checked"' : '';
 	$html .=' /> '.JText::_('COM_PROJECTS_PRIVACY_EDIT_PUBLIC').'</label>'.n;
-	$html .= t.t.t.'<input type="hidden" name="type" value="1" />'.n;	
+	$html .= t.t.t.'<input type="hidden" name="type" value="1" />'.n;
 	$html .= t.t.t.'<p class="submitarea"><input type="submit" value="'.JText::_('COM_PROJECTS_SAVE_AND_CONTINUE').'" class="btn" /></p>'.n;
 	$html .= t.t.'</fieldset>'.n;
 	$html .= t.t.'</div>'.n;

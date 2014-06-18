@@ -43,7 +43,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -59,7 +59,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -72,10 +72,10 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onMembersAreas($user, $member)) 
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -91,7 +91,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		);
 
 		// Build the final HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$content = '';
 			$this->user   = $user;
@@ -112,11 +112,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			}
 		}
 		return $arr;
-	} 
+	}
 
 	/**
 	 * View the profile page
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function display()
@@ -165,14 +165,14 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		if ($session->get('registration.incomplete'))
 		{
 			$xreg = new MembersModelRegistration();
-			$juser =  JFactory::getUser(); 
+			$juser =  JFactory::getUser();
 			$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 
-			if (is_object($xprofile)) 
+			if (is_object($xprofile))
 			{
 				$xreg->loadProfile($xprofile);
 			}
-			else 
+			else
 			{
 				$xreg->loadAccount($juser);
 			}
@@ -182,7 +182,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			{
 				$session->set('registration.incomplete', 0);
 				$app->redirect($_SERVER['REQUEST_URI']);
-			}  
+			}
 			else
 			{
 				$registration_update = $xreg;
@@ -194,11 +194,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		$this->view->option = 'com_members';
 		$this->view->profile = $this->member;
-		$this->view->registration = $registration; 
+		$this->view->registration = $registration;
 		$this->view->registration_update = $registration_update;
 		$this->view->params = $params;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -208,7 +208,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return if a field is required, option, read only, or hidden
-	 * 
+	 *
 	 * @param      string  $name    Property name
 	 * @param      string  $default Default property value
 	 * @param      string  $task    Task to look up value for
@@ -216,7 +216,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	 */
 	private function _registrationField($name, $default, $task = 'create')
 	{
-		switch ($task) 
+		switch ($task)
 		{
 			case 'register':
 			case 'create': $index = 0; break;
@@ -230,16 +230,16 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$default = str_pad($default, 4, '-');
 		$configured = $hconfig->get($name);
 
-		if (empty($configured)) 
+		if (empty($configured))
 		{
 			$configured = $default;
 		}
 		$length = strlen($configured);
-		if ($length > $index) 
+		if ($length > $index)
 		{
 			$value = substr($configured, $index, 1);
-		} 
-		else 
+		}
+		else
 		{
 			$value = substr($default, $index, 1);
 		}
@@ -257,7 +257,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      array  $fields  Fields filled in
 	 * @param      object $profile MembersProfile
 	 * @return     integer
@@ -332,7 +332,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Method to add a user address
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addAddress()
@@ -342,7 +342,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Method to edit a user address
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editAddress()
@@ -373,7 +373,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$this->view->member = $this->member;
 
 		//set errors and display
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -382,7 +382,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Method to save a user address
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveAddress()
@@ -418,9 +418,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//inform and redirect
-		$this->redirect( 
-			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'), 
-			JText::_('Member address successfully saved.'), 
+		$this->redirect(
+			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+			JText::_('Member address successfully saved.'),
 			'passed'
 		);
 		return;
@@ -428,7 +428,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Method to delete a user address
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteAddress()
@@ -457,7 +457,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			return $this->view();
 		}
 
-		//make sure we dont have another stimulation 
+		//make sure we dont have another stimulation
 		if (!$membersAddress->canDelete())
 		{
 			$this->setError($membersAddress->getError());
@@ -472,9 +472,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//inform and redirect
-		$this->redirect( 
-			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'), 
-			JText::_('Member address successfully deleted.'), 
+		$this->redirect(
+			JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'),
+			JText::_('Member address successfully deleted.'),
 			'passed'
 		);
 		return;

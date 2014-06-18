@@ -38,7 +38,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Track video viewing progress
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function trackingTask()
@@ -81,7 +81,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformation                              = new stdClass;
 			$trackingInformation->user_id                     = $juser->get('id');
 			$trackingInformation->session_id                  = $session->getId();
-			$trackingInformation->ip_address                  = $ipAddress; 
+			$trackingInformation->ip_address                  = $ipAddress;
 			$trackingInformation->object_id                   = $resourceid;
 			$trackingInformation->object_type                 = 'course';
 			$trackingInformation->object_duration             = $duration;
@@ -127,7 +127,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			{
 				$trackingInformation->total_views++;
 			}
-			
+
 			// If event type is end, we need to increment completed count
 			if ($event == 'ended')
 			{
@@ -141,7 +141,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		{
 			$trackingInformationDetailed->user_id                     = $juser->get('id');
 			$trackingInformationDetailed->session_id                  = $session->getId();
-			$trackingInformationDetailed->ip_address                  = $ipAddress; 
+			$trackingInformationDetailed->ip_address                  = $ipAddress;
 			$trackingInformationDetailed->object_id                   = $resourceid;
 			$trackingInformationDetailed->object_type                 = 'course';
 			$trackingInformationDetailed->object_duration             = $duration;
@@ -194,13 +194,13 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->mediaTask();
 			return;
@@ -210,7 +210,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$listdir = JRequest::getInt('listdir', 0, 'post');
 
 		// Ensure we have an ID to work with
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
@@ -219,7 +219,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
 			$this->mediaTask();
@@ -229,10 +229,10 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		// Build the upload path if it doesn't exist
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->addComponentMessage(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
 				$this->mediaTask();
@@ -247,7 +247,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->addComponentMessage(JText::_('ERROR_UPLOADING'), 'error');
 		}
@@ -262,7 +262,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Streaking file upload
 	 * This is used by AJAX
-	 * 
+	 *
 	 * @return     void
 	 */
 	private function ajaxuploadTask()
@@ -321,12 +321,12 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array('error' => 'File is empty'));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
@@ -342,7 +342,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$these = implode(', ', $allowedExtensions);
 			echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
 			return;
-		} 
+		}
 
 		//final file
 		$file = $uploadDirectory . $filename . '.' . $ext;
@@ -355,7 +355,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
-		
+
 			//move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
@@ -374,13 +374,13 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefolderTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->mediaTask();
 			return;
@@ -388,7 +388,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming course ID
 		$listdir = JRequest::getInt('listdir', 0, 'get');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
@@ -397,7 +397,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$folder = trim(JRequest::getVar('folder', '', 'get'));
-		if (!$folder) 
+		if (!$folder)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_DIRECTORY'), 'error');
 			$this->mediaTask();
@@ -407,15 +407,15 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$del_folder = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS) . DS . ltrim($folder, DS);
 
 		// Delete the folder
-		if (is_dir(JPATH_ROOT . $del_folder)) 
+		if (is_dir(JPATH_ROOT . $del_folder))
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete(JPATH_ROOT . $del_folder)) 
+			if (!JFolder::delete(JPATH_ROOT . $del_folder))
 			{
 				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error');
-			} 
-			else 
+			}
+			else
 			{
 				//push a success message
 				$this->addComponentMessage('You successfully deleted the folder.', 'passed');
@@ -428,13 +428,13 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefileTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->mediaTask();
 			return;
@@ -442,7 +442,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming course ID
 		$listdir = JRequest::getInt('listdir', 0, 'get');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
@@ -451,7 +451,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = trim(JRequest::getVar('file', '', 'get'));
-		if (!$file) 
+		if (!$file)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
 			$this->mediaTask();
@@ -461,17 +461,17 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		// Build the file path
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->addComponentMessage(JText::_('FILE_NOT_FOUND'), 'error');
 			$this->mediaTask();
 			return;
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_FILE'), 'error');
 			}
@@ -486,14 +486,14 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for uploading and managing files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function mediaTask()
 	{
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0);
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
@@ -502,7 +502,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->config = $this->config;
-		if (is_object($course)) 
+		if (is_object($course))
 		{
 			$this->view->course = $course;
 		}
@@ -513,7 +513,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * List files for a course
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listfilesTask()
@@ -522,12 +522,12 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 
 		// Check if coming from another function
-		if ($listdir == '') 
+		if ($listdir == '')
 		{
 			$listdir = $this->listdir;
 		}
 
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
@@ -541,35 +541,35 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$folders = array();
 		$docs    = array();
 
-		if ($d) 
+		if ($d)
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file($path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|jpeg|jpe|tif|tiff|png#i", $img_file)) 
+					if (preg_match("#bmp|gif|jpg|jpeg|jpe|tif|tiff|png#i", $img_file))
 					{
 						$images[$entry] = $img_file;
-					} 
-					else 
+					}
+					else
 					{
 						$docs[$entry] = $img_file;
 					}
-				} 
-				else if (is_dir($path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'cvs' 
-				 && strtolower($entry) !== 'template' 
-				 && strtolower($entry) !== 'blog') 
+				}
+				else if (is_dir($path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'cvs'
+				 && strtolower($entry) !== 'template'
+				 && strtolower($entry) !== 'blog')
 				{
 					$folders[$entry] = $img_file;
 				}
 			}
-			
+
 			$d->close();
 
 			ksort($images);
@@ -588,7 +588,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a file
-	 * 
+	 *
 	 * @param      string $filename File name
 	 * @return     void
 	 */
@@ -601,21 +601,21 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$authorized = $this->_authorize();
 
 		//get the file name
-		if (substr(strtolower($filename), 0, 5) == 'image') 
+		if (substr(strtolower($filename), 0, 5) == 'image')
 		{
 			$file = urldecode(substr($filename, 6));
-		} 
-		elseif (substr(strtolower($filename), 0, 4) == 'file') 
+		}
+		elseif (substr(strtolower($filename), 0, 4) == 'file')
 		{
 			$file = urldecode(substr($filename, 5));
 		}
 
 		//if were on the wiki we need to output files a specific way
-		if ($this->active == 'wiki') 
+		if ($this->active == 'wiki')
 		{
 			//check to make sure user has access to wiki section
-			if (!in_array($this->juser->get('id'), $course->get('members')) 
-			 || $this->juser->get('guest')) 
+			if (!in_array($this->juser->get('id'), $course->get('members'))
+			 || $this->juser->get('guest'))
 			{
 				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
 				return;
@@ -627,7 +627,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$page->load(JRequest::getVar('pagename'), $course->get('cn') . DS . 'wiki');
 
 			//check specific wiki page access
-			if ($page->get('access') == 1 && !in_array($this->juser->get('id'), $course->get('members')) && $authorized != 'admin') 
+			if ($page->get('access') == 1 && !in_array($this->juser->get('id'), $course->get('members')) && $authorized != 'admin')
 			{
 				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
 				return;
@@ -636,12 +636,12 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			//get the config and build base path
 			$wiki_config = JComponentHelper::getParams('com_wiki');
 			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			//check to make sure we can access it
-			if (!in_array($this->juser->get('id'), $course->get('members')) 
-			 || $this->juser->get('guest') == 1) 
+			if (!in_array($this->juser->get('id'), $course->get('members'))
+			 || $this->juser->get('guest') == 1)
 			{
 				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
 				return;
@@ -656,7 +656,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$file_path = $base_path . DS . $file;
 
 		// Ensure the file exist
-		if (!file_exists(JPATH_ROOT . DS . $file_path)) 
+		if (!file_exists(JPATH_ROOT . DS . $file_path))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
 			return;
@@ -667,11 +667,11 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$xserver->filename(JPATH_ROOT . DS . $file_path);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}

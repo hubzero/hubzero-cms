@@ -38,28 +38,28 @@ class Wish extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $wishlist       = NULL;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $subject		= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $about			= NULL;
@@ -75,104 +75,104 @@ class Wish extends JTable
 	 * @var integer
 	 */
 	var $status			= NULL;
-		
+
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $proposed    	= NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $granted    	= NULL;
 
 	/**
 	 * int(50)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $proposed_by 	= NULL;
 
 	/**
 	 * int(50)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $granted_by 	= NULL;
 
 	/**
 	 * int(50)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $granted_vid 	= NULL;
 
 	/**
 	 * int(50)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $assigned 		= NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $effort		    = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $due    	    = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ranking		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $private		= NULL;
 
 	/**
-	 * int(11) 
+	 * int(11)
 	 *  1 admins accepted this wish
 	 *  2 wish author accepted solution
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $accepted		= NULL;
 
 	/**
-	 * int(11) 
-	 * 
+	 * int(11)
+	 *
 	 * @var integer
 	 */
 	var $points			= NULL;
 
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param      object &$db JDatabase
 		 * @return     void
 		 */
@@ -183,26 +183,26 @@ class Wish extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->subject = trim($this->subject);
-		if ($this->subject == '') 
+		if ($this->subject == '')
 		{
 			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_SUBJECT'));
 			return false;
 		}
 
 		$this->wishlist = intval($this->wishlist);
-		if (!$this->wishlist) 
+		if (!$this->wishlist)
 		{
 			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_LIST'));
 			return false;
 		}
 
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$juser = JFactory::getUser();
 			$this->proposed = JFactory::getDate()->toSql();
@@ -214,14 +214,14 @@ class Wish extends JTable
 
 	/**
 	 * Get the sum total votes
-	 * 
+	 *
 	 * @param      integer $wishid Entry ID
 	 * @param      string  $what   Field to sum
 	 * @return     mixed False if error, integer on success
 	 */
 	public function get_votes_sum($wishid, $what)
 	{
-		if ($wishid === NULL) 
+		if ($wishid === NULL)
 		{
 			return false;
 		}
@@ -233,7 +233,7 @@ class Wish extends JTable
 
 	/**
 	 * Get a record count for a list
-	 * 
+	 *
 	 * @param      string  $listid  List ID
 	 * @param      array   $filters Filters to build query on
 	 * @param      integer $admin   User is admin?
@@ -242,22 +242,22 @@ class Wish extends JTable
 	 */
 	public function get_count($listid, $filters, $admin, $juser=NULL)
 	{
-		if ($listid === NULL) 
+		if ($listid === NULL)
 		{
 			return false;
 		}
-		if (is_object($juser)) 
+		if (is_object($juser))
 		{
 			$uid = $juser->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			$uid = 0;
 		}
 
 		$sql = "SELECT ws.id FROM #__wishlist_item AS ws ";
 
-		if ($filters['tag']) 
+		if ($filters['tag'])
 		{
 			$sql .= "\n LEFT JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 			$sql .= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
@@ -265,7 +265,7 @@ class Wish extends JTable
 
 		$sql .= " WHERE 1=1 ";
 		$sql .= ($listid > 0) ? " AND ws.wishlist='" . $listid . "'" : '';
-		
+
 		// list  filtering
 		switch ($filters['filterby'])
 		{
@@ -292,13 +292,13 @@ class Wish extends JTable
 				case 'public':    	$sql .= ' AND ws.status!=2 AND ws.private=0';
 									break;
 				case 'mine':
-					if ($uid) 
+					if ($uid)
 					{
 						$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
 					}
 				break;
 				case 'submitter':
-					if ($uid) 
+					if ($uid)
 					{
 						$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
 					}
@@ -310,7 +310,7 @@ class Wish extends JTable
 					$sql .= ' AND ws.status!=2';
 				break;
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
 
@@ -321,12 +321,12 @@ class Wish extends JTable
 		}
 
 		// do not show private wishes
-		if (!$admin) 
+		if (!$admin)
 		{
 			$sql .="\n AND ws.private='0'";
 		}
 
-		if ($filters['tag']) 
+		if ($filters['tag'])
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
 
@@ -345,7 +345,7 @@ class Wish extends JTable
 
 	/**
 	 * Get wishes for a list
-	 * 
+	 *
 	 * @param      integer $listid   List ID
 	 * @param      array   $filters  Filters to build query from
 	 * @param      itneger $admin    Admin access?
@@ -355,15 +355,15 @@ class Wish extends JTable
 	 */
 	public function get_wishes($listid, $filters, $admin, $juser=NULL, $fullinfo = 1)
 	{
-		if ($listid === NULL) 
+		if ($listid === NULL)
 		{
 			return false;
 		}
-		if (is_object($juser)) 
+		if (is_object($juser))
 		{
 			$uid = $juser->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			$uid = 0;
 		}
@@ -396,13 +396,13 @@ class Wish extends JTable
 				? "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, "
 				: "SELECT ws.id, ws.wishlist, ws.proposed, ws.granted, ws.granted_vid, ws.status, xp.name AS authorname ";
 
-		if ($fullinfo) 
+		if ($fullinfo)
 		{
-			if ($uid) 
+			if ($uid)
 			{
 				$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . $uid . ") AS ranked,";
-			} 
-			else 
+			}
+			else
 			{
 				$sql .= "\n NULL AS ranked,";
 			}
@@ -411,7 +411,7 @@ class Wish extends JTable
 			$sql .= "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=ws.id) AS negative, ";
 			$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 
-			if ($filters['sortby'] == 'latestcomment') 
+			if ($filters['sortby'] == 'latestcomment')
 			{
 				$sql .= "\n (SELECT MAX(CC.created) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.item_type='wish' GROUP BY CC.referenceid) AS latestcomment, ";
 			}
@@ -440,12 +440,12 @@ class Wish extends JTable
 		}
 		$sql .= "\n FROM #__wishlist_item AS ws";
 		$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
-		if ($fullinfo) 
+		if ($fullinfo)
 		{
 			//$sql .= "\n JOIN #__xprofiles AS xp ON xp.uidNumber=ws.proposed_by ";
 			$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter='" . $uid . "' ";
 			$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid='" . $uid . "' ";
-			if ($filters['tag']) 
+			if ($filters['tag'])
 			{
 				$sql .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 				$sql .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
@@ -455,17 +455,17 @@ class Wish extends JTable
 		$sql .= " WHERE 1=1 ";
 		$sql .= ($listid > 0) ? " AND ws.wishlist='" . $listid . "'" : '';
 
-		if (!$fullinfo && isset($filters['timelimit'])) 
+		if (!$fullinfo && isset($filters['timelimit']))
 		{
 			$sql .= "\n OR (ws.status= 1 AND ws.granted > '" . $filters['timelimit'] . "') ";
 		}
 
-		if (!$fullinfo && isset($filters['versionid'])) 
+		if (!$fullinfo && isset($filters['versionid']))
 		{
 			$sql .= "\n OR (ws.granted_vid = '" . $filters['versionid'] . "') ";
 		}
 
-		if ($fullinfo) 
+		if ($fullinfo)
 		{
 			// list  filtering
 			switch ($filters['filterby'])
@@ -493,13 +493,13 @@ class Wish extends JTable
 					case 'public':    	$sql .= ' AND ws.status!=2 AND ws.private=0';
 										break;
 					case 'mine':
-						if ($uid) 
+						if ($uid)
 						{
 							$sql .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
 						}
 					break;
 					case 'submitter':
-						if ($uid) 
+						if ($uid)
 						{
 							$sql .= ' AND ws.proposed_by=' . $uid . ' AND ws.status!=2';
 						}
@@ -512,19 +512,19 @@ class Wish extends JTable
 		}
 
 		// do not show private wishes
-		if (!$admin) 
+		if (!$admin)
 		{
 			$sql .= "\n AND ws.private='0'";
 		}
 
-		if ($fullinfo && isset($filters['search']) && $filters['search']) 
+		if ($fullinfo && isset($filters['search']) && $filters['search'])
 		{
 			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$sql .= " AND (LOWER(ws.subject) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(ws.about) LIKE '%" . strtolower($filters['search']) . "%')";
 		}
-		if ($fullinfo && $filters['tag']) 
+		if ($fullinfo && $filters['tag'])
 		{
 			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
@@ -535,11 +535,11 @@ class Wish extends JTable
 
 		if (isset($filters['sort']))
 		{
-			if (!$filters['sort']) 
+			if (!$filters['sort'])
 			{
 				$filters['sort'] = 'title';
 			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 			{
 				$filters['sort_Dir'] = 'ASC';
 			}
@@ -555,18 +555,18 @@ class Wish extends JTable
 
 	/**
 	 * Mark a record as deleted
-	 * 
+	 *
 	 * @param      integer $wishid   Wish ID
 	 * @param      integer $withdraw Withdraw a wish
 	 * @return     boolean False if error, True on success
 	 */
 	public function delete_wish($wishid, $withdraw=0)
 	{
-		if ($wishid === NULL) 
+		if ($wishid === NULL)
 		{
 			$wishid == $this->id;
 		}
-		if ($wishid === NULL) 
+		if ($wishid === NULL)
 		{
 			return false;
 		}
@@ -575,7 +575,7 @@ class Wish extends JTable
 		$query  = "UPDATE $this->_tbl SET status='" . $status . "', ranking='0' WHERE id=" . $wishid;
 
 		$this->_db->setQuery($query);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -585,14 +585,14 @@ class Wish extends JTable
 
 	/**
 	 * Delete a record and any associated content
-	 * 
+	 *
 	 * @param      integer $oid Record ID
 	 * @return     boolean True on success
 	 */
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = intval($oid);
 		}
@@ -642,7 +642,7 @@ class Wish extends JTable
 
 	/**
 	 * Get a record based on some filters
-	 * 
+	 *
 	 * @param      integer $wishid  Wish ID
 	 * @param      integer $uid     User ID
 	 * @param      integer $refid   Reference object ID
@@ -652,13 +652,13 @@ class Wish extends JTable
 	 */
 	public function get_wish($wishid = 0, $uid = 0, $refid = 0, $cat = '', $deleted = 0)
 	{
-		if ($wishid === NULL) 
+		if ($wishid === NULL)
 		{
 			return false;
 		}
 
 		$sql = "SELECT ws.*, v.helpful AS vote, m.importance AS myvote_imp, m.effort AS myvote_effort, xp.name AS authorname, ";
-		if ($uid) 
+		if ($uid)
 		{
 			$sql .= "\n (SELECT count(*) FROM #__wishlist_vote AS wv WHERE wv.wishid=ws.id AND wv.userid=" . intval($uid) . ") AS ranked,";
 		}
@@ -687,7 +687,7 @@ class Wish extends JTable
 		$sql .= "\n (SELECT COUNT(DISTINCT uid) FROM #__users_transactions WHERE category='wish' AND referenceid=ws.id AND type='hold') AS bonusgivenby ";
 
 		$sql .= "\n FROM #__wishlist_item AS ws";
-		if ($refid && $cat) 
+		if ($refid && $cat)
 		{
 			$sql .= "\n JOIN #__wishlist AS W ON W.id=ws.wishlist AND W.referenceid=" . $this->_db->Quote($refid) . " AND W.category=" . $this->_db->Quote($cat) . " ";
 		}
@@ -695,7 +695,7 @@ class Wish extends JTable
 		$sql .= "\n LEFT JOIN #__vote_log AS v ON v.referenceid=ws.id AND v.category='wish' AND v.voter=" . $this->_db->Quote($uid) . " ";
 		$sql .= "\n LEFT JOIN #__wishlist_vote AS m ON m.wishid=ws.id AND m.userid=" . $this->_db->Quote($uid) . " ";
 		$sql .= "\n WHERE ws.id=" . $this->_db->Quote($wishid) . " ";
-		if (!$deleted) 
+		if (!$deleted)
 		{
 			$sql .=" AND ws.status!=2";
 		}
@@ -709,14 +709,14 @@ class Wish extends JTable
 
 	/**
 	 * Does the wish exist on this list?
-	 * 
+	 *
 	 * @param      integer $wishid Wish ID
 	 * @param      integer $listid List ID
 	 * @return     mixed False if error, integer on success
 	 */
 	public function check_wish($wishid, $listid)
 	{
-		if ($wishid === NULL or $listid === NULL) 
+		if ($wishid === NULL or $listid === NULL)
 		{
 			return false;
 		}
@@ -731,7 +731,7 @@ class Wish extends JTable
 
 	/**
 	 * Get an entry ID based off of some filtrs
-	 * 
+	 *
 	 * @param      string  $which   Sort records
 	 * @param      integer $id      Wish ID
 	 * @param      integer $listid  List ID
@@ -742,14 +742,14 @@ class Wish extends JTable
 	 */
 	public function getWishID($which, $id, $listid, $admin, $uid, $filters=array())
 	{
-		if ($which === NULL or $id === NULL or $listid === NULL) 
+		if ($which === NULL or $id === NULL or $listid === NULL)
 		{
 			return false;
 		}
 
 		$query  = "SELECT ws.id ";
 		$query .= "FROM #__wishlist_item AS ws ";
-		if (isset($filters['tag']) && $filters['tag']!='') 
+		if (isset($filters['tag']) && $filters['tag']!='')
 		{
 			$query .= "\n JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 			$query .= "\n INNER JOIN #__tags AS TA ON RTA.tagid=TA.id ";
@@ -757,7 +757,7 @@ class Wish extends JTable
 		$query .= "WHERE ws.wishlist=" . $this->_db->Quote($listid) . " AND ";
 		$query .= ($which == 'prev')  ? "ws.id < " . $this->_db->Quote($id) . " " : "ws.id > " . $this->_db->Quote($id);
 
-		if (isset($filters['filterby'])) 
+		if (isset($filters['filterby']))
 		{
 			switch ($filters['filterby'])
 			{
@@ -784,7 +784,7 @@ class Wish extends JTable
 				case 'public':    	$query .= ' AND ws.status!=2 AND ws.private=0';
 									break;
 				case 'mine':
-					if ($uid) 
+					if ($uid)
 					{
 						$query .= ' AND ws.assigned="' . $uid . '" AND ws.status!=2';
 					}
@@ -794,17 +794,17 @@ class Wish extends JTable
 				default: 			$query .= ' AND ws.status!=2';
 									break;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$query .= ' AND ws.status!=2';
 		}
 
-		if (!$admin) 
+		if (!$admin)
 		{
 			$query .="\n AND ws.private='0' ";
 		}
-		if (isset($filters['tag']) && $filters['tag']!='') 
+		if (isset($filters['tag']) && $filters['tag']!='')
 		{
 			$tagging = new WishTags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
@@ -821,7 +821,7 @@ class Wish extends JTable
 
 	/**
 	 * Get the vote count on an object
-	 * 
+	 *
 	 * @param      integer $refid    Reference object ID
 	 * @param      string  $category Reference object category
 	 * @param      integer $uid      User ID
@@ -829,7 +829,7 @@ class Wish extends JTable
 	 */
 	public function get_vote($refid, $category= 'wish', $uid)
 	{
-		if ($refid === NULL or $uid === NULL) 
+		if ($refid === NULL or $uid === NULL)
 		{
 			return false;
 		}

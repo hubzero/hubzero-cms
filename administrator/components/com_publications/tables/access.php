@@ -34,242 +34,242 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Table class for publication access
  */
-class PublicationAccess extends JTable 
+class PublicationAccess extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         			= NULL;
-	
+
 	/**
 	 * Publication version ID
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_version_id = NULL;
-	
+
 	/**
 	 * Group ID
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $group_id = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
+	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_access', 'publication_version_id', $db );
 	}
-	
+
 	/**
 	 * Load entry
-	 * 
+	 *
 	 * @param      integer 	$vid		pub version id
 	 * @param      integer 	$group_id	group id
 	 * @return     object or FALSE
 	 */
-	public function loadEntry( $vid = NULL, $group_id = NULL ) 
+	public function loadEntry( $vid = NULL, $group_id = NULL )
 	{
-		if (!$vid) 
+		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid) 
+		if (!$vid)
 		{
 			return false;
 		}
-		if (!$group_id) 
+		if (!$group_id)
 		{
 			return false;
 		}
-		
+
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND group_id='".$group_id."'");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check record existance
-	 * 
+	 *
 	 * @param      integer 	$vid		pub version id
 	 * @param      integer 	$group_id	group id
 	 * @return     integer or NULL
-	 */	
-	public function existsEntry( $vid = NULL, $group_id = NULL ) 
+	 */
+	public function existsEntry( $vid = NULL, $group_id = NULL )
 	{
-		if (!$vid) 
+		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid) 
+		if (!$vid)
 		{
 			return false;
 		}
-		if (!$group_id) 
+		if (!$group_id)
 		{
 			return false;
 		}
-		
-		$this->_db->setQuery( "SELECT publication_version_id FROM $this->_tbl 
+
+		$this->_db->setQuery( "SELECT publication_version_id FROM $this->_tbl
 			WHERE publication_version_id=".$vid." AND group_id='".$group_id."'");
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get groups
-	 * 
+	 *
 	 * @param      integer 	$vid		pub version id
 	 * @param      integer 	$pid		pub id
 	 * @param      string 	$version	version name or number
 	 * @param      string 	$sysgroup	name of system group
 	 * @return     object
-	 */	
-	public function getGroups ( $vid = null, $pid = null, $version = 'default', $sysgroup = '' ) 
+	 */
+	public function getGroups ( $vid = null, $pid = null, $version = 'default', $sysgroup = '' )
 	{
-		if (!$vid) 
+		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid && !$pid) 
+		if (!$vid && !$pid)
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT A.group_id, X.cn, X.description, X.published as regconfirmed FROM $this->_tbl as A ";
 		$query.= " JOIN #__xgroups AS X ON X.gidNumber = A.group_id ";
-		if ($vid) 
+		if ($vid)
 		{
 			$query .= "WHERE A.publication_version_id=".$vid;
 		}
-		else 
+		else
 		{
 			$query .= " JOIN #__publication_versions AS V ON V.id=A.publication_version_id ";
 			$query .= " WHERE V.publication_id=".$pid;
-			if ($version == 'default' or $version == 'current' && $version == 'main') 
+			if ($version == 'default' or $version == 'current' && $version == 'main')
 			{
 				$query.= " AND V.main=1 ";
 			}
-			elseif ($version == 'dev') 
+			elseif ($version == 'dev')
 			{
 				$query.= " AND V.state=3 ";
 			}
-			elseif (intval($version)) 
+			elseif (intval($version))
 			{
 				$query.= " AND V.version_number='".$version."' ";
 			}
-			else 
+			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
 		}
-		if ($sysgroup) 
+		if ($sysgroup)
 		{
 			$query.= " AND X.cn != '$sysgroup' ";
 		}
-		
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Save groups
-	 * 
+	 *
 	 * @param      integer 	$vid		pub version id
-	 * @param      array 	$groups		
+	 * @param      array 	$groups
 	 * @param      string 	$sysgroup	name of system group
 	 * @return     integer
-	 */	
-	public function saveGroups ( $vid = null, $groups = '', $sysgroup = 0 ) 
+	 */
+	public function saveGroups ( $vid = null, $groups = '', $sysgroup = 0 )
 	{
-		if (!$vid) 
+		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid ) 
+		if (!$vid )
 		{
 			return false;
 		}
 		// Clean up
 		$this->deleteGroups($vid, $sysgroup);
-		
+
 		$add = array();
 		$saved = 0;
-		if ($groups) 
-		{	
+		if ($groups)
+		{
 			$add = explode(',',$groups);
 		}
-		if ($sysgroup) 
+		if ($sysgroup)
 		{
 			$add[] = $sysgroup;
 		}
-		
-		foreach ($add as $a) 
+
+		foreach ($add as $a)
 		{
 			$a = trim($a);
-			if ($a == '') 
+			if ($a == '')
 			{
 				continue;
 			}
-			
+
 			$group = \Hubzero\User\Group::getInstance( $a);
 			$gid = $group ? $group->get('gidNumber') : 0;
-			
-			if (!$gid or $this->existsEntry($vid, $gid)) 
+
+			if (!$gid or $this->existsEntry($vid, $gid))
 			{
 				continue;
 			}
-			else 
+			else
 			{
 				$query = "INSERT INTO $this->_tbl (publication_version_id,group_id) VALUES($vid, $gid)";
 				$this->_db->setQuery( $query );
-				if ($this->_db->query()) 
+				if ($this->_db->query())
 				{
 					$saved++;
 				}
 			}
-		
+
 		}
-	
+
 		return $saved;
 	}
-	
+
 	/**
 	 * Delete groups
-	 * 
+	 *
 	 * @param      integer 	$vid		pub version id
 	 * @param      string 	$sysgroup	name of system group
 	 * @return     boolean
-	 */	
-	public function deleteGroups ( $vid = null, $sysgroup = 0 ) 
+	 */
+	public function deleteGroups ( $vid = null, $sysgroup = 0 )
 	{
-		if (!$vid) 
+		if (!$vid)
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid ) 
+		if (!$vid )
 		{
 			return false;
 		}
-		
+
 		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
-		$query.= $sysgroup ? " AND group_id !=".$sysgroup : "";		
+		$query.= $sysgroup ? " AND group_id !=".$sysgroup : "";
 		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;

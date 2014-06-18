@@ -38,7 +38,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Browse the list of billboards
-	 * 
+	 *
 	 * @return void
 	 */
 	public function displayTask()
@@ -50,15 +50,15 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.billboards.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.billboards.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.billboards.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.billboards.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 
@@ -74,13 +74,13 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -91,7 +91,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a billboard
-	 * 
+	 *
 	 * @return void
 	 */
 	public function editTask()
@@ -101,7 +101,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Incoming - expecting an array
 		$cid = JRequest::getVar('cid', array(0));
-		if (!is_array($cid)) 
+		if (!is_array($cid))
 		{
 			$cid = array(0);
 		}
@@ -114,7 +114,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$this->view->collection->load($this->view->row->collection_id);
 
 		// Fail if not checked out by 'me'
-		if ($this->view->row->checked_out && $this->view->row->checked_out != $this->juser->get('id')) 
+		if ($this->view->row->checked_out && $this->view->row->checked_out != $this->juser->get('id'))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -127,15 +127,15 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$query = $this->view->row->buildOrderingQuery($this->view->row->collection_id);
 
 		// Are we editing an existing entry?
-		if ($uid) 
+		if ($uid)
 		{
 			// Yes, we should check it out first
 			$this->view->row->checkout($this->juser->get('id'));
 
 			// Build the ordering info
 			$this->view->row->ordering = $this->ordering($this->view->row, $uid, $query);
-		} 
-		else 
+		}
+		else
 		{
 			// Set some defaults
 			$this->view->row->ordering = $this->ordering($this->view->row, '', $query);
@@ -173,7 +173,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$this->view->learnmorelocation = BillboardsHTML::buildLearnMoreList($this->view->row->learn_more_location);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -184,7 +184,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a billboard
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function save()
@@ -198,24 +198,24 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$row = new BillboardsBillboard($this->database);
 
 		// If this is a new item, let's order it last
-		if ($billboard['id'] == 0) 
+		if ($billboard['id'] == 0)
 		{
 			$new_id = $row->getNextOrdering($billboard['collection_id']);
 			$billboard['ordering'] = $new_id;
 		}
 
 		// Save the billboard
-		if (!$row->bind($billboard)) 
+		if (!$row->bind($billboard))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -233,7 +233,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save the new order
-	 * 
+	 *
 	 * @return void
 	 */
 	public function saveorderTask()
@@ -282,7 +282,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete a billboard
-	 * 
+	 *
 	 * @return void
 	 */
 	public function deleteTask()
@@ -298,14 +298,14 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		}
 
 		// Make sure we have IDs to work with
-		if (count($ids) > 0) 
+		if (count($ids) > 0)
 		{
 			$billboard = new BillboardsBillboard($this->database);
 
 			// Loop through the array of ID's and delete
 			foreach ($ids as $id)
 			{
-				if (!$billboard->delete($id)) 
+				if (!$billboard->delete($id))
 				{
 					$this->setRedirect(
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -325,7 +325,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Toggle a billboard between published and unpublished.  We're looking for an array of ID's to publish/unpublish
-	 * 
+	 *
 	 * @param  $publish: 1 to publish and 0 for unpublish
 	 * @return void
 	 */
@@ -336,7 +336,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('cid', array(0));
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array(0);
 		}
@@ -349,18 +349,18 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			$row->load($id);
 
 			// Only alter items not checked out or checked out by 'me'
-			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id')) 
+			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id'))
 			{
 				$row->published = $publish;
-				if (!$row->store($publish)) 
+				if (!$row->store($publish))
 				{
 					JError::raiseError(500, $row->getError());
 					return;
 				}
 				// Check it back in
 				$row->checkin($id);
-			} 
-			else 
+			}
+			else
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -378,7 +378,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancels out of the billboard edit view, makes sure to check the billboard back in for other people to edit
-	 * 
+	 *
 	 * @return void
 	 */
 	public function cancelTask()
@@ -399,25 +399,25 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 	/**
 	 * Build the select list for ordering of a specified Table
-	 * 
+	 *
 	 * @return $ordering
 	 */
 	protected function ordering(&$row, $id, $query, $neworder = 0)
 	{
 		$db = JFactory::getDBO();
 
-		if ($id) 
+		if ($id)
 		{
 			$order = JHTML::_('list.genericordering', $query);
 			$ordering = JHTML::_('select.genericlist', $order, 'billboard[ordering]', 'class="inputbox" size="1"', 'value', 'text', intval($row->ordering));
-		} 
-		else 
+		}
+		else
 		{
-			if ($neworder) 
+			if ($neworder)
 			{
 				$text = JText::_('descNewItemsFirst');
-			} 
-			else 
+			}
+			else
 			{
 				$text = JText::_('descNewItemsLast');
 			}

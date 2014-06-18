@@ -27,7 +27,7 @@
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * /administrator/components/com_support/controllers/tickets.php
- * 
+ *
  */
 
 JLoader::import('Hubzero.Api.Controller');
@@ -52,7 +52,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		$this->config = JComponentHelper::getParams('com_forum');
 		$this->database = JFactory::getDBO();
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'threads':    $this->threads();   break;
 			case 'sections':   $this->sections();   break;
@@ -214,8 +214,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		if (!$section->exists())
 		{
 			$this->errorMessage(
-				500, 
-				JText::_('Section not found.'), 
+				500,
+				JText::_('Section not found.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
@@ -292,8 +292,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		if (!$section->exists())
 		{
 			$this->errorMessage(
-				500, 
-				JText::_('Section not found.'), 
+				500,
+				JText::_('Section not found.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
@@ -303,8 +303,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		if (!$category->exists())
 		{
 			$this->errorMessage(
-				500, 
-				JText::_('Category not found.'), 
+				500,
+				JText::_('Category not found.'),
 				JRequest::getWord('format', 'json')
 			);
 			return;
@@ -476,7 +476,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 					$newlist = array();
 					foreach ($list as $l)
 					{
-						if ($l->id == $filters['start_id']) 
+						if ($l->id == $filters['start_id'])
 						{
 							$inc = true;
 						}
@@ -508,7 +508,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Recursive function to build tree
-	 * 
+	 *
 	 * @param      integer $id       Parent ID
 	 * @param      string  $indent   Indent text
 	 * @param      array   $list     List of records
@@ -526,22 +526,22 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			{
 				$id = $v->id;
 
-				//if ($type) 
+				//if ($type)
 				//{
 					$pre    = ' treenode';
 					$spacer = ' indent' . $level;
-				/*} 
-				else 
+				/*}
+				else
 				{
 					$pre    = '- ';
 					$spacer = '&nbsp;&nbsp;';
 				}*/
 
-				if ($v->parent == 0) 
+				if ($v->parent == 0)
 				{
 					$txt = '';
-				} 
-				else 
+				}
+				else
 				{
 					$txt = $pre;
 				}

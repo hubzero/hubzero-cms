@@ -40,7 +40,7 @@ class plgSupportForum extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      unknown &$subject Parameter description (if any) ...
 	 * @param      unknown $config Parameter description (if any) ...
 	 * @return     void
@@ -52,7 +52,7 @@ class plgSupportForum extends JPlugin
 
 	/**
 	 * Get items reported as abusive
-	 * 
+	 *
 	 * @param      integer $refid    Comment ID
 	 * @param      string  $category Item type (kb)
 	 * @param      integer $parent   Parent ID
@@ -60,12 +60,12 @@ class plgSupportForum extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'forum') 
+		if ($category != 'forum')
 		{
 			return null;
 		}
 
-		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.created, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category, 
+		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.created, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category,
 					s.alias AS section, c.alias AS category, rc.scope, rc.scope_id, rc.object_id, rc.thread
 					FROM #__forum_posts AS rc
 					LEFT JOIN #__forum_categories AS c ON c.id = rc.category_id
@@ -75,7 +75,7 @@ class plgSupportForum extends JPlugin
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
@@ -121,7 +121,7 @@ class plgSupportForum extends JPlugin
 
 	/**
 	 * Get the thread ID
-	 * 
+	 *
 	 * @param      integer $parent Parent comment to load
 	 * @return     array
 	 */
@@ -143,7 +143,7 @@ class plgSupportForum extends JPlugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -152,7 +152,7 @@ class plgSupportForum extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if ($category != 'forum') 
+		if ($category != 'forum')
 		{
 			return null;
 		}

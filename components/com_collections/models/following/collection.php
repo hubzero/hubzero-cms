@@ -41,35 +41,35 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 {
 	/**
 	 * CollectionsModelCollection
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_image = NULL;
 
 	/**
 	 * URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_baselink = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	//private $_db = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Collection ID
 	 * @return     void
 	 */
@@ -106,12 +106,12 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new CollectionsModelFollowingCollection($oid);
 		}
@@ -121,7 +121,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object

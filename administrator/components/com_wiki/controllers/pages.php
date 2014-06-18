@@ -38,7 +38,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -51,7 +51,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display all pages in the wiki(s)
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -65,39 +65,39 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		);
 		// Paging
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// Sorting
 		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'id'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'ASC'
 		));
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Filters
 		$this->view->filters['search'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['group'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.group', 
-			'group', 
+			$this->_option . '.' . $this->_controller . '.group',
+			'group',
 			''
 		));
 		$this->view->filters['state'] = array(0, 1, 2);
@@ -118,13 +118,13 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -148,7 +148,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row = null)
@@ -156,10 +156,10 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->setLayout('edit');
-		
+
 		// Incoming
 		$id = JRequest::getVar('id', array(0));
-		if (is_array($id) && !empty($id)) 
+		if (is_array($id) && !empty($id))
 		{
 			$id = $id[0];
 		}
@@ -168,20 +168,20 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->view->row = $row;
 		}
-		else 
+		else
 		{
 			// Load the article
 			$this->view->row = new WikiModelPage(intval($id));
 		}
 
-		if (!$this->view->row->exists()) 
+		if (!$this->view->row->exists())
 		{
 			// Creating new
 			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -195,7 +195,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to an entry and go back to edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -205,7 +205,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to an entry
-	 * 
+	 *
 	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
 	 * @return     void
 	 */
@@ -220,7 +220,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		// Initiate extended database class
 		$row = new WikiModelPage(intval($page['id']));
-		if (!$row->bind($page)) 
+		if (!$row->bind($page))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -229,7 +229,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		// Get parameters
 		$params = JRequest::getVar('params', array(), 'post');
-		if (is_array($params)) 
+		if (is_array($params))
 		{
 			$pparams = new JRegistry($row->get('params'));
 			$pparams->loadArray($params);
@@ -238,14 +238,14 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if (!$row->updateAuthors($page['authors'])) 
+		if (!$row->updateAuthors($page['authors']))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -270,14 +270,14 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more pages
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		if (count($ids) <= 0) 
+		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -298,7 +298,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 				$this->view->ids = $ids;
 
 				// Set any errors
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					foreach ($this->getError() as $error)
 					{
@@ -316,7 +316,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 				// Check if they confirmed
 				$confirmed = JRequest::getInt('confirm', 0);
-				if (!$confirmed) 
+				if (!$confirmed)
 				{
 					// Instantiate a new view
 					$this->view->ids = $ids;
@@ -328,13 +328,13 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 					return;
 				}
 
-				if (!empty($ids)) 
+				if (!empty($ids))
 				{
 					foreach ($ids as $id)
 					{
 						// Finally, delete the page itself
 						$page = new WikiModelPage(intval($id));
-						if (!$page->delete()) 
+						if (!$page->delete())
 						{
 							$this->setError($page->getError());
 						}
@@ -351,7 +351,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the access level to public
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accesspublicTask()
@@ -361,7 +361,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the access level to registered users
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accessregisteredTask()
@@ -371,7 +371,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the access level to special
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accessspecialTask()
@@ -381,7 +381,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the access level
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function accessTask($access = 0)
@@ -393,7 +393,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -408,7 +408,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$row->set('access', $access);
 
 		// Check and store the changes
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -425,7 +425,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Reset the page hits
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function resethitsTask()
@@ -437,7 +437,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -451,7 +451,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$page = new WikiModelPage(intval($id));
 		$page->set('hits', 0);
 
-		if (!$page->store()) 
+		if (!$page->store())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -469,7 +469,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the state for a page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function stateTask()
@@ -481,7 +481,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -495,7 +495,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$page = new WikiModelPage(intval($id));
 		$page->set('state', JRequest::getInt('state', 0));
 
-		if (!$page->store()) 
+		if (!$page->store())
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -513,7 +513,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancels a task and redirects to listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()

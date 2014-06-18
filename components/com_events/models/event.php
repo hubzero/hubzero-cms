@@ -38,21 +38,21 @@ class EventsModelEvent extends \Hubzero\Base\Model
 {
 	/**
 	 * JTable
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl = null;
-	
+
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'EventsEvent';
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -60,11 +60,11 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	{
 		// create needed objects
 		$this->_db = JFactory::getDBO();
-		
+
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
-		
-		// load object 
+
+		// load object
 		if (is_numeric($oid))
 		{
 			$this->_tbl->load( $oid );
@@ -74,7 +74,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 			$this->bind( $oid );
 		}
 	}
-	
+
 	/**
 	 * Get Instance this Model
 	 *
@@ -84,22 +84,22 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($key);
 		}
-		
+
 		return $instances[$key];
 	}
 
 	/**
 	 * Return link to event
-	 * 
+	 *
 	 * @return string
 	 */
 	public function link()
@@ -110,8 +110,8 @@ class EventsModelEvent extends \Hubzero\Base\Model
 
 	/**
 	 * Returns calendar for event
-	 * 
-	 * @return object 
+	 *
+	 * @return object
 	 */
 	public function calendar()
 	{
@@ -120,7 +120,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 
 	/**
 	 * Parses the Events Repeating Rule
-	 * 
+	 *
 	 * @return array
 	 */
 	public function parseRepeatingRule()
@@ -136,7 +136,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 
 		// split rules
 		$parts = array_map('trim', explode(';', $this->get('repeating_rule')));
-		
+
 		// loop through each part
 		foreach ($parts as $k => $part)
 		{
@@ -171,13 +171,13 @@ class EventsModelEvent extends \Hubzero\Base\Model
 				unset($parts[$k]);
 			}
 		}
-		
+
 		return $repeating;
 	}
 
 	/**
 	 * Generate Human Readable Repeating Info
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function humanReadableRepeatingRule()
@@ -197,7 +197,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		{
 			$readable .= ucfirst($rule['freq']);
 		}
-		
+
 		// handle end
 		if ($rule['end'] == 'count')
 		{
@@ -214,24 +214,24 @@ class EventsModelEvent extends \Hubzero\Base\Model
 
 	/**
 	 * Export Event in iCal Format
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function export()
 	{
 		// get event timezone setting
-		// use this in "DTSTART;TZID=" 
+		// use this in "DTSTART;TZID="
 		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($this->get('time_zone'));
 		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
-		
+
 		// get publish up/down dates in UTC
 		$publishUp   = new DateTime($this->get('publish_up'), new DateTimezone('UTC'));
 		$publishDown = new DateTime($this->get('publish_down'), new DateTimezone('UTC'));
-		
+
 		// Set eastern timezone as publish up/down date timezones
-		// since all event date/times are stores relative to eastern 
+		// since all event date/times are stores relative to eastern
 		// ----------------------------------------------------------------------------------
-		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to 
+		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
 		// adjust date/time display according to that timezone and their systems timezone setting
 		$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
 		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
@@ -245,7 +245,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
 		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
 		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
-			
+
 		//create ouput
 		$output  = "BEGIN:VCALENDAR\r\n";
 		$output .= "VERSION:2.0\r\n";
@@ -314,7 +314,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		}
 		$output .= "END:VEVENT\r\n";
 		$output .= "END:VCALENDAR\r\n";
-		
+
 		//set the headers for output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', strtolower($title)) . '_export.ics');

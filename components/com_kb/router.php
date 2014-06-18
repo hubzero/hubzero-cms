@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -41,65 +41,65 @@ function kbBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (isset($query['task'])) 
+	if (isset($query['task']))
 	{
-		if ($query['task'] == 'article') 
+		if ($query['task'] == 'article')
 		{
 			unset($query['task']);
-		} 
-		else if ($query['task'] == 'vote') 
+		}
+		else if ($query['task'] == 'vote')
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
 	}
 
-	if (isset($query['section'])) 
+	if (isset($query['section']))
 	{
-		if (!empty($query['section'])) 
+		if (!empty($query['section']))
 		{
 			$segments[] = $query['section'];
 		}
 		unset($query['section']);
 	}
 
-	if (isset($query['category'])) 
+	if (isset($query['category']))
 	{
-		if (!empty($query['category'])) 
+		if (!empty($query['category']))
 		{
 			$segments[] = $query['category'];
 		}
 		unset($query['category']);
 	}
 
-	if (isset($query['alias'])) 
+	if (isset($query['alias']))
 	{
-		if (!empty($query['alias'])) 
+		if (!empty($query['alias']))
 		{
 			$segments[] = $query['alias'];
 		}
 		unset($query['alias']);
 	}
 
-	if (isset($query['id'])) 
+	if (isset($query['id']))
 	{
-		if (!empty($query['id'])) 
+		if (!empty($query['id']))
 		{
 			$segments[] = $query['id'];
 		}
 		unset($query['id']);
 	}
 
-	if (isset($query['vote'])) 
+	if (isset($query['vote']))
 	{
-		if (!empty($query['vote'])) 
+		if (!empty($query['vote']))
 		{
 			$segments[] = $query['vote'];
 		}
 		unset($query['vote']);
 	}
 
-	if (isset($query['controller'])) 
+	if (isset($query['controller']))
 	{
 		unset($query['controller']);
 	}
@@ -109,7 +109,7 @@ function kbBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -127,7 +127,7 @@ function kbParseRoute($segments)
 	$count = count($segments);
 
 	// section/
-	switch ($count) 
+	switch ($count)
 	{
 		case 1:
 			$vars['task'] = 'category';
@@ -148,14 +148,14 @@ function kbParseRoute($segments)
 			$category = new KbTableCategory($db);
 			$category->loadAlias($title2);
 
-			if ($category->id) 
+			if ($category->id)
 			{
 				// section/category
 				$vars['task'] = 'category';
 				$vars['alias'] = $title2; //urldecode($segments[1]);
 				return $vars;
-			} 
-			else 
+			}
+			else
 			{
 				$category->loadAlias($title1);
 			}
@@ -171,7 +171,7 @@ function kbParseRoute($segments)
 			$article = new KbTableArticle($db);
 			$article->loadAlias($title2, $category->id);
 
-			if ($article->id) 
+			if ($article->id)
 			{
 				// section/article
 				$vars['id'] = $article->id;
@@ -183,13 +183,13 @@ function kbParseRoute($segments)
 		case 3:
 			// section/category/article
 			// section/article/comments.rss
-			if ($segments[2] == 'comments.rss') 
+			if ($segments[2] == 'comments.rss')
 			{
 				$vars['task'] = 'comments';
 				$vars['alias'] = urldecode($segments[1]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);
-			} 
-			else 
+			}
+			else
 			{
 				$vars['task'] = 'article';
 				if ($vars['alias'])
@@ -204,13 +204,13 @@ function kbParseRoute($segments)
 		case 4:
 			// task/category/id/vote
 			// section/category/article/comments.rss
-			if ($segments[3] == 'comments.rss') 
+			if ($segments[3] == 'comments.rss')
 			{
 				$vars['task']  = 'comments';
 				$vars['alias'] = urldecode($segments[2]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);
-			} 
-			else 
+			}
+			else
 			{
 				$vars['task'] = $segments[0];
 				$vars['type'] = $segments[1];

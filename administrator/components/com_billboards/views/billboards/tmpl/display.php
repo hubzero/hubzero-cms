@@ -68,9 +68,9 @@ $juser = JFactory::getUser();
 		</tfoot>
 		<tbody>
 
-<?php 
+<?php
 	$k = 0;
-	for ($i=0, $n=count($this->rows); $i < $n; $i++) 
+	for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row =& $this->rows[$i];
 
@@ -81,7 +81,7 @@ $juser = JFactory::getUser();
 			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
 					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
 					 : '';
-		} 
+		}
 		else
 		{
 			$checked = JHTML::_('grid.id', $i, $row->id, false, 'cid');

@@ -40,77 +40,77 @@ class MwModApp
 {
 	/**
 	 * Tool name
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name;
 
 	/**
 	 * Tool caption
-	 * 
+	 *
 	 * @var string
 	 */
 	var $caption;
 
 	/**
 	 * Tool description
-	 * 
+	 *
 	 * @var string
 	 */
 	var $desc;
 
 	/**
 	 * which environment to run in
-	 * 
+	 *
 	 * @var string
 	 */
 	var $middleware;
 
 	/**
 	 * sessionid of application
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $session;
 
 	/**
 	 * owner of a running session
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $owner;
 
 	/**
 	 * Nth occurrence of this application in a list
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $num;
 
 	/**
 	 * is this tool public?
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $public;
 
 	/**
 	 * what license is in use?
-	 * 
+	 *
 	 * @var string
 	 */
 	var $revision;
 
 	/**
 	 * Tool name
-	 * 
+	 *
 	 * @var string
 	 */
 	var $toolname;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string  $n   Name
 	 * @param      string  $c   Caption
 	 * @param      string  $d   Description

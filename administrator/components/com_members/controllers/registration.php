@@ -40,7 +40,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display configurations for registration
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -58,7 +58,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		$this->view->params = $this->config->renderToArray();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -69,7 +69,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save changes to the registration
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -79,7 +79,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 
 		$settings = JRequest::getVar('settings', array(), 'post');
 
-		if (!is_array($settings) || empty($settings)) 
+		if (!is_array($settings) || empty($settings))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,

@@ -46,7 +46,7 @@ if ($this->cats)
 	foreach ($this->cats as $cat)
 	{
 		// Only show categories that have returned search results
-		if ($cat['total'] > 0) 
+		if ($cat['total'] > 0)
 		{
 			// Is this the active category?
 			$a = ($cat['category'] == $this->active) ? ' class="active"' : '';
@@ -58,7 +58,7 @@ if ($this->cats)
 			$l = "\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 
 			// Are there sub-categories?
-			if (isset($cat['_sub']) && is_array($cat['_sub'])) 
+			if (isset($cat['_sub']) && is_array($cat['_sub']))
 			{
 				// An array for storing the HTML we make
 				$k = array();
@@ -66,7 +66,7 @@ if ($this->cats)
 				foreach ($cat['_sub'] as $subcat)
 				{
 					// Only show sub-categories that returned search results
-					if ($subcat['total'] > 0) 
+					if ($subcat['total'] > 0)
 					{
 						// Is this the active category?
 						$a = ($subcat['category'] == $this->active) ? ' class="active"' : '';
@@ -80,7 +80,7 @@ if ($this->cats)
 				}
 				// Do we actually have any links?
 				// NOTE: this method prevents returning empty list tags "<ul></ul>"
-				if (count($k) > 0) 
+				if (count($k) > 0)
 				{
 					$l .= "\t\t" . '<ul>' . "\n";
 					$l .= implode("\n", $k);
@@ -223,7 +223,7 @@ if ($this->cats)
 						}
 						$html .= '</ol>'."\n";
 						// Initiate paging if we we're displaying an active category
-						if (!$dopaging) 
+						if (!$dopaging)
 						{
 							$html .= '<p class="moreresults">' . JText::sprintf('PLG_GROUPS_RESOURCES_NUMBER_SHOWN', $amt);
 							// Ad a "more" link if necessary

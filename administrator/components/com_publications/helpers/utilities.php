@@ -38,7 +38,7 @@ class PublicationUtilities
 {
 	/**
 	 * Register DOI with configures DOI service
-	 * 
+	 *
 	 * @param      array 	$row 		Publication version info
 	 * @param      array 	$authors 	Publication version authors
 	 * @param      array 	$config 	Publications component config
@@ -55,7 +55,7 @@ class PublicationUtilities
 		$service  = trim($config->get('doi_service'), DS);
 		$prefix   = $config->get('doi_prefix', '' );
 		$userpw   = $config->get('doi_userpw');
-		
+
 		if (!$service || !$userpw || !$shoulder)
 		{
 			$doierr .= 'Oups! Can\'t publish! DOI service is not available, please contact Support.';
@@ -74,7 +74,7 @@ class PublicationUtilities
 		$call .= $prefix ? DS . $prefix : DS;
 
 		// Get publisher name
-		if (!$metadata['publisher']) 
+		if (!$metadata['publisher'])
 		{
 			$metadata['publisher'] = $jconfig->getValue('config.sitename');
 		}
@@ -82,10 +82,10 @@ class PublicationUtilities
 		$juri = JURI::getInstance();
 
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site') 
-			? $jconfig->getValue('config.live_site') 
+		$livesite = $jconfig->getValue('config.live_site')
+			? $jconfig->getValue('config.live_site')
 			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite) 
+		if (!$livesite)
 		{
 			$doierr .= 'Missing live site configuration';
 			return false;
@@ -94,12 +94,12 @@ class PublicationUtilities
 		$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . $row->version_number;
 
 		// Get first author / creator name
-		if (count($authors) > 0) 
+		if (count($authors) > 0)
 		{
 			$creatorName = $authors[0]->name;
 			$creatorOrcid = (isset($authors[0]->orcid) ? $authors[0]->orcid : '');
 		}
-		else 
+		else
 		{
 			$creator = JUser::getInstance($row->created_by);
 			$creatorName = $creator->get('name');
@@ -136,12 +136,12 @@ class PublicationUtilities
 
 		/*returns HTTP Code for success or fail */
 		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if ($success === 201) 
+		if ($success === 201)
 		{
 			$out = explode('/', $output);
 			$handle = trim(end($out));
 		}
-		else 
+		else
 		{
 			$doierr = $success . $output;
 			$doierr.= ' '.$call;
@@ -153,7 +153,7 @@ class PublicationUtilities
 		curl_close($ch);
 
 		// Prepare XML data
-		if ($handle && $reserve == 0) 
+		if ($handle && $reserve == 0)
 		{
 			$xdoc      = new DomDocument;
 			$xmlfile   = PublicationUtilities::getXml($row, $authors, $metadata, $doi);
@@ -163,7 +163,7 @@ class PublicationUtilities
 			$xdoc->loadXML($xmlfile);
 
 			//Validate the XML file against the schema
-			if ($xdoc->schemaValidate($xmlschema)) 
+			if ($xdoc->schemaValidate($xmlschema))
 			{
 				/*EZID parses text received based on new lines. */
 				$input  = "_target: " . $metadata['url'] ."\n";
@@ -173,8 +173,8 @@ class PublicationUtilities
 				$input .= "datacite.publicationyear: " . $metadata['pubYear'] . "\n";
 				$input .= "_profile: datacite". "\n";
 
-				/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
-				$input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+				/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */
+				$input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
 
 				// Make service path
 				$call  = $service . DS . 'id' . DS . 'doi:' . $doi;
@@ -191,8 +191,8 @@ class PublicationUtilities
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$output = curl_exec($ch);
 				curl_close($ch);
-			} 
-			else 
+			}
+			else
 			{
 				$doierr .= "XML is invaild. DOI has been created but unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
 			}
@@ -203,9 +203,9 @@ class PublicationUtilities
 
 	/**
 	 * Update DOI information
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string 	$doi 		DOI handle, e.g. 10.4231/D3F47GT6N
 	 * @param      array 	$row 		Publication version info
 	 * @param      array 	$authors 	Publication version authors
@@ -241,14 +241,14 @@ class PublicationUtilities
 
 		// Collect metadata
 		$metadata['publisher'] = $config->get('doi_publisher', $jconfig->getValue('config.sitename') );
-		$metadata['pubYear']   = $row->published_up && $row->published_up != '0000-00-00 00:00:00' 
+		$metadata['pubYear']   = $row->published_up && $row->published_up != '0000-00-00 00:00:00'
 								? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
 
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site') 
-			? $jconfig->getValue('config.live_site') 
+		$livesite = $jconfig->getValue('config.live_site')
+			? $jconfig->getValue('config.live_site')
 			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite) 
+		if (!$livesite)
 		{
 			$doierr .= 'Missing live site configuration';
 			return false;
@@ -264,12 +264,12 @@ class PublicationUtilities
 		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
 
 		// Get first author / creator name
-		if (count($authors) > 0) 
+		if (count($authors) > 0)
 		{
 			$creatorName = $authors[0]->name;
 			$creatorOrcid = (isset($authors[0]->orcid) ? $authors[0]->orcid : '');
 		}
-		else 
+		else
 		{
 			$creator = JUser::getInstance($row->created_by);
 			$creatorName = $creator->get('name');
@@ -303,10 +303,10 @@ class PublicationUtilities
 		$input .= "_profile: datacite". "\n";
 
 		//Validate the XML file against the schema
-		if ($sendXML == true && $xdoc->schemaValidate($xmlschema)) 
+		if ($sendXML == true && $xdoc->schemaValidate($xmlschema))
 		{
-			/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */ 
-			$input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n"; 
+			/*colons(:),percent signs(%),line terminators(\n),carriage returns(\r) are percent encoded for given input string  */
+			$input  .= 'datacite: ' . strtr($xmlfile, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
 		}
 		elseif ($sendXML == true)
 		{
@@ -315,7 +315,7 @@ class PublicationUtilities
 		}
 
 		// Make service path
-		$call  = $service . DS . 'id' . DS . 'doi:' . $doi;	
+		$call  = $service . DS . 'id' . DS . 'doi:' . $doi;
 
 		// cURL Request
 		$ch = curl_init();
@@ -334,7 +334,7 @@ class PublicationUtilities
 
 	/**
 	 * Get XML
-	 * 
+	 *
 	 * @param      array 	$row 		Publication version info
 	 * @param      array 	$authors 	Publication version authors
 	 * @param      array 	$metadata 	Array of metadata
@@ -349,9 +349,9 @@ class PublicationUtilities
 		$xmlfile = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns="http://datacite.org/schema/kernel-2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.1 http://schema.datacite.org/meta/kernel-2.1/metadata.xsd">';
 		$xmlfile.='<identifier identifierType="DOI">'.$doi.'</identifier>';
 		$xmlfile.='<creators>';
-		if (count($authors) > 0) 
+		if (count($authors) > 0)
 		{
-			foreach ($authors as $author) 
+			foreach ($authors as $author)
 			{
 				$nameParts    = explode(" ", $author->name);
 				$name  = end($nameParts);
@@ -365,7 +365,7 @@ class PublicationUtilities
 				$xmlfile.='</creator>';
 			}
 		}
-		else 
+		else
 		{
 			$xmlfile.='<creator>';
 			$xmlfile.='	<creatorName>'.$metadata['creator'].'</creatorName>';
@@ -394,12 +394,12 @@ class PublicationUtilities
 			<date dateType="Accepted">'.$dateAccepted.'</date>
 		</dates>
 		<language>'.$metadata['language'].'</language>
-		<resourceType resourceTypeGeneral="' . $metadata['resourceType'] . '">'.$metadata['typetitle'].'</resourceType>';	
+		<resourceType resourceTypeGeneral="' . $metadata['resourceType'] . '">'.$metadata['typetitle'].'</resourceType>';
 		if (isset($metadata['relatedDoi']) && $metadata['relatedDoi'])
 		{
 			$xmlfile.='<relatedIdentifiers>
 				<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $metadata['relatedDoi'] . '</relatedIdentifier>
-			</relatedIdentifiers>';	
+			</relatedIdentifiers>';
 		}
 		$xmlfile.= '<version>'.$row->version_label.'</version>';
 		if (isset($metadata['license']))
@@ -417,7 +417,7 @@ class PublicationUtilities
 
 	/**
 	 * Collect DOI metadata
-	 * 
+	 *
 	 * @param      object $pub      Publication
 	 * @return     void
 	 */

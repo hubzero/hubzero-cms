@@ -53,7 +53,7 @@ $dispatcher = JDispatcher::getInstance();
 
 <section class="main section">
 	<?php
-		foreach($this->notifications as $notification) 
+		foreach($this->notifications as $notification)
 		{
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
@@ -71,7 +71,7 @@ $dispatcher = JDispatcher::getInstance();
 
 			<label>
 				<?php echo JText::_('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo JText::_('COM_GROUPS_REQUIRED'); ?></span>
-				<?php 
+				<?php
 					$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'logins', 'acmembers')) );
 					if (count($mc) > 0) {
 						echo $mc[0];

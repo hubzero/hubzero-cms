@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 // Get Option and Defautl to com_groups
 $option = JRequest::getCmd('option', 'com_groups');
 
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }

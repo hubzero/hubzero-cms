@@ -45,7 +45,7 @@ $this->css();
 	<?php if ($this->roles && $this->hasRoles > 1) { ?>
 		<ul class="entries-menu user-options">
 			<?php foreach ($this->roles as $s) { ?>
-				<?php 
+				<?php
 				if ($s->total <= 0)
 				{
 					continue;
@@ -84,11 +84,11 @@ $this->css();
 
 			<table class="courses entries">
 				<caption>
-					<?php 
+					<?php
 					$s = ($this->total > 0) ? $this->filters['start']+1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-					echo $this->escape(stripslashes($this->active->title)); //JText::_('PLG_MEMBERS_COURSES_' . strtoupper($this->filters['task'])); 
+					echo $this->escape(stripslashes($this->active->title)); //JText::_('PLG_MEMBERS_COURSES_' . strtoupper($this->filters['task']));
 					?>
 					<span>(<?php echo JText::sprintf('PLG_MEMBERS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 				</caption>
@@ -134,12 +134,12 @@ $this->css();
 								<?php echo $this->escape(stripslashes($row->title)); ?>
 							</a><br />
 							<span class="entry-details">
-								<?php echo $dateText; ?> 
-								<!-- 
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
-								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+								<?php echo $dateText; ?>
+								<!--
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
 								-->
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
 								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo JHTML::_('date', $row->enrolled, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
 								<span class="entry-section">
@@ -160,9 +160,9 @@ $this->css();
 							<?php echo JText::_('PLG_MEMBERS_COURSES_STARTS'); ?><br />
 							<span class="entry-details">
 							<?php if ($row->starts != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
-								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
 								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo JHTML::_('date', $row->starts, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 							<?php } else { ?>
 								<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
@@ -175,9 +175,9 @@ $this->css();
 							<?php echo JText::_('PLG_MEMBERS_COURSES_ENDS'); ?><br />
 							<span class="entry-details">
 								<?php if ($row->ends != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span> 
-								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
-								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span> 
+								<span class="entry-date-at"><?php echo JText::_('PLG_MEMBERS_COURSES_AT'); ?></span>
+								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+								<span class="entry-date-on"><?php echo JText::_('PLG_MEMBERS_COURSES_ON'); ?></span>
 								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo JHTML::_('date', $row->ends, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php } else { ?>
 									<?php echo JText::_('PLG_MEMBERS_COURSES_NA'); ?>
@@ -198,14 +198,14 @@ $this->css();
 		<?php } // end if (count($this->results) > 0) { ?>
 				</tbody>
 			</table>
-			
-			<?php 
+
+			<?php
 			$this->pageNav->setAdditionalUrlParam('id', $this->member->get('uidNumber'));
 			$this->pageNav->setAdditionalUrlParam('active', 'courses');
 			$this->pageNav->setAdditionalUrlParam('task', $this->filters['task']);
 			$this->pageNav->setAdditionalUrlParam('action', '');
 			$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-			
+
 			echo $this->pageNav->getListFooter();
 			?>
 			<div class="clearfix"></div>

@@ -63,19 +63,19 @@ $this->css();
 
 					<label for="shippingToLast">Last name:
 						<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
-					</label> 
+					</label>
 
 					<label for="shippingAddress">Shipping address:
 						<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
-					</label> 
+					</label>
 
 					<label for="shippingCity">City:
 						<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
-					</label> 
+					</label>
 
 					<label for="shippingZip">Zip:
 						<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
-					</label> 
+					</label>
 
 					<label for="shippingState">State:
 						<select name="shippingState" id="shippingState">
@@ -92,7 +92,7 @@ $this->css();
 								}
 							?>
 						</select>
-					</label> 
+					</label>
 
 					<label for="saveAddress"><input type="checkbox" name="saveAddress" id="saveAddress" /> Save this address?</label>
 
@@ -106,7 +106,7 @@ $this->css();
 				if (!empty($this->savedShippingAddresses))
 				{
 					echo '<h2>Select saved address</h2>';
-					
+
 					foreach ($this->savedShippingAddresses as $address)
 					{
 						echo '<div class="cartSection">';
@@ -115,13 +115,13 @@ $this->css();
 						echo $address->saAddress . '<br>';
 						echo $address->saCity . ', ' . $address->saState . ' ' . $address->saZip;
 						echo '</p>';
-						
+
 						echo '<a href="';
 						echo JRoute::_('index.php?option=com_cart/checkout/shipping/select/' . $address->saId);
 						echo '">';
 						echo 'Ship to this address';
 						echo '</a>';
-						
+
 						echo '</div>';
 					}
 				}

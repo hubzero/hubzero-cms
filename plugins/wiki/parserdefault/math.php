@@ -38,49 +38,49 @@ class WikiPageMath extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id               = NULL;
 
 	/**
 	 * varbinary(16)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $inputhash        = NULL;
 
 	/**
 	 * varbinary(16)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $outputhash       = NULL;
 
 	/**
 	 * tinyint
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $conservativeness = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $html             = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $mathml           = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,18 +91,18 @@ class WikiPageMath extends JTable
 
 	/**
 	 * Load a record by inputhash and bind to $this
-	 * 
+	 *
 	 * @param      string $inputhash Hash to load
 	 * @return     boolean True on success
 	 */
 	public function loadByInput($inputhash)
 	{
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE inputhash='" . addslashes($inputhash) . "' LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

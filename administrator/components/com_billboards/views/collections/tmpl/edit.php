@@ -39,15 +39,15 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('collection');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancelcollection') {
 		submitformpressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('name').value == '') {
 		alert('<?php echo JText::_('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');

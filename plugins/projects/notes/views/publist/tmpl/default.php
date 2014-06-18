@@ -48,27 +48,27 @@ if (!$params->get('enable_publinks'))
 
 $database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
-$page		= new WikiTablePage( $database );	
+$page		= new WikiTablePage( $database );
 
 // Get listed public notes
 $items = $objSt->getPubList($this->project->id, 'notes');
 
 $link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
 
-if ($items) { 
+if ($items) {
 ?>
 <div class="public-list-header">
 	<h3><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLIC')); ?> <?php echo JText::_('COM_PROJECTS_NOTES'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>
-		<?php foreach ($items as $item) { 
+		<?php foreach ($items as $item) {
 			$ref = json_decode($item->reference);
-			
+
 			if (isset($ref->pageid) && $page->loadById( $ref->pageid ))
 			{
 		?>
-		<li class="notes"><a href="<?php echo $link . $item->stamp; ?>"><?php echo $page->title; ?></li>	
+		<li class="notes"><a href="<?php echo $link . $item->stamp; ?>"><?php echo $page->title; ?></li>
 		<?php }
 		} ?>
 	</ul>

@@ -38,7 +38,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Set a notification
-	 * 
+	 *
 	 * @param      string $message Message to set
 	 * @param      string $type    Type [error, passed, warning]
 	 * @return     void
@@ -49,34 +49,34 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		$type = ($type == '') ? 'error' : $type;
 
 		//if message is set push to notifications
-		if ($message != '') 
+		if ($message != '')
 		{
 			$this->addComponentMessage($message, $type);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get notifications
-	 * 
+	 *
 	 * @return     array 	Any messages
 	 */
 	public function getNotifications()
 	{
-		//getmessages in quene 
+		//getmessages in quene
 		$messages = $this->getComponentMessage();
 
 		//if we have any messages return them
-		if ($messages) 
+		if ($messages)
 		{
 			return $messages;
 		}
 	}
-	
-	
+
+
 	/**
 	 *  Redirect to Login form with return URL
-	 * 
+	 *
 	 * @param 		string	$message		User notification message
 	 * @param 		string  $customReturn 	Do we want to redirect someplace specific after login
 	 * @return 		void
@@ -85,19 +85,19 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	{
 		//general return
 		$return = JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task);
-		
+
 		//do we have a custom return
 		if($customReturn)
 		{
 			$return = $customReturn;
 		}
-		
+
 		$component = 'com_user';
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$component = 'com_users';
 		}
-		
+
 		//redirect
 		$this->setRedirect(
 			JRoute::_('index.php?option='. $component.'&view=login&return=' . base64_encode($return) ),
@@ -106,18 +106,18 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		);
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Override Default Build Pathway Method
-	 * 
+	 *
 	 * @param		array $pages	Array of group pages, if any
 	 * @return 		void
 	 */
 	public function _buildPathway( $pages = array() )
 	{
 		$pathway = JFactory::getApplication()->getPathway();
-		
+
 		//add 'groups' item to pathway
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -126,7 +126,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
-		
+
 		// add group to pathway
 		if ($this->cn)
 		{
@@ -140,7 +140,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 				);
 			}
 		}
-		
+
 		//add task to pathway
 		if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, array('pages', 'modules', 'categories')))
 		{
@@ -159,9 +159,9 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task
 				);
 			}
-			
+
 		}
-		
+
 		//add active
 		if ($this->active)
 		{
@@ -171,7 +171,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			{
 				$page = $pages->fetch('alias', $this->active);
 			}
-			
+
 			if ($page !== null)
 			{
 				$pathway->addItem(
@@ -187,14 +187,14 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 				);
 			}
 		}
-		
+
 		if (in_array($this->_controller, array('pages', 'modules', 'categories')))
 		{
 			$pathway->addItem(
 				JText::_('COM_GROUPS_PAGES'),
 				'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller
 			);
-			
+
 			if ($this->_task && $this->_task != 'view')
 			{
 				$pathway->addItem(
@@ -204,8 +204,8 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Override default build title
 	 *
@@ -216,12 +216,12 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 
-		if ($this->_task) 
+		if ($this->_task)
 		{
 			$this->_title = JText::_(strtoupper($this->_option . '_' . $this->_task));
 		}
-		
-		if ($this->cn) 
+
+		if ($this->cn)
 		{
 			$group = \Hubzero\User\Group::getInstance( $this->cn );
 			if(is_object($group))
@@ -229,7 +229,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
 			}
 		}
-		
+
 		if ($this->active)
 		{
 			// fetch the active page
@@ -238,7 +238,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			{
 				$page = $pages->fetch('alias', $this->active);
 			}
-			
+
 			if ($page !== null)
 			{
 				$this->_title .= ' ~ ' . JText::_($page->get('title'));
@@ -253,11 +253,11 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
-	
-	
+
+
 	/**
 	 *  Error Handler
-	 * 
+	 *
 	 * @param 		int $errorCode			Error code number
 	 * @param 		string $errorMessage	Error message
 	 * @return 		void
@@ -265,7 +265,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	public function _errorHandler( $errorCode, $errorMessage )
 	{
 		$no_html = JRequest::getInt('no_html', 0);
-		
+
 		if($no_html)
 		{
 			$error = array('error' => array( 'code' => $errorCode, 'message' => $errorMessage ));
@@ -278,11 +278,11 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			return;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Check if user is authorized in groups
-	 * 
+	 *
 	 * @param 		bool $checkOnlyMembership 		Do we want to check joomla admin
 	 * @return 		boolean 						True if authorized, false if not
 	 */
@@ -294,13 +294,13 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		{
 			return false;
 		}
-		
+
 		return GroupsHelperView::authorize( $group, $checkOnlyMembership );
 	}
-	
+
 	/**
 	 * Check if user has role with permission to perform task
-	 * 
+	 *
 	 * @param     $task    Task to be performed
 	 * @return    boolean
 	 */
@@ -312,7 +312,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		{
 			return false;
 		}
-		
+
 		// check if user has permissions
 		return \Hubzero\User\Profile::userHasPermissionForGroupAction($group, $task);
 	}

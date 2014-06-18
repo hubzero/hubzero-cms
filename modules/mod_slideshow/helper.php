@@ -39,20 +39,20 @@ class modSlideshow extends \Hubzero\Module\Module
 {
 	/**
 	 * Path to find slideshow content
-	 * 
+	 *
 	 * @var string
 	 */
 	public $homedir = 'site/slideshow';
 
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		$image_dir = trim($this->params->get('image_dir', 'site/slideshow'), DS);
-		
+
 		$alias          = $this->params->get('alias', '');
 		$height         = $this->params->get('height', '350');
 		$width          = $this->params->get('width', '600');
@@ -69,14 +69,14 @@ class modSlideshow extends \Hubzero\Module\Module
 		jimport('joomla.filesystem.file');
 
 		// check for directory
-		if (!is_dir( JPATH_ROOT . DS . $image_dir )) 
+		if (!is_dir( JPATH_ROOT . DS . $image_dir ))
 		{
-			if (!JFolder::create( JPATH_ROOT . DS . $image_dir )) 
+			if (!JFolder::create( JPATH_ROOT . DS . $image_dir ))
 			{
 				echo JText::_('failed to create image directory') . ' ' . $image_dir;
 				$noflash = 1;
-			} 
-			else 
+			}
+			else
 			{
 				// use default images for this time
 				$image_dir = 'modules/mod_slideshow/images/images';
@@ -85,7 +85,7 @@ class modSlideshow extends \Hubzero\Module\Module
 
 		$images = array();
 		$files = JFolder::files(JPATH_ROOT . DS . $image_dir, '.', false, true, array());
-		if (count($files)==0) 
+		if (count($files)==0)
 		{
 			$image_dir = 'modules/mod_slideshow/images/images';
 		}
@@ -94,17 +94,17 @@ class modSlideshow extends \Hubzero\Module\Module
 
 		$d = @dir(JPATH_ROOT . DS . $image_dir);
 
-		if ($d) 
+		if ($d)
 		{
 			// fetch images
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . DS . $image_dir . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . DS . $image_dir . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) )) 
+					if (preg_match("#bmp|gif|jpg|png|swf#i", strtolower($img_file) ))
 					{
 						$images[] = $img_file;
 					}
@@ -113,19 +113,19 @@ class modSlideshow extends \Hubzero\Module\Module
 
 			$d->close();
 
-			if (count($images) > 0) 
+			if (count($images) > 0)
 			{
 				// pick a random image  to display if flash doesn't work
 				$noflash_file = $image_dir . DS . $images[array_rand($images)];
 
-				if ($random) 
+				if ($random)
 				{
 					// shuffle array
 					shuffle($images);
 				}
 
 				// start xml output
-				if (!$noflash) 
+				if (!$noflash)
 				{
 					$xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 					$xml.= " <slideshow>\n";
@@ -147,18 +147,18 @@ class modSlideshow extends \Hubzero\Module\Module
 					fwrite($fh,utf8_encode($xml));
 					fclose($fh);
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$noflash = 1;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$noflash = 1;
 		}
 
-		if (!$noflash) 
+		if (!$noflash)
 		{
 			$this->js();
 			$this->js('HUB.ModSlideshow.src="' . $swffile . '"; HUB.ModSlideshow.alias="' . $alias . '"; HUB.ModSlideshow.height="' . $height . '"; HUB.ModSlideshow.width="' . $width . '"');

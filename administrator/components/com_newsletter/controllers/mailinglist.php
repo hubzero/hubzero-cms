@@ -44,7 +44,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$this->registerTask('', 'display');
 		parent::execute();
 	}
-	
+
 	/**
 	 * Display Mailing Lists Task
 	 *
@@ -54,16 +54,16 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//set layout
 		$this->view->setLayout('display');
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$this->view->lists = $newsletterMailinglist->getLists();
-		
+
 		//diplay list of mailing lists
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Add Mailing List Task
 	 *
@@ -73,8 +73,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		$this->editTask();
 	}
-	
-	
+
+
 	/**
 	 * Edit Mailing List Task
 	 *
@@ -84,7 +84,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//force layout
 		$this->view->setLayout('edit');
-		
+
 		//default object
 		$this->view->list 				= new stdClass;
 		$this->view->list->id			= null;
@@ -93,29 +93,29 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$this->view->list->private		= null;
 		$this->view->list->deleted		= null;
 		$this->view->list->email_count	= null;
-		
+
 		//get request vars
 		$ids = JRequest::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		//are we editing or adding a new list
 		if ($id)
 		{
 			$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 			$this->view->list = $newsletterMailinglist->getLists( $id );
 		}
-		
+
 		//set errors if we have any
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//ouput
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Save Mailing List Task
 	 *
@@ -128,10 +128,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		//get request vars
 		$list = JRequest::getVar('list', array(), 'post');
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
-		
+
 		//save mailing list
 		if ($newsletterMailinglist->save($list))
 		{
@@ -145,8 +145,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			return;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Delete Mailing List Task
 	 *
@@ -156,7 +156,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//get the request vars
 		$ids = JRequest::getVar("id", array());
-		
+
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
 		{
@@ -166,10 +166,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				//instantiate mailing list object
 				$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 				$newsletterMailinglist->load( $id );
-				
+
 				//mark as deleted
 				$newsletterMailinglist->deleted = 1;
-				
+
 				//save campaign marking as deleted
 				if (!$newsletterMailinglist->save($newsletterMailinglist))
 				{
@@ -179,15 +179,15 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				}
 			}
 		}
-		
+
 		//set success message
 		$this->_message = JText::_('Mailing List(s) Successfully Deleted');
-		
+
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist';
 	}
-	
-	
+
+
 	/**
 	 * Cancel Task
 	 *
@@ -197,8 +197,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
-	
-	
+
+
 	/**
 	 * Manage Mailing List Task
 	 *
@@ -208,37 +208,37 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//set layout
 		$this->view->setLayout('manage');
-		
+
 		//get request vars
 		$ids = JRequest::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		//get request vars
 		$this->view->id 				= $id;
 		$this->view->filters['status'] 	= JRequest::getWord('status', 'active');
 		$this->view->filters['sort'] 	= JRequest::getVar('sort', 'email ASC');
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist 		= new NewsletterMailinglist( $this->database );
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
-		
+
 		//load mailing list
 		$this->view->list = $newsletterMailinglist->getLists( $this->view->id );
-		
+
 		//load mailing list emails
 		$this->view->list_emails = $newsletterMailinglist->getListEmails( $this->view->id, null, $this->view->filters );
-		
+
 		//set errors if we have any
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//diplay list of mailing lists
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Add to Mailing List Task
 	 *
@@ -248,41 +248,41 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//set layout
 		$this->view->setLayout('addemail');
-		
+
 		//get request vars
 		$mailinglistId = JRequest::getVar('id', 0);
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
-		
+
 		if (!$mailinglistId)
 		{
 			$mailinglistId = $this->mid;
 		}
-		
+
 		//load mailing list
 		$this->view->list = new NewsletterMailinglist( $this->database );
 		$this->view->list->load( $mailinglistId );
-		
+
 		//get list of groups
 		$filters = array(
 			'fields' => array('gidNumber','description'),
 			'type' => array('hub','project','super','course')
 		);
 		$this->view->groups = \Hubzero\User\Group::find( $filters );
-		
+
 		//getting vars from do import
 		$this->view->emailBox = $this->emailBox;
-		
+
 		//set errors if we have any
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//output
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Import to Mailing List Task
 	 *
@@ -297,14 +297,14 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$emailFileEmails 	= array();
 		$emailGroupEmails	= array();
 		$emailBoxEmails 	= array();
-		
+
 		//get request vars
 		$this->mid 					= JRequest::getInt('mid', 0);
 		$this->emailFile 			= JRequest::getVar('email_file', array(), 'files');
 		$this->emailGroup			= JRequest::getInt('email_group', 0);
 		$this->emailBox 			= JRequest::getVar('email_box', '');
 		$this->emailConfirmation	= JRequest::getVar('email_confirmation', '-1');
-		
+
 		//make sure we have selected whether or not to send confirmation emails
 		if ($this->emailConfirmation == '-1')
 		{
@@ -312,32 +312,32 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			$this->addEmailTask();
 			return;
 		}
-		
+
 		//instantiate newletter mailing email object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$newsletterMailinglist->load( $this->mid );
-		
+
 		//get current emails on list
 		$filters = array( 'status' => 'all' );
 		$currentEmails = array_keys($newsletterMailinglist->getListEmails( $this->mid, $key ='email', $filters ));
-		
+
 		//get the applicaton
 		$application = JFactory::getApplication();
-		
+
 		//get com_media params
 		$config = JComponentHelper::getParams('com_media');
-		
+
 		//array of allowed extensions
 		$allowedExtensions = array('txt','csv','xls','xlsx');
-		
+
 		//max file size
 		$maxFileSize = (int) $config->get('upload_maxsize');
-		
+
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$maxFileSize = $maxFileSize * 1024 * 1024;
 		}
-		
+
 		//if we have a file
 		if (isset($this->emailFile['size']) && $this->emailFile['size'] > 0)
 		{
@@ -349,7 +349,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				$this->addEmailTask();
 				return;
 			}
-			
+
 			//make sure were within file limits
 			if ($this->emailFile['size'] > $maxFileSize)
 			{
@@ -357,21 +357,21 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				$this->addEmailTask();
 				return;
 			}
-			
+
 			//get contents of file
 			$emailFileContents = file_get_contents( $this->emailFile['tmp_name'] );
-			
+
 			//parse emails
-			$emailFileEmails = $this->_parseEmails( $emailFileContents ); 
+			$emailFileEmails = $this->_parseEmails( $emailFileContents );
 		}
-		
+
 		//do we have an email group
 		if ($this->emailGroup != '' || $this->emailGroup != 0)
 		{
 			$hg = \Hubzero\User\Group::getInstance( $this->emailGroup );
 			$emailGroupEmails = $hg->getEmails( 'members' );
 		}
-		
+
 		//do we have a emails in the textarea
 		if ($this->emailBox != '')
 		{
@@ -383,13 +383,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-		
+
 		//merge emails from file and box
 		$emails = array_merge( $emailFileEmails, $emailGroupEmails, $emailBoxEmails );
-		
+
 		//make sure we have distinct emails
 		$emails = array_unique( $emails );
-		
+
 		//check that they are valid emails
 		$inserts = array();
 		foreach ($emails as $k => $email)
@@ -409,7 +409,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				$inserts[] = "(" . $this->mid . ", '" . $email . "', 'active', 0, '".JFactory::getDate()->toSql()."')";
 			}
 		}
-		
+
 		//do we have something to add
 		if (count($inserts) > 0)
 		{
@@ -418,14 +418,14 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			$sql .= implode(", ", $inserts);
 			$this->database->setQuery( $sql );
 			$this->database->query();
-			
+
 			//inform user of successfully addes
 			$application->enqueueMessage(
 				'There were ' . count($emails) . ' emails successfully added to the mailing list: <br /><br />&mdash; ' . implode('<br />&mdash; ', $emails),
 				'success'
 			);
 		}
-		
+
 		//if we had an duplicate emails
 		if (count($duplicateEmails) > 0)
 		{
@@ -434,7 +434,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				'warning'
 			);
 		}
-		
+
 		//if we had an issue with emails
 		if (count($badEmails) > 0)
 		{
@@ -443,7 +443,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				'error'
 			);
 		}
-		
+
 		//send confirmation emails
 		if ($this->emailConfirmation)
 		{
@@ -454,12 +454,12 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, $addedByAdmin = true );
 			}
 		}
-		
+
 		//redirect back to mailing list manage page
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $this->mid;
 	}
-	
-	
+
+
 	/**
 	 * Edit Email On Mailing List Task
 	 *
@@ -469,36 +469,36 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//set layout
 		$this->view->setLayout('editemail');
-		
+
 		//get request vars
 		$id = JRequest::getInt('id', 0);
 		$mid = JRequest::getInt('mid', 0);
-		
+
 		//load mailing list
 		$this->view->list = new NewsletterMailinglist( $this->database );
 		$this->view->list->load( $mid );
-		
+
 		//load email
 		$this->view->email = new NewsletterMailinglistEmail( $this->database );
 		$this->view->email->load( $id );
-		
+
 		//are we passing back an email
 		if ($this->email)
 		{
 			$this->view->email->email = $this->email;
 		}
-		
+
 		//set errors if we have any
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		//output
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Save Email On Mailing List Task
 	 *
@@ -508,10 +508,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//get request vars
 		$email = JRequest::getVar('email', array(), 'post');
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
-		
+
 		//save email
 		if ($newsletterMailinglistEmail->save($email))
 		{
@@ -528,8 +528,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			return;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Remove Email From Mailing List Task
 	 *
@@ -541,7 +541,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$ids 			= JRequest::getVar('email_id', array());
 		$mailinglistId 	= JRequest::getVar('id', array());
 		$mailinglistId 	= (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
-		
+
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
 		{
@@ -551,10 +551,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				//instantiate mailing list object
 				$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 				$newsletterMailinglistEmail->load( $id );
-		
+
 				//mark as removed
 				$newsletterMailinglistEmail->status = 'removed';
-		
+
 				//delete mailing list email
 				if (!$newsletterMailinglistEmail->save( $newsletterMailinglistEmail ))
 				{
@@ -564,13 +564,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				}
 			}
 		}
-		
+
 		//inform and redirect
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mailinglistId;
 		$this->_message = JText::_('The selected email(s) was successfully marked as removed from mailing list.');
 	}
-	
-	
+
+
 	/**
 	 * Add Email Back To Mailing List Task
 	 *
@@ -581,16 +581,16 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		//get request vars
 		$id = JRequest::getInt('id', 0);
 		$mid = JRequest::getInt('mid', 0);
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
-		
+
 		//load email
 		$newsletterMailinglistEmail->load( $id );
-		
+
 		//mark as removed
 		$newsletterMailinglistEmail->status = 'active';
-		
+
 		//delete mailing list email
 		if ($newsletterMailinglistEmail->save( $newsletterMailinglistEmail ))
 		{
@@ -604,30 +604,30 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			return;
 		}
 	}
-	
+
 	public function sendConfirmationTask()
 	{
 		//get request vars
 		$id = JRequest::getInt('id', 0);
 		$mid = JRequest::getInt('mid', 0);
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$newsletterMailinglist->load( $mid );
-		
+
 		//instantiate mailing list email object
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 		$newsletterMailinglistEmail->load( $id );
-		
+
 		//send confirmation email
 		NewsletterHelper::sendMailinglistConfirmationEmail( $newsletterMailinglistEmail->email, $newsletterMailinglist, false );
-		
+
 		//inform user and redirect
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mid;
 		$this->_message = JText::_('You successfully resent a confirmation email to "'.$newsletterMailinglistEmail->email.'"');
 		return;
 	}
-	
+
 	/**
 	 * Export Mailing List Task
 	 *
@@ -638,24 +638,24 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		//get request vars
 		$ids = JRequest::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$newsletterMailinglist->load( $id );
-		
+
 		//get list of emails
 		$emails = $newsletterMailinglist->getListEmails( $id, null, array('status' => 'all') );
-		
+
 		//file name
 		$filename = 'Newsletter Mailing List Export - ' . $newsletterMailinglist->name . ' - ' . JFactory::getDate()->format('m-d-Y') . '.csv';
-		
+
 		//file contents
 		$content = 'Email, Status' . PHP_EOL;
 		foreach ($emails as $email)
 		{
 			$content .= $email->email . ", " . $email->status . PHP_EOL;
 		}
-		
+
 		//set the headers for output
 		header("Content-type: text/csv");
 		header("Content-Disposition: attachment; filename={$filename}");
@@ -664,8 +664,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		echo $content;
 		exit();
 	}
-	
-	
+
+
 	/**
 	 * Cancel Task
 	 *
@@ -674,12 +674,12 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	public function cancelEmailTask()
 	{
 		$email = JRequest::getVar('email', array(), 'post');
-		
+
 		$mid = ($email['mid']) ? $email['mid'] : JRequest::getInt('mid');
 		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id[]=' . $mid;
 	}
-	
-	
+
+
 	/**
 	 * Mailing List Email Count Task
 	 *
@@ -689,17 +689,17 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//get the mailing list
 		$mailinglistId = JRequest::getInt('mailinglistid', '-1');
-		
+
 		//get list of emails
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$filters = array( 'status' => 'active' );
 		$emails = array_keys( $newsletterMailinglist->getListEmails( $mailinglistId, 'email', $filters ) );
-		
+
 		//echo count of emails
 		echo json_encode($emails);
 	}
-	
-	
+
+
 	/**
 	 * Parse Email Content
 	 *
@@ -711,10 +711,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	{
 		//array to hold parsed emails
 		$parsedEmails = array();
-		
+
 		//split file by line break
 		$parsedEmailLines = explode( PHP_EOL, $emails );
-		
+
 		//loop through each line and parse
 		foreach ($parsedEmailLines as $emailLine)
 		{
@@ -742,25 +742,25 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				$parsedEmails[] = $emailLine;
 			}
 		}
-		
+
 		//trim results
 		$parsedEmails = array_map( "trim", $parsedEmails );
-		
+
 		//strtolower results
 		$parsedEmails = array_map( "strtolower", $parsedEmails );
-		
+
 		//remove empty values
 		$parsedEmails = array_filter( $parsedEmails );
-		
+
 		//reset array keys
 		$parsedEmails = array_values( $parsedEmails );
-		
+
 		//remove duplicates
 		$parsedEmails = array_unique( $parsedEmails );
-		
+
 		//return parse emails
 		return $parsedEmails;
 	}
-	
-	
+
+
 }

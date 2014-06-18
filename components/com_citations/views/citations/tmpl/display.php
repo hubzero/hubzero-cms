@@ -45,7 +45,7 @@ $this->css('introduction.css', 'system')
 			<?php endif; ?>
 			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 				<li><a class="btn icon-upload" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a></li>
-			<?php endif; ?>	
+			<?php endif; ?>
 		</ul>
 	</div>
 </header>

@@ -34,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
 		<?php
-		if (!$this->page->isStatic()) 
+		if (!$this->page->isStatic())
 		{
 			$view = new JView(array(
-				'base_path' => $this->base_path, 
+				'base_path' => $this->base_path,
 				'name'      => 'page',
 				'layout'    => 'authors'
 			));
@@ -57,7 +57,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
@@ -97,7 +97,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$filters['version'] = 'AND version=' . $this->v;
 		}
 
-		if ($this->page->comments('list', $filters)->total()) 
+		if ($this->page->comments('list', $filters)->total())
 		{
 			$view = new JView(array(
 				'base_path' => JPATH_ROOT . '/components/com_wiki',
@@ -113,14 +113,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$view->version    = $this->v;
 			$view->cls        = 'odd';
 			$view->display();
-		} 
-		else 
+		}
+		else
 		{
-			if ($this->v) 
+			if ($this->v)
 			{
 				echo '<p>No comments found for this version.</p>';
-			} 
-			else 
+			}
+			else
 			{
 				echo '<p>No comments found. Be the first to add a comment!</p>';
 			}
@@ -163,7 +163,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</h3>
 
 			<p class="comment-member-photo">
-				<?php 
+				<?php
 				$juser = JFactory::getUser();
 				$anon = (!$juser->get('guest')) ? 0 : 1;
 				?>

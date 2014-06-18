@@ -40,9 +40,9 @@ class Helper
 {
 	/**
 	 * Short description for 'iterate_profiles'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $func Parameter description (if any) ...
 	 * @param      string $storage Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
@@ -70,7 +70,7 @@ class Helper
 
 	/**
 	 * Find a username by email address
-	 * 
+	 *
 	 * @param      string $email Email address to look up
 	 * @return     mixed False if not found, string if found
 	 */
@@ -96,7 +96,7 @@ class Helper
 
 	/**
 	 * Get member picture
-	 * 
+	 *
 	 * @param      mixed $member Parameter description (if any) ...
 	 * @param      integer $anonymous Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -133,7 +133,7 @@ class Helper
 			}
 
 			// If we have a member
-			if (is_object($member)) 
+			if (is_object($member))
 			{
 				if (!$member->get('picture'))
 				{
@@ -200,9 +200,9 @@ class Helper
 						$hash = md5(strtolower(trim($member->get('email'))));
 						$protocol = \JBrowser::getInstance()->isSSLConnection() ? 'https' : 'http';
 						//$paths[] = $protocol . '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?' . (!$thumbit ? 's=300&' : '') . 'd=' . urlencode(JURI::base() . $dfthumb);
-						return $protocol 
-								. '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?' 
-								. (!$thumbit ? 's=300&' : '') 
+						return $protocol
+								. '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
+								. (!$thumbit ? 's=300&' : '')
 								. 'd=' . urlencode(str_replace('/administrator', '', rtrim(\JURI::base(), DS)) . DS . $dfthumb);
 					}
 				}
@@ -215,7 +215,7 @@ class Helper
 		// Start running through paths until we find a valid one
 		foreach ($paths as $path)
 		{
-			if ($path && file_exists(JPATH_ROOT . $path)) 
+			if ($path && file_exists(JPATH_ROOT . $path))
 			{
 				return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $path;
 			}
@@ -225,7 +225,7 @@ class Helper
 	/**
 	 * Generate a thumbnail file name format
 	 * example.jpg -> example_thumb.jpg
-	 * 
+	 *
 	 * @param      string $thumb Filename to get thumbnail of
 	 * @return     string
 	 */
@@ -240,7 +240,7 @@ class Helper
 	/**
 	 * Pad a user ID with zeros
 	 * ex: 123 -> 00123
-	 * 
+	 *
 	 * @param      integer $someid
 	 * @return     integer
 	 */

@@ -27,7 +27,7 @@
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * /administrator/components/com_support/controllers/tickets.php
- * 
+ *
  */
 
 ini_set('display_errors', 1);
@@ -54,7 +54,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		$this->config   = JComponentHelper::getParams('com_tags');
 		$this->database = JFactory::getDBO();
 
-		switch ($this->segments[0]) 
+		switch ($this->segments[0])
 		{
 			case 'view':    $this->tagTask();  break;
 			case 'tag':     $this->tagTask();  break;
@@ -230,7 +230,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			$response->success = false;
 
 			$this->errorMessage(
-				404, 
+				404,
 				JText::_('Specified tag does not exist.')
 			);
 			return;
@@ -280,7 +280,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			$response->success = false;
 
 			$this->errorMessage(
-				404, 
+				404,
 				JText::_('Specified tag does not exist.')
 			);
 			return;
@@ -297,7 +297,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			$response->success = false;
 
 			$this->errorMessage(
-				500, 
+				500,
 				JText::_('Failed to add tag.')
 			);
 			return;
@@ -325,7 +325,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			$response->success = false;
 
 			$this->errorMessage(
-				404, 
+				404,
 				JText::_('Specified tag does not exist.')
 			);
 			return;
@@ -342,7 +342,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			$response->success = false;
 
 			$this->errorMessage(
-				500, 
+				500,
 				JText::_('Failed to remove tag.')
 			);
 			return;
@@ -394,7 +394,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		// Cut suggestion at 70 characters
 		$ticket->summary   = substr($ticket->report, 0, 70);
-		if (strlen($ticket->summary) >= 70) 
+		if (strlen($ticket->summary) >= 70)
 		{
 			$ticket->summary .= '...';
 		}
@@ -415,14 +415,14 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		$ticket->hostname  = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
 
 		// Check the data
-		if (!$ticket->check()) 
+		if (!$ticket->check())
 		{
 			$this->errorMessage(500, $ticket->getErrors());
 			return;
 		}
 
 		// Save the data
-		if (!$ticket->store()) 
+		if (!$ticket->store())
 		{
 			$this->errorMessage(500, $ticket->getErrors());
 			return;

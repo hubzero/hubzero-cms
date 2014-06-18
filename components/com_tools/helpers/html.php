@@ -38,9 +38,9 @@ class ToolsHelperHtml
 {
 	/**
 	 * Short description for 'error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $msg Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -52,13 +52,13 @@ class ToolsHelperHtml
 
 	/**
 	 * Turn datetime 0000-00-00 00:00:00 to timestamp
-	 * 
+	 *
 	 * @param      string $stime Datetime to convert
 	 * @return     number
 	 */
 	public static function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) 
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs))
 		{
 			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
@@ -67,7 +67,7 @@ class ToolsHelperHtml
 
 	/**
 	 * Calculate how long ago a date was
-	 * 
+	 *
 	 * @param      number $timestamp Date to convert
 	 * @return     string
 	 */
@@ -81,13 +81,13 @@ class ToolsHelperHtml
 
 		// Set the periods of time
 		$periods = array(
-			JText::_('COM_TOOLS_SECOND'), 
-			JText::_('COM_TOOLS_MINUTE'), 
-			JText::_('COM_TOOLS_HOUR'), 
-			JText::_('COM_TOOLS_DAY'), 
-			JText::_('COM_TOOLS_WEEK'), 
-			JText::_('COM_TOOLS_MONTH'), 
-			JText::_('COM_TOOLS_YEAR'), 
+			JText::_('COM_TOOLS_SECOND'),
+			JText::_('COM_TOOLS_MINUTE'),
+			JText::_('COM_TOOLS_HOUR'),
+			JText::_('COM_TOOLS_DAY'),
+			JText::_('COM_TOOLS_WEEK'),
+			JText::_('COM_TOOLS_MONTH'),
+			JText::_('COM_TOOLS_YEAR'),
 			JText::_('COM_TOOLS_DECADE')
 		);
 
@@ -109,7 +109,7 @@ class ToolsHelperHtml
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) 
+		if ($val < 0)
 		{
 			$val = 0;
 		}
@@ -124,13 +124,13 @@ class ToolsHelperHtml
 		if ($number != 1)
 		{
 			$periods = array(
-				JText::_('COM_TOOLS_SECONDS'), 
-				JText::_('COM_TOOLS_MINUTES'), 
-				JText::_('COM_TOOLS_HOURS'), 
-				JText::_('COM_TOOLS_DAYS'), 
-				JText::_('COM_TOOLS_WEEKS'), 
-				JText::_('COM_TOOLS_MONTHS'), 
-				JText::_('COM_TOOLS_YEARS'), 
+				JText::_('COM_TOOLS_SECONDS'),
+				JText::_('COM_TOOLS_MINUTES'),
+				JText::_('COM_TOOLS_HOURS'),
+				JText::_('COM_TOOLS_DAYS'),
+				JText::_('COM_TOOLS_WEEKS'),
+				JText::_('COM_TOOLS_MONTHS'),
+				JText::_('COM_TOOLS_YEARS'),
 				JText::_('COM_TOOLS_DECADES')
 			);
 		}
@@ -149,7 +149,7 @@ class ToolsHelperHtml
 
 	/**
 	 * Calculate how long ago a date was and put it in human readable format
-	 * 
+	 *
 	 * @param      number $timestamp Date to convert
 	 * @return     string
 	 */
@@ -170,9 +170,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'formSelect'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $name Parameter description (if any) ...
 	 * @param      string $idname Parameter description (if any) ...
 	 * @param      array $array Parameter description (if any) ...
@@ -199,9 +199,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'primaryButton'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $class Parameter description (if any) ...
 	 * @param      string $href Parameter description (if any) ...
 	 * @param      string $msg Parameter description (if any) ...
@@ -221,9 +221,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getNumofTools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $status Parameter description (if any) ...
 	 * @param      string $toolnum Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -233,17 +233,17 @@ class ToolsHelperHtml
         // get hub parameters
         $jconfig = JFactory::getConfig();
         $sitename = $jconfig->getValue('config.sitename');
-		
+
 		$toolnum = ($status['state']!=9) ? JText::_('COM_TOOLS_THIS_TOOL').'  ': '';
-		if (!$status['published'] && self::toolActive($status['state'])) 
+		if (!$status['published'] && self::toolActive($status['state']))
 		{
 			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_UNDER_DEVELOPMENT')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if ($status['published'] && self::toolActive($status['state'])) 
+		else if ($status['published'] && self::toolActive($status['state']))
 		{
 			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_PUBLISHED')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if ($status['state']==8) 
+		else if ($status['state']==8)
 		{
 			$toolnum .= JText::_('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.JText::_('COM_TOOLS_ON').' '.$sitename.' '.JText::_('COM_TOOLS_NOW_RETIRED');
 		}
@@ -253,15 +253,15 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'toolActive'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolActive($stateNum) 
+	public static function toolActive($stateNum)
 	{
-		if ($stateNum == 8 || $stateNum == 9) 
+		if ($stateNum == 8 || $stateNum == 9)
 		{
 			return false;
 		}
@@ -270,15 +270,15 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'toolWIP'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolWIP($stateNum) 
+	public static function toolWIP($stateNum)
 	{
-		if ($stateNum == 2 || $stateNum == 9 || $stateNum == 1) 
+		if ($stateNum == 2 || $stateNum == 9 || $stateNum == 1)
 		{
 			return false;
 		}
@@ -287,15 +287,15 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'toolEstablished'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $stateNum Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
-	public static function toolEstablished($stateNum) 
+	public static function toolEstablished($stateNum)
 	{
-		if ($stateNum == 1 || $stateNum == 9) 
+		if ($stateNum == 1 || $stateNum == 9)
 		{
 			return false;
 		}
@@ -304,14 +304,14 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getStatusClass'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusNum Parameter description (if any) ...
 	 * @param      string &$statusClass Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getStatusClass($statusNum, &$statusClass) 
+	public static function getStatusClass($statusNum, &$statusClass)
 	{
 		switch ($statusNum)
 		{
@@ -326,14 +326,14 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getStatusName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusNum Parameter description (if any) ...
 	 * @param      unknown &$statusName Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
-	public static function getStatusName($statusNum, &$statusName) 
+	public static function getStatusName($statusNum, &$statusName)
 	{
 		switch ($statusNum)
 		{
@@ -353,9 +353,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getStatusNum'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $statusName Parameter description (if any) ...
 	 * @param      integer $statusNum Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
@@ -379,9 +379,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getPriority'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $int Parameter description (if any) ...
 	 * @param      string $priority Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -402,34 +402,34 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getDevTeam'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $members Parameter description (if any) ...
 	 * @param      integer $obj Parameter description (if any) ...
 	 * @param      string $team Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getDevTeam($members, $obj = 1, $team='') 
+	public static function getDevTeam($members, $obj = 1, $team='')
 	{
-		if ($members && count($members) > 0) 
+		if ($members && count($members) > 0)
 		{
-			foreach ($members as $member) 
+			foreach ($members as $member)
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
 				$juser = JUser::getInstance($uid);
-				if (is_object($juser)) 
+				if (is_object($juser))
 				{
 					$login = $juser->get('username');
-				} 
-				else 
+				}
+				else
 				{
 					$login = JText::_('COM_TOOLS_UNKNOWN');
 				}
 				$team .= ($member != end($members)) ? $login . ', ' : $login;
 			}
 		}
-		else 
+		else
 		{
 			$team .= JText::_('COM_TOOLS_N/A');
 		}
@@ -438,19 +438,19 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      integer $obj Parameter description (if any) ...
 	 * @param      string $list Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getGroups($groups, $obj = 1, $list='') 
+	public static function getGroups($groups, $obj = 1, $list='')
 	{
-		if ($groups && count($groups) > 0) 
+		if ($groups && count($groups) > 0)
 		{
-			foreach ($groups as $group) 
+			foreach ($groups as $group)
 			{
 				$cn = ($obj) ? $group->cn : $group;
 				$list .= ($group != end($groups)) ? $cn . ', ' : $cn;
@@ -461,9 +461,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getToolAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      string $toolaccess Parameter description (if any) ...
@@ -474,16 +474,16 @@ class ToolsHelperHtml
 		switch ($access)
 		{
 			case '@GROUP':
-				if (count($groups)>0) 
+				if (count($groups)>0)
 				{
 					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
-					foreach ($groups as $group) 
+					foreach ($groups as $group)
 					{
 						$toolaccess .= ($group != end($groups)) ? $group->cn . ', ' : $group->cn;
 					}
 				}
-				else 
-				{ 
+				else
+				{
 					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_UNSPECIFIED') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS');
 				}
 			break;
@@ -499,9 +499,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getCodeAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      string $codeaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -520,9 +520,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'getWikiAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $access Parameter description (if any) ...
 	 * @param      string $wikiaccess Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -541,9 +541,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'writeApproval'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $active_stage Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -581,9 +581,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'selectAccess'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $as Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -593,10 +593,10 @@ class ToolsHelperHtml
 		$html  = '<select name="access">';
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
-			if ($as[$i] != 'Registered' && $as[$i] != 'Special') 
+			if ($as[$i] != 'Registered' && $as[$i] != 'Special')
 			{
 				$html .= '<option value="' . $i . '"';
-				if ($value == $i) 
+				if ($value == $i)
 				{
 					$html .= ' selected="selected"';
 				}
@@ -609,9 +609,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'selectGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $groups Parameter description (if any) ...
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -623,7 +623,7 @@ class ToolsHelperHtml
 		foreach ($groups as $group)
 		{
 			$html .= '<option value="'.$group->cn.'"';
-			if ($value == $group->cn) 
+			if ($value == $group->cn)
 			{
 				$html .= ' selected="selected"';
 			}
@@ -635,9 +635,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'writeNotesArea'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $notes Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
@@ -650,10 +650,10 @@ class ToolsHelperHtml
 
 		$out ='';
 		$i = 0;
-		if (count($notes) > 0) 
+		if (count($notes) > 0)
 		{
 			$out .= '<ul class="features">'."\n";
-			for ($i=0, $n=count($notes); $i < $n; $i++) 
+			for ($i=0, $n=count($notes); $i < $n; $i++)
 			{
 				$note = $notes[$i];
 				$out .= ' <li>'."\n";
@@ -664,7 +664,7 @@ class ToolsHelperHtml
 			$out .= '</ul>'."\n";
 		}
 
-		if ($addnew) 
+		if ($addnew)
 		{
 			$out .= self::addNoteArea($i, $option, $type);
 		}
@@ -674,9 +674,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'addNoteArea'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $i Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      string $type Parameter description (if any) ...
@@ -697,9 +697,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'parseTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -719,9 +719,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'txt_unpee'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $pee Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -738,9 +738,9 @@ class ToolsHelperHtml
 
 	/**
 	 * Short description for 'niceidformat'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $someid Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -755,20 +755,20 @@ class ToolsHelperHtml
 
 	/**
 	 * Get the file attributes (type, size) of a file
-	 * 
+	 *
 	 * @param      string $path      Path to get file info fore
 	 * @param      string $base_path Base path to prepend to $path
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function getFileAttribs($path, $base_path='')
 	{
 		// Return nothing if no path provided
-		if (!$path) 
+		if (!$path)
 		{
 			return '';
 		}
 
-		if ($base_path) 
+		if ($base_path)
 		{
 			// Strip any trailing slash
 			$base_path = DS . trim($base_path, DS);
@@ -778,7 +778,7 @@ class ToolsHelperHtml
 		$path = DS . trim($path, DS);
 
 		// Does the beginning of the path match the base path?
-		if (substr($path, 0, strlen($base_path)) != $base_path) 
+		if (substr($path, 0, strlen($base_path)) != $base_path)
 		{
 			$path = $base_path . $path;
 		}
@@ -790,13 +790,13 @@ class ToolsHelperHtml
 		$fs = '';
 
 		// Get the file size if the file exist
-		if (file_exists($path)) 
+		if (file_exists($path))
 		{
 			$fs = filesize($path);
 		}
 
 		$html  = $type;
-		if ($fs) 
+		if ($fs)
 		{
 			switch ($type)
 			{

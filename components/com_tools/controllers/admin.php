@@ -63,17 +63,17 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 	public function getMessage($i = null)
 	{
 		// Find the message
-		if ($i === null) 
+		if ($i === null)
 		{
 			// Default, return the last message
 			$message = end($this->_messages);
 		}
-		else if (!array_key_exists($i, $this->_messages)) 
+		else if (!array_key_exists($i, $this->_messages))
 		{
 			// If $i has been specified but does not exist, return false
 			return false;
 		}
-		else 
+		else
 		{
 			$message = $this->_messages[$i];
 		}
@@ -93,7 +93,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -101,7 +101,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$this->_authorize();
 
 		// needs to be admin
-		if (!$this->config->get('access-manage-component')) 
+		if (!$this->config->get('access-manage-component'))
 		{
 			$this->setRedirect(
 				$this->config->get('contribtool_redirect', '/home')
@@ -118,7 +118,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Add repo
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addrepoTask()
@@ -130,12 +130,12 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = JRequest::getVar('app', ''))) 
+		if (($alias = JRequest::getVar('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
 		// Do we have a tool ID
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
@@ -143,21 +143,21 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		// Get the tool status
 		$obj->getToolStatus(
-			$this->_toolid, 
-			$this->_option, 
-			$status, 
+			$this->_toolid,
+			$this->_option,
+			$status,
 			'dev'
 		);
 		// Check for a status
-		if (count($status) <= 0) 
+		if (count($status) <= 0)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
 		}
-		
+
 		$ldap_params = JComponentHelper::getParams('com_system');
 		$pw = $ldap_params->get('ldap_searchpw','');
-		
+
 		$command  = '/usr/bin';
 		$command .= DS . 'addrepo ' . $status['toolname'];
 		$command .= ' -title "' . $status['title'] . '"';
@@ -192,7 +192,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Install the tool
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function installTask()
@@ -204,12 +204,12 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = JRequest::getVar('app', ''))) 
+		if (($alias = JRequest::getVar('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
 		// Do we have a tool ID
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
@@ -217,13 +217,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		// Get the tool status
 		$obj->getToolStatus(
-			$this->_toolid, 
-			$this->_option, 
-			$status, 
+			$this->_toolid,
+			$this->_option,
+			$status,
 			'dev'
 		);
 		// Check for a status
-		if (count($status) <= 0) 
+		if (count($status) <= 0)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
@@ -233,21 +233,21 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . JPATH_ROOT . ' ' . $status['toolname'];
 		error_log($command);
 		// Invoke the script
-		if ($this->_invokeScript($command, JText::_('COM_TOOLS_NOTICE_REV_INSTALLED'))) 
+		if ($this->_invokeScript($command, JText::_('COM_TOOLS_NOTICE_REV_INSTALLED')))
 		{
 			// Extract revision number
 			$rev = explode('installed revision: ', $this->getMessage());
 
-			if (!isset($rev[1]) || !intval($rev[1])) 
+			if (!isset($rev[1]) || !intval($rev[1]))
 			{
 				$this->setError(JText::_('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
 			}
-			else 
+			else
 			{
 				// Update the revision number
 				$hztv = ToolsHelperVersion::getDevelopmentToolVersion($this->_toolid);
 				$hztv->revision = intval($rev[1]);
-				if (!$hztv->update()) 
+				if (!$hztv->update())
 				{
 					$this->setError(JText::_('COM_TOOLS_Error saving revision update to installed tool'));
 				}
@@ -280,7 +280,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Retire a tool
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function retireTask()
@@ -292,12 +292,12 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = JRequest::getVar('app', ''))) 
+		if (($alias = JRequest::getVar('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
 		// Do we have a tool ID
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
@@ -305,13 +305,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		// Get the tool status
 		$obj->getToolStatus(
-			$this->_toolid, 
-			$this->_option, 
-			$status, 
-			'dev' 
+			$this->_toolid,
+			$this->_option,
+			$status,
+			'dev'
 		);
 		// Check for a status
-		if (count($status) <= 0) 
+		if (count($status) <= 0)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
@@ -321,11 +321,11 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$objV = new ToolVersion($this->database);
 
 		// Unpublish all previous versions
-		if (!$objV->unpublish($this->_toolid)) 
+		if (!$objV->unpublish($this->_toolid))
 		{
 			$this->setError(JText::_('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS'));
 		}
-		else 
+		else
 		{
 			$this->setMessage(JText::_('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSIONS'));
 		}
@@ -355,7 +355,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Publish a tool
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
@@ -367,12 +367,12 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// Do we have an alias?
-		if (($alias = JRequest::getVar('app', ''))) 
+		if (($alias = JRequest::getVar('app', '')))
 		{
 			$this->_toolid = $obj->getToolId($alias);
 		}
 		// Do we have a tool ID
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_No tool found.'));
 			return;
@@ -380,13 +380,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		// Get the tool status
 		$obj->getToolStatus(
-			$this->_toolid, 
-			$this->_option, 
-			$status, 
-			'dev' 
+			$this->_toolid,
+			$this->_option,
+			$status,
+			'dev'
 		);
 		// Check for a status
-		if (count($status) <= 0) 
+		if (count($status) <= 0)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
 			return;
@@ -402,25 +402,25 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// Create a Tool Version object
 		$objV = new ToolVersion($this->database);
 		$objV->getToolVersions(
-			$this->_toolid, 
-			$tools, 
-			'', 
+			$this->_toolid,
+			$tools,
+			'',
 			1
 		);
 
 		// make checks
-		if (!is_numeric($status['revision'])) 
+		if (!is_numeric($status['revision']))
 		{
 			// bad format
 			$result = false;
 			$this->setError(JText::_('COM_TOOLS_ERR_MISSING_REVISION_OR_BAD_FORMAT'));
 		}
-		else if (count($tools) > 0 && $status['revision']) 
+		else if (count($tools) > 0 && $status['revision'])
 		{
 			// check for duplicate revision
-			foreach ($tools as $t) 
+			foreach ($tools as $t)
 			{
-				if ($t->revision == $status['revision']) 
+				if ($t->revision == $status['revision'])
 				{
 					$result = false;
 					$this->setError(JText::_('COM_TOOLS_ERR_REVISION_EXISTS') . ' ' . $status['revision']);
@@ -428,7 +428,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			}
 			// check that revision number is greater than in previous version
 			$currentrev = $objV->getCurrentVersionProperty($status['toolname'], 'revision');
-			if ($currentrev && (intval($currentrev) > intval($status['revision']))) 
+			if ($currentrev && (intval($currentrev) > intval($status['revision'])))
 			{
 				$result = false;
 				$this->setError(JText::_('COM_TOOLS_ERR_REVISION_GREATER'));
@@ -441,7 +441,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		// check if version is valid
 		if (!ToolsModelTool::validateVersion($status['version'], $error_v, $this->_toolid))
 		{
-			$result = false; 
+			$result = false;
 			$this->setError($error_v);
 		}
 
@@ -449,13 +449,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$xlog->debug("publish(): checkpoint 3:$result, running finalize tool");
 
 		// Run finalizetool
-		if (!$this->getError()) 
+		if (!$this->getError())
 		{
-			if ($this->_finalizeTool($out)) 
+			if ($this->_finalizeTool($out))
 			{
 				$this->setMessage(JText::_('COM_TOOLS_Version finalized.'));
 			}
-			else 
+			else
 			{
 				$this->setError($out);
 				$result = false;
@@ -465,7 +465,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$xlog->debug("publish(): checkpoint 4:$result, running doi stuff");
 
 		// Register DOI handle
-		if ($result && $this->config->get('new_doi', 0)) 
+		if ($result && $this->config->get('new_doi', 0))
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
 
@@ -479,16 +479,16 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', 1);
 
 			// DOI already exists for this revision
-			if ($bingo) 
+			if ($bingo)
 			{
 				$this->setError(JText::_('COM_TOOLS_ERR_DOI_ALREADY_EXISTS') . ': ' . $bingo);
 			}
-			else 
+			else
 			{
 				// Get latest DOI label
 				$latestdoi  = $objDOI->getLatestDoi($status['resourceid']);
 				$newlabel   = ($latestdoi) ? (intval($latestdoi) + 1): 1;
-				
+
 				// Collect metadata
 				$metadata = array(
 					'targetURL' => $url,
@@ -496,7 +496,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 					'version'   => $status['version'],
 					'abstract'  => htmlspecialchars(stripslashes($status['description']))
 				);
-				
+
 				// Get authors
 				$objA = new ToolAuthor($this->database);
 				$authors = $objA->getAuthorsDOI($status['resourceid']);
@@ -505,26 +505,26 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$doiSuccess = $objDOI->registerDOI($authors, $this->config, $metadata, $doierr);
 
 				// Save [new] DOI record
-				if ($doiSuccess) 
+				if ($doiSuccess)
 				{
-					if (!$objDOI->loadDOI($status['resourceid'], $status['revision'])) 
+					if (!$objDOI->loadDOI($status['resourceid'], $status['revision']))
 					{
-						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess)) 
+						if ($objDOI->saveDOI($status['revision'], $newlabel, $status['resourceid'], $status['toolname'], 0, $doiSuccess))
 						{
 							$this->setMessage(JText::_('COM_TOOLS_SUCCESS_DOI_CREATED') . ' ' . $doiSuccess);
 						}
-						else 
+						else
 						{
 							$this->setError(JText::_('COM_TOOLS_ERR_DOI_STORE_FAILED'));
 							$result = false;
 						}
 					}
-					else 
+					else
 					{
 						$this->setError(JText::_('COM_TOOLS_DOI already exists: ') . $objDOI->doi);
 					}
 				}
-				else 
+				else
 				{
 					$this->setError(JText::_('COM_TOOLS_ERR_DOI_STORE_FAILED'));
 					$this->setError($doierr);
@@ -598,28 +598,28 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$hzt->add('version', $new_hztv->instance);
 				$hzt->update();
 
-				if ($hzt->published != 1) 
+				if ($hzt->published != 1)
 				{
 					$hzt->published = 1;
 					// save tool info
-					if (!$hzt->update()) 
+					if (!$hzt->update())
 					{
 						$this->setError(JText::_('COM_TOOLS_Failed to update tool.'));
 					}
-					else 
+					else
 					{
 						$this->setMessage(JText::_('COM_TOOLS_NOTICE_TOOL_MARKED_PUBLISHED'));
 					}
 				}
 
 				// unpublish previous version
-				if (!$new) 
+				if (!$new)
 				{
-					if ($hzt->unpublishVersion($hztv_cur->instance)) 
+					if ($hzt->unpublishVersion($hztv_cur->instance))
 					{
 						$this->setMessage(JText::_('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSION_DB'));
 					}
-					else 
+					else
 					{
 						$this->setError(JText::_('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSION_DB'));
 					}
@@ -630,26 +630,26 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 				// save authors for this version
 				$objA = new ToolAuthor($this->database);
-				if ($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'])) 
+				if ($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname']))
 				{
 					$this->setMessage(JText::_('COM_TOOLS_Authors saved successfully.'));
 				}
-				else 
+				else
 				{
 					$this->setError(JText::_('COM_TOOLS_There was a problem saving authors. Version ID: ' . $currentid));
 				}
 
 				// transfer screenshots
-				if ($devid && $currentid) 
+				if ($devid && $currentid)
 				{
 					include_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'screenshots.php');
 
 					$screenshots = new ToolsControllerScreenshots();
-					if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) 
+					if ($screenshots->transfer($devid, $currentid, $status['resourceid']))
 					{
 						$this->setMessage(JText::_('COM_TOOLS_Screenshots (if avaliable) transferred successfully.'));
 					}
-					else 
+					else
 					{
 						$this->setError(JText::_('COM_TOOLS_There was a problem transferring screenshots.'));
 					}
@@ -690,7 +690,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Finalize a tool
-	 * 
+	 *
 	 * @param      string &$out Output messages container
 	 * @return     boolean True on success, False if errors
 	 */
@@ -700,7 +700,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		$xlog->debug("finalizeTool(): checkpoint 1");
 
-		if (!$this->_toolid) 
+		if (!$this->_toolid)
 		{
 			return false;
 		}
@@ -717,13 +717,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
 
-		if (count($status) > 0) 
+		if (count($status) > 0)
 		{
 			// Make sure the path exist
-			if (!is_dir('/tmp')) 
+			if (!is_dir('/tmp'))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create('/tmp')) 
+				if (!JFolder::create('/tmp'))
 				{
 					$out .= JText::_('COM_TOOLS_ERR_UNABLE_TO_CREATE_PATH') . ' /tmp';
 					return false;
@@ -739,13 +739,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . JPATH_ROOT . ' -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
 			$xlog->debug("finalizeTool(): checkpoint 3: $command");
 
-			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_VERSION_FINALIZED'))) 
+			if (!$this->_invokescript($command, JText::_('COM_TOOLS_NOTICE_VERSION_FINALIZED')))
 			{
 				$out .= " invoke script failure";
 				return false;
 			}
 
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$out .= " invoke script failure";
 				return false;
@@ -757,10 +757,10 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$file_path = $tarball_path . DS . $status['toolname'];
 
 			// Make sure the upload path exist
-			if (!is_dir($file_path)) 
+			if (!is_dir($file_path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($file_path)) 
+				if (!JFolder::create($file_path))
 				{
 					$xlog->debug("findalizeTool(): failed to create tarball path $file_path");
 					$out .= JText::_('COM_TOOLS_ERR_UNABLE_TO_CREATE_TAR_PATH');
@@ -768,20 +768,20 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				}
 			}
 			$xlog->debug("finalizeTool(): checkpoint 4: " . DS . 'tmp' . DS . $tar . " to " . $file_path . '/' . $tar);
-			if (!@copy(DS . 'tmp' . DS . $tar, $file_path . '/' . $tar)) 
+			if (!@copy(DS . 'tmp' . DS . $tar, $file_path . '/' . $tar))
 			{
 				$out .= " failed to copy $tar to $file_path";
 				$xlog->debug("findalizeTool(): failed tarball copy");
 				return false;
-			} 
-			else 
+			}
+			else
 			{
 				$xlog->debug("findalizeTool(): deleting tmp files");
 				exec ('sudo -u apps rm -f /tmp/' . $tar, $out, $result);
 			}
 			return true;
 		}
-		else 
+		else
 		{
 			$out = JText::_('COM_TOOLS_ERR_CANNOT_RETRIEVE');
 			return false;
@@ -791,7 +791,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set the access for TRAC
-	 * 
+	 *
 	 * @param      string  $toolname   Tool name
 	 * @param      string  $codeaccess Code access level
 	 * @param      string  $wikiaccess Wiki access level
@@ -799,12 +799,12 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 	 */
 	protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
 	{
-		if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) 
+		if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname)))
 		{
 			return false;
 		}
 
-		switch ($codeaccess) 
+		switch ($codeaccess)
 		{
 			case '@OPEN':
 				$hztrac->add_user_permission(0, array(
@@ -827,7 +827,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			break;
 		}
 
-		switch ($wikiaccess) 
+		switch ($wikiaccess)
 		{
 			case '@OPEN':
 				$hztrac->add_user_permission(0, array(
@@ -857,7 +857,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a script
-	 * 
+	 *
 	 * @param      string  $command    Command to execute
 	 * @param      string  $successmsg Message to set upon success
 	 * @return     boolean True if command executed without errors
@@ -868,13 +868,13 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 		exec($command . ' 2>&1 </dev/null', $rawoutput, $status);
 
-		if ($status != 0) 
+		if ($status != 0)
 		{
 			$this->setError(JText::_('COM_TOOLS_ERR_OPERATION_FAILED'));
 			$success = false;
 		}
 
-		if ($success) 
+		if ($success)
 		{
 			$this->setMessage(JText::_('COM_TOOLS_SUCCESS') . ': ' . $successmsg);
 			// Print out results or errors
@@ -883,7 +883,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$this->setMessage($line);
 			}
 		}
-		else 
+		else
 		{
 			// Print out results or errors
 			foreach ($rawoutput as $line)
@@ -897,7 +897,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorization checks
-	 * 
+	 *
 	 * @param      string $assetType Asset type
 	 * @param      string $assetId   Asset id to check against
 	 * @return     void
@@ -905,23 +905,23 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
 		// if no admin group is defined, allow superadmin to act as admin
 		// otherwise superadmins can only act if they are also a member of the component admin group
-		if (($admingroup = trim($this->config->get('admingroup', '')))) 
+		if (($admingroup = trim($this->config->get('admingroup', ''))))
 		{
 			// Check if they're a member of admin group
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				$admingroup = strtolower($admingroup);
 				foreach ($ugs as $ug)
 				{
-					if (strtolower($ug->cn) == $admingroup) 
+					if (strtolower($ug->cn) == $admingroup)
 					{
 						$this->config->set('access-manage-' . $assetType, true);
 						$this->config->set('access-admin-' . $assetType, true);
@@ -932,7 +932,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		else 
+		else
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -959,7 +959,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

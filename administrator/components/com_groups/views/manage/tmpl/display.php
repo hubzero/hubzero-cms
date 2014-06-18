@@ -34,7 +34,7 @@ $canDo = GroupsHelper::getActions('group');
 
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
 
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences('com_groups', '550');
 	JToolBarHelper::spacer();
@@ -46,15 +46,15 @@ if ($canDo->get('core.admin'))
 	}
 
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('delete', 'delete');
 }
@@ -64,7 +64,7 @@ JToolBarHelper::help('groups');
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -78,10 +78,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
-		
-		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label> 
+
+		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label>
 		<select name="type" id="filter-type">
 			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
 			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
@@ -92,15 +92,15 @@ function submitbutton(pressbutton)
 			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
 			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
-		
-		<label for="filter-discoverability"><?php echo JText::_('Discoverability'); ?>:</label> 
+
+		<label for="filter-discoverability"><?php echo JText::_('Discoverability'); ?>:</label>
 		<select name="discoverability" id="filter-discoverability">
 			<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Discoverability...'); ?></option>
 			<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Visible'); ?></option>
 			<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Hidden'); ?></option>
 		</select>
-		
-		<label for="filter-policy"><?php echo JText::_('Policy'); ?>:</label> 
+
+		<label for="filter-policy"><?php echo JText::_('Policy'); ?>:</label>
 		<select name="policy" id="filter-policy">
 			<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Policy type...'); ?></option>
 			<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Open'); ?></option>
@@ -108,7 +108,7 @@ function submitbutton(pressbutton)
 			<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Invite only'); ?></option>
 			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Closed'); ?></option>
 		</select>
-		
+
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 		|
 		<a class="button" href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created=">Reset</a>
@@ -155,20 +155,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '3': $type = 'Super';   break;
 		case '4': $type = 'Course';  break;
 	}
-	
+
 	//get group invite emails
 	$hubzeroGroupInviteEmail = new \Hubzero\User\Group\InviteEmail($database);
 	$inviteemails = $hubzeroGroupInviteEmail->getInviteEmails($group->get('gidNumber'));
-	
+
 	//get group membership
 	$members    = $group->get('members');
 	$managers   = $group->get('managers');
 	$applicants = $group->get('applicants');
 	$invitees   = $group->get('invitees');
-	
+
 	//remove any managers from members list
 	$true_members = array_diff($members, $managers);
-	
+
 	//build membership tooltip
 	$tip  = '<table><tbody>';
 	$tip .= '<tr><th>' . JText::_('COM_GROUPS_MEMBERS') . '</th><td>' . count($true_members) . '</td></tr>';

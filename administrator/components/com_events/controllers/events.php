@@ -38,7 +38,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Determine task and attempt to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -48,14 +48,14 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 		$tables = $this->database->getTableList();
 		$table = $this->database->getPrefix() . 'events_respondent_race_rel';
-		if (!in_array($table, $tables)) 
+		if (!in_array($table, $tables))
 		{
 			$this->database->setQuery("CREATE TABLE `#__events_respondent_race_rel` (
 			  `respondent_id` int(11) default NULL,
 			  `race` varchar(255) default NULL,
 			  `tribal_affiliation` varchar(255) default NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-			if (!$this->database->query()) 
+			if (!$this->database->query())
 			{
 				echo $this->database->getErrorMsg();
 				return false;
@@ -77,7 +77,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display a list of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -89,20 +89,20 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// Incoming
 		$this->view->filters = array();
 		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		$this->view->filters['search']   = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['catid']    = JRequest::getVar('catid', 0, '', 'int');
@@ -119,8 +119,8 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -136,7 +136,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		}
 		$categories = array_merge($categories, $this->database->loadObjectList());
 		$this->view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
-		
+
 		//get list of groups
 		$groups[] = JHTML::_('select.option', '0', '- ' . JText::_('All Groups'), 'value', 'text');
 		$sql = "SELECT DISTINCT(g.gidNumber) AS value, g.description AS text
@@ -146,9 +146,9 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$this->database->setQuery($sql);
 		$groups = array_merge($groups, $this->database->loadObjectList());
 		$this->view->glist = JHTML::_('select.genericlist', $groups, 'group_id', 'class="inputbox"','value', 'text', $this->view->filters['scope_id'], false, false);
-		
+
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -162,7 +162,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for adding an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addpageTask()
@@ -176,7 +176,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for adding an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function respondentsTask()
@@ -190,7 +190,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show a form for adding an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -200,7 +200,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display a form for editing an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
@@ -217,7 +217,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 		// We need at least one category before we can proceed
 		$cat = new EventsCategory($this->database);
-		if ($cat->getCategoryCount($this->_option) < 1) 
+		if ($cat->getCategoryCount($this->_option) < 1)
 		{
 			JError::raiseError(500, JText::_('COM_EVENTS_LANG_NEED_CATEGORY'));
 			return;
@@ -226,14 +226,14 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array(), 'request');
 		$id  = (isset($ids[0])) ? $ids[0] : 0;
-		
+
 		// Load the event object
 		$this->view->row = new EventsEvent($this->database);
 		$this->view->row->load($id);
 
 		// Fail if checked out not by 'me'
-		if ($this->view->row->checked_out 
-		 && $this->view->row->checked_out <> $this->juser->get('id')) 
+		if ($this->view->row->checked_out
+		 && $this->view->row->checked_out <> $this->juser->get('id'))
 		{
 			$this->_redirect = 'index.php?option=' . $this->_option;
 			$this->_message = JText::_('COM_EVENTS_CAL_LANG_WARN_CHECKEDOUT');
@@ -242,11 +242,11 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('..' . DS . 'components' . DS . $this->_option . DS . 'calendar.css');
 
-		if ($this->view->row->id) 
+		if ($this->view->row->id)
 		{
 			$this->view->row->checkout($this->juser->get('id'));
 
-			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00') 
+			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
 			{
 				$this->view->row->publish_down = JText::_('COM_EVENTS_CAL_LANG_NEVER');
 			}
@@ -256,8 +256,8 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 			$stop_publish = JHTML::_('date', $this->view->row->publish_down, 'Y-m-d');
 			$end_time = JHTML::_('date', $this->view->row->publish_down, 'H:i');
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->row->state = 0;
 			$start_publish = JFactory::getDate()->format('Y-m-d');
@@ -278,7 +278,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$groups = $this->database->loadObjectList();
 
 		$this->view->fields = $this->config->getCfg('fields');
-		if (!empty($this->view->fields)) 
+		if (!empty($this->view->fields))
 		{
 			for ($i=0, $n=count($this->view->fields); $i < $n; $i++)
 			{
@@ -294,7 +294,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		list($end_hrs, $end_mins) = explode(':', $end_time);
 		$start_pm = false;
 		$end_pm = false;
-		if ($this->config->getCfg('calUseStdTime') == 'YES') 
+		if ($this->config->getCfg('calUseStdTime') == 'YES')
 		{
 			$start_hrs = intval($start_hrs);
 			if ($start_hrs >= 12) $start_pm = true;
@@ -326,7 +326,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$this->view->tags = $rt->get_tag_string($this->view->row->id, 0, 0, NULL, 0, 1);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -340,9 +340,9 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Short description for 'parseTag'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -350,13 +350,13 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 	private function parseTag($text, $tag)
 	{
 		preg_match("#<ef:" . $tag . ">(.*?)</ef:" . $tag . ">#s", $text, $matches);
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			$match = $matches[0];
 			$match = str_replace('<ef:' . $tag . '>', '', $match);
 			$match = str_replace('</ef:' . $tag . '>', '', $match);
-		} 
-		else 
+		}
+		else
 		{
 			$match = '';
 		}
@@ -365,7 +365,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task by redirecting to main page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -387,7 +387,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -408,34 +408,34 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 		// Bind the posted data to an event object
 		$row = new EventsEvent($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
 		// New entry or existing?
-		if ($row->id) 
+		if ($row->id)
 		{
 			// Existing - update modified info
 			$row->modified = JFactory::getDate()->toSql();
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
 				$row->modified_by = $juser->get('id');
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// New - set created info
 			$row->created = JFactory::getDate()->toSql();
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
 				$row->created_by = $juser->get('id');
 			}
 		}
 
 		// Set some fields and do some cleanup work
-		if ($row->catid) 
+		if ($row->catid)
 		{
 			$row->catid = intval($row->catid);
 		}
@@ -453,15 +453,15 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$fs = $this->config->fields;
 		foreach ($fields as $param=>$value)
 		{
-			if (trim($value) != '') 
+			if (trim($value) != '')
 			{
 				$row->content .= '<ef:' . $param . '>' . $this->_clean($value) . '</ef:' . $param . '>';
-			} 
-			else 
+			}
+			else
 			{
 				foreach ($fs as $f)
 				{
-					if ($f[0] == $param && end($f) == 1) 
+					if ($f[0] == $param && end($f) == 1)
 					{
 						echo EventsHtml::alert(JText::sprintf('EVENTS_REQUIRED_FIELD_CHECK', $f[1]));
 						exit();
@@ -480,17 +480,17 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$row->extra_info = $this->_clean($row->extra_info);
 
 		// Prepend http:// to URLs without it
-		if ($row->extra_info != NULL) 
+		if ($row->extra_info != NULL)
 		{
-			if ((substr($row->extra_info, 0, 7) != 'http://') 
-			 && (substr($row->extra_info, 0, 8) != 'https://')) 
+			if ((substr($row->extra_info, 0, 7) != 'http://')
+			 && (substr($row->extra_info, 0, 8) != 'https://'))
 			{
 				$row->extra_info = 'http://' . $row->extra_info;
 			}
 		}
 
 		// reformat the time into 24hr format if necessary
-		if ($this->config->getCfg('calUseStdTime') =='YES') 
+		if ($this->config->getCfg('calUseStdTime') =='YES')
 		{
 			list($hrs,$mins) = explode(':', $start_time);
 			$hrs = intval($hrs);
@@ -514,17 +514,17 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// build local timezone
 		$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
 
-		if ($row->publish_up) 
+		if ($row->publish_up)
 		{
 			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
 			$row->publish_up = JFactory::getDate($publishtime, $tz)->toSql();
-		} 
-		else 
+		}
+		else
 		{
 			$row->publish_up = JFactory::getDate()->toSql();
 		}
 
-		if ($row->publish_down) 
+		if ($row->publish_down)
 		{
 			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
 			$row->publish_down = JFactory::getDate($publishtime, $tz)->toSql();
@@ -532,14 +532,14 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 
 		// If this is a new event, publish it, otherwise retain its state
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->state = 1;
 		}
-		
+
 		// Get parameters
 		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params)) 
+		if (is_array($params))
 		{
 			//email is reaquired
 			$params['show_email'] = 1;
@@ -548,12 +548,12 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			$row->params = $p->toString();
 		}
 
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -577,13 +577,13 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 	/**
 	 * Strip some unwanted content.
 	 * This includes script tags, HTML comments, sctyle tags, etc.
-	 * 
+	 *
 	 * @param      string $string String to clean
 	 * @return     string
 	 */
 	private function _clean($string)
 	{
-		if (get_magic_quotes_gpc()) 
+		if (get_magic_quotes_gpc())
 		{
 			$string = stripslashes($string);
 		}
@@ -608,7 +608,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// remove javascript: and vbscript: protocol
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
-		//<span style="width: expression(alert('Ping!'));"></span> 
+		//<span style="width: expression(alert('Ping!'));"></span>
 		// only works in ie...
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
@@ -626,20 +626,20 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Publish one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function publishTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -665,20 +665,20 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Unpublish one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function unpublishTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -704,20 +704,20 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Set the event type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function settypeTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -744,7 +744,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			$event = new EventsEvent($this->database);
 			$event->load($id);
 			$event->announcement = $v;
-			if (!$event->store()) 
+			if (!$event->store())
 			{
 				JError::raiseError(500, $event->getError());
 				return;
@@ -759,20 +759,20 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more entries for an event
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids)) 
+		if (!is_array($ids))
 		{
 			$ids = array();
 		}
 
 		// Make sure we have an ID
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -801,7 +801,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			// Delete the event
 			$event->delete($id);
 
-			// Delete any associated pages 
+			// Delete any associated pages
 			$ep->deletePages($id);
 
 			// Delete any associated respondents

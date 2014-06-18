@@ -29,144 +29,144 @@ use Hubzero\Item\Comment\File;
 /**
  * Table class for comments
  */
-class Comment extends \JTable 
+class Comment extends \JTable
 {
 	/**
 	 * Primary key
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $id            = NULL;
 
 	/**
 	 * Object this is a comment for
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $item_id      = NULL;
 
 	/**
 	 * Object type (resource, kb, etc)
-	 * 
+	 *
 	 * @var string varchar(100)
 	 */
 	var $item_type    = NULL;
 
 	/**
 	 * Comment
-	 * 
+	 *
 	 * @var string text
 	 */
 	var $content       = NULL;
 
 	/**
 	 * When the entry was created
-	 * 
+	 *
 	 * @var string datetime (0000-00-00 00:00:00)
 	 */
 	var $created       = NULL;
 
 	/**
 	 * Who created this entry
-	 * 
+	 *
 	 * @var integer int(11)
 	 */
 	var $created_by    = NULL;
 
 	/**
 	 * When the entry was modifed
-	 * 
+	 *
 	 * @var string datetime (0000-00-00 00:00:00)
 	 */
 	var $modified      = NULL;
 
 	/**
 	 * Who modified this entry
-	 * 
+	 *
 	 * @var integer int(11)
 	 */
 	var $modified_by   = NULL;
 
 	/**
 	 * Display comment as anonymous
-	 * 
+	 *
 	 * @var integer tinyint(3)
 	 */
 	var $anonymous     = NULL;
 
 	/**
 	 * Parent comment
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $parent        = NULL;
 
 	/**
 	 * Notify the user of replies
-	 * 
+	 *
 	 * @var integer tinyint(2)
 	 */
 	var $notify        = NULL;
 
 	/**
 	 * Access level (0=public, 1=registered, 2=special, 3=protected, 4=private)
-	 * 
+	 *
 	 * @var integer tinyint(2)
 	 */
 	var $access        = NULL;
 
 	/**
 	 * Pushed state (0=unpublished, 1=published, 2=trashed)
-	 * 
+	 *
 	 * @var integer int(2)
 	 */
 	var $state         = NULL;
 
 	/**
 	 * Positive votes (people liked this comment)
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $positive      = NULL;
 
 	/**
 	 * Negative votes (people disliked this comment)
-	 * 
-	 * @var integer int(11) 
+	 *
+	 * @var integer int(11)
 	 */
 	var $negative      = NULL;
 
 	/**
 	 * Upload path
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_uploadDir    = '/sites/comments';
-	
+
 	/**
 	 * Allowed Extensions
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_extensions    = array('jpg','png','gif','bmp','tiff');
 
 	/**
 	 * array
-	 * 
+	 *
 	 * @var array
 	 */
 	var $attachmentNames = NULL;
 
 	/**
 	 * decimal(2,1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rating      = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -177,33 +177,33 @@ class Comment extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
-	public function check() 
+	public function check()
 	{
 		$this->content = trim($this->content);
-		if (!$this->content || $this->content == \JText::_('Enter your comments...')) 
+		if (!$this->content || $this->content == \JText::_('Enter your comments...'))
 		{
 			$this->setError(\JText::_('Please provide a comment'));
 			return false;
 		}
 
 		$this->item_id = intval($this->item_id);
-		if (!$this->item_id) 
+		if (!$this->item_id)
 		{
 			$this->setError(\JText::_('Missing entry ID.'));
 			return false;
 		}
 
 		$this->item_type = strtolower(preg_replace("/[^a-zA-Z0-9\-]/", '', trim($this->item_type)));
-		if (!$this->item_type) 
+		if (!$this->item_type)
 		{
 			$this->setError(\JText::_('Missing entry type.'));
 			return false;
 		}
 
-		if (!$this->created_by) 
+		if (!$this->created_by)
 		{
 			$juser = \JFactory::getUser();
 			$this->created_by = $juser->get('id');
@@ -214,7 +214,7 @@ class Comment extends \JTable
 			$this->created = \JFactory::getDate()->toSql();
 			$this->state = 1;
 		}
-		else 
+		else
 		{
 			$juser = \JFactory::getUser();
 			$this->modified_by = $juser->get('id');
@@ -222,17 +222,17 @@ class Comment extends \JTable
 		}
 
 		// Check file attachment
-		$fieldName = 'commentFile'; 
-		if (!empty($_FILES[$fieldName])) 
+		$fieldName = 'commentFile';
+		if (!empty($_FILES[$fieldName]))
 		{
 			jimport('joomla.filesystem.file');
 			jimport('joomla.filesystem.folder');
 
 			//any errors the server registered on uploading
 			$fileError = $_FILES[$fieldName]['error'];
-			if ($fileError > 0) 
+			if ($fileError > 0)
 			{
-				switch ($fileError) 
+				switch ($fileError)
 				{
 					case 1:
 						$this->setError(\JText::_('FILE TO LARGE THAN PHP INI ALLOWS'));
@@ -269,7 +269,7 @@ class Comment extends \JTable
 			$uploadedFileExtension = array_pop($uploadedFileNameParts);
 
 			$validFileExts = $this->getAllowedExtensions();
-			
+
 			//assume the extension is false until we know its ok
 			$extOk = false;
 
@@ -283,7 +283,7 @@ class Comment extends \JTable
 				}
 			}
 
-			if ($extOk == false) 
+			if ($extOk == false)
 			{
 				$this->setError(\JText::_('Invalid Extension. Only these file types allowed: ' . implode(', ', $this->getAllowedExtensions())));
 				return false;
@@ -303,7 +303,7 @@ class Comment extends \JTable
 
 			$uploadPath = $uploadDir . DS . $fileName;
 
-			if (!\JFile::upload($fileTemp, $uploadPath)) 
+			if (!\JFile::upload($fileTemp, $uploadPath))
 			{
 				$this->setError(\JText::_('ERROR MOVING FILE'));
 				return false;
@@ -317,11 +317,11 @@ class Comment extends \JTable
 
 	/**
 	 * Set the upload path
-	 * 
+	 *
 	 * @param      string $path PAth to set to
 	 * @return     void
 	 */
-	public function setUploadDir($path) 
+	public function setUploadDir($path)
 	{
 		$path = trim($path);
 
@@ -334,17 +334,17 @@ class Comment extends \JTable
 
 	/**
 	 * Get the upload path
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function getUploadDir() 
+	private function getUploadDir()
 	{
 		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
 	}
 
 	/**
 	 * Get allowed file extensions
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getAllowedExtensions()
@@ -354,7 +354,7 @@ class Comment extends \JTable
 
 	/**
 	 * Set allowed file extensions
-	 * 
+	 *
 	 * @param      $exts    Array of file extensions
 	 * @return     void
 	 */
@@ -368,19 +368,19 @@ class Comment extends \JTable
 
 	/**
 	 * Check File Name
-	 * 
+	 *
 	 * @param      $uploadDir    Upload Directory
 	 * @param      $fileName     File Name
 	 * @return     void
 	 */
-	private function checkFileName($uploadDir, $fileName) 
+	private function checkFileName($uploadDir, $fileName)
 	{
 		$ext = strrchr($fileName, '.');
 		$prefix = substr($fileName, 0, -strlen($ext));
 
 		// rename file if exists
 		$i = 1;
-		while (is_file($uploadDir . DS . $fileName)) 
+		while (is_file($uploadDir . DS . $fileName))
 		{
 			$fileName = $prefix . ++$i . $ext;
 		}
@@ -389,7 +389,7 @@ class Comment extends \JTable
 
 	/**
 	 * Store attachments
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function store($updateNulls = false)
@@ -404,7 +404,7 @@ class Comment extends \JTable
 		if ($this->attachmentNames && count($this->attachmentNames) > 0)
 		{
 			// save the attachments
-			foreach ($this->attachmentNames as $nm) 
+			foreach ($this->attachmentNames as $nm)
 			{
 				// delete old attachment
 				// find old file and remove it from file system
@@ -433,7 +433,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get all the comments on an entry
-	 * 
+	 *
 	 * @param      string  $item_type Type of entry these comments are attached to
 	 * @param      integer $item_id   ID of entry these comments are attached to
 	 * @param      integer $parent     ID of parent comment
@@ -441,20 +441,20 @@ class Comment extends \JTable
 	 */
 	public function getComments($item_type=NULL, $item_id=0, $parent=0, $limit=25, $start=0)
 	{
-		if (!$item_type) 
+		if (!$item_type)
 		{
 			$item_type = $this->item_type;
 		}
-		if (!$item_id) 
+		if (!$item_id)
 		{
 			$item_id = $this->item_id;
 		}
-		if (!$parent) 
+		if (!$parent)
 		{
 			$parent = 0;
 		}
 
-		if (!$item_type || !$item_id) 
+		if (!$item_type || !$item_id)
 		{
 			$this->setError(\JText::_('Missing parameter(s). item_type:' . $item_type . ', item_id:' . $item_id));
 			return false;
@@ -462,14 +462,14 @@ class Comment extends \JTable
 
 		$juser = \JFactory::getUser();
 
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$sql  = "SELECT c.*, u.name, v.vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
 			$sql .= "LEFT JOIN #__users AS u ON u.id=c.created_by ";
 			$sql .= "LEFT JOIN #__item_votes AS v ON v.item_id=c.id AND v.created_by=" . $this->_db->Quote($juser->get('id')) . " AND v.item_type='comment' ";
-		} 
-		else 
+		}
+		else
 		{
 			$sql  = "SELECT c.*, u.name, NULL as vote, (c.positive - c.negative) AS votes, f.filename FROM $this->_tbl AS c ";
 			$sql .= "LEFT JOIN #__item_comment_files AS f ON f.comment_id=c.id ";
@@ -498,7 +498,7 @@ class Comment extends \JTable
 	 */
 	public function delete($oid=null)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->id;
 		}
@@ -524,7 +524,7 @@ class Comment extends \JTable
 			$id = array_map('intval', $id);
 			$id = implode(',', $id);
 		}
-		else 
+		else
 		{
 			$id = intval($id);
 		}
@@ -538,7 +538,7 @@ class Comment extends \JTable
 			$ids = implode(',', $rows);
 
 			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE id IN ($ids)");
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
@@ -557,7 +557,7 @@ class Comment extends \JTable
 	 */
 	public function setState($oid=null, $state=0)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->id;
 		}
@@ -569,7 +569,7 @@ class Comment extends \JTable
 		}
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE id=" . $this->_db->Quote($oid));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -591,7 +591,7 @@ class Comment extends \JTable
 			$id = array_map('intval', $id);
 			$id = implode(',', $id);
 		}
-		else 
+		else
 		{
 			$id = intval($id);
 		}
@@ -605,7 +605,7 @@ class Comment extends \JTable
 			$id = implode(',', $rows);
 
 			$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE parent IN ($id)");
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
@@ -617,9 +617,9 @@ class Comment extends \JTable
 
 	/**
 	 * Short description for 'buildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -630,29 +630,29 @@ class Comment extends \JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
 
 		$where = array();
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
 
-		if (isset($filters['item_type']) && $filters['item_type'] >= 0) 
+		if (isset($filters['item_type']) && $filters['item_type'] >= 0)
 		{
 			$where[] = "c.item_type=" . $this->_db->Quote($filters['item_type']);
 		}
 
-		if (isset($filters['item_id']) && $filters['item_id'] >= 0) 
+		if (isset($filters['item_id']) && $filters['item_id'] >= 0)
 		{
 			$where[] = "c.item_id=" . $this->_db->Quote($filters['item_id']);
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "LOWER(c.content) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 		}
@@ -668,7 +668,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query off of
 	 * @return     integer
 	 */
@@ -684,7 +684,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get an array of records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query off of
 	 * @return     array
 	 */
@@ -695,23 +695,23 @@ class Comment extends \JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
 		$query .= " " . $this->buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'created';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
@@ -722,7 +722,7 @@ class Comment extends \JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -733,7 +733,7 @@ class Comment extends \JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON r.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON r.access=a.id";
 		}
@@ -778,7 +778,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -793,7 +793,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -804,7 +804,7 @@ class Comment extends \JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
@@ -830,7 +830,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -858,7 +858,7 @@ class Comment extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */

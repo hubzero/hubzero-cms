@@ -18,17 +18,17 @@ class Remote
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * Accepts an associative array with the following keys:
-	 * 
+	 *
 	 * server     - mandatory only if using remote SpamAssassin server
 	 * verbose    - optional parameter
-	 * 
+	 *
 	 * @param array $params SpamAssassin parameters
 	 */
 	public function __construct(array $params)
 	{
-		foreach ($params as $param => $value) 
+		foreach ($params as $param => $value)
 		{
 			$this->$param = $value;
 		}
@@ -36,7 +36,7 @@ class Remote
 
 	/**
 	 * Parses SpamAssassin output ($header and $message)
-	 * 
+	 *
 	 * @param  string $header  Output headers
 	 * @param  string $message Output message
 	 * @return Result Object containing the result
@@ -51,7 +51,7 @@ class Remote
 			'/Spam: (True|False|Yes|No) ; (\S+) \/ (\S+)/',
 			$report->message,
 			$matches
-		)) 
+		))
 		{
 			($matches[1] == 'True' || $matches[1] == 'Yes') ?
 				$result->isSpam = true :
@@ -59,11 +59,11 @@ class Remote
 
 			$result->score    = (float) $matches[2];
 			$result->thresold = (float) $matches[3];
-		} 
-		else 
+		}
+		else
 		{
 			/**
-			 * In PROCESS method with protocol version before 1.3, SpamAssassin 
+			 * In PROCESS method with protocol version before 1.3, SpamAssassin
 			 * won't return the 'Spam:' field in the response header. In this case,
 			 * it is necessary to check for the X-Spam-Status: header in the
 			 * processed message headers.
@@ -71,10 +71,10 @@ class Remote
 			if (preg_match(
 				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d) required=(\d+\.\d)/',
 				  $report->message,
-				  $matches)) 
+				  $matches))
 			{
 
-				($matches[1] == 'Yes') ? 
+				($matches[1] == 'Yes') ?
 					$result->isSpam = true :
 					$result->isSpam = false;
 
@@ -91,7 +91,7 @@ class Remote
 
 	/**
 	 * Returns a detailed report if the message is spam or null if it's ham
-	 * 
+	 *
 	 * @param  string $message Email message
 	 * @return string Detailed spam report
 	 */
@@ -102,7 +102,7 @@ class Remote
 
 	/**
 	 * Checks if a message is spam with the CHECK protocol command
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return Result Object containing the result
 	 */
@@ -136,7 +136,7 @@ class Remote
 		}
 
 		$result = json_decode($result);
-		if (!isset($result->success) || !$result->success) 
+		if (!isset($result->success) || !$result->success)
 		{
 			throw new Exception(
 				'Postmark Error: ' . (isset($result->message) && $result->message ? $result->message : 'unknown')
@@ -149,7 +149,7 @@ class Remote
 
 	/**
 	 * Shortcut to check() method that returns a boolean
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return boolean Whether message is spam or not
 	 */
@@ -160,7 +160,7 @@ class Remote
 
 	/**
 	 * Shortcut to check() method that returns a float score
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return float Spam Score of the Message
 	 */

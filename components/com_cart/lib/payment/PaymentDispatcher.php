@@ -32,19 +32,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'PaymentGateway'
- * 
+ *
  * Long description (if any) ...
  */
 class PaymentDispatcher
-{	
+{
 	private $buttonVars;
 	private $credentials;
-	
+
 	private $paymentHandler;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param 	object transaction info
 	 * @param	string payment gateway provider
 	 * @param 	object payment gateway credentials
@@ -52,10 +52,10 @@ class PaymentDispatcher
 	 * @return  void
 	 */
 	public function __construct($paymentGatewayProivder)
-	{		
+	{
 		// Load language file
 		JFactory::getLanguage()->load('com_cart');
-		
+
 		switch ($paymentGatewayProivder)
 		{
 			case "PAYPAL STANDARD":
@@ -73,23 +73,23 @@ class PaymentDispatcher
 			default:
 				die('Wrong payment gateway provider.');
 		}
-		
-		require_once('PaymentProvider.php');		
+
+		require_once('PaymentProvider.php');
 		$this->paymentHandler = new PaymentProvider();
 	}
-	
+
 	/**
 	 * Get Payment provider instance
 	 *
 	 */
-	public function getPaymentProvider() 
+	public function getPaymentProvider()
 	{
 		return $this->paymentHandler;
 	}
-	
-	
+
+
 	/* --------------------- Static methods -------------------- */
-	
+
 	/**
 	 * Return a transaction ID variable name in the return from payment gatevay site payment URL
 	 *

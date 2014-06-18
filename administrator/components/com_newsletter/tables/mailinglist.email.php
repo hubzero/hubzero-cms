@@ -35,57 +35,57 @@ class NewsletterMailinglistEmail extends JTable
 {
 	/**
 	 * Mailing List Email ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 					= NULL;
-	
+
 	/**
 	 * Mailing List ID
-	 * 
+	 *
 	 * @var varchar(150)
 	 */
 	var $mid 					= NULL;
-	
+
 	/**
 	 * Mailing List Email
-	 * 
+	 *
 	 * @var varchar(50)
 	 */
 	var $email	 				= NULL;
-	
+
 	/**
 	 * Mailing List Email Status
-	 * 
+	 *
 	 * @var varchar(50)
 	 */
 	var $status	 				= NULL;
-	
+
 	/**
 	 * Mailing List Email Confirmed?
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $confirmed 				= NULL;
-	
+
 	/**
 	 * Mailing List Email Date Added
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $date_added 			= NULL;
-	
+
 	/**
 	 * Mailing List Email Date Confirmed
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $date_confirmed 		= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Mailing List Email Constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
@@ -93,11 +93,11 @@ class NewsletterMailinglistEmail extends JTable
 	{
 		parent::__construct( '#__newsletter_mailinglist_emails', 'id', $db );
 	}
-	
-	
+
+
 	/**
 	 * Newsletter Mailing List Email Save Check method
-	 * 
+	 *
 	 * @return 	boolean
 	 */
 	public function check()
@@ -107,14 +107,14 @@ class NewsletterMailinglistEmail extends JTable
 			$this->setError('Mailing list email must not be empty.');
 			return false;
 		}
-		
+
 		//validate email
 		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL))
 		{
 			$this->setError('Mailing list email is not a valid email address.');
 			return false;
 		}
-		
+
 		return true;
 	}
 }

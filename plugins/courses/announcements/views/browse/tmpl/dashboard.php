@@ -35,7 +35,7 @@ $this->css();
 $this->js('announcements.dashboard.js');
 
 $rows = $this->offering->announcements(array(
-	'limit'     => $this->params->get('display_limit', 1), 
+	'limit'     => $this->params->get('display_limit', 1),
 	'published' => true
 ));
 ?>
@@ -52,7 +52,7 @@ $rows = $this->offering->announcements(array(
 				<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
 					<?php echo $row->content('parsed'); ?>
 					<dl class="entry-meta">
-						<dt class="entry-id"><?php echo $row->get('id'); ?></dt> 
+						<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
 						<dd class="time">
 							<time datetime="<?php echo $row->published(); ?>">
 								<?php echo $row->published('time'); ?>
@@ -93,7 +93,7 @@ $rows = $this->offering->announcements(array(
 						</label>
 
 						<label for="field-priority" id="priority-label">
-							<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" /> 
+							<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" />
 							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
 						</label>
 

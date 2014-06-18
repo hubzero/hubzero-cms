@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Units'), 'courses.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList('delete', 'delete');
 }
@@ -53,7 +53,7 @@ $this->css();
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
@@ -80,10 +80,10 @@ function submitbutton(pressbutton)
 				<th colspan="11">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
-					</a>) 
+					</a>)
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-					</a>: 
+					</a>:
 					<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 				</th>
 			</tr>
@@ -113,7 +113,7 @@ foreach ($this->rows as $row)
 	$tip = '[coming soon]';
 	$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
-	
+
 	switch ($row->get('state'))
 	{
 		case 1:
@@ -174,7 +174,7 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php 
+					<?php
 					$prv = $this->rows->fetch('prev');
 					$prev = 0;
 					if (is_object($prv))
@@ -184,7 +184,7 @@ foreach ($this->rows as $row)
 					echo $this->pageNav->orderUpIcon( $i, ($row->get('ordering') != $prev) ); ?>
 				</td>
 				<td>
-					<?php 
+					<?php
 					$nxt = $this->rows->fetch('next');
 					$next = 0;
 					if (is_object($nxt))

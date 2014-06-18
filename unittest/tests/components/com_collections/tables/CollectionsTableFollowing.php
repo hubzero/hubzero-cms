@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,18 +15,18 @@ class CollectionsTableFollowingTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'follower_type', 
-		'follower_id', 
-		'created', 
+		'id',
+		'follower_type',
+		'follower_id',
+		'created',
 		'following_type',
 		'following_id'
 	);
 	var $mock       = array(
-		'id'             => null, 
-		'follower_type'  => 'member', 
-		'follower_id'    => 123, 
-		'created'        => '2-13=09-30 16:15:17', 
+		'id'             => null,
+		'follower_type'  => 'member',
+		'follower_id'    => 123,
+		'created'        => '2-13=09-30 16:15:17',
 		'following_type' => 'collection',
 		'following_id'   => 1
 	);
@@ -93,7 +93,7 @@ class CollectionsTableFollowingTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that count() with filters returns number
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTableFollowing::count
 	 */
@@ -109,7 +109,7 @@ class CollectionsTableFollowingTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that find() returns an array
-	 * 
+	 *
 	 * @group com_collections
 	 * @covers CollectionsTableFollowing::find
 	 */

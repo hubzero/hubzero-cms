@@ -41,7 +41,7 @@ jQuery(document).ready(function(jQuery){
 		url = "<?php echo JURI::base(true) . '/' . $this->offering->link() . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
 
 	var options = {
-		notes: <?php 
+		notes: <?php
 			$n = array();
 			$access = 0;
 			if ($this->course->access('manage'))

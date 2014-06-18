@@ -35,14 +35,14 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 {
 		/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_config = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
@@ -81,7 +81,7 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 
 	/**
 	 * Get a config value
-	 * 
+	 *
 	 * @param	   string $key     Property to return
 	 * @param	   mixed  $default Default value
 	 * @return     mixed

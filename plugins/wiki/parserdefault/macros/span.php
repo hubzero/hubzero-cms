@@ -38,14 +38,14 @@ class SpanMacro extends WikiMacro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -58,14 +58,14 @@ class SpanMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -74,7 +74,7 @@ class SpanMacro extends WikiMacro
 		$text = array_shift($attribs);
 
 		$atts = array();
-		if (!empty($attribs) && count($attribs) > 0) 
+		if (!empty($attribs) && count($attribs) > 0)
 		{
 			foreach ($attribs as $a)
 			{

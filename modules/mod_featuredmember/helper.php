@@ -39,7 +39,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -60,7 +60,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		$filters['search']     = '';
 		$filters['authorized'] = false;
 		$filters['show']       = trim($this->params->get('show'));
-		if ($min = $this->params->get('min_contributions')) 
+		if ($min = $this->params->get('min_contributions'))
 		{
 			$filters['contributions'] = $min;
 		}
@@ -68,7 +68,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		$mp = new MembersProfile($database);
 
 		$rows = $mp->getRecords($filters, false);
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$this->row = $rows[0];
 		}
@@ -76,13 +76,13 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		// Load their bio
 		$this->profile = \Hubzero\User\Profile::getInstance($this->row->uidNumber);
 
-		if (trim(strip_tags($this->profile->get('bio'))) == '') 
+		if (trim(strip_tags($this->profile->get('bio'))) == '')
 		{
 			return '';
 		}
 
 		// Did we have a result to display?
-		if ($this->row) 
+		if ($this->row)
 		{
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
@@ -95,18 +95,18 @@ class modFeaturedmember extends \Hubzero\Module\Module
 
 			if ($this->params->get('access_bio') == 0
 			 || ($this->params->get('access_bio') == 1 && !$juser->get('guest'))
-			) 
+			)
 			{
 				$this->txt = $this->profile->getBio('parsed');
-			} 
-			else 
+			}
+			else
 			{
 				$this->txt = '';
 			}
 
 			// Member profile
 			$this->title = $this->row->name;
-			if (!trim($this->title)) 
+			if (!trim($this->title))
 			{
 				$this->title = $this->row->givenName . ' ' . $this->row->surname;
 			}
@@ -121,7 +121,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

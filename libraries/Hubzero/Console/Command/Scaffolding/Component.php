@@ -107,7 +107,7 @@ class Component extends Scaffolding
 			->addArgument(
 				'-n, --name: component name',
 				'Give the component name. The component name can also be provided
-				as the next word following the command as shown here: 
+				as the next word following the command as shown here:
 				"muse scaffolding create component awesome"',
 				'Example: -n=awesome, --name=awesomer'
 			)

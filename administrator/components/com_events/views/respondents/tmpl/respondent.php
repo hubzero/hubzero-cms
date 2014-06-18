@@ -33,13 +33,13 @@ list($resp) = $resp->getRecords();
 		<?php endif; ?>
 		<?php if (!empty($resp->telephone) || !empty($resp->fax)): ?>
 		<tr><td><?php echo JText::_('COM_EVENTS_RESPONDANT_TELEPHONE'); ?></td><td><?php echo $this->escape($resp->telephone) . (empty($resp->fax) ? '' : ' ' . $this->escape($resp->fax) . ' ('.JText::_('COM_EVENTS_FAX').')'); ?></td></tr>
-		<?php endif; ?>	
+		<?php endif; ?>
 		<?php if (!empty($resp->website)): ?>
 		<tr><td><?php echo JText::_('COM_EVENTS_RESPONDANT_WEBSITE'); ?></td><td><?php echo $this->escape($resp->website); ?></td></tr>
 		<?php endif; ?>
-		<?php 
+		<?php
 		$race = EventsRespondent::getRacialIdentification($resp->id);
-		if (!empty($race)): 
+		if (!empty($race)):
 		?>
 		<tr><td><?php echo JText::_('COM_EVENTS_RESPONDANT_RACE'); ?></td><td><?php echo $this->escape($race); ?></td></tr>
 		<?php endif; ?>

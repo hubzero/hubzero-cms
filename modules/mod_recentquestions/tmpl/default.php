@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
 <?php if (count($this->rows) > 0) { ?>
 	<ul class="questions">
-	<?php 
+	<?php
 	foreach ($this->rows as $row)
 	{
 		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
@@ -49,8 +49,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } else { ?>
 			<h4><a href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a></h4>
 			<p class="entry-details">
-				<?php echo JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $this->escape($name)); ?> @ 
-				<span class="entry-time"><?php echo $row->created('time'); ?></span> on 
+				<?php echo JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $this->escape($name)); ?> @
+				<span class="entry-time"><?php echo $row->created('time'); ?></span> on
 				<span class="entry-date"><?php echo $row->created('date'); ?></span>
 				<span class="entry-details-divider">&bull;</span>
 				<span class="entry-comments">
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>
 				</span>
 			</p>
-			<p class="entry-tags"><?php echo JText::_('MOD_RECENTQUESTIONS_TAGS'); ?>:</p> 
+			<p class="entry-tags"><?php echo JText::_('MOD_RECENTQUESTIONS_TAGS'); ?>:</p>
 			<?php
 			echo $row->tags('cloud');
 			?>

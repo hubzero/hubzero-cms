@@ -53,7 +53,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 	<?php if(count($this->notifications) > 0) {
 		foreach ($this->notifications as $notification) { ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-		<?php } // close foreach 
+		<?php } // close foreach
 	} // close if count ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
@@ -72,7 +72,7 @@ $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
 				</a>
 				<input class="search-submit" type="submit" value="<?php echo JText::_('PLG_TIME_TASKS_SEARCH'); ?>" />
 				<fieldset class="search-text">
-					<input id="search-input" type="text" name="search" placeholder="<?php echo JText::_('PLG_TIME_TASKS_SEARCH_EXPLANATION'); ?>" value="<?php 
+					<input id="search-input" type="text" name="search" placeholder="<?php echo JText::_('PLG_TIME_TASKS_SEARCH_EXPLANATION'); ?>" value="<?php
 							echo (is_array($this->filters['search']) && !empty($this->filters['search'][0])) ? implode(" ", $this->filters['search']) : ''; ?>" />
 				</fieldset>
 			</div><!-- / .search-box -->

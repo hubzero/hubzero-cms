@@ -38,7 +38,7 @@ class Xml implements \Iterator
 	private $key;
 	private $reader;
 	private $position;
-	
+
 	/**
 	 * XML Reader Iterator Constructor
 	 * @param string $file XML file we want to use
@@ -51,7 +51,7 @@ class Xml implements \Iterator
 		$this->file     = $file;
 		$this->key      = $key;
 	}
-	
+
 	/**
 	 * Get the current XML node
 	 * @return object XML node as a stdClass
@@ -62,7 +62,7 @@ class Xml implements \Iterator
 		$object = simplexml_import_dom($doc->importNode($this->reader->expand(), true));
 		return json_decode(json_encode($object));
 	}
-	
+
 	/**
 	 * Get our current position while iterating
 	 * @return int Current position
@@ -71,7 +71,7 @@ class Xml implements \Iterator
 	{
 		return $this->position;
 	}
-	
+
 	/**
 	 * Go to the next Node that matches our key
 	 * @return void
@@ -83,7 +83,7 @@ class Xml implements \Iterator
 			++$this->position;
 		}
 	}
-	
+
 	/**
 	 * Move to the first node that matches our key
 	 * @return void
@@ -93,11 +93,11 @@ class Xml implements \Iterator
 		// open file with reader
 		// force UTF-8, validate XML, & substitute entities while reading
 		$this->reader->open($this->file, 'UTF-8', \XMLReader::VALIDATE | \XMLReader::SUBST_ENTITIES);
-		
+
 		// fast forward to first record
 		while ($this->reader->read() && $this->reader->name !== $this->key);
 	}
-	
+
 	/**
 	 * Is our current node valid
 	 * @return bool Is valid?

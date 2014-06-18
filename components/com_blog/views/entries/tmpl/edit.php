@@ -44,7 +44,7 @@ $this->css()
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 $tf = $dispatcher->trigger(
-	'onGetMultiEntry', 
+	'onGetMultiEntry',
 	array(
 		array('tags', 'tags', 'actags','', $this->entry->tags('string'))
 	)
@@ -68,7 +68,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 	<?php /*if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php }*/ ?>
-	
+
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<h4 id="files-header"><?php echo JText::_('COM_BLOG_FIELD_FILES'); ?></h4>
@@ -76,7 +76,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			</div>
 			<fieldset>
 				<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
-	
+
 				<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 					<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 					<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
@@ -84,7 +84,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
 				<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 			<?php } ?>
-	
+
 				<label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) { echo ' class="fieldWithErrors"'; } ?>>
 					<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 					<?php
@@ -94,7 +94,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 				<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
 			<?php } ?>
-	
+
 				<label>
 					<?php echo JText::_('COM_BLOG_FIELD_TAGS'); ?>
 				<?php if (count($tf) > 0) {
@@ -104,15 +104,15 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<?php } ?>
 					<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 				</label>
-	
+
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-allow_comments">
-							<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> /> 
+							<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 						</label>
 					</div>
-	
+
 					<div class="col span-half omega">
 						<label for="field-state">
 							<?php echo JText::_('COM_BLOG_FIELD_PRIVACY'); ?>
@@ -124,7 +124,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 						</label>
 					</div>
 				</div>
-	
+
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-publish_up">
@@ -133,7 +133,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 							<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
-	
+
 					<div class="col span-half omega">
 						<label for="field-publish_down">
 							<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
@@ -144,7 +144,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				</div>
 			</fieldset>
 			<div class="clear"></div>
-	
+
 			<input type="hidden" name="lid" value="<?php //echo $lid; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->entry->get('created_by'); ?>" />
 			<input type="hidden" name="entry[id]" value="<?php echo $this->entry->get('id'); ?>" />
@@ -154,12 +154,12 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<input type="hidden" name="entry[scope]" value="site" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />
-	
+
 			<?php echo JHTML::_('form.token'); ?>
-	
+
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />
-	
+
 				<a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? JRoute::_($this->entry->link()) : JRoute::_('index.php?option=' . $this->option); ?>">
 					<?php echo JText::_('COM_BLOG_CANCEL'); ?>
 				</a>

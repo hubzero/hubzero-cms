@@ -33,26 +33,26 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CollectionsHelperPermissions::getActions('collection');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS'), 'collection.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -60,7 +60,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('collections');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
@@ -96,11 +96,11 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php 
+					<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->total, 
-						$this->filters['start'], 
+						$this->total,
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 					echo $pageNav->getListFooter();
@@ -134,7 +134,7 @@ foreach ($this->rows as $row)
 			break;
 	}
 
-	switch ($row->get('access', 0)) 
+	switch ($row->get('access', 0))
 	{
 		case 0:
 			$color_access = 'public';
@@ -157,7 +157,7 @@ foreach ($this->rows as $row)
 			$task_access = 'accesspublic';
 			$row->set('groupname', JText::_('COM_COLLECTIONS_ACCESS_PRIVATE'));
 		break;
-	} 
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>

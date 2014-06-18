@@ -45,7 +45,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onCourseAreas()
@@ -62,7 +62,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $course      Current course
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -89,9 +89,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onCourseAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				//return $arr;
 				$return = 'metadata';
@@ -123,7 +123,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		), true);
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			$action = strtolower(JRequest::getWord('group', ''));
 			if ($action && $action != 'edit' && $action != 'delete')
@@ -189,7 +189,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @return     string
 	 */
@@ -243,7 +243,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @return     string
 	 */
@@ -313,7 +313,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @return     string
 	 */
@@ -364,7 +364,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      object $url  URL to redirect to
 	 * @return     string
 	 */
@@ -402,7 +402,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect and message
-	 * 
+	 *
 	 * @param      string $url  URL to redirect to
 	 * @param      string $msg  Message to send
 	 * @param      string $type Message type (message, error, warning, info)
@@ -419,13 +419,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function _ajaxUpload()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
+		if ($this->view->juser->get('guest'))
 		{
 			ob_clean();
 			header('Content-type: text/plain');
@@ -460,10 +460,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		//define upload directory and make sure its writable
 		$path = $this->_path();
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				ob_clean();
 				header('Content-type: text/plain');
@@ -481,14 +481,14 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			ob_clean();
 			header('Content-type: text/plain');
 			echo json_encode(array('error' => JText::_('File is empty')));
 			exit();
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			ob_clean();
@@ -508,7 +508,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
@@ -522,7 +522,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
-		
+
 			//move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
@@ -537,7 +537,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		ob_clean();
 		header('Content-type: text/plain');
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path)
 		));
@@ -546,13 +546,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _fileUpload()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
+		if ($this->view->juser->get('guest'))
 		{
 			return $this->_files();
 		}
@@ -567,7 +567,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('listdir', 0, 'post');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_ID_PROVIDED'));
 			return $this->_files();
@@ -575,7 +575,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			return $this->_files();
@@ -584,10 +584,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Build the upload path if it doesn't exist
 		$path = $this->_path();
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_MAKE_PATH'));
 				return $this->_files();
@@ -601,7 +601,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
 		}
@@ -612,7 +612,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build and return the file path
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function _path($page=null)
@@ -661,13 +661,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete a file in the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _fileDelete()
 	{
 		// Check if they're logged in
-		if ($this->view->juser->get('guest')) 
+		if ($this->view->juser->get('guest'))
 		{
 			return $this->_files();
 		}
@@ -676,7 +676,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		// Incoming file
 		$file = trim(JRequest::getVar('file', '', 'get'));
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			if ($no_html)
@@ -684,7 +684,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				ob_clean();
 				header('Content-type: text/plain');
 				echo json_encode(array(
-					'success'   => false, 
+					'success'   => false,
 					'error'     => $this->getError()
 				));
 				exit();
@@ -696,7 +696,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$path = $this->_path();
 
 		// Delete the file
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_FILE_NOT_FOUND'));
 			if ($no_html)
@@ -704,18 +704,18 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				ob_clean();
 				header('Content-type: text/plain');
 				echo json_encode(array(
-					'success' => false, 
+					'success' => false,
 					'error'   => $this->getError()
 				));
 				exit();
 			}
 			return $this->_files();
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('PLG_COURSES_PAGES_ERROR_UNABLE_TO_DELETE_FILE'));
 				if ($no_html)
@@ -723,12 +723,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 					ob_clean();
 					header('Content-type: text/plain');
 					echo json_encode(array(
-						'success' => false, 
+						'success' => false,
 						'error'   => $this->getError()
 					));
 					exit();
 				}
-			} 
+			}
 		}
 
 		if ($no_html)
@@ -742,14 +742,14 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a form for uploading files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _files()
 	{
 		$this->view->setLayout('files');
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -762,7 +762,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _fileList()
@@ -817,7 +817,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$this->view->docs    = $docs;
 		$this->view->folders = $folders;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -830,7 +830,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Download a wiki file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _fileDownload()
@@ -844,18 +844,18 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		// Get the scope of the parent page the file is attached to
 		$filename = JRequest::getVar('group', '');
 
-		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
+		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));
-		} 
-		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
+		}
+		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:')
 		{
 			$filename = substr($filename, strlen('file:'));
 		}
 		$filename = urldecode($filename);
 
 		// Ensure we have a path
-		if (empty($filename)) 
+		if (empty($filename))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[r]' . $filename);
 			return;
@@ -878,7 +878,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$filename = $this->_path($page) . DS . ltrim($filename, DS);
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filename);
 			return;
@@ -890,12 +890,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR') . '[x]' . $filename);
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}

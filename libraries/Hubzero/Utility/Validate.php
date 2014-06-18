@@ -33,7 +33,7 @@ namespace Hubzero\Utility;
 
 /**
  * Hubzero helper class for input validation
- * 
+ *
  * Several methods inspired by CakePHP (http://cakephp.org) and Zend (http://framework.zend.com)
  */
 class Validate
@@ -58,14 +58,14 @@ class Validate
 	 * @param  string|array $check Value to check
 	 * @return boolean Success
 	 */
-	public static function notEmpty($check) 
+	public static function notEmpty($check)
 	{
-		if (is_array($check)) 
+		if (is_array($check))
 		{
 			extract(self::_defaults($check));
 		}
 
-		if (empty($check) && $check != '0') 
+		if (empty($check) && $check != '0')
 		{
 			return false;
 		}
@@ -83,14 +83,14 @@ class Validate
 	 * @param  string|array $check Value to check
 	 * @return boolean Success
 	 */
-	public static function alphaNumeric($check) 
+	public static function alphaNumeric($check)
 	{
-		if (is_array($check)) 
+		if (is_array($check))
 		{
 			extract(self::_defaults($check));
 		}
 
-		if (empty($check) && $check != '0') 
+		if (empty($check) && $check != '0')
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class Validate
 	 * @param integer $max Maximum value in range (inclusive)
 	 * @return boolean Success
 	 */
-	public static function between($check, $min, $max) 
+	public static function between($check, $min, $max)
 	{
 		$length = mb_strlen($check);
 		return ($length >= $min && $length <= $max);
@@ -123,9 +123,9 @@ class Validate
 	 * @param string|array $check Value to check
 	 * @return boolean Success
 	 */
-	public static function blank($check) 
+	public static function blank($check)
 	{
-		if (is_array($check)) 
+		if (is_array($check))
 		{
 			extract(self::_defaults($check));
 		}
@@ -138,7 +138,7 @@ class Validate
 	 * @param string $check a valid boolean
 	 * @return boolean Success
 	 */
-	public static function boolean($check) 
+	public static function boolean($check)
 	{
 		$booleanList = array(0, 1, '0', '1', true, false);
 		return in_array($check, $booleanList, true);
@@ -154,13 +154,13 @@ class Validate
 	 * @param integer $upper Upper limit
 	 * @return boolean Success
 	 */
-	public static function range($check, $lower = null, $upper = null) 
+	public static function range($check, $lower = null, $upper = null)
 	{
-		if (!is_numeric($check)) 
+		if (!is_numeric($check))
 		{
 			return false;
 		}
-		if (isset($lower) && isset($upper)) 
+		if (isset($lower) && isset($upper))
 		{
 			return ($check > $lower && $check < $upper);
 		}
@@ -173,14 +173,14 @@ class Validate
 	 * @param string $check Value to check
 	 * @return boolean Success
 	 */
-	public static function numeric($check) 
+	public static function numeric($check)
 	{
 		return is_numeric($check);
 	}
 
 	/**
 	 * Is value an integer?
-	 * 
+	 *
 	 * @param      unknown $x Value to check
 	 * @return     boolean True if valid, false if invalid
 	 */
@@ -191,7 +191,7 @@ class Validate
 
 	/**
 	 * Is value a positive integer?
-	 * 
+	 *
 	 * @param      integer $x Value to check
 	 * @return     boolean True if valid, false if invalid
 	 */
@@ -202,7 +202,7 @@ class Validate
 
 	/**
 	 * Is value a non-negative integer?
-	 * 
+	 *
 	 * @param      integer $x Value to check
 	 * @return     boolean True if valid, false if invalid
 	 */
@@ -213,7 +213,7 @@ class Validate
 
 	/**
 	 * Is value a non-positive integer?
-	 * 
+	 *
 	 * @param      integer $x Value to check
 	 * @return     boolean True if valid, false if invalid
 	 */
@@ -224,7 +224,7 @@ class Validate
 
 	/**
 	 * Is value a negative integer?
-	 * 
+	 *
 	 * @param      integer $x Value to check
 	 * @return     boolean True if valid, false if invalid
 	 */
@@ -235,33 +235,33 @@ class Validate
 
 	/**
 	 * Validate ORCID
-	 * 
+	 *
 	 * @param      string $orcid ORCID to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
 	public static function orcid($orcid)
 	{
-		if (preg_match('#^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$#i', $orcid)) 
+		if (preg_match('#^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$#i', $orcid))
 		{
 			return true;
-		} 
+		}
 		return false;
 	}
 
 	/**
 	 * Check if a username is valid.
-	 * 
+	 *
 	 * - Check if the username contains any invalid characters
 	 * - Check if username is just an integer
 	 * - Check if the username is reserved
-	 * 
+	 *
 	 * @param  string $x Username to check
 	 * @return boolean True if valid, false if invalid
 	 */
 	public static function username($x)
 	{
 		// Does it contain invalid characters?
-		if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $x)) 
+		if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $x))
 		{
 			return false;
 		}
@@ -283,11 +283,11 @@ class Validate
 
 	/**
 	 * Check if a group alias is valid
-	 * 
+	 *
 	 * - Check if $cn contains any invalid characters
 	 * - Check if $cn is just an integer
 	 * - Check if $cn is reserved
-	 * 
+	 *
 	 * @param  string  $cn          Group to check
 	 * @param  boolean $allowDashes Allow dashes in cn
 	 * @return boolean True if valid, false if invalid
@@ -319,7 +319,7 @@ class Validate
 	 * Check if $val is reserved
 	 *
 	 * Type [username, group] must be specified.
-	 * 
+	 *
 	 * @param  string  $type List to check against
 	 * @param  string  $val  Value to check
 	 * @return boolean True if reserved, False if not
@@ -525,13 +525,13 @@ class Validate
 
 	/**
 	 * Validate password
-	 * 
+	 *
 	 * @param      string $password Password to validate
 	 * @return     boolean True if valid, false if invalid
 	 */
 	public function password($password)
 	{
-		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password)) 
+		if (preg_match("#^[_\`\~\!\@\#\$\%\^\&\*\(\)\=\+\{\}\:\;\"\'\<\>\,\.\?\/0-9a-zA-Z-]+$#i", $password))
 		{
 			return true;
 		}
@@ -549,30 +549,30 @@ class Validate
 	 * @param  string  $regex Regex to use (if none it will use built in regex)
 	 * @return boolean Success
 	 */
-	public static function email($check, $deep = false, $regex = null) 
+	public static function email($check, $deep = false, $regex = null)
 	{
-		if (is_array($check)) 
+		if (is_array($check))
 		{
 			extract(self::_defaults($check));
 		}
 
-		if ($regex === null) 
+		if ($regex === null)
 		{
 			$regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@' . self::$_pattern['hostname'] . '$/i';
 		}
 		$return = self::_check($check, $regex);
-		if ($deep === false || $deep === null) 
+		if ($deep === false || $deep === null)
 		{
 			return $return;
 		}
 
-		if ($return === true && preg_match('/@(' . self::$_pattern['hostname'] . ')$/i', $check, $regs)) 
+		if ($return === true && preg_match('/@(' . self::$_pattern['hostname'] . ')$/i', $check, $regs))
 		{
-			if (function_exists('getmxrr') && getmxrr($regs[1], $mxhosts)) 
+			if (function_exists('getmxrr') && getmxrr($regs[1], $mxhosts))
 			{
 				return true;
 			}
-			if (function_exists('checkdnsrr') && checkdnsrr($regs[1], 'MX')) 
+			if (function_exists('checkdnsrr') && checkdnsrr($regs[1], 'MX'))
 			{
 				return true;
 			}
@@ -588,15 +588,15 @@ class Validate
 	 * @param string $type The IP Protocol version to validate against
 	 * @return boolean Success
 	 */
-	public static function ip($check, $type = 'both') 
+	public static function ip($check, $type = 'both')
 	{
 		$type = strtolower($type);
 		$flags = 0;
-		if ($type === 'ipv4') 
+		if ($type === 'ipv4')
 		{
 			$flags = FILTER_FLAG_IPV4;
 		}
-		if ($type === 'ipv6') 
+		if ($type === 'ipv6')
 		{
 			$flags = FILTER_FLAG_IPV6;
 		}
@@ -620,7 +620,7 @@ class Validate
 	 * @param  boolean $strict Require URL to be prefixed by a valid scheme (one of http(s)/ftp(s)/file/news/gopher)
 	 * @return boolean Success
 	 */
-	public static function url($check, $strict = false) 
+	public static function url($check, $strict = false)
 	{
 		self::_populateIp();
 
@@ -643,16 +643,16 @@ class Validate
 	 * @param  string       $country Country code (defaults to 'all')
 	 * @return boolean Success
 	 */
-	public static function phone($check, $regex = null, $country = 'all') 
+	public static function phone($check, $regex = null, $country = 'all')
 	{
-		if (is_array($check)) 
+		if (is_array($check))
 		{
 			extract(self::_defaults($check));
 		}
 
-		if ($regex === null) 
+		if ($regex === null)
 		{
-			switch ($country) 
+			switch ($country)
 			{
 				case 'us':
 				case 'ca':
@@ -678,7 +678,7 @@ class Validate
 				break;
 			}
 		}
-		if (empty($regex)) 
+		if (empty($regex))
 		{
 			return self::_pass('phone', $check, $country);
 		}
@@ -695,15 +695,15 @@ class Validate
 	 * @param  string $classPrefix The prefix for the class to do the validation.
 	 * @return mixed Return of Passed method, false on failure
 	 */
-	protected static function _pass($method, $check, $classPrefix) 
+	protected static function _pass($method, $check, $classPrefix)
 	{
 		$className = ucwords($classPrefix) . 'Validation';
-		if (!class_exists($className)) 
+		if (!class_exists($className))
 		{
 			trigger_error(JText::sprintf('Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
 			return false;
 		}
-		if (!method_exists($className, $method)) 
+		if (!method_exists($className, $method))
 		{
 			trigger_error(JText::sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
 			return false;
@@ -719,9 +719,9 @@ class Validate
 	 * @param string $regex Regular expression
 	 * @return boolean Success of match
 	 */
-	protected static function _check($check, $regex) 
+	protected static function _check($check, $regex)
 	{
-		if (is_string($regex) && preg_match($regex, $check)) 
+		if (is_string($regex) && preg_match($regex, $check))
 		{
 			return true;
 		}
@@ -735,7 +735,7 @@ class Validate
 	 * @param  array $params Parameters sent to validation method
 	 * @return void
 	 */
-	protected static function _defaults($params) 
+	protected static function _defaults($params)
 	{
 		self::_reset();
 		$defaults = array(
@@ -746,7 +746,7 @@ class Validate
 			'type'    => null
 		);
 		$params = array_merge($defaults, $params);
-		if ($params['country'] !== null) 
+		if ($params['country'] !== null)
 		{
 			$params['country'] = mb_strtolower($params['country']);
 		}
@@ -758,9 +758,9 @@ class Validate
 	 *
 	 * @return void
 	 */
-	protected static function _populateIp() 
+	protected static function _populateIp()
 	{
-		if (!isset(self::$_pattern['IPv6'])) 
+		if (!isset(self::$_pattern['IPv6']))
 		{
 			$pattern  = '((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}';
 			$pattern .= '(:|((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})';
@@ -779,7 +779,7 @@ class Validate
 
 			self::$_pattern['IPv6'] = $pattern;
 		}
-		if (!isset(self::$_pattern['IPv4'])) 
+		if (!isset(self::$_pattern['IPv4']))
 		{
 			$pattern = '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])';
 			self::$_pattern['IPv4'] = $pattern;
@@ -791,7 +791,7 @@ class Validate
 	 *
 	 * @return void
 	 */
-	protected static function _reset() 
+	protected static function _reset()
 	{
 		self::$errors = array();
 	}

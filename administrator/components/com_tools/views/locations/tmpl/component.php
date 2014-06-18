@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.modal');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {

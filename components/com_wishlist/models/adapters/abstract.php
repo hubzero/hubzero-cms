@@ -38,28 +38,28 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 {
 	/**
 	 * The object the referenceid references
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_item = null;
 
 	/**
 	 * Script name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_base = 'index.php';
 
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $referenceid Scope ID (group, course, etc.)
 	 * @return     void
 	 */
@@ -70,7 +70,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 
 	/**
 	 * Generate and return the title for this wishlist
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function title()
@@ -80,7 +80,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 
 	/**
 	 * Retrieve a property from the internal item object
-	 * 
+	 *
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
@@ -95,7 +95,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 
 	/**
 	 * Does the item exists?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function exists()
@@ -110,7 +110,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
@@ -122,7 +122,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 
 	/**
 	 * Flatten array of segments into querystring
-	 * 
+	 *
 	 * @param      array $segments An associative array of querystring bits
 	 * @return     string
 	 */
@@ -142,7 +142,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
-	 * 
+	 *
 	 * @param      string $title Breadcrumb title
 	 * @param      string $url   Breadcrumb URL
 	 * @return     string
@@ -154,14 +154,14 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->get('option'))), 
+				JText::_(strtoupper($this->get('option'))),
 				'index.php?option=' . $this->get('option')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				$title, 
+				$title,
 				$url
 			);
 		}

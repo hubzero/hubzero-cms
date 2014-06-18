@@ -38,17 +38,17 @@ class plgSearchKB extends SearchPlugin
 {
 	/**
 	 * Get the name of the area being searched
-	 * 
+	 *
 	 * @return     string
 	 */
-	public static function getName() 
-	{ 
-		return JText::_('Knowledge Base'); 
+	public static function getName()
+	{
+		return JText::_('Knowledge Base');
 	}
 
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -67,13 +67,13 @@ class plgSearchKB extends SearchPlugin
 		{
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.params NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
 		}
-		
+
 		$user = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
 			$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 		}
-		else 
+		else
 		{
 			if ($user->guest)
 			{
@@ -86,24 +86,24 @@ class plgSearchKB extends SearchPlugin
 		}
 
 		$results->add(new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				f.title,
 				coalesce(f.`fulltxt`, '') AS description,
 				concat('index.php?option=com_kb&section=', coalesce(concat(s.alias, '/'), ''), f.alias) AS link,
 				$weight AS weight,
 				created AS date,
-				CASE 
+				CASE
 					WHEN s.alias IS NULL THEN c.alias
 					WHEN c.alias IS NULL THEN s.alias
-					ELSE concat(s.alias, ', ', c.alias) 
+					ELSE concat(s.alias, ', ', c.alias)
 				END AS section
 			FROM #__faq f
-			LEFT JOIN #__faq_categories s 
+			LEFT JOIN #__faq_categories s
 				ON s.id = f.section
 			LEFT JOIN #__faq_categories c
 				ON c.id = f.category
-			WHERE 
-				f.state = 1 AND s.state = 1 AND 
+			WHERE
+				f.state = 1 AND s.state = 1 AND
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"

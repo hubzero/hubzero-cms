@@ -71,9 +71,9 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 			<?php foreach ($rows as $gidNumber => $row) : ?>
 				<tr>
 					<td>
-						<?php 
+						<?php
 							$group = \Hubzero\User\Group::getInstance($gidNumber);
-							echo $group->get('description'); 
+							echo $group->get('description');
 						?>
 					</td>
 					<td>

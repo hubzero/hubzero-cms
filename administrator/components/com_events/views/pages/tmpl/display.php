@@ -37,7 +37,7 @@ JToolBarHelper::deleteList();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -55,11 +55,11 @@ function submitbutton(pressbutton)
 			<?php echo stripslashes($this->event->title); ?>
 		</a>
 	</h2>
-	
+
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-		
+
 		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
 	</fieldset>
 

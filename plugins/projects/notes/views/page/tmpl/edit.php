@@ -43,21 +43,21 @@ if ($this->page->get('id')) {
 
 // Incoming
 $scope   = JRequest::getVar('scope', '');
-$tool 	 = JRequest::getVar( 'tool', '', 'request', 'object' );	
+$tool 	 = JRequest::getVar( 'tool', '', 'request', 'object' );
 $project = JRequest::getVar( 'project', '', 'request', 'object' );
 $canDelete = JRequest::getVar('candelete', 0);
 
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 	<h2><?php echo $this->escape($this->title); ?></h2>
-<?php 
+<?php
 ?>
 </header><!-- /#content-header -->
 
-<?php 
+<?php
 if ($this->page->get('id')) {
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
@@ -67,7 +67,7 @@ if ($this->page->get('id')) {
 	$view->task   = $this->task;
 	$view->sub    = $this->sub;
 	$view->display();
-} 
+}
 ?>
 
 <section class="main section">
@@ -116,9 +116,9 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } else { ?>
 		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" />
 	<?php } ?>
-		
+
 		<label for="pagetext" style="position: relative;">
-			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>: 
+			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>:
 			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
 			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
@@ -128,7 +128,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<p class="ta-right hint">
 			See <a class="wiki-formatting popup" rel="external" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
 		</p>
-		
+
 <?php if ($this->sub) { ?>
 	<div id="file-uploader"></div>
 		<div class="field-wrap mini">
@@ -146,7 +146,7 @@ if ($this->page->access('edit')) {
 	}
 
 		$juser = JFactory::getUser(); ?>
-		
+
 			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
 
 <?php } else { ?>
@@ -170,7 +170,7 @@ if ($this->page->access('edit')) {
 		<fieldset>
 			<label>
 				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
-				<?php 
+				<?php
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 				if (count($tf) > 0) {
 					echo $tf[0];
@@ -195,15 +195,15 @@ if ($this->page->access('edit')) {
 		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
 		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
-		
+
 		<input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
 		<input type="hidden" name="revision[pageid]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
 		<input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
 		<input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
-		
+
 		<?php echo JHTML::_('form.token'); ?>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="page[group_cn]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
@@ -211,7 +211,7 @@ if ($this->page->access('edit')) {
 		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
 
 		<p class="submit">
-			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp; 
+			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp;
 			<input type="submit" name="submit" id="page-submit" value="<?php echo JText::_('SUBMIT'); ?>" />
 		</p>
 	</form>
@@ -233,7 +233,7 @@ if ($this->page->access('edit')) {
 		}
 	</style>
 </section><!-- / .main section -->
-	
+
 	<?php if ($this->page->exists() && strtolower($this->page->get('namespace')) != 'special' && $canDelete) { ?>
 		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename').'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
 	<?php } ?>

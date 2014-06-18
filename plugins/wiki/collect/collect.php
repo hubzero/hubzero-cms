@@ -46,7 +46,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 	/**
 	 * After display content method
 	 * Method is called by the view and the results are imploded and displayed in a placeholder
-	 * 
+	 *
 	 * @param      object $page     Wiki page
 	 * @param      object $revision Wiki revision
 	 * @param      object $config   Wiki config
@@ -59,7 +59,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 
 		// Incoming action
 		$action = JRequest::getVar('action', '');
-		if ($action && $action == 'collect') 
+		if ($action && $action == 'collect')
 		{
 			// Check the user's logged-in status
 			return $this->fav();
@@ -73,7 +73,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		$juser = JFactory::getUser();
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -93,7 +93,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Un/favorite an item
-	 * 
+	 *
 	 * @param      integer $oid Resource to un/favorite
 	 * @return     void
 	 */
@@ -125,12 +125,12 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 			$b->object_id   = $this->page->get('id');
 			$b->title       = $this->page->get('title');
 			$b->description = \Hubzero\Utility\String::truncate($this->revision->content('clean'), 300);
-			if (!$b->check()) 
+			if (!$b->check())
 			{
 				$this->setError($b->getError());
 			}
 			// Store new content
-			if (!$b->store()) 
+			if (!$b->store())
 			{
 				$this->setError($b->getError());
 			}
@@ -165,7 +165,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 				$view->display();
 				exit;
 			}
-			else 
+			else
 			{
 				return $view->loadTemplate();
 			}
@@ -199,10 +199,10 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 				$stick->item_id       = $item_id;
 				$stick->collection_id = $collection_id;
 				$stick->description = JRequest::getVar('description', '', 'none', 2);
-				if ($stick->check()) 
+				if ($stick->check())
 				{
 					// Store new content
-					if (!$stick->store()) 
+					if (!$stick->store())
 					{
 						$this->setError($stick->getError());
 					}

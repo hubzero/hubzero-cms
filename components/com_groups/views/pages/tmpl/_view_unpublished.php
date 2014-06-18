@@ -35,8 +35,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 <div class="group-page group-page-notice notice-info">
 	<h4>Group Page is Currently Not Published</h4>
 	<p>This page has been marked <strong>unpublished</strong> by one of the group managers. If you would like to publish this page click the link below: </p>
-	<?php 
-		$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id')); 
+	<?php
+		$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id'));
 	?>
 	<p><a href="<?php echo $link . '&return=' . base64_encode(JURI::getInstance()->toString()); ?>"><?php echo rtrim(JURI::getInstance()->base(), DS) . $link; ?></a></p>
 </div>

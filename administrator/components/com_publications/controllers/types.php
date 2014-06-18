@@ -40,7 +40,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -78,13 +78,13 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			'filter_order_Dir',
 			'ASC'
 		));
-		
+
 		$this->view->filters['state'] = 'all';
-		
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		
+
 		// Instantiate an object
 		$rt = new PublicationMasterType($this->database);
 
@@ -114,7 +114,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add a new type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -125,7 +125,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -157,24 +157,24 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->view->setError($this->getError());
 		}
-		
+
 		$this->view->config = $this->config;
-		
+
 		// Get all active categories
 		$objC = new PublicationCategory($this->database);
 		$this->view->cats = $objC->getCategories();
-		
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
-		
+
 		// Output the HTML
 		$this->view->display();
 	}
 
 	/**
 	 * Save a type
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -184,12 +184,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
-		
+
 		// Initiate extended database class
 		$row = new PublicationMasterType($this->database);
-		
+
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $fields['id'];
-		
+
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -208,7 +208,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			}
 			$row->params = implode("\n", $txt);
 		}
-						
+
 		// Check content
 		if (!$row->check())
 		{
@@ -227,21 +227,21 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->setRedirect( $url, JText::_('Publication Master Type successfully saved'));
 		return;
 	}
-	
+
 	public function orderupTask()
 	{
 		$this->reorderTask(-1);
 	}
-	
+
 	public function orderdownTask()
 	{
 		$this->reorderTask(1);
 	}
-	
+
 	/**
 	 * Reorders licenses
 	 * Redirects to license listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask($dir = 0)
@@ -255,15 +255,15 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Load row
 		$row = new PublicationMasterType($this->database);
 		$row->load( (int) $id[0]);
-		
+
 		// Update order
 		$row->changeOrder($dir);
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
-	
+
 	/**
 	 * Cancel a task (redirects to default task)
 	 *

@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('Edit Section') : JText::_('New Sectio
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text, 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -52,15 +52,15 @@ $this->css(); //->css('classic');
 $course_id = 0;
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('field-alias').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -126,7 +126,7 @@ jQuery(document).ready(function($){
 										$j = 0;
 										foreach ($course->offerings() as $i => $offering)
 										{
-											if ($offering->get('id') == $this->row->get('offering_id')) 
+											if ($offering->get('id') == $this->row->get('offering_id'))
 											{
 												$course_id = $offering->get('course_id');
 											}
@@ -136,7 +136,7 @@ jQuery(document).ready(function($){
 										}
 							?>
 										</optgroup>
-							<?php 
+							<?php
 									}
 								}
 							?>
@@ -234,7 +234,7 @@ jQuery(document).ready(function($){
 						<?php if ($this->row->get('created_by')) { ?>
 						<tr>
 							<th><?php echo JText::_('Creator'); ?></th>
-							<td><?php 
+							<td><?php
 								$creator = JUser::getInstance($this->row->get('created_by'));
 								echo $this->escape(stripslashes($creator->get('name'))); ?>
 							</td>
@@ -248,7 +248,7 @@ jQuery(document).ready(function($){
 					<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
 
 					<?php
-					if ($this->row->exists()) 
+					if ($this->row->exists())
 					{
 						$logo = $this->row->params('logo');
 						?>
@@ -259,11 +259,11 @@ jQuery(document).ready(function($){
 								</noscript>
 							</div>
 						</div>
-							<?php 
+							<?php
 							$width  = 0;
 							$height = 0;
 							$this_size = 0;
-							if ($logo) 
+							if ($logo)
 							{
 								$path = $this->row->logo('path');
 
@@ -327,9 +327,9 @@ jQuery(document).ready(function($){
 										multiple: true,
 										debug: true,
 										template: '<div class="qq-uploader">' +
-													'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+													'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
 													'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-													'<ul class="qq-upload-list"></ul>' + 
+													'<ul class="qq-upload-list"></ul>' +
 												   '</div>',
 										onComplete: function(id, file, response) {
 											if (response.success) {
@@ -406,7 +406,7 @@ jQuery(document).ready(function($){
 								JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
 							);
 							$out = $param->render('params', 'onSectionEdit');
-							if (!$out) 
+							if (!$out)
 							{
 								continue;
 							}
@@ -449,18 +449,18 @@ jQuery(document).ready(function($){
 				<p class="info"><?php echo JText::_('Dates and times are initially inherited from the default section for this offering.'); ?></p>
 				<?php } ?>
 
-				<?php 
+				<?php
 				//jimport('joomla.html.pane');
 				//$tabs = JPane::getInstance('sliders');
 
-				//echo $tabs->startPane("content-pane"); 
+				//echo $tabs->startPane("content-pane");
 				echo JHtml::_('sliders.start', 'content-pane');
-				
+
 
 				$this->offering->section($this->row->get('alias', '__default'));
 
 					$i = 0;
-					foreach ($this->offering->units(array(), true) as $unit) 
+					foreach ($this->offering->units(array(), true) as $unit)
 					{
 						echo JHtml::_('sliders.panel', stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
 						//echo $tabs->startPanel(stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
@@ -497,7 +497,7 @@ jQuery(document).ready(function($){
 							{
 								$agt->set('publish_up', $this->row->date('asset_group', $agt->get('id'))->get('publish_up'));
 								$agt->set('publish_down', $this->row->date('asset_group', $agt->get('id'))->get('publish_down'));
-								
+
 								if ($agt->get('publish_up') == '0000-00-00 00:00:00')
 								{
 									$agt->set('publish_up', $unit->get('publish_up'));
@@ -507,10 +507,10 @@ jQuery(document).ready(function($){
 									$agt->set('publish_down', $unit->get('publish_down'));
 								}
 								?>
-								
+
 									<tr>
 										<th class="key">
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
 											<?php echo $this->escape(stripslashes($agt->get('title'))); ?>
 										</th>
 										<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
@@ -531,7 +531,7 @@ jQuery(document).ready(function($){
 								<?php
 								//$agt->set('publish_up', $unit->get('publish_up'));
 								//$agt->set('publish_down', $unit->get('publish_down'));
-								
+
 
 								$j = 0;
 								foreach ($agt->children() as $ag)
@@ -550,7 +550,7 @@ jQuery(document).ready(function($){
 									?>
 											<tr>
 												<th class="key">
-													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
 													<?php echo $this->escape(stripslashes($ag->get('title'))); ?>
 												</th>
 												<td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
@@ -567,9 +567,9 @@ jQuery(document).ready(function($){
 													<input type="text" name="dates[<?php echo $i; ?>][<?php echo $z; ?>][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo ($ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == '0000-00-00 00:00:00' ? '' : $ag->get('publish_down')); ?>" />
 												</td>
 											</tr>
-										
+
 									<?php
-									
+
 									if ($ag->assets()->total())
 									{
 										$k = 0;
@@ -577,7 +577,7 @@ jQuery(document).ready(function($){
 										{
 											$a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
 											$a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
-											
+
 											if ($a->get('publish_up') == '0000-00-00 00:00:00')
 											{
 												$a->set('publish_up', $ag->get('publish_up'));
@@ -589,7 +589,7 @@ jQuery(document).ready(function($){
 											?>
 													<tr>
 														<th class="key">
-															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
 															<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 														</th>
 														<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
@@ -620,7 +620,7 @@ jQuery(document).ready(function($){
 									{
 										$a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
 										$a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
-										
+
 										if ($a->get('publish_up') == '0000-00-00 00:00:00')
 										{
 											$a->set('publish_up', $agt->get('publish_up'));
@@ -632,7 +632,7 @@ jQuery(document).ready(function($){
 										?>
 												<tr>
 													<th class="key">
-														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+														&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
 														<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 													</th>
 													<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
@@ -663,7 +663,7 @@ jQuery(document).ready(function($){
 								{
 									$a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
 									$a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
-									
+
 									if ($a->get('publish_up') == '0000-00-00 00:00:00')
 									{
 										$a->set('publish_up', $unit->get('publish_up'));
@@ -675,7 +675,7 @@ jQuery(document).ready(function($){
 									?>
 											<tr>
 												<th class="key">
-													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp; 
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
 													<?php echo $this->escape(stripslashes($a->get('title'))); ?>
 												</th>
 												<td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('from'); ?></label></th>
@@ -710,7 +710,7 @@ jQuery(document).ready(function($){
 				<!-- </fieldset> -->
 				<script type="text/javascript">
 				jQuery(document).ready(function($){
-					$('.datetime-field').datetimepicker({  
+					$('.datetime-field').datetimepicker({
 						duration: '',
 						showTime: true,
 						constrainInput: false,

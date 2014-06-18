@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
@@ -98,7 +98,7 @@ $this->css()
 				<tbody>
 			<?php
 			if ($this->category->threads('list', $this->filters)->total() > 0) {
-				foreach ($this->category->threads() as $row) 
+				foreach ($this->category->threads() as $row)
 				{
 					$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 					if (!$row->get('anonymous'))
@@ -106,11 +106,11 @@ $this->css()
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
 					}
 					$cls = array();
-					if ($row->get('closed')) 
+					if ($row->get('closed'))
 					{
 						$cls[] = 'closed';
 					}
-					if ($row->get('sticky')) 
+					if ($row->get('sticky'))
 					{
 						$cls[] = 'sticky';
 					}
@@ -139,12 +139,12 @@ $this->css()
 						<td>
 							<span><?php echo JText::_('PLG_GROUPS_FORUM_LAST_POST'); ?></span>
 							<span class="entry-details">
-						<?php 
+						<?php
 							$lastpost = $row->lastActivity();
-							if ($lastpost->exists()) 
+							if ($lastpost->exists())
 							{
 									$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
-									if (!$lastpost->get('anonymous')) 
+									if (!$lastpost->get('anonymous'))
 									{
 										$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
 									}
@@ -182,11 +182,11 @@ $this->css()
 				</tbody>
 			</table>
 
-			<?php 
+			<?php
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
-				$this->category->threads('count', $this->filters), 
-				$this->filters['start'], 
+				$this->category->threads('count', $this->filters),
+				$this->filters['start'],
 				$this->filters['limit']
 			);
 			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));

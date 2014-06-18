@@ -55,8 +55,8 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 					<div class="breadcrumbs">
 						<p>
-							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo JText::_('MOD_QUOTES_NOTABLE_QUOTES'); ?></a> 
-							&rsaquo; 
+							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo JText::_('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+							&rsaquo;
 							<strong><?php echo $this->escape(stripslashes($quote->fullname)); ?></strong>
 						</p>
 					</div>
@@ -70,7 +70,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 					<p>
 					<?php if ($quote->short_quote != $quote->quote) { ?>
 						<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
-						 &#8230; 
+						 &#8230;
 						<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo JText::sprintf('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
 							<?php echo JText::_('MOD_QUOTES_MORE'); ?>
 						</a>

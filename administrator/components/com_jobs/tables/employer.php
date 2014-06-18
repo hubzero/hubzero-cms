@@ -38,56 +38,56 @@ class Employer extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid				= NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $added    			= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $subscriptionid		= NULL;
 
 	/**
 	 * varchar (250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $companyName		= NULL;
 
 	/**
 	 * varchar (250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $companyLocation	= NULL;
 
 	/**
 	 * varchar (250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $companyWebsite		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,32 +98,32 @@ class Employer extends JTable
 
 	/**
 	 * Check if a user is an employer
-	 * 
+	 *
 	 * @param      string $uid Parameter description (if any) ...
 	 * @param      integer $admin Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function isEmployer($uid, $admin=0)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			return false;
 		}
 
 		$now = JFactory::getDate()->toSql();
 		$query  = "SELECT e.id FROM $this->_tbl AS e  ";
-		if (!$admin) 
+		if (!$admin)
 		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 			$query .= "WHERE e.uid = " . $this->_db->Quote($uid) . " AND s.status=1";
 			$query .= " AND s.expires > " . $this->_db->Quote($now) . " ";
-		} 
-		else 
+		}
+		else
 		{
 			$query .= "WHERE e.uid = 1";
 		}
 		$this->_db->setQuery($query);
-		if ($this->_db->loadResult()) 
+		if ($this->_db->loadResult())
 		{
 			return true;
 		}
@@ -132,19 +132,19 @@ class Employer extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @return     boolean True upon success
 	 */
 	public function loadEmployer($uid=NULL)
 	{
-		if ($uid === NULL) 
+		if ($uid === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->Quote($uid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
@@ -153,35 +153,35 @@ class Employer extends JTable
 
 	/**
 	 * Get an employer
-	 * 
+	 *
 	 * @param      integer $uid              User ID
 	 * @param      string  $subscriptioncode Subscription code
 	 * @return     mixed False if errors, Array upon success
 	 */
 	public function getEmployer($uid = NULL, $subscriptioncode = NULL)
 	{
-		if ($uid === NULL or $subscriptioncode === NULL) 
+		if ($uid === NULL or $subscriptioncode === NULL)
 		{
 			return false;
 		}
 		$query  = "SELECT e.* ";
 		$query .= "FROM #__jobs_employers AS e  ";
-		if ($subscriptioncode == 'admin') 
+		if ($subscriptioncode == 'admin')
 		{
 			$query .= "WHERE e.uid = 1";
-		} 
-		else if ($subscriptioncode) 
+		}
+		else if ($subscriptioncode)
 		{
 			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 			$query .= "WHERE s.code=" . $this->_db->Quote($subscriptioncode);
-		} 
-		else if ($uid) 
+		}
+		else if ($uid)
 		{
 			$query .= "WHERE e.uid = " . $this->_db->Quote($uid);
 		}
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) 
+		if ($result)
 		{
 			return $result[0];
 		}

@@ -54,19 +54,19 @@ $this->css();
 		?>
 
 		<?php
-		
+
 		$perks = false;
 		if (!empty($this->transactionInfo->tiPerks))
 		{
 			$perks = $this->transactionInfo->tiPerks;
 			$perks = unserialize($perks);
 		}
-		
+
 		$membershipInfo = false;
 		if (!empty($this->transactionInfo->tiMeta))
 		{
 			$meta = unserialize($this->transactionInfo->tiMeta);
-			
+
 			if (!empty($meta['membershipInfo']))
 			{
 				$membershipInfo = $meta['membershipInfo'];
@@ -85,15 +85,15 @@ $this->css();
 			$view->membershipInfo = $membershipInfo;
 			$view->transactionItems = $this->transactionItems;
 			$view->tiShippingDiscount = $this->transactionInfo->tiShippingDiscount;
-			
+
 			echo '<div class="col span6">';
-			
+
 			$view->display();
-			
+
 			echo '</div>';
-			
+
 			echo '<div class="col span6 omega orderSummary">';
-			
+
 			if (!empty($this->transactionInfo))
 			{
 				$orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
@@ -114,7 +114,7 @@ $this->css();
 
 				echo '<p class="orderTotal">Order total: ' . money_format('%n', $orderTotal) . '</p>';
 			}
-			
+
 			echo '</div>';
 			?>
 		</div>
@@ -133,7 +133,7 @@ $this->css();
 			$buttonLabel = 'Proceed to payment';
 			$buttonLink = JRoute::_('index.php?option=com_cart/checkout/confirm');
 		}
-		else 
+		else
 		{
 			$buttonLabel = 'Place order';
 			$buttonLink = JRoute::_('index.php?option=com_cart/order/place/' . $this->token);

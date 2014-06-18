@@ -106,7 +106,7 @@ class SupportControllerTaggroups extends \Hubzero\Component\AdminController
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-		
+
 		$this->view->setLayout('edit');
 
 		if (is_object($row))

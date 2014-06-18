@@ -57,7 +57,7 @@ class Message extends \Swift_Message
 	/**
 	 * Set the priority of this message.
 	 * The value is an integer where 1 is the highest priority and 5 is the lowest.
-	 * 
+	 *
 	 * Modified version to also accept a string $message->setPriority('high');
 	 *
 	 * @param      mixed $priority integer|string

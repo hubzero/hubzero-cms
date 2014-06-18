@@ -38,7 +38,7 @@ class CartControllerRequest extends ComponentController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -83,7 +83,7 @@ class CartControllerRequest extends ComponentController
 				$skus[$product_skus[0]] = $qty;
 			}
 		}
-		else 
+		else
 		{
 			$skus = JRequest::getVar('skus', false, 'post');
 		}
@@ -112,7 +112,7 @@ class CartControllerRequest extends ComponentController
 		// add coupon if needed
 		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
 		$couponCode = JRequest::getVar('couponCode', false, 'post');
-		
+
 		if ($addCouponRequest && $couponCode)
 		{
 			// Sync cart before pontial coupons applying
@@ -132,7 +132,7 @@ class CartControllerRequest extends ComponentController
 			}
 		}
 
-		if (!empty($errors)) 
+		if (!empty($errors))
 		{
 			$response->status = 'error';
 			$response->errors = $errors;

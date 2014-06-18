@@ -39,35 +39,35 @@ class CitationsSecondary extends JTable
 
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id            = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $cid           = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sec_cits_cnt  = NULL;
 
 	/**
 	 * tinytext()
-	 * 
+	 *
 	 * @var string
 	 */
 	var $search_string = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -78,17 +78,17 @@ class CitationsSecondary extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->cid) == '') 
+		if (trim($this->cid) == '')
 		{
 			$this->setError(JText::_('SECONDARY_MUST_HAVE_CITATION_ID'));
 			return false;
 		}
-		if (trim($this->sec_cits_cnt) == '') 
+		if (trim($this->sec_cits_cnt) == '')
 		{
 			$this->setError(JText::_('SECONDARY_MUST_HAVE_COUNT'));
 			return false;
@@ -98,7 +98,7 @@ class CitationsSecondary extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -106,24 +106,24 @@ class CitationsSecondary extends JTable
 	{
 		$query = "";
 		$ands = array();
-		if (isset($filters['cid']) && $filters['cid'] != 0) 
+		if (isset($filters['cid']) && $filters['cid'] != 0)
 		{
 			$ands[] = "r.cid=" . $this->_db->Quote($filters['cid']);
 		}
-		if (isset($filters['search_string']) && $filters['search_string'] != '') 
+		if (isset($filters['search_string']) && $filters['search_string'] != '')
 		{
 			$ands[] = "LOWER(r.search_string)=" . $this->_db->Quote(strtolower($filters['search_string']));
 		}
-		if (count($ands) > 0) 
+		if (count($ands) > 0)
 		{
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
-		if (isset($filters['sort']) && $filters['sort'] != '') 
+		if (isset($filters['sort']) && $filters['sort'] != '')
 		{
 			$query .= " ORDER BY " . $filters['sort'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
@@ -133,7 +133,7 @@ class CitationsSecondary extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -147,7 +147,7 @@ class CitationsSecondary extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

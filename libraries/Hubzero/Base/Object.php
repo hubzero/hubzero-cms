@@ -170,7 +170,7 @@ class Object
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 * Returns $this so set() can be chained
-	 * 
+	 *
 	 *    $object->set('foo', $bar)
 	 *           ->set('bar', $foo)
 	 *           ->doSomething();

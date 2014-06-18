@@ -34,9 +34,9 @@ $task = JRequest::getCmd('task', '');
 ?>
 <nav role="navigation" class="sub sub-navigation">
 	<ul>
-		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Summary</a></li> 
+		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Summary</a></li>
 		<li><a<?php if ($task == 'edit') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit">Look up User Balance</a></li>
-		<li><a<?php if ($task == 'config') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=config">Configuration</a></li> 
+		<li><a<?php if ($task == 'config') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=config">Configuration</a></li>
 		<li><a<?php if ($task == 'batch') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=batch">Batch Transaction</a></li>
 	</ul>
 </nav><!-- / .sub-navigation -->

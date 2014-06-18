@@ -62,7 +62,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					continue;
 				}
 				$version  = $page->versions()->first();
-				
+
 				if ($category !== null)
 				{
 					$class .= ' category-' . $page->get('category');
@@ -71,7 +71,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				{
 					$class .= ' not-approved';
 				}
-				
+
 				//get file check outs
 				$checkout = GroupsHelperPages::getCheckout($page->get('id'));
 			?>
@@ -83,11 +83,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php endif; ?>
 						<?php echo $page->get('title'); ?>
 					</div>
-					
+
 					<div class="item-sub" >
 						<span tabindex="-1"><?php echo DS . 'groups' . DS . $this->group->get('cn') . DS .$page->get('alias'); ?></span>
 					</div>
-					
+
 					<?php if ($checkout) : ?>
 						<div class="item-checkout">
 							<img width="15" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($checkout->userid); ?>" />
@@ -97,13 +97,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 							?>
 						</div>
 					<?php endif; ?>
-					
+
 					<?php if ($version->get('approved') == 0) : ?>
 						<div class="item-approved">
 							<?php echo JText::_('Pending Approval'); ?>
 						</div>
 					<?php endif; ?>
-					
+
 					<div class="item-state">
 						<?php if ($page->get('state') == 0) : ?>
 							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Publish Page'); ?></a>
@@ -111,7 +111,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<a class="published tooltips" title="<?php echo JText::_('Unpublish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Unpublish Page'); ?></a>
 						<?php endif; ?>
 					</div>
-					
+
 					<div class="item-home">
 						<?php if (!$page->get('home')) : ?>
 							<a class="tooltips" title="<?php echo JText::_('Make Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Make Home Page'); ?></a>
@@ -119,14 +119,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<a class="homepage tooltips" title="<?php echo JText::_('Remove as Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Remove as Home Page'); ?></a>
 						<?php endif; ?>
 					</div>
-			
+
 					<div class="item-order">
 						<div class="order-num">
 							<?php echo ($page->get('ordering') + 0); ?>
 						</div>
 						<div class="order-grabber"></div>
 					</div>
-			
+
 					<div class="item-controls btn-group dropdown">
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>" class="btn"><?php echo JText::_('Manage Page'); ?></a>
 						<span class="btn dropdown-toggle"></span>

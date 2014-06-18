@@ -38,49 +38,49 @@ class ResourcesScreenshot extends  JTable
 {
 	/**
 	 * int (primary key)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id            = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $versionid     = NULL;
 
 	/**
 	 * varchar (127)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title         = NULL;
 
 	/**
 	 * int (11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering      = NULL;
 
 	/**
 	 * varchar (100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $filename      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $resourceid    = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,12 +91,12 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->filename) == '') 
+		if (trim($this->filename) == '')
 		{
 			$this->setError('Missing filename');
 			return false;
@@ -107,7 +107,7 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Load a record and bind to $this based on filename and resource ID (optional version ID)
-	 * 
+	 *
 	 * @param      string  $filename  File name
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
@@ -115,27 +115,27 @@ class ResourcesScreenshot extends  JTable
 	 */
 	public function loadFromFilename($filename, $rid=NULL, $versionid=NULL)
 	{
-		if ($filename===NULL) 
+		if ($filename===NULL)
 		{
 			return false;
 		}
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->Quote($filename) . " AND s.resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query .= " AND s.versionid=" . $this->_db->Quote($versionid) . " LIMIT 1";
 		}
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -144,7 +144,7 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Load records based on filename and resource ID (optional version ID)
-	 * 
+	 *
 	 * @param      string  $filename  File name
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
@@ -152,17 +152,17 @@ class ResourcesScreenshot extends  JTable
 	 */
 	public function getScreenshot($filename, $rid=NULL, $versionid=NULL)
 	{
-		if ($filename===NULL) 
+		if ($filename===NULL)
 		{
 			return false;
 		}
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl as s WHERE s.filename=" . $this->_db->Quote($filename) . " AND s.resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query.= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
@@ -174,19 +174,19 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Get the last item in the order
-	 * 
+	 *
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
 	 * @return     mixed False on error, Integer on success
 	 */
-	public function getLastOrdering($rid=NULL, $versionid=NULL) 
+	public function getLastOrdering($rid=NULL, $versionid=NULL)
 	{
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 		$query  = "SELECT ordering FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
@@ -198,7 +198,7 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @param      string  $filename  File name
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
@@ -208,27 +208,27 @@ class ResourcesScreenshot extends  JTable
 	 */
 	public function saveScreenshot($filename, $rid=NULL, $versionid=0, $ordering = 0, $new=false)
 	{
-		if ($filename===NULL) 
+		if ($filename===NULL)
 		{
 			return false;
 		}
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
-		if (!$new) 
+		if (!$new)
 		{
 			$this->_db->setQuery("UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($ordering) . " WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid) . " AND versionid=" . $this->_db->Quote($versionid));
-			if ($this->_db->query()) 
+			if ($this->_db->query())
 			{
 				$ret = true;
-			} 
-			else 
+			}
+			else
 			{
 				$ret = false;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->ordering   = $ordering;
 			$this->resourceid = $rid;
@@ -236,12 +236,12 @@ class ResourcesScreenshot extends  JTable
 			$this->filename   = $filename;
 			$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 		}
-		if (!$ret) 
+		if (!$ret)
 		{
 			$this->setError(strtolower(get_class($this)) . '::store failed <br />' . $this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -249,25 +249,25 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Delete an entry
-	 * 
+	 *
 	 * @param      string  $filename  File name
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
 	 * @return     boolean True on success, False on error
 	 */
-	public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL) 
+	public function deleteScreenshot($filename, $rid=NULL, $versionid=NULL)
 	{
-		if ($filename===NULL) 
+		if ($filename===NULL)
 		{
 			return false;
 		}
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 
 		$query = "DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query .= " AND versionid=" . $this->_db->Quote($versionid) . " LIMIT 1";
 		}
@@ -283,20 +283,20 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Get screenshots for a resource
-	 * 
+	 *
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
 	 * @return     array
 	 */
 	public function getScreenshots($rid=NULL, $versionid=NULL)
 	{
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT * FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
@@ -308,20 +308,20 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Get filenames for a resource
-	 * 
+	 *
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $versionid Version ID
 	 * @return     array
 	 */
 	public function getFiles($rid=NULL, $versionid=NULL)
 	{
-		if ($rid===NULL) 
+		if ($rid===NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT filename FROM $this->_tbl as s WHERE s.resourceid=" . $this->_db->Quote($rid);
-		if ($versionid) 
+		if ($versionid)
 		{
 			$query .= " AND s.versionid=" . $this->_db->Quote($versionid);
 		}
@@ -333,7 +333,7 @@ class ResourcesScreenshot extends  JTable
 
 	/**
 	 * Update all entries to a new version ID
-	 * 
+	 *
 	 * @param      integer $rid       Resource ID
 	 * @param      integer $devid     Previous version ID
 	 * @param      integer $currentid Curent version ID
@@ -342,24 +342,24 @@ class ResourcesScreenshot extends  JTable
 	 */
 	public function updateFiles($rid=NULL, $devid=NULL, $currentid=NULL, $copy=0)
 	{
-		if ($rid===NULL or $devid===NULL or $currentid===NULL) 
+		if ($rid===NULL or $devid===NULL or $currentid===NULL)
 		{
 			return false;
 		}
 
-		if ($copy) 
+		if ($copy)
 		{
 			$ss = $this->getScreenshots($rid, $devid);
 
-			if ($ss) 
+			if ($ss)
 			{
-				foreach ($ss as $s) 
+				foreach ($ss as $s)
 				{
 					$this->id = 0;
 					$this->versionid = $currentid;
 					$this->filename = 'new.gif';
 					$this->resourceid = $rid;
-					if (!$this->store()) 
+					if (!$this->store())
 					{
 						$this->setError($this->getError());
 						return false;
@@ -376,17 +376,17 @@ class ResourcesScreenshot extends  JTable
 				}
 			}
 		}
-		else 
+		else
 		{
 			$query  = "UPDATE $this->_tbl SET versionid=" . $this->_db->Quote($currentid) . " WHERE ";
 			$query .= " versionid=" . $this->_db->Quote($devid) . " ";
 			$query .= " AND resourceid=" . $this->_db->Quote($rid);
 			$this->_db->setQuery($query);
-			if ($this->_db->query()) 
-			{ 
+			if ($this->_db->query())
+			{
 				return true;
 			}
-			else 
+			else
 			{
 				return false;
 			}

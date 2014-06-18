@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div>
 <?php } else { ?>
 	<ul>
-		<?php foreach($this->items as $pub) { 
+		<?php foreach($this->items as $pub) {
 			$status = PublicationHelper::getPubStateProperty($pub, 'status', 0);
 		?>
 	<li>

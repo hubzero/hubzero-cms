@@ -54,7 +54,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 	<?php if ($this->juser->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 		<a class="delete" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">
 			Delete
-		</a> 
+		</a>
 		<a class="edit" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 			Edit
 		</a>
@@ -89,7 +89,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>" id="hubForm" method="post" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Name &amp; Title'); ?></legend>
-		
+
 		<div class="grid">
 			<div class="col span6">
 				<label><?php echo JText::_('First Name:'); ?> <span class="required">Required</span>
@@ -122,7 +122,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			</div>
 		<?php endif; ?>
 	</fieldset>
-	
+
 	<fieldset>
 		<legend><?php echo JText::_('Contact Information'); ?></legend>
 		<?php if ($this->params->get('show_address')) : ?>
@@ -151,7 +151,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				</div>
 			</div>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('show_telephone') || $this->params->get('show_fax')) : ?>
 			<div class="grid">
 				<div class="col span6">
@@ -170,7 +170,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				</div>
 			</div>
 		<?php endif; ?>
-		
+
 		<?php if ($this->params->get('show_email') || $this->params->get('show_website')) : ?>
 			<div class="grid">
 				<div class="col span6">
@@ -190,7 +190,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			</div>
 		<?php endif; ?>
 	</fieldset>
-	
+
 	<?php if ($this->params->get('show_position') || $this->params->get('show_degree') || $this->params->get('show_gender') || $this->params->get('show_race')) : ?>
 		<fieldset>
 			<legend><?php echo JText::_('Demographics'); ?></legend>
@@ -210,7 +210,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 					<input name="register[position_other]" type="text" value="<?php echo (isset($this->register['position_other'])) ? $this->register['position_other'] : ''; ?>" />
 				</label>
 			<?php endif; ?>
-			
+
 			<?php if ($this->params->get('show_degree')) : ?>
 				<fieldset>
 					<legend><?php echo JText::_('Highest academic degree earned:'); ?> <span class="optional">Optional</span></legend>
@@ -219,11 +219,11 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 							<?php echo JText::_('Bachelors degree'); ?>
 						</label>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="Masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"': ''; ?> /> 
+							<input type="radio" class="option" name="register[degree]" value="Masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"': ''; ?> />
 							<?php echo JText::_('Masters degree'); ?>
 						</label>
 						<label>
-							<input type="radio" class="option" name="register[degree]" value="Doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"': ''; ?> /> 
+							<input type="radio" class="option" name="register[degree]" value="Doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"': ''; ?> />
 							<?php echo JText::_('Doctoral degree'); ?>
 						</label>
 						<label>
@@ -237,15 +237,15 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				<fieldset>
 					<legend><?php echo JText::_('Gender:'); ?> <span class="optional">Optional</span></legend>
 					<label>
-						<input type="radio" name="register[sex]" value="Male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"': ''; ?> />
 						<?php echo JText::_('Male'); ?>
 					</label>
 					<label>
-						<input type="radio" name="register[sex]" value="Female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"': ''; ?> />
 						<?php echo JText::_('Female'); ?>
 					</label>
 					<label>
-						<input type="radio" name="register[sex]" value="Refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"': ''; ?> /> 
+						<input type="radio" name="register[sex]" value="Refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"': ''; ?> />
 						<?php echo JText::_('Do not wish to reveal'); ?>
 					</label>
 				</fieldset>
@@ -258,14 +258,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 						<?php echo JText::_('Select one or more that apply.'); ?>
 					</p>
 					<label>
-						<input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="Native American" /> 
+						<input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="Native American" />
 						<?php echo JText::_('American Indian or Alaska Native'); ?>
 					</label>
 					<label class="indent"><?php echo JText::_('Tribal Affiliation(s):'); ?>
 						<input name="race[nativetribe]" id="racenativetribe" type="text" value="" />
 					</label>
 					<label>
-						<input type="checkbox" class="option" name="race[asian]" id="raceasian" value="Asian" /> 
+						<input type="checkbox" class="option" name="race[asian]" id="raceasian" value="Asian" />
 						<?php echo JText::_('Asian'); ?>
 					</label>
 					<label>
@@ -292,11 +292,11 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<?php endif; ?>
 		</fieldset>
 	<?php endif; ?>
-	
+
 	<?php if ($this->params->get('show_arrival') || $this->params->get('show_departure')) : ?>
 		<fieldset>
 			<legend><?php echo JText::_('Arrival/Departure'); ?></legend>
-			
+
 			<?php if ($this->params->get('show_arrival')) : ?>
 				<fieldset>
 					<legend><?php echo JText::_('Arrival Information:'); ?> <span class="optional">Optional</span></legend>
@@ -322,20 +322,20 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<?php endif; ?>
 		</fieldset>
 	<?php endif; ?>
-	
+
 	<?php if ($this->params->get('show_disability') || $this->params->get('show_dietary')) : ?>
 		<fieldset>
 			<legend><?php echo JText::_('Disability/Dietary needs'); ?></legend>
 			<?php if ($this->params->get('show_disability')) : ?>
 				<label>
-					<input type="checkbox" class="option" name="disability" value="yes" <?php if(isset($this->disability) && $this->disability == 'yes') { echo 'checked="checked"'; } ?> /> 
+					<input type="checkbox" class="option" name="disability" value="yes" <?php if(isset($this->disability) && $this->disability == 'yes') { echo 'checked="checked"'; } ?> />
 					<?php echo JText::_('I have auxiliary aids or services due to a disability. Please contact me.'); ?>
 				</label>
 			<?php endif; ?>
 
 			<?php if ($this->params->get('show_dietary')) : ?>
 				<label>
-					<input type="checkbox" class="option" name="dietary[needs]" value="yes" <?php if(isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes') { echo 'checked="checked"'; } ?> /> 
+					<input type="checkbox" class="option" name="dietary[needs]" value="yes" <?php if(isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes') { echo 'checked="checked"'; } ?> />
 					<?php echo JText::_('I have specific dietary needs.'); ?>
 				</label>
 				<label class="indent"><?php echo JText::_('Please specify'); ?>
@@ -344,23 +344,23 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<?php endif; ?>
 		</fieldset>
 	<?php endif; ?>
-	
+
 	<?php if ($this->params->get('show_dinner')) : ?>
 		<fieldset>
 			<legend><?php echo JText::_('Dinner'); ?></legend>
 			<label for="filed-dinner">
-				<input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?php if(isset($this->dinner) && $this->dinner == 'yes') { echo 'checked="checked"'; } ?> /> 
+				<input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?php if(isset($this->dinner) && $this->dinner == 'yes') { echo 'checked="checked"'; } ?> />
 				<?php echo JText::_('I plan to attend the dinner.'); ?>
 			</label>
 		</fieldset>
 	<?php endif; ?>
-	
+
 	<?php if ($this->params->get('show_abstract')) : ?>
 		<fieldset>
 			<legend><?php echo JText::_('Abstract'); ?></legend>
 			<label>
-				<?php 
-					if ($this->params->get('abstract_text')) 
+				<?php
+					if ($this->params->get('abstract_text'))
 					{
 						echo stripslashes($this->params->get('abstract_text'));
 					}
@@ -379,13 +379,13 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			</label>
 		</fieldset>
 	<?php endif; ?>
-	
+
 	<input type="hidden" name="option" value="com_groups" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="calendar" />
 	<input type="hidden" name="action" value="doregister" />
 	<input type="hidden" name="event_id" value="<?php echo $this->event->get('id'); ?>" />
-	
+
 	<p class="submit">
 		<input type="submit" name="event_submit" value="Submit" />
 	</p>

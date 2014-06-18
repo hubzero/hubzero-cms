@@ -40,28 +40,28 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 {
 	/**
 	 * Resource ID
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_authorized = false;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_data = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -84,7 +84,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 		$this->attribs = new $paramsClass($this->resource->attribs);
 
-		if ($this->isTool()) 
+		if ($this->isTool())
 		{
 			$this->thistool = null;
 			$this->curtool  = null;
@@ -92,18 +92,18 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			$tables = $this->_db->getTableList();
 			$table  = $this->_db->getPrefix() . 'tool_version';
 
-			if (in_array($table, $tables)) 
+			if (in_array($table, $tables))
 			{
 				$tv = new ToolVersion($this->_db);
 				//$tv->getToolVersions('', $alltools, $this->resource->alias);
 
-				if ($this->revisions()) //$alltools) 
+				if ($this->revisions()) //$alltools)
 				{
 					foreach ($this->revisions() as $tool)
 					{
 						// Archive version, if requested
-						if (($revision && $tool->revision == $revision && $revision != 'dev') 
-						 or ($revision == 'dev' and $tool->state==3)) 
+						if (($revision && $tool->revision == $revision && $revision != 'dev')
+						 or ($revision == 'dev' and $tool->state==3))
 						{
 							$this->thistool = $tool;
 						}
@@ -114,14 +114,14 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 							$revision = $revision ? $revision : $tool->revision;
 						}
 						// Dev version
-						if (!$revision && count($this->revisions()) == 1 && $tool->state == 3) 
+						if (!$revision && count($this->revisions()) == 1 && $tool->state == 3)
 						{
 							$this->thistool = $tool;
 							$revision = 'dev';
 						}
 					}
 
-					if (!$this->thistool && !$this->curtool && count($this->revisions()) > 1) 
+					if (!$this->thistool && !$this->curtool && count($this->revisions()) > 1)
 					{
 						// Tool is retired, display latest unpublished version
 						$this->thistool = $this->revisions(1);
@@ -129,7 +129,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 					}
 
 					// If the revision is the same as the current version
-					if ($this->curtool && $this->thistool && $this->thistool == $this->curtool) 
+					if ($this->curtool && $this->thistool && $this->thistool == $this->curtool)
 					{
 						// Display default resource page for current version
 						$this->thistool = null;
@@ -162,12 +162,12 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$inst = new ResourcesModelResource($oid, $revision);
 
@@ -179,7 +179,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if a property is set
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @return     boolean True if set
 	 */
@@ -190,7 +190,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param      string $property Name of property to set
 	 * @param      mixed  $value    Value to set property to
 	 * @return     void
@@ -202,13 +202,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param      string $property Name of property to retrieve
 	 * @return     mixed
 	 */
 	public function __get($property)
 	{
-		if (isset($this->_data[$property])) 
+		if (isset($this->_data[$property]))
 		{
 			return $this->_data[$property];
 		}
@@ -216,13 +216,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if the resource exists
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function exists()
 	{
-		if ($this->resource->id && $this->resource->id > 0) 
+		if ($this->resource->id && $this->resource->id > 0)
 		{
 			return true;
 		}
@@ -231,13 +231,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if the resource was deleted
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function deleted()
 	{
-		if ($this->resource->published == 4) 
+		if ($this->resource->published == 4)
 		{
 			return true;
 		}
@@ -246,7 +246,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if the resource is a tool or not
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -258,22 +258,22 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		}
 
 		// Make sure the resource is published and standalone
-		if (in_array($this->resource->published, array(0, 2, 4, 5))) 
+		if (in_array($this->resource->published, array(0, 2, 4, 5)))
 		{
 			return false;
 		}
 
 		$now = JFactory::getDate();
 
-		if ($this->resource->publish_up 
-		 && $this->resource->publish_up != $this->_db->getNullDate() 
-		 && $this->resource->publish_up >= $now) 
+		if ($this->resource->publish_up
+		 && $this->resource->publish_up != $this->_db->getNullDate()
+		 && $this->resource->publish_up >= $now)
 		{
 			return false;
 		}
-		if ($this->resource->publish_down 
-		 && $this->resource->publish_down != $this->_db->getNullDate() 
-		 && $this->resource->publish_down <= $now) 
+		if ($this->resource->publish_down
+		 && $this->resource->publish_down != $this->_db->getNullDate()
+		 && $this->resource->publish_down <= $now)
 		{
 			return false;
 		}
@@ -283,7 +283,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -298,7 +298,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Authorize current user
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -327,16 +327,16 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		{
 			$tconfig = JComponentHelper::getParams('com_tools');
 
-			if (($admingroup = trim($tconfig->get('admingroup', '')))) 
+			if (($admingroup = trim($tconfig->get('admingroup', ''))))
 			{
 				// Check if they're a member of admin group
 				$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
-				if ($ugs && count($ugs) > 0) 
+				if ($ugs && count($ugs) > 0)
 				{
 					$admingroup = strtolower($admingroup);
 					foreach ($ugs as $ug)
 					{
-						if (strtolower($ug->cn) == $admingroup) 
+						if (strtolower($ug->cn) == $admingroup)
 						{
 							$this->params->set('access-view-resource', true);
 							$this->params->set('access-view-all-resource', true);
@@ -360,7 +360,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			// Check if they're a site admin (from Joomla)
 			if (version_compare(JVERSION, '1.6', 'lt'))
 			{
-				if ($juser->authorize('com_resources', 'manage')) 
+				if ($juser->authorize('com_resources', 'manage'))
 				{
 					$this->params->set('access-view-resource', true);
 					$this->params->set('access-view-all-resource', true);
@@ -375,11 +375,11 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 					$this->params->set('access-edit-own-resource', true);
 				}
 			}
-			else 
+			else
 			{
 				$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
 				$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
-				if ($this->params->get('access-admin-resource') 
+				if ($this->params->get('access-admin-resource')
 				 || $this->params->get('access-manage-resource'))
 				{
 					$this->params->set('access-view-resource', true);
@@ -395,7 +395,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		}
 
 		// If they're not an admin
-		if (!$this->params->get('access-admin-resource') 
+		if (!$this->params->get('access-admin-resource')
 		 && !$this->params->get('access-manage-resource'))
 		{
 			// If logged in and resource is published and public or registered
@@ -407,7 +407,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			}
 
 			// Check if they're the resource creator
-			if ($this->resource->created_by == $juser->get('id')) 
+			if ($this->resource->created_by == $juser->get('id'))
 			{
 				// Give full access
 				$this->params->set('access-view-resource', true);
@@ -420,7 +420,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				$this->params->set('access-edit-own-resource', true);
 			}
 			// Listed as a contributor
-			else if (in_array($juser->get('id'), $this->contributors('id'))) 
+			else if (in_array($juser->get('id'), $this->contributors('id')))
 			{
 				// Give full access
 				$this->params->set('access-view-resource', true);
@@ -449,11 +449,11 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				// Get the groups the user has access to
 				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 				$usersgroups = array();
-				if (!empty($xgroups)) 
+				if (!empty($xgroups))
 				{
 					foreach ($xgroups as $group)
 					{
-						if ($group->regconfirmed) 
+						if ($group->regconfirmed)
 						{
 							$usersgroups[] = $group->cn;
 						}
@@ -468,15 +468,15 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 				// Check if the user is apart of the group that owns the resource
 				// or if they have any groups in common
-				if (in_array($this->resource->group_owner, $usersgroups) || count($common) > 0) 
+				if (in_array($this->resource->group_owner, $usersgroups) || count($common) > 0)
 				{
 					$this->params->set('access-view-resource', true);
 					$this->params->set('access-view-all-resource', true);
-					if (!empty($xgroups)) 
+					if (!empty($xgroups))
 					{
 						foreach ($xgroups as $group)
 						{
-							if ($this->resource->group_owner == $group->cn && $group->manager) 
+							if ($this->resource->group_owner == $group->cn && $group->manager)
 							{
 								$this->params->set('access-delete-resource', true);
 								$this->params->set('access-edit-resource', true);
@@ -500,7 +500,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if the resource is a tool or not
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -529,7 +529,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 	/**
 	 * Check if the resource is a tool or not
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -561,13 +561,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function types($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -625,13 +625,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function contributors($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -641,10 +641,10 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			$this->contributors = array();
 
 			$sql = "SELECT a.authorid, a.name, n.name AS xname, a.ordering, a.organization AS org, n.organization AS xorg, a.role, n.uidNumber AS id, n.givenName, n.middleName, n.surname
-					FROM #__author_assoc AS a 
+					FROM #__author_assoc AS a
 					LEFT JOIN #__xprofiles AS n ON n.uidNumber=a.authorid
-					WHERE a.subtable='resources' 
-					AND a.subid=" . $this->resource->id . " 
+					WHERE a.subtable='resources'
+					AND a.subid=" . $this->resource->id . "
 					ORDER BY ordering, surname, givenName, middleName";
 
 			$this->_db->setQuery($sql);
@@ -686,16 +686,16 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						$names = array();
 						foreach ($this->contributors as $contributor)
 						{
-							if ($contributor->surname || $contributor->givenName) 
+							if ($contributor->surname || $contributor->givenName)
 							{
 								$name = stripslashes($contributor->givenName) . ' ';
-								if ($contributor->middleName != NULL) 
+								if ($contributor->middleName != NULL)
 								{
 									$name .= stripslashes($contributor->middleName) . ' ';
 								}
 								$name .= stripslashes($contributor->surname);
-							} 
-							else 
+							}
+							else
 							{
 								$name = stripslashes($contributor->name);
 							}
@@ -720,15 +720,15 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 								 . " AND t.revision='" . $this->resource->revision . "'"
 								 . " ORDER BY t.ordering";
 							$this->_db->setQuery($sql);
-							if (($cons = $this->_db->loadObjectList())) 
+							if (($cons = $this->_db->loadObjectList()))
 							{
 								foreach ($cons as $k => $c)
 								{
-									if (!$cons[$k]->name) 
+									if (!$cons[$k]->name)
 									{
 										$cons[$k]->name = $cons[$k]->xname;
 									}
-									if (trim($cons[$k]->org) == '') 
+									if (trim($cons[$k]->org) == '')
 									{
 										$cons[$k]->org = $cons[$k]->xorg;
 									}
@@ -759,7 +759,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 										$res[] = $contributor;
 									}
 								break;
-								
+
 								case 'not':
 									if ($contributor->role != $idx)
 									{
@@ -782,13 +782,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function children($idx=null, $limit=0, $start=0, $order='ordering')
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -798,7 +798,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		{
 			$this->children = array();
 
-			$sql = "SELECT r.*, r.logical_type AS logicaltype, t.type AS logicaltitle, rt.type AS typetitle, a.grouping, 
+			$sql = "SELECT r.*, r.logical_type AS logicaltype, t.type AS logicaltitle, rt.type AS typetitle, a.grouping,
 							(SELECT n.surname FROM #__xprofiles AS n, #__author_assoc AS aa WHERE n.uidNumber=aa.authorid AND aa.subtable='resources' AND aa.subid=r.id ORDER BY ordering LIMIT 1) AS author"
 				 . " FROM #__resource_types AS rt, #__resources AS r"
 				 . " JOIN #__resource_assoc AS a ON r.id=a.child_id"
@@ -814,7 +814,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				case 'ranking':  $sql .= "r.ranking DESC";                    break;
 				case 'author':   $sql .= "author";                            break;
 			}
-			/*if ($limit != 0) 
+			/*if ($limit != 0)
 			{
 				$sql .= " LIMIT " . (int) $start . "," . (int) $limit;
 			}*/
@@ -874,12 +874,12 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						$res = array();*/
 						foreach ($this->children as $child)
 						{
-							if ($child->standalone) 
+							if ($child->standalone)
 							{
 								$res[] = $child;
 							}
 						}
-						if ($limit != 0) 
+						if ($limit != 0)
 						{
 							return array_slice($res, $start, $limit);
 						}
@@ -891,7 +891,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						$res = array();
 						foreach ($this->children as $child)
 						{
-							if (!$child->standalone) 
+							if (!$child->standalone)
 							{
 								$res[] = $child;
 							}
@@ -913,13 +913,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 * Get a list of parents of this resource
 	 *   Accepts either a numeric array index
 	 *   If index, it'll return the entry matching that index in the list
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function parents($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -928,13 +928,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		{
 			$this->parents = array();
 
-			$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype, 
+			$sql = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.footertext, r.type, r.logical_type AS logicaltype,
 					r.created, r.published, r.publish_up, r.path, r.standalone, r.hits, r.rating, r.times_rated, r.params, r.ranking,
-					t.type AS logicaltitle, rt.type AS typetitle 
-					FROM #__resource_types AS rt, #__resources AS r 
-					JOIN #__resource_assoc AS a ON r.id=a.parent_id 
-					LEFT JOIN #__resource_types AS t ON r.logical_type=t.id 
-					WHERE r.published=1 AND a.child_id=" . $this->resource->id . " AND r.type=rt.id 
+					t.type AS logicaltitle, rt.type AS typetitle
+					FROM #__resource_types AS rt, #__resources AS r
+					JOIN #__resource_assoc AS a ON r.id=a.parent_id
+					LEFT JOIN #__resource_types AS t ON r.logical_type=t.id
+					WHERE r.published=1 AND a.child_id=" . $this->resource->id . " AND r.type=rt.id
 					ORDER BY a.ordering, a.grouping";
 			$this->_db->setQuery($sql);
 			if (($results = $this->_db->loadObjectList()))
@@ -964,13 +964,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 *   Accepts either a numeric array index or a string [id, raw]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or raw tags
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function tags($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -1037,13 +1037,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	/**
 	 * Get citations on a resource
 	 *   Accepts a numeric array index
-	 * 
+	 *
 	 * @param      integer $idx Index value
 	 * @return     array
 	 */
 	public function citations($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -1085,13 +1085,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 * Get a list of parents of this resource
 	 *   Accepts either a numeric array index
 	 *   If index, it'll return the entry matching that index in the list
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
 	public function revisions($idx=null)
 	{
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return array();
 		}
@@ -1104,7 +1104,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			$tv = new ToolVersion($this->_db);
 			$tv->getToolVersions('', $alltools, $this->resource->alias);
 
-			if ($alltools) 
+			if ($alltools)
 			{
 				$this->revisions = $alltools;
 			}
@@ -1125,7 +1125,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						foreach ($this->revisions as $tool)
 						{
 							// Current version
-							if ($tool->state == 1 
+							if ($tool->state == 1
 							 && (count($this->revisions) == 1 || (count($this->revisions) > 1 && $this->revisions[1]->version == $tool->version)))
 							{
 								$curtool = $tool;
@@ -1140,7 +1140,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 						foreach ($this->revisions as $tool)
 						{
 							// Current version
-							if ($tool->state == 3) 
+							if ($tool->state == 3)
 							{
 								$devtool = $tool;
 								break; // No need to go further
@@ -1169,13 +1169,13 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string

@@ -38,21 +38,21 @@ class MembersPasswordBlacklist extends JTable
 {
 	/**
 	 * ID - primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * Word
-	 * 
+	 *
 	 * @var char(32)
 	 */
 	var $word = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -63,13 +63,13 @@ class MembersPasswordBlacklist extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		// Make sure they gave a word
-		if (trim($this->word) == '') 
+		if (trim($this->word) == '')
 		{
 			$this->setError( JText::_('PASSWORD_BLACKLIST_MUST_HAVE_WORD') );
 			return false;
@@ -80,7 +80,7 @@ class MembersPasswordBlacklist extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -93,7 +93,7 @@ class MembersPasswordBlacklist extends JTable
 
 	/**
 	 * Get a count of the number of blacklisted passwords (used mainly for pagination)
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return count of rows
 	 */
@@ -108,7 +108,7 @@ class MembersPasswordBlacklist extends JTable
 
 	/**
 	 * Get the an object list of blacklisted passwords
-	 * 
+	 *
 	 * @param  array $filters start and limit, needed for pagination
 	 * @return object Return password rule records
 	 */

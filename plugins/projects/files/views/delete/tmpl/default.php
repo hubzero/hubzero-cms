@@ -38,12 +38,12 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 <h3><?php echo JText::_('COM_PROJECTS_DELETE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" class="" action="<?php echo $this->url; ?>">
 	<fieldset >
@@ -56,25 +56,25 @@ if (!$this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 		<p><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM'); ?></p>
-		
-		<ul class="sample"> 
-		<?php foreach ($this->items as $element) 
-		{ 
+
+		<ul class="sample">
+		<?php foreach ($this->items as $element)
+		{
 			$skip 	= false;
 			$remote = NULL;
-			
+
 			foreach ($element as $type => $item)
 			{
 				// Get type and item name
-			} 
-			
+			}
+
 			// Remote file?
 			if (!empty($this->services))
 			{
 				foreach ($this->services as $servicename)
-				{		
-					// Get stored remote connection to file	
-					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item; 		
+				{
+					// Get stored remote connection to file
+					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item;
 					$remote = $objRFile->getConnection($this->project->id, '', $servicename, $fpath);
 					if ($remote)
 					{
@@ -82,7 +82,7 @@ if (!$this->getError()) {
 					}
 				}
 			}
-				
+
 			// Display list item with file data
 			$this->view('default', 'selected')
 			     ->set('skip', $skip)
@@ -94,11 +94,11 @@ if (!$this->getError()) {
 			     ->display();
 		} ?>
 		</ul>
-		
+
 		<?php if (!empty($this->services) && $skipped > 0)  { ?>
 			<p class="notice"><?php echo JText::_('COM_PROJECTS_FILES_DELETE_REMOTE_NEED_CONNECTION'); ?></p>
 		<?php } ?>
-		
+
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" id="submit-ajaxform" />
 			<?php if ($this->ajax) { ?>
@@ -106,7 +106,7 @@ if (!$this->getError()) {
 			<?php } else {  ?>
 					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

@@ -61,7 +61,7 @@ class Provider extends AbstractAdapter
 	 * @param    string $value Conent to test
 	 * @return   bool True if the comment is spam, false if not
 	 */
-	public function isSpam($value = null) 
+	public function isSpam($value = null)
 	{
 		if ($value)
 		{

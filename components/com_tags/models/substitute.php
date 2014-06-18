@@ -40,14 +40,14 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'TagsTableSubstitute';
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
@@ -65,7 +65,7 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -83,7 +83,7 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new TagsModelSubstitute($oid);
 		}
@@ -93,7 +93,7 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -116,7 +116,7 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     string
 	 */

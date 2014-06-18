@@ -42,13 +42,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			JError::raiseError(403, JText::_('You must be logged in to access.'));
 			return;
@@ -63,7 +63,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function createTask()
@@ -74,7 +74,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -82,7 +82,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$pid = JRequest::getInt('pid', 0, 'post');
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
@@ -101,13 +101,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$asset->standalone   = 0;
 		$asset->path         = 'http://'; // make sure no path is specified just yet
 		$asset->type         = 11;
-		if (!$asset->check()) 
+		if (!$asset->check())
 		{
 			$this->setError($asset->getError());
 			$this->displayTask();
 			return;
 		}
-		if (!$asset->store()) 
+		if (!$asset->store())
 		{
 			$this->setError($asset->getError());
 			$this->displayTask();
@@ -128,11 +128,11 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$assoc->parent_id = $pid;
 		$assoc->child_id  = $asset->id;
 		$assoc->grouping  = 0;
-		if (!$assoc->check()) 
+		if (!$assoc->check())
 		{
 			$this->setError($assoc->getError());
 		}
-		if (!$assoc->store(true)) 
+		if (!$assoc->store(true))
 		{
 			$this->setError($assoc->getError());
 		}
@@ -142,13 +142,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxCreateTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -156,7 +156,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$pid = strtolower(JRequest::getInt('pid', 0));
-		if (!$pid) 
+		if (!$pid)
 		{
 			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
 			return;
@@ -178,7 +178,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		if (!\Hubzero\Utility\Validate::url($asset->path))
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => array(JText::_('Link provided is not a valid URL.')),
 				'file'      => $asset->path,
 				'directory' => '',
@@ -187,10 +187,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			));
 			return;
 		}
-		if (!$asset->check()) 
+		if (!$asset->check())
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $asset->getErrors(),
 				'file'      => $asset->path,
 				'directory' => '',
@@ -199,10 +199,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			));
 			return;
 		}
-		if (!$asset->store()) 
+		if (!$asset->store())
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $asset->getErrors(),
 				'file'      => 'http://',
 				'directory' => '',
@@ -226,10 +226,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$assoc->parent_id = $pid;
 		$assoc->child_id  = $asset->id;
 		$assoc->grouping  = 0;
-		if (!$assoc->check()) 
+		if (!$assoc->check())
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $assoc->getErrors(),
 				'file'      => $asset->path,
 				'directory' => '',
@@ -238,10 +238,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			));
 			return;
 		}
-		if (!$assoc->store(true)) 
+		if (!$assoc->store(true))
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $assoc->getErrors(),
 				'file'      => $asset->path,
 				'directory' => '',
@@ -253,7 +253,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'errors'    => array(),
 			'file'      => $asset->path,
 			'directory' => '',
@@ -264,13 +264,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -278,7 +278,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$pid = strtolower(JRequest::getInt('pid', 0));
-		if (!$pid) 
+		if (!$pid)
 		{
 			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
 			return;
@@ -297,7 +297,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		elseif (isset($_FILES['qqfile']))
 		{
 			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
-			
+
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
 			$size = (int) $_FILES['qqfile']['size'];
@@ -309,14 +309,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array(
 				'error' => JText::_('File is empty')
 			));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array(
@@ -336,7 +336,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
-		/*while (file_exists($path . DS . $filename . '.' . $ext)) 
+		/*while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}*/
@@ -356,14 +356,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$row->type         = $this->_getChildType($filename . '.' . $ext);
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			echo json_encode(array(
 				'error' => $row->getError()
 			));
 			return;
 		}
-		
+
 		// File already exists
 		if ($row->loadByFile($filename, $pid))
 		{
@@ -372,9 +372,9 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			));
 			return;
 		}
-		
+
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			echo json_encode(array(
 				'error' => $row->getError()
@@ -382,7 +382,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->id = $row->insertid();
 		}
@@ -390,10 +390,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		//define upload directory and make sure its writable
 		$listdir = $this->_buildPathFromDate($row->created, $row->id, '');
 		$path = $this->_buildUploadPath($listdir, '');
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				echo json_encode(array(
 					'error' => JText::_('Error uploading. Unable to create path.')
@@ -444,10 +444,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$assoc->parent_id = $pid;
 		$assoc->child_id  = $row->id;
 		$assoc->grouping  = 0;
-		if (!$assoc->check()) 
+		if (!$assoc->check())
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $assoc->getErrors(),
 				'file'      => $filename . '.' . $ext,
 				'directory' => '',
@@ -455,10 +455,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			));
 			return;
 		}
-		if (!$assoc->store(true)) 
+		if (!$assoc->store(true))
 		{
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $assoc->getErrors(),
 				'file'      => $filename . '.' . $ext,
 				'directory' => '',
@@ -470,7 +470,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		exec("clamscan -i --no-summary --block-encrypted $file", $output, $status);
 		if ($status == 1)
 		{
-			if (JFile::delete($file)) 
+			if (JFile::delete($file))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -482,7 +482,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
 
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $this->getErrors(),
 				'file'      => $filename . '.' . $ext,
 				'directory' => str_replace(JPATH_ROOT, '', $path),
@@ -491,7 +491,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$row->path) 
+		if (!$row->path)
 		{
 			$row->path = $listdir . DS . $filename . '.' . $ext;
 		}
@@ -517,7 +517,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'errors'    => $this->getErrors(),
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
@@ -527,7 +527,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Reorder an attachment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask()
@@ -538,7 +538,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$move = 'order' . JRequest::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
@@ -546,7 +546,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have a parent ID to work with
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -592,7 +592,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Rename an attachment
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function renameTask()
@@ -602,7 +602,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$name = JRequest::getVar('name', '');
 
 		// Ensure we have everything we need
-		if ($id && $name != '') 
+		if ($id && $name != '')
 		{
 			$r = new ResourcesResource($this->database);
 			$r->load($id);
@@ -616,7 +616,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an attachment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -628,7 +628,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -637,7 +637,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid);
@@ -658,7 +658,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Instantiate a new resource object
 		$row = new ResourcesResource($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
@@ -675,13 +675,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$row->path         = ''; // make sure no path is specified just yet
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
 			return;
 		}
-		
+
 		// File already exists
 		if ($row->loadByFile($file['name'], $pid))
 		{
@@ -689,16 +689,16 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			$this->displayTask($pid);
 			return;
 		}
-		
+
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
 			return;
 		}
 
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->id = $row->insertid();
 		}
@@ -708,10 +708,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
@@ -720,11 +720,11 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('COM_CONTRIBUTE_ERROR_UPLOADING'));
-		} 
-		else 
+		}
+		else
 		{
 			// File was uploaded
 			// Check the file type
@@ -734,15 +734,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			/*
 			Breeze presentations haven't been used for some time.
 			Completely unnecessary code?
-			if ($row->type == 38) 
+			if ($row->type == 38)
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
-				if (!extension_loaded('zlib')) 
+				if (!extension_loaded('zlib'))
 				{
 					$this->setError(JText::_('COM_CONTRIBUTE_ZLIB_PACKAGE_REQUIRED'));
-				} 
-				else 
+				}
+				else
 				{
 					// Check the table of contents and look for a Breeze viewer.swf file
 					$isbreeze = 0;
@@ -751,26 +751,26 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 					$file_to_unzip = preg_replace('/(.+)\..*$/', '$1', $path . DS . $file['name']);
 
-					if (($list = $zip->listContent()) == 0) 
+					if (($list = $zip->listContent()) == 0)
 					{
 						die('Error: '.$zip->errorInfo(true));
 					}
 
 					for ($i=0; $i<sizeof($list); $i++)
 					{
-						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf') 
+						if (substr($list[$i]['filename'], strlen($list[$i]['filename']) - 10, strlen($list[$i]['filename'])) == 'viewer.swf')
 						{
 							$isbreeze = $list[$i]['filename'];
 							break;
 						}
 						//$this->setError(substr($list[$i]['filename'], strlen($list[$i]['filename']), -4).' '.substr($file['name'], strlen($file['name']), -4));
 					}
-					if (!$isbreeze) 
+					if (!$isbreeze)
 					{
 						for ($i=0; $i<sizeof($list); $i++)
 						{
 							if (strtolower(substr($list[$i]['filename'], -3)) == 'swf'
-							 && substr($list[$i]['filename'], strlen($list[$i]['filename']), -4) == substr($file['name'], strlen($file['name']), -4)) 
+							 && substr($list[$i]['filename'], strlen($list[$i]['filename']), -4) == substr($file['name'], strlen($file['name']), -4))
 							{
 								$isbreeze = $list[$i]['filename'];
 								break;
@@ -780,15 +780,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 					}
 
 					// It IS a breeze presentation
-					if ($isbreeze) 
+					if ($isbreeze)
 					{
 						// unzip the file
 						$do = $zip->extract($path);
-						if (!$do) 
+						if (!$do)
 						{
 							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_EXTRACT_PACKAGE'));
-						} 
-						else 
+						}
+						else
 						{
 							$row->path = $listdir . DS . $isbreeze;
 
@@ -806,7 +806,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
 		if ($status == 1)
 		{
-			if (JFile::delete($fpath)) 
+			if (JFile::delete($fpath))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -820,14 +820,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$row->path) 
+		if (!$row->path)
 		{
 			$row->path = $listdir . DS . $file['name'];
 		}
 		$row->path = ltrim($row->path, DS);
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
@@ -848,11 +848,11 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$assoc->parent_id = $pid;
 		$assoc->child_id  = $row->id;
 		$assoc->grouping  = 0;
-		if (!$assoc->check()) 
+		if (!$assoc->check())
 		{
 			$this->setError($assoc->getError());
 		}
-		if (!$assoc->store(true)) 
+		if (!$assoc->store(true))
 		{
 			$this->setError($assoc->getError());
 		}
@@ -883,14 +883,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Incoming parent ID
 		$pid = JRequest::getInt('pid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -899,7 +899,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Incoming child ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
@@ -914,13 +914,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$row->load($id);
 
 		// Check for stored file
-		if ($row->path != '') 
+		if ($row->path != '')
 		{
 			$listdir = $row->path;
-		} 
-		else 
+		}
+		else
 		{
-			// No stored path, derive from created date		
+			// No stored path, derive from created date
 			$listdir = $this->_buildPathFromDate($row->created, $id, '');
 		}
 
@@ -932,13 +932,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
 
 		// Check if the folder even exists
-		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http') 
+		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http')
 		{
 			//$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
-			if ($path == $base 
+			if ($path == $base
 			 || $path == $baseY
 			 || $path == $baseM)
 			{
@@ -947,14 +947,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			else
 			{
 				// Attempt to delete the folder
-				if (!JFile::delete($path)) 
+				if (!JFile::delete($path))
 				{
 					$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE'));
 				}
 			}
 		}
 
-		if (!$this->getError()) 
+		if (!$this->getError())
 		{
 			/*
 			WTF? What is all this for? -- zooley 04/01/2014
@@ -975,17 +975,17 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			$g = array_pop($bits);
 			foreach ($bits as $bit)
 			{
-				if ($bit == '/' || $bit == $year || $bit == $month || $bit == \Hubzero\Utility\String::pad($id)) 
+				if ($bit == '/' || $bit == $year || $bit == $month || $bit == \Hubzero\Utility\String::pad($id))
 				{
 					$b .= ($bit != DS) ? DS . $bit : '';
-				} 
-				else if ($bit != DS) 
+				}
+				else if ($bit != DS)
 				{
 					$p[] = $bit;
 				}
 			}
 
-			if (count($p) > 1) 
+			if (count($p) > 1)
 			{
 				$p = array_reverse($p);
 				foreach ($p as $v)
@@ -998,18 +998,18 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 					$npath = JPATH_ROOT . $uploadPath . $b . DS . $v;
 
 					// Check if the folder even exists
-					if (!is_dir($npath) 
-					 or !$npath 
+					if (!is_dir($npath)
+					 or !$npath
 					 or rtrim($npath, '/') == $base
-					 or rtrim($npath, '/') == $baseY 
-					 or rtrim($npath, '/') == $baseM) 
+					 or rtrim($npath, '/') == $baseY
+					 or rtrim($npath, '/') == $baseM)
 					{
 						$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
-					} 
-					else 
+					}
+					else
 					{
 						// Attempt to delete the folder
-						if (!JFolder::delete($npath)) 
+						if (!JFolder::delete($npath))
 						{
 							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
@@ -1031,7 +1031,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of attachments
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     void
 	 */
@@ -1040,13 +1040,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('id', 0);
 		}
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
 			return;
@@ -1077,14 +1077,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the absolute path to a resource's file upload
-	 * 
+	 *
 	 * @param      string $listdir Primary upload directory
 	 * @param      string $subdir  Sub directory of $listdir
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = DS . trim($subdir, DS);
 		}
@@ -1096,11 +1096,11 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$listdir = DS . trim($listdir, DS);
 
 		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base) 
+		if (substr($listdir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$listdir = $base . $listdir;
@@ -1112,7 +1112,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get the child's type ID based on file extension
-	 * 
+	 *
 	 * @param      string $filename File name
 	 * @return     integer
 	 */
@@ -1141,7 +1141,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build a path from a creation date (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @param      string  $date Resource created date
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
@@ -1149,16 +1149,16 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	private function _buildPathFromDate($date, $id, $base='')
 	{
-		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) 
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = JFactory::getDate($date)->format('Y');
 			$dir_month = JFactory::getDate($date)->format('m');
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = JFactory::getDate()->format('Y');
 			$dir_month = JFactory::getDate()->format('m');

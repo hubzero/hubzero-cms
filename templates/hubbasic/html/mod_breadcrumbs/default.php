@@ -1,7 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <span class="breadcrumbs pathway">
-	You are here: 
+	You are here:
 <?php for ($i = 0; $i < $count; $i ++) :
 
 	// If not the last item in the breadcrumbs add the separator

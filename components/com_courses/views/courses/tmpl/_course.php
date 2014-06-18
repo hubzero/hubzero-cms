@@ -48,7 +48,7 @@ switch ($this->count)
 					<?php } else { ?>
 						<span></span>
 					<?php } ?>
-					
+
 					<?php if ($this->course->get('rating', 0) > 4) { ?>
 					<div>
 						<strong>Top rated course!</strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>

@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="tmpl" value="component" />
 						<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 						<input type="hidden" name="task" value="add" />
-						
+
 						<select name="gid" style="max-width: 15em;">
 							<option value=""><?php echo JText::_('Select...'); ?></option>
 							<?php
@@ -57,15 +57,15 @@ defined('_JEXEC') or die('Restricted access');
 							<option value="members" selected="selected"><?php echo JText::_('MEMBERS'); ?></option>
 							<option value="managers"><?php echo JText::_('MANAGERS'); ?></option>
 						</select>
-						
+
 						<input type="submit" value="<?php echo JText::_('ADD_GROUP'); ?>" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<br />
-		
+
 		<table class="paramlist admintable">
 			<tbody>
 <?php
@@ -88,35 +88,35 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		foreach ($members as $mem)
 		{
-			if (!in_array($mem->cn,$managerids)) 
+			if (!in_array($mem->cn,$managerids))
 			{
 				$groups[] = $mem;
 			}
 		}
 
-		if (count($groups) > 0) 
+		if (count($groups) > 0)
 		{
 			foreach ($groups as $group)
 			{
 ?>
 				<tr>
 					<td class="paramlist_key"><a href="index.php?option=com_groups&amp;controller=manage&amp;task=edit&amp;id[]=<?php echo $group->cn; ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
-					<td class="paramlist_value"><?php 
+					<td class="paramlist_value"><?php
 					$seen[] = $group->cn;
 
-					if ($group->registered) 
+					if ($group->registered)
 					{
 						$status = JText::_('applicant');
-						if ($group->regconfirmed) 
+						if ($group->regconfirmed)
 						{
 							$status = JText::_('member');
-							if ($group->manager) 
+							if ($group->manager)
 							{
 								$status = JText::_('manager');
 							}
 						}
-					} 
-					else 
+					}
+					else
 					{
 						$status = JText::_('invitee');
 					}
@@ -128,7 +128,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 			</tbody>
 		</table>
-		
+
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>

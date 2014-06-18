@@ -1,4 +1,4 @@
-<? defined('JPATH_BASE') or die(); 
+<? defined('JPATH_BASE') or die();
 
 class HubgraphRequest
 {
@@ -21,10 +21,10 @@ class HubgraphRequest
 				foreach (Db::query('SELECT raw_tag, id FROM jos_tags WHERE id IN ('.implode(', ', array_fill(0, count($this->form['tags']), '?')).')', $this->form['tags']) as $row) {
 					$rv[] = array('id' => $row['id'], 'tag' => $row['raw_tag']);
 				}
-				usort($rv, function($a, $b) use($order) { 
+				usort($rv, function($a, $b) use($order) {
 					$oa = $order[$a['id']];
 					$ob = $order[$b['id']];
-					return $oa == $ob ? 0 : ($oa > $ob ? 1 : -1); 
+					return $oa == $ob ? 0 : ($oa > $ob ? 1 : -1);
 				});
 			}
 		}
@@ -47,16 +47,16 @@ class HubgraphRequest
 				foreach (Db::query('SELECT name, uidNumber FROM jos_xprofiles WHERE uidNumber IN ('.implode(', ', array_fill(0, count($this->form['contributors']), '?')).')', $this->form['contributors']) as $row) {
 					$rv[] = array('id' => $row['uidNumber'], 'name' => $row['name']);
 				}
-				usort($rv, function($a, $b) use($order) { 
+				usort($rv, function($a, $b) use($order) {
 					$oa = $order[$a['id']];
 					$ob = $order[$b['id']];
-					return $oa == $ob ? 0 : ($oa > $ob ? 1 : -1); 
+					return $oa == $ob ? 0 : ($oa > $ob ? 1 : -1);
 				});
 			}
 		}
 		return $rv;
 	}
-	
+
 	public function getGroupName($gid) {
 		static $map = array();
 		if (!isset($map[$gid])) {
@@ -66,7 +66,7 @@ class HubgraphRequest
 	}
 
 	public function getGroup() {
-		static $group = NULL; 
+		static $group = NULL;
 		if (!$group) {
 			if (isset($this->form['gid'])) {
 				$group = $this->form['gid'];
@@ -94,7 +94,7 @@ class HubgraphRequest
 			if (($uid = $user->get('id'))) {
 				$super = $user->usertype === 'Super Administrator';
 				foreach (Db::query(
-					'SELECT DISTINCT g.gidNumber FROM jos_xgroups_members xm INNER JOIN jos_xgroups g ON g.gidNumber = xm.gidNumber WHERE uidNumber = ? 
+					'SELECT DISTINCT g.gidNumber FROM jos_xgroups_members xm INNER JOIN jos_xgroups g ON g.gidNumber = xm.gidNumber WHERE uidNumber = ?
 					UNION SELECT DISTINCT g.gidNumber FROM jos_xgroups_managers xm INNER JOIN jos_xgroups g ON g.gidNumber = xm.gidNumber WHERE uidNumber = ?', array($uid, $uid)) as $group) {
 					$groups[] = $group['gidNumber'];
 				}
@@ -102,7 +102,7 @@ class HubgraphRequest
 
 			$crit = array(
 				'terms'        => $this->getTerms(),
-				'tags'         => self::idList($this->getTags()), 
+				'tags'         => self::idList($this->getTags()),
 				'domain'       => lcfirst(htmlentities($this->getDomain())),
 				'contributors' => self::idList($this->getContributors()),
 				'offset'       => isset($_GET['offset']) ? (int)$_GET['offset'] : 0,
@@ -122,7 +122,7 @@ class HubgraphRequest
 		}
 		if (isset($this->form['option']) && $this->form['option'] == 'com_resources') {
 			if (isset($this->form['type']) && ($type = Db::scalarQuery('SELECT type FROM jos_resource_types WHERE alias = ?', array($this->form['type'])))) {
-				return 'Resources~'.$type;	
+				return 'Resources~'.$type;
 			}
 			return 'Resources';
 		}

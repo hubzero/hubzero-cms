@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-$app = JRequest::getVar( 'app', '', 'request', 'object' );	
+$app = JRequest::getVar( 'app', '', 'request', 'object' );
 
 ?>
 	<ul class="sub-menu">

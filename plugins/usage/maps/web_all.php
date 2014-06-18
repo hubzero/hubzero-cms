@@ -78,7 +78,7 @@ behavior:url(#default#VML);
         }
     }
 
-	function getMarkers() 
+	function getMarkers()
 	{
 		//var urlstr="/components/'.$option.'/maps/read.php";
 		var urlstr="'.$dataurl.'";
@@ -95,7 +95,7 @@ behavior:url(#default#VML);
 
 			var usage = locations[i].getAttribute("hits");
 			var icon = new GIcon();
-		   	
+
 			icon.image = "/components/'.$option.'/maps/images/marker.png";
 
 			// icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";

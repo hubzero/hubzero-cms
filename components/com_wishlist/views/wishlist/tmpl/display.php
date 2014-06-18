@@ -44,7 +44,7 @@ $cloud = new WishlistModelTags($this->wishlist->get('id'));
 $total = $this->wishlist->wishes('list', $this->filters);
 
 /* Wish List */
-if ($this->wishlist->exists()) 
+if ($this->wishlist->exists())
 {
 	if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 		<section class="main section">
@@ -66,34 +66,34 @@ if ($this->wishlist->exists())
 		</header><!-- / #content-header -->
 
 		<form method="get" action="<?php echo JRoute::_($base); ?>">
-			<?php 
+			<?php
 			// Admin messages
-			if ($this->wishlist->access('manage') && !$this->getError()) 
+			if ($this->wishlist->access('manage') && !$this->getError())
 			{
 				// Wish was deleted from the list
-				if ($this->task == 'deletewish') 
+				if ($this->task == 'deletewish')
 				{
 					echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_DELETED').'</p>'."\n";
 				}
 
 				// Wish was moved to a new list
-				if ($this->task == 'movewish') 
+				if ($this->task == 'movewish')
 				{
 					echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_MOVED').'</p>'."\n";
 				}
 
-				switch ($this->wishlist->get('saved')) 
+				switch ($this->wishlist->get('saved'))
 				{
 					case '1':
-						// List settings saved    
+						// List settings saved
 						echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_LIST_SETTINGS_SAVED').'</p>'."\n";
 					break;
 					case '2':
-						// Changes to wish saved  
+						// Changes to wish saved
 						echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED').'</p>'."\n";
 					break;
-					case '3': 
-						// New wish posted     
+					case '3':
+						// New wish posted
 						echo '<p class="passed">'.JText::_('COM_WISHLIST_NOTICE_WISH_POSTED').'</p>'."\n";
 					break;
 				}
@@ -181,7 +181,7 @@ if ($this->wishlist->exists())
 
 						<table class="ideas entries">
 							<caption>
-								<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?> 
+								<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?>
 								<?php echo ($this->filters['tag'] != '') ? JText::sprintf('COM_WISHLIST_WISHES_TAGGED_WITH', $this->filters['tag']) : ''; ?>
 								<span>
 									(<?php echo ($this->pageNav->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishlist->wishes()->total(); ?> of <?php echo $this->pageNav->total; ?>)
@@ -189,7 +189,7 @@ if ($this->wishlist->exists())
 							</caption>
 							<tbody>
 						<?php
-						if ($this->wishlist->wishes()->total()) 
+						if ($this->wishlist->wishes()->total())
 						{
 							$y = 1;
 
@@ -206,28 +206,28 @@ if ($this->wishlist->exists())
 								}
 							}
 
-							foreach ($this->wishlist->wishes() as $item) 
+							foreach ($this->wishlist->wishes() as $item)
 							{
 								$item->set('category', $this->wishlist->get('category'));
 								$item->set('referenceid', $this->wishlist->get('referenceid'));
 								$item->set('bonus', ($this->wishlist->get('banking') ? $item->get('bonus') : 0));
 
-								if ($item->get('reports')) 
+								if ($item->get('reports'))
 								{
 									$status = 'outstanding';
-								} 
-								else if ($item->get('ranked') && !$item->isGranted() && !$item->isWithdrawn() && !$item->isRejected() && $this->wishlist->access('manage')) 
+								}
+								else if ($item->get('ranked') && !$item->isGranted() && !$item->isWithdrawn() && !$item->isRejected() && $this->wishlist->access('manage'))
 								{
 									$status = 'unranked';
-								} 
-								else 
+								}
+								else
 								{
 									$status = 'outstanding';
 								}
 
 								$state = $item->status('alias');
 
-								if (!$item->get('anonymous')) 
+								if (!$item->get('anonymous'))
 								{
 									$item->set('authorname', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('proposed_by')) . '">' . $this->escape($item->get('authorname')) . '</a>');
 								}
@@ -243,10 +243,10 @@ if ($this->wishlist->exists())
 										</a>
 										<br />
 										<span class="entry-details">
-											<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo ($item->get('anonymous') == 1) ? JText::_('COM_WISHLIST_ANONYMOUS') : $item->get('authorname'); ?> 
-											<span class="entry-date-at"><?php echo JText::_('COM_WISHLIST_AT'); ?></span> 
-											<span class="entry-time"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('time'); ?></time></span> 
-											<span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span> 
+											<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo ($item->get('anonymous') == 1) ? JText::_('COM_WISHLIST_ANONYMOUS') : $item->get('authorname'); ?>
+											<span class="entry-date-at"><?php echo JText::_('COM_WISHLIST_AT'); ?></span>
+											<span class="entry-time"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('time'); ?></time></span>
+											<span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span>
 											<span class="entry-date"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('date'); ?></time></span>
 											<span class="entry-details-divider">&bull;</span>
 											<span class="entry-comments">
@@ -291,16 +291,16 @@ if ($this->wishlist->exists())
 										?>
 									</td>
 									<td class="ranking">
-										<?php 
+										<?php
 										$html = '';
-										switch ($item->get('status')) 
+										switch ($item->get('status'))
 										{
 											case 0:
-												if (!$item->get('ranked') && $this->wishlist->access('manage')) 
+												if (!$item->get('ranked') && $this->wishlist->access('manage'))
 												{
 													$html .= '<a class="rankit" href="' . $item->link('rank', $filters) . '">'.JText::_('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
-												} 
-												else if ($item->get('ranked')) 
+												}
+												else if ($item->get('ranked'))
 												{
 													//$html .= JText::_('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
 													$html .= '<span class="priority-level-base">
@@ -309,7 +309,7 @@ if ($this->wishlist->exists())
 														</span>
 													</span>';
 												}
-												if ($item->isAccepted()) 
+												if ($item->isAccepted())
 												{
 													$html .= '<span class="accepted">'.JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED').'</span>';
 												}
@@ -365,9 +365,9 @@ if ($this->wishlist->exists())
 					</div><!-- / .container -->
 				</div><!-- / .subject -->
 				<aside class="aside">
-					<?php 
+					<?php
 						// Popular tags
-						if ($this->wishlist->get('category') == 'general') 
+						if ($this->wishlist->get('category') == 'general')
 						{
 							$tags = $cloud->render('html', array(
 								'limit'    => $this->config->get('maxtags', 10),
@@ -380,7 +380,7 @@ if ($this->wishlist->exists())
 								'filters'  => $this->filters
 							));
 
-							if ($tags) 
+							if ($tags)
 							{
 								?>
 								<div class="container">
@@ -388,24 +388,24 @@ if ($this->wishlist->exists())
 									<?php echo $tags; ?>
 									<p><?php echo JText::_('Click a tag to filter results.'); ?></p>
 								</div><!-- / .container -->
-								<?php 
+								<?php
 							} // end if ($tags)
 						} // end if ($this->wishlist->category == 'general')
 
-						if ($this->wishlist->get('category') == 'resource') 
+						if ($this->wishlist->get('category') == 'resource')
 						{
 							$html  = '<p>' . JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', strtolower(substr($this->wishlist->item('typetitle'), 0, strlen($this->wishlist->item('typetitle')) - 1)).' '.JText::_('COM_WISHLIST_RESOURCE_ENTITLED').' <a href="'.JRoute::_('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')).'">'.$this->escape($this->wishlist->item('title')).'</a>') . '.</p>';
-						} 
-						else if ($this->wishlist->get('description')) 
+						}
+						else if ($this->wishlist->get('description'))
 						{
 							$html  = '<p>' . $this->escape($this->wishlist->get('description')) . '<p>';
-						} 
-						else 
+						}
+						else
 						{
 							$html  = '<p>' . JText::sprintf('COM_WISHLIST_HELP_US_IMPROVE', $sitename) . '</p>';
 						}
 
-						switch ($this->wishlist->get('admin')) 
+						switch ($this->wishlist->get('admin'))
 						{
 							case '1':
 								$html .= '<p class="info">' . JText::_('COM_WISHLIST_NOTICE_SITE_ADMIN') . '</p>' . "\n";
@@ -420,10 +420,10 @@ if ($this->wishlist->exists())
 						echo $html;
 
 						// Show what's popular
-						if ($this->wishlist->access('manage') 
-						 && $this->wishlist->wishes()->total() >= 10 
-						 && $this->wishlist->get('category') == 'general' 
-						 && $this->filters['filterby'] == 'all') 
+						if ($this->wishlist->access('manage')
+						 && $this->wishlist->wishes()->total() >= 10
+						 && $this->wishlist->get('category') == 'general'
+						 && $this->filters['filterby'] == 'all')
 						{
 							JRequest::setVar('rid', $this->wishlist->get('referenceid'));
 							JRequest::setVar('category', $this->wishlist->get('category'));

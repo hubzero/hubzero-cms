@@ -38,26 +38,26 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $config Optional configurations
 	 * @return     void
 	 */
 	public function __construct($config=array())
 	{
 		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
-		if (isset($config['base_path'])) 
+		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
 		}
 
 		$this->_sub = false;
-		if (isset($config['sub'])) 
+		if (isset($config['sub']))
 		{
 			$this->_sub = $config['sub'];
 		}
 
 		$this->_group = false;
-		if (isset($config['group'])) 
+		if (isset($config['group']))
 		{
 			$this->_group = $config['group'];
 		}
@@ -74,7 +74,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -86,7 +86,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		if (!$this->book->pages('count'))
 		{
-			if ($result = $this->book->scribe($this->_option)) 
+			if ($result = $this->book->scribe($this->_option))
 			{
 				$this->setError($result);
 			}
@@ -101,7 +101,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Download a wiki file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadTask()
@@ -117,7 +117,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$attachment->filename = urldecode($attachment->filename);
 
 		// Get the scope of the parent page the file is attached to
-		if (!$this->scope) 
+		if (!$this->scope)
 		{
 			$this->scope = trim(JRequest::getVar('scope', ''));
 		}
@@ -129,20 +129,20 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$this->page = new WikiModelPage($pagename, $scope);
 
 		// Load the page
-		if (!$this->page->exists()) 
+		if (!$this->page->exists())
 		{
 			JError::raiseError(404, JText::_('COM_WIKI_PAGE_NOT_FOUND'));
 			return;
 		}
 
 		// Check if the page is group restricted and the user is authorized
-		if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view')) 
+		if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view'))
 		{
-			/*if ($this->_sub) 
+			/*if ($this->_sub)
 			{
 				echo '<p class="warning">' . JText::_('COM_WIKI_WARNING_NOT_AUTH') . '</p>';
-			} 
-			else 
+			}
+			else
 			{*/
 				JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			//}
@@ -150,7 +150,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have a path
-		if (empty($attachment->filename)) 
+		if (empty($attachment->filename))
 		{
 			JError::raiseError(404, JText::_('COM_WIKI_FILE_NOT_FOUND'));
 			return;
@@ -163,11 +163,11 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$attachment->filename = DS . ltrim($attachment->filename, DS);
 
 		// Does the beginning of the $attachment->path match the config path?
-		if (substr($attachment->filename, 0, strlen($base_path)) == $base_path) 
+		if (substr($attachment->filename, 0, strlen($base_path)) == $base_path)
 		{
 			// Yes - this means the full path got saved at some point
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$attachment->filename = $base_path . $attachment->filename;
@@ -177,7 +177,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$filename = JPATH_ROOT . $attachment->filename;
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_WIKI_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
@@ -189,12 +189,12 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_WIKI_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -203,13 +203,13 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -217,15 +217,15 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('listdir', 0);
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			echo json_encode(array('error' => JText::_('COM_WIKI_NO_ID')));
 			return;
 		}
-		
+
 		//allowed extensions for uplaod
 		//$allowedExtensions = array("png","jpeg","jpg","gif");
-		
+
 		//max upload size
 		$sizeLimit = $this->book->config('maxAllowed', 40000000);
 
@@ -239,7 +239,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		elseif (isset($_FILES['qqfile']))
 		{
 			//$files = JRequest::getVar('qqfile', '', 'files', 'array');
-			
+
 			$stream = false;
 			$file = $_FILES['qqfile']['name'];
 			$size = (int) $_FILES['qqfile']['size'];
@@ -252,10 +252,10 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		//define upload directory and make sure its writable
 		$path = JPATH_ROOT . DS . trim($this->book->config('filepath', '/site/wiki'), DS) . DS . $listdir;
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
 				return;
@@ -269,12 +269,12 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array('error' => JText::_('File is empty')));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
@@ -284,15 +284,15 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// don't overwrite previous files that were uploaded
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
 		$filename = JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
-		
+
 		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
@@ -306,7 +306,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
-		
+
 			//move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
@@ -326,18 +326,18 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$attachment->created     = JFactory::getDate()->toSql();
 		$attachment->created_by  = $this->juser->get('id');
 
-		if (!$attachment->check()) 
+		if (!$attachment->check())
 		{
 			$this->setError($attachment->getError());
 		}
-		if (!$attachment->store()) 
+		if (!$attachment->store())
 		{
 			$this->setError($attachment->getError());
 		}
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path)
 		));
@@ -345,13 +345,13 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -364,7 +364,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('listdir', 0, 'post');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
@@ -373,7 +373,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('COM_WIKI_NO_FILE'));
 			$this->displayTask();
@@ -383,10 +383,10 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Build the upload path if it doesn't exist
 		$path = JPATH_ROOT . DS . trim($this->book->config('filepath', '/site/wiki'), DS) . DS . $listdir;
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('Error uploading. Unable to create path.'));
 				$this->displayTask();
@@ -401,12 +401,12 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
 		}
-		// File was uploaded 
-		else 
+		// File was uploaded
+		else
 		{
 			// Create database entry
 			$attachment = new WikiTableAttachment($this->database);
@@ -416,11 +416,11 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			$attachment->created     = JFactory::getDate()->toSql();
 			$attachment->created_by  = $this->juser->get('id');
 
-			if (!$attachment->check()) 
+			if (!$attachment->check())
 			{
 				$this->setError($attachment->getError());
 			}
-			if (!$attachment->store()) 
+			if (!$attachment->store())
 			{
 				$this->setError($attachment->getError());
 			}
@@ -432,13 +432,13 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a folder in the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefolderTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -446,7 +446,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming group ID
 		$listdir = JRequest::getInt('listdir', 0, 'get');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
@@ -455,7 +455,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming folder
 		$folder = trim(JRequest::getVar('folder', '', 'get'));
-		if (!$folder) 
+		if (!$folder)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
 			$this->displayTask();
@@ -466,16 +466,16 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$path = JPATH_ROOT . DS . trim($this->book->config('filepath', '/site/wiki'), DS) . DS . $listdir . DS . $folder;
 
 		// Delete the folder
-		if (is_dir($path)) 
+		if (is_dir($path))
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path)) 
+			if (!JFolder::delete($path))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError(JText::_('COM_WIKI_NO_DIRECTORY'));
 		}
@@ -492,13 +492,13 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file in the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefileTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -506,7 +506,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'get');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_ID'));
 			$this->displayTask();
@@ -515,7 +515,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = trim(JRequest::getVar('file', '', 'get'));
-		if (!$file) 
+		if (!$file)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_FILE'));
 			$this->displayTask();
@@ -526,20 +526,20 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$path = JPATH_ROOT . DS . trim($this->book->config('filepath', '/site/wiki'), DS) . DS . $listdir;
 
 		// Delete the file
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
 			$this->displayTask();
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-			} 
-			else 
+			}
+			else
 			{
 				// Delete the database entry for the file
 				$attachment = new WikiTableAttachment($this->database);
@@ -558,7 +558,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for uploading files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -571,7 +571,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->config = $this->config;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -584,7 +584,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listTask()
@@ -594,7 +594,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Incoming
 		$listdir = JRequest::getInt('listdir', 0, 'get');
 
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_WIKI_NO_ID'));
 		}
@@ -647,7 +647,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->name    = $this->_name;
 		$this->view->sub     = $this->_sub;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

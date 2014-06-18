@@ -34,112 +34,112 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course section table class
- * 
+ *
  */
 class CoursesTableSection extends JTable
 {
 	/**
 	 * ID, primary key for course instances table
 	 * int(11)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $offering_id = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * Start date for instance
-	 * 
+	 *
 	 * @var string
 	 */
 	var $start_date = NULL;
 
 	/**
 	 * End date for instance
-	 * 
+	 *
 	 * @var string
 	 */
 	var $end_date = NULL;
 
 	/**
 	 * Start publishing date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_up = NULL;
 
 	/**
 	 * End publishing date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $publish_down = NULL;
 
 	/**
 	 * Created date for unit
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $enrollment = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $grade_policy_id = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -165,12 +165,12 @@ class CoursesTableSection extends JTable
 		$alias = $type;
 		$offering_id = $prefix;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$alias . '_' . $offering_id])) 
+		if (!isset($instances[$alias . '_' . $offering_id]))
 		{
 			$inst = new CoursesTableSection(JFactory::getDBO());
 			$inst->load($alias, $offering_id);
@@ -183,13 +183,13 @@ class CoursesTableSection extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($oid=NULL, $offering_id=null)
 	{
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
@@ -208,11 +208,11 @@ class CoursesTableSection extends JTable
 		}
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -221,7 +221,7 @@ class CoursesTableSection extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
@@ -234,7 +234,7 @@ class CoursesTableSection extends JTable
 		}
 
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -266,7 +266,7 @@ class CoursesTableSection extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -277,28 +277,28 @@ class CoursesTableSection extends JTable
 
 		$where = array();
 
-		if (isset($filters['offering_id']) && $filters['offering_id']) 
+		if (isset($filters['offering_id']) && $filters['offering_id'])
 		{
 			$where[] = "os.offering_id=" . $this->_db->Quote(intval($filters['offering_id']));
 		}
 
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "os.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 
-		if (isset($filters['enrollment'])) 
+		if (isset($filters['enrollment']))
 		{
 			$where[] = "os.enrollment=" . $this->_db->Quote(intval($filters['enrollment']));
 		}
 
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(os.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(os.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					  OR LOWER(os.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
-		if (isset($filters['available']) && $filters['available']) 
+		if (isset($filters['available']) && $filters['available'])
 		{
 			$now = JFactory::getDate()->toSql();
 
@@ -317,7 +317,7 @@ class CoursesTableSection extends JTable
 
 	/**
 	 * Get a count of course offerings
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -332,7 +332,7 @@ class CoursesTableSection extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -341,20 +341,20 @@ class CoursesTableSection extends JTable
 		$query  = "SELECT os.*";
 		$query .= $this->_buildquery($filters);
 
-		if (!isset($filters['sort']) || $filters['sort'] == '') 
+		if (!isset($filters['sort']) || $filters['sort'] == '')
 		{
 			$filters['sort'] = 'os.title';
 		}
-		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			if (!isset($filters['start'])) 
+			if (!isset($filters['start']))
 			{
 				$filters['start'] = 0;
 			}

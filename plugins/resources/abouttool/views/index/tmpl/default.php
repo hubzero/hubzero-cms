@@ -43,7 +43,7 @@ switch ($this->model->params->get('show_date'))
 	case 2: $thedate = $this->model->resource->modified;   break;
 	case 3: $thedate = $this->model->resource->publish_up; break;
 }
-if ($this->curtool) 
+if ($this->curtool)
 {
 	$thedate = $this->curtool->released;
 }
@@ -59,7 +59,7 @@ $type->load($this->model->resource->type);
 $data = array();
 
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -74,7 +74,7 @@ $elements = new ResourcesElements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
 // Set the document description
-if ($this->model->resource->introtext) 
+if ($this->model->resource->introtext)
 {
 	$document = JFactory::getDocument();
 	$document->setDescription(strip_tags($this->model->resource->introtext));
@@ -144,7 +144,7 @@ $maintext = $this->model->description('parsed');
 			</div>
 		<?php } ?>
 
-		<?php 
+		<?php
 		$citations = '';
 		if (!isset($schema->fields) || !is_array($schema->fields))
 		{
@@ -194,7 +194,7 @@ $maintext = $this->model->description('parsed');
 					}
 				}
 				$cite->author = implode(';', $authors);
-				
+
 				// Get contribtool params
 				$tconfig = JComponentHelper::getParams( 'com_tools' );
 				$doi = '';
@@ -212,7 +212,7 @@ $maintext = $this->model->description('parsed');
 				{
 					$cite->doi = $doi;
 				}
-				
+
 				if ($this->model->params->get('show_citation') == 2) {
 					$citations = '';
 				}
@@ -223,7 +223,7 @@ $maintext = $this->model->description('parsed');
 			}
 
 			//$this->helper->getUnlinkedContributors();
-			
+
 			$revision = isset($this->model->resource->revision) ? $this->model->resource->revision : '';
 			$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
 			$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
@@ -241,7 +241,7 @@ $maintext = $this->model->description('parsed');
 		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CONTRIBUTOR'); ?></h4>
 		<div class="resource-content">
 			<span id="submitterlist">
-				<?php 
+				<?php
 				$view = new \Hubzero\Component\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
 					'name'      => 'view',

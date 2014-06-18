@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * DataScienceToolkit plugin for geocode
  *
- * The DataScienceToolkitProvider is able to geocode IPv4 
+ * The DataScienceToolkitProvider is able to geocode IPv4
  * addresses and street adresses, exclusively in USA & Canada.
  */
 class plgGeocodeDatasciencetoolkit extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

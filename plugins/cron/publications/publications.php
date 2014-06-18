@@ -40,7 +40,7 @@ class plgCronPublications extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -62,13 +62,13 @@ class plgCronPublications extends JPlugin
 				'params' => ''
 			)
 		);
-		
+
 		return $obj;
 	}
 
 	/**
 	 * Send emails to authors with the monthly stats
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function sendAuthorStats($params = null)
@@ -118,7 +118,7 @@ class plgCronPublications extends JPlugin
 			$apu    = explode(',', $params->get('userids'));
 			$apu    = array_map('trim',$apu);
 			$query .= " AND A.user_id IN (";
-			
+
 			$tquery = '';
 			foreach ($apu as $a)
 			{
@@ -155,7 +155,7 @@ class plgCronPublications extends JPlugin
 				continue;
 			}
 
-			// Get pub stats for each author			
+			// Get pub stats for each author
 			$pubLog = new PublicationLog($database);
 			$pubstats = $pubLog->getAuthorStats($author->user_id);
 
@@ -219,7 +219,7 @@ class plgCronPublications extends JPlugin
 
 	/**
 	 * Compute unique user stats from text logs
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function rollUserStats($params = null)

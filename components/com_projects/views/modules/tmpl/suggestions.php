@@ -24,18 +24,18 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-shuffle($this->suggestions); 
-$i= 0; 
+shuffle($this->suggestions);
+$i= 0;
 ?>
 <div class="sidebox suggestions">
 	<h4><?php echo JText::_('COM_PROJECTS_SUGGESTIONS'); ?>:</h4>
-	<?php foreach($this->suggestions as $suggestion) 
-		{ $i++; 
-		  if ($i <= 3) 
+	<?php foreach($this->suggestions as $suggestion)
+		{ $i++;
+		  if ($i <= 3)
 			{ ?>
 		<p class="<?php echo $suggestion['class']; ?>">
 			<a href="<?php echo $suggestion['url']; ?>"><?php echo $suggestion['text']; ?></a>
 		</p>
-	<?php } 
+	<?php }
 	} ?>
 </div>

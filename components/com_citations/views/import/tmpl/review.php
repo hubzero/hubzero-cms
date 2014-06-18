@@ -78,7 +78,7 @@ $no_show = array("errors","duplicate");
 							//load the duplicate citation
 							$cc = new CitationsCitation($database);
 							$cc->load($c['duplicate']);
-							
+
 							//get the type
 							$ct = new CitationsType($database);
 							$type = $ct->getType($cc->type);
@@ -102,25 +102,25 @@ $no_show = array("errors","duplicate");
 											<th>Citation Details</th>
 											<th class="options">
 												<label title="Overwrite old version of citation in database and replace with new one.">
-													<input 
-														type="radio" 
-														class="citation_require_attention_option" 
-														name="citation_action_attention[<?php echo $counter; ?>]" 
+													<input
+														type="radio"
+														class="citation_require_attention_option"
+														name="citation_action_attention[<?php echo $counter; ?>]"
 														value="overwrite"
 														checked="checked" /> Replace Old Version with Uploaded One
 												</label>
 												<label title="Keep old version and also upload new version.">
-													<input 
-														type="radio" 
-														class="citation_require_attention_option" 
-														name="citation_action_attention[<?php echo $counter; ?>]" 
+													<input
+														type="radio"
+														class="citation_require_attention_option"
+														name="citation_action_attention[<?php echo $counter; ?>]"
 														value="both" /> Keep Old and Import Uploaded Version
 												</label>
 												<label title="Keep old version and do nothing with new uploaded version.">
-													<input 
-														type="radio" 
-														class="citation_require_attention_option" 
-														name="citation_action_attention[<?php echo $counter; ?>]" 
+													<input
+														type="radio"
+														class="citation_require_attention_option"
+														name="citation_action_attention[<?php echo $counter; ?>]"
 														value="discard" /> Don't Import Uploaded Version
 												</label>
 											</th>
@@ -145,7 +145,7 @@ $no_show = array("errors","duplicate");
 																<td>Citation on file:</td>
 																<td>
 																	<span class="old delete">
-																		<?php 
+																		<?php
 																			switch ($k)
 																			{
 																				case 'type':	echo $type_title;		break;
@@ -192,12 +192,12 @@ $no_show = array("errors","duplicate");
 							<td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?php echo $counter++; ?>]" checked="checked" value="1" /></td>
 							<td>
 								<span class="citation-title">
-									<?php 
+									<?php
 										if (array_key_exists("title", $c))
 										{
 											echo html_entity_decode($c['title']);
-										} 
-										else 
+										}
+										else
 										{
 											echo "NO TITLE FOUND";
 										}

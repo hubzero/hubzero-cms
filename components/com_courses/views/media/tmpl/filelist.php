@@ -50,7 +50,7 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
 		<?php } ?>
-		
+
 		<script type="text/javascript">
 			function updateDir()
 			{
@@ -84,12 +84,12 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 
 				return false;
 			}
-			
+
 			function showFilePath(file) {
 				var path = prompt('The file path is:', file);
 				return false;
 			}
-			
+
 		</script>
 	</head>
 	<body id="file_list">

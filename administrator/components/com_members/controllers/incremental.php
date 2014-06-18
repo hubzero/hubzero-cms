@@ -38,20 +38,20 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display settings
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function displayTask() 
+	public function displayTask()
 	{
 		$this->view->display();
 	}
 
 	/**
 	 * Save settings
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function saveTask() 
+	public function saveTask()
 	{
 		$this->database->setQuery('DELETE FROM `#__incremental_registration_groups`');
 		$this->database->execute();
@@ -59,18 +59,18 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 		$this->database->setQuery('DELETE FROM `#__incremental_registration_group_label_rel`');
 		$this->database->execute();
 
-		for ($idx = 0; isset($_POST['group-hours-' . $idx]); ++$idx) 
+		for ($idx = 0; isset($_POST['group-hours-' . $idx]); ++$idx)
 		{
-			if (!($hours = (int)$_POST['group-hours-' . $idx])) 
+			if (!($hours = (int)$_POST['group-hours-' . $idx]))
 			{
 				continue;
 			}
 
-			if ($_POST['group-time-unit-' . $idx] == 'week') 
+			if ($_POST['group-time-unit-' . $idx] == 'week')
 			{
 				$hours *= 24 * 7;
 			}
-			elseif ($_POST['group-time-unit-' . $idx] == 'day') 
+			elseif ($_POST['group-time-unit-' . $idx] == 'day')
 			{
 				$hours *= 24;
 			}
@@ -107,7 +107,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 		$this->database->setQuery('DELETE FROM `#__incremental_registration_popover_recurrence`');
 		$this->database->execute();
 
-		for ($idx = 0; isset($_POST['recur-' . $idx]); ++$idx) 
+		for ($idx = 0; isset($_POST['recur-' . $idx]); ++$idx)
 		{
 			$hours = (int)$_POST['recur-' . $idx];
 			if ($_POST['recur-type-' . $idx] == 'week')

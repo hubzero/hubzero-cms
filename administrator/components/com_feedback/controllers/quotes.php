@@ -38,7 +38,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of quotes
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -63,16 +63,16 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 		// Get sorting variables
 		$this->view->filters['sortby']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.sort', 
-			'filter_order', 
+			$this->_option . '.sort',
+			'filter_order',
 			'date'
 		));
 		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
-		
+
 		// Get paging variables
 		$this->view->filters['start']  = $app->getUserStateFromRequest(
 			$this->_option . '.limitstart',
@@ -118,7 +118,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -128,7 +128,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
@@ -193,7 +193,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -271,7 +271,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Delete one or more entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -313,7 +313,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task and redirect to main listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()

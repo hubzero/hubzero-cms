@@ -42,10 +42,10 @@ $helper->getContributorIDs();
 
 /*
 // Determine if they have access to edit
-if (!$juser->get('guest')) 
+if (!$juser->get('guest'))
 {
 	if ((!$this->show_edit && $this->line->created_by == $juser->get('id'))
-	 || in_array($juser->get('id'), $helper->contributorIDs)) 
+	 || in_array($juser->get('id'), $helper->contributorIDs))
 	{
 		$this->show_edit = 2;
 	}
@@ -110,15 +110,15 @@ switch ($this->line->access)
 				$r = (10 * $this->line->ranking);
 				?>
 				<span class="rank">
-					<span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;"><?php echo JText::_('COM_RESOURCES_THIS_HAS'); ?></span> 
+					<span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;"><?php echo JText::_('COM_RESOURCES_THIS_HAS'); ?></span>
 				</span>
 				<?php echo number_format($this->line->ranking, 1) . ' ' . JText::_('COM_RESOURCES_RANKING'); ?>
 			</dt>
 			<dd>
 				<p><?php echo JText::_('COM_RESOURCES_RANKING_EXPLANATION'); ?></p>
 				<div>
-					<?php 
-					if ($this->line->type == 7) 
+					<?php
+					if ($this->line->type == 7)
 					{
 						$stats = new ToolStats($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
 					}
@@ -159,17 +159,17 @@ switch ($this->line->access)
 	</div>
 <?php } ?>
 	<p class="details">
-		<?php 
+		<?php
 		$info = array();
-		if ($thedate) 
+		if ($thedate)
 		{
 			$info[] = $thedate;
 		}
-		if (($this->line->type && $params->get('show_type')) || $this->line->standalone == 1) 
+		if (($this->line->type && $params->get('show_type')) || $this->line->standalone == 1)
 		{
 			$info[] = stripslashes($this->line->typetitle);
 		}
-		if ($helper->contributors && $params->get('show_authors')) 
+		if ($helper->contributors && $params->get('show_authors'))
 		{
 			$info[] = JText::_('COM_RESOURCES_CONTRIBUTORS') . ': ' . $helper->contributors;
 		}
@@ -177,13 +177,13 @@ switch ($this->line->access)
 		?>
 	</p>
 	<p>
-		<?php 
+		<?php
 		$content = '';
-		if ($this->line->introtext) 
+		if ($this->line->introtext)
 		{
 			$content = $this->line->introtext;
-		} 
-		else if ($this->line->fulltxt) 
+		}
+		else if ($this->line->fulltxt)
 		{
 			$content = $this->line->fulltxt;
 		}

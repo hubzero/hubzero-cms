@@ -54,7 +54,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}
 	?>
-	
+
 	<div class="upload-browser-col left">
 		<div class="toolbar cf">
 			<div class="title"><?php echo JText::_('Group Files'); ?></div>

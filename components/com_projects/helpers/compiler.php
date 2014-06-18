@@ -34,26 +34,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Projects Git LaTeX and PDF compiler helper class
  */
-class ProjectsCompiler extends JObject 
+class ProjectsCompiler extends JObject
 {
 	/**
 	 * Cache dir
-	 * 
+	 *
 	 * @var string
 	 */
-	private $_outputFolder 	= './';		
-	
+	private $_outputFolder 	= './';
+
 	/**
 	 * Is tex file?
-	 * 
+	 *
 	 * @param      string	$file
 	 *
 	 * @return     array to be parsed
 	 */
-	public static function isTexFile ($file = '', $mimeType = '') 
+	public static function isTexFile ($file = '', $mimeType = '')
 	{
 		$tex = 0;
-		
+
 		// Get file extention
 		if ($file)
 		{
@@ -61,24 +61,24 @@ class ProjectsCompiler extends JObject
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 			$tex   = $ext == 'tex' ? 1 : 0;
 		}
-		
+
 		if ($mimeType && in_array($mimeType, array('application/x-tex', 'text/x-tex')))
 		{
 			$tex = 1;
 		}
-		
+
 		return $tex;
 	}
-	
+
 	/**
 	 * Get array of file types
-	 * 
+	 *
 	 * @param      string	$file
 	 *
 	 * @return     array
 	 */
-	public static function getFormatsArray() 
-	{		
+	public static function getFormatsArray()
+	{
 		$formats = array (
 		    'application' => array (
 		      'application/pdf'
@@ -97,12 +97,12 @@ class ProjectsCompiler extends JObject
 			  'text/html'
 			)
 		);
-		
+
 		return $formats;
 	}
-	
+
 	/**
-	* Compile tex 
+	* Compile tex
 	*
 	* @access	public
 	* @param	string		fullpath
@@ -119,10 +119,10 @@ class ProjectsCompiler extends JObject
 		{
 			return false;
 		}
-		
+
 		$cacheFolder = dirname($fullpath);
 		$outputDir   = $outputDir ? $outputDir : $this->_outputFolder;
-	
+
 		if (!$tempBase)
 		{
 			$filename 	 = ProjectsHtml::takeOutExt(basename($fullpath));
@@ -133,24 +133,24 @@ class ProjectsCompiler extends JObject
 		{
 			$texFile	 = $cacheFolder . DS . $tempBase;
 		}
-		
+
 		$pdf = $tempBase . '.pdf';
-		
+
 		// Remove previous compilation
 		if (file_exists($outputDir . DS . $pdf))
 		{
 			unlink($outputDir . DS . $pdf);
-		} 
-		
+		}
+
 		// Create temp tex copy
 		$fp = fopen($texFile . '.tex', 'w');
 		fwrite($fp, $data);
 		fclose($fp);
-				
+
 		chdir($cacheFolder);
 		$command = $texpath . DS . 'pdflatex -output-directory=' . $outputDir . ' -interaction=batchmode ' . $texFile . '.tex';
 		exec($command, $out);
-				
+
 		// Remove temp tex copy
 		if (file_exists($texFile . '.tex'))
 		{
@@ -160,12 +160,12 @@ class ProjectsCompiler extends JObject
 		{
 			unlink($texFile);
 		}
-		
+
 		if (file_exists($outputDir . DS . $pdf))
 		{
 			return $getPath ? basename($pdf) : file_get_contents($outputDir . DS . $pdf);
 		}
-		
+
 		return false;
 	}
 }

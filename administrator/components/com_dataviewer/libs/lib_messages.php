@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 if(!isset($_SESSION['databases']['notifications'])) {
 	$_SESSION['databases']['notifications'] = array();
 }
-	
+
 function db_msg($msg, $type = 'error')
 {
 	$_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);

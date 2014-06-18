@@ -59,7 +59,7 @@ $home      = 0;
 $version   = 0;
 
 // if we are in edit mode
-if ($this->page->get('id')) 
+if ($this->page->get('id'))
 {
 	$id        = $this->page->get('id');
 	$gidNumber = $this->page->get('gidNumber');
@@ -72,7 +72,7 @@ if ($this->page->get('id'))
 	$state     = $this->page->get('state');
 	$privacy   = $this->page->get('privacy');
 	$home      = $this->page->get('home');
-	
+
 	$pageHeading = JText::sprintf("Edit Page: %s", $title);
 }
 ?>
@@ -113,7 +113,7 @@ if ($this->page->get('id'))
 							$allowScripts  = true;
 							$startupMode   = 'wysiwyg';
 							$showSourceBtn = true;
-					
+
 							// only allow super groups to use php & scrips
 							// strip out php and scripts if somehow it made it through
 							if (!$this->group->isSuperGroup())
@@ -123,7 +123,7 @@ if ($this->page->get('id'))
 								$content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
 								$content      = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
 							}
-					
+
 							// open in source mode if contains php or scripts
 							if (strstr(stripslashes($content), '<script>') ||
 								strstr(stripslashes($content), '<?php'))
@@ -131,7 +131,7 @@ if ($this->page->get('id'))
 								$startupMode  = 'source';
 								//$showSourceBtn = false;
 							}
-				
+
 							//build config
 							$config = array(
 								'startupMode'                 => $startupMode,
@@ -146,20 +146,20 @@ if ($this->page->get('id'))
 								'allowPhpTags'                => $allowPhp,
 								'allowScriptTags'             => $allowScripts
 							);
-					
+
 							// if super group add to templates
 							if ($this->group->isSuperGroup())
 							{
 								$config['templates_replace'] = false;
 								$config['templates_files']   = array('pagelayouts' => '/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js');
 							}
-					
+
 							// display with ckeditor
 							jimport( 'joomla.html.editor' );
 							$editor = new JEditor( 'ckeditor' );
 							echo $editor->display('pageversion[content]', stripslashes($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
 						?>
-						
+
 					</label>
 				</fieldset>
 			</div>
@@ -173,7 +173,7 @@ if ($this->page->get('id'))
 							<option value="0" <?php if($state == 0) { echo "selected"; } ?>>Unpublished</option>
 						</select>
 					</label>
-					
+
 					<?php if ($this->page->get('id')) : ?>
 						<label>
 							<strong>Versions:</strong> <br />
@@ -182,7 +182,7 @@ if ($this->page->get('id'))
 							</a>
 						</label>
 					<?php endif; ?>
-					
+
 					<label>
 						<strong>Privacy:</strong> <span class="required">Required</span>
 						<?php
@@ -200,12 +200,12 @@ if ($this->page->get('id'))
 						</select>
 					</label>
 				</fieldset>
-				
+
 				<div class="form-controls cf">
 					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo JText::_('Cancel'); ?></a>
 					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo JText::_('Save Page'); ?></button>
 				</div>
-				
+
 				<fieldset>
 					<legend><?php echo JText::_('Settings'); ?></legend>
 					<?php if ($this->page->get('id')) : ?>
@@ -221,7 +221,7 @@ if ($this->page->get('id'))
 							</select>
 						</label>
 					<?php endif; ?>
-			
+
 					<label for="page-category" class="page-category-label">
 						<strong>Category:</strong> <span class="optional">Optional</span>
 						<select name="page[category]" class="page-category" data-url="<?php echo JRoute::_('index.php?option=com_groups&cn='. $this->group->get('gidNumber').'&controller=categories&task=add&no_html=1'); ?>">
@@ -234,7 +234,7 @@ if ($this->page->get('id'))
 						</select>
 						<span class="hint">Organize your content pages.</span>
 					</label>
-			
+
 					<?php if ($this->group->isSuperGroup() && count($this->pageTemplates) > 0) : ?>
 						<label for="page-template">
 							<strong>Template:</strong> <span class="optional">Optional</span>
@@ -249,7 +249,7 @@ if ($this->page->get('id'))
 							</select>
 						</label>
 					<?php endif; ?>
-			
+
 					<label>
 						<strong>Home Page:</strong> <span class="optional">Optional</span>
 						<select name="page[home]" class="fancy-select">
@@ -259,10 +259,10 @@ if ($this->page->get('id'))
 						<span class="hint">Override the group home page.</span>
 					</label>
 				</fieldset>
-		
+
 			</div>
 		</div>
-		
+
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />

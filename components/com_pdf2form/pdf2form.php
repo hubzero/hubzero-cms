@@ -2,7 +2,7 @@
 
 $task = isset($_REQUEST['task']) ? $_REQUEST['task'] : 'index';
 if ($task == 'index' && preg_match('#^/pdf2form/([-a-zA-Z0-9]{20})(?:$|\?)#', isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL'], $ma)) {
-	$params = $_SERVER['argv']; 
+	$params = $_SERVER['argv'];
 	$location = "/pdf2form?task=complete&crumb=".$ma[1];
 	if($params) {
 		$location .= "&".implode("&", $params);
@@ -50,9 +50,9 @@ function assertExistentForm() {
 
 try {
 	switch ($task) {
-		case 'index': 
+		case 'index':
 			authzFaculty();
-			require 'views/select.php'; 
+			require 'views/select.php';
 		break;
 		case 'upload':
 			authzFaculty();
@@ -76,7 +76,7 @@ try {
 		break;
 		case 'saveLayout':
 			authzFaculty();
-			$pdf = assertExistentForm(); 
+			$pdf = assertExistentForm();
 			$pdf->setTitle($_POST['title']);
 			if (isset($_POST['pages'])) {
 				$pdf->setPageLayout($_POST['pages']);
@@ -94,7 +94,7 @@ try {
 			if (!isset($_POST['deployment'])) {
 				throw new UnprocessableEntityError();
 			}
-			$pdf = assertExistentForm(); 
+			$pdf = assertExistentForm();
 			$dep = PdfFormDeployment::fromFormData($pdf->getId(), $_POST['deployment']);
 			if ($dep->hasErrors()) {
 				require 'views/deploy.php';
@@ -103,12 +103,12 @@ try {
 				header('Location: /pdf2form?task=showDeployment&id='.$dep->save().'&formId='.$pdf->getId());
 				exit();
 			}
-		break;	
+		break;
 		case 'updateDeployment':
 			if (!isset($_POST['deployment']) || !isset($_POST['deploymentId'])) {
 				throw new UnprocessableEntityError();
 			}
-			$pdf = assertExistentForm(); 
+			$pdf = assertExistentForm();
 			$dep = PdfFormDeployment::fromFormData($pdf->getId(), $_POST['deployment']);
 			echo 'check';
 			if ($dep->hasErrors(NULL, TRUE)) {
@@ -134,10 +134,10 @@ try {
 			$dep = PdfFormDeployment::fromCrumb($_GET['crumb']);
 			$dbg = isset($_GET['dbg']);
 			switch ($dep->getState()) {
-				case 'pending': 
+				case 'pending':
 					throw new ForbiddenError('This deployment is not yet available');
-				case 'expired': 
-					require 'views/results/'.$dep->getResultsClosed().'.php'; 
+				case 'expired':
+					require 'views/results/'.$dep->getResultsClosed().'.php';
 				break;
 				case 'active':
 					$incomplete = array();
@@ -169,9 +169,9 @@ try {
 			if ($complete) {
 				$resp = $dep->getRespondent();
 				$resp->saveAnswers($_POST)->markEnd();
-				
+
 				header('Location: /pdf2form?task=complete&crumb='.$_POST['crumb']);
-				exit();	
+				exit();
 			}
 			else {
 				$incomplete = array_filter($answers, function($ans) { return is_null($ans[0]); });
@@ -194,7 +194,7 @@ catch (Exception $ex) {
 	JError::raiseError(500, 'Internal Server Error');
 }
 
-class HttpCodedError extends Exception 
+class HttpCodedError extends Exception
 {
 	private $httpCode;
 
@@ -207,7 +207,7 @@ class HttpCodedError extends Exception
 		return $this->httpCode;
 	}
 }
-class NotFoundError extends HttpCodedError 
+class NotFoundError extends HttpCodedError
 {
 	public function __construct($msg = '') {
 		parent::__construct(404, $msg);
@@ -300,7 +300,7 @@ class PdfFormRespondent
 	public function getStartTime() {
 		return $this->started;
 	}
-	
+
 	public function getEndTime() {
 		return $this->finished;
 	}
@@ -310,7 +310,7 @@ class PdfFormRespondent
 		JFactory::getDBO()->execute('UPDATE #__pdf_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
 		return $this;
 	}
-	
+
 	public function markEnd() {
 		$this->started = date('Y-m-d H:i:s');
 		JFactory::getDBO()->execute('UPDATE #__pdf_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
@@ -326,7 +326,7 @@ class PdfFormDeployment
 
 	public static function forForm($formId) {
 		$rv = array();
-		
+
 		$dbh = self::getDbh();
 		$dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, (SELECT name FROM #__users WHERE id = user_id) AS userName FROM #__pdf_form_deployments WHERE form_id = '.(int)$formId);
 		foreach ($dbh->loadAssocList() as $depData) {
@@ -372,25 +372,25 @@ class PdfFormDeployment
 		return $rv;
 	}
 
-	public function getUserId() { 
-		return $this->userId; 
+	public function getUserId() {
+		return $this->userId;
 	}
 
 	public function getResults() {
 		$dbh = self::getDBH();
 		$dbh->setQuery(
 			'SELECT name, email, started, finished, version, count(pfa.id)*100/count(pfr2.id) AS score
-			FROM #__pdf_form_respondents pfr 
-			INNER JOIN #__users u ON u.id = pfr.user_id 
+			FROM #__pdf_form_respondents pfr
+			INNER JOIN #__users u ON u.id = pfr.user_id
 			LEFT JOIN #__pdf_form_latest_responses_view pfr2 ON pfr2.respondent_id = pfr.id
 			INNER JOIN #__pdf_form_questions pfq ON pfq.id = pfr2.question_id
 			LEFT JOIN #__pdf_form_answers pfa ON pfa.id = pfr2.answer_id AND pfa.correct
-			WHERE deployment_id = '.$this->id.' 
+			WHERE deployment_id = '.$this->id.'
 			GROUP BY name, email, started, finished, version'
 		);
 		return $dbh->loadAssocList();
 	}
-	
+
 	public function getForm() {
 		static $form;
 		if (!$form && $this->formId) {
@@ -451,7 +451,7 @@ class PdfFormDeployment
 	public function getActiveResults() {
 		return $this->getState() == 'active' ? $this->resultsOpen : $this->resultsClosed;
 	}
-	
+
 	public function getResultsOpen() {
 		return $this->resultsOpen;
 	}
@@ -533,7 +533,7 @@ class PdfFormDeployment
 		$dep->crumb = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(self::CRUMB_LEN + 1)), 0, self::CRUMB_LEN));
 		return $dep;
 	}
-	
+
 	private static function getDbh() {
 		static $dbh;
 		if (!$dbh) {
@@ -583,7 +583,7 @@ class PdfForm
 		}
 		return $dbh;
 	}
-	
+
 	private static function imageBase() {
 		$args = func_get_args();
 		array_unshift($args,  JPATH_BASE.'/site/pdf2form/images');
@@ -593,9 +593,9 @@ class PdfForm
 	public static function getActiveList() {
 		$dbh = self::getDbh();
 		$dbh->setQuery(
-			'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM #__pdf_form_questions WHERE form_id = pf.id) AS updated 
-			FROM #__pdf_forms pf  
-			WHERE title IS NOT NULL AND title != \'\' AND active = 1 
+			'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM #__pdf_form_questions WHERE form_id = pf.id) AS updated
+			FROM #__pdf_forms pf
+			WHERE title IS NOT NULL AND title != \'\' AND active = 1
 			ORDER BY title'
 		);
 		return $dbh->loadAssocList();
@@ -623,13 +623,13 @@ class PdfForm
 	public function hasErrors() {
 		return (bool)$this->errors;
 	}
-	
+
 	public function eachPage($fun) {
 		if (!$this->id) {
 			throw new UnprocessableEntityError('No pages exist for equally nonexistent form');
 		}
 		$base = self::imageBase($this->id);
-		$dir = opendir($base); 
+		$dir = opendir($base);
 		$images = array();
 		while (($file = readdir($dir))) {
 			if (preg_match('/^\d+[.]png$/', $file)) {
@@ -645,8 +645,8 @@ class PdfForm
 		}
 	}
 
-	public function getErrors() { 
-		return $this->errors; 
+	public function getErrors() {
+		return $this->errors;
 	}
 
 	public function getId() {
@@ -684,7 +684,7 @@ class PdfForm
 		else if ($_FILES[$name]['error']) {
 			switch ($_FILES[$name]['error']) {
 				case UPLOAD_ERR_INI_SIZE: case UPLOAD_ERR_FORM_SIZE:
-					$pdf->errors[] = 'Upload failed, the file exceeds the maximum allowable size'; 
+					$pdf->errors[] = 'Upload failed, the file exceeds the maximum allowable size';
 				break;
 				case UPLOAD_ERR_PARTIAL:
 					$pdf->errors[] = 'The upload did not complete. Please try again';
@@ -784,8 +784,8 @@ class PdfForm
 		$dbh = self::getDBH();
 		$fid = $this->getId();
 		$dbh->setQuery(
-			'SELECT pfq.id, pfa.id AS answer_id 
-			FROM #__pdf_form_questions pfq 
+			'SELECT pfq.id, pfa.id AS answer_id
+			FROM #__pdf_form_questions pfq
 			INNER JOIN #__pdf_form_answers pfa ON pfa.question_id = pfq.id AND pfa.correct
 			WHERE form_id = '.$fid.' AND version = (SELECT max(version) FROM #__pdf_form_questions WHERE form_id = '.$fid.')');
 		$rv = array();

@@ -57,14 +57,14 @@ window.onload = passparam;
 					<input type="hidden" name="qid" value="<?php echo $this->qid; ?>" />
 					<input type="hidden" name="type" value="<?php echo $this->type; ?>" />
 					<input type="hidden" name="task" value="upload" />
-		
+
 					<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
 					<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
@@ -79,7 +79,7 @@ window.onload = passparam;
 <?php
 	$k = 0;
 
-	if ($this->file && file_exists(JPATH_ROOT . $this->path . DS . $this->file)) 
+	if ($this->file && file_exists(JPATH_ROOT . $this->path . DS . $this->file))
 	{
 		$this_size = filesize(JPATH_ROOT . $this->path . DS . $this->file);
 		list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $this->path . DS . $this->file);

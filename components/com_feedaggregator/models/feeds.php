@@ -45,7 +45,7 @@ class FeedAggregatorModelFeeds extends \Hubzero\Base\Model
 	 */
 		protected $_tbl_name = 'FeedAggregatorTableFeeds';
 
-	
+
 	/**
 	 *  Returns all source feeds
 	 * @return     object list of source feeds
@@ -54,7 +54,7 @@ class FeedAggregatorModelFeeds extends \Hubzero\Base\Model
 		{
 			return $this->_tbl->getRecords();
 		}
-	
+
 	/**
 	 *  Returns feed as selected by ID
 	 * @param      integer $id

@@ -43,7 +43,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -71,14 +71,14 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to set the document path
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _buildPathway()
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -107,7 +107,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to build and set the document title
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _buildTitle($append='')
@@ -127,7 +127,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Default index view of all forms
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function indexTask()
@@ -154,7 +154,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a PDF and render images
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -198,7 +198,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * PDF layout view, annotate rendered images
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function layoutTask()
@@ -218,7 +218,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save layout
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveLayoutTask()
@@ -226,7 +226,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		// Check authorization
 		$this->authorize();
 
-		$pdf = $this->assertExistentForm(); 
+		$pdf = $this->assertExistentForm();
 		$pdf->setTitle($_POST['title']);
 
 		if (isset($_POST['pages']))
@@ -240,7 +240,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Deploy form view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deployTask($dep=NULL)
@@ -262,7 +262,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Create deployment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function createDeploymentTask()
@@ -272,7 +272,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			JError::raiseError(422, 'No deployment provided');
 		}
 
-		$pdf = $this->assertExistentForm(); 
+		$pdf = $this->assertExistentForm();
 		$dep = PdfFormDeployment::fromFormData($pdf->getId(), $deployment);
 
 		if ($dep->hasErrors())
@@ -304,7 +304,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Update an existing deployment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateDeploymentTask()
@@ -319,7 +319,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			JError::raiseError(422, 'No deployment ID provided');
 		}
 
-		$pdf = $this->assertExistentForm(); 
+		$pdf = $this->assertExistentForm();
 		$dep = PdfFormDeployment::fromFormData($pdf->getId(), $deployment);
 
 		if ($dep->hasErrors(NULL, TRUE))
@@ -343,7 +343,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show deployment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function showDeploymentTask($dep=NULL)
@@ -368,7 +368,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Take a form/exam
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function completeTask()
@@ -461,7 +461,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Mark the start of a time form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function startWorkTask()
@@ -486,7 +486,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save progress, called via JS ajax
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveProgressTask()
@@ -512,7 +512,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Submit and save a form response
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function submitTask()
@@ -572,7 +572,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check authorization
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function authorize()
@@ -607,7 +607,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get form ID
-	 * 
+	 *
 	 * @return     int
 	 */
 	public function assertFormId()
@@ -626,7 +626,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check that form ID exists
-	 * 
+	 *
 	 * @return     object
 	 */
 	public function assertExistentForm()
@@ -643,7 +643,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get course info from route
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function getCourseInfo()
@@ -659,7 +659,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if form is part of a course
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function authorizeCourse()
@@ -675,7 +675,7 @@ class FormHelper
 {
 	/**
 	 * Time remaining (in human readable language)
-	 * 
+	 *
 	 * @return     string
 	 */
 	public static function timeDiff($secs)
@@ -713,7 +713,7 @@ class FormHelper
 
 	/**
 	 * Convert integer to ordinal number
-	 * 
+	 *
 	 * @return     string
 	 */
 	public static function toOrdinal($int)

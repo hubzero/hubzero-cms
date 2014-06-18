@@ -38,84 +38,84 @@ class ResourcesLicense extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id  = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $text = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * tinyint(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $apps_only 	= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $main 		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $icon 		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $url 		= NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $agreement  = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $info  		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,13 +126,13 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      mixed $oid Integer or string (alias)
 	 * @return     void
 	 */
 	public function load($keys = NULL, $reset = true)
 	{
-		if ($keys === NULL) 
+		if ($keys === NULL)
 		{
 			return false;
 		}
@@ -145,11 +145,11 @@ class ResourcesLicense extends JTable
 		$oid = trim($keys);
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -158,23 +158,23 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->text = trim($this->text);
 
-		if (!$this->text) 
+		if (!$this->text)
 		{
 			$this->setError(JText::_('Please provide some text.'));
 			return false;
 		}
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->title = substr($this->text, 0, 70);
-			if (strlen($this->title >= 70)) 
+			if (strlen($this->title >= 70))
 			{
 				$this->title .= '...';
 			}
@@ -192,7 +192,7 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -201,16 +201,16 @@ class ResourcesLicense extends JTable
 		$query  = "FROM $this->_tbl AS c";
 
 		$where = array();
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 				OR LOWER(c.`text`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -222,7 +222,7 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Get record counts
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     array
 	 */
@@ -238,7 +238,7 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @return     array
 	 */
@@ -247,17 +247,17 @@ class ResourcesLicense extends JTable
 		$query  = "SELECT c.*";
 		$query .= $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
@@ -268,7 +268,7 @@ class ResourcesLicense extends JTable
 
 	/**
 	 * Get licenses
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     array
 	 */
@@ -278,12 +278,12 @@ class ResourcesLicense extends JTable
 
 		$where = array();
 
-		if (!is_null($id)) 
+		if (!is_null($id))
 		{
 			$id = intval($id);
 			$where[] = "name NOT LIKE 'custom%' OR name = 'custom$id'";
 		}
-		else 
+		else
 		{
 			$where[] = "name != 'custom'";
 		}
@@ -294,11 +294,11 @@ class ResourcesLicense extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
@@ -308,7 +308,7 @@ class ResourcesLicense extends JTable
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}

@@ -38,7 +38,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Add a member to a group
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -48,7 +48,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('MEMBERS_NO_ID'));
 			$this->displayTask($id);
@@ -57,7 +57,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 
 		// Incoming group table
 		$tbl = JRequest::getVar('tbl', '');
-		if (!$tbl) 
+		if (!$tbl)
 		{
 			$this->setError(JText::_('MEMBERS_NO_GROUP_TABLE'));
 			$this->displayTask($id);
@@ -66,7 +66,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 
 		// Incoming group ID
 		$gid = JRequest::getInt('gid', 0);
-		if (!$gid) 
+		if (!$gid)
 		{
 			$this->setError(JText::_('MEMBERS_NO_GROUP_ID'));
 			$this->displayTask($id);
@@ -78,7 +78,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 
 		// Add the user to the group table
 		$group->add($tbl, array($id));
-		if ($tbl == 'managers') 
+		if ($tbl == 'managers')
 		{
 			// Ensure they're added to the members list as well if they're a manager
 			$group->add('members', array($id));
@@ -92,20 +92,20 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 
 	/**
 	 * Display all the groups a member is apart of
-	 * 
+	 *
 	 * @param      integer $id Member ID to lookup
 	 * @return     void
 	 */
 	public function displayTask($id=0)
 	{
 		$this->view->setLayout('display');
-		
+
 		// Incoming
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('id', 0);
 		}
-		
+
 		$this->view->id = $id;
 
 		// Get a list of all groups
@@ -121,7 +121,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 		$this->view->rows = \Hubzero\User\Group::find($filters);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

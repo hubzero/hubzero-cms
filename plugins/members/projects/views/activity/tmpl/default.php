@@ -65,19 +65,19 @@ if (count($this->activities) > 0 ) {
 					<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($title, 65); ?></a></span>
 					<div class="mline <?php echo $class; ?><?php if ($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">
 						<span>
-							<span class="actor"><?php echo $a->admin == 1 ? JText::_('PLG_MEMBERS_PROJECTS_ADMIN') : $a->name; ?></span> <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>	
+							<span class="actor"><?php echo $a->admin == 1 ? JText::_('PLG_MEMBERS_PROJECTS_ADMIN') : $a->name; ?></span> <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
 						</span>
 					</div>
 				<?php if ($a->commentable) { ?>
 					<span class="comment">
-						<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('PLG_MEMBERS_PROJECTS_NEW').'</span>'; } ?> 
+						<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('PLG_MEMBERS_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('PLG_MEMBERS_PROJECTS_NEW').'</span>'; } ?>
 					</span>
-					<?php 
-					if (count($comments) > 0) { 
+					<?php
+					if (count($comments) > 0) {
 						// Show Comments
 					?>
 					<ol class="comments" id="comments_<?php echo $a->id; ?>">
-						<?php foreach ($comments as $comment) { 
+						<?php foreach ($comments as $comment) {
 							$ctimeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $comment->created ? ' class="urgency"' : '';
 						?>
 						<li class="quote" id="c_<?php echo $comment->id; ?>">
@@ -90,9 +90,9 @@ if (count($this->activities) > 0 ) {
 				} // end if commentable ?>
 				</td>
 			</tr>
-		<?php 
+		<?php
 			$i++;
-		} // end foreach 
+		} // end foreach
 		?>
 		</tbody>
 	</table>
@@ -101,9 +101,9 @@ if (count($this->activities) > 0 ) {
 <?php } ?>
 
 <div id="more-updates" class="nav_pager">
-<?php 
-if ($this->total > $this->filters['limit']) { 
-	$limit = $this->filters['limit'] + $this->limit; ?>	
+<?php
+if ($this->total > $this->filters['limit']) {
+	$limit = $this->filters['limit'] + $this->limit; ?>
 	<p><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->uid.'&active=projects').'?action=updates&limit='.$limit.'&prev='.$this->filters['limit'];  ?>"><?php echo JText::_('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if ($this->filters['limit'] != $this->limit) { ?>
 	<p><?php echo JText::_('PLG_MEMBERS_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>

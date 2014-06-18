@@ -38,7 +38,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Manage tags on a resource
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -89,7 +89,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	/**
 	 * Saves changes to the tag list on a resource
 	 * Redirects back to main resource listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()

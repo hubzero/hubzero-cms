@@ -52,7 +52,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
 	<script type="text/javascript" src="/components/'.$option.'/maps/js/elabel.js"></script>
 	<script type="text/javascript">
-	function initialize() 
+	function initialize()
 	{
 		var dt = "'.$date.'";
 		var disp_label = "'.$label.'";
@@ -91,7 +91,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
    		}
 	}
 
-	function getMarkers(dt) 
+	function getMarkers(dt)
 	{
     	//var urlstr="read_location.php?period="+dt;
         var urlstr="'.$dataurl.'&period="+dt;

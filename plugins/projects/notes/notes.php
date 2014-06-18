@@ -37,10 +37,10 @@ jimport( 'joomla.plugin.plugin' );
  * Projects Notes (wiki) plugin
  */
 class plgProjectsNotes extends JPlugin
-{	
+{
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -52,67 +52,67 @@ class plgProjectsNotes extends JPlugin
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'projects', 'notes' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		// Load component configs
 		$this->_config = JComponentHelper::getParams( 'com_projects' );
-		
+
 		// Load wiki configs
 		$this->_wiki_config = JComponentHelper::getParams( 'com_wiki' );
-				
+
 		$this->_task 	= '';
 		$this->_msg 	= '';
 		$this->_group 	= ''; // project group
 		$this->_tool	= NULL;
-		
+
 		$this->_controllerName = '';
-		
+
 		// Output collectors
 		$this->_referer = '';
 		$this->_message = array();
 	}
-	
+
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas() 
+	public function &onProjectAreas()
 	{
 		$area = array(
 			'name' => 'notes',
 			'title' => JText::_('COM_PROJECTS_TAB_NOTES')
 		);
-		
+
 		return $area;
 	}
-	
+
 	/**
 	 * Event call to return count of items
-	 * 
+	 *
 	 * @param      object  $project 		Project
-	 * @param      integer &$counts 		
+	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $project, &$counts ) 
+	public function &onProjectCount( $project, &$counts )
 	{
 		$database = JFactory::getDBO();
-				
+
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $database );
-		
+
 		$group_prefix = $this->_config->get('group_prefix', 'pr-');
 		$groupname = $group_prefix . $project->alias;
 		$scope = 'projects' . DS . $project->alias . DS . 'notes';
-		
+
 		$counts['notes'] = $projectsHelper->getNoteCount( $groupname, $scope );
-		
+
 		return $counts;
 
 	}
-	
+
 	/**
 	 * Event call to return data for a specific project
-	 * 
+	 *
 	 * @param      object  $project 		Project
 	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
@@ -124,18 +124,18 @@ class plgProjectsNotes extends JPlugin
 	 * @param      string  $tool			Name of tool wiki belongs to
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $option, $authorized, 
+	public function onProject ( $project, $option, $authorized,
 		$uid, $msg = '', $error = '', $action = '', $areas = null, $tool = NULL )
 	{
 		$returnhtml = true;
-	
+
 		$arr = array(
 			'html'=>'',
 			'metadata'=>'',
 			'msg'=>'',
 			'referer'=>''
 		);
-		
+
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
 
@@ -145,51 +145,51 @@ class plgProjectsNotes extends JPlugin
 				return;
 			}
 		}
-		
+
 		// Is the user logged in?
-		if ( !$authorized && !$project->owner ) 
+		if ( !$authorized && !$project->owner )
 		{
 			return $arr;
 		}
-		
+
 		// Do we have a project ID?
-		if ( !is_object($project) or !$project->id ) 
+		if ( !is_object($project) or !$project->id )
 		{
 			return $arr;
 		}
-		else 
+		else
 		{
 			$this->_project = $project;
 		}
-		
+
 		// Are we returning HTML?
-		if ($returnhtml) 
-		{				
+		if ($returnhtml)
+		{
 			// Load wiki language file
 			$lang = JFactory::getLanguage();
 			$lang->load('plg_groups_wiki');
 			$this->loadLanguage();
-						
+
 			// Get database
 			$database = JFactory::getDBO();
-			
+
 			// Set vars
 			$this->_database 	= $database;
 			$this->_option 		= $option;
 			$this->_authorized 	= $authorized;
 			$this->_uid 		= $uid;
-			
-			if ( !$this->_uid) 
+
+			if ( !$this->_uid)
 			{
 				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
 			$this->_msg = $msg;
-			if ( $error) 
+			if ( $error)
 			{
-				$this->setError($error);	
+				$this->setError($error);
 			}
-			
+
 			// Get JS
 			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
@@ -204,44 +204,44 @@ class plgProjectsNotes extends JPlugin
 
 			$pagename = trim(JRequest::getVar('pagename', ''));
 			$scope = trim(JRequest::getVar( 'scope', '' ));
-			
+
 			$startScope = trim(str_replace('projects' . DS . $this->_project->alias . DS . 'notes', '', $scope), DS);
-			
+
 			// Does this page belong to a tool?
 			if ($pagename && (preg_match("/^tool:/", $pagename) || preg_match("/tool:/", $startScope) ))
 			{
-				$toolname = preg_match("/^tool:/", $pagename) 
-							? preg_replace('/^tool:/', "", $pagename) 
+				$toolname = preg_match("/^tool:/", $pagename)
+							? preg_replace('/^tool:/', "", $pagename)
 							: preg_replace('/^tool:/', "", $startScope);
 				$parts 	 = explode(':', $toolname);
 				$tool 	 = $parts[0];
 			}
-			
+
 			// Enable tool wiki
-			if ($tool && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+			if ($tool && is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 				. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php'))
 			{
 				// Get tool library
-				require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+				require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 					. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
 
 				$objProjectTool = new ProjectTool( $database );
 				$this->_tool = $objProjectTool->getFullRecord($tool, $this->_project->id);
-				
+
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'tools');
 				$lang = JFactory::getLanguage();
 				$lang->load('plg_projects_tools');
 			}
-				
-			// What's the task?						
+
+			// What's the task?
 			$this->_task = $action ? $action : JRequest::getVar('action', 'view');
-			
+
 			// Publishing?
 			if ($this->_task == 'browser')
 			{
 				return $this->browser();
 			}
-						
+
 			switch ($this->_task)
 			{
 				case 'upload':
@@ -265,12 +265,12 @@ class plgProjectsNotes extends JPlugin
 				case 'removecomment':
 				case 'comments':
 					$controllerName = 'comments';
-					
+
 					$cid = JRequest::getVar('cid', 0);
 					if ($cid)
 					{
 						JRequest::setVar('id', $cid);
-					}					
+					}
 				break;
 
 				case 'delete':
@@ -282,9 +282,9 @@ class plgProjectsNotes extends JPlugin
 					$controllerName = 'page';
 				break;
 			}
-			
+
 			if (substr(strtolower($pagename), 0, strlen('image:')) == 'image:'
-			 || substr(strtolower($pagename), 0, strlen('file:')) == 'file:') 
+			 || substr(strtolower($pagename), 0, strlen('file:')) == 'file:')
 			{
 				$controllerName = 'media';
 				$this->_task = 'download';
@@ -292,17 +292,17 @@ class plgProjectsNotes extends JPlugin
 
 			$lang = JFactory::getLanguage();
 			$lang->load('com_wiki');
-			
+
 			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
 				$controllerName = 'page';
 			}
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php');
 			$controllerName = 'WikiController' . ucfirst($controllerName);
-			
+
 			// Save controller name
 			$this->_controllerName = $controllerName;
-			
+
 			// Listing/unlisting?
 			if ($this->_task == 'publist' || $this->_task == 'unlist')
 			{
@@ -313,96 +313,96 @@ class plgProjectsNotes extends JPlugin
 				$arr['html'] = $this->_share();
 			}
 			else
-			{				
+			{
 				// Display page
 				$arr['html'] = $this->page();
-			}	
+			}
 		}
-		
+
 		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;		
-		
+		$arr['msg'] = $this->_message;
+
 		// Return data
 		return $arr;
 	}
-	
+
 	//----------------------------------------
 	// Views
 	//----------------------------------------
 
 	/**
 	 * View of project note
-	 * 
+	 *
 	 * @return     string
 	 */
-	public function page() 
-	{		
+	public function page()
+	{
 		// Incoming
-		$preview = trim(JRequest::getVar( 'preview', '' ));	
+		$preview = trim(JRequest::getVar( 'preview', '' ));
 		$note = JRequest::getVar('page', array(), 'post', 'none', 2);
-		
+
 		$pagePrefix = '';
 		$defaultName = 'NewNote';
-			
+
 		// Set wiki scope
 		$scope = trim(JRequest::getVar( 'scope', '' ));
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
-		if (!$scope) 
+		if (!$scope)
 		{
 			$scope = $masterscope;
 		}
-				
+
 		// Get helper
 		$projectsHelper = new ProjectsHelper( $this->_database );
-		
-		// Set project (system) group	
+
+		// Set project (system) group
 		$group_prefix = $this->_config->get('group_prefix', 'pr-');
 		if ( !$this->_group)
 		$this->_group = $group_prefix . $this->_project->alias;
-		
+
 		// Get the page name
 		$pagename = trim(JRequest::getVar( 'pagename', ''));
 		$exists = 0;
-				
+
 		// Tool wiki?
 		if ($this->_tool && $this->_tool->id)
 		{
 			$pagePrefix  = 'tool:' . $this->_tool->name . ':';
 			$defaultName =  'WikiStart';
 		}
-		
+
 		// Get first project note
 		$firstnote = $projectsHelper->getFirstNote( $this->_group, $masterscope, $pagePrefix);
-		if ( !$pagename) 
+		if ( !$pagename)
 		{
 			// Default view to first available note if no page is requested
-			$pagename = ($firstnote && $this->_task != 'new' && $this->_task != 'save') ? $firstnote : $defaultName;			
+			$pagename = ($firstnote && $this->_task != 'new' && $this->_task != 'save') ? $firstnote : $defaultName;
 		}
-				
+
 		// Cannot save page with default name
-		if ( $this->_task == 'save' && $pagename == 'NewNote') 
+		if ( $this->_task == 'save' && $pagename == 'NewNote')
 		{
 			$pagename = '';
 			$pagetitle = (isset($note['title']))  ? trim($note['title'])    : '';
 		}
-		
+
 		// Are we saving?
 		$save = $this->_task == 'save' ? 1 : 0;
 		$rename = $this->_task == 'saverename' ? 1 : 0;
-			
+
 		// Load requested page
-		$page = new WikiTablePage( $this->_database );		
+		$page = new WikiTablePage( $this->_database );
 		$page->load( $pagename, $scope );
-		
+
 		// Fix up saved page
-		if ($page->exist()) 
+		if ($page->exist())
 		{
 			$exists = 1;
 			$_REQUEST['lid'] = $page->id;
-			
+
 			// Check that we have a version
 			$revision = new WikiTableRevision($this->_database);
-			
+
 			// Create version if does not exists
 			if (!$revision->loadByVersion($page->id))
 			{
@@ -414,33 +414,33 @@ class plgProjectsNotes extends JPlugin
 				$revision->store();
 			}
 		}
-		
+
 		// No default tool wiki - create one
 		if ($this->_tool && $this->_tool->id && !$firstnote)
 		{
 			$this->_createDefaultPage($pagename, $scope, $pagePrefix);
 		}
-					
+
 		// Set some variables for the wiki
 		$pagename = $this->_task == 'new' ? 'New Note' : $pagename;
-		
+
 		// Add tool prefix to name
 		if ($pagePrefix && !preg_match('/' . $pagePrefix . '/', $pagename) && $this->_task != 'new' && !$firstnote)
 		{
 			$pagename = $pagePrefix . $pagename;
 		}
-		
+
 		// Can delete page?
 		$canDelete = ($this->_tool && $this->_tool->id && $scope == $masterscope) ? 0 : 1;
-		
+
 		JRequest::setVar('pagename', $pagename);
 		JRequest::setVar('task', $this->_task);
 		JRequest::setVar('scope', $scope);
-		
+
 		JRequest::setVar('tool', $this->_tool);
 		JRequest::setVar('project', $this->_project);
 		JRequest::setVar('candelete', $canDelete);
-		
+
 		// Instantiate controller
 		$controller = new $this->_controllerName(array(
 			'base_path' => JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes',
@@ -452,33 +452,33 @@ class plgProjectsNotes extends JPlugin
 		// Catch any echoed content with ob
 		ob_start();
 		$controller->execute();
-		
+
 		// Record activity
-		if ($save && !$preview && !$this->getError() && !$controller->getError()) 
+		if ($save && !$preview && !$this->getError() && !$controller->getError())
 		{
 			$objAA = new ProjectActivity( $this->_database );
 			$what  = $exists ? JText::_('COM_PROJECTS_NOTE_EDITED') : JText::_('COM_PROJECTS_NOTE_ADDED');
 			$what .= $exists ? ' "' . $page->title . '" ' : '';
 			$what .= ' '.JText::_('COM_PROJECTS_NOTE_IN_NOTES');
-			$aid = $objAA->recordActivity($this->_project->id, $this->_uid, $what, 
+			$aid = $objAA->recordActivity($this->_project->id, $this->_uid, $what,
 				$controller->page->get('id'), 'notes', JRoute::_('index.php?option=' . $this->_option . a
 				. 'alias=' . $this->_project->alias . a . 'active=notes') , 'notes', 0);
-			
+
 			// Record page order for new pages
 			$lastorder = $projectsHelper->getLastNoteOrder($this->_group, $scope);
 			$order = intval($lastorder + 1);
 			$projectsHelper->saveNoteOrder($this->_group, $scope, $order);
 		}
-		
+
 		// Make sure all scopes of subpages are valid after rename
-		if ($rename) 
+		if ($rename)
 		{
 			// Incoming
 			$oldpagename = trim(JRequest::getVar( 'oldpagename', '', 'post' ));
 			$newpagename = trim(JRequest::getVar( 'newpagename', '', 'post' ));
 			$projectsHelper->fixScopePaths($this->_group, $scope, $oldpagename, $newpagename);
 		}
-				
+
 		$controller->redirect();
 		$content = ob_get_contents();
 		ob_end_clean();
@@ -491,16 +491,16 @@ class plgProjectsNotes extends JPlugin
 				'name'=>'wrap'
 			)
 		);
-		
+
 		// Fix pathway (com_wiki screws it up)
 		$this->fixupPathway();
-				
+
 		// Get all notes
 		$view->notes = $projectsHelper->getNotes($this->_group, $masterscope);
-		
+
 		// Get parent notes
 		$view->parent_notes = $projectsHelper->getParentNotes($this->_group, $scope, $this->_task);
-		
+
 		//$book = new WikiModelBook('project');
 
 		$view->templates 	= $page->getTemplates(); //$book->templates()
@@ -522,20 +522,20 @@ class plgProjectsNotes extends JPlugin
 		$view->tool			= $this->_tool;
 		$view->config		= $this->_config;
 		$view->pparams		= $this->_params;
-		
-		// Get messages	and errors	
+
+		// Get messages	and errors
 		$view->msg = $this->_msg;
-		if ( $this->getError()) 
+		if ( $this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
-				
-		return $view->loadTemplate();	
+
+		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * List/unlist on public project page
-	 * 
+	 *
 	 *
 	 * @return     string
 	 */
@@ -543,18 +543,18 @@ class plgProjectsNotes extends JPlugin
 	{
 		// Incoming
 		$id = trim(JRequest::getInt( 'p', '' ));
-		
+
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= JRoute::_($route . a . 'active=notes');
-		
+
 		// Load requested page
-		$page = new WikiTablePage( $this->_database );		
-		if (!$page->loadById( $id )) 
-		{			
+		$page = new WikiTablePage( $this->_database );
+		if (!$page->loadById( $id ))
+		{
 			$this->_referer = $url;
 			return;
 		}
-				
+
 		// Get/update public stamp for page
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
@@ -570,13 +570,13 @@ class plgProjectsNotes extends JPlugin
 				'pagename' => $page->pagename,
 				'revision' => NULL
 			);
-						
+
 			$listed = $this->_task == 'publist' ? 1 : 0;
 
 			if ($objSt->registerStamp($this->_project->id, json_encode($reference), 'notes', $listed))
 			{
 				$this->_msg = $this->_task == 'publist' ? JText::_('COM_PROJECTS_NOTE_MSG_LISTED') : JText::_('COM_PROJECTS_NOTE_MSG_UNLISTED');
-				$this->_message = array('message' => $this->_msg, 'type' => 'success');				
+				$this->_message = array('message' => $this->_msg, 'type' => 'success');
 				$this->_referer = JRoute::_('index.php?option='.$this->_option.'&scope='.$page->scope.'&pagename='.$page->pagename);
 				return;
 			}
@@ -587,10 +587,10 @@ class plgProjectsNotes extends JPlugin
 			return;
 		}
 	}
-	
+
 	/**
 	 * Get public link and list/unlist
-	 * 
+	 *
 	 *
 	 * @return     string
 	 */
@@ -598,18 +598,18 @@ class plgProjectsNotes extends JPlugin
 	{
 		// Incoming
 		$id = trim(JRequest::getInt( 'p', '' ));
-		
+
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= JRoute::_($route . a . 'active=notes');
-		
+
 		// Load requested page
-		$page = new WikiTablePage( $this->_database );		
-		if (!$page->loadById( $id )) 
-		{			
+		$page = new WikiTablePage( $this->_database );
+		if (!$page->loadById( $id ))
+		{
 			$this->_referer = $url;
 			return;
 		}
-				
+
 		// Get/update public stamp for page
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
@@ -625,7 +625,7 @@ class plgProjectsNotes extends JPlugin
 				'pagename' => $page->pagename,
 				'revision' => NULL
 			);
-			
+
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -634,7 +634,7 @@ class plgProjectsNotes extends JPlugin
 					'name'=>'pubsettings'
 				)
 			);
-			
+
 			// Generate stamp
 			$view->pubStamp = NULL;
 			$view->listed	= NULL;
@@ -643,20 +643,20 @@ class plgProjectsNotes extends JPlugin
 				$view->pubStamp = $objSt->stamp;
 				$view->listed	= $objSt->listed;
 			}
-			
+
 			$view->option 			= $this->_option;
 			$view->project			= $this->_project;
 			$view->url				= $url;
-			$view->config 			= JComponentHelper::getParams( 'com_projects' );	
+			$view->config 			= JComponentHelper::getParams( 'com_projects' );
 			$view->page				= $page;
 			$view->revision 		= $page->getCurrentRevision();
 			$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$view->params 			= new JParameter($this->_project->params);
 			$view->pparams			= $this->_params;
 			$view->ajax				= JRequest::getInt('ajax', 0);
-			
+
 			// Output HTML
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError( $this->getError() );
 			}
@@ -669,17 +669,17 @@ class plgProjectsNotes extends JPlugin
 			return;
 		}
 	}
-	
+
 	/**
 	 * Create default wiki page
-	 * 
+	 *
 	 *
 	 * @return     string
 	 */
 	protected function _createDefaultPage( $pagename = '', $scope = '', $pagePrefix = '' )
 	{
 		$juser = JFactory::getUser();
-		
+
 		// Compose default tool page
 		$eview = new \Hubzero\Plugin\View(
 			array(
@@ -695,17 +695,17 @@ class plgProjectsNotes extends JPlugin
 
 		$body = $eview->loadTemplate();
 		$body = str_replace("\n", "\r\n", $body);
-		
+
 		// Get helper
-		$projectsHelper = new ProjectsHelper( $this->_database );		
+		$projectsHelper = new ProjectsHelper( $this->_database );
 		$lastorder = $projectsHelper->getLastNoteOrder($this->_group, $scope);
 		$order = intval($lastorder + 1);
-		
+
 		if ($pagePrefix && !preg_match('/' . $pagePrefix . '/', $pagename))
 		{
 			$pagename = $pagePrefix . $pagename;
 		}
-		
+
 		// Create page
 		$page 					= new WikiTablePage($this->_database);
 		$page->title  			= $pagename;
@@ -718,13 +718,13 @@ class plgProjectsNotes extends JPlugin
 		$page->created_by 		= $juser->get('id');
 		$page->times_rated		= $order;
 		$page->store();
-		
+
 		// Make sure we have page id
-		if (!$page->id) 
+		if (!$page->id)
 		{
 			$page->getID();
 		}
-		
+
 		// Create revision
 		$revision 				= new WikiTableRevision($this->_database);
 		$revision->pageid     	= $page->id;
@@ -733,7 +733,7 @@ class plgProjectsNotes extends JPlugin
 		$revision->version    	= 1;
 		$revision->pagetext   	= $body;
 		$revision->approved 	= 1;
-		
+
 		// Transform the wikitext to HTML
 		$wikiconfig = array(
 			'option'   => $this->_option,
@@ -747,35 +747,35 @@ class plgProjectsNotes extends JPlugin
 		$p = WikiHelperParser::getInstance();
 		$revision->pagehtml = $p->parse($revision->pagetext, $wikiconfig);
 		$revision->store();
-		
+
 		$page->version_id = $revision->id;
 		$page->modified   = $revision->created;
 		$page->store();
 		//return '<pre>' . $body . '</pre>';
 	}
-	
+
 	/**
 	 * Fix pathway
-	 * 
+	 *
 	 * @param      object  	$page
 	 *
 	 * @return     string
 	 */
 	public function fixupPathway()
-	{		
+	{
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
 		$pathway->setPathway(array());
-		
+
 		$group = NULL;
-		
+
 		if ($this->_project->owned_by_group)
 		{
 			$group = \Hubzero\User\Group::getInstance( $this->_project->owned_by_group );
 		}
-		
+
 		// Add group
-		if ($group && is_object($group)) 
+		if ($group && is_object($group))
 		{
 			$pathway->setPathway(array());
 			$pathway->addItem(
@@ -798,12 +798,12 @@ class plgProjectsNotes extends JPlugin
 				JRoute::_('index.php?option=' . $this->_option)
 			);
 		}
-				
+
 		$pathway->addItem(
 			stripslashes($this->_project->title),
 			JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias)
 		);
-		
+
 		if ($this->_tool && $this->_tool->id)
 		{
 			$pathway->addItem(
@@ -811,18 +811,18 @@ class plgProjectsNotes extends JPlugin
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
 				. $this->_project->alias . a . 'active=tools')
 			);
-			
+
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
 				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id)
-			);	
-			
+			);
+
 			$pathway->addItem(
 				ucfirst(JText::_('COM_PROJECTS_TOOLS_TAB_WIKI')),
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
 				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id . a . 'action=wiki')
-			);		
+			);
 		}
 		else
 		{
@@ -833,10 +833,10 @@ class plgProjectsNotes extends JPlugin
 			);
 		}
 	}
-	
+
 	/**
 	 * List project notes available for publishing
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function browser()
@@ -845,12 +845,12 @@ class plgProjectsNotes extends JPlugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 		$primary 	= JRequest::getInt('primary', 1);
 		$versionid  = JRequest::getInt('versionid', 0);
-				
-		if (!$ajax) 
+
+		if (!$ajax)
 		{
 			return false;
 		}
-				
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -859,14 +859,14 @@ class plgProjectsNotes extends JPlugin
 				'name'=>'browser'
 			)
 		);
-		
+
 		// Get current attachments
 		$pContent = new PublicationAttachment( $this->_database );
 		$role 	= $primary ? '1' : '0';
 		$other 	= $primary ? '0' : '1';
-		
+
 		$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => 'note'));
-		
+
 		// Output HTML
 		$view->params 		= new JParameter( $this->_project->params );
 		$view->option 		= $this->_option;
@@ -874,85 +874,85 @@ class plgProjectsNotes extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;	
+		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];
 		$view->primary		= $primary;
 		$view->versionid	= $versionid;
-		
-		// Get messages	and errors	
-		if ($this->getError()) 
+
+		// Get messages	and errors
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		$html =  $view->loadTemplate();
-				
+
 		$arr = array(
 			'html' => $html,
 			'metadata' => '',
 			'msg' => '',
 			'referer' => ''
 		);
-		
+
 		return $arr;
 	}
-	
+
 	/**
 	 * Serve file (usually via public link)
-	 * 
+	 *
 	 * @param   int  	$projectid
 	 * @return  void
 	 */
-	public function serve( $projectid = 0, $query = '')  
+	public function serve( $projectid = 0, $query = '')
 	{
 		$data = json_decode($query);
-		
+
 		if (!isset($data->pageid) || !$projectid)
 		{
 			return false;
 		}
-		
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 		$this->loadLanguage();
-		
+
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-		
+
 		$database = JFactory::getDBO();
-		
+
 		// Instantiate a project
 		$obj = new Project( $database );
-		
+
 		// Get Project
 		$this->_project = $obj->getProject($projectid);
 		$this->_option 	= 'com_projects';
-		
+
 		if (!$this->_project)
 		{
 			return false;
 		}
-		
+
 		// Fix pathway (com_wiki screws it up)
 		$this->fixupPathway();
-		
+
 		// URL to project
 		$url 	= JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->_project->alias);
-		
+
 		// Load requested page
-		$page = new WikiTablePage( $database );		
-		if (!$page->loadById( $data->pageid )) 
-		{			
+		$page = new WikiTablePage( $database );
+		if (!$page->loadById( $data->pageid ))
+		{
 			return false;
 		}
-		
+
 		// Add styling
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
 		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
-		
+
 		// Write title & build pathway
-		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->title) );	
-				
+		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->title) );
+
 		// Instantiate a new view
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -965,18 +965,18 @@ class plgProjectsNotes extends JPlugin
 		$view->project			= $this->_project;
 		$view->url				= $url;
 		$view->config 			= JComponentHelper::getParams( 'com_projects' );
-		$view->database 		= $database;	
+		$view->database 		= $database;
 		$view->page				= $page;
 		$view->revision 		= $page->getCurrentRevision();
 		$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
-				
+
 		// Output HTML
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
-		
+
 		$view->display();
 		return true;
-	}		
+	}
 }

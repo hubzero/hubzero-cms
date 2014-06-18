@@ -38,7 +38,7 @@ class modFindResources extends \Hubzero\Module\Module
 {
 	/**
 	 * Generate module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -61,7 +61,7 @@ class modFindResources extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

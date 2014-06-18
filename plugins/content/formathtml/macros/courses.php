@@ -41,7 +41,7 @@ class Courses extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -69,7 +69,7 @@ class Courses extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -80,7 +80,7 @@ class Courses extends Macro
 
 	/**
 	 * Get a list of courses
-	 * 
+	 *
 	 * @return \Hubzero\Base\ItemList
 	 */
 	private function _getCourses()
@@ -93,7 +93,7 @@ class Courses extends Macro
 		$filters['limit']    = $this->_getArg('limit', 5);
 		$filters['sort']     = 'title';
 		$filters['sort_Dir'] = 'ASC';
-		
+
 		// make sure to replace group cname with group id
 		if (isset($filters['group']))
 		{
@@ -103,7 +103,7 @@ class Courses extends Macro
 				$filters['group_id'] = $group->get('gidNumber');
 				unset($filters['group']);
 			}
-		}	
+		}
 
 		// instantiate courses model
 		$model = \CoursesModelCourses::getInstance();
@@ -111,14 +111,14 @@ class Courses extends Macro
 		// get a list of courses
 		// make sure to clear in case we have more then one
 		$courses = $model->courses($filters, true);
-		
+
 		// return courses
 		return $courses;
 	}
 
 	/**
 	 * Render Courses List
-	 * 
+	 *
 	 * @param  array  $courses  Courses list
 	 * @return string
 	 */
@@ -140,7 +140,7 @@ class Courses extends Macro
 					$instructorIds = array_map(function($instructor) {
 						return $instructor->get('user_id');
 					}, $instructors);
-					
+
 					// get the profile from the instructor param
 					$profile = \Hubzero\User\Profile::getInstance($this->_getArg('instructor'));
 					if ($profile)
@@ -175,7 +175,7 @@ class Courses extends Macro
 					{
 						// load the section (default is __default)
 						$section = $offering->section($sectionParam);
-						
+
 						// if we have section
 						if ($section->get('id'))
 						{
@@ -202,7 +202,7 @@ class Courses extends Macro
 						{
 							$instr[] = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
 						}
-						
+
 					}
 					$html .= '<span class="entry-details">Instructors: ' . implode(', ', $instr) . '</span>';
 				}
@@ -226,7 +226,7 @@ class Courses extends Macro
 
 	/**
 	 * Get Arg by search
-	 * 
+	 *
 	 * @param  string $arg     Argument to search for
 	 * @param  string $default Default value if no match is found
 	 * @return string

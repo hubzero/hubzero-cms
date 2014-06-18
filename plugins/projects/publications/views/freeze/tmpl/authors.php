@@ -48,11 +48,11 @@ $elName = "authorList";
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
-	<?php if (count($this->pub->_authors) > 0) { 
+	<?php if (count($this->pub->_authors) > 0) {
 		$i= 1; ?>
 	<div class="list-wrapper">
-		<ul class="itemlist" id="author-list">	
-			<?php foreach ($this->pub->_authors as $author) { 
+		<ul class="itemlist" id="author-list">
+			<?php foreach ($this->pub->_authors as $author) {
 					$org = $author->organization ? $author->organization : $author->p_organization;
 					$name = $author->name ? $author->name : $author->p_name;
 					$name = trim($name) ? $name : $author->invited_name;
@@ -60,18 +60,18 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 
 					$active 	= in_array($author->project_owner_id, $this->teamids) ? true : false;
 					$confirmed 	= $author->user_id ? true : false;
-					
+
 					$details = $author->credit ? stripslashes($author->credit) : NULL;
 				 ?>
 				<li>
 					<span class="item-order"><?php echo $i; ?></span>
 					<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
 					<span class="item-details"><?php echo $details; ?></span>
-				</li>	
+				</li>
 		<?php	$i++; } ?>
 		</ul>
 	</div>
 	<?php } else {
 		echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
-	}  ?>		
+	}  ?>
 </div>

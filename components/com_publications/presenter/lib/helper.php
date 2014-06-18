@@ -33,14 +33,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'PresenterHelper'
- * 
+ *
  * Long description (if any) ...
  */
 class PresenterHelper extends JObject
 {
 	/**
 	 * Displays Error Messages to the User
-	 * 
+	 *
 	 * @param 	array 	Array of error messages
 	 * @return 	string	Html data for errors
 	 */
@@ -66,7 +66,7 @@ class PresenterHelper extends JObject
 
 	/**
 	 * Generates JSON Manifest from XML doc uploaded
-	 * 
+	 *
 	 * @param 	string 	Path to resources files
 	 * @param 	string 	Path to XML doc
 	 * @return 	string	Check to make sure manifest is created successfully
@@ -152,7 +152,7 @@ class PresenterHelper extends JObject
 
 	/**
 	 * Gets the file extension from filename
-	 * 
+	 *
 	 * @param 	string	Name of file
 	 * @return 	string	File Extension
 	 */
@@ -163,7 +163,7 @@ class PresenterHelper extends JObject
 
 	/**
 	 * Gets just the name of file from filename
-	 * 
+	 *
 	 * @param 	string	Name of file
 	 * @return 	string	File name
 	 */

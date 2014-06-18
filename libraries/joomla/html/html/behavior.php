@@ -58,7 +58,7 @@ abstract class JHtmlBehavior
 			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
 		}
 
-		// We need to make sure the framework is first, regardless of where/when 
+		// We need to make sure the framework is first, regardless of where/when
 		// JHTML::_('behavior.framework') is called. For instance, if called in the template
 		// then the framework needs to be pushed before any custom scripts the component
 		// or plugins may have already pushed.
@@ -453,7 +453,7 @@ abstract class JHtmlBehavior
 		$opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
 		$opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
 		$opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
-		if (isset($params['size']) 
+		if (isset($params['size'])
 		 && is_array($params['size']))
 		{
 			$opt['width']  = $params['size']['width'];
@@ -701,7 +701,7 @@ abstract class JHtmlBehavior
 			jQuery(document).ready(function($){
 				(function keepAlive() {
 					$.ajax({
-						url: "index.php", 
+						url: "index.php",
 						complete: function() {
 							setTimeout(keepAlive, ' . $refreshTime . ');
 						}

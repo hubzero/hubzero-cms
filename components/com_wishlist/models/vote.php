@@ -41,21 +41,21 @@ class WishlistModelVote extends WishlistModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'WishRank';
 
 	/**
 	 * ForumModelAttachment
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed $oid Integer (ID), string (alias), object or array
 	 * @return     void
 	 */
@@ -101,7 +101,7 @@ class WishlistModelVote extends WishlistModelAbstract
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
@@ -127,7 +127,7 @@ class WishlistModelVote extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
 	 */

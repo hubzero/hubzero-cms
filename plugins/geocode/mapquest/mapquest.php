@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * MapQuest plugin for geocode
  *
- * The MapQuestProvider is able to geocode and reverse geocode 
+ * The MapQuestProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
 class plgGeocodeMapquest extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

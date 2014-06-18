@@ -46,7 +46,7 @@ function dv_list()
 		$id = explode('/', $item);
 		$id = $id[1];
 		$db = json_decode(file_get_contents($item), true);
-	
+
 		print '<tr>';
 		print '<td >' . ++$c . '</td>';
 		print '<td >' . $db['name'] . '</td>';

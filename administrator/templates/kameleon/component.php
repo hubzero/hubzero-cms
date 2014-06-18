@@ -34,12 +34,12 @@ defined('_JEXEC') or die;
 // Load base styles
 $this->addStyleSheet('templates/' . $this->template . '/css/component.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/component.css'));
 // Load theme
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') 
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 // Load language direction CSS
-if ($this->direction == 'rtl') 
+if ($this->direction == 'rtl')
 {
 	$this->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 //-------------------------------------------------------------
 // Joomla module
 // "My Tickets"
-//    This module displays support tickets assigned to the 
+//    This module displays support tickets assigned to the
 //    user currently logged in.
 // Support component "com_support" REQUIRED
 //-------------------------------------------------------------

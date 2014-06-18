@@ -38,7 +38,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display an overview of point earnings
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -196,7 +196,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -210,17 +210,17 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
 	{
-		if (($uid = JRequest::getInt('uid', 0))) 
+		if (($uid = JRequest::getInt('uid', 0)))
 		{
 			$this->view->row = new \Hubzero\Bank\Account($this->database);
 			$this->view->row->load_uid($uid);
 
-			if (!$this->view->row->balance) 
+			if (!$this->view->row->balance)
 			{
 				$this->view->row->uid = $uid;
 				$this->view->row->balance = 0;
@@ -229,14 +229,14 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 			$this->database->setQuery("SELECT * FROM #__users_transactions WHERE uid=" . $uid . " ORDER BY created DESC, id DESC");
 			$this->view->history = $this->database->loadObjectList();
-		} 
-		else 
+		}
+		else
 		{
 			$this->view->setLayout('find');
 		}
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -250,7 +250,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancel a task and redirect to main view
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()
@@ -262,7 +262,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -273,7 +273,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 
 		$row = new \Hubzero\Bank\Account($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -283,7 +283,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$row->balance = intval($row->balance);
 		$row->earnings = intval($row->earnings);
 
-		if (isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount'])) 
+		if (isset($_POST['amount']) && intval($_POST['amount'])>0 && intval($_POST['amount']))
 		{
 			$data = array(
 				'uid'         => $row->uid,
@@ -312,39 +312,39 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			$data['balance'] = $row->balance;
 
 			$BT = new \Hubzero\Bank\Transaction($this->database);
-			if ($data['description'] == '') 
+			if ($data['description'] == '')
 			{
 				$data['description'] = 'Reason unspecified';
 			}
-			if ($data['category'] == '') 
+			if ($data['category'] == '')
 			{
 				$data['category'] = 'general';
 			}
 
-			if (!$BT->bind($data)) 
+			if (!$BT->bind($data))
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
-			if (!$BT->check()) 
+			if (!$BT->check())
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
-			if (!$BT->store()) 
+			if (!$BT->store())
 			{
 				JError::raiseError(500, $row->getError());
 				return;
 			}
 		}
 
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
 
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			JError::raiseError(500, $row->getError());
 			return;
@@ -358,7 +358,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Configure items that can earn points
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function configTask()
@@ -367,7 +367,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$this->view->params = $this->database->loadObjectList();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -378,7 +378,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save config settings for items that can earn points
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveconfigTask()
@@ -398,7 +398,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			$point = intval($points[$i]);
 			$description = $descriptions[$i];
 			$alias = $aliases[$i];
-			if ($point) 
+			if ($point)
 			{
 			    $id = intval($i);
 				$this->database->setQuery("INSERT INTO #__users_points_config (`id`,`description`,`alias`,`points`) VALUES ($id,'$description','$alias', '$point')");
@@ -414,13 +414,13 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Perform batch operations
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function batchTask()
 	{
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -434,7 +434,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Process a batch of records
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function process_batchTask()
@@ -448,7 +448,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$log = array_map('trim', $log);
 		$log['category'] = ($log['category']) ? $log['category'] : 'general';
 		$log['action']   = ($log['action'])   ? $log['action']   : 'batch';
-		
+
 		$data = JRequest::getVar('transaction', array());
 		$data = array_map('trim', $data);
 
@@ -458,9 +458,9 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$MH = new \Hubzero\Bank\MarketHistory($this->database);
 		$duplicate = $MH->getRecord($ref, $action, $category, '', $data['description']);
 
-		if ($data['amount'] && $data['description'] && $data['users']) 
+		if ($data['amount'] && $data['description'] && $data['users'])
 		{
-			if (!$duplicate) 
+			if (!$duplicate)
 			{ // run only once
 				// get array of affected users
 				$users = str_replace(' ', ',', $data['users']);
@@ -470,7 +470,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				foreach ($users as $user)
 				{
 					$validuser = \Hubzero\User\Profile::getInstance($user);
-					if ($user && $validuser) 
+					if ($user && $validuser)
 					{
 						$BTL = new \Hubzero\Bank\Teller($this->database, $user);
 						switch ($data['type'])
@@ -494,24 +494,24 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				$data['action']       = $log['action'];
 				$data['log']          = $data['description'];
 
-				if (!$MH->bind($data)) 
+				if (!$MH->bind($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store()) 
+				if (!$MH->store())
 				{
 					$err = $MH->getError();
 				}
 
 				$this->_message = JText::_('Batch transaction was processed successfully.');
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message = JText::_('This batch transaction was already processed earlier. Use a different identifier if you need to run it again.');
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message = JText::_('Could not process. Some required fields are missing.');
 		}
@@ -525,7 +525,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 
 	/**
 	 * Calculate royalties
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function royaltyTask()
@@ -533,11 +533,11 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$auto = JRequest::getInt('auto', 0);
 		$action = 'royalty';
 
-		if (!$auto) 
+		if (!$auto)
 		{
 			$who = $this->juser->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			$who = 0;
 		}
@@ -570,11 +570,11 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$accumulated = 0;
 
 		// Get Royalties on Answers
-		if (!$royaltyAnswers) 
+		if (!$royaltyAnswers)
 		{
 			$rows = $AE->getQuestions();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $r)
 				{
@@ -583,7 +583,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				}
 
 				// make a record of royalty payment
-				if (intval($accumulated) > 0) 
+				if (intval($accumulated) > 0)
 				{
 					$MH = new \Hubzero\Bank\MarketHistory($this->database);
 					$data['itemid']       = $ref;
@@ -593,31 +593,31 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 					$data['action']       = $action;
 					$data['log']          = $this->_message;
 
-					if (!$MH->bind($data)) 
+					if (!$MH->bind($data))
 					{
 						$err = $MH->getError();
 					}
 
-					if (!$MH->store()) 
+					if (!$MH->store())
 					{
 						$err = $MH->getError();
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message = 'There were no questions eligible for royalty payment. ';
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message = 'Royalties on Answers for '.$curyear.' were previously distributed. ';
 		}
 
 		// Get Royalties on Resource Reviews
-		if (!$royaltyReviews) 
+		if (!$royaltyReviews)
 		{
-			// get eligible 
+			// get eligible
 			$RE = new ReviewsEconomy($this->database);
 			$reviews = $RE->getReviews();
 
@@ -633,7 +633,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			$voting = $plparam->get('voting');
 
 			$accumulated = 0;
-			if ($reviews && $voting) 
+			if ($reviews && $voting)
 			{
 				foreach ($reviews as $r)
 				{
@@ -642,14 +642,14 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				}
 
 				$this->_message .= $rmsg;
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message .= 'There were no reviews eligible for royalty payment. ';
 			}
 
 			// make a record of royalty payment
-			if (intval($accumulated) > 0) 
+			if (intval($accumulated) > 0)
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
@@ -659,31 +659,31 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				$data['action']       = $action;
 				$data['log']          = $rmsg;
 
-				if (!$MH->bind($data)) 
+				if (!$MH->bind($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store()) 
+				if (!$MH->store())
 				{
 					$err = $MH->getError();
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message .= 'Royalties on Reviews for '.$curyear.' were previously distributed. ';
 		}
 
 		// Get Royalties on Resources
-		if (!$royaltyResources) 
+		if (!$royaltyResources)
 		{
-			// get eligible 
+			// get eligible
 			$ResE = new ResourcesEconomy($this->database);
 			$cons = $ResE->getCons();
 
 			$accumulated = 0;
-			if ($cons) 
+			if ($cons)
 			{
 				foreach ($cons as $con)
 				{
@@ -692,14 +692,14 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				}
 
 				$this->_message .= $resmsg;
-			} 
-			else 
+			}
+			else
 			{
 				$this->_message .= 'There were no resources eligible for royalty payment.';
 			}
 
 			// make a record of royalty payment
-			if (intval($accumulated) > 0) 
+			if (intval($accumulated) > 0)
 			{
 				$MH = new \Hubzero\Bank\MarketHistory($this->database);
 				$data['itemid']       = $ref;
@@ -709,23 +709,23 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				$data['action']       = $action;
 				$data['log']          = $resmsg;
 
-				if (!$MH->bind($data)) 
+				if (!$MH->bind($data))
 				{
 					$err = $MH->getError();
 				}
 
-				if (!$MH->store()) 
+				if (!$MH->store())
 				{
 					$err = $MH->getError();
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->_message .= 'Royalties on Resources for ' . $curyear . ' were previously distributed.';
 		}
 
-		if (!$auto) 
+		if (!$auto)
 		{
 			// show output if run manually
 			$this->setRedirect(

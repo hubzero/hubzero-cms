@@ -62,7 +62,7 @@ else
 	//$layout = 'page';
 	$pathway = JFactory::getApplication()->getPathway();
 	$pathway->addItem(
-		stripslashes($this->page->get('title')), 
+		stripslashes($this->page->get('title')),
 		$base . '&unit=' . $this->page->get('url')
 	);
 

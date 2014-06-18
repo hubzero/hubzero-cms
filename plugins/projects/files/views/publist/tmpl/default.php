@@ -48,30 +48,30 @@ $link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
 $config = JComponentHelper::getParams('com_projects');
 
 // Get project path
-$path  = ProjectsHelper::getProjectPath($this->project->alias, 
+$path  = ProjectsHelper::getProjectPath($this->project->alias,
 		$config->get('webpath'), 1);
 $prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT;
 
-if ($items) { 
+if ($items) {
 ?>
 <div class="public-list-header">
 	<h3><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLIC')); ?> <?php echo JText::_('COM_PROJECTS_FILES'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>
-		<?php foreach ($items as $item) { 
+		<?php foreach ($items as $item) {
 			$ref = json_decode($item->reference);
-			
+
 			$serve = $prefix . $path . DS . $ref->file;
-			
+
 			// Get file extention
 			$ext = explode('.', $ref->file);
 			$ext = count($ext) > 1 ? end($ext) : '';
-			
+
 			if (is_file($serve))
 			{
 		?>
-		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>	
+		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>
 		<?php }
 		} ?>
 	</ul>

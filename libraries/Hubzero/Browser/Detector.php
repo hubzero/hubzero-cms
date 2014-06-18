@@ -159,11 +159,11 @@ class Detector extends Object
 	 * @var    array
 	 */
 	protected $images = array(
-		'jpeg', 
-		'gif', 
-		'png', 
-		'pjpeg', 
-		'x-png', 
+		'jpeg',
+		'gif',
+		'png',
+		'pjpeg',
+		'x-png',
 		'bmp'
 	);
 
@@ -258,13 +258,13 @@ class Detector extends Object
 
 			foreach ($browsers as $b)
 			{
-				if (preg_match("#($b)[/ ]?([0-9.]*)#", $this->lowerAgent, $match)) 
+				if (preg_match("#($b)[/ ]?([0-9.]*)#", $this->lowerAgent, $match))
 				{
 					$this->setBrowser($match[1]);
 
 					$this->majorVersion = strstr($match[2], '.', true);
 					$this->minorVersion = substr($match[2], strlen($this->majorVersion . '.'));
-					if (preg_match("#(version)[/ ]?([0-9.]*)#", $this->lowerAagent, $match)) 
+					if (preg_match("#(version)[/ ]?([0-9.]*)#", $this->lowerAagent, $match))
 					{
 						$this->majorVersion = strstr($match[2], '.', true);
 						$this->minorVersion = substr($match[2], strlen($this->majorVersion . '.'));
@@ -491,7 +491,7 @@ class Detector extends Object
 			$this->platform = 'unix';
 		}*/
 		$this->device = 'computer';
-		
+
 		// Determine platform
 		//
 		// packs the os array
@@ -507,20 +507,20 @@ class Detector extends Object
 		// same logic, check in order to catch the os's in order, last is always default item
 		$a_unix = array(
 			'unixware', 'solaris', 'sunos', 'sun4', 'sun5', 'suni86', 'sun',
-			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9', 
-			'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4', 
-			'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix', 
+			'freebsd', 'openbsd', 'bsd' , 'irix5', 'irix6', 'irix', 'hpux9',
+			'hpux10', 'hpux11', 'hpux', 'hp-ux', 'aix1', 'aix2', 'aix3', 'aix4',
+			'aix5', 'aix', 'sco', 'unixware', 'mpras', 'reliant', 'dec', 'sinix',
 			'unix'
 		);
 		// only sometimes will you get a linux distro to id itself...
 		$a_linux = array(
-			'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware', 
+			'kanotix', 'ubuntu', 'mepis', 'debian', 'suse', 'redhat', 'slackware',
 			'mandrake', 'gentoo', 'linux'
 		);
 		// note, order of os very important in os array, you will get failed ids if changed
 		$a_os = array(
-			'beos', 'os2', 'amiga', 'webtv', 'iphone', 'ipad', 'mac', 'nt', 'win', 
-			$a_unix, 
+			'beos', 'os2', 'amiga', 'webtv', 'iphone', 'ipad', 'mac', 'nt', 'win',
+			$a_unix,
 			$a_linux
 		);
 
@@ -545,7 +545,7 @@ class Detector extends Object
 
 					case 'win':
 						$this->platform = 'Windows';
-						if (stristr($this->lowerAgent, '95')) 
+						if (stristr($this->lowerAgent, '95'))
 						{
 							$this->platformVersion = '95';
 						}
@@ -614,7 +614,7 @@ class Detector extends Object
 						{
 							$this->platformVersion = 10;
 						}
-						// this is a crude test for os x, since safari, camino, ie 5.2, & moz >= rv 1.3 
+						// this is a crude test for os x, since safari, camino, ie 5.2, & moz >= rv 1.3
 						// are only made for os x
 						/*elseif (($browser == 'safari') || ($browser == 'camino') || ($browser == 'shiira') ||
 							(($browser == 'mozilla') && ($browser_ver >= 1.3)) ||
@@ -629,7 +629,7 @@ class Detector extends Object
 				}
 				break;
 			}
-			// check that it's an array, check it's the second to last item 
+			// check that it's an array, check it's the second to last item
 			// in the main os array, the unix one that is
 			elseif (is_array($s_os) && ($i == (count($a_os) - 2)))
 			{
@@ -643,13 +643,13 @@ class Detector extends Object
 					}
 				}
 			}
-			// check that it's an array, check it's the last item 
+			// check that it's an array, check it's the last item
 			// in the main os array, the linux one that is
-			elseif (is_array($s_os) && ($i == (count($a_os) - 1))) 
+			elseif (is_array($s_os) && ($i == (count($a_os) - 1)))
 			{
 				for ($j = 0; $j < count($s_os); $j++)
 				{
-					if (stristr($this->lowerAgent, $s_os[$j])) 
+					if (stristr($this->lowerAgent, $s_os[$j]))
 					{
 						$this->platform = 'Linux';
 						// assign linux distro from the linux array, there's a default

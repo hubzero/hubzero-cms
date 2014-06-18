@@ -22,14 +22,14 @@ JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');
 require_once(JPATH_COMPONENT_SITE . DS . 'controller.php');
 
 // Require specific controller if requested
-if ($controller = JRequest::getWord('controller', 'poll')) 
+if ($controller = JRequest::getWord('controller', 'poll'))
 {
 	$path = JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controller . '.php';
-	if (file_exists($path)) 
+	if (file_exists($path))
 	{
 		require_once $path;
-	} 
-	else 
+	}
+	else
 	{
 		$controller = '';
 	}

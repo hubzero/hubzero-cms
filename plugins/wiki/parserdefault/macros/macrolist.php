@@ -38,7 +38,7 @@ class MacrolistMacro extends WikiMacro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -51,7 +51,7 @@ class MacrolistMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -62,14 +62,14 @@ class MacrolistMacro extends WikiMacro
 
 		$macros = array();
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($path . DS . $entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html') 
+				if (is_file($path . DS . $entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#php#i", $entry)) 
+					if (preg_match("#php#i", $entry))
 					{
 						$macros[] = $entry;
 					}
@@ -88,7 +88,7 @@ class MacrolistMacro extends WikiMacro
 
 			$macroname = ucfirst($f) . 'Macro';
 
-			if (class_exists($macroname)) 
+			if (class_exists($macroname))
 			{
 				$macro = new $macroname();
 

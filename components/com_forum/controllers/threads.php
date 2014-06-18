@@ -4,19 +4,19 @@
  * @author		Shawn                                     Rice <zooley@purdue.edu>
  * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- * 
+ *
  * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
  * version 2 as published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -65,21 +65,21 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		if (isset($this->view->section))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->section->get('title')), 
+				stripslashes($this->view->section->get('title')),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
 			);
 		}
 		if (isset($this->view->category))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->category->get('title')), 
+				stripslashes($this->view->category->get('title')),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
 			);
 		}
 		if (isset($this->view->thread) && $this->view->thread->exists())
 		{
 			$pathway->addItem(
-				'#' . $this->view->thread->get('id') . ' - ' . stripslashes($this->view->thread->get('title')), 
+				'#' . $this->view->thread->get('id') . ' - ' . stripslashes($this->view->thread->get('title')),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias') . '&thread=' . $this->view->thread->get('id')
 			);
 		}
@@ -111,7 +111,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a thread
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -148,7 +148,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
 
 		// Check logged in status
-		if ($this->view->thread->get('access') > 0 && $this->juser->get('guest')) 
+		if ($this->view->thread->get('access') > 0 && $this->juser->get('guest'))
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			$this->setRedirect(
@@ -174,7 +174,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -187,7 +187,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for creating a new entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function latestTask()
@@ -226,32 +226,32 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$group_forum = $this->database->loadAssocList();
 
 		// make sure that the group for each forum post has the right privacy setting
-		foreach ($group_forum as $k => $gf) 
+		foreach ($group_forum as $k => $gf)
 		{
 			$group = \Hubzero\User\Group::getInstance($gf['scope_id']);
-			if (is_object($group)) 
+			if (is_object($group))
 			{
 				$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
 
-				if ($forum_access == 'nobody' 
-				 || ($forum_access == 'registered' && $this->juser->get('guest')) 
-				 || ($forum_access == 'members' && !in_array($this->juser->get('id'), $group->get('members')))) 
+				if ($forum_access == 'nobody'
+				 || ($forum_access == 'registered' && $this->juser->get('guest'))
+				 || ($forum_access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))))
 				{
 					unset($group_forum[$k]);
 				}
-			} 
-			else 
+			}
+			else
 			{
 				unset($group_forum[$k]);
 			}
 		}
 
 		//based on param decide what to include
-		switch ($this->config->get('forum', 'both')) 
+		switch ($this->config->get('forum', 'both'))
 		{
 			case 'site':  $rows = $site_forum;  break;
 			case 'group': $rows = $group_forum; break;
-			case 'both':  
+			case 'both':
 			default:
 				$rows = array_merge($site_forum, $group_forum);
 			break;
@@ -278,7 +278,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		{
 			$d1 = date("Y-m-d H:i:s", strtotime($a['created']));
 			$d2 = date("Y-m-d H:i:s", strtotime($b['created']));
-			
+
 			return ($d1 > $d2) ? -1 : 1;
 		}
 
@@ -286,7 +286,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		usort($rows, 'sortbydate');
 
 		// Start outputing results if any found
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			foreach ($rows as $row)
 			{
@@ -295,11 +295,11 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				$title = html_entity_decode($title);
 
 				// Get URL
-				if ($row['scope_id'] == 0) 
+				if ($row['scope_id'] == 0)
 				{
 					$link = 'index.php?option=com_forum&section=' . $categories[$row['category_id']]->section . '&category=' . $categories[$row['category_id']]->alias . '&thread=' . ($row['parent'] ? $row['parent'] : $row['id']);
-				} 
-				else 
+				}
+				else
 				{
 					$group = \Hubzero\User\Group::getInstance($row['scope_id']);
 					$link = 'index.php?option=com_groups&gid=' . $group->get('cn') . '&active=forum&scope=' .  $categories[$row['category_id']]->section . '/' . $categories[$row['category_id']]->alias . '/' . ($row['parent'] ? $row['parent'] : $row['id']);
@@ -338,7 +338,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for creating a new entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function newTask()
@@ -348,7 +348,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($post=null)
@@ -359,7 +359,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$category = JRequest::getCmd('category', '');
 		$section  = JRequest::getVar('section', '');
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$return = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&task=new');
 			if ($id)
@@ -392,19 +392,19 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		{
 			$this->view->post = $post;
 		}
-		else 
+		else
 		{
 			$this->view->post = new ForumModelThread($id);
 		}
 
 		$this->_authorize('thread', $id);
 
-		if (!$id) 
+		if (!$id)
 		{
 			$this->view->post->set('scope', $this->model->get('scope'));
 			$this->view->post->set('created_by', $this->juser->get('id'));
 		}
-		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->config->get('access-edit-thread')) 
+		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->config->get('access-edit-thread'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -426,7 +426,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -439,12 +439,12 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option)))
@@ -502,7 +502,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				return;
 			}
 		}
-		if (!$model->bind($fields)) 
+		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
 			$this->editTask($model);
@@ -510,7 +510,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		}
 
 		// Store new content
-		if (!$model->store(true)) 
+		if (!$model->store(true))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
 			$this->editTask($model);
@@ -528,16 +528,16 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		// Determine message
 		if (!$fields['id'])
 		{
-			if (!$fields['parent']) 
+			if (!$fields['parent'])
 			{
 				$message = JText::_('COM_FORUM_THREAD_STARTED');
 			}
-			else 
+			else
 			{
 				$message = JText::_('COM_FORUM_POST_ADDED');
 			}
 		}
-		else 
+		else
 		{
 			$message = ($model->get('modified_by')) ? JText::_('COM_FORUM_POST_EDITED') : JText::_('COM_FORUM_POST_ADDED');
 		}
@@ -554,7 +554,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -563,7 +563,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$category = JRequest::getVar('category', '');
 
 		// Is the user logged in?
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -581,7 +581,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$model->load($id);
 
 		// Make the sure the category exist
-		if (!$model->id) 
+		if (!$model->id)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -614,7 +614,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 		// Delete the topic itself
 		$model->state = 2;  /* 0 = unpublished, 1 = published, 2 = deleted */
-		if (!$model->store()) 
+		if (!$model->store())
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -631,7 +631,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 			'message'
 		);
 	}
-	
+
 	/**
 	 * Serves up files only after passing access checks
 	 *
@@ -647,7 +647,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$file = JRequest::getVar('file', '');
 
 		// Ensure we have a database object
-		if (!$this->database) 
+		if (!$this->database)
 		{
 			JError::raiseError(500, JText::_('COM_FORUM_DATABASE_NOT_FOUND'));
 			return;
@@ -659,12 +659,12 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		{
 			$attach->loadByThread($thread, $file);
 		}
-		else 
+		else
 		{
 			$attach->loadByPost($post);
 		}
-		
-		if (!$attach->filename) 
+
+		if (!$attach->filename)
 		{
 			JError::raiseError(404, JText::_('COM_FORUM_FILE_NOT_FOUND'));
 			return;
@@ -675,14 +675,14 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$row = new ForumTablePost($this->database);
 		$row->load($attach->post_id);
 
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			JError::raiseError(404, JText::_('COM_FORUM_POST_NOT_FOUND'));
 			return;
 		}
 
 		// Check logged in status
-		if ($row->access > 0 && $this->juser->get('guest')) 
+		if ($row->access > 0 && $this->juser->get('guest'))
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread . '&post=' . $post . '&file=' . $file));
 			$this->setRedirect(
@@ -695,14 +695,14 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$this->_authorize('thread', $row->id);
 
 		// Ensure the user is authorized to view this file
-		if (!$this->config->get('access-view-thread')) 
+		if (!$this->config->get('access-view-thread'))
 		{
 			JError::raiseError(403, JText::_('COM_FORUM_NOT_AUTH_FILE'));
 			return;
 		}
-		
+
 		// Ensure we have a path
-		if (empty($file)) 
+		if (empty($file))
 		{
 			JError::raiseError(404, JText::_('COM_FORUM_FILE_NOT_FOUND'));
 			return;
@@ -712,15 +712,15 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$basePath  = DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS  . $attach->parent . DS . $attach->post_id;
 
 		// Does the path start with a slash?
-		if (substr($file, 0, 1) != DS) 
+		if (substr($file, 0, 1) != DS)
 		{
 			$file = DS . $file;
 			// Does the beginning of the $attachment->filename match the config path?
-			if (substr($file, 0, strlen($basePath)) == $basePath) 
+			if (substr($file, 0, strlen($basePath)) == $basePath)
 			{
 				// Yes - this means the full path got saved at some point
-			} 
-			else 
+			}
+			else
 			{
 				// No - append it
 				$file = $basePath . $file;
@@ -731,7 +731,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$filename = JPATH_ROOT . $file;
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_FORUM_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
@@ -743,12 +743,12 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_FORUM_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -758,19 +758,19 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 	/**
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
-	 * 
+	 *
 	 * @param      string $listdir Directory to upload files to
 	 * @return     string A string that gets appended to messages
 	 */
 	public function uploadTask($listdir, $post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_FORUM_NO_UPLOAD_DIRECTORY'));
 			return;
@@ -784,15 +784,15 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			if ($row->id)
 			{
-				if (!$row->check()) 
+				if (!$row->check())
 				{
 					$this->setError($row->getError());
 				}
-				if (!$row->store()) 
+				if (!$row->store())
 				{
 					$this->setError($row->getError());
 				}
@@ -808,10 +808,10 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path if it doesn't exist
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
@@ -825,22 +825,22 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 		$ext = strtolower(JFile::getExt($file['name']));
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('COM_FORUM_ERROR_UPLOADING'));
 			return;
-		} 
-		else 
+		}
+		else
 		{
 			// File was uploaded
 			// Create database entry
 			$row->filename = $file['name'];
-			
-			if (!$row->check()) 
+
+			if (!$row->check())
 			{
 				$this->setError($row->getError());
 			}
-			if (!$row->store()) 
+			if (!$row->store())
 			{
 				$this->setError($row->getError());
 			}
@@ -849,13 +849,13 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set access permissions for a user
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -899,7 +899,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 						$this->config->set('access-edit-own-' . $assetType, $val);
 					}
 				}
-				else 
+				else
 				{
 					$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
 					$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
@@ -909,7 +909,7 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($assetType == 'post' || $assetType == 'thread')
 				{

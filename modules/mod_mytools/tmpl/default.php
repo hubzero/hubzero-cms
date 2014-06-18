@@ -45,26 +45,26 @@ $this->js();
 		<li title="favtools"><?php echo JText::_('MOD_MYTOOLS_FAVORITES'); ?></li>
 		<li title="alltools"><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS'); ?></li>
 	</ul>
-	
+
 	<div id="recenttools" class="tab_panel active">
-		<?php 
+		<?php
 		$r = $this->rectools;
 		echo $this->buildList($r, 'recent'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_RECENT_EXPLANATION'); ?></p>
 	</div>
-	
+
 	<div id="favtools" class="tab_panel">
-		<?php 
+		<?php
 		$f = $this->favtools;
 		echo $this->buildList($f, 'favs'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_FAVORITES_EXPLANATION'); ?></p>
 	</div>
-	
+
 	<div id="alltools" class="tab_panel">
 		<div id="filter-mytools">
 			<input type="text" placeholder="Search Tools" />
 		</div>
-		<?php 
+		<?php
 		$a = $this->alltools;
 		echo $this->buildList($a, 'all'); ?>
 		<p><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS_EXPLANATION'); ?></p>

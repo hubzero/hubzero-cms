@@ -34,10 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>" class="full">
 	<h2><?php echo $this->escape($this->title); ?></h2>
 	<?php
-	if (!$this->page->isStatic()) 
+	if (!$this->page->isStatic())
 	{
 		$view = new JView(array(
-			'base_path' => $this->base_path, 
+			'base_path' => $this->base_path,
 			'name'      => 'page',
 			'layout'    => 'authors'
 		));
@@ -48,10 +48,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 </header><!-- /#content-header -->
 
 <?php
-if ($this->page->exists()) 
+if ($this->page->exists())
 {
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));

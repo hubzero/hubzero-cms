@@ -92,7 +92,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL DOI service" />
 		<param name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder DOI service" />
 		<param name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
-		<param name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />		
+		<param name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
 		<param name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
 		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
@@ -202,7 +202,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="doi_newservice" type="text" menu="hide" default="" label="DOI service path" description="URL DOI service" />
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder DOI service" />
 		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
-		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />    
+		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
 		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles (e.g. test handles)" />
 		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />

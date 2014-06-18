@@ -40,7 +40,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('queries');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -76,18 +76,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	switch ($row->iscore)
 	{
-		case 4: 
+		case 4:
 			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
 		break;
 
-		case 2: 
+		case 2:
 			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
 		break;
-		
+
 		case 1:
 			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_MINE');
 		break;
-		
+
 		case 0:
 		default:
 			$iscore = JText::_('COM_SUPPORT_QUERY_TYPE_CUSTOM');

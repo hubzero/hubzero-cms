@@ -118,7 +118,7 @@ $this->css('introduction.css', 'system')
 		</div><!-- / .col span9 omega -->
 	</div><!-- / .grid -->
 
-	<?php if ($this->contribution_counting) 
+	<?php if ($this->contribution_counting)
 	{
 	?>
 	<div class="grid">
@@ -130,7 +130,7 @@ $this->css('introduction.css', 'system')
 <?php
 	$db = JFactory::getDBO();
 	$c = new MembersProfile($db);
-	
+
 	$filters = array(
 		'limit'  => 4,
 		'start'  => 0,
@@ -160,7 +160,7 @@ $this->css('introduction.css', 'system')
 			{
 				case 2: $cls = ''; break;
 				case 1: $cls = 'omega'; break;
-				case 0: 
+				case 0:
 				default: $cls = ''; break;
 			}
 ?>

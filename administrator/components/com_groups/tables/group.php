@@ -38,7 +38,7 @@ class GroupsGroup extends JTable
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -90,7 +90,7 @@ class GroupsGroup extends JTable
 		$assetId = null;
 		$db = $this->getDbo();
 
-		if ($assetId === null) 
+		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
@@ -100,18 +100,18 @@ class GroupsGroup extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
+			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) 
+		if ($assetId)
 		{
 			return $assetId;
-		} 
-		else 
+		}
+		else
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
@@ -119,12 +119,12 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Validate fields before store()
-	 * 
+	 *
 	 * @return     boolean True if all fields are valid
 	 */
 	public function check()
 	{
-		if (trim($this->cn) == '') 
+		if (trim($this->cn) == '')
 		{
 			$this->setError(JText::_('COM_GROUPS_ERROR_EMPTY_TITLE'));
 			return false;
@@ -134,7 +134,7 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Save changes
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function save($src, $orderingFilter ='', $ignore = '')
@@ -142,10 +142,10 @@ class GroupsGroup extends JTable
 		$this->setError('You\'re doing it wrong!');
 		return false;
 	}
-	
+
 	/**
 	 * Insert or Update the object
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function store($updateNulls = false)
@@ -157,29 +157,29 @@ class GroupsGroup extends JTable
 	/**
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
-	 * 
+	 *
 	 * @param      mixed $oid Unique ID or alias of object to retrieve
 	 * @return     boolean True on success
 	 */
 	public function load($oid = NULL, $reset = true)
 	{
-		if (empty($oid)) 
+		if (empty($oid))
 		{
 			return false;
 		}
 
-		if (is_numeric($oid)) 
+		if (is_numeric($oid))
 		{
 			return parent::load($oid);
 		}
 
 		$sql  = "SELECT * FROM $this->_tbl WHERE cn='$oid' LIMIT 1";
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -188,7 +188,7 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -216,7 +216,7 @@ class GroupsGroup extends JTable
 			}
 			else
 			{
-				$where[] = "(LOWER(v.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				$where[] = "(LOWER(v.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(v.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(v.email) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 			}
@@ -232,7 +232,7 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Build sub-query
-	 * 
+	 *
 	 * @param  string $role    Role [member, invitee, applicant, manager]
 	 * @param  string $tbl     Table alias
 	 * @param  array  $filters Filters to build query from
@@ -240,7 +240,7 @@ class GroupsGroup extends JTable
 	 */
 	private function _groupTable($role='member', $tbl='m', $filters=array())
 	{
-		$query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role 
+		$query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role
 					FROM #__xgroups_{$role}s AS {$tbl} JOIN jos_users AS u ON {$tbl}.uidNumber=u.id";
 
 		if (isset($filters['gidNumber']))
@@ -253,7 +253,7 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -268,7 +268,7 @@ class GroupsGroup extends JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -279,11 +279,11 @@ class GroupsGroup extends JTable
 		$query  = "SELECT v.* ";
 		$query .= $this->_buildMembersQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'name';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}

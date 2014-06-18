@@ -179,7 +179,7 @@ class PdfFormRespondent
 		);
 
 		// NOTE: added this to allow a scenario where there are multiple correct answers.
-		//       In that scenario, we still want to increment the correct count, but we don't 
+		//       In that scenario, we still want to increment the correct count, but we don't
 		//       want to increment the total count, as that question has already been counted.
 		$questionIds = array();
 

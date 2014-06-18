@@ -34,7 +34,7 @@ class ResourcesModelLicense extends JModelAdmin
 
 		// Get the pk of the record from the request.
 		$pk = JRequest::getVar($key, array());
-		if (!empty($pk)) 
+		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
 		}
@@ -57,7 +57,7 @@ class ResourcesModelLicense extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_resources.license', 'license', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
@@ -74,11 +74,11 @@ class ResourcesModelLicense extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'License', $prefix = 'Resources', $config = array()) 
+	public function getTable($type = 'License', $prefix = 'Resources', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -89,7 +89,7 @@ class ResourcesModelLicense extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_resources.edit.license.data', array());
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = $this->getItem();
 		}

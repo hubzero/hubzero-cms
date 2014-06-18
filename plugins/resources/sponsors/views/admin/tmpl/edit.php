@@ -38,13 +38,13 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	if ($('title').value == '') {
 		alert( '<?php echo JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'); ?>' );

@@ -44,32 +44,32 @@ function prettyPrint($json)
 	$ends_line_level = NULL;
 	$json_length = strlen($json);
 
-	for ($i = 0; $i < $json_length; $i++) 
+	for ($i = 0; $i < $json_length; $i++)
 	{
 		$char = $json[$i];
 		$new_line_level = NULL;
 		$post = "";
-		if ($ends_line_level !== NULL) 
+		if ($ends_line_level !== NULL)
 		{
 			$new_line_level  = $ends_line_level;
 			$ends_line_level = NULL;
 		}
-		if ($char === '"' && $prev_char != '\\') 
+		if ($char === '"' && $prev_char != '\\')
 		{
 			$in_quotes = !$in_quotes;
-		} 
-		else if (! $in_quotes) 
+		}
+		else if (! $in_quotes)
 		{
-			switch ($char) 
+			switch ($char)
 			{
-				case '}': 
+				case '}':
 				case ']':
 					$level--;
 					$ends_line_level = NULL;
 					$new_line_level  = $level;
 				break;
 
-				case '{': 
+				case '{':
 				case '[':
 					$level++;
 
@@ -81,9 +81,9 @@ function prettyPrint($json)
 					$post = ' ';
 				break;
 
-				case " ": 
-				case "\t": 
-				case "\n": 
+				case " ":
+				case "\t":
+				case "\n":
 				case "\r":
 					$char = '';
 					$ends_line_level = $new_line_level;
@@ -91,7 +91,7 @@ function prettyPrint($json)
 				break;
 			}
 		}
-		if ($new_line_level !== NULL) 
+		if ($new_line_level !== NULL)
 		{
 			$result .= "\n" . str_repeat("\t", $new_line_level);
 		}

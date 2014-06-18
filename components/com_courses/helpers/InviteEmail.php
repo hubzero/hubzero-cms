@@ -39,37 +39,37 @@ Class CoursesHelperInviteEmail extends JTable
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id = NULL;
 
 	/**
 	 * Description for 'email'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $email = NULL;
 
 	/**
 	 * Description for 'gidNumber'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * Description for 'token'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $token = NULL;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -80,9 +80,9 @@ Class CoursesHelperInviteEmail extends JTable
 
 	/**
 	 * Short description for 'getInviteEmails'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $gid Parameter description (if any) ...
 	 * @param      boolean $email_only Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
@@ -106,24 +106,24 @@ Class CoursesHelperInviteEmail extends JTable
 
 		return $final;
 	}
-     
+
 
 	/**
 	 * Short description for 'addInvites'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      int $gid Parameter description (if any) ...
 	 * @param      array $emails Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
 	public function addInvites( $gid, $emails )
-	{   
+	{
 		$exists = array();
-		$added = array(); 
-		
+		$added = array();
+
 		$current = $this->getInviteEmails( $gid, true );
-		
+
 		foreach($emails as $e)
 		{
 			if(in_array($e, $current))
@@ -135,10 +135,10 @@ Class CoursesHelperInviteEmail extends JTable
 				$added[] = $e;
 			}
 		}
-		
+
 		if(count($added) > 0)
 		{
-	   		$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";                                                                    
+	   		$sql = "INSERT INTO {$this->_tbl}(`email`,`gidNumber`,`token`) VALUES ";
 			foreach($added as $a)
 			{
 				$sql_values[] = "('".$a."',".$gid.",'".md5($a)."')";
@@ -148,9 +148,9 @@ Class CoursesHelperInviteEmail extends JTable
 			$db->setQuery($sql);
 			$db->query();
 		}
-		
+
 		$return['exists'] = $exists;
 		$return['added'] = $added;
-	    return $return; 
+	    return $return;
 	}
 }

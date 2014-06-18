@@ -84,7 +84,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 				}
 			}
 			$out = $param->render('params', 'onAssetgroupEdit');
-			if (!$out) 
+			if (!$out)
 			{
 				continue;
 			}

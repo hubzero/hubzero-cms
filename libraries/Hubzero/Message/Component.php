@@ -32,41 +32,41 @@ namespace Hubzero\Message;
 
 /**
  * Table class for message component list
- * These are action items that are message-able 
+ * These are action items that are message-able
  */
 class Component extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $component = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action    = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title     = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -77,19 +77,19 @@ class Component extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->component = trim($this->component);
-		if (!$this->component) 
+		if (!$this->component)
 		{
 			$this->setError(\JText::_('Please provide a component.'));
 			return false;
 		}
 		$this->action = trim($this->action);
-		if (!$this->action) 
+		if (!$this->action)
 		{
 			$this->setError(\JText::_('Please provide an action.'));
 			return false;
@@ -99,7 +99,7 @@ class Component extends \JTable
 
 	/**
 	 * Get a record count based on filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -113,7 +113,7 @@ class Component extends \JTable
 
 	/**
 	 * Get records based on filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -127,7 +127,7 @@ class Component extends \JTable
 
 	/**
 	 * Builds a query string based on filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -163,12 +163,12 @@ class Component extends \JTable
 
 	/**
 	 * Get all records
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getComponents()
 	{
-		$query  = "SELECT DISTINCT x.component 
+		$query  = "SELECT DISTINCT x.component
 					FROM $this->_tbl AS x
 					ORDER BY x.component ASC";
 

@@ -42,28 +42,28 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 {
 	/**
 	 * Current cursor position
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_pos = 0;
 
 	/**
 	 * Current array count
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_total = 0;
 
 	/**
 	 * Container for data
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_data = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      array $data Array of data
 	 * @return     void
 	 */
@@ -82,7 +82,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param      mixed $value
 	 * @return     void
 	 */
-	public function add($value) 
+	public function add($value)
 	{
 		//$this->_data[$this->_total++] = $value;
 		return $this->offsetSet(null, $value);
@@ -94,7 +94,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param      mixed $offset
 	 * @return     void
 	 */
-	public function remove($offset) 
+	public function remove($offset)
 	{
 		return $this->offsetUnset($offset);
 	}
@@ -104,7 +104,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     void
 	 */
-	public function rewind() 
+	public function rewind()
 	{
 		$this->_pos = 0;
 		//reset($this->_data);
@@ -115,7 +115,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     void
 	 */
-	public function reset() 
+	public function reset()
 	{
 		$this->_pos = 0;
 		$this->_data = array_values($this->_data);
@@ -126,19 +126,19 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     boolean
 	 */
-	public function isFirst() 
+	public function isFirst()
 	{
 		return !isset($this->_data[$this->_pos - 1]);
-	} 
+	}
 
 	/**
 	 * Is the current position the last one?
 	 *
 	 * @return     boolean
 	 */
-	public function isLast() 
+	public function isLast()
 	{
-		return !isset($this->_data[$this->_pos + 1]); 
+		return !isset($this->_data[$this->_pos + 1]);
 	}
 
 	/**
@@ -152,12 +152,12 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	{
 		$this->rewind();
 
-		while ($this->_pos < $index && $this->valid()) 
+		while ($this->_pos < $index && $this->valid())
 		{
 			$this->next();
 		}
 
-		if (!$this->valid()) 
+		if (!$this->valid())
 		{
 			throw new \OutOfBoundsException(\JText::_('Invalid seek position'));
 		}
@@ -169,7 +169,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function current() 
+	public function current()
 	{
 		if ($this->valid())
 		{
@@ -183,7 +183,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     integer
 	 */
-	public function total() 
+	public function total()
 	{
 		return $this->count();
 	}
@@ -193,7 +193,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     integer
 	 */
-	public function count() 
+	public function count()
 	{
 		return $this->_total;
 	}
@@ -203,7 +203,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function first() 
+	public function first()
 	{
 		$this->rewind();
 		return $this->current();
@@ -214,7 +214,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function last() 
+	public function last()
 	{
 		$this->_pos = ($this->_total - 1);
 		return $this->current();
@@ -235,7 +235,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function prev() 
+	public function prev()
 	{
 		--$this->_pos;
 		return $this->current();
@@ -246,7 +246,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function next() 
+	public function next()
 	{
 		++$this->_pos;
 		return $this->current();
@@ -257,7 +257,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return     mixed
 	 */
-	public function valid() 
+	public function valid()
 	{
 		return isset($this->_data[$this->_pos]);
 	}
@@ -293,12 +293,12 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 */
 	public function offsetSet($offset, $item)
 	{
-		if ($offset === null) 
+		if ($offset === null)
 		{
 			$this->_data[] = $item;
 			$this->_total = count($this->_data);
-		} 
-		else 
+		}
+		else
 		{
 			$this->_data[$offset] = $item;
 		}
@@ -318,7 +318,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 
 	/**
 	 * Run a map over each of the items
-	 * 
+	 *
 	 * @param  Closure  $callback
 	 * @return array
 	 */
@@ -329,7 +329,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 
 	/**
 	 * Merge Item Lists
-	 * 
+	 *
 	 * @param  object $data Hubzero\Base\ItemList
 	 * @return Hubzero\Base\ItemList
 	 */
@@ -339,7 +339,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		{
 			if ($list instanceof self)
 			{
-				$this->_data = array_merge($this->_data, $list->_data);		
+				$this->_data = array_merge($this->_data, $list->_data);
 			}
 		}
 

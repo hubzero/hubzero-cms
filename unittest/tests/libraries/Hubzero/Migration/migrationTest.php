@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for HUBzero migrations class
- * 
+ *
  * @author Sam Wilson <samwilson@purdue.edu>
  */
 
@@ -160,12 +160,12 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 		$this->instance->migrate('up', true);
 
 		// Check for existance of sample table
-		try 
+		try
 		{
 			$this->instance->get('db')->setQuery("SELECT * FROM `#__migrations_sample_table`");
 			$result = $this->instance->get('db')->query();
-		} 
-		catch (PDOException $e) 
+		}
+		catch (PDOException $e)
 		{
 			$result = null;
 		}
@@ -179,7 +179,7 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 	function testUpCreatesDatabaseLogRecord()
 	{
 		// Check for log entry from sample table run
-		try 
+		try
 		{
 			// Path of file we should expect to find in the database log entry
 			$file = 'Migration20130101000000ComGroups.php';
@@ -195,8 +195,8 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 
 			// Get result
 			$count = $this->instance->get('db')->getNumRows();
-		} 
-		catch (PDOException $e) 
+		}
+		catch (PDOException $e)
 		{
 			$count = 0;
 		}
@@ -266,12 +266,12 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 		$this->instance->migrate('down', true);
 
 		// Check for lack of existance of sample table
-		try 
+		try
 		{
 			$this->instance->get('db')->setQuery("SELECT * FROM `#__migrations_sample_table`");
 			$result = $this->instance->get('db')->query();
-		} 
-		catch (PDOException $e) 
+		}
+		catch (PDOException $e)
 		{
 			$result = false;
 		}
@@ -287,7 +287,7 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 	function testCleanupDbLogEntries()
 	{
 		// Check for log entry from sample table run
-		try 
+		try
 		{
 			// Files we should expect to find in the database log entry
 			$file   = array();
@@ -304,8 +304,8 @@ class MigrationClassTest extends PHPUnit_Framework_TestCase
 			// Prepare and execute query
 			$this->instance->get('db')->setQuery($query);
 			$this->instance->get('db')->query();
-		} 
-		catch (PDOException $e) 
+		}
+		catch (PDOException $e)
 		{
 			$this->instance->log('Test cleanup failed');
 		}

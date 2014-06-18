@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @author		Zeh Fernando, Nate Chatellier
  * @version		1.0.2
  * @license		MIT
- * 
+ *
  * @package		Easing Equations
  * @author		Robert Penner
  * @copyright	Copyright 2001 Robert Penner. All rights reserved.
@@ -102,7 +102,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  * @link		http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/
  *
  * CSS - Reset
- * 
+ *
  * @package		reset css
  * @file		templates/hubbasic/css/reset.css
  * @copyright	Copyright (c) 2006, Yahoo! Inc. All rights reserved.

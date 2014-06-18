@@ -68,7 +68,7 @@ $this->css()
 									<?php echo JText::_('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
 								</a>
 							</h4>
-						<?php 
+						<?php
 						$popular = $this->archive->articles('popular', array('limit' => 5));
 						if ($popular->total() > 0) { ?>
 							<ul class="articles">
@@ -90,7 +90,7 @@ $this->css()
 									<?php echo JText::_('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
 								</a>
 							</h4>
-						<?php 
+						<?php
 						$recent = $this->archive->articles('recent', array('limit' => 5));
 						if ($recent->total() > 0) { ?>
 							<ul class="articles">
@@ -110,7 +110,7 @@ $this->css()
 
 					<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 					<div class="grid">
-					<?php 
+					<?php
 						$i = 0;
 
 						$filters = array();
@@ -157,7 +157,7 @@ $this->css()
 						</div><!-- / .col span-half <?php echo $cls; ?> -->
 						<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>
 							<?php
-							if ($i >= 2) 
+							if ($i >= 2)
 							{
 								$i = 0;
 							}

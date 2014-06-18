@@ -40,7 +40,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -68,7 +68,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to set the document path
-	 * 
+	 *
 	 * @param      array $course_pages List of roup pages
 	 * @return     void
 	 */
@@ -76,14 +76,14 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'intro') 
+		if ($this->_task && $this->_task != 'intro')
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option . '_' . $this->_task)),
@@ -94,7 +94,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to build and set the document title
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _buildTitle()
@@ -102,7 +102,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		//set title used in view
 		$this->_title = JText::_(strtoupper($this->_option));
 
-		if ($this->_task && $this->_task != 'intro') 
+		if ($this->_task && $this->_task != 'intro')
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 		}
@@ -114,7 +114,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display component main page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function introTask()
@@ -151,9 +151,9 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 				if ($mytags = $mt->get_tag_string($this->juser->get('id')))
 				{
 					$this->view->interestingcourses = $model->courses(array(
-						'tag'   => $mytags, 
+						'tag'   => $mytags,
 						'tag_any' => true,
-						'limit' => 10, 
+						'limit' => 10,
 						'state' => 1
 					), true);
 				}
@@ -164,8 +164,8 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		if ($this->config->get('intro_popularcourses', 1))
 		{
 			$this->view->popularcourses = $model->courses(array(
-				'limit' => 3, 
-				'sort'  => 'students', 
+				'limit' => 3,
+				'sort'  => 'students',
 				'state' => 1
 			), true);
 		}
@@ -182,12 +182,12 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of courses on the site and options for filtering/browsing them
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function browseTask()
 	{
-		// Filters 
+		// Filters
 		$this->view->filters = array();
 		$this->view->filters['state']  = 1;
 		$this->view->filters['search'] = JRequest::getVar('search', '');
@@ -242,8 +242,8 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
@@ -263,7 +263,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Public url for badge info
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function badgeTask()
@@ -296,13 +296,13 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 	/**
 	 * Set access permissions for a user
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, false);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -329,7 +329,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

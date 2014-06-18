@@ -61,11 +61,11 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 		<input type="hidden" name="course[id]" value="<?php echo $this->escape($this->course->get('id')); ?>" />
 		<input type="hidden" name="course[alias]" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
 	</form>
-	<?php 
+	<?php
 }
 else
 {
-	if ($this->course->access('edit', 'course')) 
+	if ($this->course->access('edit', 'course'))
 	{
 		?>
 		<div class="manager-options">
@@ -74,7 +74,7 @@ else
 			</a>
 			<span><strong>Long description</strong></span>
 		</div>
-		<?php 
+		<?php
 	}
 
 	if (!$this->course->get('description'))

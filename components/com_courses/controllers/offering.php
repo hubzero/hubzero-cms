@@ -38,7 +38,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -56,7 +56,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		$this->course = CoursesModelCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$this->course->exists()) 
+		if (!$this->course->exists())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 			return;
@@ -72,7 +72,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we found the course info
-		if (!$this->course->offering($offering)) 
+		if (!$this->course->offering($offering))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;
@@ -90,7 +90,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to set the document path
-	 * 
+	 *
 	 * @param      array $course_pages List of roup pages
 	 * @return     void
 	 */
@@ -98,7 +98,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				JText::_(strtoupper($this->_option)),
@@ -106,14 +106,14 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			);
 		}
 
-		if ($this->course->exists()) 
+		if ($this->course->exists())
 		{
 			$pathway->addItem(
 				stripslashes($this->course->get('title')),
 				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
 			);
 
-			if ($this->course->offering()->exists()) 
+			if ($this->course->offering()->exists())
 			{
 				$pathway->addItem(
 					stripslashes($this->course->offering()->get('title')),
@@ -125,7 +125,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Method to build and set the document title
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function _buildTitle()
@@ -133,11 +133,11 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		//set title used in view
 		$this->_title = JText::_(strtoupper($this->_option));
 
-		if ($this->course->exists()) 
+		if ($this->course->exists())
 		{
 			$this->_title .= ': ' . stripslashes($this->course->get('title'));
 
-			if ($this->course->offering()->exists()) 
+			if ($this->course->offering()->exists())
 			{
 				$this->_title .= ': ' . stripslashes($this->course->offering()->get('title'));
 			}
@@ -150,7 +150,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Redirect to login page
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function loginTask($message = '')
@@ -167,7 +167,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * View a course
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -230,7 +230,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// If active tab is not one of available tabs
-		if (!in_array($this->view->active, array_keys($course_plugin_access))) 
+		if (!in_array($this->view->active, array_keys($course_plugin_access)))
 		{
 			$this->view->active = 'outline';
 		}
@@ -257,13 +257,13 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an offering asset
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function enrollTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask('You must be logged in to enroll in a course.');
 			return;
@@ -272,7 +272,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		$offering = $this->course->offering();
 
 		// Is the user a manager or student?
-		if ($offering->isManager() || $offering->isStudent()) 
+		if ($offering->isManager() || $offering->isStudent())
 		{
 			// Yes! Already enrolled
 			// Redirect back to the course page
@@ -422,7 +422,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing a course
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function newTask()
@@ -432,7 +432,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing a course
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask()
@@ -445,13 +445,13 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an offering asset
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function assetTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask('You must be logged in to save course settings.');
 			return;
@@ -518,13 +518,13 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a course
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->loginTask('You must be logged in to save course settings.');
 			return;
@@ -540,7 +540,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 * Delete a course
 	 * This method initially displays a form for confirming deletion
 	 * then deletes course and associated information upon POST
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()

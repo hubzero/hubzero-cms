@@ -39,7 +39,7 @@ class modMyTickets extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -53,25 +53,25 @@ class modMyTickets extends \Hubzero\Module\Module
 		// Find the user's most recent support tickets
 		$database->setQuery(
 			"(
-				SELECT id, summary, category, open, status, severity, owner, created, login, name, 
-					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
-				FROM #__support_tickets as st 
-				WHERE st.login='" . $juser->get('username') . "' AND st.open=1 AND type=0 
+				SELECT id, summary, category, open, status, severity, owner, created, login, name,
+					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+				FROM #__support_tickets as st
+				WHERE st.login='" . $juser->get('username') . "' AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
 			)
 			UNION
 			(
-				SELECT id, summary, category, open, status, severity, owner, created, login, name, 
-					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments 
-				FROM #__support_tickets as st 
-				WHERE st.owner='" . $juser->get('username') . "' AND st.open=1 AND type=0 
+				SELECT id, summary, category, open, status, severity, owner, created, login, name,
+					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+				FROM #__support_tickets as st
+				WHERE st.owner='" . $juser->get('username') . "' AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
 			)"
 		);
 		$this->rows = $database->loadObjectList();
-		if ($database->getErrorNum()) 
+		if ($database->getErrorNum())
 		{
 			$this->setError($database->stderr());
 			$this->rows = array();
@@ -88,7 +88,7 @@ class modMyTickets extends \Hubzero\Module\Module
 				{
 					$rows2[] = $row;
 				}
-				else 
+				else
 				{
 					$rows1[] = $row;
 				}
@@ -102,7 +102,7 @@ class modMyTickets extends \Hubzero\Module\Module
 		$xgroups = $profile->getGroups('members');
 
 		$groups = '';
-		if ($xgroups) 
+		if ($xgroups)
 		{
 			$g = array();
 			foreach ($xgroups as $xgroup)
@@ -113,19 +113,19 @@ class modMyTickets extends \Hubzero\Module\Module
 		}
 
 		$this->rows3 = null;
-		if ($groups) 
+		if ($groups)
 		{
 			// Find support tickets on the user's contributions
 			$database->setQuery(
-				"SELECT id, summary, category, open, status, severity, owner, created, login, name, 
+				"SELECT id, summary, category, open, status, severity, owner, created, login, name,
 				 	(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-				 FROM #__support_tickets as st 
+				 FROM #__support_tickets as st
 				 WHERE st.open=1 AND type=0 AND st.group IN ('$groups')
 				 ORDER BY created DESC
 				 LIMIT $limit"
 			);
 			$this->rows3 = $database->loadObjectList();
-			if ($database->getErrorNum()) 
+			if ($database->getErrorNum())
 			{
 				$this->setError($database->stderr());
 				$this->rows3 = null;

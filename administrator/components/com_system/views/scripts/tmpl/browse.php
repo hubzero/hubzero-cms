@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('Scripts'), 'script.png');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -75,7 +75,7 @@ if ($this->paths) {
 		$totalRuns = '0';
 		$args = null;
 
-		if (isset($this->log[$scriptName])) 
+		if (isset($this->log[$scriptName]))
 		{
 			$lastRun   = $this->log[$scriptName]['lastRun'];
 			$totalRuns = $this->log[$scriptName]['totalRuns'];
@@ -83,10 +83,10 @@ if ($this->paths) {
 
 		include_once($path);
 
-		if (class_exists($scriptName)) 
+		if (class_exists($scriptName))
 		{
 			$job = new $scriptName();
-			if ($job instanceof SystemHelperScript) 
+			if ($job instanceof SystemHelperScript)
 			{
 				$description = $job->getDescription();
 				$form = true;
@@ -109,7 +109,7 @@ if ($this->paths) {
 						<input type="hidden" name="script" value="<?php echo $scriptName; ?>" />
 						<input type="submit" value="Run Script" />
 					</form>
-<?php 
+<?php
 	if ($args) {
 		foreach ($args as $arg) {
 ?>
@@ -117,7 +117,7 @@ if ($this->paths) {
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="task" value="run" />
 						<input type="hidden" name="script" value="<?php echo $scriptName; ?>" />
-<?php 
+<?php
 			$str = array();
 			foreach ($arg as $key => $val) {
 				$str[] = $key . '=' . $val;
@@ -126,7 +126,7 @@ if ($this->paths) {
 <?php } ?>
 						<input type="submit" value="Run Script (<?php echo implode('&amp;', $str); ?>)" />
 					</form>
-<?php 
+<?php
 		}
 	}
 ?>

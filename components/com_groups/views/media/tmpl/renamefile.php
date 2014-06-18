@@ -41,7 +41,7 @@ $fileInfo = pathinfo($this->file);
 		<label>
 			<?php echo JText::_('Current Name: '); ?><br />
 			<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
-			
+
 			<input type="text" name="name" value="<?php echo $fileInfo['basename']; ?>" />
 		</label>
 		<p class="controls">

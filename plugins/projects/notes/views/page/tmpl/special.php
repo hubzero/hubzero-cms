@@ -61,7 +61,7 @@ $juser = JFactory::getUser();
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));
@@ -78,7 +78,7 @@ $juser = JFactory::getUser();
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'special',
 		'layout'    => strtolower($this->layout)
 	));

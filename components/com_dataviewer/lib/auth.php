@@ -41,7 +41,7 @@ function dv_auth()
 			return true;
 		}
 	}
-	
+
 	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !$juser->get('guest')) {
 		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {

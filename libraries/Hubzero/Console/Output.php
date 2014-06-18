@@ -49,7 +49,7 @@ class Output
 	 * Track default indentation for lines
 	 *
 	 * If prefering predominant indentation other than 0,
-	 * set with setDefaultIndentation() to avoid having 
+	 * set with setDefaultIndentation() to avoid having
 	 * to set on all calls to addLine().
 	 *
 	 * @var string
@@ -203,7 +203,7 @@ class Output
 	 *
 	 * Here we're expecting an array, with each entry also containing an
 	 * array with at least one key of 'message'. Another key
-	 * can also be provided with a message type, which translates to 
+	 * can also be provided with a message type, which translates to
 	 * one of the predefined styles used in formatLine().
 	 *
 	 * @param  (array) $lines - array of lines
@@ -324,7 +324,7 @@ class Output
 	 * Take line of text and styles and give back a formatted line.
 	 *
 	 * This will also translate textual colors and formatting words
-	 * to bash escape sequences. 
+	 * to bash escape sequences.
 	 *
 	 * @param  (string) $message - raw line of text
 	 * @param  (mixed)  $styles  - string or array of styles

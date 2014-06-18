@@ -16,7 +16,7 @@ class Migration20140519120000ComPublications extends Base
 	public function up()
 	{
 		$queries = array();
-		
+
 		// Set up curation
 		if (!$this->db->tableExists('#__publication_curation_history'))
 		{
@@ -32,8 +32,8 @@ class Migration20140519120000ComPublications extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 		}
-		
-		// Run queries		
+
+		// Run queries
 		if (count($queries) > 0)
 		{
 			// Run queries

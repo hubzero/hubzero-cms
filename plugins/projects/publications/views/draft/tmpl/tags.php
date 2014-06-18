@@ -36,8 +36,8 @@ $name	  = $block->name;
 $props = $name . '-' . $this->step;
 
 // Build url
-$route = $prov 
-		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id  
+$route = $prov
+		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 
 // Are we in draft flow?
@@ -62,7 +62,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?>
 				<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS')); ?>
 				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
-				
+
 				<?php
 				JPluginHelper::importPlugin( 'hubzero' );
 				$dispatcher = JDispatcher::getInstance();
@@ -80,8 +80,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 	</div>
 </div>
 
-<?php if ($this->categories && count($this->categories) > 1) { 
-	
+<?php if ($this->categories && count($this->categories) > 1) {
+
 	$paramsClass = 'JParameter';
 	if (version_compare(JVERSION, '1.6', 'ge'))
 	{
@@ -93,10 +93,10 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 		<div class="pane-wrapper">
 			<span class="checker">&nbsp;</span>
 	<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
-	<?php foreach ($this->categories as $cat) { 
+	<?php foreach ($this->categories as $cat) {
 		$params = new $paramsClass($cat->params);
 		// Skip inaplicable category
-		if (!$params->get('type_' . $this->pub->base, 1)) 
+		if (!$params->get('type_' . $this->pub->base, 1))
 		{
 			continue;
 		}
@@ -105,7 +105,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 		 <input type="radio" name="pubtype" value="<?php echo $cat->id; ?>"
 		<?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> class="radio" />	<?php echo $cat->name; ?>
 			<span><?php echo $cat->description; ?></span>
-		</div>	
+		</div>
 	<?php } ?>
 	</div>
  </div>

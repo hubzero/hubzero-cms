@@ -47,7 +47,7 @@ class Javascript extends AbstractRenderer
 
 	/**
 	 * Render a list of messages
-	 * 
+	 *
 	 * @param   array  $messages
 	 * @return  string
 	 */

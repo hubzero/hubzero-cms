@@ -979,9 +979,9 @@ class Sanitizer
 
 	/**
 	 * Short description for 'normalizeWhitespace'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1039,8 +1039,8 @@ class Sanitizer
 
 	/**
 	 * If the named entity is defined in the HTML 4.0/XHTML 1.0 DTD,
-	 * return the named entity reference as is. If the entity is a 
-	 * MediaWiki-specific alias, returns the HTML equivalent. Otherwise, 
+	 * return the named entity reference as is. If the entity is a
+	 * MediaWiki-specific alias, returns the HTML equivalent. Otherwise,
 	 * returns HTML-escaped text of pseudo-entity source (eg &amp;foo;)
 	 *
 	 * @param string $name
@@ -1061,9 +1061,9 @@ class Sanitizer
 
 	/**
 	 * Short description for 'decCharReference'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $codepoint Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1079,9 +1079,9 @@ class Sanitizer
 
 	/**
 	 * Short description for 'hexCharReference'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $codepoint Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
@@ -1397,9 +1397,9 @@ class Sanitizer
 
 	/**
 	 * Short description for 'cleanUrl'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $url Parameter description (if any) ...
 	 * @param      boolean $hostname Parameter description (if any) ...
 	 * @return     string Return description (if any) ...

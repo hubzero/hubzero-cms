@@ -40,7 +40,7 @@ if ($this->getError()) { ?>
 		</tr>
 	</thead>
 	<tbody>
-<?php 
+<?php
 foreach ($this->rows as $row)
 {
 	if (intval($row->created) <> 0)
@@ -63,7 +63,7 @@ foreach ($this->rows as $row)
 	</tr>
 	<tr>
  		<th style="border-bottom: 2px solid #999;vertical-align:top;">Comment:</th>
-		<td style="border-bottom: 2px solid #999;" class="aLeft"><?php 
+		<td style="border-bottom: 2px solid #999;" class="aLeft"><?php
 			if ($row->comment) {
 				echo $this->escape(stripslashes($row->comment));
 			} else {

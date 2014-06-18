@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <section class="main section">
 	<p>
 		Your account is currently pending approval from a site administrator.
-		If you feel you are receiving this message in error, please 
+		If you feel you are receiving this message in error, please
 		<a href="<?php echo JRoute::_('index.php?option=com_support&task=new'); ?>">contact the site administrator</a>.
 	</p>
 </section>

@@ -37,7 +37,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $juri = JURI::getInstance();
 
 // Build url
-$url = $this->project->provisioned 
+$url = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit' . a . 'pid=' . $this->pub->id
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 
@@ -48,17 +48,17 @@ if (substr($sef,0,1) == '/') {
 
 $message  = $this->actor->get('name').' ';
 if($this->project->provisioned) {
-	$message .= $this->uid 
-			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR') 
+	$message .= $this->uid
+			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
 			: JText::_('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
-	$message .= ' "'.$this->pub->title.'"';	
+	$message .= ' "'.$this->pub->title.'"';
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
 else {
 	$message .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
 	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');	
+	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 	$message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.')'."\n";
@@ -68,13 +68,13 @@ else {
 	$message .= JText::_('COM_PROJECTS_EMAIL_URL').': '.$juri->base().$sef."\n\n";
 }
 
-$sef = $this->uid ? $sef : JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias) 
+$sef = $this->uid ? $sef : JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias)
 	. '/?confirm=' . $this->code . '&email=' . $this->email;
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 if($this->uid) {
-	$message .= $this->project->provisioned 
+	$message .= $this->project->provisioned
 			? JText::_('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT')."\n"
 			: JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 	$message .= $juri->base().$sef."\n\n";

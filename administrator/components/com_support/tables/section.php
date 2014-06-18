@@ -38,21 +38,21 @@ class SupportSection extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $section = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -63,12 +63,12 @@ class SupportSection extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->section) == '') 
+		if (trim($this->section) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
@@ -79,7 +79,7 @@ class SupportSection extends JTable
 
 	/**
 	 * Get all sections
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getSections()
@@ -90,7 +90,7 @@ class SupportSection extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -98,7 +98,7 @@ class SupportSection extends JTable
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY section";
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -108,7 +108,7 @@ class SupportSection extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -121,7 +121,7 @@ class SupportSection extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } else { ?>
 		<ul class="expandedlist">
 			<?php
-			foreach ($this->rows1 as $row) 
+			foreach ($this->rows1 as $row)
 			{
 				$when = JHTML::_('date.relative', $row->proposed);
 			?>
@@ -56,15 +56,15 @@ defined('_JEXEC') or die('Restricted access');
 					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
 				</a>
 				<span>
-					<span class="<?php 
-					echo ($row->status==3) ? 'rejected' : ''; 
-					if ($row->status==0) { 
+					<span class="<?php
+					echo ($row->status==3) ? 'rejected' : '';
+					if ($row->status==0) {
 						echo ($row->accepted==1) ? 'accepted' : 'pending';
 					}
 					?>">
 						<?php
-						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
-						if ($row->status==0) { 
+						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : '';
+						if ($row->status==0) {
 							echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
 						}
 						?>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } else { ?>
 		<ul class="expandedlist">
 			<?php
-			foreach ($this->rows2 as $row) 
+			foreach ($this->rows2 as $row)
 			{
 				$when = JHTML::_('date.relative', $row->proposed);
 			?>
@@ -95,15 +95,15 @@ defined('_JEXEC') or die('Restricted access');
 					#<?php echo $row->id; ?>: <?php echo \Hubzero\Utility\String::truncate(stripslashes($row->subject), 35); ?>
 				</a>
 				<span>
-					<span class="<?php 
-					echo ($row->status==3) ? 'rejected' : ''; 
-					if ($row->status==0) { 
+					<span class="<?php
+					echo ($row->status==3) ? 'rejected' : '';
+					if ($row->status==0) {
 						echo ($row->accepted==1) ? 'accepted' : 'pending';
 					}
 					?>">
 						<?php
-						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : ''; 
-						if ($row->status==0) { 
+						echo ($row->status==3) ? JText::_('MOD_MYWISHES_REJECTED') : '';
+						if ($row->status==0) {
 							echo ($row->accepted==1) ? JText::_('MOD_MYWISHES_ACCEPTED') : JText::_('MOD_MYWISHES_PENDING');
 						}
 						?>

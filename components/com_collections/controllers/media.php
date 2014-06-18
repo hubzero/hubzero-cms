@@ -40,7 +40,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Download a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function downloadTask()
@@ -54,7 +54,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$asset = CollectionsModelAsset::getInstance($file, $post->get('item_id'));
 
 		// Ensure record exist
-		if (!$asset->get('id') || $post->item()->get('state') == 2) 
+		if (!$asset->get('id') || $post->item()->get('state') == 2)
 		{
 			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
 			return;
@@ -68,7 +68,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have a path
-		if (!$asset->get('filename')) 
+		if (!$asset->get('filename'))
 		{
 			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
 			return;
@@ -78,7 +78,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
@@ -97,12 +97,12 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_COLLECTIONS_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -110,7 +110,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function createTask()
@@ -121,7 +121,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -129,7 +129,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('dir', 0, 'post');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
@@ -159,7 +159,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
-		if (!$asset->store()) 
+		if (!$asset->store())
 		{
 			$this->setError($asset->getError());
 		}
@@ -169,13 +169,13 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxCreateTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -183,7 +183,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = strtolower(JRequest::getVar('dir', ''));
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_NO_ID')));
 			return;
@@ -200,7 +200,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 				if (!$item->store())
 				{
 					echo json_encode(array(
-						'success'   => false, 
+						'success'   => false,
 						'errors'    => $item->getErrors(),
 						'file'      => 'http://',
 						'directory' => '',
@@ -220,11 +220,11 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
-		if (!$asset->store()) 
+		if (!$asset->store())
 		{
 			//$this->setError($asset->getError());
 			echo json_encode(array(
-				'success'   => false, 
+				'success'   => false,
 				'errors'    => $asset->getErrors(),
 				'file'      => 'http://',
 				'directory' => '',
@@ -235,7 +235,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'file'      => 'http://',
 			'directory' => '',
 			'id'        => $listdir
@@ -244,13 +244,13 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki via AJAX
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => JText::_('Must be logged in.')));
 			return;
@@ -258,7 +258,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = strtolower(JRequest::getVar('dir', ''));
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_NO_ID')));
 			return;
@@ -306,10 +306,10 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		//define upload directory and make sure its writable
 		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
 				return;
@@ -323,12 +323,12 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a file and its not too big
-		if ($size == 0) 
+		if ($size == 0)
 		{
 			echo json_encode(array('error' => JText::_('File is empty')));
 			return;
 		}
-		if ($size > $sizeLimit) 
+		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
@@ -346,7 +346,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
-		while (file_exists($path . DS . $filename . '.' . $ext)) 
+		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
@@ -380,7 +380,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$asset->set('state', 1);
 		$asset->set('type', 'file');
 
-		if (!$asset->store()) 
+		if (!$asset->store())
 		{
 			echo json_encode(array(
 				'error' => $asset->getError()
@@ -400,7 +400,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		//echo result
 		echo json_encode(array(
-			'success'   => true, 
+			'success'   => true,
 			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(JPATH_ROOT, '', $path),
 			'id'        => $listdir,
@@ -410,13 +410,13 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Upload a file to the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -429,7 +429,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getInt('dir', 0, 'post');
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
@@ -438,7 +438,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_FILE'));
 			$this->displayTask();
@@ -448,10 +448,10 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Build the upload path if it doesn't exist
 		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
 
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('Error uploading. Unable to create path.'));
 				$this->displayTask();
@@ -466,12 +466,12 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('ERROR_UPLOADING'));
 		}
-		// File was uploaded 
-		else 
+		// File was uploaded
+		else
 		{
 			// Create database entry
 			$asset = new CollectionsModelAsset();
@@ -481,7 +481,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			$asset->set('state', 1);
 			$asset->set('type', 'file');
 
-			if (!$asset->store()) 
+			if (!$asset->store())
 			{
 				$this->setError($asset->getError());
 			}
@@ -493,7 +493,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file in the wiki
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -504,7 +504,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
@@ -530,7 +530,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a form for uploading files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function ajaxDeleteTask()
@@ -558,14 +558,14 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 		//echo result
 		echo json_encode(array(
-			'success' => true, 
+			'success' => true,
 			'asset'   => $id
 		));
 	}
 
 	/**
 	 * Display a form for uploading files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -578,7 +578,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->config = $this->config;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -591,7 +591,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of files
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listTask()
@@ -599,7 +599,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Incoming
 		$listdir = JRequest::getInt('dir', 0, 'get');
 
-		if (!$listdir) 
+		if (!$listdir)
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
 		}
@@ -613,7 +613,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->config  = $this->config;
 		$this->view->listdir = $listdir;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

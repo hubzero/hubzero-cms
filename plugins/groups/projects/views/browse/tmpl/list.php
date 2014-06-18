@@ -33,11 +33,11 @@ $projects = $this->rows;
 $juser = $this->juser;
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
-switch ($this->which) 
+switch ($this->which)
 {
 	case 'group': $title = JText::_('PLG_GROUPS_PROJECTS_SHOW_GROUP'); break;
 	case 'owned': $title = JText::_('PLG_GROUPS_PROJECTS_SHOW_OWNED'); break;
-	case 'other': $title = JText::_('PLG_GROUPS_PROJECTS_SHOW_OTHER'); break; 
+	case 'other': $title = JText::_('PLG_GROUPS_PROJECTS_SHOW_OTHER'); break;
 	default:
 	case 'all':   $title = JText::_('PLG_GROUPS_PROJECTS_SHOW_ALL');   break;
 }
@@ -104,7 +104,7 @@ switch ($this->which)
 							}
 						}
 						echo $html;
-					
+
 					?>
 					</td>
 					<td class="th_role">

@@ -42,24 +42,24 @@ defined('_JEXEC') or die('Restricted access');
  * May die if fed out of range data.
  *
  * @param  $codepoint Integer:
- * @return String    
+ * @return String
  * @public
  */
 function codepointToUtf8($codepoint)
 {
-	if ($codepoint < 0x80) 
+	if ($codepoint < 0x80)
 	{
 		return chr($codepoint);
 	}
-	if ($codepoint < 0x800) 
+	if ($codepoint < 0x800)
 	{
 		return chr($codepoint >> 6 & 0x3f | 0xc0) . chr($codepoint & 0x3f | 0x80);
 	}
-	if ($codepoint < 0x10000) 
+	if ($codepoint < 0x10000)
 	{
 		return chr($codepoint >> 12 & 0x0f | 0xe0) . chr($codepoint >> 6 & 0x3f | 0x80) . chr($codepoint & 0x3f | 0x80);
 	}
-	if ($codepoint < 0x110000) 
+	if ($codepoint < 0x110000)
 	{
 		return chr($codepoint >> 18 & 0x07 | 0xf0) . chr($codepoint >> 12 & 0x3f | 0x80) . chr($codepoint >> 6 & 0x3f | 0x80) . chr($codepoint & 0x3f | 0x80);
 	}
@@ -74,7 +74,7 @@ function codepointToUtf8($codepoint)
  * characters. Used by UTF-8 data generation and testing routines.
  *
  * @param   $sequence String
- * @return  String   
+ * @return  String
  * @private
  */
 function hexSequenceToUtf8($sequence)
@@ -113,25 +113,25 @@ function utf8ToCodepoint($char)
 {
 	# Find the length
 	$z = ord($char{0});
-	if ($z & 0x80) 
+	if ($z & 0x80)
 	{
 		$length = 0;
-		while ($z & 0x80) 
+		while ($z & 0x80)
 		{
 			$length++;
 			$z <<= 1;
 		}
-	} 
-	else 
+	}
+	else
 	{
 		$length = 1;
 	}
 
-	if ($length != strlen($char)) 
+	if ($length != strlen($char))
 	{
 		return false;
 	}
-	if ($length == 1) 
+	if ($length == 1)
 	{
 		return ord($char);
 	}

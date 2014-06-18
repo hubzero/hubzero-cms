@@ -54,7 +54,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return array of areas related to this plugin (name, title, etc...)
-	 * 
+	 *
 	 * @return array Return
 	 */
 	public function &onTimeAreas()
@@ -137,7 +137,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -145,7 +145,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 		$hubs    = new TimeHubs($this->db);
 		$tasks   = new TimeTasks($this->db);
 		$records = new TimeRecords($this->db);
-		
+
 		// Create a new plugin view
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -172,7 +172,7 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setRedirect($url, $msg=null, $type='message')

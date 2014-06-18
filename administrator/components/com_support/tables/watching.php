@@ -38,28 +38,28 @@ class SupportTableWatching extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ticket_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,13 +70,13 @@ class SupportTableWatching extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
 	public function load($oid=null, $user_id=null)
 	{
-		if ($oid === null) 
+		if ($oid === null)
 		{
 			return false;
 		}
@@ -88,11 +88,11 @@ class SupportTableWatching extends JTable
 		$query = "SELECT * FROM $this->_tbl WHERE ticket_id=" . $this->_db->Quote(trim($oid)) . " AND user_id=" . $this->_db->Quote(intval($user_id));
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -101,20 +101,20 @@ class SupportTableWatching extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->ticket_id = intval($this->ticket_id);
-		if (!$this->ticket_id) 
+		if (!$this->ticket_id)
 		{
 			$this->setError(JText::_('A ticket ID must be provided.'));
 			return false;
 		}
 
 		$this->user_id = intval($this->user_id);
-		if (!$this->user_id) 
+		if (!$this->user_id)
 		{
 			$this->setError(JText::_('A user ID must be provided.'));
 			return false;
@@ -125,7 +125,7 @@ class SupportTableWatching extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -150,11 +150,11 @@ class SupportTableWatching extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (isset($filters['order']) && $filters['order'] != '') 
+		if (isset($filters['order']) && $filters['order'] != '')
 		{
 			$query .= " ORDER BY " . $filters['order'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -164,7 +164,7 @@ class SupportTableWatching extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -177,7 +177,7 @@ class SupportTableWatching extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

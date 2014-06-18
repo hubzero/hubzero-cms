@@ -40,7 +40,7 @@ class plgSupportComments extends JPlugin
 {
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $category Element type (determines table to look in)
 	 * @param      string $parent   If the element has a parent element
@@ -48,12 +48,12 @@ class plgSupportComments extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment')))
 		{
 			return null;
 		}
 
-		$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` " 
+		$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` "
 				. "FROM #__item_comments AS rc "
 				. "WHERE rc.id=" . $refid;
 		$database = JFactory::getDBO();
@@ -115,7 +115,7 @@ class plgSupportComments extends JPlugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -124,7 +124,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function onReportItem($refid, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment')))
 		{
 			return null;
 		}
@@ -141,7 +141,7 @@ class plgSupportComments extends JPlugin
 
 	/**
 	 * Release a reported item
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -149,7 +149,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment')))
 		{
 			return null;
 		}
@@ -167,7 +167,7 @@ class plgSupportComments extends JPlugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -176,7 +176,7 @@ class plgSupportComments extends JPlugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'))) 
+		if (!in_array($category, array('wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment')))
 		{
 			return null;
 		}

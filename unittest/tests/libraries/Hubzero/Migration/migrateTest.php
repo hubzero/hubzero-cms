@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for HUBzero migrate command line utility
- * 
+ *
  * @author Sam Wilson <samwilson@purdue.edu>
  */
 

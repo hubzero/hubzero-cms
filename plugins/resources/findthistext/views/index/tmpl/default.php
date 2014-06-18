@@ -36,7 +36,7 @@ $this->css();
 // parse the custom fields out of the resource
 $resourceFields = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -76,7 +76,7 @@ if (count($matches) > 0)
 					<?php
 						$text  = $this->openurl->text;
 						$image = "<img src=\"{$this->openurl->icon}\" alt=\"\" />";
-						
+
 						// add field data to local library link
 						$fields   = array('doi','isbn','issn');
 						$linkData = array(
@@ -89,7 +89,7 @@ if (count($matches) > 0)
 								$linkData[$field] = $resourceFields[$field];
 							}
 						}
-						
+
 						// build link
 						$link  = rtrim($this->openurl->link, '?') . '?' . http_build_query($linkData);
 					?>
@@ -127,7 +127,7 @@ if (count($matches) > 0)
 			<td>
 				<ul>
 					<li>
-						<?php 
+						<?php
 							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+',  $this->model->resource->title);
 							echo JText::sprintf('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
 						?>

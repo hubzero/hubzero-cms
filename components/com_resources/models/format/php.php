@@ -44,11 +44,11 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 		$vars = '';
 		foreach (get_object_vars($object) as $k => $v)
 		{
-			if (is_scalar($v)) 
+			if (is_scalar($v))
 			{
 				$vars .= "\tpublic $". $k . " = '" . addcslashes($v, '\\\'') . "';\n";
-			} 
-			else if (is_array($v)) 
+			}
+			else if (is_array($v))
 			{
 				$vars .= "\tpublic $". $k . " = " . $this->getArrayString($v) . ";\n";
 			}
@@ -59,7 +59,7 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 		$str .= "}";
 
 		// Use the closing tag if it not set to false in parameters.
-		if (!isset($params['closingtag']) || $params['closingtag'] !== false) 
+		if (!isset($params['closingtag']) || $params['closingtag'] !== false)
 		{
 			$str .= "\n?>";
 		}
@@ -93,11 +93,11 @@ class ResourcesElementsFormatPHP extends ResourcesElementsFormat
 		{
 			$s .= ($i) ? ', ' : '';
 			$s .= '"' . $k . '" => ';
-			if (is_array($v)) 
+			if (is_array($v))
 			{
 				$s .= $this->getArrayString($v);
-			} 
-			else 
+			}
+			else
 			{
 				$s .= '"' . addslashes($v) . '"';
 			}

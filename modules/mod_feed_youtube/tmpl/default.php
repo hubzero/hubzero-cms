@@ -45,7 +45,7 @@ if ($this->feed)
 	$this->css();
 
 	$youtube_ima  = DS . trim($this->params->get('imagepath'), DS);
-	if (!is_file(JPATH_ROOT . $youtube_ima)) 
+	if (!is_file(JPATH_ROOT . $youtube_ima))
 	{
 		$youtube_ima = '';
 	}
@@ -54,17 +54,17 @@ if ($this->feed)
 	$morelink =  $this->params->get('moreurl') ? str_replace('&', '&amp', $this->params->get('moreurl')) : str_replace('&', '&amp', $this->feed->link);
 
 	// feed image & title
-	if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { 
+	if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) {
 ?>
 		<h3 class="feed_title">
-<?php 
+<?php
 		// feed title
 		if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) {
 			$this->feedtitle = $this->params->get('feedtitle') ? $this->params->get('feedtitle') : $this->feed->title;
 ?>
 			<a href="<?php echo $morelink; ?>" rel="external"><?php echo $this->feedtitle; ?></a>
 <?php
-		} 
+		}
 		if ($this->params->get('rssimage', 1) && $youtube_ima) { ?>
 			<a href="<?php echo str_replace('&', '&amp', $this->feed->link); ?>" rel="external">
 				<img src="<?php echo $youtube_ima; ?>" alt="<?php echo @$iTitle; ?>"/>
@@ -122,7 +122,7 @@ if ($this->feed)
 					}
 
 					// display with thumbnails
-					if ($vid) { 
+					if ($vid) {
 ?>
 				<a href="<?php echo $currItem->get_link(); ?>" rel="external">
 					<img src="<?php echo $thumb; ?>" alt="" />

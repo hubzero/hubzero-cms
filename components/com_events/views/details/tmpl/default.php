@@ -123,8 +123,8 @@ $this->css()
 			$html .= '   <th scope="row">'.JText::_('EVENTS_CAL_LANG_EVENT_WHEN').':</th>'."\n";
 			$html .= '   <td>'."\n";
 
-			
-			
+
+
 			$ts = explode(':', $this->row->start_time);
 			if (intval($ts[0]) > 12) {
 				$ts[0] = ($ts[0] - 12);
@@ -141,7 +141,7 @@ $this->css()
 			} else {
 				$this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>'.JText::_('EVENTS_NOON').'</small>' : ' <small>AM</small>';
 			}
-			
+
 			//if ($config->getCfg('repeatview') == 'YES') {
 				/*
 				if ($this->row->start_date == $this->row->stop_date) {
@@ -154,12 +154,12 @@ $this->css()
 			/*} else {
 				$html .= $this->row->start_date .', '.$this->row->start_time.'&nbsp;-&nbsp;'.$this->row->stop_time.'<br />';
 			}*/
-		
+
 			// get publish up/down & timezone
 			$publish_up   = $this->row->publish_up;
 			$publish_down = $this->row->publish_down;
 			$timezone     = timezone_name_from_abbr('',$this->row->time_zone*3600, NULL);
-			
+
 			if (date("Y-m-d", strtotime($publish_up)) == date("Y-m-d", strtotime($publish_down)))
 			{
 				$html .= JHTML::_('date', $publish_up, 'l d F, Y', $timezone) . ', ';
@@ -170,7 +170,7 @@ $this->css()
 				$html .= JHTML::_('date', $publish_up, 'l d F, Y g:i a T', $timezone) . ' - ';
 				$html .= JHTML::_('date', $publish_down, 'l d F, Y g:i a T', $timezone);
 			}
-				
+
 			$html .= '   </td>'."\n";
 			$html .= '  </tr>'."\n";
 			if (trim($this->row->contact_info)) {

@@ -75,7 +75,7 @@ foreach ($this->modules as $module)
 				<div class="item-container">
 					<div class="item-title">
 						<?php echo $module->get('title'); ?>
-					
+
 						<?php
 							$pages = array();
 							$menus = $module->menu('list');
@@ -85,22 +85,22 @@ foreach ($this->modules as $module)
 							}
 						?>
 					</div>
-					
+
 					<div class="item-sub">
 						Included on: <?php echo implode(', ', $pages); ?>
 					</div>
-					
+
 					<div class="item-position">
 						<span><?php echo JText::_('Position:'); ?></span>
 						<?php echo $module->get('position'); ?>
 					</div>
-					
+
 					<?php if ($module->get('approved') == 0) : ?>
 						<div class="item-approved">
 							<?php echo JText::_('Pending Approval'); ?>
 						</div>
 					<?php endif; ?>
-					
+
 					<div class="item-state">
 						<?php if ($module->get('state') == 0) : ?>
 							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Module'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Publish Module'); ?></a>

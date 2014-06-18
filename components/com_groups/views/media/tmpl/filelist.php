@@ -99,7 +99,7 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 						{
 							$dataFolder = $this->relpath . DS . $folder;
 						}
-						
+
 						$moveFolderPath     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=movefolder&folder=' .  $dataFolder . '&tmpl=component');
 						$renameFolderPath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=renamefolder&folder=' .  $dataFolder . '&tmpl=component');
 						$deleteFolderPath   = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component');
@@ -111,30 +111,30 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 				</div>
 			</li>
 		<?php endforeach; ?>
-		
+
 		<?php foreach ($this->files as $file) : ?>
 			<?php
 				// build file path
 				$filePath    = $this->path . DS . $file;
 				$relFilePath = $this->relpath . DS . $file;
-				
+
 				// get file info & stats
 				$fileInfo   = @pathInfo($filePath);
 				$filesize   = @filesize($filePath);
 				$dimensions = @getimagesize( $filePath );
 				$modified   = @filemtime($filePath);
-				
-				
+
+
 				// formatted results
 				$extension           = $fileInfo['extension'];
 				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes( $filesize );
 				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
 				$formattedModified   = date('m/d/Y g:ia', $modified);
-				
+
 				// is this file an image
 				$isImage   = (in_array($extension, array('jpg','jpeg','png','gif','bmp','tiff'))) ? true : false;
 				$isArchive = (in_array($extension, array('zip', 'tar', 'gz'))) ? true : false;
-				
+
 				// build paths
 				$downloadPath = $baseURI . DS . 'File:' . $relFilePath;
 				$movePath     = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=movefile&file=' .  $relFilePath . '&tmpl=component');

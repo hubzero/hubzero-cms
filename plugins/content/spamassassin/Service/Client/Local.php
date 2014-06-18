@@ -36,19 +36,19 @@ class Local
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * Accepts an associative array with the following keys:
-	 * 
+	 *
 	 * socketPath      - mandatory only if using UNIX sockets to local server
 	 * hostname        - mandatory only if using remote SpamAssassin server
 	 * user            - optional parameter
 	 * protocolVersion - spamd protocol version (defaults to 1.5)
-	 * 
+	 *
 	 * @param array $params SpamAssassin parameters
 	 */
 	public function __construct(array $params)
 	{
-		foreach ($params as $param => $value) 
+		foreach ($params as $param => $value)
 		{
 			$this->$param = $value;
 		}
@@ -59,16 +59,16 @@ class Local
 	 */
 	protected function getSocket()
 	{
-		if (!empty($this->socketPath)) 
+		if (!empty($this->socketPath))
 		{
 			$socket = fsockopen('unix://' . $this->socketPath, NULL, $errno, $errstr);
-		} 
-		else 
+		}
+		else
 		{
 			$socket = fsockopen($this->hostname, $this->port, $errno, $errstr);
 		}
 
-		if (!$socket) 
+		if (!$socket)
 		{
 			throw new Exception(
 				"Could not connect to SpamAssassin: {$errstr}", $errno
@@ -79,8 +79,8 @@ class Local
 	}
 
 	/**
-	 * Sends a command to the server and returns an object with the result 
-	 * 
+	 * Sends a command to the server and returns an object with the result
+	 *
 	 * @param string $cmd               Protocol command to be executed
 	 * @param string $message           Full email message
 	 * @param array  $additionalHeaders Associative array with additional headers
@@ -91,9 +91,9 @@ class Local
 		$message      .= "\r\n";
 		$contentLength = strlen($message);
 
-		if (!empty($this->maxSize)) 
+		if (!empty($this->maxSize))
 		{
-			if ($contentLength > $this->maxSize) 
+			if ($contentLength > $this->maxSize)
 			{
 				throw new Exception(
 					"Message exceeds the maximum allowed size of {$this->maxSize} kbytes"
@@ -104,20 +104,20 @@ class Local
 		$cmd  = $cmd . ' SPAMC/' . $this->protocolVersion . "\r\n";
 		$cmd .= "Content-length: {$contentLength}\r\n";
 
-		if ($this->enableZlib && function_exists('gzcompress')) 
+		if ($this->enableZlib && function_exists('gzcompress'))
 		{
 			$cmd .= "Compress: zlib\r\n";
 			$message = gzcompress($message);
 		}
 
-		if (!empty($this->user)) 
+		if (!empty($this->user))
 		{
 			$cmd .= 'User: ' . $this->user . "\r\n";
 		}
 
-		if (!empty($additionalHeaders)) 
+		if (!empty($additionalHeaders))
 		{
-			foreach ($additionalHeaders as $headerName => $val) 
+			foreach ($additionalHeaders as $headerName => $val)
 			{
 				$cmd .= $headerName . ': ' . $val . "\r\n";
 			}
@@ -136,7 +136,7 @@ class Local
 
 	/**
 	 * Writes data to the socket
-	 * 
+	 *
 	 * @param  resource $socket Socket returned by getSocket()
 	 * @param  string   $data   Data to be written
 	 * @return void
@@ -148,7 +148,7 @@ class Local
 
 	/**
 	 * Reads all input from the SpamAssassin server after data was written
-	 * 
+	 *
 	 * @param  resource $socket Socket connection created by getSocket()
 	 * @return array Array containing output headers and message
 	 */
@@ -157,17 +157,17 @@ class Local
 		$headers = '';
 		$message = '';
 
-		while (true) 
+		while (true)
 		{
 			$buffer   = fgets($socket, 128);
 			$headers .= $buffer;
-			if ($buffer == "\r\n" || feof($socket)) 
+			if ($buffer == "\r\n" || feof($socket))
 			{
 				break;
 			}
 		}
 
-		while (!feof($socket)) 
+		while (!feof($socket))
 		{
 			$message .= fgets($socket, 128);
 		}
@@ -179,7 +179,7 @@ class Local
 
 	/**
 	 * Parses SpamAssassin output ($header and $message)
-	 * 
+	 *
 	 * @param  string $header  Output headers
 	 * @param  string $message Output message
 	 * @return Result Object containing the result
@@ -190,30 +190,30 @@ class Local
 
 		/**
 		 * Matches the first line in the output. Something like this:
-		 * 
+		 *
 		 * SPAMD/1.5 0 EX_OK
 		 * SPAMD/1.5 68 service unavailable: TELL commands have not been enabled
 		 */
-		if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches)) 
+		if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches))
 		{
 			$result->protocolVersion = $matches[1];
 			$result->responseCode    = $matches[2];
 			$result->responseMessage = $matches[3];
 
-			if ($result->responseCode != 0) 
+			if ($result->responseCode != 0)
 			{
 				throw new Exception(
 					$result->responseMessage,
 					$result->responseCode
 				);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			throw new Exception('Could not parse response header');
 		}
 
-		if (preg_match('/Content-length: (\d+)/', $header, $matches)) 
+		if (preg_match('/Content-length: (\d+)/', $header, $matches))
 		{
 			$result->contentLength = $matches[1];
 		}
@@ -222,7 +222,7 @@ class Local
 			'/Spam: (True|False|Yes|No) ; (\S+) \/ (\S+)/',
 			$header,
 			$matches
-		)) 
+		))
 		{
 			($matches[1] == 'True' || $matches[1] == 'Yes') ?
 				$result->isSpam = true :
@@ -230,11 +230,11 @@ class Local
 
 			$result->score    = (float) $matches[2];
 			$result->thresold = (float) $matches[3];
-		} 
-		else 
+		}
+		else
 		{
 			/**
-			 * In PROCESS method with protocol version before 1.3, SpamAssassin 
+			 * In PROCESS method with protocol version before 1.3, SpamAssassin
 			 * won't return the 'Spam:' field in the response header. In this case,
 			 * it is necessary to check for the X-Spam-Status: header in the
 			 * processed message headers.
@@ -242,10 +242,10 @@ class Local
 			if (preg_match(
 				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d) required=(\d+\.\d)/',
 				  $header . $message,
-				  $matches)) 
+				  $matches))
 			{
 
-				($matches[1] == 'Yes') ? 
+				($matches[1] == 'Yes') ?
 					$result->isSpam = true :
 					$result->isSpam = false;
 
@@ -255,21 +255,21 @@ class Local
 		}
 
 		/* Used for report/revoke/learn */
-		if (preg_match('/DidSet: (\S+)/', $header, $matches)) 
+		if (preg_match('/DidSet: (\S+)/', $header, $matches))
 		{
 			$result->didSet = true;
-		} 
-		else 
+		}
+		else
 		{
 			$result->didSet = false;
 		}
 
 		/* Used for report/revoke/learn */
-		if (preg_match('/DidRemove: (\S+)/', $header, $matches)) 
+		if (preg_match('/DidRemove: (\S+)/', $header, $matches))
 		{
 			$result->didRemove = true;
-		} 
-		else 
+		}
+		else
 		{
 			$result->didRemove = false;
 		}
@@ -282,7 +282,7 @@ class Local
 
 	/**
 	 * Pings the server to check the connection
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function ping()
@@ -292,7 +292,7 @@ class Local
 		$this->write($socket, "PING SPAMC/{$this->protocolVersion}\r\n\r\n");
 		list($headers, $message) = $this->read($socket);
 
-		if (strpos($headers, "PONG") === false) 
+		if (strpos($headers, "PONG") === false)
 		{
 			return false;
 		}
@@ -302,7 +302,7 @@ class Local
 
 	/**
 	 * Returns a detailed report if the message is spam or null if it's ham
-	 * 
+	 *
 	 * @param string $message Email message
 	 * @return string Detailed spam report
 	 */
@@ -313,12 +313,12 @@ class Local
 
 	/**
 	 * Processes the message and returns it's headers
-	 * 
+	 *
 	 * This will check if the message is spam or not and return all headers
 	 * for the modified processed message. Such as X-Spam-Flag and X-Spam-Status.
-	 * 
+	 *
 	 * @param  string $message Headers for the modified message
-	 * @return Result Object containing the 
+	 * @return Result Object containing the
 	 */
 	public function headers($message)
 	{
@@ -327,7 +327,7 @@ class Local
 
 	/**
 	 * Checks if a message is spam with the CHECK protocol command
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return Result Object containing the result
 	 */
@@ -338,7 +338,7 @@ class Local
 
 	/**
 	 * Shortcut to check() method that returns a boolean
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return boolean Whether message is spam or not
 	 */
@@ -349,7 +349,7 @@ class Local
 
 	/**
 	 * Shortcut to check() method that returns a float score
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return float Spam Score of the Message
 	 */
@@ -360,7 +360,7 @@ class Local
 
 	/**
 	 * Processes the message, checks it for spam and returning it's modified version
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return Result Result details and modified message
 	 */
@@ -371,7 +371,7 @@ class Local
 
 	/**
 	 * Returns all rules matched by the message
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return array Array containing the names of the rules matched
 	 */
@@ -379,7 +379,7 @@ class Local
 	{
 		$result = $this->exec('SYMBOLS', $message);
 
-		if (empty($result->message)) 
+		if (empty($result->message))
 		{
 			return array();
 		}
@@ -391,33 +391,33 @@ class Local
 
 	/**
 	 * Uses SpamAssassin learning feature with TELL. Must be enabled on the server.
-	 * 
+	 *
 	 * @param  string $message   Raw email message
 	 * @param  int    $learnType self::LEARN_SPAM|self::LEARN_FORGET|self::LEARN_HAM
 	 * @return boolean Whether it did learn or not
 	 */
 	public function learn($message, $learnType = self::LEARN_SPAM)
 	{
-		if (!in_array($learnType, $this->learnTypes)) 
+		if (!in_array($learnType, $this->learnTypes))
 		{
 			throw new Exception("Invalid learn type ($learnType)");
 		}
 
-		if ($learnType == self::LEARN_SPAM) 
+		if ($learnType == self::LEARN_SPAM)
 		{
 			$additionalHeaders = array(
 				'Message-class' => 'spam',
 				'Set'           => 'local'
 			);
-		} 
-		else if ($learnType == self::LEARN_HAM) 
+		}
+		else if ($learnType == self::LEARN_HAM)
 		{
 			$additionalHeaders = array(
 				'Message-class' => 'ham',
 				'Set'           => 'local'
 			);
-		} 
-		else if ($learnType == self::LEARN_FORGET) 
+		}
+		else if ($learnType == self::LEARN_FORGET)
 		{
 			$additionalHeaders = array(
 				'Remove' => 'local'
@@ -426,11 +426,11 @@ class Local
 
 		$result = $this->exec('TELL', $message, $additionalHeaders);
 
-		if ($learnType == self::LEARN_SPAM || $learnType == self::LEARN_HAM) 
+		if ($learnType == self::LEARN_SPAM || $learnType == self::LEARN_HAM)
 		{
 			return $result->didSet;
-		} 
-		else 
+		}
+		else
 		{
 			return $result->didRemove;
 		}
@@ -438,7 +438,7 @@ class Local
 
 	/**
 	 * Report message as spam, both local and remote
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return boolean
 	 */
@@ -454,7 +454,7 @@ class Local
 
 	/**
 	 * Revokes a message previously reported as spam
-	 * 
+	 *
 	 * @param  string $message Raw email message
 	 * @return boolean
 	 */

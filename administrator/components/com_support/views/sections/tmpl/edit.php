@@ -36,15 +36,15 @@ JToolBarHelper::save();
 JToolBarHelper::cancel();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancelsec') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	if ($('section').value == '') {
 		alert( '<?php echo JText::_('SECTION_ERROR_NO_TEXT'); ?>' );
@@ -65,11 +65,11 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 	</fieldset>
-	
+
 	<input type="hidden" name="sec[id]" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="save" />
-	
+
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

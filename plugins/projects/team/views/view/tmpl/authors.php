@@ -26,24 +26,24 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned 
+$route = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=team');
 
 $shown = array();
 ?>
-<div>	
+<div>
 		<ul id="c-browser" 	<?php if(count($this->team) == 0) { echo 'class="hidden"'; } ?>>
-			<?php 
-			if(count($this->team) > 0) {		
+			<?php
+			if(count($this->team) > 0) {
 				$i = 0;
 				foreach($this->team as $owner) {
-					
-					// Get profile thumb image 				
+
+					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
-					
+
 					if(in_array($owner->userid, $this->exclude)) {
 						// Skip certain team members if necessary
 						continue;
@@ -54,18 +54,18 @@ $shown = array();
 					$name = trim($name) ? $name : $owner->invited_email;
 
 					$username = $owner->username ? $owner->username : JText::_('COM_PROJECTS_AUTHOR_UNCONFIRMED');
-					
+
 					 ?>
 					<li id="owner:<?php echo $owner->id; ?>" class="c-click  user:<?php echo $owner->userid; ?> owner:<?php echo $owner->id; ?>  name:<?php echo urlencode(htmlspecialchars($name)); ?> org:<?php echo urlencode(htmlspecialchars($org)); ?> credit:<?php echo urlencode(htmlspecialchars($owner->credit)); ?>">
 						<img width="30" height="30" src="<?php echo $thumb; ?>" class="a-ima" alt="<?php echo htmlentities($name); ?>" />
 						<span class="a-name"><?php echo $name; ?> <span class="block prominent"><?php echo $username; ?></span></span>
 					</li>
-			<?php		
+			<?php
 				$i++;
 			?>
 			<?php }
-			} 
-			
+			}
+
 			$missing = array();
 
 			// Check for missing items
@@ -82,9 +82,9 @@ $shown = array();
 							$miss['username'] = $member->username;
 							$miss['organization'] = stripslashes($member->organization);
 							$miss['credit'] = stripslashes($member->credit);
-							
-							// Get profile thumb image 
-							$thumb = '';					
+
+							// Get profile thumb image
+							$thumb = '';
 							if($member->picture) {
 								$curthumb = $ih->createThumbName($member->picture);
 								$thumb = $path.DS.\Hubzero\Utility\String::pad($member->user_id).DS.$curthumb;
@@ -98,7 +98,7 @@ $shown = array();
 					}
 				}
 			}
-			
+
 			// Add missing items
 			if(count($missing) > 0) {
 				foreach ($missing as $miss) { ?>
@@ -108,7 +108,7 @@ $shown = array();
 						<span class="c-missing"><?php echo JText::_('COM_PROJECTS_AUTHORS_MISSING'); ?></span>
 					</li>
 			<?php	}
-			}	
+			}
 			?>
 		</ul>
 </div>

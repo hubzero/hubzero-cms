@@ -36,9 +36,9 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 
 <div role="navigation" class="sub-navigation">
 	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user" class="active">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user" class="active">User</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
 	</ul>
@@ -108,7 +108,7 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 			<option value="A"<?php echo $this->MYREQUEST['SCOPE']=='A' ? ' selected="selected"' : ''; ?>>Active</option>
 			<option value="D"<?php echo $this->MYREQUEST['SCOPE']=='D' ? ' selected="selected"' : ''; ?>>Deleted</option>
 		</select>
-		
+
 		<label for="filter-sort1">Sorting:</label>
 		<select name="SORT1" id="filter-sort1">
 			<option value="H"<?php echo $this->MYREQUEST['SORT1']=='H' ? ' selected="selected"' : ''; ?>>Hits</option>
@@ -122,12 +122,12 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 			<option value="D"<?php echo $this->MYREQUEST['SORT1']=='T' ? ' selected="selected"' : ''; ?>>Timeout</option>
 		<?php } ?>
 		</select>
-		
+
 		<select name="SORT2">
 			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
 			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
 		</select>
-		
+
 		<select name="COUNT" onChange="form.submit()">
 			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
 			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
@@ -142,7 +142,7 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 		<div class="col width-40 fltrt">
 		<label for="filter_search">Search:</label>
 		<input name="SEARCH" id="filter_search" value="<?php echo $this->MYREQUEST['SEARCH']; ?>" type="text" size="25" />
-		
+
 		&nbsp;<input type="submit" value="GO!" />
 		</div>
 	</fieldset>
@@ -183,7 +183,7 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 			</tr>
 		</thead>
 		<tbody>
-<?php 
+<?php
 	// builds list with alpha numeric sortable keys
 	//
 	$list = array();
@@ -206,7 +206,7 @@ JToolBarHelper::title(JText::_('APC User Entries'), 'config.png');
 	if ($list)
 	{
 		// sort list
-		switch ($this->MYREQUEST['SORT2']) 
+		switch ($this->MYREQUEST['SORT2'])
 		{
 			case "A": krsort($list); break;
 			case "D": ksort($list);  break;

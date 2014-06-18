@@ -36,7 +36,7 @@ class Country extends AbstractResult implements ResultInterface
 	public function getCoordinates()
 	{
 		return array(
-			'latitude'  => 0.0, 
+			'latitude'  => 0.0,
 			'longitude' => 0.0
 		);
 	}
@@ -126,17 +126,17 @@ class Country extends AbstractResult implements ResultInterface
 	 */
 	public function fromArray(array $data = array())
 	{
-		if (isset($data['continent'])) 
+		if (isset($data['continent']))
 		{
 			$this->continent = $this->formatString($data['continent']);
 		}
 
-		if (isset($data['name'])) 
+		if (isset($data['name']))
 		{
 			$this->name = $this->formatString($data['name']);
 		}
 
-		if (isset($data['code'])) 
+		if (isset($data['code']))
 		{
 			$this->code = $this->upperize($data['code']);
 		}

@@ -51,24 +51,24 @@ $start = JRequest::getInt('limitstart', 0);
 
 $database = JFactory::getDBO();
 
-$query = "SELECT COUNT(*) 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
+$query = "SELECT COUNT(*)
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				AND wp.scope = '{$this->page->scope}'
 				AND wp.access != 1";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
-$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.summary 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
-				AND wp.access != 1 
+$query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.summary
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				AND wp.scope = '{$this->page->scope}'
+				AND wp.access != 1
 			ORDER BY created DESC";
 if ($limit && $limit != 'all')
 {
@@ -80,8 +80,8 @@ $rows = $database->loadObjectList();
 
 jimport('joomla.html.pagination');
 $pageNav = new JPagination(
-	$total, 
-	$start, 
+	$total,
+	$start,
 	$limit
 );
 
@@ -114,7 +114,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	$dateFormat = '%d %b %Y';
 	$tz = 0;
@@ -137,9 +137,9 @@ if ($rows)
 					<td>
 						(
 						<?php if ($row->version > 1) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=compare&oldid=' . ($row->version - 1). '&diff=' . $row->version); ?>">diff</a> | 
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=compare&oldid=' . ($row->version - 1). '&diff=' . $row->version); ?>">diff</a> |
 						<?php } else { ?>
-							diff | 
+							diff |
 						<?php } ?>
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=history'); ?>">hist</a>
 						)

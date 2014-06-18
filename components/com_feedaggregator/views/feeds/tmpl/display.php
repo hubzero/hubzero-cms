@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
-<section class="main section"> 
+<section class="main section">
 	<form class="contentForm">
 		<div id="page-main">
 		<?php if (count($this->feeds) > 0): ?>
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr class='shade-table'>
 						<td><?php echo $feed->name; ?></td>
 						<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
-						<td><a class="btn" href="index.php?option=com_feedaggregator&amp;controller=posts&amp;task=PostsById&amp;id=<?php echo $feed->id; ?>">View Posts</a> 
+						<td><a class="btn" href="index.php?option=com_feedaggregator&amp;controller=posts&amp;task=PostsById&amp;id=<?php echo $feed->id; ?>">View Posts</a>
 							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=edit&amp;id=<?php echo $feed->id;?>">Edit</a>
 							<?php if ($feed->enabled == '1'):?>
 								<a class="btn disableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=disable&amp;id=<?php echo $feed->id;?>">Disable</a>

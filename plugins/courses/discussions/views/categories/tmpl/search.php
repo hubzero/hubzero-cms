@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
@@ -37,18 +37,18 @@ $base = $this->offering->alias() . '&active=forum';
 				<?php
 				if ($this->rows)
 				{
-					foreach ($this->rows as $row) 
+					foreach ($this->rows as $row)
 					{
 						$name = JText::_('Anonymous');
 						if (!$row->anonymous)
 						{
 							$creator = JUser::getInstance($row->created_by);
-							if (is_object($creator)) 
+							if (is_object($creator))
 							{
 								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $creator->get('id')) . '">' . $this->escape(stripslashes($creator->get('name'))) . '</a>';
 							}
 						}
-						
+
 						if ($row->parent)
 						{
 							$p = new ForumTablePost(JFactory::getDBO());
@@ -96,7 +96,7 @@ $base = $this->offering->alias() . '&active=forum';
 								</span>
 							</td>
 						</tr>
-				<?php 
+				<?php
 					}
 				} else { ?>
 						<tr>
@@ -105,8 +105,8 @@ $base = $this->offering->alias() . '&active=forum';
 				<?php } ?>
 					</tbody>
 				</table>
-				<?php 
-				if ($this->pageNav) 
+				<?php
+				if ($this->pageNav)
 				{
 					$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 					$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));

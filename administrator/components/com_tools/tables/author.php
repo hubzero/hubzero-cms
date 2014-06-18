@@ -38,56 +38,56 @@ class ToolAuthor extends  JTable
 {
 	/**
 	 * varchar (50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $toolname     = NULL;
 
 	/**
 	 * int (11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $revision     = NULL;
 
 	/**
 	 * int (11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid          = NULL;
 
 	/**
 	 * int (11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering     = NULL;
 
 	/**
 	 * int (11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version_id   = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $name         = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $organization = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,30 +98,30 @@ class ToolAuthor extends  JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (!$this->version_id) 
+		if (!$this->version_id)
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_AUTHOR_NO_VERSIONID'));
 			return false;
 		}
 
-		if (!$this->uid) 
+		if (!$this->uid)
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_AUTHOR_NO_UID'));
 			return false;
 		}
 
 		$this->toolname = trim($this->toolname);
-		if (!$this->toolname) 
+		if (!$this->toolname)
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_AUTHOR_NO_TOOLNAME'));
 			return false;
 		}
-		if (!$this->revision) 
+		if (!$this->revision)
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_AUTHOR_NO_REVISION'));
 			return false;
@@ -132,15 +132,15 @@ class ToolAuthor extends  JTable
 
 	/**
 	 * Short description for 'getToolContributions'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $uid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getToolContributions($uid)
 	{
-		if (!$uid) 
+		if (!$uid)
 		{
 			return false;
 		}
@@ -156,7 +156,7 @@ class ToolAuthor extends  JTable
 
 	/**
 	 * Get the first author's name on a resource
-	 * 
+	 *
 	 * @param      integer $rid Resource ID
 	 * @return     string
 	 */
@@ -168,12 +168,12 @@ class ToolAuthor extends  JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Short description for 'getAuthorsDOI'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $rid Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
@@ -188,54 +188,54 @@ class ToolAuthor extends  JTable
 
 	/**
 	 * Get a list of the authors on a tool
-	 * 
+	 *
 	 * @param      string  $version  Tool version
 	 * @param      integer $rid      Resource ID
 	 * @param      string  $toolname Tool name
 	 * @param      string  $revision Tool revision
 	 * @param      array   $authors  Author list
-	 * @return     array 
+	 * @return     array
 	 */
 	public function getToolAuthors($version='', $rid=0, $toolname='', $revision='', $authors=array())
 	{
 		$juser =  JFactory::getUser();
 
-		if ($version == 'dev' && $rid) 
+		if ($version == 'dev' && $rid)
 		{
 			$query = "SELECT authorid as uidNumber FROM #__author_assoc WHERE subid= " . $this->_db->Quote($rid) . " AND subtable='resources' ORDER BY ordering";
 			$this->_db->setQuery($query);
 			$authors = $this->_db->loadObjectList();
 		}
-		else 
+		else
 		{
 			$query  = "SELECT DISTINCT a.uid as uidNumber ";
 			$query .= "FROM #__tool_authors as a  ";
-			if ($version == 'current' && $toolname) 
+			if ($version == 'current' && $toolname)
 			{
 				$objV = new ToolVersion($this->_db);
 				$rev = $objV->getCurrentVersionProperty ($toolname, 'revision');
-				if ($rev) 
+				if ($rev)
 				{
 					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND a.revision=" . $this->_db->Quote($rev);
-				} 
-				else 
+				}
+				else
 				{
 					$query .= "JOIN #__tool_version as v ON a.toolname=v.toolname AND a.revision=v.revision WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND v.state=1 ORDER BY v.revision DESC";
 				}
 			}
-			else if (is_numeric($version)) 
+			else if (is_numeric($version))
 			{
 				$query .= "WHERE a.version_id=" . $this->_db->Quote($version) . " ORDER BY a.ordering";
 			}
-			else if ($toolname && $revision) 
+			else if ($toolname && $revision)
 			{
 				$query .= "WHERE a.toolname=" . $this->_db->Quote($toolname) . " AND a.revision=" . $this->_db->Quote($revision) . " ORDER BY a.ordering";
 			}
-			else if (is_object($version)) 
+			else if (is_object($version))
 			{
 				$query .= "WHERE a.version_id=" . $this->_db->Quote($version->id) . " ORDER BY a.ordering";
 			}
-			else if (isset($version[0]) && is_object($version[0])) 
+			else if (isset($version[0]) && is_object($version[0]))
 			{
 				$query .= "WHERE a.version_id=" . $this->_db->Quote($version[0]->id) . " ORDER BY a.ordering";
 			}
@@ -252,7 +252,7 @@ class ToolAuthor extends  JTable
 
 	/**
 	 * Save a list of authors
-	 * 
+	 *
 	 * @param      array   $authors  List of authors to add
 	 * @param      string  $version  Tool version
 	 * @param      integer $rid      Resource ID
@@ -262,12 +262,12 @@ class ToolAuthor extends  JTable
 	 */
 	public function saveAuthors($authors, $version='dev', $rid=0, $revision=0, $toolname='')
 	{
-		if (!$rid) 
+		if (!$rid)
 		{
 			return false;
 		}
 
-		if ($authors) 
+		if ($authors)
 		{
 			$authors = ToolsHelperUtils::transform($authors, 'uidNumber');
 		}
@@ -275,13 +275,13 @@ class ToolAuthor extends  JTable
 		$dev_authors = $this->getToolAuthors('dev', $rid);
 		$dev_authors = ToolsHelperUtils::transform($dev_authors, 'uidNumber');
 
-		if ($dev_authors && $version == 'dev') 
+		if ($dev_authors && $version == 'dev')
 		{
-			// update 
+			// update
 			$to_delete = array_diff($current_authors, $authors);
-			if ($to_delete) 
+			if ($to_delete)
 			{
-				foreach ($to_delete as $del) 
+				foreach ($to_delete as $del)
 				{
 					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->Quote($del) . " AND subid=" . $this->_db->Quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
@@ -291,7 +291,7 @@ class ToolAuthor extends  JTable
 		}
 
 		// add new authors
-		if ($version == 'dev') 
+		if ($version == 'dev')
 		{
 			// development version is updated
 			$to_delete = array_diff($dev_authors, $authors);
@@ -300,9 +300,9 @@ class ToolAuthor extends  JTable
 			$rc->subtable = 'resources';
 			$rc->subid = $rid;
 
-			if ($to_delete) 
+			if ($to_delete)
 			{
-				foreach ($to_delete as $del) 
+				foreach ($to_delete as $del)
 				{
 					$query = "DELETE FROM #__author_assoc  WHERE authorid=" . $this->_db->Quote($del) . " AND subid=" . $this->_db->Quote($rid) . " AND subtable='resources'";
 					$this->_db->setQuery($query);
@@ -313,11 +313,11 @@ class ToolAuthor extends  JTable
 			$order = $rc->getLastOrder($rid, 'resources');
 			$order = $order + 1; // new items are always last
 
-			foreach ($authors as $authid) 
+			foreach ($authors as $authid)
 			{
 				// Check if they're already linked to this resource
 				$rc->loadAssociation($authid, $rid, 'resources');
-				if (!$rc->authorid) 
+				if (!$rc->authorid)
 				{
 					$xprofile = new \Hubzero\User\Profile();
 					$xprofile->load($authid);
@@ -333,12 +333,12 @@ class ToolAuthor extends  JTable
 				}
 			}
 		}
-		else if ($dev_authors) 
+		else if ($dev_authors)
 		{
 			// new version is being published, transfer data from author_assoc
 			$i=0;
 
-			foreach ($dev_authors as $authid) 
+			foreach ($dev_authors as $authid)
 			{
 				// Do we have name/org info in previous version?
 				$query  = "SELECT name, organization FROM #__tool_authors ";
@@ -347,12 +347,12 @@ class ToolAuthor extends  JTable
 				$query .= " ORDER BY revision DESC LIMIT 1";
 				$this->_db->setQuery($query);
 				$info = $this->_db->loadObjectList();
-				if ($info) 
+				if ($info)
 				{
 					$name         = $info[0]->name;
 					$organization = $info[0]->organization;
 				}
-				else 
+				else
 				{
 					$xprofile = new \Hubzero\User\Profile();
 					$xprofile->load($authid);
@@ -363,7 +363,7 @@ class ToolAuthor extends  JTable
 
 				$query = "INSERT INTO $this->_tbl (toolname, revision, uid, ordering, version_id, name, organization) VALUES ('" . $toolname . "','" . $revision . "','" . $authid . "','" . $i . "', '" . $version . "', '" . addslashes($name) . "', '" . addslashes($organization) . "')";
 				$this->_db->setQuery($query);
-				if (!$this->_db->query()) 
+				if (!$this->_db->query())
 				{
 					return false;
 				}
@@ -377,24 +377,24 @@ class ToolAuthor extends  JTable
 	/**
 	 * Check the author's name
 	 * Ensures the individual name fields are filled in
-	 * 
+	 *
 	 * @param      integer $id User ID
 	 * @return     void
 	 */
 	private function _author_check($id)
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($id);
-		if ($xprofile->get('givenName') == '' 
-		 && $xprofile->get('middleName') == '' 
-		 && $xprofile->get('surname') == '') 
+		if ($xprofile->get('givenName') == ''
+		 && $xprofile->get('middleName') == ''
+		 && $xprofile->get('surname') == '')
 		{
 			$bits = explode(' ', $xprofile->get('name'));
 			$xprofile->set('surname', array_pop($bits));
-			if (count($bits) >= 1) 
+			if (count($bits) >= 1)
 			{
 				$xprofile->set('givenName', array_shift($bits));
 			}
-			if (count($bits) >= 1) 
+			if (count($bits) >= 1)
 			{
 				$xprofile->set('middleName', implode(' ', $bits));
 			}

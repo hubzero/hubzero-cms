@@ -39,7 +39,7 @@ class modResourceMenu extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -56,7 +56,7 @@ class modResourceMenu extends \Hubzero\Module\Module
 
 		// Get the search result totals
 		$results = $dispatcher->trigger(
-			'onPrepareContent', 
+			'onPrepareContent',
 			array(
 				'',
 				$obj,

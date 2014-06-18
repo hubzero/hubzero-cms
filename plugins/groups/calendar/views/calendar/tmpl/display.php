@@ -52,9 +52,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php endif; ?>
 
 <?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array($this->juser->get('id'), $this->group->get('members'))) ? true : 0; ?>
-<div id="calendar" 
-	data-base="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>" 
-	data-month="<?php echo $this->month; ?>" 
+<div id="calendar"
+	data-base="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
+	data-month="<?php echo $this->month; ?>"
 	data-year="<?php echo $this->year; ?>"
 	data-event-quickcreate="<?php echo $quickCreate; ?>"></div>
 
@@ -100,9 +100,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 						</dl>
 						<div class="entry-content">
 							<p>
-								<?php 
+								<?php
 									$content = strip_tags($event->get('content'));
-									echo ($content) ? Hubzero\Utility\String::truncate($content, 500) : '<em>no content</em>'; 
+									echo ($content) ? Hubzero\Utility\String::truncate($content, 500) : '<em>no content</em>';
 								?>
 							</p>
 						</div>
@@ -110,11 +110,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php endforeach; ?>
 			</ol>
 
-			<?php 
+			<?php
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
-					$this->eventsCount, 
-					$this->filters['start'], 
+					$this->eventsCount,
+					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));

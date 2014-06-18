@@ -43,35 +43,35 @@ class SupportModelTicket extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'SupportTicket';
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_data = null;
 
 	/**
 	 * Support ACL
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_acl = null;
 
 	/**
 	 * URL for this entry
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = 'index.php?option=com_support';
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -84,7 +84,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		if (!$this->get('summary') && $this->get('report'))
 		{
 			$this->set('summary', substr($this->get('report'), 0, 70));
-			if (strlen($this->get('summary')) >= 70) 
+			if (strlen($this->get('summary')) >= 70)
 			{
 				$this->set('summary', $this->get('summary') . '...');
 			}
@@ -103,12 +103,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$id])) 
+		if (!isset($instances[$id]))
 		{
 			$instances[$id] = new SupportModelTicket($id);
 		}
@@ -118,7 +118,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get the submitter of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -150,7 +150,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get the owner of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -179,12 +179,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Is the question open?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isOpen()
 	{
-		if ($this->get('open') == 1) 
+		if ($this->get('open') == 1)
 		{
 			return true;
 		}
@@ -193,12 +193,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Is the question open?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isOwned()
 	{
-		if ($this->get('owner')) 
+		if ($this->get('owner'))
 		{
 			return true;
 		}
@@ -207,9 +207,9 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get the status text for a status number
-	 * 
+	 *
 	 * @param      integer $int Status number
-	 * @return     string 
+	 * @return     string
 	 */
 	public function status($as='text')
 	{
@@ -248,7 +248,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get a count of or list of attachments on this model
-	 * 
+	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
 	 * @param      boolean $clear   Clear data cache?
@@ -349,7 +349,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get a user's ID
-	 * 
+	 *
 	 * Accepts a user ID, JUser object, \Hubzero\User\Profile object
 	 * or username
 	 *
@@ -397,7 +397,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 		$tbl = new SupportTableWatching($this->_db);
 		$tbl->load(
-			$this->get('id'), 
+			$this->get('id'),
 			$user_id
 		);
 
@@ -428,7 +428,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	{
 		$tbl = new SupportTableWatching($this->_db);
 		$tbl->load(
-			$this->get('id'), 
+			$this->get('id'),
 			$this->_resolveUserID($user)
 		);
 
@@ -520,7 +520,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -545,11 +545,11 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
 
 				$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
-				if (isset($_SERVER['HTTPS'])) 
+				if (isset($_SERVER['HTTPS']))
 				{
 					$webpath = str_replace('http:', 'https:', $webpath);
 				}
-				if (!strstr($webpath, '://')) 
+				if (!strstr($webpath, '://'))
 				{
 					$webpath = str_replace(':/', '://', $webpath);
 				}
@@ -596,7 +596,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}
@@ -636,7 +636,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
-	 * 
+	 *
 	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
 	 * @param      integer $admin Include amdin tags? (defaults to no)
 	 * @return     mixed
@@ -670,7 +670,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -685,7 +685,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function appendTag($tag)
@@ -700,7 +700,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     string
 	 */
@@ -725,7 +725,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */
@@ -759,7 +759,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function access($action='view', $item='tickets')
@@ -771,27 +771,27 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			$this->_acl = SupportACL::getACL();
 
 			if ($this->get('login') == $juser->get('username')
-			 || $this->get('owner') == $juser->get('username')) 
+			 || $this->get('owner') == $juser->get('username'))
 			{
-				if (!$this->_acl->check('read', 'tickets')) 
+				if (!$this->_acl->check('read', 'tickets'))
 				{
 					$this->_acl->setAccess('read', 'tickets', 1);
 				}
-				if (!$this->_acl->check('update', 'tickets')) 
+				if (!$this->_acl->check('update', 'tickets'))
 				{
 					$this->_acl->setAccess('update', 'tickets', -1);
 				}
-				if (!$this->_acl->check('create', 'comments')) 
+				if (!$this->_acl->check('create', 'comments'))
 				{
 					$this->_acl->setAccess('create', 'comments', -1);
 				}
-				if (!$this->_acl->check('read', 'comments')) 
+				if (!$this->_acl->check('read', 'comments'))
 				{
 					$this->_acl->setAccess('read', 'comments', 1);
 				}
 			}
 
-			if ($this->_acl->authorize($this->get('group'))) 
+			if ($this->_acl->authorize($this->get('group')))
 			{
 				$this->_acl->setAccess('read',   'tickets',  1);
 				$this->_acl->setAccess('update', 'tickets',  1);

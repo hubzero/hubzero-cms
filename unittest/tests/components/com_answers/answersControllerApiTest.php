@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the answers API component controller
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  */
 

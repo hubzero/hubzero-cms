@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgSearchSortEvents'
- * 
+ *
  * Long description (if any) ...
  */
 class plgSearchSortEvents extends SearchPlugin
@@ -41,9 +41,9 @@ class plgSearchSortEvents extends SearchPlugin
 
 	/**
 	 * Short description for 'onYSearchSort'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $a Parameter description (if any) ...
 	 * @param      object $b Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...

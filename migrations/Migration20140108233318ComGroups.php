@@ -34,7 +34,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// create page versions table
 		if (!$this->db->tableExists('#__xgroups_pages_versions'))
 		{
@@ -55,7 +55,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// create page category table
 		if (!$this->db->tableExists('#__xgroups_pages_categories'))
 		{
@@ -69,7 +69,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// create page category table
 		if (!$this->db->tableExists('#__xgroups_modules'))
 		{
@@ -95,7 +95,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// create page category table
 		if (!$this->db->tableExists('#__xgroups_modules_menu'))
 		{
@@ -106,7 +106,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// remove content field from pages table
 		if ($this->db->tableHasField('#__xgroups_pages', 'content'))
 		{
@@ -114,7 +114,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// if the groups table still has the home page overview content
 		if ($this->db->tableHasField('#__xgroups', 'overview_type'))
 		{
@@ -122,7 +122,7 @@ class Migration20140108233318ComGroups extends Base
 			$query = "SELECT `gidNumber`, `overview_type`, `overview_content` FROM `#__xgroups` WHERE `type` IN(1,3)";
 			$this->db->setQuery($query);
 			$groups = $this->db->loadObjectList();
-			
+
 			// loop through each group
 			foreach ($groups as $group)
 			{
@@ -134,7 +134,7 @@ class Migration20140108233318ComGroups extends Base
 					          VALUES(".$this->db->quote($group->gidNumber).",".$this->db->quote('home_page').",".$this->db->quote('Home Page').",0,1,'default',".$this->db->quote($group->overview_type).");";
 					$this->db->setQuery($query);
 					$this->db->query();
-					
+
 					// create page version to store page content
 					$query2 = "INSERT INTO `#__xgroups_pages_versions` (`pageid`,`version`,`content`,`created`,`created_by`,`approved`,`approved_on`,`approved_by`)
 					           VALUES(".$this->db->insertid().",1,".$this->db->quote($group->overview_content).",NOW(),1000,1, NOW(), 1000);";
@@ -142,14 +142,14 @@ class Migration20140108233318ComGroups extends Base
 					$this->db->query();
 				}
 			}
-			
+
 			if ($this->db->tableHasField('#__xgroups_pages', 'content'))
 			{
 				$query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `content`;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
-			
+
 			if ($this->db->tableHasField('#__xgroups', 'overview_type'))
 			{
 				$query  = "ALTER TABLE `#__xgroups` DROP COLUMN `overview_type`;";
@@ -173,32 +173,32 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		//move pages back
 		if (!$this->db->tableHasField('#__xgroups_pages', 'content'))
 		{
 			$query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `content` TEXT AFTER `title`;";
 			$this->db->setQuery($query);
 			$this->db->query();
-			
+
 			$query = "UPDATE `#__xgroups_pages` AS p SET content=(SELECT content FROM `#__xgroups_pages_versions` as pv WHERE p.id=pv.pageid ORDER BY version DESC LIMIT 1);";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		//move home content back to xgroups table and delete those records
 		if ($this->db->tableHasField('#__xgroups_pages', 'home'))
 		{
 			$query = "UPDATE `#__xgroups` as g SET overview_content=(SELECT content FROM `#__xgroups_pages` as p WHERE g.gidNumber=p.gidNumber AND p.alias='home_page'), overview_type=(SELECT home FROM `#__xgroups_pages` as p WHERE g.gidNumber=p.gidNumber AND p.alias='home_page');";
 			$this->db->setQuery($query);
 			$this->db->query();
-			
+
 			// delete all moved home pages
 			$query = "DELETE FROM `#__xgroups_pages` WHERE `alias`='home_page';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// a bunch of name changes
 		if ($this->db->tableHasField('#__xgroups_pages', 'gidNumber'))
 		{
@@ -218,7 +218,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// delete page version table
 		if ($this->db->tableExists('#__xgroups_pages_versions'))
 		{
@@ -226,7 +226,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// delete categories table
 		if ($this->db->tableExists('#__xgroups_pages_categories'))
 		{
@@ -234,7 +234,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// delete modules table
 		if ($this->db->tableExists('#__xgroups_modules'))
 		{
@@ -242,7 +242,7 @@ class Migration20140108233318ComGroups extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		
+
 		// delete  modules menu table
 		if ($this->db->tableExists('#__xgroups_modules_menu'))
 		{

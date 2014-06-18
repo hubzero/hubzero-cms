@@ -35,7 +35,7 @@ $canDo = StoreHelper::getActions('component');
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'store.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -52,7 +52,7 @@ if (intval($this->row->created) <> 0)
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 

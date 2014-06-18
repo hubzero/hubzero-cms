@@ -27,14 +27,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Determine pane title
 if($this->version == 'dev') {
-	$ptitle = $this->last_idx > $this->current_idx  ? 
+	$ptitle = $this->last_idx > $this->current_idx  ?
 	ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_TAGS')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_TAGS')) ;
 }
 else {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_TAGS'));	
+	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_TAGS'));
 }
 ?>
-	<?php echo $this->project->provisioned == 1 
+	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
 
@@ -43,10 +43,10 @@ else {
 	$this->contribHelper->drawStatusBar($this);
 
 	$canedit = (
-	$this->pub->state == 3 
-	|| $this->pub->state == 4 
-	|| $this->pub->state == 5 
-	|| in_array($this->active, $this->mayupdate)) 
+	$this->pub->state == 3
+	|| $this->pub->state == 4
+	|| $this->pub->state == 5
+	|| in_array($this->active, $this->mayupdate))
 	? 1 : 0;
 
 // Section body starts:
@@ -58,7 +58,7 @@ else {
 			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
 			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SELECT'); ?></p>
-			<!-- Load content selection browser //-->				
+			<!-- Load content selection browser //-->
 			<div id="c-show">
 				<div id="pick-tags">
 					<noscript>
@@ -75,10 +75,10 @@ else {
 		</div>
 		<div class="two columns second" id="c-output">
 			<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
-				<fieldset>	
+				<fieldset>
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 					<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
-					<input type="hidden" name="active" value="publications" />					
+					<input type="hidden" name="active" value="publications" />
 					<input type="hidden" name="action" value="save" />
 					<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 					<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
@@ -93,7 +93,7 @@ else {
 					<?php if($this->project->provisioned == 1 ) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
-				</fieldset>	
+				</fieldset>
 			 <div class="c-inner">
 					<?php if($canedit) { ?>
 							<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
@@ -114,8 +114,8 @@ else {
 						}
 						?>
 					</label>
-					<?php if($this->categories) { 
-						
+					<?php if($this->categories) {
+
 						$paramsClass = 'JParameter';
 						if (version_compare(JVERSION, '1.6', 'ge'))
 						{
@@ -123,10 +123,10 @@ else {
 						}
 						?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_CATEGORY'); ?></h5>
-					<?php foreach($this->categories as $cat) { 
+					<?php foreach($this->categories as $cat) {
 						$params = new $paramsClass($cat->params);
 						// Skip inaplicable category
-						if (!$params->get('type_' . $this->pub->base, 1)) 
+						if (!$params->get('type_' . $this->pub->base, 1))
 						{
 							continue;
 						}
@@ -135,10 +135,10 @@ else {
 						 <input type="radio" name ="pubtype" value="<?php echo $cat->id; ?>"
 						<?php if($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> />	<?php echo $cat->name; ?>
 							<span><?php echo $cat->description; ?></span>
-						</label>	
+						</label>
 					<?php } ?>
 					<?php } ?>
-					<?php } else { 
+					<?php } else {
 						// Show tags
 						if ($this->tags) {
 								$this->helper->getTagCloud( 1 );
@@ -146,7 +146,7 @@ else {
 						}
 						else {
 							echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
-						} 
+						}
 					} ?>
 			 </div>
 			</form>

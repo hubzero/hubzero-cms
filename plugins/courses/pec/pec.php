@@ -45,7 +45,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onOfferingEdit()
@@ -59,7 +59,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      array   $areas     Active area(s)
@@ -86,7 +86,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after saving an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @param      boolean $isNew Is this a newly created entry?
 	 * @return     void
@@ -101,7 +101,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Actions to perform after deleting an offering
-	 * 
+	 *
 	 * @param      object  $model CoursesModelSection
 	 * @return     void
 	 */

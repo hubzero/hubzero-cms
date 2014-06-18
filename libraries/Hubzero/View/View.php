@@ -82,7 +82,7 @@ class View extends Object
 	 * @var array
 	 */
 	protected $_path = array(
-		'template' => array(), 
+		'template' => array(),
 		'helper'   => array()
 	);
 
@@ -614,7 +614,7 @@ class View extends Object
 					$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
 
 					$this->_addPath(
-						'template', 
+						'template',
 						JPATH_THEMES . '/' . $app->getTemplate() . '/html/' . $component . '/' . $this->getName()
 					);
 				}
@@ -685,9 +685,9 @@ class View extends Object
 	 */
 	public function setHelperManager($helpers)
 	{
-		if (is_string($helpers)) 
+		if (is_string($helpers))
 		{
-			if (!class_exists($helpers)) 
+			if (!class_exists($helpers))
 			{
 				throw new InvalidHelperManagerException(sprintf(
 					'Invalid helper manager class provided (%s)',
@@ -696,7 +696,7 @@ class View extends Object
 			}
 			$helpers = new $helpers();
 		}
-		if (!$helpers instanceof HelperManager) 
+		if (!$helpers instanceof HelperManager)
 		{
 			throw new InvalidHelperManagerException(sprintf(
 				'Helper manager must extend Hubzero\View\HelperManager; got type "%s" instead',
@@ -717,16 +717,16 @@ class View extends Object
 	 */
 	public function helpers($helpers=null)
 	{
-		if (null === $this->helpers) 
+		if (null === $this->helpers)
 		{
 			if (null === $helpers)
 			{
 				$helpers = new HelperManager();
 			}
 
-			if (is_string($helpers)) 
+			if (is_string($helpers))
 			{
-				if (!class_exists($helpers)) 
+				if (!class_exists($helpers))
 				{
 					throw new InvalidHelperManagerException(\JText::sprintf(
 						'Invalid helper manager class provided (%s)',
@@ -736,7 +736,7 @@ class View extends Object
 				$helpers = new $helpers();
 			}
 
-			if (!$helpers instanceof HelperManager) 
+			if (!$helpers instanceof HelperManager)
 			{
 				throw new InvalidHelperManagerException(\JText::sprintf(
 					'Helper manager must extend Hubzero\View\HelperManager; got type "%s" instead',
@@ -779,7 +779,7 @@ class View extends Object
 	 */
 	/*public function view($layout=null, $name=null)
 	{
-		if (!$layout) 
+		if (!$layout)
 		{
 			throw new \InvalidArgumentException(
 				'Either a view object or layout name must be provided.'
@@ -787,7 +787,7 @@ class View extends Object
 		}
 
 		// If we were passed only a view object, just return it.
-		if ($layout instanceof View) 
+		if ($layout instanceof View)
 		{
 			return $layout;
 		}

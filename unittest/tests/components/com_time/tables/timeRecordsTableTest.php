@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Sam Wilson <samwilson@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -86,7 +86,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getCount
 	 */
@@ -105,7 +105,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getSummaryHours returns array
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getSummaryHours
 	 */
@@ -117,7 +117,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getSummaryHoursByHub returns array
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getSummaryHoursByHub
 	 */
@@ -129,7 +129,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getSummaryEntries returns array
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getSummaryEntries
 	 */
@@ -142,7 +142,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getTotalHours returns number
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getTotalHours
 	 */
@@ -154,7 +154,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getTotalHours returns number with filters
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getTotalHours
 	 */
@@ -180,7 +180,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_time
 	 * @covers TimeRecords::getRecords
 	 */
@@ -257,7 +257,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 		$mock = $this->mock;
 		$mock['time'] = '0.0';
 		$result = $this->instance->save($mock);
-		
+
 		$this->assertFalse($result);
 	}
 
@@ -271,7 +271,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 		$mock = $this->mock;
 		$mock['task_id'] = null;
 		$result = $this->instance->save($mock);
-		
+
 		$this->assertFalse($result);
 	}
 
@@ -285,7 +285,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 		$this->instance->task_id = 1;
 		$this->instance->time    = "1.0";
 		$result = $this->instance->check();
-		
+
 		$this->assertTrue($result);
 	}
 
@@ -297,7 +297,7 @@ class TimeRecordsTableTest extends PHPUnit_Framework_TestCase
 	function testGetRecordWithoutIdCreatesNew()
 	{
 		$result = $this->instance->getRecord(0);
-		
+
 		$this->assertTrue(is_object($result));
-	}	
+	}
 }

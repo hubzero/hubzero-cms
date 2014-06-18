@@ -13,19 +13,19 @@ class modFeedHelper
 {
 	static function getFeed($params)
 	{
-		
-		
+
+
 		// module params
 		$rssurl	= $params->get('rssurl', '');
-		
+
 		// get RSS parsed object
 		$cache_time = 0;
 		if ($params->get('cache')) {
 			$cache_time  = $params->get('cache_time', 15) * 60;
 		}
-		
-		$rssDoc = JFactory::getFeedParser($rssurl, $cache_time);		
-		
+
+		$rssDoc = JFactory::getFeedParser($rssurl, $cache_time);
+
 		$feed = new stdclass();
 
 		if ($rssDoc != false)

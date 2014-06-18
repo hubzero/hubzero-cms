@@ -41,14 +41,14 @@ class Members extends GroupMacro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -66,7 +66,7 @@ class Members extends GroupMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -79,7 +79,7 @@ class Members extends GroupMacro
 
 		// get args
 		$args = $this->getArgs();
-		
+
 		//array of filters
 		$filters = array(
 			'limit' => (count($args) == 1 && is_numeric($args[0])) ? $args[0] : 12
@@ -112,7 +112,7 @@ class Members extends GroupMacro
 
 	/**
 	 * Get a list of events for a group
-	 * 
+	 *
 	 * @param      object $group
 	 * @param      array  $filters
 	 * @return     array
@@ -123,7 +123,7 @@ class Members extends GroupMacro
 		$members = $group->get('members');
 
 		// get group params
-		$params = \JComponentHelper::getParams("com_groups"); 
+		$params = \JComponentHelper::getParams("com_groups");
 		$displaySystemUsers = $params->get('display_system_users', 'no');
 
 		//get this groups params
@@ -131,7 +131,7 @@ class Members extends GroupMacro
 		$displaySystemUsers = $gparams->get('display_system_users', $displaySystemUsers);
 
 		// filter is system users
-		if ($displaySystemUsers == 'no') 
+		if ($displaySystemUsers == 'no')
 		{
 			$members = array_map(function($userid) {
 				return ($userid < 1000) ? null : $userid;
@@ -151,16 +151,16 @@ class Members extends GroupMacro
 
 	/**
 	 * Render the events
-	 * 
+	 *
 	 * @param      array     Array of group events
-	 * @return     string 
+	 * @return     string
 	 */
 	private function renderMembers($group, $members)
 	{
 		$content = '<div class="member_browser">';
-		if (count($members) > 0) 
+		if (count($members) > 0)
 		{
-			foreach ($members as $member) 
+			foreach ($members as $member)
 			{
 				$profile = \Hubzero\User\Profile::getInstance($member);
 				$link    = \JRoute::_('index.php?option=com_members&id='.$profile->get('uidNumber'));

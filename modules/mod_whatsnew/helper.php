@@ -39,7 +39,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 {
 	/**
 	 * Get the categories for What's New
-	 * 
+	 *
 	 * @return     array
 	 */
 	private function _getAreas()
@@ -73,7 +73,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 
 	/**
 	 * Fromat tags for display
-	 * 
+	 *
 	 * @param      array   $tags Tags to format
 	 * @param      integer $num  Number of tags to display
 	 * @param      integer $max  Max characters for a tag
@@ -113,14 +113,14 @@ class modWhatsNew extends \Hubzero\Module\Module
 
 	/**
 	 * Get module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
 		$live_site = rtrim(JURI::base(), '/');
-		
+
 		// Get some initial parameters
 		$count        = intval($this->params->get('limit', 5));
 		$this->feed   = $this->params->get('feed');
@@ -280,7 +280,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()

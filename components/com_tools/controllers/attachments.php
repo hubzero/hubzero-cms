@@ -45,7 +45,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -61,7 +61,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Reorder an attachment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function reorderTask()
@@ -72,7 +72,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$move = 'order' . JRequest::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
@@ -80,7 +80,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have a parent ID to work with
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -126,7 +126,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Rename an attachment
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function renameTask()
@@ -136,7 +136,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$name = JRequest::getVar('name', '');
 
 		// Ensure we have everything we need
-		if ($id && $name != '') 
+		if ($id && $name != '')
 		{
 			$r = new ResourcesResource($this->database);
 			$r->load($id);
@@ -150,14 +150,14 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save an attachment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -169,7 +169,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -177,7 +177,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid);
@@ -198,7 +198,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Instantiate a new resource object
 		$row = new ResourcesResource($this->database);
-		if (!$row->bind($_POST)) 
+		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
@@ -216,21 +216,21 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$row->path = ''; // make sure no path is specified just yet
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
 			return;
 		}
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
 			return;
 		}
 
-		if (!$row->id) 
+		if (!$row->id)
 		{
 			$row->id = $row->insertid();
 		}
@@ -241,10 +241,10 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path)) 
+			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
@@ -253,28 +253,28 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
-		} 
-		else 
+		}
+		else
 		{
 			// File was uploaded
 			// Check the file type
 			$row->type = $this->_getChildType($file['name']);
 		}
 
-		if (!$row->path) 
+		if (!$row->path)
 		{
 			$row->path = $listdir . DS . $file['name'];
 		}
-		if (substr($row->path, 0, 1) == DS) 
+		if (substr($row->path, 0, 1) == DS)
 		{
 			$row->path = substr($row->path, 1, strlen($row->path));
 		}
 
 		// Store new content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError($row->getError());
 			$this->displayTask($pid);
@@ -296,11 +296,11 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$assoc->child_id = $row->id;
 		$assoc->ordering = $order;
 		$assoc->grouping = 0;
-		if (!$assoc->check()) 
+		if (!$assoc->check())
 		{
 			$this->setError($assoc->getError());
 		}
-		if (!$assoc->store(true)) 
+		if (!$assoc->store(true))
 		{
 			$this->setError($assoc->getError());
 		}
@@ -312,14 +312,14 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
 		// Incoming parent ID
 		$pid = JRequest::getInt('pid', 0);
-		if (!$pid) 
+		if (!$pid)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
@@ -331,7 +331,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$this->_toolid = $obj->getToolIdFromResource($pid);
 
 		// make sure user is authorized to go further
-		if (!$this->_checkAccess($this->_toolid)) 
+		if (!$this->_checkAccess($this->_toolid))
 		{
 			JError::raiseError(403, JText::_('COM_TOOLS_ALERTNOTAUTH'));
 			return;
@@ -339,7 +339,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Incoming child ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
@@ -353,7 +353,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$row->load($id);
 
 		// Check for stored file
-		if ($row->path == '') 
+		if ($row->path == '')
 		{
 			$this->setError(JText::_('COM_TOOLS_Error: file path not found.'));
 			$this->displayTask($pid);
@@ -368,14 +368,14 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Check if the folder even exists
-		if (!is_dir($path) or !$path) 
+		if (!is_dir($path) or !$path)
 		{
 			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
-			if (!JFolder::delete($path)) 
+			if (!JFolder::delete($path))
 			{
 				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
@@ -393,7 +393,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of attachments
-	 * 
+	 *
 	 * @param      integer $id Resource ID
 	 * @return     void
 	 */
@@ -402,13 +402,13 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Incoming
-		if (!$id) 
+		if (!$id)
 		{
 			$id = JRequest::getInt('rid', 0);
 		}
 
 		// Ensure we have an ID to work with
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return;
@@ -444,14 +444,14 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the absolute path to a resource's file upload
-	 * 
+	 *
 	 * @param      string $listdir Primary upload directory
 	 * @param      string $subdir  Sub directory of $listdir
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = DS . trim($subdir, DS);
 		}
@@ -461,13 +461,13 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Make sure the path doesn't end with a slash
 		$listdir = DS . trim($listdir, DS);
-		
+
 		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base) 
+		if (substr($listdir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$listdir = $base . $listdir;
@@ -479,7 +479,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Get the child's type ID based on file extension
-	 * 
+	 *
 	 * @param      string $filename File name
 	 * @return     integer
 	 */
@@ -508,7 +508,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Check if user has access
-	 * 
+	 *
 	 * @param      integer $toolid       Tool ID
 	 * @param      boolean $allowAuthors Allow tool authors?
 	 * @return     boolean True if user has access, False if not
@@ -519,17 +519,17 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$obj = new Tool($this->database);
 
 		// allow to view if admin
-		if ($this->config->get('access-manage-component')) 
+		if ($this->config->get('access-manage-component'))
 		{
 			return true;
 		}
 
 		// check if user in tool dev team
-		if ($developers = $obj->getToolDevelopers($toolid)) 
+		if ($developers = $obj->getToolDevelopers($toolid))
 		{
-			foreach ($developers as $dv) 
+			foreach ($developers as $dv)
 			{
-				if ($dv->uidNumber == $this->juser->get('id')) 
+				if ($dv->uidNumber == $this->juser->get('id'))
 				{
 					return true;
 				}
@@ -537,7 +537,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// allow access to tool authors
-		if ($allowAuthors) 
+		if ($allowAuthors)
 		{
 			// Nothing here?
 		}
@@ -547,7 +547,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorization checks
-	 * 
+	 *
 	 * @param      string $assetType Asset type
 	 * @param      string $assetId   Asset id to check against
 	 * @return     void
@@ -555,23 +555,23 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
 
 		// if no admin group is defined, allow superadmin to act as admin
 		// otherwise superadmins can only act if they are also a member of the component admin group
-		if (($admingroup = trim($this->config->get('admingroup', '')))) 
+		if (($admingroup = trim($this->config->get('admingroup', ''))))
 		{
 			// Check if they're a member of admin group
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0) 
+			if ($ugs && count($ugs) > 0)
 			{
 				$admingroup = strtolower($admingroup);
 				foreach ($ugs as $ug)
 				{
-					if (strtolower($ug->cn) == $admingroup) 
+					if (strtolower($ug->cn) == $admingroup)
 					{
 						$this->config->set('access-manage-' . $assetType, true);
 						$this->config->set('access-admin-' . $assetType, true);
@@ -582,7 +582,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		else 
+		else
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -609,7 +609,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

@@ -1,8 +1,8 @@
 <?php
-defined('JPATH_BASE') or die(); 
+defined('JPATH_BASE') or die();
 
 /*
-[!] - (zooley) Added NotFoundError class because PHP was throwing 
+[!] - (zooley) Added NotFoundError class because PHP was throwing
 	fatal error that the class was not found (irony?).
 */
 if (!class_exists('NotFoundError'))
@@ -12,7 +12,7 @@ if (!class_exists('NotFoundError'))
 	}
 }
 
-$base = isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL']; 
+$base = isset($_SERVER['SCRIPT_URL']) ? $_SERVER['SCRIPT_URL'] : $_SERVER['REDIRECT_SCRIPT_URL'];
 $basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__));
 
 $doc = JFactory::getDocument();
@@ -79,14 +79,14 @@ try {
 		case 'getRelated':
 			hgView('related', $req->getTransportCriteria(array('limit' => 5, 'domain' => $_GET['domain'], 'id' => $_GET['id'])));
 		case 'index':
-			$results = $req->anyCriteria() 
-				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE) 
+			$results = $req->anyCriteria()
+				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE)
 				: NULL;
 			require 'views/index.html.php';
 		break;
 		case 'update':
-			$results = $req->anyCriteria() 
-				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE) 
+			$results = $req->anyCriteria()
+				? json_decode(HubgraphClient::execView('search', $req->getTransportCriteria(array('limit' => $perPage))), TRUE)
 				: NULL;
 			define('HG_AJAX', 1);
 			require 'views/index.html.php';
@@ -101,7 +101,7 @@ try {
 			consumeNonce($_POST);
 			$conf->bind($_POST)->save();
 			header('Location: /hubgraph?task=settings');
-			exit();	
+			exit();
 		break;
 		default:
 			throw new NotFoundError('no such task');

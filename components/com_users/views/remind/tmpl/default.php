@@ -33,19 +33,19 @@ JHtml::_('behavior.formvalidation');
 			<div class="help">
 				<h4>What if I have also lost my password?</h4>
 				<p>
-					Fill out this form to retrieve your username(s). The email you 
+					Fill out this form to retrieve your username(s). The email you
 					receive will contain instructions on how to reset your password as well.
 				</p>
 
 				<h4>What if I have multiple accounts?</h4>
 				<p>
-					All accounts registered to your email address will be located, and you will be given a 
+					All accounts registered to your email address will be located, and you will be given a
 					list of all of those usernames.
 				</p>
 
 				<h4>What if this cannot find my account?</h4>
 				<p>
-					It is possible you registered under a different email address.  Please try any other email 
+					It is possible you registered under a different email address.  Please try any other email
 					addresses you have.
 				</p>
 			</div>

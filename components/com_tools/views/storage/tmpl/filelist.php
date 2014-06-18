@@ -78,7 +78,7 @@ $this->css('storage.css');
 						$dir = DS . $name;
 						$numFiles = count(JFolder::files($fullpath, '.', false, true, array()));
 
-						if ($this->listdir == DS) 
+						if ($this->listdir == DS)
 						{
 							$this->listdir = '';
 						}

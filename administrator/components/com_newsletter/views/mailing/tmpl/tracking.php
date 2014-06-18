@@ -39,7 +39,7 @@ JToolBarHelper::custom('cancel', 'back', '', 'Back', false);
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -83,10 +83,10 @@ function submitbutton(pressbutton)
 			<tr>
 				<th>Bounce Rate:</th>
 				<td>
-					<?php 
+					<?php
 						if (count($this->recipients) > 0)
 						{
-							echo (count($this->bounces) / count($this->recipients)) * 100 . '% '; 
+							echo (count($this->bounces) / count($this->recipients)) * 100 . '% ';
 						}
 					?>
 				</td>
@@ -107,7 +107,7 @@ function submitbutton(pressbutton)
 	</table>
 	<br />
 	<hr />
-	
+
 	<h3>Opens By Location</h3>
 	<div class="col width-30">
 		<table class="adminlist">
@@ -152,7 +152,7 @@ function submitbutton(pressbutton)
 	<br class="clear" />
 	<br />
 	<hr />
-	
+
 	<h3>Click Throughs</h3>
 	<table class="adminlist">
 		<thead>
@@ -182,7 +182,7 @@ function submitbutton(pressbutton)
 			<?php endif; ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

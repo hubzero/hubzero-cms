@@ -46,7 +46,7 @@ class Clean extends AbstractHelper
 	 */
 	public function __invoke($text = null)
 	{
-		if (null === $text) 
+		if (null === $text)
 		{
 			throw new \InvalidArgumentException(
 				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'

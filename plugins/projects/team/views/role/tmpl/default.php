@@ -30,13 +30,13 @@ $i = 1;
 <h3><?php echo JText::_('COM_PROJECTS_REASSIGN_ROLE_TEAM_MEMBERS'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 }
 $self = in_array($this->aid, $this->checked) ? 1 : 0;
 ?>
 <?php
-if (!$this->getError()) { 
+if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
 	<fieldset >
@@ -49,17 +49,17 @@ if (!$this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="anote"><?php echo JText::_('COM_PROJECTS_REASSIGN_ROLE_TEAM_MEMBERS_NOTE'); ?></p>
 		<p><?php echo JText::_('COM_PROJECTS_REASSIGN_ROLE_TEAM_MEMBERS_CONFIRM'); ?></p>
-		<p class="prominent"><?php foreach ($this->selected as $owner) {  
-			echo $owner->fullname; 
-			echo ($i < count($this->selected)) ? ', ': ''; 
-			$i++; 
+		<p class="prominent"><?php foreach ($this->selected as $owner) {
+			echo $owner->fullname;
+			echo ($i < count($this->selected)) ? ', ': '';
+			$i++;
 			echo '<input type="hidden" name="owner[]" value="'.$owner->id.'" />';
 		} ?></p>
 		<div class="combine_options">
-			<?php echo JText::_('COM_PROJECTS_TEAM_SET_ROLE'); ?>  
+			<?php echo JText::_('COM_PROJECTS_TEAM_SET_ROLE'); ?>
 			 <label>
 				 <input class="option" name="role" type="radio" value="1" checked="checked"  />
-				<?php echo JText::_('COM_PROJECTS_LABEL_OWNER'); ?>  
+				<?php echo JText::_('COM_PROJECTS_LABEL_OWNER'); ?>
 			 </label>
 			 <label>
 				<input class="option" name="role" type="radio" value="2" />
@@ -69,7 +69,7 @@ if (!$this->getError()) {
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_CHANGE_ROLE'); ?>" />
 			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-		</p>		
+		</p>
 	</fieldset>
 </form>
 <?php } ?>

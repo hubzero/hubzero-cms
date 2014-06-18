@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * GeocoderUS plugin for geocode
  *
- * The GeocoderUsProvider is able to geocode street addresses 
+ * The GeocoderUsProvider is able to geocode street addresses
  * only, exclusively in USA.
  */
 class plgGeocodeGeocoderus extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

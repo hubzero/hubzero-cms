@@ -73,39 +73,39 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= ' '.JText::_('COM_PROJECTS_ALL').' <span class="prominent">'.$this->total.'</span> ';
 	}
 	else {
-		$html .= ' <span class="prominent">'.count($this->rows).'</span> '.JText::_('COM_PROJECTS_OUT_OF').' '.$this->total;	
+		$html .= ' <span class="prominent">'.count($this->rows).'</span> '.JText::_('COM_PROJECTS_OUT_OF').' '.$this->total;
 	}
 	$html .= ' '.strtolower(JText::_('COM_PROJECTS_PROJECTS')).'</p></div>';
-	if (count($this->rows) > 0) {		
+	if (count($this->rows) > 0) {
 		$html .= t.t.'<table class="listing" id="projectlist">'.n;
 		$html .= t.t.t.'<thead>'.n;
 		$html .= t.t.t.'<tr>'.n;
 		$html .='<th class="th_image" colspan="2"></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if ($this->filters['sortby'] == 'title') { 
-			$html .= ' class="activesort"'; 
-		} 
+		if ($this->filters['sortby'] == 'title') {
+			$html .= ' class="activesort"';
+		}
 		$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=title'
-		. a . 'sortdir=' . $sortbyDir . '" class="re_sort" title="' 
+		. a . 'sortdir=' . $sortbyDir . '" class="re_sort" title="'
 			. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_TITLE') . '">';
 		$html .= JText::_('COM_PROJECTS_TITLE').'</a></th>'.n;
 		$html .= t.t.t.t.'<th';
-		if ($this->filters['sortby'] == 'owner') { 
-			$html .= ' class="activesort"'; 
-		} 
+		if ($this->filters['sortby'] == 'owner') {
+			$html .= ' class="activesort"';
+		}
 		$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse')
-		.'/?sortby=owner'.a.'sortdir='.$sortbyDir.'" class="re_sort" title="' 
+		.'/?sortby=owner'.a.'sortdir='.$sortbyDir.'" class="re_sort" title="'
 		. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_OWNER') . '">';
 		$html .= JText::_('COM_PROJECTS_OWNER').'</a></th>'.n;
-		
+
 		$html .= t.t.t.t.'<th';
 		if (!$this->guest) {
-			if ($this->filters['sortby'] == 'status') { 
+			if ($this->filters['sortby'] == 'status') {
 				$html .= ' class="activesort"';
 			}
 				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=status'
-				.a.'sortdir='.$sortbyDir.'" class="re_sort" title="' 
-					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_STATUS') . '">'; 
+				.a.'sortdir='.$sortbyDir.'" class="re_sort" title="'
+					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_STATUS') . '">';
 				$html .= JText::_('COM_PROJECTS_STATUS').'</a>';
 		}
 		else {
@@ -114,12 +114,12 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .='</th>'.n;
 		$html .= t.t.t.t.'<th';
 		if (!$this->guest) {
-			if ($this->filters['sortby'] == 'role') { 
+			if ($this->filters['sortby'] == 'role') {
 				$html .= ' class="activesort"';
 			}
 				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=role'
-				.a.'sortdir='.$sortbyDir.'" class="re_sort" 	 title="' 
-					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_MY_ROLE') . '">'; 
+				.a.'sortdir='.$sortbyDir.'" class="re_sort" 	 title="'
+					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_MY_ROLE') . '">';
 				$html .= JText::_('COM_PROJECTS_MY_ROLE').'</a>';
 		}
 		else {
@@ -184,16 +184,16 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		}
 		$html .= '</p>'.n;
 	}
-	
+
 	// Insert page navigation
-	if (count($this->rows) > 0) {	
+	if (count($this->rows) > 0) {
 		$pagenavhtml = $this->pageNav->getListFooter();
 		$pagenavhtml = str_replace('projects/?','projects/browse/?',$pagenavhtml);
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.$pagenavhtml;
 	}
-	$html .= t.t.'</fieldset>'.n;	
-	$html .= t.'</form>'.n;	
+	$html .= t.t.'</fieldset>'.n;
+	$html .= t.'</form>'.n;
 	echo $html;
 ?>
 	<div class="clear"></div>

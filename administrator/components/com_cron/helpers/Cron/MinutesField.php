@@ -25,11 +25,11 @@ class MinutesField extends AbstractField
 	 */
 	public function increment(DateTime $date, $invert = false)
 	{
-		if ($invert) 
+		if ($invert)
 		{
 			$date->sub(new DateInterval('PT1M'));
-		} 
-		else 
+		}
+		else
 		{
 			$date->add(new DateInterval('PT1M'));
 		}

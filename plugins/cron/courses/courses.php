@@ -40,7 +40,7 @@ class plgCronCourses extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -67,7 +67,7 @@ class plgCronCourses extends JPlugin
 
 	/**
 	 * Sync claimed/denied passport badges
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function syncPassportBadgeStatus($params=null)
@@ -158,7 +158,7 @@ class plgCronCourses extends JPlugin
 
 	/**
 	 * Email instructor course digest
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function emailInstructorDigest($params=null)
@@ -284,7 +284,7 @@ class plgCronCourses extends JPlugin
 
 								$eview = new \Hubzero\Component\View(array(
 									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
-									'name'      => 'emails', 
+									'name'      => 'emails',
 									'layout'    => 'digest_plain'
 								));
 								$eview->option      = 'com_courses';

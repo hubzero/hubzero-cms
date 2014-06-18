@@ -40,7 +40,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 {
 	/**
 	 * URL segments
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_segments = array(
@@ -49,7 +49,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $scope_id Scope ID (group, course, etc.)
 	 * @return     void
 	 */
@@ -66,7 +66,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 
 	/**
 	 * Retrieve a property from the internal item object
-	 * 
+	 *
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
@@ -96,7 +96,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string

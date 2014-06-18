@@ -93,7 +93,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		$this->view->conditions = $con->getConditions();
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getError() as $error)
 			{
@@ -128,7 +128,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -143,7 +143,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -158,7 +158,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 				$this->addComponentMessage($row->getError(), 'error');
 				$this->editTask($row);
 			}
-			else 
+			else
 			{
 				echo $row->getError();
 			}
@@ -172,7 +172,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 				JRoute::_('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->id)
 			);
 		}
-		else 
+		else
 		{
 			$this->view->setLayout('list');
 
@@ -194,7 +194,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getError() as $error)
 				{
@@ -266,7 +266,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getError() as $error)
 				{

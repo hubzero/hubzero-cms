@@ -90,10 +90,10 @@ foreach ($this->rows as $row)
 						<?php
 							//are we authorized to edit users
 							$editAuthorized = $this->juser->authorize( 'com_users', 'manage' );
-						
+
 							//get user object
 							$juser = JUser::getInstance( $row->username );
-						
+
 							//display link if we are authorized
 							if ($editAuthorized)
 							{

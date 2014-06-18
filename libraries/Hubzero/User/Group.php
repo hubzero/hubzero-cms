@@ -48,154 +48,154 @@ class Group extends Object
 	 * @var integer
 	 */
 	private $gidNumber = null;
-	
+
 	/**
 	 * Group alias
 	 *
 	 * @var string
 	 */
 	private $cn = null;
-	
+
 	/**
 	 * Group title
 	 *
 	 * @var string
 	 */
 	private $description = null;
-	
+
 	/**
 	 * Description for 'published'
 	 *
 	 * @var unknown
 	 */
 	private $published = null;
-	
+
 	/**
 	 * Description for 'approved'
 	 *
 	 * @var integer
 	 */
 	private $approved = null;
-	
+
 	/**
 	 * Group type
 	 *
 	 * @var integer
 	 */
 	private $type = null;
-	
+
 	/**
 	 * Description for 'public_desc'
 	 *
 	 * @var unknown
 	 */
 	private $public_desc = null;
-	
+
 	/**
 	 * Description for 'private_desc'
 	 *
 	 * @var unknown
 	 */
 	private $private_desc = null;
-	
+
 	/**
 	 * Description for 'restrict_msg'
 	 *
 	 * @var unknown
 	 */
 	private $restrict_msg = null;
-	
+
 	/**
 	 * Description for 'join_policy'
 	 *
 	 * @var unknown
 	 */
 	private $join_policy = null;
-	
+
 	/**
 	 * Description for 'discoverability'
 	 *
 	 * @var unknown
 	 */
 	private $discoverability = null;
-	
+
 	/**
 	 * Description for 'discussion_email_autosubscribe'
 	 *
 	 * @var tinyint
 	 */
 	private $discussion_email_autosubscribe = 0;
-	
+
 	/**
 	 * Description for 'logo'
 	 *
 	 * @var unknown
 	 */
 	private $logo = null;
-	
+
 	/**
 	 * Description for 'plugins'
 	 *
 	 * @var unknown
 	 */
 	private $plugins = null;
-	
+
 	/**
 	 * Description for 'created'
 	 *
 	 * @var unknown
 	 */
 	private $created = null;
-	
+
 	/**
 	 * Description for 'created_by'
 	 *
 	 * @var unknown
 	 */
 	private $created_by = null;
-	
+
 	/**
 	 * Description for 'params'
 	 *
 	 * @var unknown
 	 */
 	private $params = null;
-	
+
 	/**
 	 * Description for 'members'
 	 *
 	 * @var array
 	 */
 	private $members = array();
-	
+
 	/**
 	 * Description for 'managers'
 	 *
 	 * @var array
 	 */
 	private $managers = array();
-	
+
 	/**
 	 * Description for 'applicants'
 	 *
 	 * @var array
 	 */
 	private $applicants = array();
-	
+
 	/**
 	 * Description for 'invitees'
 	 *
 	 * @var array
 	 */
 	private $invitees = array();
-	
+
 	/**
 	 * Description for '_list_keys'
 	 *
 	 * @var array
 	 */
 	static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
-	
+
 	/**
 	 * Description for '_updatedkeys'
 	 *
@@ -258,13 +258,13 @@ class Group extends Object
 		static $instances;
 
 		// Set instances array
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		// Do we have a matching instance?
-		if (!isset($instances[$group])) 
+		if (!isset($instances[$group]))
 		{
 			// If an ID is passed, check for a match in existing instances
 			if (is_numeric($group))
@@ -583,7 +583,7 @@ class Group extends Object
 			// already in group. *njk*
 
 			// @FIXME: Not neat, but because all group membership is resaved every time even for single additions
-			// there is no nice way to detect only *new* additions without this check. I don't want to 
+			// there is no nice way to detect only *new* additions without this check. I don't want to
 			// fire off an 'onUserGroupEnrollment' event for users unless they are really being enrolled. *drb*
 
 			if (in_array($property, array('members', 'managers')))
@@ -633,7 +633,7 @@ class Group extends Object
 			{
 				if (in_array($property, array('members', 'managers', 'applicants', 'invitees')))
 				{
-					$query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" . 
+					$query = "DELETE m FROM `#__xgroups_$property` AS m WHERE " . " m.gidNumber=" .
 						$db->Quote($this->gidNumber) . " AND m.uidNumber NOT IN (" . $ulist . ");";
 				}
 			}
@@ -646,7 +646,7 @@ class Group extends Object
 			}
 		}
 
-		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents 
+		// After SQL is done and has no errors, fire off onGroupUserEnrolledEvents
 		// for every user added to this group
 		\JPluginHelper::importPlugin('groups');
 		$dispatcher = \JDispatcher::getInstance();
@@ -659,7 +659,7 @@ class Group extends Object
 		if ($affected > 0)
 		{
 			\JPluginHelper::importPlugin('user');
-			
+
 			//trigger the onAfterStoreGroup event
 			$dispatcher->trigger('onAfterStoreGroup', array($this));
 		}
@@ -764,7 +764,7 @@ class Group extends Object
 							(select uidNumber, 'members' AS role from #__xgroups_members where gidNumber=" . $db->Quote($this->gidNumber) . ")
 						UNION
 							(select uidNumber, 'managers' AS role from #__xgroups_managers where gidNumber=" . $db->Quote($this->gidNumber) . ")";
-					
+
 					$db->setQuery($query);
 
 					if (($results = $db->loadObjectList()))
@@ -1089,13 +1089,13 @@ class Group extends Object
 			{
 				return true;
 			}
-			
+
 			if (!is_numeric($group) && posix_getgrnam($group))
 			{
 				return true;
 			}
 		}
-		
+
 		// check reserved
 		if (Validate::reserved('group', $group))
 		{
@@ -1161,14 +1161,14 @@ class Group extends Object
 		else
 		{
 			$t = implode(",", $types);
-			
+
 			//replace group type names with group type id
 			$t = str_replace('hub', 1, $t);
 			$t = str_replace('project', 2, $t);
 			$t = str_replace('super', 3, $t);
 			$t = str_replace('course', 4, $t);
 			$t = str_replace('system', 0, $t);
-			
+
 			$where_clause = 'WHERE type IN (' . $t . ')';
 		}
 
@@ -1182,7 +1182,7 @@ class Group extends Object
 			{
 				$where_clause = "WHERE";
 			}
-			
+
 			$where_clause .= " (LOWER(description) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(cn) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -1196,7 +1196,7 @@ class Group extends Object
 			{
 				$where_clause = "WHERE";
 			}
-			
+
 			$where_clause .= " (LOWER(description) LIKE '" . $db->getEscaped(strtolower($filters['index'])) . "%') ";
 		}
 
@@ -1270,7 +1270,7 @@ class Group extends Object
 					break;
 			}
 		}
-		
+
 		if (isset($filters['published']) && $filters['published'] != '')
 		{
 			if ($where_clause != '')
@@ -1281,7 +1281,7 @@ class Group extends Object
 			{
 				$where_clause .= "WHERE";
 			}
-			
+
 			$where_clause .= " published=".$filters['published'];
 		}
 
@@ -1295,10 +1295,10 @@ class Group extends Object
 			{
 				$where_clause .= "WHERE";
 			}
-			
+
 			$where_clause .= " approved=".$filters['approved'];
 		}
-		
+
 		if (isset($filters['created']) && $filters['created'] != '')
 		{
 			if ($where_clause != '')
@@ -1309,15 +1309,15 @@ class Group extends Object
 			{
 				$where_clause .= "WHERE";
 			}
-			
+
 			if($filters['created'] == 'pastday')
 			{
 				$pastDay = date("Y-m-d H:i:s", strtotime('-1 DAY'));
 				$where_clause .= " created >= '" . $pastDay . "'";
 			}
 		}
-		
-		
+
+
 		if (empty($filters['fields']))
 		{
 			$filters['fields'][] = 'cn';
@@ -1330,7 +1330,7 @@ class Group extends Object
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
 			$query .= " ORDER BY ";
-			
+
 			switch ($filters['sortby'])
 			{
 				case 'alias':
@@ -1385,7 +1385,7 @@ class Group extends Object
 		{
 			return false;
 		}
-		
+
 		if (!is_numeric($uid))
 		{
 			$uidNumber = \JUserHelper::getUserId($uid);
@@ -1394,7 +1394,7 @@ class Group extends Object
 		{
 			$uidNumber = $uid;
 		}
-		
+
 		return in_array($uidNumber, $this->get($table));
 	}
 
@@ -1484,8 +1484,8 @@ class Group extends Object
 	 * @param string $q Parameter description (if any) ...
 	 * @return mixed Return description (if any) ...
 	 */
-	
-	// @FIXME: next refactoring this might be getMembers(), getInvitees(), getApplicaants(), 
+
+	// @FIXME: next refactoring this might be getMembers(), getInvitees(), getApplicaants(),
 	// getManagers() with a filter and limit/offset option  *njk*
 	public function search($tbl = '', $q = '')
 	{
@@ -1504,9 +1504,9 @@ class Group extends Object
 
 		$db = \JFactory::getDBO();
 
-		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u 
-					WHERE t.gidNumber={$db->Quote($this->gidNumber)} 
-					AND u.id=t.uidNumber 
+		$query = "SELECT u.id FROM {$table} AS t, {$user_table} AS u
+					WHERE t.gidNumber={$db->Quote($this->gidNumber)}
+					AND u.id=t.uidNumber
 					AND LOWER(u.name) LIKE '%" . strtolower($q) . "%';";
 		$db->setQuery($query);
 		return $db->loadResultArray();
@@ -1546,7 +1546,7 @@ class Group extends Object
 
 		//check to make sure were a member to show logo for hidden group
 		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
-		if ($this->get('discoverability') == 1 
+		if ($this->get('discoverability') == 1
 		 && !in_array($juser->get('id'), $members_and_invitees))
 		{
 			$src = $default_logo;
@@ -1557,7 +1557,7 @@ class Group extends Object
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @param      string  $type    Type to get [public, private]
@@ -1609,7 +1609,7 @@ class Group extends Object
 		{
 			$content = String::truncate($content, $shorten, $options);
 		}
-		
+
 		// set our descriptions to be html
 		if ($before != $content && $as == 'parsed')
 		{

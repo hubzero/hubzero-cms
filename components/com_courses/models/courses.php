@@ -42,35 +42,35 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 {
 	/**
 	 * CoursesTableCourse
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_tbl = NULL;
 
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_courses = null;
 
 	/**
 	 * CoursesModelCourse
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_course = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
@@ -94,12 +94,12 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self();
 		}
@@ -115,7 +115,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 */
 	public function course($id=null)
 	{
-		if (!isset($this->_course) 
+		if (!isset($this->_course)
 		 || ($id !== null && (int) $this->_course->get('id') != $id && (string) $this->_course->get('alias') != $id))
 		{
 			$this->_course = null;
@@ -142,7 +142,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	/**
 	 * Get a list of courses
 	 *   Accepts an array of filters to build query from
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Clear cached results?
 	 * @return     mixed
@@ -177,7 +177,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	/**
 	 * Get a list of courses
 	 *   Accepts an array of filters to build query from
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     mixed
 	 */
@@ -203,7 +203,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	/**
 	 * Get a list of courses
 	 *   Accepts an array of filters to build query from
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     mixed
 	 */
@@ -234,7 +234,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 
 	/**
 	 * Turn a string of tags to an array
-	 * 
+	 *
 	 * @param      string $tag Tag string
 	 * @return     mixed
 	 */

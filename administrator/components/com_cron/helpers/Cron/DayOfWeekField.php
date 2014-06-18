@@ -28,7 +28,7 @@ class DayOfWeekField extends AbstractField
 	 */
 	public function isSatisfiedBy(DateTime $date, $value)
 	{
-		if ($value == '?') 
+		if ($value == '?')
 		{
 			return true;
 		}
@@ -49,12 +49,12 @@ class DayOfWeekField extends AbstractField
 		$lastDayOfMonth = DayOfMonthField::getLastDayOfMonth($date);
 
 		// Find out if this is the last specific weekday of the month
-		if (strpos($value, 'L')) 
+		if (strpos($value, 'L'))
 		{
 			$weekday = str_replace('7', '0', substr($value, 0, strpos($value, 'L')));
 			$tdate = clone $date;
 			$tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
-			while ($tdate->format('w') != $weekday) 
+			while ($tdate->format('w') != $weekday)
 			{
 				$tdate->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
 			}
@@ -63,20 +63,20 @@ class DayOfWeekField extends AbstractField
 		}
 
 		// Handle # hash tokens
-		if (strpos($value, '#')) 
+		if (strpos($value, '#'))
 		{
 			list($weekday, $nth) = explode('#', $value);
 			// Validate the hash fields
-			if ($weekday < 1 || $weekday > 5) 
+			if ($weekday < 1 || $weekday > 5)
 			{
 				throw new InvalidArgumentException("Weekday must be a value between 1 and 5. {$weekday} given");
 			}
-			if ($nth > 5) 
+			if ($nth > 5)
 			{
 				throw new InvalidArgumentException('There are never more than 5 of a given weekday in a month');
 			}
 			// The current weekday must match the targeted weekday to proceed
-			if ($date->format('N') != $weekday) 
+			if ($date->format('N') != $weekday)
 			{
 				return false;
 			}
@@ -85,11 +85,11 @@ class DayOfWeekField extends AbstractField
 			$tdate->setDate($currentYear, $currentMonth, 1);
 			$dayCount = 0;
 			$currentDay = 1;
-			while ($currentDay < $lastDayOfMonth + 1) 
+			while ($currentDay < $lastDayOfMonth + 1)
 			{
-				if ($tdate->format('N') == $weekday) 
+				if ($tdate->format('N') == $weekday)
 				{
-					if (++$dayCount >= $nth) 
+					if (++$dayCount >= $nth)
 					{
 						break;
 					}
@@ -101,14 +101,14 @@ class DayOfWeekField extends AbstractField
 		}
 
 		// Handle day of the week values
-		if (strpos($value, '-')) 
+		if (strpos($value, '-'))
 		{
 			$parts = explode('-', $value);
-			if ($parts[0] == '7') 
+			if ($parts[0] == '7')
 			{
 				$parts[0] = '0';
-			} 
-			else if ($parts[1] == '0') 
+			}
+			else if ($parts[1] == '0')
 			{
 				$parts[1] = '7';
 			}
@@ -127,12 +127,12 @@ class DayOfWeekField extends AbstractField
 	 */
 	public function increment(DateTime $date, $invert = false)
 	{
-		if ($invert) 
+		if ($invert)
 		{
 			$date->sub(new DateInterval('P1D'));
 			$date->setTime(23, 59, 0);
-		} 
-		else 
+		}
+		else
 		{
 			$date->add(new DateInterval('P1D'));
 			$date->setTime(0, 0, 0);

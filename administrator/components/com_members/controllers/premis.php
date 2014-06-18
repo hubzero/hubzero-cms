@@ -38,15 +38,15 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display all employer types
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
 	{
 		$this->view->setLayout('display');
-		
+
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -58,13 +58,13 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
+		if (!$file['name'])
 		{
 			$this->setError(JText::_('Check the file please.'));
 			$this->displayTask();
 			return;
 		}
-		
+
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
@@ -72,30 +72,30 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		// Ensure file names fit.
 		$ext = JFile::getExt($file['name']);
 		$filename = JFile::stripExt($file['name']);
-		
-		if ($ext != 'csv') 
+
+		if ($ext != 'csv')
 		{
 			$this->setError(JText::_('Only .csv files are allowed'));
 			$this->view->setError($this->getError());
 			$this->view->display();
 			return;
 		}
-		
+
 		if (strlen($filename) > 230)
 		{
 			$filename = substr($filename, 0, 230);
 		}
-	
+
 		$path = JPATH_ROOT . DS . 'site' . DS . 'protected' . DS . 'premis_uploads';
-		
-		if (!is_dir($path)) 
+
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
 			if(!JFolder::create( $path )) {
 				// error
 			}
 		}
-				
+
 		// Check if file exists
 		$counter = '';
 		while (file_exists($path . DS . $filename . $counter . '.' . $ext)) {
@@ -105,38 +105,38 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 			}
 			$counter++;
 		}
-		
+
 		$filename = $path . DS . $filename . $counter . '.' . $ext;
-		
+
 		$uploaded = JFile::upload($file['tmp_name'], $filename);
-		
+
 		if($uploaded)
 		{
 			// parse the file and do the registration
 			$skipLines = 1;
 			$row = 0;
-			
+
 			$report = array();
 			$ok = 0;
 			$fail = 0;
-			
+
 			include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'Premis.php');
-			
-			if (($handle = fopen($filename, "r")) !== FALSE) 
+
+			if (($handle = fopen($filename, "r")) !== FALSE)
 			{
-				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) 
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
 				{
 					$line = array();
-					
+
 					$num = count($data);
 					$row++;
-					if ($row <= $skipLines) 
+					if ($row <= $skipLines)
 					{
 						continue;
 					}
-					
+
 					$line['line'] = $row;
-	
+
 					$user['fName'] = $data[0];
 					$user['lName'] = $data[1];
 					$user['email'] = $data[2];
@@ -144,10 +144,10 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 					$user['premisId'] = $data[3];
 					$user['password'] = $data[5];
 					$user['premisEnrollmentId'] = $data[9];
-					
+
 					$courses['add'] = $data[6];
 					$courses['drop'] = $data[7];
-					
+
 					$return = MembersHelperPremis::doRegistration($user, $courses);
 					if ($return['status'] == 'ok')
 					{
@@ -159,24 +159,24 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 						$fail++;
 					}
 					$line['status'] = $return['status'];
-					
+
 					$report[] = $line;
-					
+
 				}
 				fclose($handle);
 			}
-			
+
 			$this->view->report = $report;
 			$this->view->ok = $ok;
 			$this->view->fail = $fail;
 		}
-		else 
+		else
 		{
 			$this->setError(JText::_('Error uploading file'));
 		}
-		
+
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
@@ -184,7 +184,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		// Output the HTML
 		$this->view->display();
 	}
-	
+
 	public function statTask()
 	{
 		echo 'ff';

@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned 
+$route = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=team');
@@ -51,16 +51,16 @@ $p_url = JRoute::_($route . a . 'active=team');
 		<input type="text" name="from" value="<?php echo $this->name; ?>" maxlength="100" /></label>
 		<label for="to"><span class="leftshift"><?php echo ucfirst(JText::_('COM_PROJECTS_TO')); ?>:
 			<span class="hint block mini"><?php echo JText::_('COM_PROJECTS_COMMA_SEPARATED_LIST'); ?></span></span>
-			<textarea name="to" cols="4" rows="4" class="emailstring" ></textarea>			
+			<textarea name="to" cols="4" rows="4" class="emailstring" ></textarea>
 		</label>
 		<label for="message"><span class="leftshift"><?php echo ucfirst(JText::_('COM_PROJECTS_MESSAGE')); ?>:
 			<span class="hint block mini">(<?php echo JText::_('COM_PROJECTS_OPTIONAL'); ?>)</span></span>
-			<textarea name="message" cols="4" rows="4" class="msgstring" ></textarea>			
+			<textarea name="message" cols="4" rows="4" class="msgstring" ></textarea>
 		</label>
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_INVITE'); ?>" />
 			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
-		</p>		
+		</p>
 	</fieldset>
 </form>
 </div>

@@ -39,7 +39,7 @@ $canDo = GroupsHelper::getActions('group');
 if ($tmpl != 'component')
 {
 	JToolBarHelper::title(JText::_('COM_GROUPS').': ' . $text, 'groups.png');
-	if ($canDo->get('core.edit')) 
+	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::save();
 	}
@@ -49,15 +49,15 @@ if ($tmpl != 'component')
 JHTML::_('behavior.framework');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if (form.usernames.value == '') {
 		alert('<?php echo JText::_('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
@@ -93,7 +93,7 @@ jQuery(document).ready(function($){
 	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_GROUPS_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">

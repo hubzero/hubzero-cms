@@ -42,7 +42,7 @@ $this->css();
 	</p>
 	<table class="questions entries">
 		<caption>
-			<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?> 
+			<?php echo JText::_('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
 			<span>(<?php echo ($this->rows) ? count($this->rows) : '0'; ?>)</span>
 		</caption>
 		<tbody>
@@ -54,7 +54,7 @@ $this->css();
 
 		foreach ($this->rows as $row)
 		{
-			if ($i > $this->limit) 
+			if ($i > $this->limit)
 			{
 				break;
 			}
@@ -65,14 +65,14 @@ $this->css();
 
 			// author name
 			$name = JText::_('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
-			if (!$row->get('anonymous')) 
+			if (!$row->get('anonymous'))
 			{
 				$user = JUser::getInstance($row->get('created_by'));
-				if (is_object($user)) 
+				if (is_object($user))
 				{
 					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
-				} 
-				else 
+				}
+				else
 				{
 					$name = JText::_('PLG_RESOURCES_QUESTIONS_UNKNOWN');
 				}
@@ -93,10 +93,10 @@ $this->css();
 					<span class="entry-title"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
 				<?php } ?>
 					<span class="entry-details">
-						<?php echo JText::sprintf('PLG_RESOURCES_QUESTIONS_ASKED_BY', $name); ?> 
-						<span class="entry-date-at"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_AT'); ?></span> 
-						<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
-						<span class="entry-date-on"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ON'); ?></span> 
+						<?php echo JText::sprintf('PLG_RESOURCES_QUESTIONS_ASKED_BY', $name); ?>
+						<span class="entry-date-at"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_AT'); ?></span>
+						<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
+						<span class="entry-date-on"><?php echo JText::_('PLG_RESOURCES_QUESTIONS_ON'); ?></span>
 						<span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-state">

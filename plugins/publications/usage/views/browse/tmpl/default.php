@@ -36,7 +36,7 @@ $database = JFactory::getDBO();
 ?>
 <h3>
 	<a name="usage"></a>
-	<?php echo JText::_('PLG_PUBLICATION_USAGE'); ?> 
+	<?php echo JText::_('PLG_PUBLICATION_USAGE'); ?>
 </h3>
 <div id="sub-sub-menu">
 	<ul>
@@ -49,5 +49,5 @@ $database = JFactory::getDBO();
 	</ul>
 </div>
 <form method="get" action="<?php echo JRoute::_($url); ?>">
-	
+
 </form>

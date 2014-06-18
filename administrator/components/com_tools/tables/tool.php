@@ -33,84 +33,84 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'Tool'
- * 
+ *
  * Long description (if any) ...
  */
 class Tool extends JTable
 {
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id            = NULL;  // @var int (primary key)
 
 	/**
 	 * Description for 'toolname'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $toolname      = NULL;  // @var string (15)
 
 	/**
 	 * Description for 'published'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $published	   = NULL;  // @var tinyint
 
 	/**
 	 * Description for 'state'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $state         = NULL;  // @var int (11)
 
 	/**
 	 * Description for 'priority'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $priority      = NULL;  // @var int (11)
 
 	/**
 	 * Description for 'registered'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $registered    = NULL;  // @var dateandtime
 
 	/**
 	 * Description for 'registered_by'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $registered_by = NULL;  // @var string (31)
 
 	/**
 	 * Description for 'ticketid'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $ticketid	   = NULL;  // @var int
 
 	/**
 	 * Description for 'state_changed'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $state_changed = NULL;  // @var dateandtime
 
 	/**
 	 * Description for 'title'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $title         = NULL;  // @var string (127)
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -121,12 +121,12 @@ class Tool extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->toolname) == '') 
+		if (trim($this->toolname) == '')
 		{
 			$this->setError(JText::_('CONTRIBTOOL_ERROR_NO_TOOLNAME'));
 			return false;
@@ -137,15 +137,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'loadFromName'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function loadFromName($toolname)
 	{
-		if ($toolname === NULL) 
+		if ($toolname === NULL)
 		{
 			return false;
 		}
@@ -153,11 +153,11 @@ class Tool extends JTable
 		$query = "SELECT * FROM $this->_tbl as t WHERE t.toolname=" . $this->_db->Quote($toolname) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -166,9 +166,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'buildQuery'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      unknown $admin Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
@@ -187,33 +187,33 @@ class Tool extends JTable
 			case 'dev':       $filter .= " AND f.published='0' AND f.state!='9' AND f.state!='8' "; break;
 			case 'all':       $filter .= " ";                                                       break;
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$search = $filters['search'];
-			if (intval($search)) 
+			if (intval($search))
 			{
 				$filter .= " AND f.id='%" . $this->_db->getEscaped($search) . "%' ";
 			}
-			else 
+			else
 			{
 				$filter .= " AND LOWER(f.toolname) LIKE '%" . $this->_db->getEscaped($search) . "%' ";
 			}
 		}
-		if (!$admin) 
+		if (!$admin)
 		{
 			$filter .= " AND m.uidNumber=" . $this->_db->Quote($juser->get('id')) . " ";
 			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
 		}
-		else 
-		{ 
-			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC'; 
+		else
+		{
+			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC';
 		}
 
 		$query = "#__tool as f "
 				. "JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "
 				. "JOIN #__tool_groups AS g ON f.id=g.toolid AND g.cn=CONCAT('app-',f.toolname) AND g.role=1 "
 				. "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		if (!$admin) 
+		if (!$admin)
 		{
 			$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		}
@@ -225,9 +225,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolCount'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
@@ -242,20 +242,20 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getMyTools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	public function getMyTools()
 	{
 		$sql = "SELECT r.alias, v.toolname, v.title, v.description, v.toolaccess AS access, v.mw, v.instance, v.revision
-				FROM #__resources AS r, #__tool_version AS v	
-				WHERE r.published=1 
-				AND r.type=7 
-				AND r.standalone=1 
+				FROM #__resources AS r, #__tool_version AS v
+				WHERE r.published=1
+				AND r.type=7
+				AND r.standalone=1
 				AND r.access!=4
-				AND r.alias=v.toolname 
+				AND r.alias=v.toolname
 				AND v.state=1
 				ORDER BY v.title, v.toolname, v.revision DESC";
 
@@ -265,9 +265,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getTools'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $filters Parameter description (if any) ...
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
@@ -276,7 +276,7 @@ class Tool extends JTable
 	{
 		$sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
 				. " FROM " . $this->buildQuery($filters, $admin);
-		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0) 
+		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0)
 		{
 			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -287,9 +287,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolsOldScheme'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     object Return description (if any) ...
 	 */
 	public function getToolsOldScheme()
@@ -300,15 +300,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getTicketId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getTicketId($toolid=NULL)
 	{
-		if ($toolid=== NULL) 
+		if ($toolid=== NULL)
 		{
 			return false;
 		}
@@ -318,15 +318,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getResourceId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getResourceId($toolid=NULL)
 	{
-		if ($toolid=== NULL) 
+		if ($toolid=== NULL)
 		{
 			return false;
 		}
@@ -336,30 +336,30 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolInstanceFromResource'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $rid Parameter description (if any) ...
 	 * @param      string $version Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getToolInstanceFromResource($rid=NULL, $version ='dev')
 	{
-		if ($rid=== NULL) 
+		if ($rid=== NULL)
 		{
 			return false;
 		}
 
 		$query = "SELECT v.instance FROM #__tool_version as v JOIN #__resources as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->Quote($rid);
-		if ($version=='dev') 
+		if ($version=='dev')
 		{
 			$query.= " AND v.state=3 LIMIT 1";
 		}
-		else if ($version=='current') 
+		else if ($version=='current')
 		{
 			$query.= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
 		}
-		else 
+		else
 		{
 			$query.= " AND v.version=" . $this->_db->Quote($version) . " LIMIT 1";
 		}
@@ -370,15 +370,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolIdFromResource'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $rid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getToolIdFromResource($rid=NULL)
 	{
-		if ($rid=== NULL) 
+		if ($rid=== NULL)
 		{
 			return false;
 		}
@@ -388,15 +388,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolnameFromResource'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $rid Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getToolnameFromResource($rid=NULL)
 	{
-		if ($rid=== NULL) 
+		if ($rid=== NULL)
 		{
 			return false;
 		}
@@ -406,15 +406,15 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getToolId($toolname=NULL)
 	{
-		if ($toolname=== NULL) 
+		if ($toolname=== NULL)
 		{
 			return false;
 		}
@@ -424,26 +424,26 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'saveTicketId'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      string $ticketid Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function saveTicketId($toolid=NULL, $ticketid=NULL)
 	{
-		if ($toolid=== NULL or $ticketid=== NULL) 
+		if ($toolid=== NULL or $ticketid=== NULL)
 		{
 			return false;
 		}
 		$query = "UPDATE #__tool SET ticketid=" . $this->_db->Quote($ticketid) . " WHERE id=" . $this->_db->Quote($toolid);
 		$this->_db->setQuery($query);
-		if ($this->_db->query()) 
+		if ($this->_db->query())
 		{
 			return true;
 		}
-		else 
+		else
 		{
 			return false;
 		}
@@ -451,9 +451,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'updateTool'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      string $newstate Parameter description (if any) ...
 	 * @param      string $priority Parameter description (if any) ...
@@ -461,28 +461,28 @@ class Tool extends JTable
 	 */
 	public function updateTool($toolid=NULL, $newstate=NULL, $priority=NULL)
 	{
-		if ($toolid=== NULL) 
+		if ($toolid=== NULL)
 		{
 			return false;
 		}
-		if ($newstate or $priority) 
+		if ($newstate or $priority)
 		{
 			$query = "UPDATE #__tool SET ";
-			if ($newstate) 
+			if ($newstate)
 			{
 				$query.= "state=" . $this->_db->Quote($newstate) . ", state_changed='" . JFactory::getDate()->toSql() . "'";
 			}
-			if ($newstate && $priority) 
+			if ($newstate && $priority)
 			{
 				$query.= ", ";
 			}
-			if ($priority) 
+			if ($priority)
 			{
 				$query.= "priority=" . $this->_db->Quote($priority);
 			}
 			$query.= " WHERE id=" . $this->_db->Quote($toolid);
 			$this->_db->setQuery($query);
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				return false;
 			}
@@ -493,9 +493,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolInfo'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      string $toolname Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
@@ -514,11 +514,11 @@ class Tool extends JTable
 		$query .= "FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname ";
 		$query .= "JOIN #__tool_groups AS g ON t.id=g.toolid AND g.role=1 ";
 		$query .= "JOIN #__xgroups AS xg ON g.cn=xg.cn ";
-		if ($toolid) 
+		if ($toolid)
 		{
 			$query .= "WHERE t.id = " . $this->_db->Quote($toolid);
 		}
-		else if ($toolname) 
+		else if ($toolname)
 		{
 			$query .= "WHERE t.toolname = " . $this->_db->Quote($toolname);
 		}
@@ -529,9 +529,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolDevGroup'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
@@ -547,9 +547,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolDevelopers'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -566,9 +566,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolGroups'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $toolid Parameter description (if any) ...
 	 * @param      array $groups Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
@@ -585,9 +585,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'getToolStatus'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $toolid Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      array &$status Parameter description (if any) ...
@@ -597,7 +597,7 @@ class Tool extends JTable
 	public function getToolStatus($toolid, $option, &$status, $version='dev')
 	{
 		$toolinfo = $this->getToolInfo(intval($toolid));
-		if ($toolinfo) 
+		if ($toolinfo)
 		{
 			$objV = new ToolVersion($this->_db);
 			$objA = new ToolAuthor($this->_db);
@@ -607,7 +607,7 @@ class Tool extends JTable
 
 			$this->buildToolStatus($toolinfo, $developers, $authors, $version, $status, $option);
 		}
-		else 
+		else
 		{
 			$status = array();
 		}
@@ -615,9 +615,9 @@ class Tool extends JTable
 
 	/**
 	 * Short description for 'buildToolStatus'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $toolinfo Parameter description (if any) ...
 	 * @param      array $developers Parameter description (if any) ...
 	 * @param      array $authors Parameter description (if any) ...
@@ -642,7 +642,7 @@ class Tool extends JTable
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified) 
+			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified)
 				&& $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && isset($version[0]) && $version[0]->fulltxt != '') ? 1 : 0,
 			'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
 			'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
@@ -681,7 +681,7 @@ class Tool extends JTable
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 
 		// get latest version information
-		if ($status['published']) 
+		if ($status['published'])
 		{
 			$current = $objV->getVersionInfo('', 'current', $toolinfo[0]->toolname);
 		}

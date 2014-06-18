@@ -30,25 +30,25 @@ $useBlocks = $this->config->get('curation', 0);
 
 // Add stylesheet
 $document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+$document->addStyleSheet('plugins' . DS . 'publications' . DS
 	. 'supportingdocs' . DS . 'assets' . DS . 'css' . DS . 'supportingdocs.css');
 
 ?>
 <div class="supportingdocs">
 <h3>
 	<a name="supportingdocs"></a>
-	<?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS'); ?> 
+	<?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS'); ?>
 </h3>
 
 <?php
 if ($useBlocks)
 {
 	// Get primary elements
-	$elements = $this->publication->_curationModel->getElements(2);	
-	
+	$elements = $this->publication->_curationModel->getElements(2);
+
 	// Get attachment type model
 	$attModel = new PublicationsModelAttachments($database);
-	
+
 	if ($elements)
 	{
 		foreach ($elements as $element)
@@ -56,11 +56,11 @@ if ($useBlocks)
 			// Draw button
 			$launcher = $attModel->drawLauncher(
 				$element->manifest->params->type,
-				$this->publication, 
+				$this->publication,
 				$element,
 				$this->authorized
 			);
-			
+
 			echo $launcher;
 		}
 	}
@@ -69,90 +69,90 @@ elseif ($this->docs) {
 	$dls = '';
 	$dls .= '<ul>'."\n";
 	foreach($this->docs as $child) {
-		
-		$child->title = $child->title ? stripslashes($child->title) : '';				
+
+		$child->title = $child->title ? stripslashes($child->title) : '';
 		$child->title = str_replace( '"', '&quot;', $child->title );
 		$child->title = str_replace( '&amp;', '&', $child->title );
 		$child->title = str_replace( '&', '&amp;', $child->title );
 		$child->title = str_replace( '&amp;quot;', '&quot;', $child->title );
-		
+
 		$params = new JParameter( $child->params );
-				
-		switch ( $child->type ) 
+
+		switch ( $child->type )
 		{
-			case 'file': 
+			case 'file':
 			default:
-			
+
 				$mt = new \Hubzero\Content\Mimetypes();
-				
+
 				$mimetype 	= $mt->getMimeType($child->path);
 				$parts		= explode('/', $mimetype);
 				$type 		= array_shift($parts);
 				$type 		= strtolower($type);
-				
+
 				// Some files can be viewed inline
-				if ($type == 'image' || $type == 'video' || $type == 'audio') 
+				if ($type == 'image' || $type == 'video' || $type == 'audio')
 				{
 					$default_type = 'inlineview';
 				}
 				else
 				{
-					$default_type = 'download'; 
-				}										
+					$default_type = 'download';
+				}
 				break;
-				
-			case 'link': 				
-				$default_type = 'external'; 		
+
+			case 'link':
+				$default_type = 'external';
 				break;
 		}
 		$serveas = $params->get('serveas', $default_type);
-		
+
 		// Get ext
 		$parts  = explode('.', $child->path);
 		$ext 	= array_pop($parts);
 		$ext	= strtolower($ext);
-		
+
 		// Get size
 		$fpath = $this->path . DS . $child->path;
 		$size = ($serveas == 'download' && $child->type == 'file' && file_exists( $fpath )) ? filesize( $fpath ) : '';
 		$size = $size ? PublicationsHtml::formatsize($size) : '';
-		
+
 		// Get file icon
-		$icon  = ($child->type == 'file') 
-		? '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" /> ' 
+		$icon  = ($child->type == 'file')
+		? '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" /> '
 		: '<span class="'.$child->type.'"></span> ';
-		
-		$url = JRoute::_('index.php?option=com_publications&id=' 
+
+		$url = JRoute::_('index.php?option=com_publications&id='
 			 . $this->publication->id . '&task=serve&v=' . $this->version . '&a='
 			 . $child->id);
-			
+
 		$extra = '';
-		
-		switch ( $serveas ) 
+
+		switch ( $serveas )
 		{
-			case 'download': 
-			default:				
+			case 'download':
+			default:
 				break;
 			case 'external':
-				$extra = ' rel="external"'; 						
+				$extra = ' rel="external"';
 				break;
-			case 'inlineview': 				
+			case 'inlineview':
 				$extra = ' class="play"';
-				$url  .= '?render=inline';		
+				$url  .= '?render=inline';
 				break;
 		}
-		
+
 		$title = $params->get('title', $child->title);
 		$title = $title ? $title : basename($child->path);
-				
+
 		$dls .= "\t".'<li><a href="'.$url.'"' . $extra .'>'.$icon.$title.'</a> ';
 		$dls .= $ext ? ' <span class="ext">('.strtoupper($ext) : '';
 		$dls .= $size ? ' | '.$size : '';
 		$dls .= $ext ? ')</span>' : '';
-		$dls .= '</li>'."\n";	
+		$dls .= '</li>'."\n";
 	}
 	$dls .= '</ul>'."\n";
-	echo $dls; 
+	echo $dls;
 ?>
 <?php } else { ?>
 	<p class="noresults"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>

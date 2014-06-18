@@ -46,7 +46,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
 	<script type="text/javascript" src="/components/'.$option.'/maps/js/Clusterer2.js"></script>
 	<script type="text/javascript">
-	function load() 
+	function load()
 	{
 		if (GBrowserIsCompatible()) {
     		map = new GMap2(document.getElementById("div_map"));
@@ -55,8 +55,8 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 			getMarkers();
 		}
 	}
-	
-	function getMarkers() 
+
+	function getMarkers()
 	{
 		//var urlstr="/components/'.$option.'/maps/read_location.php";
 		var urlstr="'.$dataurl.'";

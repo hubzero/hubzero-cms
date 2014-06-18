@@ -39,14 +39,14 @@ class modFeaturedresource extends \Hubzero\Module\Module
 {
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	public $id = 0;
 
 	/**
 	 * Generate module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function run()
@@ -75,13 +75,13 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 		// Get records
 		$rows = $rr->getRecords($filters, false);
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$row = $rows[0];
 		}
 
 		// Did we get any results?
-		if ($row) 
+		if ($row)
 		{
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
@@ -94,7 +94,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
 			$path = $this->build_path($row->created, $row->id, $path);
 
-			if ($row->type == 7) 
+			if ($row->type == 7)
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
@@ -103,21 +103,21 @@ class modFeaturedresource extends \Hubzero\Module\Module
 				$versionid = $tv->getVersionIdFromResource($id, 'current');
 
 				$picture = $this->getToolImage($path, $versionid);
-			} 
-			else 
+			}
+			else
 			{
 				$picture = $this->getImage($path);
 			}
 
 			$thumb = $path . DS . $picture;
 
-			if (!is_file(JPATH_ROOT . $thumb)) 
+			if (!is_file(JPATH_ROOT . $thumb))
 			{
 				$thumb = DS . trim($config->get('defaultpic'));
 			}
 
 			$row->typetitle = trim(stripslashes($row->typetitle));
-			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies') 
+			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies')
 			{
 				$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
 			}
@@ -132,7 +132,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -154,7 +154,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 	/**
 	 * Get a resource image
-	 * 
+	 *
 	 * @param      string $path Path to get resource image from
 	 * @return     string
 	 */
@@ -164,16 +164,16 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 		$images = array();
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file)) 
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
@@ -184,7 +184,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		}
 
 		$b = 0;
-		if ($images) 
+		if ($images)
 		{
 			foreach ($images as $ima)
 			{
@@ -192,7 +192,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') 
+				if ($img == 'thumb')
 				{
 					return $ima;
 				}
@@ -202,7 +202,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 	/**
 	 * Get a screenshot of a tool
-	 * 
+	 *
 	 * @param      string  $path      Path to look for screenshots in
 	 * @param      integer $versionid Tool version
 	 * @return     string
@@ -213,7 +213,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		$tconfig = JComponentHelper::getParams('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
-		if ($versionid && $allowversions) 
+		if ($versionid && $allowversions)
 		{
 			// Add version directory
 			//$path .= DS.$versionid;
@@ -223,16 +223,16 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 		$images = array();
 
-		if ($d) 
+		if ($d)
 		{
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $img_file) 
-				 && substr($entry, 0, 1) != '.' 
-				 && strtolower($entry) !== 'index.html') 
+				if (is_file(JPATH_ROOT . $path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file)) 
+					if (preg_match("#bmp|gif|jpg|png#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
@@ -243,7 +243,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		}
 
 		$b = 0;
-		if ($images) 
+		if ($images)
 		{
 			foreach ($images as $ima)
 			{
@@ -251,7 +251,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 				$type = array_pop($bits);
 				$img  = implode('.', $bits);
 
-				if ($img == 'thumb') 
+				if ($img == 'thumb')
 				{
 					return $ima;
 				}
@@ -261,24 +261,24 @@ class modFeaturedresource extends \Hubzero\Module\Module
 
 	/**
 	 * Build a path to a resource's files
-	 * 
+	 *
 	 * @param      string  $date Resource date
 	 * @param      integer $id   Resource ID
 	 * @param      string  $base Base path to prepend
-	 * @return     string 
+	 * @return     string
 	 */
 	private function build_path($date, $id, $base='')
 	{
-		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs)) 
+		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))
 		{
 			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
-		if ($date) 
+		if ($date)
 		{
 			$dir_year  = date('Y', $date);
 			$dir_month = date('m', $date);
-		} 
-		else 
+		}
+		else
 		{
 			$dir_year  = date('Y');
 			$dir_month = date('m');

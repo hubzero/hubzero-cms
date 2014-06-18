@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class ForumHelper
 {
 	public static $extension = 'com_forum';
-	
+
 	/**
 	 * Configure the Linkbar.
 	 *
@@ -54,7 +54,7 @@ class ForumHelper
 			$vName == 'featured'
 		);
 	}
-	
+
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
@@ -76,12 +76,12 @@ class ForumHelper
 				'admin', 'manage', 'create', 'edit', 'edit.state', 'delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
 			}
 		}
-		else 
+		else
 		{
 			$assetName .= '.' . $assetType;
 			if ($assetId) {
@@ -92,7 +92,7 @@ class ForumHelper
 				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
 			);
 
-			foreach ($actions as $action) 
+			foreach ($actions as $action)
 			{
 				$result->set($action, $user->authorise($action, $assetName));
 			}

@@ -65,19 +65,19 @@ if ($this->condition->expressions)
 				<option value="category"<?php if ($expression->fldval == 'category') { echo ' selected="selected"'; } ?>>Category</option>
 			</select>
 			<select class="op">
-<?php 
+<?php
 		if ($operators)
 		{
 			foreach ($operators as $operator)
 			{
 ?>
 				<option value="<?php echo $operator->val; ?>"<?php if ($expression->opval == $operator->val) { echo ' selected="selected"'; } ?>><?php echo $operator->label; ?></option>
-<?php 
+<?php
 			}
 		}
 ?>
 			</select>
-<?php 
+<?php
 		if (is_array($values))
 		{
 ?>
@@ -87,13 +87,13 @@ if ($this->condition->expressions)
 			{
 ?>
 				<option value="<?php echo $value->val; ?>"<?php if ($expression->val == $value->val) { echo ' selected="selected"'; } ?>><?php echo $value->label; ?></option>
-<?php 
+<?php
 			}
 ?>
 			</select>
 <?php
 		}
-		else 
+		else
 		{
 			if ($expression->val == '$me')
 			{

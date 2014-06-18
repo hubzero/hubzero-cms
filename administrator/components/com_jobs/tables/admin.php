@@ -38,28 +38,28 @@ class JobAdmin extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $jid        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid        = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,14 +70,14 @@ class JobAdmin extends JTable
 
 	/**
 	 * Check if a user is an admin for a job
-	 * 
+	 *
 	 * @param      integer $uid User ID
 	 * @param      integer $jid Job ID
 	 * @return     boolean True if admin
 	 */
 	public function isAdmin($uid,  $jid)
 	{
-		if ($uid === NULL or $jid === NULL) 
+		if ($uid === NULL or $jid === NULL)
 		{
 			return false;
 		}
@@ -86,7 +86,7 @@ class JobAdmin extends JTable
 		$query .= "FROM #__jobs_admins  ";
 		$query .= "WHERE uid = " . $this->_db->Quote($uid) . " AND jid = " . $this->_db->Quote($jid);
 		$this->_db->setQuery($query);
-		if ($this->_db->loadResult()) 
+		if ($this->_db->loadResult())
 		{
 			return true;
 		}
@@ -95,13 +95,13 @@ class JobAdmin extends JTable
 
 	/**
 	 * Get a list of administrators
-	 * 
+	 *
 	 * @param      integer $jid Job ID
 	 * @return     array
 	 */
 	public function getAdmins($jid)
 	{
-		if ($jid === NULL) 
+		if ($jid === NULL)
 		{
 			return false;
 		}
@@ -113,7 +113,7 @@ class JobAdmin extends JTable
 		$query .= "WHERE jid = " . $this->_db->Quote($jid);
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $r)
 			{

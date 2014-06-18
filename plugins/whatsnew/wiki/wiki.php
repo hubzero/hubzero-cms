@@ -45,7 +45,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onWhatsnewAreas()
@@ -57,7 +57,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Pull a list of records that were created within the time frame ($period)
-	 * 
+	 *
 	 * @param      object  $period     Time period to pull results for
 	 * @param      mixed   $limit      Number of records to pull
 	 * @param      integer $limitstart Start of records to pull
@@ -67,17 +67,17 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onWhatsnew($period, $limit=0, $limitstart=0, $areas=null, $tagids=array())
 	{
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			if (!isset($areas[$this->_name])
-			 && !in_array($this->_name, $areas)) 
+			 && !in_array($this->_name, $areas))
 			{
 				return array();
 			}
 		}
 
 		// Do we have a time period?
-		if (!is_object($period)) 
+		if (!is_object($period))
 		{
 			return array();
 		}
@@ -97,25 +97,25 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 
 		$juser = JFactory::getUser();
 		$filters['authorized'] = false;
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$filters['authorized'] = true;
 		}
 
-		if (count($tagids) > 0) 
+		if (count($tagids) > 0)
 		{
 			$filters['tags'] = $tagids;
 		}
 
-		if (!$limit) 
+		if (!$limit)
 		{
 			// Get a count
 			$filters['select'] = 'count';
 
 			$database->setQuery($wp->buildPluginQuery($filters));
 			return $database->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			// Get results
 			$filters['select'] = 'records';
@@ -125,20 +125,20 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
 			$database->setQuery($wp->buildPluginQuery($filters));
 			$rows = $database->loadObjectList();
 
-			if ($rows) 
+			if ($rows)
 			{
 				foreach ($rows as $key => $row)
 				{
-					if ($row->area != '' && $row->category != '') 
+					if ($row->area != '' && $row->category != '')
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_groups&scope=' . $row->category . '&pagename=' . $row->alias);
-					} 
-					else 
+					}
+					else
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_wiki&scope=' . $row->category . '&pagename=' . $row->alias);
 					}
 					$rows[$key]->text = strip_tags($rows[$key]->itext);
-					if ($row->title == '') 
+					if ($row->title == '')
 					{
 						$rows[$key]->title = $rows[$key]->alias;
 					}

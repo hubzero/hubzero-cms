@@ -115,7 +115,7 @@ class ModIncrementalRegistrationOptions
 		$cur = self::getCurrent();
 		return $cur['award_per'];
 	}
-	
+
 	public function isEnabled($uid = NULL) {
 		$dbg = isset($_GET['dbg']);
 		if (!$uid) {
@@ -188,14 +188,14 @@ class ModIncrementalRegistrationAwards
 		self::$dbh->setQuery('UPDATE #__profile_completion_awards SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP WHERE user_id = '.$this->uid);
 		self::$dbh->execute();
 	}
-	
+
 	public function award() {
 		if (!$this->uid) {
 			return NULL;
 		}
 		$opts = new ModIncrementalRegistrationOptions;
 		$awardPer = $opts->getAwardPerField();
-		
+
 		$fieldMap = array(
 			'name'            => 'Fullname',
 			'orgtype'         => 'Employment',
@@ -225,7 +225,7 @@ class ModIncrementalRegistrationAwards
 			if ($k === 'picture') {
 				self::$dbh->setQuery('SELECT picture FROM #__xprofiles WHERE uidNumber = '.$this->uid);
 				if (self::$dbh->loadResult()) {
-					$completeSql .= ', '.$k.' = 1'; 
+					$completeSql .= ', '.$k.' = 1';
 					$alreadyComplete += $awardPer;
 				}
 				else {
@@ -247,14 +247,14 @@ class ModIncrementalRegistrationAwards
 		self::$dbh->setQuery($completeSql.' WHERE user_id = '.$this->uid);
 		self::$dbh->execute();
 
-		if ($alreadyComplete) 
+		if ($alreadyComplete)
 		{
 			self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM #__users_transactions WHERE uid = '.$this->uid.' AND id = (SELECT MAX(id) FROM #__users_transactions WHERE uid = '.$this->uid.')), 0)');
 			$newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
 
 			$BTL = new \Hubzero\Bank\Teller( self::$dbh, $this->uid );
-			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0); 
+			$BTL->deposit($alreadyComplete, 'Profile completion award', 'registration', 0);
 		}
 		return array(
 			'prior'     => $prior,

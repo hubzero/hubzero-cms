@@ -357,8 +357,8 @@ abstract class JFolder
 		if (@rmdir($path))
 		{
 			JFactory::getLogger()->debug(
-				'Path deleted: ' . $path . '; ' . 
-				(!JFactory::getUser()->get('guest') ? ' By: ' . JFactory::getUser()->get('username') . '; ' : '') . 
+				'Path deleted: ' . $path . '; ' .
+				(!JFactory::getUser()->get('guest') ? ' By: ' . JFactory::getUser()->get('username') . '; ' : '') .
 				'Request: ' . JRequest::getVar('REQUEST_URI', '', 'server')
 			);
 			$ret = true;

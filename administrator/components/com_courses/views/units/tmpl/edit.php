@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Unit'), 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -46,7 +46,7 @@ JToolBarHelper::cancel();
 JHTML::_('behavior.modal');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -74,7 +74,7 @@ jQuery(document).ready(function($){
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 
@@ -105,7 +105,7 @@ jQuery(document).ready(function($){
 								}
 								?>
 								</optgroup>
-								<?php 
+								<?php
 							}
 						}
 					?>
@@ -154,7 +154,7 @@ jQuery(document).ready(function($){
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('Creator'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>

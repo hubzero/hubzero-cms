@@ -35,8 +35,8 @@ if ($this->row->type == 'file')
 {
 	$dirpath = dirname($this->row->path) == '.' ? '' : dirname($this->row->path) . DS;
 	$gone 	 = is_file($this->path . DS . $this->row->path) ? false : true;
-	$title   = !$allowRename 
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL') 
+	$title   = !$allowRename
+		? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL')
 		: JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
 }
 
@@ -48,9 +48,9 @@ $block	   = $this->pub->_curationModel->_progress->blocks->$step;
 $manifest  = $block->manifest;
 $element   = $manifest->elements->$elementId;
 
-$defaultTitle	= $element->params->title 
+$defaultTitle	= $element->params->title
 				? str_replace('{pubtitle}', $this->pub->title, $element->params->title) : NULL;
-				
+
 if ($this->row->type == 'file')
 {
 	$dTitle = $defaultTitle ? $defaultTitle : basename($this->row->path);
@@ -82,7 +82,7 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 			</fieldset>
 			<div class="content-wrap">
 				<div class="content-edit">
-					
+
 					<label for="title">
 						<span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
 						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>" placeholder="<?php echo $placeholder; ?>"  />
@@ -91,8 +91,8 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 					<p class="c-wrapper">
 						<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_URL')); ?>:</span>
 						<span class="content-filepath"><?php echo $this->row->path; ?></span>
-					</p>	
-					<?php } ?>					
+					</p>
+					<?php } ?>
 					<?php if ($this->row->type == 'file') { ?>
 						<?php if ($gone || !$allowRename) { ?>
 						<p class="c-wrapper">
@@ -106,17 +106,17 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 						</p>
 						<?php } ?>
 					<?php } ?>
-					
+
 					<p class="submitarea">
 						<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-						<?php if ($this->ajax) { ?>	
+						<?php if ($this->ajax) { ?>
 						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?>" />
 						<?php } else { ?>
 						<a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 						<?php } ?>
 					</p>
-				</div>	
-			</div>	
+				</div>
+			</div>
 	</form>
 	<div class="clear"></div>
 </div>

@@ -97,7 +97,7 @@ $this->css('jobs', 'com_jobs');
 						</span>
 					</label>
 					<label class="cats">
-						<?php echo JText::_('PLG_MEMBERS_RESUME_POSITION_SOUGHT'); ?>: 
+						<?php echo JText::_('PLG_MEMBERS_RESUME_POSITION_SOUGHT'); ?>:
 					</label>
 
 					<?php
@@ -142,7 +142,7 @@ $this->css('jobs', 'com_jobs');
 
 					<div class="submitblock">
 						<span class="selectgroup">
-							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" /> 
+							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span class="cancelaction">
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
@@ -156,18 +156,18 @@ $this->css('jobs', 'com_jobs');
 		</div>
 	<?php } ?>
 
-		<?php 
+		<?php
 		// seeker details block
-		if ($this->js->active && $this->file) 
+		if ($this->js->active && $this->file)
 		{
 			// get seeker info
 			$seeker = $this->js->getSeeker($this->member->get('uidNumber'), $juser->get('id'));
 
-			if (!$seeker or count($seeker)==0) 
+			if (!$seeker or count($seeker)==0)
 			{
 				echo '<p class="error">'.JText::_('PLG_MEMBERS_RESUME_ERROR_RETRIEVING_PROFILE').'</p>';
 			}
-			else 
+			else
 			{
 				$this->view('seeker')
 				     ->set('seeker', $seeker[0])
@@ -193,10 +193,10 @@ $this->css('jobs', 'com_jobs');
 				<tbody>
 					<tr>
 						<td>
-						<?php 
+						<?php
 						$title = $this->resume->title ?  stripslashes($this->resume->title) : $this->resume->filename;
-						$default_title = $this->member->get('firstname') 
-									? $this->member->get('firstname').' '.$this->member->get('lastname').' '.JText::_('PLG_MEMBERS_RESUME') 
+						$default_title = $this->member->get('firstname')
+									? $this->member->get('firstname').' '.$this->member->get('lastname').' '.JText::_('PLG_MEMBERS_RESUME')
 									: $this->member->get('name').' '.JText::_('PLG_MEMBERS_RESUME');
 						?>
 						<?php if ($this->edittitle && $this->self) { ?>
@@ -236,8 +236,8 @@ $this->css('jobs', 'com_jobs');
 			<form class="addResumeForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>" enctype="multipart/form-data">
 				<fieldset>
 					<legend>
-						<?php echo ($this->resume->id && $this->file) 
-									? JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLG_MEMBERS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n" 
+						<?php echo ($this->resume->id && $this->file)
+									? JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD_NEW_RESUME') . ' <span>(' . JText::_('PLG_MEMBERS_RESUME_WILL_BE_REPLACED') . ')</span>' . "\n"
 									:  JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD_A_RESUME') . "\n"; ?>
 					</legend>
 					<div>

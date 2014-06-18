@@ -610,7 +610,7 @@ class Assets
 
 				// Add the template path to the import list
 				$less->setImportDir(array(
-					$template . DS, 
+					$template . DS,
 					$lesspath . DS
 				));
 
@@ -624,7 +624,7 @@ class Assets
 
 				if ($cache && is_array($cache['files']))
 				{
-					foreach ($cache['files'] as $fname => $ftime) 
+					foreach ($cache['files'] as $fname => $ftime)
 					{
 						$path = explode('/', $fname);
 						$file = array_pop($path);
@@ -638,7 +638,7 @@ class Assets
 							$nname = $lesspath . '/' . $file;
 						}
 
-						if ($fname != $nname or !file_exists($nname) or filemtime($nname) > $ftime) 
+						if ($fname != $nname or !file_exists($nname) or filemtime($nname) > $ftime)
 						{
 							// One of the files we knew about previously has changed
 							// so we should look at our incoming root again.
@@ -674,7 +674,7 @@ class Assets
 				}
 
 				// Did the cache change?
-				if (!is_array($cache) || $newCache['updated'] > $cache['updated']) 
+				if (!is_array($cache) || $newCache['updated'] > $cache['updated'])
 				{
 					file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
 					$newCache['compiled'] = str_replace("'/media/system/", "'" . rtrim(JURI::getInstance()->base(true), DS) . '/media/system/', $newCache['compiled']);
@@ -682,8 +682,8 @@ class Assets
 				}
 				$output =  rtrim(JURI::root(true), '/') . DS . 'cache' . DS . $primary . '.css?v=' . $newCache['updated'];
 			}
-		} 
-		catch (Exception $e) 
+		}
+		catch (Exception $e)
 		{
 			//echo "fatal error: " . $e->getMessage(); die();
 
@@ -707,7 +707,7 @@ class Assets
 			// Determine last modification date of the files
 			$lastmodified = 0;
 
-			foreach ($elements as $k => $element) 
+			foreach ($elements as $k => $element)
 			{
 				if (!$element)
 				{
@@ -749,12 +749,12 @@ class Assets
 			// Try the cache first to see if the combined files were already generated
 			$cachefile = 'system-' . $hash . '.css';
 
-			if (!file_exists($cachedir . DS . $cachefile)) 
+			if (!file_exists($cachedir . DS . $cachefile))
 			{
 				$contents = '';
 				reset($elements);
 
-				foreach ($elements as $k => $element) 
+				foreach ($elements as $k => $element)
 				{
 					$contents .= "\n\n" . file_get_contents($thispath . DS . $element . '.css');
 				}
@@ -773,7 +773,7 @@ class Assets
 				$contents = preg_replace($patterns, $replacements, $contents);
 				$contents = str_replace("url('/media/system/", "url('" . rtrim(JURI::getInstance()->base(true), DS) . "/media/system/", $contents);
 
-				if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) 
+				if ($fp = fopen($cachedir . DS . $cachefile, 'wb'))
 				{
 					fwrite($fp, $contents);
 					fclose($fp);

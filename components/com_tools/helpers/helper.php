@@ -33,24 +33,24 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'ContribtoolHelper'
- * 
+ *
  * Long description (if any) ...
  */
 class ContribtoolHelper
 {
 	/**
 	 * Short description for 'makeArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $string Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	public function makeArray($string='') 
+	public function makeArray($string='')
 	{
 		$string		= preg_replace('# #',',',$string);
 		$arr 		= preg_split('#,#',$string);
-		//$arr 		= $this->cleanArray($arr); 
+		//$arr 		= $this->cleanArray($arr);
 		$arr 		= ContribtoolHelper::cleanArray($arr);
 		$arr 		= array_unique($arr);
 
@@ -59,18 +59,18 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'cleanArray'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $array Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function cleanArray($array) 
+	public function cleanArray($array)
 	{
-		foreach ($array as $key => $value) 
+		foreach ($array as $key => $value)
 		{
 			$value = trim($value);
-			if ($value == '') 
+			if ($value == '')
 			{
 				unset($array[$key]);
 			}
@@ -80,19 +80,19 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'check_validInput'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $field Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
 	public function check_validInput($field)
 	{
-		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='') 
+		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='')
 		{
 			return(0);
-		} 
-		else 
+		}
+		else
 		{
 			return(1);
 		}
@@ -100,9 +100,9 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'getLicenses'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $database Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
@@ -114,25 +114,25 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'transform'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $array Parameter description (if any) ...
 	 * @param      unknown $label Parameter description (if any) ...
 	 * @param      array $newarray Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public static function transform($array, $label, $newarray=array()) 
+	public static function transform($array, $label, $newarray=array())
 	{
-		if (count($array) > 0) 
+		if (count($array) > 0)
 		{
-			foreach ($array as $a) 
+			foreach ($array as $a)
 			{
-				if (is_object($a)) 
+				if (is_object($a))
 				{
 					$newarray[] = $a->$label;
 				}
-				else 
+				else
 				{
 					$newarray[] = $a;
 				}
@@ -144,21 +144,21 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'getLogins'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $uids Parameter description (if any) ...
 	 * @param      array $logins Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
-	public function getLogins($uids, $logins = array()) 
+	public function getLogins($uids, $logins = array())
 	{
-		if (is_array($uids)) 
+		if (is_array($uids))
 		{
-			foreach ($uids as $uid) 
+			foreach ($uids as $uid)
 			{
 				$juser = JUser::getInstance($uid);
-				if ($juser) 
+				if ($juser)
 				{
 					$logins[] = $juser->get('username');
 				}
@@ -169,9 +169,9 @@ class ContribtoolHelper
 
 	/**
 	 * Short description for 'record_view'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      mixed $database Parameter description (if any) ...
 	 * @param      string $ticketid Parameter description (if any) ...
 	 * @return     void
@@ -184,20 +184,20 @@ class ContribtoolHelper
 		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . $juser->get('id');
 		$database->setQuery($sql);
 		$found = $database->loadObjectList();
-		if ($found) 
+		if ($found)
 		{
 			$elapsed = strtotime($when) - strtotime($found[0]->viewed);
 			$database->setQuery("UPDATE #__tool_statusviews SET viewed='" . $when . "', elapsed='" . $elapsed . "' WHERE ticketid='" . $ticketid . "' AND uid=" . $juser->get('id'));
-			if (!$database->query()) 
+			if (!$database->query())
 			{
 				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg() . "');</script>\n";
 				exit;
 			}
 		}
-		else 
+		else
 		{
 			$database->setQuery("INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (" . $juser->get('id') . ", '" . $ticketid . "', '" . $when . "', '500000')");
-			if (!$database->query()) 
+			if (!$database->query())
 			{
 				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg()."');</script>\n";
 				exit;

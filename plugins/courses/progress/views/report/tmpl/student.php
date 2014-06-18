@@ -449,7 +449,7 @@ $progress_timeline .= '</div>';
 			<div class="unit-overview">
 				<div class="unit-title"><?= $unit->get('title') ?></div>
 				<div class="unit-score">
-					<?= 
+					<?=
 						(isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
 							? $grades[$this->member->get('id')]['units'][$unit->get('id')] . '%'
 							: '--'
@@ -466,7 +466,7 @@ $progress_timeline .= '</div>';
 						</tr>
 					</thead>
 					<tbody>
-						<? if (isset($details['forms'][$unit->get('id')])) : 
+						<? if (isset($details['forms'][$unit->get('id')])) :
 								usort($details['forms'][$unit->get('id')], function ($a, $b) {
 									return strcmp($a['title'], $b['title']);
 								});
@@ -569,7 +569,7 @@ $progress_timeline .= '</div>';
 		<p>
 			Upon successful completion of this course, you will be awarded a special <?= $this->course->get('title') ?> badge.
 			This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
-			To learn more about Purdue's Passport initiative, please visit the 
+			To learn more about Purdue's Passport initiative, please visit the
 			<a href="https://www.openpassport.org/Login" target="_blank">Open Passport website</a>.
 		</p>
 	</div>

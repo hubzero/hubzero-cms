@@ -40,35 +40,35 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'SupportAttachment';
 
 	/**
 	 * URL for this entry
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = 'index.php?option=com_support';
 
 	/**
 	 * File size
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_size = null;
 
 	/**
 	 * Diemnsions for file (must be an image)
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_dimensions = null;
 
 	/**
 	 * Scan text for attachment macros {attachment#}
-	 * 
+	 *
 	 * @param      string $text Text to search
 	 * @return     string HTML
 	 */
@@ -79,7 +79,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Process an attachment macro and output a link to the file
-	 * 
+	 *
 	 * @param      array $matches Macro info
 	 * @return     string HTML
 	 */
@@ -91,29 +91,29 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 		$this->_tbl->load($id);
 
-		if ($this->output != 'web' && $this->output != 'email') 
+		if ($this->output != 'web' && $this->output != 'email')
 		{
 			return $this->link();
 		}
 
-		if (is_file($this->link('filepath'))) 
+		if (is_file($this->link('filepath')))
 		{
 			$url = $this->link();
 
-			if ($this->output != 'email' && $this->isImage()) 
+			if ($this->output != 'email' && $this->isImage())
 			{
 				$size = getimagesize($this->link('filepath'));
-				if ($size[0] > 400) 
+				if ($size[0] > 400)
 				{
 					$img = '<a href="' . $url . '"><img src="' . $url . '" alt="' . $this->get('description') . '" width="400" /></a>';
-				} 
-				else 
+				}
+				else
 				{
 					$img = '<img src="' . $url . '" alt="' . $this->get('description') . '" />';
 				}
 				return $img;
-			} 
-			else 
+			}
+			else
 			{
 				return '<a href="' . $url . '" title="' . $this->get('description') . '">' . $this->get('description', $this->get('filename')) . '</a>';
 			}
@@ -124,7 +124,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Is the file an image?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isImage()
@@ -134,7 +134,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Is the file an image?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function size()
@@ -153,7 +153,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Is the file an image?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function width()
@@ -168,7 +168,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Is the file an image?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function height()
@@ -184,7 +184,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */
@@ -227,7 +227,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Delete redord and associated file
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function delete()
@@ -240,10 +240,10 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 			return false;
 		}
 
-		if (is_dir($path)) 
+		if (is_dir($path))
 		{
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path)) 
+			if (!JFile::delete($path))
 			{
 				$this->setError(JText::sprintf('Unable to delete file %s', $file));
 				return false;

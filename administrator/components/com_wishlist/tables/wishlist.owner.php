@@ -38,28 +38,28 @@ class WishlistOwner extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $wishlist = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $userid	  = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,7 +70,7 @@ class WishlistOwner extends JTable
 
 	/**
 	 * Delete a record
-	 * 
+	 *
 	 * @param      integer $listid     List ID
 	 * @param      integer $uid        User ID
 	 * @param      object  $admingroup Admin group
@@ -78,7 +78,7 @@ class WishlistOwner extends JTable
 	 */
 	public function delete_owner($listid, $uid, $admingroup)
 	{
-		if ($listid === NULL or $uid === NULL) 
+		if ($listid === NULL or $uid === NULL)
 		{
 			return false;
 		}
@@ -88,7 +88,7 @@ class WishlistOwner extends JTable
 		$quser = JUser::getInstance($uid);
 
 		// cannot delete "native" owner (e.g. resource contributor)
-		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true)) 
+		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true))
 		{
 			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND userid=" . $this->_db->Quote($uid);
 			$this->_db->setQuery($query);
@@ -98,7 +98,7 @@ class WishlistOwner extends JTable
 
 	/**
 	 * Save a list of users as owners of a wishlist
-	 * 
+	 *
 	 * @param      integer $listid     List ID
 	 * @param      object  $admingroup Admin group
 	 * @param      array   $newowners  Users to add
@@ -113,21 +113,21 @@ class WishlistOwner extends JTable
 
 		$owners = $this->get_owners($listid, $admingroup);
 
-		if (count($newowners) > 0) 
+		if (count($newowners) > 0)
 		{
 			foreach ($newowners as $no)
 			{
 				$quser = JUser::getInstance($no);
-				if (is_object($quser) 
-				 && !in_array($quser->get('id'), $owners['individuals'], true) 
-				 && !in_array($quser->get('id'), $owners['advisory'], true)) 
+				if (is_object($quser)
+				 && !in_array($quser->get('id'), $owners['individuals'], true)
+				 && !in_array($quser->get('id'), $owners['advisory'], true))
 				{
 					$this->id = 0;
 					$this->userid = $quser->get('id');
 					$this->wishlist = $listid;
 					$this->type = $type;
 
-					if (!$this->store()) 
+					if (!$this->store())
 					{
 						$this->setError(JText::_('Failed to add a user.'));
 						return false;
@@ -152,7 +152,7 @@ class WishlistOwner extends JTable
 
 					JPluginHelper::importPlugin('xmessage');
 					$dispatcher = JDispatcher::getInstance();
-					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist'))) 
+					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist')))
 					{
 						$this->setError(JText::_('Failed to message new wish list owner.'));
 					}
@@ -164,7 +164,7 @@ class WishlistOwner extends JTable
 
 	/**
 	 * Get a list of owners
-	 * 
+	 *
 	 * @param      integer $listid     List ID
 	 * @param      object  $admingroup Admin Group
 	 * @param      object  $wishlist   Wish list
@@ -175,29 +175,29 @@ class WishlistOwner extends JTable
 	 */
 	public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array())
 	{
-		if ($listid === NULL) 
+		if ($listid === NULL)
 		{
 			return false;
 		}
 
 		$obj = new Wishlist($this->_db);
 		$objG = new WishlistOwnerGroup($this->_db);
-		if (!$wishlist) 
+		if (!$wishlist)
 		{
 			$wishlist = $obj->get_wishlist($listid);
 		}
 
 		// if private user list, add the user
-		if ($wishlist->category == 'user') 
+		if ($wishlist->category == 'user')
 		{
 			$owners[] = $wishlist->referenceid;
 		}
 
 		// if resource, get contributors
-		if ($wishlist->category == 'resource' &&  $wishlist->resource->type != 7) 
+		if ($wishlist->category == 'resource' &&  $wishlist->resource->type != 7)
 		{
 			$cons = $obj->getCons($wishlist->referenceid);
-			if ($cons) 
+			if ($cons)
 			{
 				foreach ($cons as $con)
 				{
@@ -208,7 +208,7 @@ class WishlistOwner extends JTable
 
 		// get groups
 		$groups = $objG->get_owner_groups($listid, (is_object($admingroup) ? $admingroup->get('group') : $admingroup), $wishlist, $native);
-		if ($groups) 
+		if ($groups)
 		{
 			foreach ($groups as $g)
 			{
@@ -219,7 +219,7 @@ class WishlistOwner extends JTable
 					$members  = $group->get('members');
 					$managers = $group->get('managers');
 					$members  = array_merge($members, $managers);
-					if ($members) 
+					if ($members)
 					{
 						foreach ($members as $member)
 						{
@@ -231,7 +231,7 @@ class WishlistOwner extends JTable
 		}
 
 		// get individuals
-		if (!$native) 
+		if (!$native)
 		{
 			$sql = "SELECT o.userid"
 				. "\n FROM #__wishlist_owners AS o "
@@ -239,7 +239,7 @@ class WishlistOwner extends JTable
 
 			$this->_db->setQuery($sql);
 			$results =  $this->_db->loadObjectList();
-			if ($results) 
+			if ($results)
 			{
 				foreach ($results as $result)
 				{
@@ -256,7 +256,7 @@ class WishlistOwner extends JTable
 		$allow_advisory = $wconfig->get('allow_advisory');
 		$advisory = array();
 
-		if ($allow_advisory) 
+		if ($allow_advisory)
 		{
 			$sql = "SELECT DISTINCT o.userid"
 					. "\n FROM #__wishlist_owners AS o "
@@ -264,7 +264,7 @@ class WishlistOwner extends JTable
 
 			$this->_db->setQuery($sql);
 			$results =  $this->_db->loadObjectList();
-			if ($results) 
+			if ($results)
 			{
 				foreach ($results as $result)
 				{
@@ -274,7 +274,7 @@ class WishlistOwner extends JTable
 		}
 
 		// find out those who voted - for distribution of points
-		if ($wishid) 
+		if ($wishid)
 		{
 			$activeowners = array();
 			$query  = "SELECT v.userid ";
@@ -283,7 +283,7 @@ class WishlistOwner extends JTable
 
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
-			if ($result) 
+			if ($result)
 			{
 				foreach ($result as $r)
 				{

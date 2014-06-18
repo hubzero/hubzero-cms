@@ -40,14 +40,14 @@ class WishlistModelTags extends TagsModelCloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'wishlist';
 
 	/**
 	 * Turn a string of tags to an array
-	 * 
+	 *
 	 * @param      string $tag Tag string
 	 * @return     mixed
 	 */
@@ -84,7 +84,7 @@ class WishlistModelTags extends TagsModelCloud
 
 	/**
 	 * Render a tag cloud
-	 * 
+	 *
 	 * @param      string  $rtrn    Format to render
 	 * @param      array   $filters Filters to apply
 	 * @param      boolean $clear   Clear cached data?

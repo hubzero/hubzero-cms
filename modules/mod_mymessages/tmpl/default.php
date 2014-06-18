@@ -49,11 +49,11 @@ if ($this->getError()) {
 			foreach ($this->rows as $row)
 			{
 				$cls = 'box';
-				if ($row->actionid) 
+				if ($row->actionid)
 				{
 					$cls = 'actionitem';
 				}
-				if ($row->component == 'support' || $row->component == 'com_support') 
+				if ($row->component == 'support' || $row->component == 'com_support')
 				{
 					$fg = explode(' ', $row->subject);
 					$fh = array_pop($fg);

@@ -47,7 +47,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return file type
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function onImportAcceptedFiles()
@@ -57,9 +57,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onImport'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $file Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
@@ -72,7 +72,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$file_info = pathinfo($file['name']);
 
 		//only process more in this file if it matches endnote format
-		if ($active != $file_info['extension']) 
+		if ($active != $file_info['extension'])
 		{
 			return;
 		}
@@ -86,34 +86,34 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onImportProcessEndnote'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $raw_citations_text Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
 	protected function onImportProcessEndnote($raw_citations_text)
 	{
 		//make sure we have some citation data to process
-		if (empty($raw_citations_text)) 
+		if (empty($raw_citations_text))
 		{
 			return;
 		}
 
 		$raw_citation = array();
 		$raw_citations = array();
-		
+
 		foreach ($raw_citations_text as $k => $line)
 		{
 			// get this lines content
 			$line = trim($line);
-			
+
 			// check to see if we can get the next lines content
 			if(isset($raw_citations_text[$k + 1]))
 			{
 				$nextline = trim($raw_citations_text[$k + 1]);
 			}
-			
+
 			// if we have two line breaks in a row that means next citation
 			if ($line == '' && $nextline == '')
 			{
@@ -123,42 +123,42 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 			}
 			$raw_citation[] = $line;
 		}
-		
+
 		// append each citation as a single citation
 		$raw_citations[] = $raw_citation;
-		
+
 		// remove empty citations
 		$raw_citations = array_values(array_filter($raw_citations));
-		
-		foreach ($raw_citations as $k => $rc) 
+
+		foreach ($raw_citations as $k => $rc)
 		{
-			foreach ($rc as $r => $line) 
+			foreach ($rc as $r => $line)
 			{
 				$raw_citations[$k] .= $line . "\r\n";
 			}
 		}
-		
+
 		// var to hold citation data
 		$citations = array();
-		
+
 		// loop through each citations raw data
-		for ($i=0, $n=count($raw_citations); $i<$n; $i++) 
+		for ($i=0, $n=count($raw_citations); $i<$n; $i++)
 		{
 			//split citation data match % sign followed by char
 			//$citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
 			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], NULL, PREG_SPLIT_OFFSET_CAPTURE);
-			
+
 			//array to hold each citation
 			$citation = array();
-			
+
 			//build array of citation data
-			foreach ($citation_data as $cd) 
+			foreach ($citation_data as $cd)
 			{
-				if (!empty($cd[0])) 
+				if (!empty($cd[0]))
 				{
 					//$key = substr($raw_citations[$i], ($cd[1]-3), 2);
 					$key = substr($raw_citations[$i], ($cd[1]-2), 2);
-					if (array_key_exists($key, $citation)) 
+					if (array_key_exists($key, $citation))
 					{
 						switch($key)
 						{
@@ -166,8 +166,8 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 							case "%E": $citation[$key] .= "; " . htmlspecialchars(trim($cd[0])); break;
 							case "%Z": $citation[$key] .= "\n" . htmlspecialchars(trim($cd[0])); break;
 						}
-					} 
-					else 
+					}
+					else
 					{
 						if($key == "%K")
 						{
@@ -183,24 +183,24 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 					}
 				}
 			}
-			
+
 			$citations[] = $citation;
 		}
-		
+
 		//get the citation objects vars
 		$citation_vars = $this->getCitationVars();
-		
+
 		//get the endnote tags
 		$endnote_tags = $this->getEndnoteTags();
-		
+
 		//array to hold final citations
 		$final_citations = array();
 
 		//loop through the split up citations
-		foreach ($citations as $citation) 
+		foreach ($citations as $citation)
 		{
 			$cite = array();
-			foreach($endnote_tags as $tag => $keys) 
+			foreach($endnote_tags as $tag => $keys)
 			{
 				//loop through each key, we might have more than one key that we want as a var (ie. %K & %< to be tags)
 				foreach($keys as $key)
@@ -209,11 +209,11 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 					$key = trim($key);
 
 					//make sure the var exists in our citation
-					if(array_key_exists($key, $citation)) 
+					if(array_key_exists($key, $citation))
 					{
-						// trim the value 
+						// trim the value
 						$value = trim(trim($citation[$key],':;,'));
-						
+
 						//append the data if we have already set that variable
 						if(isset($cite[$tag]))
 						{
@@ -237,16 +237,16 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		}
 
 		//check for duplicates
-		for ($i = 0; $i < count($final_citations); $i++) 
+		for ($i = 0; $i < count($final_citations); $i++)
 		{
 			$duplicate = $this->checkDuplicateCitation($final_citations[$i]);
 
-			if ($duplicate) 
+			if ($duplicate)
 			{
 				$final_citations[$i]['duplicate'] = $duplicate;
 				$final['attention'][] = $final_citations[$i];
-			} 
-			else 
+			}
+			else
 			{
 				$final_citations[$i]['duplicate'] = 0;
 				$final['no_attention'][] = $final_citations[$i];
@@ -258,9 +258,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'getCitationVars'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	protected function getCitationVars()
@@ -269,9 +269,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$keys = array_keys(get_class_vars('CitationsCitation'));
 
 		//remove any private vars
-		foreach ($keys as $k => $v) 
+		foreach ($keys as $k => $v)
 		{
-			if (substr($v,0,1) == '_') 
+			if (substr($v,0,1) == '_')
 			{
 				unset($keys[$k]);
 			}
@@ -283,9 +283,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'getEndnoteTags'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	protected function getEndnoteTags()
@@ -325,9 +325,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$custom_tags = explode("\n", $custom_tags);
 
 		//loop through each custom tag in the parameter and add it to the tag list
-		foreach ($custom_tags as $ct) 
+		foreach ($custom_tags as $ct)
 		{
-			if ($ct) 
+			if ($ct)
 			{
 				$parts = explode('-', $ct);
 				if(in_array($parts[0], array_keys($tags)))
@@ -347,19 +347,19 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'checkDuplicateCitation'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $citation Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
 	protected function checkDuplicateCitation($citation)
 	{
 		//vars
-		$title = ''; 
-		$doi = ''; 
-		$isbn = ''; 
-		$match = 0; 
+		$title = '';
+		$doi = '';
+		$isbn = '';
+		$match = 0;
 		$title_does_match = false;
 
 		//default percentage to match title
@@ -387,7 +387,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		$result = $db->loadObjectList();
 
 		//loop through all current citations
-		foreach ($result as $r) 
+		foreach ($result as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;
@@ -396,27 +396,27 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 			//match titles based on percect param
 			similar_text($title, $citation['title'], $similar);
-			if ($similar >= $title_match) 
+			if ($similar >= $title_match)
 			{
 				$title_does_match = true;
 			}
 
 			//direct matches on doi
-			if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match)) 
+			if (isset($citation['doi']) && ($doi == $citation['doi']) && ($doi != '' && $title_does_match))
 			{
 				$match = $id;
 				break;
 			}
 
 			//direct matches on isbn
-			if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match)) 
+			if (isset($citation['isbn']) && ($isbn == $citation['isbn']) && ($isbn != '' && $title_does_match))
 			{
 				$match = $id;
 				break;
 			}
 
 			//
-			if ($title_does_match) 
+			if ($title_does_match)
 			{
 				$match = $id;
 				break;
@@ -428,9 +428,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for '_cleanText'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $string Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */

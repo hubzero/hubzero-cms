@@ -40,9 +40,9 @@ $MY_SELF   = $this->MY_SELF;
 
 <div role="navigation" class="sub-navigation">
 	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li> 
+		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache" class="active">Directory</a></li>
 		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
 	</ul>
@@ -70,12 +70,12 @@ $MY_SELF   = $this->MY_SELF;
 			<option value="A"<?php echo $this->MYREQUEST['SORT1']=='A' ? ' selected="selected"' : ''; ?>>Avg. Size</option>
 			<option value="C"<?php echo $this->MYREQUEST['SORT1']=='C' ? ' selected="selected"' : ''; ?>>Avg. Hits</option>
 		</select>
-		
+
 		<select name="SORT2">
 			<option value="D"<?php echo $this->MYREQUEST['SORT2']=='D' ? ' selected="selected"' : ''; ?>>DESC</option>
 			<option value="A"<?php echo $this->MYREQUEST['SORT2']=='A' ? ' selected="selected"' : ''; ?>>ASC</option>
 		</select>
-		
+
 		<select name="COUNT" onChange="form.submit()">
 			<option value="10" <?php echo $this->MYREQUEST['COUNT']=='10' ? ' selected="selected"' : ''; ?>>Top 10</option>
 			<option value="20" <?php echo $this->MYREQUEST['COUNT']=='20' ? ' selected="selected"' : ''; ?>>Top 20</option>
@@ -88,7 +88,7 @@ $MY_SELF   = $this->MY_SELF;
 		</select>
 		</div>
 		<div class="col width-40 fltrt">
-		<label for="AGGR">Group By Dir Level:</label> 
+		<label for="AGGR">Group By Dir Level:</label>
 		<select name="AGGR" id="AGGR">
 			<option value="" selected="selected">None</option>
 		<?php for ($i = 1; $i < 10; $i++) { ?>
@@ -99,7 +99,7 @@ $MY_SELF   = $this->MY_SELF;
 		</div>
 	</fieldset>
 	<div class="clr"></div>
-	
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -112,7 +112,7 @@ $MY_SELF   = $this->MY_SELF;
 			</tr>
 		</thead>
 		<tbody>
-<?php 
+<?php
 	// builds list with alpha numeric sortable keys
 	$tmp = $list = array();
 	foreach($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $entry)
@@ -145,7 +145,7 @@ $MY_SELF   = $this->MY_SELF;
 		$list[$kn . $k] = array($k, $v['ents'], $v['hits'], $v['size']);
 	}
 
-	if ($list) 
+	if ($list)
 	{
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
@@ -155,7 +155,7 @@ $MY_SELF   = $this->MY_SELF;
 		}
 		// output list
 		$i = 0;
-		foreach ($list as $entry) 
+		foreach ($list as $entry)
 		{
 			echo
 				'<tr class="row' . $i%2 . '">' .
@@ -167,7 +167,7 @@ $MY_SELF   = $this->MY_SELF;
 				'<td class="td-n center">' . round($entry[3] / $entry[1]) . '</td>' .
 				'</tr>';
 
-			if (++$i == $this->MYREQUEST['COUNT']) 
+			if (++$i == $this->MYREQUEST['COUNT'])
 			{
 				break;
 			}

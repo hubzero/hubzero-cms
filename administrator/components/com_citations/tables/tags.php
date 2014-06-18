@@ -41,7 +41,7 @@ class CitationTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Configuration options
 	 * @return     void

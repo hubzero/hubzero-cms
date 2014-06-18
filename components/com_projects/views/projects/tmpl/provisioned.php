@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $route = 'index.php?option=com_publications&task=submit';
 $url = JRoute::_($route . '&pid=' . $this->pub->id);
-	
+
 ?>
 <div id="project-wrap">
 	<section class="main section">
@@ -38,9 +38,9 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 		<h3 class="prov-header"><a href="<?php echo $route; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $url; ?>"> "<?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?>"</a> &raquo; <?php echo JText::_('COM_PROJECTS_PROVISIONED_PROJECT'); ?></h3>
 
 		<div class="status-msg">
-		<?php 
+		<?php
 			// Display error or success message
-			if ($this->getError()) { 
+			if ($this->getError()) {
 				echo ('<p class="witherror">' . $this->getError().'</p>');
 			}
 			else if($this->msg) {
@@ -54,15 +54,15 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 					<h3><?php echo JText::_('COM_PROJECTS_ACTIVATE_WHAT_YOU_GET'); ?></h3>
 					<ul id="activate-features">
 						<li id="feature-files">
-							<span class="ima">&nbsp;</span> 
+							<span class="ima">&nbsp;</span>
 							<span class="desc"><?php echo JText::_('COM_PROJECTS_ACTIVATE_GET_REPOSITORY'); ?></span>
 						</li>
 						<li id="feature-todo">
-							<span class="ima">&nbsp;</span> 
+							<span class="ima">&nbsp;</span>
 							<span class="desc"><?php echo JText::_('COM_PROJECTS_ACTIVATE_GET_TODO'); ?></span>
 						</li>
 						<li id="feature-wiki">
-							<span class="ima">&nbsp;</span> 
+							<span class="ima">&nbsp;</span>
 							<span class="desc"><?php echo JText::_('COM_PROJECTS_ACTIVATE_GET_WIKI'); ?></span>
 						</li>
 						<li id="andmore">
@@ -73,7 +73,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 				<div class="col span6 omega">
 					<div id="activate-body">
 						<h3><?php echo JText::_('COM_PROJECTS_ACTIVATE_YOUR_NEW_PROJECT'); ?></h3>
-						<form action="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $this->project->alias . '&task=activate'); ?>" method="post" id="activate-form" enctype="multipart/form-data">	
+						<form action="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $this->project->alias . '&task=activate'); ?>" method="post" id="activate-form" enctype="multipart/form-data">
 							<fieldset>
 								<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 								<input type="hidden" name="task" value="activate" />
@@ -83,7 +83,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 							</fieldset>
 							<div id="activate-summary">
 								<p>
-									<span class="activate-label">Publication:</span> 
+									<span class="activate-label">Publication:</span>
 									<span class="prominent"><?php echo $this->pub->title; ?></span>
 								</p>
 								<p>
@@ -109,7 +109,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 									<input type="submit" id="b-continue" class="btn btn-primary active" value="<?php echo JText::_('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT'); ?>" />
 									<span class="btn btncancel"><a href="<?php echo $url; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 								</p>
-							</fieldset>	
+							</fieldset>
 						</form>
 					</div>
 				</div>

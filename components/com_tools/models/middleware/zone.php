@@ -41,14 +41,14 @@ class MiddlewareModelZone extends MiddlewareModelBase
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'MwZones';
 
 	/**
 	 * \Hubzero\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_cache = array(
@@ -67,12 +67,12 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}
@@ -82,7 +82,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 
 	/**
 	 * Get a list of locations
-	 * 
+	 *
 	 * @param      string $rtrn    Data type to return [count, list]
 	 * @param      array  $filters Filters to apply to query
 	 * @return     mixed Returns an integer or array depending upon format chosen
@@ -177,7 +177,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}
@@ -200,7 +200,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			{
 				// Remove picture
 				jimport('joomla.filesystem.file');
-				if (!JFile::delete($this->logo('path') . DS . $file)) 
+				if (!JFile::delete($this->logo('path') . DS . $file))
 				{
 					$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				}

@@ -56,7 +56,7 @@ if($role_id) {
 	</ul>
 	<br class="clear" />
 	<?php endif; ?>
-	
+
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
 		<fieldset class="hub-mail">
 			<div class="cont" style="background:#fff url('<?php echo $this->params->get('stamp_logo'); ?>') no-repeat 99% 4%;">
@@ -65,7 +65,7 @@ if($role_id) {
 					<select name="users[]" id="msg-recipient">
 						<optgroup label="Group Status">
 							<?php foreach($group_statuses as $val => $name) { ?>
-								<?php $sel = ($val == $this->users[0]) ? "selected" : ""; ?> 
+								<?php $sel = ($val == $this->users[0]) ? "selected" : ""; ?>
 								<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
 							<?php } ?>
 						</optgroup>
@@ -81,7 +81,7 @@ if($role_id) {
 							<optgroup label="Group Members">
 								<?php foreach($this->members as $m) { ?>
 									<?php $u = JUser::getInstance($m); ?>
-									<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?> 
+									<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?>
 									<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
 								<?php } ?>
 							</optgroup>

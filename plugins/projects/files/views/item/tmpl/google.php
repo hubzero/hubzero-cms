@@ -43,7 +43,7 @@ if (basename($item->local_path) != $item->remote_title)
 {
 	$append = ProjectsHtml::getAppendedNumber(basename($item->local_path));
 	if ($append > 0)
-	{		
+	{
 		$name = ProjectsHtml::fixFileName($item->remote_title, ' (' . $append . ')', $ext );
 	}
 }
@@ -65,20 +65,20 @@ if (in_array($item->remote_format, $texFormats)  || in_array($item->original_for
 
 $author = $item->remote_author ? utf8_decode($item->remote_author) : '';
 $me = ($author == utf8_decode($this->oparams->get('google_name')) || $author == $this->juser->get('name') ) ? 1 : 0;
-	
+
 ?>
 <tr class="mini faded mline google-resource">
 	<td><input type="checkbox" value="<?php echo urlencode(basename($item->local_path)); ?>" name="asset[]" class="checkasset js remote service-google" /></td>
-	<td class="sharing"><img src="<?php echo $img; ?>" alt="<?php echo urlencode($item->remote_title); ?>" /> 
-		<a href="<?php echo $url; ?>" 
+	<td class="sharing"><img src="<?php echo $img; ?>" alt="<?php echo urlencode($item->remote_title); ?>" />
+		<a href="<?php echo $url; ?>"
 		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo ProjectsHtml::shortenFileName($name, 50); ?></a>
 	</td>
 	<td class="shrinked"></td>
 	<td class="shrinked"></td>
 	<td class="shrinked"><a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
 	<td class="shrinked pale"><?php echo $me ? JText::_('COM_PROJECTS_FILES_ME') : $author; ?></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir) 
-	. a . 'asset='.urlencode(basename($item->local_path)); ?>" 
+	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir)
+	. a . 'asset='.urlencode(basename($item->local_path)); ?>"
 	 title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
 	<?php if ($this->publishing) { ?>
 	<td class="shrinked"></td>

@@ -43,7 +43,7 @@ class ForumModelAdminSection extends JModelAdmin
 		$value = JComponentHelper::getParams($this->option);
 		$this->setState('params', $value);
 	}
-	
+
 	/**
 	 * Method to get the record form.
 	 *
@@ -56,14 +56,14 @@ class ForumModelAdminSection extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_forum.section', 'section', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
 
 		return $form;
 	}
-	
+
 	/**
 		 * Returns a reference to the a Table object, always creating it.
 		 *
@@ -73,11 +73,11 @@ class ForumModelAdminSection extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array()) 
+	public function getTable($type = 'Section', $prefix = 'ForumTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -88,7 +88,7 @@ class ForumModelAdminSection extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_forum.edit.section.data', array());
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = $this->getItem();
 		}

@@ -45,25 +45,25 @@ $database = JFactory::getDBO();
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
-$query = "SELECT COUNT(*) 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
-				AND wp.access != 1 
+$query = "SELECT COUNT(*)
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				AND wp.scope = '{$this->page->scope}'
+				AND wp.access != 1
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
-$query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created  
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				AND wp.scope = '{$this->page->scope}' 
-				AND wp.access != 1 
+$query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
+			FROM #__wiki_version AS wv
+			INNER JOIN #__wiki_page AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				AND wp.scope = '{$this->page->scope}'
+				AND wp.access != 1
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY length DESC";
 if ($limit && $limit != 'all')
@@ -76,8 +76,8 @@ $rows = $database->loadObjectList();
 
 jimport('joomla.html.pagination');
 $pageNav = new JPagination(
-	$total, 
-	$start, 
+	$total,
+	$start,
 	$limit
 );
 ?>
@@ -105,7 +105,7 @@ $pageNav = new JPagination(
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	$dateFormat = '%d %b %Y';
 	$tz = 0;

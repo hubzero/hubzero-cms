@@ -37,7 +37,7 @@ namespace Hubzero\Utility;
  *
  * Largely inspired by CakePHP (http://cakephp.org) and Zend (http://framework.zend.com)
  */
-class Sanitize 
+class Sanitize
 {
 	/**
 	 * Removes any non-alphanumeric characters.
@@ -46,24 +46,24 @@ class Sanitize
 	 * @param  array  $allowed An array of additional characters that are not to be removed.
 	 * @return string Sanitized string
 	 */
-	public static function paranoid($string, $allowed = array()) 
+	public static function paranoid($string, $allowed = array())
 	{
 		$allow = null;
-		if (!empty($allowed)) 
+		if (!empty($allowed))
 		{
-			foreach ($allowed as $value) 
+			foreach ($allowed as $value)
 			{
 				$allow .= "\\$value";
 			}
 		}
 
-		if (!is_array($string)) 
+		if (!is_array($string))
 		{
 			return preg_replace("/[^{$allow}a-zA-Z0-9]/", '', $string);
 		}
 
 		$cleaned = array();
-		foreach ($string as $key => $clean) 
+		foreach ($string as $key => $clean)
 		{
 			$cleaned[$key] = preg_replace("/[^{$allow}a-zA-Z0-9]/", '', $clean);
 		}
@@ -77,7 +77,7 @@ class Sanitize
 	 * @param  string $str String to sanitize
 	 * @return string whitespace sanitized string
 	 */
-	public static function stripWhitespace($str) 
+	public static function stripWhitespace($str)
 	{
 		return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str));
 	}
@@ -88,7 +88,7 @@ class Sanitize
 	 * @param  string $str String to sanitize
 	 * @return string String with images stripped.
 	 */
-	public static function stripImages($str) 
+	public static function stripImages($str)
 	{
 		$preg = array(
 			'/(<a[^>]*>)(<img[^>]+alt=")([^"]*)("[^>]*>)(<\/a>)/i' => '$1$3$5<br />',
@@ -105,7 +105,7 @@ class Sanitize
 	 * @param  string $text Text
 	 * @return string The text without links
 	 */
-	public static function stripLinks($text) 
+	public static function stripLinks($text)
 	{
 		return preg_replace('|<a\s+[^>]+>|im', '', preg_replace('|<\/a>|im', '', $text));
 	}
@@ -116,7 +116,7 @@ class Sanitize
 	 * @param  string $str String to sanitize
 	 * @return string String with <link>, <img>, <script>, <style> elements and html comments removed.
 	 */
-	public static function stripScripts($str) 
+	public static function stripScripts($str)
 	{
 		$regex =
 			'/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|' .
@@ -134,7 +134,7 @@ class Sanitize
 	 * @param string $str String to sanitize
 	 * @return string sanitized string
 	 */
-	public static function stripAll($str) 
+	public static function stripAll($str)
 	{
 		return self::stripScripts(
 			self::stripImages(
@@ -154,11 +154,11 @@ class Sanitize
 	 * @param  string $str,... String to sanitize
 	 * @return string sanitized String
 	 */
-	public static function stripTags($str) 
+	public static function stripTags($str)
 	{
 		$params = func_get_args();
 
-		for ($i = 1, $count = count($params); $i < $count; $i++) 
+		for ($i = 1, $count = count($params); $i < $count; $i++)
 		{
 			$str = preg_replace('/<' . $params[$i] . '\b[^>]*>/i', '', $str);
 			$str = preg_replace('/<\/' . $params[$i] . '[^>]*>/i', '', $str);
@@ -168,18 +168,18 @@ class Sanitize
 
 	/**
 	 * Clean out any cross site scripting attempts (XSS)
-	 * 
+	 *
 	 * @param  string $string Data to sanitize
 	 * @return string Sanitized data
 	 */
-	public static function clean($string) 
+	public static function clean($string)
 	{
-		if (empty($string)) 
+		if (empty($string))
 		{
 			return $string;
 		}
 
-		if (get_magic_quotes_gpc()) 
+		if (get_magic_quotes_gpc())
 		{
 			$string = stripslashes($string);
 		}
@@ -189,8 +189,8 @@ class Sanitize
 		$string = self::stripScripts($string);
 
 		$string = str_replace(
-			array('&amp;',     '&lt;',     '&gt;'), 
-			array('&amp;amp;', '&amp;lt;', '&amp;gt;'), 
+			array('&amp;',     '&lt;',     '&gt;'),
+			array('&amp;amp;', '&amp;lt;', '&amp;gt;'),
 			$string
 		);
 		// Fix &entitiy\n;
@@ -206,7 +206,7 @@ class Sanitize
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
 		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
 
-		// <span style="width: expression(alert('Ping!'));"></span> 
+		// <span style="width: expression(alert('Ping!'));"></span>
 		// only works in ie...
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
 		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
@@ -216,9 +216,9 @@ class Sanitize
 		$string = preg_replace('#</*\w+:\w[^>]*>#i', '', $string);
 
 		// Remove really unwanted tags
-		$string = self::stripTags($string, 
-			'applet', 'meta',  'xml',     'blink',  'link',  'style', 
-			'script', 'embed', 'object',  'iframe', 'frame', 'frameset', 
+		$string = self::stripTags($string,
+			'applet', 'meta',  'xml',     'blink',  'link',  'style',
+			'script', 'embed', 'object',  'iframe', 'frame', 'frameset',
 			'ilayer', 'layer', 'bgsound', 'title',  'base'
 		);
 
@@ -227,7 +227,7 @@ class Sanitize
 
 	/**
 	 * Replace discouraged characters introduced by Microsoft Word
-	 * 
+	 *
 	 * @param      string  $text       Text to clean
 	 * @param      boolean $quotesOnly Only clean quotes (single and double)
 	 * @return     string
@@ -235,40 +235,40 @@ class Sanitize
 	public function cleanMsChar($text, $quotesOnly=false)
 	{
 		$y = array(
-			"\x7f"=>'', 
-			"\x80"=>'&#8364;', 
-			"\x81"=>'', 
-			"\x83"=>'&#402;', 
-			"\x85"=>'&#8230;', 
-			"\x86"=>'&#8224;', 
-			"\x87"=>'&#8225;', 
-			"\x88"=>'&#710;', 
-			"\x89"=>'&#8240;', 
-			"\x8a"=>'&#352;', 
-			"\x8b"=>'&#8249;', 
-			"\x8c"=>'&#338;', 
-			"\x8d"=>'', 
-			"\x8e"=>'&#381;', 
-			"\x8f"=>'', 
-			"\x90"=>'', 
-			"\x95"=>'&#8226;', 
-			"\x96"=>'&#8211;', 
-			"\x97"=>'&#8212;', 
-			"\x98"=>'&#732;', 
-			"\x99"=>'&#8482;', 
-			"\x9a"=>'&#353;', 
-			"\x9b"=>'&#8250;', 
-			"\x9c"=>'&#339;', 
-			"\x9d"=>'', 
-			"\x9e"=>'&#382;', 
+			"\x7f"=>'',
+			"\x80"=>'&#8364;',
+			"\x81"=>'',
+			"\x83"=>'&#402;',
+			"\x85"=>'&#8230;',
+			"\x86"=>'&#8224;',
+			"\x87"=>'&#8225;',
+			"\x88"=>'&#710;',
+			"\x89"=>'&#8240;',
+			"\x8a"=>'&#352;',
+			"\x8b"=>'&#8249;',
+			"\x8c"=>'&#338;',
+			"\x8d"=>'',
+			"\x8e"=>'&#381;',
+			"\x8f"=>'',
+			"\x90"=>'',
+			"\x95"=>'&#8226;',
+			"\x96"=>'&#8211;',
+			"\x97"=>'&#8212;',
+			"\x98"=>'&#732;',
+			"\x99"=>'&#8482;',
+			"\x9a"=>'&#353;',
+			"\x9b"=>'&#8250;',
+			"\x9c"=>'&#339;',
+			"\x9d"=>'',
+			"\x9e"=>'&#382;',
 			"\x9f"=>'&#376;',
 		);
 		$x = array(
-			"\x82"=>'\'', 
-			"\x84"=>'"', 
-			"\x91"=>'\'', 
-			"\x92"=>'\'', 
-			"\x93"=>'"', 
+			"\x82"=>'\'',
+			"\x84"=>'"',
+			"\x91"=>'\'',
+			"\x92"=>'\'',
+			"\x93"=>'"',
 			"\x94"=>'"'
 		);
 		if (!$quotesOnly)
@@ -283,7 +283,7 @@ class Sanitize
 
 	/**
 	 * Run HTML through a purifier
-	 * 
+	 *
 	 * @param      string  $text    Text to clean
 	 * @param      array   $options Array of key => value pairs
 	 * @return     string
@@ -300,10 +300,10 @@ class Sanitize
 		$config->set('Attr.EnableID', true);
 
 		$path = JPATH_ROOT . DS . 'cache' . DS . 'htmlpurifier';
-		if (!is_dir($path)) 
+		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!\JFolder::create($path)) 
+			if (!\JFolder::create($path))
 			{
 				$path = '';
 			}

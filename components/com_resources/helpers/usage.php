@@ -38,77 +38,77 @@ class ResourcesUsage
 {
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	var $_db      = NULL;
 
 	/**
 	 * Resource ID
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_resid   = NULL;
 
 	/**
 	 * Resource type
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $_type    = NULL;
 
 	/**
 	 * Resource rating
-	 * 
+	 *
 	 * @var string
 	 */
 	var $rating   = NULL;
 
 	/**
 	 * Number of users
-	 * 
+	 *
 	 * @var string
 	 */
 	var $users    = 'unavailable';
 
 	/**
 	 * Description for 'datetime'
-	 * 
+	 *
 	 * @var string
 	 */
 	var $datetime = NULL;
 
 	/**
 	 * Number of citations
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $cites    = NULL;
 
 	/**
 	 * Last citation date
-	 * 
+	 *
 	 * @var string
 	 */
 	var $lastcite = NULL;
 
 	/**
 	 * Date format
-	 * 
+	 *
 	 * @var string
 	 */
 	var $dateFormat = NULL;
 
 	/**
 	 * Time zone flag
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tz = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      JDatabase
 	 * @param      integer $resid    Resource ID
 	 * @param      integer $type     Resource type
@@ -137,7 +137,7 @@ class ResourcesUsage
 
 	/**
 	 * Fetch data for a particular time range
-	 * 
+	 *
 	 * @param      string $disp Data time range ti display
 	 * @return     array
 	 */
@@ -179,7 +179,7 @@ class ResourcesUsage
 
 	/**
 	 * Display formatted results for a given time range
-	 * 
+	 *
 	 * @param      string $disp Time range [curr, last, year, all]
 	 * @return     string
 	 */
@@ -190,7 +190,7 @@ class ResourcesUsage
 
 	/**
 	 * Display a table for ancillary data
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function display_substats()
@@ -200,7 +200,7 @@ class ResourcesUsage
 		/*$html .= ' <tfoot>' . "\n";
 		$html .= '  <tr>' . "\n";
 		$html .= '   <td colspan="2">Google/IEEE';
-		if ($this->lastcite) 
+		if ($this->lastcite)
 		{
 			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat, $this->tz);
 		}
@@ -223,7 +223,7 @@ class ResourcesUsage
 
 	/**
 	 * Push database results to $this for internal use
-	 * 
+	 *
 	 * @param      array &$result Database records
 	 * @return     boolean False if errors, true on success
 	 */
@@ -234,27 +234,27 @@ class ResourcesUsage
 
 	/**
 	 * Format a value
-	 * 
+	 *
 	 * @param      mixed $val Parameter description (if any) ...
 	 * @return     mixed
 	 */
 	public function valfmt($val)
 	{
-		if ($val != 'unavailable') 
+		if ($val != 'unavailable')
 		{
-			if ($val <= 60) 
+			if ($val <= 60)
 			{
 				$val = ceil($val) . ' secs';
-			} 
-			else if ($val > 60 && $val <= 3600) 
+			}
+			else if ($val > 60 && $val <= 3600)
 			{
 				$val = ceil($val/60) . ' mins';
-			} 
-			else if ($val > 3600 && $val <= 86400) 
+			}
+			else if ($val > 3600 && $val <= 86400)
 			{
 				$val = ceil($val/3600) . ' hours';
-			} 
-			else 
+			}
+			else
 			{
 				$val = ceil($val/84600) . ' days';
 			}
@@ -264,9 +264,9 @@ class ResourcesUsage
 
 	/**
 	 * Get the classname for a rating value
-	 * 
+	 *
 	 * @param      integer $rating Rating (out of 5 total)
-	 * @return     string 
+	 * @return     string
 	 */
 	public function getRatingClass($rating=0)
 	{
@@ -302,56 +302,56 @@ class ToolStats extends ResourcesUsage
 {
 	/**
 	 * Number of jobs
-	 * 
+	 *
 	 * @var string
 	 */
 	var $jobs     = 'unavailable';
 
 	/**
 	 * Average wall time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $avg_wall = 'unavailable';
 
 	/**
 	 * Total wall time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tot_wall = 'unavailable';
 
 	/**
 	 * Average CPU time
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $avg_cpu  = 'unavailable';
 
 	/**
 	 * Total CPU time
-	 * 
+	 *
 	 * @var mixed
 	 */
 	var $tot_cpu  = 'unavailable';
 
 	/**
 	 * Average execution time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $avg_exec = 'unavailable';
 
 	/**
 	 * Total execution time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tot_exec = 'unavailable';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      JDatabase
 	 * @param      integer $resid    Resource ID
 	 * @param      integer $type     Resource type
@@ -367,7 +367,7 @@ class ToolStats extends ResourcesUsage
 
 	/**
 	 * Display formatted results for a given time range
-	 * 
+	 *
 	 * @param      string $disp Time range [curr, last, year, all]
 	 * @return     string
 	 */
@@ -376,14 +376,14 @@ class ToolStats extends ResourcesUsage
 		list($caption, $period) = $this->fetch($disp);
 
 		$html = '';
-		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable') 
+		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable')
 		{
 			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
 			$html .= ' <caption>' . JText::_('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime) 
+			if ($this->datetime)
 			{
 				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
 			}
@@ -391,21 +391,21 @@ class ToolStats extends ResourcesUsage
 			$html .= '  </tr>' . "\n";
 			$html .= ' </tfoot>' . "\n";
 			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable') 
+			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			if ($this->jobs != 'unavailable') 
+			if ($this->jobs != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.JText::_('Jobs').':</th>' . "\n";
 				$html .= '   <td>' . $this->jobs . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			if ($this->avg_exec != 'unavailable') 
+			if ($this->avg_exec != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> <abbr title="execution">exec.</abbr> time:</th>' . "\n";
@@ -422,13 +422,13 @@ class ToolStats extends ResourcesUsage
 
 	/**
 	 * Push database results to $this for internal use
-	 * 
+	 *
 	 * @param      array &$result Database records
 	 * @return     boolean False if errors, true on success
 	 */
 	public function process($result)
 	{
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $row)
 			{
@@ -441,21 +441,21 @@ class ToolStats extends ResourcesUsage
 				$this->datetime = $row->processed_on;
 
 				// Changed by Swaroop on 06/25/2007: Avg. exec. time = Avg. wall time
-				if ($this->avg_cpu == 0) 
+				if ($this->avg_cpu == 0)
 				{
 					$this->avg_exec = $this->avg_wall;
-				} 
-				else 
+				}
+				else
 				{
 			    	$this->avg_exec = $this->avg_cpu;
 				}
 				# $this->avg_exec = $this->avg_wall;
 
-				if ($this->tot_cpu == 0) 
+				if ($this->tot_cpu == 0)
 				{
 					$this->tot_exec = $this->tot_wall;
-				} 
-				else 
+				}
+				else
 				{
 					$this->tot_exec = $this->tot_cpu;
 				}
@@ -473,28 +473,28 @@ class AndmoreStats extends ResourcesUsage
 {
 	/**
 	 * Number of views
-	 * 
+	 *
 	 * @var string
 	 */
 	var $views    = 'unavailable';
 
 	/**
 	 * Average view time
-	 * 
+	 *
 	 * @var string
 	 */
 	var $avg_view = 'unavailable';
 
 	/**
 	 * Total views
-	 * 
+	 *
 	 * @var string
 	 */
 	var $tot_view = 'unavailable';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object  &$db      JDatabase
 	 * @param      integer $resid    Resource ID
 	 * @param      integer $type     Resource type
@@ -510,7 +510,7 @@ class AndmoreStats extends ResourcesUsage
 
 	/**
 	 * Display formatted results for a given time range
-	 * 
+	 *
 	 * @param      string $disp Time range [curr, last, year, all]
 	 * @return     string
 	 */
@@ -518,26 +518,26 @@ class AndmoreStats extends ResourcesUsage
 	{
 		list($caption, $period) = $this->fetch($disp);
 
-		if ($this->_type == 1) 
+		if ($this->_type == 1)
 		{
 			$vlabel  = JText::_('Views');
 			$avlabel = JText::_('Avg. view time');
-		} 
-		else 
+		}
+		else
 		{
 			$vlabel = JText::_('Downloads');
 			$avlabel = JText::_('Avg. downloads');
 		}
 
 		$html = '';
-		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable') 
+		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
 		{
 			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
 			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime) 
+			if ($this->datetime)
 			{
 				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
 			}
@@ -545,21 +545,21 @@ class AndmoreStats extends ResourcesUsage
 			$html .= '  </tr>' . "\n";
 			$html .= ' </tfoot>' . "\n";
 			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable') 
+			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			/*if ($this->views != 'unavailable') 
+			/*if ($this->views != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
 				$html .= '   <td>'.$this->views.'</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
-			if ($this->avg_view != 'unavailable') 
+			if ($this->avg_view != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
 				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
@@ -576,13 +576,13 @@ class AndmoreStats extends ResourcesUsage
 
 	/**
 	 * Push database results to $this for internal use
-	 * 
+	 *
 	 * @param      array &$result Database results
 	 * @return     void
 	 */
 	public function process($result)
 	{
-		if ($result) 
+		if ($result)
 		{
 			foreach ($result as $row)
 			{
@@ -590,20 +590,20 @@ class AndmoreStats extends ResourcesUsage
 				$this->views    = $row->jobs;
 				$this->datetime = $row->processed_on;
 
-				if ($row->avg_cpu == 0) 
+				if ($row->avg_cpu == 0)
 				{
 					$this->avg_view = $row->avg_wall;
-				} 
-				else 
+				}
+				else
 				{
 					$this->avg_view = $row->avg_cpu;
 				}
 
-				if ($row->tot_cpu == 0) 
+				if ($row->tot_cpu == 0)
 				{
 					$this->tot_view = $row->tot_wall;
-				} 
-				else 
+				}
+				else
 				{
 					$this->tot_view = $row->tot_cpu;
 				}

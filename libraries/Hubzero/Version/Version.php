@@ -96,10 +96,10 @@ final class Version
 	 */
 	public static function getLatest($service = self::VERSION_SERVICE_HUBZERO)
 	{
-		if (null === static::$latestVersion) 
+		if (null === static::$latestVersion)
 		{
 			static::$latestVersion = 'not available';
-			if ($service == self::VERSION_SERVICE_GITHUB) 
+			if ($service == self::VERSION_SERVICE_GITHUB)
 			{
 				$url = 'https://api.github.com/repos/hubzero/hzcms1/git/refs/tags/release-';
 
@@ -114,11 +114,11 @@ final class Version
 				static::$latestVersion = array_reduce($tags, function ($a, $b) {
 					return version_compare($a, $b, '>') ? $a : $b;
 				});
-			} 
-			elseif ($service == self::VERSION_SERVICE_HUBZERO) 
+			}
+			elseif ($service == self::VERSION_SERVICE_HUBZERO)
 			{
 				$handle = fopen('http://hubzero.org/api/hz-version?v=1', 'r');
-				if (false !== $handle) 
+				if (false !== $handle)
 				{
 					static::$latestVersion = stream_get_contents($handle);
 					fclose($handle);

@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="section-inner">
 
 	<?php
-	
+
 		if (!empty($this->products))
 		{
 			echo '<ul>';
@@ -53,15 +53,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 					echo '">';
 					echo $product->pName;
 					echo '</a>';
-				echo '</li>';	
+				echo '</li>';
 			}
 			echo '</ul>';
 		}
 		else {
-			echo JText::_('COM_STOREFRONT_NO_PRODUCTS');	
+			echo JText::_('COM_STOREFRONT_NO_PRODUCTS');
 		}
-	
+
 	?>
-	
+
 	</div>
 </section>

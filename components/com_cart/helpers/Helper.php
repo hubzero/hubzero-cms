@@ -33,14 +33,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Cart helper functions
- * 
+ *
  */
 class Cart_Helper
 {
 
 	/**
 	 * Dump system message (debugging function)
-	 * 
+	 *
 	 * @param      mixed var: whatever needs to be ptinted
 	 * @return     void
 	 */
@@ -50,35 +50,35 @@ class Cart_Helper
 		print_r($var);
 		echo '<br>----<br>';
 	}
-	
-	function getUsStates() 
+
+	function getUsStates()
 	{
-		$states = array('AL' => "Alabama",  
-						'AK' => "Alaska",  
-						'AZ' => "Arizona",  
-						'AR' => "Arkansas",  
-						'CA' => "California",  
-						'CO' => "Colorado",  
-						'CT' => "Connecticut",  
-						'DE' => "Delaware",  
-						'DC' => "District Of Columbia",  
-						'FL' => "Florida",  
-						'GA' => "Georgia",  
-						'HI' => "Hawaii",  
-						'ID' => "Idaho",  
-						'IL' => "Illinois",  
-						'IN' => "Indiana",  
-						'IA' => "Iowa",  
-						'KS' => "Kansas",  
-						'KY' => "Kentucky",  
-						'LA' => "Louisiana",  
-						'ME' => "Maine",  
-						'MD' => "Maryland",  
-						'MA' => "Massachusetts",  
-						'MI' => "Michigan",  
-						'MN' => "Minnesota",  
-						'MS' => "Mississippi",  
-						'MO' => "Missouri",  
+		$states = array('AL' => "Alabama",
+						'AK' => "Alaska",
+						'AZ' => "Arizona",
+						'AR' => "Arkansas",
+						'CA' => "California",
+						'CO' => "Colorado",
+						'CT' => "Connecticut",
+						'DE' => "Delaware",
+						'DC' => "District Of Columbia",
+						'FL' => "Florida",
+						'GA' => "Georgia",
+						'HI' => "Hawaii",
+						'ID' => "Idaho",
+						'IL' => "Illinois",
+						'IN' => "Indiana",
+						'IA' => "Iowa",
+						'KS' => "Kansas",
+						'KY' => "Kentucky",
+						'LA' => "Louisiana",
+						'ME' => "Maine",
+						'MD' => "Maryland",
+						'MA' => "Massachusetts",
+						'MI' => "Michigan",
+						'MN' => "Minnesota",
+						'MS' => "Mississippi",
+						'MO' => "Missouri",
 						'MT' => "Montana",
 						'NE' => "Nebraska",
 						'NV' => "Nevada",
@@ -88,65 +88,65 @@ class Cart_Helper
 						'NY' => "New York",
 						'NC' => "North Carolina",
 						'ND' => "North Dakota",
-						'OH' => "Ohio",  
-						'OK' => "Oklahoma",  
-						'OR' => "Oregon",  
-						'PA' => "Pennsylvania",  
-						'RI' => "Rhode Island",  
-						'SC' => "South Carolina",  
+						'OH' => "Ohio",
+						'OK' => "Oklahoma",
+						'OR' => "Oregon",
+						'PA' => "Pennsylvania",
+						'RI' => "Rhode Island",
+						'SC' => "South Carolina",
 						'SD' => "South Dakota",
-						'TN' => "Tennessee",  
-						'TX' => "Texas",  
-						'UT' => "Utah",  
-						'VT' => "Vermont",  
-						'VA' => "Virginia",  
-						'WA' => "Washington",  
-						'WV' => "West Virginia",  
-						'WI' => "Wisconsin",  
+						'TN' => "Tennessee",
+						'TX' => "Texas",
+						'UT' => "Utah",
+						'VT' => "Vermont",
+						'VA' => "Virginia",
+						'WA' => "Washington",
+						'WV' => "West Virginia",
+						'WI' => "Wisconsin",
 						'WY' => "Wyoming");
-				
-		return $states;	
+
+		return $states;
 	}
 
 	/**
 	 * Short description for 'is_positiveint'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      integer $x Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function is_positiveint($x)
 	{
-		if (is_numeric($x) && intval($x) == $x && $x >= 0) 
+		if (is_numeric($x) && intval($x) == $x && $x >= 0)
 		{
 			return(true);
-		} 
+		}
 		return(false);
 	}
 
 	/**
 	 * Short description for 'validemail'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $email Parameter description (if any) ...
 	 * @return     boolean Return description (if any) ...
 	 */
 	public function validemail($email)
 	{
-		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email)) 
+		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/", $email))
 		{
 			return true;
-		} 
-		return false;		
+		}
+		return false;
 	}
 
 	/**
 	 * Short description for 'validurl'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $url Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -162,9 +162,9 @@ class Cart_Helper
 
 	/**
 	 * Short description for 'validphone'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $phone Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
@@ -176,28 +176,28 @@ class Cart_Helper
 			return(0);
 		}
 	}
-	
+
 	/**
 	 * Short description for 'validzip'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $text Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
 	public function validZip($zip)
 	{
-		if (preg_match("/^\d{5}([\-]\d{4})?$/", $zip)) 
+		if (preg_match("/^\d{5}([\-]\d{4})?$/", $zip))
 		{
 			return true;
-		} 
+		}
 		return false;
 	}
-	
+
 	/**
 	 * Escape value for DB insertino
-	 * 
-	 * @param	string Value to be escaped 
+	 *
+	 * @param	string Value to be escaped
 	 * @return  string Escaped value
 	 */
 	public function escapeDb($val)
@@ -205,5 +205,5 @@ class Cart_Helper
 		$val = mysql_real_escape_string($val);
 		return $val;
 	}
-	
+
 }

@@ -37,84 +37,84 @@ Class GroupsTablePageVersion extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $pageid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version = NULL;
 
 	/**
 	 * longtext
-	 * 
+	 *
 	 * @var string
 	 */
 	var $content = NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var date
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $approved = NULL;
-	
+
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var date
 	 */
 	var $approved_on = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $approved_by = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $checked_errors = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scanned = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -122,7 +122,7 @@ Class GroupsTablePageVersion extends JTable
 	{
 		parent::__construct('#__xgroups_pages_versions', 'id', $db);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -135,7 +135,7 @@ Class GroupsTablePageVersion extends JTable
 			$this->setError( JText::_('Page version must have a page ID.') );
 			return false;
 		}
-		
+
 		// need page version number
 		if ($this->get('version') == null)
 		{
@@ -143,17 +143,17 @@ Class GroupsTablePageVersion extends JTable
 			return false;
 		}
 		*/
-		
+
 		// need page content
 		if ($this->get('content') == null || $this->get('content') == '')
 		{
 			$this->setError( JText::_('Page version must contain content.') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 *
 	 */
@@ -161,11 +161,11 @@ Class GroupsTablePageVersion extends JTable
 	{
 		$sql = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -173,11 +173,11 @@ Class GroupsTablePageVersion extends JTable
 	{
 		$sql = "SELECT COUNT(*) FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 *
 	 */
@@ -185,27 +185,27 @@ Class GroupsTablePageVersion extends JTable
 	{
 		$where = array();
 		$sql   = '';
-		
+
 		if (isset($filters['pageid']) && is_numeric($filters['pageid']))
 		{
 			$where[] = 'pageid=' . $this->_db->quote( $filters['pageid'] );
 		}
-		
+
 		if (isset($filters['version']) && is_numeric($filters['version']))
 		{
 			$where[] = 'version=' . $this->_db->quote( $filters['version'] );
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$sql .= " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
 }

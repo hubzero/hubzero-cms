@@ -41,11 +41,11 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 								</a>
 								<span class="tagline"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 							</h1>
-							
+
 							<div class="mobile-search">
 								<jdoc:include type="modules" name="search" />
 							</div>
-							
+
 							<div id="nav" role="main navigation">
 								<a name="nav"></a>
 								<jdoc:include type="modules" name="user3" />
@@ -100,4 +100,3 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>
-	

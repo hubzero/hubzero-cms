@@ -39,35 +39,35 @@ class GroupsModelPageArchive extends JObject
 {
 	/**
 	 * \Hubzero\Base\Model
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_pages = null;
 
 	/**
 	 * Modules count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_pages_count = null;
-	
+
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_db = NULL;
-	
+
 	/**
 	 * \Hubzero\User\Group
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_group = NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function __construct()
@@ -75,7 +75,7 @@ class GroupsModelPageArchive extends JObject
 		$this->_db    = JFactory::getDBO();
 		$this->_group = \Hubzero\User\Group::getInstance( JRequest::getVar('cn', '') );
 	}
-	
+
 	/**
 	 * Get Instance of Page Archive
 	 *
@@ -85,19 +85,19 @@ class GroupsModelPageArchive extends JObject
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new GroupsModelPageArchive();
 		}
-		
+
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Get a list of group pages
 	 *
@@ -129,7 +129,7 @@ class GroupsModelPageArchive extends JObject
 					{
 						// get current version
 						$version = $result->versions()->first();
-						
+
 						// if current version is unapproved return it
 						if ($version->get('approved') == 0)
 						{
@@ -157,7 +157,7 @@ class GroupsModelPageArchive extends JObject
 			break;
 		}
 	}
-	
+
 	/**
 	 * Reset all pages with new value for key
 	 *
@@ -170,8 +170,8 @@ class GroupsModelPageArchive extends JObject
 	{
 		// get list of pages
 		$pages = $this->pages('list', $filters);
-		
-		// reset each page 
+
+		// reset each page
 		foreach ($pages as $page)
 		{
 			$page->set($key, $value);

@@ -36,27 +36,27 @@ include_once(dirname(__FILE__) . DS . 'status.php');
 
 /**
  * Publications block elements class
- * 
+ *
  */
 class PublicationsModelBlockElements
-{		
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	public $_db   		= NULL;
-	
+
 	/**
 	* @var    array  Loaded elements
 	*/
 	protected $_elements 	= array();
-	
+
 	/**
 	* @var    array  Directories, where block elements can be stored
 	*/
 	protected $_path 	= array();
-	
+
 	/**
 	 * Constructor
 	 *
@@ -68,17 +68,17 @@ class PublicationsModelBlockElements
 		$this->_db 		= $db;
 		$this->_path[] 	= dirname(__FILE__) . DS . 'blockelements';
 	}
-	
+
 	/**
 	 * Get status for a block element within publication
 	 *
 	 * @return object
 	 */
 	public function getStatus($name, $manifest = NULL, $pub = NULL)
-	{		
+	{
 		// Load attachment type
 		$element = $this->loadElement($name);
-		
+
 		if ($element === false || !$pub || !$pub->id)
 		{
 			$status = new PublicationsModelStatus();
@@ -87,22 +87,22 @@ class PublicationsModelBlockElements
 		{
 			$status = $element->getStatus($manifest, $pub);
 		}
-		
+
 		// Return status
-		return $status;		
+		return $status;
 	}
-		
+
 	/**
-	 * Draw element for 
+	 * Draw element for
 	 *
 	 * @return object
 	 */
 	public function drawElement($name, $elementId = 0, $manifest = NULL,
 		$master = NULL, $pub = NULL, $status = NULL, $viewname = 'edit', $order = 0)
-	{		
+	{
 		// Load attachment type
 		$element = $this->loadElement($name);
-		
+
 		if ($element === false)
 		{
 			return false;
@@ -112,20 +112,20 @@ class PublicationsModelBlockElements
 			return $element->render($elementId, $manifest, $pub, $viewname, $status, $master, $order);
 		}
 	}
-	
+
 	/**
 	 * Get active element
 	 *
 	 * @return object
 	 */
 	public function getActiveElement($elements, $review)
-	{		
+	{
 		// What is the last incomplete element?
 		$lastComplete 	= 0;
 		$lastIncomplete = 0;
 		$total 			= 0;
 		$showElement 	= 1;
-		
+
 		foreach ($elements as $elId => $el)
 		{
 			if ($el->status == 1)
@@ -150,13 +150,13 @@ class PublicationsModelBlockElements
 				elseif ($el->status != 1)
 				{
 					$lastIncomplete = $elId;
-				}				
+				}
 			}
-			
+
 			$total++;
 		}
 		$nextElement = $lastComplete + 1;
-		
+
 		if ($lastIncomplete)
 		{
 			$showElement = $lastIncomplete;
@@ -165,10 +165,10 @@ class PublicationsModelBlockElements
 		{
 			$showElement = isset($elements->$nextElement) ? $nextElement : $lastComplete;
 		}
-		
+
 		return array('showElement' => $showElement, 'total' => $total);
 	}
-	
+
 	/**
 	 * Loads a block
 	 *
@@ -178,21 +178,21 @@ class PublicationsModelBlockElements
 	{
 		$signature = md5($name);
 
-		if ((isset($this->_elements[$signature]) 
-			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))  
-			&& $new === false) 
+		if ((isset($this->_elements[$signature])
+			&& !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))
+			&& $new === false)
 		{
 			return	$this->_elements[$signature];
-		}		
-		
+		}
+
 		$elementClass = 'PublicationsModelBlockElement' . ucfirst($name);
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
-			if (isset($this->_path)) 
+			if (isset($this->_path))
 			{
 				$dirs = $this->_path;
-			} 
-			else 
+			}
+			else
 			{
 				$dirs = array();
 			}
@@ -200,24 +200,24 @@ class PublicationsModelBlockElements
 			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file)) 
+			if ($elementFile = JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
-			} 
-			else 
+			}
+			else
 			{
 				$false = false;
 				return $false;
 			}
 		}
 
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
 			$false = false;
 			return $false;
 		}
-		
+
 		$this->_elements[$signature] = new $elementClass($this);
-		return $this->_elements[$signature];		
+		return $this->_elements[$signature];
 	}
 }

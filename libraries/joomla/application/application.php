@@ -1039,7 +1039,7 @@ class JApplication extends JObject
 			$db->execute();
 		}
 		*/
-		// END: HUBzero, allow php session garbage collection handle this 
+		// END: HUBzero, allow php session garbage collection handle this
 
 		// Check to see the the session already exists.
 		if (($this->getCfg('session_handler') != 'database' && ($time % 2 || $session->isNew()))

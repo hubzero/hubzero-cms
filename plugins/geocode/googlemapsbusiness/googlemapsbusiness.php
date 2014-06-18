@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * GoogleMapsBusiness plugin for geocode
  *
- * The GoogleMapsBusinessProvider is able to geocode and reverse geocode 
+ * The GoogleMapsBusinessProvider is able to geocode and reverse geocode
  * street addresses. A valid Client ID is required. The private key is optional.
  */
 class plgGeocodeGooglemapsbusiness extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

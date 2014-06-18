@@ -38,14 +38,14 @@ class AnchorMacro extends WikiMacro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -58,7 +58,7 @@ class AnchorMacro extends WikiMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -66,7 +66,7 @@ class AnchorMacro extends WikiMacro
 		$name = $this->args;
 
 		// Did we get a result from the database?
-		if ($name) 
+		if ($name)
 		{
 			// Build and return the link
 			return '<a name="' . urlencode($name) . '"></a>';

@@ -70,7 +70,7 @@
 				<option value="des">JGLOBAL_MOST_RECENT_FIRST</option>
 				<option value="asc">JGLOBAL_OLDEST_FIRST</option>
 			</field>
-			
+
 		</fieldset>
 	</fields>
 </metadata>

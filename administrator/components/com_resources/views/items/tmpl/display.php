@@ -33,33 +33,33 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = ResourcesHelperPermissions::getActions('resource');
 
 JToolBarHelper::title(JText::_('Resource Manager'), 'resources.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::custom('check', 'scan', '', 'Check Paths', false);
 	JToolBarHelper::spacer();
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew('addchild', 'Add Child');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -69,7 +69,7 @@ JHTML::_('behavior.tooltip');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -165,7 +165,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	// Build some publishing info
 	$info  = JText::_('Created') . ': ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')) . '<br />';
 	$info .= JText::_('Created by') . ': ' . $this->escape($row->created_by) . '<br />';
-	
+
 	// Get the published status
 	$now = JFactory::getDate()->toSql();
 	switch ($row->published)
@@ -189,7 +189,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				$class = 'expired';
 				$task  = 'unpublish';
 			}
-			
+
 			$info .= JText::_('Published').': '.JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')).'<br />';
 			break;
 		case 2:
@@ -316,22 +316,22 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->typetitle)); ?>
 				</td>
 				<td style="white-space: nowrap">
-					<?php if ($row->children > 0) { ?> 
+					<?php if ($row->children > 0) { ?>
 						<a class="glyph menulist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=children&amp;pid=<?php echo $row->id; ?>" title="View this item's children">
 							<span><?php echo $row->children; ?></span>
 						</a>
-					<?php } else { ?> 
+					<?php } else { ?>
 						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>" title="Add a child">
 							<span>+ Add</span>
 						</a>
 					<?php } ?>
 				</td>
 				<td style="white-space: nowrap">
-					<?php if ($tags > 0) { ?> 
+					<?php if ($tags > 0) { ?>
 						<a class="glyph tag" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="View this item's tags">
 							<span><?php echo $tags; ?></span>
 						</a>
-					<?php } else { ?> 
+					<?php } else { ?>
 						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>" title="Add a tag">
 							<span>+ Add</span>
 						</a>

@@ -66,7 +66,7 @@ $this->css()
 			</label>
 
 			<label for="field-admin">
-				<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1" /> 
+				<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1" />
 				<strong><?php echo JText::_('COM_TAGS_FIELD_ADMINISTRATION'); ?></strong>
 				<span class="hint">(<?php echo JText::_('COM_TAGS_FIELD_ADMINISTRATION_EXPLANATION'); ?>)</span>
 			</label>

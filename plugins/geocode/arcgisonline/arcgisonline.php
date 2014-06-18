@@ -35,18 +35,18 @@ jimport('joomla.plugin.plugin');
 
 /**
  * ArcGISOnline plugin for geocode
- * 
- * The ArcGISOnlineProvider is able to geocode and reverse geocode 
- * street addresses. It's possible to specify a sourceCountry to 
- * restrict result to this specific country thus reducing request 
- * time (note that this doesn't work on reverse geocoding). 
+ *
+ * The ArcGISOnlineProvider is able to geocode and reverse geocode
+ * street addresses. It's possible to specify a sourceCountry to
+ * restrict result to this specific country thus reducing request
+ * time (note that this doesn't work on reverse geocoding).
  * This provider also supports SSL.
  */
 class plgGeocodeArcgisonline extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

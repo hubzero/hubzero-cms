@@ -42,31 +42,31 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	{
 		//default if no campaign
 		$this->_title = JText::_(strtoupper($this->_option));
-		
+
 		//add campaign name to title
 		if (is_object($newsletter) && $newsletter->id)
 		{
 			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': ' . $newsletter->name;
 		}
-		
+
 		//if we are unsubscribing
 		if ($this->_task == 'unsubscribe')
 		{
 			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': Unsubscribe';
 		}
-		
+
 		//if we are subscribing
 		if ($this->_task == 'subscribe')
 		{
 			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': Subscribe';
 		}
-		
+
 		//set title of browser window
 		$document = JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
-	
-	
+
+
 	/**
 	 * Override parent build pathway method
 	 *
@@ -76,33 +76,33 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	{
 		//get the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		
+
 		//add 'newlsetters' item to pathway
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem( JText::_(strtoupper($this->_option)), 'index.php?option=' . $this->_option );
 		}
-		
+
 		//add campaign
 		if (is_object($newsletter) && $newsletter->id)
 		{
 			$pathway->addItem( JText::_($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id );
 		}
-		
+
 		//if we are unsubscribing
 		if ($this->_task == 'unsubscribe')
 		{
 			$pathway->addItem( JText::_('Unsubscribe'), 'index.php?option=' . $this->_option . '&task=unsubscribe' );
 		}
-		
+
 		//if we are subscribing
 		if ($this->_task == 'subscribe')
 		{
 			$pathway->addItem( JText::_('Subscribe'), 'index.php?option=' . $this->_option . '&task=subscribe' );
 		}
 	}
-	
-	
+
+
 	/**
 	 * Subscribe to Mailing Lists View
 	 *
@@ -112,40 +112,40 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	{
 		//set layout
 		$this->view->setLayout('subscribe');
-		
+
 		//must be logged in
 		if ($this->juser->get('guest'))
 		{
 			//build return url and redirect url
 			$return 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			$redirect	= JRoute::_('index.php?option=com_login&return=' . base64_encode($return) );
-			
+
 			//redirect
 			$this->setRedirect( $redirect, 'You must be logged in to subscribe to mailing lists', 'warning');
 			return;
 		}
-		
+
 		//get mailing lists user belongs to
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$this->view->mylists = $newsletterMailinglist->getListsForEmail( $this->juser->get('email') );
-		
+
 		//get all lists
 		$this->view->alllists = $newsletterMailinglist->getLists( null, 'public' );
-		
+
 		//build title
 		$this->_buildTitle();
-		
+
 		//build pathway
 		$this->_buildPathway();
-		
+
 		//set vars for view
 		$this->view->title = $this->_title;
-		
+
 		//output
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Subscribe to *Single* Mailing List (Newsletter Module)
 	 *
@@ -155,20 +155,20 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	{
 		//check to make sure we have a valid token
 		if (!JRequest::checkToken()) die('Invalid Token');
-		
+
 		//get request vars
 		$list   = JRequest::getInt('list_' . JUtility::getToken(), '', 'post');
 		$email  = JRequest::getVar('email_' . JUtility::getToken(), $this->juser->get('email'), 'post');
 		$sid    = JRequest::getInt('subscriptionid', 0);
 		$hp1    = JRequest::getVar('hp1', '', 'post');
 		$return = base64_decode( JRequest::getVar('return', '/', 'post') );
-		
+
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
 		{
 			die('Unable to process the form.');
 		}
-		
+
 		//validate email
 		if (!isset($email) || $email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
@@ -178,7 +178,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect    = JRoute::_( $return );
 			return;
 		}
-		
+
 		//validate list
 		if (!isset($list) || !is_numeric($list))
 		{
@@ -188,11 +188,11 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect    = JRoute::_( $return );
 			return;
 		}
-		
+
 		//load mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$newsletterMailinglist->load( $list );
-		
+
 		//make sure its not private or already deleted
 		if (is_object($newsletterMailinglist) && !$newsletterMailinglist->private && !$newsletterMailinglist->deleted)
 		{
@@ -202,7 +202,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$subscription->email      = $email;
 			$subscription->status     = 'inactive';
 			$subscription->date_added = JFactory::getDate()->toSql();
-			
+
 			//mail confirmation email and save subscription
 			if (NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false ))
 			{
@@ -210,13 +210,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 				$newsletterMailinglistEmail->save( $subscription );
 			}
 		}
-		
+
 		//inform user and redirect
 		$this->_message 	= 'You have successfully signed up for the "' . $newsletterMailinglist->name . '" mailing list. Please confirm your subscription by clicking the link in the email we have sent you.';
 		$this->_redirect 	= JRoute::_( $return );
 	}
-	
-	
+
+
 	/**
 	 * Subscribe/Unsubscribe from *Multiple* Mailing Lists
 	 *
@@ -227,11 +227,11 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//get request vars
 		$lists = JRequest::getVar('lists', array(), 'post');
 		$email = $this->juser->get('email');
-		
+
 		//get my lists
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$mylists = $newsletterMailinglist->getListsForEmail( $email, 'mailinglistid' );
-		
+
 		// subscribe user to checked lists
 		foreach ($lists as $list)
 		{
@@ -241,7 +241,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 				//load mailing list object
 				$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 				$newsletterMailinglist->load( $list );
-				
+
 				//make sure its not private or already deleted
 				if (is_object($newsletterMailinglist) && !$newsletterMailinglist->private && !$newsletterMailinglist->deleted)
 				{
@@ -260,14 +260,14 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		
+
 		//check to make sure we dont need to unsubscribe from lists
 		foreach ($mylists as $mylist)
 		{
 			//instantiate newsletter mailing email
 			$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 			$newsletterMailinglistEmail->load( $mylist->id );
-			
+
 			//do we want to mark as active or mark as unsubscribed
 			if (!in_array($mylist->mailinglistid, $lists))
 			{
@@ -280,33 +280,33 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			{
 				//set as active
 				$newsletterMailinglistEmail->status = 'inactive';
-				
+
 				//load mailing list object
 				$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 				$newsletterMailinglist->load( $mylist->mailinglistid );
-				
+
 				//send a new confirmation
 				NewsletterHelper::sendMailinglistConfirmationEmail( $email, $newsletterMailinglist, false );
-				
+
 				//delete all unsubscribes
 				$sql = "DELETE FROM #__newsletter_mailinglist_unsubscribes
-						WHERE mid=" . $this->database->quote( $mylist->mailinglistid ) . " 
+						WHERE mid=" . $this->database->quote( $mylist->mailinglistid ) . "
 						AND email=" . $this->database->quote( $email );
 				$this->database->setQuery( $sql );
 				$this->database->query();
 			}
-			
+
 			//save
 			$newsletterMailinglistEmail->save( $newsletterMailinglistEmail );
 		}
-		
+
 		//inform user and redirect
 		$this->_message  = 'You have successfully saved your newsletter subscriptions preferences.';
 		$this->_redirect = JRoute::_('index.php?option=com_newsletter&task=subscribe');
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Unsubscribe From Mailing Lists
 	 *
@@ -316,14 +316,14 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 	{
 		//set layout
 		$this->view->setLayout('unsubscribe');
-		
+
 		//get request vars
 		$email = JRequest::getVar('e', '');
 		$token = JRequest::getVar('t', '');
-		
+
 		//parse token
 		$recipient = NewsletterHelper::parseMailingToken( $token );
-		
+
 		//make sure mailing recipient email matches email param
 		if ($email != $recipient->email)
 		{
@@ -332,20 +332,20 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
-		
+
 		//get newsletter mailing to get mailing list id mailing was sent to
 		$newsletterMailing = new NewsletterMailing( $this->database );
 		$mailing = $newsletterMailing->getMailings( $recipient->mid );
-		
+
 		//make sure we have a mailing object
-		if (!is_object($mailing)) 
+		if (!is_object($mailing))
 		{
 			$this->_messageType = 'error';
 			$this->_message 	= 'Unable to locate newsletter mailing associated with unsubscribe link.';
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
-		
+
 		//is the mailing list to the default hub mailing list?
 		if ($mailing->lid == '-1')
 		{
@@ -360,7 +360,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 			$mailinglist = $newsletterMailinglist->getLists( $mailing->lid );
 		}
-		
+
 		//check to make sure were not already unsubscribed
 		$unsubscribedAlready = false;
 		if ($mailing->lid == '-1')
@@ -371,7 +371,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 					AND p.mailPreferenceOption > " . $this->database->quote( 0 );
 			$this->database->setQuery( $sql );
 			$profile = $this->database->loadObject();
-			
+
 			if (!is_object( $profile ) || $profile->uidNumber == '')
 			{
 				$unsubscribedAlready = true;
@@ -387,13 +387,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 					AND mle.status=" . $this->database->quote( 'active' );
 			$this->database->setQuery( $sql );
 			$list = $this->database->loadObject();
-			
+
 			if (!is_object( $list ) || $list->id == '')
 			{
 				$unsubscribedAlready = true;
 			}
 		}
-		
+
 		//are we unsubscribed already
 		if ($unsubscribedAlready)
 		{
@@ -406,23 +406,23 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			}
 			return;
 		}
-		
+
 		//build title
 		$this->_buildTitle();
-		
+
 		//build pathway
 		$this->_buildPathway();
-		
+
 		//set vars for view
 		$this->view->title 			= $this->_title;
 		$this->view->juser 			= $this->juser;
 		$this->view->mailinglist 	= $mailinglist;
-		
+
 		//output
 		$this->view->display();
 	}
-	
-	
+
+
 	/**
 	 * Unsubscribe User Mailing Lists
 	 *
@@ -435,16 +435,16 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		$token 		= JRequest::getVar('t', '');
 		$reason 	= JRequest::getVar('reason', '');
 		$reason_alt = JRequest::getVar('reason-alt', '');
-		
+
 		//grab the reason explaination if user selected other
 		if ($reason == 'Other')
 		{
 			$reason = $reason_alt;
 		}
-		
+
 		//parse mailing token
 		$recipient = NewsletterHelper::parseMailingToken( $token );
-		
+
 		//make sure the token is valid
 		if (!is_object($recipient) || $email != $recipient->email)
 		{
@@ -453,20 +453,20 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
-		
+
 		//get newsletter mailing to get mailing list id mailing was sent to
 		$newsletterMailing = new NewsletterMailing( $this->database );
 		$mailing = $newsletterMailing->getMailings( $recipient->mid );
-		
+
 		//make sure we have a mailing object
-		if (!is_object($mailing)) 
+		if (!is_object($mailing))
 		{
 			$this->_messageType = 'error';
 			$this->_message 	= 'Unable to locate newsletter mailing associated with unsubscribe link.';
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
-		
+
 		//are we unsubscribing from default list?
 		$sql = '';
 		if ($mailing->lid == '-1')
@@ -479,7 +479,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			{
 				//build return url and redirect url
 				$return = JRoute::_('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token );
-				
+
 				//inform user and redirect
 				$this->_messageType = 'warning';
 				$this->_message 	= JText::_('You must be logged in to subscribe to mailing lists');
@@ -490,12 +490,12 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		else
 		{
 			//update the emails status on the mailing list
-			$sql = "UPDATE #__newsletter_mailinglist_emails 
+			$sql = "UPDATE #__newsletter_mailinglist_emails
 					SET status=" . $this->database->quote('unsubscribed') . "
-					WHERE mid=" . $this->database->quote( $mailing->lid ) . " 
+					WHERE mid=" . $this->database->quote( $mailing->lid ) . "
 					AND email=" . $this->database->quote( $recipient->email );
 		}
-		
+
 		//set query and execute
 		$this->database->setQuery( $sql );
 		if (!$this->database->query())
@@ -505,13 +505,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token);
 			return;
 		}
-		
+
 		//insert unsubscribe reason
-		$sql = "INSERT INTO #__newsletter_mailinglist_unsubscribes(mid,email,reason) 
+		$sql = "INSERT INTO #__newsletter_mailinglist_unsubscribes(mid,email,reason)
 				VALUES(".$this->database->quote( $mailing->lid ).",".$this->database->quote( $recipient->email ).",".$this->database->quote( $reason ).")";
 		$this->database->setQuery( $sql );
 		$this->database->query();
-		
+
 		//inform user of successful unsubscribe
 		$this->_messageType = 'success';
 		$this->_message		= 'You have been successfully unsubscribed from the mailing list.';
@@ -522,8 +522,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		}
 		return;
 	}
-	
-	
+
+
 	/**
 	 * Confirm Subscription to Mailing list
 	 *
@@ -534,10 +534,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//get request vars
 		$email = JRequest::getVar('e', '');
 		$token = JRequest::getVar('t', '');
-		
+
 		//make sure we have an email
 		$mailinglistEmail = NewsletterHelper::parseConfirmationToken( $token );
-		
+
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
@@ -546,36 +546,36 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 			return;
 		}
-		
+
 		//instantiate mailing list email object and load based on id
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 		$newsletterMailinglistEmail->load( $mailinglistEmail->id );
-		
+
 		//set that we are now confirmed
 		$newsletterMailinglistEmail->status			= 'active';
 		$newsletterMailinglistEmail->confirmed 		= 1;
 		$newsletterMailinglistEmail->date_confirmed = JFactory::getDate()->toSql();
-		
+
 		//save
 		$newsletterMailinglistEmail->save( $newsletterMailinglistEmail );
-		
+
 		//inform user
 		$this->_messageType = 'success';
 		$this->_message 	= 'You have successfully confirmed you subscription to the mailing list.';
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
-		
+
 		//if were not logged in go back to newsletter page
 		if (JFactory::getUser()->get('guest'))
 		{
 			$this->_redirect = JRoute::_('index.php?option=com_newsletter');
 		}
 	}
-	
-	
+
+
 	/**
 	 * Remove From Mailing list
 	 *
-	 * @param 	$email 		
+	 * @param 	$email
 	 * @return 	void
 	 */
 	public function removeTask()
@@ -583,10 +583,10 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//get request vars
 		$email = JRequest::getVar('e', '');
 		$token = JRequest::getVar('t', '');
-		
+
 		//make sure we have an email
 		$mailinglistEmail = NewsletterHelper::parseConfirmationToken( $token );
-		
+
 		//make sure the token is valid
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
@@ -595,37 +595,37 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 			return;
 		}
-		
+
 		//instantiate mailing list email object and load based on id
 		$newsletterMailinglistEmail = new NewsletterMailinglistEmail( $this->database );
 		$newsletterMailinglistEmail->load( $mailinglistEmail->id );
-		
+
 		//unsubscribe & unconfirm email
 		$newsletterMailinglistEmail->status 	= "unsubscribed";
 		$newsletterMailinglistEmail->confirmed 	= 0;
-		
+
 		//save
 		$newsletterMailinglistEmail->save( $newsletterMailinglistEmail );
-		
+
 		//inform user
 		$this->_messageType = 'success';
 		$this->_message 	= 'You have successfully removed your subscription to the mailing list.';
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 	}
-	
-	
+
+
 	public function resendConfirmationTask()
 	{
 		//get request vars
 		$mid = JRequest::getInt('mid', 0);
-		
+
 		//instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist( $this->database );
 		$newsletterMailinglist->load( $mid );
-		
+
 		//send confirmation email
 		NewsletterHelper::sendMailinglistConfirmationEmail( $this->juser->get('email'), $newsletterMailinglist, false );
-		
+
 		//inform user and redirect
 		$this->_message 	= JText::_('You successfully resent a confirmation email to "'.$this->juser->get('email').'"');
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');

@@ -61,13 +61,13 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 		This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
 		<form action="<?php echo JRoute::_($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
-			View another attempt: 
+			View another attempt:
 			<select name="attempt">
 				<?php for ($i = 1; $i <= $this->dep->getAllowedAttempts(); $i++) { ?>
 					<?php
 						if ($i == $attempt) :
 							continue;
-						endif; 
+						endif;
 					?>
 					<option value="<?php echo $i ?>"><?php echo FormHelper::toOrdinal($i) ?> attempt</option>
 				<?php } ?>
@@ -80,7 +80,7 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 	<?php $pdf->eachPage(function($url, $idx) use($layout, $record) { ?>
 		<li>
 			<img src="<?php echo $url ?>" />
-			<?	
+			<?
 			if (isset($layout[$idx - 1])):
 				$qidx = 0;
 				foreach ($layout[$idx - 1] as $qid=>$group):

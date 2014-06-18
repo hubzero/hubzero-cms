@@ -38,28 +38,28 @@ class SupportMessage extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title   = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $message = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,12 +70,12 @@ class SupportMessage extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->message) == '') 
+		if (trim($this->message) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
@@ -86,7 +86,7 @@ class SupportMessage extends JTable
 
 	/**
 	 * Get all messages
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getMessages()
@@ -97,7 +97,7 @@ class SupportMessage extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
@@ -105,7 +105,7 @@ class SupportMessage extends JTable
 	{
 		$query = " FROM $this->_tbl"
 				. " ORDER BY id";
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
@@ -115,7 +115,7 @@ class SupportMessage extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -128,7 +128,7 @@ class SupportMessage extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */

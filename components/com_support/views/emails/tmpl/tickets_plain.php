@@ -57,15 +57,15 @@ $message  = 'The following is a list of open tickets.' . "\n\n";
 if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 {
 	$message .= '----------------------------'."\n";
-	$message .= 'Critical' . "\n"; 
+	$message .= 'Critical' . "\n";
 	$message .= '----------------------------'."\n\n";
 
-	foreach ($this->tickets['critical'] as $ticket) 
+	foreach ($this->tickets['critical'] as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -88,15 +88,15 @@ if (isset($this->tickets['critical']) && count($this->tickets['critical']) > 0)
 if (isset($this->tickets['major']) && count($this->tickets['major']) > 0)
 {
 	$message .= '----------------------------'."\n";
-	$message .= 'Major' . "\n"; 
+	$message .= 'Major' . "\n";
 	$message .= '----------------------------'."\n\n";
 
-	foreach ($this->tickets['major'] as $ticket) 
+	foreach ($this->tickets['major'] as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -120,7 +120,7 @@ $message .= '----------------------------'."\n\n";
 
 $more = 0;
 $i = 0;
-foreach ($this->tickets as $severity => $tickets) 
+foreach ($this->tickets as $severity => $tickets)
 {
 	if ($severity == 'critical' || $severity == 'major')
 	{
@@ -138,7 +138,7 @@ foreach ($this->tickets as $severity => $tickets)
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}

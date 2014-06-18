@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'objectid', 
-		'tagid', 
-		'strength', 
+		'id',
+		'objectid',
+		'tagid',
+		'strength',
 		'taggerid',
 		'taggedon',
 		'tbl',
@@ -97,7 +97,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getCount with filters returns number
-	 * 
+	 *
 	 * @group com_tags
 	 * @covers TagsTableObject::count
 	 */
@@ -113,7 +113,7 @@ class TagsTableObjectTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Test that getRecords
-	 * 
+	 *
 	 * @group com_tags
 	 * @covers TagsTableObject::find
 	 */

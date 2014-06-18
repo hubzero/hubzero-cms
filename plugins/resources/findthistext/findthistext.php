@@ -45,7 +45,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -53,7 +53,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_findthistext', 0)) 
+		if ($model->type->params->get('plg_findthistext', 0))
 		{
 			$areas['findthistext'] = JText::_('PLG_RESOURCES_FINDTHISTEXT');
 		}
@@ -63,7 +63,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      integer $miniview  View style
@@ -78,16 +78,16 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		);
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))) 
+			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
 			{
 				$rtrn = '';
 			}
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'html') 
+		if ($rtrn == 'all' || $rtrn == 'html')
 		{
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -113,7 +113,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get Open URL
-	 * 
+	 *
 	 * @return     string
 	 */
 	private function getOpenUrl()
@@ -128,7 +128,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		$ipRegex = array(
 			'10.\d{2,5}.\d{2,5}.\d{2,5}',
 			'192.\d{1,5}.\d{1,5}.\d{1,5}'
-		); 
+		);
 
 		// do we use the machine ip?
 		$useMachineIp = false;
@@ -168,7 +168,7 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 		$resolver = $xml->resolverRegistryEntry->resolver;
 
 		//if we have resolver set vars for creating open urls
-		if ($resolver != null) 
+		if ($resolver != null)
 		{
 			$openUrl = new stdClass;
 			$openUrl->link = $resolver->baseURL;

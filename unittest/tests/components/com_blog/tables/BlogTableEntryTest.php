@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the blog entry table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runTestsInSeparateProcesses
  */
@@ -15,9 +15,9 @@ class BlogTableEntryTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'title', 
-		'alias', 
+		'id',
+		'title',
+		'alias',
 		'content',
 		'created',
 		'created_by',
@@ -31,9 +31,9 @@ class BlogTableEntryTest extends PHPUnit_Framework_TestCase
 		'scope'
 	);
 	var $mock       = array(
-		'id' => 0, 
-		'title' => 'My blog post', 
-		'alias' => '', 
+		'id' => 0,
+		'title' => 'My blog post',
+		'alias' => '',
 		'content' => 'My blog post is amazing!',
 		'created' => '',
 		'created_by' => 1000,

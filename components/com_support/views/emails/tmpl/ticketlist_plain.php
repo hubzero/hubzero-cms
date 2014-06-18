@@ -51,12 +51,12 @@ $message .= implode(", ", $cells) . "\n";
 
 if (isset($this->tickets) && count($this->tickets) > 0)
 {
-	foreach ($this->tickets as $ticket) 
+	foreach ($this->tickets as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}

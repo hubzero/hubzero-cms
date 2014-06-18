@@ -30,33 +30,33 @@ $projectsHelper = new ProjectsHelper( $this->database );
 $pubHelper 		= new PublicationHelper($this->database);
 
 // Load component configs
-$config = JComponentHelper::getParams( 'com_projects' );	
+$config = JComponentHelper::getParams( 'com_projects' );
 
-// Git path	
+// Git path
 $gitpath  = $config->get('gitpath', '/opt/local/bin/git');
 
-$multiZip 		= (isset($this->manifest->params->typeParams->multiZip) 
-				&& $this->manifest->params->typeParams->multiZip == 0) 
+$multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
+				&& $this->manifest->params->typeParams->multiZip == 0)
 				? false : true;
 $required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'content-element' . $this->elementId;
 $max 	  		= $this->manifest->params->max;
-$defaultTitle	= $this->manifest->params->title 
+$defaultTitle	= $this->manifest->params->title
 				? str_replace('{pubtitle}', $this->pub->title, $this->manifest->params->title) : NULL;
 
 $error 			= $this->status->getError();
 
-$aboutTxt 		= $this->manifest->adminTips 
-				? $this->manifest->adminTips 
+$aboutTxt 		= $this->manifest->adminTips
+				? $this->manifest->adminTips
 				: $this->manifest->about;
-				
+
 $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten)
 {
 	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
-	$about.= ' <a href="#more-' . $elName . '" class="more-content">' 
+	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
 				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
 	$about.= ' <div class="hidden">';
 	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
@@ -74,7 +74,7 @@ $git = new ProjectsGitHelper( $config->get('gitpath', '/opt/local/bin/git'), 0, 
 );
 
 // Get version params and extract bundle name
-$versionParams 	= new JParameter( $this->pub->params );				
+$versionParams 	= new JParameter( $this->pub->params );
 $bundleName		= $versionParams->get($elName . 'bundlename', $defaultTitle);
 $bundleName		= $bundleName ? $bundleName : 'bundle';
 $bundleName	   .= '.zip';
@@ -98,22 +98,22 @@ if ($handler)
 $modelAttach = new PublicationsModelAttachmentFile();
 
 // Get pub path
-$pubDir  = isset($this->manifest->params->typeParams->directory) && $this->manifest->params->typeParams->directory 
-			? $this->manifest->params->typeParams->directory : $this->pub->secret; 
-$pubPath = $pubHelper->buildPath($this->pub->id, $this->pub->version_id, '', 
+$pubDir  = isset($this->manifest->params->typeParams->directory) && $this->manifest->params->typeParams->directory
+			? $this->manifest->params->typeParams->directory : $this->pub->secret;
+$pubPath = $pubHelper->buildPath($this->pub->id, $this->pub->version_id, '',
 		   $this->manifest->params->typeParams->directory, 1);
-		
-$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id=' 
-			. $this->pub->id . '&v=' . $this->pub->version_number ) 
+
+$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+			. $this->pub->id . '&v=' . $this->pub->version_number )
 			. '?el=' . $this->elementId . '&download=1';
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
 // Build url
-$route = $this->pub->_project->provisioned 
+$route = $this->pub->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' 
-				. $this->pub->_project->alias . '&active=publications';		
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
 $url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
 
@@ -132,50 +132,50 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
 				<?php if (count($this->attachments)) { echo ' (' . count($this->attachments) .')'; }?>
 				<?php if (count($this->attachments) > 1) { ?><span class="download-all"><a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('Download all'); ?></a></span><?php } ?></h5>
-				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); ?>		
+				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); ?>
 		<?php if (count($this->attachments) > 0) { ?>
 		<div class="list-wrapper">
 			<ul class="itemlist">
 		<?php	$i= 1; ?>
-				<?php foreach ($this->attachments as $att) { 
-				
+				<?php foreach ($this->attachments as $att) {
+
 					$data 		= new stdClass;
 					$data->path = str_replace($this->path . DS, '', $att->path);
 					$data->ext 	= strtolower(end(explode('.', $data->path)));
-				
+
 					// Set default title
 					$incNum			   = $max > 1 ? ' (' . $i . ')' : '';
-					$dTitle			   = $defaultTitle ? $defaultTitle . $incNum : basename($data->path);					
+					$dTitle			   = $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
 					$data->title 	   = $att->title && $att->title != $defaultTitle ? $att->title : $dTitle;
-					
+
 					$data->ordering    = $i;
-					$data->id		   = $att->id;					
+					$data->id		   = $att->id;
 					$data->projectPath = $this->path;
 					$data->git		   = $git;
 					$data->pubPath	   = $pubPath;
 					$data->md5		   = $att->content_hash;
 					$data->viewer	   = 'freeze';
-					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id=' 
-										. $this->pub->id . '&v=' . $this->pub->version_number ) 
+					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+										. $this->pub->id . '&v=' . $this->pub->version_number )
 										. '?el=' . $this->elementId . '&amp;a=' . $att->id . '&amp;download=1';
 					$data->allowRename = false;
-										
+
 					// Is attachment (image) also publication thumbnail
 					$params = new JParameter( $att->params );
 					$data->pubThumb = $params->get('pubThumb', NULL);
 
 					// Get file size
-					$data->size		= $att->vcs_hash 
-									? $git->gitLog($this->path, $att->path, $att->vcs_hash, 'size') 
+					$data->size		= $att->vcs_hash
+									? $git->gitLog($this->path, $att->path, $att->vcs_hash, 'size')
 									: NULL;
 					$data->hash	  	= $att->vcs_hash;
 					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;
-					$data->gitStatus= $data->gone 
+					$data->gitStatus= $data->gone
 								? JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
 								: $projectsHelper->showGitInfo($gitpath, $this->path, $att->vcs_hash, $att->path);
-					
+
 					$i++;
-					
+
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams, $handler);
  				} ?>
@@ -184,11 +184,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 		<?php } elseif (!$required) {  ?>
 			<p class="noresults">No user input</p>
 		<?php } ?>
-		
+
 			<?php if ($error || ($required && !$complete)) { ?>
 				<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
 			<?php } else { ?>
-			
+
 			<?php } ?>
 		</div>
 	</div>

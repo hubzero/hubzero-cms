@@ -38,7 +38,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -80,10 +80,10 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				$youtube_url .= 'videos?q=' . $content . '&v=2';
 			break;
 		}
-		
+
 		//append the the return type and the callback function
 		$youtube_url .= '&alt=json';
-		
+
 		//get title,desc,logo and link params
 		$show_title = $this->params->get('title');
 		$alt_title  = $this->params->get('alttitle');
@@ -108,7 +108,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		$this->lazy = $lazy_loading;
 
 		//if we are lazy loading
-		if ($lazy_loading) 
+		if ($lazy_loading)
 		{
 			$this->js();
 
@@ -134,8 +134,8 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 						});
 					});
 				");
-			} 
-			else 
+			}
+			else
 			{
 				$this->js("
 					window.addEvent('domready', function() {
@@ -158,8 +158,8 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 					});
 				");
 			}
-		} 
-		else 
+		}
+		else
 		{
 			// load feed
 			$feed = $this->_feed($youtube_url, $this->params);
@@ -169,65 +169,65 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				require(JModuleHelper::getLayoutPath($this->module->module));
 				return;
 			}
-			
+
 			// access youtubes weird feed item
 			$feed = $feed['feed'];
-			
+
 			//get the entries from the feed
 			$entries = $feed['entry'];
-			
+
 			//start building the html content
 			$html = '';
 
 			//get the title, subtitle, logo
 			$title = $feed['title']['$t'];
-			if ($type == 'playlists') 
+			if ($type == 'playlists')
 			{
 				$desc = $feed['subtitle']['$t'];
 			}
 			$logo = $feed['logo']['$t'];
 
 			//show title based on params
-			if ($show_title) 
+			if ($show_title)
 			{
-				if ($alt_title != '') 
+				if ($alt_title != '')
 				{
 					$html .= '<h3>' . $alt_title . '</h3>';
-				} 
-				else 
+				}
+				else
 				{
 					$html .= '<h3>' . $title . '</h3>';
 				}
 			}
 
 			//show the description based on params
-			if ($show_desc) 
+			if ($show_desc)
 			{
-				if ($alt_desc != '') 
+				if ($alt_desc != '')
 				{
 					$html .= '<p class="description">' . $alt_desc . '</p>';
-				} 
-				elseif($type == 'playlists') 
+				}
+				elseif($type == 'playlists')
 				{
 					$html .= '<p class="description">' . $desc . '</p>';
 				}
 			}
 
 			//show the logo based on your
-			if ($show_image) 
+			if ($show_image)
 			{
-				if ($alt_image != '' && is_file(JPATH_ROOT . DS . $alt_image)) 
+				if ($alt_image != '' && is_file(JPATH_ROOT . DS . $alt_image))
 				{
 					$html .= '<img class="logo" src="' . $alt_image . '" alt="Youtube" />';
-				} 
-				else 
+				}
+				else
 				{
 					$html .= '<img class="logo" src="' . $logo . '" alt="Youtube" />';
 				}
 			}
 
 			//are we supposed to randomize
-			if ($random) 
+			if ($random)
 			{
 				shuffle($entries);
 			}
@@ -237,7 +237,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			$counter = 1;
 			foreach ($entries as $entry)
 			{
-				if ($counter <= $num_videos) 
+				if ($counter <= $num_videos)
 				{
 					$media = $entry['media$group'];
 					$html .= "<li>";
@@ -251,13 +251,13 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			$html .= "</ul>";
 
 			//show the view more link based on params
-			if ($show_link) 
+			if ($show_link)
 			{
-				if ($alt_link != '') 
+				if ($alt_link != '')
 				{
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$alt_link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
-				} 
-				else 
+				}
+				else
 				{
 					switch ($type)
 					{
@@ -274,26 +274,26 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
 				}
 			}
-			
+
 			$this->html = $html;
 		}
-		
+
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
-	
+
 	private function _feed($url, $params)
 	{
 		// var to hold feed
 		$feed = null;
-		
+
 		// cache path
 		$cachePath = JPATH_ROOT . DS . 'cache' . DS . 'mod_youtube' . DS . $this->module->id;
 		$cacheFile = $cachePath . DS . $params->get('type') . '.txt';
-		
+
 		// do we want to load a cached version
-		if ($this->params->get('cache') 
-			&& file_exists($cacheFile) 
-			&& filemtime($cacheFile) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES')) 
+		if ($this->params->get('cache')
+			&& file_exists($cacheFile)
+			&& filemtime($cacheFile) > strtotime('-' . $this->params->get('cache_time') . ' MINUTES'))
 		{
 			$feed = file_get_contents($cacheFile);
 			$feed = json_decode($feed);
@@ -310,12 +310,12 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 			$feed = curl_exec($ch);
 			curl_close($ch);
-		
+
 			//if we want to use caching
-			if ($params->get('cache')) 
+			if ($params->get('cache'))
 			{
 				//write to the cache folder
-				if (!is_dir($cachePath)) 
+				if (!is_dir($cachePath))
 				{
 					JFolder::create($cachePath);
 				}
@@ -323,14 +323,14 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				JFile::write($cacheFile, $f);
 			}
 		}
-		
+
 		// return jsto
 		return json_decode($feed, true);
 	}
 
 	/**
 	 * Format a time
-	 * 
+	 *
 	 * @param      integer $seconds Time to format
 	 * @return     string
 	 */
@@ -339,7 +339,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		$minutes = floor($seconds / 60);
 		$seconds = $seconds % 60;
 
-		if ($seconds < 10) 
+		if ($seconds < 10)
 		{
 			$seconds = "0{$seconds}";
 		}

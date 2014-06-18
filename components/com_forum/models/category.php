@@ -42,21 +42,21 @@ class ForumModelCategory extends ForumModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'ForumTableCategory';
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cache = array();
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid        ID (integer), alias (string), array or object
 	 * @param      integer $section_id Section ID
 	 * @return     void
@@ -106,7 +106,7 @@ class ForumModelCategory extends ForumModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -124,7 +124,7 @@ class ForumModelCategory extends ForumModelAbstract
 			$key = $section_id . '_' . $oid['id']; //$scope . '_' . $scope_id . '_' . $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new ForumModelCategory($oid, $section_id); //, $scope, $scope_id);
 		}
@@ -134,12 +134,12 @@ class ForumModelCategory extends ForumModelAbstract
 
 	/**
 	 * Is the category closed?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isClosed()
 	{
-		if ($this->get('closed', 0) == 1) 
+		if ($this->get('closed', 0) == 1)
 		{
 			return true;
 		}
@@ -148,13 +148,13 @@ class ForumModelCategory extends ForumModelAbstract
 
 	/**
 	 * Set and get a specific thread
-	 * 
+	 *
 	 * @param      mixed $id ID (integer) or alias (string)
 	 * @return     object ForumModelThread
 	 */
 	public function thread($id=null)
 	{
-		if (!isset($this->_cache['thread']) 
+		if (!isset($this->_cache['thread'])
 		 || ($id !== null && (int) $this->_cache['thread']->get('id') != $id))
 		{
 			$this->_cache['thread'] = null;
@@ -189,7 +189,7 @@ class ForumModelCategory extends ForumModelAbstract
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -243,7 +243,7 @@ class ForumModelCategory extends ForumModelAbstract
 
 	/**
 	 * Return a count for the type of data specified
-	 * 
+	 *
 	 * @param      string $what What to count
 	 * @return     integer
 	 */
@@ -296,7 +296,7 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
@@ -308,7 +308,7 @@ class ForumModelCategory extends ForumModelAbstract
 
 	/**
 	 * Get the most recent post mad ein the forum
-	 * 
+	 *
 	 * @return     ForumModelPost
 	 */
 	public function lastActivity()
@@ -327,7 +327,7 @@ class ForumModelCategory extends ForumModelAbstract
 
 	/**
 	 * Get the adapter
-	 * 
+	 *
 	 * @return  object
 	 */
 	public function adapter()

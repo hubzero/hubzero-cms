@@ -33,19 +33,19 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CitationsHelper::getActions('citation');
 
 JToolBarHelper::title(JText::_('CITATIONS'), 'citation.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences('com_citations', 600, 800);
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -56,7 +56,7 @@ JToolBarHelper::help('citations');
 $this->setEscape("htmlentities");
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 
 			<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('GO'); ?>" />
@@ -119,11 +119,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td>
-					<?php 
+					<?php
 						$type = "";
-						foreach ($this->types as $t) 
+						foreach ($this->types as $t)
 						{
-							if ($row->type == $t['id']) 
+							if ($row->type == $t['id'])
 							{
 								$type = $t['type_title'];
 							}
@@ -135,12 +135,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php
 						$title = html_entity_decode($row->title);
 						$author = html_entity_decode($row->author);
-						if (!preg_match('!\S!u', $title)) 
+						if (!preg_match('!\S!u', $title))
 						{
 							$title = utf8_encode($title);
 						}
-						
-						if (!preg_match('!\S!u', $author)) 
+
+						if (!preg_match('!\S!u', $author))
 						{
 							$author = utf8_encode($author);
 						}

@@ -43,28 +43,28 @@ class WishlistModelWishlist extends WishlistModelAbstract
 {
 	/**
 	 * Open state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISHLIST_STATE_PRIVATE = 0;
 
 	/**
 	 * Granted state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISHLIST_STATE_PUBLIC  = 1;
 
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'Wishlist';
 
 	/**
 	 * Container for interally cached data
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cache = array(
@@ -78,14 +78,14 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * WishlistModelAdapter
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_adapter = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string  $scope    Forum scope [site, group, course]
 	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
 	 * @return     void
@@ -147,7 +147,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -166,7 +166,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			$key .= $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $scope);
 		}
@@ -177,7 +177,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params String or array of extra params to append
 	 * @return     string
@@ -190,7 +190,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function title()
@@ -201,7 +201,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params String or array of extra params to append
 	 * @return     string
@@ -214,7 +214,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
-	 * 
+	 *
 	 * @param      string $title Breadcrumb title
 	 * @param      string $url   Breadcrumb URL
 	 * @return     string
@@ -227,7 +227,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	private function _adapter()
@@ -256,7 +256,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Populate the forum with defaulta wish and category
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function setup()
@@ -275,10 +275,10 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		$this->set('title', $this->_adapter()->title());
 
 		$this->set('id', $this->_tbl->createlist(
-			$this->get('category'), 
-			$this->get('referenceid'), 
-			1, 
-			$this->get('title'), 
+			$this->get('category'),
+			$this->get('referenceid'),
+			1,
+			$this->get('title'),
 			$this->_adapter()->item('title')
 		));
 
@@ -293,7 +293,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Determine if record was modified
-	 * 
+	 *
 	 * @return     boolean True if modified, false if not
 	 */
 	public function isPublic()
@@ -307,12 +307,12 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Set and get a specific wish
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function wish($id=null)
 	{
-		if (!($this->_cache['wish'] instanceof WishlistModelWish) 
+		if (!($this->_cache['wish'] instanceof WishlistModelWish)
 		 || ($id !== null && (int) $this->_cache['wish']->get('id') != $id))
 		{
 			$this->_cache['wish'] = null;
@@ -346,7 +346,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Get a list of wishes for a forum
-	 * 
+	 *
 	 * @param      string  $rtrn    What data to return [count, list, first]
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -397,7 +397,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Get a list of wishes for a forum
-	 * 
+	 *
 	 * @param      string  $rtrn    What data to return [count, list, first]
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -448,7 +448,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Remove one or more owners
-	 * 
+	 *
 	 * @param      string $what Owner type to remove
 	 * @param      mixed  $data integer|string|array
 	 * @return     object
@@ -511,7 +511,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Add one or more owners
-	 * 
+	 *
 	 * @param      string $what Owner type to add
 	 * @param      mixed  $data integer|string|array
 	 * @return     object
@@ -568,7 +568,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Turn a comma or space deliniated string into an array
-	 * 
+	 *
 	 * @param      string $string
 	 * @return     array
 	 */
@@ -587,9 +587,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		$string = str_replace(' ', ',', $string);
 		$arr    = explode(',', $string);
 		$arr    = array_map('trim', $arr);
-		foreach ($arr as $key => $value) 
+		foreach ($arr as $key => $value)
 		{
-			if ($value == '') 
+			if ($value == '')
 			{
 				unset($arr[$key]);
 			}
@@ -647,7 +647,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string  $action    Action to check
 	 * @param      string  $assetType Type of asset to check
 	 * @param      integer $assetId   ID of item to check access on
@@ -662,7 +662,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			$this->set('admin', 0);
 			$this->config()->set('access-view-' . $assetType, true);
 
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
 				if ($assetType == 'wish')
 				{
@@ -706,7 +706,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$managers = $this->owners('individuals');
 					$advisory = $this->owners('advisory');
 
-					if (in_array($juser->get('id'), $managers)) 
+					if (in_array($juser->get('id'), $managers))
 					{
 						$this->config()->set('access-manage-' . $assetType, true);
 						$this->config()->set('access-admin-' . $assetType, true);
@@ -716,7 +716,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 						$this->set('admin', 2);  // individual group manager
 					}
-					if (in_array($juser->get('id'), $advisory)) 
+					if (in_array($juser->get('id'), $advisory))
 					{
 						//$this->config()->set('access-manage-' . $assetType, true);
 						//$this->config()->set('access-delete-' . $assetType, true);
@@ -736,7 +736,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 	/**
 	 * Rank the wishes in this list
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function rank()
@@ -744,7 +744,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		// do we give more weight to votes coming from advisory committee?
 		$votesplit = $this->config('votesplit', 0);
 
-		if ($this->wishes()->total() > 0) 
+		if ($this->wishes()->total() > 0)
 		{
 			//$owners = $objOwner->get_owners($this->listid, $this->admingroup, $wishlist);
 			$managers = $this->owners('individuals');
@@ -752,7 +752,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 			$voters = array_merge($managers, $advisory);
 
-			foreach ($this->wishes() as $item) 
+			foreach ($this->wishes() as $item)
 			{
 				$weight_e = 4;
 				$weight_i = 5;
@@ -766,7 +766,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				$ranking = 0;
 
 				// first consider votes by list owners
-				if ($item->rankings()->total() > 0) 
+				if ($item->rankings()->total() > 0)
 				{
 					$imp     = 0;
 					$eff     = 0;
@@ -774,36 +774,36 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$skipped = 0; // how many times effort selection was skipped
 					$divisor = 0;
 
-					foreach ($item->rankings() as $vote) 
+					foreach ($item->rankings() as $vote)
 					{
-						if (in_array($vote->get('userid'), $voters)) 
+						if (in_array($vote->get('userid'), $voters))
 						{
 							// vote must come from list owner!
 							$num++;
-							if ($votesplit && in_array($vote->get('userid'), $advisory)) 
+							if ($votesplit && in_array($vote->get('userid'), $advisory))
 							{
 								$imp += $vote->importance * $co_adv;
 								$divisor += $co_adv;
 							}
-							else if ($votesplit) 
+							else if ($votesplit)
 							{
 								$imp += $vote->get('importance') * $co_reg;
 								$divisor += $co_reg;
 							}
-							else 
+							else
 							{
 								$imp += $vote->get('importance');
 							}
-							if ($vote->get('effort') != 6) 
+							if ($vote->get('effort') != 6)
 							{ // ignore "don't know" selection
 								$eff += $vote->get('effort');
 							}
-							else 
-							{ 
+							else
+							{
 								$skipped++;
 							}
 						}
-						else 
+						else
 						{
 							// need to clean up this vote! looks like owners list changed since last voting
 							//$remove = $objR->remove_vote($item->id, $vote->userid);
@@ -816,7 +816,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$eff = ($num - $skipped) != 0 ? $eff/($num - $skipped) : 0;
 					$weight_i = ($num - $skipped) != 0 ? $weight_i : 7;
 
-					// we need to factor in how many people voted 
+					// we need to factor in how many people voted
 					$certainty = $co + $num/count($voters);
 
 					$ranking += ($imp * $weight_i) * $certainty;
@@ -839,7 +839,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				$item->set('ranking', $ranking);
 
 				// store new content
-				if (!$item->store()) 
+				if (!$item->store())
 				{
 					$this->setError($item->getError());
 					return false;

@@ -66,31 +66,31 @@ if (!defined('n')) {
 /**
  * Html helper class
  */
-class ProjectsHtml 
+class ProjectsHtml
 {
 	//----------------------------------------------------------
 	// Date/time management
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Format time
-	 * 
+	 *
 	 * @param      string $value
 	 * @param      string $format
 	 * @return     string
 	 */
-	public static function valformat($value, $format) 
+	public static function valformat($value, $format)
 	{
-		if ($format == 1) 
+		if ($format == 1)
 		{
 			return(number_format($value));
-		} 
-		elseif ($format == 2 || $format == 3) 
+		}
+		elseif ($format == 2 || $format == 3)
 		{
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				$min = round($value / 60);
-			} else 
+			} else
 			{
 				$min = floor($value / 60);
 				$sec = $value - ($min * 60);
@@ -99,54 +99,54 @@ class ProjectsHtml
 			$min -= ($hr * 60);
 			$day = floor($hr / 24);
 			$hr -= ($day * 24);
-			if ($day == 1) 
+			if ($day == 1)
 			{
 				$day = "1 day, ";
-			} 
-			elseif ($day > 1) 
+			}
+			elseif ($day > 1)
 			{
 				$day = number_format($day) . " days, ";
-			} 
-			else 
+			}
+			else
 			{
 				$day = "";
 			}
-			if ($format == 2) 
+			if ($format == 2)
 			{
 				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			} 
-			else 
+			}
+			else
 			{
 				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
 			}
-		} 
-		else 
+		}
+		else
 		{
 			return($value);
 		}
 	}
-	
+
 	/**
 	 * Specially formatted time display
-	 * 
+	 *
 	 * @param      string 	$time
 	 * @param      boolean 	$full	Return detailed date/time?
 	 * @return     string
 	 */
-	public static function formatTime($time, $full = false, $utc = false) 
+	public static function formatTime($time, $full = false, $utc = false)
 	{
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
 
 		$now 		= $utc ? JFactory::getDate()->toSql() : date('c');
 		$current  	= date_parse($now);
-		
+
 		if ($full)
 		{
 		//	return $utc ? JFactory::getDate($timestamp)->format('g:i A M j, Y') : date('Y-m-d H:i:s', $timestamp) ;
 			return JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
 		}
-		
+
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
@@ -163,28 +163,28 @@ class ProjectsHtml
 			return JHTML::_('date', $timestamp, 'M j, Y', false);
 		}
 	}
-	
+
 	/**
 	 * Time elapsed from moment
-	 * 
+	 *
 	 * @param      string $timestamp
 	 * @return     string
 	 */
-	public static function timeAgo($timestamp, $utc = true) 
+	public static function timeAgo($timestamp, $utc = true)
 	{
 		$timestamp = strtotime($timestamp);
-		
+
 		// Get current time
 		$current_time = $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
-		
+
 		$text = ProjectsHtml::timeDifference($current_time - $timestamp);
 
 		return $text;
 	}
-	
+
 	/**
 	 * Get time difference
-	 * 
+	 *
 	 * @param      string $difference
 	 * @return     string
 	 */
@@ -202,37 +202,37 @@ class ProjectsHtml
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) 
+		if ($val < 0)
 		{
 			$val = 0;
 		}
-		
+
 		// Set the current value to be floored
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) 
+		if ($number != 1)
 		{
 			$periods[$val] .= 's';
 		}
 
 		// Return text
 		$text = sprintf("%d %s ", $number, $periods[$val]);
-		
+
 		$parts = explode(' ', $text);
 
 		$text  = $parts[0] . ' ' . $parts[1];
-		if ($text == '0 seconds') 
+		if ($text == '0 seconds')
 		{
 			$text = JText::_('COM_PROJECTS_JUST_A_MOMENT');
 		}
 
 		return $text;
 	}
-	
+
 	/**
 	 * Time current moment
-	 * 
+	 *
 	 * @param      string $timestamp
 	 * @return     string
 	 */
@@ -246,14 +246,14 @@ class ProjectsHtml
 
 		return ProjectsHtml::timeDifference($difference);
 	}
-	
+
 	//----------------------------------------------------------
 	// File management
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Get file attributes
-	 * 
+	 *
 	 * @param      string $path
 	 * @param      string $base_path
 	 * @param      string $get
@@ -262,39 +262,39 @@ class ProjectsHtml
 	 */
 	public static function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
 	{
-		if (!$path) 
+		if (!$path)
 		{
 			return '';
 		}
-				
+
 		// Get extension
-		if ($get == 'ext') 
+		if ($get == 'ext')
 		{
 			$ext = explode('.', basename($path));
 			$ext = count($ext) > 1 ? end($ext) : '';
 			return strtoupper($ext);
 		}
-		
+
 		$path = DS . trim($path, DS);
 		if ($base_path)
 		{
-			$base_path = DS . trim($base_path, DS);	
+			$base_path = DS . trim($base_path, DS);
 		}
-		
-		if (substr($path, 0, strlen($base_path)) == $base_path) 
+
+		if (substr($path, 0, strlen($base_path)) == $base_path)
 		{
 			// Do nothing
-		} 
-		else 
+		}
+		else
 		{
 			$path = $base_path . $path;
 		}
 		$path = $prefix . $path;
-	
+
 		$fs = '';
-		
+
 		// Get the file size if the file exist
-		if (file_exists( $path )) 
+		if (file_exists( $path ))
 		{
 			try
 			{
@@ -303,22 +303,22 @@ class ProjectsHtml
 			catch (Exception $e)
 			{
 				// could not get file size
-			}			
+			}
 		}
 		$fs = ProjectsHtml::formatSize($fs);
 		return ($fs) ? $fs : '';
 
 	}
-	
+
 	/**
 	 * Get directory size
-	 * 
+	 *
 	 * @param      string $directory
 	 * @return     string
 	 */
-	public static function getDirSize ($directory = '') 
+	public static function getDirSize ($directory = '')
 	{
-		if(!$directory) 
+		if(!$directory)
 		{
 			return 0;
 		}
@@ -351,76 +351,76 @@ class ProjectsHtml
 
 		return $dirSize;
 	}
-	
+
 	/**
 	 * Format size
-	 * 
+	 *
 	 * @param      int $file_size
 	 * @param      int $round
 	 * @return     string
 	 */
-	public static function formatSize($file_size, $round = 0) 
+	public static function formatSize($file_size, $round = 0)
 	{
-		if ($file_size >= 1073741824) 
-	//	if ($file_size >= 107374182) 
+		if ($file_size >= 1073741824)
+	//	if ($file_size >= 107374182)
 		{
 			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
-		} 
-		elseif ($file_size >= 1048576) 
+		}
+		elseif ($file_size >= 1048576)
 		{
 			$file_size = round(($file_size / 1048576 * 100), $round) / 100 . 'MB';
-		} 
-		elseif ($file_size >= 1024) 
+		}
+		elseif ($file_size >= 1024)
 		{
 			$file_size = round(($file_size / 1024 * 100) / 100, $round) . 'KB';
-		} 
-		elseif ($file_size < 1024) 
+		}
+		elseif ($file_size < 1024)
 		{
 			$file_size = $file_size . 'b';
 		}
 
 		return $file_size;
 	}
-	
+
 	/**
 	 * Convert file size
-	 * 
+	 *
 	 * @param      int $file_size
 	 * @param      string $from
 	 * @param      string $to
 	 * @param      string $round
 	 * @return     string
 	 */
-	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0) 
+	public static function convertSize($file_size, $from = 'b', $to = 'GB', $round = 0)
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
-		if($from == 'b') 
+		if($from == 'b')
 		{
-			if ($to == 'GB') 
+			if ($to == 'GB')
 			{
 				$file_size = round(($file_size / 1073741824 * 100), $round) / 100;
-			} 
-			elseif ($to == 'MB') 
+			}
+			elseif ($to == 'MB')
 			{
 				$file_size = round(($file_size / 1048576 * 100), $round) / 100 ;
-			} 
-			elseif ($to == 'KB') 
+			}
+			elseif ($to == 'KB')
 			{
 				$file_size = round(($file_size / 1024 * 100) / 100, $round);
-			} 
+			}
 		}
-		elseif ($from == 'GB') 
+		elseif ($from == 'GB')
 		{
-			if ($to == 'b') 
+			if ($to == 'b')
 			{
 				$file_size = $file_size * 1073741824;
-			} 
-			if ($to == 'KB') 
+			}
+			if ($to == 'KB')
 			{
 				$file_size = $file_size * 1048576;
 			}
-			if ($to == 'MB') 
+			if ($to == 'MB')
 			{
 				$file_size = $file_size * 1024;
 			}
@@ -428,64 +428,64 @@ class ProjectsHtml
 
 		return $file_size;
 	}
-	
+
 	/**
 	 * Get google icon image
-	 * 
+	 *
 	 * @param      string $mimeType
 	 * @param      boolean $include_dir
 	 * @param      string $icon
 	 * @return     string
 	 */
-	public static function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '') 
+	public static function getGoogleIcon ($mimeType, $include_dir = 1, $icon = '')
 	{
-		switch (strtolower($mimeType)) 
+		switch (strtolower($mimeType))
 		{
 			case 'application/vnd.google-apps.presentation':
 				$icon = 'presentation';
 				break;
-				
+
 			case 'application/vnd.google-apps.spreadsheet':
 				$icon = 'sheet';
 				break;
-				
+
 			case 'application/vnd.google-apps.document':
 				$icon = 'doc';
 				break;
-				
+
 			case 'application/vnd.google-apps.drawing':
 				$icon = 'drawing';
 				break;
-				
+
 			case 'application/vnd.google-apps.form':
 				$icon = 'form';
 				break;
-				
+
 			case 'application/vnd.google-apps.folder':
 				$icon = 'folder';
 				break;
-						
-			default: 
+
+			default:
 				$icon = 'gdrive';
-				break;				
+				break;
 		}
-		
+
 		if ($include_dir)
 		{
 			$icon = "/plugins/projects/files/images/google/" . $icon . '.gif';
 		}
 		return $icon;
-		
+
 	}
-	
+
 	/**
 	 * Fix up some mimetypes
-	 * 
+	 *
 	 * @param      string $file
 	 * @param      string $mimeType
 	 * @return     string
 	 */
-	public static function fixUpMimeType ($file = NULL, $mimeType = NULL) 
+	public static function fixUpMimeType ($file = NULL, $mimeType = NULL)
 	{
 		if ($file)
 		{
@@ -493,97 +493,97 @@ class ProjectsHtml
 			$parts = explode('.', $file);
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 			$ext   = strtolower($ext);
-			
-			switch (strtolower($ext)) 
+
+			switch (strtolower($ext))
 			{
 				case 'key':
 					$mimeType = 'application/x-iwork-keynote-sffkey';
 					break;
-					
+
 				case 'ods':
 					$mimeType = 'application/vnd.oasis.opendocument.spreadsheet';
 					break;
-					
+
 				case 'wmf':
 					$mimeType = 'application/x-msmetafile';
 					break;
-					
+
 				case 'tex':
 					$mimeType = 'application/x-tex';
 					break;
 			}
 		}
-				
+
 		return $mimeType;
 	}
-	
+
 	/**
 	 * Get name for a number
-	 * 
+	 *
 	 * @param      integer $int
 	 * @return     string
 	 */
 	public static function getNumberName($int = 0)
-	{		
+	{
 		$name = '';
-		
+
 		switch($int)
 		{
 			case 1:
 				$name = 'one';
 			break;
-			
+
 			case 2:
 				$name = 'two';
 			break;
-			
+
 			case 3:
 				$name = 'three';
 			break;
-			
+
 			case 4:
 				$name = 'four';
 			break;
-			
+
 			case 5:
 				$name = 'five';
 			break;
-			
+
 			case 6:
 				$name = 'six';
 			break;
-			
+
 			case 7:
 				$name = 'seven';
 			break;
-			
+
 			case 8:
 				$name = 'eight';
 			break;
-			
+
 			case 9:
 				$name = 'nine';
 			break;
-			
+
 			case 10:
 				$name = 'ten';
 			break;
 		}
-		
+
 		return $name;
 	}
-	
+
 	/**
 	 * Get file icon image
-	 * 
+	 *
 	 * @param      string $ext
 	 * @param      boolean $include_dir
 	 * @param      string $icon
 	 * @return     string
 	 */
-	public static function getFileIcon ($ext, $include_dir = 1, $icon = '') 
+	public static function getFileIcon ($ext, $include_dir = 1, $icon = '')
 	{
-		switch (strtolower($ext)) 
+		switch (strtolower($ext))
 		{
 			case 'pdf':
 				$icon = 'page_white_acrobat';
@@ -685,44 +685,44 @@ class ProjectsHtml
 			case 'folder':
 				$icon = 'folder';
 				break;
-			default: 
+			default:
 				$icon = 'page_white';
 				break;
 		}
-		
+
 		if ($include_dir)
 		{
 			$icon = "/plugins/projects/files/images/" . $icon . '.gif';
 		}
 		return $icon;
 	}
-	
+
 	//----------------------------------------------------------
 	// Project page elements
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Embed project image
-	 * 
+	 *
 	 * @param      object $view
 	 * @return     string HTML
 	 */
 	public static function embedProjectImage( $view )
-	{ 
+	{
 		$path = DS . trim($view->config->get('imagepath', '/site/projects'), DS) . DS . $view->project->alias . DS . 'images';
-		$image  = $view->project->picture 
-			&& file_exists( JPATH_ROOT . $path . DS . $view->project->picture ) 
-			? $path . DS . $view->project->picture 
+		$image  = $view->project->picture
+			&& file_exists( JPATH_ROOT . $path . DS . $view->project->picture )
+			? $path . DS . $view->project->picture
 			: NULL; ?>
 		<div id="pimage">
 			<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias='
-			.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - ' 
+			.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - '
 			. JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>">
 	<?php
 		if ($image) {
-		?>		
-			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" />	
-	<?php 
+		?>
+			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" />
+	<?php
  		}
 		else
 		{ ?>
@@ -730,15 +730,15 @@ class ProjectsHtml
 	<?php } ?>
 		</a></div>
 	<?php }
-	
+
 	/**
 	 * Write member options
-	 * 
+	 *
 	 * @param      object $view
 	 * @return     string HTML
 	 */
-	public static function writeMemberOptions ( $view ) 
-	{ 
+	public static function writeMemberOptions ( $view )
+	{
 		$dateFormat = '%b %d, %Y';
 		$tz = null;
 
@@ -750,60 +750,60 @@ class ProjectsHtml
 
 		$options = '';
 		$role    = JText::_('COM_PROJECTS_PROJECT') . ' <span>';
-		
+
 		switch ($view->project->role)
 		{
 			case 1:
 				$role .= JText::_('COM_PROJECTS_LABEL_OWNER');
-				$options .= '<li><a href="' . JRoute::_('index.php?option=' 
-						 . $view->option . a . 'task=edit' . a . 'alias=' 
+				$options .= '<li><a href="' . JRoute::_('index.php?option='
+						 . $view->option . a . 'task=edit' . a . 'alias='
 						 . $view->project->alias) . '">' . JText::_('COM_PROJECTS_EDIT_PROJECT') . '</a></li>';
-				$options .= '<li><a href="' . JRoute::_('index.php?option=' 
-						 . $view->option . a . 'task=edit' . a . 'alias=' 
+				$options .= '<li><a href="' . JRoute::_('index.php?option='
+						 . $view->option . a . 'task=edit' . a . 'alias='
 						 . $view->project->alias) . '?edit=team">' . JText::_('COM_PROJECTS_INVITE_PEOPLE') . '</a></li>';
 				break;
 			default:
 				$role .= JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 		}
 		$role 	.= '</span>';
-		
-		if (!$view->project->private) 
-		{ 
-			$options .= '<li><a href="' . JRoute::_('index.php?option=' 
-					 . $view->option . a . 'alias=' 
-					 . $view->project->alias) . '?preview=1">' 
+
+		if (!$view->project->private)
+		{
+			$options .= '<li><a href="' . JRoute::_('index.php?option='
+					 . $view->option . a . 'alias='
+					 . $view->project->alias) . '?preview=1">'
 					 . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '</a></li>';
 		}
-		if (isset($view->project->counts['team']) && $view->project->counts['team'] > 1) 
+		if (isset($view->project->counts['team']) && $view->project->counts['team'] > 1)
 		{
-			$options .= '<li><a href="' . JRoute::_('index.php?option=' 
-					 . $view->option . a . 'alias=' 
-					 . $view->project->alias . a. 'active=team') . '?action=quit">' 
+			$options .= '<li><a href="' . JRoute::_('index.php?option='
+					 . $view->option . a . 'alias='
+					 . $view->project->alias . a. 'active=team') . '?action=quit">'
 					 . JText::_('COM_PROJECTS_LEAVE_PROJECT') . '</a></li>';
-		} 
-				
+		}
+
 		$html = "\n" . t.t. '<ul id="member_options">' . "\n";
 		$html.= t.t.' <li>' . ucfirst($role) . "\n";
 		$html.= t.t.' 	<div id="options-dock">' . "\n";
 		$html.= t.t.' 		<div>' . "\n";
-		$html.= t.t.' 			<p>' . JText::_('COM_PROJECTS_JOINED') 
+		$html.= t.t.' 			<p>' . JText::_('COM_PROJECTS_JOINED')
 				. ' ' . JHTML::_('date', $view->project->since, $dateFormat, $tz) . '</p>' . "\n";
-		if ($options) 
-		{ 
+		if ($options)
+		{
 			$html.= t.t.'			<ul>' . "\n";
 			$html.= t.t.t.t.t.t. $options . "\n";
-			$html.= t.t.'			</ul>' . "\n";	
+			$html.= t.t.'			</ul>' . "\n";
 		}
 		$html.= t.t.' 		</div>' . "\n";
 		$html.= t.t.' 	</div>' . "\n";
 		$html.= t.t.' </li>' . "\n";
 		$html.= t.t.'</ul>' . "\n";
-		echo $html;		
+		echo $html;
 	}
-	
+
 	/**
 	 * Write project header
-	 * 
+	 *
 	 * @param      object $view
 	 * @param      boolean $back
 	 * @param      boolean $underline
@@ -811,27 +811,27 @@ class ProjectsHtml
 	 * @param      boolean $show_pic
 	 * @return     string HTML
 	 */
-	public static function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1) 
+	public static function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1)
 	{
 		// Use alias or id in urls?
 		$goto  = 'alias=' . $view->project->alias;
 		$privacy_txt = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
-		
-		if($view->project->private) 
+
+		if($view->project->private)
 		{
 			$privacy = '<span class="private">' . ucfirst($privacy_txt) . '</span>';
 		}
-		else 
+		else
 		{
-			$privacy = '<a href="' . JRoute::_('index.php?option=' . $view->option . a . $goto) 
+			$privacy = '<a href="' . JRoute::_('index.php?option=' . $view->option . a . $goto)
 					. '/?preview=1" title="' . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">'
-					. ucfirst($privacy_txt) . '</a>'; 
+					. ucfirst($privacy_txt) . '</a>';
 		}
-		
-		$start = ($show_privacy == 2 && $view->project->owner) 
+
+		$start = ($show_privacy == 2 && $view->project->owner)
 				? '<span class="h-privacy">' .$privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT'))
 				: ucfirst(JText::_('COM_PROJECTS_PROJECT'));
-	?>	
+	?>
 	<div id="content-header" <?php if(!$show_pic) { echo 'class="nopic"'; } ?>>
 		<?php if($show_pic) { ?>
 		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo ProjectsHtml::getThumbSrc($view->project->id, $view->project->alias, $view->project->picture, $view->config); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
@@ -841,23 +841,23 @@ class ProjectsHtml
 			<?php if($back)  { ?>
 			<h3 class="returnln"><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
 			<?php } else { ?>
-			<h3 <?php if($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' '; 
-			if($view->project->owned_by_group) 
-			{	
-				$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );	
-				if($group) 
+			<h3 <?php if($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
+			if($view->project->owned_by_group)
+			{
+				$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );
+				if($group)
 				{
 					echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
 				}
-				else 
+				else
 				{
 					echo JText::_('COM_PROJECTS_UNKNOWN').' '.JText::_('COM_PROJECTS_GROUP');
-				}		
+				}
 			}
-			else 
+			else
 			{
-				echo '<a href="/members/'.$view->project->created_by_user.'">'.$view->project->fullname.'</a>';	
-			//	echo '<span class="prominent">'.$view->project->fullname.'</span>';	
+				echo '<a href="/members/'.$view->project->created_by_user.'">'.$view->project->fullname.'</a>';
+			//	echo '<span class="prominent">'.$view->project->fullname.'</span>';
 			}
 			?>
 			<?php if($show_privacy == 1) { ?>
@@ -868,12 +868,12 @@ class ProjectsHtml
 			<?php } ?>
 		</div>
 	</div><!-- / #content-header -->
-	<?php 
+	<?php
 	}
-	
+
 	/**
 	 * Get project thumbnail
-	 * 
+	 *
 	 * @param      int $id
 	 * @param      string $alias
 	 * @param      string $picname
@@ -881,44 +881,44 @@ class ProjectsHtml
 	 * @return     string HTML
 	 */
 	public static function getThumbSrc( $id, $alias, $picname = '', $config )
-	{		
+	{
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
-		
+
 		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
 		{
 			return $path . DS . 'thumb.png';
 		}
-	
-		if ($picname) 
+
+		if ($picname)
 		{
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS 
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
 				. 'helpers' . DS . 'imghandler.php' );
-			
+
 			$ih = new ProjectsImgHandler();
 			$thumb = $ih->createThumbName($picname);
 			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  '';
 		}
-		if (!$src) 
+		if (!$src)
 		{
 			$src = $config->get('defaultpic');
 		}
-		
+
 		return $src;
 	}
-	
+
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Tool development header
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public static function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
 	{
-		// tool-only tab menu 
+		// tool-only tab menu
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'=>'projects',
@@ -938,41 +938,41 @@ class ProjectsHtml
 		$view->title 	= 'Tools';
 
 		// Get path for tool thumb image
-		$p_path 			= ProjectsHelper::getProjectPath($project->alias, $config->get('imagepath'), 1, 'images');			
+		$p_path 			= ProjectsHelper::getProjectPath($project->alias, $config->get('imagepath'), 1, 'images');
 		$imagePath 			= $p_path . DS . 'tools';
 		$view->projectPath 	= $imagePath;
 		$view->path_bc 		= $bcrumb;
-		$view->ih 			= new ProjectsImgHandler();				
+		$view->ih 			= new ProjectsImgHandler();
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Show 'no preview' message
-	 * 
+	 *
 	 * @param      string $msg
 	 * @return     string HTML
 	 */
-	public static function showNoPreviewMessage( $msg = '' ) 
+	public static function showNoPreviewMessage( $msg = '' )
 	{
 		$msg = $msg ? $msg : JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PREVIEW_NO_CONTENT');
 		return '<p class="pale">'.$msg.'</p>';
 	}
-	
+
 	/**
 	 * Generate random code
-	 * 
+	 *
 	 * @param      int $minlength
 	 * @param      int $maxlength
 	 * @param      boolean $usespecial
 	 * @param      boolean $usenumbers
 	 * @param      boolean $useletters
 	 * @return     string HTML
-	 */	
+	 */
 	public static function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false )
-	{	
+	{
 		$key = '';
 		$charset = '';
-		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";		
+		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		if ($useletters && $mixedcaps) $charset .= "abcdefghijklmnopqrstuvwxyz";
 		if ($usenumbers) $charset .= "0123456789";
 		if ($usespecial) $charset .= "~@#$%^*()_+-={}|][";
@@ -981,34 +981,34 @@ class ProjectsHtml
 		for ($i=0; $i<$length; $i++) $key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
 		return $key;
 	}
-	
+
 	/**
 	 * Clean up text
-	 * 
+	 *
 	 * @param      string $in
 	 * @return     string
-	 */		
-	public static function cleanText ($in = '') 
-	{	
+	 */
+	public static function cleanText ($in = '')
+	{
 		$in = stripslashes($in);
 		$in = str_replace('&quote;','&quot;',$in);
 		$in = htmlspecialchars($in);
 
-		if (!strstr( $in, '</p>' ) && !strstr( $in, '<pre class="wiki">' )) 
+		if (!strstr( $in, '</p>' ) && !strstr( $in, '<pre class="wiki">' ))
 		{
 			$in = str_replace("<br />","",$in);
 		}
 		return $in;
 	}
-	
+
 	/**
 	 * Replace urls in text
-	 * 
+	 *
 	 * @param      string $string
 	 * @param      string $rel
 	 * @return     string HTML
-	 */		
-	public static function replaceUrls($string, $rel = 'nofollow') 
+	 */
+	public static function replaceUrls($string, $rel = 'nofollow')
 	{
 	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
 	    $port = "(:\d{1,})?";
@@ -1016,31 +1016,31 @@ class ProjectsHtml
 	    $query = "(\?[^<>\#\"\s]+)?";
 	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
 	}
-	
+
 	/**
 	 * Search for value in array
-	 * 
+	 *
 	 * @param      string $needle
 	 * @param      string $haystack
 	 * @return     boolean
-	 */	
-	public static function myArraySearch( $needle, $haystack ) 
+	 */
+	public static function myArraySearch( $needle, $haystack )
 	{
-	    if (empty($needle) || empty($haystack)) 
+	    if (empty($needle) || empty($haystack))
 		{
             return false;
         }
 
-        foreach ($haystack as $key => $value) 
+        foreach ($haystack as $key => $value)
 		{
             $exists = 0;
-            foreach ($needle as $nkey => $nvalue) 
+            foreach ($needle as $nkey => $nvalue)
 			{
-                if (!empty($value->$nkey) && $value->$nkey == $nvalue) 
+                if (!empty($value->$nkey) && $value->$nkey == $nvalue)
 				{
                     $exists = 1;
-                } 
-				else 
+                }
+				else
 				{
                     $exists = 0;
                 }
@@ -1050,25 +1050,25 @@ class ProjectsHtml
 
         return false;
 	}
-	
+
 	/**
 	 * Get appended to file name random string
-	 * 
+	 *
 	 * @param      string $path
-	 * 
+	 *
 	 * @return     string
 	 */
 	public static function getAppendedNumber ( $path = null )
 	{
 		$append = '';
-		
+
 		$dirname 	= dirname($path);
 		$filename 	= basename($path);
 		$name 		= '';
 		$file = explode('.', $filename);
-		
+
 		$n = count($file);
-		if ($n > 1) 
+		if ($n > 1)
 		{
 			$name = $file[$n-2];
 		}
@@ -1076,19 +1076,19 @@ class ProjectsHtml
 		{
 			$name = $path;
 		}
-		
+
 		$parts = explode('-', $name);
 		if (count($parts) > 1)
 		{
 			$append = intval(end($parts));
 		}
-		
+
 		return $append;
 	}
-	
+
 	/**
 	 * Replace file ending
-	 * 
+	 *
 	 * @param      string $path
 	 * @param      string $end
 	 * @param      string $delim
@@ -1097,22 +1097,22 @@ class ProjectsHtml
 	public static function cleanFileNum ( $path = null, $end = '', $delim = '-' )
 	{
 		$newpath = $path;
-		
+
 		if ($end)
 		{
 			$file = explode('.', $path);
 			$n = count($file);
 			$ext = '';
-			if ($n > 1) 
+			if ($n > 1)
 			{
 				$name = $file[$n-2];
-				$ext  = array_pop($file);			
+				$ext  = array_pop($file);
 			}
 			else
 			{
 				$name = $path;
 			}
-			
+
 			$parts = explode($delim, $name);
 			if (count($parts) > 1)
 			{
@@ -1123,16 +1123,16 @@ class ProjectsHtml
 					$name = implode('', $parts);
 				}
 			}
-			
+
 			$newpath = $ext ? $name . '.' . $ext : $name;
 		}
-		
+
 		return $newpath;
 	}
-	
+
 	/**
 	 * Append string to file name
-	 * 
+	 *
 	 * @param      string $path
 	 * @param      string $append
 	 * @param      string $ext
@@ -1140,27 +1140,27 @@ class ProjectsHtml
 	 */
 	public static function fixFileName ( $path = null, $append = '', $ext = '' )
 	{
-		if (!$path) 
+		if (!$path)
 		{
 			// $this->setError( JText::_('No path set.') );
 			return false;
 		}
 
-		if (!$append) 
+		if (!$append)
 		{
 			return $path;
 		}
-		
+
 		$newname 	= '';
 		$dirname 	= dirname($path);
 		$filename 	= basename($path);
-		
+
 		$file = explode('.', $filename);
 		$n = count($file);
-		if ($n > 1) 
+		if ($n > 1)
 		{
 			$file[$n-2] .= $append;
-			
+
 			$end = array_pop($file);
 			$file[] = $end;
 			$filename = implode('.',$file);
@@ -1169,52 +1169,52 @@ class ProjectsHtml
 		{
 			$filename = $filename . $append;
 		}
-		
+
 		if ($ext)
 		{
 			$filename = $filename . '.' . $ext;
 		}
-		
+
 		$newname = $dirname && $dirname != '.' ? $dirname . DS . $filename : $filename;
-		
+
 		return $newname;
 	}
-	
+
 	/**
 	 * Return filename without extension
-	 * 
+	 *
 	 * @param      string  $file      String to shorten
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function takeOutExt($file = '')
 	{
 		// Take out extention
 		if ($file)
 		{
-			$parts = explode('.', $file);			
-			
-			if (count($parts) > 1) 
+			$parts = explode('.', $file);
+
+			if (count($parts) > 1)
 			{
 				$end = array_pop($parts);
 			}
-			
-			if (count($parts) > 1) 
+
+			if (count($parts) > 1)
 			{
 				$end = array_pop($parts);
 			}
-			
+
 			$file = implode($parts);
 		}
-		
+
 		return $file;
 	}
-	
+
 	/**
 	 * Shorten a string to a max length, preserving whole words
-	 * 
+	 *
 	 * @param      string  $text      String to shorten
 	 * @param      integer $chars     Max length to allow
-	 * @return     string 
+	 * @return     string
 	 */
 	public static function shortenText($text, $chars=300)
 	{
@@ -1228,99 +1228,99 @@ class ProjectsHtml
 
 		return $text;
 	}
-	
+
 	/**
 	 * Shorten user full name
-	 * 
+	 *
 	 * @param      string $name
 	 * @param      int $chars
 	 * @return     string
-	 */	
-	public static function shortenName( $name, $chars = 12 ) 
+	 */
+	public static function shortenName( $name, $chars = 12 )
 	{
 		$name = trim($name);
 
-		if (strlen($name) > $chars) 
+		if (strlen($name) > $chars)
 		{
 			$names = explode(' ',$name);
 			$name = $names[0];
-			if (count($names) > 0 && $names[1] != '') 
+			if (count($names) > 0 && $names[1] != '')
 			{
 				$name  = $name.' ';
 				$name .= substr($names[1], 0, 1);
 				$name .= '.';
 			}
 		}
-		if ($name == '') 
+		if ($name == '')
 		{
 			$name = JText::_('COM_PROJECTS_UNKNOWN');
 		}
-	
+
 		return $name;
 	}
-	
+
 	/**
 	 * Shorten user full name
-	 * 
-	 * @param      string $name
-	 * @param      int $chars
-	 * @return     string
-	 */	
-	public static function shortenUrl( $name, $chars = 40 ) 
-	{
-		$name = trim($name);
-
-		if (strlen($name) > $chars) 
-		{
-			$name = substr($name, 0, $chars);
-			$name = $name . '...';
-		}
-	
-		return $name;
-	}		
-	
-	/**
-	 * Shorten file name
-	 * 
+	 *
 	 * @param      string $name
 	 * @param      int $chars
 	 * @return     string
 	 */
-	public static function shortenFileName( $name, $chars = 30 ) 
+	public static function shortenUrl( $name, $chars = 40 )
+	{
+		$name = trim($name);
+
+		if (strlen($name) > $chars)
+		{
+			$name = substr($name, 0, $chars);
+			$name = $name . '...';
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Shorten file name
+	 *
+	 * @param      string $name
+	 * @param      int $chars
+	 * @return     string
+	 */
+	public static function shortenFileName( $name, $chars = 30 )
 	{
 		$name = trim($name);
 		$original = $name;
-		
+
 		$chars = $chars < 10 ? 10 : $chars;
 
-		if (strlen($name) > $chars) 
+		if (strlen($name) > $chars)
 		{
 			$cutFront = $chars - 10;
 			$name = substr($name, 0, $cutFront);
 			$name = $name . '&#8230;';
 			$name = $name . substr($original, -10, 10);
 		}
-		if ($name == '') 
+		if ($name == '')
 		{
 			$name = '&#8230;';
 		}
-	
+
 		return $name;
 	}
-	
+
 	/**
 	 * Makes file name safe to use
 	 *
 	 * @param string $file The name of the file [not full path]
 	 * @return string The sanitized string
 	 */
-	public static function makeSafeFile($file) 
+	public static function makeSafeFile($file)
 	{
 	//	$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
 		$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#');
 		return preg_replace($regex, '', $file);
 	}
-	
+
 	/**
 	 * Makes path name safe to use.
 	 *
@@ -1334,14 +1334,14 @@ class ProjectsHtml
 		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
 		return preg_replace($regex, '', $path);
 	}
-	
+
 	//----------------------------------------------------------
 	// Reviewers
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Get admin notes
-	 * 
+	 *
 	 * @param      string $notes
 	 * @param      string $reviewer
 	 * @return     string
@@ -1350,7 +1350,7 @@ class ProjectsHtml
 	{
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
 		$ntext = '';
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			$notes = $matches[0];
 			if (count($notes) > 0)
@@ -1362,13 +1362,13 @@ class ProjectsHtml
 				}
 			}
 		}
-		
+
 		return $ntext;
 	}
-	
+
 	/**
 	 * Get admin notes count
-	 * 
+	 *
 	 * @param      string $notes
 	 * @param      string $reviewer
 	 * @return     string
@@ -1378,18 +1378,18 @@ class ProjectsHtml
 
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
 
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			$notes = $matches[0];
 			return count($notes);
 		}
-		
+
 		return 0;
 	}
-	
+
 	/**
 	 * Parse admin notes
-	 * 
+	 *
 	 * @param      string $note
 	 * @param      string $reviewer
 	 * @param      boolean $showmeta
@@ -1400,13 +1400,13 @@ class ProjectsHtml
 	{
 		$note = str_replace('<nb:'.$reviewer.'>','', $note);
 		$note = str_replace('</nb:'.$reviewer.'>','', $note);
-		
+
 		preg_match("#<meta>(.*?)</meta>#s", $note, $matches);
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			$meta = $matches[0];
 			$note   = preg_replace( '#<meta>(.*?)</meta>#s', '', $note );
-				
+
 			if($shorten)
 			{
 				$note   = \Hubzero\Utility\String::truncate($note, $shorten);
@@ -1415,18 +1415,18 @@ class ProjectsHtml
 			{
 				$meta = str_replace('<meta>','' , $meta);
 				$meta = str_replace('</meta>','', $meta);
-				
+
 				$note  .= '<span class="block mini faded">' . $meta . '</span>';
 			}
 		}
 		$note = $note ? '<p class="admin-note">' . $note . '</p>' : '';
-		
+
 		return $note;
 	}
-		
+
 	/**
 	 * Get last admin note
-	 * 
+	 *
 	 * @param      string $notes
 	 * @param      string $reviewer
 	 * @return     string
@@ -1436,38 +1436,38 @@ class ProjectsHtml
 		$match = '';
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
 
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			$notes = $matches[0];
 			if(count($notes) > 0)
 			{
 				$match = ProjectsHtml::parseAdminNote(end($notes), $reviewer, 1, 100);
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$match = '';
 		}
-		
+
 		return $match;
 	}
-	
+
 	/**
 	 * Email
-	 * 
+	 *
 	 * @param      string $email
 	 * @param      string $subject
 	 * @param      string $body
 	 * @param      array $from
 	 * @return     void
-	 */	
-	public static function email($email, $subject, $body, $from) 
+	 */
+	public static function email($email, $subject, $body, $from)
 	{
-		if ($from) 
+		if ($from)
 		{
 			$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
 			$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
-			
+
 			$message = new \Hubzero\Mail\Message();
 			$message->setSubject($subject)
 				->addTo($email, $email)
@@ -1475,14 +1475,14 @@ class ProjectsHtml
 				->setPriority('normal');
 
 			$message->addPart($body_plain, 'text/plain');
-			
-			if ($body_html)	
+
+			if ($body_html)
 			{
 				$message->addPart($body_html, 'text/html');
 			}
-			
+
 			$message->send();
-			return true;			
+			return true;
 		}
 		return false;
 	}

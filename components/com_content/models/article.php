@@ -71,7 +71,7 @@ class ContentModelArticle extends JModelItem
 
 		// Get current user for authorisation checks
 		$user	= JFactory::getUser();
-		
+
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('article.id');
 

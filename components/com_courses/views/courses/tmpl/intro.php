@@ -51,7 +51,7 @@ $this->css('introduction', 'system')
 <?php
 if (count($this->notifications) > 0)
 {
-	foreach ($this->notifications as $notification) 
+	foreach ($this->notifications as $notification)
 	{
 		echo '<p class="' . $this->escape($notification['type']) . '">' . $notification['message'] . '</p>';
 	}
@@ -88,7 +88,7 @@ if (count($this->notifications) > 0)
 	<?php if ($this->config->get("intro_popularcourses", 1)) : ?>
 		<?php if (count($this->popularcourses) > 0) { ?>
 			<div class="popularcourses">
-				<?php 
+				<?php
 				$count = 0;
 				foreach ($this->popularcourses as $course)
 				{
@@ -102,7 +102,7 @@ if (count($this->notifications) > 0)
 					     ->set('course', $course)
 					     ->display();
 
-					if ($count == 2) 
+					if ($count == 2)
 					{
 						$count = 0;
 						echo '</div>';

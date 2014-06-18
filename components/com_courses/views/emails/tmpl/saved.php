@@ -64,7 +64,7 @@ if ($this->isNew) {
 	$message .= JText::_('COURSES_PRIVACY').': '. $privacy ."\n";
 
 	/*
-	switch ($this->course->get('access')) 
+	switch ($this->course->get('access'))
 	{
 		case 4: $access = JText::_('COURSES_ACCESS_PRIVATE');   break;
 		case 3: $access = JText::_('COURSES_ACCESS_PROTECTED'); break;
@@ -94,7 +94,7 @@ switch ($this->g_privacy)
 $message .= JText::_('COURSES_PRIVACY').': '. $privacy ."\n";
 
 /*
-switch ($this->g_access) 
+switch ($this->g_access)
 {
 	case 4: $access = JText::_('COURSES_ACCESS_PRIVATE');   break;
 	case 3: $access = JText::_('COURSES_ACCESS_PROTECTED'); break;

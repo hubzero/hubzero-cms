@@ -39,7 +39,7 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 	$jacl->addACL($option, 'manage', 'users', 'super administrator');
 	$jacl->addACL($option, 'manage', 'users', 'administrator');
 	$jacl->addACL($option, 'manage', 'users', 'manager');
-	
+
 	// Authorization check
 	$user = JFactory::getUser();
 	if (!$user->authorize($option, 'manage'))
@@ -48,9 +48,9 @@ if (version_compare(JVERSION, '1.6', 'lt'))
 		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
 	}
 }
-else 
+else
 {
-	if (!JFactory::getUser()->authorise('core.manage', $option)) 
+	if (!JFactory::getUser()->authorise('core.manage', $option))
 	{
 		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	}
@@ -90,24 +90,24 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Publications'), 
-	'index.php?option=' .  $option . '&controller=items', 
+	JText::_('Publications'),
+	'index.php?option=' .  $option . '&controller=items',
 	$controllerName == 'items'
 );
 
 JSubMenuHelper::addEntry(
-	JText::_('Licenses'), 
-	'index.php?option=' .  $option . '&controller=licenses', 
+	JText::_('Licenses'),
+	'index.php?option=' .  $option . '&controller=licenses',
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Categories'), 
-	'index.php?option=' .  $option . '&controller=categories', 
+	JText::_('Categories'),
+	'index.php?option=' .  $option . '&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Master Types'), 
-	'index.php?option=' .  $option . '&controller=types', 
+	JText::_('Master Types'),
+	'index.php?option=' .  $option . '&controller=types',
 	$controllerName == 'types'
 );
 

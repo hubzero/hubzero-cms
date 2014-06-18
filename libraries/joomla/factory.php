@@ -346,7 +346,7 @@ abstract class JFactory
 
 		$cache_time = 0;
 		$cache->setLifeTime(0);
-		
+
 		if ($cache_time > 0)
 		{
 			$cache->setLifeTime($cache_time);
@@ -357,9 +357,9 @@ abstract class JFactory
 		$simplepie->enable_cache(false);
 		$simplepie->set_feed_url($url);
 		$simplepie->force_feed(true);
-	
+
 		$contents = $cache->get(array($simplepie, 'init'), null, false, false);
-		
+
 		if ($contents)
 		{
 			return $simplepie;
@@ -393,7 +393,7 @@ abstract class JFactory
 
 		switch (strtolower($type))
 		{
-			
+
 			case 'rss':
 			case 'atom':
 				$cache_time = isset($options['cache_time']) ? $options['cache_time'] : 0;
@@ -563,9 +563,9 @@ abstract class JFactory
 
 	/**
 	 * [!] HUBZERO - Moved from Hubzero Factory
-	 * 
+	 *
 	 * Get the debug logger, creating it if it doesn't exist
-	 * 
+	 *
 	 * @return     object
 	 */
 	public static function &getLogger()
@@ -575,7 +575,7 @@ abstract class JFactory
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
 			$instance = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
 				\JDispatcher::getInstance()
 			);
 
@@ -593,9 +593,9 @@ abstract class JFactory
 
 	/**
 	 * [!] HUBZERO - Moved from Hubzero Factory
-	 * 
+	 *
 	 * Get the auth logger, creating it if it doesn't exist
-	 * 
+	 *
 	 * @return     object
 	 */
 	public static function &getAuthLogger()
@@ -605,7 +605,7 @@ abstract class JFactory
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
 			$instance = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
 				\JDispatcher::getInstance()
 			);
 

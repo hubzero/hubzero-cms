@@ -76,11 +76,11 @@ if ($this->group->isSuperGroup())
 			<span class="inviteonly">Group is Invite Only</span>
 		</li>
 	<?php elseif($this->group->get('join_policy') == 0 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
-		<?php if($membership_control == 1) : ?> 
+		<?php if($membership_control == 1) : ?>
 			<li>
 				<a class="join" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>">Join Group</a>
 			</li>
-		<?php endif; ?> 
+		<?php endif; ?>
 	<?php elseif($this->group->get('join_policy') == 1 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<?php if($membership_control == 1) : ?>
 			<?php if(in_array($this->juser->get("id"), $this->group->get("applicants"))) : ?>
@@ -102,7 +102,7 @@ if ($this->group->isSuperGroup())
 				<span class="btn dropdown-toggle"></span>
 				<ul class="dropdown-menu">
 					<?php if($isManager) : ?>
-						<?php if($membership_control == 1) : ?> 
+						<?php if($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
 									Invite Members
@@ -119,13 +119,13 @@ if ($this->group->isSuperGroup())
 								Manage Group Pages
 							</a>
 						</li>
-						<?php if($membership_control == 1) : ?> 
+						<?php if($membership_control == 1) : ?>
 							<li class="divider"></li>
 						<?php endif; ?>
 					<?php endif; ?>
-					
+
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
-						<?php if($membership_control == 1) : ?> 
+						<?php if($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
 									Invite Members
@@ -133,7 +133,7 @@ if ($this->group->isSuperGroup())
 							</li>
 						<?php endif; ?>
 					<?php endif; ?>
-					
+
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.edit')) : ?>
 						<li>
 							<a class="group-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
@@ -141,7 +141,7 @@ if ($this->group->isSuperGroup())
 							</a>
 						</li>
 					<?php endif; ?>
-					
+
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 						<li>
 							<a class="group-pages" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
@@ -149,9 +149,9 @@ if ($this->group->isSuperGroup())
 							</a>
 						</li>
 					<?php endif; ?>
-					
+
 					<?php if($canCancel) : ?>
-						<?php if($membership_control == 1) : ?> 
+						<?php if($membership_control == 1) : ?>
 							<li>
 								<a class="group-cancel cancel_group_membership" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
 									Cancel Group Membership
@@ -163,7 +163,7 @@ if ($this->group->isSuperGroup())
 						<?php endif; ?>
 					<?php endif; ?>
 					<?php if($isManager) : ?>
-						<?php if($membership_control == 1) : ?> 
+						<?php if($membership_control == 1) : ?>
 							<li>
 								<a class="group-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=delete'); ?>">
 									Delete Group
@@ -171,7 +171,7 @@ if ($this->group->isSuperGroup())
 							</li>
 						<?php endif; ?>
 					<?php endif; ?>
-					
+
 					<?php if ($this->logoutLink) : ?>
 						<li class="divider"></li>
 						<li>

@@ -34,34 +34,34 @@ defined('_JEXEC') or die( 'Restricted access' );
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'handler.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'handlerassoc.php');
 
 /**
  * Publications handlers class
- * 
+ *
  */
 class PublicationsModelHandlers extends JObject
-{		
+{
 	/**
 	 * JDatabase
-	 * 
+	 *
 	 * @var object
 	 */
 	public $_db   		= NULL;
-	
+
 	/**
 	* @var    array  Loaded elements
 	*/
 	protected $_types 	= array();
-	
+
 	/**
 	* @var    array  Directories, where attachment types can be stored
 	*/
 	protected $_path 	= array();
-	
+
 	/**
 	 * Constructor
 	 *
@@ -73,16 +73,16 @@ class PublicationsModelHandlers extends JObject
 		$this->_db 		= $db;
 		$this->_path[] 	= dirname(__FILE__) . DS . 'handlers';
 	}
-	
+
 	/**
 	 * Show handler selection
 	 *
 	 * @return object
 	 */
 	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments)
-	{				
+	{
 		$html = '<div class="handler-controls">';
-		
+
 		// We have a handler assigned
 		if ($handler)
 		{
@@ -90,48 +90,48 @@ class PublicationsModelHandlers extends JObject
 			{
 				$handler = $this->ini($handler);
 			}
-			
+
 			$html .= $handler->drawSelectedHandler($pub, $elementid, $attachments);
 		}
 		elseif ($handlers)
 		{
 			// Handler choice
 			// TBD
-			
+
 			if ($handlers == 'auto')
 			{
 				// Look for relevant handlers
 				// TBD
 			}
 		}
-		
+
 		$html.= '</div>';
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Initialize
 	 *
 	 * @return object
 	 */
 	public function ini($name)
-	{				
+	{
 		// Load
 		$handler = $this->loadHandler($name);
-		
+
 		if ($handler === false)
 		{
 			return false;
 		}
-		
+
 		// Load config
 		$handler->getConfig();
-		
+
 		return $handler;
-		
+
 	}
-	
+
 	/**
 	 * Loads a handler
 	 *
@@ -141,21 +141,21 @@ class PublicationsModelHandlers extends JObject
 	{
 		$signature = md5($name);
 
-		if ((isset($this->_types[$signature]) 
-			&& !($this->_types[$signature] instanceof __PHP_Incomplete_Class))  
-			&& $new === false) 
+		if ((isset($this->_types[$signature])
+			&& !($this->_types[$signature] instanceof __PHP_Incomplete_Class))
+			&& $new === false)
 		{
 			return	$this->_types[$signature];
-		}		
-		
+		}
+
 		$elementClass = 'PublicationsModelHandler' . ucfirst($name);
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
-			if (isset($this->_path)) 
+			if (isset($this->_path))
 			{
 				$dirs = $this->_path;
-			} 
-			else 
+			}
+			else
 			{
 				$dirs = array();
 			}
@@ -163,24 +163,24 @@ class PublicationsModelHandlers extends JObject
 			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file)) 
+			if ($elementFile = JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
-			} 
-			else 
+			}
+			else
 			{
 				$false = false;
 				return $false;
 			}
 		}
 
-		if (!class_exists($elementClass)) 
+		if (!class_exists($elementClass))
 		{
 			$false = false;
 			return $false;
 		}
-		
+
 		$this->_types[$signature] = new $elementClass($this);
-		return $this->_types[$signature];		
+		return $this->_types[$signature];
 	}
 }

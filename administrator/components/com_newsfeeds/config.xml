@@ -58,9 +58,9 @@
 			label="COM_NEWSFEEDS_FIELD_CHARACTER_COUNT_LABEL"
 			description="COM_NEWSFEEDS_FIELD_CHARACTER_COUNT_DESC" />
 
-		<field 
+		<field
 			id="feed_display_order"
-			name="feed_display_order" 
+			name="feed_display_order"
 			type="list"
 			label="COM_NEWSFEEDS_FIELD_FEED_DISPLAY_ORDER_LABEL"
 			description="COM_NEWSFEEDS_FIELD_FEED_DISPLAY_ORDER_DESC"

@@ -44,28 +44,28 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 	/**
 	 * Resource areas
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_areas = null;
 
 	/**
 	 * Resource categories
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_cats  = null;
 
 	/**
 	 * Record count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_total = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject The object to observe
 	 * @param      array  $config   An optional associative array of configuration settings.
 	 * @return     void
@@ -80,19 +80,19 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the name of the area this plugin retrieves records for
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onTagAreas()
 	{
 		$areas = $this->_areas;
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			return $areas;
 		}
 
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			// Get categories
 			$database = JFactory::getDBO();
@@ -121,7 +121,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 * 
+	 *
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -132,18 +132,18 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
 			$ars = $this->onTagAreas();
 			if (!isset($areas['resources']) && $areas[0] != 'resources' && (count($areas) == 1
-			 && !array_intersect($areas, array_keys($ars['resources'])))) 
+			 && !array_intersect($areas, array_keys($ars['resources']))))
 			{
 				return array();
 			}
 		}
 
 		// Do we have any tags?
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return array();
 		}
@@ -171,7 +171,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 		// Get categories
 		$categories = $this->_cats;
-		if (!is_array($categories)) 
+		if (!is_array($categories))
 		{
 			$rt = new ResourcesType($database);
 			$categories = $rt->getMajorTypes();
@@ -188,9 +188,9 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$cats[$normalized]['id'] = $categories[$i]->id;
 		}
 
-		if ($limit) 
+		if ($limit)
 		{
-			if ($this->_total != null) 
+			if ($this->_total != null)
 			{
 				$total = 0;
 				$t = $this->_total;
@@ -199,7 +199,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 					$total += $l;
 				}
 
-				if (count($areas) <= 1 && $total == 0) 
+				if (count($areas) <= 1 && $total == 0)
 				{
 					return array();
 				}
@@ -212,14 +212,14 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources') 
+			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources')
 			{
 				$filters['type'] = $cats[$areas[0]]['id'];
 			}
 
 			// Get results
 			$query = $this->_buildPluginQuery($filters);
-			if (count($areas) > 1) 
+			if (count($areas) > 1)
 			{
 				plgTagsResources::documents();
 				return $query;
@@ -230,16 +230,16 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$rows = $database->loadObjectList();
 
 			// Did we get any results?
-			if ($rows) 
+			if ($rows)
 			{
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
-					if ($row->alias) 
+					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
-					} 
-					else 
+					}
+					else
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
 					}
@@ -248,8 +248,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 			// Return the results
 			return $rows;
-		} 
-		else 
+		}
+		else
 		{
 			$filters['select'] = 'count';
 
@@ -258,7 +258,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$ares = $this->onTagAreas();
 			foreach ($ares as $area=>$val)
 			{
-				if (is_array($val)) 
+				if (is_array($val))
 				{
 					foreach ($val as $a => $t)
 					{
@@ -279,7 +279,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build a database query
-	 * 
+	 *
 	 * @param      array $filters Options for building the query
 	 * @return     string SQL
 	 */
@@ -291,22 +291,22 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		$rt = new ResourcesType($database);
 
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query = "SELECT count(f.id) FROM (SELECT r.id, COUNT(DISTINCT t.tagid) AS uniques ";
-			} 
-			else 
+			}
+			else
 			{
 				$query = "SELECT count(DISTINCT r.id) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
-			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,  
+			$query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,
 					CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section ";
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
@@ -314,24 +314,24 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}
 		$query .= "FROM #__resources AS r ";
 		$query .= "LEFT JOIN " . $rt->getTableName() . " AS rt ON r.type=rt.id ";
-		if (isset($filters['tag'])) 
+		if (isset($filters['tag']))
 		{
 			$query .= ", #__tags_object AS t, #__tags AS tg ";
 		}
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
-		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized'])) 
+		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized']))
 		{
 			$query .= "AND r.published=1 AND r.access<4 ";
 		}
-		if (isset($filters['tag'])) 
+		if (isset($filters['tag']))
 		{
 			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
 		}
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$ids = implode(',', $filters['tags']);
 			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid IN (" . $ids . ") ";
@@ -340,15 +340,15 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$query .= "AND r.type=" . $filters['type'] . " ";
 		}
 
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= " GROUP BY r.id HAVING uniques=" . count($filters['tags']) . " ";
 		}
-		if (isset($filters['select']) && $filters['select'] != 'count') 
+		if (isset($filters['select']) && $filters['select'] != 'count')
 		{
-			if (isset($filters['sortby'])) 
+			if (isset($filters['sortby']))
 			{
-				if (isset($filters['groupby'])) 
+				if (isset($filters['groupby']))
 				{
 					$query .= "GROUP BY r.id ";
 				}
@@ -365,14 +365,14 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 					case 'jobs':    $query .= "jobs DESC";                     break;
 				}
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			if (isset($filters['limit']) && $filters['limit'] != 'all')
 			{
 				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
 			}
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query .= ") AS f";
 			}
@@ -383,7 +383,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Include needed libraries and push scripts and CSS to the document
-	 * 
+	 *
 	 * @return     void
 	 */
 	public static function documents()
@@ -397,7 +397,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Static method for formatting results
-	 * 
+	 *
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
@@ -430,7 +430,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
 		}
 
-		if (strstr($row->href, 'index.php')) 
+		if (strstr($row->href, 'index.php'))
 		{
 			$row->href = JRoute::_($row->href);
 		}
@@ -449,16 +449,16 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}*/
 		$html .= 'resource">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($rparams->get('show_ranking', $config->get('show_ranking'))) 
+		if ($rparams->get('show_ranking', $config->get('show_ranking')))
 		{
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
 
-			if ($row->category == 'Tools') 
+			if ($row->category == 'Tools')
 			{
 				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			} 
-			else 
+			}
+			else
 			{
 				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
@@ -468,7 +468,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
 			$r = (10*$row->ranking);
-			if (intval($r) < 10) 
+			if (intval($r) < 10)
 			{
 				$r = '0' . $r;
 			}
@@ -482,8 +482,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t\t\t" . '</dd>' . "\n";
 			$html .= "\t\t\t" . '</dl>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
-		} 
-		elseif ($rparams->get('show_rating', $config->get('show_rating'))) 
+		}
+		elseif ($rparams->get('show_rating', $config->get('show_rating')))
 		{
 			switch ($row->rating)
 			{
@@ -506,16 +506,16 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '</div>'."\n";
 		}
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($helper->contributors) 
+		if ($helper->contributors)
 		{
 			$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_RESOURCES_CONTRIBUTORS') . ' ' . stripslashes($helper->contributors);
 		}
 		$html .= '</p>' . "\n";
-		if ($row->itext) 
+		if ($row->itext)
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . "\n";
-		} 
-		else if ($row->ftext) 
+		}
+		else if ($row->ftext)
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}

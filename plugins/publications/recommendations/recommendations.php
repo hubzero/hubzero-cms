@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
-	
+
 /**
  * Publications Plugin class for recommendations
  */
@@ -40,7 +40,7 @@ class plgPublicationRecommendations extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -48,17 +48,17 @@ class plgPublicationRecommendations extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'recommendations' );
 		$this->_params = new JParameter( $this->_plugin->params );
 
 		$this->loadLanguage();
 	}
-	
+
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @return     array
 	 */
@@ -72,7 +72,7 @@ class plgPublicationRecommendations extends JPlugin
 
 	/**
 	 * Return data on a publication sub view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $publication 	Current publication
 	 * @param      string  $option    		Name of the component
 	 * @param      integer $miniview  		View style
@@ -85,10 +85,10 @@ class plgPublicationRecommendations extends JPlugin
 			'metadata'=>'',
 			'name'=>'recommendations'
 		);
-				
+
 		// Get some needed libraries
 		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'publications' . DS . 'recommendations' . DS . 'publication.recommendation.php');
-		
+
 		// Set some filters for returning results
 		$filters = array();
 		$filters['id'] = $publication->id;
@@ -96,14 +96,14 @@ class plgPublicationRecommendations extends JPlugin
 		$filters['threshold'] = ($filters['threshold']) ? $filters['threshold'] : '0.21';
 		$filters['limit'] = $this->_params->get('display_limit');
 		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
-		
+
 		// Get recommendations
 		$database = JFactory::getDBO();
 		$r = new PublicationRecommendation($database);
 		$results = $r->getResults($filters);
-		
+
 		// Instantiate a view
-		if ($miniview) 
+		if ($miniview)
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -113,11 +113,11 @@ class plgPublicationRecommendations extends JPlugin
 					'layout'=>'mini'
 				)
 			);
-		} 
-		else 
+		}
+		else
 		{
 			\Hubzero\Document\Assets::addPluginScript('resources', 'recommendations');
-			
+
 			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder'=>'publications',
@@ -131,7 +131,7 @@ class plgPublicationRecommendations extends JPlugin
 		$view->option = $option;
 		$view->publication = $publication;
 		$view->results = $results;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}

@@ -40,7 +40,7 @@ class CollectionsTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class CollectionsTags extends TagsHandler
 
 	/**
 	 * Get tags for a list of IDs
-	 * 
+	 *
 	 * @param      array   $ids       Bulletin ids
 	 * @param      integer $admin     Admin flag
 	 * @return     array
@@ -71,8 +71,8 @@ class CollectionsTags extends TagsHandler
 		$ids = array_map('intval', $ids);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
-				FROM " . $tt->getTableName() . " AS t 
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$this->_tbl' 
+				FROM " . $tt->getTableName() . " AS t
+				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$this->_tbl'
 				WHERE rt.objectid IN (" . implode(',', $ids) . ") ";
 
 		switch ($admin)
@@ -91,7 +91,7 @@ class CollectionsTags extends TagsHandler
 		$sql .= "ORDER BY raw_tag ASC";
 		$this->_db->setQuery($sql);
 		$items = $this->_db->loadObjectList();
-		
+
 		$tags = array();
 		if ($items)
 		{

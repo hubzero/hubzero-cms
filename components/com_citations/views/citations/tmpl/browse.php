@@ -116,7 +116,7 @@ if ($label == "none") {
 					<li><a <?php if($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>">Non-Affiliated</a></li>
 				</ul>
 				<div class="clearfix"></div>
-					
+
 				<?php if(count($this->citations) > 0) : ?>
 					<?php
 						$formatter = new CitationFormat();
@@ -157,7 +157,7 @@ if ($label == "none") {
 
 									<?php if ($label != "none") : ?>
 										<td class="citation-label <?php echo $citations_label_class; ?>">
-											<?php 
+											<?php
 												$type = "";
 												foreach($this->types as $t) {
 													if ($t['id'] == $cite->type) {
@@ -183,19 +183,19 @@ if ($label == "none") {
 										</td>
 									<?php endif; ?>
 									<td class="citation-container">
-										<?php 
-											$formatted = $cite->formatted 
-												? $cite->formatted 
-												: $formatter->formatCitation($cite, 
+										<?php
+											$formatted = $cite->formatted
+												? $cite->formatted
+												: $formatter->formatCitation($cite,
 													$this->filters['search'], $coins, $this->config);
-													
+
 											if ($cite->doi && $cite->url)
 											{
-												$formatted = str_replace('doi:' . $cite->doi, 
-													'<a href="' . $cite->url . '" rel="external">' 
+												$formatted = str_replace('doi:' . $cite->doi,
+													'<a href="' . $cite->url . '" rel="external">'
 													. 'doi:' . $cite->doi . '</a>', $formatted);
 											}
-											
+
 											echo $formatted; ?>
 										<?php
 											//get this citations rollover param
@@ -242,7 +242,7 @@ if ($label == "none") {
 											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView && ($cite->title && $cite->author && $cite->publisher))
 											{
-												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); 
+												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl);
 											}
 										?>
 										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
@@ -261,7 +261,7 @@ if ($label == "none") {
 				<?php else : ?>
 					<p class="warning"><?php echo JText::_('COM_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 				<?php endif; ?>
-				<?php 
+				<?php
 					$this->pageNav->setAdditionalUrlParam('task', 'browse');
 					foreach ($this->filters as $key => $value)
 					{
@@ -305,7 +305,7 @@ if ($label == "none") {
 				</label>
 				<label>
 					<?php echo JText::_('Tags'); ?>:
-					<?php 
+					<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
 						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tag', 'actags', '', $this->filters['tag'])));  // type, field name, field id, class, value
@@ -363,58 +363,58 @@ if ($label == "none") {
 				<fieldset>
 					<legend><?php echo JText::_('Reference Type'); ?></legend>
 					<label>
-						<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Research'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Education'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Education/Research'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Cyberinfrastructure'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
 					<legend><?php echo JText::_('Author Geography'); ?></legend>
 					<label>
-						<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('US'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('North America'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Europe'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Asia'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
 					<legend><?php echo JText::_('Author Affiliation'); ?></legend>
 					<label>
-						<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('University'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Industry'); ?>
 					</label>
 					<label>
-						<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> /> 
+						<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('Government'); ?>
 					</label>
 				</fieldset>
 
-				<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>   
+				<input type="hidden" name="idlist" value="<?php echo $this->filters['idlist']; ?>"/>
 				<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 
 				<p class="submit">
@@ -426,9 +426,9 @@ if ($label == "none") {
 				<fieldset id="download-batch">
 					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
 					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
-					
-					<input type="submit" name="download" class="download-endnote" value="EndNote" /> 
-					| 
+
+					<input type="submit" name="download" class="download-endnote" value="EndNote" />
+					|
 					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
 				</fieldset>
 			<?php endif; ?>

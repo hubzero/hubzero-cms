@@ -39,7 +39,7 @@ class modWishVoters extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -63,13 +63,13 @@ class modWishVoters extends \Hubzero\Module\Module
 		$category = JRequest::getVar('category', '');
 
 		// figure list id
-		if ($category && $refid) 
+		if ($category && $refid)
 		{
 			$listid = $objWishlist->get_wishlistID($refid, $category);
 		}
 
 		// cannot rank a wish if list/wish is not found
-		if (!$listid) 
+		if (!$listid)
 		{
 			echo JText::_('Cannot locate a wish or a wish list');
 			return;
@@ -81,7 +81,7 @@ class modWishVoters extends \Hubzero\Module\Module
 			. " GROUP BY v.userid ORDER BY times DESC, v.voted DESC "
 		);
 		$this->rows = $database->loadObjectList();
-		if ($database->getErrorNum()) 
+		if ($database->getErrorNum())
 		{
 			$this->setError($database->stderr());
 			return JText::_('Error occurred retrieving wish voters');

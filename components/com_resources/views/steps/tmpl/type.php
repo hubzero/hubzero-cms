@@ -56,21 +56,21 @@ $this->css('create.css')
 	<div class="subject">
 		<div class="grid">
 <?php
-	if ($this->types) 
+	if ($this->types)
 	{
 		$i = 0;
 		$clm = '';
 		foreach ($this->types as $type)
 		{
-			if ($type->contributable != 1) 
+			if ($type->contributable != 1)
 			{
 				continue;
 			}
-			if ($type->id == 7) 
+			if ($type->id == 7)
 			{
 				$url = JRoute::_('index.php?option=com_tools&task=create');
 			}
-			else 
+			else
 			{
 				$url = JRoute::_('index.php?option=' . $this->option . '&task=draft&step=' . $this->step . '&type=' . $type->id . ($this->group ? '&group=' . $this->group : ''));
 			}
@@ -84,11 +84,11 @@ $this->css('create.css')
 				default: $clm = ''; break;
 			}
 
-			if (substr($type->alias, -3) == 'ies') 
+			if (substr($type->alias, -3) == 'ies')
 			{
 				$cls = $type->alias;
-			} 
-			else 
+			}
+			else
 			{
 				$cls = substr($type->alias, 0, -1);
 			}
@@ -100,14 +100,14 @@ $this->css('create.css')
 			</div>
 		</div><!-- / .col span-third <?php echo $clm; ?> -->
 <?php
-			if ($clm == 'omega') 
+			if ($clm == 'omega')
 			{
 				echo '</div><div class="grid">';
 				$clm = '';
 				$i = 0;
 			}
 		}
-		if ($i == 1 || $i == 2) 
+		if ($i == 1 || $i == 2)
 		{
 ?>
 		<div class="col span-third omage">
@@ -122,9 +122,9 @@ $this->css('create.css')
 ?>
 
 		<p class="info">
-			In order for <?php echo $jconfig->getValue('config.sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo $jconfig->getValue('config.sitename'); ?> must be authorized to 
-			hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="/legal/license">this agreement</a>. 
-			You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="/legal/licensing">license your contributions</a> 
+			In order for <?php echo $jconfig->getValue('config.sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo $jconfig->getValue('config.sitename'); ?> must be authorized to
+			hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="/legal/license">this agreement</a>.
+			You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="/legal/licensing">license your contributions</a>
 			so that others can build upon them.
 		</p>
 
@@ -132,11 +132,11 @@ $this->css('create.css')
 			<div class="container-block">
 				<h3>Frequently Asked Questions</h3>
 				<div class="entry-content">
-					<ul class="faq-list"> 
-						<li><a href="#unknowntype">What if I want to contribute a type not listed here?</a></li> 
-						<li><a href="#drafts">What if I don't have all the materials right now?</a></li> 
-						<li><a href="#submission">What happens after submission?</a></li> 
-						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li> 
+					<ul class="faq-list">
+						<li><a href="#unknowntype">What if I want to contribute a type not listed here?</a></li>
+						<li><a href="#drafts">What if I don't have all the materials right now?</a></li>
+						<li><a href="#submission">What happens after submission?</a></li>
+						<li><a href="#retract">Ooops! I missed something and/or submitted too early!</a></li>
 					</ul>
 				</div>
 				<div class="entry-content">

@@ -46,91 +46,91 @@ class WishlistModelWish extends WishlistModelAbstract
 {
 	/**
 	 * Open state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_OPEN    = 0;
 
 	/**
 	 * Granted state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_GRANTED = 1;
 
 	/**
 	 * Deleted state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_DELETED = 2;
 
 	/**
 	 * Rejected state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_REJECTED = 3;
 
 	/**
 	 * Withdrawn state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_WITHDRAWN = 4;
 
 	/**
 	 * Withdrawn state
-	 * 
+	 *
 	 * @var integer
 	 */
 	const WISH_STATE_ACCEPTED = 6;
 
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'Wish';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_wishlist.wish.about';
 
 	/**
 	 * ForumModelAttachment
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_attachment = null;
 
 	/**
 	 * WishlistModelAdapter
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_adapter = null;
 
 	/**
 	 * WishlistModelPlan
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_plan = null;
 
 	/**
 	 * WishlistModelPlan
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_proposer = null;
 
 	/**
 	 * WishlistModelPlan
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_cache = array(
@@ -151,7 +151,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -169,7 +169,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			$key = $oid['id'];
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid);
 		}
@@ -179,7 +179,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
@@ -206,7 +206,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get the attachment on the wish
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function attachment()
@@ -220,7 +220,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp for the proposed datetime
-	 * 
+	 *
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
 	 */
@@ -231,7 +231,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp for the granted datetime
-	 * 
+	 *
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
 	 */
@@ -242,7 +242,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp for the due datetime
-	 * 
+	 *
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
 	 */
@@ -253,7 +253,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $key  Field name to use
 	 * @param      string $rtrn What data to return
 	 * @return     boolean
@@ -278,7 +278,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish is open
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isOpen()
@@ -292,7 +292,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish was rejected
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isAccepted()
@@ -306,7 +306,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish was rejected
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isRejected()
@@ -320,7 +320,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish was withdrawn
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isWithdrawn()
@@ -334,7 +334,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish was granted
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isGranted()
@@ -348,7 +348,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish is private
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isPrivate()
@@ -362,7 +362,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Determine if wish was reported for abuse
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isReported()
@@ -372,17 +372,17 @@ class WishlistModelWish extends WishlistModelAbstract
 			return true;
 		}
 		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1) 
+		if ($this->get('reports', -1) == -1)
 		{
 			$reporter = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php';
-			if (is_file($reporter)) 
+			if (is_file($reporter))
 			{
 				include_once($reporter);
 
 				$ra = new ReportAbuse($this->_db);
 
 				$this->set('reports', $ra->getCount(array(
-					'id'       => $this->get('id'), 
+					'id'       => $this->get('id'),
 					'category' => 'wish'
 				)));
 
@@ -397,7 +397,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Return wish status in various formats
-	 * 
+	 *
 	 * @param      string $as Format to return data in [text, alias, note, number]
 	 * @return     mixed string|integer
 	 */
@@ -409,7 +409,7 @@ class WishlistModelWish extends WishlistModelAbstract
 		{
 			case 'text':
 				$ky = 'COM_WISHLIST_WISH_STATUS_';
-				switch ($this->get('status')) 
+				switch ($this->get('status'))
 				{
 					case static::WISH_STATE_ACCEPTED:  $state = JText::_($ky . 'ACCEPTED');  break;
 					case static::WISH_STATE_WITHDRAWN: $state = JText::_($ky . 'WITHDRAWN'); break;
@@ -428,7 +428,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			break;
 
 			case 'alias':
-				switch ($this->get('status')) 
+				switch ($this->get('status'))
 				{
 					case static::WISH_STATE_ACCEPTED:  $state = 'accepted';  break;
 					case static::WISH_STATE_WITHDRAWN: $state = 'withdrawn'; break;
@@ -447,23 +447,23 @@ class WishlistModelWish extends WishlistModelAbstract
 			break;
 
 			case 'note':
-				switch ($this->get('status')) 
+				switch ($this->get('status'))
 				{
 					case static::WISH_STATE_ACCEPTED:
 						$state  = JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
-						$state .= $this->plan()->exists() 
-								? '; ' . JText::_('COM_WISHLIST_WISH_PLAN_STARTED') 
+						$state .= $this->plan()->exists()
+								? '; ' . JText::_('COM_WISHLIST_WISH_PLAN_STARTED')
 								: '';
-						$state .= $this->due() != '0000-00-00 00:00:00' 
-								? '; ' . JText::_('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due() 
+						$state .= $this->due() != '0000-00-00 00:00:00'
+								? '; ' . JText::_('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
 								: '';
 					break;
 					case static::WISH_STATE_WITHDRAWN: $state = JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
 					case static::WISH_STATE_REJECTED:  $state = JText::_('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
 					case static::WISH_STATE_DELETED:   $state = JText::_('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
-					case static::WISH_STATE_GRANTED: 
-						$state = $this->granted() != '0000-00-00 00:00:00' 
-								? JText::sprintf('on %s by %s', $this->granted('date'), $this->get('grantedby')) 
+					case static::WISH_STATE_GRANTED:
+						$state = $this->granted() != '0000-00-00 00:00:00'
+								? JText::sprintf('on %s by %s', $this->granted('date'), $this->get('grantedby'))
 								: '';
 					break;
 					case static::WISH_STATE_OPEN:
@@ -485,7 +485,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params String or array of extra params to append
 	 * @return     string
@@ -498,7 +498,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	private function _adapter()
@@ -556,7 +556,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get tags on an entry
-	 * 
+	 *
 	 * @param      string  $what  Data format to return (string, array, cloud)
 	 * @param      integer $admin Get admin tags? 0=no, 1=yes
 	 * @return     mixed
@@ -590,7 +590,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
@@ -605,7 +605,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -643,8 +643,8 @@ class WishlistModelWish extends WishlistModelAbstract
 					$this->set('about', $content);
 
 					/*$this->set('about.parsed', $this->get('about.parsed') . $attach->getAttachment(
-						$this->get('id'), 
-						$this->link('download'), 
+						$this->get('id'),
+						$this->link('download'),
 						$this->_config
 					));*/
 
@@ -674,7 +674,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function plan()
@@ -689,7 +689,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function neighbor($direction, $filters=array(), $user_id=null)
@@ -706,18 +706,18 @@ class WishlistModelWish extends WishlistModelAbstract
 		}
 
 		return $this->_tbl->getWishId(
-			$direction, 
-			$this->get('id'), 
-			$this->get('wishlist'), 
-			$this->get('admin', 0), 
-			$user_id, 
+			$direction,
+			$this->get('id'),
+			$this->get('wishlist'),
+			$this->get('admin', 0),
+			$user_id,
 			$filters
 		);
 	}
 
 	/**
 	 * Vote on the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function rank($effort, $importance) //vote
@@ -733,12 +733,12 @@ class WishlistModelWish extends WishlistModelAbstract
 		$tbl->importance = $importance;
 		$tbl->effort     = $effort;
 
-		if (!$tbl->check()) 
+		if (!$tbl->check())
 		{
 			$this->setError($tbl->getError());
 			return false;
 		}
-		if (!$tbl->store()) 
+		if (!$tbl->store())
 		{
 			$this->setError($tbl->getError());
 			return false;
@@ -749,7 +749,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Vote on the entry
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function vote($vote)
@@ -785,12 +785,12 @@ class WishlistModelWish extends WishlistModelAbstract
 		$tbl->voted       = JFactory::getDate()->toSql();
 		$tbl->helpful     = $vote;
 
-		if (!$tbl->check()) 
+		if (!$tbl->check())
 		{
 			$this->setError($tbl->getError());
 			return false;
 		}
-		if (!$tbl->store()) 
+		if (!$tbl->store())
 		{
 			$this->setError($tbl->getError());
 			return false;
@@ -801,7 +801,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get a list or count of comments
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -835,19 +835,19 @@ class WishlistModelWish extends WishlistModelAbstract
 				{
 					$this->_cache['comments.count'] = 0;
 
-					if (!$this->_cache['comments.list']) 
+					if (!$this->_cache['comments.list'])
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($c as $com)
 					{
 						$this->_cache['comments.count']++;
-						if ($com->replies()->total()) 
+						if ($com->replies()->total())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_cache['comments.count']++;
-								if ($rep->replies()->total()) 
+								if ($rep->replies()->total())
 								{
 									$this->_cache['comments.count'] += $rep->replies()->total();
 								}
@@ -863,19 +863,19 @@ class WishlistModelWish extends WishlistModelAbstract
 				{
 					$this->_cache['comments.authors'] = array();
 
-					if (!$this->_cache['comments.authors']) 
+					if (!$this->_cache['comments.authors'])
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($c as $com)
 					{
 						$this->_cache['comments.authors'][] = $com->get('added_by');
-						if ($com->replies()->total()) 
+						if ($com->replies()->total())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_cache['comments.authors'][] = $rep->get('added_by');
-								if ($rep->replies()->total()) 
+								if ($rep->replies()->total())
 								{
 									foreach ($rep->replies() as $res)
 									{
@@ -915,7 +915,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get a list or count of ranks
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -966,7 +966,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Get a ranking
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @return     mixed
 	 */
@@ -985,7 +985,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string  $action    Action to check
 	 * @param      string  $assetType Type of asset to check
 	 * @param      integer $assetId   ID of item to check access on
@@ -993,7 +993,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	 */
 	public function access($action='view', $assetType='wish', $assetId=null)
 	{
-		if (!$this->config()->get('access-check-list-done', false) 
+		if (!$this->config()->get('access-check-list-done', false)
 		 || !$this->config()->get('access-check-wish-done', false))
 		{
 
@@ -1036,7 +1036,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 					// Is the user logged in?
 					$juser = JFactory::getUser();
-					if (!$juser->get('guest')) 
+					if (!$juser->get('guest'))
 					{
 						// Is the user the wish proposer?
 						if ($juser->get('id') == $this->get('proposed_by'))
@@ -1059,7 +1059,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 	/**
 	 * Purge data associated with this wish
-	 * 
+	 *
 	 * @param      string  $what What to purge
 	 * @return     boolean True on success, false if not
 	 */

@@ -96,8 +96,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <?php if ($this->rows->total() > 0) { ?>
 	<div id="posts">
-	<?php 
-	foreach ($this->rows as $row) 
+	<?php
+	foreach ($this->rows as $row)
 	{
 		?>
 		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">

@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Student'), 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -59,15 +59,15 @@ foreach ($roles as $role)
 }
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	// form field validation
 	if ($('offering_id').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
@@ -119,7 +119,7 @@ function submitbutton(pressbutton)
 								}
 							?>
 							</optgroup>
-							<?php 
+							<?php
 							}
 						}
 					?>
@@ -151,7 +151,7 @@ function submitbutton(pressbutton)
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Progress'); ?></span></legend>
-			
+
 			<table class="admintable">
 				<tbody>
 					<tr>

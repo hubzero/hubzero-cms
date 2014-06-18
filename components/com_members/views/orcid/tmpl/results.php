@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $orcid_html = '';
-		
+
 $orcid_html .= "<ol class=\"results\" id=\"orcid-results-list\">\n";
 
 foreach ($this->records as $record)

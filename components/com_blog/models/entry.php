@@ -42,63 +42,63 @@ class BlogModelEntry extends \Hubzero\Base\Model
 {
 	/**
 	 * Table name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'BlogTableEntry';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_blog.entry.content';
 
 	/**
 	 * BlogModelComment
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comment = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_comments = null;
 
 	/**
 	 * Comment count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_comments_count = null;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	public $params = NULL;
 
 	/**
 	 * Scope adapter
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_adapter = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid      ID (int) or alias (string)
 	 * @param      string  $scope    site|member|group
 	 * @param      integer $group_id Group ID if scope is 'group'
@@ -148,12 +148,12 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new self($oid, $scope, $group_id);
 		}
@@ -163,7 +163,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Has the publish window started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function started()
@@ -176,9 +176,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		$now = JFactory::getDate();
 
-		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != $this->_db->getNullDate() 
-		 && $this->get('publish_up') > $now) 
+		if ($this->get('publish_up')
+		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') > $now)
 		{
 			return false;
 		}
@@ -188,7 +188,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Has the publish window ended?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function ended()
@@ -201,9 +201,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		$now = JFactory::getDate();
 
-		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != $this->_db->getNullDate() 
-		 && $this->get('publish_down') <= $now) 
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') <= $now)
 		{
 			return true;
 		}
@@ -213,7 +213,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Check if the entry is available
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isAvailable()
@@ -225,7 +225,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		}
 
 		// Make sure the item is published and within the available time range
-		if ($this->started() && !$this->ended()) 
+		if ($this->started() && !$this->ended())
 		{
 			return true;
 		}
@@ -235,7 +235,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -266,13 +266,13 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Set and get a specific comment
-	 * 
+	 *
 	 * @param      integer $id ID of specific comment to fetch
 	 * @return     object BlogModelComment
 	 */
 	public function comment($id=null)
 	{
-		if (!isset($this->_comment) 
+		if (!isset($this->_comment)
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
@@ -297,7 +297,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list or count of comments
-	 * 
+	 *
 	 * @param      string  $rtrn    Data format to return
 	 * @param      array   $filters Filters to apply to data fetch
 	 * @param      boolean $clear   Clear cached data?
@@ -323,19 +323,19 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				{
 					$this->_comments_count = 0;
 
-					if (!$this->_comments) 
+					if (!$this->_comments)
 					{
 						$c = $this->comments('list', $filters);
 					}
 					foreach ($this->_comments as $com)
 					{
 						$this->_comments_count++;
-						if ($com->replies()) 
+						if ($com->replies())
 						{
 							foreach ($com->replies() as $rep)
 							{
 								$this->_comments_count++;
-								if ($rep->replies()) 
+								if ($rep->replies())
 								{
 									$this->_comments_count += $rep->replies()->total();
 								}
@@ -375,7 +375,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Get tags on an entry
-	 * 
+	 *
 	 * @param      string  $what  Data format to return (string, array, cloud)
 	 * @param      integer $admin Get admin tags? 0=no, 1=yes
 	 * @return     mixed
@@ -406,7 +406,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Tag the entry
-	 * 
+	 *
 	 * @param      string  $tags    Tags to apply
 	 * @param      integer $user_id ID of tagger
 	 * @param      integer $admin   Tag as admin? 0=no, 1=yes
@@ -421,7 +421,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string $as Format to return state in [text, number]
 	 * @return     mixed String or Integer
 	 */
@@ -454,7 +454,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type   The type of link to return
 	 * @param      mixed  $params String or array of extra params to append
 	 * @return     string
@@ -466,7 +466,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Gets a property of the adapter's object (e.g., a group, a member)
-	 * 
+	 *
 	 * @param      string $property Property to get
 	 * @return     string
 	 */
@@ -478,7 +478,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
-	 * 
+	 *
 	 * @return    object
 	 */
 	private function _adapter()
@@ -517,7 +517,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What format to return
 	 * @return     string
 	 */
@@ -541,7 +541,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Get the content of the entry
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     string
@@ -606,7 +606,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -633,7 +633,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				// Check if they're a site admin
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
-					if ($juser->authorize('com_blog', 'manage')) 
+					if ($juser->authorize('com_blog', 'manage'))
 					{
 						$this->params->set('access-admin-entry', true);
 						$this->params->set('access-manage-entry', true);
@@ -643,7 +643,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 						$this->params->set('access-edit-own-entry', true);
 					}
 				}
-				else 
+				else
 				{
 					$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
 					$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
@@ -654,11 +654,11 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				}
 
 				// If they're not an admin
-				if (!$this->params->get('access-admin-entry') 
+				if (!$this->params->get('access-admin-entry')
 				 && !$this->params->get('access-manage-entry'))
 				{
 					// Was the entry created by the current user?
-					if ($this->get('created_by') == $juser->get('id')) 
+					if ($this->get('created_by') == $juser->get('id'))
 					{
 						// Give full access
 						$this->params->set('access-view-entry', true);

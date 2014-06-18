@@ -63,8 +63,8 @@ $this->css();
 	</p>
 
 	<div id="posts">
-<?php 
-if ($this->rows->total() > 0) 
+<?php
+if ($this->rows->total() > 0)
 {
 	foreach ($this->rows as $row)
 	{
@@ -147,11 +147,11 @@ if ($this->rows->total() > 0)
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-						</a> 
-						posted 
+						</a>
+						posted
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span> 
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
 							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>
@@ -165,14 +165,14 @@ if ($this->rows->total() > 0)
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-						</a> 
-						onto 
+						</a>
+						onto
 						<a href="<?php echo JRoute::_($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
 							<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span> 
+							<span class="entry-date-at">@</span> <span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 							<span class="entry-date-on">on</span> <span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
 						</span>
 					</p>

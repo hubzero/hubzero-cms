@@ -59,7 +59,7 @@ $dispatcher = JDispatcher::getInstance();
 			<?php echo JText::_('COM_PROJECTS_AS'); ?>:
 		<?php } ?>
 		 <input class="option" name="role" id="role_owner" type="radio" value="1"  />
-		<?php echo JText::_('COM_PROJECTS_LABEL_OWNERS'); ?>  
+		<?php echo JText::_('COM_PROJECTS_LABEL_OWNERS'); ?>
 	 </label>
 	 <label>
 		<span class="and_or"><?php echo JText::_('COM_PROJECTS_OR'); ?></span>
@@ -72,7 +72,7 @@ $dispatcher = JDispatcher::getInstance();
 <div class="add-team">
 	<label id="add-users">
 		 <span class="instr i_user"><?php echo JText::_('COM_PROJECTS_ADD_IND_USER'); ?>:</span>
-		<?php 
+		<?php
 			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('members', 'newmember', 'newmember')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
@@ -83,7 +83,7 @@ $dispatcher = JDispatcher::getInstance();
 	<span class="or_separator"><?php echo strtoupper(JText::_('COM_PROJECTS_OR')); ?></span>
 	<label id="add-groups">
 		 <span class="instr i_group"><?php echo JText::_('COM_PROJECTS_ADD_GROUP_OF_USERS'); ?>:</span>
-		<?php 
+		<?php
 			$mc = $dispatcher->trigger( 'onGetMultiEntry', array(array('groups', 'newgroup', 'newgroup')) );
 			if (count($mc) > 0) {
 				echo $mc[0];
@@ -103,7 +103,7 @@ $dispatcher = JDispatcher::getInstance();
 	 	<span id="team-manage" class="manage-options hidden">
 		<span class="faded"><?php echo JText::_('COM_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=team').'?action=delete'; ?>" class="manage" id="t-delete" ><?php echo JText::_('COM_PROJECTS_DELETE'); ?></a>
-		</span>	
+		</span>
 	</p>
 	</div>
 </div>
@@ -119,47 +119,47 @@ $dispatcher = JDispatcher::getInstance();
 			</tr>
 		</thead>
 		<tbody>
-<?php foreach ($this->team as $owner) 
+<?php foreach ($this->team as $owner)
 	{
-					// Get profile thumb image 			
+					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
-					
+
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;
-					
+
 					// Determine css class for user
 					$usr_class = $owner->status == 0 ? ' class="userinvited"' : ' class="useractive"';
-					$usr_class = ($creator || ($this->project->owned_by_group && $owner->native)) 
+					$usr_class = ($creator || ($this->project->owned_by_group && $owner->native))
 						? ' class="userowner"' : $usr_class;
 					if($owner->role == 1)
 					{
-						$role = JText::_('COM_PROJECTS_LABEL_OWNER');	
+						$role = JText::_('COM_PROJECTS_LABEL_OWNER');
 					}
-					else 
+					else
 					{
 						$role = JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
-					}					
+					}
 ?>
 			<tr class="mline <?php if($owner->userid == $this->uid) { echo 'native'; } else if($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
 				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if($owner->groupid) { echo 'group:'.$owner->groupid; } ?>"  <?php if($owner->native && ($this->project->owned_by_group or ($this->managers_count == 1 && $owner->role == 1) or $this->setup)) { echo 'disabled="disabled"'; } ?> /></td>
 				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini nobsp"><?php if(!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if(!$creator) { ?></span><?php } ?></td>
-				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>				
+				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 			</tr>
 <?php } ?>
 			</tbody>
 			</table>
 	<div class="nav_pager"><p>
-		<?php 
+		<?php
 		if($this->filters['start'] == 0) {	?>
 			<span>&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></span>
 		<?php	} else {  ?>
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=edit').'/?edit=team'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
 		<?php } ?><span>&nbsp; | &nbsp;</span>
-		<?php 
+		<?php
 		if( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 			<span><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</span>
 		<?php	} else { ?>

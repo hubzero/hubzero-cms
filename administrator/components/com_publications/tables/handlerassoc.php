@@ -33,83 +33,83 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for publication handler associations
  */
-class PublicationHandlerAssoc extends JTable 
+class PublicationHandlerAssoc extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       					= NULL;
-		
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $publication_version_id 	= NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
-	var $element_id 				= NULL;	
-	
+	var $element_id 				= NULL;
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $handler_id 				= NULL;
-		
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering 					= NULL;
-		
+
 	/**
 	 * text
-	 * 
+	 *
 	 * @var text
 	 */
-	var $params 					= NULL;	
-	
+	var $params 					= NULL;
+
 	/**
 	 * Handler customization status - will not play unless status=1
-	 * 
+	 *
 	 * @var tinyint
 	 */
 	var $status 					= NULL;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
-	 */	
-	public function __construct( &$db ) 
+	 */
+	public function __construct( &$db )
 	{
 		parent::__construct( '#__publication_handler_assoc', 'id', $db );
 	}
-	
+
 	/**
 	 * Get associated handler(s)
-	 * 
+	 *
 	 * @param      integer 	$vid 		Publication Version ID
 	 * @param      integer 	$elementid  Element ID
 	 *
 	 * @return     mixed False if error, Object on success
-	 */	
-	public function getAssoc( $vid = NULL, $elementid = NULL ) 
+	 */
+	public function getAssoc( $vid = NULL, $elementid = NULL )
 	{
-		if (!intval($vid) || !intval($elementid)) 
+		if (!intval($vid) || !intval($elementid))
 		{
 			return false;
 		}
-		
+
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
 		$query  = " JOIN #__publication_handlers as H ON H.id=A.handler_id";
 		$query .= " WHERE A.publication_version_id=" . $vid;
@@ -119,5 +119,5 @@ class PublicationHandlerAssoc extends JTable
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
-	}	
+	}
 }

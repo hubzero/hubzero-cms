@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -41,40 +41,40 @@ function WishlistBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['category'])) 
+	if (!empty($query['category']))
 	{
 		$segments[] = $query['category'];
 		unset($query['category']);
 	}
 
-	if (!empty($query['rid'])) 
+	if (!empty($query['rid']))
 	{
 		$segments[] = $query['rid'];
 		unset($query['rid']);
 	}
 
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
 
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
-		if ($query['task'] != 'wishlist') 
+		if ($query['task'] != 'wishlist')
 		{
 			$segments[] = $query['task'];
 		}
 		unset($query['task']);
 	}
 
-	if (!empty($query['wishid'])) 
+	if (!empty($query['wishid']))
 	{
 		$segments[] = $query['wishid'];
 		unset($query['wishid']);
 	}
 
-	if (!empty($query['file'])) 
+	if (!empty($query['file']))
 	{
 		$segments[] = $query['file'];
 		unset($query['file']);
@@ -85,7 +85,7 @@ function WishlistBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -96,7 +96,7 @@ function WishlistParseRoute($segments)
 	// Count route segments
 	$count = count($segments);
 
-	if (empty($segments[0])) 
+	if (empty($segments[0]))
 	{
 		// default to main wish list
 		$vars['task'] = 'wishlist';
@@ -112,7 +112,7 @@ function WishlistParseRoute($segments)
 		$vars['id'] = $segments[0];
 		return $vars;
 	}
-	else if (!intval($segments[0]) && empty($segments[1])) 
+	else if (!intval($segments[0]) && empty($segments[1]))
 	{
 		// some general task
 		$vars['task'] = $segments[0];
@@ -121,22 +121,22 @@ function WishlistParseRoute($segments)
 
  	if (!empty($segments[1]))
 	{
-		if (intval($segments[0])) 
+		if (intval($segments[0]))
 		{
 			// we have a specific list id requested
 			$vars['id'] = $segments[0];
 			$vars['task'] = $segments[1];
-			if (!empty($segments[2])) 
+			if (!empty($segments[2]))
 			{
 				$vars['wishid'] = $segments[2];
-				if (!empty($segments[3])) 
+				if (!empty($segments[3]))
 				{
 					$vars['file'] = $segments[3];
 					$vars['task'] = 'download';
 				}
 			}
 		}
-		else 
+		else
 		{
 			switch ($segments[0])
 			{
@@ -160,15 +160,15 @@ function WishlistParseRoute($segments)
 					$vars['category'] = $segments[0];
 					$vars['rid'] = $segments[1];
 
-					if (!empty($segments[2])) 
+					if (!empty($segments[2]))
 					{
 						$vars['task'] = $segments[2];
 					}
-					if (!empty($segments[3])) 
+					if (!empty($segments[3]))
 					{
 						$vars['wishid'] = $segments[3];
 					}
-					if (!empty($segments[4])) 
+					if (!empty($segments[4]))
 					{
 						$vars['file'] = $segments[4];
 						$vars['task'] = 'download';

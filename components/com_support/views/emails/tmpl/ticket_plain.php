@@ -54,7 +54,7 @@ if ($submitter && is_object($submitter))
 	if (version_compare(JVERSION, '1.6', 'lt'))
 	{
 		$usertype = $submitter->get('usertype');
-	} 
+	}
 	else
 	{
 		jimport( 'joomla.user.helper' );
@@ -65,7 +65,7 @@ if ($submitter && is_object($submitter))
 $comment = $this->ticket->report;
 
 $message = '';
-if ($this->delimiter) 
+if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
 	$message .= 'You can reply to this message, just include your reply text above this area' . "\n";

@@ -58,7 +58,7 @@ if ($allowEmailResponses)
 
 	<?php if ($allowEmailResponses) { ?>
 		<div style="padding-top:25px;">
-			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) { echo 'checked="checked"'; } ?> /> 
+			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) { echo 'checked="checked"'; } ?> />
 			<label for="recvpostemail"><?php echo JText::_('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
 		</div>
 	<?php

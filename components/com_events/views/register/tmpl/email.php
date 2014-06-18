@@ -93,7 +93,7 @@ if ($this->departure) {
 
 /*if (!empty($this->bos)) {
 	$message .= 'Break Out Session(s): '."\n";
-	for ($i=0, $n=count( $this->bos ); $i < $n; $i++) 
+	for ($i=0, $n=count( $this->bos ); $i < $n; $i++)
 	{
 		$message .= '  '.$this->bos[$i]."\n";
 	}

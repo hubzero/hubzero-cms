@@ -40,7 +40,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 {
 	/**
 	 * List resource roles
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -111,7 +111,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 	/**
 	 * Add a new role
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -121,7 +121,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a role
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row=null)
@@ -144,7 +144,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 			$this->view->row = new CoursesTableRole($this->database);
 			$this->view->row->load($id);
 		}
-		
+
 		if (!$this->view->row->id)
 		{
 			$this->view->row->created_by = $this->juser->get('id');
@@ -170,7 +170,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save a role
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
@@ -215,7 +215,7 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 	/**
 	 * Remove one or more types
-	 * 
+	 *
 	 * @return     void Redirects back to main listing
 	 */
 	public function removeTask()

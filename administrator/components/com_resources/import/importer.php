@@ -40,21 +40,21 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import' . DS 
  * Import Importer class
  */
 class Importer {
-	
+
 	/**
 	 * ResourceImportInterface Object
 	 *
 	 * @access private
 	 */
 	private $adapter;
-	
+
 	/**
 	 * Array of Resource Import Adapters
 	 *
 	 * @access private
 	 */
 	private $adapters;
-	
+
 	/**
 	 * Resource Import Repository Constructor
 	 *
@@ -76,19 +76,19 @@ class Importer {
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self();
 		}
-		
+
 		return $instances[$key];
 	}
-	
+
 	/**
 	 * Method to boot import adapaters
 	 *
@@ -102,17 +102,17 @@ class Importer {
 		{
 			require_once $adapter;
 		}
-		
+
 		// anonymous function to get adapters
 		$isAdapterClass = function($class) {
-			
+
 			return (in_array('Resources\Import\Interfaces\Adapter', class_implements($class)));
 		};
-		
+
 		// set our adapters (any declared class implementing the ResourcesImportInterface)
 		$this->adapters = array_values(array_filter(get_declared_classes(), $isAdapterClass));
 	}
-	
+
 	/**
 	 * Method to set adapater
 	 *
@@ -124,7 +124,7 @@ class Importer {
 	{
 		$this->adapter = $adapter;
 	}
-	
+
 	/**
 	 * Method to get adapater
 	 *
@@ -135,7 +135,7 @@ class Importer {
 	{
 		return $this->adapter;
 	}
-	
+
 	/**
 	 * Method auto detect adapter based on mime type
 	 *
@@ -150,33 +150,33 @@ class Importer {
 		{
 			return;
 		}
-		
+
 		// get path to data file
 		$dataPath = $import->getDataPath();
-		
+
 		// get the mime type of file
 		$file  = finfo_open(FILEINFO_MIME_TYPE);
 		$mime  = finfo_file($file, $dataPath);
-		
+
 		// anonymous function to see if we can use any
 		$respondsTo = function($class) use ($mime) {
 			return $class::accepts($mime);
 		};
-		
+
 		// set the adapter if we found one
 		$responded = array_filter($this->adapters, $respondsTo);
 		if ($adapter = array_shift($responded))
 		{
 			$this->setAdapter(new $adapter());
 		}
-		
+
 		// do we still not have adapter
 		if (!$this->adapter)
 		{
-			throw new \Exception( \JText::_('Resource Import: No adapter found to count import data.') ); 
+			throw new \Exception( \JText::_('Resource Import: No adapter found to count import data.') );
 		}
 	}
-	
+
 	/**
 	 * Count import data
 	 *
@@ -187,11 +187,11 @@ class Importer {
 	{
 		// autodetect adapter
 		$this->autoDetectAdapter($import);
-		
+
 		// call count on adapter
 		return $this->adapter->count($import);
 	}
-	
+
 	/**
 	 * Process import data
 	 *
@@ -206,7 +206,7 @@ class Importer {
 
 		// mark import run
 		$import->markRun($dryRun);
-		
+
 		// call process on adapter
 		return $this->adapter->process($import, $callbacks, $dryRun);
 	}

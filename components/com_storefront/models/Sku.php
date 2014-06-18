@@ -36,26 +36,26 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 /**
  *
  * Storefront SKU class
- * 
+ *
  */
 class StorefrontModelSku
-{	
+{
 
 	var $data;
-		
+
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
 	public function __construct()
 	{
 	}
-	
+
 	/**
 	 * Set price
-	 * 
+	 *
 	 * @param	double		price
 	 * @return	bool		true on success, exception otherwise
 	 */
@@ -63,21 +63,21 @@ class StorefrontModelSku
 	{
 		if (!is_numeric($productPrice))
 		{
-			throw new Exception(JText::_('Price must be numeric'));	
+			throw new Exception(JText::_('Price must be numeric'));
 		}
-		
+
 		$this->data->price = $productPrice;
 		return true;
 	}
-	
+
 	public function getPrice()
 	{
 		return $this->data->price;
 	}
-	
+
 	/**
 	 * Set ID
-	 * 
+	 *
 	 * @param	int		sku ID
 	 * @return	bool	true on success, exception otherwise
 	 */
@@ -86,116 +86,116 @@ class StorefrontModelSku
 		$this->data->id = $sId;
 		return true;
 	}
-	
+
 	public function getId()
 	{
 		if (empty($this->data->id))
 		{
-			return NULL;	
+			return NULL;
 		}
 		return $this->data->id;
 	}
-	
+
 	public function verify()
 	{
 		if (empty($this->data->price))
 		{
-			throw new Exception(JText::_('No SKU price'));	
-		}	
+			throw new Exception(JText::_('No SKU price'));
+		}
 	}
-	
+
 	public function setAllowMultiple($allowMultiple)
 	{
 		if (!$allowMultiple)
 		{
-			$allowMultiple = 0;	
+			$allowMultiple = 0;
 		}
 		else
 		{
-			$allowMultiple = 1;	
+			$allowMultiple = 1;
 		}
-		return $this->data->allowMultiple = $allowMultiple;	
+		return $this->data->allowMultiple = $allowMultiple;
 	}
-	
+
 	public function getAllowMultiple()
 	{
 		if (!isset($this->data->allowMultiple))
 		{
 			return 'DEFAULT';
 		}
-		
-		return $this->data->allowMultiple;	
+
+		return $this->data->allowMultiple;
 	}
-	
+
 	public function setTrackInventory($trackInventory)
 	{
 		if (!$trackInventory)
 		{
-			$trackInventory = 0;	
+			$trackInventory = 0;
 		}
 		else
 		{
-			$trackInventory = 1;	
+			$trackInventory = 1;
 		}
-		$this->data->trackInventory = $trackInventory;	
+		$this->data->trackInventory = $trackInventory;
 	}
-	
+
 	public function getTrackInventory()
 	{
 		if (!isset($this->data->trackInventory))
 		{
 			return 'DEFAULT';
 		}
-		
+
 		return $this->data->trackInventory;
 	}
-	
+
 	public function setInventoryLevel($inventoryLevel)
-	{		
+	{
 		if (!is_numeric($inventoryLevel))
 		{
-			throw new Exception(JText::_('Bad inventory level value'));	
+			throw new Exception(JText::_('Bad inventory level value'));
 		}
 
-		$this->data->inventoryLevel = $inventoryLevel;	
+		$this->data->inventoryLevel = $inventoryLevel;
 	}
-	
+
 	public function getInventoryLevel()
 	{
 		if (!isset($this->data->inventoryLevel))
 		{
 			return 'DEFAULT';
 		}
-		
-		return $this->data->inventoryLevel;	
+
+		return $this->data->inventoryLevel;
 	}
-	
+
 	public function setEnumerable($enumerable)
 	{
 		if (!$enumerable)
 		{
-			$enumerable = 0;	
+			$enumerable = 0;
 		}
 		else
 		{
-			$enumerable = 1;	
+			$enumerable = 1;
 		}
-		$this->data->enumerable = $enumerable;	
+		$this->data->enumerable = $enumerable;
 	}
-	
+
 	public function getEnumerable()
 	{
 		if (!isset($this->data->enumerable))
 		{
 			return 'DEFAULT';
 		}
-		
+
 		return $this->data->enumerable;
 	}
-	
+
 	/**
 	 * Set SKU active status
-	 * 
+	 *
 	 * @param	bool		SKU status
 	 * @return	bool		true
 	 */
@@ -205,16 +205,16 @@ class StorefrontModelSku
 		{
 			$this->data->activeStatus = 1;
 		}
-		else 
+		else
 		{
 			$this->data->activeStatus = 0;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get SKU active status
-	 * 
+	 *
 	 * @param	void
 	 * @return	bool		SKU status
 	 */
@@ -226,38 +226,38 @@ class StorefrontModelSku
 		}
 		return $this->data->activeStatus;
 	}
-	
+
 	public function addMeta($key, $val)
 	{
 		$this->data->meta[$key] = $val;
 	}
-	
+
 	public function getMeta()
 	{
 		return $this->data->meta;
 	}
-	
+
 	/*
 	 * Set time to live
-	 * 
+	 *
 	 * @param	strng		expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
 	 * @return	bool		SKU status
 	*/
 	public function setTimeToLive($ttl)
 	{
 		StorefrontModelMemberships::checkTtl($ttl);
-		
+
 		$this->data->meta['ttl'] = $ttl;
 	}
-	
+
 	public function getTimeToLive()
 	{
 		if (isset($this->data->meta['ttl']))
 		{
 			return $this->data->meta['ttl'];
 		}
-		
+
 		return false;
-	}	
-	
+	}
+
 }

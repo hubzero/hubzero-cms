@@ -79,13 +79,13 @@ $this->css()
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-sticky">
-							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> /> 
+							<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
 						</label>
 					</div>
 					<div class="col span-half omega">
 						<label for="field-closed">
-							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> /> 
+							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
 						</label>
 					</div>
@@ -129,7 +129,7 @@ $this->css()
 
 				<label>
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
-					<?php 
+					<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
 						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->post->tags('string'))) );
@@ -166,7 +166,7 @@ $this->css()
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
 				</label>
 

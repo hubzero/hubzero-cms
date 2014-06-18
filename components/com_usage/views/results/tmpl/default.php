@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!$this->no_html) { 
+if (!$this->no_html) {
 	$this->css()
 	     ->js();
 	?>

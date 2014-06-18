@@ -41,28 +41,28 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableSectionCode';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'section_code';
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_redeemer = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
@@ -99,7 +99,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -119,7 +119,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			$key = $oid['id'] . ($section_id ? '_' . $section_id : '');
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $section_id);
 		}
@@ -129,7 +129,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -168,9 +168,9 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 
 		$now = JFactory::getDate()->toSql();
 
-		if ($this->get('expires') 
-		 && $this->get('expires') != $this->_db->getNullDate() 
-		 && $this->get('expires') <= $now) 
+		if ($this->get('expires')
+		 && $this->get('expires') != $this->_db->getNullDate()
+		 && $this->get('expires') <= $now)
 		{
 			return true;
 		}

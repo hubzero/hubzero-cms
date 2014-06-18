@@ -41,14 +41,14 @@ class Resources extends GroupMacro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -66,7 +66,7 @@ class Resources extends GroupMacro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -84,7 +84,7 @@ class Resources extends GroupMacro
 		$type  = $this->_getType($args, 'all');
 		$limit = $this->_getLimit($args, 5);
 		$class = $this->_getClass($args);
-		
+
 		//get resources
 		$groupResources = $this->_getResources($type, $limit);
 
@@ -102,7 +102,7 @@ class Resources extends GroupMacro
 		}
 
 		$html .= '</div>';
-		
+
 		return $html;
 	}
 
@@ -162,7 +162,7 @@ class Resources extends GroupMacro
 
 	/**
 	 * Get item limit
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */
@@ -184,7 +184,7 @@ class Resources extends GroupMacro
 
 	/**
 	 * Get class
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */
@@ -203,7 +203,7 @@ class Resources extends GroupMacro
 
 	/**
 	 * Get type
-	 * 
+	 *
 	 * @param  array  $args  Macro Arguments
 	 * @return mixed
 	 */

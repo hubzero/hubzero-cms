@@ -45,7 +45,7 @@ $doc->addScript('/administrator/components/' . $this->option . '/assets/js/tag_g
 
 $dbh = JFactory::getDBO();
 $dbh->setQuery(
-	'SELECT *, (SELECT group_concat(resource_type_id) FROM #__focus_area_resource_type_rel WHERE focus_area_id = fa.id) AS types 
+	'SELECT *, (SELECT group_concat(resource_type_id) FROM #__focus_area_resource_type_rel WHERE focus_area_id = fa.id) AS types
 	FROM #__tags t
 	INNER JOIN #__focus_areas fa ON fa.tag_id = t.id
 	ORDER BY raw_tag'
@@ -63,8 +63,8 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post">
 	<div class="col width-70 fltlft">
 		<div id="fas">
-<?php 
-foreach ($fas as $fa): 
+<?php
+foreach ($fas as $fa):
 	$type_ids = array_flip(explode(',', $fa['types']));
 ?>
 			<fieldset class="adminform" id="group-<?php echo $fa['id']; ?>">
@@ -132,7 +132,7 @@ foreach ($fas as $fa):
 					</tbody>
 				</table>
 			</fieldset>
-<?php 
+<?php
 endforeach;
 $fill_new = !isset($added_new_focus_area);
 $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-new']) : array();

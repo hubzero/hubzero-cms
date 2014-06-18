@@ -38,7 +38,7 @@ class modBillboards extends \Hubzero\Module\Module
 {
 	/**
 	 * Get the list of billboads in the selected collection
-	 * 
+	 *
 	 * @return retrieved rows
 	 */
 	private function _getList()
@@ -65,7 +65,7 @@ class modBillboards extends \Hubzero\Module\Module
 	/**
 	 * Display method
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
-	 * 
+	 *
 	 * @return void
 	 */
 	public function display()
@@ -106,7 +106,7 @@ class modBillboards extends \Hubzero\Module\Module
 			$background = (!empty($slide->background_img)) ? "background: url('$image_location$slide->background_img') no-repeat 0 0;" : '';
 			$padding    = (!empty($slide->padding)) ? "padding: $slide->padding;" : '';
 
-			$css = 
+			$css =
 				"#$slide->alias {
 					$background
 					}
@@ -124,13 +124,13 @@ class modBillboards extends \Hubzero\Module\Module
 		{
 			$js_pager    = "'#$this->pager$this->collection'";
 			$this->pager = $this->pager . $this->collection;
-			$pager = 
+			$pager =
 				".slider #$this->pager a.activeSlide {
 					opacity:1.0;
 					}";
 			$this->css($pager);
 		}
-		else 
+		else
 		{
 			$js_pager = $this->pager;
 		}

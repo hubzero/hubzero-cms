@@ -58,7 +58,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	switch ($row->state) 
+	switch ($row->state)
 	{
 		case '2':
 			$task = 'publish';

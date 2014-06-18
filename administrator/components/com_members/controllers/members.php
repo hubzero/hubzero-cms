@@ -40,7 +40,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 {
 	/**
 	 * Display a list of site members
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -52,39 +52,39 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search', 
-			'search', 
+			$this->_option . '.' . $this->_controller . '.search',
+			'search',
 			''
 		));
 		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search_field', 
-			'search_field', 
+			$this->_option . '.' . $this->_controller . '.search_field',
+			'search_field',
 			'name'
 		));
 		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort', 
-			'filter_order', 
+			$this->_option . '.' . $this->_controller . '.sort',
+			'filter_order',
 			'registerDate'
 		));
 		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir', 
-			'filter_order_Dir', 
+			$this->_option . '.' . $this->_controller . '.sortdir',
+			'filter_order_Dir',
 			'DESC'
 		));
 		$this->view->filters['registerDate']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.registerDate', 
-			'registerDate', 
+			$this->_option . '.' . $this->_controller . '.registerDate',
+			'registerDate',
 			''
 		));
 		$this->view->filters['emailConfirmed']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.emailConfirmed', 
-			'emailConfirmed', 
+			$this->_option . '.' . $this->_controller . '.emailConfirmed',
+			'emailConfirmed',
 			0,
 			'int'
 		));
 		$this->view->filters['public']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.public', 
-			'public', 
+			$this->_option . '.' . $this->_controller . '.public',
+			'public',
 			-1,
 			'int'
 		));
@@ -97,15 +97,15 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Get paging variables
 		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit', 
-			'limit', 
-			$config->getValue('config.list_limit'), 
+			$this->_option . '.' . $this->_controller . '.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart', 
-			'limitstart', 
-			0, 
+			$this->_option . '.' . $this->_controller . '.limitstart',
+			'limitstart',
+			0,
 			'int'
 		);
 		// In case limit has been changed, adjust limitstart accordingly
@@ -122,15 +122,15 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
-			$this->view->total, 
-			$this->view->filters['start'], 
+			$this->view->total,
+			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -144,7 +144,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new member
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -152,7 +152,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -166,7 +166,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Create a new user
-	 * 
+	 *
 	 * @param      integer $redirect Redirect to main listing?
 	 * @return     void
 	 */
@@ -181,7 +181,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Initialize new usertype setting
 		$usersConfig = JComponentHelper::getParams('com_users');
 		$newUsertype = $usersConfig->get('new_usertype');
-		if (!$newUsertype) 
+		if (!$newUsertype)
 		{
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
@@ -255,7 +255,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Edit a member's information
-	 * 
+	 *
 	 * @param      integer $id ID of member to edit
 	 * @return     void
 	 */
@@ -265,17 +265,17 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		$this->view->setLayout('edit');
 
-		if (!$id) 
+		if (!$id)
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array());
 
 			// Get the single ID we're working with
-			if (is_array($ids)) 
+			if (is_array($ids))
 			{
 				$id = (!empty($ids)) ? $ids[0] : 0;
-			} 
-			else 
+			}
+			else
 			{
 				$id = 0;
 			}
@@ -294,7 +294,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$this->view->tags = $mt->get_tag_string($id);
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -308,7 +308,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and return to edit form
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function applyTask()
@@ -318,7 +318,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Save an entry and return to main listing
-	 * 
+	 *
 	 * @param      integer $redirect Redirect to main listing?
 	 * @return     void
 	 */
@@ -331,7 +331,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0, 'post');
 
 		// Do we have an ID?
-		if (!$id) 
+		if (!$id)
 		{
 			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
 			return;
@@ -348,17 +348,17 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$profile->set('givenName', trim($p['givenName']));
 		$profile->set('middleName', trim($p['middleName']));
 		$profile->set('surname', trim($p['surname']));
-		
+
 		$name  = trim($p['givenName']).' ';
 		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
 		$name .= trim($p['surname']);
-		
+
 		$profile->set('name', $name);
-		if (isset($p['vip'])) 
+		if (isset($p['vip']))
 		{
 			$profile->set('vip',$p['vip']);
-		} 
-		else 
+		}
+		else
 		{
 			$profile->set('vip',0);
 		}
@@ -368,11 +368,11 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$profile->set('orgtype', trim($p['orgtype']));
 		$profile->set('organization', trim($p['organization']));
 		$profile->set('bio', trim($p['bio']));
-		if (isset($p['public'])) 
+		if (isset($p['public']))
 		{
 			$profile->set('public',$p['public']);
-		} 
-		else 
+		}
+		else
 		{
 			$profile->set('public',0);
 		}
@@ -385,96 +385,96 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$profile->set('loginShell', trim($p['loginShell']));
 
 		$ec = JRequest::getInt('emailConfirmed', 0, 'post');
-		if ($ec) 
+		if ($ec)
 		{
 			$profile->set('emailConfirmed', 1);
-		} 
-		else 
+		}
+		else
 		{
 			$confirm = MembersHelperUtility::genemailconfirm();
 			$profile->set('emailConfirmed', $confirm);
 		}
 
-		if (isset($p['email'])) 
+		if (isset($p['email']))
 		{
 			$profile->set('email', trim($p['email']));
 		}
-		if (isset($p['mailPreferenceOption'])) 
+		if (isset($p['mailPreferenceOption']))
 		{
 			$profile->set('mailPreferenceOption', trim($p['mailPreferenceOption']));
-		} 
-		else 
+		}
+		else
 		{
 			$profile->set('mailPreferenceOption', -1);
 		}
 
-		if (!empty($p['gender'])) 
+		if (!empty($p['gender']))
 		{
 			$profile->set('gender', trim($p['gender']));
 		}
 
-		if (!empty($p['disability'])) 
+		if (!empty($p['disability']))
 		{
-			if ($p['disability'] == 'yes') 
+			if ($p['disability'] == 'yes')
 			{
-				if (!is_array($p['disabilities'])) 
+				if (!is_array($p['disabilities']))
 				{
 					$p['disabilities'] = array();
 				}
-				if (count($p['disabilities']) == 1 
-				 && isset($p['disabilities']['other']) 
-				 && empty($p['disabilities']['other'])) 
+				if (count($p['disabilities']) == 1
+				 && isset($p['disabilities']['other'])
+				 && empty($p['disabilities']['other']))
 				{
 					$profile->set('disability',array('no'));
-				} 
-				else 
+				}
+				else
 				{
 					$profile->set('disability',$p['disabilities']);
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$profile->set('disability',array($p['disability']));
 			}
 		}
 
-		if (!empty($p['hispanic'])) 
+		if (!empty($p['hispanic']))
 		{
-			if ($p['hispanic'] == 'yes') 
+			if ($p['hispanic'] == 'yes')
 			{
-				if (!is_array($p['hispanics'])) 
+				if (!is_array($p['hispanics']))
 				{
 					$p['hispanics'] = array();
 				}
-				if (count($p['hispanics']) == 1 
-				 && isset($p['hispanics']['other']) 
-				 && empty($p['hispanics']['other'])) 
+				if (count($p['hispanics']) == 1
+				 && isset($p['hispanics']['other'])
+				 && empty($p['hispanics']['other']))
 				{
 					$profile->set('hispanic', array('no'));
-				} 
-				else 
+				}
+				else
 				{
 					$profile->set('hispanic',$p['hispanics']);
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$profile->set('hispanic',array($p['hispanic']));
 			}
 		}
 
-		if (isset($p['race']) && is_array($p['race'])) 
+		if (isset($p['race']) && is_array($p['race']))
 		{
 			$profile->set('race',$p['race']);
 		}
 
 		// Save the changes
-		if (!$profile->update()) 
+		if (!$profile->update())
 		{
 			JError::raiseWarning('', $profile->getError());
 			return false;
 		}
-		
+
 		// Do we have a new pass?
 		$newpass = trim(JRequest::getVar('newpass', '', 'post'));
 		if ($newpass != '')
@@ -535,21 +535,21 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$juser = JUser::getInstance($id);
 		$juser->set('name', $name);
 		$juser->set('email', $profile->get('email'));
-		if (!$juser->save()) 
+		if (!$juser->save())
 		{
 			JError::raiseWarning('', JText::_($juser->getError()));
 			return false;
 		}
 
-		if ($redirect) 
+		if ($redirect)
 		{
 			// Redirect
 			$this->setRedirect(
 				JRoute::_('index.php?option='.$this->_option),
 				JText::_('MEMBER_SAVED')
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$this->editTask($id);
 		}
@@ -557,7 +557,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Removes a profile entry, associated picture, and redirects to main listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -569,20 +569,20 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('ids', array());
 
 		// Do we have any IDs?
-		if (!empty($ids)) 
+		if (!empty($ids))
 		{
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
 				$id = intval($id);
-				
+
 				// Delete any associated pictures
 				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
-				if (!file_exists($path . DS . $file) or !$file) 
+				if (!file_exists($path . DS . $file) or !$file)
 				{
 					$this->setError(JText::_('FILE_NOT_FOUND'));
-				} 
-				else 
+				}
+				else
 				{
 					unlink($path . DS . $file);
 				}
@@ -615,7 +615,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	{
 		$this->stateTask(1);
 	}
-	
+
 	/**
 	 * Set a member's emailConfirmed to unconfirmed
 	 *
@@ -625,7 +625,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	{
 		$this->stateTask(0);
 	}
-	
+
 	/**
 	 * Sets the emailConfirmed state of a member
 	 *
@@ -640,7 +640,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 
 		// Do we have an ID?
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -649,24 +649,24 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		
+
 		foreach ($ids as $id)
 		{
 			// Load the profile
 			$profile = new \Hubzero\User\Profile();
 			$profile->load(intval($id));
 
-			if ($state) 
+			if ($state)
 			{
 				$profile->set('emailConfirmed', $state);
-			} 
-			else 
+			}
+			else
 			{
 				$confirm = MembersHelperUtility::genemailconfirm();
 				$profile->set('emailConfirmed', $confirm);
 			}
 
-			if (!$profile->update()) 
+			if (!$profile->update())
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -676,7 +676,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-		
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('MEMBERS_CONFIRMATION_CHANGED')
@@ -697,12 +697,12 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 	/**
 	 * Return results for autocompleter
-	 * 
+	 *
 	 * @return     string JSON
 	 */
 	public function autocompleteTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			return;
 		}
@@ -715,10 +715,10 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
 
 		// Fetch results
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
-				FROM #__xprofiles AS xp 
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
+				FROM #__xprofiles AS xp
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict 
+				WHERE LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%' AND xp.emailConfirmed>0 $restrict
 				ORDER BY xp.name ASC";
 
 		$this->database->setQuery($query);
@@ -728,7 +728,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Output search results in JSON format
 		$json = array();
-		if (count($rows) > 0) 
+		if (count($rows) > 0)
 		{
 			$default = DS . trim($this->config->get('defaultpic', '/components/com_members/images/profile.gif'), DS);
 			$default = \Hubzero\User\Profile\Helper::thumbit($default);

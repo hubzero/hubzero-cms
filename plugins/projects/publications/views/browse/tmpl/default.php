@@ -38,10 +38,10 @@ $url 	= JRoute::_($route);
 
 // Check used space against quota (percentage)
 $inuse = round(($this->dirsize * 100 ) / $this->quota);
-if ($inuse < 1) 
+if ($inuse < 1)
 {
 	$inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
-	if ($inuse < 0.1) 
+	if ($inuse < 0.1)
 	{
 		$inuse = 0.0;
 	}
@@ -61,11 +61,11 @@ $i = 1;
 $pubHelper = new PublicationHelper ($this->database);
 
 ?>
-<form action="<?php echo $url; ?>" method="post" id="plg-form" >	
+<form action="<?php echo $url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 		<h3 class="publications"><?php echo $this->title; ?></h3>
 	</div>
-	<?php 
+	<?php
 	if(count($this->rows) > 0 ) {
 	?>
 	<div class="list-editing"><p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if($this->total <= count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if($this->total > count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
@@ -84,28 +84,28 @@ $pubHelper = new PublicationHelper ($this->database);
 				</tr>
 			</thead>
 			<tbody>
-	<?php 
-		foreach ($this->rows as $row) {	
+	<?php
+		foreach ($this->rows as $row) {
 				// What's the publication status?
 				$status = PublicationHelper::getPubStateProperty($row, 'status', 0);
 				$class 	= PublicationHelper::getPubStateProperty($row, 'class');
 				$date 	= PublicationHelper::getPubStateProperty($row, 'date');
-				
+
 				// Normalize type title
 				$cat_name = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
-				
+
 				$abstract = $row->abstract ? stripslashes($row->abstract) : '';
-				
+
 				if ($row->state == 1)
 				{
 					$showStats = true;
 				}
-				
+
 				// Get thumbnail
 				$pubThumb  = $pubHelper->getThumb($row->id, $row->version_id, $this->pubconfig, false, $row->cat_url);
-				
-				$trClass = $i % 2 == 0 ? ' even' : ' odd';	
-				$i++;		
+
+				$trClass = $i % 2 == 0 ? ' even' : ' odd';
+				$i++;
 			?>
 			<tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->id; ?>">
 				<td class="pub-image"><img src="<?php echo $pubThumb; ?>" alt="" /></td>
@@ -117,49 +117,49 @@ $pubHelper = new PublicationHelper ($this->database);
 					<span class="mini faded block"><?php echo $date; ?></span>
 				</td>
 				<td>
-				<?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label) 
+				<?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label)
 				{ echo '<a href="'. JRoute::_($route . '&pid=' . $row->id) . '/?version=dev'
 				.'">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
 				.' <strong>'.$row->dev_version_label.'</strong></a> '
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS'); 
+				.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
 				if ($this->pubconfig->get('curation', 0))
-				{					
+				{
 					echo ' <span class="block"><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				}
-				
+
 				} elseif ($row->state == 3 && $this->pubconfig->get('curation', 0))
-				{					
+				{
 					echo ' <span><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				} elseif ($row->state == 7) { echo ' <span><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=' . $row->version_number . '" class="btn mini icon-next btn-action">' . JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>
-				
+
 				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid='.$row->id.a.'action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
 				<td class="autowidth">
 					<a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" class="manageit" title="<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
 
 					<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
 			</tr>
-			<?php 
+			<?php
 		}
 	?>
 			</tbody>
 		</table>
-		<?php 
+		<?php
 		if ($this->filters['limit'] < count($this->rows)) {	?>
 			<div class="nav_pager"><p>
-				<?php 
+				<?php
 				if ($this->filters['start'] == 0) {	?>
 					<span>&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></span>
 				<?php	} else {  ?>
 					<a href="<?php echo $url . '/?t_sortby='.$this->filters['sortby'].a.'limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></a>
 				<?php } ?><span>&nbsp; | &nbsp;</span>
-				<?php 
+				<?php
 				if ($whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 					<span><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</span>
 				<?php	} else { ?>
 					<a href="<?php echo $url . '/?t_sortby='.$this->filters['sortby'].a.'limitstart='.$next_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</a>
 				<?php } ?></p>
 			</div>
-		<?php } ?>			
+		<?php } ?>
 			<p class="extras">
 				<span class="leftfloat">
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
@@ -167,15 +167,15 @@ $pubHelper = new PublicationHelper ($this->database);
 					 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . ProjectsHtml::formatSize($this->quota); ?></span>
 				</span>
 			</p>
-			<?php if ($showStats) { ?>	
+			<?php if ($showStats) { ?>
 			<p class="viewallstats mini"><a href="<?php echo $url . '?action=stats'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
 			<?php } ?>
-	<?php 
+	<?php
 	}
 	else {
 		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="'. $url .'/?action=start"  >'.JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION').'</a></span></p>');
-		
-			// Show intro banner with publication steps	
+
+			// Show intro banner with publication steps
 			$this->view('intro')
 			     ->set('option', $this->option)
 			     ->set('project', $this->project)

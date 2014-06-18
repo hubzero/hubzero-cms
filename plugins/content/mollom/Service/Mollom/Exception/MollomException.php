@@ -41,7 +41,7 @@ use Plugins\Content\Mollom\Service\Mollom;
  *   - response: (mixed) The server response, either as string, or the already
  *     parsed response; i.e., an array.
  */
-class MollomException extends Exception 
+class MollomException extends Exception
 {
 	/**
 	 * @var Mollom
@@ -61,14 +61,14 @@ class MollomException extends Exception
 	/**
 	 * Overrides Exception::__construct().
 	 */
-	function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array()) 
+	function __construct($message = '', $code = 0, Exception $previous = NULL, Mollom $mollom, array $request_info = array())
 	{
 		// Fatal error on PHP <5.3 when passing more arguments to Exception.
-		if (version_compare(phpversion(), '5.3') >= 0) 
+		if (version_compare(phpversion(), '5.3') >= 0)
 		{
 			parent::__construct($message, $code, $previous);
 		}
-		else 
+		else
 		{
 			parent::__construct($message, $code);
 		}
@@ -95,7 +95,7 @@ class MollomException extends Exception
 			),
 		);
 		// Add HTTP request information, if available.
-		if (!empty($request_info)) 
+		if (!empty($request_info))
 		{
 			$message += $request_info;
 		}

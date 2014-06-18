@@ -57,11 +57,11 @@ $total = $this->granted + $this->accepted + $this->pending + $this->removed + $t
 					{label: 'withdrawn', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>'},
 					{label: 'rejected', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_rejected", "#333333"); ?>'}
 				], {
-					legend: { 
+					legend: {
 						show: true
 					},
 					series: {
-						pie: { 
+						pie: {
 							innerRadius: 0.5,
 							show: true,
 							stroke: {

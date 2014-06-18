@@ -38,56 +38,56 @@ class ResourcesReview extends JTable
 {
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $resource_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id     = NULL;
 
 	/**
 	 * decimal(2,1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rating      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $comment     = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created     = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous   = NULL;
 
 	/**
 	 * int(11) primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,12 +98,12 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, false if not
 	 */
 	public function check()
 	{
-		if (trim($this->rating) == '') 
+		if (trim($this->rating) == '')
 		{
 			$this->setError(JText::_('Your review must have a rating.'));
 			return false;
@@ -113,7 +113,7 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Load a review for a specific user/resource combination
-	 * 
+	 *
 	 * @param      integer $resourceid Resource ID
 	 * @param      integer $userid     User ID
 	 * @return     boolean True on success, False on error
@@ -122,11 +122,11 @@ class ResourcesReview extends JTable
 	{
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE resource_id=" . $this->_db->Quote($resourceid) . " AND user_id=" . $this->_db->Quote($userid) . " LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -135,7 +135,7 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Load a rating for a specific user/resource combination
-	 * 
+	 *
 	 * @param      integer $resourceid Resource ID
 	 * @param      integer $userid     User ID
 	 * @return     integer
@@ -148,7 +148,7 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Get all ratings for a specific resource
-	 * 
+	 *
 	 * @param      integer $resource_id Resource ID
 	 * @return     array
 	 */
@@ -156,7 +156,7 @@ class ResourcesReview extends JTable
 	{
 		$juser = JFactory::getUser();
 
-		if (!$resource_id) 
+		if (!$resource_id)
 		{
 			$resource_id = $this->resource_id;
 		}
@@ -176,20 +176,20 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Load rating for a specific resource
-	 * 
+	 *
 	 * @param      integer $id     Resource ID
 	 * @param      integer $userid User ID
 	 * @return     array
 	 */
 	public function getRating($id=NULL, $userid)
 	{
-		if (!$userid) 
+		if (!$userid)
 		{
 			$juser = JFactory::getUser();
 			$userid = $juser->get('id');
 		}
 
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->resource_id;
 		}
@@ -209,7 +209,7 @@ class ResourcesReview extends JTable
 
 	/**
 	 * Get the vote for a specific item and user
-	 * 
+	 *
 	 * @param      integer $id       Resource ID
 	 * @param      string  $category Category
 	 * @param      integer $uid      User ID
@@ -217,12 +217,12 @@ class ResourcesReview extends JTable
 	 */
 	public function getVote($id, $category = 'review', $uid)
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->id;
 		}
 
-		if ($id === NULL or $uid === NULL) 
+		if ($id === NULL or $uid === NULL)
 		{
 			return false;
 		}

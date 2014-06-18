@@ -26,14 +26,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned 
+$route = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
-	
+
 $block   	= $this->block;
 $step  	 	= $this->step;
 $elementId 	= $this->element;
-	
+
 // Get requirements
 $blocks   		= $this->publication->_curationModel->_progress->blocks;
 $blockParams   	= $blocks->$step->manifest->params;
@@ -45,10 +45,10 @@ $action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl'
 $btnLabel 	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
 $placeHolder= 'http://';
 
-$title = $block == 'citations' 
-	? JText::_('PLG_PROJECTS_LINKS_SELECTOR_DOI') 
+$title = $block == 'citations'
+	? JText::_('PLG_PROJECTS_LINKS_SELECTOR_DOI')
 	: JText::_('PLG_PROJECTS_LINKS_SELECTOR');
-	
+
 if ($block == 'citations')
 {
 	$label  	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
@@ -58,11 +58,11 @@ if ($block == 'citations')
 }
 
 //$newCiteUrl   = 'citations/add?publication=' . $this->publication->id;
-$newCiteUrl   = $this->project->provisioned == 1 
+$newCiteUrl   = $this->project->provisioned == 1
 		? JRoute::_( $route) . '?active=links&action=newcite'
-		: JRoute::_( $route . '&active=links&action=newcite') .'/?p=' . $this->props . a . 'pid=' 
+		: JRoute::_( $route . '&active=links&action=newcite') .'/?p=' . $this->props . a . 'pid='
 		. $this->publication->id . a . 'vid=' . $this->publication->version_id;
-		
+
 ?>
 <div id="abox-content-wrap">
 	<div id="abox-content" class="url-select">
@@ -75,7 +75,7 @@ $newCiteUrl   = $this->project->provisioned == 1
 			</span>
 		</h3>
 		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
-			<fieldset >	
+			<fieldset >
 				<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -86,11 +86,11 @@ $newCiteUrl   = $this->project->provisioned == 1
 				<input type="hidden" name="section" id="section" value="<?php echo $block; ?>" />
 				<input type="hidden" name="step" value="<?php echo $step; ?>" />
 				<input type="hidden" name="element" value="<?php echo $elementId; ?>" />
-				<input type="hidden" name="active" value="publications" />					
-				<input type="hidden" name="action" value="apply" />	
+				<input type="hidden" name="active" value="publications" />
+				<input type="hidden" name="action" value="apply" />
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
-				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo JRoute::_( $route); ?>" />	
+				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo JRoute::_( $route); ?>" />
 			</fieldset>
 				<div id="import-link">
 					<label>

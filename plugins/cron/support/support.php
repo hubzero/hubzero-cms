@@ -40,7 +40,7 @@ class plgCronSupport extends JPlugin
 {
 	/**
 	 * Return a list of events
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function onCronEvents()
@@ -73,7 +73,7 @@ class plgCronSupport extends JPlugin
 
 	/**
 	 * Close tickets in a pending state for a specific amount of time
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function onClosePending($params=null)
@@ -170,9 +170,9 @@ class plgCronSupport extends JPlugin
 				}
 
 				$where[] = "t.`id` NOT IN (
-							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
-							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
-							WHERE jto.`tbl`='support' 
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
+							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
 							)
@@ -189,9 +189,9 @@ class plgCronSupport extends JPlugin
 				}
 
 				$where[] = "t.`id` IN (
-							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
-							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
-							WHERE jto.`tbl`='support' 
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
+							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
 							)
@@ -273,7 +273,7 @@ class plgCronSupport extends JPlugin
 
 	/**
 	 * Send emails reminding people of their open tickets
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function sendTicketsReminder($params=null)
@@ -383,7 +383,7 @@ class plgCronSupport extends JPlugin
 			// Plain text
 			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
-				'name'      => 'emails', 
+				'name'      => 'emails',
 				'layout'    => 'tickets_plain'
 			));
 			$eview->option     = 'com_support';
@@ -427,7 +427,7 @@ class plgCronSupport extends JPlugin
 
 	/**
 	 * Send emails reminding people of their open tickets
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function sendTicketList($params=null)
@@ -536,9 +536,9 @@ class plgCronSupport extends JPlugin
 				}
 
 				$where[] = "t.`id` NOT IN (
-							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
-							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
-							WHERE jto.`tbl`='support' 
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
+							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
 							)
@@ -555,9 +555,9 @@ class plgCronSupport extends JPlugin
 				}
 
 				$where[] = "t.`id` IN (
-							SELECT jto.`objectid` FROM `#__tags_object` AS jto 
-							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id` 
-							WHERE jto.`tbl`='support' 
+							SELECT jto.`objectid` FROM `#__tags_object` AS jto
+							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
+							WHERE jto.`tbl`='support'
 							AND (
 								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
 							)
@@ -784,7 +784,7 @@ class plgCronSupport extends JPlugin
 
 			$eview = new \Hubzero\Component\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
-				'name'      => 'emails', 
+				'name'      => 'emails',
 				'layout'    => 'ticketlist_plain'
 			));
 			$eview->option     = 'com_support';

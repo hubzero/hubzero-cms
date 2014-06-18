@@ -38,49 +38,49 @@ class CoursesTableGradeBook extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $member_id = NULL;
 
 	/**
 	 * decimal(5,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $score = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * decimal(5,2)
-	 * 
+	 *
 	 * @var decimal
 	 */
 	var $override = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -91,7 +91,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Load gradebook entry by user and asset id
-	 * 
+	 *
 	 * @param      string $member_id
 	 * @param      string $asset_id
 	 * @return     array
@@ -117,7 +117,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
@@ -179,7 +179,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Get grade records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
@@ -193,7 +193,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Get passing info
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
@@ -251,7 +251,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Query to sync form scores with gradebook
-	 * 
+	 *
 	 * @param      obj   $course
 	 * @param      array $member_id
 	 * @return     void
@@ -445,7 +445,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Query to save unit and course totals to gradebook
-	 * 
+	 *
 	 * @param      array $data - values to compose update query
 	 * @param      int $course_id = course id
 	 * @return     void
@@ -579,7 +579,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Clear grades for a given course/user combination
-	 * 
+	 *
 	 * @param      array $member_id
 	 * @param      object $course
 	 * @return     void
@@ -616,7 +616,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Get graded asset completion count
-	 * 
+	 *
 	 * @param      int $course_id
 	 * @param      int $member_id
 	 * @return     void
@@ -639,7 +639,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Get asset completion count
-	 * 
+	 *
 	 * @FIXME: combine with function above
 	 *
 	 * @param      int $course_id
@@ -676,7 +676,7 @@ class CoursesTableGradeBook extends JTable
 
 	/**
 	 * Get graded asset count
-	 * 
+	 *
 	 * @param      int $course_id
 	 * @return     void
 	 */

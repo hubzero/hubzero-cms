@@ -40,7 +40,7 @@ class plgSupportResources extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -54,9 +54,9 @@ class plgSupportResources extends JPlugin
 
 	/**
 	 * Short description for 'getReportedItem'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      string $refid Parameter description (if any) ...
 	 * @param      string $category Parameter description (if any) ...
 	 * @param      string $parent Parameter description (if any) ...
@@ -64,30 +64,30 @@ class plgSupportResources extends JPlugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'review' && $category != 'reviewcomment') 
+		if ($category != 'review' && $category != 'reviewcomment')
 		{
 			return null;
 		}
 
-		if ($category == 'review') 
+		if ($category == 'review')
 		{
-			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.user_id as author, 
-						NULL as subject, 'review' as parent_category, rr.anonymous as anon 
-						FROM #__resource_ratings AS rr 
+			$query  = "SELECT rr.id, rr.comment as text, rr.created, rr.user_id as author,
+						NULL as subject, 'review' as parent_category, rr.anonymous as anon
+						FROM #__resource_ratings AS rr
 						WHERE rr.id=" . $refid;
-		} 
-		else if ($category == 'reviewcomment') 
+		}
+		else if ($category == 'reviewcomment')
 		{
-			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author, 
-						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon 
-						FROM #__item_comments AS rr 
+			$query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
+						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon
+						FROM #__item_comments AS rr
 						WHERE rr.id=" . $refid;
 		}
 
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $key => $row)
 			{
@@ -103,7 +103,7 @@ class plgSupportResources extends JPlugin
 
 	/**
 	 * Looks up ancestors to find root element
-	 * 
+	 *
 	 * @param      integer $parentid ID to check for parents of
 	 * @param      string  $category Element type (determines table to look in)
 	 * @return     integer
@@ -113,20 +113,20 @@ class plgSupportResources extends JPlugin
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
-		if ($category == 'reviewcomment') 
+		if ($category == 'reviewcomment')
 		{
 			$pdata = $this->parent($parentid);
 			$category = $pdata->category;
 			$refid = $pdata->referenceid;
 
-			if ($pdata->category == 'reviewcomment') 
+			if ($pdata->category == 'reviewcomment')
 			{
 				// Yet another level?
 				$pdata = $this->parent($pdata->referenceid);
 				$category = $pdata->category;
 				$refid = $pdata->referenceid;
 
-				if ($pdata->category == 'reviewcomment') 
+				if ($pdata->category == 'reviewcomment')
 				{
 					// Yet another level?
 					$pdata = $this->parent($pdata->referenceid);
@@ -136,7 +136,7 @@ class plgSupportResources extends JPlugin
 			}
 		}
 
-		if ($category == 'review') 
+		if ($category == 'review')
 		{
 			$database->setQuery("SELECT resource_id FROM #__resource_ratings WHERE id=" . $refid);
 		 	return $database->loadResult();
@@ -145,7 +145,7 @@ class plgSupportResources extends JPlugin
 
 	/**
 	 * Retrieve parent element
-	 * 
+	 *
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     object
 	 */
@@ -161,14 +161,14 @@ class plgSupportResources extends JPlugin
 
 	/**
 	 * Returns the appropriate text for category
-	 * 
+	 *
 	 * @param      string  $category Element type (determines text)
 	 * @param      integer $parentid ID of element to retrieve
 	 * @return     string
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'review' && $category != 'reviewcomment') 
+		if ($category != 'review' && $category != 'reviewcomment')
 		{
 			return null;
 		}
@@ -187,7 +187,7 @@ class plgSupportResources extends JPlugin
 
 	/**
 	 * Removes an item reported as abusive
-	 * 
+	 *
 	 * @param      integer $referenceid ID of the database table row
 	 * @param      integer $parentid    If the element has a parent element
 	 * @param      string  $category    Element type (determines table to look in)
@@ -196,7 +196,7 @@ class plgSupportResources extends JPlugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'review' && $category != 'reviewcomment') 
+		if ($category != 'review' && $category != 'reviewcomment')
 		{
 			return null;
 		}
@@ -242,7 +242,7 @@ class plgSupportResources extends JPlugin
 				$resource = new ResourcesResource($database);
 				$resource->load($parentid);
 				$resource->calculateRating();
-				if (!$resource->store()) 
+				if (!$resource->store())
 				{
 					$this->setError($resource->getError());
 					return false;
@@ -275,7 +275,7 @@ class plgSupportResources extends JPlugin
 					$comment->content = '[[Span(' . $msg . ', class="warning")]]';
 				}
 
-				if (!$comment->store()) 
+				if (!$comment->store())
 				{
 					$this->setError($comment->getError());
 					return false;

@@ -82,12 +82,12 @@ $this->css()
 						<?php
 						$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
 						$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-						if ($this->filters['search'] != '') 
+						if ($this->filters['search'] != '')
 						{
 							echo JText::sprintf('COM_KB_SEARCH_FOR_IN', $this->filters['search'], $this->escape(stripslashes($this->category->get('title'))));
 						} else {
-							echo $this->escape(stripslashes($this->category->get('title'))); 
-						} ?> 
+							echo $this->escape(stripslashes($this->category->get('title')));
+						} ?>
 						<span>(<?php echo JText::sprintf('COM_KB_NUM_OF_TOTAL', $s . '-' . $e, $this->total); ?>)</span>
 					</caption>
 					<tbody>
@@ -100,9 +100,9 @@ $this->css()
 								<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a><br />
 								<span class="entry-details">
 									<?php if ($this->catid <= 0) { echo JText::sprintf('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle')))); } ?>
-									<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?> 
+									<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>
 									<span class="entry-time-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
-									<span class="entry-time"><?php echo $row->modified('time'); ?></span> 
+									<span class="entry-time"><?php echo $row->modified('time'); ?></span>
 									<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
 									<span class="entry-date"><?php echo $row->modified('date'); ?></span>
 								</span>
@@ -115,9 +115,9 @@ $this->css()
 									     ->set('type', 'entry')
 									     ->set('vote', '')
 									     ->set('id', '');
-								if (!$this->juser->get('guest')) 
+								if (!$this->juser->get('guest'))
 								{
-									if ($row->get('user_id') == $this->juser->get('id')) 
+									if ($row->get('user_id') == $this->juser->get('id'))
 									{
 										$view->set('vote', $row->get('vote'));
 										$view->set('id', $row->get('id'));
@@ -130,7 +130,7 @@ $this->css()
 					<?php } ?>
 					</tbody>
 				</table>
-				<?php 
+				<?php
 				$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 				$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
 

@@ -36,7 +36,7 @@ class plgSearchCitations extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -45,32 +45,32 @@ class plgSearchCitations extends SearchPlugin
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
-		
+
 		//get com_citations params
 		$citationParams = JComponentHelper::getParams('com_citations');
 		$citationSingleView = $citationParams->get('citation_single_view', 1);
-		
+
 		//are we linking to singe citation view
 		if ($citationSingleView)
 		{
-			$sql = "SELECT 
+			$sql = "SELECT
 						c.title AS title,
 						c.abstract AS description,
 					 	concat('/citations/view/', c.id) AS link,
 						$weight AS weight
 					FROM #__citations c
-					WHERE 
+					WHERE
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
-					
+
 			$results->add(new SearchResultSQL($sql));
-			
+
 			$sql2 = "SELECT
 						c.id as id,
 						c.title as title,
 						c.abstract as description,
 						concat('/citations/view/', c.id) AS link
-					 FROM 
+					 FROM
 						#__citations c,
 						#__tags as tag,
 						#__tags_object as tago
@@ -80,29 +80,29 @@ class plgSearchCitations extends SearchPlugin
 						tago.tagid=tag.id
 					AND
 						tago.tbl='citations'
-					AND 
+					AND
 						tago.label=''";
 			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
 		}
 		else
 		{
-			$sql = "SELECT 
+			$sql = "SELECT
 						c.title AS title,
 						c.abstract AS description,
 					 	concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link,
 						$weight AS weight
 					FROM #__citations c
-					WHERE 
+					WHERE
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
 			$results->add(new SearchResultSQL($sql));
-			
+
 			$sql2 = "SELECT
 						c.id as id,
 						c.title as title,
 						c.abstract as description,
 						concat('/citations/browse?search=" . join(' ', $terms['optional']) . "&year=', c.year) AS link
-					 FROM 
+					 FROM
 						#__citations c,
 						#__tags as tag,
 						#__tags_object as tago
@@ -112,11 +112,11 @@ class plgSearchCitations extends SearchPlugin
 						tago.tagid=tag.id
 					AND
 						tago.tbl='citations'
-					AND 
+					AND
 						tago.label=''";
 			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
 		}
-		
+
 		//add final query to ysearch
 		$sql_result_one = "SELECT c.id as id FROM #__citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";

@@ -39,14 +39,14 @@ class Span extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function description()
@@ -59,14 +59,14 @@ class Span extends Macro
 
 	/**
 	 * Generate macro output
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
 	{
 		$et = $this->args;
 
-		if (!$et) 
+		if (!$et)
 		{
 			return '';
 		}
@@ -75,7 +75,7 @@ class Span extends Macro
 		$text = array_shift($attribs);
 
 		$atts = array();
-		if (!empty($attribs) && count($attribs) > 0) 
+		if (!empty($attribs) && count($attribs) > 0)
 		{
 			foreach ($attribs as $a)
 			{

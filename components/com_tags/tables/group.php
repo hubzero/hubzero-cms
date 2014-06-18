@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'TagsGroup'
- * 
+ *
  * Long description (if any) ...
  */
 class TagsTableGroup extends JTable
@@ -41,35 +41,35 @@ class TagsTableGroup extends JTable
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $groupid = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $tagid   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $priority = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -80,16 +80,16 @@ class TagsTableGroup extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @return     integer
 	 */
 	public function getCount()
 	{
-		$query = "SELECT COUNT(*) 
+		$query = "SELECT COUNT(*)
 					FROM $this->_tbl AS tg,
 					#__tags AS t,
 					#__xgroups as g
-					WHERE tg.tagid=t.id 
+					WHERE tg.tagid=t.id
 					AND g.gidNumber=tg.groupid ORDER BY tg.priority ASC";
 
 		$this->_db->setQuery($query);
@@ -98,16 +98,16 @@ class TagsTableGroup extends JTable
 
 	/**
 	 * Get all records
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getRecords()
 	{
-		$query = "SELECT tg.id, t.tag, g.cn, g.description, tg.tagid, tg.groupid, tg.priority 
+		$query = "SELECT tg.id, t.tag, g.cn, g.description, tg.tagid, tg.groupid, tg.priority
 					FROM $this->_tbl AS tg,
 					#__tags AS t,
 					#__xgroups as g
-					WHERE tg.tagid=t.id 
+					WHERE tg.tagid=t.id
 					AND g.gidNumber=tg.groupid ORDER BY tg.priority ASC";
 
 		$this->_db->setQuery($query);
@@ -116,7 +116,7 @@ class TagsTableGroup extends JTable
 
 	/**
 	 * Get the tag next to another tag
-	 * 
+	 *
 	 * @param      string $move Dirction to look for neighbor
 	 * @return     boolean True if tag was moved
 	 */
@@ -133,11 +133,11 @@ class TagsTableGroup extends JTable
 			break;
 		}
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

@@ -37,6 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 </dl>
 <h3>Please contact the HUB Administrator.</h3>
 	<p>The <strong>projects databases plugin parameters<sup>[**]</sup></strong> need to be updated with the correct mysql server host, usernames and passwords.
-	<br /><br /> 
+	<br /><br />
 	** Administrator Backend -> <a target="_blank" href="/administrator/index.php?option=com_plugins">Plugin Manager</a> -> search for "projects - databases"</p>
 </div>

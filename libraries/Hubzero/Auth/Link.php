@@ -31,7 +31,7 @@ namespace Hubzero\Auth;
 
 /**
  * Short description for 'Hubzero\Auth\Link'
- * 
+ *
  * Long description (if any) ...
  */
 class Link
@@ -39,72 +39,72 @@ class Link
 
 	/**
 	 * Description for 'id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $id;
 
 	/**
 	 * Description for 'user_id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $user_id;
 
 	/**
 	 * Description for 'auth_domain_id'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $auth_domain_id;
 
 	/**
 	 * Description for 'username'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $username;
 
 	/**
 	 * Description for 'email'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $email;
 
 	/**
 	 * Description for 'password'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $password;
 
 	/**
 	 * Description for 'params'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	private $params;
 
 	/**
 	 * Description for '_updatedkeys'
-	 * 
+	 *
 	 * @var array
 	 */
 	private $_updatedkeys = array();
 
 	/**
 	 * Description for '_updateAll'
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_updateAll = false;
 
 	/**
 	 * Short description for '__construct'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 void
 	 */
 	private function __construct()
@@ -113,9 +113,9 @@ class Link
 
 	/**
 	 * Short description for 'clear'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 void
 	 */
 	public function clear()
@@ -140,9 +140,9 @@ class Link
 
 	/**
 	 * Short description for 'logDebug'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $msg Parameter description (if any) ...
 	 * @return	 void
 	 */
@@ -154,9 +154,9 @@ class Link
 
 	/**
 	 * Short description for 'getInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
 	 * @param	  unknown $username Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
@@ -168,7 +168,7 @@ class Link
 		$hzal->username = $username;
 
 		$hzal->read();
- 
+
 		if (!$hzal->id)
 		{
 			return false;
@@ -179,9 +179,9 @@ class Link
 
 	/**
 	 * Short description for 'find_by_id'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $id Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
@@ -201,9 +201,9 @@ class Link
 
 	/**
 	 * Short description for 'createInstance'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $auth_domain_id Parameter description (if any) ...
 	 * @param	  unknown $username Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
@@ -232,9 +232,9 @@ class Link
 
 	/**
 	 * Short description for 'create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function create()
@@ -312,9 +312,9 @@ class Link
 
 	/**
 	 * Short description for 'read'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function read()
@@ -370,9 +370,9 @@ class Link
 
 	/**
 	 * Short description for 'update'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -443,9 +443,9 @@ class Link
 
 	/**
 	 * Short description for 'delete'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
 	public function delete()
@@ -482,9 +482,9 @@ class Link
 
 	/**
 	 * Short description for '__get'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -518,9 +518,9 @@ class Link
 
 	/**
 	 * Short description for '__set'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @param	  unknown $value Parameter description (if any) ...
 	 * @return	 void
@@ -546,9 +546,9 @@ class Link
 
 	/**
 	 * Short description for '__isset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 string Return description (if any) ...
 	 */
@@ -568,9 +568,9 @@ class Link
 
 	/**
 	 * Short description for '__unset'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $property Parameter description (if any) ...
 	 * @return	 void
 	 */
@@ -592,9 +592,9 @@ class Link
 
 	/**
 	 * Short description for '_error'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  string $message Parameter description (if any) ...
 	 * @param	  integer $level Parameter description (if any) ...
 	 * @return	 void
@@ -622,7 +622,7 @@ class Link
 	/**
 	 * Return array of linked accounts associated with a given user id
 	 * Also include auth domain name for easy display of domain name
-	 * 
+	 *
 	 * @param	  int $user_id - id of user to return accounts for
 	 * @return	 array Return - array of auth link entries for the given user_id
 	 */
@@ -658,7 +658,7 @@ class Link
 	/**
 	 * Return array of linked accounts associated with a given email address
 	 * Also include auth domain name for easy display of domain name
-	 * 
+	 *
 	 * @param	  string $email - email address to match accounts against
 	 * @return	 array Return - array of auth link entries for the given user_id
 	 */
@@ -701,9 +701,9 @@ class Link
 
 	/**
 	 * Short description for 'delete_by_user_id'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $uid Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
@@ -731,9 +731,9 @@ class Link
 
 	/**
 	 * Short description for 'find_or_create'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $type Parameter description (if any) ...
 	 * @param	  unknown $authenticator Parameter description (if any) ...
 	 * @param	  unknown $domain Parameter description (if any) ...
@@ -764,9 +764,9 @@ class Link
 
 	/**
 	 * Short description for 'find_trusted_emails'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param	  unknown $user_id Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */

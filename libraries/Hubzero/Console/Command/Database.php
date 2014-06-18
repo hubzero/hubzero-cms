@@ -82,7 +82,7 @@ class Database implements CommandInterface
 	 * Dump the database
 	 *
 	 * @return void
-	 * @author 
+	 * @author
 	 **/
 	public function dump()
 	{
@@ -197,7 +197,7 @@ class Database implements CommandInterface
 				'By default, the database dump does not include non-prefixed tables
 				(example: host, display, etc...). This option can be used to include
 				these tables. Use with caution when planning to evenutally load this
-				data into another host (ex: dev) as it rarely makes sense to reload 
+				data into another host (ex: dev) as it rarely makes sense to reload
 				tool sessions into another environment.'
 			);
 	}

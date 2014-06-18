@@ -33,22 +33,22 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CollectionsHelperPermissions::getActions('post');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_POSTS'), 'collection.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -62,7 +62,7 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label> 
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COLLECTIONS_GO'); ?>" />
@@ -85,11 +85,11 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="5">
-					<?php 
+					<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->total, 
-						$this->filters['start'], 
+						$this->total,
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 					echo $pageNav->getListFooter();

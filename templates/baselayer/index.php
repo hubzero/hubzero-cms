@@ -47,7 +47,7 @@ $cls = array(
 $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $isFrontPage = false;
-if ($menu->getActive() == $menu->getDefault() && $this->countModules('home-intro')) 
+if ($menu->getActive() == $menu->getDefault() && $this->countModules('home-intro'))
 {
 	$isFrontPage = true;
 }
@@ -96,7 +96,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<nav id="main-navigation" role="main">
 				<div class="wrapper cf">
 					<div id="account">
-					<?php if (!$juser->get('guest')) { 
+					<?php if (!$juser->get('guest')) {
 							$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					?>
 						<ul class="menu cf <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
@@ -104,7 +104,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<div id="account-info">
 									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" />
 									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-										<?php echo stripslashes($juser->get('name')); ?> 
+										<?php echo stripslashes($juser->get('name')); ?>
 										<span class="account-email"><?php echo $juser->get('email'); ?></span>
 									</a>
 									<p class="account-logout">
@@ -174,14 +174,14 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<?php endif; ?>
 
 						<!-- start component output -->
-						<?php 
+						<?php
 						if (JRequest::getVar('option', '') == 'com_content')
 						{
 							echo '<div class="section-inner">';
 						}
 						?>
 						<jdoc:include type="component" />
-						<?php 
+						<?php
 						if (JRequest::getVar('option', '') == 'com_content')
 						{
 							echo '</div>';

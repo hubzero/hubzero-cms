@@ -41,14 +41,14 @@ class ForumModelAttachment extends ForumModelAbstract
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_tbl_name = 'ForumTableAttachment';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed   $oid ID (integer), alias (string), array or object
 	 * @param      integer $pid Post ID
 	 * @return     void
@@ -82,7 +82,7 @@ class ForumModelAttachment extends ForumModelAbstract
 			{
 				$this->bind($oid);
 			}
-		} 
+		}
 		else if ($pid)
 		{
 			$this->_tbl->loadByPost($pid);
@@ -100,7 +100,7 @@ class ForumModelAttachment extends ForumModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -118,7 +118,7 @@ class ForumModelAttachment extends ForumModelAbstract
 			$key = $pid . '_' . $oid['id'];
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new ForumModelAttachment($oid, $pid);
 		}

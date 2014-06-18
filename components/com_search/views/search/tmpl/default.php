@@ -60,7 +60,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php
 				$total  = $this->results->get_plugin_list_count();
 				$offset = $this->results->get_offset();
-				$limit  = $this->results->get_limit(); 
+				$limit  = $this->results->get_limit();
 				$limit  = ($limit == 0) ? ($limit+1) : $limit;
 				$current_page = $offset / $limit + 1;
 				$total_pages  = ceil($total / $limit);
@@ -93,11 +93,11 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo JFactory::getDate($date)->format('j M Y'); ?></span><?php } ?>
 								<?php if (($contributors = $res->get_contributors())): ?>
 								<span class="contributors">
-										<?php 
+										<?php
 											$contrib_ids = $res->get_contributor_ids();
 											$contrib_len = count($contributors);
 										?>
-										Contributor(s): 
+										Contributor(s):
 										<?php foreach ($contributors as $idx=>$contrib): ?>
 											<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
 										<?php endforeach; ?>
@@ -124,7 +124,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						</div><!-- / .result-description<?php echo $before ? ' shifted' : ''; ?> -->
 						<p class="clear"></p>
 					</div><!-- / .summary -->
-					<?php 
+					<?php
 						$last_type = NULL;
 						if (($children = $res->get_children())):
 							$ctypec = array();
@@ -140,7 +140,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						?>
 						<ul class="child-types">
 							<?php foreach ($children as $idx=>$child): ?>
-								<?php 
+								<?php
 									if (!($current_type = $child->get_section()))
 										continue;
 									if (!$last_type):
@@ -154,7 +154,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 									<li>
 										<h4><span class="expand"></span><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 										<ul class="child-result">
-								<?php 
+								<?php
 									endif;
 									$last_type = $current_type;
 								?>
@@ -173,7 +173,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<?php endforeach; ?>
 			</ol>
 			<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get">
-				<?php 
+				<?php
 				$this->pagination->setAdditionalUrlParam('terms', $this->terms);
 				echo $this->pagination->getListFooter();
 				?>
@@ -183,7 +183,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 		</div><!-- / .container -->
 <?php elseif (($raw = $this->terms->get_raw())): ?>
 	<p>No results were found for '<?php echo $this->escape($raw); ?>'</p>
-	<?php 
+	<?php
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 		if (!$this->terms->any() || strlen($raw) <= 3):
 	?>
@@ -210,16 +210,16 @@ $show_weight = array_key_exists('show_weight', $_GET);
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
 							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
-						<?php else: ?> 
+						<?php else: ?>
 							<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
 						<?php endif; ?>
-						<?php 
+						<?php
 						$fc_child_flag = 'plgsearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
 						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
 						?>
 							<ul>
 							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
-								<?php 
+								<?php
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
 									<li><a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>

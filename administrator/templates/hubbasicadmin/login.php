@@ -81,7 +81,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			jQuery(document).ready(function($){
 				(function worker() {
 					$.ajax({
-						url: 'index.php', 
+						url: 'index.php',
 						complete: function() {
 							setTimeout(worker, 3540000);
 						}
@@ -98,7 +98,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
 			<div class="clr"></div>
 		</header><!-- / header -->
-		
+
 		<div id="wrap">
 			<section id="component-content">
 				<div id="toolbar-box">

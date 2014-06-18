@@ -40,15 +40,15 @@ class FixNames extends SystemHelperScript
 {
 	/**
 	 * Description
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_description = 'Import givenName/middleName/surname from name.';
 
 	/**
 	 * Run the script
-	 * 
-	 * @return     boolean 
+	 *
+	 * @return     boolean
 	 */
 	public function run()
 	{
@@ -73,7 +73,7 @@ class FixNames extends SystemHelperScript
 				$this->_fixName($row->uidNumber);
 			}
 		}
-		else 
+		else
 		{
 			echo 'No changes to be made.';
 		}
@@ -83,7 +83,7 @@ class FixNames extends SystemHelperScript
 
 	/**
 	 * Break apart a name into it's respective fields
-	 * 
+	 *
 	 * @param      string $name User's name
 	 * @return     void
 	 */

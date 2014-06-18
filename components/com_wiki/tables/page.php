@@ -180,12 +180,12 @@ class WikiTablePage extends JTable
 			$scope = '';
 		}
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$scope . '/' . $pagename])) 
+		if (!isset($instances[$scope . '/' . $pagename]))
 		{
 			$db = JFactory::getDBO();
 			$page = new self($db);
@@ -222,18 +222,18 @@ class WikiTablePage extends JTable
 			$oid = $this->normalize($oid);
 		}
 		$k = $this->_tbl_key;
-		if ($oid !== NULL) 
+		if ($oid !== NULL)
 		{
 			$this->$k = $oid;
 		}
 		$oid = $this->$k;
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			$res = $this->bind($result);
 			if ($res)
@@ -242,8 +242,8 @@ class WikiTablePage extends JTable
 			}
 			$this->_tbl_key = 'id';
 			return $res;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -260,24 +260,24 @@ class WikiTablePage extends JTable
 	public function loadByTitle($oid=NULL, $scope='')
 	{
 		$s = "";
-		if ($oid !== NULL) // && !is_numeric($oid)) 
+		if ($oid !== NULL) // && !is_numeric($oid))
 		{
 			$this->_tbl_key = 'title';
 			$s = "AND scope=" . $this->_db->Quote($scope);
 		}
 		$k = $this->_tbl_key;
-		if ($oid !== NULL) 
+		if ($oid !== NULL)
 		{
 			$this->$k = $oid;
 		}
 		$oid = $this->$k;
-		if ($oid === NULL) 
+		if ($oid === NULL)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->Quote($oid) . " $s ORDER BY state ASC LIMIT 1");
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			$res = $this->bind($result);
 			if ($res)
@@ -285,8 +285,8 @@ class WikiTablePage extends JTable
 				$this->title = ($this->title) ? $this->title : $this->splitPagename($this->pagename);
 			}
 			return $res;
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -337,7 +337,7 @@ class WikiTablePage extends JTable
 	 */
 	public function exist()
 	{
-		if ($this->id !== NULL && $this->state != 2) 
+		if ($this->id !== NULL && $this->state != 2)
 		{
 			return true;
 		}
@@ -428,7 +428,7 @@ class WikiTablePage extends JTable
 		{
 			$obj->load($this->version_id);
 		}
-		else 
+		else
 		{*/
 			$obj->loadByVersion($this->id);
 		//}
@@ -514,40 +514,40 @@ class WikiTablePage extends JTable
 
 	/**
 	 * Method for checking that fields are valid before sending to the database
-	 * 
+	 *
 	 * @return    boolean True if all fields are valid
 	 */
 	public function check()
 	{
-		if (!trim($this->pagename)) 
+		if (!trim($this->pagename))
 		{
 			$this->pagename = $this->normalize($this->title);
 		}
-		else 
+		else
 		{
 			$this->pagename = $this->normalize($this->pagename);
 		}
 
-		if (!$this->pagename) 
+		if (!$this->pagename)
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_NO_PAGE_TITLE'));
 			return false;
 		}
 
-		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file'))) 
+		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file')))
 		{
 			$this->setError(JText::_('COM_WIKI_ERROR_INVALID_TITLE'));
 			return false;
 		}
 
-		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH) 
+		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH)
 		{
 			//$this->pagename = substr($this->pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
 			$this->setError(JText::_('Pagename too long'));
 			return false;
 		}
 
-		/*if ($this->group_cn && !$this->_validCn($this->group_cn)) 
+		/*if ($this->group_cn && !$this->_validCn($this->group_cn))
 		{
 			$this->setError(JText::_('Invalid group'));
 			return false;
@@ -557,14 +557,14 @@ class WikiTablePage extends JTable
 		{
 			$g = new WikiTablePage($this->_db);
 			$g->loadByTitle($this->pagename, $this->scope);
-			if ($g->exist()) 
+			if ($g->exist())
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 
 			$g->load($this->pagename, $this->scope);
-			if ($g->exist()) 
+			if ($g->exist())
 			{
 				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
@@ -576,7 +576,7 @@ class WikiTablePage extends JTable
 			$this->created_by = $juser->get('id');
 		}
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			return false;
 		}
@@ -586,7 +586,7 @@ class WikiTablePage extends JTable
 
 	/**
 	 * Check if a group alias is valid
-	 * 
+	 *
 	 * @param      integer $gid Group alias
 	 * @return     boolean True if valid, false if not
 	 */
@@ -594,12 +594,12 @@ class WikiTablePage extends JTable
 	{
 		if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid))
 		{
-			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) 
+			if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0)
 			{
 				return false;
-			} 
+			}
 			return true;
-		} 
+		}
 		return false;
 	}
 
@@ -647,12 +647,12 @@ class WikiTablePage extends JTable
 	 */
 	public function deleteBits($id=NULL)
 	{
-		if (!$id) 
+		if (!$id)
 		{
 			$id = $this->id;
 		}
 		$id = intval($id);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('Missing page ID'));
 			return false;
@@ -660,35 +660,35 @@ class WikiTablePage extends JTable
 
 		// Delete the page's version history
 		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's tags
 		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's comments
 		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's attachments
 		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's authors
 		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id=" . $this->_db->Quote($id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -767,26 +767,26 @@ class WikiTablePage extends JTable
 	 */
 	public function buildQuery($filters)
 	{
-		if (isset($filters['count']) && $filters['count']) 
+		if (isset($filters['count']) && $filters['count'])
 		{
 			$query = "SELECT count(*)";
-		} 
-		else 
+		}
+		else
 		{
 			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
 		}
 		$query .= " FROM $this->_tbl AS t";
 
 		$where = array();
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "(LOWER(t.pagename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(t.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
-		if (isset($filters['namespace']) && $filters['namespace']) 
+		if (isset($filters['namespace']) && $filters['namespace'])
 		{
 			$where[] = "LOWER(t.pagename) LIKE '" . $this->_db->getEscaped(strtolower($filters['namespace'])) . "%'";
 		}
-		if (isset($filters['scope'])) 
+		if (isset($filters['scope']))
 		{
 			if ($filters['scope'])
 			{
@@ -797,13 +797,13 @@ class WikiTablePage extends JTable
 				$where[] = "(t.`scope`='' OR t.`scope` IS NULL)";
 			}
 		}
-		if (isset($filters['group'])) // && $filters['group'] != '' 
+		if (isset($filters['group'])) // && $filters['group'] != ''
 		{
 			if ($filters['group'] != '')
 			{
 				$where[] = "t.`group_cn`=" . $this->_db->Quote($filters['group']);
 			}
-			else 
+			else
 			{
 				$where[] = "(t.`group_cn`='' OR t.`group_cn` IS NULL)";
 			}
@@ -825,17 +825,17 @@ class WikiTablePage extends JTable
 		{
 			$query .= " WHERE " . implode(' AND ', $where);
 		}
-		if (!isset($filters['count']) || !$filters['count']) 
+		if (!isset($filters['count']) || !$filters['count'])
 		{
-			if (isset($filters['sortby']) && $filters['sortby'] != '') 
+			if (isset($filters['sortby']) && $filters['sortby'] != '')
 			{
 				$query .= " ORDER BY t." . $filters['sortby'];
-			} 
-			else 
+			}
+			else
 			{
 				$query .= " ORDER BY t.id ASC GROUP BY `t.group_cn`";
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 			{
 				$query .= " LIMIT  ". $filters['start'] . "," . $filters['limit'];
 			}
@@ -855,33 +855,33 @@ class WikiTablePage extends JTable
 	{
 		$juser = JFactory::getUser();
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query = "SELECT COUNT(f.id) FROM (SELECT v.pageid AS id, COUNT(DISTINCT t.tagid) AS uniques ";
-			} 
-			else 
+			}
+			else
 			{
 				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.pageid) ";
 			}
-		} 
-		else 
+		}
+		else
 		{
-			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params, 
+			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagehtml AS itext, NULL AS ftext, w.state, v.created, v.created AS modified, v.created AS publish_up, w.params,
 					CONCAT('index.php?option=com_topics&pagename=', w.pagename) AS href, 'topics' AS `section`, w.`group_cn` AS area, w.scope AS category, w.rating, w.times_rated, w.ranking, w.access, w.hits ";
-			if (isset($filters['tags'])) 
+			if (isset($filters['tags']))
 			{
 				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
 			}
-			if (isset($filters['search']) && $filters['search'] != '') 
+			if (isset($filters['search']) && $filters['search'] != '')
 			{
-				if (!empty($phrases)) 
+				if (!empty($phrases))
 				{
 					$exactphrase = addslashes('"' . $phrases[0] . '"');
 					$text3 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($searchquery->searchText));
@@ -890,13 +890,13 @@ class WikiTablePage extends JTable
 							. "  MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) +"
 							. "  CASE WHEN LOWER(w.pagename) LIKE '%$text3%' THEN 10 ELSE 0 END"
 							. ") AS relevance ";
-				} 
-				else 
+				}
+				else
 				{
 					/*$words = array();
 					if (count($searchquery->searchWords) > 0) {
 						$ws = $searchquery->searchWords;
-						foreach ($ws as $w) 
+						foreach ($ws as $w)
 						{
 							if (strlen($w) > 2) {
 								$words[] = $w;
@@ -921,11 +921,11 @@ class WikiTablePage extends JTable
 			}
 		}
 		$query .= "FROM $this->_tbl AS w LEFT JOIN #__wiki_version AS v ON w.id=v.pageid LEFT JOIN #__xgroups AS g ON g.cn=w.group_cn";
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
 		}
-		
+
 		$where = array();
 		//$where[] = "w.id=v.pageid";
 		$where[] = "v.approved=1";
@@ -933,24 +933,24 @@ class WikiTablePage extends JTable
 		$where[] = "(w.group_cn='')";
 		$where[] = "w.state<2";
 
-		if (isset($filters['author'])) 
+		if (isset($filters['author']))
 		{
 			$where[] = "(w.created_by=" . $this->_db->Quote(intval($filters['author'])) . " OR " . intval($filters['author']) . " IN (SELECT user_id FROM #__wiki_page_author WHERE page_id=w.id))";
 		}
 
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$where[] = "w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN (" . implode(',', $filters['tags']) . ")";
 		}
 
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			if (!empty($phrases)) 
+			if (!empty($phrases))
 			{
 				$exactphrase = addslashes('"' . $phrases[0] . '"');
 				$where[] = "((MATCH(w.title) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0) OR (MATCH(v.pagetext) AGAINST ('$exactphrase' IN BOOLEAN MODE) > 0))";
-			} 
-			else 
+			}
+			else
 			{
 				$text = implode(' +', $searchquery->searchWords);
 				$text = addslashes($text);
@@ -962,10 +962,10 @@ class WikiTablePage extends JTable
 			}
 		}
 
-		if (isset($filters['group']) && $filters['group'] != '') 
+		if (isset($filters['group']) && $filters['group'] != '')
 		{
 			$where[] = "r.group_owner='" . $filters['group'] . "'";
-			if (!$filters['authorized']) 
+			if (!$filters['authorized'])
 			{
 				switch ($filters['access'])
 				{
@@ -975,8 +975,8 @@ class WikiTablePage extends JTable
 					case 'all':
 					default:          $where[] = "r.access != 4"; break;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				switch ($filters['access'])
 				{
@@ -988,18 +988,18 @@ class WikiTablePage extends JTable
 					break;
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
-				if (!isset($filters['authorized']) || (isset($filters['authorized']) && $filters['authorized'] !== 'admin')) 
+				if (!isset($filters['authorized']) || (isset($filters['authorized']) && $filters['authorized'] !== 'admin'))
 				{
 					$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					$ugs = (is_object($profile)) ? $profile->getGroups('members') : array();
-					
+
 					$groups = array();
-					if ($ugs && count($ugs) > 0) 
+					if ($ugs && count($ugs) > 0)
 					{
 						foreach ($ugs as $ug)
 						{
@@ -1009,17 +1009,17 @@ class WikiTablePage extends JTable
 
 					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN ('" . implode("','", $groups) . "') OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
 				}
-			} 
-			else 
+			}
+			else
 			{
 				$where[] = "w.access!=1";
 			}
 		}
-		if (isset($filters['startdate'])) 
+		if (isset($filters['startdate']))
 		{
 			$where[] = "v.created > " . $this->_db->Quote($filters['startdate']);
 		}
-		if (isset($filters['enddate'])) 
+		if (isset($filters['enddate']))
 		{
 			$where[] = "v.created < " . $this->_db->Quote($filters['enddate']);
 		}
@@ -1029,13 +1029,13 @@ class WikiTablePage extends JTable
 			$query .= " WHERE " . implode(" AND ", $where) . " ";
 		}
 		$query .= "GROUP BY pageid ";
-		if (isset($filters['tags'])) 
+		if (isset($filters['tags']))
 		{
 			$query .= "HAVING uniques=".count($filters['tags'])." ";
 		}
-		if (isset($filters['select']) && $filters['select'] != 'count') 
+		if (isset($filters['select']) && $filters['select'] != 'count')
 		{
-			if (isset($filters['sortby'])) 
+			if (isset($filters['sortby']))
 			{
 				$query .= "ORDER BY ";
 				switch ($filters['sortby'])
@@ -1051,22 +1051,22 @@ class WikiTablePage extends JTable
 					default:          $query .= 'created DESC';   break;
 				}
 			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all') 
+			if (isset($filters['limit']) && $filters['limit'] != 'all')
 			{
 				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
 			}
 		}
-		if (isset($filters['select']) && $filters['select'] == 'count') 
+		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
 			$query .= ") AS f";
 		}
-		
+
 		return $query;
 	}
 
 	/**
-	 * Get page metrics 
-	 * 
+	 * Get page metrics
+	 *
 	 * @return     array
 	 */
 	public function getMetrics()
@@ -1091,7 +1091,7 @@ class WikiTablePage extends JTable
 
 	/**
 	 * Strip unwanted characters
-	 * 
+	 *
 	 * @param      string $txt Text to normalize
 	 * @return     string
 	 */
@@ -1103,7 +1103,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Get the page title
 	 * If title isn't set, it will split the camelcase pagename into a spaced title
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function getTitle()
@@ -1115,7 +1115,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Splits camel-case page names
 	 * e.g., MyPageName => My Page Name
-	 * 
+	 *
 	 * @param      string $page Wiki page name
 	 * @return     string
 	 */
@@ -1132,7 +1132,7 @@ class WikiTablePage extends JTable
 		// Improvements for other languages welcome.
 		static $RE;
 
-		if (!isset($RE)) 
+		if (!isset($RE))
 		{
 			$language = strtolower(JFactory::getLanguage()->getTag());
 
@@ -1160,7 +1160,7 @@ class WikiTablePage extends JTable
 				case 'es':
 				case 'spanish':
 				case 'es-es':
-				
+
 
 				case 'de':
 				case 'german':
@@ -1198,7 +1198,7 @@ class WikiTablePage extends JTable
 			$RE[] = "/([^${sep}]+)(${sep})/";
 			$RE[] = "/(${sep})([^${sep}]+)/";
 
-			foreach ($RE as $key) 
+			foreach ($RE as $key)
 			{
 				$RE[$key] = $this->_pcreFixPosixClasses($key);
 			}
@@ -1219,26 +1219,26 @@ class WikiTablePage extends JTable
 	/**
 	 * This is a helper function which can be used to convert a regexp
 	 * which contains POSIX named character classes to one that doesn't.
-	 * 
+	 *
 	 * Older version (pre 3.x?) of the PCRE library do not support
 	 * POSIX named character classes (e.g. [[:alnum:]]).
-	 * 
+	 *
 	 * All instances of strings like '[:<class>:]' are replaced by the equivalent
 	 * enumerated character class.
-	 * 
+	 *
 	 * Implementation Notes:
-	 * 
+	 *
 	 * Currently we use hard-coded values which are valid only for
 	 * ISO-8859-1.  Also, currently on the classes [:alpha:], [:alnum:],
 	 * [:upper:] and [:lower:] are implemented.  (The missing classes:
 	 * [:blank:], [:cntrl:], [:digit:], [:graph:], [:print:], [:punct:],
 	 * [:space:], and [:xdigit:] could easily be added if needed.)
-	 * 
+	 *
 	 * This is a hack.  I tried to generate these classes automatically
 	 * using ereg(), but discovered that in my PHP, at least, ereg() is
 	 * slightly broken w.r.t. POSIX character classes.  (It includes
 	 * "\xaa" and "\xba" in [:alpha:].)
-	 * 
+	 *
 	 * @param      string $regexp Regular expression
 	 * @return     string Return description (if any) ...
 	 */

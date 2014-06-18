@@ -33,26 +33,26 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = KbHelper::getActions('category');
 
 JToolBarHelper::title(JText::_('COM_KB'), 'kb.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -60,7 +60,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('categories');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -116,17 +116,17 @@ foreach ($this->rows as $row)
 			break;
 	}
 
-	if (!$row->get('access', 0)) 
+	if (!$row->get('access', 0))
 	{
 		$color_access = 'public';
 		$task_access  = 'accessregistered';
-	} 
-	elseif ($row->get('access', 0) == 1) 
+	}
+	elseif ($row->get('access', 0) == 1)
 	{
 		$color_access = 'registered';
 		$task_access  = 'accessspecial';
-	} 
-	else 
+	}
+	else
 	{
 		$color_access = 'special';
 		$task_access  = 'accesspublic';

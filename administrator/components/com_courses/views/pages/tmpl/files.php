@@ -92,9 +92,9 @@ function goUpDir()
 					multiple: true,
 					debug: true,
 					template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
+								'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
 								'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
-								'<ul class="qq-upload-list"></ul>' + 
+								'<ul class="qq-upload-list"></ul>' +
 							   '</div>',
 					/*onSubmit: function(id, file) {
 						//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");

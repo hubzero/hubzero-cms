@@ -38,7 +38,7 @@ class ResourcesUtilities
 {
 	/**
 	 * Cleans, normalizes, and constructs full path to media directory
-	 * 
+	 *
 	 * @param      string $dir Primary directory for media
 	 * @param      string $subdir  Sub-directory of primary (optional)
 	 * @return     string Return full system path
@@ -79,7 +79,7 @@ class ResourcesUtilities
 
 	/**
 	 * Strips trailing slashes and ensures path begins with a slash
-	 * 
+	 *
 	 * @param      string $path Path to normalize
 	 * @return     string
 	 */

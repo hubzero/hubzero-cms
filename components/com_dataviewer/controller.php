@@ -33,7 +33,7 @@ function controller()
 
 	$task = strtolower(JRequest::getVar('task'));
 	$task_func = 'task_' . $task;
-	
+
 	if (function_exists($task_func)) {
 		$task_func($db_id);
 	} else {
@@ -45,7 +45,7 @@ function task_file($db_id)
 {
 	$view = 'file';
 	$file = (JPATH_COMPONENT.DS."view".DS."$view.php");
-	
+
 	if (file_exists($file)) {
 		require_once ($file);
 		view();
@@ -158,7 +158,7 @@ function authorize($dd)
 			return true;
 		}
 	}
-	
+
 	if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !$juser->get('guest')) {
 		$groups = \Hubzero\User\Helper::getGroups($juser->get('id'));
 		if ($groups && count($groups)) {

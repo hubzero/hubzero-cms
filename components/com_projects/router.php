@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Projects build route
- * 
+ *
  * @param  array &$query
  * @return array Return
  */
@@ -41,25 +41,25 @@ function ProjectsBuildRoute(&$query)
 {
 	$segments = array();
 	$scope = 0;
-	
-	if (!empty($query['controller'])) 
+
+	if (!empty($query['controller']))
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-    if (!empty($query['alias'])) 
+    if (!empty($query['alias']))
 	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
 	}
-	if (!empty($query['id'])) 
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
-		if (empty($query['scope'])) 
+		if (empty($query['scope']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
@@ -70,127 +70,127 @@ function ProjectsBuildRoute(&$query)
 		$segments[] = $query['active'];
 		unset($query['active']);
 	}
-	if (!empty($query['pid'])) 
+	if (!empty($query['pid']))
 	{
 		$segments[] = $query['pid'];
 		unset($query['pid']);
 	}
 	// Publications
-	if (!empty($query['section'])) 
+	if (!empty($query['section']))
 	{
 		$segments[] = $query['section'];
 		unset($query['section']);
 	}
-	if (!empty($query['move'])) 
+	if (!empty($query['move']))
 	{
 		$segments[] = $query['move'];
 		unset($query['move']);
 	}
-	if (!empty($query['step'])) 
+	if (!empty($query['step']))
 	{
 		$segments[] = $query['step'];
 		unset($query['step']);
 	}
-	if (!empty($query['tool'])) 
+	if (!empty($query['tool']))
 	{
 		$segments[] = $query['tool'];
 		unset($query['tool']);
 	}
-	if (!empty($query['scope'])) 
+	if (!empty($query['scope']))
 	{
 		// For wiki routing
 		$segments = array();
 		$scope = 1;
 		$parts = explode ( '/', $query['scope'] );
-		if(count($parts) >= 3) 
+		if(count($parts) >= 3)
 		{
 			$segments[] = $parts[1]; // alias
 			$segments[] = 'notes'; // active
-			
-			for( $i = 3; $i < count($parts); $i++ ) 
+
+			for( $i = 3; $i < count($parts); $i++ )
 			{
 				$segments[] = $parts[$i]; // inlcude parent page names
 			}
 		}
         unset($query['scope']);
     }
-	if (!empty($query['pagename'])) 
+	if (!empty($query['pagename']))
 	{
 		$segments[] = $query['pagename'];
         unset($query['pagename']);
     }
-	if (!empty($query['action'])) 
+	if (!empty($query['action']))
 	{
 		$segments[] = $query['action'];
 		unset($query['action']);
-	} 
-	elseif ($scope == 1) 
+	}
+	elseif ($scope == 1)
 	{
-		$segments[] = !empty($query['task']) ? $query['task'] : 'view'; // wiki action	
-		if(!empty($query['task'])) 
-		{ 
+		$segments[] = !empty($query['task']) ? $query['task'] : 'view'; // wiki action
+		if(!empty($query['task']))
+		{
 			unset($query['task']);
 		}
 	}
-	
+
 	return $segments;
 }
 
 /**
  * Projects parse route
- * 
+ *
  * @param  array $segments
  * @return array Return
  */
 function ProjectsParseRoute($segments)
 {
 	$vars  = array();
-	
+
 	// Valid tasks
-	$tasks = array(	'start', 'setup', 'edit', 
+	$tasks = array(	'start', 'setup', 'edit',
 		'browse', 'intro', 'features', 'auth',
-		'deleteimg', 'img', 'wikipreview', 'fixownership', 
+		'deleteimg', 'img', 'wikipreview', 'fixownership',
 		'stats', 'reports', 'get'
 	);
-	
+
 	// Valid tasks
 	$mediaTasks = array( 'img', 'deleteimg', 'upload');
-	
+
 	// Views (plugins or view panels)
-	$views = array('feed', 'info', 'team', 
-		'files', 'tools', 'publications', 
-		'notes', 'todo', 'activity', 
+	$views = array('feed', 'info', 'team',
+		'files', 'tools', 'publications',
+		'notes', 'todo', 'activity',
 		'databases', 'links'
 	);
-	
+
 	// Wiki actions
-	$wiki_actions = array('media', 'list', 'upload', 
-		'deletefolder', 'deletefile', 'view', 
-		'new', 'edit', 'save', 'cancel', 
-		'delete', 'deleteversion', 'approve', 
-		'rename', 'saverename', 'history', 
-		'compare', 'comments', 'editcomment', 
-		'addcomment', 'savecomment', 'removecomment', 
-		'reportcomment', 'deleterevision' 
+	$wiki_actions = array('media', 'list', 'upload',
+		'deletefolder', 'deletefile', 'view',
+		'new', 'edit', 'save', 'cancel',
+		'delete', 'deleteversion', 'approve',
+		'rename', 'saverename', 'history',
+		'compare', 'comments', 'editcomment',
+		'addcomment', 'savecomment', 'removecomment',
+		'reportcomment', 'deleterevision'
 	);
-	
+
 	// App actions
-	$app_actions = array('status', 'history', 'wiki', 'browse', 
+	$app_actions = array('status', 'history', 'wiki', 'browse',
 		'edit', 'start', 'save', 'register', 'attach', 'source',
 		'cancel', 'update', 'message', 'update'
 	);
-			
+
 	if (empty($segments[0]))
 	{
 		return $vars;
 	}
-		
+
 	// Id?
-	if (is_numeric($segments[0])) 
+	if (is_numeric($segments[0]))
 	{
 		$vars['id'] = $segments[0];
 
-		if (empty($segments[1])) 
+		if (empty($segments[1]))
 		{
 			$vars['task'] = 'view';
 			if (in_array($vars['task'], $mediaTasks))
@@ -198,22 +198,22 @@ function ProjectsParseRoute($segments)
 				$vars['controller'] = 'media';
 			}
 			return $vars;
-		}	
+		}
 	}
 
 	// Alias?
-	if (!is_numeric($segments[0])) 
+	if (!is_numeric($segments[0]))
 	{
 		if ($segments[0] == 'reports')
 		{
 			$vars['controller'] = 'reports';
-			if (!empty($segments[1])) 
+			if (!empty($segments[1]))
 			{
 				$vars['task'] = $segments[1];
 			}
 			return $vars;
 		}
-		elseif (in_array($segments[0], $tasks)) 
+		elseif (in_array($segments[0], $tasks))
 		{
 			$vars['task'] = $segments[0];
 			if (in_array($vars['task'], $mediaTasks))
@@ -222,50 +222,50 @@ function ProjectsParseRoute($segments)
 			}
 			return $vars;
 		}
-		else 
+		else
 		{
 			$vars['alias']  = $segments[0];
 		}
 	}
-	
-	if (!empty($segments[1])) 
+
+	if (!empty($segments[1]))
 	{
 		// Plugin?
-		if (in_array($segments[1], $views)) 
+		if (in_array($segments[1], $views))
 		{
 			$vars['active'] = $segments[1];
 			$vars['task'] = 'view';
-			
+
 			// Publications
-			if (!empty($segments[2]) && $vars['active'] == 'publications') 
+			if (!empty($segments[2]) && $vars['active'] == 'publications')
 			{
-				if (is_numeric($segments[2])) 
+				if (is_numeric($segments[2]))
 				{
 					$vars['pid'] = $segments[2];
 					$blocks = array();
-					
-					if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+
+					if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 						. DS . 'com_publications' . DS . 'tables' . DS . 'block.php'))
 					{
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 							. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 						$database = JFactory::getDBO();
 
 						$b = new PublicationBlock($database);
 						$blocks = $b->getBlocks('block');
 					}
-										
-					if (!empty($segments[3]) && in_array($segments[3], $blocks)) 
+
+					if (!empty($segments[3]) && in_array($segments[3], $blocks))
 					{
 						$vars['section'] = $segments[3];
-						
-						if (!empty($segments[4]) && $segments[4] == 'continue') 
+
+						if (!empty($segments[4]) && $segments[4] == 'continue')
 						{
 							$vars['move'] = $segments[4];
-							
+
 							if (!empty($segments[5]))
 							{
-								if (is_numeric($segments[5])) 
+								if (is_numeric($segments[5]))
 								{
 									$vars['step'] = $segments[5];
 
@@ -282,10 +282,10 @@ function ProjectsParseRoute($segments)
 						}
 						elseif (!empty($segments[4]))
 						{
-							if (is_numeric($segments[4])) 
+							if (is_numeric($segments[4]))
 							{
 								$vars['step'] = $segments[4];
-								
+
 								if (!empty($segments[5]))
 								{
 									$vars['action'] = $segments[5];
@@ -294,61 +294,61 @@ function ProjectsParseRoute($segments)
 							else
 							{
 								$vars['action'] = $segments[4];
-							}							
+							}
 						}
 					}
 				}
-				else 
+				else
 				{
 					$vars['action'] = $segments[2];
 				}
 				return $vars;
 			}
-			
+
 			// Apps
-			if (!empty($segments[2]) && $vars['active'] == 'tools') 
+			if (!empty($segments[2]) && $vars['active'] == 'tools')
 			{
-				if (in_array( $segments[2], $app_actions )) 
+				if (in_array( $segments[2], $app_actions ))
 				{
-					$vars['action'] = $segments[2];	
+					$vars['action'] = $segments[2];
 				}
-				else 
+				else
 				{
-					$vars['tool'] = $segments[2];	
+					$vars['tool'] = $segments[2];
 				}
-				if (!empty($segments[3]) && in_array( $segments[3], $app_actions )) 
+				if (!empty($segments[3]) && in_array( $segments[3], $app_actions ))
 				{
 					$vars['action'] = $segments[3];
 				}
 			}
-			
+
 			// Notes
-			elseif (!empty($segments[2]) && !is_numeric($segments[2]) && $vars['active'] == 'notes') 
-			{				
+			elseif (!empty($segments[2]) && !is_numeric($segments[2]) && $vars['active'] == 'notes')
+			{
 				$remaining = array_slice($segments, 2);
 				$action = array_pop($remaining);
 				$pagename = '';
-				
-				if (in_array( $action, $wiki_actions )) 
+
+				if (in_array( $action, $wiki_actions ))
 				{
-					$vars['action'] = $action;	
+					$vars['action'] = $action;
 					$pagename = array_pop($remaining);
 				}
-				else 
+				else
 				{
-					$vars['action'] = 'view';	
+					$vars['action'] = 'view';
 					$pagename = $action;
 				}
 				$vars['pagename'] = $pagename;
-								
+
 				// Collect scope
 				if (isset($vars['alias']))
 				{
-					if (count($remaining) > 0) 
+					if (count($remaining) > 0)
 					{
 						$scope = 'projects' . DS . $vars['alias'] . DS . 'notes';
 
-						for ( $i = 0; $i < count($remaining); $i++ ) 
+						for ( $i = 0; $i < count($remaining); $i++ )
 						{
 							$scope .= DS . $remaining[$i]; // inlcude parent page names
 						}
@@ -362,27 +362,27 @@ function ProjectsParseRoute($segments)
 					{
 						$scope = 'projects' . DS . $vars['alias'] . DS . 'notes' . DS . $pagename;
 						$vars['scope'] = $scope;
-					}	
+					}
 				}
-				
-				return $vars;				
+
+				return $vars;
 			}
 			// All other plugins
-			elseif (!empty($segments[2]) && !is_numeric($segments[2])) 
+			elseif (!empty($segments[2]) && !is_numeric($segments[2]))
 			{
 				$vars['action'] = $segments[2];
 			}
-						
+
 			return $vars;
 		}
-	
+
 		$vars['task'] = $segments[1];
-		if (!empty($segments[2])) 
+		if (!empty($segments[2]))
 		{
 			$vars['active'] = $segments[2];
 		}
 	}
-	else 
+	else
 	{
 		$vars['task'] = 'view';
 	}
@@ -391,7 +391,7 @@ function ProjectsParseRoute($segments)
 	{
 		$vars['controller'] = 'media';
 	}
-	
+
 	return $vars;
 }
 

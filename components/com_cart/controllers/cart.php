@@ -38,7 +38,7 @@ class CartControllerCart extends ComponentController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -57,10 +57,10 @@ class CartControllerCart extends ComponentController
 
 	/**
 	 * Display default page
-	 * 
+	 *
 	 * @return     void
 	 */
-	public function homeTask() 
+	public function homeTask()
 	{
 		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
@@ -119,7 +119,7 @@ class CartControllerCart extends ComponentController
 				}
 			}
 
-			if (!empty($errors)) 
+			if (!empty($errors))
 			{
 				$redirect = false;
 			}
@@ -149,7 +149,7 @@ class CartControllerCart extends ComponentController
 				$errors[] = $e->getMessage();
 			}
 
-			if (!empty($errors)) 
+			if (!empty($errors))
 			{
 				$redirect = false;
 			}
@@ -178,12 +178,12 @@ class CartControllerCart extends ComponentController
 		$this->view->cartInfo = $cartInfo;
 
 		// Handle coupons
-		$couponPerks = $cart->getCouponPerks(); 
+		$couponPerks = $cart->getCouponPerks();
 		//print_r($couponPerks); die;
 		$this->view->couponPerks = $couponPerks;
 
 		// Handle memberships
-		$membershipInfo = $cart->getMembershipInfo(); 
+		$membershipInfo = $cart->getMembershipInfo();
 		//print_r($membershipInfo); die;
 		$this->view->membershipInfo = $membershipInfo;
 

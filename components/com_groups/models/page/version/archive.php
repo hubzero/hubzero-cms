@@ -38,21 +38,21 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_versions = null;
-	
+
 	/**
 	 * Version Count
-	 * 
+	 *
 	 * @var int
 	 */
 	private $_versions_count = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -61,7 +61,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 		// create database object
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Get a list of group page versions
 	 *
@@ -73,7 +73,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 	public function versions( $rtrn = 'list', $filters = array(), $clear = false )
 	{
 		$tbl = new GroupsTablePageVersion($this->_db);
-		
+
 		switch (strtolower($rtrn))
 		{
 			case 'count':
@@ -89,7 +89,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 					{
 						$filters['pageid'] = 0;
 					}
-					
+
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)

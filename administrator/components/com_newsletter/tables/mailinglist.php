@@ -35,59 +35,59 @@ class NewsletterMailinglist extends JTable
 {
 	/**
 	 * Mailing List ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 		= NULL;
-	
+
 	/**
 	 * Mailing List Name
-	 * 
+	 *
 	 * @var varchar(150)
 	 */
 	var $name 		= NULL;
-	
+
 	/**
 	 * Mailing List Dec
-	 * 
+	 *
 	 * @var text
 	 */
 	var $description = NULL;
-	
+
 	/**
 	 * Mailing List Private
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $private 	= NULL;
-	
+
 	/**
 	 * Mailing List Deleted
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $deleted 	= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Mailing List Constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
 	public function __construct( &$db )
 	{
 		parent::__construct( '#__newsletter_mailinglists', 'id', $db );
-		
+
 		//set up the assoc table
 		$this->_tbl_assoc = '#__newsletter_mailinglist_emails';
 		$this->_tbl_assoc_key = 'id';
 	}
-	
-	
+
+
 	/**
 	 * Newsletter Mailing List Save Check method
-	 * 
+	 *
 	 * @return 	boolean
 	 */
 	public function check()
@@ -97,26 +97,26 @@ class NewsletterMailinglist extends JTable
 			$this->setError('Newsletter mailing list must have a name.');
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Get Mailing Lists
-	 * 
+	 *
 	 * @param 	$id		Mailing List Id
 	 * @return 	array
 	 */
 	public function getLists( $id = null, $privacy = null )
 	{
-		$sql = "SELECT 
-					ml.*, 
+		$sql = "SELECT
+					ml.*,
 					(SELECT COUNT(*) FROM {$this->_tbl_assoc} AS mle WHERE mle.mid=ml.id AND mle.status='active') as active_count,
 					(SELECT COUNT(*) FROM {$this->_tbl_assoc} AS mle WHERE mle.mid=ml.id) as total_count
 				FROM {$this->_tbl} AS ml
 				WHERE ml.deleted=0";
-				
+
 		//do we have a specific status
 		if (strtolower($privacy) == 'private')
 		{
@@ -126,7 +126,7 @@ class NewsletterMailinglist extends JTable
 		{
 			$sql .= " AND ml.private=0";
 		}
-		
+
 		//do we have an id
 		if ($id)
 		{
@@ -175,11 +175,11 @@ class NewsletterMailinglist extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
-	
+
+
 	/**
 	 * Get Mailing List Emails
-	 * 
+	 *
 	 * @param 	$id		Mailing List Id
 	 * @return 	array
 	 */
@@ -190,7 +190,7 @@ class NewsletterMailinglist extends JTable
 		{
 			return;
 		}
-		
+
 		//are we loading default list
 		if ($mailinglistId == '-1')
 		{
@@ -203,7 +203,7 @@ class NewsletterMailinglist extends JTable
 		}
 
 		// default select
-		$select = "mle.*, (SELECT reason FROM #__newsletter_mailinglist_unsubscribes AS u 
+		$select = "mle.*, (SELECT reason FROM #__newsletter_mailinglist_unsubscribes AS u
 				WHERE mle.email=u.email AND mle.mid=u.mid) AS unsubscribe_reason";
 
 		// specific select
@@ -211,18 +211,18 @@ class NewsletterMailinglist extends JTable
 		{
 			$select = $filters['select'];
 		}
-		
+
 		//get list of emails
-		$sql = "SELECT {$select} 
-				FROM {$this->_tbl_assoc} AS mle 
+		$sql = "SELECT {$select}
+				FROM {$this->_tbl_assoc} AS mle
 				WHERE mle.mid=" . $this->_db->quote( $mailinglistId );
-				
+
 		//do we have a status
 		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
 			 $sql .= " AND mle.status=" . $this->_db->quote( $filters['status'] );
 		}
-		
+
 		//do we have an order filter
 		if (isset($filters['sort']) && $filters['sort'] != '')
 		{
@@ -239,7 +239,7 @@ class NewsletterMailinglist extends JTable
 			$start = (isset($filters['start'])) ? $filters['start'] : 0;
 			$sql .= " LIMIT " . $start . ", " . $filters['limit'];
 		}
-		
+
 		$this->_db->setQuery( $sql );
 
 		if (isset($filters['select']))
@@ -249,11 +249,11 @@ class NewsletterMailinglist extends JTable
 
 		return $this->_db->loadObjectList( $key );
 	}
-	
-	
+
+
 	/**
 	 * Get Mailing List Emails
-	 * 
+	 *
 	 * @param 	$id		Mailing List Id
 	 * @return 	array
 	 */
@@ -263,25 +263,25 @@ class NewsletterMailinglist extends JTable
 		{
 			return;
 		}
-		
+
 		//get lists that member belongs to
 		$sql = "SELECT mle.id AS id, ml.id as mailinglistid, ml.name, ml.description, mle.status, mle.confirmed
-				FROM {$this->_tbl} AS ml, {$this->_tbl_assoc} AS mle 
+				FROM {$this->_tbl} AS ml, {$this->_tbl_assoc} AS mle
 				WHERE ml.id=mle.mid
 				AND ml.deleted=0
 				AND mle.email=" . $this->_db->quote( $email );
-		
+
 		//do we have a status
 		if ($status != 'all')
 		{
 			 $sql .= " AND mle.status=" . $this->_db->quote( $status );
 		}
-		
+
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList( $key );
 	}
-	
-	
+
+
 	/**
 	 * Get default hub members list
 	 *

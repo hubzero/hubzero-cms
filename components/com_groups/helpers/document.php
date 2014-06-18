@@ -40,11 +40,11 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 	public $tab          = null;
 	public $allowed_tags = array('module','modules');
 	private $_tags       = array();
-	
-	
+
+
 	/**
 	 * Parse Document Content
-	 * 
+	 *
 	 * @return void
 	 */
 	public function parse()
@@ -54,39 +54,39 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		{
 			JError::raiseError(406, 'GroupsHelperDocument: Requires document to parse');
 		}
-		
+
 		// parse content
 		// get all group includes
 		if(preg_match_all('#<group:include([^/]*)/>#', $this->get('document'), $matches))
 		{
 			// import utility class
 			jimport('joomla.utilities.utility');
-			
+
 			// get number of matches
 			$count = count($matches[1]);
-			
+
 			//loop through each match
 			for($i = 0; $i < $count; $i++)
 			{
 				$attribs = JUtility::parseAttributes($matches[1][$i]);
-				
+
 				$type   = (isset($attribs['type'])) ? strtolower(trim($attribs['type'])) : null;
 				$name   = (isset($attribs['name'])) ? $attribs['name'] : $type;
-				
+
 				unset($attribs['type']);
 				$params = $attribs;
-				
+
 				$this->_tags[$matches[0][$i]] = array( 'type' => $type, 'name' => $name, 'params' => $params );
 			}
 		}
-		
+
 		// return this
 		return $this;
 	}
-	
+
 	/**
-	 * Render Document 
-	 * 
+	 * Render Document
+	 *
 	 * @return    string
 	 */
 	public function render()
@@ -94,30 +94,30 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		// vars to hold replace values
 		$replace = array();
 		$with    = array();
-		
+
 		// include renderer class
 		require_once dirname(__FILE__) . DS . 'document' . DS . 'renderer.php';
-		
+
 		// loop through all includes and render
 		foreach ($this->_tags as $tag => $props)
 		{
 			$replace[] = $tag;
 			$with[]    = $this->_getBuffer( $tag, $props['type'], $props['name'], $props['params'] );
 		}
-		
+
 		// replace group includes
 		$this->set('document', str_replace($replace, $with, $this->get('document')) );
-		
+
 		// reset tags
 		$this->_tags = array();
-		
+
 		//return this for chainability
 		return $this;
 	}
-	
+
 	/**
 	 * Return Content
-	 * 
+	 *
 	 * @return string
 	 */
 	public function output($echo = false)
@@ -131,11 +131,11 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 			return $this->get('document');
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get Template Buffer
-	 * 
+	 *
 	 * @return
 	 */
 	private function _getBuffer( $tag, $type = null, $name = null, $params = array() )
@@ -146,29 +146,29 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		{
 			return "<!-- [[{$tag}]]: Include Invalid or Not Allowed Here -->";
 		}
-		
+
 		// class name for renderer
 		$renderClass = 'GroupsHelperDocumentRenderer' . ucfirst($type);
-		
+
 		// if we dont already have the class instantiated
 		if (!class_exists($renderClass))
 		{
 			// build path to renderer
 			$path = dirname(__FILE__) . DS . 'document' . DS . 'renderer' . DS . $type . '.php';
-			
+
 			// include renderer if exists
 			if (file_exists($path))
 			{
 				require_once $path;
 			}
 		}
-		
+
 		// if we still dont have a class return null
 		if (!class_exists($renderClass))
 		{
 			return null;
 		}
-		
+
 		// instantiate renderer and call render
 		$renderer          = new $renderClass();
 		$renderer->group   = $this->get('group');

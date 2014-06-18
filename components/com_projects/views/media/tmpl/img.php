@@ -58,7 +58,7 @@ $src = $this->thumb && file_exists( $this->file_path . DS . $this->thumb ) ? $th
 				<input type="hidden" name="task" value="upload" />
 				<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="tempid" value="<?php echo $this->tempid; ?>" />
-				<input type="file" name="upload" id="upload" size="20" /> 
+				<input type="file" name="upload" id="upload" size="20" />
 				<input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" />
 				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" />
 				<?php if ($this->getError()) { ?>

@@ -33,20 +33,20 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WikiHelper::getActions('page');
 
 JToolBarHelper::title(JText::_('COM_WIKI'), 'wiki.png');
-if ($canDo->get('core.admin')) 
+if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -54,7 +54,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('pages');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 			<label for="filter_group"><?php echo JText::_('COM_WIKI_FILTER_GROUP'); ?>:</label>
 			<select name="group" id="filter_group" onchange="document.adminForm.submit( );">
 				<option value=""><?php echo JText::_('COM_WIKI_FILTER_GROUP_SELECT'); ?></option>
-				<?php 
+				<?php
 				if ($this->groups) {
 					foreach ($this->groups as $group) {
 				?>

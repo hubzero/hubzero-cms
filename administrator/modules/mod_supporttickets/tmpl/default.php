@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$top = 0;
 
 		$closeddata = '';
-		if ($this->closedmonths) 
+		if ($this->closedmonths)
 		{
 			$c = array();
 			foreach ($this->closedmonths as $year => $data)
@@ -52,7 +52,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 
 		$openeddata = '';
-		if ($this->openedmonths) 
+		if ($this->openedmonths)
 		{
 			$o = array();
 			foreach ($this->openedmonths as $year => $data)
@@ -72,8 +72,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			var jq = $;
 		}
 		if (jQuery()) {
-			var $ = jq, 
-				chart, 
+			var $ = jq,
+				chart,
 				month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				datasets = [
 					{
@@ -91,7 +91,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$(document).ready(function() {
 				var chart = $.plot($('#container<?php echo $this->module->id; ?>'), datasets, {
 					series: {
-						lines: { 
+						lines: {
 							show: true,
 							fill: true
 						},
@@ -103,7 +103,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						color: 'rgba(0, 0, 0, 0.6)',
 						borderWidth: 1,
 						borderColor: 'transparent',
-						hoverable: true, 
+						hoverable: true,
 						clickable: true
 					},
 					tooltip: true,
@@ -115,7 +115,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						},
 						defaultTheme: false
 					},
-					legend: { 
+					legend: {
 						show: true,
 						noColumns: 2,
 						position: "ne",

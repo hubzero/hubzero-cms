@@ -40,7 +40,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 {
 	/**
 	 * Execute!
-	 * 
+	 *
 	 * @return void
 	 */
 	function execute()
@@ -130,7 +130,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Save a course unit
-	 * 
+	 *
 	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function unitSave()
@@ -290,7 +290,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Save an asset group
-	 * 
+	 *
 	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function assetGroupSave()
@@ -419,7 +419,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Reorder assets
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function assetGroupReorder()
@@ -466,7 +466,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get the asset handlers for a given extension
-	 * 
+	 *
 	 * @return 200 ok
 	 */
 	private function assetHandlers()
@@ -496,7 +496,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Create a new asset
-	 * 
+	 *
 	 * @return 201 created on success
 	 */
 	private function assetNew()
@@ -565,7 +565,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Retrieve the asset edit page
-	 * 
+	 *
 	 * @return 200 OK
 	 */
 	private function assetEdit()
@@ -608,7 +608,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Preview an asset
-	 * 
+	 *
 	 * @return 200 OK
 	 */
 	private function assetPreview()
@@ -651,7 +651,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Save an asset
-	 * 
+	 *
 	 * @return '201 Created' on new, '200 OK' otherwise
 	 */
 	private function assetSave()
@@ -940,7 +940,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Delete an asset
-	 * 
+	 *
 	 * @return 200 ok on success
 	 */
 	private function assetDelete()
@@ -1045,7 +1045,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Reorder assets
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function assetReorder()
@@ -1088,7 +1088,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Toggle the published state of an asset
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function assetTogglePublished()
@@ -1146,7 +1146,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Look up the form id based on the asset id
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function assetGetFormId()
@@ -1192,7 +1192,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Get form image
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function formImage()
@@ -1206,7 +1206,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$filename = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . ltrim($filename, DS);
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			// Return message
 			$this->setMessage('Image not found', 404, 'Not Found');
@@ -1297,7 +1297,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Passport badges. Placeholder for now.
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function passport()
@@ -1402,7 +1402,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Look up the form id and deployment id based on the asset id
 	 * @FIXME: combine this with method above
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function assetGetFormAndDepId()
@@ -1448,7 +1448,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Process grade save from unity app
-	 * 
+	 *
 	 * @return 200 OK on success
 	 */
 	private function unityScoreSave()
@@ -1586,7 +1586,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Default method - not found
-	 * 
+	 *
 	 * @return 404, method not found error
 	 */
 	private function method_not_found()
@@ -1601,7 +1601,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Helper function to check whether or not someone is using oauth and authorized to use this call
-	 * 
+	 *
 	 * @return bool - true if in group, false otherwise
 	 */
 	private function authorize_call()
@@ -1653,7 +1653,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Next see if the user is allowed to make this call
-		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $this->db->quote($permissions_path) . ' AND 
+		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $this->db->quote($permissions_path) . ' AND
 				(`user_id` = ' . $this->db->quote($userid) . ' OR `consumer_key` = ' . $this->db->quote($consumerKey) . ' OR 0';
 
 		foreach ($user_groups as $group)
@@ -1678,7 +1678,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 	/**
 	 * Helper function to check whether or not someone is using oauth and authorized
-	 * 
+	 *
 	 * @return bool - true if in group, false otherwise
 	 */
 	private function authorize()
@@ -1723,7 +1723,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		return $authorized;
 	}
-	
+
 	/**
 	 * Method to report errors. creates error node for response body as well
 	 *
@@ -1739,11 +1739,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$object = new stdClass();
 		$object->error->code = $code;
 		$object->error->message = $message;
-				
+
 		//set http status code and reason
 		$response = $this->getResponse();
 		$response->setErrorMessage($object->error->code, $object->error->message, $object->error->message);
-		
+
 		//add error to message body
 		$this->setMessage($object);
 	}

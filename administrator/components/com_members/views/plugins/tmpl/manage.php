@@ -35,12 +35,12 @@ JToolBarHelper::title(JText::_('Members') . ': ' . JText::_('Plugins'), 'addedit
 if ($this->html)
 {
 	echo $this->html;
-} else { 
+} else {
 	JToolBarHelper::cancel();
 ?>
 	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
 		<p class="warning"><?php echo JText::_('No management interface found for this plugin.'); ?></p>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="" />

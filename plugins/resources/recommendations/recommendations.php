@@ -45,7 +45,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $resource Current resource
 	 * @return     array
 	 */
@@ -59,7 +59,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a resource sub view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $resource Current resource
 	 * @param      string  $option    Name of the component
 	 * @param      integer $miniview  View style
@@ -90,7 +90,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		));
 
 		// Instantiate a view
-		if ($miniview) 
+		if ($miniview)
 		{
 			$view->setLayout('mini');
 		}
@@ -104,7 +104,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		$r = new ResourcesRecommendation($database);
 		$view->results  = $r->getResults($filters);
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError($this->getError());
 		}

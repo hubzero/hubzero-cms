@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Add stylesheet
 $document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS 
+$document->addStyleSheet('plugins' . DS . 'publications' . DS
 	. 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
 
 $dateFormat = '%d %b, %Y';
@@ -64,7 +64,7 @@ foreach ($this->related as $line)
 	}
 	else {
 		$class = PublicationsHtml::getRatingClass( $line->rating );
-		
+
 		// Get version authors
 		$authors = $pa->getAuthors($line->version);
 		$authorlist = $helper->showContributors( $authors, false, true );
@@ -105,7 +105,7 @@ foreach ($this->related as $line)
 <?php  if($line->section == 'Topic') { ?>
 		<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
 <?php }
-		
+
 else { ?>
 	<?php if($line->section == 'Series') { echo JText::_('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
 				<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>

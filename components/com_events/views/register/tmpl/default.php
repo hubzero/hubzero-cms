@@ -202,7 +202,7 @@ $this->css()
 
 			<?php if ($params->get('show_position')) { ?>
 			<label>
-				Which best describes your current position? 
+				Which best describes your current position?
 				<select name="register[position]">
 					<option value="" selected="selected">(select from list or enter below)</option>
 					<option value="university">University / College Student or Staff</option>
@@ -321,7 +321,7 @@ $this->css()
 		<fieldset>
 			<legend>Abstract</legend>
 			<label>
-				<?php 
+				<?php
 				if ($params->get('abstract_text')) {
 					echo stripslashes($params->get('abstract_text'));
 				}

@@ -36,9 +36,9 @@ $goto  = 'alias=' . $this->project->alias;
 	<?php echo ProjectsHtml::writeProjectHeader($this, 1); ?>
 
 	<div class="status-msg">
-		<?php 
+		<?php
 		// Display error or success message
-		if ($this->getError()) { 
+		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
 		else if($this->msg) {
@@ -74,8 +74,8 @@ $goto  = 'alias=' . $this->project->alias;
 							<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
 							<li><strong><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
 						</ul>
-				<?php } 
-				 else if ($this->active == 'settings') { ?>		
+				<?php }
+				 else if ($this->active == 'settings') { ?>
 						<h4><?php echo JText::_('COM_PROJECTS_HOWTO_PUBLIC_PAGE'); ?></h4>
 						<p><?php echo JText::_('COM_PROJECTS_HOWTO_PUBLIC_PAGE_EXPLAIN'); ?></p>
 					<?php if($this->config->get('grantinfo', 0)) { ?>
@@ -97,12 +97,12 @@ $goto  = 'alias=' . $this->project->alias;
 					</div>
 					<div>
 						<?php
-							switch ($this->active) 
+							switch ($this->active)
 							{
-								case 'info': 
-								default: 
+								case 'info':
+								default:
 						?>
-						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_INFO')); ?></h4>	
+						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_INFO')); ?></h4>
 							<div>
 								<table id="infotbl">
 									<tbody>
@@ -113,11 +113,11 @@ $goto  = 'alias=' . $this->project->alias;
 										<tr>
 											<td class="htd"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></td>
 											<td><input name="title" maxlength="250" type="text" value="<?php echo $this->project->title; ?>" class="long" /></td>
-										</tr>								
+										</tr>
 										<tr>
 											<td class="htd"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></td>
 											<td>
-												<span class="clear"></span>	
+												<span class="clear"></span>
 												<?php
 													$project = new ProjectsModelProject($this->project);
 													echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
@@ -132,7 +132,7 @@ $goto  = 'alias=' . $this->project->alias;
 											<td class="htd"><?php echo JText::_('COM_PROJECTS_THUMB'); ?></td>
 											<td><iframe class="filer filerMini" src="<?php echo JRoute::_('index.php?option='.$this->option. a . $goto . a . 'task=img').'/?no_html=1&file='.stripslashes($this->project->picture); ?>"></iframe></td>
 										</tr>
-				
+
 									</tbody>
 								</table>
 								<p class="submitarea">
@@ -140,46 +140,46 @@ $goto  = 'alias=' . $this->project->alias;
 									<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto . '&active=info'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 								</p>
 							</div><!-- / .basic info -->
-						<?php  
+						<?php
 								break;
-								case 'team': 
+								case 'team':
 						?>
-						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_TEAM')); ?></h4>	
+						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_TEAM')); ?></h4>
 						<div id="cbody">
 							<?php echo $this->content; ?>
 						</div>
-						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_PROJECT') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>:</h5>	
-						<?php 	if($this->project->owned_by_group) {	
-								$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );			
+						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_PROJECT') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>:</h5>
+						<?php 	if($this->project->owned_by_group) {
+								$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
 								$ownedby = '<a href="'.JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')).'">'.JText::_('COM_PROJECTS_GROUP').' '.$group->get('cn').'</a>';
 							}
 							else {
-							 $ownedby = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->project->owned_by_user).'">'.$this->project->fullname.'</a>';	
+							 $ownedby = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->project->owned_by_user).'">'.$this->project->fullname.'</a>';
 						} echo '<span class="mini">' . $ownedby . '</span>'; ?>
-						<?php  
+						<?php
 								break;
-								case 'settings': 
+								case 'settings':
 						?>
 						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_SETTINGS')); ?></h4>
-						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_ACCESS'); ?></h5>	
+						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_ACCESS'); ?></h5>
 						<label><input class="option" name="private" type="radio" value="1" <?php if($this->project->private == 1) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></label>
 						<label><input class="option" name="private" type="radio" value="0" <?php if($this->project->private == 0) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></label>
 						<?php if($this->project->private == 0) { ?>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></h5>
-						<p class="hint"><?php echo JText::_('COM_PROJECTS_YOUR_PROJECT_IS'); ?> <span class="prominent urgency"><?php echo $privacy; ?></span></p>				
+						<p class="hint"><?php echo JText::_('COM_PROJECTS_YOUR_PROJECT_IS'); ?> <span class="prominent urgency"><?php echo $privacy; ?></span></p>
 						<label>
 							<input type="hidden"  name="params[team_public]" value="0" />
 							<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->params->get( 'team_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_TEAM_PUBLIC'); ?>
 						</label>
-						
+
 						<?php if ($this->publishing) { ?>
 						<label>
 							<input type="hidden"  name="params[publications_public]" value="0" />
 							<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?>
 						</label>
 						<?php } ?>
-						
-						<?php 
+
+						<?php
 						$plugin = JPluginHelper::getPlugin( 'projects', 'notes' );
 						$pparams = new JParameter( $plugin->params );
 						if ($pparams->get('enable_publinks')) { ?>
@@ -188,8 +188,8 @@ $goto  = 'alias=' . $this->project->alias;
 							<input type="checkbox" class="option" name="params[notes_public]" value="1" <?php if ($this->params->get( 'notes_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_NOTES_PUBLIC'); ?>
 						</label>
 						<?php } ?>
-						
-						<?php 
+
+						<?php
 						$plugin = JPluginHelper::getPlugin( 'projects', 'files' );
 						$pparams = new JParameter( $plugin->params );
 						if ($pparams->get('enable_publinks')) { ?>
@@ -198,13 +198,13 @@ $goto  = 'alias=' . $this->project->alias;
 							<input type="checkbox" class="option" name="params[files_public]" value="1" <?php if ($this->params->get( 'files_public')) { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_FILES_PUBLIC'); ?>
 						</label>
 						<?php } ?>
-						
+
 						<?php } ?>
 						<?php if($this->config->get('grantinfo', 0)) { ?>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></h5>
-						<?php 
+						<?php
 							$approved = ($this->params->get( 'grant_status') == 1) ? 1 : 0;
-							if($approved) 
+							if($approved)
 							{ ?>
 							<p class="notice notice_passed"><?php echo JText::_('COM_PROJECTS_GRANT_APPROVED_WITH_CODE'); ?> <span class="prominent"><?php echo htmlentities(html_entity_decode($this->params->get( 'grant_approval', 'N/A'))); ?></span></p>
 						<?php } else { ?>
@@ -212,7 +212,7 @@ $goto  = 'alias=' . $this->project->alias;
 						<?php } ?>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
 						<?php if($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_title', 'N/A'))) . '</span>'; } else {  ?>
-						 <input name="params[grant_title]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_title'))); ?>" class="long" />	
+						 <input name="params[grant_title]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_title'))); ?>" class="long" />
 						<?php } ?>
 						</label>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
@@ -231,8 +231,8 @@ $goto  = 'alias=' . $this->project->alias;
 						<?php } ?>
 						</label>
 						<?php if(!$approved) { ?>
-							<label><input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if($this->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> /> <?php echo $this->params->get( 'grant_status') == 2 
-							? JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL') 
+							<label><input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if($this->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> /> <?php echo $this->params->get( 'grant_status') == 2
+							? JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL')
 							: JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN') ; ?></label>
 						<?php } ?>
 						<?php } ?>
@@ -240,7 +240,7 @@ $goto  = 'alias=' . $this->project->alias;
 							<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
 							<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 						</p>
-						<?php 
+						<?php
 							break;
 							}
 						?>

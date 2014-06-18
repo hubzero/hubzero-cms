@@ -211,7 +211,7 @@ class Ldap
 	/**
 	 * Sync a user's info to LDAP
 	 *
-	 * @param   mixed   $user 
+	 * @param   mixed   $user
 	 * @return  boolean
 	 */
 	public static function syncUser($user)
@@ -699,7 +699,7 @@ class Ldap
 		$reqattr = array('gidNumber','cn');
 
 		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
-		
+
 		$count = ldap_count_entries($conn, $entry);
 
 		// If there was a database entry, but there was no ldap entry, create the ldap entry
@@ -806,7 +806,7 @@ class Ldap
 	public static function syncAllGroups()
 	{
 		// @TODO: chunk this to 1000 groups at a time
-		
+
 		$db = \JFactory::getDBO();
 
 		$query = "SELECT gidNumber FROM #__xgroups;";
@@ -815,7 +815,7 @@ class Ldap
 
 		$result = $db->loadResultArray();
 
-		if ($result === false) 
+		if ($result === false)
 		{
 			return false;
 		}
@@ -910,13 +910,13 @@ class Ldap
 
 		$gids = array();
 
-		if ($sr !== false) 
+		if ($sr !== false)
 		{
-			if (ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false)
 			{
 				$entry = ldap_first_entry($conn, $sr);
 
-				while ($entry !== false) 
+				while ($entry !== false)
 				{
 					$attr = ldap_get_attributes($conn, $entry);
 
@@ -987,13 +987,13 @@ class Ldap
 
 		$gids = array();
 
-		if ($sr !== false) 
+		if ($sr !== false)
 		{
-			if (ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false)
 			{
 				$entry = ldap_first_entry($conn, $sr);
 
-				while ($entry !== false) 
+				while ($entry !== false)
 				{
 					$attr = ldap_get_attributes($conn, $firstentry);
 
@@ -1055,13 +1055,13 @@ class Ldap
 
 		$uids = array();
 
-		if ($sr !== false) 
+		if ($sr !== false)
 		{
-			if (ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false)
 			{
 				$entry = ldap_first_entry($conn, $sr);
 
-				while ($entry !== false) 
+				while ($entry !== false)
 				{
 					$attr = ldap_get_attributes($conn, $entry);
 
@@ -1125,13 +1125,13 @@ class Ldap
 
 		$uids = array();
 
-		if ($sr !== false) 
+		if ($sr !== false)
 		{
-			if (ldap_count_entries($conn, $sr) !== false) 
+			if (ldap_count_entries($conn, $sr) !== false)
 			{
 				$entry = ldap_first_entry($conn, $sr);
 
-				while ($entry !== false) 
+				while ($entry !== false)
 				{
 					$attr = ldap_get_attributes($conn, $firstentry);
 

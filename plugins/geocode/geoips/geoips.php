@@ -36,14 +36,14 @@ jimport('joomla.plugin.plugin');
 /**
  * GeoIPs plugin for geocode
  *
- * The GeoIPsProvider named geo_ips is able to geocode 
+ * The GeoIPsProvider named geo_ips is able to geocode
  * IPv4 addresses only. A valid api key is required.
  */
 class plgGeocodeGeoips extends JPlugin
 {
 	/**
 	 * Return a geocode provider
-	 * 
+	 *
 	 * @param  string  $context
 	 * @param  object  $adapter
 	 * @param  boolean $ip

@@ -233,8 +233,8 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">
-																		<?php 
-																			$profile = \Hubzero\User\Profile::getInstance( $this->object->get('created_by') ); 
+																		<?php
+																			$profile = \Hubzero\User\Profile::getInstance( $this->object->get('created_by') );
 																			echo $profile->get('name') . ' ('.$profile->get('username').')';
 																		?>
 																	</td>
@@ -259,7 +259,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
 												</tr>
 											</tbody>
 										</table>
-										
+
 										<table width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background: #fff; ">
 											<tbody>
 												<tr>

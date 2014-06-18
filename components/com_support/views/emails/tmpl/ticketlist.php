@@ -56,7 +56,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 --<?php echo $this->boundary . "\n"; ?>
 Content-type: text/plain;charset=utf-8
 
-<?php 
+<?php
 
 $message = '----------------------------'."\n\n";
 
@@ -73,12 +73,12 @@ $message .= implode(", ", $cells) . "\n";
 
 if (isset($this->tickets) && count($this->tickets) > 0)
 {
-	foreach ($this->tickets as $ticket) 
+	foreach ($this->tickets as $ticket)
 	{
 		if (!$ticket->summary)
 		{
 			$ticket->summary = substr($ticket->report, 0, 70);
-			if (strlen($ticket->summary) >= 70) 
+			if (strlen($ticket->summary) >= 70)
 			{
 				$ticket->summary .= '...';
 			}
@@ -266,15 +266,15 @@ Content-type: text/html;charset=utf-8";
 												</tr>
 											</thead>
 											<tbody>
-								<?php 
+								<?php
 								if (isset($this->tickets))
 								{
-									foreach ($this->tickets as $ticket) 
+									foreach ($this->tickets as $ticket)
 									{
 										if (!$ticket->summary)
 										{
 											$ticket->summary = substr($ticket->report, 0, 70);
-											if (strlen($ticket->summary) >= 70) 
+											if (strlen($ticket->summary) >= 70)
 											{
 												$ticket->summary .= '...';
 											}

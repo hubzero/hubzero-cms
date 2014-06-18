@@ -35,64 +35,64 @@ class NewsletterMailingRecipientAction extends JTable
 {
 	/**
 	 * Mailing Action ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 					= NULL;
-	
+
 	/**
 	 * Mailing ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $mailingid 				= NULL;
-	
+
 	/**
 	 * Mailing Action
-	 * 
+	 *
 	 * @var varchar(100)
 	 */
 	var $action	 				= NULL;
-	
+
 	/**
 	 * Mailing Action Vars
-	 * 
+	 *
 	 * @var text
 	 */
 	var $action_vars	 		= NULL;
-	
+
 	/**
 	 * Mailing Action Email
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $email 					= NULL;
-	
+
 	/**
 	 * Mailing Action IP
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $ip 					= NULL;
-	
+
 	/**
 	 * Mailing Action User Agent String
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $user_agent		 		= NULL;
-	
+
 	/**
 	 * Mailing Action Date
-	 * 
+	 *
 	 * @var datetime
 	 */
 	var $date		 			= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Mailing Recipient Action Constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
@@ -100,32 +100,32 @@ class NewsletterMailingRecipientAction extends JTable
 	{
 		parent::__construct( '#__newsletter_mailing_recipient_actions', 'id', $db );
 	}
-	
-	
+
+
 	/**
 	 * Get newsletter mailing actions
-	 * 
+	 *
 	 * @param   $id     ID of mailing action
 	 * @return  array
 	 */
 	public function getActions( $id = null )
 	{
 		$sql = "SELECT * FROM {$this->_tbl}";
-		
+
 		if (isset($id) && $id != '')
 		{
 			$sql .= " WHERE id=" . $this->_db->quote( $id );
 		}
-		
+
 		$sql .= " ORDER BY date DESC";
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get unconverted mailing actions
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function getUnconvertedActions()
@@ -134,28 +134,28 @@ class NewsletterMailingRecipientAction extends JTable
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get mailing actions for mailing ID
-	 * 
+	 *
 	 * @param   $mailingid      Mailing ID #
 	 * @param   $action         Mailing Action
 	 * @return 	void
 	 */
 	public function getMailingActions( $mailingid, $action = 'open' )
 	{
-		$sql = "SELECT * FROM {$this->_tbl} 
+		$sql = "SELECT * FROM {$this->_tbl}
 				WHERE mailingid=" . $this->_db->quote( $mailingid ) . "
 				AND action=" . $this->_db->quote( $action );
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Check to see if mailing action already exists for mailing ID and email
-	 * 
+	 *
 	 * @param   $mailingid      Mailing ID #
 	 * @param   $email          Email Address
 	 * @param   $action         Mailing Action
@@ -163,7 +163,7 @@ class NewsletterMailingRecipientAction extends JTable
 	 */
 	public function actionExistsForMailingAndEmail( $mailingid, $email, $action = 'open' )
 	{
-		$sql = "SELECT * FROM {$this->_tbl} 
+		$sql = "SELECT * FROM {$this->_tbl}
 				WHERE mailingid=" . $this->_db->quote( $mailingid ) ."
 				AND email=" . $this->_db->quote( $email ) . "
 				AND action=" . $this->_db->quote( $action );

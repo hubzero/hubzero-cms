@@ -54,21 +54,21 @@ class Module extends Object
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	public $params = null;
 
 	/**
 	 * Database row
-	 * 
+	 *
 	 * @var object
 	 */
 	public $module = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   object $params JParameter/JRegistry
 	 * @param   object $module Database row
 	 * @return  void
@@ -90,7 +90,7 @@ class Module extends Object
      */
 	public function escape($var)
 	{
-		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities'))) 
+		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities')))
 		{
 			return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
 		}
@@ -110,7 +110,7 @@ class Module extends Object
 
 	/**
 	 * Push CSS to the document
-	 * 
+	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $component  Component name
 	 * @param   string  $type       Mime encoding type
@@ -193,7 +193,7 @@ class Module extends Object
 
 	/**
 	 * Display module
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function display()

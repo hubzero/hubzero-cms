@@ -79,10 +79,10 @@ $this->css()
 			<h3><span>Common</span></h3>
 			<ul id="common-views" class="views">
 			<?php if (count($this->queries['common']) > 0) { ?>
-				<?php 
+				<?php
 				$i = 0;
-				foreach ($this->queries['common'] as $query) 
-				{ 
+				foreach ($this->queries['common'] as $query)
+				{
 					?>
 						<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 							<a class="common-<?php echo strtolower(preg_replace("/[^a-zA-Z0-9]/", '', stripslashes($query->title))); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . '&limitstart=0' . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
@@ -103,9 +103,9 @@ $this->css()
 						<?php } else if ($i > 2) { ?>
 						</li>
 						<?php } ?>
-					<?php 
+					<?php
 					$i++;
-				} 
+				}
 				?>
 			<?php } else { ?>
 				<li>
@@ -264,7 +264,7 @@ if ($this->rows)
 		$row = &$this->rows[$i];
 
 		$comments = 0;
-		
+
 		$lastcomment = '0000-00-00 00:00:00';
 		if (isset($lastactivities[$row->id]))
 		{
@@ -302,7 +302,7 @@ if ($this->rows)
 
 		$lnk = '';
 		$targetuser = null;
-		if ($row->login) 
+		if ($row->login)
 		{
 			if (!isset($users[$row->login]))
 			{
@@ -316,7 +316,7 @@ if ($this->rows)
 			}
 			else
 			{
-				$targetuser = $users[$row->login]; 
+				$targetuser = $users[$row->login];
 				if (is_object($targetuser) && $targetuser->get('id'))
 				{
 					$lnk = JRoute::_('index.php?option=com_members&id=' . $targetuser->get('id'));
@@ -325,7 +325,7 @@ if ($this->rows)
 		}
 
 		$row->summary = substr($row->report, 0, 200);
-		if (strlen($row->summary) >= 200) 
+		if (strlen($row->summary) >= 200)
 		{
 			$row->summary .= '...';
 		}
@@ -375,7 +375,7 @@ if ($this->rows)
 									<?php echo $tags; ?>
 								</span>
 							<?php } ?>
-							<?php if ($row->group) { 
+							<?php if ($row->group) {
 									if ($this->acl->check('read', 'tickets'))
 									{
 										$queryid = $this->queries['common'][0]->id;
@@ -390,7 +390,7 @@ if ($this->rows)
 									<?php echo $group; ?>
 								</span>
 							<?php } ?>
-							<?php if ($row->owner) { 
+							<?php if ($row->owner) {
 										$owner = \Hubzero\User\Profile::getInstance($row->owner);
 										$picture = \Hubzero\User\Profile\Helper::getMemberPhoto($owner, 0);
 							?>
@@ -422,7 +422,7 @@ if ($this->rows)
 							<?php echo JText::_('No results found.'); ?>
 						</td>
 					</tr>
-<?php 
+<?php
 }
 ?>
 				</tbody>

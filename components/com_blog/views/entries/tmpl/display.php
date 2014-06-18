@@ -54,11 +54,11 @@ $first = $this->model->entries('first', $filters);
 		$path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
 		$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
 		$feed = JRoute::_($path);
-		if (substr($feed, 0, 4) != 'http') 
+		if (substr($feed, 0, 4) != 'http')
 		{
 			$jconfig = JFactory::getConfig();
 			$live_site = rtrim(JURI::base(),'/');
-			
+
 			$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 		}
 		$feed = str_replace('https:://','http://', $feed);
@@ -88,7 +88,7 @@ $first = $this->model->entries('first', $filters);
 					<?php echo JText::sprintf('COM_BLOG_SEARCH_FOR', $this->filters['search']); ?>
 				<?php } else if (!isset($this->filters['year']) || !$this->filters['year']) { ?>
 					<?php echo JText::_('COM_BLOG_LATEST_ENTRIES'); ?>
-				<?php } else { 
+				<?php } else {
 					$archiveDate  = $this->filters['year'];
 					$archiveDate .= ($this->filters['month']) ? '-' . $this->filters['month'] : '-01';
 					$archiveDate .= '-01 00:00:00';
@@ -105,7 +105,7 @@ $first = $this->model->entries('first', $filters);
 
 		<?php if ($rows = $this->model->entries('list', $this->filters)) { ?>
 				<ol class="blog-entries">
-				<?php 
+				<?php
 				$cls = 'even';
 				foreach ($rows as $row)
 				{
@@ -176,10 +176,10 @@ $first = $this->model->entries('first', $filters);
 							<div class="entry-content">
 							<?php if ($this->config->get('cleanintro', 1)) { ?>
 								<p>
-									<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?> 
+									<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
 								</p>
 							<?php } else { ?>
-								<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?> 
+								<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
 							<?php } ?>
 							</div>
 						</article>
@@ -187,11 +187,11 @@ $first = $this->model->entries('first', $filters);
 				<?php } ?>
 				</ol>
 
-				<?php 
+				<?php
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
-					$this->model->entries('count', $this->filters), 
-					$this->filters['start'], 
+					$this->model->entries('count', $this->filters),
+					$this->filters['start'],
 					$this->filters['limit']
 				);
 				$pageNav->setAdditionalUrlParam('year', $this->filters['year']);
@@ -218,7 +218,7 @@ $first = $this->model->entries('first', $filters);
 			<div class="container blog-entries-years">
 				<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
-				<?php 
+				<?php
 			if ($first->exists()) {
 				$start = intval(substr($first->get('publish_up'), 0, 4));
 				$now = JFactory::getDate()->format("Y");
@@ -264,7 +264,7 @@ $first = $this->model->entries('first', $filters);
 						</ol>
 					<?php } ?>
 					</li>
-				<?php 
+				<?php
 				}
 			}
 				?>

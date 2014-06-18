@@ -38,140 +38,140 @@ class KbTableArticle extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id           = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title        = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params       = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $fulltxt     = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by   = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $checked_out  = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $checked_out_time = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state        = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $hits         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $version      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $category     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $helpful      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $nothelpful   = NULL;
 
 	/**
 	 * varchar(200)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias        = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -182,14 +182,14 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->id = intval($this->id);
 
-		if (trim($this->title) == '') 
+		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 			return false;
@@ -209,7 +209,7 @@ class KbTableArticle extends JTable
 			$this->created = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
-		else 
+		else
 		{
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
@@ -261,7 +261,7 @@ class KbTableArticle extends JTable
 		$assetId = null;
 		$db		= $this->getDbo();
 
-		if ($assetId === null) 
+		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
@@ -271,18 +271,18 @@ class KbTableArticle extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
+			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) 
+		if ($assetId)
 		{
 			return $assetId;
-		} 
-		else 
+		}
+		else
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
@@ -290,12 +290,12 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Store changes.
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function store($updateNulls = false)
 	{
-		if (empty($this->modified)) 
+		if (empty($this->modified))
 		{
 			$this->modified = $this->created;
 		}
@@ -306,25 +306,25 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string  $oid Alias
 	 * @param      integer $cat Section ID
 	 * @return     boolean True upon success, False if errors
 	 */
 	public function loadAlias($oid=NULL, $cat=NULL)
 	{
-		if (empty($oid)) 
+		if (empty($oid))
 		{
 			return false;
 		}
 		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid);
 		$sql .= ($cat) ? " AND section=" . $this->_db->Quote($cat) : '';
 		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -333,41 +333,41 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl AS a
-					LEFT JOIN #__faq_categories AS c ON c.id = a.section 
+					LEFT JOIN #__faq_categories AS c ON c.id = a.section
 					LEFT JOIN #__faq_categories AS cc ON cc.id = a.category ";
 
-		if (isset($filters['user_id']) && $filters['user_id'] > 0) 
+		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
 			$query .= " LEFT JOIN #__faq_helpful_log AS v ON v.object_id=a.id AND v.user_id=" . $this->_db->Quote($filters['user_id']) . " AND v.type='entry' ";
 		}
 
 		$where = array();
 
-		if (isset($filters['section']) && $filters['section'] > 0) 
+		if (isset($filters['section']) && $filters['section'] > 0)
 		{
 			$where[] = "a.`section`=" . $this->_db->Quote($filters['section']);
 		}
-		if (isset($filters['category']) && $filters['category'] >= 0) 
+		if (isset($filters['category']) && $filters['category'] >= 0)
 		{
 			$where[] = "a.`category`=" . $this->_db->Quote($filters['category']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
 			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0) 
+		if (isset($filters['access']) && $filters['access'] >= 0)
 		{
 			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`fulltxt` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
 		}
@@ -377,7 +377,7 @@ class KbTableArticle extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (isset($filters['sort']) && $filters['sort']) 
+		if (isset($filters['sort']) && $filters['sort'])
 		{
 			switch ($filters['sort'])
 			{
@@ -407,7 +407,7 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
@@ -424,7 +424,7 @@ class KbTableArticle extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
@@ -436,7 +436,7 @@ class KbTableArticle extends JTable
 		}
 
 		$query  = "SELECT a.*, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
-		if (isset($filters['user_id']) && $filters['user_id'] > 0) 
+		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
 			$query .= ", v.vote, v.user_id ";
 		}

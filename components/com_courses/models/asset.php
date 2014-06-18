@@ -44,21 +44,21 @@ class CoursesModelAsset extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableAsset';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'asset';
 
 	/**
 	 * Container for properties
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_params = null;
@@ -72,7 +72,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -93,11 +93,11 @@ class CoursesModelAsset extends CoursesModelAbstract
  	 */
 	public function get($property, $default=null)
 	{
-		if (isset($this->_tbl->$property)) 
+		if (isset($this->_tbl->$property))
 		{
 			return $this->_tbl->$property;
 		}
-		else if (isset($this->_tbl->{'__' . $property})) 
+		else if (isset($this->_tbl->{'__' . $property}))
 		{
 			return $this->_tbl->{'__' . $property};
 		}
@@ -142,7 +142,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Check if the resource exists
-	 * 
+	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
@@ -184,8 +184,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 		{
 			$dt = new CoursesTableSectionDate($this->_db);
 			$dt->load(
-				$this->get('id'), 
-				$this->_scope, 
+				$this->get('id'),
+				$this->_scope,
 				$this->get('section_id')
 			);
 			$dt->set('publish_up', $this->get('publish_up'));
@@ -240,7 +240,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 *   Deleted asset_associations until there is only one
 	 *   association left, then it deletes the association,
 	 *   the asset record, and asset file(s)
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function delete()
@@ -262,7 +262,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -313,7 +313,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view->referrer          = (isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$view->session_id        = JFactory::getSession()->getId();
-		if (!$view->store()) 
+		if (!$view->store())
 		{
 			$this->setError($view->getError());
 		}
@@ -321,7 +321,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -358,7 +358,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Download a wiki file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function download($course)
@@ -372,11 +372,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		// Get the scope of the parent page the file is attached to
 		$filename = JRequest::getVar('file', '');
-		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') 
+		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));
-		} 
-		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') 
+		}
+		else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:')
 		{
 			$filename = substr($filename, strlen('file:'));
 		}
@@ -390,11 +390,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$filename = DS . ltrim($filename, DS);
 
 		// Does the beginning of the $attachment->path match the config path?
-		if (substr($filename, 0, strlen($base_path)) == $base_path) 
+		if (substr($filename, 0, strlen($base_path)) == $base_path)
 		{
 			// Yes - this means the full path got saved at some point
-		} 
-		else 
+		}
+		else
 		{
 			// No - append it
 			$filename = $base_path . $filename;
@@ -404,7 +404,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$filename = JPATH_ROOT . $filename;
 
 		// Ensure the file exist
-		if (!file_exists($filename)) 
+		if (!file_exists($filename))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 			return;
@@ -416,12 +416,12 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		if (!$xserver->serve()) 
+		if (!$xserver->serve())
 		{
 			// Should only get here on error
 			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
-		} 
-		else 
+		}
+		else
 		{
 			exit;
 		}
@@ -430,7 +430,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */

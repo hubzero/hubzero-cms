@@ -36,15 +36,15 @@ JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	submitform(pressbutton);
 }
 </script>
@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 		</tfoot>
 		<tbody>
 <?php
-if ($this->rows) 
+if ($this->rows)
 {
 	$i = 0;
 	foreach ($this->rows as $row)
@@ -113,7 +113,7 @@ if ($this->rows)
 ?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

@@ -33,16 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Incoming
 $scope   = JRequest::getVar('scope', '');
-$app 	 = JRequest::getVar( 'app', '', 'request', 'object' );	
-$project = JRequest::getVar( 'project', '', 'request', 'object' );	
+$app 	 = JRequest::getVar( 'app', '', 'request', 'object' );
+$project = JRequest::getVar( 'project', '', 'request', 'object' );
 ?>
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->title; ?></h2>
 		<?php
-		if (!$this->page->isStatic()) 
+		if (!$this->page->isStatic())
 		{
 			$view = new JView(array(
-				'base_path' => $this->base_path, 
+				'base_path' => $this->base_path,
 				'name'      => 'page',
 				'layout'    => 'authors'
 			));
@@ -61,7 +61,7 @@ $project = JRequest::getVar( 'project', '', 'request', 'object' );
 
 <?php
 	$view = new JView(array(
-		'base_path' => $this->base_path, 
+		'base_path' => $this->base_path,
 		'name'      => 'page',
 		'layout'    => 'submenu'
 	));

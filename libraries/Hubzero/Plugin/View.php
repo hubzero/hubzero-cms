@@ -80,8 +80,8 @@ class View extends AbstractView
 			if (array_key_exists('folder', $config))
 			{
 				$this->_folder = $config['folder'];
-			} 
-			else 
+			}
+			else
 			{
 				$this->_folder = $this->getFolder();
 			}
@@ -93,8 +93,8 @@ class View extends AbstractView
 			if (array_key_exists('element', $config))
 			{
 				$this->_element = $config['element'];
-			} 
-			else 
+			}
+			else
 			{
 				$this->_element = $this->getElement();
 			}
@@ -126,11 +126,11 @@ class View extends AbstractView
 		}
 
 		// Set a base path for use by the view
-		if (array_key_exists('base_path', $config)) 
+		if (array_key_exists('base_path', $config))
 		{
 			$this->_basePath = $config['base_path'];
-		} 
-		else 
+		}
+		else
 		{
 			$this->_basePath = JPATH_PLUGINS . DS . $this->_folder . DS . $this->_element;
 		}
@@ -269,7 +269,7 @@ class View extends AbstractView
 				if (isset($app))
 				{
 					$this->_addPath(
-						'template', 
+						'template',
 						JPATH_BASE . DS . 'templates' . DS . $app->getTemplate() . DS . 'html' . DS . $option . DS . $this->getName()
 					);
 				}
@@ -279,7 +279,7 @@ class View extends AbstractView
 
 	/**
 	 * Push CSS to the document
-	 * 
+	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $component  Component name
 	 * @param   string  $type       Mime encoding type
@@ -376,7 +376,7 @@ class View extends AbstractView
 	public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
-		if ($layout instanceof AbstractView) 
+		if ($layout instanceof AbstractView)
 		{
 			return $layout;
 		}

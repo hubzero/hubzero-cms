@@ -40,14 +40,14 @@ class CoursesModelStudent extends CoursesModelMember
 {
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'student';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id  Resource ID or alias
 	 * @param      object  &$db JDatabase
 	 * @return     void
@@ -97,12 +97,12 @@ class CoursesModelStudent extends CoursesModelMember
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid . '_' . $uid])) 
+		if (!isset($instances[$oid . '_' . $uid]))
 		{
 			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
 		}
@@ -112,7 +112,7 @@ class CoursesModelStudent extends CoursesModelMember
 
 	/**
 	 * Delete an entry and associated data
-	 * 
+	 *
 	 * @return     boolean True on success, false on error
 	 */
 	public function gradebook()

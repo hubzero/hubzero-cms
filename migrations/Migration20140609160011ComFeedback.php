@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for adding fields to the feedback table and 
+ * Migration script for adding fields to the feedback table and
  * dropping redundant selected_quotes table
  **/
 class Migration20140609160011ComFeedback extends Base

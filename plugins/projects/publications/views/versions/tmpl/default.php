@@ -37,7 +37,7 @@ $typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->p
 		<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></span>
 		</h3>
 	<?php } ?>
-	</div>	
+	</div>
 	<div class="list-editing">
 	 <p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TOTAL_VERSIONS')); ?>: <span class="prominent"><?php echo count($this->versions); ?></span></p>
 	</div>
@@ -45,7 +45,7 @@ $typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->p
 		<table class="listing">
 		 <thead>
 			<tr>
-				<th class="tdmini"></th>	
+				<th class="tdmini"></th>
 				<th class="tdmini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
 				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
 				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>
@@ -54,30 +54,30 @@ $typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->p
 			</tr>
 		 </thead>
 		 <tbody>
-		<?php foreach($this->versions as $v) { 
+		<?php foreach($this->versions as $v) {
 			// Get DOI
 			$doi = $v->doi ? 'doi:'.$v->doi : '';
 			$ark = $v->ark ? 'ark:'.$v->ark : '';
 			if($ark || $doi)
 			{
-				$doi_notice = $doi ? $doi : $ark;	
+				$doi_notice = $doi ? $doi : $ark;
 			}
 			else {
-				$doi_notice = JText::_('PLG_PROJECTS_PUBLICATIONS_NA');	
+				$doi_notice = JText::_('PLG_PROJECTS_PUBLICATIONS_NA');
 			}
-						
+
 			// Version status
 			$status = PublicationHelper::getPubStateProperty($v, 'status');
 			$class = PublicationHelper::getPubStateProperty($v, 'class');
 			$date = PublicationHelper::getPubStateProperty($v, 'date');
-					
+
 			$options = '<a href="'.$this->url.'?version='.$v->version_number.'">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION').'</a>';
-			
+
 			$options .= '<span class="block"><a href="'.JRoute::_('index.php?option=com_publications'
 			.a.'id='.$this->pid).'?v='.$v->version_number.'">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE').'</a></span>';
-			
+
 			?>
 			<tr class="mini <?php if($v->main == 1) { echo ' vprime'; } ?>">
 				<td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>

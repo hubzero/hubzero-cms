@@ -46,14 +46,14 @@ class Autolink extends AbstractHelper
 	 */
 	public function __invoke($text = null)
 	{
-		if (null === $text) 
+		if (null === $text)
 		{
 			throw new \InvalidArgumentException(
 				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
 			);
 		}
 
-		// Parse for link syntax 
+		// Parse for link syntax
 		// e.g. [mylink My Link] => <a href="mylink">My Link</a>
 		$char_regexes = array(
 			// URL pattern
@@ -78,7 +78,7 @@ class Autolink extends AbstractHelper
 
 	/**
 	 * Automatically links any strings matching a URL pattern
-	 * 
+	 *
 	 * @param      array $matches Text matching link pattern
 	 * @return     string
 	 */
@@ -89,7 +89,7 @@ class Autolink extends AbstractHelper
 
 	/**
 	 * Automatically links any strings matching an email pattern
-	 * 
+	 *
 	 * @param      array $matches Text matching link pattern
 	 * @return     string
 	 */
@@ -101,11 +101,11 @@ class Autolink extends AbstractHelper
 
 	/**
 	 * Automatically links any strings matching a URL or email pattern
-	 * 
+	 *
 	 * Link is pushed to internal array and placeholder returned
 	 * This is to ensure links aren't parsed twice. We put the links back in place
 	 * towards the end of parsing.
-	 * 
+	 *
 	 * @param      array $matches Text matching link pattern
 	 * @return     string
 	 */
@@ -125,7 +125,7 @@ class Autolink extends AbstractHelper
 
 		$prfx  = preg_replace('/^([\s]*)(.*)/i', "$1", $whole);
 		$href  = trim($whole);
-		if (substr($href, 0, 1) == '>') 
+		if (substr($href, 0, 1) == '>')
 		{
 			$href  = ltrim($href, '>');
 			$prfx .= '>';

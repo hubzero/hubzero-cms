@@ -30,7 +30,7 @@ $projectsHelper = new ProjectsHelper( $this->database );
 
 $masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
 
-// Set project (system) group	
+// Set project (system) group
 $group_prefix = $this->config->get('group_prefix', 'pr-');
 $group = $group_prefix . $this->project->alias;
 
@@ -42,24 +42,24 @@ $notes = array();
 $order = array();
 $thirdlevel = array();
 
-if ($items) 
+if ($items)
 {
-	foreach ($items as $note) 
-	{ 		
-		$parts = explode ( '/', $note->scope );	
+	foreach ($items as $note)
+	{
+		$parts = explode ( '/', $note->scope );
 		$remaining = array_slice($parts, 3);
 		$level = count($remaining) + 1;
 		$parent = $level > 1 ? array_shift($remaining) : '';
-		
-		if ($level == 1) 
+
+		if ($level == 1)
 		{
 			$notes[$note->pagename] = array( $level => array($note));
 		}
-		elseif ($level == 2) 
+		elseif ($level == 2)
 		{
 			$notes[$parent][$level][] = $note;
 		}
-		elseif ($level >= 3) 
+		elseif ($level >= 3)
 		{
 			$r = array_shift($remaining);
 			$thirdlevel[$r][] = $note;
@@ -72,13 +72,13 @@ $shown = array();
 
 // Attached item
 $selected = NULL;
-if ($this->primary && !empty($this->attachments)) 
+if ($this->primary && !empty($this->attachments))
 {
 	$selected = $this->attachments[0]->object_name;
 }
 
 // Build url
-$route = $this->project->provisioned 
+$route = $this->project->provisioned
 	? 'index.php?option=com_publications' . a . 'task=submit'
 	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
 $p_url = JRoute::_($route . a . 'active=notes');
@@ -88,20 +88,20 @@ $p_url = JRoute::_($route . a . 'active=notes');
 <?php
 	if (count($notes) > 0)
 	{ ?>
-				
-		<?php foreach ($notes as $note) 
-		{ 
-			foreach ($note as $level => $parent) 
+
+		<?php foreach ($notes as $note)
+		{
+			foreach ($note as $level => $parent)
 			{
 				$p2 = 0;
 
-				foreach ($parent as $entry) 
+				foreach ($parent as $entry)
 				{ ?>
 					<?php if ($level == 1) { ?>
 					<li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?>
 					<?php } ?>
-					
-					<?php if ($level == 2) { 
+
+					<?php if ($level == 2) {
 						$p2++;
 						if ($p2 == 1)
 						{
@@ -109,39 +109,39 @@ $p_url = JRoute::_($route . a . 'active=notes');
 						}
 					?>
 					<li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></li>
-					<?php 	
+					<?php
 						if ($p2 == count($parent))
 						{
 							echo '</ol>';
 						}
-					 } 
+					 }
 					?>
-					
-					<?php 
+
+					<?php
 						$shown[] = $entry->id;
-						
+
 						// Third level of notes
-						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) { 
+						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
 							foreach ($thirdlevel[$entry->pagename] as $subpage) { ?>
 							<li class="c-click notes wikilevel_3" id="note::<?php echo $subpage->id; ?>"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></li>
-								
+
 					<?php $shown[] = $subpage->id;	}
 					 } ?>
-										
-					</li>	
+
+					</li>
 		<?php	}
 			}
 		}
-		
+
 		// Check for missing items
 		// Primary content / Supporting docs
-		if (isset($this->attachments)) 
+		if (isset($this->attachments))
 		{
-			if (count($this->attachments) > 0) 
+			if (count($this->attachments) > 0)
 			{
-				foreach ($this->attachments as $attachment) 
+				foreach ($this->attachments as $attachment)
 				{
-					if (!in_array($attachment->object_id, $shown)) 
+					if (!in_array($attachment->object_id, $shown))
 					{
 						// Found missing
 						$miss = array();
@@ -152,15 +152,15 @@ $p_url = JRoute::_($route . a . 'active=notes');
 				}
 			}
 		}
-		
+
 		// Add missing items
-		if (count($missing) > 0) 
+		if (count($missing) > 0)
 		{
-			foreach ($missing as $miss) 
+			foreach ($missing as $miss)
 			{ ?>
 				<li class="c-click notes i-missing" id="note::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_NOTES_MISSING_NOTE'); ?></span></li>
 		<?php	}
-		}						
+		}
 	}
 ?>
 </ul>

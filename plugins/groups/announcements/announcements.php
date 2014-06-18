@@ -47,7 +47,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -61,7 +61,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		);
 		return $area;
 	}
-	
+
 	/**
 	 * Return content that is to be displayed before group main area
 	 *
@@ -119,7 +119,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -145,9 +145,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$returnhtml = false;
 			}
@@ -155,7 +155,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		//Create user object
 		$this->juser = JFactory::getUser();
-		
+
 		//creat database object
 		$this->database = JFactory::getDBO();
 
@@ -171,7 +171,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$this->access     = $access;
 
 		//if we want to return content
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
@@ -180,15 +180,15 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			if ($this->action != 'subscribe')
 			{
 				//if set to nobody make sure cant access
-				if ($group_plugin_acl == 'nobody') 
+				if ($group_plugin_acl == 'nobody')
 				{
 					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 					return $arr;
 				}
 
 				//check if guest and force login if plugin access is registered or members
-				if ($this->juser->get('guest') 
-				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+				if ($this->juser->get('guest')
+				 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 				{
 					$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
 					$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
@@ -197,7 +197,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 				}
 
 				//check to see if user is member and plugin access requires members
-				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members') 
+				if (!in_array($this->juser->get('id'), $members) && $group_plugin_acl == 'members')
 				{
 					$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 					return $arr;
@@ -235,10 +235,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Return the output
 		return $arr;
 	}
-	
+
 	/**
 	 * Display a list of all announcements
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _list()
@@ -283,7 +283,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->rows  = $hubzeroAnnouncement->find($view->filters);
 
 		//get any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -297,7 +297,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a list of all announcements
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _edit()
@@ -336,7 +336,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->name   = $this->_name;
 
 		//get any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -350,7 +350,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save an entry
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _save()
@@ -393,7 +393,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		//do we want to mark as high priority
 		$fields['priority'] = (isset($fields['priority']) && $fields['priority'] == 1) ? 1 : 0;
 
-		//format publish up 
+		//format publish up
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00')
 		{
 			$fields['publish_up'] = JFactory::getDate(strtotime(str_replace('@', '', $fields['publish_up'])))->toSql();
@@ -420,7 +420,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		{
 			// email announcement
 			$announcement->emailAnnouncement();
-			
+
 			//set that we sent it and resave
 			$announcement->sent = 1;
 			$announcement->save($announcement);
@@ -437,7 +437,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Mark an entry as deleted
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	private function _delete()

@@ -75,7 +75,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	<body id="error-body">
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
-			
+
 			<ul class="user-options">
 				<li>
 					<?php
@@ -103,10 +103,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					?>
 				</li>
   			</ul>
-			
+
 			<div class="clear"></div>
 		</header><!-- / header -->
-		
+
 		<div id="wrap">
 			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
@@ -117,14 +117,14 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				</div>
 				<div class="clr"><!-- We need this for the drop downs --></div>
 			</nav><!-- / .navigation -->
-						
+
 			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<div class="header icon-48-alert">
 						<?php echo JText::_('An error has occurred'); ?>
 					</div>
 				</div><!-- / #toolbar-box -->
-				
+
 				<div id="errorbox">
 					<div class="col width-50 fltlft">
 						<h3><?php echo $this->error->getCode() ?></h3>
@@ -134,17 +134,17 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					</div>
 					<div class="clr"></div>
 				</div>
-				
+
 				<?php if ($this->debug) :
 					echo $this->renderBacktrace();
 				endif; ?>
-				
+
 				<noscript>
 					<?php echo JText::_('JGLOBAL_WARNJAVASCRIPT') ?>
 				</noscript>
 			</section>
 		</div>
-		
+
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">

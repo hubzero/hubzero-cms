@@ -76,13 +76,13 @@ if ($this->rows) {
 				<?php if ($row->size && $row->available) { ?>
 					<span class="sizes"><?php echo JText::_('COM_STORE_SIZES'); ?>: <?php echo $row->size; ?></span>
 				<?php } ?>
-				<?php 
+				<?php
 				if ($row->category != 'service') {
 					if ($row->available) { ?>
 						<span class="yes"><?php echo JText::_('COM_STORE_INSTOCK'); ?></span>
 					<?php } else { ?>
 						<span class="no"><?php echo JText::_('COM_STORE_SOLDOUT'); ?></span>
-					<?php 
+					<?php
 					}
 				}
 				?>

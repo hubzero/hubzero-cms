@@ -28,91 +28,91 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for support queries
  */
-class SupportQuery extends JTable 
+class SupportQuery extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $conditions = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $user_id    = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sort       = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $sort_dir    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(3)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $iscore    = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($db) 
+	public function __construct($db)
 	{
 		parent::__construct('#__support_queries', 'id', $db);
 	}
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
-	public function check() 
+	public function check()
 	{
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
 		$this->conditions = trim($this->conditions);
-		if (!$this->conditions) 
+		if (!$this->conditions)
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
@@ -120,18 +120,18 @@ class SupportQuery extends JTable
 		$this->query = $this->getQuery($this->conditions);
 
 		$this->sort = trim($this->sort);
-		if (!$this->sort) 
+		if (!$this->sort)
 		{
 			$this->sort = 'created';
 		}
 
 		$this->sort_dir = strtolower(trim($this->sort_dir));
-		if (!$this->sort_dir) 
+		if (!$this->sort_dir)
 		{
 			$this->sort_dir = 'desc';
 		}
 
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			//$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
@@ -147,27 +147,27 @@ class SupportQuery extends JTable
 
 	/**
 	 * Build a query from filters
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	protected function _buildQuery($filters=array()) 
+	protected function _buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS q"; //" LEFT JOIN #__users AS u ON u.id=q.user_id";
 
 		$where = array();
-		if (isset($filters['user_id'])) 
+		if (isset($filters['user_id']))
 		{
 			$where[] = "q.user_id='" . $filters['user_id'] . "'";
 		}
-		if (isset($filters['iscore'])) 
+		if (isset($filters['iscore']))
 		{
 			if (is_array($filters['iscore']))
 			{
 				$filters['iscore'] = array_map('intval', $filters['iscore']);
 				$where[] = "q.iscore IN (" . implode(',', $filters['iscore']) . ")";
 			}
-			else 
+			else
 			{
 				$where[] = "q.iscore='" . $filters['iscore'] . "'";
 			}
@@ -180,31 +180,31 @@ class SupportQuery extends JTable
 
 		if (!isset($filters['count']) || !$filters['count'])
 		{
-			if (!isset($filters['sort']) || !$filters['sort']) 
+			if (!isset($filters['sort']) || !$filters['sort'])
 			{
 				$filters['sort'] = 'created';
 			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 			{
 				$filters['sort_Dir'] = 'desc';
 			}
 			$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
-	
+
 		return $query;
 	}
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     integer
 	 */
-	public function getCount($filters=array()) 
+	public function getCount($filters=array())
 	{
 		$filters['count'] = true;
 		$filters['limit'] = 0;
@@ -216,20 +216,20 @@ class SupportQuery extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT q.* " . $this->_buildQuery($filters); //, u.name 
+		$query = "SELECT q.* " . $this->_buildQuery($filters); //, u.name
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get common queries
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getCommonNotInACL()
@@ -247,7 +247,7 @@ class SupportQuery extends JTable
 
 	/**
 	 * Get common queries
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getCommon()
@@ -265,7 +265,7 @@ class SupportQuery extends JTable
 
 	/**
 	 * Get my queries
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getMine()
@@ -283,7 +283,7 @@ class SupportQuery extends JTable
 
 	/**
 	 * Get my queries
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function getCustom($user_id=null)
@@ -311,22 +311,22 @@ class SupportQuery extends JTable
 
 	/**
 	 * Recursive method to parse the condition and generate the query. Takes the selector for the root condition
-	 * 
+	 *
 	 * @param      mixed $condition Accepts either a JSON string or object
 	 * @return     string
 	 */
-	public function getCondition($data) 
+	public function getCondition($data)
 	{
 		return json_encode($data);
 	}
 
 	/**
 	 * Recursive method to iterate over the condition tree and generate the query
-	 * 
+	 *
 	 * @param      mixed $condition Accepts either a JSON string or object
 	 * @return     string
 	 */
-	public function getQuery($condition) 
+	public function getQuery($condition)
 	{
 		if (is_string($condition))
 		{
@@ -342,10 +342,10 @@ class SupportQuery extends JTable
 
 		$tags = array();
 		$nottags = array();
-		for ($i = 0; $i < $elen; $i++) 
+		for ($i = 0; $i < $elen; $i++)
 		{
 			$expr = $condition->expressions[$i];
-			if (strtolower($expr->fldval) == 'tag') 
+			if (strtolower($expr->fldval) == 'tag')
 			{
 				$tags[] = $expr->val;
 
@@ -357,7 +357,7 @@ class SupportQuery extends JTable
 			}
 		}
 
-		for ($i = 0; $i < $elen; $i++) 
+		for ($i = 0; $i < $elen; $i++)
 		{
 			$expr = $condition->expressions[$i];
 			switch ($expr->opval)
@@ -391,11 +391,11 @@ class SupportQuery extends JTable
 			{
 				$expr->opval = 'IN ($1)';
 
-				if ($expr->fldval == 'group') 
+				if ($expr->fldval == 'group')
 				{
 					$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
 					$expr->val = '';
-					if ($xgroups) 
+					if ($xgroups)
 					{
 						$g = array();
 						foreach ($xgroups as $xgroup)
@@ -411,7 +411,7 @@ class SupportQuery extends JTable
 				}
 			}
 
-			if (strstr($expr->opval, '$1')) 
+			if (strstr($expr->opval, '$1'))
 			{
 				if (strtolower($expr->fldval) == 'tag')
 				{
@@ -421,13 +421,13 @@ class SupportQuery extends JTable
 				{
 					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if ($expr->val == '$me') 
+				if ($expr->val == '$me')
 				{
 					$expr->val = $juser->get('username');
-				} 
+				}
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
 			}
 		}
@@ -436,9 +436,9 @@ class SupportQuery extends JTable
 			if (implode("','", $tags) == implode("','", $nottags))
 			{
 				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
-							SELECT st.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS st 
-							LEFT JOIN #__tags AS t ON st.' . $this->_db->nameQuote('tagid') . '=t.' . $this->_db->nameQuote('id') . ' 
-							WHERE st.' . $this->_db->nameQuote('tbl') . '=\'support\' 
+							SELECT st.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS st
+							LEFT JOIN #__tags AS t ON st.' . $this->_db->nameQuote('tagid') . '=t.' . $this->_db->nameQuote('id') . '
+							WHERE st.' . $this->_db->nameQuote('tbl') . '=\'support\'
 							AND (t.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
 				$having = " GROUP BY f.id ";
 			}
@@ -446,9 +446,9 @@ class SupportQuery extends JTable
 			{
 				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
 				$e[] = 'f.' . $this->_db->nameQuote('id') . ' NOT IN (
-							SELECT jto.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS jto 
-							JOIN #__tags AS jt ON jto.' . $this->_db->nameQuote('tagid') . '=jt.' . $this->_db->nameQuote('id') . ' 
-							WHERE jto.' . $this->_db->nameQuote('tbl') . '=\'support\' 
+							SELECT jto.' . $this->_db->nameQuote('objectid') . ' FROM #__tags_object AS jto
+							JOIN #__tags AS jt ON jto.' . $this->_db->nameQuote('tagid') . '=jt.' . $this->_db->nameQuote('id') . '
+							WHERE jto.' . $this->_db->nameQuote('tbl') . '=\'support\'
 							AND (jt.' . $this->_db->nameQuote('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
 				$having = " GROUP BY f.id ";
 			}
@@ -470,7 +470,7 @@ class SupportQuery extends JTable
 
 		$n = array();
 		$nlen = count($condition->nestedexpressions);
-		for ($k = 0; $k < $nlen; $k++) 
+		for ($k = 0; $k < $nlen; $k++)
 		{
 			$nestexpr = $condition->nestedexpressions[$k];
 			$result = $this->getQuery($nestexpr);
@@ -492,11 +492,11 @@ class SupportQuery extends JTable
 
 	/**
 	 * Recursive method to iterate over the condition tree and generate the query
-	 * 
+	 *
 	 * @param      mixed $condition Accepts either a JSON string or object
 	 * @return     string
 	 */
-	public function getFilters($condition) 
+	public function getFilters($condition)
 	{
 		if (is_string($condition))
 		{
@@ -507,15 +507,15 @@ class SupportQuery extends JTable
 
 		$e = array();
 		$elen = count($condition->expressions);
-		for ($i = 0; $i < $elen; $i++) 
+		for ($i = 0; $i < $elen; $i++)
 		{
 			$expr = $condition->expressions[$i];
 			//$prfx = (strtolower($expr->fldval) == 'tag') ? 't' : 'f';
-			if (strstr($expr->val, '$1')) 
+			if (strstr($expr->val, '$1'))
 			{
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . str_replace('$1', $expr->val);
-			} 
-			else 
+			}
+			else
 			{
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
 			}
@@ -523,7 +523,7 @@ class SupportQuery extends JTable
 
 		$n = array();
 		$nlen = count($condition->nestedexpressions);
-		for ($k = 0; $k < $nlen; $k++) 
+		for ($k = 0; $k < $nlen; $k++)
 		{
 			$nestexpr = $condition->nestedexpressions[$k];
 			$result = $this->getQuery($nestexpr);
@@ -545,11 +545,11 @@ class SupportQuery extends JTable
 
 	/**
 	 * Populate the database with default values
-	 * 
+	 *
 	 * @param      string  $type Type of query to populate [common, mine]
 	 * @return     boolean False if errors, True on success
 	 */
-	public function populateDefaults($type='common') 
+	public function populateDefaults($type='common')
 	{
 		$me = '$me';
 
@@ -593,7 +593,7 @@ class SupportQuery extends JTable
 		}
 
 		$this->_db->setQuery($sql);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

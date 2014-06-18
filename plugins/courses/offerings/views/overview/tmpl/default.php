@@ -45,7 +45,7 @@ $this->css();
 		<tbody>
 	<?php
 	/*$offerings = $this->course->offerings(array(
-		'state'    => 1, 
+		'state'    => 1,
 		'sort_Dir' => 'ASC'
 	), true);*/
 	$offerings = $this->course->offerings();
@@ -121,7 +121,7 @@ $this->css();
 			<?php
 			if ($offering->sections()->total() > 1)
 			{
-				foreach ($offering->sections() as $section) 
+				foreach ($offering->sections() as $section)
 				{
 					if ($section->isDeleted())
 					{
@@ -178,15 +178,15 @@ $this->css();
 					<?php } ?>
 				</td>
 				<td>
-					<?php 
-					switch ($section->get('enrollment')) 
-					{ 
-						case 0: 
+					<?php
+					switch ($section->get('enrollment'))
+					{
+						case 0:
 							?>
 							<span class="accepting enrollment">
 								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
 							</a>
-							<?php 
+							<?php
 						break;
 
 						case 1:
@@ -194,7 +194,7 @@ $this->css();
 							<span class="restricted enrollment">
 								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_RESTRICTED'); ?>
 							</span>
-							<?php 
+							<?php
 						break;
 
 						case 2:
@@ -202,9 +202,9 @@ $this->css();
 							<span class="closed enrollment">
 								<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>
 							</span>
-							<?php 
+							<?php
 						break;
-					} 
+					}
 					?>
 				</td>
 			</tr>

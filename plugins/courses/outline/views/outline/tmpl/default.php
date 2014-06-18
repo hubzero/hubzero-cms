@@ -46,8 +46,8 @@ if ($isManager)
 	$filters['state'] = -1;
 }
 
-if (JRequest::getInt('nonadmin', 0) == 1) 
-{ 
+if (JRequest::getInt('nonadmin', 0) == 1)
+{
 	$isNowOnManager = false;
 }
 
@@ -99,7 +99,7 @@ if (!$this->course->offering()->access('view')) { ?>
 
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
-		<?php if ((!$isManager && $unit->isPublished()) || $isManager) { 
+		<?php if ((!$isManager && $unit->isPublished()) || $isManager) {
 				$cls = '';
 				if (!$unit->isAvailable())
 				{
@@ -109,7 +109,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				{
 					$cls = ' draft';
 				}
-				
+
 				if ($unit->isUnpublished())
 				{
 					$cls = ' unpublished';
@@ -153,7 +153,7 @@ if (!$this->course->offering()->access('view')) { ?>
 				<?php } else if (!$isManager && !$prerequisites->hasMet('unit', $unit->get('id'))) { ?>
 							<div class="grid">
 								<p class="info">
-									This unit has prerequisites that have not yet been met. Begin by completing: 
+									This unit has prerequisites that have not yet been met. Begin by completing:
 									<?php foreach ($prerequisites->get('unit', $unit->get('id')) as $prereq) : ?>
 										<?php echo $unitTitles[$prereq['scope_id']]; ?>
 									<?php endforeach; ?>
@@ -178,12 +178,12 @@ if (!$this->course->offering()->access('view')) { ?>
 									{
 										$cls = ' draft';
 									}
-									
+
 									if ($agt->isUnpublished())
 									{
 										$cls = ' unpublished';
 									}
-									
+
 									if ($agt->isDeleted())
 									{
 										continue;
@@ -203,7 +203,7 @@ if (!$this->course->offering()->access('view')) { ?>
 
 										<div class="col span8 omega">
 									<?php foreach ($agt->children() as $ag) { ?>
-										<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) : 
+										<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) :
 											$cls = '';
 											if ($ag->isDraft())
 											{
@@ -221,16 +221,16 @@ if (!$this->course->offering()->access('view')) { ?>
 											{
 												$cls = ' unpublished';
 											}
-											
+
 											if ($ag->isDeleted())
 											{
 												continue;
 											}
-											
+
 										?>
 											<div class="asset-group<?php echo $cls; ?>">
 												<ul class="asset-list">
-												<?php 
+												<?php
 												$title = '';
 												if (trim($ag->get('title')) !== '--')
 												{
@@ -239,7 +239,7 @@ if (!$this->course->offering()->access('view')) { ?>
 
 												$link = '<span class="asset-primary unavailable">' . $title . '</span>';
 
-												if ($ag->assets()->total()) 
+												if ($ag->assets()->total())
 												{
 													// Loop through the assets
 													foreach ($ag->assets() as $a)
@@ -260,12 +260,12 @@ if (!$this->course->offering()->access('view')) { ?>
 															{
 																$cls = ' draft';
 															}
-															
+
 															if ($a->isUnpublished())
 															{
 																$cls = ' unpublished';
 															}
-															
+
 															if ($a->isDeleted())
 															{
 																continue;
@@ -287,7 +287,7 @@ if (!$this->course->offering()->access('view')) { ?>
 															break;
 														}
 													}
-												} 
+												}
 												echo '<li>' . $link . '</li>';
 												?>
 											</ul>
@@ -325,7 +325,7 @@ if (!$this->course->offering()->access('view')) { ?>
 														{
 															$cls = ' unpublished';
 														}
-														
+
 														if ($a->isDeleted())
 														{
 															continue;

@@ -39,21 +39,21 @@ class Image extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Container for element attributes
-	 * 
+	 *
 	 * @var array
 	 */
 	private $attr = array();
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()
@@ -140,7 +140,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 	/**
 	 * Generate macro output based on passed arguments
-	 * 
+	 *
 	 * @return     string HTML image tag on success or error message on failure
 	 */
 	public function render()
@@ -148,7 +148,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		$content = $this->args;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return '';
 		}
@@ -176,7 +176,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Get wiki config
 		$this->config = \JComponentHelper::getParams('com_wiki');
-		if ($this->filepath != '') 
+		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
@@ -187,7 +187,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		$ret = false;
 		// Is it numeric?
-		if (is_numeric($file)) 
+		if (is_numeric($file))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
@@ -196,7 +196,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$attach->load(intval($file));
 
 			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) 
+			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
 			{
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
@@ -208,27 +208,27 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			}
 		}
 		// Check for file existence
-		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) 
+		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
 			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
 			$ret = true;
-		} 
+		}
 
 		// Does the file exist?
 		if ($ret)
 		{
 			jimport('joomla.filesystem.file');
 
-			if (!in_array(strtolower(\JFile::getExt($file)), $this->imgs)) 
+			if (!in_array(strtolower(\JFile::getExt($file)), $this->imgs))
 			{
 				return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
 			}
 
 			// Return HTML
 			return $this->_embed($file, $attr);
-		}	
-		else 
+		}
+		else
 		{
 			// Return error message
 			return '(Image(' . $content . ') failed - File not found)'; // . $this->_path($file);
@@ -238,7 +238,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	/**
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching attr=val pairs
 	 * @return     void
 	 */
@@ -251,9 +251,9 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches) && $key != 'border') 
+		if (preg_match($size, $val, $matches) && $key != 'border')
 		{
 			if ($matches[0])
 			{
@@ -270,17 +270,17 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		// Specific call to NOT link an image
 		// Links images by default
-		if ($key == 'nolink') 
+		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
 			return;
 		}
 		// Check for a specific link given
-		if ($key == 'link') 
+		if ($key == 'link')
 		{
 			$this->attr['href'] = 'none';
 
-			if ($val) 
+			if ($val)
 			{
 				$this->attr['href'] = $val;
 
@@ -294,7 +294,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
 			{
@@ -302,7 +302,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $key;
 				if ($key == 'left')
@@ -318,7 +318,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 
 		// Look for any other attributes
-		if ($key == 'align') 
+		if ($key == 'align')
 		{
 			if ($val == 'center')
 			{
@@ -326,7 +326,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $val;
 				if ($val == 'left')
@@ -338,12 +338,12 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 					$this->attr['style']['margin-left'] = '1em';
 				}
 			}
-		} 
-		else if ($key == 'border') 
+		}
+		else if ($key == 'border')
 		{
 			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
-		} 
-		else 
+		}
+		else
 		{
 			$this->attr[$key] = $val;
 		}
@@ -353,7 +353,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	/**
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching the single attribute pattern
 	 * @return     void
 	 */
@@ -361,10 +361,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	{
 		$key = strtolower(trim($matches[1]));
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, 120px)]]
 		$size   = '/[0-9+](%|px|em)+$/';
-		if (preg_match($size, $key, $matches)) 
+		if (preg_match($size, $key, $matches))
 		{
 			if ($matches[0])
 			{
@@ -382,7 +382,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Specific call to NOT link an image
 		// Links images by default
-		if ($key == 'nolink') 
+		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
 			return;
@@ -390,7 +390,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
 			{
@@ -398,7 +398,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['display'] = 'block';
 				$this->attr['style']['float'] = $key;
@@ -420,17 +420,17 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	/**
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
-	 * 
+	 *
 	 * @param      string $file Filename
 	 * @return     string
 	 */
 	private function _path($file, $alt=false)
 	{
-		if (substr($file, 0, 1) == DS) 
+		if (substr($file, 0, 1) == DS)
 		{
 			$path = JPATH_ROOT . $file;
 		}
-		else 
+		else
 		{
 			if ($alt)
 			{
@@ -454,14 +454,14 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}
-		
+
 		return $path;
 	}
-	
+
 	/**
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
-	 * 
+	 *
 	 * @param      string $file Filename
 	 * @return     string
 	 */
@@ -472,18 +472,18 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		{
 			return $file;
 		}
-		
+
 		$file = trim($file, DS);
-		
+
 		if (\JRequest::getVar('format') == 'pdf')
 		{
 			return $this->_path($file);
 		}
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope) 
+		if ($this->scope)
 		{
 			$scope = trim($this->scope, DS);
-			
+
 			$link .= $scope . DS;
 		}
 		$link .= $this->pagename . DS . 'Image:' . $file;
@@ -493,7 +493,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 	/**
 	 * Generates HTML to embed an <img>
-	 * 
+	 *
 	 * @param      string $file File to embed
 	 * @param      array  $attr Attributes to apply to the HTML
 	 * @return     string
@@ -507,7 +507,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 
 		$styles = '';
-		if (count($attr['style']) > 0) 
+		if (count($attr['style']) > 0)
 		{
 			$s = array();
 			foreach ($attr['style'] as $k => $v)
@@ -532,11 +532,11 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
 
-		if ($attr['href'] == 'none') 
+		if ($attr['href'] == 'none')
 		{
 			$html .= $img;
-		} 
-		else 
+		}
+		else
 		{
 			$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 			$attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';

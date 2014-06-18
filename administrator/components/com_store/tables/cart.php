@@ -38,56 +38,56 @@ class Cart extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $uid    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $itemid     = NULL;
 
 	/**
 	 * varchar(20)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $type    	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $quantity   = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $added  	= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $selections = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,14 +98,14 @@ class Cart extends JTable
 
 	/**
 	 * Check if an item is already in the cart
-	 * 
+	 *
 	 * @param      integer $id  Entry ID
 	 * @param      integer $uid User ID
 	 * @return     array
 	 */
 	public function checkCartItem($id=null, $uid)
 	{
-		if ($id == null or $uid == null) 
+		if ($id == null or $uid == null)
 		{
 			return false;
 		}
@@ -117,7 +117,7 @@ class Cart extends JTable
 
 	/**
 	 * Get items int he cart
-	 * 
+	 *
 	 * @param      integer $uid  User ID
 	 * @param      string  $rtrn Return cost or items?
 	 * @return     mixed
@@ -125,7 +125,7 @@ class Cart extends JTable
 	public function getCartItems($uid, $rtrn='')
 	{
 		$total = 0;
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
@@ -142,7 +142,7 @@ class Cart extends JTable
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 
-		if ($result) 
+		if ($result)
 		{
 			$paramsClass = 'JParameter';
 			if (version_compare(JVERSION, '1.6', 'ge'))
@@ -152,7 +152,7 @@ class Cart extends JTable
 			foreach ($result as $r)
 			{
 				$price = $r->price * $r->quantity;
-				if ($r->available) 
+				if ($r->available)
 				{
 					$total = $total + $price;
 				}
@@ -174,7 +174,7 @@ class Cart extends JTable
 			}
 		}
 
-		if ($rtrn) 
+		if ($rtrn)
 		{
 			$result = $total; // total cost of items in cart
 		}
@@ -184,26 +184,26 @@ class Cart extends JTable
 
 	/**
 	 * Save items to the cart
-	 * 
+	 *
 	 * @param      array  $posteditems List of items to save
 	 * @param      string $uid         User ID
 	 * @return     boolean True upon success
 	 */
 	public function saveCart($posteditems, $uid)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
 
 		// get current cart items
 		$items = $this->getCartItems($uid);
-		if ($items) 
+		if ($items)
 		{
 			foreach ($items as $item)
 			{
-				if ($item->type != 2) 
-				{ // not service	
+				if ($item->type != 2)
+				{ // not service
 					$size 			= (isset($item->selectedsize)) ? $item->selectedsize : '';
 					$color 			= (isset($item->color)) ? $item->color : '';
 					$sizechoice 	= (isset($posteditems['size' . $item->itemid]))  ? $posteditems['size' . $item->itemid]  : $size;
@@ -230,7 +230,7 @@ class Cart extends JTable
 
 	/**
 	 * Remove an item from the cart
-	 * 
+	 *
 	 * @param      integer $id  Entry ID
 	 * @param      integer $uid User ID
 	 * @param      integer $all Remove all items?
@@ -239,7 +239,7 @@ class Cart extends JTable
 	public function deleteCartItem($id, $uid, $all=0)
 	{
 		$sql = "DELETE FROM $this->_tbl WHERE uid='" . $uid . "'  ";
-		if (!$all && $id) 
+		if (!$all && $id)
 		{
 			$sql .= "AND itemid='" . $id . "' ";
 		}
@@ -250,22 +250,22 @@ class Cart extends JTable
 
 	/**
 	 * Delete items marked as unavailable
-	 * 
+	 *
 	 * @param      integer $uid   User ID
 	 * @param      array   $items List of item IDs
 	 * @return     boolean True upon success
 	 */
 	public function deleteUnavail($uid, $items)
 	{
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
-		if (count($items) > 0) 
+		if (count($items) > 0)
 		{
 			foreach ($items as $i)
 			{
-				if ($i->available == 0) 
+				if ($i->available == 0)
 				{
 					$sql = "DELETE FROM $this->_tbl WHERE itemid=" . $i->itemid . " AND uid=" . $uid;
 					$this->_db->setQuery($sql);
@@ -277,7 +277,7 @@ class Cart extends JTable
 
 	/**
 	 * Delete an entry
-	 * 
+	 *
 	 * @param      integer $itemid Entry ID
 	 * @param      integer $uid    User ID
 	 * @param      string  $type   Entry type
@@ -285,18 +285,18 @@ class Cart extends JTable
 	 */
 	public function deleteItem($itemid=null, $uid=null, $type='merchandise')
 	{
-		if ($itemid == null) 
+		if ($itemid == null)
 		{
 			return false;
 		}
-		if ($uid == null) 
+		if ($uid == null)
 		{
 			return false;
 		}
 
 		$sql = "DELETE FROM $this->_tbl WHERE itemid='$itemid' AND type='$type' AND uid=$uid";
 		$this->_db->setQuery($sql);
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

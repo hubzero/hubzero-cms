@@ -45,7 +45,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin name
@@ -67,7 +67,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -80,10 +80,10 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		$returnmeta = true;
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas)) 
+		if (is_array($areas))
 		{
 			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))) 
+			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
 			{
 				$returnhtml = false;
 			}
@@ -98,7 +98,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		$tables = $database->getTableList();
 		$table = $database->getPrefix() . 'users_points';
 
-		if (!in_array($table, $tables)) 
+		if (!in_array($table, $tables))
 		{
 			$arr['html'] = '<p class="error">' . JText::_('PLG_MEMBERS_POINTS_ERROR_MISSING_TABLE') . '</p>';
 			return $arr;
@@ -107,7 +107,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		$BTL = new \Hubzero\Bank\Teller($database, $member->get('uidNumber'));
 
 		// Build the final HTML
-		if ($returnhtml) 
+		if ($returnhtml)
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -124,7 +124,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 
 			$view->funds = ($funds > 0) ? $funds : 0;
 			$view->hist = $BTL->history(0);
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				$view->setError($this->getError());
 			}
@@ -133,7 +133,7 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the HTML meant for the "about" tab's metadata overview
-		if ($returnmeta) 
+		if ($returnmeta)
 		{
 			$arr['metadata'] = array();
 

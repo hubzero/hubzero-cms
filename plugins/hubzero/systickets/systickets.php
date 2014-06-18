@@ -38,7 +38,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return information about this hub
-	 * 
+	 *
 	 * @return  array
 	 */
 	public function onSystemOverview()
@@ -79,7 +79,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Assign label and data to an object
-	 * 
+	 *
 	 * @param   string $label
 	 * @param   mixed  $value
 	 * @return  object

@@ -138,7 +138,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -170,7 +170,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Create a custom bill
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _create_bill()
@@ -200,7 +200,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * View customized bill
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _view_bill()
@@ -312,7 +312,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save bill
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _save_bill()
@@ -348,7 +348,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 			$record->load($id);
 
 			$record->billed = 1;
-			if (!$record->store()) 
+			if (!$record->store())
 			{
 				JError::raiseError(500, $record->getError());
 				return;
@@ -372,7 +372,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Delete bill
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _delete_bill()
@@ -382,7 +382,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Create CSV download of report
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _csv_bill()
@@ -432,7 +432,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	private function setRedirect($url, $msg=null, $type='message')
@@ -446,7 +446,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Build a select list of reports
-	 * 
+	 *
 	 * @return $rlist
 	 */
 	public function buildReportsList()
@@ -460,7 +460,7 @@ class plgTimeReports extends \Hubzero\Plugin\Plugin
 
 		// Go through all the reports and add a select option for each
 		$options[] = JHTML::_('select.option', '', JText::_('PLG_TIME_REPORTS_SELECT_REPORT'), 'value', 'text');
-		foreach($reports as $report) 
+		foreach($reports as $report)
 		{
 			$hubname   = $hub->getHubNameByReportId($report->id);
 			$date      = explode(" ", $report->time_stamp);

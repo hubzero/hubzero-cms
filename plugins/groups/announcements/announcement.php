@@ -38,50 +38,50 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = '\\Hubzero\\Item\\Announcement';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'plg_groups_announcements.announcement.content';
 
 	/**
 	 * Scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'group';
 
 	/**
-	 * Group associated with 
+	 * Group associated with
 	 * this announcement
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_group = null;
 
 	/**
 	 * User profile
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_creator = NULL;
 
 	/**
 	 * URL for this entry
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = null;
 
 	/**
 	 * Check if the entry is available
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isAvailable()
@@ -96,18 +96,18 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 
 		// Is a publish up date set and, if so,
 		// is it after "now"?
-		if ($this->get('publish_up') 
-		 && $this->get('publish_up') != $this->_db->getNullDate() 
-		 && $this->get('publish_up') > $now) 
+		if ($this->get('publish_up')
+		 && $this->get('publish_up') != $this->_db->getNullDate()
+		 && $this->get('publish_up') > $now)
 		{
 			return false;
 		}
 
 		// Is a publish down date set and, if so,
 		// is it before "now"?
-		if ($this->get('publish_down') 
-		 && $this->get('publish_down') != $this->_db->getNullDate() 
-		 && $this->get('publish_down') <= $now) 
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') <= $now)
 		{
 			return false;
 		}
@@ -117,13 +117,13 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
 	public function published($as='')
 	{
-		$dt = ($this->get('publish_up') && $this->get('publish_up') != '0000-00-00 00:00:00') 
+		$dt = ($this->get('publish_up') && $this->get('publish_up') != '0000-00-00 00:00:00')
 			? $this->get('publish_up')
 			: $this->get('created');
 		switch (strtolower($as))
@@ -144,7 +144,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 
 	/**
 	 * Get the creator of this entry
-	 * 
+	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
@@ -171,7 +171,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     boolean
 	 */
@@ -195,7 +195,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 
 	/**
 	 * Get the state of the entry as either text or numerical value
-	 * 
+	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -257,7 +257,7 @@ class GroupsModelAnnouncement extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     string
 	 */

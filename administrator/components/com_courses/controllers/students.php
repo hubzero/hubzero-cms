@@ -63,7 +63,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			'section',
 			0
 		);
-		
+
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
@@ -129,7 +129,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				$this->view->rows[$key] = new CoursesModelStudent($row);
 			}
 		}
-		
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
@@ -317,7 +317,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				continue;
 			}
 
-			// Ensure it's a new record as the check above 
+			// Ensure it's a new record as the check above
 			// could pull a record for another section
 			$model->set('id', null);
 
@@ -431,15 +431,15 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : '')
 		);
 	}
-	
-	
+
+
 	/**
 	 * Save students info as CSV file
 	 *
 	 * @return	void
 	 */
-	public function csvTask() 
-	{	
+	public function csvTask()
+	{
 		// Get configuration
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -454,7 +454,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			'section',
 			0
 		);
-		
+
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
@@ -479,9 +479,9 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				$this->view->rows[$key] = new CoursesModelStudent($row);
 			}
 		}
-		
+
 		// Output the CSV
 		$this->view->display();
 	}
-			
+
 }

@@ -38,7 +38,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -59,7 +59,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -77,7 +77,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -88,7 +88,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onGroup($group, $option, $authorized, $limit=0, 
+	public function onGroup($group, $option, $authorized, $limit=0,
 		$limitstart=0, $action='', $access, $areas=null)
 	{
 		$return = 'html';
@@ -103,9 +103,9 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$this_area = $this->onGroupAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit) 
+		if (is_array($areas) && $limit)
 		{
-			if (!in_array($this_area['name'], $areas)) 
+			if (!in_array($this_area['name'], $areas))
 			{
 				$return = 'metadata';
 			}
@@ -118,22 +118,22 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$members = $group->get('members');
 
 		//if we want to return content
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			//set group members plugin access level
 			$group_plugin_acl = $access[$active];
 
 			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody') 
+			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', 
+				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF',
 					ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
 			//check if guest and force login if plugin access is registered or members
-			if ($juser->get('guest') 
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')) 
+			if ($juser->get('guest')
+			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
 				$url = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
@@ -146,11 +146,11 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			}
 
 			//check to see if user is member and plugin access requires members
-			if (!in_array($juser->get('id'), $members) 
-			 && $group_plugin_acl == 'members' 
-			 && $authorized != 'admin') 
+			if (!in_array($juser->get('id'), $members)
+			 && $group_plugin_acl == 'members'
+			 && $authorized != 'admin')
 			{
-				$arr['html'] = '<p class="info">' 
+				$arr['html'] = '<p class="info">'
 					. JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
 			}
@@ -193,10 +193,10 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$id = $obj->get_wishlistID($gid, $category);
 
 		// Create a new list if necessary
-		if (!$id) 
+		if (!$id)
 		{
 			// create private list for group
-			if (\Hubzero\User\Group::exists($gid)) 
+			if (\Hubzero\User\Group::exists($gid))
 			{
 				$group = \Hubzero\User\Group::getInstance($gid);
 				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . JText::_('WISHLIST_NAME_GROUP'));
@@ -207,7 +207,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$wishlist = $obj->get_wishlist($id, $gid, $category);
 
 		//if we dont have a wishlist display error
-		if (!$wishlist) 
+		if (!$wishlist)
 		{
 			$arr['html'] = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
 			return $arr;
@@ -223,17 +223,17 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		//}
 
 		// Authorize admins & list owners
-		if ($juser->authorize($option, 'manage')) 
+		if ($juser->authorize($option, 'manage'))
 		{
 			$admin = 1;
 		}
 
 		//authorized based on wishlist
-		if (in_array($juser->get('id'), $owners['individuals'])) 
+		if (in_array($juser->get('id'), $owners['individuals']))
 		{
 			$admin = 2;
-		} 
-		else if (in_array($juser->get('id'), $owners['advisory'])) 
+		}
+		else if (in_array($juser->get('id'), $owners['advisory']))
 		{
 			$admin = 3;
 		}
@@ -243,7 +243,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 		$arr['metadata']['count'] = $items;
 
-		if ($return == 'html') 
+		if ($return == 'html')
 		{
 			// Get wishes
 			$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
@@ -268,7 +268,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			$view->filters = $filters;
 			$view->admin = $admin;
 			$view->config = $this->config;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{

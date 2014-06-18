@@ -58,11 +58,11 @@ if ($this->project->provisioned == 1)
 }
 
 $message .= ')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' ' 
-		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' 
+$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
+		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' '
 		 . JText::_('COM_PROJECTS_BY') . ' ';
-$message .= $this->project->owned_by_group 
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP') 
+$message .= $this->project->owned_by_group
+			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
 

@@ -36,26 +36,26 @@ if ($this->citations) {
 	// Set some vars
 	$affiliated = '';
 	$nonaffiliated = '';
-	
+
 	$formatter = new CitationFormat;
 	$formatter->setTemplate($this->format);
-				
+
 	// Loop through the citations and build the HTML
-	foreach ($this->citations as $cite) 
+	foreach ($this->citations as $cite)
 	{
-		
+
 		$showLinks = ($cite->title && $cite->author && $cite->publisher) ? true : false;
-		
+
 		$item  = "\t".'<li>'."\n";
 		$formatted = $cite->formatted ? $cite->formatted : CitationFormat::formatReference($cite, '');
-		
+
 		if ($cite->doi && $cite->url)
 		{
-			$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">' 
+			$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">'
 				. 'doi:' . $cite->doi . '</a>', $formatted);
 		}
-		
-		$item .= $formatted;		
+
+		$item .= $formatted;
 		$item .= "\t\t".'<p class="details">'."\n";
 		if ($showLinks)
 		{
@@ -68,7 +68,7 @@ if ($this->citations) {
 			}
 		}
 		$item .= "\t\t".'</p>'."\n";
-		
+
 		$item .= "\t".'</li>'."\n";
 
 		// Decide which group to add it to
@@ -84,15 +84,15 @@ if ($this->citations) {
 ?>
 <h3>
 	<a name="citations"></a>
-	<?php echo JText::_('PLG_PUBLICATION_CITATIONS'); ?> 
+	<?php echo JText::_('PLG_PUBLICATION_CITATIONS'); ?>
 	<span>
-		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations&v=' . $this->publication->version_number . '#nonaffiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> | 
+		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations&v=' . $this->publication->version_number . '#nonaffiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> |
 		<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=citations&v=' . $this->publication->version_number . '#affiliated'); ?>"><?php echo JText::_('PLG_PUBLICATION_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
 	</span>
 </h3>
 <?php
-if ($this->citations) { 
-	if ($nonaffiliated) { 
+if ($this->citations) {
+	if ($nonaffiliated) {
 ?>
 	<a name="nonaffiliated"></a>
 	<h4><?php echo JText::_('PLG_PUBLICATION_CITATIONS_NOT_AFFILIATED'); ?></h4>

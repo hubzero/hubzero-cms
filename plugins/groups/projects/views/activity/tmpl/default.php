@@ -36,7 +36,7 @@ if (count($this->activities) > 0 ) {
 		<tbody>
 	<?php
 	// Loop through activities
-		foreach ($this->activities as $activity) 
+		foreach ($this->activities as $activity)
 		{
 			$a = $activity['activity'];
 			$class = $activity['class'];
@@ -78,19 +78,19 @@ if (count($this->activities) > 0 ) {
 						</span>
 					</div>
 
-					<?php if ($a->commentable) { ?>	
+					<?php if ($a->commentable) { ?>
 						<span class="comment">
-							<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } ?> 
+							<?php if (count($comments) > 0) { echo count($comments) == 1 ? count($comments).' '.JText::_('COM_PROJECTS_COMMENT') : ' '.count($comments).' '.JText::_('COM_PROJECTS_COMMENTS'); } ?>  <?php if (isset($a->new) && $a->new > 0) { echo ' &middot; <span class="prominent urgency">'.$a->new.' '.JText::_('COM_PROJECTS_NEW').'</span>'; } ?>
 						</span>
 						<?php  if (count($comments) > 0) { // Show Comments ?>
 							<ol class="comments" id="comments_<?php echo $a->id; ?>">
-								<?php foreach ($comments as $comment) { 
+								<?php foreach ($comments as $comment) {
 									$ctimeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $comment->created ? ' class="urgency"' : '';
 								?>
 								<li class="quote" id="c_<?php echo $comment->id; ?>">
 									<?php echo stripslashes(ProjectsHTML::replaceUrls($comment->comment, 'external')); ?>
 									<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHTML::timeAgo($comment->created).' '.JText::_('COM_PROJECTS_AGO'); ?></span></span>
-								</li>	
+								</li>
 								<?php } ?>
 							</ol>
 						<?php } ?>
@@ -105,9 +105,9 @@ if (count($this->activities) > 0 ) {
 <?php } ?>
 
 <div id="more-updates" class="nav_pager">
-	<?php 
-	if ($this->total > $this->filters['limit']) { 
-		$limit = $this->filters['limit'] + $this->limit; ?>	
+	<?php
+	if ($this->total > $this->filters['limit']) {
+		$limit = $this->filters['limit'] + $this->limit; ?>
 		<p><a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->gid.'&active=projects&action=updates&limit='.$limit.'&prev='.$this->filters['limit']);  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 	<?php } else if ($this->filters['limit'] != $this->limit) { ?>
 		<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>

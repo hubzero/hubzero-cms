@@ -38,84 +38,84 @@ class ResourcesStats extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id       = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $resid    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $restype  = NULL;
 
 	/**
 	 * Description for 'users'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $users    = NULL;
 
 	/**
 	 * Description for 'jobs'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $jobs     = NULL;
 
 	/**
 	 * Description for 'avg_wall'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_wall = NULL;
 
 	/**
 	 * Description for 'tot_wall'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_wall = NULL;
 
 	/**
 	 * Description for 'avg_cpu'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_cpu  = NULL;
 
 	/**
 	 * Description for 'tot_cpu'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_cpu  = NULL;
 
 	/**
 	 * Description for 'datetime'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $datetime = NULL;
 
 	/**
 	 * Description for 'period'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $period   = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -126,12 +126,12 @@ class ResourcesStats extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->resid) == '') 
+		if (trim($this->resid) == '')
 		{
 			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
@@ -141,7 +141,7 @@ class ResourcesStats extends JTable
 
 	/**
 	 * Load data for a resource and given period
-	 * 
+	 *
 	 * @param      integer $resid  Resource ID
 	 * @param      integer $period Time period
 	 * @param      string  $dthis  YYYY-MM
@@ -149,26 +149,26 @@ class ResourcesStats extends JTable
 	 */
 	public function loadStats($resid=NULL, $period=NULL, $dthis=NULL)
 	{
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			return false;
 		}
 
-		$sql = "SELECT * 
+		$sql = "SELECT *
 				FROM $this->_tbl
 				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-01 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
 		$this->_db->setQuery($sql);
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -183,126 +183,126 @@ class ResourcesStatsTools extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id       = NULL;
 
 	/**
 	 * varchar(250)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $resid    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $restype  = NULL;
 
 	/**
 	 * Description for 'users'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $users    = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $sessions    = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $simulations = NULL;
 
 	/**
 	 * Description for 'jobs'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $jobs     = NULL;
 
 	/**
 	 * Description for 'avg_wall'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_wall = NULL;
 
 	/**
 	 * Description for 'tot_wall'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_wall = NULL;
 
 	/**
 	 * Description for 'avg_cpu'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_cpu  = NULL;
 
 	/**
 	 * Description for 'tot_cpu'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_cpu  = NULL;
 
 	/**
 	 * Description for 'avg_view'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_view = NULL;
 
 	/**
 	 * Description for 'tot_view'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_view = NULL;
 
 	/**
 	 * Description for 'avg_cpus'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $avg_cpus = NULL;
 
 	/**
 	 * Description for 'tot_cpus'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_cpus = NULL;
 
 	/**
 	 * Description for 'datetime'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $datetime = NULL;
 
 	/**
 	 * Description for 'period'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $period   = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -313,12 +313,12 @@ class ResourcesStatsTools extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->resid) == '') 
+		if (trim($this->resid) == '')
 		{
 			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
@@ -328,7 +328,7 @@ class ResourcesStatsTools extends JTable
 
 	/**
 	 * Load data for a resource and given period
-	 * 
+	 *
 	 * @param      integer $resid  Resource ID
 	 * @param      integer $period Time period
 	 * @param      string  $dthis  YYYY-MM
@@ -336,26 +336,26 @@ class ResourcesStatsTools extends JTable
 	 */
 	public function loadStats($resid=NULL, $period=NULL, $dthis=NULL)
 	{
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			return false;
 		}
 
-		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime 
+		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime
 				FROM $this->_tbl
 				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-00 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
 		$this->_db->setQuery($sql);
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -370,35 +370,35 @@ class ResourcesStatsToolsTop extends JTable
 {
 	/**
 	 * tinyint(4) Primary key
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $top    = NULL;
 
 	/**
 	 * varchar(128)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $name   = NULL;
 
 	/**
 	 * tinyint(4)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $valfmt = NULL;
 
 	/**
 	 * tinyint(4)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $size   = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -409,12 +409,12 @@ class ResourcesStatsToolsTop extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->name) == '') 
+		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('Your entry must have a name.'));
 			return false;
@@ -430,42 +430,42 @@ class ResourcesStatsToolsTopvals extends JTable
 {
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id    = NULL;
 
 	/**
 	 * tinyint(4)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $top   = NULL;
 
 	/**
 	 * tinyint(4)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $rank  = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $name  = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $value = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -476,12 +476,12 @@ class ResourcesStatsToolsTopvals extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->name) == '') 
+		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('Your entry must have a name.'));
 			return false;
@@ -491,26 +491,26 @@ class ResourcesStatsToolsTopvals extends JTable
 
 	/**
 	 * Get top countries for a resource
-	 * 
+	 *
 	 * @param      integer $id  Resource Id
 	 * @param      integer $top Top value
 	 * @return     mixed False on error, Array on success
 	 */
 	public function getTopCountryRes($id=NULL, $top=NULL)
 	{
-		if ($id == NULL) 
+		if ($id == NULL)
 		{
 			$id = $this->id;
 		}
-		if ($id == NULL) 
+		if ($id == NULL)
 		{
 			return false;
 		}
-		if ($top == NULL) 
+		if ($top == NULL)
 		{
 			$top = $this->top;
 		}
-		if ($top == NULL) 
+		if ($top == NULL)
 		{
 			return false;
 		}
@@ -527,91 +527,91 @@ class ResourcesStatsToolsUsers extends JTable
 {
 	/**
 	 * int(20) Primary key
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id          = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $resid       = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $restype     = NULL;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $user        = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $sessions    = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $simulations = NULL;
 
 	/**
 	 * int(20)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $jobs        = NULL;
 
 	/**
 	 * double
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_wall    = NULL;
 
 	/**
 	 * double
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_cpu     = NULL;
 
 	/**
 	 * double
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $tot_view    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $datetime    = NULL;
 
 	/**
 	 * tinyint(4)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $period      = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -622,12 +622,12 @@ class ResourcesStatsToolsUsers extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->resid) == '') 
+		if (trim($this->resid) == '')
 		{
 			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
@@ -637,7 +637,7 @@ class ResourcesStatsToolsUsers extends JTable
 
 	/**
 	 * Get top users for a resource
-	 * 
+	 *
 	 * @param      integer $resid  Resource ID
 	 * @param      integer $period Time period
 	 * @param      string  $dthis  YYYY-MM
@@ -646,9 +646,9 @@ class ResourcesStatsToolsUsers extends JTable
 	 */
 	public function getTopUsersRes($resid, $dthis, $period, $top)
 	{
-		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view 
-				FROM $this->_tbl AS s, user AS u 
-				WHERE u.user = s.user AND s.datetime='" . $this->_db->getEscaped($dthis) . "-00' AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . " 
+		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view
+				FROM $this->_tbl AS s, user AS u
+				WHERE u.user = s.user AND s.datetime='" . $this->_db->getEscaped($dthis) . "-00' AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . "
 				ORDER BY s.jobs DESC limit 25";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -662,91 +662,91 @@ class ResourcesStatsClusters extends JTable
 {
 	/**
 	 * bigint(20) Primary key
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $id       		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $cluster  		= NULL;
 
 	/**
 	 * varchar(32)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $username 		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $uidNumber 		= NULL;
 
 	/**
 	 * Dvarchar(80)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $toolname 		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var unknown
 	 */
  	var $resid   		= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $clustersize  	= NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $cluster_start 	= NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $cluster_end 	= NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $instituion 	= NULL;
 
 	/**
 	 * Description for 'users'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $users		= NULL;
 
 	/**
 	 * Description for 'classes'
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $classes 	= NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -757,12 +757,12 @@ class ResourcesStatsClusters extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (trim($this->resid) == '') 
+		if (trim($this->resid) == '')
 		{
 			$this->setError(JText::_('Your entry must have a resource ID.'));
 			return false;
@@ -772,32 +772,32 @@ class ResourcesStatsClusters extends JTable
 
 	/**
 	 * Load data for a resource
-	 * 
+	 *
 	 * @param      integer $resid  Resource ID
 	 * @return     boolean True on success, False on error
 	 */
 	public function loadStats($resid=NULL)
 	{
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			$resid = $this->resid;
 		}
-		if ($resid == NULL) 
+		if ($resid == NULL)
 		{
 			return false;
 		}
 
-		$sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes 
+		$sql = "SELECT COUNT(DISTINCT uidNumber, username) AS users, COUNT(DISTINCT cluster) AS classes
 				FROM $this->_tbl
 				WHERE resid=" . $this->_db->Quote($resid);
 
 		$this->_db->setQuery($sql);
 
-		if ($result = $this->_db->loadAssoc()) 
+		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

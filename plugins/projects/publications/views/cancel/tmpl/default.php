@@ -29,12 +29,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 $draft = ($this->pub->state == 3 || $this->pub->state == 4) ? 1 : 0;
 
-$heading = $draft 
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT') 
+$heading = $draft
+		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT')
 		: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH');
 $heading.= ' ('.$this->pub->version_label.')';
-$crumbs = $draft 
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_CRUMBS') 
+$crumbs = $draft
+		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_CRUMBS')
 		: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_CRUMBS');
 ?>
 <div id="abox-content">
@@ -42,7 +42,7 @@ $crumbs = $draft
 <h3><?php echo $heading; ?></h3>
 <?php } ?>
 
-<?php if(!$this->ajax) { ?>	
+<?php if(!$this->ajax) { ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if($this->project->provisioned == 1 ) { ?>
@@ -56,9 +56,9 @@ $crumbs = $draft
 <?php } else { ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
-		<input type="hidden" name="active" value="publications" />					
+		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="cancel" />
 		<input type="hidden" name="confirm" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

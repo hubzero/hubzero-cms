@@ -28,7 +28,7 @@
 		<param name="acl_users" type="text" label="ACL Users" description="" default="" />
 		<param name="acl_groups" type="text" label="ACL Groups" description="" default="" />
 
-		
+
 	</params>
 
 	<!-- Joomla! 2.5 fieldset -->

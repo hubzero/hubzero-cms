@@ -40,7 +40,7 @@ JToolBarHelper::cancel();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	// do field validation
 	submitform( pressbutton );
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 		<?php endif; ?>
 	</div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="dosendtest" />

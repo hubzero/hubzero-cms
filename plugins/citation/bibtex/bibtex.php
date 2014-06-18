@@ -47,7 +47,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return file type
-	 * 
+	 *
 	 * @return     string HTML
 	 */
 	public function onImportAcceptedFiles()
@@ -57,9 +57,9 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onImport'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $file Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */
@@ -72,12 +72,12 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$file_info = pathinfo($file['name']);
 
 		//make sure we have a .bib file
-		if ($active != $file_info['extension']) 
+		if ($active != $file_info['extension'])
 		{
 			return;
 		}
 
-		//include bibtex file 
+		//include bibtex file
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
 		//create bibtex object
@@ -93,10 +93,10 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$citations = $bibtex->data;
 
 		//fix authors
-		for ($i=0;$i<count($citations); $i++) 
+		for ($i=0;$i<count($citations); $i++)
 		{
 			$auths = $citations[$i]['author'];
-			foreach ($auths as $a) 
+			foreach ($auths as $a)
 			{
 				$authors[] = $a['last'] . ' ' . $a['jr'] . ', ' . $a['first'];
 			}
@@ -108,16 +108,16 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$final = array();
 
 		//check for duplicates
-		for ($i = 0; $i < count($citations); $i++) 
+		for ($i = 0; $i < count($citations); $i++)
 		{
 			$duplicate = $this->checkDuplicateCitation($citations[$i]);
 
-			if ($duplicate) 
+			if ($duplicate)
 			{
 				$citations[$i]['duplicate'] = $duplicate;
 				$final['attention'][] = $citations[$i];
-			} 
-			else 
+			}
+			else
 			{
 				$citations[$i]['duplicate'] = 0;
 				$final['no_attention'][] = $citations[$i];
@@ -129,18 +129,18 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'checkDuplicateCitation'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      array $citation Parameter description (if any) ...
 	 * @return     integer Return description (if any) ...
 	 */
 	protected function checkDuplicateCitation($citation)
 	{
 		//vars
-		$title = ''; 
-		$doi   = ''; 
-		$isbn  = ''; 
+		$title = '';
+		$doi   = '';
+		$isbn  = '';
 		$match = 0;
 
 		//default percentage to match title
@@ -168,7 +168,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		$result = $db->loadObjectList();
 
 		//loop through all current citations
-		foreach ($result as $r) 
+		foreach ($result as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;
@@ -176,14 +176,14 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 			$isbn  = $r->isbn;
 
 			//direct matches on doi
-			if ($doi == $citation['doi'] && $doi != '') 
+			if ($doi == $citation['doi'] && $doi != '')
 			{
 				$match = $id;
 				break;
 			}
 
 			//direct matches on isbn
-			if ($isbn == $citation['isbn'] && $isbn != '') 
+			if ($isbn == $citation['isbn'] && $isbn != '')
 			{
 				$match = $id;
 				break;
@@ -191,7 +191,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 
 			//match titles based on percect param
 			similar_text($title, $citation['title'], $similar);
-			if ($similar >= $title_match) 
+			if ($similar >= $title_match)
 			{
 				$match = $id;
 				break;

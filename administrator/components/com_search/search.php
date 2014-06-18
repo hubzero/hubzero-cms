@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $option = 'com_search';
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -44,11 +44,11 @@ if (!function_exists('stem'))
 {
 	/**
 	 * Stem a string
-	 * 
+	 *
 	 * @param  string $str
 	 * @return string
 	 */
-	function stem($str) 
+	function stem($str)
 	{
 		return $str;
 	}

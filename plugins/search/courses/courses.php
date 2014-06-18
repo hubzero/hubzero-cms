@@ -38,7 +38,7 @@ class plgSearchCourses extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @param      object $authz    SearchAuthorization
@@ -61,7 +61,7 @@ class plgSearchCourses extends SearchPlugin
 		}
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				c.id,
 				c.title,
 				c.blurb AS description,

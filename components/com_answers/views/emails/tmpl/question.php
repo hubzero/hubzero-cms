@@ -34,15 +34,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-if ($this->question->isOpen() && !$this->question->isReported()) 
+if ($this->question->isOpen() && !$this->question->isReported())
 {
 	$status = 'open';
-} 
-else if ($this->question->isReported()) 
+}
+else if ($this->question->isReported())
 {
 	$status = 'underreview';
-} 
-else 
+}
+else
 {
 	$status = 'closed';
 }
@@ -56,7 +56,7 @@ Content-type: text/plain;charset=utf-8
 <?php
 if ($this->plaintext)
 {
-	echo $this->plaintext; 
+	echo $this->plaintext;
 }
 else
 {

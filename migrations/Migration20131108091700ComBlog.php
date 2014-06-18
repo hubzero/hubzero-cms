@@ -17,7 +17,7 @@ class Migration20131108091700ComBlog extends Base
 	{
 		if ($this->db->tableExists('#__blog_entries'))
 		{
-			$query = "ALTER TABLE `#__blog_entries` 
+			$query = "ALTER TABLE `#__blog_entries`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `state` `state` TINYINT(2)  NOT NULL  DEFAULT '0',
@@ -59,7 +59,7 @@ class Migration20131108091700ComBlog extends Base
 
 		if ($this->db->tableExists('#__blog_comments'))
 		{
-			$query = "ALTER TABLE `#__blog_comments` 
+			$query = "ALTER TABLE `#__blog_comments`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `parent` `parent` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',

@@ -37,8 +37,8 @@ $assets = $this->model->attachments('list', array(
 	'ticket'  => $this->ticket,
 	'comment_id' => $this->comment
 ));
-if ($assets->total() > 0) 
-{ 
+if ($assets->total() > 0)
+{
 	$i = 0;
 	foreach ($assets as $asset)
 	{

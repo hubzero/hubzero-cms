@@ -27,39 +27,39 @@ namespace Hubzero\Item\Comment;
 /**
  * Table class for comments
  */
-class File extends \JTable 
+class File extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $id          = NULL;
 
 	/**
-	 * int(11) 
-	 * 
-	 * @var integer 
+	 * int(11)
+	 *
+	 * @var integer
 	 */
 	var $comment_id  = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	var $filename    = NULL;
 
 	/**
 	 * Upload path
-	 * 
+	 *
 	 * @var string
 	 */
 	var $_uploadDir    = '/sites/comments';
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,13 +70,13 @@ class File extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
-	public function check() 
+	public function check()
 	{
 		$this->filename = trim($this->filename);
-		if (!$this->filename) 
+		if (!$this->filename)
 		{
 			$this->setError(\JText::_('Please provide a file name'));
 			return false;
@@ -85,7 +85,7 @@ class File extends \JTable
 		$this->filename = $this->_checkFileName($this->_getUploadDir(), $this->filename);
 
 		$this->comment_id = intval($this->comment_id);
-		if (!$this->comment_id) 
+		if (!$this->comment_id)
 		{
 			$this->setError(\JText::_('Missing comment ID.'));
 			return false;
@@ -96,11 +96,11 @@ class File extends \JTable
 
 	/**
 	 * Set the upload path
-	 * 
+	 *
 	 * @param      string $path PAth to set to
 	 * @return     void
 	 */
-	public function setUploadDir($path) 
+	public function setUploadDir($path)
 	{
 		$path = trim($path);
 
@@ -113,29 +113,29 @@ class File extends \JTable
 
 	/**
 	 * Get the upload path
-	 * 
+	 *
 	 * @return     string
 	 */
-	private function _getUploadDir() 
+	private function _getUploadDir()
 	{
 		return JPATH_ROOT . DS . ltrim($this->_uploadDir, DS);
 	}
 
 	/**
 	 * Ensure no conflicting file names
-	 * 
+	 *
 	 * @param      string $uploadDir Upload path
 	 * @param      string $fileName  File name
 	 * @return     string
 	 */
-	private function _checkFileName($uploadDir, $fileName) 
+	private function _checkFileName($uploadDir, $fileName)
 	{
 		$ext = strrchr($fileName, '.');
 		$prefix = substr($fileName, 0, -strlen($ext));
 
 		// rename file if exists
 		$i = 1;
-		while (is_file($uploadDir . DS . $fileName)) 
+		while (is_file($uploadDir . DS . $fileName))
 		{
 			$fileName = $prefix . ++$i . $ext;
 		}
@@ -144,7 +144,7 @@ class File extends \JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -176,7 +176,7 @@ class File extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -190,7 +190,7 @@ class File extends \JTable
 
 	/**
 	 * Get an object list of course units
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return object Return course units
 	 */
@@ -215,8 +215,8 @@ class File extends \JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
-	
-	
+
+
 	/**
 	 * Get Attachment by Comment ID
 	 *
@@ -228,8 +228,8 @@ class File extends \JTable
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE comment_id=" . $this->_db->Quote((int) $comment_id));
 		return $this->_db->loadObject();
 	}
-	
-	
+
+
 	/**
 	 * Delete records by comment ID
 	 *
@@ -245,7 +245,7 @@ class File extends \JTable
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE comment_id=" . $this->_db->Quote((int) $comment_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -261,7 +261,7 @@ class File extends \JTable
 	 */
 	public function delete($oid=null)
 	{
-		if (!$oid) 
+		if (!$oid)
 		{
 			$oid = $this->id;
 		}
@@ -293,10 +293,10 @@ class File extends \JTable
 			$filename = $tbl->filename;
 		}
 
-		if (file_exists($this->_getUploadDir() . DS . $filename)) 
+		if (file_exists($this->_getUploadDir() . DS . $filename))
 		{
 			jimport('joomla.filesystem.file');
-			if (!\JFile::delete($this->_getUploadDir() . DS . $filename)) 
+			if (!\JFile::delete($this->_getUploadDir() . DS . $filename))
 			{
 				$this->setError(\JText::_('Unable to delete file.'));
 				return false;

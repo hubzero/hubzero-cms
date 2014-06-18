@@ -38,7 +38,7 @@ class WhatsnewHelperFinder
 {
 	/**
 	 * Get what's new based on a time period and category
-	 * 
+	 *
 	 * @param   string  $period   Time period to return results for
 	 * @param   string  $category Category to filter by
 	 * @param   integer $limit    Limit number of results returned
@@ -97,13 +97,13 @@ class WhatsnewHelperFinder
 	 *
 	 * For example, "month" will calculate a timestamp (YYYY-MM-DD hh:mm:ss)
 	 * of 1 month from "now"
-	 * 
+	 *
 	 * @param   string $period Time period
 	 * @return  object
 	 */
 	public static function parseTimePeriod($period)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php'); 
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
 		$p = new WhatsnewPeriod($period);
 		$p->process();
 		return $p;

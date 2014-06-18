@@ -38,11 +38,11 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 <?php } ?>
 <?php
 // Display error  message
-if ($this->getError()) { 
+if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
-<?php if(!$this->ajax) { ?>	
+<?php if(!$this->ajax) { ?>
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=publications'); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if($this->project->provisioned == 1 ) { ?>
@@ -57,9 +57,9 @@ if ($this->getError()) {
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
 	<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_HOW'); ?></p>
-	<fieldset>	
+	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
-		<input type="hidden" name="active" value="publications" />					
+		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="save_license" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
@@ -85,11 +85,11 @@ if ($this->getError()) {
 	</div>
 		<p class="submitarea">
 			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
-			<?php if($this->ajax) { ?>	
+			<?php if($this->ajax) { ?>
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else { ?>
 			<a href="<?php echo $this->url . '?section=license' . a . 'version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
-			<?php } ?>			
+			<?php } ?>
 		</p>
 </form>
 </div>

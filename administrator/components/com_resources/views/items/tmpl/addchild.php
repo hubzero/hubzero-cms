@@ -36,16 +36,16 @@ JToolBarHelper::cancel();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<h3><?php echo stripslashes($this->parent->title); ?></h3>
-	
+
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('Choose a method for adding a new child resource'); ?></span></legend>
 		<?php if ($this->getError()) { echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>'; } ?>
-		
+
 		<table class="admintable">
 			<tbody>
 				<tr>
 					<td>
-						<input type="radio" name="method" id="child_create" value="create" checked="checked" /> 
+						<input type="radio" name="method" id="child_create" value="create" checked="checked" />
 						<label for="child_create"><?php echo JText::_('Create new'); ?></label>
 					</td>
 				</tr>
@@ -60,13 +60,13 @@ JToolBarHelper::cancel();
 				</tr>
 			</tbody>
 		</table>
-	
+
 		<input type="hidden" name="step" value="2" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		
+
 		<?php echo JHTML::_('form.token'); ?>
 	</fieldset>
 </form>

@@ -49,11 +49,11 @@ $this->css();
 		foreach ($cats as $cat)
 		{
 			// Only show categories that have returned search results
-			if ($cat['total'] > 0) 
+			if ($cat['total'] > 0)
 			{
 				// If we have a specific category, prepend it to the search term
 				$blob = '';
-				if ($cat['category']) 
+				if ($cat['category'])
 				{
 					$blob = $cat['category'];
 				}
@@ -68,7 +68,7 @@ $this->css();
 
 				// Is this the active category?
 				$a = '';
-				if ($cat['category'] == $this->active) 
+				if ($cat['category'] == $this->active)
 				{
 					$a = ' class="active"';
 
@@ -80,7 +80,7 @@ $this->css();
 				// Build the HTML
 				$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 				// Are there sub-categories?
-				if (isset($cat['_sub']) && is_array($cat['_sub'])) 
+				if (isset($cat['_sub']) && is_array($cat['_sub']))
 				{
 					// An array for storing the HTML we make
 					$k = array();
@@ -88,18 +88,18 @@ $this->css();
 					foreach ($cat['_sub'] as $subcat)
 					{
 						// Only show sub-categories that returned search results
-						if ($subcat['total'] > 0) 
+						if ($subcat['total'] > 0)
 						{
 							// If we have a specific category, prepend it to the search term
 							$blob = '';
-							if ($subcat['category']) 
+							if ($subcat['category'])
 							{
 								$blob = $subcat['category'];
 							}
 
 							// Is this the active category?
 							$a = '';
-							if ($subcat['category'] == $this->active) 
+							if ($subcat['category'] == $this->active)
 							{
 								$a = ' class="active"';
 
@@ -118,7 +118,7 @@ $this->css();
 					}
 					// Do we actually have any links?
 					// NOTE: this method prevents returning empty list tags "<ul></ul>"
-					if (count($k) > 0) 
+					if (count($k) > 0)
 					{
 						$l .= "\t\t".'<ul>'."\n";
 						$l .= implode( "\n", $k );
@@ -182,7 +182,7 @@ $this->css();
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
-						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php 
+						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php
 							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title');
 							$sef = str_replace('%20',',',$sef);
 							$sef = str_replace(' ',',',$sef);
@@ -193,7 +193,7 @@ $this->css();
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php 
+						<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php
 							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date');
 							$sef = str_replace('%20',',',$sef);
 							$sef = str_replace(' ',',',$sef);
@@ -359,7 +359,7 @@ $this->css();
 			}
 			$html .= '</ol>'."\n";
 			// Initiate paging if we we're displaying an active category
-			if (!$dopaging) 
+			if (!$dopaging)
 			{
 				$html .= '<p class="moreresults">'.JText::sprintf('COM_TAGS_TOTAL_RESULTS_FOUND',$amt);
 				// Add a "more" link if necessary
@@ -392,8 +392,8 @@ $this->css();
 				if ($dopaging) {
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->total, 
-						$this->filters['start'], 
+						$this->total,
+						$this->filters['start'],
 						$this->filters['limit']
 					);
 
@@ -412,14 +412,14 @@ $this->css();
 				<?php
 				// Do we actually have any links?
 				// NOTE: this method prevents returning empty list tags "<ul></ul>"
-				if (count($links) > 0) 
+				if (count($links) > 0)
 				{
 					// Yes - output the necessary HTML
 					$html  = '<ul>'."\n";
 					$html .= implode( "\n", $links );
 					$html .= '</ul>'."\n";
-				} 
-				else 
+				}
+				else
 				{
 					// No - nothing to output
 					$html = '';

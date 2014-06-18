@@ -45,7 +45,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $category Element type (determines table to look in)
 	 * @param      string $parent   If the element has a parent element
@@ -53,22 +53,22 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'blog' && $category != 'blogcomment') 
+		if ($category != 'blog' && $category != 'blogcomment')
 		{
 			return null;
 		}
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
-		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category 
-					FROM #__blog_comments AS rc 
+		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category
+					FROM #__blog_comments AS rc
 					WHERE rc.id=" . $refid;
 
 		$database = JFactory::getDBO();
 		$database->setQuery($query);
 
 		$rows = $database->loadObjectList();
-		if ($rows) 
+		if ($rows)
 		{
 			foreach ($rows as $key => $row)
 			{
@@ -88,7 +88,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieves a row from the database
-	 * 
+	 *
 	 * @param      string $refid    ID of the database table row
 	 * @param      string $parent   If the element has a parent element
 	 * @param      string $category Element type (determines table to look in)
@@ -97,7 +97,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($refid, $parent, $category, $message)
 	{
-		if ($category != 'blog' && $category != 'blogcomment') 
+		if ($category != 'blog' && $category != 'blogcomment')
 		{
 			return null;
 		}

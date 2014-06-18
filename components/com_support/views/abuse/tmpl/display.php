@@ -67,7 +67,7 @@ $this->css();
 
 				<div class="field-wrap">
 					<div class="abuseitem">
-						<h4><?php 
+						<h4><?php
 							echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 							echo ucfirst($this->cat) . ' by ';
 							echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;

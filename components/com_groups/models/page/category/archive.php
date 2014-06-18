@@ -38,14 +38,14 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_categories = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
@@ -54,7 +54,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 		// create database object
 		$this->_db = JFactory::getDBO();
 	}
-	
+
 	/**
 	 * Get a list of group pages
 	 *
@@ -68,7 +68,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				
+
 			break;
 			case 'list':
 			default:

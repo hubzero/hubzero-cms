@@ -40,21 +40,21 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'Project';
 
 	/**
 	 * Model context
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_context = 'com_projects.project.about';
 
 	/**
 	 * JParameter
-	 * 
+	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
@@ -69,7 +69,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -87,7 +87,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 			$key = $oid;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid);
 		}
@@ -97,7 +97,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted created timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
@@ -108,7 +108,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted modified timestamp
-	 * 
+	 *
 	 * @param      string $as What data to return
 	 * @return     string
 	 */
@@ -119,7 +119,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 
 	/**
 	 * Return a formatted timestamp
-	 * 
+	 *
 	 * @param      string $key Field to return
 	 * @param      string $as  What data to return
 	 * @return     string
@@ -143,13 +143,13 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the content of the record. 
+	 * Get the content of the record.
 	 * Optional argument to determine how content should be handled
 	 *
 	 * parsed - performs parsing on content (i.e., converting wiki markup to HTML)
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
-	 * 
+	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
@@ -212,7 +212,7 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 	/**
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
-	 * 
+	 *
 	 * @param      string $key Config property to retrieve
 	 * @return     mixed
 	 */

@@ -47,7 +47,7 @@ HUBzero is a registered trademark of Purdue University.
 	<params>
 		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
 		<param type="spacer" />
-		
+
 		<param name="show_screenshots" type="list" default="1" label="Show Session Screenshots" description="Select wether to show session screenshots or not.">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
@@ -57,7 +57,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 		</param>
 		<param type="spacer" />
-		
+
 		<param name="quick_launch" type="list" default="1" label="Quick Launch" description="Have quick launch link in title bar for each session?">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
@@ -72,7 +72,7 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
 				<field type="spacer" />
-				
+
 				<field name="show_screenshots" member_dashboard="1" type="list" default="0" label="Show Session Screenshots" description="Select wether to show session screenshots or not.">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
@@ -82,7 +82,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 				</field>
 				<field type="spacer" />
-				
+
 				<field name="quick_launch" member_dashboard="1" type="list" default="0" label="Quick Launch" description="Have quick launch link in title bar for each session?">
 					<option value="1">Yes</option>
 					<option value="0">No</option>

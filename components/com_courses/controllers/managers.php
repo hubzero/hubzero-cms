@@ -38,7 +38,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
@@ -51,7 +51,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 	/**
 	 * Short description for 'addmanager'
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function addTask()
@@ -61,7 +61,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
@@ -127,7 +127,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 	/**
 	 * Remove one or more users from the course manager list
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function removeTask()
@@ -137,7 +137,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
@@ -191,7 +191,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 	/**
 	 * Remove one or more users from the course manager list
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function updateTask()
@@ -201,7 +201,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 		// Incoming member ID
 		$id = JRequest::getInt('id', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			$this->setError(JText::_('COURSES_NO_ID'));
 			$this->displayTask();
@@ -236,7 +236,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of 'manager' for a specific course
-	 * 
+	 *
 	 * @param      object $profile \Hubzero\User\Profile
 	 * @return     void
 	 */
@@ -247,7 +247,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 		$this->view->course = $this->course;
 
 		// Set any errors
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{

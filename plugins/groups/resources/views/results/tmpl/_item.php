@@ -56,7 +56,7 @@ switch ($params->get('show_date'))
 	case 3: $thedate = JHTML::_('date', $this->row->publish_up, 'd M Y'); break;
 }
 
-if (strstr($this->row->href, 'index.php')) 
+if (strstr($this->row->href, 'index.php'))
 {
 	$this->row->href = JRoute::_($this->row->href);
 }
@@ -81,7 +81,7 @@ switch ($this->row->access)
 		$this->row->ranking = round($this->row->ranking, 1);
 
 		$r = (10*$this->row->ranking);
-		if (intval($r) < 10) 
+		if (intval($r) < 10)
 		{
 			$r = '0' . $r;
 		}
@@ -96,11 +96,11 @@ switch ($this->row->access)
 						$RE->getCitationsCount();
 						$RE->getLastCitationDate();
 
-						if ($this->row->category == 7) 
+						if ($this->row->category == 7)
 						{
 							$stats = new ToolStats($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
-						} 
-						else 
+						}
+						else
 						{
 							$stats = new AndmoreStats($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
 						}
@@ -134,7 +134,7 @@ switch ($this->row->access)
 	<?php } ?>
 
 	<p class="details">
-		<?php echo $thedate; ?> <span>|</span> <?php echo stripslashes($this->row->area); ?> 
+		<?php echo $thedate; ?> <span>|</span> <?php echo stripslashes($this->row->area); ?>
 		<?php if ($RE->contributors) { ?>
 			<span>|</span> <?php echo JText::_('PLG_GROUPS_RESOURCES_CONTRIBUTORS') . ': ' . $RE->contributors; ?>
 		<?php } ?>
@@ -142,10 +142,10 @@ switch ($this->row->access)
 
 	<?php
 	$text = $this->row->ftext;
-	if ($this->row->itext) 
+	if ($this->row->itext)
 	{
 		$text = $this->row->itext;
-	} 
+	}
 
 	echo \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($text)), 200) . "\n";
 	?>

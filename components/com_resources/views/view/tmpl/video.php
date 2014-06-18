@@ -61,16 +61,16 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 						case 'm4v':
 						default:        $type = "video/mp4;";    break;
 					}
-					
+
 					//video source
 					$source = $video->source;
-					
+
 					//is this the mp4 (need for flash)
 					if (in_array($video->type, array('mp4','m4v')))
 					{
 						$mp4 = $video->source;
 					}
-					
+
 					//if were playing local files
 					if (substr($video->source, 0, 4) != 'http')
 					{
@@ -83,19 +83,19 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 				?>
 				<source src="<?php echo $source; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
-		
+
 			<a href="<?php echo $mp4; ?>"
 				id="video-flowplayer"
 				style="<?php echo "width:{$width};height:{$height};"; ?>"
 				data-mediaid="<?php echo $this->resource->id; ?>"></a>
-		
+
 			<?php if(count($presentation->subtitles) > 0) : ?>
 				<?php foreach($presentation->subtitles as $subtitle) : ?>
 					<?php
 						//get file modified time
 						$source = $subtitle->source;
 						$auto   = $subtitle->autoplay;
-						
+
 						//if were playing local files
 						if (substr($subtitle->source, 0, 4) != 'http')
 						{
@@ -110,12 +110,12 @@ $height = (isset($presentation->height) && $presentation->height != 0) ? $presen
 					<div
 						data-autoplay="<?php echo $auto; ?>"
 						data-type="subtitle"
-						data-lang="<?php echo $subtitle->name; ?>" 
+						data-lang="<?php echo $subtitle->name; ?>"
 						data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</video>
-	<?php endif; ?>   
+	<?php endif; ?>
 </div><!-- /#video-container -->
 
 <div id="transcript-container">

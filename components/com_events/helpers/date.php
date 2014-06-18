@@ -38,55 +38,55 @@ class EventsDate
 {
 	/**
 	 * Year
-	 * 
+	 *
 	 * @var number
 	 */
 	var $year   = NULL;
 
 	/**
 	 * Month
-	 * 
+	 *
 	 * @var number
 	 */
 	var $month  = NULL;
 
 	/**
 	 * Day
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $day    = NULL;
 
 	/**
 	 * Hour
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $hour   = NULL;
 
 	/**
 	 * Minute
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $minute = NULL;
 
 	/**
 	 * Second
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $second = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      string $datetime Timestamp (0000-00-00 00:00:00)
 	 * @return     void
 	 */
     public function EventsDate($datetime='')
 	{
-		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $datetime, $regs)) 
+		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $datetime, $regs))
 		{
 			$this->setDate($regs[1], $regs[2], $regs[3]);
 			$this->hour   = intval($regs[4]);
@@ -98,8 +98,8 @@ class EventsDate
 
 			$this->day = max(1, $this->day);
 			$this->day = min($this->daysInMonth(), $this->day);
-		} 
-		else 
+		}
+		else
 		{
 			$this->setDate(date("Y"), date("m"), date("d"));
 			$this->hour   = 0;
@@ -110,7 +110,7 @@ class EventsDate
 
 	/**
 	 * Set the date
-	 * 
+	 *
 	 * @param      integer $year  Year
 	 * @param      integer $month Month
 	 * @param      integer $day   Day
@@ -131,7 +131,7 @@ class EventsDate
 
 	/**
 	 * Get the year
-	 * 
+	 *
 	 * @param      boolean $asString Return as string?
 	 * @return     mixed Integer unless $asString is true (string)
 	 */
@@ -142,7 +142,7 @@ class EventsDate
 
 	/**
 	 * Get the month
-	 * 
+	 *
 	 * @param      boolean $asString Return as string?
 	 * @return     mixed Integer unless $asString is true (string)
 	 */
@@ -153,7 +153,7 @@ class EventsDate
 
 	/**
 	 * Get the day
-	 * 
+	 *
 	 * @param      boolean $asString Return as string?
 	 * @return     mixed Integer unless $asString is true (string)
 	 */
@@ -164,17 +164,17 @@ class EventsDate
 
 	/**
 	 * Get the 12 hour time (am/pm)
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function get12hrTime()
 	{
 		$hour=$this->hour;
-		if ($hour > 12) 
+		if ($hour > 12)
 		{
 			$hour -= 12;
-		} 
-		elseif ($hour == 0) 
+		}
+		elseif ($hour == 0)
 		{
 			$hour = 12;
 		}
@@ -184,7 +184,7 @@ class EventsDate
 
 	/**
 	 * Get the 24 hour time
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function get24hrTime()
@@ -194,9 +194,9 @@ class EventsDate
 
 	/**
 	 * Generate a URL from the date data
-	 * 
+	 *
 	 * @param      string $task Task to perform
-	 * @return     string 
+	 * @return     string
 	 */
 	public function toDateURL($task='')
 	{
@@ -222,53 +222,53 @@ class EventsDate
 
 	/**
 	 * Calculate the number of days in the month
-	 * 
+	 *
 	 * @param      integer $month Month
 	 * @param      integer $year  Year
-	 * @return     integer 
+	 * @return     integer
 	 */
 	public function daysInMonth($month=0, $year=0)
 	{
 		$month = intval($month);
 		$year = intval($year);
-		if (!$month) 
+		if (!$month)
 		{
-			if (isset($this)) 
+			if (isset($this))
 			{
 				$month = $this->month;
-			} 
-			else 
+			}
+			else
 			{
 				$month = date("m");
 			}
 		}
-		if (!$year) 
+		if (!$year)
 		{
-			if (isset($this)) 
+			if (isset($this))
 			{
 				$year = $this->year;
-			} 
-			else 
+			}
+			else
 			{
 				$year = date("Y");
 			}
 		}
-		if ($month == 2) 
+		if ($month == 2)
 		{
-			if (($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0) 
+			if (($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0)
 			{
 				return 29;
-			} 
-			else 
+			}
+			else
 			{
 				return 28;
 			}
-		} 
-		else if ($month == 4 || $month == 6 || $month == 9 || $month == 11) 
+		}
+		else if ($month == 4 || $month == 6 || $month == 9 || $month == 11)
 		{
 			return 30;
-		} 
-		else 
+		}
+		else
 		{
 			return 31;
 		}
@@ -276,7 +276,7 @@ class EventsDate
 
 	/**
 	 * Add months to the date
-	 * 
+	 *
 	 * @param      integer $n Number of months to add
 	 * @return     void
 	 */
@@ -286,21 +286,21 @@ class EventsDate
 		$years = floor($an / 12);
 		$months = $an % 12;
 
-		if ($n < 0) 
+		if ($n < 0)
 		{
 			$this->year -= $years;
 			$this->month -= $months;
-			if ($this->month < 1) 
+			if ($this->month < 1)
 			{
 				$this->year--;
 				$this->month = 12 - $this->month;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->year += $years;
 			$this->month += $months;
-			if ($this->month > 12) 
+			if ($this->month > 12)
 			{
 				$this->year++;
 				$this->month -= 12;
@@ -310,7 +310,7 @@ class EventsDate
 
 	/**
 	 * Add days to the date
-	 * 
+	 *
 	 * @param      integer $n Number of days to add
 	 * @return     void
 	 */
@@ -322,43 +322,43 @@ class EventsDate
 
 	/**
 	 * Calculate the number of days until a date
-	 * 
+	 *
 	 * @param      integer $day   Day
 	 * @param      number  $month Month
 	 * @param      number  $year  Year
-	 * @return     number 
+	 * @return     number
 	 */
 	public function toDays($day=0, $month=0, $year=0)
 	{
-		if (!$day) 
+		if (!$day)
 		{
-			if (isset($this)) 
+			if (isset($this))
 			{
 				$day = $this->day;
-			} 
-			else 
+			}
+			else
 			{
 				$day = date("d");
 			}
 		}
-		if (!$month) 
+		if (!$month)
 		{
-			if (isset($this)) 
+			if (isset($this))
 			{
 				$month = $this->month;
-			} 
-			else 
+			}
+			else
 			{
 				$month = date("m");
 			}
 		}
-		if (!$year) 
+		if (!$year)
 		{
-			if (isset($this)) 
+			if (isset($this))
 			{
 				$year = $this->year;
-			} 
-			else 
+			}
+			else
 			{
 				$year = date("Y");
 			}
@@ -367,18 +367,18 @@ class EventsDate
 		$century = floor($year / 100);
 		$year = $year % 100;
 
-		if ($month > 2) 
+		if ($month > 2)
 		{
 			$month -= 3;
-		} 
-		else 
+		}
+		else
 		{
 			$month += 9;
-			if ($year) 
+			if ($year)
 			{
 				$year--;
-			} 
-			else 
+			}
+			else
 			{
 				$year = 99;
 				$century--;
@@ -390,7 +390,7 @@ class EventsDate
 
 	/**
 	 * Calculate the date from the number of days passed
-	 * 
+	 *
 	 * @param      number $days Number of days
 	 * @return     void
 	 */
@@ -409,14 +409,14 @@ class EventsDate
 		$day     = floor(5 * $day -  3 -  153 * $month);
 		$day     = floor(($day +  5) /  5);
 
-		if ($month < 10) 
+		if ($month < 10)
 		{
 			$month +=3;
-		} 
-		else 
+		}
+		else
 		{
 			$month -=9;
-			if ($year++ == 99) 
+			if ($year++ == 99)
 			{
 				$year = 0;
 				$century++;

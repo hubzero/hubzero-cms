@@ -319,7 +319,7 @@ $defaultCountries = array(
 					<?php endif; ?>
 					<select id="org" name="org">
 						<option value="">(select from list or enter other)</option>
-						<?php 
+						<?php
 						$dbh->setQuery('SELECT organization FROM #__xorganizations ORDER BY organization');
 						foreach ($dbh->loadAssocList() as $org)
 							echo '<option value="'.$org['organization'].'"'.(isset($_POST['org']) && $_POST['org'] === $org['organization'] ? ' selected="selected"' : '').'>'.$org['organization'].'</option>';
@@ -418,7 +418,7 @@ $defaultCountries = array(
 						</div>
 					</li>
 				<?php endif; ?>
-				<?php if (isset($row['countryorigin'])): ?> 
+				<?php if (isset($row['countryorigin'])): ?>
 					<li>
 						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
 							<label>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</label>
@@ -426,7 +426,7 @@ $defaultCountries = array(
 								<?php if (isset($errors['countryorigin'])): ?>
 									<p class="warning">Please select your country of origin</p>
 								<?php endif; ?>
-								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label> 
+								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label>
 								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usno" value="no" <?php if (!empty($_POST['countryorigin']) && strtolower($country) != 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'no')) echo 'checked="checked"'; ?> />No</label>
 							</div>
 
@@ -451,7 +451,7 @@ $defaultCountries = array(
 							</div>
 					</li>
 				<?php endif; ?>
-				<?php if (isset($row['countryresident'])): ?> 
+				<?php if (isset($row['countryresident'])): ?>
 					<li>
 						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
 							<label>Do you currently live in the <abbr title="United States">US</abbr>?</label>
@@ -459,7 +459,7 @@ $defaultCountries = array(
 								<?php if (isset($errors['countryresident'])): ?>
 									<p class="warning">Please select your country of residency</p>
 								<?php endif; ?>
-								<label><input type="radio" class="option" name="countryresident_us" id="cores_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label> 
+								<label><input type="radio" class="option" name="countryresident_us" id="cores_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label>
 								<label><input type="radio" class="option" name="countryresident_us" id="cores_usno" value="no" <?php if (!empty($_POST['countryresident']) && strtolower($country) != 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'no')) echo 'checked="checked"'; ?> />No</label>
 							</div>
 

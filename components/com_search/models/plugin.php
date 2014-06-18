@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'YSearchPluginError'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchPluginError extends Exception
@@ -44,7 +44,7 @@ class SearchPluginError extends Exception
 
 /**
  * Short description for 'class'
- * 
+ *
  * Long description (if any) ...
  */
 class SearchPlugin extends JPlugin

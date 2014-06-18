@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 //-------------------------------------------------------------
 // Joomla module
 // "My Courses"
-//    This module displays support tickets assigned to the 
+//    This module displays support tickets assigned to the
 //    user currently logged in.
 //-------------------------------------------------------------
 

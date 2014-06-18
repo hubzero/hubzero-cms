@@ -54,13 +54,13 @@ class MembersTableOrganizationType extends JTable
 	public function check()
 	{
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Organization Type must contain text'));
 			return false;
 		}
 
-		if (!$this->type) 
+		if (!$this->type)
 		{
 			$this->type = $this->title;
 		}
@@ -141,7 +141,7 @@ class MembersTableOrganizationType extends JTable
 				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
 				$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 				}
@@ -154,21 +154,21 @@ class MembersTableOrganizationType extends JTable
 
 	/**
 	 * Build SQL based on filters passed
-	 * 
+	 *
 	 * @param      array $filters
 	 * @return     string
 	 */
-	private function _buildQuery($filters=array()) 
+	private function _buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl ";
 
 		$where = array();
 
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['id']) && $filters['id']) 
+		if (isset($filters['id']) && $filters['id'])
 		{
 			if (!is_array($filters['id']))
 			{
@@ -178,7 +178,7 @@ class MembersTableOrganizationType extends JTable
 
 			$where[] = "`id` IN (" . implode(',', $filters['state']) . ")";
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "(`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR `type` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
 		}
@@ -200,9 +200,9 @@ class MembersTableOrganizationType extends JTable
 	public function getTypes($filters = array())
 	{
 		$types = array();
-		if ($records = $this->find('list', $filters)) 
+		if ($records = $this->find('list', $filters))
 		{
-			foreach ($records as $record) 
+			foreach ($records as $record)
 			{
 				$types[$record->type] = stripslashes($record->title);
 			}

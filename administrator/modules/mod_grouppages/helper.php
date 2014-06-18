@@ -38,7 +38,7 @@ class modGroupPages extends \Hubzero\Module\Module
 {
 	/**
 	 * Display module contents
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -46,25 +46,25 @@ class modGroupPages extends \Hubzero\Module\Module
 		//create objects
 		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
-		
+
 		// include group page archive model
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'archive.php';
-		
+
 		// include group module archive model
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'archive.php';
-		
+
 		// get unapproved pages
 		$groupModelPageArchive = new GroupsModelPageArchive();
 		$this->unapprovedPages = $groupModelPageArchive->pages('unapproved', array(
 			'state' => array(0,1)
 		), true);
-		
+
 		// get unapproved modules
 		$groupModelModuleArchive = new GroupsModelModuleArchive();
 		$this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', array(
 			'state' => array(0,1)
 		), true);
-		
+
 		//add stylesheets to view
 		$this->css();
 

@@ -35,7 +35,7 @@ $canDo = AnswersHelper::getActions('question');
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -46,7 +46,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('question');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -73,13 +73,13 @@ function submitbutton(pressbutton)
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> /> 
+					<input type="checkbox" name="question[anonymous]" id="anonymous" value="1" <?php echo ($this->row->get('anonymous')) ? 'checked="checked"' : ''; ?> />
 					<label for="anonymous"><?php echo JText::_('COM_ANSWERS_FIELD_ANONYMOUS'); ?></label>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> /> 
+					<input type="checkbox" name="question[email]" id="email" value="1" <?php echo ($this->row->get('email')) ? 'checked="checked"' : ''; ?> />
 					<label for="email"><?php echo JText::_('COM_ANSWERS_FIELD_NOTIFY'); ?></label>
 				</div>
 			</div>

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Query string values
  * @return array Segments to build SEF route
  */
@@ -41,9 +41,9 @@ function ResourcesBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
+	if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder')))
 	{
-		if (!empty($query['task'])) 
+		if (!empty($query['task']))
 		{
 			if ($query['task'] == 'start')
 			{
@@ -52,40 +52,40 @@ function ResourcesBuildRoute(&$query)
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
-		if (!empty($query['id'])) 
+		if (!empty($query['id']))
 		{
 			$segments[] = $query['id'];
 			unset($query['id']);
 		}
 	}
-	else 
+	else
 	{
-		if (!empty($query['id'])) 
+		if (!empty($query['id']))
 		{
 			$segments[] = $query['id'];
 			unset($query['id']);
 		}
-		if (!empty($query['alias'])) 
+		if (!empty($query['alias']))
 		{
 			$segments[] = $query['alias'];
 			unset($query['alias']);
 		}
-		if (!empty($query['active'])) 
+		if (!empty($query['active']))
 		{
 			$segments[] = $query['active'];
 			unset($query['active']);
 		}
-		if (!empty($query['task'])) 
+		if (!empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
-		if (!empty($query['file'])) 
+		if (!empty($query['file']))
 		{
 			$segments[] = $query['file'];
 			unset($query['file']);
 		}
-		if (!empty($query['type'])) 
+		if (!empty($query['type']))
 		{
 			$segments[] = $query['type'];
 			unset($query['type']);
@@ -97,7 +97,7 @@ function ResourcesBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Exploded route segments
  * @return array
  */
@@ -110,15 +110,15 @@ function ResourcesParseRoute($segments)
 		return $vars;
 	}
 
-	if (is_numeric($segments[0])) 
+	if (is_numeric($segments[0]))
 	{
 		$vars['id'] = $segments[0];
-	} 
-	elseif ($segments[0] == 'browse') 
+	}
+	elseif ($segments[0] == 'browse')
 	{
 		$vars['task'] = $segments[0];
-	} 
-	elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder'))) 
+	}
+	elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder')))
 	{
 		$vars['task'] = $segments[0];
 		$vars['controller'] = 'create';
@@ -127,7 +127,7 @@ function ResourcesParseRoute($segments)
 			$vars['id'] = $segments[1];
 		}
 	}
-	else 
+	else
 	{
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
@@ -144,33 +144,33 @@ function ResourcesParseRoute($segments)
 			//$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $types[$i]->type);
 			//$normalized = strtolower($normalized);
 
-			if (trim($segments[0]) == $types[$i]->alias) 
+			if (trim($segments[0]) == $types[$i]->alias)
 			{
 				$vars['type'] = $segments[0];
 				$vars['task'] = 'browsetags';
 			}
 		}
 
-		if ($segments[0] == 'license') 
+		if ($segments[0] == 'license')
 		{
 			$vars['task'] = $segments[0];
-		} 
-		else 
+		}
+		else
 		{
-			if (!isset($vars['type'])) 
+			if (!isset($vars['type']))
 			{
 				$vars['alias'] = $segments[0];
 			}
 		}
 	}
 
-	if (!empty($segments[1])) 
+	if (!empty($segments[1]))
 	{
 		switch ($segments[1])
 		{
 			case 'download':
 				$vars['task'] = 'download';
-				if (isset($segments[2])) 
+				if (isset($segments[2]))
 				{
 					$vars['file'] = $segments[2];
 				}
@@ -187,8 +187,8 @@ function ResourcesParseRoute($segments)
 				if ($segments[0] == 'browse')
 				{
 					$vars['type'] = $segments[1];
-				} 
-				else 
+				}
+				else
 				{
 					$vars['active'] = $segments[1];
 				}

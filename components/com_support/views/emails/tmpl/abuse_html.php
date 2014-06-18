@@ -263,7 +263,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 														<?php
-														if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">')) 
+														if (!strstr($this->reported->text, '</p>') && !strstr($this->reported->text, '<pre class="wiki">'))
 														{
 															$this->reported->text = str_replace("<br />", '', $this->reported->text);
 															$this->reported->text = $this->escape($this->reported->text);

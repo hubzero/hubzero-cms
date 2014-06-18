@@ -70,16 +70,16 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
 				$title,
 				'index.php?option=' . $this->_option
 			);
 		}
-		if ($this->_task && $this->_task != 'display') 
+		if ($this->_task && $this->_task != 'display')
 		{
-			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment') 
+			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
 				$pathway->addItem(
 					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
@@ -87,7 +87,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				);
 			}
 			$year = JRequest::getInt('year', 0);
-			if ($year) 
+			if ($year)
 			{
 				$pathway->addItem(
 					$year,
@@ -95,14 +95,14 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				);
 			}
 			$month = JRequest::getInt('month', 0);
-			if ($month) 
+			if ($month)
 			{
 				$pathway->addItem(
 					sprintf("%02d",$month),
 					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
 				);
 			}
-			if (isset($this->view->row)) 
+			if (isset($this->view->row))
 			{
 				$pathway->addItem(
 					stripslashes($this->view->row->get('title')),
@@ -120,23 +120,23 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	protected function _buildTitle()
 	{
 		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
-		if ($this->_task && $this->_task != 'display') 
+		if ($this->_task && $this->_task != 'display')
 		{
-			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment') 
+			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
 				$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			}
 			$year = JRequest::getInt('year', 0);
-			if ($year) 
+			if ($year)
 			{
 				$this->_title .= ': ' . $year;
 			}
 			$month = JRequest::getInt('month', 0);
-			if ($month) 
+			if ($month)
 			{
 				$this->_title .= ': ' . sprintf("%02d", $month);
 			}
-			if (isset($this->view->row)) 
+			if (isset($this->view->row))
 			{
 				$this->_title .= ': ' . stripslashes($this->view->row->get('title'));
 			}
@@ -147,7 +147,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a list of entries
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -173,11 +173,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->view->filters['authorized'] = false;
 
 		$this->view->filters['state'] = 'public';
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			$this->view->filters['state'] = 'registered';
 
-			if ($this->view->config->get('access-manage-component')) 
+			if ($this->view->config->get('access-manage-component'))
 			{
 				$this->view->filters['state'] = 'all';
 				$this->view->filters['authorized'] = true;
@@ -195,7 +195,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 
 		// Get any errors for display
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -209,10 +209,10 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Highlight a string in a body of text
-	 * 
+	 *
 	 * @param      string $searchquery String to highlight
 	 * @param      array  $results     Content o highlight string in
-	 * @return     array 
+	 * @return     array
 	 */
 	private function _highlight($searchquery, $results)
 	{
@@ -237,11 +237,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				if ($pos !== false) break;
 			}
 
-			if ($pos > $resultback) 
+			if ($pos > $resultback)
 			{
 				$row->content = substr($row->content, ($pos - $resultback), $resultlen);
-			} 
-			else 
+			}
+			else
 			{
 				$row->content = substr($row->content, 0, $resultlen);
 			}
@@ -249,7 +249,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			// Highlight each word/phrase found
 			foreach ($toks as $tok)
 			{
-				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight')) 
+				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight'))
 				{
 					continue;
 				}
@@ -265,7 +265,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function entryTask()
@@ -277,7 +277,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$alias = JRequest::getVar('alias', '');
 
-		if (!$alias) 
+		if (!$alias)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
@@ -287,15 +287,15 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$this->view->row = $this->model->entry($alias);
 
-		if (!$this->view->row->exists()) 
+		if (!$this->view->row->exists())
 		{
 			JError::raiseError(404, JText::_('COM_BLOG_NOT_FOUND'));
 			return;
 		}
 
 		// Check authorization
-		if (($this->view->row->get('state') == 2 && $this->juser->get('guest')) 
-		 || ($this->view->row->get('state') == 0 && !$this->view->config->get('access-manage-component'))) 
+		if (($this->view->row->get('state') == 2 && $this->juser->get('guest'))
+		 || ($this->view->row->get('state') == 0 && !$this->view->config->get('access-manage-component')))
 		{
 			JError::raiseError(403, JText::_('COM_BLOG_NOT_AUTH'));
 			return;
@@ -309,13 +309,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			'group_id' => 0
 		);
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->view->filters['state'] = 'public';
-		} 
-		else 
+		}
+		else
 		{
-			if (!$this->view->config->get('access-manage-component')) 
+			if (!$this->view->config->get('access-manage-component'))
 			{
 				$this->view->filters['state'] = 'registered';
 			}
@@ -325,11 +325,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = ($this->config->get('title')) 
-							? $this->config->get('title') 
+		$this->view->title = ($this->config->get('title'))
+							? $this->config->get('title')
 							: JText::_(strtoupper($this->_option));
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -341,7 +341,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for creating an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function newTask()
@@ -351,12 +351,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a form for editing an entry
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function editTask($row = null)
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
@@ -373,12 +373,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			$this->view->entry = $row;
 		}
-		else 
+		else
 		{
 			$this->view->entry = $this->model->entry(JRequest::getInt('entry', 0));
 		}
 
-		if (!$this->view->entry->exists()) 
+		if (!$this->view->entry->exists())
 		{
 			$this->view->entry->set('allow_comments', 1);
 			$this->view->entry->set('state', 1);
@@ -390,11 +390,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = ($this->config->get('title')) 
-							? $this->config->get('title') 
+		$this->view->title = ($this->config->get('title'))
+							? $this->config->get('title')
 							: JText::_(strtoupper($this->_option));
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -407,12 +407,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save entry to database
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function saveTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
@@ -427,27 +427,27 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
-		
+
 		// make sure we dont want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
-		
+
 		$row = $this->model->entry(0);
 
-		if (!$row->bind($entry)) 
+		if (!$row->bind($entry))
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
 
 		// Process tags
-		if (!$row->tag(JRequest::getVar('tags', ''))) 
+		if (!$row->tag(JRequest::getVar('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
@@ -460,12 +460,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Mark an entry as deleted
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
@@ -476,7 +476,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!$this->config->get('access-delete-entry')) 
+		if (!$this->config->get('access-delete-entry'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
@@ -488,7 +488,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$id = JRequest::getInt('entry', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->displayTask();
 		}
@@ -500,9 +500,9 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$entry = $this->model->entry($id);
 
 		// Did they confirm delete?
-		if (!$process || !$confirmdel) 
+		if (!$process || !$confirmdel)
 		{
-			if ($process && !$confirmdel) 
+			if ($process && !$confirmdel)
 			{
 				$this->setError(JText::_('COM_BLOG_ERROR_CONFIRM_DELETION'));
 			}
@@ -515,7 +515,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
 			$this->view->entry  = $entry;
 			$this->view->config = $this->config;
-			if ($this->getError()) 
+			if ($this->getError())
 			{
 				foreach ($this->getErrors() as $error)
 				{
@@ -531,7 +531,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Delete the entry itself
 		$entry->set('state', -1);
-		if (!$entry->store()) 
+		if (!$entry->store())
 		{
 			$this->setError($entry->getError());
 		}
@@ -545,12 +545,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Generate an RSS feed of entries
-	 * 
+	 *
 	 * @return     string RSS
 	 */
 	public function feedTask()
 	{
-		if (!$this->config->get('feeds_enabled')) 
+		if (!$this->config->get('feeds_enabled'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
@@ -582,13 +582,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			'search'   => JRequest::getVar('search','')
 		);
 
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$filters['state'] = 'public';
-		} 
-		else 
+		}
+		else
 		{
-			if (!$this->config->get('access-manage-component')) 
+			if (!$this->config->get('access-manage-component'))
 			{
 				$filters['state'] = 'registered';
 			}
@@ -607,7 +607,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$rows = $this->model->entries('list', $filters);
 
 		// Start outputing results if any found
-		if ($rows->total() > 0) 
+		if ($rows->total() > 0)
 		{
 			foreach ($rows as $row)
 			{
@@ -616,7 +616,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
 				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
-				if ($this->config->get('feed_entries') == 'partial') 
+				if ($this->config->get('feed_entries') == 'partial')
 				{
 					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
 				}
@@ -640,13 +640,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Save a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function savecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
@@ -665,25 +665,25 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Instantiate a new comment object and pass it the data
 		$row = new BlogModelComment($comment['id']);
-		if (!$row->bind($comment)) 
+		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
 			return $this->entryTask();
 		}
 
 		// Store new content
-		if (!$row->store(true)) 
+		if (!$row->store(true))
 		{
 			$this->setError($row->getError());
 			return $this->entryTask();
 		}
 
 		/*
-		if ($row->get('created_by') != $this->member->get('uidNumber)) 
+		if ($row->get('created_by') != $this->member->get('uidNumber))
 		{
 			$this->entry = new BlogTableEntry($this->database);
 			$this->entry->load($row->entry_id);
-			
+
 			// Get the site configuration
 			$jconfig = JFactory::getConfig();
 
@@ -721,13 +721,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a comment
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->setError(JText::_('COM_BLOG_LOGIN_NOTICE'));
 			return $this->entryTask();
@@ -735,7 +735,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$id = JRequest::getInt('comment', 0);
-		if (!$id) 
+		if (!$id)
 		{
 			return $this->entryTask();
 		}
@@ -744,7 +744,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$comment = new BlogTableComment($this->database);
 		$comment->load($id);
 
-		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-manage-entry')) 
+		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-manage-entry'))
 		{
 			return $this->entryTask();
 		}
@@ -753,7 +753,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$comment->setState($id, 2);
 
 		// Delete the entry itself
-		if (!$comment->store()) 
+		if (!$comment->store())
 		{
 			$this->setError($comment->getError());
 		}
@@ -770,12 +770,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an RSS feed of comments
-	 * 
+	 *
 	 * @return     string RSS
 	 */
 	public function commentsTask()
 	{
-		if (!$this->config->get('feeds_enabled')) 
+		if (!$this->config->get('feeds_enabled'))
 		{
 			JError::raiseError(404, JText::_('Feed not found.'));
 			return;
@@ -793,7 +793,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
-		if (!$alias) 
+		if (!$alias)
 		{
 			JError::raiseError(404, JText::_('Feed not found.'));
 			return;
@@ -801,7 +801,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$this->entry = $this->model->entry($alias);
 
-		if (!$this->entry->isAvailable()) 
+		if (!$this->entry->isAvailable())
 		{
 			JError::raiseError(404, JText::_('Feed not found.'));
 			return;
@@ -824,7 +824,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$rows = $this->entry->comments('list');
 
 		// Start outputing results if any found
-		if ($rows->total() <= 0) 
+		if ($rows->total() <= 0)
 		{
 			echo $doc->render();
 			return;
@@ -853,11 +853,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$item->title = JText::sprintf('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
 		$item->link  = JRoute::_($this->entry->link()  . '#c' . $row->get('id'));
 
-		if ($row->isReported()) 
+		if ($row->isReported())
 		{
 			$item->description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
-		} 
-		else 
+		}
+		else
 		{
 			$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($row->content('clean')));
 		}
@@ -893,7 +893,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	{
 		$this->config->set('access-view-' . $assetType, true);
 
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -920,7 +920,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

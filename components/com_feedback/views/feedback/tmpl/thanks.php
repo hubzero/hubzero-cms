@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $default = DS . trim($this->config->get('defaultpic'), DS);
 $file = '';
 
-if ($this->row->picture) 
+if ($this->row->picture)
 {
 	// Build upload path
 	$file  = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($this->user->get('id'));
@@ -52,12 +52,12 @@ else if ($default && file_exists(JPATH_ROOT . $default))
 
 //scale if image is bigger than 120w x120h
 $num = max($ow/120, $oh/120);
-if ($num > 1) 
+if ($num > 1)
 {
 	$mw = round($ow/$num);
 	$mh = round($oh/$num);
-} 
-else 
+}
+else
 {
 	$mw = $ow;
 	$mh = $oh;

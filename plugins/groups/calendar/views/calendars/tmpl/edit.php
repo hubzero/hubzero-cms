@@ -45,19 +45,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 </ul>
 
 <form action="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->cn.'&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post" class="full">
-	
+
 	<fieldset>
 		<legend><?php echo JText::_('Group Calendar'); ?></legend>
-		
+
 		<label><?php echo JText::_('Title:'); ?> <span class="required">Required</span>
 			<input type="text" name="calendar[title]" value="<?php echo $this->calendar->get('title'); ?>" />
 		</label>
-		
+
 		<label><?php echo JText::_('URL:'); ?> <span class="optional">Optional</span>
 			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->get('url'); ?>" />
 			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
 		</label>
-		
+
 		<label><?php echo JText::_('Color:'); ?> <span class="optional">Optional</span>
 			<?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
 			<select name="calendar[color]">
@@ -68,7 +68,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php endforeach; ?>
 			</select>
 		</label>
-		
+
 		<label><?php echo JText::_('Publish Events to Subscribers?:'); ?>
 			<select name="calendar[published]">
 				<option <?php echo ($this->calendar->get('published') == 1) ? 'selected="selected"' : ''; ?>value="1">Yes</option>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<p class="submit">
 		<input type="submit" value="Submit" />
 	</p>
-	
+
 	<input type="hidden" name="option" value="com_groups" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="calendar" />

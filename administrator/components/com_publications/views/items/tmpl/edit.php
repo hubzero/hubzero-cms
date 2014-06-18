@@ -35,8 +35,8 @@ $htmlHelper	  = new PublicationsHtml();
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
-$site 	 = $jconfig->getValue('config.live_site') 
-	? $jconfig->getValue('config.live_site') 
+$site 	 = $jconfig->getValue('config.live_site')
+	? $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $dateFormat = '%d %b %Y';
@@ -48,8 +48,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$tz = false;
 }
 
-$text = ($this->task == 'edit' 
-	? JText::_('Edit') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')' 
+$text = ($this->task == 'edit'
+	? JText::_('Edit') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
 	: JText::_('New'));
 
 JToolBarHelper::title(JText::_('Publication') . ': [ ' . $text . ' ]', 'addedit.png');
@@ -67,7 +67,7 @@ $rt->load( $this->pub->category );
 // Parse data
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->metadata, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -94,7 +94,7 @@ $v = $this->version == 'default' ? '' : '?v=' . $this->version;
 
 // Build the path for publication attachments
 $base_path 	= $this->config->get('webpath');
-$path 		= $htmlHelper->buildPath($this->pub->id, $this->pub->version_id, $base_path, $this->pub->secret);	
+$path 		= $htmlHelper->buildPath($this->pub->id, $this->pub->version_id, $base_path, $this->pub->secret);
 
 // Instantiate the sliders object
 jimport('joomla.html.pane');
@@ -102,18 +102,18 @@ $tabs = JPane::getInstance('sliders');
 
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
 
-switch ($this->row->state) 
+switch ($this->row->state)
 {
 	case 1:
-	case 0: 
-	default:   
-		$date_label = JText::_('Published');         
+	case 0:
+	default:
+		$date_label = JText::_('Published');
 		break;
-	case 4:  
-		$date_label = JText::_('Finalized');         
+	case 4:
+		$date_label = JText::_('Finalized');
 		break;
-	case 6:  
-		$date_label = JText::_('Archived');         
+	case 6:
+		$date_label = JText::_('Archived');
 		break;
 }
 
@@ -140,7 +140,7 @@ $panels = array(
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -157,31 +157,31 @@ function submitbutton(pressbutton)
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	if(pressbutton == 'publish') {
 		form.admin_action.value = 'publish';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'revert') {
 		form.admin_action.value = 'revert';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'message') {
 		form.admin_action.value = 'message';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'unpublish') {
 		form.admin_action.value = 'unpublish';
 		submitform( 'save' );
 		return;
 	}
-	
+
 	if(pressbutton == 'republish') {
 		form.admin_action.value = 'republish';
 		submitform( 'save' );
@@ -191,13 +191,13 @@ function submitbutton(pressbutton)
 	// do field validation
 	if (form.title.value == ''){
 		alert( 'Content item must have a title' );
-	} 
+	}
 	else {
 		submitform( pressbutton );
 	}
 }
 
-function popratings() 
+function popratings()
 {
 	window.open('index.php?option=<?php echo $this->option; ?>&task=ratings&id=<?php echo $this->row->id; ?>&no_html=1', 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
 	return false;
@@ -210,7 +210,7 @@ function popratings()
 		<tr>
 			<th>
 				Publications &raquo;
-				Publication #<?php echo $this->pub->id; ?> &raquo; 
+				Publication #<?php echo $this->pub->id; ?> &raquo;
 				Version <?php echo $this->pub->version_label.' ('.$status.')'; ?>
 			</th>
 			<th></th>
@@ -244,7 +244,7 @@ function popratings()
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<table class="statustable">
 			<tbody>
 				<tr>
@@ -263,7 +263,7 @@ function popratings()
 				</tr>
 			</tbody>
 		</table>
-		
+
 		<table class="statustable metadata">
 			<caption><?php echo JText::_('Metadata'); ?></caption>
 			<tbody>
@@ -279,8 +279,8 @@ function popratings()
 				<tr>
 					<td>
 						<label><?php echo JText::_('Release Notes'); ?>  - <?php echo JText::_('Version').' '.$this->row->version_label; ?> (Release #<?php echo $this->row->version_number; ?>)
-						<textarea name="release_notes" id="release_notes" cols="40" rows="10" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>	
-						</label>						
+						<textarea name="release_notes" id="release_notes" cols="40" rows="10" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>
+						</label>
 					</td>
 				</tr>
 			</tbody>
@@ -291,7 +291,7 @@ function popratings()
 	</fieldset>
 </div>
 <div class="col width-50 fltrt">
-<?php 
+<?php
 		echo $tabs->startPane("content-pane");
 		echo $tabs->startPanel('Publication Management','publish-page');
 ?>
@@ -301,13 +301,13 @@ function popratings()
 					<td class="paramlist_key"><label>Status:</label></td>
 					<td class="status">
 						<span class="<?php echo $class; ?>"><?php echo $status; ?></span>
-						<?php if($this->row->state == 3 || $this->row->state == 4 || $this->row->state == 5 ) { 
+						<?php if($this->row->state == 3 || $this->row->state == 4 || $this->row->state == 5 ) {
 							if($this->pub_allowed) {
 								echo '<span class="allowed">'.JText::_('Required fields are complete, publication allowed').'</span>';
 							}
 							else { ?>
-								<span class="disallowed"><?php echo JText::_('Publication cannot be released. Missing '); 
-									$missing = '';	
+								<span class="disallowed"><?php echo JText::_('Publication cannot be released. Missing ');
+									$missing = '';
 									foreach ($this->checked as $key=>$value) {
 										if($value ==  0) {
 											$missing .= '<strong>'.$key.'</strong>, ';
@@ -323,26 +323,26 @@ function popratings()
 				</tr>
 				<?php if ($this->row->state == 1 || $this->row->state == 5) { ?>
 				<tr>
-					<td class="key"><?php echo ($this->row->published_up > $now || $this->row->state == 5) 
+					<td class="key"><?php echo ($this->row->published_up > $now || $this->row->state == 5)
 					? JText::_('Will publish') : JText::_('Released') ; ?></td>
 					<td>
 						<label>
 							<input type="text" id="published_up" name="published_up" value="<?php echo $this->row->published_up; ?>" />
 						</label>
 					</td>
-				</tr>	
+				</tr>
 				<?php } ?>
 				<tr>
 					<td class="key"><?php echo JText::_('Message to pub creator and authors'); ?>:</td>
 					<td>
-						<textarea name="message" id="message" rows="5" cols="50"></textarea>				
+						<textarea name="message" id="message" rows="5" cols="50"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<td class="paramlist_key"><?php echo JText::_('Options'); ?>:</td>
 					<td class="puboptions">
 						<input type="hidden" name="admin_action" value="" />
-						<input type="submit" value="<?php echo JText::_('Send message'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" /> 
+						<input type="submit" value="<?php echo JText::_('Send message'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" />
 					<?php if($this->row->state == 1) { ?>
 						<input type="submit" value="<?php echo JText::_('Unpublish Version'); ?>" class="btn" id="do-unpublish" onclick="javascript: submitbutton('unpublish')" />
 					<?php } else if($this->row->state == 0) { ?>
@@ -379,7 +379,7 @@ function popratings()
 				<tr>
 					<td class="paramlist_key"><?php echo $date_label; ?></td>
 					<td>
-						<?php echo $this->row->published_up != NULL && $this->row->published_up != '0000-00-00 00:00:00' 
+						<?php echo $this->row->published_up != NULL && $this->row->published_up != '0000-00-00 00:00:00'
 						? $this->row->published_up
 						: 'N/A'; ?>
 					</td>
@@ -389,7 +389,7 @@ function popratings()
 			<tr>
 				<td class="paramlist_key">Unpublished</td>
 				<td>
-					<?php echo $this->row->published_down != NULL && $this->row->published_down != '0000-00-00 00:00:00' 
+					<?php echo $this->row->published_down != NULL && $this->row->published_down != '0000-00-00 00:00:00'
 					? JHTML::_('date', $this->row->published_down, $dateFormat, $tz)
 					: 'N/A'; ?>
 				</td>
@@ -432,7 +432,7 @@ function popratings()
 					<td>
 						<?php echo $this->pub->ranking; ?>/10
 						<?php if ($this->pub->ranking != '0') { ?>
-							<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" /> 
+							<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
 						<?php } ?>
 					</td>
 				</tr>
@@ -441,7 +441,7 @@ function popratings()
 					<td>
 						<?php echo $rating.'/5.0 ('.$this->pub->times_rated.' reviews)'; ?>
 						<?php if ( $rating != '0.0' ) { ?>
-							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" /> 
+							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
 						<?php } ?>
 					</td>
 				</tr>
@@ -451,7 +451,7 @@ function popratings()
 <?php
 		echo $tabs->endPanel();
 		echo $tabs->endPane();
-?>	
+?>
 	<fieldset class="adminform">
 		<legend>Content</legend>
 			<table class="admintable">
@@ -485,7 +485,7 @@ function popratings()
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_PUBLICATIONS_SHOW_HIDE'); ?></legend>
 		<p class="hint"><?php echo JText::_('COM_PUBLICATIONS_SHOW_HIDE_HINT'); ?></p>
-			<table class="admintable showhide">				
+			<table class="admintable showhide">
 				<tbody>
 					<?php
 						foreach ($panels as $panel => $val)
@@ -507,14 +507,14 @@ function popratings()
 			</table>
 	</fieldset>
 	</div>
-	
+
 	<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 	<input type="hidden" name="isnew" value="<?php echo $this->isnew; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
-	
+
 	<div class="clr"></div>
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

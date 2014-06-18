@@ -35,7 +35,7 @@ $canDo = WishlistHelper::getActions('list');
 $text = ($this->task == 'edit' ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 
 JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_WISH') . ': ' . $text, 'wishlist.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -56,9 +56,9 @@ var ownerassignees = new Array;
 $i = 0;
 if ($this->ownerassignees)
 {
-	foreach ($this->ownerassignees as $k => $items) 
+	foreach ($this->ownerassignees as $k => $items)
 	{
-		foreach ($items as $v) 
+		foreach ($items as $v)
 		{
 			echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->name) . "' );\n\t\t";
 		}
@@ -66,7 +66,7 @@ if ($this->ownerassignees)
 }
 ?>
 
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
@@ -134,12 +134,12 @@ function submitbutton(pressbutton)
 				<legend><?php echo JText::_('COM_WISHLIST_DUE'); ?>:</legend>
 
 				<div class="input-wrap">
-					<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->due == '' || $this->row->due == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->due == '' || $this->row->due == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 					<label for="field-due-never"><?php echo JText::_('COM_WISHLIST_DUE_NEVER'); ?></label>
 					<br />
 					<strong><?php echo JText::_('COM_WISHLIST_OR'); ?></strong>
 					<br />
-					<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> /> 
+					<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->due != '' && $this->row->due != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 					<label for="field-due-on"><?php echo JText::_('COM_WISHLIST_DUE_ON'); ?></label>
 
 					<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->due); ?>" />
@@ -191,9 +191,9 @@ function submitbutton(pressbutton)
 				<tr>
 					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
 					<td>
-						<?php 
+						<?php
 						$editor = JUser::getInstance($this->row->proposed_by);
-						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown'); 
+						echo ($editor) ? $this->escape(stripslashes($editor->get('name'))) : JText::_('unknown');
 						?>
 						<input type="hidden" name="fields[proposed_by]" id="field-proposed_by" value="<?php echo $this->row->proposed_by; ?>" />
 					</td>

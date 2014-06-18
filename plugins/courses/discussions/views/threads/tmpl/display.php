@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -53,7 +53,7 @@ $base = $this->offering->link() . '&active=forum';
 
 		<form action="<?php echo JRoute::_($base . '&unit=' . $this->category->alias . '&b=' . $this->post->id); ?>" method="get">
 			<?php
-			if ($this->rows) 
+			if ($this->rows)
 			{
 				$last = '0000-00-00 00:00:00';
 				foreach ($this->rows as $row)
@@ -77,12 +77,12 @@ $base = $this->offering->link() . '&active=forum';
 				     ->set('attach', $this->attach)
 				     ->set('course', $this->course)
 				     ->display();
-			} 
-			else 
+			}
+			else
 			{
 				?>
 				<p><?php echo JText::_('PLG_COURSES_DISCUSSIONS_NO_REPLIES_FOUND'); ?></p>
-				<?php 
+				<?php
 			}
 			$this->pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
 			$this->pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
@@ -107,14 +107,14 @@ $base = $this->offering->link() . '&active=forum';
 			<h4><?php echo JText::_('PLG_COURSES_DISCUSSIONS_PARTICIPANTS'); ?></h4>
 			<?php if ($this->participants) { ?>
 				<ul>
-				<?php 
+				<?php
 					$anon = false;
-					foreach ($this->participants as $participant) 
-					{ 
-						if (!$participant->anonymous) { 
+					foreach ($this->participants as $participant)
+					{
+						if (!$participant->anonymous) {
 						?>
 						<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $participant->created_by); ?>"><?php echo $this->escape(stripslashes($participant->name)); ?></a></li>
-						<?php 
+						<?php
 						} else if (!$anon) {
 							$anon = true;
 						?>
@@ -130,8 +130,8 @@ $base = $this->offering->link() . '&active=forum';
 			<h4><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ATTACHMENTS'); ?></h4>
 			<?php if ($this->attachments) { ?>
 				<ul class="attachments">
-				<?php 
-				foreach ($this->attachments as $attachment) 
+				<?php
+				foreach ($this->attachments as $attachment)
 				{
 					$title = ($attachment->description) ? $attachment->description : $attachment->filename;
 					?>
@@ -156,7 +156,7 @@ $base = $this->offering->link() . '&active=forum';
 				$juser = JFactory::getUser();
 				$anon = 1;
 				$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
-				if (!$juser->get('guest')) 
+				if (!$juser->get('guest'))
 				{
 					$anon = 0;
 				}
@@ -172,11 +172,11 @@ $base = $this->offering->link() . '&active=forum';
 				<p class="comment-title">
 					<strong>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape($juser->get('name')); ?></a>
-					</strong> 
+					</strong>
 					<span class="permalink">
 						<span class="comment-date-at"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span> 
-						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span> 
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAt_HZ1')); ?></time></span>
 					</span>
 				</p>
@@ -204,7 +204,7 @@ $base = $this->offering->link() . '&active=forum';
 				</fieldset>
 
 				<label for="field-anonymous" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" /> 
+					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 					<?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
 				</label>
 

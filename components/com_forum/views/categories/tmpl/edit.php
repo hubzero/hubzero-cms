@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * HUBzero CMS
  *
@@ -64,7 +64,7 @@ $juser = JFactory::getUser();
 				</legend>
 
 				<label for="field-closed" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('COM_FORUM_FIELD_CLOSED'); ?>
 				</label>
 

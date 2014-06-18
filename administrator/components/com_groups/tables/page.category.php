@@ -40,10 +40,10 @@ class GroupsTablePageCategory extends JTable
 	var $gidNumber = null;
 	var $title     = null;
 	var $color     = null;
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -51,7 +51,7 @@ class GroupsTablePageCategory extends JTable
 	{
 		parent::__construct('#__xgroups_pages_categories', 'id', $db);
 	}
-	
+
 	/**
 	 * Check method overload
 	 */
@@ -63,72 +63,72 @@ class GroupsTablePageCategory extends JTable
 			$this->setError( JText::_('Category Must Contain Group ID Number') );
 			return false;
 		}
-		
+
 		// make sure we have a title
 		if (!$this->title || $this->title == "")
 		{
 			$this->setError( JText::_('Category Must Contain Title') );
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public function find( $filters = array() )
 	{
 		$sql = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	public function count( $filters = array() )
 	{
 		$sql = "SELECT COUNT(*) FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	private function _buildQuery( $filters = array() )
 	{
 		//vars
 		$sql   = '';
 		$where = array();
-		
+
 		// check for gidNumber
 		if (isset($filters['gidNumber']))
 		{
 			$where[] = 'gidNumber=' . $this->_db->quote( $filters['gidNumber'] );
 		}
-		
+
 		// did we have any conditions
 		if (count($where) > 0)
 		{
 			$sql = ' WHERE ' . implode(' AND', $where);
 		}
-		
+
 		// check for gidNumber
 		if (isset($filters['orderby']))
 		{
 			$sql .= ' ORDER BY ' . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
-	
+
 	public function getCategories( $group )
 	{
 		$categories = array();
-		
+
 		// make sure we have a valid group
 		if (!is_object($group) || $group->get('gidNumber') == '')
 		{
 			return $categories;
 		}
-		
+
 		$sql = "SELECT * FROM {$this->_tbl} WHERE gidNumber=" . $this->_db->quote( $group->get('gidNumber') );
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();

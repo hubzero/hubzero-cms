@@ -38,42 +38,42 @@ class AnswersTableQuestionsLog extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $question_id     = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var unknown
 	 */
 	var $expires = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $voter   = NULL;
 
 	/**
 	 * varchar(15)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $ip      = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -84,20 +84,20 @@ class AnswersTableQuestionsLog extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->question_id = intval($this->question_id);
-		if (!$this->question_id) 
+		if (!$this->question_id)
 		{
 			$this->setError(JText::_('Missing question ID'));
 			return false;
 		}
 
 		$this->voter = intval($this->voter);
-		if (!$this->voter) 
+		if (!$this->voter)
 		{
 			$this->voter = JFactory::getUser()->get('id');
 		}
@@ -118,7 +118,7 @@ class AnswersTableQuestionsLog extends JTable
 
 	/**
 	 * Check if a user has voted
-	 * 
+	 *
 	 * @param      integer $qid   Question ID
 	 * @param      string  $ip    IP address
 	 * @param      integer $voter Voter user ID
@@ -126,11 +126,11 @@ class AnswersTableQuestionsLog extends JTable
 	 */
 	public function checkVote($qid=null, $ip=null, $voter=null)
 	{
-		if ($qid == null) 
+		if ($qid == null)
 		{
 			$qid = $this->question_id;
 		}
-		if ($qid == null) 
+		if ($qid == null)
 		{
 			return false;
 		}

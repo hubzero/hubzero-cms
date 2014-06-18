@@ -7,7 +7,7 @@ $canDo = WikiHelper::getActions('page');
 $text = ($this->task == 'editpage' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
@@ -19,7 +19,7 @@ JToolBarHelper::help('page');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -117,7 +117,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_WIKI_FIELDSET_PARAMETERS'); ?></span></legend>
 
 			<div class="input-wrap">
-			<?php 
+			<?php
 			$params = new JParameter($this->row->get('params'), JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'wiki.xml');
 			echo $params->render();
 			?>

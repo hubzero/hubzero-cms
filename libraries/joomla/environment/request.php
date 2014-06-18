@@ -39,7 +39,7 @@ class JRequest
 {
 	/**
 	 * Get a user's IP address
-	 * 
+	 *
 	 * @return     string
 	 */
 	public static function ip()
@@ -71,7 +71,7 @@ class JRequest
 			$address = self::getVar('HTTP_FORWARDED', '', 'server');
 		}
 
-		if (strstr($address, ',')) 
+		if (strstr($address, ','))
 		{
 			$x = explode(',', $address);
 			$address = end($x);

@@ -52,7 +52,7 @@ else
 			<span class="comment-anchor"></span>
 			<?php
 			$anon = 1;
-			if (!$this->juser->get('guest')) 
+			if (!$this->juser->get('guest'))
 			{
 				$anon = 0;
 			}
@@ -77,27 +77,27 @@ else
 			<fieldset>
 				<legend><?php echo JText::_('PLG_RESOURCES_REVIEWS_FORM_RATING'); ?>:</legend>
 				<label>
-					<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($review->get('rating') == 1) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" id="review_rating_1" name="rating" type="radio" value="1"<?php if ($review->get('rating') == 1) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_POOR'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($review->get('rating') == 2) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" id="review_rating_2" name="rating" type="radio" value="2"<?php if ($review->get('rating') == 2) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_FAIR'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($review->get('rating') == 3) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" id="review_rating_3" name="rating" type="radio" value="3"<?php if ($review->get('rating') == 3) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_GOOD'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($review->get('rating') == 4) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" id="review_rating_4" name="rating" type="radio" value="4"<?php if ($review->get('rating') == 4) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_VERY_GOOD'); ?>
 				</label>
 				<label>
-					<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($review->get('rating') == 5) { echo ' checked="checked"'; } ?> /> 
+					<input class="option" id="review_rating_5" name="rating" type="radio" value="5"<?php if ($review->get('rating') == 5) { echo ' checked="checked"'; } ?> />
 					&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
 					<?php echo JText::_('PLG_RESOURCES_REVIEWS_RATING_EXCELLENT'); ?>
 				</label>

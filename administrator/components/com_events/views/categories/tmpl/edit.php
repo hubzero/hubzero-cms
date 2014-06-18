@@ -46,13 +46,13 @@ $editor = JFactory::getEditor();
 ?>
 
 <script language="javascript" type="text/javascript">
-function submitbutton(pressbutton, section) 
+function submitbutton(pressbutton, section)
 {
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	if (document.adminForm.name.value == ''){
 		alert("Category must have a name");
 	} else {

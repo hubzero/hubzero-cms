@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'plgCoursesMemberOptions'
- * 
+ *
  * Long description (if any) ...
  */
 class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
@@ -47,9 +47,9 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onCourseAreas'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @return     array Return description (if any) ...
 	 */
 	public function &onCourseAreas()
@@ -57,7 +57,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name' => 'memberoptions',
 			'title' => JText::_('COURSE_MEMBEROPTIONS'),
-			'default_access' => 'registered', 
+			'default_access' => 'registered',
 			'display_menu_tab' => false
 		);
 
@@ -66,9 +66,9 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'onCourse'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $course Parameter description (if any) ...
 	 * @param      unknown $option Parameter description (if any) ...
 	 * @param      unknown $authorized Parameter description (if any) ...
@@ -115,9 +115,9 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'edit'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $course Parameter description (if any) ...
 	 * @param      object $user Parameter description (if any) ...
 	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
@@ -164,9 +164,9 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Short description for 'save'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      object $course Parameter description (if any) ...
 	 * @param      object $user Parameter description (if any) ...
 	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
@@ -176,7 +176,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	protected function save($course, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
-		
+
 		//instantaite database object
 		$database = JFactory::getDBO();
 
@@ -196,14 +196,14 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 		$row->bind($rowdata);
 
 		// Check content
-		if (!$row->check()) 
+		if (!$row->check())
 		{
 			$this->setError( $row->getError() );
 			return;
 		}
 
 		// Store content
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError( $row->getError() );
 			return $this->edittopic();
@@ -211,7 +211,7 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 
 		$app = JFactory::getApplication();
 		$app->enqueueMessage('You have successfully updated your email settings','Message');
-		
+
 		if (!$postSaveRedirect)
 			$app->redirect( JRoute::_($this->course->link() . '&active=memberoptions&task=edit' ) );
 		else

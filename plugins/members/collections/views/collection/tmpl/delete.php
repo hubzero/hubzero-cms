@@ -48,7 +48,7 @@ $this->css();
 			</p>
 
 			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" /> 
+				<input type="checkbox" class="option" name="confirmdel" value="1" />
 				<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
 			</label>
 		</fieldset>

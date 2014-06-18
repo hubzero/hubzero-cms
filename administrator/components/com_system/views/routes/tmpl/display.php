@@ -39,7 +39,7 @@ JToolBarHelper::deleteList();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -54,8 +54,8 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label>ViewMode:</label>
-		<?php echo $this->lists['viewmode']; ?> 
-		
+		<?php echo $this->lists['viewmode']; ?>
+
 		<label>Sort by:</label>
 		<?php echo $this->lists['sortby']; ?>
 	</fieldset>
@@ -89,15 +89,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo $i; ?></td>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->cpt; ?></td>
-				<td><?php 
+				<td><?php
 				if ($this->is404mode == true) {
    					echo $row->dateadd;
 				} else {
-					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php 
+					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php
 				} ?></td>
-				<td><?php 
+				<td><?php
    				if ($this->is404mode == true) {
-   					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php 
+   					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php
 				} else {
 					$row->newurl = str_replace('&','&amp;', $row->newurl);
 					echo $row->newurl;

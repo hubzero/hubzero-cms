@@ -38,7 +38,7 @@ class plgSearchContent extends SearchPlugin
 {
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -63,7 +63,7 @@ class plgSearchContent extends SearchPlugin
 		{
 			$addtl_where[] = '(c.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 		}
-		else 
+		else
 		{
 			if ($user->guest)
 			{
@@ -77,7 +77,7 @@ class plgSearchContent extends SearchPlugin
 
 		if (version_compare(JVERSION, '1.6', 'lt'))
 		{
-			$query = "SELECT 
+			$query = "SELECT
 				c.title,
 				concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
 				CASE
@@ -87,49 +87,49 @@ class plgSearchContent extends SearchPlugin
 							CASE WHEN ca.name AND ca.name != s.name THEN concat('/', ca.name) ELSE '' END,
 							CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 						)
-					ELSE concat('index.php?option=com_content&view=article&id=', c.id) 
+					ELSE concat('index.php?option=com_content&view=article&id=', c.id)
 				END AS link,
 				$weight AS weight,
 				publish_up AS date,
 				ca.title AS section,
 				(SELECT group_concat(u1.name separator '\\n') FROM #__author_assoc anames INNER JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
 				(SELECT group_concat(ids.authorid separator '\\n') FROM #__author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
-			FROM #__content c 
-			LEFT JOIN #__sections s 
+			FROM #__content c
+			LEFT JOIN #__sections s
 				ON s.id = c.sectionid
 			LEFT JOIN #__categories ca
 				ON ca.id = c.catid
-			WHERE 
-				state = 1 AND 
-				(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down) 
+			WHERE
+				state = 1 AND
+				(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down)
 				AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC";
 		}
-		else 
+		else
 		{
-			$query = "SELECT 
+			$query = "SELECT
 				c.title,
 				concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
 				CASE
-					WHEN ca.alias OR c.alias THEN 
+					WHEN ca.alias OR c.alias THEN
 						concat(
-							CASE WHEN ca.alias THEN concat('/', ca.alias) ELSE '' END, 
+							CASE WHEN ca.alias THEN concat('/', ca.alias) ELSE '' END,
 							CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
 						)
-					ELSE concat('index.php?option=com_content&view=article&id=', c.id) 
+					ELSE concat('index.php?option=com_content&view=article&id=', c.id)
 				END AS link,
 				$weight AS weight,
 				publish_up AS date,
 				ca.title AS section,
 				(SELECT group_concat(u1.name separator '\\n') FROM #__author_assoc anames INNER JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
 				(SELECT group_concat(ids.authorid separator '\\n') FROM #__author_assoc ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
-			FROM #__content c 
+			FROM #__content c
 			LEFT JOIN #__categories ca
 				ON ca.id = c.catid
-			WHERE 
-				state = 1 AND 
-				(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down) 
+			WHERE
+				state = 1 AND
+				(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down)
 				AND $weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC";

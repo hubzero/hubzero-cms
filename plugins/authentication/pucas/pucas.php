@@ -57,7 +57,7 @@ class plgAuthenticationPUCAS extends JPlugin
 
 	/**
 	 * Actions to perform when logging out a user session
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function logout()
@@ -88,7 +88,7 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$return = base64_decode($return);
 
-			if (!JURI::isInternal($return)) 
+			if (!JURI::isInternal($return))
 			{
 				$return = '';
 			}
@@ -133,17 +133,17 @@ class plgAuthenticationPUCAS extends JPlugin
 
 	/**
 	 * Actions to perform when logging in a user session
-	 * 
+	 *
 	 * @param      unknown &$credentials Parameter description (if any) ...
 	 * @param      array &$options Parameter description (if any) ...
 	 * @return     void
 	 */
 	public function login(&$credentials, &$options)
 	{
-		if ($return = JRequest::getVar('return', '', 'method', 'base64')) 
+		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
-			if (!JURI::isInternal($return)) 
+			if (!JURI::isInternal($return))
 			{
 				$return = '';
 			}
@@ -350,8 +350,8 @@ class plgAuthenticationPUCAS extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This purdue cas account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-					'This Purdue Career Account appears to already be linked to a hub account', 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+					'This Purdue Career Account appears to already be linked to a hub account',
 					'error');
 			}
 			else
@@ -365,8 +365,8 @@ class plgAuthenticationPUCAS extends JPlugin
 		else
 		{
 			// User somehow got redirect back without being authenticated (not sure how this would happen?)
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-				'There was an error linking your Purdue Career Account, please try again later.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'There was an error linking your Purdue Career Account, please try again later.',
 				'error');
 		}
 	}

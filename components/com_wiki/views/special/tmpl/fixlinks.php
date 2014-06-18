@@ -46,15 +46,15 @@ $start = JRequest::getInt('limitstart', 0);
 $database = JFactory::getDBO();
 
 $query = "SELECT COUNT(*)
-			FROM #__wiki_page AS wp 
+			FROM #__wiki_page AS wp
 			INNER JOIN #__wiki_version AS wv ON wp.version_id = wv.id";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
-$query = "SELECT wp.id, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.created_by, wv.created, wv.pagetext 
-			FROM #__wiki_page AS wp 
-			INNER JOIN #__wiki_version AS wv ON wp.version_id = wv.id 
+$query = "SELECT wp.id, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.created_by, wv.created, wv.pagetext
+			FROM #__wiki_page AS wp
+			INNER JOIN #__wiki_version AS wv ON wp.version_id = wv.id
 			ORDER BY created DESC";
 		if ($limit && $limit != 'all')
 		{
@@ -66,8 +66,8 @@ $rows = $database->loadObjectList();
 
 jimport('joomla.html.pagination');
 $pageNav = new JPagination(
-	$total, 
-	$start, 
+	$total,
+	$start,
 	$limit
 );
 ?>
@@ -95,7 +95,7 @@ $pageNav = new JPagination(
 			</thead>
 			<tbody>
 <?php
-if ($rows) 
+if ($rows)
 {
 	$p = WikiHelperParser::getInstance();
 

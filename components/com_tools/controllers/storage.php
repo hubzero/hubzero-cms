@@ -38,12 +38,12 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function execute()
 	{
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			// Redirect to home page
 			$this->setRedirect(
@@ -59,7 +59,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		if ($this->_task != 'image'
 		 && $this->_task != 'css'
 		 && $this->_task != 'diskusage'
-		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin'))) 
+		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin')))
 		{
 			// Redirect to home page
 			$this->_redirect = $this->config->get('mw_redirect', '/home');
@@ -73,33 +73,33 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Build the document path (breadcrumbs)
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildPathway()
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
-		if (count($pathway->getPathWay()) <= 0) 
+		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_('Members'), 
+				JText::_('Members'),
 				'index.php?option=com_members'
 			);
 		}
 		$pathway->addItem(
-			stripslashes($this->juser->get('name')), 
+			stripslashes($this->juser->get('name')),
 			'index.php?option=com_members&id=' . $this->juser->get('id')
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_option . '_' . $this->_task)), 
+			JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			'index.php?option=' . $this->_option . '&task=storage'
 		);
 	}
 
 	/**
 	 * Build the document title
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _buildTitle()
@@ -114,12 +114,12 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a login form
-	 * 
+	 *
 	 * @return     void
 	 */
 	protected function _login($rtrn)
 	{
-		if (!$rtrn) 
+		if (!$rtrn)
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		}
@@ -132,7 +132,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 	/**
 	 * Display a warning message that the user has exceeded their allowed space
 	 * then display a file list and options for managing disk usage
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function exceededTask()
@@ -142,14 +142,14 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display a file list and options for managing disk usage
-	 * 
+	 *
 	 * @param      boolean $exceeded Exceeded allowed space?
 	 * @return     void
 	 */
 	public function displayTask($exceeded=false)
 	{
 		// Check that the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->_login();
 			return;
@@ -166,13 +166,13 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		// Get their disk space usage
 		$this->percent = 0;
 		$this->view->monitor = '';
-		if ($this->config->get('show_storage')) 
+		if ($this->config->get('show_storage'))
 		{
 			$this->getDiskUsage();
 			$this->_redirect = '';
 
 			$view = new \Hubzero\Component\View(array(
-				'name'   => $this->_controller, 
+				'name'   => $this->_controller,
 				'layout' => 'diskusage'
 			));
 			$view->option    = $this->_option;
@@ -191,7 +191,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->view->exceeded = $exceeded;
 		$this->view->output = (isset($this->view->output)) ? $this->view->output : null;
 		$this->view->percentage = $this->percent;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -203,19 +203,19 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Purge old session data
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function purgeTask()
 	{
 		// Check that the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->_login();
 			return;
 		}
 
-		if (!($shost = $this->config->get('storagehost'))) 
+		if (!($shost = $this->config->get('storagehost')))
 		{
 			$this->setRedirect(
 				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
@@ -229,12 +229,12 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$msg = '';
 
 		$fp = stream_socket_client($shost, $errno, $errstr, 30);
-		if (!$fp) 
+		if (!$fp)
 		{
 			$info[] = "$errstr ($errno)\n";
 			$this->setError("$errstr ($errno)\n");
 		}
-		else 
+		else
 		{
 			fwrite($fp, 'purge user=' . $this->juser->get('username') . ",degree=$degree \n");
 			while (!feof($fp))
@@ -246,7 +246,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		foreach ($info as $line)
 		{
-			if (trim($line) != '') 
+			if (trim($line) != '')
 			{
 				$msg .= $line . '<br />';
 			}
@@ -260,14 +260,14 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Determine the amount of disk usage
-	 * 
+	 *
 	 * @param      string $type Type [hard, soft]
 	 * @return     void
 	 */
 	private function getDiskUsage($type='soft')
 	{
 		// Check that the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->_login();
 			return;
@@ -276,13 +276,13 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		bcscale(6);
 
 		$du = ToolsHelperUtils::getDiskUsage($this->juser->get('username'));
-		if (isset($du['space'])) 
+		if (isset($du['space']))
 		{
-			if ($type == 'hard') 
+			if ($type == 'hard')
 			{
 				$val = ($du['hardspace'] != 0) ? bcdiv($du['space'], $du['hardspace']) : 0;
-			} 
-			else 
+			}
+			else
 			{
 				$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
 			}
@@ -306,7 +306,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->total     = $total;
 
 		//if ($this->percent >= 100 && $this->remaining == 0) {
-		if ($this->percent >= 100) 
+		if ($this->percent >= 100)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=storageexceeded')
@@ -316,13 +316,13 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display how much disk usage is being used
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function diskusageTask()
 	{
 		// Check that the user is logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->_login();
 			return;
@@ -331,12 +331,12 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$msgs = JRequest::getInt('msgs', 0);
 
 		$du = ToolsHelperUtils::getDiskUsage($this->juser->get('username'));
-		if (count($du) <=1) 
+		if (count($du) <=1)
 		{
 			// error
 			$percent = 0;
-		} 
-		else 
+		}
+		else
 		{
 			bcscale(6);
 			$val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
@@ -353,7 +353,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->view->msgs      = $msgs;
 		$this->view->ajax      = 1;
 		$this->view->writelink = 1;
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -365,29 +365,29 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Construct the path to be used for file management
-	 * 
+	 *
 	 * @param      string $listdir Base directory
 	 * @param      string $subdir  Sub-directory
-	 * @return     string 
+	 * @return     string
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
 		// Get the configured upload path
 		$base = $this->config->get('storagepath', 'webdav' . DS . 'home') . DS . $this->juser->get('username');
-		if ($base) 
+		if ($base)
 		{
 			$base = DS . trim($base, DS);
 		}
 
 		$listdir = DS . trim($listdir, DS);
 
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = DS . trim($subdir, DS);
 		}
 
 		// Does the beginning of the $listdir match the config path?
-		if (substr($listdir, 0, strlen($base)) == $base) 
+		if (substr($listdir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
 			JError::raiseError(500, JText::_('Bad path'));
@@ -400,13 +400,13 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefolderTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->filelistTask();
 			return;
@@ -414,7 +414,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = urldecode(JRequest::getVar('listdir', ''));
-		/*if (!$listdir) 
+		/*if (!$listdir)
 		{
 			$this->setError(JText::_('Directory not found.'));
 			$this->filelistTask();
@@ -425,7 +425,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir);
 
 		// Incoming directory to delete
-		if (!($folder = urldecode(JRequest::getVar('delFolder', '')))) 
+		if (!($folder = urldecode(JRequest::getVar('delFolder', ''))))
 		{
 			$this->setError(JText::_('Directory not found.'));
 			$this->filelistTask();
@@ -435,15 +435,15 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$folder = DS . trim($folder, DS);
 
 		// Check if the folder even exists
-		if (!is_dir($path . $folder) or !$folder) 
+		if (!is_dir($path . $folder) or !$folder)
 		{
 			$this->setError(JText::_('Directory not found.'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::delete($path . $folder)) 
+			if (!JFolder::delete($path . $folder))
 			{
 				$this->setError(JText::_('Unable to delete directory.'));
 			}
@@ -455,13 +455,13 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Delete a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deletefileTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest')) 
+		if ($this->juser->get('guest'))
 		{
 			$this->filelistTask();
 			return;
@@ -474,7 +474,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir);
 
 		// Incoming file to delete
-		if (!($file = urldecode(JRequest::getVar('file', '')))) 
+		if (!($file = urldecode(JRequest::getVar('file', ''))))
 		{
 			$this->setError(JText::_('File not found.'));
 			$this->filelistTask();
@@ -482,15 +482,15 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		}
 
 		// Check if the file even exists
-		if (!file_exists($path . DS . $file) or !$file) 
+		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('File not found.'));
-		} 
-		else 
+		}
+		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file)) 
+			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError(JText::_('Unable to delete file'));
 			}
@@ -502,7 +502,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show a file list
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function filelistTask()
@@ -517,7 +517,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$dirtree = array();
 		$subdir = $listdir;
 
-		if ($subdir) 
+		if ($subdir)
 		{
 			$subdir = trim($subdir, DS);
 
@@ -570,7 +570,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->view->listdir = $listdir;
 		$this->view->path = $path;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -582,7 +582,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 
 	/**
 	 * Authorization checks
-	 * 
+	 *
 	 * @param      string $assetType Asset type
 	 * @param      string $assetId   Asset id to check against
 	 * @return     void
@@ -590,7 +590,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 	public function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -617,7 +617,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{

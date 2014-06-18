@@ -48,7 +48,7 @@ $app = JFactory::getApplication();
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
 		<?php } ?>
-		
+
 		<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
 			<script src="/media/system/js/jquery.js"></script>
 			<script src="/media/system/js/jquery.fileuploader.js"></script>

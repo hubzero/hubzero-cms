@@ -1,7 +1,7 @@
 <?php
 /**
  * Test class for the time records table class
- * 
+ *
  * @author Shawn Rice <zooley@purdue.edu>
  * @runInSeparateProcesses
  */
@@ -15,10 +15,10 @@ class KbTableVoteTest extends PHPUnit_Framework_TestCase
 {
 	var $instance   = null;
 	var $attributes = array(
-		'id', 
-		'object_id', 
-		'ip', 
-		'vote', 
+		'id',
+		'object_id',
+		'ip',
+		'vote',
 		'user_id',
 		'type'
 	);

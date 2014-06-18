@@ -39,7 +39,7 @@ $modTwitterFeed = new modTwitterFeed($params, $module);
 $modTwitterFeed->display();
 
 /*
-// Include the helper file  
+// Include the helper file
 require_once(dirname(__FILE__).DS.'helper.php');
 
 // Get a parameter from the module's configuration
@@ -52,6 +52,6 @@ $displayIcon = $params->get('displayIcon');
 // Get the items to display from the helper
 //modTwitterFeedHelper::getTweets($twitterID, $tweetCount);
 
-// Include the template for display  
+// Include the template for display
 require(JModuleHelper::getLayoutPath('mod_twitterfeed'));
 */

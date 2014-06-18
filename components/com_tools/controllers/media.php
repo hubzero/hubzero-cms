@@ -45,7 +45,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Upload a file or create a new folder
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function uploadTask()
@@ -127,7 +127,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Deletes a file
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function deleteTask()
@@ -196,7 +196,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Display an upload form and file listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function displayTask()
@@ -303,7 +303,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Lists all files and folders for a given directory
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function listTask()
@@ -387,7 +387,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 
 	/**
 	 * Scans directory and builds multi-dimensional array of all files and sub-directories
-	 * 
+	 *
 	 * @param      string $base Directory to scan
 	 * @return     array
 	 */

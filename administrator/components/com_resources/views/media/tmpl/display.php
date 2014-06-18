@@ -53,7 +53,7 @@ function goUpDir()
 
 <form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<p>path = <?php echo $this->path; ?></p>
-	
+
 	<fieldset>
 		<label>
 			Directory
@@ -64,7 +64,7 @@ function goUpDir()
 			<iframe src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;tmpl=component&amp;listdir=<?php echo $this->listdir; ?>&amp;subdir=<?php echo $this->subdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 		</div>
 	</fieldset>
-	
+
 	<fieldset>
 		<table>
 			<tbody>

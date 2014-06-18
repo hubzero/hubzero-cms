@@ -38,17 +38,17 @@ class plgSearchForum extends SearchPlugin
 {
 	/**
 	 * Get the name of the area being searched
-	 * 
+	 *
 	 * @return     string
 	 */
-	public static function getName() 
-	{ 
-		return JText::_('Forum'); 
+	public static function getName()
+	{
+		return JText::_('Forum');
 	}
 
 	/**
 	 * Build search query and add it to the $results
-	 * 
+	 *
 	 * @param      object $request  SearchModelRequest
 	 * @param      object &$results SearchModelResultSet
 	 * @return     void
@@ -67,7 +67,7 @@ class plgSearchForum extends SearchPlugin
 		{
 			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.comment NOT LIKE '%$forb%')";
 		}
-		
+
 		$juser = JFactory::getUser();
 		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
@@ -76,7 +76,7 @@ class plgSearchForum extends SearchPlugin
 			{
 				$addtl_where[] = 'f.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 			}
-			else 
+			else
 			{
 				$viewlevels = implode(',', $juser->getAuthorisedViewLevels());
 
@@ -84,13 +84,13 @@ class plgSearchForum extends SearchPlugin
 				{
 					$addtl_where[] = '(f.access IN (' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . join(',', $gids) . ')))';
 				}
-				else 
+				else
 				{
 					$addtl_where[] = '(f.access IN (' . $viewlevels . '))';
 				}
 			}
 		}
-		else 
+		else
 		{
 			if ($juser->get('guest'))
 			{
@@ -111,7 +111,7 @@ class plgSearchForum extends SearchPlugin
 		}
 
 		$rows = new SearchResultSQL(
-			"SELECT 
+			"SELECT
 				f.title,
 				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
 				(CASE WHEN f.scope_id > 0 AND f.scope='group' THEN
@@ -123,21 +123,21 @@ class plgSearchForum extends SearchPlugin
 				f.created AS date,
 				concat(s.alias, ', ', c.alias) AS section
 			FROM #__forum_posts f
-			LEFT JOIN #__forum_categories c 
+			LEFT JOIN #__forum_categories c
 				ON c.id = f.category_id
 			LEFT JOIN #__forum_sections s
 				ON s.id = c.section_id
 			LEFT JOIN #__xgroups g
 				ON g.gidNumber = f.scope_id
-			WHERE 
-				f.state = 1 AND 
+			WHERE
+				f.state = 1 AND
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
 			" ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{
-			if (!$row) 
+			if (!$row)
 			{
 				continue;
 			}

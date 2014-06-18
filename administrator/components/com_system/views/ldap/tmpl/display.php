@@ -50,7 +50,7 @@ JToolBarHelper::preferences($this->option, '550');
 	</div>
 	<div class="col width-50 fltrt">
 		<p class="warning"><strong><?php echo JText::_('Warning!'); ?></strong> <?php echo JText::_('The following operations are irreversible.'); ?></p>
-		
+
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('Users'); ?></legend>
 			<table class="admintable">
@@ -66,7 +66,7 @@ JToolBarHelper::preferences($this->option, '550');
 				</tbody>
 			</table>
 		</fieldset>
-		
+
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('Groups'); ?></legend>
 			<table class="admintable">
@@ -84,7 +84,7 @@ JToolBarHelper::preferences($this->option, '550');
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-	
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />

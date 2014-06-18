@@ -35,7 +35,7 @@ $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CR
 $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text, 'courses.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -48,10 +48,10 @@ JToolBarHelper::help('course');
 $this->css();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
-			
+
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 						{
 							?>
 							<option value="<?php echo $group->gidNumber; ?>"<?php if ($group->gidNumber == $this->row->get('group_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($group->description); ?> (<?php echo $this->escape($group->cn); ?>)</option>
-							<?php 
+							<?php
 						}
 					}
 					?>
@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
 					<th><?php echo JText::_('COM_COURSES_FIELD_CREATOR'); ?></th>
-					<td><?php 
+					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
 				</tr>
@@ -190,7 +190,7 @@ function submitbutton(pressbutton)
 						JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 					);
 					$out = $param->render('params', 'onCourseEdit');
-					if (!$out) 
+					if (!$out)
 					{
 						continue;
 					}
@@ -206,7 +206,7 @@ function submitbutton(pressbutton)
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_IMAGE'); ?></span></legend>
-			
+
 			<?php
 			if ($this->row->exists()) {
 				$logo = stripslashes($this->row->get('logo'));
@@ -220,11 +220,11 @@ function submitbutton(pressbutton)
 					</noscript>
 				</div>
 			</div>
-				<?php 
+				<?php
 				$width = 0;
 				$height = 0;
 				$this_size = 0;
-				if ($logo) 
+				if ($logo)
 				{
 					$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
@@ -288,9 +288,9 @@ function submitbutton(pressbutton)
 							multiple: true,
 							debug: true,
 							template: '<div class="qq-uploader">' +
-										'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLOCK_OR_DROP'); ?></span></div>' + 
+										'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLOCK_OR_DROP'); ?></span></div>' +
 										'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLOCK_OR_DROP'); ?></span></div>' +
-										'<ul class="qq-upload-list"></ul>' + 
+										'<ul class="qq-upload-list"></ul>' +
 									   '</div>',
 							onComplete: function(id, file, response) {
 								if (response.success) {

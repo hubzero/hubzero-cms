@@ -61,11 +61,11 @@ $this->css()
 				<span class="hint">Max File size is 4<abbr title="Mega Bytes">MB</abbr></span>
 			</label>
 		</fieldset>
-		
+
 		<p class="submit">
 			<input type="submit" name="submit" value="Upload" />
 		</p>
-		
+
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="import_upload" />
 	</form>

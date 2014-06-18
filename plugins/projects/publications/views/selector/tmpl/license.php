@@ -29,25 +29,25 @@ $pubParams = new JParameter( $this->publication->params );
 
 ?>
 <ul class="pub-selector" id="pub-selector">
-	<?php foreach ($this->selections as $item) 
-	{ 
+	<?php foreach ($this->selections as $item)
+	{
 		$selected = $this->publication->license_type && $this->publication->license_type == $item->id ? true : false;
-		$liId = 'choice-' . $item->id;	
-		
-		$info = $item->info; 
+		$liId = 'choice-' . $item->id;
+
+		$info = $item->info;
 		if ($item->url) {
 			$info .= ' <a href="'.$item->url.'" rel="external">Read license terms &rsaquo;</a>';
 		}
-		
+
 		?>
 		<li class="type-license allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
 			<span class="item-info"></span>
 			<span class="item-wrap">
 			<?php if ($item->icon) { echo '<img src="' . $item->icon . '" alt="' . htmlentities($item->title) . '" />'; } ?><?php echo $item->title; ?>
-			</span>	
+			</span>
 			<span class="item-fullinfo">
 				<?php echo $info; ?>
-			</span>		
+			</span>
 		</li>
 	<?php } ?>
 </ul>

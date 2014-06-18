@@ -61,7 +61,7 @@ class WikiHelperEditor extends JObservable
 	 */
 	public function __construct($editor = '')
 	{
-		if (!$editor) 
+		if (!$editor)
 		{
 			$database = JFactory::getDBO();
 			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1");
@@ -86,14 +86,14 @@ class WikiHelperEditor extends JObservable
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
 		$signature = serialize($editor);
 
-		if (empty($instances[$signature])) 
+		if (empty($instances[$signature]))
 		{
 			$instances[$signature] = new self($editor);
 		}
@@ -107,7 +107,7 @@ class WikiHelperEditor extends JObservable
 	public function initialise()
 	{
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) 
+		if (is_null(($this->_editor)))
 		{
 			return;
 		}
@@ -120,13 +120,13 @@ class WikiHelperEditor extends JObservable
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) 
+			if (trim($result))
 			{
 				$return = $result;
 			}
 		}
 
-		if ($return) 
+		if ($return)
 		{
 			$document = JFactory::getDocument();
 			$document->addCustomTag($return);
@@ -148,7 +148,7 @@ class WikiHelperEditor extends JObservable
 	public function display($name, $id, $html, $cls, $col, $row, $params = array())
 	{
 		// Return a standard textarea if no editor is found
-		if (!$this->_name) 
+		if (!$this->_name)
 		{
 			return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $html . '</textarea>' . "\n";
 		}
@@ -156,7 +156,7 @@ class WikiHelperEditor extends JObservable
 		$this->_loadEditor($params);
 
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) 
+		if (is_null(($this->_editor)))
 		{
 			return;
 		}
@@ -178,7 +178,7 @@ class WikiHelperEditor extends JObservable
 
 		foreach ($results as $result)
 		{
-			if (trim($result)) 
+			if (trim($result))
 			{
 				$return .= $result;
 			}
@@ -196,7 +196,7 @@ class WikiHelperEditor extends JObservable
 		$this->_loadEditor();
 
 		// Check if editor is already loaded
-		if (is_null(($this->_editor))) 
+		if (is_null(($this->_editor)))
 		{
 			return;
 		}
@@ -208,7 +208,7 @@ class WikiHelperEditor extends JObservable
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) 
+			if (trim($result))
 			{
 				$return .= $result;
 			}
@@ -259,7 +259,7 @@ class WikiHelperEditor extends JObservable
 		$results[] = $this->_editor->update($args);
 		foreach ($results as $result)
 		{
-			if (trim($result)) 
+			if (trim($result))
 			{
 				$return .= $result;
 			}
@@ -277,7 +277,7 @@ class WikiHelperEditor extends JObservable
 	private function _loadEditor($config = array())
 	{
 		// Check if editor is already loaded
-		if (!is_null(($this->_editor))) 
+		if (!is_null(($this->_editor)))
 		{
 			return;
 		}
@@ -288,7 +288,7 @@ class WikiHelperEditor extends JObservable
 		$name = JFilterInput::getInstance()->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!JFile::exists($path)) 
+		if (!JFile::exists($path))
 		{
 			JError::raiseWarning(500, JText::_('Cannot load the editor'));
 			return false;
@@ -311,7 +311,7 @@ class WikiHelperEditor extends JObservable
 
 		// Build editor plugin classname
 		$name = 'plgWiki' . $this->_name;
-		if ($this->_editor = new $name($this, (array)$plugin)) 
+		if ($this->_editor = new $name($this, (array)$plugin))
 		{
 			// Load plugin parameters
 			$this->initialise();

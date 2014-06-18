@@ -38,56 +38,56 @@ class GroupsTableLog extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id        = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $gidNumber = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $timestamp = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $userid    = NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action    = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $comments  = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $actorid   = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,23 +98,23 @@ class GroupsTableLog extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->gidNumber) == '') 
+		if (trim($this->gidNumber) == '')
 		{
 			$this->setError(JText::_('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Find all logs matching filters
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     array
 	 */
@@ -122,14 +122,14 @@ class GroupsTableLog extends JTable
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
 		$sql .= $this->_buildQuery( $filters );
-		
+
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Build query string for getting list or count of pages
-	 * 
+	 *
 	 * @param      array   $filters
 	 * @return     string
 	 */
@@ -138,30 +138,30 @@ class GroupsTableLog extends JTable
 		// var to hold conditions
 		$where = array();
 		$sql   = '';
-		
+
 		// gidnumber
 		if (isset($filters['gidNumber']))
 		{
 			$where[] = "gidNumber=" . $this->_db->quote( $filters['gidNumber'] );
 		}
-		
+
 		// action
 		if (isset($filters['action']))
 		{
 			$where[] = "action=" . $this->_db->quote( $filters['action'] );
 		}
-		
+
 		// if we have and conditions
 		if (count($where) > 0)
 		{
 			$sql = " WHERE " . implode(" AND ", $where);
 		}
-		
+
 		if (isset($filters['orderby']))
 		{
 			$sql .= " ORDER BY " . $filters['orderby'];
 		}
-		
+
 		return $sql;
 	}
 }

@@ -38,170 +38,170 @@ class ForumTablePost extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $category_id = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $title      = NULL;
 
 	/**
 	 * text
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $comment    = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
-	 * @var integer 
+	 *
+	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
-	 * @var string  
+	 *
+	 * @var string
 	 */
 	var $modified   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state      = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $sticky     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $parent     = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $hits       = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_sub_id = NULL;
 
 	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access     = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $anonymous  = NULL;
-	
+
 	/**
 	 * ID for ACL asset (J1.6+)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $last_activity = null;
-	
+
 	/**
 	 * ID for ACL asset (J1.6+)
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $asset_id = NULL;
 
 	/**
 	 * int(11)
-	 * Used to associate another object such as a 
+	 * Used to associate another object such as a
 	 * course lecture to a specific entry
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $object_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $lft = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $rgt = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $thread = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $closed = NULL;
@@ -261,7 +261,7 @@ class ForumTablePost extends JTable
 		$assetId = null;
 		$db		= $this->getDbo();
 
-		if ($assetId === null) 
+		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
 			$query	= $db->getQuery(true);
@@ -271,18 +271,18 @@ class ForumTablePost extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
+			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) 
+		if ($assetId)
 		{
 			return $assetId;
-		} 
-		else 
+		}
+		else
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
@@ -290,7 +290,7 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Load a record by its alias and bind data to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True upon success, False if errors
 	 */
@@ -302,7 +302,7 @@ class ForumTablePost extends JTable
 
 		if ($scope_id !== null)
 		{
-			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope_id'] = (int) $scope_id;
 			$fields['scope']    = (string) $scope;
 			$fields['parent']   = 0;
 		}
@@ -312,23 +312,23 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->comment = trim($this->comment);
 
-		if (!$this->comment) 
+		if (!$this->comment)
 		{
 			$this->setError(JText::_('Please provide a comment'));
 			return false;
 		}
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->title = substr(strip_tags($this->comment), 0, 70);
-			if (strlen($this->title >= 70)) 
+			if (strlen($this->title >= 70))
 			{
 				$this->title .= '...';
 			}
@@ -340,25 +340,25 @@ class ForumTablePost extends JTable
 		$this->scope_id = intval($this->scope_id);
 
 		$juser = JFactory::getUser();
-		if (!$this->id) 
+		if (!$this->id)
 		{
 			$this->created    = ($this->created && $this->created != $this->_db->getNullDate()) ? $this->created : JFactory::getDate()->toSql();
 			$this->created_by = ($this->created_by) ? $this->created_by : $juser->get('id');
-		} 
-		else 
+		}
+		else
 		{
 			$this->modified    = ($this->modified && $this->modified != $this->_db->getNullDate()) ? $this->modified : JFactory::getDate()->toSql();
 			$this->modified_by = ($this->modified_by) ? $this->modified_by : $juser->get('id');
 		}
 
-		if (!$this->parent) 
+		if (!$this->parent)
 		{
 			$this->lft = 0;
 			$this->rgt = 1;
 		}
 		else
 		{
-			if (!$this->thread) 
+			if (!$this->thread)
 			{
 				$this->thread = $this->parent;
 			}
@@ -369,14 +369,14 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
 	public function buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS c";
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
 		}
@@ -384,114 +384,114 @@ class ForumTablePost extends JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
-		//if (isset($filters['parent']) && $filters['parent'] != 0) 
-		if (isset($filters['thread']) && $filters['thread'] != 0) 
+		//if (isset($filters['parent']) && $filters['parent'] != 0)
+		if (isset($filters['thread']) && $filters['thread'] != 0)
 		{
 			//$query .= " WHERE (c.parent=" . $this->_db->Quote(intval($filters['parent'])) . " OR c.id=" . $this->_db->Quote(intval($filters['parent'])) . ")";
 			$query .= " WHERE c.thread=" . $this->_db->Quote(intval($filters['thread']));
-			if (isset($filters['state'])) 
+			if (isset($filters['state']))
 			{
 				$query .= " AND c.state=" . $this->_db->Quote(intval($filters['state']));
 			}
-			if (!isset($filters['sort']) || !$filters['sort']) 
+			if (!isset($filters['sort']) || !$filters['sort'])
 			{
 				$filters['sort'] = 'c.id';
 			}
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 			{
 				$filters['sort_Dir'] = 'ASC';
 			}
 			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		} 
-		else 
+		}
+		else
 		{
 			$where = array();
-			
-			if (isset($filters['state'])) 
+
+			if (isset($filters['state']))
 			{
 				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 			}
-			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
+			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 			{
 				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
 			}
-			if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+			if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 			{
 				$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 			}
-			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			if (isset($filters['group']) && (int) $filters['group'] >= 0)
 			{
 				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 			}
-			if (isset($filters['scope']) && (string) $filters['scope']) 
+			if (isset($filters['scope']) && (string) $filters['scope'])
 			{
 				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
 			}
-			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 			{
 				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
-			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 			{
 				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 			}
-			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
+			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
 			{
 				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 			}
-			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 			{
 				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 			}
-			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
 				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
 			//}
-			if (isset($filters['search']) && $filters['search'] != '') 
+			if (isset($filters['search']) && $filters['search'] != '')
 			{
-				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 			}
-			if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
+			if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 			{
 				$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
 			}
-			if (isset($filters['thread']) && (int) $filters['thread'] >= 0) 
+			if (isset($filters['thread']) && (int) $filters['thread'] >= 0)
 			{
 				$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
 			}
-			
+
 			if (count($where) > 0)
 			{
 				$query .= " WHERE ";
 				$query .= implode(" AND ", $where);
 			}
-			
-			//if (isset($filters['limit']) && $filters['limit'] != 0) 
-			if (!isset($filters['count']) || !$filters['count']) 
+
+			//if (isset($filters['limit']) && $filters['limit'] != 0)
+			if (!isset($filters['count']) || !$filters['count'])
 			{
-				if (isset($filters['sticky']) && $filters['sticky'] == false) 
+				if (isset($filters['sticky']) && $filters['sticky'] == false)
 				{
-					if (!isset($filters['sort']) || !$filters['sort']) 
+					if (!isset($filters['sort']) || !$filters['sort'])
 					{
 						$filters['sort'] = 'activity DESC, c.id';
 					}
-				} 
-				else 
+				}
+				else
 				{
-					if (!isset($filters['sort']) || !$filters['sort']) 
+					if (!isset($filters['sort']) || !$filters['sort'])
 					{
 						$filters['sort'] = 'c.sticky DESC, activity DESC, c.id';
 					}
 				}
-				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 				{
 					$filters['sort_Dir'] = 'DESC';
 				}
@@ -503,7 +503,7 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -520,19 +520,19 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
 		$query = "SELECT c.*";
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$query .= ", g.cn AS group_alias";
 		}
-		//if (!isset($filters['parent']) || $filters['parent'] == 0) 
-		if (!isset($filters['thread']) || $filters['thread'] == 0) 
+		//if (!isset($filters['parent']) || $filters['parent'] == 0)
+		if (!isset($filters['thread']) || $filters['thread'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
@@ -543,13 +543,13 @@ class ForumTablePost extends JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
 		$query .= $this->buildQuery($filters);
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}
@@ -560,18 +560,18 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
 	public function getLatestPosts($filters=array())
 	{
 		$query = "SELECT c.*";
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$query .= ", g.cn AS group_alias";
 		}
-		if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		if (!isset($filters['parent']) || $filters['parent'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
@@ -581,7 +581,7 @@ class ForumTablePost extends JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
@@ -590,85 +590,85 @@ class ForumTablePost extends JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
 
 			$where = array();
-			
-			if (isset($filters['state'])) 
+
+			if (isset($filters['state']))
 			{
 				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 			}
-			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
+			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 			{
 				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
 			}
-			/*if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			/*if (isset($filters['group']) && (int) $filters['group'] >= 0)
 			{
 				$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 			}*/
-			if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+			if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 			{
 				$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 			}
-			if (isset($filters['scope']) && (string) $filters['scope']) 
+			if (isset($filters['scope']) && (string) $filters['scope'])
 			{
 				$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
 			}
-			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+			if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 			{
 				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
-			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+			if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 			{
 				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 			}
-			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
+			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
 			{
 				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 			}
-			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 			{
 				$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 			}
 			//if (!isset($filters['authorized']) || !$filters['authorized']) {
 			//	$query .= "c.access=0 AND ";
 			//}
-			if (isset($filters['search']) && $filters['search'] != '') 
+			if (isset($filters['search']) && $filters['search'] != '')
 			{
-				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 			}
-			//if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
+			//if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 			//{
 				$where[] = "c.parent>0"; //. $this->_db->Quote(intval($filters['parent']));
 			//}
-			
+
 			if (count($where) > 0)
 			{
 				$query .= " WHERE ";
 				$query .= implode(" AND ", $where);
 			}
-			
-			if (isset($filters['limit']) && $filters['limit'] != 0) 
+
+			if (isset($filters['limit']) && $filters['limit'] != 0)
 			{
-				if (isset($filters['sticky']) && $filters['sticky'] == false) 
+				if (isset($filters['sticky']) && $filters['sticky'] == false)
 				{
-					if (!isset($filters['sort']) || !$filters['sort']) 
+					if (!isset($filters['sort']) || !$filters['sort'])
 					{
 						$filters['sort'] = 'activity DESC, c.id';
 					}
-					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 					{
 						$filters['sort_Dir'] = 'DESC';
 					}
 					$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-				} 
-				else 
+				}
+				else
 				{
-					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+					if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 					{
 						$filters['sort_Dir'] = 'DESC';
 					}
@@ -676,7 +676,7 @@ class ForumTablePost extends JTable
 				}
 			}
 
-		if ($filters['limit'] != 0) 
+		if ($filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
 		}
@@ -687,14 +687,14 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS c";
-		if (isset($filters['replies'])) 
+		if (isset($filters['replies']))
 		{
 			$query .= " LEFT JOIN $this->_tbl AS p ON p.id=c.parent";
 		}
@@ -703,34 +703,34 @@ class ForumTablePost extends JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
 
 		$where = array();
-		
-		if (isset($filters['replies'])) 
+
+		if (isset($filters['replies']))
 		{
 			$where[] = "c.parent != 0";
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
-		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0) 
+		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 		{
 			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
 		}
-		if (isset($filters['closed']) && (int) $filters['closed'] >= 0) 
+		if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 		{
 			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 		}
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 		}
-		if (isset($filters['scope']) && $filters['scope']) 
+		if (isset($filters['scope']) && $filters['scope'])
 		{
 			if (is_array($filters['scope']))
 			{
@@ -746,7 +746,7 @@ class ForumTablePost extends JTable
 				$where[] = "c.scope=" . $this->_db->Quote(strtolower((string) $filters['scope']));
 			}
 		}
-		if (isset($filters['scope_id'])) 
+		if (isset($filters['scope_id']))
 		{
 			if (is_array($filters['scope_id']) && count($filters['scope_id']) > 0)
 			{
@@ -759,18 +759,18 @@ class ForumTablePost extends JTable
 				$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 			}
 		}
-		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
 			$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 		}
 
-		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0) 
+		if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
 		{
 			$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
 		}
-		if (isset($filters['replies'])) 
+		if (isset($filters['replies']))
 		{
-			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
 				$where[] = "p.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 				$where[] = "c.created_by!=" . $this->_db->Quote(intval($filters['created_by']));
@@ -778,35 +778,35 @@ class ForumTablePost extends JTable
 		}
 		else
 		{
-			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0) 
+			if (isset($filters['created_by']) && (int) $filters['created_by'] >= 0)
 			{
 				$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 			}
 		}
-		
-		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+
+		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
 			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
-		if (isset($filters['parent']) && (int) $filters['parent'] >= 0) 
+		if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 		{
 			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
 		}
-		if (isset($filters['thread']) && (int) $filters['thread'] >= 0) 
+		if (isset($filters['thread']) && (int) $filters['thread'] >= 0)
 		{
 			$where[] = "c.thread=" . $this->_db->Quote(intval($filters['thread']));
 		}
-		if (isset($filters['start_at']) && $filters['start_at']) 
+		if (isset($filters['start_at']) && $filters['start_at'])
 		{
 			$where[] = "c.created >" . $this->_db->Quote($filters['start_at']);
 		}
 
-		if (isset($filters['id']) && $filters['id']) 
+		if (isset($filters['id']) && $filters['id'])
 		{
 			if (!is_array($filters['id']))
 			{
@@ -822,23 +822,23 @@ class ForumTablePost extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (!isset($filters['count']) || !$filters['count']) 
+		if (!isset($filters['count']) || !$filters['count'])
 		{
-			if (isset($filters['sticky']) && $filters['sticky'] == false) 
+			if (isset($filters['sticky']) && $filters['sticky'] == false)
 			{
-				if (!isset($filters['sort']) || !$filters['sort']) 
+				if (!isset($filters['sort']) || !$filters['sort'])
 				{
 					$filters['sort'] = 'activity DESC, c.id';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if (!isset($filters['sort']) || !$filters['sort']) 
+				if (!isset($filters['sort']) || !$filters['sort'])
 				{
 					$filters['sort'] = 'c.sticky DESC, activity DESC, c.id';
 				}
 			}
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) 
+			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 			{
 				$filters['sort_Dir'] = 'DESC';
 			}
@@ -850,7 +850,7 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
@@ -863,7 +863,7 @@ class ForumTablePost extends JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
@@ -875,14 +875,14 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
 	public function find($filters=array())
 	{
 		$query = "SELECT c.*, u.name, u.picture";
-		if (!isset($filters['parent']) || $filters['parent'] == 0) 
+		if (!isset($filters['parent']) || $filters['parent'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
 			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
@@ -893,13 +893,13 @@ class ForumTablePost extends JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
 		$query .= $this->_buildQuery($filters);
 
-		if ($filters['limit'] != 0) 
+		if ($filters['limit'] != 0)
 		{
 			if (!isset($filters['start']))
 			{
@@ -914,18 +914,18 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get a list of all participants in a thread
-	 * 
+	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
 	public function getParticipants($filters=array())
 	{
-		$query = "SELECT DISTINCT c.anonymous, c.created_by, u.name 
-					FROM $this->_tbl AS c 
-					LEFT JOIN #__users AS u ON c.created_by=u.id 
+		$query = "SELECT DISTINCT c.anonymous, c.created_by, u.name
+					FROM $this->_tbl AS c
+					LEFT JOIN #__users AS u ON c.created_by=u.id
 					WHERE ";
 
-		if (isset($filters['category_id'])) 
+		if (isset($filters['category_id']))
 		{
 			$where[] = "c.category_id = " . $this->_db->Quote($filters['category_id']);
 		}
@@ -940,17 +940,17 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Get the last post in a thread
-	 * 
+	 *
 	 * @param      integer $parent Thread ID
 	 * @return     object
 	 */
 	public function getLastPost($parent=null)
 	{
-		if (!$parent) 
+		if (!$parent)
 		{
 			$parent = $this->parent;
 		}
-		if (!$parent) 
+		if (!$parent)
 		{
 			return null;
 		}
@@ -965,10 +965,10 @@ class ForumTablePost extends JTable
 		}
 		return $obj;
 	}
-	
+
 	/**
 	 * Get the last activity for a category
-	 * 
+	 *
 	 * @param      integer $group_id    Group ID
 	 * @param      integer $category_id Category ID
 	 * @return     object
@@ -987,7 +987,7 @@ class ForumTablePost extends JTable
 		{
 			$where[] = "r.category_id=" . $this->_db->Quote($category_id);
 		}
-		if (count($where) > 0) 
+		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
@@ -1004,28 +1004,28 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Delete replies to a post
-	 * 
+	 *
 	 * @param      integer $parent Thread ID
 	 * @return     boolean True on success
 	 */
 	public function deleteReplies($parent=null)
 	{
-		if (!$parent) 
+		if (!$parent)
 		{
 			$parent = $this->parent;
 		}
-		if (!$parent) 
+		if (!$parent)
 		{
 			return null;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent=" . $this->_db->Quote($parent));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -1033,18 +1033,18 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Update all replies to a post
-	 * 
+	 *
 	 * @param      array   $data   Data to update posts with
 	 * @param      integer $parent Parent ID
 	 * @return     boolean True on success
 	 */
 	public function updateReplies($data=array(), $parent=null)
 	{
-		if (!$parent) 
+		if (!$parent)
 		{
 			$parent = $this->parent;
 		}
-		if (!$parent) 
+		if (!$parent)
 		{
 			return false;
 		}
@@ -1065,12 +1065,12 @@ class ForumTablePost extends JTable
 		$row = $this->_db->loadObject();
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET $values WHERE parent=" . $this->_db->Quote($parent) . " OR (thread=" . $this->_db->Quote($row->thread) . " AND lft > " . $this->_db->Quote($row->lft) . " AND rgt < " . $this->_db->Quote($row->rgt) . ")"); // parent=" . $this->_db->Quote($parent));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -1078,7 +1078,7 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Set a new category for all records of a previous category
-	 * 
+	 *
 	 * @param      integer $old      Old category ID
 	 * @param      integer $nw       New category ID
 	 * @param      integer $group_id Group ID
@@ -1086,22 +1086,22 @@ class ForumTablePost extends JTable
 	 */
 	public function updateCategory($old=null, $nw=null, $group_id=0, $scope='site')
 	{
-		if ($old === null) 
+		if ($old === null)
 		{
 			$old = $this->category_id;
 		}
-		if ($nw === null || $old === null) 
+		if ($nw === null || $old === null)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery("UPDATE $this->_tbl SET category_id=" . $this->_db->Quote($nw) . " WHERE category_id=" . $this->_db->Quote($old) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -1109,14 +1109,14 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Delete all records in a category
-	 * 
+	 *
 	 * @param      integer $oid Record ID
 	 * @return     boolean True on success
 	 */
 	public function deleteByCategory($oid=null)
 	{
 		$oid = intval($oid);
-		if ($oid === null) 
+		if ($oid === null)
 		{
 			return false;
 		}
@@ -1134,14 +1134,14 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Delete a record and any children
-	 * 
+	 *
 	 * @param      integer $oid Record ID
 	 * @return     boolean True on success
 	 */
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = intval($oid);
 		}
@@ -1163,39 +1163,39 @@ class ForumTablePost extends JTable
 
 	/**
 	 * Set the state of posts by the category
-	 * 
+	 *
 	 * @param      integer $cat   Category ID
 	 * @param      integer $state State to set (0, 1, 2)
 	 * @return     boolean True on success
 	 */
 	public function setStateByCategory($cat=null, $state=null)
 	{
-		if ($cat === null) 
+		if ($cat === null)
 		{
 			$cat = $this->category_id;
 		}
-		if ($state === null || $cat === null) 
+		if ($state === null || $cat === null)
 		{
 			return false;
 		}
-		
+
 		if (is_array($cat))
 		{
 			$cat = array_map('intval', $cat);
 			$cat = implode(',', $cat);
 		}
-		else 
+		else
 		{
 			$cat = intval($cat);
 		}
-		
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE category_id IN ($cat)");
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
@@ -1213,7 +1213,7 @@ class ForumTablePost extends JTable
 		$thread->load($id);
 
 		// Return the asset id.
-		if ($thread->parent) 
+		if ($thread->parent)
 		{
 			return $this->getThread($thread->parent);
 		}
@@ -1330,7 +1330,7 @@ class ForumTablePost extends JTable
 	protected function _getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
 	{
 		// Make sure the reference an object with a left and right id.
-		if (!is_object($referenceNode) && isset($referenceNode->lft) && isset($referenceNode->rgt)) 
+		if (!is_object($referenceNode) && isset($referenceNode->lft) && isset($referenceNode->rgt))
 		{
 			return false;
 		}
@@ -1422,20 +1422,20 @@ class ForumTablePost extends JTable
 
 		// Get the node and children as a tree.
 		/*$query = "SELECT COUNT(n.id)
-					FROM $this->_tbl AS n, $this->_tbl AS p 
-					WHERE n.lft BETWEEN p.lft AND p.rgt 
-					AND p." . $k . ' = ' . (int) $pk . " 
-					AND n.scope=p.scope 
-					AND n.scope_id=p.scope_id 
+					FROM $this->_tbl AS n, $this->_tbl AS p
+					WHERE n.lft BETWEEN p.lft AND p.rgt
+					AND p." . $k . ' = ' . (int) $pk . "
+					AND n.scope=p.scope
+					AND n.scope_id=p.scope_id
 					AND n.object_id=p.object_id ";*/
 		$query = "SELECT COUNT(n.id)
-					FROM $this->_tbl AS n 
+					FROM $this->_tbl AS n
 					WHERE n.thread=" . (int) $pk;
-		if (isset($filters['start_at']) && $filters['start_at']) 
+		if (isset($filters['start_at']) && $filters['start_at'])
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
@@ -1470,29 +1470,29 @@ class ForumTablePost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node and children as a tree.
-		/*$query = "SELECT n.*, 
-					0 AS replies, 
-					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports 
-					FROM $this->_tbl AS n, $this->_tbl AS p 
-					WHERE n.lft BETWEEN p.lft AND p.rgt 
-					AND p." . $k . ' = ' . (int) $pk . " 
-					AND n.scope=p.scope 
-					AND n.scope_id=p.scope_id 
+		/*$query = "SELECT n.*,
+					0 AS replies,
+					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports
+					FROM $this->_tbl AS n, $this->_tbl AS p
+					WHERE n.lft BETWEEN p.lft AND p.rgt
+					AND p." . $k . ' = ' . (int) $pk . "
+					AND n.scope=p.scope
+					AND n.scope_id=p.scope_id
 					AND n.object_id=p.object_id ";*/
-		$query = "SELECT n.*, 0 AS replies, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports 
-					FROM $this->_tbl AS n 
+		$query = "SELECT n.*, 0 AS replies, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports
+					FROM $this->_tbl AS n
 					WHERE n.thread=" . (int) $pk;
-		if (isset($filters['start_at']) && $filters['start_at']) 
+		if (isset($filters['start_at']) && $filters['start_at'])
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
 		}
-		if (isset($filters['state'])) 
+		if (isset($filters['state']))
 		{
 			$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
 		}
 		$query .= " ORDER BY n.created ASC";
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			if (!isset($filters['start']))
 			{
@@ -1577,7 +1577,7 @@ class ForumTablePost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node by primary key.
-		if (!$node = $this->_getNode($pk)) 
+		if (!$node = $this->_getNode($pk))
 		{
 			// Error message set in getNode method.
 			return false;

@@ -54,7 +54,7 @@ $type->load($this->model->resource->type);
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->resource->fulltxt, $matches, PREG_SET_ORDER);
-if (count($matches) > 0) 
+if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
@@ -69,7 +69,7 @@ $elements = new ResourcesElements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
 // Set the document description
-if ($this->model->resource->introtext) 
+if ($this->model->resource->introtext)
 {
 	$document = JFactory::getDocument();
 	$document->setDescription(strip_tags($this->model->resource->introtext));
@@ -188,7 +188,7 @@ $maintext = $this->model->description('parsed');
 
 		<?php if ($this->model->attribs->get('timeof', '')) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TIME'); ?></h4>
-			<p class="resource-content"><time><?php 
+			<p class="resource-content"><time><?php
 				// If the resource had a specific event date/time
 				if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00')
 				{
@@ -209,7 +209,7 @@ $maintext = $this->model->description('parsed');
 					$seminarTime = $this->model->attribs->get('timeof', '');
 				}
 
-				echo $this->escape($seminarTime); 
+				echo $this->escape($seminarTime);
 				?></time></p>
 		<?php } ?>
 
@@ -222,7 +222,7 @@ $maintext = $this->model->description('parsed');
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h4>
 			<div class="resource-content">
 				<span id="submitterlist">
-					<?php 
+					<?php
 					$view = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
 						'name'   => 'view',
@@ -242,7 +242,7 @@ $maintext = $this->model->description('parsed');
 			<?php if ($tags = $this->model->tags()) { ?>
 				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
-					<?php 
+					<?php
 					$tagger = new ResourcesTags($this->database);
 					echo $tagger->buildCloud($tags);
 					?>

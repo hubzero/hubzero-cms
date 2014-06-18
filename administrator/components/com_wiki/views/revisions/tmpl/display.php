@@ -5,15 +5,15 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WikiHelper::getActions('page');
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') . ': ' . JText::_('COM_WIKI_REVISIONS'), 'wiki.png');
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -22,7 +22,7 @@ JToolBarHelper::help('revisions');
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
-		
+
 		<input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" />
 		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
@@ -84,9 +84,9 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $i = 0;
-foreach ($this->rows as $row) 
+foreach ($this->rows as $row)
 {
-	switch ($row->get('approved')) 
+	switch ($row->get('approved'))
 	{
 		case '2':
 			$color_access = 'trashed';
@@ -94,7 +94,7 @@ foreach ($this->rows as $row)
 			$task = '0';
 			$alt = JText::_('COM_WIKI_STATE_TRASHED');
 		break;
-		
+
 		case '1':
 			$color_access = 'public';
 			$class = 'approved';

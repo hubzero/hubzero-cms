@@ -55,22 +55,22 @@ $this->css()
 					<?php echo JText::_('COM_STORE_RECEIVER_NAME'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
 					<input name="name" id="name" type="text" value="<?php echo (isset($this->posted['name'])) ? $this->escape($this->posted['name']) : $this->escape($this->juser->get('name')); ?>" />
 				</label>
-				
+
 				<label for="address">
 					<?php echo JText::_('COM_STORE_COMPLETE_ADDRESS'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
 					<textarea name="address" id="address" rows="10" cols="50"><?php echo (isset($this->posted['address'])) ? $this->escape($this->posted['address']) : ''; ?></textarea>
 				</label>
-				
+
 				<p class="hint"><?php echo JText::_('COM_STORE_ADDRESS_MSG'); ?></p>
-				
+
 				<label for="country">
 					<?php echo JText::_('COM_STORE_COUNTRY'); ?> <span class="required"><?php echo JText::_('COM_STORE_REQUIRED'); ?></span>
 					<select name="country" id="country">
 						<option value=""><?php echo JText::_('(select from list)'); ?></option>
-<?php 
-	
+<?php
+
 	$countries = \Hubzero\Geocode\Geocode::countries();
-	
+
 	$mycountry = (isset($this->posted['country'])) ? $this->posted['country'] : \Hubzero\Geocode\Geocode::getcountry($this->xprofile->get('countryresident'));
 	foreach ($countries as $country)
 	{
@@ -84,12 +84,12 @@ $this->css()
 			</fieldset>
 			<fieldset>
 				<legend><?php echo JText::_('COM_STORE_CONTACT_INFO'); ?></legend>
-				
+
 				<label for="phone">
 					<?php echo JText::_('COM_STORE_CONTACT_PHONE'); ?>
 					<input name="phone" id="phone" type="text" value="<?php echo (isset($this->posted['phone'])) ? $this->escape($this->posted['phone']) : $this->escape($this->juser->get('phone')); ?>" />
 				</label>
-				
+
 				<label for="email">
 					<?php echo JText::_('COM_STORE_CONTACT_EMAIL'); ?>
 					<input name="email" id="email" type="text" value="<?php echo (isset($this->posted['email'])) ? $this->escape($this->posted['email']) : $this->escape($this->juser->get('email')); ?>" />
@@ -98,7 +98,7 @@ $this->css()
 			</fieldset>
 			<fieldset>
 				<legend><?php echo JText::_('COM_STORE_ADDITIONAL_COMMENTS'); ?></legend>
-				
+
 				<label for="comments">
 					<?php echo JText::_('COM_STORE_DETAILS'); ?>
 					<textarea name="comments" id="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?></textarea>
@@ -108,7 +108,7 @@ $this->css()
 			<span class="confirm">(<?php echo JText::_('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
 		</form>
 	</div>
-	
+
 	<div id="balanceupdate">
 		<div class="order_summary">
 			<h4><span class="coin">&nbsp;</span><?php echo JText::_('COM_STORE_ORDER_SUMMARY'); ?></h4>
@@ -127,7 +127,7 @@ $this->css()
 <?php } ?>
 				<span><?php echo ($item->price*$item->quantity); ?></span>
 			</p>
-<?php 
+<?php
 	}
 ?>
 			<p><?php echo JText::_('COM_STORE_SHIPPING'); ?>: <span>0</span></p>
@@ -141,6 +141,6 @@ $this->css()
 <?php } ?>
 		<p class="sidenotes"><?php echo JText::_('COM_STORE_CONSULT'); ?> <a href="/legal/terms"><?php echo JText::_('COM_STORE_TERMS'); ?></a></p>
 	</div><!-- / #balanceupdate -->
-	
+
 	<div class="clear"></div>
 </section><!-- / .main section -->

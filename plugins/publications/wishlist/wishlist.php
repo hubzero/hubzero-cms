@@ -36,10 +36,10 @@ defined('_JEXEC') or die('Restricted access');
  */
 class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 {
-	
+
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -47,11 +47,11 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
-		
+
 		// Load plugin parameters
 		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'wishlist' );
 		$this->_params = new JParameter( $this->_plugin->params );
-		
+
 		// Get the component parameters
 		$wconfig =  JComponentHelper::getParams( 'com_wishlist' );
 		$this->config = $wconfig;
@@ -64,53 +64,53 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @param      object $publication 	Current publication
 	 * @param      string $version 		Version name
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
-	 */	
-	function &onPublicationAreas( $publication, $version = 'default', $extended = true ) 
+	 */
+	function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
-		if ($publication->_category->_params->get('plg_wishlist') && $extended) 
+		if ($publication->_category->_params->get('plg_wishlist') && $extended)
 		{
 			$areas = array(
 				'wishlist' => JText::_('Wishlist')
 			);
-		} 
-		else 
+		}
+		else
 		{
 			$areas = array();
 		}
-		
+
 		return $areas;
 	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  	$publication 	Current publication
 	 * @param      string  	$option    		Name of the component
 	 * @param      array   	$areas     		Active area(s)
 	 * @param      string  	$rtrn      		Data to be returned
 	 * @param      string 	$version 		Version name
-	 * @param      boolean 	$extended 		Whether or not to show panel	
+	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
-	 */	
+	 */
 	function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
 			'html'=>'',
 			'metadata'=>''
 		);
-		
+
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) ) 
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) )) 
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_wishlist')) 
+				if ($publication->_category->_params->get('plg_wishlist'))
 				{
 					$rtrn == 'metadata';
 				}
@@ -151,12 +151,12 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		$id = $obj->get_wishlistID($refid, $cat);
 
 		// Create a new list if necessary
-		if (!$id) 
+		if (!$id)
 		{
-			if ($publication->title && $publication->state == 1) 
+			if ($publication->title && $publication->state == 1)
 			{
 				$rtitle = isset($publication->alias) && $publication->alias
-				? JText::_('COM_WISHLIST_NAME_RESOURCE').' '.$publication->alias 
+				? JText::_('COM_WISHLIST_NAME_RESOURCE').' '.$publication->alias
 				: JText::_('COM_WISHLIST_NAME_PUB_ID').' '.$publication->id;
 				$id = $obj->createlist($cat, $refid, 1, $rtitle, $publication->title);
 			}
@@ -165,51 +165,51 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		// get wishlist data
 		$wishlist = $obj->get_wishlist($id, $refid, $cat);
 
-		if (!$wishlist) 
+		if (!$wishlist)
 		{
 			$html = '<p class="error">' . JText::_('COM_WISHLIST_ERROR_LIST_NOT_FOUND') . '</p>';
-		} 
-		else 
+		}
+		else
 		{
 			// Get list owners
 			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);
-	
+
 			// Authorize admins & list owners
-			if (!$juser->get('guest')) 
+			if (!$juser->get('guest'))
 			{
-				if ($juser->authorize($option, 'manage')) 
+				if ($juser->authorize($option, 'manage'))
 				{
 					$admin = 1;
 				}
-				if (in_array($juser->get('id'), $owners['individuals'])) 
+				if (in_array($juser->get('id'), $owners['individuals']))
 				{
 					$admin = 2;
-				} 
-				elseif (in_array($juser->get('id'), $owners['advisory'])) 
+				}
+				elseif (in_array($juser->get('id'), $owners['advisory']))
 				{
 					$admin = 3;
 				}
-			} 
-			elseif (!$wishlist->public && $rtrn != 'metadata') 
+			}
+			elseif (!$wishlist->public && $rtrn != 'metadata')
 			{
 				// not authorized
 				JError::raiseError( 403, JText::_('COM_WISHLIST_ERROR_ALERTNOTAUTH') );
 				return;
 			}
-			
+
 			$items = $objWish->get_count ($id, $filters, $admin);
-			
-			if ($rtrn != 'metadata') 
-			{				
+
+			if ($rtrn != 'metadata')
+			{
 				// Get wishes
 				$wishlist->items = $objWish->get_wishes($wishlist->id, $filters, $admin, $juser);
-				
+
 				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
-				if (count($wishlist->items) > 0 && $items > $filters['limit']) 
+				if (count($wishlist->items) > 0 && $items > $filters['limit'])
 				{
 					$title.= ' (<a href="'.JRoute::_('index.php?option='.$option.'&task=wishlist&category='. $wishlist->category.'&rid='.$wishlist->referenceid).'">'.JText::_('view all') .' '.$items.'</a>)';
-				} 
-				else 
+				}
+				else
 				{
 					$title .= ' ('.$items.')';
 				}
@@ -232,7 +232,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 				$view->filters     = $filters;
 				$view->admin       = $admin;
 				$view->config      = $this->config;
-				if ($this->getError()) 
+				if ($this->getError())
 				{
 					$view->setError( $this->getError() );
 				}
@@ -245,7 +245,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		// Build the HTML meant for the "about" tab's metadata overview
 		$metadata = '';
 
-		if ($rtrn == 'all' || $rtrn == 'metadata') 
+		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(

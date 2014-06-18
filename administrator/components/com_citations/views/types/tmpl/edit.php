@@ -35,7 +35,7 @@ $canDo = CitationsHelper::getActions('type');
 $text = ($this->task == 'edittype' ? JText::_('EDIT') : JText::_('NEW'));
 
 JToolBarHelper::title(JText::_('Citation Type') . ': ' . $text, 'citation.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -46,17 +46,17 @@ JToolBarHelper::help('type');
 $id     = NULL;
 $type   = NULL;
 $title  = NULL;
-$desc   = NULL; 
+$desc   = NULL;
 $fields = NULL;
-if ($this->type) 
+if ($this->type)
 {
 	$id     = $this->type->id;
 	$type   = $this->escape(stripslashes($this->type->type));
 	$title  = $this->escape(stripslashes($this->type->type_title));
 	$desc   = $this->escape(stripslashes($this->type->type_desc));
-	$fields = $this->escape(stripslashes($this->type->fields)); 
+	$fields = $this->escape(stripslashes($this->type->fields));
 }
- 
+
 $f = array(
 	"cite"           => 'Cite Key',
 	"ref_type"       => 'Ref Type',
@@ -97,7 +97,7 @@ $f = array(
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	return submitform(pressbutton);
 }

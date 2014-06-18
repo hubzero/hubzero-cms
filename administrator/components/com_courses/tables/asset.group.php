@@ -34,90 +34,90 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * Course asset groups table class
- * 
+ *
  */
 class CoursesTableAssetGroup extends JTable
 {
 	/**
 	 * int(11) ID, primary key for course asset grouping table
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id = NULL;
 
 	/**
 	 * int(11) Course unit id of this asset group (references #__course_units.gidNumber)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $unit_id = NULL;
 
 	/**
 	 * varchar(255) Alias
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias = NULL;
 
 	/**
 	 * varchar(255) Asset grouping title
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title = NULL;
 
 	/**
 	 * varchar(255) Asset group description
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description = NULL;
 
 	/**
 	 * int(11) Ordering
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * varchar(255) Asset group type
-	 * 
+	 *
 	 * @var string
 	 */
 	var $parent = NULL;
 
 	/**
 	 * datetime Created date for unit
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created = NULL;
 
 	/**
 	 * int(11) Who created the unit (reference #__users.id)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params = NULL;
 
 	/**
 	 * Contructor method for JTable class
-	 * 
+	 *
 	 * @param  database object
 	 * @return void
 	 */
@@ -128,20 +128,20 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Override the check function to do a little input cleanup
-	 * 
+	 *
 	 * @return return true
 	 */
 	public function check()
 	{
 		$this->unit_id = intval($this->unit_id);
-		if (!$this->unit_id) 
+		if (!$this->unit_id)
 		{
 			$this->setError(JText::_('Missing unit ID'));
 			return false;
 		}
 
 		$this->title = trim($this->title);
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Missing title'));
 			return false;
@@ -171,7 +171,7 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Get the last page in the ordering
-	 * 
+	 *
 	 * @param      string  $offering_id    Course alias (cn)
 	 * @return     integer
 	 */
@@ -184,7 +184,7 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Build query method
-	 * 
+	 *
 	 * @param  array $filters
 	 * @return $query database query
 	 */
@@ -192,7 +192,7 @@ class CoursesTableAssetGroup extends JTable
 	{
 		$query  = " FROM $this->_tbl AS cag";
 		$query .= " LEFT JOIN #__courses_offering_section_dates AS sd ON sd.scope='asset_group' AND sd.scope_id=cag.id";
-		if (isset($filters['section_id']) && $filters['section_id']) 
+		if (isset($filters['section_id']) && $filters['section_id'])
 		{
 			$query .= " AND sd.section_id=" . $this->_db->Quote($filters['section_id']);
 		}
@@ -200,25 +200,25 @@ class CoursesTableAssetGroup extends JTable
 
 		$where = array();
 
-		if (isset($filters['unit_id']) && $filters['unit_id']) 
+		if (isset($filters['unit_id']) && $filters['unit_id'])
 		{
 			$where[] = "cag.unit_id=" . $this->_db->Quote($filters['unit_id']);
 		}
-		if (isset($filters['parent'])) 
+		if (isset($filters['parent']))
 		{
 			$where[] = "cag.parent=" . $this->_db->Quote($filters['parent']);
 		}
-		if (isset($filters['alias']) && $filters['alias']) 
+		if (isset($filters['alias']) && $filters['alias'])
 		{
 			$where[] = "cag.alias=" . $this->_db->Quote($filters['alias']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0) 
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "cag.state=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['search']) && $filters['search']) 
+		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(cag.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(cag.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 					OR LOWER(cag.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
 
@@ -232,7 +232,7 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param     array $filters Filters to build query from
 	 * @return    integer
 	 */
@@ -247,7 +247,7 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Get a list of course asset groups
-	 * 
+	 *
 	 * @param     array $filters Filters to build query from
 	 * @return    array
 	 */
@@ -282,7 +282,7 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Return a unique alias based on given alias
-	 * 
+	 *
 	 * @return     integer
 	 */
 	private function makeAliasUnique()
@@ -308,14 +308,14 @@ class CoursesTableAssetGroup extends JTable
 
 	/**
 	 * Delete a record and any associated content
-	 * 
+	 *
 	 * @param      integer $oid Record ID
 	 * @return     boolean True on success
 	 */
 	/*public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = intval($oid);
 		}

@@ -34,7 +34,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_PUBLICATIONS').': [ ' . JText::_('Edit Author Info for Publication') . ' #' 
+	JToolBarHelper::title(JText::_('COM_PUBLICATIONS').': [ ' . JText::_('Edit Author Info for Publication') . ' #'
 	. $this->pub->id . ' (v.' . $this->row->version_label . ')' . ' ]', 'groups.png');
 	JToolBarHelper::save('saveauthor');
 	JToolBarHelper::cancel();
@@ -43,7 +43,7 @@ if ($tmpl != 'component')
 $name = $this->author->name ? $this->author->name : NULL;
 $name = trim($name) ? $name : $this->author->invited_name;
 
-if (trim($name)) {	
+if (trim($name)) {
 	$nameParts    = explode(" ", $name);
 	$lastname  	  = end($nameParts);
 	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
@@ -54,17 +54,17 @@ $lastname 	= $this->author->lastName ? htmlspecialchars($this->author->lastName)
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
-	
+
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-	
+
 	submitform(pressbutton);
-	
+
 	window.addEvent('domready', function(){
 		window.addEvent('keypress', function(){
 			if (window.event.keyCode == 13) {
@@ -77,8 +77,8 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller=' 
-. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option=' 
+<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
+. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
 . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('Publication') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('Edit Author Info'); ?></p>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Edit Author Information'); ?></span></legend>
-			
+
 			<input type="hidden" name="author" value="<?php echo $this->author->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
@@ -119,7 +119,7 @@ function submitbutton(pressbutton)
 						<td>
 							<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
 						</td>
-					</tr>					
+					</tr>
 				</tbody>
 			</table>
 		</fieldset>

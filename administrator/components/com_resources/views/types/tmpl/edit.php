@@ -41,7 +41,7 @@ $canDo = ResourcesHelperPermissions::getActions('type');
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
 
 JToolBarHelper::title(JText::_('Resource Type') . ': ' . $text, 'addedit.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
 }
@@ -58,15 +58,15 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 $params = new $paramsClass($this->row->params);
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
-	
+
 	if (pressbutton == 'canceltype') {
 		submitform( pressbutton );
 		return;
 	}
-	
+
 	// form field validation
 	if (form.title.value == '') {
 		alert( 'Type must have a title' );
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 <?php } ?>
 		<div class="input-wrap">
 			<label for="field-description"><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label><br />
-			<?php 
+			<?php
 				$editor = JFactory::getEditor();
 				echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
 			?>
@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</thead>
 				<tbody>
-				<?php 
+				<?php
 				$database = JFactory::getDBO();
 				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='resources'" );
 				$plugins = $database->loadObjectList();
@@ -192,7 +192,7 @@ function submitbutton(pressbutton)
 					</tr>
 				</tfoot>
 				<tbody id="field-items">
-				<?php 
+				<?php
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 				$elements = new ResourcesElements('', $this->row->customFields);
 				$schema = $elements->getSchema();
@@ -271,7 +271,7 @@ function submitbutton(pressbutton)
 				if (!jq) {
 					var jq = $;
 				}
-				
+
 				var Fields = {
 					isIE8: function() {
 						var rv = -1,
@@ -290,10 +290,10 @@ function submitbutton(pressbutton)
 							replaceme = null;
 
 						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++) 
+						for (var i=0;i<newField.length;i++)
 						{
 							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++) 
+							for (var k=0;k<inputs.length;k++)
 							{
 								var theName = inputs[k].name;
 								if (theName) {
@@ -327,7 +327,7 @@ function submitbutton(pressbutton)
 
 						// Make a clone of the clone. Why? Because IE 8 is dumb.
 						// IE still retains a reference to the original object for change events
-						// So, when calling onChange, the event gets fired for the clone AND the 
+						// So, when calling onChange, the event gets fired for the clone AND the
 						// original. Cloning the clone seems to fix this.
 						if (replaceme) {
 							var replace = jq(replaceme);
@@ -348,10 +348,10 @@ function submitbutton(pressbutton)
 						var newNode = tbody.rows[0].cloneNode(true);
 
 						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++) 
+						for (var i=0;i<newField.length;i++)
 						{
 							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++) 
+							for (var k=0;k<inputs.length;k++)
 							{
 								var theName = inputs[k].name;
 								if (theName) {

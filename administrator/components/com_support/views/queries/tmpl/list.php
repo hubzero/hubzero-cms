@@ -33,9 +33,9 @@ if ($this->getError()) { ?>
 	<li class="error">Error: <?php echo $this->getError(); ?></li>
 <?php } ?>
 <?php
-	if ($this->queries) 
+	if ($this->queries)
 	{
-		foreach ($this->queries as $query) 
+		foreach ($this->queries as $query)
 		{
 ?>
 	<li<?php if (intval($this->show) == $query->id) { echo ' class="active"'; }?>>

@@ -40,7 +40,7 @@ class BlogModelTags extends TagsModelCloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'blog';

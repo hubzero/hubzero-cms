@@ -44,7 +44,7 @@ JToolBarHelper::deleteList();
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -83,7 +83,7 @@ function submitbutton(pressbutton)
 								</span>
 							</td>
 							<td>
-								<?php 
+								<?php
 									if ($import->get('count'))
 									{
 										echo number_format($this->escape($import->get('count')));
@@ -92,7 +92,7 @@ function submitbutton(pressbutton)
 							</td>
 							<td>
 								<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
-								<?php 
+								<?php
 									$created_on = JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a');
 									echo $created_on . '<br />';
 								?>
@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 								?>
 							</td>
 							<td>
-								<?php 
+								<?php
 									$lastRun = $import->runs('list', array(
 										'import' => $import->get('id'),
 										'dry_run' => 0,
@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 								?>
 								<?php if ($lastRun) : ?>
 									<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
-									<?php 
+									<?php
 										$created_on = JHTML::_('date', $lastRun->get('ran_at'), 'm/d/Y @ g:i a');
 										echo $created_on . '<br />';
 									?>
@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 								<?php endif; ?>
 							</td>
 							<td>
-								<?php 
+								<?php
 									$runs = $import->runs('list', array(
 										'import' => $import->get('id'),
 										'dry_run' => 0

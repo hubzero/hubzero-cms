@@ -38,91 +38,91 @@ class Store extends  JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         	= NULL;
 
 	/**
 	 * varchar(127)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title    		= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $price    		= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description    = NULL;
 
 	/**
 	 * int(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $available    	= NULL;
 
 	/**
 	 * tinyint(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $published   	= NULL;
 
 	/**
 	 * tinyint(1)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $featured   	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $special   		= NULL;
 
 	/**
 	 * varchar(127)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category   	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $type   		= NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created  		= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $params 		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -133,13 +133,13 @@ class Store extends  JTable
 
 	/**
 	 * Get a record
-	 * 
-	 * @param      integer $id 
+	 *
+	 * @param      integer $id
 	 * @return     mixed Return description (if any) ...
 	 */
 	public function getInfo($id)
 	{
-		if ($id == null) 
+		if ($id == null)
 		{
 			return false;
 		}
@@ -151,7 +151,7 @@ class Store extends  JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      string $rtrn    Return data (record count or array or records)
 	 * @param      array  $filters Filters to build query from
 	 * @param      object $config  JParameter
@@ -162,7 +162,7 @@ class Store extends  JTable
 		// build body of query
 		$query  = "FROM $this->_tbl AS C WHERE ";
 
-		if (isset($filters['filterby'])) 
+		if (isset($filters['filterby']))
 		{
 			switch ($filters['filterby'])
 			{
@@ -179,8 +179,8 @@ class Store extends  JTable
 					$query .= "C.published=1";
 				break;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$query .= "C.published=1";
 		}
@@ -199,26 +199,26 @@ class Store extends  JTable
 		$query_count  = "SELECT count(*) ";
 
 		// build fetch query
-		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available, 
+		$query_fetch  = "SELECT C.id, C.title, C.description, C.price, C.created, C.available,
 						C.params, C.special, C.featured, C.category, C.type, C.published ";
 		$query_fetch .= $query;
-		if ($filters['limit'] && $filters['start']) 
+		if ($filters['limit'] && $filters['start'])
 		{
 			$query_fetch .= " LIMIT " . $start . ", " . $limit;
 		}
 
 		// execute query
 		$result = NULL;
-		if ($rtrn == 'count') 
+		if ($rtrn == 'count')
 		{
 			$this->_db->setQuery($query_count);
 			$result = $this->_db->loadResult();
-		} 
-		else 
+		}
+		else
 		{
 			$this->_db->setQuery($query_fetch);
 			$result = $this->_db->loadObjectList();
-			if ($result) 
+			if ($result)
 			{
 				$paramsClass = 'JParameter';
 				if (version_compare(JVERSION, '1.6', 'ge'))

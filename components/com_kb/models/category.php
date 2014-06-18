@@ -41,49 +41,49 @@ class KbModelCategory extends \Hubzero\Base\Model
 {
 	/**
 	 * Table class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'KbTableCategory';
 
 	/**
 	 * KbModelCategory
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_parent = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_children = null;
 
 	/**
 	 * child category count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_children_count = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_articles = null;
 
 	/**
 	 * Article count
-	 * 
+	 *
 	 * @var integer
 	 */
 	private $_articles_count = null;
 
 	/**
 	 * Base URL
-	 * 
+	 *
 	 * @var string
 	 */
 	private $_base = 'index.php?option=com_kb';
@@ -101,12 +101,12 @@ class KbModelCategory extends \Hubzero\Base\Model
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
 
-		if (!isset($instances[$oid])) 
+		if (!isset($instances[$oid]))
 		{
 			$instances[$oid] = new KbModelCategory($oid);
 		}
@@ -116,7 +116,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list of articles
-	 * 
+	 *
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
@@ -148,7 +148,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 		{
 			$filters['state']    = self::APP_STATE_PUBLISHED;
 		}
-		
+
 		if (!isset($filters['sort']))
 		{
 			$filters['sort'] = 'title';
@@ -193,7 +193,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 
 	/**
 	 * Get a list of responses
-	 * 
+	 *
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
@@ -262,7 +262,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 
 	/**
 	 * Get parent section
-	 * 
+	 *
 	 * @return     object KbModelCategory
 	 */
 	public function parent()
@@ -277,7 +277,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 * 
+	 *
 	 * @param      string $type The type of link to return
 	 * @return     boolean
 	 */
@@ -327,7 +327,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}

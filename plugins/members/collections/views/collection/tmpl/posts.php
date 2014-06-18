@@ -171,14 +171,14 @@ $this->css()
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-						</a> 
-						onto 
+						</a>
+						onto
 						<a href="<?php echo JRoute::_($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span> 
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
 							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 						</span>
 					</p>
@@ -192,14 +192,14 @@ $this->css()
 					<p>
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
 							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-						</a> 
-						onto 
+						</a>
+						onto
 						<a href="<?php echo JRoute::_($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 						<br />
 						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> 
+							<span class="entry-date-at">@</span> <span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
 							<span class="entry-date-on">on</span> <span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date') ?></time></span>
 						</span>
 					</p>

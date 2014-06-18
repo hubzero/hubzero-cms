@@ -35,71 +35,71 @@ class NewsletterTemplate extends JTable
 {
 	/**
 	 * Template ID
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id 					= NULL;
-	
+
 	/**
 	 * Template Editable
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $editable 				= NULL;
-	
+
 	/**
 	 * Template Name
-	 * 
+	 *
 	 * @var varchar(100)
 	 */
 	var $name					= NULL;
-	
+
 	/**
 	 * Template Content
-	 * 
+	 *
 	 * @var text
 	 */
 	var $template 				= NULL;
-	
+
 	/**
 	 * Template Primary Story Title Color
-	 * 
+	 *
 	 * @var text
 	 */
 	var $primary_title_color 	= NULL;
-	
+
 	/**
 	 * Template Primary Story Text Color
-	 * 
+	 *
 	 * @var text
 	 */
 	var $primary_text_color 	= NULL;
-	
+
 	/**
 	 * Template Secondary Story Title Color
-	 * 
+	 *
 	 * @var text
 	 */
 	var $secondary_title_color 	= NULL;
-	
+
 	/**
 	 * Template Secondary Story Text Color
-	 * 
+	 *
 	 * @var text
 	 */
 	var $secondary_text_color 	= NULL;
-	
+
 	/**
 	 * Template Deleted?
-	 * 
+	 *
 	 * @var text
 	 */
 	var $deleted 				= NULL;
-	
-	
+
+
 	/**
 	 * Newsletter Template object constructor
-	 * 
+	 *
 	 * @param 	$db		Database Object
 	 * @return 	void
 	 */
@@ -107,74 +107,74 @@ class NewsletterTemplate extends JTable
 	{
 		parent::__construct( '#__newsletter_templates', 'id', $db );
 	}
-	
-	
+
+
 	/**
 	 * Save Check
-	 * 
+	 *
 	 * @return 	void
 	 */
 	public function check()
 	{
 		//regex for validating hex color codes
 		$hexcodeRegex = '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/';
-		
+
 		//make sure we have a name
 		if (!$this->name || $this->name == '')
 		{
 			$this->setError('Template name is required.');
 			return false;
 		}
-		
+
 		//make sure we have not used a reserved name
 		if ($this->name == 'Default HTML Email Template' || $this->name == 'Default Plain Text Email Template')
 		{
 			$this->setError('The template name you entered is a reserved template name.');
 			return false;
 		}
-		
+
 		//check to make sure hex codes are formated
 		if ($this->primary_title_color != '' && !preg_match($hexcodeRegex, $this->primary_title_color))
 		{
 			$this->setError('Your primary title color code is not formatted correctly.');
 			return false;
 		}
-		
+
 		//check to make sure hex codes are formated
 		if ($this->primary_text_color != '' && !preg_match($hexcodeRegex, $this->primary_text_color))
 		{
 			$this->setError('Your primary text color code is not formatted correctly.');
 			return false;
 		}
-		
+
 		//check to make sure hex codes are formated
 		if ($this->secondary_title_color != '' && !preg_match($hexcodeRegex, $this->secondary_title_color))
 		{
 			$this->setError('Your secondary title color code is not formatted correctly.');
 			return false;
 		}
-		
+
 		//check to make sure hex codes are formated
 		if ($this->secondary_text_color != '' && !preg_match($hexcodeRegex, $this->secondary_text_color))
 		{
 			$this->setError('Your secondary text color code is not formatted correctly.');
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Get Templates
-	 * 
+	 *
 	 * @param 	int	$id		Id of template to load
 	 * @return 	object		Template
 	 */
 	public function getTemplates( $id = null )
 	{
 		$sql = "SELECT * FROM {$this->_tbl} WHERE deleted=0";
-		
+
 		if ($id)
 		{
 			$sql .= " AND id=".$id;
@@ -187,6 +187,6 @@ class NewsletterTemplate extends JTable
 			$this->_db->setQuery($sql);
 			return $this->_db->loadObjectList();
 		}
-		
+
 	}
 }

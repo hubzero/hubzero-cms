@@ -38,7 +38,7 @@ class modDashboard extends \Hubzero\Module\Module
 {
 	/**
 	 * Output module TML
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function display()
@@ -54,7 +54,7 @@ class modDashboard extends \Hubzero\Module\Module
 		$threemonths 	= JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
 		$onemonth 		= JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
 
-		if ($banking && JComponentHelper::isEnabled('com_store')) 
+		if ($banking && JComponentHelper::isEnabled('com_store'))
 		{
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
@@ -65,7 +65,7 @@ class modDashboard extends \Hubzero\Module\Module
 		/*$sql = "SELECT count(*) FROM #__support_tickets WHERE status=1 AND created < '".$threemonths."' AND section!=2 AND type=0";
 		$database->setQuery($sql);
 		$oldtickets = $database->loadResult();
-		
+
 		// get unassigned support tickets
 		$sql = "SELECT count(*) FROM #__support_tickets WHERE status=0 AND section!=2 AND type=0 AND (owner is NULL OR owner='') AND report != ''";
 		$database->setQuery($sql);
@@ -98,7 +98,7 @@ class modDashboard extends \Hubzero\Module\Module
 		$database->setQuery( "SELECT c.extension_id FROM #__extensions as c WHERE c.element='com_wishlist' AND type='component' AND enabled=1" );
 		$found = $database->loadResult();
 
-		if ($found) 
+		if ($found)
 		{
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php');
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php');
@@ -113,7 +113,7 @@ class modDashboard extends \Hubzero\Module\Module
 
 			// Check if main wishlist exists, create one if missing
 			$mainlist = $obj->get_wishlistID(1, 'general');
-			if (!$mainlist) 
+			if (!$mainlist)
 			{
 				$mainlist = $obj->createlist('general', 1);
 			}

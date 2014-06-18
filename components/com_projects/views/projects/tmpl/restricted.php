@@ -40,7 +40,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	<div class="clear"></div>
 
 	<div class="status-msg">
-		<?php 
+		<?php
 		// Display error or success message
 		if ($this->getError())
 		{

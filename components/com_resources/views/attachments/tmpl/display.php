@@ -60,7 +60,7 @@ $this->css('create.css')
 		<?php
 		$out = '';
 		// loop through children and build list
-		if ($this->children) 
+		if ($this->children)
 		{
 			$base = $this->config->get('uploadpath');
 
@@ -81,12 +81,12 @@ $this->css('create.css')
 				switch ($child->type)
 				{
 					case 12:
-						if ($child->path) 
+						if ($child->path)
 						{
 							// internal link, not a resource
 							$url = $child->path;
-						} 
-						else 
+						}
+						else
 						{
 							// internal link but a resource
 							$url = '/index.php?option=com_resources&id=' . $child->id;
@@ -99,14 +99,14 @@ $this->css('create.css')
 
 				// figure out the file type so we can give it the appropriate CSS class
 				$type = JFile::getExt($url);
-				if (!$child->type != 12 && $child->type != 11) 
+				if (!$child->type != 12 && $child->type != 11)
 				{
 					$type = ($type) ? $type : 'html';
 				}
 
 				$isFile = true;
-				if (($child->type == 12 || $child->type == 11) 
-				 || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml')) 
+				if (($child->type == 12 || $child->type == 11)
+				 || in_array($type, array('html', 'htm', 'php', 'asp', 'shtml'))
 				 || strstr($url, '?'))
 				{
 					$isFile = false;
@@ -116,7 +116,7 @@ $this->css('create.css')
 					<td width="100%">
 						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>">
 							<?php echo $this->escape($child->title); ?>
-						</span> 
+						</span>
 						<?php echo ($isFile) ? ResourcesHtml::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
 					</td>
 					<td class="u">

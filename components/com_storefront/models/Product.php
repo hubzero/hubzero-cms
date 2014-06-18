@@ -37,19 +37,19 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
 /**
  *
  * Storefront product class
- * 
+ *
  */
 class StorefrontModelProduct
-{	
+{
 	// Product data container
 	var $data;
-	
+
 	// Product SKUs
 	var $skus = array();
-	
+
 	/**
 	 * Contructor
-	 * 
+	 *
 	 * @param  void
 	 * @return void
 	 */
@@ -58,10 +58,10 @@ class StorefrontModelProduct
 		// Load language file
 		JFactory::getLanguage()->load('com_storefront');
 	}
-	
+
 	/**
 	 * Set product type
-	 * 
+	 *
 	 * @param	string		Product type
 	 * @return	bool		true on success, exception otherwise
 	 */
@@ -72,8 +72,8 @@ class StorefrontModelProduct
 			$this->data->type = $productType;
 			return true;
 		}
-		
-		switch (strtolower($productType)) 
+
+		switch (strtolower($productType))
 		{
 			case 'course':
 				$this->data->type = 20;
@@ -84,13 +84,13 @@ class StorefrontModelProduct
 				return true;
 				break;
 		}
-		
+
 		throw new Exception(JText::_('COM_STOREFRONT_INVALID_PRODUCT_TYPE'));
 	}
-	
+
 	/**
 	 * Get product type
-	 * 
+	 *
 	 * @param	void
 	 * @return	int		Product type
 	 */
@@ -98,73 +98,73 @@ class StorefrontModelProduct
 	{
 		return $this->data->type;
 	}
-	
+
 	/**
 	 * add product to collection
-	 * 
+	 *
 	 * @param	int		collection ID
 	 * @return	bool	true
 	 */
 	public function addToCollection($cId)
 	{
-		$this->data->collections[] = $cId;	
+		$this->data->collections[] = $cId;
 		return true;
 	}
-	
+
 	/**
 	 * Get product collections
-	 * 
+	 *
 	 * @param	void
 	 * @return	array		collection IDs
 	 */
 	public function getCollections()
 	{
-		return $this->data->collections;	
+		return $this->data->collections;
 	}
-	
+
 	public function addSku($sku)
 	{
 		if (!($sku instanceof StorefrontModelSku))
 		{
-			throw new Exception(JText::_('Bad SKU. Unable to add.'));	
-		}		
-		
+			throw new Exception(JText::_('Bad SKU. Unable to add.'));
+		}
+
 		$sku->verify();
-		
+
 		$this->skus[] = $sku;
 	}
-	
+
 	/**
 	 * Sets a new SKU for the product, used by single SKU products
-	 * 
+	 *
 	 * @param	StorefrontModelSku
 	 * @return	void
 	 */
-	protected function setSku($sku) 
-	{		
+	protected function setSku($sku)
+	{
 		if (!($sku instanceof StorefrontModelSku))
 		{
-			throw new Exception(JText::_('Bad SKU. Unable to add.'));	
-		}		
-				
+			throw new Exception(JText::_('Bad SKU. Unable to add.'));
+		}
+
 		// Overwrite the existing SKU(s)
 		$this->skus = array($sku);
 	}
-	
+
 	/**
 	 * Get product skus
-	 * 
+	 *
 	 * @param	void
 	 * @return	array		product SKUs
 	 */
 	public function getSkus()
-	{		
-		return $this->skus;	
+	{
+		return $this->skus;
 	}
-	
+
 	/**
 	 * Set product id (used to update product or to create a product with given ID)
-	 * 
+	 *
 	 * @param	int			product ID
 	 * @return	bool		true
 	 */
@@ -173,10 +173,10 @@ class StorefrontModelProduct
 		$this->data->id = $pId;
 		return true;
 	}
-	
+
 	/**
 	 * Get product id (if set)
-	 * 
+	 *
 	 * @param	void
 	 * @return	int		product ID
 	 */
@@ -188,10 +188,10 @@ class StorefrontModelProduct
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Set product name
-	 * 
+	 *
 	 * @param	string		Product name
 	 * @return	bool		true
 	 */
@@ -200,10 +200,10 @@ class StorefrontModelProduct
 		$this->data->name = $productName;
 		return true;
 	}
-	
+
 	/**
 	 * Get product name
-	 * 
+	 *
 	 * @param	void
 	 * @return	string		Product name
 	 */
@@ -211,10 +211,10 @@ class StorefrontModelProduct
 	{
 		return $this->data->name;
 	}
-	
+
 	/**
 	 * Set product description
-	 * 
+	 *
 	 * @param	string		Product description
 	 * @return	bool		true
 	 */
@@ -223,10 +223,10 @@ class StorefrontModelProduct
 		$this->data->description = $productDescription;
 		return true;
 	}
-	
+
 	/**
 	 * Get product description
-	 * 
+	 *
 	 * @param	void
 	 * @return	string		Product description
 	 */
@@ -234,10 +234,10 @@ class StorefrontModelProduct
 	{
 		return $this->data->description;
 	}
-	
+
 	/**
 	 * Set product tagline
-	 * 
+	 *
 	 * @param	string		Product tagline
 	 * @return	bool		true
 	 */
@@ -246,10 +246,10 @@ class StorefrontModelProduct
 		$this->data->tagline = $productTagline;
 		return true;
 	}
-	
+
 	/**
 	 * Get product tagline
-	 * 
+	 *
 	 * @param	void
 	 * @return	string		Product tagline
 	 */
@@ -257,14 +257,14 @@ class StorefrontModelProduct
 	{
 		if (empty($this->data->tagline))
 		{
-			return NULL;	
+			return NULL;
 		}
 		return $this->data->tagline;
 	}
-	
+
 	/**
 	 * Set product active status
-	 * 
+	 *
 	 * @param	bool		Product status
 	 * @return	bool		true
 	 */
@@ -274,16 +274,16 @@ class StorefrontModelProduct
 		{
 			$this->data->activeStatus = 1;
 		}
-		else 
+		else
 		{
 			$this->data->activeStatus = 0;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Get product active status
-	 * 
+	 *
 	 * @param	void
 	 * @return	bool		Product status
 	 */
@@ -295,65 +295,65 @@ class StorefrontModelProduct
 		}
 		return $this->data->activeStatus;
 	}
-	
+
 	/**
 	 * Check if everything checks out and the product is ready to go
-	 * 
+	 *
 	 * @param  void
 	 * @return bool		true on sucess, throws exception on failure
 	 */
 	public function verify()
-	{		
+	{
 		if (empty($this->data->name))
 		{
-			throw new Exception(JText::_('No product name set'));	
+			throw new Exception(JText::_('No product name set'));
 		}
 		if (empty($this->data->description))
 		{
-			//throw new Exception(JText::_('No product description set'));	
+			//throw new Exception(JText::_('No product description set'));
 		}
-		
+
 		foreach ($this->skus as $sku)
 		{
 			$sku->verify();
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Add product to the warehouse
-	 * 
+	 *
 	 * @param  void
 	 * @return object	info
 	 */
 	public function add()
 	{
 		$this->verify();
-		
+
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
-		
+
 		return($warehouse->addProduct($this));
 	}
-	
+
 	/**
 	 * Update product info
-	 * 
+	 *
 	 * @param  void
 	 * @return object	info
 	 */
 	public function update()
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();		
-		
+		$warehouse = new StorefrontModelWarehouse();
+
 		return($warehouse->updateProduct($this));
 	}
-		
+
 	/**
 	 * Debug
-	 * 
+	 *
 	 * @param	void
 	 * @return	void
 	 */
@@ -362,9 +362,9 @@ class StorefrontModelProduct
 		echo "\n\n<br><br>";
 		print_r($this->data);
 		echo "\n\n<br><br>";
-		
+
 		print_r($this->skus);
-		echo "\n\n<br><br>";		
+		echo "\n\n<br><br>";
 	}
-	
+
 }

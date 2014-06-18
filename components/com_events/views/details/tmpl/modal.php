@@ -51,7 +51,7 @@ $juser = JFactory::getUser();
 			</li>
 		<?php
 		if ($this->pages) {
-			foreach ($this->pages as $p) 
+			foreach ($this->pages as $p)
 			{
 		?>
 			<li<?php if ($this->page->alias == $p->alias) { echo ' class="active"'; } ?>>
@@ -59,7 +59,7 @@ $juser = JFactory::getUser();
 					<span><?php echo trim(stripslashes($p->title)); ?></span>
 				</a>
 			</li>
-		<?php 
+		<?php
 			}
 		}
 		?>
@@ -87,12 +87,12 @@ $juser = JFactory::getUser();
 			<p class="entry-description">
 				<?php echo stripslashes($this->row->content); ?>
 			</p>
-<?php 
-	if ($this->fields) { 
-		foreach ($this->fields as $field) 
+<?php
+	if ($this->fields) {
+		foreach ($this->fields as $field)
 		{
 			if (end($field) != NULL) {
-				if (end($field) == '1') { 
+				if (end($field) == '1') {
 ?>
 			<h3><?php echo $this->escape(stripslashes($field[1])); ?></h3>
 			<p><?php echo JText::_('YES'); ?></p>
@@ -103,7 +103,7 @@ $juser = JFactory::getUser();
 				}
 			}
 		}
-	} 
+	}
 ?>
 		</div>
 <?php if ($this->tags) { ?>
@@ -124,7 +124,7 @@ $juser = JFactory::getUser();
 		<div class="container">
 			<h3><?php echo JText::_('EVENTS_CAL_LANG_EVENT_WHEN'); ?></h3>
 			<p class="entry-datetime">
-<?php 
+<?php
 		$ts = explode(':', $this->row->start_time);
 		//$ts[0] = intval($ts[0]);
 		if (intval($ts[0]) > 12) {

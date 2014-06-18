@@ -38,19 +38,19 @@ class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Flag for if scripts need to be pushed to the document or not
-	 * 
+	 *
 	 * @var boolean
 	 */
 	private $_pushscripts = true;
 
 	/**
 	 * Initiate the editor. Push scripts to document if needed
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function onInitEditor()
 	{
-		if ($this->_pushscripts) 
+		if ($this->_pushscripts)
 		{
 			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
 			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name);
@@ -63,7 +63,7 @@ class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Display a wiki editor
-	 * 
+	 *
 	 * @param      string  $name    Name of field
 	 * @param      string  $id      ID for field
 	 * @param      string  $content Field content

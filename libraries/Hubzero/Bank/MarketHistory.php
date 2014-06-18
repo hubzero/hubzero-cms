@@ -38,56 +38,56 @@ class MarketHistory extends \JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id          	= NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $itemid      	= NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $category    	= NULL;
 
 	/**
 	 * decimal(11,2)
-	 * 
+	 *
 	 * @var number
 	 */
 	var $market_value	= NULL;
 
 	/**
 	 * datetime
-	 * 
+	 *
 	 * @var string
 	 */
 	var $date      		= NULL;
 
 	/**
 	 * varchar(50)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $action	 		= NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $log    		= NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -98,20 +98,20 @@ class MarketHistory extends \JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->itemid = intval($this->itemid);
-		if (!$this->itemid) 
+		if (!$this->itemid)
 		{
 			$this->setError(\JText::_('Entry must have an item ID.'));
 			return false;
 		}
 
 		$this->category = trim($this->category);
-		if (!$this->category) 
+		if (!$this->category)
 		{
 			$this->setError(\JText::_('Entry must have a category.'));
 			return false;
@@ -127,7 +127,7 @@ class MarketHistory extends \JTable
 
 	/**
 	 * Get the ID of a record matching the data passed
-	 * 
+	 *
 	 * @param      mixed  $itemid   Integer
 	 * @param      string $action   Transaction type
 	 * @param      string $category Transaction category
@@ -137,15 +137,15 @@ class MarketHistory extends \JTable
 	 */
 	public function getRecord($itemid=0, $action='', $category='', $created='', $log = '')
 	{
-		if ($itemid === NULL) 
+		if ($itemid === NULL)
 		{
 			$itemid = $this->itemid;
 		}
-		if ($action === NULL) 
+		if ($action === NULL)
 		{
 			$action = $this->action;
 		}
-		if ($category === NULL) 
+		if ($category === NULL)
 		{
 			$category = $this->category;
 		}
@@ -153,23 +153,23 @@ class MarketHistory extends \JTable
 		$sql = "SELECT id FROM $this->_tbl";
 
 		$where = array();
-		if ($itemid) 
+		if ($itemid)
 		{
 			$where[] = "itemid=" . $this->_db->Quote($itemid);
 		}
-		if ($action) 
+		if ($action)
 		{
 			$where[] = "action=" . $this->_db->Quote($action);
 		}
-		if ($category) 
+		if ($category)
 		{
 			$where[] = "category=" . $this->_db->Quote($category);
 		}
-		if ($created) 
+		if ($created)
 		{
 			$where[] = "`date` LIKE '" . $created . "%'";
 		}
-		if ($log) 
+		if ($log)
 		{
 			$where[] = "log=" . $this->_db->Quote($log);
 		}

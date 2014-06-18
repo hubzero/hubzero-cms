@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'DocumentMetadata'
- * 
+ *
  * Long description (if any) ...
  */
 abstract class DocumentMetadata
@@ -41,7 +41,7 @@ abstract class DocumentMetadata
 
 	/**
 	 * Description for 'stop_words'
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $stop_words = array(
@@ -77,9 +77,9 @@ abstract class DocumentMetadata
 
 	/**
 	 * Short description for 'is_stop_word'
-	 * 
+	 *
 	 * Long description (if any) ...
-	 * 
+	 *
 	 * @param      unknown $word Parameter description (if any) ...
 	 * @return     array Return description (if any) ...
 	 */

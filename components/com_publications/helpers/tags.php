@@ -40,7 +40,7 @@ class PublicationTags extends TagsHandler
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object $db     JDatabase
 	 * @param      array  $config Optional configurations
 	 * @return     void
@@ -53,7 +53,7 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Get tags on a publication
-	 * 
+	 *
 	 * @param      integer $id        Resource ID
 	 * @param      integer $tagger_id Tagger ID
 	 * @param      integer $strength  Tag strength
@@ -68,15 +68,15 @@ class PublicationTags extends TagsHandler
 		$where[] = "rt.objectid=$id";
 		$where[] = "rt.tbl='$this->_tbl'";
 		$where[] = "rt.tagid=t.id";
-		if ($admin != 1) 
+		if ($admin != 1)
 		{
 			$where[] = "t.admin=0";
 		}
-		if ($tagger_id != 0) 
+		if ($tagger_id != 0)
 		{
 			$where[] = "rt.taggerid=" . $tagger_id;
 		}
-		if ($strength) 
+		if ($strength)
 		{
 			$where[] = "rt.strength=" . $strength;
 		}
@@ -89,7 +89,7 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Get all tags with a publication association
-	 * 
+	 *
 	 * @param      integer $id   Publication ID
 	 * @param      integer $cat	 Publication category (optional)
 	 * @param      string  $tag  Parameter description (if any) ...
@@ -100,12 +100,12 @@ class PublicationTags extends TagsHandler
 		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 
-		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t, 
+		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t,
 			$this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
 		$objs = $this->_db->loadObjectList();
 
 		$ids = '';
-		if ($objs) 
+		if ($objs)
 		{
 			$s = array();
 			foreach ($objs as $obj)
@@ -115,30 +115,30 @@ class PublicationTags extends TagsHandler
 			$ids = implode(',', $s);
 		}
 
-		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids 
+		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
 				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__publications AS r
 				JOIN #__publication_versions as V ON V.publication_id = r.id AND V.main = 1
-				WHERE o.tbl='$this->_tbl' 
-				AND o.tagid=t.id 
-				AND t.admin=0 
-				AND o.objectid=r.id 
-				AND V.state=1 
-				AND (V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now') 
+				WHERE o.tbl='$this->_tbl'
+				AND o.tagid=t.id
+				AND t.admin=0
+				AND o.objectid=r.id
+				AND V.state=1
+				AND (V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
 				AND (V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
-		if ($category) 
+		if ($category)
 		{
 			$sql .= "AND r.category=" . $category . " ";
 		}
 
-		if (!$juser->get('guest')) 
+		if (!$juser->get('guest'))
 		{
 			$sql .= "AND (V.access=0 OR V.access=1 OR V.access=2) ";
-		} 
-		else 
+		}
+		else
 		{
 			$sql .= "AND (V.access=0 OR V.access=2) ";
 		}
-		if ($ids) 
+		if ($ids)
 		{
 			$sql .= "AND o.objectid IN ($ids) ";
 		}
@@ -148,19 +148,19 @@ class PublicationTags extends TagsHandler
 		$results = $this->_db->loadObjectList();
 
 		$rows = array();
-		if ($results) 
+		if ($results)
 		{
 			foreach ($results as $result)
 			{
-				if (!isset($rows[$result->id])) 
+				if (!isset($rows[$result->id]))
 				{
 					$rows[$result->id] = $result;
 					$rows[$result->id]->ucount++;
 					$rows[$result->id]->rids = array($result->rid);
-				} 
-				else 
+				}
+				else
 				{
-					if (!in_array($result->rid, $rows[$result->id]->rids)) 
+					if (!in_array($result->rid, $rows[$result->id]->rids))
 					{
 						$rows[$result->id]->ucount++;
 						$rows[$result->id]->rids[] = $result->rid;
@@ -173,18 +173,18 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Push group alias into array for easier searching
-	 * 
+	 *
 	 * @param      array $groups User's gorups
 	 * @return     array
 	 */
 	public function getUsersGroups($groups)
 	{
 		$arr = array();
-		if (!empty($groups)) 
+		if (!empty($groups))
 		{
 			foreach ($groups as $group)
 			{
-				if ($group->regconfirmed) 
+				if ($group->regconfirmed)
 				{
 					$arr[] = $group->cn;
 				}
@@ -195,7 +195,7 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Get all resources associated with a tag
-	 * 
+	 *
 	 * @param      string  $tag      Tag to find data for
 	 * @param      integer $id       Resource ID
 	 * @param      integer $type     Publication category
@@ -209,7 +209,7 @@ class PublicationTags extends TagsHandler
 		$juser = JFactory::getUser();
 		$now  = JFactory::getDate()->toSql();
 
-		if ($tag || $tag2) 
+		if ($tag || $tag2)
 		{
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, V.title ";
 			switch ($sortby)
@@ -225,8 +225,8 @@ class PublicationTags extends TagsHandler
 			$query .= "JOIN #__publication_versions as V ON V.publication_id = C.id AND V.main = 1 ";
 			$query .= " LEFT JOIN #__publication_audience AS TTA ON C.id=TTA.rid ";
 			$query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
-		} 
-		else 
+		}
+		else
 		{
 			$query  = "SELECT C.id, V.title  ";
 			switch ($sortby)
@@ -250,23 +250,23 @@ class PublicationTags extends TagsHandler
 		$query .= "AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '".$now."') ";
 		$query .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') AND ";
 
-		$query .= (!$juser->get('guest'))     
-			   ? "(C.access=0 OR C.access=1) " 
+		$query .= (!$juser->get('guest'))
+			   ? "(C.access=0 OR C.access=1) "
 			   : "(C.access=0) ";
-			
-		if ($tag || $tag2) 
+
+		if ($tag || $tag2)
 		{
-			if ($tag && !$tag2) 
+			if ($tag && !$tag2)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} 
-			else if ($tag2 && !$tag) 
+			}
+			else if ($tag2 && !$tag)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=1";
-			} 
-			else if ($tag && $tag2) 
+			}
+			else if ($tag && $tag2)
 			{
 				$query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
 				$query .= " GROUP BY C.id HAVING uniques=2";
@@ -299,7 +299,7 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Check if a tag is being used
-	 * 
+	 *
 	 * @param      string  $tag   Tag
 	 * @param      integer $id    Publication ID
 	 * @param      string  $alias Publication alias
@@ -307,27 +307,27 @@ class PublicationTags extends TagsHandler
 	 */
 	public function checkTagUsage($tag, $id=0, $alias='')
 	{
-		if (!$id && !$alias) 
+		if (!$id && !$alias)
 		{
 			return false;
 		}
-		if ($id) 
+		if ($id)
 		{
-			$query = "SELECT COUNT(*) 
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t 
-						WHERE ta.tagid=t.id 
-						AND t.tag='" . $tag . "' 
-						AND ta.tbl='publications' 
+			$query = "SELECT COUNT(*)
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t
+						WHERE ta.tagid=t.id
+						AND t.tag='" . $tag . "'
+						AND ta.tbl='publications'
 						AND ta.objectid=" . $id;
 		}
-		if (!$id && $alias) 
+		if (!$id && $alias)
 		{
-			$query = "SELECT COUNT(*) 
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r 
-						WHERE ta.tagid=t.id 
-						AND t.tag='" . $tag . "' 
-						AND ta.tbl='publications' 
-						AND ta.objectid=r.id 
+			$query = "SELECT COUNT(*)
+						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r
+						WHERE ta.tagid=t.id
+						AND t.tag='" . $tag . "'
+						AND ta.tbl='publications'
+						AND ta.objectid=r.id
 						AND r.alias='" . $alias . "'";
 		}
 
@@ -337,93 +337,93 @@ class PublicationTags extends TagsHandler
 
 	/**
 	 * Get a singular field, such as ID, for all items with a specific tag
-	 * 
+	 *
 	 * @param      string $tag  Tag to get data for
 	 * @param      string $rtrn Field to return
 	 * @return     array
 	 */
 	public function getTagUsage($tag, $rtrn='id')
 	{
-		if (!$tag) 
+		if (!$tag)
 		{
 			return array();
 		}
 
-		$query = "SELECT r.$rtrn 
-					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r 
-					WHERE ta.tagid=t.id 
-					AND t.tag='".$tag."' 
-					AND ta.tbl='publications' 
+		$query = "SELECT r.$rtrn
+					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r
+					WHERE ta.tagid=t.id
+					AND t.tag='".$tag."'
+					AND ta.tbl='publications'
 					AND ta.objectid=r.id";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
-	
+
 	/**
 	 * Get tag count
-	 * 
+	 *
 	 * @param      integer $id
-	 * 
+	 *
 	 * @return     string
-	 */	
+	 */
 	public function countTags($id)
 	{
-		$sql = "SELECT COUNT(*) FROM $this->_tag_tbl AS t, 
-			$this->_obj_tbl AS rt WHERE rt.objectid=$id 
+		$sql = "SELECT COUNT(*) FROM $this->_tag_tbl AS t,
+			$this->_obj_tbl AS rt WHERE rt.objectid=$id
 			AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
-	
+
 	/**
 	 * Get picked tags
-	 * 
+	 *
 	 * @param      array $tags
-	 * 
+	 *
 	 * @return     object
-	 */	
+	 */
 	public function getPickedTags($tags = array())
 	{
-		if (empty($tags)) 
+		if (empty($tags))
 		{
 			return $tags;
 		}
-		
+
 		$picked = '';
 		$k = 1;
-		foreach ($tags as $att) 
+		foreach ($tags as $att)
 		{
 			$picked  .= $att;
 			$picked .= $k == count($tags) ? '' : ',';
 			$k++;
 		}
-		
+
 		$sql  = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t ";
 		$sql .= "WHERE  t.id IN (".$picked.")";
 		$sql .= " ORDER BY t.raw_tag";
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-	
+
 	/**
 	 * Get suggested tags
-	 * 
+	 *
 	 * @param      string 	$pubtitle
 	 * @param      string 	$typealias
 	 * @param      array 	$attached_tags
 	 * @param      integer 	$limit
 	 * @param      integer	$tcount
-	 * 
+	 *
 	 * @return     object
-	 */	
+	 */
 	public function getSuggestedTags($pubtitle = '', $typealias = '', $attached_tags = array(), $limit = 10, $tcount = 2)
 	{
 		$picked = '';
 		$k = 1;
-		if (!empty($attached_tags)) 
+		if (!empty($attached_tags))
 		{
-			foreach($attached_tags as $att) 
+			foreach($attached_tags as $att)
 			{
 				$picked  .= $att->id;
 				$picked .= $k == count($attached_tags) ? '' : ',';
@@ -431,31 +431,31 @@ class PublicationTags extends TagsHandler
 			}
 		}
 		$keywords = array();
-		if ($pubtitle) 
+		if ($pubtitle)
 		{
 			$words = explode(' ', $pubtitle );
-			foreach ($words as $word) 
+			foreach ($words as $word)
 			{
-				if ($word != '') 
+				if ($word != '')
 				{
 					$keywords[] = trim($word);
 				}
 			}
 		}
-		
+
 		$sql  = "SELECT DISTINCT t.*, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount  ";
 		$sql .= "FROM $this->_tag_tbl AS t ";
 		$sql .= "JOIN $this->_obj_tbl AS tj ON t.id=tj.tagid ";
 		$sql .= "WHERE ";
 		$sql .= $picked ? " t.id NOT IN (".$picked.")" : "1=1";
-		$sql .= " GROUP BY tagid "; 
+		$sql .= " GROUP BY tagid ";
 		$sql .= " HAVING tcount > ".$tcount;
-		
-		if (!empty($keywords)) 
+
+		if (!empty($keywords))
 		{
 			$sql .= ' OR (';
 			$w = 1;
-			foreach ($keywords as $key) 
+			foreach ($keywords as $key)
 			{
 				$sql .= 't.raw_tag LIKE "%'.$key.'%"';
 				$sql .= $w == count($keywords) ? '' : ' OR ';
@@ -463,7 +463,7 @@ class PublicationTags extends TagsHandler
 			}
 			$sql .= ')';
 		}
-		$sql .= " AND t.admin=0 "; 
+		$sql .= " AND t.admin=0 ";
 		$sql .= " ORDER BY  RAND()";
 		$sql .= " LIMIT ".$limit;
 		$this->_db->setQuery( $sql );

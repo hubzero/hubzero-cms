@@ -43,14 +43,14 @@ if (!extension_loaded('ftp'))
 {
 	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
 	{
-		if ( function_exists( 'dl')) 
+		if ( function_exists( 'dl'))
 		{
    			@ dl('php_ftp.dll');
    		}
 	}
 	else
 	{
-		if ( function_exists( 'dl')) 
+		if ( function_exists( 'dl'))
 		{
 			@ dl('ftp.so');
 		}

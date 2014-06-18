@@ -47,16 +47,16 @@ class ResourceMediaTrackingDetailed extends JTable
 	var $current_position_timestamp  = NULL;
 	var $farthest_position_timestamp = NULL;
 	var $completed                   = NULL;
-	
+
 	//-----
-	
+
 	public function __construct(&$db)
 	{
 		parent::__construct('#__media_tracking_detailed', 'id', $db);
 	}
-	
+
 	//-----
-	
+
 	public function loadByDetailId( $id )
 	{
 		//start sequel

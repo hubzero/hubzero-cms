@@ -49,7 +49,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @return     array   Plugin  name
@@ -71,7 +71,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Event call to return data for a specific member
-	 * 
+	 *
 	 * @param      object  $user   JUser
 	 * @param      object  $member MembersProfile
 	 * @param      string  $option Component name
@@ -175,7 +175,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Primary/default view function
-	 * 
+	 *
 	 * @return object Return
 	 */
 	private function _view()
@@ -307,7 +307,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Send out local password set confirmation token
-	 * 
+	 *
 	 * @return void - redirect to confirm token view
 	 */
 	private function sendtoken()
@@ -359,7 +359,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Confirm the password set token
-	 * 
+	 *
 	 * @return void - redirect to set local password view
 	 */
 	private function confirmtoken()
@@ -462,7 +462,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set local password
-	 * 
+	 *
 	 * @return void - redirect to members account page
 	 */
 	private function setlocalpass()
@@ -644,7 +644,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Remove linked account
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _unlink()
@@ -683,7 +683,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get information about the password expiration
-	 * 
+	 *
 	 * @return array - password expiration information
 	 */
 	private function getPassInfo()
@@ -723,7 +723,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Upload SSH key
-	 * 
+	 *
 	 * @return void
 	 */
 	private function _uploadKey()
@@ -791,7 +791,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Read SSH key
-	 * 
+	 *
 	 * @return string - .ssh/authorized_keys file content
 	 */
 	private function readKey()
@@ -861,7 +861,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Set redirect
-	 * 
+	 *
 	 * @return void
 	 */
 	private function setRedirect($url, $msg=null, $type='message')
@@ -875,7 +875,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save password change token to the database
-	 * 
+	 *
 	 * @return bool - true if token save successful
 	 */
 	private function setToken($hashedToken)
@@ -902,7 +902,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Retrieve activation token from the database
-	 * 
+	 *
 	 * @return object - id and activation token for user
 	 */
 	private function getToken()
@@ -916,7 +916,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Send token email
-	 * 
+	 *
 	 * @return bool - true if email send successfully
 	 */
 	private function sendEmail($token)
@@ -948,7 +948,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Check password fuction for ajax password rules validation
-	 * 
+	 *
 	 * @return string - html rules section with classes for passed/error on each rule
 	 */
 	public function checkPass()

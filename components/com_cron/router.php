@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Turn querystring parameters into an SEF route
- * 
+ *
  * @param  array &$query Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -41,29 +41,29 @@ function CronBuildRoute(&$query)
 {
 	$segments = array();
 
-	if (!empty($query['controller'])) 
+	if (!empty($query['controller']))
 	{
 		//$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-	if (!empty($query['post'])) 
+	if (!empty($query['post']))
 	{
 		$segments[] = 'post';
 		$segments[] = $query['post'];
 		unset($query['post']);
 	}
-	if (!empty($query['board'])) 
+	if (!empty($query['board']))
 	{
 		//$segments[] = 'collection';
 		$segments[] = $query['board'];
 		unset($query['board']);
 	}
-	if (!empty($query['task'])) 
+	if (!empty($query['task']))
 	{
 		$segments[] = $query['task'];
 		unset($query['task']);
 	}
-	if (!empty($query['file'])) 
+	if (!empty($query['file']))
 	{
 		$segments[] = $query['file'];
 		unset($query['file']);
@@ -74,7 +74,7 @@ function CronBuildRoute(&$query)
 
 /**
  * Parse a SEF route
- * 
+ *
  * @param  array $segments Parameter description (if any) ...
  * @return array Return description (if any) ...
  */
@@ -87,13 +87,13 @@ function CronParseRoute($segments)
 		return $vars;
 	}
 
-	if (isset($segments[0])) 
+	if (isset($segments[0]))
 	{
 		if (is_numeric($segments[0]))
 		{
 			$vars['board'] = $segments[0];
 			$vars['controller'] = 'posts';
-			if (isset($segments[1])) 
+			if (isset($segments[1]))
 			{
 				$vars['task'] = $segments[1];
 			}
@@ -101,21 +101,21 @@ function CronParseRoute($segments)
 		else
 		{
 			$vars['task'] = $segments[0];
-			if (isset($segments[1])) 
+			if (isset($segments[1]))
 			{
 				if (is_numeric($segments[1]))
 				{
 					$vars['post'] = $segments[1];
 					$vars['controller'] = 'posts';
 				}
-				if (isset($segments[2])) 
+				if (isset($segments[2]))
 				{
 					$vars['task'] = $segments[2];
 				}
 			}
 		}
 	}
-	if (isset($segments[3])) 
+	if (isset($segments[3]))
 	{
 		$vars['file'] = $segments[3];
 		$vars['controller'] = 'media';

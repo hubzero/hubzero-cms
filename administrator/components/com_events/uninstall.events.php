@@ -35,9 +35,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 /**
  * Short description for 'com_uninstall'
- * 
+ *
  * Long description (if any) ...
- * 
+ *
  * @return void
  */
 function com_uninstall()

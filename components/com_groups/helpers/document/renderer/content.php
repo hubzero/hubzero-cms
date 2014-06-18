@@ -42,12 +42,12 @@ class GroupsHelperDocumentRendererContent extends GroupsHelperDocumentRenderer
 	{
 		// get the scope
 		$scope = (isset($this->params->scope)) ? $this->params->scope : 'main';
-		
+
 		// based on which scope display content
 		switch ( $scope )
 		{
 			case 'before':
-				return GroupsHelperView::displayBeforeSectionsContent( $this->group );   
+				return GroupsHelperView::displayBeforeSectionsContent( $this->group );
 			break;
 			default:
 				return $this->content;

@@ -11,7 +11,7 @@ $rows = $this->resp->getRecords();
 $pageNav = $this->resp->getPaginator();
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
@@ -25,7 +25,7 @@ function submitbutton(pressbutton)
 
 <form action="" method="post" name="adminForm" id="adminForm">
 	<h2><?php echo stripslashes($this->event->title); ?></h2>
-	
+
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->resp->getSearchTerms(); ?>" />
@@ -70,7 +70,7 @@ foreach ($rows as $idx=>&$row)
 {
 	if (!@$row->id) continue;*/
 $k = 0;
-for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+for ($i=0, $n=count( $rows ); $i < $n; $i++)
 {
 	$row = &$rows[$i];
 ?>
@@ -79,7 +79,7 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=respondent&amp;id=<?php echo $row->id; ?>&amp;event_id=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->last_name . ', ' . $row->first_name)); ?></a></td>
 				<td><a href="mailto:<?php echo $row->email ?>"><?php echo $this->escape($row->email); ?></a></td>
 				<td><?php echo JHTML::_('date', $row->registered, JText::_('DATE_FORMAT_HZ1')); ?></td>
-				<td><?php 
+				<td><?php
 				if (!empty($row->dietary_needs)) {
 					echo 'Dietary needs: '.$this->escape($row->dietary_needs).'<br />';
 				}

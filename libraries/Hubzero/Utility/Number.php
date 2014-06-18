@@ -31,7 +31,7 @@
 namespace Hubzero\Utility;
 
 /**
- * Numeric helper class. Provides additional formatting methods for 
+ * Numeric helper class. Provides additional formatting methods for
  * working with numeric values.
  *
  * Techniques and inspiration were taken from all over, including:

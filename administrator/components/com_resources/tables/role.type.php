@@ -38,28 +38,28 @@ class ResourcesContributorRoleType extends JTable
 {
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id    = NULL;
 
 	/**
 	 * int(11) Primary Key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $role_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $type_id = NULL;
 
 	/**
 	 * Construct
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -70,18 +70,18 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if valid, False if not
 	 */
 	public function check()
 	{
-		if (!$this->role_id) 
+		if (!$this->role_id)
 		{
 			$this->setError(JText::_('Please provide a role ID.'));
 			return false;
 		}
 
-		if (!$this->type_id) 
+		if (!$this->type_id)
 		{
 			$this->setError(JText::_('Please provide a type ID.'));
 			return false;
@@ -92,13 +92,13 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Get all roles for a specific type
-	 * 
+	 *
 	 * @param      integer $type_id Type ID
 	 * @return     array
 	 */
 	public function getRolesForType($type_id=null)
 	{
-		if ($type_id === null) 
+		if ($type_id === null)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -106,7 +106,7 @@ class ResourcesContributorRoleType extends JTable
 
 		$type_id = intval($type_id);
 
-		$query = "SELECT r.id, r.title, r.alias 
+		$query = "SELECT r.id, r.title, r.alias
 					FROM #__author_roles AS r
 					JOIN #__author_role_types AS rt ON r.id=rt.role_id
 					WHERE rt.type_id=" . $this->_db->Quote($type_id) . "
@@ -118,13 +118,13 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Get all types for a specific role
-	 * 
+	 *
 	 * @param      integer $role_id Role ID
 	 * @return     array
 	 */
 	public function getTypesForRole($role_id=null)
 	{
-		if (!$role_id) 
+		if (!$role_id)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -132,7 +132,7 @@ class ResourcesContributorRoleType extends JTable
 
 		$role_id = intval($role_id);
 
-		$query = "SELECT r.id, r.type, r.alias 
+		$query = "SELECT r.id, r.type, r.alias
 					FROM #__resource_types AS r
 					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
 					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
@@ -144,14 +144,14 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Set types for a role
-	 * 
+	 *
 	 * @param      integer $role_id Role ID
 	 * @param      array   $current List of types assigned to role
 	 * @return     boolean True on success, False on errors
 	 */
 	public function setTypesForRole($role_id=null, $current=null)
 	{
-		if (!$role_id) 
+		if (!$role_id)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -169,7 +169,7 @@ class ResourcesContributorRoleType extends JTable
 			}
 		}
 
-		// Run through the $current array and determine if 
+		// Run through the $current array and determine if
 		// each item is new or not
 		$keep = array();
 		$add = array();
@@ -181,7 +181,7 @@ class ResourcesContributorRoleType extends JTable
 				{
 					$add[] = intval($bit);
 				}
-				else 
+				else
 				{
 					$keep[] = intval($bit);
 				}
@@ -195,7 +195,7 @@ class ResourcesContributorRoleType extends JTable
 		{
 			$remove = implode(',', $remove);
 			$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id) . " AND type_id IN ($remove)");
-			if (!$this->_db->query()) 
+			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
@@ -222,7 +222,7 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Delete entries for a specific role
-	 * 
+	 *
 	 * @param      integer $role_id Role ID
 	 * @return     boolean True on success, False on error
 	 */
@@ -233,7 +233,7 @@ class ResourcesContributorRoleType extends JTable
 			$role_id = $this->role_id;
 		}
 
-		if (!$role_id) 
+		if (!$role_id)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -242,7 +242,7 @@ class ResourcesContributorRoleType extends JTable
 
 		// Remove any types in the remove list
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE role_id=" . $this->_db->Quote($role_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
@@ -252,7 +252,7 @@ class ResourcesContributorRoleType extends JTable
 
 	/**
 	 * Delete entries for a specific type
-	 * 
+	 *
 	 * @param      integer $type_id Type ID
 	 * @return     boolean True on success, False on error
 	 */
@@ -263,7 +263,7 @@ class ResourcesContributorRoleType extends JTable
 			$type_id = $this->type_id;
 		}
 
-		if (!$type_id) 
+		if (!$type_id)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
@@ -272,7 +272,7 @@ class ResourcesContributorRoleType extends JTable
 
 		// Remove any types in the remove list
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE type_id=" . $this->_db->Quote($type_id));
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;

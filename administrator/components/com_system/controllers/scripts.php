@@ -80,7 +80,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 		$this->view->paths = $this->_scanDirectory($this->view->path);
 		$this->view->log   = $this->_readLog();
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -101,7 +101,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 		$this->view->script = JRequest::getVar('script', '', 'post');
 
 		// If no script name passed, default to the _browse method
-		if (!$this->view->script) 
+		if (!$this->view->script)
 		{
 			$this->_task = 'browse';
 			return $this->browseTask();
@@ -111,17 +111,17 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 		$path = JPATH_COMPONENT . DS . 'scripts' . DS . $this->view->script . '.php';
 
 		// Check for the script file
-		if (is_file($path)) 
+		if (is_file($path))
 		{
 			// Include the script
 			include_once($path);
 
-			if (class_exists($this->view->script)) 
+			if (class_exists($this->view->script))
 			{
 				// Instantiate the script
 				$job = new $this->view->script();
 				// Ensure the script is of the right type
-				if ($job instanceof SystemHelperScript) 
+				if ($job instanceof SystemHelperScript)
 				{
 					ob_start();
 					$job->run();
@@ -132,7 +132,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 		}
 
 		// Display the view
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
 			{
@@ -152,22 +152,22 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 	{
 		$path = array();
 		$stack[] = $dir;
-		while ($stack) 
+		while ($stack)
 		{
 			$thisdir = array_pop($stack);
-			if ($dircont = scandir($thisdir)) 
+			if ($dircont = scandir($thisdir))
 			{
 				$i=0;
-				while (isset($dircont[$i])) 
+				while (isset($dircont[$i]))
 				{
-					if ($dircont[$i] !== '.' && $dircont[$i] !== '..' && $dircont[$i] !== '.DS_Store') 
+					if ($dircont[$i] !== '.' && $dircont[$i] !== '..' && $dircont[$i] !== '.DS_Store')
 					{
 						$current_file = "{$thisdir}/{$dircont[$i]}";
-						if (is_file($current_file) && substr($current_file, -4) == '.php') 
+						if (is_file($current_file) && substr($current_file, -4) == '.php')
 						{
 							$path[] = "{$thisdir}/{$dircont[$i]}";
-						} 
-						elseif (is_dir($current_file)) 
+						}
+						elseif (is_dir($current_file))
 						{
 							$path[] = "{$thisdir}/{$dircont[$i]}";
 							$stack[] = $current_file;
@@ -189,20 +189,20 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 	{
 		$log = array();
 
-		if (!file_exists($this->_log)) 
+		if (!file_exists($this->_log))
 		{
 			return $log;
 		}
 
 		$fp = fopen($this->_log, "r");
-		if ($fp) 
+		if ($fp)
 		{
 			while (!feof($fp))
 			{
 				$line = fgets($fp);
 				$timestamp = substr($line, 0, 19);
 				$script = trim(str_replace($timestamp, '', $line));
-				if (!isset($log[$script])) 
+				if (!isset($log[$script]))
 				{
 					$log[$script] = array(
 						'lastRun'   => '',
@@ -219,7 +219,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Authorization check
-	 * 
+	 *
 	 * @param      string  $assetType Asset type to authorize
 	 * @param      integer $assetId   ID of asset to authorize
 	 * @return     void
@@ -227,7 +227,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, false);
-		if (!$this->juser->get('guest')) 
+		if (!$this->juser->get('guest'))
 		{
 			if (version_compare(JVERSION, '1.6', 'ge'))
 			{
@@ -254,7 +254,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
 				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 			}
-			else 
+			else
 			{
 				if ($this->juser->authorize($this->_option, 'manage'))
 				{
@@ -270,7 +270,7 @@ class SystemControllerScripts extends \Hubzero\Component\AdminController
 
 	/**
 	 * Cancels a task and redirects to listing
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function cancelTask()

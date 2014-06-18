@@ -103,7 +103,7 @@ class UsersViewLogin extends JViewLegacy
 			$return = base64_encode($return);
 		}
 
-		// Figure out whether or not any of our third party auth plugins are turned on 
+		// Figure out whether or not any of our third party auth plugins are turned on
 		// Don't include the 'hubzero' plugin, or the $auth plugin as described above
 		$multiAuth      = false;
 		$plugins        = JPluginHelper::getPlugin('authentication');
@@ -169,7 +169,7 @@ class UsersViewLogin extends JViewLegacy
 					$status[$plugin->name] = $myplugin->status();
 					$this->status = $status;
 				}
-					
+
 				if ($plugin->name != $authenticator)
 					continue;
 

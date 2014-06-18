@@ -37,77 +37,77 @@ Class TimeTasks extends JTable
 {
 	/**
 	 * id, primary key
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $id = null;
 
 	/**
 	 * task name
-	 * 
+	 *
 	 * @var varchar(255)
 	 */
 	var $name = null;
 
 	/**
 	 * hub id
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $hub_id = null;
 
 	/**
 	 * start date
-	 * 
+	 *
 	 * @var date
 	 */
 	var $start_date = null;
 
 	/**
 	 * end date
-	 * 
+	 *
 	 * @var date
 	 */
 	var $end_date = null;
 
 	/**
 	 * active
-	 * 
+	 *
 	 * @var int(1)
 	 */
 	var $active = null;
 
 	/**
 	 * description
-	 * 
+	 *
 	 * @var blob
 	 */
 	var $description = null;
 
 	/**
 	 * priority
-	 * 
+	 *
 	 * @var int(1)
 	 */
 	var $priority = null;
 
 	/**
 	 * assignee
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $assignee = null;
 
 	/**
 	 * liaison
-	 * 
+	 *
 	 * @var int(11)
 	 */
 	var $liaison = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      unknown &$db Parameter description (if any) ...
 	 * @return     void
 	 */
@@ -118,7 +118,7 @@ Class TimeTasks extends JTable
 
 	/**
 	 * Override check function to perform validation
-	 * 
+	 *
 	 * @return boolean Return true if all checks pass, else false
 	 */
 	public function check()
@@ -145,7 +145,7 @@ Class TimeTasks extends JTable
 
 	/**
 	 * Build query
-	 * 
+	 *
 	 * @return $query
 	 */
 	public function buildQuery()
@@ -160,7 +160,7 @@ Class TimeTasks extends JTable
 
 	/**
 	 * Get count of tasks, mainly used for pagination
-	 * 
+	 *
 	 * @return query result: number of tasks
 	 */
 	public function getCount($filters=array())
@@ -204,7 +204,7 @@ Class TimeTasks extends JTable
 
 	/**
 	 * Get list of tasks
-	 * 
+	 *
 	 * @param  $filters start and limit
 	 * @return object list of collections
 	 */

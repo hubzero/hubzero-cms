@@ -57,7 +57,7 @@ if (is_object($this->reported))
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -88,8 +88,8 @@ function submitbutton(pressbutton)
 					<tr>
 						<td>
 							<p style="color:#999;">
-								<?php echo JText::_('COM_SUPPORT_REPORT_REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('COM_SUPPORT_UNKNOWN'); ?>, <?php echo JText::_('COM_SUPPORT_REPORT_RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?>: 
-								<?php 
+								<?php echo JText::_('COM_SUPPORT_REPORT_REPORTED_BY'); ?> <?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : JText::_('COM_SUPPORT_UNKNOWN'); ?>, <?php echo JText::_('COM_SUPPORT_REPORT_RECEIVED'); ?> <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?>:
+								<?php
 								if ($this->report->report)
 								{
 									echo '<br /><br />' . $this->escape(stripslashes($this->report->report));

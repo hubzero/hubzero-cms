@@ -31,17 +31,17 @@ class plgEditorNone extends JPlugin
 		4/5/2013
 		*/
 		$showFullPaths = ($this->params->get('full_paths')) ? 'true' : 'false';
-		
+
 		$txt =	"<script type=\"text/javascript\">
 					var showFullPaths = ".$showFullPaths.";
 					function insertAtCursor(myField, myValue) {
-						
+
 						if(showFullPaths)
 						{
 							var hub = 'https://' + document.location.host + '/';
 							myValue = myValue.replace(/(<img[\w+]* src=)\"([^\"]*)\"/gi, \"$1\\\"\" + hub + \"$2\\\"\");
 						}
-	
+
 						if (document.selection) {
 							// IE support
 							myField.focus();

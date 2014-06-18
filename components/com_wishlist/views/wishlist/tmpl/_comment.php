@@ -1,21 +1,21 @@
-<?php 
+<?php
 defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	if ($this->wish->get('proposed_by') == $this->comment->get('created_by')) 
+	if ($this->wish->get('proposed_by') == $this->comment->get('created_by'))
 	{
 		$cls .= ' author';
 	}
 
 	$name = JText::_('COM_WISHLIST_ANONYMOUS');
 	$huser = new \Hubzero\User\Profile;
-	if (!$this->comment->get('anonymous')) 
+	if (!$this->comment->get('anonymous'))
 	{
 		$huser = $this->comment->creator();
-		if (is_object($huser) && $huser->get('name')) 
+		if (is_object($huser) && $huser->get('name'))
 		{
 			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 		}
@@ -40,11 +40,11 @@ defined('_JEXEC') or die('Restricted access');
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
-				<strong><?php echo $name; ?></strong> 
+				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->wish->link() . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_WISHLIST_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span> 
-					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span> 
-					<span class="comment-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span> 
+					<span class="comment-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+					<span class="comment-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 				</a>
 			</p>
@@ -60,30 +60,30 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->wish->link() . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('COM_WISHLIST_DELETE'); ?><!-- 
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->wish->link() . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('COM_WISHLIST_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->wish->link() . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!-- 
-						--><?php echo JText::_('COM_WISHLIST_EDIT'); ?><!-- 
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->wish->link() . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo JText::_('COM_WISHLIST_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WISHLIST_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('COM_WISHLIST_CANCEL'); ?><!-- 
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WISHLIST_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('COM_WISHLIST_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WISHLIST_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('COM_WISHLIST_REPLY'); ?><!-- 
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WISHLIST_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('COM_WISHLIST_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!-- 
-					--><?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?><!-- 
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 			</p>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('COM_WISHLIST_SUBMIT'); ?>" /> 
+							<input type="submit" value="<?php echo JText::_('COM_WISHLIST_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>
@@ -134,7 +134,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 		</div><!-- / .comment-content -->
 		<?php
-		if ($this->depth < $this->wish->config()->get('comments_depth', 3)) 
+		if ($this->depth < $this->wish->config()->get('comments_depth', 3))
 		{
 			$this->view('_list')
 			     ->set('parent', $this->comment->get('id'))

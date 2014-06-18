@@ -25,10 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 	$data  = $this->data;
-	
+
 	$viewer 	 = $this->data->viewer;
 	$allowRename = $this->data->allowRename;
-	
+
 	if ($viewer == 'freeze')
 	{
 		$title 	 = $data->title;
@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	else
 	{
 		$title 	 = $data->title;
-		$details = $data->path; 
+		$details = $data->path;
 		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
 		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
 	}
@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php if (!$data->gone) { ?>
 				<a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
 				<?php } ?>
-				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>  
+				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
 				<a href="<?php echo $data->editUrl . '/?action=deleteitem' . a . 'aid=' . $data->id . a . 'p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 			<?php } else { ?>

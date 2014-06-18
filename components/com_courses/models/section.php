@@ -46,91 +46,91 @@ class CoursesModelSection extends CoursesModelAbstract
 {
 	/**
 	 * JTable class name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_tbl_name = 'CoursesTableSection';
 
 	/**
 	 * Object scope
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_scope = 'section';
 
 	/**
 	 * Flag for if authorization checks have been run
-	 * 
+	 *
 	 * @var mixed
 	 */
 	private $_authorized = false;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_roles = NULL;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_members = NULL;
 
 	/**
 	 * JUser
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_member = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_codes = NULL;
 
 	/**
 	 * CoursesModelSectionCode
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_code = NULL;
 
 	/**
 	 * CoursesModelIterator
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_dates = NULL;
 
 	/**
 	 * CoursesModelSectionDate
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_date = NULL;
 
 	/**
 	 * CoursesModelSectionBadge
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_badge = NULL;
 
 	/**
 	 * JRegistry
-	 * 
+	 *
 	 * @var object
 	 */
 	private $_params = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      integer $id Course offering ID or alias
 	 * @return     void
 	 */
@@ -172,7 +172,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		static $instances;
 
-		if (!isset($instances)) 
+		if (!isset($instances))
 		{
 			$instances = array();
 		}
@@ -192,7 +192,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$key = $oid['id'] . '_' . $offering_id;
 		}
 
-		if (!isset($instances[$key])) 
+		if (!isset($instances[$key]))
 		{
 			$instances[$key] = new self($oid, $offering_id);
 		}
@@ -202,21 +202,21 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Has the offering started?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function started()
 	{
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return false;
 		}
 
 		$now = JFactory::getDate()->toSql();
 
-		if ($this->get('start_date') 
-		 && $this->get('start_date') != $this->_db->getNullDate() 
-		 && $this->get('start_date') > $now) 
+		if ($this->get('start_date')
+		 && $this->get('start_date') != $this->_db->getNullDate()
+		 && $this->get('start_date') > $now)
 		{
 			return false;
 		}
@@ -226,21 +226,21 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Has the offering ended?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function ended()
 	{
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return true;
 		}
 
 		$now = JFactory::getDate()->toSql();
 
-		if ($this->get('end_date') 
-		 && $this->get('end_date') != $this->_db->getNullDate() 
-		 && $this->get('end_date') <= $now) 
+		if ($this->get('end_date')
+		 && $this->get('end_date') != $this->_db->getNullDate()
+		 && $this->get('end_date') <= $now)
 		{
 			return true;
 		}
@@ -250,13 +250,13 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Has the offering ended?
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function canEnroll()
 	{
 		// If it doesn't exist or isn't published
-		if (!$this->exists() || !$this->isPublished()) 
+		if (!$this->exists() || !$this->isPublished())
 		{
 			return false;
 		}
@@ -271,7 +271,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	/**
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isMember($id=null)
@@ -287,7 +287,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	/**
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function isManager()
@@ -297,7 +297,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Check a user's authorization
-	 * 
+	 *
 	 * @param      string $action Action to check
 	 * @return     boolean True if authorized, false if not
 	 */
@@ -314,12 +314,12 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function member($user_id=null)
 	{
-		if (!isset($this->_member) 
+		if (!isset($this->_member)
 		 || ($user_id !== null && (int) $this->_member->get('user_id') != $user_id))
 		{
 			$this->_member = null;
@@ -335,7 +335,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$this->_member = CoursesModelMember::getInstance($user_id, null, null, $this->get('id'));
 		}
 
-		return $this->_member; 
+		return $this->_member;
 	}
 
 	/**
@@ -343,7 +343,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
 	 * @return     mixed
@@ -386,12 +386,12 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function date($scope=null, $scope_id=null)
 	{
-		if (!isset($this->_date) 
+		if (!isset($this->_date)
 		 || ((int) $this->_date->get('scope_id') != (int) $scope_id || (string) $this->_date->get('scope') != (string) $scope))
 		{
 			$this->_date = new CoursesModelSectionDate(null);
@@ -405,7 +405,7 @@ class CoursesModelSection extends CoursesModelAbstract
 				}
 			}
 		}
-		return $this->_date; 
+		return $this->_date;
 	}
 
 	/**
@@ -413,7 +413,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
 	 * @return     mixed
@@ -628,12 +628,12 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Check if the current user is enrolled
-	 * 
+	 *
 	 * @return     boolean
 	 */
 	public function code($code=null)
 	{
-		if (!isset($this->_code) 
+		if (!isset($this->_code)
 		 || ($code !== null && (string) $this->_code->get('code') != $code))
 		{
 			$this->_code = null;
@@ -655,7 +655,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$this->_code = new CoursesModelSectionCode($code, $this->get('id'));
 		}
 
-		return $this->_code; 
+		return $this->_code;
 	}
 
 	/**
@@ -663,7 +663,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
-	 * 
+	 *
 	 * @param      array   $filters Filters to build query from
 	 * @param      boolean $clear   Force a new dataset?
 	 * @return     mixed
@@ -713,7 +713,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		$chars = '023456789ABCDEFGHJKLMNOPQRSTUVWXYZ'; // no 1 or I
 		$res = '';
-		for ($i = 0; $i < 10; $i++) 
+		for ($i = 0; $i < 10; $i++)
 		{
 			$res .= $chars[mt_rand(0, strlen($chars)-1)];
 		}
@@ -729,7 +729,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	public function generateCodes($num=1)
 	{
 		$codes = array();
-		for ($i = 0; $i < $num; $i++) 
+		for ($i = 0; $i < $num; $i++)
 		{
 			$codes[] = $this->generateCode();
 		}
@@ -748,12 +748,12 @@ class CoursesModelSection extends CoursesModelAbstract
 			$this->_badge = CoursesModelSectionBadge::loadBySectionId($this->get('id'));
 		}
 
-		return $this->_badge; 
+		return $this->_badge;
 	}
 
 	/**
 	 * Mark this section as the default for this offering
-	 * 
+	 *
 	 * @return  boolean
 	 */
 	public function makeDefault()
@@ -778,7 +778,7 @@ class CoursesModelSection extends CoursesModelAbstract
 
 	/**
 	 * Get a param value
-	 * 
+	 *
 	 * @param	   string $key     Property to return
 	 * @param	   mixed  $default Default value to return
 	 * @return     mixed

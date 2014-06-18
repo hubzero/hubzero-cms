@@ -40,7 +40,7 @@ JHtml::_('behavior.framework', true);
 					<tr class="nope row<?php echo $i % 2;?>">
 				<?php else : ?>
 					<tr class="row<?php echo $i % 2;?>">
-				<?php endif; ?> 
+				<?php endif; ?>
 			<?php else : ?>
 				<tr class="row<?php echo $i % 2;?>">
 			<?php endif; ?>

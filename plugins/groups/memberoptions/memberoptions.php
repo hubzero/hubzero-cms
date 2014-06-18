@@ -46,7 +46,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return the alias and name for this category of content
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function &onGroupAreas()
@@ -54,7 +54,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name' => 'memberoptions',
 			'title' => JText::_('GROUP_MEMBEROPTIONS'),
-			'default_access' => 'registered', 
+			'default_access' => 'registered',
 			'display_menu_tab' => $this->params->get('display_tab', 0),
 			'icon' => '2699'
 		);
@@ -64,7 +64,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Return data on a group view (this will be some form of HTML)
-	 * 
+	 *
 	 * @param      object  $group      Current group
 	 * @param      string  $option     Name of the component
 	 * @param      string  $authorized User's authorization level
@@ -113,7 +113,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Edit settings
-	 * 
+	 *
 	 * @param      object  $group
 	 * @param      object  $user
 	 * @param      integer $recvEmailOptionID
@@ -159,7 +159,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Save settings
-	 * 
+	 *
 	 * @param      object  $group
 	 * @param      object  $user
 	 * @param      integer $recvEmailOptionID
@@ -219,7 +219,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Subscribe a person to emails on enrollment
-	 * 
+	 *
 	 * @param      integer $gidNumber
 	 * @param      integer $userid
 	 * @return     void

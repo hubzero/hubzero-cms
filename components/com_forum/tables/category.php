@@ -38,143 +38,143 @@ class ForumTableCategory extends JTable
 {
 	/**
 	 * int(11) Primary key
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $id         = NULL;
 
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $title      = NULL;
-	
+
 	/**
 	 * varchar(255)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $alias      = NULL;
 
 	/**
 	 * text
-	 * 
+	 *
 	 * @var string
 	 */
 	var $description    = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $created    = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $created_by = NULL;
 
 	/**
 	 * datetime (0000-00-00 00:00:00)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $modified   = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $modified_by = NULL;
 
 	/**
 	 * int(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $state      = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $hits       = NULL;
 
 	/**
 	 * varchar(100)
-	 * 
+	 *
 	 * @var string
 	 */
 	var $scope = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $scope_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	//var $scope_sub_id = NULL;
 
 	/**
 	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $access     = NULL;
-	
+
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $section_id = NULL;
-	
+
 	/**
 	 * tinyint(2)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $closed = null;
-	
+
 	/**
 	 * int(11)
 	 * ID for ACL asset (J1.6+)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $asset_id = NULL;
 
 	/**
 	 * int(11)
-	 * Used to associate another object such as a 
+	 * Used to associate another object such as a
 	 * course lecture to a specific entry
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $object_id = NULL;
 
 	/**
 	 * int(11)
-	 * 
+	 *
 	 * @var integer
 	 */
 	var $ordering = NULL;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$db JDatabase
 	 * @return     void
 	 */
@@ -226,7 +226,7 @@ class ForumTableCategory extends JTable
 		$assetId = null;
 		$db = $this->getDbo();
 
-		if ($assetId === null) 
+		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
 			$query = $db->getQuery(true);
@@ -236,18 +236,18 @@ class ForumTableCategory extends JTable
 
 			// Get the asset id from the database.
 			$db->setQuery($query);
-			if ($result = $db->loadResult()) 
+			if ($result = $db->loadResult())
 			{
 				$assetId = (int) $result;
 			}
 		}
 
 		// Return the asset id.
-		if ($assetId) 
+		if ($assetId)
 		{
 			return $assetId;
-		} 
-		else 
+		}
+		else
 		{
 			return parent::_getAssetParentId($table, $id);
 		}
@@ -255,7 +255,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Load a record and bind to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True on success
 	 */
@@ -268,11 +268,11 @@ class ForumTableCategory extends JTable
 
 		if ($section_id !== null)
 		{
-			$fields['section_id'] = (int) $section_id; 
+			$fields['section_id'] = (int) $section_id;
 		}
 		if ($scope_id !== null)
 		{
-			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope_id'] = (int) $scope_id;
 			$fields['scope']    = (string) $scope;
 		}
 
@@ -281,7 +281,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Load a record by its alias and bind data to $this
-	 * 
+	 *
 	 * @param      string $oid Record alias
 	 * @return     boolean True upon success, False if errors
 	 */
@@ -294,11 +294,11 @@ class ForumTableCategory extends JTable
 
 		if ($section_id !== null)
 		{
-			$fields['section_id'] = (int) $section_id; 
+			$fields['section_id'] = (int) $section_id;
 		}
 		if ($scope_id !== null)
 		{
-			$fields['scope_id'] = (int) $scope_id; 
+			$fields['scope_id'] = (int) $scope_id;
 			$fields['scope']    = (string) $scope;
 		}
 
@@ -307,7 +307,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Populate the object with default data
-	 * 
+	 *
 	 * @param      integer $group ID of group the data belongs to
 	 * @return     boolean True if data is bound to $this object
 	 */
@@ -332,14 +332,14 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Validate data
-	 * 
+	 *
 	 * @return     boolean True if data is valid
 	 */
 	public function check()
 	{
 		$this->title = trim($this->title);
 
-		if (!$this->title) 
+		if (!$this->title)
 		{
 			$this->setError(JText::_('Please provide a title.'));
 			return false;
@@ -369,7 +369,7 @@ class ForumTableCategory extends JTable
 				$this->ordering = $this->getHighestOrdering($this->scope, $this->scope_id);
 			}
 		}
-		else 
+		else
 		{
 			$this->modified = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
@@ -380,7 +380,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Get the last page in the ordering
-	 * 
+	 *
 	 * @param      string  $offering_id
 	 * @return     integer
 	 */
@@ -393,14 +393,14 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Build a query based off of filters passed
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
 		}
@@ -408,50 +408,50 @@ class ForumTableCategory extends JTable
 		{
 			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
 		}
-		else 
+		else
 		{
 			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 		}
 
 		$where = array();
-		if (isset($filters['state']) && (int) $filters['state'] >= 0) 
+		if (isset($filters['state']) && (int) $filters['state'] >= 0)
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
-		if (isset($filters['closed'])) 
+		if (isset($filters['closed']))
 		{
 			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
 		}
-		if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{
 			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
 		}
-		if (isset($filters['scope']) && (string) $filters['scope']) 
+		if (isset($filters['scope']) && (string) $filters['scope'])
 		{
 			$where[] = "c.scope=" . $this->_db->Quote(strtolower($filters['scope']));
 		}
-		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0) 
+		if (isset($filters['scope_id']) && (int) $filters['scope_id'] >= 0)
 		{
 			$where[] = "c.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
-		/*if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		/*if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
 			$where[] = "c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id']));
 		}*/
-		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0) 
+		if (isset($filters['section_id']) && (int) $filters['section_id'] >= 0)
 		{
 			$where[] = "c.section_id=" . $this->_db->Quote(intval($filters['section_id']));
 		}
-		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0) 
+		if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 		{
 			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 		}
-		if (isset($filters['search']) && $filters['search'] != '') 
+		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' 
+			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 				OR LOWER(c.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
 		}
-		
+
 		if (count($where) > 0)
 		{
 			$query .= " WHERE ";
@@ -463,7 +463,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Get a record count
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     integer
 	 */
@@ -479,14 +479,14 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Get records
-	 * 
+	 *
 	 * @param      array $filters Filters to construct query from
 	 * @return     array
 	 */
 	public function getRecords($filters=array())
 	{
 		$flt = "";
-		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0) 
+		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
 			$flt = " AND (r.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR r.sticky=1)";
 		}
@@ -494,17 +494,17 @@ class ForumTableCategory extends JTable
 		if (isset($filters['admin']))
 		{
 			$query  = "SELECT c.*";
-			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			if (isset($filters['group']) && (int) $filters['group'] >= 0)
 			{
 				$query .= ", g.cn AS group_alias";
 			}
 			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 $flt) AS threads,
 						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id $flt) AS posts";
 		}
-		else 
+		else
 		{
 			$query  = "SELECT c.*";
-			if (isset($filters['group']) && (int) $filters['group'] >= 0) 
+			if (isset($filters['group']) && (int) $filters['group'] >= 0)
 			{
 				$query .= ", g.cn AS group_alias";
 			}
@@ -515,23 +515,23 @@ class ForumTableCategory extends JTable
 		{
 			$query .= ", a.name AS access_level";
 		}
-		else 
+		else
 		{
 			$query .= ", a.title AS access_level";
 		}
 		$query .= " " . $this->_buildQuery($filters);
 
-		if (!isset($filters['sort']) || !$filters['sort']) 
+		if (!isset($filters['sort']) || !$filters['sort'])
 		{
 			$filters['sort'] = 'title';
 		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
+		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
 			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
 		}
@@ -542,7 +542,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Get a count of all threads for a category
-	 * 
+	 *
 	 * @param      integer $oid      Category ID
 	 * @param      integer $group_id Group ID
 	 * @return     array
@@ -550,7 +550,7 @@ class ForumTableCategory extends JTable
 	public function getThreadCount($oid=null, $scope_id=0, $scope='site')
 	{
 		$k = $this->_tbl_key;
-		if ($oid !== null) 
+		if ($oid !== null)
 		{
 			$this->$k = intval($oid);
 		}
@@ -563,7 +563,7 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Get a count of all posts for a category
-	 * 
+	 *
 	 * @param      integer $oid      Category ID
 	 * @param      integer $group_id Group ID
 	 * @return     array
@@ -571,7 +571,7 @@ class ForumTableCategory extends JTable
 	public function getPostCount($oid=null, $scope_id=0, $scope='site')
 	{
 		$k = $this->_tbl_key;
-		if ($oid !== null) 
+		if ($oid !== null)
 		{
 			$this->$k = intval($oid);
 		}
@@ -584,63 +584,63 @@ class ForumTableCategory extends JTable
 
 	/**
 	 * Delete a category and all associated content
-	 * 
+	 *
 	 * @param      integer $oid Object ID (primary key)
 	 * @return     true if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
 		$k = $this->_tbl_key;
-		if ($oid) 
+		if ($oid)
 		{
 			$this->$k = intval($oid);
 		}
-		
+
 		$post = new ForumTablePost($this->_db);
 		if (!$post->deleteByCategory($this->$k))
 		{
 			$this->setError($post->getErrorMsg());
 			return false;
 		}
-		
+
 		return parent::delete();
 	}
 
 	/**
 	 * Set the state of records for a section
-	 * 
+	 *
 	 * @param      integer $section Section ID
 	 * @param      integer $state   State (0, 1, 2)
 	 * @return     array
 	 */
 	public function setStateBySection($section=null, $state=null)
 	{
-		if ($section=== null) 
+		if ($section=== null)
 		{
 			$section = $this->section_id;
 		}
-		if ($state === null || $section === null) 
+		if ($state === null || $section === null)
 		{
 			return false;
 		}
-		
+
 		if (is_array($section))
 		{
 			$section = array_map('intval', $section);
 			$section = implode(',', $section);
 		}
-		else 
+		else
 		{
 			$section = intval($section);
 		}
-		
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET state=" . $this->_db->Quote($state) . " WHERE section_id IN ($section)");
-		if (!$this->_db->query()) 
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}

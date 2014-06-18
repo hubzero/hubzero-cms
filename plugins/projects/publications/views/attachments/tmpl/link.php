@@ -36,7 +36,7 @@ $viewer 	= $this->data->viewer;
 		<span class="item-options">
 		<?php if ($viewer == 'edit') { ?>
 			<span>
-				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>  
+				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
 				<a href="<?php echo $data->editUrl . '/?action=deleteitem' . a . 'aid=' . $data->id . a . 'p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 		<?php } ?>

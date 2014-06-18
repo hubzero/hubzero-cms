@@ -39,21 +39,21 @@ class File extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
-	 * 
+	 *
 	 * @var string
 	 */
 	public $allowPartial = true;
 
 	/**
 	 * Container for element attributes
-	 * 
+	 *
 	 * @var array
 	 */
 	private $attr = array();
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function description()
@@ -88,7 +88,7 @@ class File extends Macro
 
 	/**
 	 * Generate macro output based on passed arguments
-	 * 
+	 *
 	 * @return     string
 	 */
 	public function render()
@@ -96,7 +96,7 @@ class File extends Macro
 		$content = $this->args;
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content) 
+		if (!$content)
 		{
 			return '';
 		}
@@ -124,7 +124,7 @@ class File extends Macro
 
 		// Get wiki config
 		$this->config = \JComponentHelper::getParams('com_wiki');
-		if ($this->filepath != '') 
+		if ($this->filepath != '')
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
@@ -135,7 +135,7 @@ class File extends Macro
 
 		$ret = false;
 		// Is it numeric?
-		if (is_numeric($file)) 
+		if (is_numeric($file))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
@@ -144,7 +144,7 @@ class File extends Macro
 			$attach->load(intval($file));
 
 			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) 
+			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
 			{
 				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 				if (!$attr['desc'])
@@ -158,7 +158,7 @@ class File extends Macro
 			}
 		}
 		// Check for file existence
-		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) 
+		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
@@ -174,7 +174,7 @@ class File extends Macro
 			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : $file;
 
 			$ret = true;
-		} 
+		}
 
 		// Does the file exist?
 		if ($ret)
@@ -184,8 +184,8 @@ class File extends Macro
 
 			// Return HTML
 			return $this->_embed($file, $attr);
-		}	
-		else 
+		}
+		else
 		{
 			// Return error message
 			return '(file:' . $file . ' not found)';
@@ -195,7 +195,7 @@ class File extends Macro
 	/**
 	 * Parse attribute=value pairs
 	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching attr=val pairs
 	 * @return     void
 	 */
@@ -208,9 +208,9 @@ class File extends Macro
 		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches) && $key != 'border') 
+		if (preg_match($size, $val, $matches) && $key != 'border')
 		{
 			if ($matches[0] && in_array($key, array('width', 'height')))
 			{
@@ -228,17 +228,17 @@ class File extends Macro
 		}
 		// Specific call to NOT link an image
 		// Links images by default
-		if ($key == 'nolink') 
+		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
 			return;
 		}
 		// Check for a specific link given
-		if ($key == 'link') 
+		if ($key == 'link')
 		{
 			$this->attr['href'] = 'none';
 
-			if ($val) 
+			if ($val)
 			{
 				$this->attr['href'] = $val;
 
@@ -252,7 +252,7 @@ class File extends Macro
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
 		{
 			if ($key == 'center')
 			{
@@ -260,7 +260,7 @@ class File extends Macro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $key;
 				if ($key == 'left')
@@ -276,7 +276,7 @@ class File extends Macro
 		}
 
 		// Look for any other attributes
-		if ($key == 'align') 
+		if ($key == 'align')
 		{
 			if ($val == 'center')
 			{
@@ -284,7 +284,7 @@ class File extends Macro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['float'] = $val;
 				if ($val == 'left')
@@ -296,12 +296,12 @@ class File extends Macro
 					$this->attr['style']['margin-left'] = '1em';
 				}
 			}
-		} 
-		else if ($key == 'border') 
+		}
+		else if ($key == 'border')
 		{
 			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
-		} 
-		else 
+		}
+		else
 		{
 			$this->attr[$key] = $val;
 		}
@@ -311,7 +311,7 @@ class File extends Macro
 	/**
 	 * Handle single attribute values
 	 * EX: [[Image(myimage.png, nolink, right)]]
-	 * 
+	 *
 	 * @param      array $matches Values matching the single attribute pattern
 	 * @return     void
 	 */
@@ -325,10 +325,10 @@ class File extends Macro
 			$ky = 'height';
 		}
 
-		// Set width if just a pixel size is given 
+		// Set width if just a pixel size is given
 		// e.g., [[File(myfile.jpg, 120px)]]
 		$size   = '/[0-9+](%|px|em)+$/';
-		if (preg_match($size, $key, $matches)) 
+		if (preg_match($size, $key, $matches))
 		{
 			if ($matches[0])
 			{
@@ -346,7 +346,7 @@ class File extends Macro
 
 		// Specific call to NOT link an image
 		// Links images by default
-		if ($key == 'nolink') 
+		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
 			return;
@@ -354,7 +354,7 @@ class File extends Macro
 
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom'))) 
+		if (in_array($key, array('left', 'right', 'top', 'bottom')))
 		{
 			if ($key == 'center')
 			{
@@ -362,7 +362,7 @@ class File extends Macro
 				$this->attr['style']['margin-right'] = 'auto';
 				$this->attr['style']['margin-left'] = 'auto';
 			}
-			else 
+			else
 			{
 				$this->attr['style']['display'] = 'block';
 				$this->attr['style']['float'] = $key;
@@ -384,17 +384,17 @@ class File extends Macro
 	/**
 	 * Generate an absolute path to a file stored on the system
 	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
-	 * 
+	 *
 	 * @param      $file  Filename
 	 * @return     string
 	 */
 	private function _path($file, $alt=false)
 	{
-		if (substr($file, 0, 1) == DS) 
+		if (substr($file, 0, 1) == DS)
 		{
 			$path = JPATH_ROOT . $file;
 		}
-		else 
+		else
 		{
 			if ($alt)
 			{
@@ -426,7 +426,7 @@ class File extends Macro
 	/**
 	 * Generate a link to a file
 	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
-	 * 
+	 *
 	 * @param      $file  Filename
 	 * @return     string
 	 */
@@ -441,14 +441,14 @@ class File extends Macro
 		$file = trim($file, DS);
 
 		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope) 
+		if ($this->scope)
 		{
 			$scope = trim($this->scope, DS);
-			
+
 			$link .= $scope . DS;
 		}
 		$type = 'File';
-		if (in_array(strtolower(\JFile::getExt($file)), $this->imgs)) 
+		if (in_array(strtolower(\JFile::getExt($file)), $this->imgs))
 		{
 			if (\JRequest::getVar('format') == 'pdf')
 			{
@@ -463,7 +463,7 @@ class File extends Macro
 
 	/**
 	 * Generates HTML to either embed a file or link to file for download
-	 * 
+	 *
 	 * @param      string $file File to embed
 	 * @param      array  $attr Attributes to apply to the HTML
 	 * @return     string
@@ -487,18 +487,18 @@ class File extends Macro
 				}
 				$attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
 
-				/*if (!array_key_exists('alt', $attr) 
-				 && array_key_exists('altimage', $attr) 
+				/*if (!array_key_exists('alt', $attr)
+				 && array_key_exists('altimage', $attr)
 				 && $attr['altimage'] != ''
-				 && file_exists($this->_path($attr['altimage']))) 
+				 && file_exists($this->_path($attr['altimage'])))
 				{
 					//$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
 					$attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
 					$attr['alt'] .= '</a>';
-				} 
-				else 
+				}
+				else
 				{
 					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';
@@ -519,7 +519,7 @@ class File extends Macro
 				$html .= '<script type="text/javascript">' . "\n";
 				$html .= '<!--
 							var config = {
-								width: '.intval($attr['width']).', 
+								width: '.intval($attr['width']).',
 								height: '.intval($attr['height']).',
 								params: { enableDebugging:"0" }
 							}
@@ -547,18 +547,18 @@ class File extends Macro
 
 				$rand = rand(0, 100000);
 
-				if (!array_key_exists('alt', $attr) 
-				 && array_key_exists('altimage', $attr) 
+				if (!array_key_exists('alt', $attr)
+				 && array_key_exists('altimage', $attr)
 				 && $attr['altimage'] != ''
-				 && file_exists($this->_path($attr['altimage']))) 
+				 && file_exists($this->_path($attr['altimage'])))
 				{
 					//$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
 					$attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
 					$attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
 					$attr['alt'] .= '</a>';
-				} 
-				else 
+				}
+				else
 				{
 					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . $juri->getScheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
 				}
@@ -588,10 +588,10 @@ class File extends Macro
 					$attr['alt'] = $file;
 				}
 
-				if (in_array($ext, $this->imgs)) 
+				if (in_array($ext, $this->imgs))
 				{
 					$styles = '';
-					if (count($attr['style']) > 0) 
+					if (count($attr['style']) > 0)
 					{
 						$s = array();
 						foreach ($attr['style'] as $k => $v)
@@ -613,11 +613,11 @@ class File extends Macro
 					}
 					$html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
 					$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
-					if ($attr['href'] == 'none') 
+					if ($attr['href'] == 'none')
 					{
 						$html .= $img;
-					} 
-					else 
+					}
+					else
 					{
 						$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 						$attr['rel'] = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
@@ -636,10 +636,10 @@ class File extends Macro
 					$attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
 
 					$size = null;
-					if (file_exists($this->_path($file))) 
+					if (file_exists($this->_path($file)))
 					{
 						$size = filesize($this->_path($file));
-					} 
+					}
 					else if (file_exists($this->_path($file, true)))
 					{
 						$size = filesize($this->_path($file, true));

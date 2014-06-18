@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $option = 'com_store';
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option)) 
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -54,13 +54,13 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Orders'), 
+	JText::_('Orders'),
 	'index.php?option=' .  $option . '&controller=orders',
 	($controllerName == 'orders')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Store Items'), 
-	'index.php?option=' .  $option . '&controller=items', 
+	JText::_('Store Items'),
+	'index.php?option=' .  $option . '&controller=items',
 	($controllerName == 'items')
 );
 

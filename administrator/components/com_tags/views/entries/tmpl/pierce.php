@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = TagsHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_PIERCE'), 'tags.png');
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save('pierce');
 }
@@ -41,7 +41,7 @@ JToolBarHelper::cancel();
 
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 
@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 				<?php
 				JPluginHelper::importPlugin('hubzero');
 				$tf = JDispatcher::getInstance()->trigger(
-					'onGetMultiEntry', 
+					'onGetMultiEntry',
 					array(
 						array('tags', 'newtag', 'newtag')
 					)

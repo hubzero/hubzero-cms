@@ -33,21 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = WishlistHelper::getActions('component');
 
 JToolBarHelper::title(JText::_('Wishlist Manager') . ': ' . JText::_('Wishes'), 'wishlist.png');
-if ($canDo->get('core.edit.state')) 
+if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
 	JToolBarHelper::unpublishList();
 	JToolBarHelper::spacer();
 }
-if ($canDo->get('core.create')) 
+if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
 }
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-if ($canDo->get('core.delete')) 
+if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
@@ -55,7 +55,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('wishes');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton) 
+function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
@@ -70,13 +70,13 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label> 
+			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
 			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-by"><?php echo JText::_('COM_WISHLIST_FILTERBY'); ?>:</label> 
+			<label for="filter-by"><?php echo JText::_('COM_WISHLIST_FILTERBY'); ?>:</label>
 			<select name="filterby" id="filter-by">
 				<option value="all"<?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ none ]'); ?></option>
 				<option value="granted"<?php echo ($this->filters['filterby'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Granted'); ?></option>
@@ -144,13 +144,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		break;
 	}
 
-	if ($row->private) 
+	if ($row->private)
 	{
 		$color_access = 'access private';
 		$task_access = 'accesspublic';
 		$groupname = 'Private';
-	} 
-	else 
+	}
+	else
 	{
 		$color_access = 'access public';
 		$task_access = 'accessregistered';

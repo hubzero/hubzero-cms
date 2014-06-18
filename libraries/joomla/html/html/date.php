@@ -109,7 +109,7 @@ abstract class JHtmlDate
 
 	/**
 	 * Calculate how long ago a date was
-	 * 
+	 *
 	 * @param      number $timestamp Date to convert
 	 * @return     string
 	 */
@@ -138,7 +138,7 @@ abstract class JHtmlDate
 		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
 
 		// Ensure the script has found a match
-		if ($val < 0) 
+		if ($val < 0)
 		{
 			$val = 0;
 		}
@@ -150,7 +150,7 @@ abstract class JHtmlDate
 		$number = floor($number);
 
 		// If required create a plural
-		if ($number != 1) 
+		if ($number != 1)
 		{
 			$periods[$val] .= 's';
 		}
@@ -159,7 +159,7 @@ abstract class JHtmlDate
 		$text = sprintf("%d %s ", $number, $periods[$val]);
 
 		// Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
-		if (($val >= 1) && (($current_time - $new_time) > 0)) 
+		if (($val >= 1) && (($current_time - $new_time) > 0))
 		{
 			$text .= self::_ago($new_time, $current_time);
 		}

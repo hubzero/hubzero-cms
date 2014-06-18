@@ -36,20 +36,20 @@ defined('_JEXEC') or die('Restricted access');
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
 			<?php foreach ($this->sessions as $k => $session) : ?>
-				<?php 
-					$cls = ($k == 0) ? 'active' : 'not-active'; 
-					
+				<?php
+					$cls = ($k == 0) ? 'active' : 'not-active';
+
 					//get the appname
 					$bits = explode('_',$session->appname);
 					$bit = (count($bits) > 1) ? array_pop($bits) : '';
 					$appname = implode('_',$bits);
-				
+
 					//are we on the iPad
 					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-				
+
 					//get tool params
 					$launchOnIpad = $this->toolsConfig->get('launch_ipad', 0);
-				
+
 					//are we launching on iPad?
 					if ($isiPad && $launchOnIpad)
 					{
@@ -59,11 +59,11 @@ defined('_JEXEC') or die('Restricted access');
 					{
 						$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess='.$session->sessnum.'&app='.$appname);
 					}
-				
-					//terminate & disconnect links 
+
+					//terminate & disconnect links
 					$terminateLink = JRoute::_('index.php?option=com_tools&task=stop&sess='.$session->sessnum.'&app='.$appname);
 					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess='.$session->sessnum.'&app='.$appname);
-					
+
 					//get snapshot
 					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&notfound=1';
 				?>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 							<span class="status"></span>
 						</div>
 					</div>
-				
+
 					<div class="session-details">
 						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<div class="session-details-left">
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 								<span>Last Accessed:</span>
 								<?php echo date("F d, Y @ g:ia", strtotime($session->accesstime)); ?>
 							</div>
-							
+
 							<?php if($this->juser->get('username') != $session->username) : ?>
 								<div class="session-sharing">
 									<span>Session Owner:</span>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 									?>
 								</div>
 							<?php endif; ?>
-						
+
 							<div class="session-buttons">
 								<a class="btn icon-resume resume" href="<?php echo $resumeLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
 									<?php echo ucfirst( JText::_('MOD_MYSESSIONS_RESUME') ); ?>
@@ -165,28 +165,28 @@ defined('_JEXEC') or die('Restricted access');
 				$val 		= ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
 				$percent 	= round( $val * 100 );
 				$percent 	= ($percent > 100) ? 100: $percent;
-				
+
 				// Amount can only have a max of 100 due to some display restrictions
 				$amount  	= ($percent > 100) ? 100 : $percent;
-				
+
 				//show different colored bar
 				$cls 		= ($percent < 50) ? 'storage-low' : 'storage-high';
 			}
 		?>
-		
+
 		<div class="storage-meter <?php echo $cls; ?>">
 			<?php if ($amount > 0) : ?>
 				<span class="storage-meter-percent" style="width:<?php echo $percent; ?>%"></span>
 			<?php endif; ?>
 			<span class="storage-meter-amount"><?php echo $amount . '% of ' . $total . 'GB'; ?></span>
 		</div>
-		
+
 		<?php if ($percent == 100) : ?>
 			<p class="warning">
 				<?php echo JText::_('MOD_MYSESSIONS_MAXIMUM_STORAGE'); ?>
 			</p>
 		<?php endif; ?>
-		
+
 		<?php if ($percent > 100) : ?>
 			<p class="warning">
 				<?php echo JText::_('MOD_MYSESSIONS_EXCEEDING_STORAGE'); ?>

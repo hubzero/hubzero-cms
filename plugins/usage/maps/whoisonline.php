@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $key; ?>"></script>
 	<script type="text/javascript" src="/components/<?php echo $option; ?>/maps/js/Clusterer2.js"></script>
 	<script type="text/javascript">
-	function load() 
+	function load()
 	{
 		if (GBrowserIsCompatible()) {
 			map = new GMap2(document.getElementById('div_map'));
@@ -53,14 +53,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 				if (overlay){     // marker clicked
 					overlay.openInfoWindowHtml(overlay.infowindow);   // open InfoWindow
 				} else if (point) {
-					
+
 				}      // background clicked
 			});
 			getMarkers();
 		}
 	}
-	
-	function getMarkers() 
+
+	function getMarkers()
 	{
 		var urlstr='<?php echo $mappath; ?>/whoisonline.xml';
 		var request = GXmlHttp.create();
@@ -94,7 +94,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						markers[i].infowindow = info.replace(/_br_/g,'<br/>');
 						map.addOverlay(markers[i]);
 						if (lat==<?php echo $lat; ?> && lng==<?php echo $long; ?>){
-							GEvent.trigger(markers[i], 'click'); 
+							GEvent.trigger(markers[i], 'click');
 						}
 					}
 				}

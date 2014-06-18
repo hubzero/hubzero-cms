@@ -92,7 +92,7 @@ $lang->load('tpl_' . $this->template);
 			<nav id="main-navigation" class="hide-m" role="main">
 				<div class="wrapper cf">
 					<div id="account">
-					<?php if (!$juser->get('guest')) { 
+					<?php if (!$juser->get('guest')) {
 							$profile = Hubzero_User_Profile::getInstance($juser->get('id'));
 					?>
 						<ul class="menu cf <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
@@ -100,10 +100,10 @@ $lang->load('tpl_' . $this->template);
 								<div id="account-info">
 									<img src="<?php echo Hubzero_User_Profile_Helper::getMemberPhoto($profile); ?>" alt="<?php echo $juser->get('name'); ?>" />
 									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-										<?php echo stripslashes($juser->get('name')); ?> 
+										<?php echo stripslashes($juser->get('name')); ?>
 										<span class="account-email"><?php echo $juser->get('email'); ?></span>
 									</a>
-									
+
 									<p class="account-logout">
 										<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_BASELAYER_LOGOUT'); ?></span></a>
 									</p>
