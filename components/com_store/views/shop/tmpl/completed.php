@@ -36,9 +36,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 </header>
 
 <section class="main section">
-	<p class="final_summary">
-		<?php echo JText::_('COM_STORE_ORDER_NUMBER'); ?>: <strong><?php echo $this->orderid; ?></strong><br />
-		<?php echo JText::_('COM_STORE_THANKYOU_MSG'); ?><br />
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>.
-	</p>
+	<div class="section-inner">
+		<p class="final_summary">
+			<?php echo JText::_('COM_STORE_ORDER_NUMBER'); ?>: <strong><?php echo $this->orderid; ?></strong><br />
+			<?php echo JText::_('COM_STORE_THANKYOU_MSG'); ?><br />
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>.
+		</p>
+	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
