@@ -1,8 +1,37 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
+JToolBarHelper::title(JText::_('COM_TOOLS'), 'tools.png');
 JToolBarHelper::preferences('com_tools', '550');
 JToolBarHelper::spacer();
 JToolBarHelper::help('versions');
@@ -13,11 +42,11 @@ function submitbutton(pressbutton)
 {
 	var form = document.getElementById('adminForm');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -31,11 +60,11 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TOOLID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TOOLINSTANCE'), 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TOOLVERSION'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TOOLREVISION'), 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('TOOLSTATE'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_INSTANCE', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_VERSION', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_REVISION', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -103,5 +132,5 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

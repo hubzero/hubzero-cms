@@ -254,7 +254,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('Zone successfully saved.'),
+				Jtext::_('COM_TOOLS_ITEM_SAVED'),
 				'message'
 			);
 			return;
@@ -295,7 +295,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('State update failed.'),
+					JText::_('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
 					'error'
 				);
 				return;
@@ -339,7 +339,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Zone successfully deleted.'),
+			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
 	}
@@ -366,18 +366,11 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
-		// Check if they're logged in
-		if ($this->juser->get('guest'))
-		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_MISSING_ID')));
 			return;
 		}
 
@@ -413,7 +406,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_NO_FILE')));
 			return;
 		}
 
@@ -422,27 +415,27 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_DIRECTORY_NOT_WRITABLE')));
 			return;
 		}
 
 		// check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_EMPTY_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('COM_TOOLS_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -459,7 +452,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$ext = $pathinfo['extension'];
 		if (!in_array(strtolower($ext), $allowedExtensions))
 		{
-			echo json_encode(array('error' => JText::_('File type not allowed.')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_INVALID_FILE_TYPE')));
 			return;
 		}
 
@@ -492,7 +485,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			{
 				if (!JFile::delete($path . DS . $curfile))
 				{
-					echo json_encode(array('error' => JText::_('UNABLE_TO_DELETE_FILE')));
+					echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
 					return;
 				}
 			}
@@ -559,7 +552,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_COURSES_NO_FILE'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_NO_FILE'));
 			$this->pictureTask('', $id);
 			return;
 		}
@@ -570,7 +563,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_COURSES_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_TOOLS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->pictureTask('', $id);
 				return;
 			}
@@ -584,7 +577,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
 			$file = $curfile;
 		}
 		else
@@ -597,7 +590,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 				{
 					if (!JFile::delete($path . DS . $curfile))
 					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->setError(JText::_('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE'));
 						$this->pictureTask($file['name'], $id);
 						return;
 					}
@@ -627,18 +620,11 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
-		// Check if they're logged in
-		if ($this->juser->get('guest'))
-		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_MISSING_ID')));
 			return;
 		}
 
@@ -656,7 +642,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -664,7 +650,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				echo json_encode(array('error' => JText::_('UNABLE_TO_DELETE_FILE')));
+				echo json_encode(array('error' => JText::_('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE')));
 				return;
 			}
 		}
@@ -708,7 +694,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('MEMBERS_NO_ID'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_MISSING_ID'));
 			$this->pictureTask('', $id);
 			return;
 		}
@@ -721,7 +707,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -729,7 +715,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_TOOLS_ERROR_UNABLE_TO_DELETE_FILE'));
 				$this->pictureTask($file, $id);
 				return;
 			}

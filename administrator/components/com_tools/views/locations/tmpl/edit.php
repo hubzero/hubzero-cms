@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 if (!$this->tmpl)
 {
-	JToolBarHelper::title(JText::_('Tools') . ': ' . JText::_('Zones') . ': ' . JText::_('Location') . ': ' . $text, 'tools.png');
+	JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_ZONES') . ': ' . JText::_('COM_TOOLS_LOCATIONS') . ': ' . $text, 'tools.png');
 	JToolBarHelper::save();
 	JToolBarHelper::cancel();
 }
@@ -299,7 +299,7 @@ var continentcountry = new Array;
 $i = 0;
 if ($countries)
 {
-	echo 'continentcountry[' . $i++ . "] = new Array( '','','" . JText::_('- Select -') . "' );\n\t\t";
+	echo 'continentcountry[' . $i++ . "] = new Array( '','','" . JText::_('COM_TOOLS_SELECT') . "' );\n\t\t";
 	foreach ($countries as $k => $items)
 	{
 		echo 'continentcountry[' . $i++ . "] = new Array( '" . $items['continent'] . "','" . addslashes($items['code']) . "','" . addslashes($items['name']) . "' );\n\t\t";
@@ -337,8 +337,8 @@ function saveAndUpdate()
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
 		<div style="float: right">
-			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('Save'); ?></button>
-			<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('Cancel'); ?></button>
+			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('COM_TOOLS_SAVE'); ?></button>
+			<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('COM_TOOLS_CANCEL'); ?></button>
 		</div>
 		<div class="configuration">
 			<?php echo $text; ?>
@@ -347,7 +347,7 @@ function saveAndUpdate()
 <?php } ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 			<input type="hidden" name="fields[zone_id]" value="<?php echo $this->escape($this->row->get('zone_id')); ?>" />
@@ -360,18 +360,18 @@ function saveAndUpdate()
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th class="key"><label for="field-ipFROM"><?php echo JText::_('IP From'); ?>:</label></th>
+						<th class="key"><label for="field-ipFROM"><?php echo JText::_('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
 						<td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(stripslashes($this->row->get('ipFROM'))); ?>" /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-ipTO"><?php echo JText::_('IP To'); ?>:</label></th>
+						<th class="key"><label for="field-ipTO"><?php echo JText::_('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
 						<td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(stripslashes($this->row->get('ipTO'))); ?>" /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-continent"><?php echo JText::_('Continent'); ?>:</label></th>
+						<th class="key"><label for="field-continent"><?php echo JText::_('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
 						<td>
 							<select name="fields[continent]" id="field-continent" onchange="changeDynaList('field-countrySHORT', continentcountry, document.getElementById('field-continent').options[document.getElementById('field-continent').selectedIndex].value, 0, 0);">
-								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>>- Select -</option>
+								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_SELECT'); ?></option>
 								<option value="NA"<?php if ($this->row->get('continent') == 'NA') { echo ' selected="selected"'; } ?>>North America</option>
 								<option value="SA"<?php if ($this->row->get('continent') == 'SA') { echo ' selected="selected"'; } ?>>South America</option>
 								<option value="EU"<?php if ($this->row->get('continent') == 'EU') { echo ' selected="selected"'; } ?>>Europe</option>
@@ -386,7 +386,7 @@ function saveAndUpdate()
 						<th class="key"><label for="field-countrySHORT"><?php echo JText::_('Country'); ?>:</label></th>
 						<td>
 							<select name="fields[countrySHORT]" id="field-countrySHORT">
-								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>>- Select -</option>
+								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_SELECT'); ?></option>
 								<?php
 								//if ($countries = \Hubzero\Geocode\Geocode::countries())
 								if ($countries)
@@ -414,15 +414,15 @@ function saveAndUpdate()
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-ipREGION"><?php echo JText::_('Region'); ?>:</label></th>
+						<th class="key"><label for="field-ipREGION"><?php echo JText::_('COM_TOOLS_FIELD_REGION'); ?>:</label></th>
 						<td><input type="text" name="fields[ipREGION]" id="field-ipREGION" value="<?php echo $this->escape(stripslashes($this->row->get('ipREGION'))); ?>" /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-ipCITY"><?php echo JText::_('City'); ?>:</label></th>
+						<th class="key"><label for="field-ipCITY"><?php echo JText::_('COM_TOOLS_FIELD_CITY'); ?>:</label></th>
 						<td><input type="text" name="fields[ipCITY]" id="field-ipCITY" value="<?php echo $this->escape(stripslashes($this->row->get('ipCITY'))); ?>" /></td>
 					</tr>
 					<tr>
-						<th class="key"><label for="field-notes"><?php echo JText::_('Notes'); ?>:</label></th>
+						<th class="key"><label for="field-notes"><?php echo JText::_('COM_TOOLS_FIELD_NOTES'); ?>:</label></th>
 						<td>
 							<textarea name="fields[notes]" id="field-notes" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('notes'))); ?></textarea>
 						</td>

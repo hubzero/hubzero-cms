@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'middleware.php');
 
 /**
- * Administrative tools controller for zones
+ * Administrative tools controller for zone locations
  */
 class ToolsControllerLocations extends \Hubzero\Component\AdminController
 {
@@ -236,7 +236,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				echo '<p class="message">' . JText::_('Location successfully saved') . '</p>';
+				echo '<p class="message">' . JText::_('COM_TOOLS_ITEM_SAVED') . '</p>';
 			}
 			return;
 		}
@@ -245,7 +245,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('Zone location successfully saved.'),
+				Jtext::_('COM_TOOLS_ITEM_SAVED'),
 				'message'
 			);
 			return;
@@ -284,7 +284,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('State update failed.'),
+					JText::_('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
 					'error'
 				);
 				return;
@@ -326,7 +326,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Zone location successfully deleted.'),
+			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
 	}

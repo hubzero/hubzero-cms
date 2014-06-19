@@ -250,15 +250,15 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$this->view->zones = $v->find('list');
 
 		//make sure we have a hostname
-		if($this->view->row->hostname != '')
+		if ($this->view->row->hostname != '')
 		{
 			//get tool instance counts
-			$sql = "select appname, count(*) as count from session where exechost='" . $this->view->row->hostname . "' group by appname";
+			$sql = "SELECT appname, count(*) as count from session where exechost=" . $this->database->quote($this->view->row->hostname) . " group by appname";
 			$this->database->setQuery($sql);
 			$this->view->toolCounts = $this->database->loadObjectList();
 
 			//get status counts
-			$sql = "select status, count(*) as count from display where hostname='" . $this->view->row->hostname . "' group by status";
+			$sql = "SELECT status, count(*) as count from display where hostname=" . $this->database->quote($this->view->row->hostname) . " group by status";
 			$this->database->setQuery($sql);
 			$this->view->statusCounts = $this->database->loadObjectList();
 		}
@@ -307,7 +307,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		if (!$row->hostname)
 		{
-			$this->addComponentMessage(Jtext::_('You must specify a valid hostname.'), 'error');
+			$this->addComponentMessage(Jtext::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -359,7 +359,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			Jtext::_('Hostname successfully saved.'),
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
 			'message'
 		);
 	}
@@ -388,7 +388,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Provision update failed.'),
+				JText::_('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'),
 				'error'
 			);
 			return;
@@ -432,7 +432,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Hostname successfully deleted.'),
+			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
 	}

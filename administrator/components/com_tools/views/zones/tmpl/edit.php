@@ -30,9 +30,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit Zone') : JText::_('New Zone'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Tools').': ' . $text, 'tools.png');
+JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_ZONES') . ': ' . $text, 'tools.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -61,10 +61,9 @@ function submitbutton(pressbutton)
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
-					<ul id="submenu" class="member">
-						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
-						<li><a href="#" onclick="return false;" id="locations">Locations</a></li>
-						<!-- <li><a href="index.php?option=com_tools&amp;controller=zones&amp;task=locations&amp;id=<?php echo $this->row->get('id'); ?>" id="locations">Locations</a></li> -->
+					<ul id="submenu">
+						<li><a href="#" onclick="return false;" id="profile" class="active"><?php echo JText::_('JDETAILS'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="locations"><?php echo JText::_('COM_TOOLS_FIELDSET_LOCATIONS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -78,41 +77,41 @@ function submitbutton(pressbutton)
 			<div class="col width-60 fltlft">
 
 			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('ZONE_PROFILE'); ?></span></legend>
+				<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 				<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="save" />
 
-				<div class="input-wrap" data-hint="<?php echo JText::_('Only letters, numbers, dashes and underscores allowed.'); ?>">
-					<label for="field-zone"><?php echo JText::_('Zone'); ?>:</label>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?>">
+					<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_ZONE'); ?>:</label>
 					<input type="text" name="fields[zone]" id="field-zone" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('zone'))); ?>" />
-					<span class="hint"><?php echo JText::_('Only letters, numbers, dashes and underscores allowed.'); ?></span>
+					<span class="hint"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?></span>
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-zone"><?php echo JText::_('Title'); ?>:</label>
+					<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_TITLE'); ?>:</label>
 					<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-master"><?php echo JText::_('Master'); ?>:</label>
+					<label for="field-master"><?php echo JText::_('COM_TOOLS_FIELD_MASTER'); ?>:</label>
 					<input type="text" name="fields[master]" id="field-master" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('master'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-type"><?php echo JText::_('Type'); ?>:</label>
+					<label for="field-type"><?php echo JText::_('COM_TOOLS_FIELD_TYPE'); ?>:</label>
 					<select name="fields[type]" id="field-type">
-						<option value="local"<?php if ($this->row->get('type') == 'local') { echo ' selected="selected"'; } ?>><?php echo JText::_('Local'); ?></option>
-						<option value="remote"<?php if ($this->row->get('type') == 'remote') { echo ' selected="selected"'; } ?>><?php echo JText::_('Remote'); ?></option>
+						<option value="local"<?php if ($this->row->get('type') == 'local') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_LOCAL'); ?></option>
+						<option value="remote"<?php if ($this->row->get('type') == 'remote') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_REMOTE'); ?></option>
 					</select>
 				</div>
 
 				<div class="input-wrap">
-					<?php echo JText::_('State'); ?>:<br />
-					<label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('up'); ?></label>
-					<label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('down'); ?></label>
+					<?php echo JText::_('COM_TOOLS_FIELD_STATE'); ?>:<br />
+					<label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_UP'); ?></label>
+					<label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_DOWN'); ?></label>
 				</div>
 			</fieldset>
 			</div>
@@ -120,18 +119,18 @@ function submitbutton(pressbutton)
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th scope="row"><?php echo JText::_('ID'); ?></th>
+							<th scope="row"><?php echo JText::_('COM_TOOLS_COL_ID'); ?></th>
 							<td><?php echo $this->escape($this->row->get('id')); ?></td>
 						</tr>
 						<tr>
-							<th scope="row"><?php echo JText::_('State'); ?></th>
+							<th scope="row"><?php echo JText::_('COM_TOOLS_COL_STATE'); ?></th>
 							<td><?php echo $this->escape($this->row->get('state')); ?></td>
 						</tr>
 					</tbody>
 				</table>
 
 				<fieldset class="adminform">
-					<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
+					<legend><span><?php echo JText::_('COM_TOOLS_FIELDSET_IMAGE'); ?></span></legend>
 
 					<?php
 					if ($this->row->exists())
@@ -167,21 +166,21 @@ function submitbutton(pressbutton)
 							<tbody>
 								<tr>
 									<td rowspan="6">
-										<img id="img-display" src="<?php echo '..' . str_replace(JPATH_ROOT, '', $path) . DS . $pic; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" />
+										<img id="img-display" src="<?php echo '..' . str_replace(JPATH_ROOT, '', $path) . DS . $pic; ?>" alt="<?php echo JText::_('COM_TOOLS_FIELDSET_IMAGE'); ?>" />
 									</td>
-									<td><?php echo JText::_('FILE'); ?>:</td>
-									<td><span id="img-name"><?php echo $this->row->get('picture', '[ none ]'); ?></span></td>
+									<td><?php echo JText::_('COM_TOOLS_IMAGE_FILE'); ?>:</td>
+									<td><span id="img-name"><?php echo $this->row->get('picture', JText::_('COM_TOOLS_IMAGE_NONE')); ?></span></td>
 								</tr>
 								<tr>
-									<td><?php echo JText::_('SIZE'); ?>:</td>
+									<td><?php echo JText::_('COM_TOOLS_IMAGE_SIZE'); ?>:</td>
 									<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
 								</tr>
 								<tr>
-									<td><?php echo JText::_('WIDTH'); ?>:</td>
+									<td><?php echo JText::_('COM_TOOLS_IMAGE_WIDTH'); ?>:</td>
 									<td><span id="img-width"><?php echo $width; ?></span> px</td>
 								</tr>
 								<tr>
-									<td><?php echo JText::_('HEIGHT'); ?>:</td>
+									<td><?php echo JText::_('COM_TOOLS_IMAGE_HEIGHT'); ?>:</td>
 									<td><span id="img-height"><?php echo $height; ?></span> px</td>
 								</tr>
 								<tr>
@@ -208,8 +207,8 @@ function submitbutton(pressbutton)
 									multiple: true,
 									debug: true,
 									template: '<div class="qq-uploader">' +
-												'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
-												'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+												'<div class="qq-upload-button"><span><?php echo JText::_('COM_TOOLS_IMAGE_CLICK_OR_DROP'); ?></span></div>' +
+												'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_TOOLS_IMAGE_CLICK_OR_DROP'); ?></span></div>' +
 												'<ul class="qq-upload-list"></ul>' +
 											   '</div>',
 									/*onSubmit: function(id, file) {
@@ -247,7 +246,7 @@ function submitbutton(pressbutton)
 						</script>
 					<?php
 					} else {
-						echo '<p class="warning">'.JText::_('COM_TOOLS_PICTURE_ADDED_LATER').'</p>';
+						echo '<p class="warning">' . JText::_('COM_TOOLS_PICTURE_ADDED_LATER') . '</p>';
 					}
 					?>
 				</fieldset>
@@ -257,11 +256,11 @@ function submitbutton(pressbutton)
 
 		<div id="page-locations" class="tab">
 			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('Locations'); ?></span></legend>
+				<legend><span><?php echo JText::_('COM_TOOLS_FIELDSET_LOCATIONS'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
 				<iframe width="100%" height="400" name="locations" id="locations" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;tmpl=component&amp;zone=<?php echo $this->row->get('id'); ?>"></iframe>
 			<?php } else { ?>
-				<p><?php echo JText::_('Course must be saved before managers can be added.'); ?></p>
+				<p><?php echo JText::_('COM_TOOLS_LOCATIONS_ADDED_LATER'); ?></p>
 			<?php } ?>
 		</fieldset>
 		</div>

@@ -1,8 +1,37 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_('Tools'), 'tools.png');
+JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_HOSTS'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
@@ -17,11 +46,11 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -30,12 +59,12 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Hostname', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Provisions', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Uses', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Zone', 'zone_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col">Broken Containers</th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_PROVISIONS', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_USES', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_ZONE', 'zone_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_TOOLS_COL_BROKEN_CONTAINERS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -101,10 +130,8 @@ if ($this->rows)
 				<td>
 					<?php
 						$db = MwUtils::getMWDBO();
-						$sql = "select count(*) from display where status='broken' and hostname='{$row->hostname}'";
-						$db->setQuery($sql);
-						$bc = $db->loadResult();
-						echo $bc;
+						$db->setQuery("SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`=" . $db->quote($row->hostname));
+						echo $db->loadResult();
 					?>
 				</td>
 			</tr>
@@ -122,5 +149,5 @@ if ($this->rows)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -189,7 +189,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Missing ID'),
+				JText::_('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -200,7 +200,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		{
 			JRequest::setVar('id', $fields['id']);
 			JRequest::setVar('version', $fields['version']);
-			$this->addComponentMessage(JText::_('Tool instance not found'), 'error');
+			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
 			$this->editTask();
 			return;
 		}
@@ -213,7 +213,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 		if (!$row->vnc_command)
 		{
-			$this->addComponentMessage(JText::_('No command value'), 'error');
+			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_MISSING_COMMAND'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -243,7 +243,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('TOOL_VERSION_SAVED')
+				JText::_('COM_TOOLS_ITEM_SAVED')
 			);
 		}
 	}

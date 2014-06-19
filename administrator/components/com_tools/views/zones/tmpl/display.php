@@ -30,7 +30,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Tools'), 'tools.png');
+JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_ZONES'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
@@ -56,12 +56,12 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Zone', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Type', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'State', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Master', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'SSH Key Path', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('Locations'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_MASTER', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_SSH_KEY', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_TOOLS_COL_LOCATIONS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

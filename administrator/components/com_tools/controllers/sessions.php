@@ -155,7 +155,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 				$id = intval($id);
 				if (!$row->load($id))
 				{
-					$this->addComponentMessage(JText::sprintf('Failed to load session #%s', $id), 'error');
+					$this->addComponentMessage(JText::sprintf('COM_TOOLS_ERROR_FAILED_TO_LOAD_SESSION', $id), 'error');
 					continue;
 				}
 
@@ -181,7 +181,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Session(s) successfully terminated.'),
+			JText::_('COM_TOOLS_SESSIONS_TERMINATED'),
 			'message'
 		);
 	}

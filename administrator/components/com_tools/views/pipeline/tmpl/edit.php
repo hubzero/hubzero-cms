@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_TOOLS').': '. $text, 'tools.png');
 JToolBarHelper::save();
@@ -16,23 +16,23 @@ function submitbutton(pressbutton)
 {
 	var form = document.getElementById('item-form');
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 	// do field validation
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('TOOL_DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('TOOL_TITLE'); ?>:</label><br />
+				<label for="field-title"><?php echo JText::_('COM_TOOLS_FIELD_TITLE'); ?>:</label><br />
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 		</fieldset>
@@ -41,11 +41,11 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('TOOL_ID'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_FIELD_ID'); ?>:</th>
 					<td><?php echo $this->escape($this->row->id);?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('TOOL_NAME'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_FIELD_NAME'); ?>:</th>
 					<td><?php echo $this->escape(stripslashes($this->row->toolname)); ?></td>
 				</tr>
 			</tbody>
@@ -57,5 +57,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

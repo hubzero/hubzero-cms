@@ -1,8 +1,37 @@
 <?php
-// No direct access
-defined('_JEXEC') or die( 'Restricted access' );
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-JToolBarHelper::title( JText::_( 'Tools' ), 'tools.png' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_HOST_TYPES'), 'tools.png');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::deleteList();
@@ -15,11 +44,11 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -28,10 +57,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Bit#', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Description', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('References'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_BIT', 'value', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TOOLS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_TOOLS_COL_REFERENCES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -90,5 +119,5 @@ if ($this->rows)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

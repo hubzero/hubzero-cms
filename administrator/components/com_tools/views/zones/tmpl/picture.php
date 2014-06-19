@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="formed">
 			<thead>
 				<tr>
-					<th><label for="image"><?php echo JText::_('UPLOAD'); ?> <?php echo JText::_('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+					<th><label for="image"><?php echo JText::_('COM_TOOLS_UPLOAD'); ?> <?php echo JText::_('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="task" value="upload" />
 
 						<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
-						<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_TOOLS_UPLOAD'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="formed">
 			<thead>
 				<tr>
-					<th colspan="4"><label for="image"><?php echo JText::_('COM_TOOLS_LOGO'); ?></label></th>
+					<th colspan="4"><label for="image"><?php echo JText::_('COM_TOOLS_FIELDSET_IMAGE'); ?></label></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -79,31 +79,31 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 				<tr>
 					<td rowspan="6">
-						<img src="<?php echo '../' . substr($path, strlen(JPATH_ROOT . '/')) . DS . $file; ?>" alt="<?php echo JText::_('COM_TOOLS_LOGO'); ?>" id="conimage" />
+						<img src="<?php echo '../' . substr($path, strlen(JPATH_ROOT . '/')) . DS . $file; ?>" alt="<?php echo JText::_('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
 					</td>
-					<th><?php echo JText::_('FILE'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_IMAGE_FILE'); ?>:</th>
 					<td><?php echo $file; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('SIZE'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_IMAGE_SIZE'); ?>:</th>
 					<td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('WIDTH'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_IMAGE_WIDTH'); ?>:</th>
 					<td><?php echo $width; ?> px</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('HEIGHT'); ?>:</th>
+					<th><?php echo JText::_('COM_TOOLS_IMAGE_HEIGHT'); ?>:</th>
 					<td><?php echo $height; ?> px</td>
 				</tr>
 				<tr>
 					<td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
-					<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=removefile&amp;id=<?php echo $this->zone->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+					<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=removefile&amp;id=<?php echo $this->zone->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('JDELETE'); ?> ]</a></td>
 				</tr>
 		<?php } else { ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('COM_TOOLS_LOGO_NONE'); ?>
+						<?php echo JText::_('COM_TOOLS_IMAGE_NONE'); ?>
 						<input type="hidden" name="currentfile" value="" />
 					</td>
 				</tr>

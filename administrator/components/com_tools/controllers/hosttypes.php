@@ -34,18 +34,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
 
 /**
- * Short description for 'ToolsController'
- *
- * Long description (if any) ...
+ * Tools controller for host types
  */
 class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Short description for 'type_display'
+	 * Display a list of host types
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return     void
 	 */
 	public function displayTask()
 	{
@@ -276,7 +272,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			Jtext::_('Host type successfully saved.'),
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
 			'message'
 		);
 	}
@@ -313,7 +309,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Host type successfully deleted.'),
+			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
 	}

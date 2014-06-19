@@ -187,7 +187,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Missing ID'),
+				JText::_('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -197,7 +197,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		if (!$row)
 		{
 			JRequest::setVar('id', $fields['id']);
-			$this->addComponentMessage(JText::_('Tool not found'), 'error');
+			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
 			$this->editTask();
 			return;
 		}
@@ -206,7 +206,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		if (!$row->title)
 		{
-			$this->addComponentMessage(JText::_('Missing title'), 'error');
+			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -224,7 +224,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('TOOL_SAVED')
+				JText::_('COM_TOOLS_ITEM_DELETED')
 			);
 		}
 	}
@@ -291,7 +291,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 							echo '<p>'.$cr.'</p>';
 						}
 					}
-					echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
+					echo '<p>' . JText::sprintf('COM_TOOLS_REGISTERED_DOIS', count($created), count($failed)) . '</p>';
 					return;
 				}
 
@@ -302,7 +302,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 				}
 
 				// Get version info
-				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname='".$row->alias."' AND revision='".$row->local_revision."' AND state!=3 LIMIT 1");
+				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname='" . $row->alias . "' AND revision='" . $row->local_revision . "' AND state!=3 LIMIT 1");
 				$results = $this->database->loadObjectList();
 
 				if ($results)
@@ -318,9 +318,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 				// Collect metadata
 				$metadata = array();
-				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev='.$row->local_revision;
-				$metadata['title'] = htmlspecialchars($title);
-				$metadata['pubYear'] = $pubyear;
+				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev=' . $row->local_revision;
+				$metadata['title']     = htmlspecialchars($title);
+				$metadata['pubYear']   = $pubyear;
 
 				// Get authors
 				$objA = new ToolAuthor($this->database);
@@ -357,10 +357,10 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		{
 			foreach ($created as $cr)
 			{
-				echo '<p>'.$cr.'</p>';
+				echo '<p>' . $cr . '</p>';
 			}
 		}
-		echo '<p>Registered '.count($created).' dois, failed '.count($failed).'</p>';
+		echo '<p>' . JText::sprintf('COM_TOOLS_REGISTERED_DOIS', count($created), count($failed)) . '</p>';
 		return;
 	}
 

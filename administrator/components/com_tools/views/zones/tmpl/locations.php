@@ -30,9 +30,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$text = JText::_('LOCATIONS');
+$text = ;
 
-JToolBarHelper::title(JText::_('Tools').': <small><small>[ ' . $text . ' ]</small></small>', 'tools.png');
+JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_LOCATIONS'), 'tools.png');
 JToolBarHelper::addNew();
 JToolBarHelper::spacer();
 JToolBarHelper::apply();
@@ -56,24 +56,24 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 
-        <nav role="navigation" class="sub-navigation">
-                <div id="submenu-box">
-                        <div class="submenu-box">
-                                <div class="submenu-pad">
-                                        <ul id="submenu" class="member">
-                                                <li><a href="index.php?option=com_tools&controller=zones&task=edit&id=<?php echo $this->row->id;?>" id="profile">Profile</a></li>
-                                                <li><a href="#" onclick="return false;" id="locations" class="active">Locations</a></li>
-                                        </ul>
-                                        <div class="clr"></div>
-                                </div>
-                        </div>
-                        <div class="clr"></div>
-                </div>
-        </nav><!-- / .sub-navigation -->
+	<nav role="navigation" class="sub-navigation">
+		<div id="submenu-box">
+			<div class="submenu-box">
+				<div class="submenu-pad">
+					<ul id="submenu" class="member">
+						<li><a href="index.php?option=com_tools&controller=zones&task=edit&id=<?php echo $this->row->id;?>" id="profile"><?php echo JText::_('JDETAILS'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="locations" class="active"><?php echo JText::_('COM_TOOLS_LOCATIONS'); ?></a></li>
+					</ul>
+					<div class="clr"></div>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+	</nav><!-- / .sub-navigation -->
 
 	<div id="zone-document">
 		<div id="page-locations" class="tab">
-			<p>hello</p>
+			<p>--</p>
 		</div>
 		<div class="clr"></div>
 	</div>
