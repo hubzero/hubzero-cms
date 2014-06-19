@@ -277,6 +277,22 @@ class plgUserJoomla extends JPlugin
 		$instance->set('usertype'		, 'deprecated');
 		$instance->set('groups'		, array($defaultUserGroup));
 
+		// Check joomla user activation setting
+		// 0 = automatically confirmed
+		// 1 = require email confirmation (the norm)
+		// 2 = require admin confirmation
+		$useractivation = $config->get('useractivation', 1);
+
+		// If requiring admin approval, set user to not approved
+		if ($useractivation == 2)
+		{
+			$instance->set('approved', 0);
+		}
+		else // Automatically approved
+		{
+			$instance->set('approved', 2);
+		}
+
 		//If autoregister is set let's register the user
 		$autoregister = isset($options['autoregister']) ? $options['autoregister'] :  $this->params->get('autoregister', 1);
 
