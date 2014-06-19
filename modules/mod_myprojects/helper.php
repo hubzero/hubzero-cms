@@ -49,8 +49,8 @@ class modMyProjects extends \Hubzero\Module\Module
 
 		// Get the module parameters
 		$params = $this->params;
-		$this->moduleclass = $params->get('moduleclass');
-		$limit = intval($params->get('limit'));
+		$this->moduleclass = $params->get('moduleclass', '');
+		$limit = intval($params->get('limit', 5));
 
 		// Load component configs
 		$config = JComponentHelper::getParams('com_projects');
@@ -63,7 +63,7 @@ class modMyProjects extends \Hubzero\Module\Module
 		// Set filters
 		$filters = array();
 		$filters['mine']     = 1;
-		$filters['limit']    = ($limit) ? $limit : 10;
+		$filters['limit']    = $limit;
 		$filters['start']    = 0;
 		$filters['updates']  = 1;
 		$filters['sortby']   = 'myprojects';
@@ -79,6 +79,9 @@ class modMyProjects extends \Hubzero\Module\Module
 
 		// Get records
 		$this->rows = $obj->getRecords($filters, false, $juser->get('id'), 0, $setup_complete);
+
+		// pass limit to view
+		$this->limit = $limit;
 
 		// Push the module CSS to the template
 		$this->css();

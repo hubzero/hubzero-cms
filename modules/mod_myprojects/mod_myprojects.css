@@ -12,46 +12,46 @@
 	-- -- -- -- -- -- --
 
 */
-	div.draggable #myprojects .compactlist li {
-		padding-left: 1em;
-		clear: both;
-	}
-	div.draggable #myprojects .compactlist li.pr-inactive {
-		background: #f9f9f9;
-	}
-	div.draggable #myprojects .compactlist li.pr-setup {
-		background: #fdf8ef;
-	}
-	div.draggable #myprojects a {
-		padding: 0;
-		margin: 0;
-	}
-	div.draggable #myprojects .module-nav a {
-		padding: 0.1em 0.5em;
-		white-space: nowrap;
-	}
-	div.draggable #myprojects img {
-		width: 30px;
-		height: 30px;
-		padding: 0 0.5em 1.2em 0.5em;
-		float: left;
-		margin-right: 0.5em;
-		*padding-bottom: 0;
-	}	
-	div.draggable #myprojects span.sub {
-		display: block;
-		font-size: 85%;
-		margin-top: -0.2em;
-		line-height: 1.2em;
-	}	
-	div.draggable #myprojects .compactlist li span span.s-new {
-		display: block;
-		position: absolute;
-		font-size: 75%;
-		font-weight: bold;
-		color: #FFF;
-		background: red;
-		padding: 0 0.5em;
-		margin-top: 1em;
-	}
+
+#myprojects {
+	padding: 0 !important;
+}
+#myprojects .compactlist li {
+	padding-left: 1em;
+	clear: both;
+}
+#myprojects .compactlist li.pr-inactive {
+	background: #f9f9f9;
+}
+#myprojects .compactlist li.pr-setup {
+	background: #fdf8ef;
+}
+#myprojects a {
+	padding: 0;
+	margin: 0;
+}
+#myprojects img {
+	width: 30px;
+	height: 30px;
+	padding: 0 0.5em 1.2em 0.5em;
+	float: left;
+	margin-right: 0.5em;
+	*padding-bottom: 0;
+}	
+#myprojects span.sub {
+	display: block;
+	font-size: 85%;
+	margin-top: -0.2em;
+	line-height: 1.2em;
+}	
+#myprojects .compactlist li span span.s-new {
+	display: block;
+	position: absolute;
+	font-size: 75%;
+	font-weight: bold;
+	color: #FFF;
+	background: red;
+	padding: 0 0.5em;
+	margin-top: 1em;
+}
 	
