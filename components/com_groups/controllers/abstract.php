@@ -163,6 +163,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 
 		//add active
+		$this->active = strtolower($this->active);
 		if ($this->active)
 		{
 			// fetch the active page
@@ -230,6 +231,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			}
 		}
 
+		$this->active = strtolower($this->active);
 		if ($this->active)
 		{
 			// fetch the active page
