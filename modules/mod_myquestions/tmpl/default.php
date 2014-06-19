@@ -33,10 +33,25 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 ?>
-	<h4>
+<ul class="module-nav">
+	<li>
+		<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">
+			<?php echo JText::_('MOD_MYQUESTIONS_ALL_QUESTIONS'); ?>
+		</a>
+	</li>
+	<li>
+		<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_answers&task=new'); ?>">
+			<?php echo JText::_('MOD_MYQUESTIONS_NEW_QUESTION'); ?>
+		</a>
+	</li>
+</ul>
+
+<h4>
+	<a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=mine&filterby=open'); ?>">
 		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS'); ?>
-		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=mine&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
-	</h4>
+		<span><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></span>
+	</a>
+</h4>
 <?php if ($this->openquestions) { ?>
 	<ul class="compactlist">
 	<?php
@@ -63,16 +78,15 @@ $juser = JFactory::getUser();
 	?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></p>
+	<p><em><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></em></p>
 <?php } ?>
-	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_answers&task=new'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_ADD_QUESTION'); ?></a></li>
-	</ul>
 
 <?php if ($this->show_assigned) { // Questions related to my contributions ?>
 	<h4>
-		<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS'); ?>
-		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=assigned&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
+		<a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=assigned&filterby=open'); ?>">
+			<?php echo JText::_('MOD_MYQUESTIONS_OPEN_QUESTIONS_ON_CONTRIBUTIONS'); ?>
+			<span><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></span>
+		</a>
 	</h4>
 	<?php if ($this->assigned) { ?>
 		<p class="incentive"><span><?php echo strtolower(JText::_('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')); ?></span></p>
@@ -97,14 +111,16 @@ $juser = JFactory::getUser();
 		?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></em></p>
 	<?php } ?>
 <?php } ?>
 
 <?php if ($this->show_interests) { // Questions of interest ?>
 	<h4>
-		<?php echo JText::_('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER'); ?>
-		<small><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=interest&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></a></small>
+		<a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=interest&filterby=open'); ?>">
+			<?php echo JText::_('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER'); ?>
+			<span><?php echo JText::_('MOD_MYQUESTIONS_VIEW_ALL'); ?></span>
+		</a>
 	</h4>
 	<p class="category-header-details">
 	<?php if ($this->interests) { ?>
@@ -137,9 +153,6 @@ $juser = JFactory::getUser();
 		?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></em></p>
 	<?php } ?>
-	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&filterby=open'); ?>"><?php echo JText::_('MOD_MYQUESTIONS_ALL_OPEN_QUESTIONS'); ?></a></li>
-	</ul>
 <?php } ?>
