@@ -209,7 +209,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//get the upcoming events
 		$upcoming_events = $this->_getFutureEventsThisMonth();
-		if($upcoming_events > 0)
+		if ($upcoming_events > 0)
 		{
 			$title = $this->group->get('description')." has {$upcoming_events} events this month.";
 			$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&active=calendar');
@@ -825,7 +825,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function subscribe()
 	{
 		//check to see if subscriptions are on
-		if(!$this->params->get('allow_subscriptions', 1))
+		if (!$this->params->get('allow_subscriptions', 1))
 		{
 			header('HTTP/1.1 404 Not Found');
 			die( JText::_('Calendar subsciptions are currently turned off.') );
@@ -862,7 +862,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 
 			//make sure we are a member
-			if($plugin_access == 'members' && !is_object($auth) && !in_array($auth->id, $this->group->get('members')))
+			if ($plugin_access == 'members' && !is_object($auth) && !in_array($auth->id, $this->group->get('members')))
 			{
 				header('HTTP/1.1 403 Unauthorized');
 				die( JText::sprintf('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar') );
@@ -912,7 +912,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$user = $this->database->loadObject();
 
 		//make sure we found a user
-		if(!is_object($user) || $user->id == '' || $user->id == 0)
+		if (!is_object($user) || $user->id == '' || $user->id == 0)
 		{
 			JFactory::getAuthLogger()->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
 			apache_note('auth','invalid');
@@ -1163,7 +1163,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$eventsRespondent->position_description = $register['position_other'];
 		}
-		else if(isset($register['position']))
+		else if (isset($register['position']))
 		{
 			$eventsRespondent->position_description = $register['position'];
 		}
@@ -1334,7 +1334,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			'registered'
 		);
 
-		foreach($registrants as $registrant)
+		foreach ($registrants as $registrant)
 		{
 			$sql = "SELECT CONCAT(race, ',', tribal_affiliation) as race
 			        FROM #__events_respondent_race_rel
@@ -1342,9 +1342,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$this->database->setQuery( $sql );
 			$race = $this->database->loadResult();
 
-			foreach($fields as $field)
+			foreach ($fields as $field)
 			{
-				switch($field)
+				switch ($field)
 				{
 					case 'disability_needs':
 						$output .= ($registrant->disability_needs == 1) ? 'Yes,' : 'No,';
@@ -1537,20 +1537,20 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		if (!$calendar->bind($calendarInput))
 		{
 			$this->setError( $calendar->getError() );
-		 	return $this->editCalendar();
+			return $this->editCalendar();
 		}
 
 		// attempt to save
 		if (!$calendar->store(true))
 		{
 			$this->setError( $calendar->getError() );
-		 	return $this->editCalendar();
+			return $this->editCalendar();
 		}
 
 		// should we refresh?
 		if ($needsRefresh)
 		{
-		 	$calendar->refresh();
+			$calendar->refresh();
 		}
 
 		//inform and redirect

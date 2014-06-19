@@ -87,7 +87,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		$return = JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task);
 
 		//do we have a custom return
-		if($customReturn)
+		if ($customReturn)
 		{
 			$return = $customReturn;
 		}
@@ -225,7 +225,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		if ($this->cn)
 		{
 			$group = \Hubzero\User\Group::getInstance( $this->cn );
-			if(is_object($group))
+			if (is_object($group))
 			{
 				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
 			}
@@ -268,7 +268,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	{
 		$no_html = JRequest::getInt('no_html', 0);
 
-		if($no_html)
+		if ($no_html)
 		{
 			$error = array('error' => array( 'code' => $errorCode, 'message' => $errorMessage ));
 			echo json_encode( $error );

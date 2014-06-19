@@ -42,7 +42,7 @@ class modMyProjects extends \Hubzero\Module\Module
 	 * 
 	 * @return     void
 	 */
-	public function display() 
+	public function display()
 	{
 		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();

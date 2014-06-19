@@ -46,7 +46,7 @@ $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pa
 $return      = JRequest::getVar('return', '');
 $return_link = $base_link;
 if ($return != '')
-{	
+{
 	if (filter_var(base64_decode($return), FILTER_VALIDATE_URL))
 	{
 		$return_link = base64_decode($return);
@@ -180,8 +180,8 @@ if ($this->page->get('id'))
 					<label>
 						<strong>Status:</strong> <span class="required">Required</span>
 						<select name="page[state]" class="fancy-select">
-							<option value="1" <?php if($state == 1) { echo "selected"; } ?>>Published</option>
-							<option value="0" <?php if($state == 0) { echo "selected"; } ?>>Unpublished</option>
+							<option value="1" <?php if ($state == 1) { echo "selected"; } ?>>Published</option>
+							<option value="0" <?php if ($state == 0) { echo "selected"; } ?>>Unpublished</option>
 						</select>
 					</label>
 
@@ -198,7 +198,7 @@ if ($this->page->get('id'))
 						<strong>Privacy:</strong> <span class="required">Required</span>
 						<?php
 							$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
-							switch($access)
+							switch ($access)
 							{
 								case 'anyone':		$name = "Any HUB Visitor";		break;
 								case 'registered':	$name = "Registered HUB Users";	break;
@@ -206,8 +206,8 @@ if ($this->page->get('id'))
 							}
 						?>
 						<select name="page[privacy]" class="fancy-select">
-							<option value="default" <?php if($privacy == "default") { echo 'selected="selected"'; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
-							<option value="members" <?php if($privacy == "members") { echo 'selected="selected"'; } ?>>Private Page (Accessible to members only)</option>
+							<option value="default" <?php if ($privacy == "default") { echo 'selected="selected"'; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
+							<option value="members" <?php if ($privacy == "members") { echo 'selected="selected"'; } ?>>Private Page (Accessible to members only)</option>
 						</select>
 					</label>
 				</fieldset>
@@ -264,8 +264,8 @@ if ($this->page->get('id'))
 					<label>
 						<strong>Home Page:</strong> <span class="optional">Optional</span>
 						<select name="page[home]" class="fancy-select">
-							<option value="0" <?php if($home == 0) { echo "selected"; } ?>>Use current home page</option>
-							<option value="1" <?php if($home == 1) { echo "selected"; } ?>>Set as home page</option>
+							<option value="0" <?php if ($home == 0) { echo "selected"; } ?>>Use current home page</option>
+							<option value="1" <?php if ($home == 1) { echo "selected"; } ?>>Set as home page</option>
 						</select>
 						<span class="hint">Override the group home page.</span>
 					</label>

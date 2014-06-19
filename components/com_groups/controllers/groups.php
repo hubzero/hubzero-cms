@@ -60,7 +60,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//if we have a file
-		if(isset($file))
+		if (isset($file))
 		{
 			return $this->downloadTask( $file );
 		}
@@ -247,7 +247,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// ensure the group is published
-		if($this->view->group->get('published') != 1)
+		if ($this->view->group->get('published') != 1)
 		{
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
@@ -269,7 +269,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			//if user is NOT manager but member or invitee
-			if(!in_array($this->juser->get('id'), $managers) && in_array($this->juser->get('id'), $members_invitees))
+			if (!in_array($this->juser->get('id'), $managers) && in_array($this->juser->get('id'), $members_invitees))
 			{
 				$this->unapprovedGroupTask();
 				return;
@@ -288,7 +288,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// get active tab
 		$this->view->tab     = GroupsHelperView::getTab( $this->view->group );
 		$this->view->trueTab = strtolower(JRequest::getVar('active', 'overview'));
-		
+
 		// get group pages if any
 		$pageArchive = GroupsModelPageArchive::getInstance();
 		$pages = $pageArchive->pages('list', array(
@@ -668,7 +668,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//are we creating a new group?
-		if($this->_task == 'new')
+		if ($this->_task == 'new')
 		{
 			// Instantiate an \Hubzero\User\Group object
 			$this->view->group = new \Hubzero\User\Group();
@@ -686,7 +686,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		else
 		{
 			//check to make sure we have  cname
-			if(!$this->cn)
+			if (!$this->cn)
 			{
 				$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 			}
@@ -813,7 +813,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//are we editing or creating
-		if($g_gidNumber)
+		if ($g_gidNumber)
 		{
 			$group = \Hubzero\User\Group::getInstance($g_gidNumber);
 			$this->_task = 'edit';
@@ -1090,7 +1090,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -1177,7 +1177,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -1202,7 +1202,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$message 		= trim(JRequest::getVar('msg', '', 'post'));
 
 		//check to make sure we have confirmed
-		if(!$confirm_delete)
+		if (!$confirm_delete)
 		{
 			$this->setNotification(JText::_('COM_GROUPS_DELETE_MISSING_CONFIRM_MESSAGE'), 'error');
 			$this->deleteTask();
@@ -1503,7 +1503,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (JRequest::getVar('no_html', 0) == 1)
 		{
 			echo json_encode(array('available' => $availability));
-            return;
+			return;
 		}
 		else
 		{
@@ -1671,8 +1671,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 * @param 		boolean		$allowDashes 	Allow dashes in cn
 	 * @return 		boolean		True if valid, false if not
 	 */
-    private function _validCn( $cn, $allowDashes = false )
-    {
+	private function _validCn( $cn, $allowDashes = false )
+	{
 		$regex = '/^[0-9a-z]+[_0-9a-z]*$/u';
 		if ($allowDashes)
 		{
