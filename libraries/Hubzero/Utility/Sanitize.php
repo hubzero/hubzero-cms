@@ -293,7 +293,7 @@ class Sanitize
 		$config = \HTMLPurifier_Config::createDefault();
 		$config->set('AutoFormat.Linkify', true);
 		$config->set('AutoFormat.RemoveEmpty', true);
-		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
+		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', false);
 		$config->set('Output.CommentScriptContents', false);
 		$config->set('Output.TidyFormat', true);
 		$config->set('Attr.AllowedFrameTargets', array('_blank'));
