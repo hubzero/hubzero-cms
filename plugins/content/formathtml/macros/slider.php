@@ -88,7 +88,7 @@ class Slider extends Macro
 		}
 
 		//define a base url
-		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . 'uploads';
+		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'uploads';
 
 		//seperate image list into array of images
 		$slides = explode(',', $content);
