@@ -30,8 +30,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$text = ;
-
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_LOCATIONS'), 'tools.png');
 JToolBarHelper::addNew();
 JToolBarHelper::spacer();
@@ -61,7 +59,7 @@ function submitbutton(pressbutton)
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="member">
-						<li><a href="index.php?option=com_tools&controller=zones&task=edit&id=<?php echo $this->row->id;?>" id="profile"><?php echo JText::_('JDETAILS'); ?></a></li>
+						<li><a href="index.php?option=com_tools&amp;controller=zones&mp;task=edit&amp;id=<?php echo $this->row->id; ?>" id="profile"><?php echo JText::_('JDETAILS'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="locations" class="active"><?php echo JText::_('COM_TOOLS_LOCATIONS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
