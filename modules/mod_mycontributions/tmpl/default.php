@@ -33,6 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 // Build the HTML
 $html = '';
+
+$html .= "\t\t".'<ul class="module-nav"><li><a class="icon-plus" href="'.JRoute::_('index.php?option=com_resources&task=draft').'">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
+
 $tools = $this->tools;
 if ($this->show_tools && $tools) {
 	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_TOOLS').' ';
@@ -148,8 +151,6 @@ if (!$contributions) {
 	}
 	$html .= '</ul>'."\n";
 }
-
-$html .= "\t\t".'<ul class="module-nav"><li><a href="'.JRoute::_('index.php?option=com_resources&task=draft').'">'.JText::_('MOD_MYCONTRIBUTIONS_START_NEW').'</a></li></ul>'."\n";
 
 // Output final HTML
 echo $html;
