@@ -1,43 +1,29 @@
-<!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="ltr" lang="en" class="ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="ltr" lang="en" class="ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="ltr" lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="ltr" lang="en" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="ltr" lang="en"> <!--<![endif]-->
-	<head>
-		<title>Support Documentation: Message Templates</title>
-		<link rel="stylesheet" href="/media/system/css/documentation.css" type="text/css" />
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	</head>
-	<body id="documentation-body">
-		<div class="article">
-			<h1><span>Message Templates</span></h1>
-			<div class="section">
-				<h2><span>Overview</span></h2>
+<article>
+	<h1><span>Support: Message Templates</span></h1>
+	<section>
+		<h2><span>Overview</span></h2>
 
-				<p>To aid in responding to support ticket submissions, you may create custom message templates for frequently used responses. Example responses include a "Ticket resolved" message sent upon closing a ticket or a "Request for more information" message.</p>
-			</div>
-			<div class="section">
-				<h2><span>Adding/Editing</span></h2>
+		<p>To aid in responding to support ticket submissions, you may create custom message templates for frequently used responses. Example responses include a "Ticket resolved" message sent upon closing a ticket or a "Request for more information" message.</p>
+	</section>
+	<section>
+		<h2><span>Adding/Editing</span></h2>
 
-				<p>Messages may also includes placeholders where information that changes can be specified. For instance your message template may include references to the specific ticket ID number or site name. A "Ticket resolved" template could look like this:</p>
+		<p>Messages may also includes placeholders where information that changes can be specified. For instance your message template may include references to the specific ticket ID number or site name. A "Ticket resolved" template could look like this:</p>
 
-				<blockquote>
-				<p>Thank you for using the <span class="highlight">{sitename}</span>, and for reporting this problem.  We believe that your issue (ticket #<span class="highlight">{ticket#}</span> in our system) has been resolved. If you continue to have problems please let us know. You may reopen a closed issue at any time by following the link at the end of this message and adding a comment to the ticket.</p>
+		<blockquote>
+		<p>Thank you for using the <span class="highlight">{sitename}</span>, and for reporting this problem.  We believe that your issue (ticket #<span class="highlight">{ticket#}</span> in our system) has been resolved. If you continue to have problems please let us know. You may reopen a closed issue at any time by following the link at the end of this message and adding a comment to the ticket.</p>
 
-				<p>Thank you for helping us to improve <span class="highlight">{sitename}</span>!<br />
-				--the <span class="highlight">{sitename}</span> team</p>
-				</blockquote>
+		<p>Thank you for helping us to improve <span class="highlight">{sitename}</span>!<br />
+		--the <span class="highlight">{sitename}</span> team</p>
+		</blockquote>
 
-				<p>Here we have two placeholders: <code>{ticket#}</code> and <code>{sitename}</code>. The placeholders are replaced with their current value at the time of composition. When chosen from the select box under "Comments" of the response form, the comments text box will be filled with the following:</p>
+		<p>Here we have two placeholders: <code>{ticket#}</code> and <code>{sitename}</code>. The placeholders are replaced with their current value at the time of composition. When chosen from the select box under "Comments" of the response form, the comments text box will be filled with the following:</p>
 
-				<blockquote>
-				<p>Thank you for using the YourHUB, and for reporting this problem.  We believe that your issue (ticket #123 in our system) has been resolved. If you continue to have problems please let us know. You may reopen a closed issue at any time by following the link at the end of this message and adding a comment to the ticket.</p>
+		<blockquote>
+		<p>Thank you for using the YourHUB, and for reporting this problem.  We believe that your issue (ticket #123 in our system) has been resolved. If you continue to have problems please let us know. You may reopen a closed issue at any time by following the link at the end of this message and adding a comment to the ticket.</p>
 
-				<p>Thank you for helping us to improve YourHUB!<br />
-				--the YourHUB team</p>
-				</blockquote>
-			</div>
-		</div>
-	</body>
-</html>
+		<p>Thank you for helping us to improve YourHUB!<br />
+		--the YourHUB team</p>
+		</blockquote>
+	</section>
+</article>

@@ -239,6 +239,17 @@
 		display: none;
 	}
 
+	.ticket fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.ticket .input-wrap {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+
 	.ticket.new .private {
 		float: right;
 		position: relative;
@@ -492,6 +503,13 @@
 	}
 	ol.comments .comment-content {
 		position: relative;
+	}
+	ol.comments .comment-content p:last-child {
+		margin-bottom: 0;
+	}
+	ol.comments .comment-none {
+		font-style: italic;
+		opacity: 0.7;
 	}
 	ol.comments .comment-content:before,
 	ol.comments .comment-content:after {
@@ -1333,6 +1351,15 @@
 	#tktlist tbody tr:hover .ticket-details,
 	#tktlist tbody tr:hover .ticket-details a {
 		color: #666;
+	}
+	#tktlist .ticket-group {
+		font-weight: bold;
+	}
+	#tktlist .ticket-group:before {
+		font-family: 'Fontcons';
+		content: "\f042";
+		font-weight: normal;
+		padding-right: 0.2em;
 	}
 	/* Status */
 	#tktlist .status {

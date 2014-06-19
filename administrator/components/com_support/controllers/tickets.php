@@ -33,7 +33,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'comment.php');
 
 /**
  * Support controller class for tickets
@@ -266,16 +267,25 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$attach->webpath = $webpath;
 			$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
 			$attach->output  = 'web';
-			for ($i=0; $i < count($comments); $i++)
+
+			foreach ($comments as $i => $comment)
 			{
-				$comment =& $comments[$i];
-				$comment->comment = $attach->parse($comment->comment);
+				$comments[$i] = new SupportModelComment($comment);
 			}
 
 			$row->statustext = SupportHtml::getStatus($row->status);
+
+			// Do some text cleanup
+			$row->report = $this->view->escape($row->report);
+			$row->report = nl2br($row->report);
+			$row->report = str_replace("\t",' &nbsp; &nbsp;', $row->report);
+
+			$row->report = $attach->parse($row->report);
 		}
 		else
 		{
+			$this->view->setLayout('add');
+
 			// Creating a new ticket
 			$row->severity = 'normal';
 			$row->status   = 0;
@@ -297,25 +307,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$row->section = 1;
 
 			$comments = array();
-		}
-
-		// Do some text cleanup
-		//$row->summary = html_entity_decode(stripslashes($row->summary), ENT_COMPAT, 'UTF-8');
-		//$row->summary = str_replace('&quote;','&quot;',$row->summary);
-		//$row->summary = htmlentities($row->summary, ENT_COMPAT, 'UTF-8');
-
-		//$row->report  = html_entity_decode(stripslashes($row->report), ENT_COMPAT, 'UTF-8');
-		//$row->report  = str_replace('&quote;','&quot;',$row->report);
-		//$row->report  = str_replace("<br />","",$row->report);
-		//$row->report  = htmlentities($row->report, ENT_COMPAT, 'UTF-8');
-		$row->report  = $this->view->escape($row->report);
-		$row->report  = nl2br($row->report);
-		$row->report  = str_replace("\t",' &nbsp; &nbsp;',$row->report);
-		//$row->report  = str_replace("    ",'&nbsp;&nbsp;&nbsp;&nbsp;',$row->report);
-
-		if ($id)
-		{
-			$row->report = $attach->parse($row->report);
 		}
 
 		$this->view->lists = array();
@@ -1153,9 +1144,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				}
 				$groups[$result->alias][] = $result;
 			}
-			foreach ($groups as $name => $gusers)
+			foreach ($groups as $nme => $gusers)
 			{
-				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $name);
+				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
 				$users = array_merge($users, $gusers);
 			}
 		}
