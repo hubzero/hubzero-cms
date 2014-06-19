@@ -42,6 +42,17 @@ $this->css()
 // define base link
 $base_link = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages';
 
+// define return link
+$return      = JRequest::getVar('return', '');
+$return_link = $base_link;
+if ($return != '')
+{	
+	if (filter_var(base64_decode($return), FILTER_VALIDATE_URL))
+	{
+		$return_link = base64_decode($return);
+	}
+}
+
 // default some form vars
 $pageHeading = JText::_("Add Page");
 
@@ -202,7 +213,7 @@ if ($this->page->get('id'))
 				</fieldset>
 
 				<div class="form-controls cf">
-					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo JText::_('Cancel'); ?></a>
+					<a href="<?php echo JRoute::_($return_link); ?>" class="cancel"><?php echo JText::_('Cancel'); ?></a>
 					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo JText::_('Save Page'); ?></button>
 				</div>
 
