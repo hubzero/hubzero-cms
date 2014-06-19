@@ -552,8 +552,8 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 
 		// make sure we have an approved version
-		$view->version = $page->approvedVersion();
-		if ($view->version === null)
+		$version = $page->approvedVersion();
+		if ($version === null)
 		{
 			$this->setNotification('Unable to set "' . $page->get('title') . '" as the home page. The page must have at least one approved version to set as home.', 'error');
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages') );
