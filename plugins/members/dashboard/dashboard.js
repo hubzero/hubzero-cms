@@ -263,7 +263,6 @@ HUB.Plugins.MemberDashboard = {
 
 		dashboard.modules.remove_widget(module, function() {
 			dashboard.save();
-			$('.modules').height(0);
 			dashboard.emptyStateCheck();
 		});
 	},
@@ -326,6 +325,7 @@ HUB.Plugins.MemberDashboard = {
 		// hide/show empty state
 		if (count == 0)
 		{
+			$('.modules').height(0);
 			$('.modules-empty').show();
 		}
 		else

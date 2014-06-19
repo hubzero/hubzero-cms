@@ -434,3 +434,150 @@
 .module-list-content .module-details img {
     max-width: 100%;
 }
+
+
+/******************************************
+ Individual Module Styles
+******************************************/
+
+.module-content p {
+    margin: 1em;
+}
+.module-content h4 {
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    margin: -1px 0 0 0;
+    padding: 0;
+}
+.module-content h4 a {
+    display: block;
+    padding: 0.2em 0.5em;
+    color: #333;
+    border: none;
+    -webkit-transition: all .35s;
+}
+.module-content h4 span {
+    opacity: 0;
+    text-transform: lowercase;
+    float: right;
+    font-weight: normal;
+    margin-right: 20px;
+    -webkit-transition: all .4s;
+    color: transparent;
+}
+.module-content h4 span:after {
+    content: '\2192';
+    font-family: 'Fontcons';
+    color: #333;
+}
+.module-content h4 a:hover span {
+    margin-right: 0;
+    opacity: 1
+}
+.module-content h4 a:hover,
+.module-content h4 a:hover span:after {
+    color: #178BC1;
+}
+
+/* Compact Lists */
+.module-content .compactlist {
+    list-style: none;
+    margin: 0;
+}
+.module-content .compactlist li {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    margin: 0;
+    padding: 0.6em 0 0.6em 2.5em;
+    position: relative;
+}
+.module-content .compactlist li a {
+    margin-right: 4em;
+}
+.module-content .compactlist li span {
+    color: #999;
+    margin-left: 20px;
+}
+.module-content .compactlist li span span {
+    color: #999;
+    display: block;
+    position: absolute;
+    top: 0.7em;
+    right: 10px;
+    font-size: 90%;
+}
+
+
+/* Expanded Lists */
+.module-content .expandedlist {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.module-content .expandedlist li {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    margin: 0;
+    padding: 0.6em 0 0.6em 2.5em;
+    background-position: 0.7em 1em;
+}
+.module-content .expandedlist li a {
+}
+.module-content .expandedlist li span {
+    font-size: 85%;
+    color: #999;
+    display: block;
+}
+.module-content .expandedlist li span span {
+    color: #999;
+    margin-left: 0;
+    margin-right: 1.5em;
+    font-size: 1em;
+    display: inline;
+}
+
+
+/* Module Nav Buttons */
+.module-content .module-nav {
+    display: table;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    list-style: none;
+    box-sizing: border-box;
+    background: #f0f0f0;
+    padding: 5px 10px 10px 10px;
+    margin: -1px 0 0 0;
+} 
+.module-content .module-nav li {
+    padding: 0;
+    margin: 5px 0 0 0;
+    display: inline-block;
+}
+.module-content .module-nav li a,
+.module-content .more a {
+    display: inline-block;
+    font-size: 90%;
+    padding: 0.2em 0.7em !important;
+    margin: 0 5px 0 0 !important;
+    border: none;
+    color: #333;
+    text-align: center;
+    border-radius: 2px;
+    background: #fff;
+    -webkit-transition: all .35s;
+    text-decoration: none;
+}
+.module-content .module-nav a[class^="icon-"]:before,
+.module-content .module-nav a[class*=" icon-"]:before {
+    color: #aaa;
+    padding-right: 2px;
+}
+.module-content .module-nav li a:hover,
+.module-content .more a:hover {
+    background: #484848;
+    color: #FFF;
+}
