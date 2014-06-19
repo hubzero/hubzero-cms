@@ -23,27 +23,32 @@ $doc = JFactory::getDocument();
 $path = JFactory::getApplication()->getPathway();
 $path->addItem('Search', $base);
 
-function hgView($view, $args = array()) {
+function hgView($view, $args = array())
+{
 	header('Content-type: text/json');
 	echo HubgraphClient::execView($view, array_merge($_GET, $args));
 	exit();
 }
 
-function h($str) {
+function h($str)
+{
 	return htmlentities($str);
 }
 
-function a($str) {
+function a($str)
+{
 	return str_replace('"', '&quot;', $str);
 }
 
-function assertSuperAdmin() {
+function assertSuperAdmin()
+{
 	if (JFactory::getUser()->usertype != 'Super Administrator') {
 		JError::raiseError(405, 'Forbidden');
 	}
 }
 
-function createNonce() {
+function createNonce()
+{
 //	set_include_path(get_include_path() . PATH_SEPARATOR . JPATH_BASE.'/libraries/openid');
 //	require_once 'Auth/OpenID/Nonce.php';
 	$now = time();
@@ -52,7 +57,8 @@ function createNonce() {
 	return $_SESSION['hg_nonce'];
 }
 
-function consumeNonce($form) {
+function consumeNonce($form)
+{
 	$now = time();
 	if (!isset($form['nonce']) || $form['nonce'] != $_SESSION['hg_nonce']
 		|| !preg_match('/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/', $form['nonce'], $ma)
@@ -109,7 +115,7 @@ try {
 }
 catch (Exception $ex) {
 	if (!defined('HG_INLINE')) {
-		header('Location: '.JRoute::_('index.php?option=com_search' . (isset($_GET['terms']) ? '&terms='.$_GET['terms'] : '')));
+		header('Location: '.JRoute::_('index.php?option=com_ysearch' . (isset($_GET['terms']) ? '&terms='.$_GET['terms'] : '')));
 		exit();
 	}
 }

@@ -36,7 +36,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="search" type="text" size="25" default="ysearch" label="Search Component" description="The name of the component to default searches to."/>
+				<field name="search" type="text" size="25" default="search" label="Search Component" description="The name of the component to default searches to."/>
 			</fieldset>
 		</fields>
 	</config>

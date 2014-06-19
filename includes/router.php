@@ -412,7 +412,7 @@ class JRouterSite extends JRouter
 
 			$item = $menu->getDefault(JFactory::getLanguage()->getTag());
 			// if user not allowed to see default menu item then avoid notices
-			if(is_object($item)) {
+			if (is_object($item)) {
 				//Set the information in the request
 				$vars = $item->query;
 
@@ -446,7 +446,7 @@ class JRouterSite extends JRouter
 
 			foreach ($items as $item) {
 				//sqlsrv  change
-				if(isset($item->language)){
+				if (isset($item->language)){
 					$item->language = trim($item->language);
 				}
 				$depth = substr_count(trim($item->route,'/'),'/') + 1; // HUBzero: keep searching for better matches with higher depth
@@ -532,6 +532,14 @@ class JRouterSite extends JRouter
 					$search = 'search';
 				}
 				$segments[0] = $search;
+			}
+			elseif ($segments[0] == 'ysearch')
+			{
+				// Hack for fallback search when hubgraph fails...
+				// We use ysearch as our keyword (even though ysearch doesn't exist anymore),
+				// just so we can distinguish between a generic search and a redirect from 
+				// hubgraph (when it fails), which would otherwise result in an infinite loop.
+				$segments[0] = 'search';
 			}
 
 			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";
