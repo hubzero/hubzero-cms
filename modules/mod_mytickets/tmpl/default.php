@@ -34,13 +34,18 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo JText::_('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
+		<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
+		<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo JText::_('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
 	</ul>
 
-	<h4><?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?></h4>
+	<h4>
+		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=7'); ?>">
+			<?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?>
+			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		</a>
+	</h4>
 	<?php if (count($this->rows1) <= 0) { ?>
-		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
@@ -57,9 +62,14 @@ defined('_JEXEC') or die('Restricted access');
 		</ul>
 	<?php } ?>
 
-	<h4><?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?></h4>
+	<h4>
+		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=8'); ?>">
+			<?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?>
+			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		</a>
+	</h4>
 	<?php if (count($this->rows2) <= 0) { ?>
-		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
@@ -76,9 +86,14 @@ defined('_JEXEC') or die('Restricted access');
 		</ul>
 	<?php } ?>
 
-	<h4><?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?></h4>
+	<h4>
+		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=8'); ?>">
+			<?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
+			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		</a>
+	</h4>
 	<?php if (count($this->rows3) <= 0) { ?>
-		<p><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
