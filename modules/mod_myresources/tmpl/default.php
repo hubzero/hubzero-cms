@@ -35,6 +35,13 @@ $juser = JFactory::getUser();
 
 if (!$this->no_html) {
 ?>
+	<ul class="module-nav">
+		<li>
+			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=contributions&area=resources'); ?>">
+				<?php echo JText::_('MOD_MYRESOURCES_ALL_PUBLICATIONS'); ?>
+			</a>
+		</li>
+	</ul>
 	<form method="get" action="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>" data-module="<?php echo $this->module->id; ?>" id="myresources-form" enctype="multipart/form-data">
 <?php } ?>
 		<div id="myresources-content">
@@ -71,12 +78,5 @@ if (!$this->no_html) {
 		<?php } ?>
 		</div>
 <?php if (!$this->no_html) { ?>
-		<ul class="module-nav">
-			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=contributions&area=resources'); ?>">
-					<?php echo JText::_('MOD_MYRESOURCES_ALL_PUBLICATIONS'); ?>
-				</a>
-			</li>
-		</ul>
 	</form>
 <?php } ?>
