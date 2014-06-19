@@ -35,15 +35,20 @@ defined('_JEXEC') or die('Restricted access');
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
 	<ul class="module-nav">
 		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1'); ?>">
+			<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1'); ?>">
 				<?php echo JText::_('MOD_MYWISHES_NEW_WISH'); ?>
 			</a>
 		</li>
 	</ul>
 
-	<h4><?php echo JText::_('MOD_MYWISHES_SUBMITTED'); ?></h4>
+	<h4>
+		<a href="<?php echo JRoute::_('index.php?option=com_wishlist&category=general&rid=1&filterby=submitter'); ?>">
+			<?php echo JText::_('MOD_MYWISHES_SUBMITTED'); ?>
+			<span><?php echo JText::_('MOD_MYWISHES_VIEW_ALL'); ?></span>
+		</a>
+	</h4>
 	<?php if (count($this->rows1) <= 0) { ?>
-		<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
+		<p><em><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 			<?php
@@ -80,7 +85,12 @@ defined('_JEXEC') or die('Restricted access');
 		</ul>
 	<?php } ?>
 
-	<h4><?php echo JText::_('MOD_MYWISHES_ASSIGNED'); ?></h4>
+	<h4>
+		<a href="<?php echo JRoute::_('index.php?option=com_wishlist&category=general&rid=1&filterby=accepted'); ?>">
+			<?php echo JText::_('MOD_MYWISHES_ASSIGNED'); ?>
+			<span><?php echo JText::_('MOD_MYWISHES_VIEW_ALL'); ?></span>
+		</a>
+	</h4>
 	<?php if (count($this->rows2) <= 0) { ?>
 		<p><?php echo JText::_('MOD_MYWISHES_NO_WISHES'); ?></p>
 	<?php } else { ?>
