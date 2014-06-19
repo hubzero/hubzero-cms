@@ -1493,11 +1493,12 @@ class Profile extends Object
 			\JFactory::getUser()->get('id'), 
 			$group->get('gidNumber')
 		);
-		
+
 		// check to see if any of our roles for user has permission for action
 		foreach ($roles as $role)
 		{
 			$permissions = json_decode($role['permissions']);
+			$permissions = (is_array($permissions)) ? $permissions : array();
 			if (array_key_exists($action, $permissions) && $permissions->$action == 1)
 			{
 				return true;
