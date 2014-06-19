@@ -545,7 +545,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if (!$updateEmail)
 			{
 				$suri = JRequest::getVar('REQUEST_URI', '/', 'server');
-				if ($suri == '/register/update')
+				if ($suri == '/register/update' || $suri == '/members/update')
 				{
 					$this->setRedirect(
 						JRoute::_('index.php?option=' . $this->_option . '&task=myaccount')
