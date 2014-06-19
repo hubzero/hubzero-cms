@@ -1672,7 +1672,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 * @return 		boolean		True if valid, false if not
 	 */
     private function _validCn( $cn, $allowDashes = false )
-	{
+    {
 		$regex = '/^[0-9a-z]+[_0-9a-z]*$/u';
 		if ($allowDashes)
 		{
