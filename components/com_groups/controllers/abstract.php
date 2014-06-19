@@ -163,6 +163,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		}
 		
 		//add active
+		$this->active = strtolower($this->active);
 		if ($this->active)
 		{
 			// fetch the active page
@@ -229,7 +230,8 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
 			}
 		}
-		
+
+		$this->active = strtolower($this->active);
 		if ($this->active)
 		{
 			// fetch the active page

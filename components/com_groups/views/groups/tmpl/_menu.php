@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 			//if we are on the overview tab and we have group pages
 			if ($section['name'] == 'overview' && count($this->pages) > 0)
 			{
-				$trueTab = JRequest::getVar('active', 'overview');
+				$trueTab = strtolower(JRequest::getVar('active', 'overview'));
 				$liClass = ($trueTab != $this->tab) ? '' : $liClass;
 
 				if(($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !in_array($this->juser->get("id"), $this->group->get('members'))))

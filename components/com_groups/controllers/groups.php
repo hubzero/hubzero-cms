@@ -297,7 +297,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		
 		// get active tab
 		$this->view->tab     = GroupsHelperView::getTab( $this->view->group );
-		$this->view->trueTab = JRequest::getVar('active', 'overview');
+		$this->view->trueTab = strtolower(JRequest::getVar('active', 'overview'));
 		
 		// get group pages if any
 		$pageArchive = GroupsModelPageArchive::getInstance();
