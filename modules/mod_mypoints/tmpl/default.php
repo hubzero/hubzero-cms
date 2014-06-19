@@ -37,6 +37,13 @@ if ($this->error) {
 	$juser = JFactory::getUser();
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
+	<ul class="module-nav">
+		<li>
+			<a class="icon-points" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=points'); ?>">
+				<?php echo JText::_('MOD_MYPOINTS_ALL_TRANSACTIONS'); ?>
+			</a>
+		</li>
+	</ul>
 	<p id="point-balance">
 		<span><?php echo JText::_('MOD_MYPOINTS_YOU_HAVE'); ?> </span> <?php echo $this->escape($this->summary); ?><small> <?php echo strtolower(JText::_('MOD_MYPOINTS_POINTS')); ?></small>
 	</p>
@@ -84,8 +91,5 @@ if ($this->error) {
 		</tbody>
 	</table>
 <?php } ?>
-	<ul class="module-nav">
-		<li><a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=points'); ?>"><?php echo JText::_('MOD_MYPOINTS_ALL_TRANSACTIONS'); ?></a></li>
-	</ul>
 </div>
 <?php } ?>
