@@ -286,19 +286,19 @@ $cc = array();
 										$attachment->set('description', $attachment->get('filename'));
 									}
 
-									if ($attachment->isImage()) 
+									if ($attachment->isImage())
 									{
-										if ($attachment->width() > 400) 
+										if ($attachment->width() > 400)
 										{
 											$img = '<p><a href="' . JRoute::_($attachment->link()) . '"><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
-										} 
-										else 
+										}
+										else
 										{
 											$img = '<p><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
 										}
 										echo $img;
-									} 
-									else 
+									}
+									else
 									{
 										echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
 									}
