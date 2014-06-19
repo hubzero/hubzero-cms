@@ -32,16 +32,27 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'supportBuildRoute'
+ * Turn querystring parameters into an SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array &$query Query string values
+ * @return array Segments to build SEF route
  */
 function supportBuildRoute(&$query)
 {
 	$segments = array();
+
+	if (!empty($query['controller']) && $query['controller'] == 'media')
+	{
+		$segments[] = $query['controller'];
+		unset($query['controller']);
+
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		return $segments;
+	}
 
 	if (!empty($query['view']) && strncmp($query['view'], 'article', 7) == 0) 
 	{
@@ -116,12 +127,10 @@ function supportBuildRoute(&$query)
 }
 
 /**
- * Short description for 'supportParseRoute'
+ * Parse a SEF route
  * 
- * Long description (if any) ...
- * 
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param  array $segments Exploded route segments
+ * @return array
  */
 function supportParseRoute($segments)
 {
@@ -140,6 +149,15 @@ function supportParseRoute($segments)
 
 	switch ($segments[0])
 	{
+		case 'media':
+			$vars['option'] = 'com_support';
+			$vars['controller'] = 'media';
+			if (!empty($segments[1]))
+			{
+				$vars['task'] = $segments[1];
+			}
+		break;
+
 		case 'report_problems':
 			$vars['option'] = 'com_support';
 			$vars['controller'] = 'tickets';
