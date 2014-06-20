@@ -2,7 +2,7 @@
 	//CKEDITOR
 	CKEDITOR.plugins.add( 'hubzerohighlight', {
 		init: function( editor ) {
-			var $      = jq,
+			var $      = (typeof(jq) !== "undefined" ? jq : jQuery),
 				mode   = '', 
 				plugin = this;
 
@@ -51,8 +51,6 @@
 
 		highlight: function( editor )
 		{
-			console.log('highlight');
-
 			// get current data
 			var data  = editor.getData();
 
