@@ -81,7 +81,7 @@ jQuery(document).ready(function(jq){
 					$('.results-stats').html('');
 					$('.dryrun-message').hide();
 
-					$(this).parents('form').find('input[name=dryrun').val(0);
+					$(this).parents('form').find('input[name=dryrun]').val(0);
 
 					setTimeout(function() {
 						self.startImport();
