@@ -49,12 +49,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Services'),
+	JText::_('COM_SERVICES_SERVICES'),
 	'index.php?option=com_services&controller=services',
 	$controllerName == 'services'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Subscriptions'),
+	JText::_('COM_SERVICES_SUBSCRIPTIONS'),
 	'index.php?option=com_services&controller=subscriptions',
 	$controllerName == 'subscriptions'
 );

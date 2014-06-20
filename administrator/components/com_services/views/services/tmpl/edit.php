@@ -28,8 +28,9 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager'), 'addedit.png' );
+defined('_JEXEC') or die('Restricted access');
+
+JToolBarHelper::title(JText::_('COM_SERVICES') . ': ' . JText::_('COM_SERVICES_SERVICES'), 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -40,7 +41,7 @@ function submitbutton(pressbutton)
 {
 	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 }
@@ -49,8 +50,9 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<?php
-	if ($this->getError()) {
-		echo '<p>'.JText::_('Error:').' '.$this->getError().'</p>';
+	if ($this->getError())
+	{
+		echo '<p class="error">' . $this->getError() . '</p>';
 	}
 	?>
 	<fieldset class="adminform">
@@ -61,5 +63,5 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

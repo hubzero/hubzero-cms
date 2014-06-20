@@ -146,7 +146,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Subscription not found')
+				JText::_('COM_SERVICES_SUBSCRIPTION_NOT_FOUND')
 			);
 			return;
 		}
@@ -190,7 +190,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Subscription not found'),
+				JText::_('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -202,7 +202,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Service not found.') . ' ' .  $subscription->serviceid,
+				JText::_('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->serviceid,
 				'error'
 			);
 			return;
@@ -245,7 +245,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 				$subscription->units 			= $subscription->units + $newunits;
 
 				$email = ($received_payment > 0 or $newunits > 0)  ? 1 : 0;
-				$statusmsg .= JText::_('Subscription has been activated');
+				$statusmsg .= JText::_('COM_SERVICES_SUBSCRIPTION_ACTIVATED');
 				if ($newunits > 0)
 				{
 					$statusmsg .=  ' ' . JText::_('for') . ' ' . $newunits . ' ';
@@ -268,14 +268,14 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 				$subscription->pendingpayment = $refund;
 				$subscription->pendingunits = $refund > 0  ? $unitsleft : 0;
 				$email = 1;
-				$statusmsg .= JText::_('Subscription has been cancelled by site administrator.');
+				$statusmsg .= JText::_('COM_SERVICES_SUBSCRIPTION_CANCELLED');
 			break;
 		}
 
 		if (($action && $action != 'message') || $message)
 		{
 			$subscription->notes .= '------------------------------' . "\r\n";
-			$subscription->notes .= JText::_('Subscription status update') . ', '.JFactory::getDate() . "\r\n";
+			$subscription->notes .= JText::_('COM_SERVICES_SUBSCRIPTION_STATUS_UPDATED') . ', '.JFactory::getDate() . "\r\n";
 			$subscription->notes .= $statusmsg ? $statusmsg . "\r\n" : '';
 			$subscription->notes .= $message   ? $message . "\r\n"   : '';
 			$subscription->notes .= '------------------------------' . "\r\n";
@@ -303,12 +303,12 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 			// E-mail "from" info
 			$from = array();
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('Subscriptions');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SERVICES_SUBSCRIPTIONS');
 
 			// start email message
-			$subject = JText::_('Status update on your subscription #') . $subscription->code;
+			$subject = JText::sprintf('COM_SERVICES_EMAIL_SUBJECT', $subscription->code);
 			$emailbody  = $subject . ':' . "\r\n";
-			$emailbody .= JText::_('Subscription Service') . ' - ' . $service->title . "\r\n";
+			$emailbody .= JText::_('COM_SERVICES_SUBSCRIPTION_SERVICE') . ' - ' . $service->title . "\r\n";
 			$emailbody .= '----------------------------------------------------------' . "\r\n";
 
 			$emailbody .= $action != 'message' && $statusmsg ? $statusmsg : '';
@@ -322,13 +322,13 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 			$dispatcher = JDispatcher::getInstance();
 			if (!$dispatcher->trigger('onSendMessage', array('subscriptions_message', $subject, $emailbody, $from, array($subscription->uid), $this->_option)))
 			{
-				$this->addComponentMessage(JText::_('Failed to message users.'), 'error');
+				$this->addComponentMessage(JText::_('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'), 'error');
 			}
 		}
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Subscription successfully saved.') . ($statusmsg ? ' ' . $statusmsg : '')
+			JText::_('COM_SERVICES_SUBSCRIPTION_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
 		);
 	}
 

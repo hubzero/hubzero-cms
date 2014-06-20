@@ -30,36 +30,36 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_( 'Services &amp; Subscriptions Manager' ), 'addedit.png' );
+JToolBarHelper::title(JText::_('COM_SERVICES') . ': ' . JText::_('COM_SERVICES_SUCSCRIPTIONS'), 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$added = (intval( $this->subscription->added ) <> 0) ? JHTML::_('date', $this->subscription->added, JText::_('DATE_FORMAT_HZ1')) : NULL ;
-$updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
-$expires = (intval( $this->subscription->expires) <> 0) ? JHTML::_('date', $this->subscription->expires, JText::_('DATE_FORMAT_HZ1')) : 'N/A';
+$added   = (intval( $this->subscription->added ) <> 0)   ? JHTML::_('date', $this->subscription->added, JText::_('DATE_FORMAT_HZ1')) : NULL;
+$updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_SERVICES_NOT_APPLICABLE');
+$expires = (intval( $this->subscription->expires) <> 0)  ? JHTML::_('date', $this->subscription->expires, JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_SERVICES_NOT_APPLICABLE');
 
 $status = '';
-$pending = $this->subscription->currency.' '.$this->subscription->pendingpayment;
+$pending = $this->subscription->currency . ' ' . $this->subscription->pendingpayment;
 $now = JFactory::getDate()->toSql();
 
-$onhold_msg = ($this->subscription->status==2) ? JText::_('No action / send message to user') : JText::_('Subscription on hold (pending payment or verification)');
+$onhold_msg = ($this->subscription->status==2) ? JText::_('COM_SERVICES_SEND_MESSAGE') : JText::_('COM_SERVICES_SUBSCRIPTION_ON_HOLD');
 
 switch ($this->subscription->status)
 {
 	case '1':
-		$status = ($this->subscription->expires > $now) ? '<span style="color:#197f11;">'.strtolower(JText::_('Active')).'</span>' : '<span style="color:#ef721e;">'.strtolower(JText::_('Expired')).'</span>';
+		$status = ($this->subscription->expires > $now) ? '<span style="color:#197f11;">' . strtolower(JText::_('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span style="color:#ef721e;">' . strtolower(JText::_('COM_SERVICES_STATE_EXPIRED')) . '</span>';
 		break;
 	case '0':
-		$status = '<span style="color:#ff0000;">'.strtolower(JText::_('Pending')).'</span>';
+		$status = '<span style="color:#ff0000;">' . strtolower(JText::_('COM_SERVICES_STATE_PENDING')) . '</span>';
 		break;
 	case '2':
-		$status = '<span style="color:#999;">'.strtolower(JText::_('Cancelled')).'</span>';
-		$pending .= ($this->subscription->pendingpayment) ? ' ('.JText::_('refund').')' : '';
+		$status = '<span style="color:#999;">' . strtolower(JText::_('COM_SERVICES_STATE_CANCELED')) . '</span>';
+		$pending .= ($this->subscription->pendingpayment) ? ' (' . JText::_('COM_SERVICES_REFUND') . ')' : '';
 		break;
 }
 
-$priceline  = $this->subscription->currency.' '.$this->subscription->unitprice.'  </strong>'.JText::_( 'per' ).' '.$this->subscription->unitmeasure;
-$priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscription->pointsprice.' '.JText::_('points') : '';
+$priceline  = JText::sprintf('COM_SERVICES_PRICE_PER_UNIT', $this->subscription->currency . ' ' . $this->subscription->unitprice, $this->subscription->unitmeasure);
+$priceline .= ($this->subscription->pointsprice > 0) ? JText::sprintf('COM_SERVICES_OR_POINTS', $this->subscription->pointsprice) : '';
 
 ?>
 
@@ -69,11 +69,11 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 		var form = document.adminForm;
 
 		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
+			submitform(pressbutton);
 			return;
 		}
 
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 </script>
 
@@ -82,30 +82,30 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 <?php if (isset($this->subscription->id)) { ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Subscription').' #'.$this->subscription->id.' ('.$this->subscription->code.') '; ?></span></legend>
+			<legend><span><?php echo JText::sprintf('COM_SERVICES_SUBSCRIPTION_NUM', $this->subscription->id, $this->subscription->code); ?></span></legend>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Service'); ?>:</label><br />
-				<?php echo $this->subscription->title.' - <strong>'.$priceline.'</strong>'; ?>
+				<label><?php echo JText::_('COM_SERVICES_FIELD_SERVICE'); ?>:</label><br />
+				<?php echo $this->subscription->title . ' - <strong>' . $priceline . '</strong>'; ?>
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Profile Info'); ?>:</label><br />
-				<?php echo JText::_('Login'); ?>: 		<?php echo $this->customer->get('username') ?> <br />
-				<?php echo JText::_('Name'); ?>:  		<?php echo $this->customer->get('name') ?> <br />
-				<?php echo JText::_('Email'); ?>: 		<?php echo $this->customer->get('email') ?> <br />
-				<?php echo JText::_('Tel.'); ?>: 		<?php echo $this->customer->get('phone') ?>
+				<label><?php echo JText::_('COM_SERVICES_FIELD_PROFILE'); ?>:</label><br />
+				<?php echo JText::_('Login'); ?>: <?php echo $this->customer->get('username') ?> <br />
+				<?php echo JText::_('Name'); ?>: <?php echo $this->customer->get('name') ?> <br />
+				<?php echo JText::_('Email'); ?>: <?php echo $this->customer->get('email') ?> <br />
+				<?php echo JText::_('Tel.'); ?>: <?php echo $this->customer->get('phone') ?>
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Employer Info'); ?>:</label><br />
+				<label><?php echo JText::_('COM_SERVICES_FIELD_EMPLOYER'); ?>:</label><br />
 				<?php echo JText::_('Company Name'); ?>: 	<?php echo $this->subscription->companyName; ?> <br />
 				<?php echo JText::_('Company Location'); ?>: <?php echo $this->subscription->companyLocation; ?> <br />
 				<?php echo JText::_('Company URL'); ?>: 		<?php echo $this->subscription->companyWebsite; ?>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-notes"><?php echo JText::_('Administrator Notes'); ?>:</label><br />
+				<label for="field-notes"><?php echo JText::_('COM_SERVICES_FIELD_NOTES'); ?>:</label><br />
 				<textarea name="notes" id="field-notes" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->subscription->notes)); ?></textarea>
 			</div>
 		</fieldset>
@@ -114,42 +114,42 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Status'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_STATUS'); ?>:</th>
 					<td><?php echo $status ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Added'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_ADDED'); ?>:</th>
 					<td><?php echo $added ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Expires'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_EXPIRES'); ?>:</th>
 					<td><?php echo $expires ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Last Updated'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_LAST_UPDATED'); ?>:</th>
 					<td><?php echo $updated ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Total paid'); ?>:</th>
-					<td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
+					<th><?php echo JText::_('COM_SERVICES_COL_TOTAL_PAID'); ?>:</th>
+					<td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo JText::_('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Pending payment'); ?>:</th>
-					<td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?></td>
+					<th><?php echo JText::_('COM_SERVICES_COL_PENDING_PAYMENT'); ?>:</th>
+					<td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo JText::_('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Active units'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_ACTIVE_UNITS'); ?>:</th>
 					<td><?php echo $this->subscription->units; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Pending units'); ?>:</th>
+					<th><?php echo JText::_('COM_SERVICES_COL_PENDING_UNITS'); ?>:</th>
 					<td><?php echo $this->subscription->pendingunits; ?></td>
 				</tr>
 			</tbody>
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Manage Subscription'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_SERVICES_FIELDSET_MANAGE'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input type="radio" name="action" id="field-action-message" value="message" />
@@ -159,37 +159,44 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 			<?php if ($this->subscription->pendingpayment > 0) { ?>
 				<div class="input-wrap">
 					<input type="radio" name="action" id="field-action-refund" value="refund" />
-					<label for="field-action-refund"><?php echo JText::_('Process refund / remove pending items'); ?></label>
+					<label for="field-action-refund"><?php echo JText::_('COM_SERVICES_FIELD_PROCESS_REFUND'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<label><?php echo JText::_('Pending Refund').' <br />for '.$this->subscription->pendingunits.' '.JText::_('unit(s)'); ?>:</label><br />
-					<?php echo $this->subscription->pendingpayment; ?><?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?>
+					<label><?php echo JText::sprintf('COM_SERVICES_FIELD_PENDING_REFUND_FOR', $this->subscription->pendingunits); ?>:</label><br />
+					<?php echo $this->subscription->pendingpayment; ?>
+					<?php if ($this->subscription->usepoints) { echo JText::_('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
 				</div>
 				<div class="input-wrap">
-					<label for="field-received_refund"><?php echo JText::_('Refund posted'); ?>:</label><br />
-					<input type="text" name="received_refund" id="field-received_refund" value="<?php echo $this->subscription->pendingpayment ?>"  /> <?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?>
+					<label for="field-received_refund"><?php echo JText::_('COM_SERVICES_FIELD_REFUND_POSTED'); ?>:</label><br />
+					<input type="text" name="received_refund" id="field-received_refund" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+					<?php if ($this->subscription->usepoints) { echo JText::_('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
 				</div>
 			<?php } ?>
 		<?php } else { ?>
 			<div class="input-wrap">
 				<input type="radio" name="action" id="field-action-activate" value="activate" />
-				<label for="field-action-activate"><?php echo JText::_('Activate/ Extend this subscription (new payment or verification received) '); ?></label>
+				<label for="field-action-activate"><?php echo JText::_('COM_SERVICES_FIELD_ACTIVATE'); ?></label>
 			</div>
 			<div class="input-wrap">
-				<label for="field-received_payment"><?php echo JText::_('New payment received'); ?>:</label><br />
-				<?php if  ($this->subscription->pendingpayment > 0 ) { ?> <input type="text" name="received_payment" id="field-received_payment" value="<?php echo $this->subscription->pendingpayment ?>"  />  <?php } else { echo $this->subscription->pendingpayment;  } ?><?php if ($this->subscription->usepoints) { echo JText::_('POINTS'); } else { echo $this->subscription->currency; } ?>
+				<label for="field-received_payment"><?php echo JText::_('COM_SERVICES_FIELD_PAYMENT_RECEIVED'); ?>:</label><br />
+				<?php if ($this->subscription->pendingpayment > 0 ) { ?>
+					<input type="text" name="received_payment" id="field-received_payment" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+				<?php } else { echo $this->subscription->pendingpayment; } ?>
+				<?php if ($this->subscription->usepoints) { echo JText::_('COM_SERVICES_POINTS'); } else { echo $this->subscription->currency; } ?>
 			</div>
 			<div class="input-wrap">
-				<label for="field-newunits"><?php echo JText::_('Activate units'); ?>:</label><br />
-				<?php if  ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now ) { ?> <input type="text" name="newunits" id="field-newunits" value="<?php echo $this->subscription->pendingunits ?>"  /> <?php } else { echo $this->subscription->pendingunits;  } ?>
+				<label for="field-newunits"><?php echo JText::_('COM_SERVICES_FIELD_ACTIVE_UNITS'); ?>:</label><br />
+				<?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now ) { ?>
+					<input type="text" name="newunits" id="field-newunits" value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
+				<?php } else { echo $this->subscription->pendingunits; } ?>
 			</div>
 			<div class="input-wrap">
 				<input type="radio" name="action" id="field-action-cancelsub" value="cancelsub" />
-				<label for="field-action-cancelsub"><?php echo JText::_('Cancel this subscription'); ?></label>
+				<label for="field-action-cancelsub"><?php echo JText::_('COM_SERVICES_FIELD_CANCEL_SUBSCRIPTION'); ?></label>
 			</div>
 		<?php } ?>
 			<div class="input-wrap">
-				<label for="field-message"><?php echo JText::_('Send user a message').' '.JText::_('(optional)'); ?>:</label><br />
+				<label for="field-message"><?php echo JText::_('COM_SERVICES_FIELD_SEND_MESSAGE'); ?>:</label><br />
 				<textarea name="message" id="field-message"  cols="30" rows="5"></textarea>
 			</div>
 		</fieldset>
@@ -204,5 +211,5 @@ $priceline .= ($this->subscription->pointsprice > 0) ? ' or '.$this->subscriptio
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

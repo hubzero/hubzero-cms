@@ -116,11 +116,11 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 
 		$default1 = array(
 			'id' => 0,
-			'title' => JText::_('Employer Service, Basic'),
-			'category' => strtolower(JText::_('jobs')),
-			'alias' => JText::_('employer_basic'),
+			'title' => JText::_('COM_SERVICES_BASIC_SERVICE_TITLE'),
+			'category' => strtolower(JText::_('COM_SERVICES_JOBS')),
+			'alias' => 'employer_basic',
 			'status' => 1,
-			'description' => JText::_('Allows to search member resumes and post one job ad'),
+			'description' => JText::_('COM_SERVICES_BASIC_SERVICE_DESC'),
 			'unitprice' => '0.00',
 			'pointprice' => 0,
 			'currency' => '$',
@@ -129,15 +129,15 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 			'unitsize' => 1,
 			'unitmeasure' => strtolower(JText::_('month')),
 			'changed' => $now,
-			'params' => "promo=First 3 months FREE\npromomaxunits=3\nmaxads=1"
+			'params' => "promo=" . JText::_('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
 		);
 		$default2 = array(
 			'id' => 0,
-			'title' => JText::_('Employer Service, Premium'),
-			'category' => strtolower(JText::_('jobs')),
-			'alias' => JText::_('employer_premium'),
+			'title' => JText::_('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
+			'category' => strtolower(JText::_('COM_SERVICES_JOBS')),
+			'alias' => 'employer_premium',
 			'status' => 0,
-			'description' => JText::_('Allows to search member resumes and post up to 3 job ads'),
+			'description' => JText::_('COM_SERVICES_PREMIUM_SERVICE_DESC'),
 			'unitprice' => '500.00',
 			'pointprice' => 0,
 			'currency' => '$',

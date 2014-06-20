@@ -27,16 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 <config>
-	<params>
-		<param name="autoapprove" type="list" default="1" label="Auto-approve employer subscriptions" description="Auto approve employer subscriptions, when no payment is expected.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-	</params>
 	<fieldset name="basic">
-		<field name="autoapprove" type="list" default="1" label="Auto-approve employer subscriptions" description="Auto approve employer subscriptions, when no payment is expected.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="autoapprove" type="list" default="1" label="COM_SERVICES_AUTOAPPROVE_LABEL" description="COM_SERVICES_AUTOAPPROVE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
 </config>
