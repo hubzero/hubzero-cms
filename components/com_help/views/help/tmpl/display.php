@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 </div>
 
 <script>
-
+var $ = (typeof(jq) !== "undefined" ? jq : jQuery);
 $(document).ready(function(){
 	var history = window.history;
 	if (history.length > 1)
