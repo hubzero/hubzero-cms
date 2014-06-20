@@ -87,7 +87,7 @@
 	methods.selectValue = function( value, callSelected ) {
 		return this.each(function(){
 			$('#fs-dropdown-' + $(this).data('fancyselect').id)
-				.find('.fs-dropdown-option a[data-value=' + value + ']')
+				.find('.fs-dropdown-option a[data-value="' + value + '"]')
 				.trigger('click', callSelected);
 		});
 	};
