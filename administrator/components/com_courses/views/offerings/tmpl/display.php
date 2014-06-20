@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Offerings'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_OFFERINGS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
@@ -45,7 +45,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('offerings');
@@ -67,8 +67,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
@@ -84,15 +84,15 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Starts'), 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Ends'), 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Published'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('Sections'); ?></th>
-				<th scope="col"><?php echo JText::_('Enrollment'); ?></th>
-				<th scope="col"><?php echo JText::_('Units'); ?></th>
-				<th scope="col"><?php echo JText::_('Pages'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_SECTIONS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ENROLLMENT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_UNITS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_PAGES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -106,8 +106,6 @@ $i = 0;
 $k = 0;
 foreach ($this->rows as $row)
 {
-	$tip = '[coming soon]';
-	//$managers = $row->members(array('count' => true, 'student' => 0));
 	$units    = $row->units(array('count' => true));
 
 	$s = $row->sections();
@@ -144,35 +142,35 @@ foreach ($this->rows as $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(no date set)'); ?>
+					<?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_up'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_NO_DATE'); ?>
 				</td>
 				<td>
-					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?>
+					<?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('publish_down'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_NEVER'); ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state') == 1) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Unpublish Offering'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_UNPUBLISHED')); ?>">
 						<span class="state publish">
-							<span class="text"><?php echo JText::_('Published'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 2) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Restore Offering'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state trash">
-							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 3) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Offering'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state pending">
-							<span class="text"><?php echo JText::_('Draft'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_DRAFT'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($row->get('state') == 0) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('Publish Offering'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;course=<?php echo $this->course->get('id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } ?>
@@ -216,7 +214,7 @@ foreach ($this->rows as $row)
 						<?php if ($canDo->get('core.manage')) { ?>
 						&nbsp;
 						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=units&amp;offering=<?php echo $row->get('id'); ?>&amp;task=add">
-							<span><?php echo JText::_('[ + ]'); ?></span>
+							<span><?php echo JText::_('COM_COURSES_ADD'); ?></span>
 						</a>
 						<?php } ?>
 					<?php } ?>
@@ -231,7 +229,7 @@ foreach ($this->rows as $row)
 						<?php if ($canDo->get('core.manage')) { ?>
 						&nbsp;
 						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;course=<?php echo $this->course->get('id'); ?>&amp;offering=<?php echo $row->get('id'); ?>&amp;task=add">
-							<span><?php echo JText::_('[ + ]'); ?></span>
+							<span><?php echo JText::_('COM_COURSES_ADD'); ?></span>
 						</a>
 						<?php } ?>
 					<?php } ?>

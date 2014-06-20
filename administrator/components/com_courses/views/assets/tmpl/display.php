@@ -53,61 +53,14 @@ function submitbutton(pressbutton)
 }
 function setTask(task)
 {
-	$('task').value = task;
+	$('#task').val(task);
 }
 
-/*window.addEvent('domready', function(){
-	addDeleteQueryEvent();
-});
-function addDeleteQueryEvent()
-{
-	$$('.views .delete').each(function(el) {
-		$(el).addEvent('click', function(e){
-			new Event(e).stop();
+jQuery(document).ready(function($){
+	$('a.edit-asset').on('click', function(e) {
+		e.preventDefault();
 
-			var res = confirm('Are you sure you wish to delete this item?');
-			if (!res) {
-				return false;
-			}
-
-			var href = $(this).href;
-			if (href.indexOf('?') == -1) {
-				href += '?no_html=1';
-			} else {
-				href += '&no_html=1';
-			}
-
-			var myAjax = new Ajax(href, {
-				method: 'get',
-				update: $('custom-views'),
-				evalScripts: false,
-				onSuccess: function() {
-					addDeleteQueryEvent();
-				}
-			}).request();
-
-			return false;
-		});
-	});
-}
-
-window.addEvent("domready", function() {
-	SqueezeBox.initialize({});
-	$$("a.modal").each(function(el) {
-		el.addEvent("click", function(e) {
-			new Event(e).stop();
-			SqueezeBox.fromElement(el);
-		});
-	});
-});*/
-window.addEvent('domready', function() {
-	//window.top.document.updateUploader && window.top.document.updateUploader();
-	$$('a.edit-asset').each(function(el) {
-		el.addEvent('click', function(e) {
-			new Event(e).stop();
-			//window.top.document.assetform.fromElement(el);
-			window.top.document.assetform.open($(this).get('href'), {handler: 'iframe', size: {x: 570, y: 550}});
-		});
+		window.top.document.assetform.open({'href': $(this).attr('href'), 'type': 'iframe', 'width': 570, 'height': 550, 'autoHeight': false});
 	});
 });
 
@@ -115,45 +68,40 @@ window.addEvent('domready', function() {
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 
-	<table class="adminlist" summary="<?php echo JText::_('COM_COURSES_TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="4">
 					<select name="asset" style="max-width: 15em;">
-						<option value="0"><?php echo JText::_('Select asset...'); ?></option>
-<?php if ($this->assets) { ?>
-	<?php
-	foreach ($this->assets as $asset)
-	{
-		if (in_array($asset->id, $ids))
-		{
-			continue;
-		}
-	?>
-						<option value="<?php echo $this->escape(stripslashes($asset->id)); ?>"><?php echo $this->escape(stripslashes($asset->title)); ?> (<?php echo $this->escape(stripslashes($asset->type)); ?>)</option>
-	<?php } ?>
-<?php } ?>
+						<option value="0"><?php echo JText::_('COM_COURSES_SELECT'); ?></option>
+						<?php if ($this->assets) { ?>
+							<?php
+							foreach ($this->assets as $asset)
+							{
+								if (in_array($asset->id, $ids))
+								{
+									continue;
+								}
+							?>
+							<option value="<?php echo $this->escape(stripslashes($asset->id)); ?>"><?php echo $this->escape(stripslashes($asset->title)); ?> (<?php echo $this->escape(stripslashes($asset->type)); ?>)</option>
+							<?php } ?>
+						<?php } ?>
 					</select>
-					<input type="submit" value="<?php echo JText::_('Attach asset'); ?>" onclick="setTask('link');" />
+					<input type="submit" value="<?php echo JText::_('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
 				</th>
 				<th colspan="4" style="text-align:right;">
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}">Create asset</a>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_COURSES_CREATE_ASSET'); ?></a>
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
-				<th scope="col"><?php echo JText::_('Type'); ?></th>
-				<th scope="col"><?php echo JText::_('State'); ?></th>
-				<th scope="col" colspan="3"><?php echo JText::_('Ordering'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TYPE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col" colspan="3"><?php echo JText::_('COM_COURSES_COL_ORDERING'); ?></th>
 				<th scope="col">X</th>
 			</tr>
 		</thead>
-		<!-- <tfoot>
-			<tr>
-				<td colspan="10"><?php //echo $this->pageNav->getListFooter(); ?></td>
-			</tr>
-		</tfoot> -->
 		<tbody>
 <?php
 $i = 0;
@@ -168,54 +116,49 @@ foreach ($this->rows as $row)
 					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
-<?php } else { ?>
+				<?php } else { ?>
 					<span>
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>
-<?php } ?>
+				<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->type)); ?>
 				</td>
-				<!-- <td>
-					<?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?>
-				</td> -->
 				<td>
 					<?php if ($row->state == 2) { ?>
 						<span class="state delete">
-							<span class="text"><?php echo JText::_('Trashed'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					<?php } else if ($row->state == 1) { ?>
 						<span class="state publish">
-							<span class="text"><?php echo JText::_('Published'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					<?php } else { ?>
 						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+							<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>
 					<?php } ?>
 				</td>
 				<td>
-					<?php
-					echo $this->pageNav->orderUpIcon( $i, ($row->ordering != @$this->rows[$i-1]->ordering) ); ?>
+					<?php echo $this->pageNav->orderUpIcon($i, ($row->ordering != @$this->rows[$i-1]->ordering)); ?>
 				</td>
 				<td>
-					<?php
-					echo $this->pageNav->orderDownIcon( $i, $n, ($row->ordering != @$this->rows[$i+1]->ordering) ); ?>
+					<?php echo $this->pageNav->orderDownIcon($i, $n, ($row->ordering != @$this->rows[$i+1]->ordering)); ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->ordering)); ?>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
+				<?php if ($canDo->get('core.edit')) { ?>
 					<a class="state delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unlink&amp;asset=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('[ x ]'); ?>" /></span>
+						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('COM_COURSES_REMOVE'); ?>" /></span>
 					</a>
-<?php } ?>
+				<?php } ?>
 				</td>
 			</tr>
 <?php

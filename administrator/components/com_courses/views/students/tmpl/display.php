@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Students'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_STUDENTS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -65,57 +65,57 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-30 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter name, username, or ID'); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
 		</div>
 		<div class="col width-70 fltrt">
-			<label for="filter_offering"><?php echo JText::_('Offering'); ?>:</label>
+			<label for="filter_offering"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label>
 			<select name="offering" id="filter_offering">
-				<option value="0"><?php echo JText::_('(none)'); ?></option>
-<?php
-	$offerings = array();
-	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-	$model = CoursesModelCourses::getInstance();
-	if ($model->courses()->total() > 0)
-	{
-		foreach ($model->courses() as $course)
-		{
-?>
-				<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
-<?php
-			foreach ($course->offerings() as $offering)
-			{
-				$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
-?>
-					<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
-<?php
-			}
-?>
-				</optgroup>
-<?php
-		}
-	}
-?>
+				<option value="0"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+				<?php
+				$offerings = array();
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+				$model = CoursesModelCourses::getInstance();
+				if ($model->courses()->total() > 0)
+				{
+					foreach ($model->courses() as $course)
+					{
+					?>
+					<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+					<?php
+					foreach ($course->offerings() as $offering)
+					{
+						$offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
+						?>
+						<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+						<?php
+					}
+					?>
+					</optgroup>
+					<?php
+					}
+				}
+				?>
 			</select>
 
-<?php if ($this->filters['offering']) { ?>
-			<label for="filter_section"><?php echo JText::_('Section'); ?>:</label>
+		<?php if ($this->filters['offering']) { ?>
+			<label for="filter_section"><?php echo JText::_('COM_COURSES_SECTION'); ?>:</label>
 			<select name="section" id="filter_section">
-				<option value="0"><?php echo JText::_('(none)'); ?></option>
-		<?php
-		if ($this->offering->sections()->total() > 0)
-		{
-			foreach ($this->offering->sections() as $section)
-			{
-		?>
-				<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-		<?php
-			}
-		}
-		?>
+				<option value="0"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+				<?php
+				if ($this->offering->sections()->total() > 0)
+				{
+					foreach ($this->offering->sections() as $section)
+					{
+				?>
+						<option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+				<?php
+					}
+				}
+				?>
 			</select>
-<?php } else { ?>
+		<?php } else { ?>
 			<input type="hidden" name="section" id="filter_section" value="0" />
-<?php } ?>
+		<?php } ?>
 			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 		</div>
 	</fieldset>
@@ -140,15 +140,15 @@ function submitbutton(pressbutton)
 		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Name'); ?></th>
-				<th scope="col"><?php echo JText::_('Email'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_EMAIL'); ?></th>
 			<?php if (!$this->filters['offering']) { ?>
-				<th scope="col"><?php echo JText::_('Course : Offering'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
 			<?php } ?>
-				<th scope="col"><?php echo JText::_('Section'); ?></th>
-				<th scope="col"><?php echo JText::_('Cert.'); ?></th>
-				<th scope="col"><?php echo JText::_('Enrolled'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_SECTION'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CERTIFICATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ENROLLED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -163,12 +163,6 @@ $k = 0;
 $n = count($this->rows);
 foreach ($this->rows as $row)
 {
-	/*$u = JUser::getInstance($row->get('user_id'));
-	if (!is_object($u))
-	{
-		continue;
-	}*/
-
 	$section = CoursesModelSection::getInstance($row->get('section_id'));
 ?>
 			<tr class="<?php echo "row$k"; ?>">
@@ -202,11 +196,11 @@ foreach ($this->rows as $row)
 				</td>
 			<?php if (!$this->filters['offering']) { ?>
 				<td>
-					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : JText::_('(unknown)'); ?>
+					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : JText::_('COM_COURSES_UNKNOWN'); ?>
 				</td>
 			<?php } ?>
 				<td>
-					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('(none)'); ?>
+					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('COM_COURSES_NONE'); ?>
 				</td>
 				<td>
 					<span class="state <?php echo ($row->get('token') ? 'publish' : 'unpublish'); ?>">

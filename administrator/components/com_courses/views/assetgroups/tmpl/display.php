@@ -39,7 +39,7 @@ foreach ($this->rows as $row)
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Asset groups'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_ASSET_GROUPS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -50,7 +50,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('Are you sure you want to remove these items?', 'remove');
+	JToolBarHelper::deleteList('COM_COURSES_DELETE_CONFIRM', 'remove');
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('assetgroups');
@@ -74,8 +74,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
@@ -99,12 +99,12 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
-				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<th scope="col"><?php echo JText::_('State'); ?></th>
-				<th scope="col"><?php echo JText::_('Ordering'); ?></th>
-				<th scope="col"><?php echo JText::_('Assets'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ALIAS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ORDERING'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ASSETS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -122,8 +122,6 @@ foreach ($this->rows as $row)
 {
 	$orderkey = array_search($row->get('id'), $this->ordering[$row->get('parent')]);
 
-	$tip = '[coming soon]';
-	//$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
 
 	switch ($row->get('state'))
@@ -189,8 +187,8 @@ foreach ($this->rows as $row)
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
 					<?php echo $row->get('ordering'); ?>
-					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'Move Up', $ordering ); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'Move Down', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'COM_COURSES_MOVE_UP', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', $ordering ); ?></span>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>

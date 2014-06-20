@@ -288,8 +288,8 @@ function submitbutton(pressbutton)
 							multiple: true,
 							debug: true,
 							template: '<div class="qq-uploader">' +
-										'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLOCK_OR_DROP'); ?></span></div>' +
-										'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLOCK_OR_DROP'); ?></span></div>' +
+										'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+										'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 										'<ul class="qq-upload-list"></ul>' +
 									   '</div>',
 							onComplete: function(id, file, response) {

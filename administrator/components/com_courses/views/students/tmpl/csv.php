@@ -46,13 +46,13 @@ foreach ($this->rows as $row)
 	echo ',';
 	echo encodeCSVField($row->get('email'));
 	echo ',';
-	echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('(none)');
+	echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('COM_COURSES_NONE');
 	echo ',';
 	if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') {
 		echo encodeCSVField(JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')));
 	}
 	else {
-		echo encodeCSVField(JText::_('(unknown)'));
+		echo encodeCSVField(JText::_('COM_COURSES_UNKNOWN'));
 	}
 	echo "\n";
 
@@ -60,9 +60,11 @@ foreach ($this->rows as $row)
 
 die;
 
-function encodeCSVField($string) {
-    if(strpos($string, ',') !== false || strpos($string, '"') !== false || strpos($string, "\n") !== false) {
-        $string = '"' . str_replace('"', '""', $string) . '"';
-    }
-    return $string;
+function encodeCSVField($string)
+{
+	if (strpos($string, ',') !== false || strpos($string, '"') !== false || strpos($string, "\n") !== false)
+	{
+		$string = '"' . str_replace('"', '""', $string) . '"';
+	}
+	return $string;
 }

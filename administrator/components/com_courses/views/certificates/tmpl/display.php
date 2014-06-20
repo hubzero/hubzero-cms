@@ -32,8 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Certificate'), 'courses.png');
-JToolBarHelper::custom('preview', 'preview', '', 'Preview', false);
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_CERTIFICATE'), 'courses.png');
+JToolBarHelper::custom('preview', 'preview', '', 'COM_COURSES_PREVIEW', false);
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::spacer();
@@ -54,16 +54,16 @@ $this->css('certificates.css');
 
 	<fieldset class="placeholders">
 		<div class="col width-60 fltlft">
-			<button class="placeholder" data-id="username"><?php echo JText::_('Login'); ?></button>
-			<button class="placeholder" data-id="name"><?php echo JText::_('Name'); ?></button>
-			<button class="placeholder" data-id="date"><?php echo JText::_('Date'); ?></button>
-			<button class="placeholder" data-id="email"><?php echo JText::_('Email'); ?></button>
-			<button class="placeholder" data-id="course"><?php echo JText::_('Course'); ?></button>
-			<button class="placeholder" data-id="offering"><?php echo JText::_('Offering'); ?></button>
-			<button class="placeholder" data-id="section"><?php echo JText::_('Section'); ?></button>
+			<button class="placeholder" data-id="username"><?php echo JText::_('COM_COURSES_BTN_USERNAME'); ?></button>
+			<button class="placeholder" data-id="name"><?php echo JText::_('COM_COURSES_BTN_NAME'); ?></button>
+			<button class="placeholder" data-id="date"><?php echo JText::_('COM_COURSES_BTN_DATE'); ?></button>
+			<button class="placeholder" data-id="email"><?php echo JText::_('COM_COURSES_BTN_EMAIL'); ?></button>
+			<button class="placeholder" data-id="course"><?php echo JText::_('COM_COURSES_BTN_COURSE'); ?></button>
+			<button class="placeholder" data-id="offering"><?php echo JText::_('COM_COURSES_BTN_OFFERING'); ?></button>
+			<button class="placeholder" data-id="section"><?php echo JText::_('COM_COURSES_BTN_SECTION'); ?></button>
 		</div>
 		<div class="col width-40 fltrt">
-			<button class="delete" id="clear-canvas" data-id="clear"> <?php echo JText::_('Clear All'); ?></button>
+			<button class="delete" id="clear-canvas" data-id="clear"> <?php echo JText::_('COM_COURSES_BTN_CLEAR'); ?></button>
 		</div>
 		<div class="clr"></div>
 	</fieldset>
@@ -138,7 +138,7 @@ jQuery(window).load(function() {
 		rect.w = w;
 		rect.h = h;
 		//rect.fill = fill;
-		rect.text = (text ? text : 'Unknown');
+		rect.text = (text ? text : '<?php echo JText::_('COM_COURSES_UNKNOWN'); ?>');
 		rect.id = (id ? id : 'unknown');
 
 		boxes.push(rect);

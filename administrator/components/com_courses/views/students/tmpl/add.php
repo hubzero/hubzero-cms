@@ -30,11 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('Student'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('COM_COURSES_STUDENTS'), 'courses.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -69,10 +69,10 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if (document.getElementById('acmembers').value == '') {
-		alert('<?php echo JText::_('Please input one or more usernames or IDs.'); ?>');
+		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_USER_INFO'); ?>');
 		return false;
 	} else if (document.getElementById('offering_id').value == '-1') {
-		alert('<?php echo JText::_('Please select an offering.'); ?>');
+		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
 		return false;
 	} else {
 		submitform(pressbutton);
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_COURSES_DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
@@ -95,36 +95,37 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[student]" value="1" />
 
-			<div class="input-wrap">
-				<label for="acmembers">User:</label><br />
-					<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
-					<span class="hint">Enter usernames, IDs, or look up users by name</span>
-					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
-					<?php
-					/*JPluginHelper::importPlugin('hubzero');
-					$dispatcher = JDispatcher::getInstance();
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?>">
+				<label for="acmembers"><?php echo JText::_('COM_COURSES_FIELD_USER'); ?></label><br />
+				<input type="text" name="fields[user_id]" rel="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
+				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?></span>
 
-					$mc = $dispatcher->trigger('onGetMultiEntry', array(
-						array(
-							'members',   // The component to call
-							'fields[user_id]',        // Name of the input field
-							'acmembers', // ID of the input field
-							'',          // CSS class(es) for the input field
-							'' // The value of the input field
-						)
-					));
-					if (count($mc) > 0) {
-						echo $mc[0] . '<span class="hint">Enter usernames, IDs, or look up users by name</span>';
-					} else { ?>
-					<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
-					<span class="hint">Enter a comma-separated list of usernames or IDs</span>
-					<?php }*/ ?>
+				<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+				<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+				<?php
+				/*JPluginHelper::importPlugin('hubzero');
+				$dispatcher = JDispatcher::getInstance();
+
+				$mc = $dispatcher->trigger('onGetMultiEntry', array(
+					array(
+						'members',   // The component to call
+						'fields[user_id]',        // Name of the input field
+						'acmembers', // ID of the input field
+						'',          // CSS class(es) for the input field
+						'' // The value of the input field
+					)
+				));
+				if (count($mc) > 0) {
+					echo $mc[0] . '<span class="hint">' . JText::_('COM_COURSES_FIELD_USER_HINT') . '</span>';
+				} else { ?>
+				<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
+				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?></span>
+				<?php }*/ ?>
 			</div>
 			<div class="input-wrap">
-				<label for="offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+				<label for="offering_id"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label><br />
 					<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
-						<option value="-1"><?php echo JText::_('(none)'); ?></option>
+						<option value="-1"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
 			<?php
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 				$model = CoursesModelCourses::getInstance();
@@ -155,9 +156,9 @@ function submitbutton(pressbutton)
 					</select>
 			</div>
 			<div class="input-wrap">
-				<label for="section_id"><?php echo JText::_('Section'); ?>:</label><br />
+				<label for="section_id"><?php echo JText::_('COM_COURSES_SECTION'); ?></label><br />
 				<select name="fields[section_id]" id="section_id">
-					<option value="-1"><?php echo JText::_('Select Section'); ?></option>
+					<option value="-1"><?php echo JText::_('COM_COURSES_SELECT'); ?></option>
 					<?php
 					foreach ($this->offering->sections() as $k => $section)
 					{
@@ -169,7 +170,7 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="enrolled">Enrolled:</label><br />
+				<label for="enrolled"><?php echo JText::_('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
 				<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 			</div>
 		</fieldset>
@@ -178,7 +179,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_COURSES_FIELD_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 			</tbody>

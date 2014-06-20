@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-$text = ($this->task == 'edit' ? JText::_('Edit Role') : JText::_('New Role'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . $text, 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_ROLES') . ': ' . $text, 'courses.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {
-		alert( 'Type must have a title' );
+		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform( pressbutton );
 	}
@@ -65,29 +65,29 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-offering_id"><?php echo JText::_('Offering'); ?>:</label><br />
+				<label for="field-offering_id"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label><br />
 				<select name="fields[offering_id]" id="field-offering_id">
-					<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('[none]'); ?></option>
-			<?php foreach ($this->courses as $course) { ?>
-					<optgroup label="<?php echo $course->get('alias'); ?>">
-				<?php foreach ($course->offerings() as $offering) { ?>
-						<option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
-				<?php } ?>
-					</optgroup>
-			<?php } ?>
+					<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+					<?php foreach ($this->courses as $course) { ?>
+							<optgroup label="<?php echo $course->get('alias'); ?>">
+						<?php foreach ($course->offerings() as $offering) { ?>
+								<option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
+						<?php } ?>
+							</optgroup>
+					<?php } ?>
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?>">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias" size="50" value="<?php echo $this->escape($this->row->alias); ?>" />
-				<span class="hint"><?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
@@ -100,13 +100,13 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('Offering ID'); ?></th>
+					<th class="key"><?php echo JText::_('COM_COURSES_FIELD_OFFERING'); ?></th>
 					<td>
 						<?php echo $this->row->offering_id; ?>
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?></th>
+					<th class="key"><?php echo JText::_('COM_COURSES_FIELD_ID'); ?></th>
 					<td>
 						<?php echo $this->row->id; ?>
 					</td>

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Units'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_UNITS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -43,7 +43,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('units');
@@ -67,8 +67,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
@@ -89,13 +89,13 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
-				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<th scope="col"><?php echo JText::_('State'); ?></th>
-				<th scope="col" colspan="2"><?php echo JText::_('Ordering'); ?></th>
-				<th scope="col"><?php echo JText::_('Asset groups'); ?></th>
-				<th scope="col"><?php echo JText::_('Assets'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TITLE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ALIAS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col" colspan="2"><?php echo JText::_('COM_COURSES_COL_ORDERING'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ASSET_GROUPS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ASSETS'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -110,7 +110,6 @@ $k = 0;
 $n = $this->rows->total();
 foreach ($this->rows as $row)
 {
-	$tip = '[coming soon]';
 	$assetgroups = $row->assetgroups()->total();
 	$assets = $row->assets()->total();
 

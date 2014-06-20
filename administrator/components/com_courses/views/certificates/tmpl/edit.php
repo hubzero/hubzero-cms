@@ -30,15 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Certificate') . ': ' . $text, 'courses.png');
-/*if ($canDo->get('core.edit'))
-{
-	JToolBarHelper::save();
-}*/
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_CERTIFICATE') . ': ' . $text, 'courses.png');
 JToolBarHelper::cancel();
 
 JHTML::_('behavior.framework');
@@ -55,7 +51,7 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if ($('#upload').val() == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
+		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_FILE'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -67,18 +63,18 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Upload'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_COURSES_UPLOAD'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input type="file" name="upload" id="upload" size="17" />
 			</div>
 			<div class="input-wrap">
-				<input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" />
+				<input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" />
 			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<p>Here you can upload a PDF. Once uploaded, a preview will be available where you can place, drag, and resize various placeholders for elements such as the user's name, course name, etc. to be dynamically filled in when a certificate is claimed.</p>
+		<p><?php echo JText::_('COM_COURSES_CERTIFICATE_HELP'); ?></p>
 	</div>
 	<div class="clr"></div>
 
