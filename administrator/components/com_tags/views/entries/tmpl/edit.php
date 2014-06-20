@@ -88,6 +88,11 @@ if ($this->getError())
 				<span class="hint"><?php echo JText::_('COM_TAGS_FIELD_TAG_HINT'); ?></span>
 			</div>
 
+			<div class="input-wrap">
+				<label for="field-tag"><?php echo JText::_('COM_TAGS_FIELD_TAG'); ?>:</label><br />
+				<input type="text" disabled="disabled" class="disabled" name="fields[tag]" id="field-tag" size="30" maxlength="250" value="<?php echo $this->escape($this->tag->get('tag')); ?>" />
+			</div>
+
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-substitutions"><?php echo JText::_('COM_TAGS_FIELD_ALIAS'); ?>:</label><br />
 				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
@@ -198,7 +203,6 @@ if ($this->getError())
 	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
-	<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->get('tag'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
