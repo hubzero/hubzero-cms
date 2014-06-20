@@ -314,7 +314,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->extraPlugins                  = 'tableresize,iframedialog,hubzeroequation,hubzerogrid,hubzeromacro,hubzerohighlight';
 		$config->removePlugins                 = '';
 		$config->resize_enabled                = true;
-		$config->emailProtection               = 'encode';
+		$config->emailProtection               = '';
 		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g', '/{xhub:([^}]*)}/gi');
 		$config->extraAllowedContent           = 'mark(*)[*]; *(*)[*]{*}';
 		$config->disableNativeSpellChecker     = false;
