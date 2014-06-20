@@ -34,15 +34,16 @@ defined('_JEXEC') or die('Restricted access');
 <h1>Super Group Development</h1>
 <p>In efforts to make super group development easier, we are utilizing a code management tool called <a href="https://www.gitlab.com/" target="_blank">Gitlab</a>. Similar to Github in functionality and looks, it provides an easy way for the developers to write &amp; push code and give the HUBzero team the security we needed to allow third party developers to commit code to production machines.</p>
 
-<h2>HUB Setup</h2>
-<p>Each HUB can choose to integrate with Gitlab or not. If your HUB chooses to integrate then there are few steps to get setup and running.</p>
-<ol>
-	<li>Gitlab integration must be enabled in the Groups config, under the "super" tab. The Gitlab url must also be supplied along with the API key of an admin account on Gitlab (found under the "account" tab in profile section). This allows the HUB to do the initial group/project creation when the super group is created.</li>
-	<li>In order for the HUB (www-data user) to make the first commit to the project, including the basic super group template and folder structure, the www-data user must have an SSH Key. That SSH key must also be added to the same admin account on Gitlab. This first commit actually creates the git repository.</li>
-	<li>The last step for HUB setup is to SSH as the www-data user to the Gitlab machine. This will approve the RSA fingerprint of the Gitlab machine for the www-data user and add the machine to the known_hosts file. If this step is omitted the hubs attempt to make the inital commit will be denied.</li>
-</ol>
-
-<hr />
+<?php if (JFactory::getUser()->get('usertype') == 'Super Administrators') : ?>
+	<h2>HUB Setup</h2>
+	<p>Each HUB can choose to integrate with Gitlab or not. If your HUB chooses to integrate then there are few steps to get setup and running.</p>
+	<ol>
+		<li>Gitlab integration must be enabled in the Groups config, under the "super" tab. The Gitlab url must also be supplied along with the API key of an admin account on Gitlab (found under the "account" tab in profile section). This allows the HUB to do the initial group/project creation when the super group is created.</li>
+		<li>In order for the HUB (www-data user) to make the first commit to the project, including the basic super group template and folder structure, the www-data user must have an SSH Key. That SSH key must also be added to the same admin account on Gitlab. This first commit actually creates the git repository.</li>
+		<li>The last step for HUB setup is to SSH as the www-data user to the Gitlab machine. This will approve the RSA fingerprint of the Gitlab machine for the www-data user and add the machine to the known_hosts file. If this step is omitted the hubs attempt to make the inital commit will be denied.</li>
+	</ol>
+	<hr />
+<?php endif; ?>
 
 <h2>Group Setup</h2>
 <p>When a super group is created on the HUB, most of the initial setup for that super group is done automatically. If you are working on a super group that was created prior to May 2014, then this setup will need to be done manually for that super group to work with Gitlab. Please enter a ticket through the support system detailing the the super group and that you would like to have your group integrated into Gitlab.</p>
