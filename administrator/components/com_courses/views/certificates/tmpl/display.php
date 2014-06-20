@@ -34,7 +34,7 @@ $canDo = CoursesHelper::getActions();
 
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_CERTIFICATE'), 'courses.png');
 JToolBarHelper::custom('preview', 'preview', '', 'COM_COURSES_PREVIEW', false);
-if ($canDo->get('core.edit')) 
+if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::spacer();
 	JToolBarHelper::save();
