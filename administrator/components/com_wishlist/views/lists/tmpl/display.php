@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WishlistHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('Wishlist Manager'), 'wishlist.png');
+JToolBarHelper::title(JText::_('COM_WISHLIST'), 'wishlist.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -76,7 +76,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
 			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -84,10 +84,10 @@ function submitbutton(pressbutton)
 		<div class="col width-50 fltrt">
 			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label>
 			<select name="category" id="filter-category">
-				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
-				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
-				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
-				<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
+				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
+				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
+				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
+				<option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -97,11 +97,11 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_STATE'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_ACCESS'), 'public', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_CATEGORY'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_WISHES'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_ACCESS', 'public', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_WISHES', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -153,7 +153,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_WISHLIST_EDIT_LIST'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
 				<?php } else { ?>
@@ -196,7 +196,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($row->wishes > 0) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_WISHLIST_VIEW_WISHES_FOR_LIST'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $row->id; ?>">
 						<span><?php echo $row->wishes . ' ' . JText::_('COM_WISHLIST_LIST_WISHES'); ?></span>
 					</a>
 				<?php } else { ?>

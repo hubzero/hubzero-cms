@@ -51,7 +51,7 @@ $editor = JEditor::getInstance();
 function submitbutton(pressbutton)
 {
 	if (pressbutton =='resethits') {
-		if (confirm(<?php echo JText::_('COM_WISHLIST_RESET_HITS_WARNING'); ?>)){
+		if (confirm('<?php echo JText::_('COM_WISHLIST_RESET_HITS_WARNING'); ?>')){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
-		alert(<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TITLE'); ?>);
+		alert('<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -82,10 +82,10 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field->category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label><br />
 					<select name="fields[category]" id="field-category">
-						<option value=""<?php echo ($this->row->category == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Category...'); ?></option>
-						<option value="general"<?php echo ($this->row->category == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('general'); ?></option>
-						<option value="group"<?php echo ($this->row->category == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('group'); ?></option>
-						<option value="resource"<?php echo ($this->row->category == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('resource'); ?></option>
+						<option value=""<?php echo ($this->row->category == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
+						<option value="general"<?php echo ($this->row->category == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
+						<option value="group"<?php echo ($this->row->category == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
+						<option value="resource"<?php echo ($this->row->category == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
 					</select>
 				</div>
 			</div>
@@ -112,21 +112,21 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_WISHLIST_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->id; ?>
 						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->id; ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 					<td>
 						<time datetime="<?php echo $this->row->created; ?>"><?php echo $this->row->created; ?></time>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->created ? $this->row->created : JFactory::getDate()->toSql(); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('Created by'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
 						$creator = $this->row->created_by ? $this->row->created_by : $this->juser->get('id');

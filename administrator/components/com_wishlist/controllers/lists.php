@@ -277,7 +277,7 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			// Set the redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('%s Item(s) successfully removed.', $i)
+				JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', $i)
 			);
 		}
 		else

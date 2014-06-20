@@ -112,8 +112,8 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
 		$filters = array(
 			'item_type' => 'wish',
-			'parent' => 0,
-			'search' => $this->view->filters['search']
+			'parent'    => 0,
+			'search'    => $this->view->filters['search']
 		);
 		if ($this->view->filters['wish'] > 0)
 		{
@@ -319,7 +319,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$wish = JRequest::getInt('wish', 0);
-		$ids = JRequest::getVar('id', array());
+		$ids  = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -342,7 +342,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish,
-			JText::_('Item(s) successfully removed')
+			JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', count($ids))
 		);
 	}
 

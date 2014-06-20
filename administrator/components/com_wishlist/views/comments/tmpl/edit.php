@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (document.getElementById('field-content').value == ''){
-		alert(<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>);
+		alert('<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -79,35 +79,35 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Reference ID'); ?>:</th>
+					<th><?php echo JText::_('COM_WISHLIST_REFERENCEID'); ?>:</th>
 					<td>
 						<?php echo $this->row->item_id; ?>
 						<input type="hidden" name="fields[item_id]" value="<?php echo $this->escape($this->row->item_id); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Category'); ?>:</th>
+					<th><?php echo JText::_('COM_WISHLIST_FIELD_CATEGORY'); ?>:</th>
 					<td>
 						<?php echo $this->row->item_type; ?>
 						<input type="hidden" name="fields[item_type]" value="<?php echo $this->escape($this->row->item_type); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('ID'); ?>:</th>
+					<th><?php echo JText::_('COM_WISHLIST_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->row->id; ?>
 						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created'); ?>:</th>
+					<th><?php echo JText::_('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 					<td>
 						<time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape($this->row->created); ?></time>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->created); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created by'); ?>:</th>
+					<th><?php echo JText::_('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
 						$editor = JUser::getInstance($this->row->created_by);
@@ -130,9 +130,9 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-state"><?php echo JText::_('COM_WISHLIST_STATUS'); ?>:</label>
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('unpublished'); ?></option>
-					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('published'); ?></option>
-					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('deleted'); ?></option>
+					<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 		</fieldset>

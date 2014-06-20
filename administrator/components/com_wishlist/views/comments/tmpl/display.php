@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = WishlistHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('Wishlist Manager') . ': ' . JText::_('Comments'), 'wishlist.png');
+JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_COMMENTS'), 'wishlist.png');
 if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
@@ -70,7 +70,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_WISHLIST_GO'); ?>" />
 	</fieldset>
@@ -91,12 +91,12 @@ function submitbutton(pressbutton)
 		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_COMMENT_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_COMMENT'), 'comment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_ADDED_BY'), 'added_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_ADDED'), 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_STATE'), 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_WISHLIST_ANONYMOUS'), 'anonymous', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_COMMENT_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_COMMENT', 'comment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_ADDED_BY', 'added_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_STATE', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_ANONYMOUS', 'anonymous', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -133,13 +133,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$aclass = 'publish';
 		$atask = 'publicize';
-		$aalt = JText::_('Anonymous');
+		$aalt = JText::_('COM_WISHLIST_ANONYMOUS');
 	}
 	else
 	{
 		$aclass = 'unpublish';
 		$atask = 'anonymize';
-		$aalt = JText::_('Not anonymous');
+		$aalt = JText::_('COM_WISHLIST_NOT_ANONYMOUS');
 	}
 
 	$comment = substr(strip_tags(stripslashes($row->content)), 0, 50);
@@ -158,7 +158,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->prfx; ?>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>" title="<?php echo JText::_('COM_WISHLIST_EDIT_COMMENT'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>">
 						<span><?php echo $this->escape($comment); ?></span>
 					</a>
 				<?php } else { ?>

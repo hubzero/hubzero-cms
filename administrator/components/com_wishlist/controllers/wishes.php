@@ -211,7 +211,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		$this->view->ownerassignees[-1] = array();
 		$none = new stdClass;
 		$none->id = '-1';
-		$none->name = JText::_('Select ...');
+		$none->name = JText::_('COM_WISHLIST_SELECT');
 		$this->view->ownerassignees[-1][] = $none;//JHTML::_('select.option', '-1', JText::_( 'Select Category' ), 'id', 'title');
 
 		$this->view->assignees = null;
@@ -230,14 +230,14 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 
 				$none = new stdClass;
 				$none->id = '0';
-				$none->name = JText::_('[none]');
+				$none->name = JText::_('COM_WISHLIST_NONE');
 
 				$this->view->ownerassignees[$list->id][] = $none;
 
 				$owners = $objOwner->get_owners($list->id, $this->admingroup, $list);
 				if (count($owners['individuals']) > 0)
 				{
-					$query = "SELECT a.id, a.name FROM #__users AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
+					$query = "SELECT a.id, a.name FROM `#__users` AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
 					$this->database->setQuery($query);
 
 					$users = $this->database->loadObjectList();
@@ -434,7 +434,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wishlist=' . $wishlist,
-			JText::_('Item(s) successfully removed')
+			JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', count($ids))
 		);
 	}
 

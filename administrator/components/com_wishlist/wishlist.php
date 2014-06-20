@@ -54,27 +54,23 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 {
 	$controllerName = 'lists';
 }
-switch ($controllerName)
-{
-	case 'wishes':
-		JSubMenuHelper::addEntry(JText::_('Lists'), 'index.php?option=' .  $option . '&controller=lists');
-		JSubMenuHelper::addEntry(JText::_('Wishes'), 'index.php?option=' .  $option . '&controller=wishes&wishlist=-1', true);
-		JSubMenuHelper::addEntry(JText::_('Comments'), 'index.php?option=' .  $option . '&controller=comments&wish=-1');
-	break;
 
-	case 'comments':
-		JSubMenuHelper::addEntry(JText::_('Lists'), 'index.php?option=' .  $option . '&controller=lists');
-		JSubMenuHelper::addEntry(JText::_('Wishes'), 'index.php?option=' .  $option . '&controller=wishes&wishlist=-1');
-		JSubMenuHelper::addEntry(JText::_('Comments'), 'index.php?option=' .  $option . '&controller=comments&wish=-1', true);
-	break;
+JSubMenuHelper::addEntry(
+	JText::_('COM_WISHLIST_LISTS'),
+	'index.php?option=' .  $option . '&controller=lists',
+	($controllerName == 'lists')
+);
+JSubMenuHelper::addEntry(
+	JText::_('COM_WISHLIST_WISHES'),
+	'index.php?option=' .  $option . '&controller=wishes&wishlist=-1',
+	($controllerName == 'wishes')
+);
+JSubMenuHelper::addEntry(
+	JText::_('COM_WISHLIST_COMMENTS'),
+	'index.php?option=' .  $option . '&controller=comments&wish=-1',
+	($controllerName == 'comments')
+);
 
-	default:
-	case 'lists':
-		JSubMenuHelper::addEntry(JText::_('Lists'), 'index.php?option=' .  $option . '&controller=lists', true);
-		JSubMenuHelper::addEntry(JText::_('Wishes'), 'index.php?option=' .  $option . '&controller=wishes&wishlist=-1');
-		JSubMenuHelper::addEntry(JText::_('Comments'), 'index.php?option=' .  $option . '&controller=comments&wish=-1');
-	break;
-}
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'WishlistController' . ucfirst($controllerName);
 
