@@ -32,12 +32,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CoursesHelper::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('Coupon Codes'), 'courses.png');
+JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_COUPON_CODES'), 'courses.png');
 if ($canDo->get('core.create'))
 {
-	//JToolBarHelper::custom('generate', 'refresh', JText::_('Generate'), JText::_('Generate'), true, false);
 	$bar =  JToolBar::getInstance('toolbar');
-	$bar->appendButton('Popup', 'refresh', 'Generate', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
+	$bar->appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
 
 	JToolBarHelper::spacer();
 	JToolBarHelper::addNew();
@@ -48,7 +47,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
 }
 
 JHTML::_('behavior.tooltip');
@@ -68,8 +67,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 	</fieldset>
@@ -93,12 +92,12 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Code'); ?></th>
-				<th scope="col"><?php echo JText::_('Created'); ?></th>
-				<th scope="col"><?php echo JText::_('Expires'); ?></th>
-				<th scope="col"><?php echo JText::_('Redeemed'); ?></th>
-				<th scope="col"><?php echo JText::_('Redeemed By'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CODE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CREATED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_EXPIRES'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_REDEEMED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_COURSES_COL_REDEEMED_BY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -134,11 +133,11 @@ foreach ($this->rows as $i => $row)
 					<?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?>
 				</td>
 				<td>
-					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(never)'); ?>
+					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_NEVER'); ?>
 				</td>
 			<?php if ($row->get('redeemed')) { ?>
 				<td>
-					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) : JText::_('(unknown)'); ?>
+					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_UNKNOWN'); ?>
 				</td>
 				<td>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=students&amp;task=edit&amp;section=<?php echo $row->get('section_id'); ?>&amp;id[]=<?php echo $row->get('redeemed_by'); ?>">
@@ -147,7 +146,7 @@ foreach ($this->rows as $i => $row)
 				</td>
 			<?php } else { ?>
 				<td colspan="2">
-					<?php echo JText::_('(not redeemed)'); ?>
+					<?php echo JText::_('COM_COURSES_UNREDEEMED'); ?>
 				</td>
 			<?php } ?>
 			</tr>

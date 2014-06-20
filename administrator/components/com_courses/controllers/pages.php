@@ -266,7 +266,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id'],
-				JText::_('Page successfully saved')
+				JText::_('COM_COURSES_ITEM_SAVED')
 			);
 			return;
 		}
@@ -294,7 +294,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			// Redirect with error message
 			$this->setRedirect(
 				$rtrn,
-				JText::_('No page selected'),
+				JText::_('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
 				'error'
 			);
 			return;
@@ -321,7 +321,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$rtrn,
-				JText::sprintf('%s Page(s) successfully removed', $i)
+				JText::sprintf('COM_COURSES_ITEMS_REMOVED', $i)
 			);
 			return;
 		}
@@ -374,18 +374,11 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
-		// Check if they're logged in
-		if ($this->juser->get('guest'))
-		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
-			return;
-		}
-
 		// Ensure we have an ID to work with
 		$listdir = JRequest::getVar('listdir', 0);
 		/*if (!$listdir)
 		{
-			echo json_encode(array('error' => JText::_('COM_COURSES_NO_ID')));
+			echo json_encode(array('error' => JText::_('COM_COURSES_ERROR_NO_ID')));
 			return;
 		}*/
 
@@ -416,7 +409,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => JText::_('COM_COURSES_ERROR_NO_FILE_FOUND')));
 			return;
 		}
 
@@ -426,27 +419,27 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => JText::_('COM_COURSES_ERROR_EMPTY_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -533,7 +526,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			// Make sure the name is valid
 			if (preg_match("#[^0-9a-zA-Z_]#i", $foldername))
 			{
-				$this->setError(JText::_('Directory name must only contain alphanumeric characters and no spaces please.'));
+				$this->setError(JText::_('COM_COURSES_ERROR_INVALID_DIRECTORY'));
 			}
 			else
 			{
@@ -542,12 +535,12 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 					jimport('joomla.filesystem.folder');
 					if (!JFolder::create($path . DS . $foldername))
 					{
-						$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+						$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
 				}
 				else
 				{
-					$this->setError(JText::_('Directory already exists'));
+					$this->setError(JText::_('COM_COURSES_ERROR_DIRECTORY_EXISTS'));
 				}
 			}
 			// Directory created
@@ -560,7 +553,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($path))
 				{
-					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+					$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->displayTask();
 					return;
 				}
@@ -570,7 +563,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			$file = JRequest::getVar('upload', '', 'files', 'array');
 			if (!$file['name'])
 			{
-				$this->setError(JText::_('COURSES_NO_FILE'));
+				$this->setError(JText::_('COM_COURSES_ERROR_NO_FILE'));
 				$this->displayTask();
 				return;
 			}
@@ -590,7 +583,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			// Perform the upload
 			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
-				$this->setError(JText::_('ERROR_UPLOADING'));
+				$this->setError(JText::_('COM_COURSES_ERROR_UPLOADING'));
 			}
 		}
 
@@ -614,7 +607,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$listdir = JRequest::getVar('listdir', 0);
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COURSES_NO_LISTDIR'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->filesTask();
 			return;
 		}
@@ -668,7 +661,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$listdir = JRequest::getVar('listdir', 0);
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COURSES_NO_LISTDIR'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->filesTask();
 			return;
 		}
@@ -683,7 +676,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar('delFile', '');
 		if (!$file)
 		{
-			$this->setError(JText::_('COURSES_NO_FILE'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_FILE'));
 			$this->filesTask();
 			return;
 		}
@@ -691,7 +684,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		// Check if the file even exists
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_COURSES_ERROR_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -699,7 +692,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
 			}
 		}
 
@@ -978,7 +971,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 				$model->set('active', $state);
 				if (!$model->store())
 				{
-					$this->setError(JText::_('Unable to set state for page #' . $id . '.'));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_SET_STATE', $id));
 					continue;
 				}
 
@@ -1002,7 +995,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller, // . '&course=' . JRequest::getInt('course', 0) . '&offering=' . JRequest::getInt('offering', 0),
-				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+				($state ? JText::sprintf('COM_COURSES_ITEMS_PUBLISHED', $num) : JText::sprintf('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
 	}

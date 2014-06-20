@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
@@ -258,7 +256,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 				// Delete record
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete code'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -269,7 +267,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 

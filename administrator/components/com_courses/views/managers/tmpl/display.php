@@ -35,7 +35,7 @@ $offerings = $this->course->offerings();
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
-		<dt><?php echo JText::_('Error'); ?></dt>
+		<dt><?php echo JText::_('ERROR'); ?></dt>
 		<dd class="error"><?php echo implode('<br />', $this->getErrors()); ?></dd>
 	</dl>
 <?php } ?>
@@ -47,7 +47,7 @@ $offerings = $this->course->offerings();
 					<td>
 						<label>
 							<input type="text" name="usernames" value="" />
-							<?php echo JText::_('Enter comma-separated usernames or IDs'); ?>
+							<?php echo JText::_('COM_COURSES_ENTER_USERS'); ?>
 						</label>
 					</td>
 					<td>
@@ -79,7 +79,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="task" value="add" />
 
-						<input type="submit" value="<?php echo JText::_('Add'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_COURSES_ADD_USER'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -98,7 +98,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
 
-						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
+						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_REMOVE_USER'); ?>" />
 					</th>
 				</tr>
 			</thead>
@@ -128,7 +128,7 @@ $offerings = $this->course->offerings();
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
-							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('unknown'); ?>
+							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('COM_COURSES_UNKNOWN'); ?>
 						</a>
 					</td>
 					<td class="paramlist_value">

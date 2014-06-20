@@ -34,7 +34,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('Coupon Codes') . ': ' . JText::_('Generate'), 'course.png');
+	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('COM_COURSES_COUPON_CODE') . ': ' . JText::_('COM_COURSES_GENERATE'), 'course.png');
 	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::save();
@@ -89,17 +89,17 @@ jQuery(document).ready(function($){
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="submitbutton('generate');"><?php echo JText::_( 'Generate' );?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
+				<button type="button" onclick="submitbutton('generate');"><?php echo JText::_('COM_COURSES_GENERATE');?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_('COM_COURSES_CANCEL');?></button>
 			</div>
 
-			<?php echo JText::_('Generate Codes') ?>
+			<?php echo JText::_('COM_COURSES_GENERATE_CODES') ?>
 		</div>
 	</fieldset>
 <?php } ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="section" value="<?php echo $this->section->get('id'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -110,11 +110,11 @@ jQuery(document).ready(function($){
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label for="field-num"><?php echo JText::_('Number of codes to make'); ?>:</label></td>
+						<td class="key"><label for="field-num"><?php echo JText::_('COM_COURSES_FIELD_NUMBER_OF_CODES'); ?>:</label></td>
 						<td colspan="3"><input type="text" name="num" id="field-num" value="" size="5" /></td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-expires-year"><?php echo JText::_('Expires'); ?>:</label></td>
+						<td class="key"><label for="field-expires-year"><?php echo JText::_('COM_COURSES_FIELD_EXPIRES'); ?>:</label></td>
 						<td>YYYY<input type="text" name="expires[year]" id="field-expires-year" value="<?php echo $nextYear; ?>" size="4" /></td>
 						<td>MM<input type="text" name="expires[month]" id="field-expires-month" value="<?php echo $nextMonth; ?>" size="2" /></td>
 						<td>DD<input type="text" name="expires[day]" id="field-expires-day" value="<?php echo $nextDay; ?>" size="2" /></td>

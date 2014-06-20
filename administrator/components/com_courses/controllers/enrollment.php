@@ -80,7 +80,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 				// Loop through existing members and make sure the user isn't already a member
 				if (in_array($uid, $managers))
 				{
-					$this->setError(JText::sprintf('ALREADY_A_MEMBER_OF_TABLE', $mbr));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_ALREADY_ENROLLED', $mbr));
 					continue;
 				}
 
@@ -89,7 +89,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -119,7 +119,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COURSES_NO_ID'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -148,13 +148,13 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
 		if (count($users) >= count($managers))
 		{
-			$this->setError(JText::_('COM_COURSES_LAST_MANAGER'));
+			$this->setError(JText::_('COM_COURSES_ERROR_LAST_MANAGER'));
 		}
 		else
 		{

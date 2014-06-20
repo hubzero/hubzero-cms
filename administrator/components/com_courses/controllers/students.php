@@ -285,7 +285,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				$user = JUser::getInstance($user_id);
 				if (!is_object($user))
 				{
-					$this->addComponentMessage(JText::sprintf('User %s does not exist.', $user_id));
+					$this->addComponentMessage(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
 					$this->editTask( );
 					return;
 				}
@@ -306,14 +306,14 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			if ($model->exists() && !$model->get('student'))
 			{
 				//$this->addComponentMessage(JText::sprintf('User "%s" is a course manager and cannot be added as a student.', $user_id), 'error');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('User "%s" is a course manager and cannot be added as a student.', $user_id), 'error');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id), 'error');
 				continue;
 			}
 			// If the section is the same
 			if ($model->exists() && $model->get('section_id') == $fields['section_id'])
 			{
 				//$this->addComponentMessage(JText::sprintf('User "%s" is already a student of the selected section.', $user_id), 'warning');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('User "%s" is already a student of the selected section.', $user_id), 'warning');
+				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id), 'warning');
 				continue;
 			}
 
@@ -351,7 +351,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'],
-				($c > 0 ? JText::sprintf('%s Student(s) successfully saved', $c) : null)
+				($c > 0 ? JText::sprintf('COM_COURSES_STUDENTS_SAVED', $c) : null)
 			);
 			return;
 		}
@@ -402,7 +402,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JFactory::getApplication()->enqueueMessage(JText::sprintf('Unable to remove student %s from section %s', $model->get('user_id'), $model->get('section_id')), 'error');
+					JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')), 'error');
 					continue;
 				}
 
@@ -413,7 +413,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''),
-			($num > 0 ? JText::sprintf('%s Student(s) removed.', $num) : null)
+			($num > 0 ? JText::sprintf('COM_COURSES_STUDENTS_REMOVED', $num) : null)
 		);
 	}
 

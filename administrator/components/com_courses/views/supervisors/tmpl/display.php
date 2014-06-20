@@ -33,17 +33,10 @@ defined('_JEXEC') or die('Restricted access');
 $course = CoursesModelCourse::getInstance($this->model->get('course_id'));
 $roles = $course->offering(0)->roles(array('alias' => '!student'));
 $offerings = $course->offerings();
-
-//$roles = $this->model->roles(array('alias' => '!student'));
-/*$r = array();
-foreach ($roles as $key => $role)
-{
-	$r[$role->id] = $role;
-}*/
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
-		<dt><?php echo JText::_('Error'); ?></dt>
+		<dt><?php echo JText::_('ERROR'); ?></dt>
 		<dd class="error"><?php echo implode('<br />', $this->getErrors()); ?></dd>
 	</dl>
 <?php } ?>
@@ -55,14 +48,14 @@ foreach ($roles as $key => $role)
 					<td>
 						<label>
 							<input type="text" name="usernames" value="" />
-							<?php echo JText::_('Enter comma-separated usernames or IDs'); ?>
+							<?php echo JText::_('COM_COURSES_ENTER_USERS'); ?>
 						</label>
 					</td>
 					<td>
 						<select name="role">
-<?php foreach ($roles as $role) { ?>
+						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php } ?>
+						<?php } ?>
 						<?php
 						foreach ($offerings as $offering)
 						{
@@ -88,7 +81,7 @@ foreach ($roles as $key => $role)
 						<input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="task" value="add" />
 
-						<input type="submit" value="<?php echo JText::_('Add'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_COURSES_ADD_USER'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -108,17 +101,17 @@ foreach ($roles as $key => $role)
 						<input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
 
-						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_MEMBER_REMOVE'); ?>" />
+						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_REMOVE_USER'); ?>" />
 					</th>
 				</tr>
 			</thead>
 			<tbody>
 <?php
 		$managers = $this->model->members(array(
-			'student' => 0,
-			'course_id' => $this->model->get('course_id'),
+			'student'     => 0,
+			'course_id'   => $this->model->get('course_id'),
 			'offering_id' => $this->model->get('id'),
-			'section_id' => $this->model->section()->get('id')
+			'section_id'  => $this->model->section()->get('id')
 		), true);
 
 		$i = 0;
@@ -149,9 +142,9 @@ foreach ($roles as $key => $role)
 					</td>
 					<td>
 						<select name="entries[<?php echo $i; ?>][role_id]" onchange="update();">
-<?php foreach ($roles as $role) { ?>
+						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-<?php } ?>
+						<?php } ?>
 						<?php
 						foreach ($offerings as $offering)
 						{
@@ -161,7 +154,7 @@ foreach ($roles as $key => $role)
 								continue;
 							}
 						?>
-							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<optgroup label="<?php echo JText::_('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
 							<?php foreach ($oroles as $role) { ?>
 								<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 							<?php } ?>

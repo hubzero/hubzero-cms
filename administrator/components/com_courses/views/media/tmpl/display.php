@@ -28,8 +28,10 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-if ($this->getError()) {
+defined('_JEXEC') or die('Restricted access');
+
+if ($this->getError())
+{
 	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
 ?>
@@ -54,7 +56,7 @@ function goUpDir()
 <form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>
-			<span>Files - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
+			<span><?php echo JText::_('COM_COURSES_FILES'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>
 		<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;course=<?php echo $this->course_id; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
@@ -68,17 +70,9 @@ function goUpDir()
 							<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label>
 						</td>
 						<td>
-							<input type="submit" value="<?php echo JText::_('Upload'); ?>" />
+							<input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" />
 						</td>
 					</tr>
-					<!-- <tr>
-						<td><label for="foldername"><?php echo JText::_('Create folder'); ?></label></td>
-						<td colspan="2"><input type="text" name="foldername" id="foldername" /></td>
-					</tr>
-					<tr>
-						<td> </td>
-						<td colspan="2"><input type="submit" value="<?php echo JText::_('Create or Upload'); ?>" /></td>
-					</tr> -->
 				</tbody>
 			</table>
 		</div>
@@ -89,18 +83,14 @@ function goUpDir()
 			if ($("#ajax-uploader").length) {
 				var uploader = new qq.FileUploader({
 					element: $("#ajax-uploader")[0],
-					action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
-					//params: {listdir: $('#listdir').val()},
+					action: $("#ajax-uploader").attr("data-action"),
 					multiple: true,
 					debug: true,
 					template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span>Click or drop file</span></div>' +
-								'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+								'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+								'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 								'<ul class="qq-upload-list"></ul>' +
-							   '</div>',
-					/*onSubmit: function(id, file) {
-						//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
-					},*/
+							'</div>',
 					onComplete: function(id, file, response) {
 						$('#imgManager').attr('src', $('#imgManager').attr('src'));
 					}
@@ -108,7 +98,6 @@ function goUpDir()
 			}
 		});
 		</script>
-		<!-- <script type="text/javascript" src="components/com_courses/assets/js/fileupload.jquery.js"></script> -->
 		<style>
 		/* Drag and drop file upload */
 			#ajax-uploader-before {
@@ -216,5 +205,6 @@ function goUpDir()
 		<input type="hidden" name="course" value="<?php echo $this->course_id; ?>" />
 		<input type="hidden" name="task" value="upload" />
 	</fieldset>
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

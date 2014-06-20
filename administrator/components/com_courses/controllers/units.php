@@ -249,7 +249,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
-				JText::_('COM_COURSES_UNIT_SAVED')
+				JText::_('COM_COURSES_ITEM_SAVED')
 			);
 		}
 
@@ -294,7 +294,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete unit'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -318,7 +318,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 

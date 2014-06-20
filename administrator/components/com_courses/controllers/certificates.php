@@ -111,7 +111,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
-				JText::_('Certificate settings saved.')
+				JText::_('COM_COURSES_SETTINGS_SAVED')
 			);
 			return;
 		}
@@ -132,7 +132,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=courses',
-				JText::_('Certificate not found'),
+				JText::_('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
 				'error'
 			);
 			return;
@@ -238,7 +238,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
 				return;
 			}
@@ -248,7 +248,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('No file found.'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_FILE_FOUND'));
 			$this->displayTask();
 			return;
 		}
@@ -258,7 +258,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		$ext = JFile::getExt($file['name']);
 		if (strtolower($ext) != 'pdf')
 		{
-			$this->setError(JText::_('Only PDFs are currently supported.'));
+			$this->setError(JText::_('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
 			$this->displayTask();
 			return;
 		}
@@ -268,7 +268,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING') . $path . DS . $file['name']);
+			$this->setError(JText::_('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
 		}
 
 		$model->renderPageImages();

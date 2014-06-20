@@ -469,11 +469,11 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 				if ($dimensions[0] != $dimensions[1])
 				{
-					$this->setError("Image must be square.");
+					$this->setError(JText::_('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
 				}
 				else if ($dimensions[0] < 450)
 				{
-					$this->setError("Image should be at least 450px.");
+					$this->setError(JText::_('COM_COURSES_ERROR_IMG_MIN_WIDTH'));
 				}
 				else
 				{
@@ -486,20 +486,20 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					{
 						if (!JFolder::create($uploadDirectory))
 						{
-							$this->setError('Unable to create upload directory');
+							$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
 					}
 					if (!is_writable($uploadDirectory))
 					{
-						$this->setError("Upload directory isn't writable");
+						$this->setError(JText::_('COM_COURSES_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE'));
 					}
 
 					// Get the final file path
 					$target_path = $uploadDirectory . 'badge.' . $ext;
 
-					if(!$move = move_uploaded_file($badge_image['tmp_name'], $target_path))
+					if (!$move = move_uploaded_file($badge_image['tmp_name'], $target_path))
 					{
-						$this->setError('Move file failed');
+						$this->setError(JText::_('COM_COURSES_ERROR_FILE_MOVE_FAILED'));
 					}
 					else
 					{
@@ -545,7 +545,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 					if (!$credentials->consumer_key || !$credentials->consumer_secret)
 					{
-						$this->setError('You must fill in the courses badge options before attempting to save a badge!');
+						$this->setError(JText::_('COM_COURSES_ERROR_BADGE_MISSING_OPTIONS'));
 					}
 					else
 					{
@@ -566,7 +566,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 						}
 						else
 						{
-							$this->setError('Failed to save badge to provider. Please try saving again or make sure your badge parameters are correct.');
+							$this->setError(JText::_('COM_COURSES_ERROR_FAILED_TO_SAVE_BADGE'));
 						}
 					}
 				}
@@ -575,7 +575,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		elseif ($badge['id']) // badge exists and is being unpublished
 		{
 			$badgeObj = new CoursesModelSectionBadge($badge['id']);
-			$badgeObj->bind(array('published'=>0));
+			$badgeObj->bind(array('published' => 0));
 			$badgeObj->store();
 		}
 
@@ -591,7 +591,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'),
-				JText::_('COM_COURSES_SECTION_SAVED')
+				JText::_('COM_COURSES_ITEM_SAVED')
 			);
 			return;
 		}
@@ -638,7 +638,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete section'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -649,7 +649,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id,
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 
@@ -741,7 +741,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				$section->set('state', $state);
 				if (!$section->store())
 				{
-					$this->setError(JText::_('Unable to set state for section #' . $id . '.'));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_SET_STATE', $id));
 					continue;
 				}
 
@@ -762,7 +762,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
-				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+				($state ? JText::sprintf('COM_COURSES_ITEMS_PUBLISHED', $num) : JText::sprintf('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
 	}

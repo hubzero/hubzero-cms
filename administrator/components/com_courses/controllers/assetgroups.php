@@ -344,16 +344,8 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		$mthd = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-			$mthd = 'loadArray';
-		}
-
-		$p = new $paramsClass('');
-		$p->$mthd(JRequest::getVar('params', array(), 'post'));
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', array(), 'post'));
 
 		$model->set('params', $p->toString());
 
@@ -410,7 +402,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete asset group'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -421,7 +413,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 

@@ -225,16 +225,8 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		$mthd = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-			$mthd = 'loadArray';
-		}
-
-		$p = new $paramsClass('');
-		$p->$mthd(JRequest::getVar('params', '', 'post'));
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', '', 'post'));
 
 		// Make sure the logo gets carried over
 		$op = new $paramsClass($model->get('params'));
@@ -254,7 +246,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $model->get('course_id'),
-				JText::_('COM_COURSES_SAVED')
+				JText::_('COM_COURSES_ITEM_SAVED')
 			);
 			return;
 		}
@@ -286,7 +278,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
-				JText::_('No offering ID found.'),
+				JText::_('COM_COURSES_ERROR_NO_ID'),
 				'error'
 			);
 			return;
@@ -298,7 +290,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 			// Redirect back to the courses page
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $offering->get('course_id'),
-				JText::_('Copy failed: ', $offering->getError()),
+				JText::_('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $offering->getError(),
 				'error'
 			);
 			return;
@@ -307,7 +299,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $offering->get('course_id'),
-			JText::_('Item successfully copied.')
+			JText::_('COM_COURSES_ITEM_COPIED')
 		);
 	}
 
@@ -349,7 +341,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('Unable to delete offering'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
 					return;
 				}
 
@@ -360,7 +352,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		// Redirect back to the courses page
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
-			JText::sprintf('%s Item(s) removed.', $num)
+			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 
@@ -423,7 +415,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 				$model->set('state', $state);
 				if (!$model->store())
 				{
-					$this->setError(JText::_('Unable to set state for offering #' . $id . '.'));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_SET_STATE', $id));
 					continue;
 				}
 
@@ -447,7 +439,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . JRequest::getInt('course', 0),
-				($state ? JText::sprintf('%s item(s) published', $num) : JText::sprintf('%s item(s) unpublished', $num))
+				($state ? JText::sprintf('COM_COURSES_ITEMS_PUBLISHED', $num) : JText::sprintf('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
 	}

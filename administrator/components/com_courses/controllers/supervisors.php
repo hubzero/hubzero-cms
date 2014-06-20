@@ -92,7 +92,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 				// Loop through existing members and make sure the user isn't already a member
 				if (isset($managers[$uid]))
 				{
-					$this->setError(JText::sprintf('The user "%s" is already a manager of this section or course.', $mbr));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_ALREADY_MANAGER', $mbr));
 					continue;
 				}
 
@@ -101,7 +101,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -128,7 +128,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('offering', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COURSES_NO_ID'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -174,7 +174,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('offering', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COURSES_NO_ID'));
+			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}

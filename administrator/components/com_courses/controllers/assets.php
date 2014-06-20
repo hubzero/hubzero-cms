@@ -448,7 +448,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				echo '<p class="message">' . JText::_('Entry successfully saved') . '</p>';
+				echo '<p class="message">' . JText::_('COM_COURSES_ITEM_SAVED') . '</p>';
 			}
 			return;
 		}
