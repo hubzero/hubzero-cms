@@ -28,15 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Register Layout">
+	<layout title="Registration Form">
 		<message>
-			<![CDATA[STANDARD REGISTER LAYOUT DESC]]>
+			<![CDATA[Registration Form]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Register Layout</name>
-		<description>STANDARD REGISTER LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Registration Form</name>
+		<description>Registration Form</description>
 	</state>
 </metadata>
