@@ -499,6 +499,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$row->title      = $tool['title'];
 		$row->introtext  = $tool['description'];
 		$row->alias      = $tool['toolname'];
+		$row->access     = 0;
 
 		if (!$row->store()) 
 		{
