@@ -105,13 +105,30 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="block">
 			<?php
-			$cloud = $this->cloud->render('html', array(
+			$cache = JFactory::getCache('callback');
+			$cache->setCaching(1);
+			$cache->setLifeTime(900);
+
+			$cloud = $cache->call(
+				array($this->cloud, 'render'),
+				'html',
+				array(
+					'limit'    => 25,
+					'admin'    => 0,
+					'sort'     => 'taggedon',
+					'sort_Dir' => 'DESC',
+					'by'       => 'user'
+				),
+				true
+			);
+
+			/*$cloud = $this->cloud->render('html', array(
 				'limit'    => 25,
 				'admin'    => 0,
 				'sort'     => 'taggedon',
 				'sort_Dir' => 'DESC',
 				'by'       => 'user'
-			), true);
+			), true);*/
 			if ($cloud)
 			{
 				echo $cloud;
@@ -132,13 +149,26 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="block">
 			<?php
-			$cloud = $this->cloud->render('html', array(
+			$cloud = $cache->call(
+				array($this->cloud, 'render'),
+				'html',
+				array(
+					'limit'    => 100,
+					'admin'    => 0,
+					'sort'     => 'total',
+					'sort_Dir' => 'DESC',
+					'by'       => 'user'
+				),
+				true
+			);
+
+			/*$cloud = $this->cloud->render('html', array(
 				'limit'    => 100,
 				'admin'    => 0,
 				'sort'     => 'total',
 				'sort_Dir' => 'DESC',
 				'by'       => 'user'
-			), true);
+			), true);*/
 			if ($cloud)
 			{
 				echo $cloud;
