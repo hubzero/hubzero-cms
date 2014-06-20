@@ -748,7 +748,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$row->introtext = $row->introtext 
 						? \Hubzero\Utility\String::truncate(strip_tags($row->introtext), 500) 
 						: \Hubzero\Utility\String::truncate(strip_tags($row->fulltxt), 500);
-		$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
+		//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
 		$type = new ResourcesType($this->database);
@@ -796,7 +796,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$f = trim($tagcontent);
 				if ($f)
 				{
-					$row->fulltxt .= (isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
+					$row->fulltxt .= trim($tagcontent); //(isset($fields[$tagname]) && $fields[$tagname]->type == 'textarea') ? $this->_txtAutoP(trim($tagcontent), 1) : trim($tagcontent);
 				}
 			}
 			$row->fulltxt .= '</nb:' . $tagname . '>' . "\n";
