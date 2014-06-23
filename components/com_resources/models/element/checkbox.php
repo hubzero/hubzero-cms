@@ -88,7 +88,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 		{
 			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($element->description) . '">';
 		}
-		else 
+		else
 		{
 			$output .= '>';
 		}

@@ -104,11 +104,11 @@ class ResourcesElementDate extends ResourcesElement
 			$label = $element->label ? $element->label : $element->name;
 
 			$output = '<legend id="' . $control_name . $name . '-lgd"';
-			if (isset($element->description) && $element->description) 
+			if (isset($element->description) && $element->description)
 			{
 				$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($element->description) . '">';
-			} 
-			else 
+			}
+			else
 			{
 				$output .= '>';
 			}
@@ -150,7 +150,7 @@ class ResourcesElementDate extends ResourcesElement
 			// Build the list of years
 			$options = array();
 			$y++;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = JHTML::_('select.option', $i, $i);
 			}
@@ -171,7 +171,7 @@ class ResourcesElementDate extends ResourcesElement
 			);
 			$i = 1;
 			$y = 13;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = JHTML::_('select.option', $i, $this->_getMonth($i));
 			}
@@ -189,11 +189,11 @@ class ResourcesElementDate extends ResourcesElement
 			);
 			$i = 1;
 			$y = 32;
-			for ($i, $n=$y; $i < $n; $i++) 
+			for ($i, $n=$y; $i < $n; $i++)
 			{
 				$options[] = JHTML::_('select.option', $i, $i);
 			}
-			
+
 			$html[] = JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
 		}
 
@@ -356,13 +356,13 @@ class ResourcesElementDate extends ResourcesElement
 
 		// case value to array (in case object)
 		$value = array_filter((array) $value);
-		
+
 		// loop through each value prop
 		foreach ($value as $k => $v)
 		{
 			array_push($parts, "<{$k}>{$v}</{$k}>");
 		}
-		
+
 		// build and return tag
 		$html  = "<{$prefix}{$tag}>";
 		$html .= implode("\n", $parts);
