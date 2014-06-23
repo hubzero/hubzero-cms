@@ -617,18 +617,21 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Get graded asset completion count
 	 * 
-	 * @param      int $course_id
+	 * @param      obj $course
 	 * @param      int $member_id
 	 * @return     void
 	 */
-	public function getGradedItemsCompletionCount($course_id, $member_id=null)
+	public function getGradedItemsCompletionCount($course, $member_id=null)
 	{
 		$user = (!is_null($member_id)) ? "AND gb.member_id = {$member_id}" : '';
 		$query   = "SELECT gb.member_id, ca.grade_weight, count(*) as count
 					FROM $this->_tbl AS gb
 					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
-					WHERE scope='asset'
-					AND ca.course_id = '{$course_id}'
+					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
+					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
+					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
+					WHERE gb.scope='asset'
+					AND cu.offering_id = '".$course->offering()->get('id')."'
 					AND (score IS NOT NULL OR override IS NOT NULL)
 					{$user}
 					GROUP BY member_id, grade_weight";
@@ -676,16 +679,19 @@ class CoursesTableGradeBook extends JTable
 	/**
 	 * Get graded asset count
 	 * 
-	 * @param      int $course_id
+	 * @param      obj $course
 	 * @return     void
 	 */
-	public function getGradedItemsCount($course_id)
+	public function getGradedItemsCount($course)
 	{
 		$query   = "SELECT grade_weight, count(*) as count
-					FROM `#__courses_assets`
+					FROM `#__courses_assets` ca
+					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
+					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
+					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
 					WHERE graded = 1
-					AND state = 1
-					AND course_id = '{$course_id}'
+					AND ca.state = 1
+					AND offering_id = '".$course->offering()->get('id')."'
 					GROUP BY grade_weight;";
 
 		$this->_db->setQuery($query);

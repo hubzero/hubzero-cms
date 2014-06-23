@@ -650,7 +650,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
 		// Get count of graded items taken
-		$results = $this->_tbl->getGradedItemsCompletionCount($this->course->get('id'), $member_id);
+		$results = $this->_tbl->getGradedItemsCompletionCount($this->course, $member_id);
 
 		// Restructure data
 		foreach ($results as $r)
@@ -664,7 +664,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$homework_weight = $gradePolicy->get('homework_weight');
 
 		// Get count of total graded items
-		$totals = $this->_tbl->getGradedItemsCount($this->course->get('id'));
+		$totals = $this->_tbl->getGradedItemsCount($this->course);
 		$return = false;
 
 		if (isset($counts))
