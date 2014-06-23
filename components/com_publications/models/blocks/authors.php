@@ -314,8 +314,9 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$objO = new ProjectOwner( $this->_parent->_db );
 		
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new RegisterModelRegistration();
+		include_once(JPATH_ROOT . DS . 'components' . DS 
+			. 'com_members' . DS . 'models' . DS . 'registration.php');
+		$xregistration = new MembersModelRegistration();
 		
 		// Do we have a registered user with this email?
 		if ($email && !$uid)
@@ -467,8 +468,9 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 		
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_register' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new RegisterModelRegistration();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' 
+			. DS . 'models' . DS . 'registration.php');
+		$xregistration = new MembersModelRegistration();
 		
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->id, 'all', 1);
