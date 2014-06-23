@@ -74,7 +74,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 
 		// update specs
 		$count = count($queries);
-		for ($i=0; $i<=$count-1; $i++) 
+		for ($i=0; $i<=$count-1; $i++)
 		{
 			$SQL = "UPDATE `#__oaipmh_dcspecs` SET query = " . $this->database->Quote($queries[$i]) . " WHERE id = " . $this->database->Quote($qid[$i]);
 			$this->database->Execute($SQL);

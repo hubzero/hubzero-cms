@@ -91,7 +91,7 @@ function removeGroup(id) {
 
 	<div id="member-document">
 		<?php
-			$x = 0; 
+			$x = 0;
 			foreach ($this->sets as $set)
 			{
 				echo '<div id="page-tab' . $set[0] . '" class="tab">';
