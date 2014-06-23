@@ -46,7 +46,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 		// get query groups
 		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs`";
 		$this->database->setQuery($query);
-		$this->view->sets = $this->database->loadResultArray();	
+		$this->view->sets = $this->database->loadResultArray();
 
 		// get last datestamp **
 		//$query = "SELECT submitted FROM `#__publication_versions` WHERE submitted != '0000-00-00 00:00:00' ORDER BY submitted LIMIT 1";
@@ -62,7 +62,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	 * 
 	 * @return     void
 	 */
-	public function saveTask() 
+	public function saveTask()
 	{
 		// check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -92,7 +92,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	 * 
 	 * @return     void
 	 */
-	protected function addsetTask() 
+	protected function addsetTask()
 	{
 		// increment set number, load a fresh one
 		$sets = JRequest::getVar('sets', '', 'request');
@@ -116,7 +116,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 			'language',
 			'source'
 		);
-		for ($i=0; $i<17; $i++) 
+		for ($i=0; $i<17; $i++)
 		{
 			$SQL = "INSERT INTO `#__oaipmh_dcspecs` (name, query, display) VALUES (" . $this->database->Quote($names[$i]) . ",''," . $this->database->Quote($sets) . ")";
 			$this->database->Execute($SQL);
@@ -133,7 +133,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	 * 
 	 * @return     void
 	 */
-	public function removesetTask() 
+	public function removesetTask()
 	{
 		// remove 1 query set
 		$id = JRequest::getVar('id', '', 'request');

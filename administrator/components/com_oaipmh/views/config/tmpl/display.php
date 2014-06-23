@@ -76,7 +76,7 @@ function removeGroup(id) {
 				<div class="submenu-pad">
 					<ul id="submenu" class="member-nav">
 						<?php
-							foreach ($this->sets as $set) 
+							foreach ($this->sets as $set)
 							{
 								echo '<li><a onclick="return false;" href="#tabs-' . $set[0] . '" id="tab' . $set[0] . '">' . JText::sprintf('COM_OAIPMH_GROUP_TITLE', $set[0]) . '</a></li>';
 							}
@@ -92,10 +92,10 @@ function removeGroup(id) {
 	<div id="member-document">
 		<?php
 			$x = 0; 
-			foreach ($this->sets as $set) 
+			foreach ($this->sets as $set)
 			{
 				echo '<div id="page-tab' . $set[0] . '" class="tab">';
-				for ($i=$x;$i<=$x+16;$i++) 
+				for ($i=$x;$i<=$x+16;$i++)
 				{
 					echo '<div class="input-wrap">';
 					echo '<label>' . $this->dcs[$i][1] . '</label><br />';
@@ -103,7 +103,7 @@ function removeGroup(id) {
 					echo '<input type="hidden" name="qid[]" value="' . $this->escape($this->dcs[$i][0]) . '" />';
 					echo '</div>';
 				}
-				if ($set[0] > 1) 
+				if ($set[0] > 1)
 				{
 					echo '<br /><br />[ <a href="#" onclick="javascript:removeGroup(' . $set[0] . ')" >' . JText::_('COM_OAIPMH_REMOVE_GROUP') . '</a> ]';
 				}

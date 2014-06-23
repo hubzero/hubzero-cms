@@ -85,7 +85,7 @@ class TablesOaipmhResult
 							$SQL2 = "SELECT publication_id FROM `#__publication_versions` WHERE doi = '$id' AND state = 1";
 							$db->setQuery($SQL2);
 							$id = $db->loadResult();
-						} 
+						}
 
 						eval("\$SQL = \"$SQL\";");
 

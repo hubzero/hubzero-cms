@@ -56,7 +56,7 @@ class TablesOaipmhCustom
 	 * @param      string $qset
 	 * @return     void
 	 */
-	public function __construct(&$db, $qset) 
+	public function __construct(&$db, $qset)
 	{
 		// set custom query for each element
 		$db->setQuery("SELECT `query` FROM `#__oaipmh_dcspecs` WHERE display = $qset ORDER BY id");
