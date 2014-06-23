@@ -66,6 +66,23 @@ $assets = $asset->find(
 	)
 );
 
+// Get gradebook auxiliary assets
+$auxiliary = $asset->find(
+	array(
+		'w' => array(
+			'course_id'     => $this->course->get('id'),
+			'asset_type'    => 'gradebook',
+			'asset_subtype' => 'auxiliary',
+			'graded'        => true,
+			'state'         => 1
+		),
+		'order_by'  => 'title',
+		'order_dir' => 'ASC'
+	)
+);
+
+$assets = array_merge($assets, $auxiliary);
+
 foreach($assets as $asset)
 {
 	$increment_count_taken = false;
