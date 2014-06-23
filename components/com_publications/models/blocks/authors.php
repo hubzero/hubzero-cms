@@ -296,7 +296,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$credit 	= trim(JRequest::getVar( 'credit', '', 'post' ));
 		$uid 		= trim(JRequest::getInt( 'uid', 0, 'post' ));
 
-		$regex 		= '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/'; 
+		$regex 		= '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email 		= preg_match($regex, $email) ? $email : '';
 		$name 		= $firstName . ' ' . $lastName;
 
@@ -372,7 +372,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$objO->store();
 
 			$owner 				 = $objO->id;
-			$sendInvite 		 = $email ? 1 : 0;	
+			$sendInvite 		 = $email ? 1 : 0;
 		}
 
 		// Now we do need owner record
