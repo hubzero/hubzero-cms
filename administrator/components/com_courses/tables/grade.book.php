@@ -137,7 +137,7 @@ class CoursesTableGradeBook extends JTable
 
 		if (isset($filters['member_id']) && $filters['member_id'])
 		{
-			if(!is_array($filters['member_id']))
+			if (!is_array($filters['member_id']))
 			{
 				$filters['member_id'] = array($filters['member_id']);
 			}
@@ -145,7 +145,7 @@ class CoursesTableGradeBook extends JTable
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			if(!is_array($filters['scope']))
+			if (!is_array($filters['scope']))
 			{
 				$filters['scope'] = array($filters['scope']);
 			}
@@ -153,7 +153,7 @@ class CoursesTableGradeBook extends JTable
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
-			if(!is_array($filters['scope_id']))
+			if (!is_array($filters['scope_id']))
 			{
 				$filters['scope_id'] = array($filters['scope_id']);
 			}
@@ -207,7 +207,7 @@ class CoursesTableGradeBook extends JTable
 
 		if (isset($filters['member_id']) && $filters['member_id'])
 		{
-			if(!is_array($filters['member_id']))
+			if (!is_array($filters['member_id']))
 			{
 				$filters['member_id'] = array($filters['member_id']);
 			}
@@ -215,7 +215,7 @@ class CoursesTableGradeBook extends JTable
 		}
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			if(!is_array($filters['scope']))
+			if (!is_array($filters['scope']))
 			{
 				$filters['scope'] = array($filters['scope']);
 			}
@@ -223,7 +223,7 @@ class CoursesTableGradeBook extends JTable
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
-			if(!is_array($filters['scope_id']))
+			if (!is_array($filters['scope_id']))
 			{
 				$filters['scope_id'] = array($filters['scope_id']);
 			}
@@ -231,7 +231,7 @@ class CoursesTableGradeBook extends JTable
 		}
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
-			if(!is_array($filters['section_id']))
+			if (!is_array($filters['section_id']))
 			{
 				$filters['section_id'] = array($filters['section_id']);
 			}
@@ -312,7 +312,7 @@ class CoursesTableGradeBook extends JTable
 
 		if (count($assets) > 0)
 		{
-			foreach($assets as $asset)
+			foreach ($assets as $asset)
 			{
 				// Add null values for unpublished forms that may have already been taken
 				if ($asset->state != 1)
@@ -327,7 +327,7 @@ class CoursesTableGradeBook extends JTable
 				// Check for result for given student on form
 				$crumb = $asset->url;
 
-				if(!$crumb || strlen($crumb) != 20 || $asset->state != 1)
+				if (!$crumb || strlen($crumb) != 20 || $asset->state != 1)
 				{
 					// Break foreach, this is not a valid form!
 					continue;
@@ -381,7 +381,7 @@ class CoursesTableGradeBook extends JTable
 							$resp = $dep->getRespondent($u);
 
 							// Form is active and they have completed it!
-							if($resp->getEndTime() && $resp->getEndTime() != '')
+							if ($resp->getEndTime() && $resp->getEndTime() != '')
 							{
 								$score = (isset($results[$u]['score'])) ? '\''.$results[$u]['score'].'\'' : 'NULL';
 
