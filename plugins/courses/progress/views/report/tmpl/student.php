@@ -301,59 +301,59 @@ $progress_timeline .= '</div>';
 ?>
 
 <div class="progress">
-	<? if($this->course->access('manage')) : ?>
+	<?php if($this->course->access('manage')) : ?>
 		<div class="extra">
-			<a href="<?= JRoute::_($this->base . '&active=progress') ?>" class="back btn icon-back"><?= JText::_('Back to all students') ?></a>
+			<a href="<?php echo JRoute::_($this->base . '&active=progress') ?>" class="back btn icon-back"><?php echo JText::_('Back to all students') ?></a>
 		</div>
-	<? endif; ?>
+	<?php endif; ?>
 
 	<h3>
-		<?= (JRequest::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
-		<?= $h3 ?>
+		<?php echo (JRequest::getInt('id', false)) ? JFactory::getUser($this->member->get('user_id'))->get('name') . ':' : '' ?>
+		<?php echo $h3 ?>
 	</h3>
-	<h4><?= JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
+	<h4><?php echo JText::sprintf('Unit %d of %d', $current_i, $num_units) ?></h4>
 
-	<?= $progress_timeline ?>
+	<?php echo $progress_timeline ?>
 
 	<div class="clear"></div>
 
-<? if ($this->course->offering()->section()->badge()->isAvailable() && $student->badge()->hasEarned()) : ?>
+<?php if ($this->course->offering()->section()->badge()->isAvailable() && $student->badge()->hasEarned()) : ?>
 	<div class="recognition badge earned">
-		<img src="<?= $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
-		<? if ($student->badge()->get('action') == 'accept') : ?>
+		<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
+		<?php if ($student->badge()->get('action') == 'accept') : ?>
 			<h3>Congratulations! You've got the badge!</h3>
 			<p>
 				Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
 			</p>
-		<? elseif ($student->badge()->get('action') == 'deny') : ?>
+		<?php elseif ($student->badge()->get('action') == 'deny') : ?>
 			<h3>Congratulations! You earned the badge!</h3>
 			<p>
 				You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
+				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
 			</p>
-		<? else : ?>
+		<?php else : ?>
 			<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
 			<p>
-				You've completed all of the requirements of <?= $this->course->get('title') ?>, qualifying you to receive
+				You've completed all of the requirements of <?php echo $this->course->get('title') ?>, qualifying you to receive
 				a special badge.
 			</p>
-			<? if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
+			<?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
 				<p>
-					<a target="_blank" class="claim-item" href="<?= $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+					<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
 				</p>
-			<? else : ?>
+			<?php else : ?>
 				<p>
 					Watch your email in the next few days for details on how to claim your badge.
 				</p>
-			<? endif; ?>
-		<? endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
 	</div>
-<? endif; ?>
+<?php endif; ?>
 
 <?php if ($this->course->config()->get('certificate', '') && $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id'))) : ?>
 	<div class="recognition certificate earned">
@@ -373,9 +373,9 @@ $progress_timeline .= '</div>';
 	<div class="grades">
 		<div class="current-score">
 			<div class="current-score-inner">
-				<p class="grading-policy"><?= JText::_('grading policy') ?></p>
-				<p class="title"><?= JText::_('Your current score') ?></p>
-				<?
+				<p class="grading-policy"><?php echo JText::_('grading policy') ?></p>
+				<p class="title"><?php echo JText::_('Your current score') ?></p>
+				<?php
 					$cls = '';
 					if ($passing === 1)
 					{
@@ -386,8 +386,8 @@ $progress_timeline .= '</div>';
 						$cls = ' failing';
 					}
 				?>
-				<p class="score<?= $cls ?>">
-					<?=
+				<p class="score<?php echo $cls ?>">
+					<?php echo
 						(isset($grades[$this->member->get('id')]['course'][$this->course->get('id')]))
 							? $grades[$this->member->get('id')]['course'][$this->course->get('id')] . '%'
 							: '--'
@@ -398,25 +398,25 @@ $progress_timeline .= '</div>';
 
 		<div class="quizzes">
 			<div class="quizzes-inner">
-				<p class="title"><?= JText::_('Quizzes taken') ?></p>
-				<p class="score"><?= $details['quizzes_taken'] ?></p>
-				<p><?= JText::sprintf('out of %d', $details['quizzes_total']) ?></p>
+				<p class="title"><?php echo JText::_('Quizzes taken') ?></p>
+				<p class="score"><?php echo $details['quizzes_taken'] ?></p>
+				<p><?php echo JText::sprintf('out of %d', $details['quizzes_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="homeworks">
 			<div class="homeworks-inner">
-				<p class="title"><?= JText::_('Homeworks submitted') ?></p>
-				<p class="score"><?= $details['homeworks_submitted'] ?></p>
-				<p><?= JText::sprintf('out of %d', $details['homeworks_total']) ?></p>
+				<p class="title"><?php echo JText::_('Homeworks submitted') ?></p>
+				<p class="score"><?php echo $details['homeworks_submitted'] ?></p>
+				<p><?php echo JText::sprintf('out of %d', $details['homeworks_total']) ?></p>
 			</div>
 		</div>
 
 		<div class="exams">
 			<div class="exams-inner">
-				<p class="title"><?= JText::_('Exams taken') ?></p>
-				<p class="score"><?= $details['exams_taken'] ?></p>
-				<p><?= JText::sprintf('out of %d', $details['exams_total']) ?></p>
+				<p class="title"><?php echo JText::_('Exams taken') ?></p>
+				<p class="score"><?php echo $details['exams_taken'] ?></p>
+				<p><?php echo JText::sprintf('out of %d', $details['exams_total']) ?></p>
 			</div>
 		</div>
 	</div>
@@ -424,17 +424,17 @@ $progress_timeline .= '</div>';
 	<div class="clear"></div>
 
 	<p class="info grading-policy-explanation">
-		<?= $gradePolicy->get('description') ?>
+		<?php echo $gradePolicy->get('description') ?>
 	</p>
 
 	<div class="units">
-	<? foreach($this->course->offering()->units() as $unit) : ?>
+	<?php foreach($this->course->offering()->units() as $unit) : ?>
 
 		<div class="unit-entry">
 			<div class="unit-overview">
-				<div class="unit-title"><?= $unit->get('title') ?></div>
+				<div class="unit-title"><?php echo $unit->get('title') ?></div>
 				<div class="unit-score">
-					<?= 
+					<?php echo 
 						(isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
 							? $grades[$this->member->get('id')]['units'][$unit->get('id')] . '%'
 							: '--'
@@ -445,19 +445,19 @@ $progress_timeline .= '</div>';
 				<table>
 					<thead>
 						<tr>
-							<td class="grade-details-title"><?= JText::_('Assignment') ?></td>
-							<td class="grade-details-score"><?= JText::_('Score') ?></td>
-							<td class="grade-details-date"><?= JText::_('Date taken') ?></td>
+							<td class="grade-details-title"><?php echo JText::_('Assignment') ?></td>
+							<td class="grade-details-score"><?php echo JText::_('Score') ?></td>
+							<td class="grade-details-date"><?php echo JText::_('Date taken') ?></td>
 						</tr>
 					</thead>
 					<tbody>
-						<? if (isset($details['forms'][$unit->get('id')])) : 
+						<?php if (isset($details['forms'][$unit->get('id')])) : 
 								usort($details['forms'][$unit->get('id')], function ($a, $b) {
 									return strcmp($a['title'], $b['title']);
 								});
 						?>
-							<? foreach ($details['forms'][$unit->get('id')] as $form) : ?>
-								<?
+							<?php foreach ($details['forms'][$unit->get('id')] as $form) : ?>
+								<?php
 									if (is_numeric($form['score']) && $form['score'] < 60)
 									{
 										$class = 'stop';
@@ -475,25 +475,25 @@ $progress_timeline .= '</div>';
 										$class = 'neutral';
 									}
 								?>
-								<tr class="<?= $class ?>">
-									<td class="grade-details-title"><a href="<?= $form['url'] ?>"><?= $form['title'] ?></a></td>
-									<td class="grade-details-score"><?= $form['score'] . (is_numeric($form['score']) ? '%' : '') ?></td>
-									<td class="grade-details-date"><?= $form['date'] ?></td>
+								<tr class="<?php echo $class ?>">
+									<td class="grade-details-title"><a href="<?php echo $form['url'] ?>"><?php echo $form['title'] ?></a></td>
+									<td class="grade-details-score"><?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?></td>
+									<td class="grade-details-date"><?php echo $form['date'] ?></td>
 								</tr>
-							<? endforeach; ?>
-						<? else : ?>
+							<?php endforeach; ?>
+						<?php else : ?>
 							<tr class="unit-no-details">
 								<td colspan="3">There are currently no results to show for this unit.</td>
 							</tr>
-						<? endif; ?>
+						<?php endif; ?>
 					</tbody>
 				</table>
 			</div>
 		</div>
 
-	<? endforeach; ?>
+	<?php endforeach; ?>
 
-	<? if (!empty($details['aux'])) : ?>
+	<?php if (!empty($details['aux'])) : ?>
 		<div class="unit-entry">
 			<div class="unit-overview">
 				<div class="unit-title">Other Grades</div>
@@ -503,19 +503,19 @@ $progress_timeline .= '</div>';
 				<table>
 					<thead>
 						<tr>
-							<td class="grade-details-title"><?= JText::_('Assignment') ?></td>
-							<td class="grade-details-score"><?= JText::_('Score') ?></td>
-							<td class="grade-details-date"><?= JText::_('Date taken') ?></td>
+							<td class="grade-details-title"><?php echo JText::_('Assignment') ?></td>
+							<td class="grade-details-score"><?php echo JText::_('Score') ?></td>
+							<td class="grade-details-date"><?php echo JText::_('Date taken') ?></td>
 						</tr>
 					</thead>
 					<tbody>
-						<?
+						<?php
 							usort($details['aux'], function ($a, $b) {
 								return strcmp($a['title'], $b['title']);
 							});
 						?>
-						<? foreach ($details['aux'] as $aux) : ?>
-							<?
+						<?php foreach ($details['aux'] as $aux) : ?>
+							<?php
 								if (is_numeric($aux['score']) && $aux['score'] < 60)
 								{
 									$class = 'stop';
@@ -533,30 +533,30 @@ $progress_timeline .= '</div>';
 									$class = 'neutral';
 								}
 							?>
-							<tr class="<?= $class ?>">
-								<td class="grade-details-title"><?= $aux['title'] ?></td>
-								<td class="grade-details-score"><?= $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
+							<tr class="<?php echo $class ?>">
+								<td class="grade-details-title"><?php echo $aux['title'] ?></td>
+								<td class="grade-details-score"><?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
 								<td class="grade-details-date">N/A</td>
 							</tr>
-						<? endforeach; ?>
+						<?php endforeach; ?>
 					</tbody>
 				</table>
 			</div>
 		</div>
-	<? endif; ?>
+	<?php endif; ?>
 
 	</div>
 
-<? if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
+<?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
 	<div class="recognition badge">
-		<img src="<?= $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
+		<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
 		<h3>Work hard. Earn a badge.</h3>
 		<p>
-			Upon successful completion of this course, you will be awarded a special <?= $this->course->get('title') ?> badge.
+			Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
 			This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
 			To learn more about Purdue's Passport initiative, please visit the 
 			<a href="https://www.openpassport.org/Login" target="_blank">Open Passport website</a>.
 		</p>
 	</div>
-<? endif; ?>
+<?php endif; ?>
 </div>
