@@ -36,44 +36,44 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected $_name = 'authors';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected $_parentname = 'authors';	
-		
+	protected $_parentname = 'authors';
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected $_manifest = NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence 		= 0;
-	
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
-	{	
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -82,7 +82,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		else
 		{
 			$name = $viewname == 'freeze' ? 'freeze' : 'draft';
-			
+
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -93,21 +93,21 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				)
 			);
 		}
-		
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 2;
-				
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block content
 	 *
@@ -120,29 +120,29 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Make sure changes are allowed			
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;
 		}
-		
+
 		$selections = JRequest::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
-		
+
 		// Load classes
 		$pAuthor  = new PublicationAuthor( $this->_parent->_db );
 		$objO 	  = new ProjectOwner( $this->_parent->_db );
-		
+
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
-		
+
 		foreach ($toAttach as $owner)
 		{
 			if (!trim($owner))
 			{
 				continue;
 			}
-			
+
 			if ($pAuthor->loadAssociationByOwner($owner, $pub->version_id))
 			{
 				// Restore deleted author
@@ -151,8 +151,8 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 					$pAuthor->status 		= 1;
 					$pAuthor->modified 		= JFactory::getDate()->toSql();
 					$pAuthor->modified_by 	= $actor;
-					
-					if ($pAuthor->updateAssociationByOwner()) 
+
+					if ($pAuthor->updateAssociationByOwner())
 					{
 						// Reflect the update in curation record
 						$this->_parent->set('_update', 1);
@@ -160,10 +160,10 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				}
 			}
 			else
-			{	
+			{
 				$profile = $pAuthor->getProfileInfoByOwner($owner);
 				$invited = $profile->invited_name ? $profile->invited_name : $profile->invited_email;
-								
+
 				$pAuthor->project_owner_id 			= $owner;
 				$pAuthor->publication_version_id 	= $pub->version_id;
 				$pAuthor->user_id 					= $profile->uidNumber ? $profile->uidNumber : 0;
@@ -175,28 +175,28 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				$pAuthor->lastName 					= $profile->surname ? $profile->surname : '';
 				$pAuthor->created 					= JFactory::getDate()->toSql();
 				$pAuthor->created_by 				= $actor;
-				
-				if (!$pAuthor->createAssociation()) 
+
+				if (!$pAuthor->createAssociation())
 				{
 					continue;
 				}
-				else 
+				else
 				{
 					// Update ordering
 					$order++;
-					
+
 					// Reflect the update in curation record
 					$this->_parent->set('_update', 1);
-					
+
 				}
-			}		
+			}
 		}
-				
+
 		$this->set('_message', JText::_('Author selection saved') );
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Transfer data from one version to another
 	 *
@@ -211,15 +211,15 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
-		
+
 		$juser = JFactory::getUser();
-		
+
 		if (!$pub->_authors)
 		{
 			return false;
 		}
-		
-		foreach ($pub->_authors as $author) 
+
+		foreach ($pub->_authors as $author)
 		{
 			$pAuthor 							= new PublicationAuthor( $this->_parent->_db );
 			$pAuthor->user_id 					= $author->user_id;
@@ -239,9 +239,9 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			}
 		}
 		
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Save block content
 	 *
@@ -254,11 +254,11 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Incoming
 		$list = JRequest::getVar( 'list', '' );
 		$authors = explode("-", $list);
-				
+
 		$o = 1;
 		foreach ($authors as $id)
 		{
@@ -272,16 +272,16 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			{
 				$pAuthor->ordering = $o;
 				$o++;
-				
+
 				$pAuthor->store();
-			}			
+			}
 		}
-		
+
 		$this->set('_message', JText::_('New author order saved') );
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Add new author
 	 *
@@ -295,7 +295,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$org 		= trim(JRequest::getVar( 'organization', '', 'post' ));
 		$credit 	= trim(JRequest::getVar( 'credit', '', 'post' ));
 		$uid 		= trim(JRequest::getInt( 'uid', 0, 'post' ));
-		
+
 		$regex 		= '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/'; 
 		$email 		= preg_match($regex, $email) ? $email : '';
 		$name 		= $firstName . ' ' . $lastName;
@@ -303,34 +303,34 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$sendInvite = 0;
 		$exists 	= 0;
 		$code 		= ProjectsHtml::generateCode();
-		
+
 		if (!$firstName || !$lastName || !$org)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
-		
+
 		// Load classes
 		$objO = new ProjectOwner( $this->_parent->_db );
-		
+
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS 
+		include_once(JPATH_ROOT . DS . 'components' . DS
 			. 'com_members' . DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
-		
+
 		// Do we have a registered user with this email?
 		if ($email && !$uid)
 		{			
 			$uid = $xregistration->getEmailId( $email );
-			
+
 			// Check that profile exists
 			if ($uid)
 			{
 				$profile = \Hubzero\User\Profile::getInstance($uid);
-				$uid = $profile->get('uidNumber') ? $uid : 0;				
-			}			
+				$uid = $profile->get('uidNumber') ? $uid : 0;
+			}
 		}
-				
+
 		// Do we have an owner with this email/uid?
 		if ($uid)
 		{
@@ -340,12 +340,12 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		{
 			$owner = $objO->checkInvited( $pub->_project->id, $email );	
 		}
-		
+
 		if ($owner && $objO->load($owner))
 		{
 			if ($email && $objO->invited_email != $email)
 			{
-				$sendInvite = 1;	
+				$sendInvite = 1;
 			}
 			$objO->status 			= $objO->userid ? 1 : 0;
 			$objO->invited_name 	= $objO->userid ? $objO->invited_name : $name;
@@ -355,7 +355,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		elseif ($email || trim($name))
 		{
 			$objO = new ProjectOwner( $this->_parent->_db );
-			
+
 			$objO->projectid 	 = $pub->_project->id;
 			$objO->userid 		 = $uid;
 			$objO->status 		 = $uid ? 1 : 0;
@@ -363,28 +363,28 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$objO->role 		 = 2;
 			$objO->invited_email = $email;
 			$objO->invited_name  = $name;
-			
+
 			if ($email)
 			{
 				$objO->invited_code = $code;
 			}
-			
+
 			$objO->store();	
-			
+
 			$owner 				 = $objO->id;
 			$sendInvite 		 = $email ? 1 : 0;	
 		}
-		
+
 		// Now we do need owner record
 		if (!$owner)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 			return false;
 		}
-		
+
 		// Get author information
 		$pAuthor = new PublicationAuthor( $this->_parent->_db );
-		
+
 		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id )) 
 		{
 			$pAuthor->modified 		= JFactory::getDate()->toSql();
@@ -401,7 +401,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pAuthor->ordering 	             = $pAuthor->getLastOrder($pub->version_id) + 1;
 			$pAuthor->role 				 	 = '';
 		}
-		
+
 		$pAuthor->status 		= 1;
 		$pAuthor->name   		= $name;
 		$pAuthor->firstName 	= $firstName;
@@ -413,17 +413,17 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 			return false;
 		}
-		
+
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
-		
+
 		// (Re)send email invitation
 		if ($sendInvite && $email)
 		{
 			// Get team plugin
 			JPluginHelper::importPlugin( 'projects', 'team' );
 			$dispatcher = JDispatcher::getInstance();
-			
+
 			// Plugin params
 			$plugin_params = array(
 				$uid,
@@ -435,27 +435,27 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			);
 
 			// Send invite
-			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);				
+			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);
 			$result = json_decode($output[0]);
 		}
-		
-		$message = $exists 
-			? JText::_('Author already in team, updated author information') 
+
+		$message = $exists
+			? JText::_('Author already in team, updated author information')
 			: JText::_('New author added');
 		
 		$this->set('_message', $message );
 		return true;
 	}
-	
+
 	/**
 	 * Update attachment record
 	 *
 	 * @return  void
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
-	{				
+	{
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
-				
+
 		// Load classes
 		$row  = new PublicationAuthor( $this->_parent->_db );
 		$objO = new ProjectOwner( $this->_parent->_db );
@@ -464,33 +464,33 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
-			return false;			
+			return false;
 		}
-		
+
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' 
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members'
 			. DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
-		
+
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->id, 'all', 1);
-		
+
 		$email 		= JRequest::getVar( 'email', '', 'post' );
 		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
 		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
 		$credit 	= JRequest::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
-		
-		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/'; 
+
+		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
-		
+
 		if (!$firstName || !$lastName || !$org)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
-		
+
 		$row->organization  = $org;
 		$row->firstName 	= $firstName;
 		$row->lastName 		= $lastName;
@@ -498,23 +498,23 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$row->credit 		= $credit;
 		$row->modified_by 	= $actor;
 		$row->modified 		= JFactory::getDate()->toSql();
-		
+
 		if ($row->store())
 		{
 			$this->set('_message', JText::_('Author record saved') );
-			
+
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
-		
+
 		// Update project owner (invited)
 		if ($email && !$row->user_id && $objO->load($row->project_owner_id))
 		{
 			$invitee = $objO->checkInvited( $pub->_project->id, $email );
-							
+
 			// Do we have a registered user with this email?
 			$user = $xregistration->getEmailId($email);
-			
+
 			if ($invitee && $invitee != $row->project_owner_id)
 			{
 				// Stop
@@ -530,7 +530,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				$sendInvite 		 = 1;
 			}
 		}
-		
+
 		return true;
 	}
 	
@@ -540,9 +540,9 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 * @return  void
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
-	{				
+	{
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
-				
+
 		// Load classes
 		$row  = new PublicationAuthor( $this->_parent->_db );
 		$objO = new ProjectOwner( $this->_parent->_db );
@@ -551,17 +551,17 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
-			return false;			
+			return false;
 		}
-		
-		if ($row->deleteAssociationByOwner($row->project_owner_id, $row->publication_version_id)) 
+
+		if ($row->deleteAssociationByOwner($row->project_owner_id, $row->publication_version_id))
 		{
 			$this->set('_message', JText::_('Author deleted') );
-			
+
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
-		}		
-	
+		}
+
 		return true;
 	}
 	
@@ -571,13 +571,13 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit' )
-	{				
+	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
-		
+
 		// Get selector styles
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'team' . DS . 'css' . DS . 'selector.css');
-				
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -587,7 +587,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				'layout'	=> 'authors'
 			)
 		);
-		
+
 		// Get authors
 		if (!isset($pub->_authors))
 		{
@@ -595,38 +595,38 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
-					
+
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
-		
+
 		// Get team members
 		$objO = new ProjectOwner( $this->_parent->_db );
 		$view->teamids = $objO->getIds( $pub->_project->id, 'all', 0, 0 );
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Start status
 		$status 	 = new PublicationsModelStatus();
-		
+
 		// Get authors
 		if (!isset($pub->_authors))
 		{
@@ -636,14 +636,14 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Are authors required?
-		$required 	 	= $this->_manifest->params->required;	
+		$required 	 	= $this->_manifest->params->required;
 		$status->status = $required && (!$pub->_authors || count($pub->_authors) == 0) ? 0 : 1;
-		
+
 		if ($status->status == 0)
 		{
 			$status->setError('Missing authors');
 		}
-		
+
 		return $status;
 	}
 	
@@ -655,12 +655,12 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	public function getManifest()
 	{
 		// Load config from db
-		$obj = new PublicationBlock($this->_parent->_db);		
+		$obj = new PublicationBlock($this->_parent->_db);
 		$manifest = $obj->getManifest($this->_name);
 
 		// Fall back
 		if (!$manifest)
-		{		
+		{
 			$manifest = array(
 				'name' 			=> 'authors',
 				'label' 		=> 'Authors',
@@ -672,10 +672,10 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				'elements' 		=> array(),
 				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'submitter' => 1 )
 			);
-			
+
 			return json_decode(json_encode($manifest), FALSE);
 		}
-		
+
 		return $manifest;
 	}
 }
