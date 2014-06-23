@@ -105,7 +105,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		$orderby[] = JHTML::_('select.option', '1', JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_DESC'), 'value', 'text');
 		if ($this->view->is404mode != true)
 		{
-  			$orderby[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_ASC'), 'value', 'text');
+			$orderby[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_ASC'), 'value', 'text');
 			$orderby[] = JHTML::_('select.option', '3', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_DESC'), 'value', 'text');
 		}
 		$orderby[] = JHTML::_('select.option', '4', JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_ASC'), 'value', 'text');

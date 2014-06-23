@@ -109,7 +109,7 @@ $MY_SELF   = $this->MY_SELF;
 <?php
 	// builds list with alpha numeric sortable keys
 	$tmp = $list = array();
-	foreach($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $entry)
+	foreach ($this->cache[$this->scope_list[$this->MYREQUEST['SCOPE']]] as $entry)
 	{
 		$n = dirname($entry['filename']);
 		if ($this->MYREQUEST['AGGR'] > 0)

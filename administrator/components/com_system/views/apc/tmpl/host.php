@@ -238,9 +238,10 @@ jQuery(document).ready(function($){
 				<?php
 					// Fragementation: (freeseg - 1) / total_seg
 					$nseg = $freeseg = $fragsize = $freetotal = 0;
-					for($i = 0; $i < $this->mem['num_seg']; $i++) {
+					for ($i = 0; $i < $this->mem['num_seg']; $i++)
+					{
 						$ptr = 0;
-						foreach($this->mem['block_lists'][$i] as $block)
+						foreach ($this->mem['block_lists'][$i] as $block)
 						{
 							if ($block['offset'] != $ptr)
 							{
@@ -248,7 +249,7 @@ jQuery(document).ready(function($){
 							}
 							$ptr = $block['offset'] + $block['size'];
 							// Only consider blocks <5M for the fragmentation %
-							if($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
+							if ($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
 							$freetotal+=$block['size'];
 						}
 						$freeseg += count($this->mem['block_lists'][$i]);
@@ -256,7 +257,7 @@ jQuery(document).ready(function($){
 
 					if ($freeseg > 1)
 					{
-						$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100,SystemHtml::bsize($fragsize),SystemHtml::bsize($freetotal),$freeseg);
+						$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100, SystemHtml::bsize($fragsize), SystemHtml::bsize($freetotal), $freeseg);
 					}
 					else
 					{
@@ -271,12 +272,12 @@ jQuery(document).ready(function($){
 					echo "</br>Fragmentation: $frag";
 					echo "</th>";
 					echo "</tr>";
-					if(isset($this->mem['adist']))
+					if (isset($this->mem['adist']))
 					{
-						foreach($this->mem['adist'] as $i=>$v)
+						foreach ($this->mem['adist'] as $i=>$v)
 						{
 							$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
-							if($i==0) $range = "1";
+							if ($i==0) $range = "1";
 							else $range = "$cur - $nxt";
 							echo "<tr><th align=right>$range</th><td align=right>$v</td></tr>\n";
 						}
