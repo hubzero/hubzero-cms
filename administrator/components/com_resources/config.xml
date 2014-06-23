@@ -28,186 +28,99 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="autoapprove" type="radio" default="0" label="Auto-approve" description="Automatically approve new submissions">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<param name="cc_license" type="radio" default="1" label="Apply License" description="Show an option for marking new contributions with a specific license.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cc_license_custom" type="radio" default="0" label="Allow Custom License" description="Show an option for allowing new contributions to have a custom license.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="email_when_approved" type="radio" default="0" label="Email When Published" description="Email contributors when a submitted resource is approved.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="defaultpic" type="text" menu="hide" default="/components/com_resources/images/resource_thumb.gif" label="Default picture" description="Default placeholder image for resource pictures" />
-		<param name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="Tool Tags" description="Content wrapper tags for tools" />
-		<param name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="Other Tags" description="Content wrapper tags for 'and more' resources" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="Access Levels" description="Resource access levels" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="webpath" type="text" menu="hide" default="/site/resources" label="Resources path" description="File path for resources" />
-		<param name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="Tool path" description="File path for tools" />
-		<param name="uploadpath" type="text" menu="hide" default="/site/resources" label="Upload path" description="File path for attachments" />
-		<param name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<param name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
-		<param name="doi" type="text" menu="hide" default="" label="DOI prefix" description="Digital Object Identifier prefix" />
-		<param name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
-		<param name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
-		<param name="browsetags" type="list" default="on" label="Tag Browser" description="Use the three column tag browser to find resources.">
-			<option value="on">On</option>
-			<option value="off">Off</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_assocs" type="list" default="1" label="Tags" description="Show/Hide the item's tags">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_ranking" type="list" default="1" label="Ranking" description="Show/Hide the ranking">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_rating" type="list" default="1" label="Rating" description="Show/Hide the rating">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
-			<option value="0">Hide</option>
-			<option value="1">Created</option>
-			<option value="2">Modified</option>
-			<option value="3">Published</option>
-		</param>
-		<param name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide the metadata for this resource">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
-			<option value="0">Hide All</option>
-			<option value="1">Manual And Auto</option>
-			<option value="2">Auto Generated</option>
-			<option value="3">Manually Inputed</option>
-		</param>
-		<param name="sort_children" type="list" default="1" label="Sort Children" description="Determine the default sort value for children">
-			<option value="date">Date</option>
-			<option value="ordering">Ordering</option>
-			<option value="title">Title</option>
-			<option value="author">Author</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-		<param name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
-	</params>
 	<fieldset name="basic">
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/images/resource_thumb.gif" label="Default picture" description="Default placeholder image for resource pictures" />
-		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="Tool Fields" description="Default fields for tools type" />
-		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="Default type fields" description="Default fields for resource types" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/assets/img/resource_thumb.gif" label="COM_RESOURCES_DEFAULTPIC_LABEL" description="COM_RESOURCES_DEFAULTPIC_DESC" />
+		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSTOOL_LABEL" description="COM_RESOURCES_TAGSTOOL_DESC" />
+		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSOTHR_LABEL" description="COM_RESOURCES_TAGSOTHR_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="Access Levels" description="Resource access levels" />
-		<field name="doi" type="text" menu="hide" default="" label="DOI prefix" description="Digital Object Identifier prefix" />
-		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what DOIs are" />
+		<field name="accesses" type="text" menu="hide" default="Public,Registered,Special,Protected,Private" label="COM_RESOURCES_ACCESSES_LABEL" description="COM_RESOURCES_ACCESSES_DESC" />
+		<field name="doi" type="text" menu="hide" default="" label="COM_RESOURCES_DOI_LABEL" description="COM_RESOURCES_DOI_DESC" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="COM_RESOURCES_ABOUTDOI_LABEL" description="COM_RESOURCES_ABOUTDOI_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to display to indicate Org supported tools" />
-		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to display to describe Org supported tools" />
-		<field name="browsetags" type="list" default="on" label="Tag Browser" description="Use the three column tag browser to find resources.">
-			<option value="on">On</option>
-			<option value="off">Off</option>
+		<field name="supportedtag" type="text" menu="hide" default="" label="COM_RESOURCES_SUPPORTEDTAG_LABEL" description="COM_RESOURCES_SUPPORTEDTAG_DESC" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="COM_RESOURCES_SUPPORTEDLINK_LABEL" description="COM_RESOURCES_SUPPORTEDLINK_DESC" />
+		<field name="browsetags" type="list" default="on" label="COM_RESOURCES_BROWSETAGS_LABEL" description="COM_RESOURCES_BROWSETAGS_DESC">
+			<option value="on">JON</option>
+			<option value="off">JOFF</option>
 		</field>
-		<field name="browsetags_defaulttag" type="text" default="" label="Default Tag in Tag Browser" description="Default tag in Tag Browser" />
+		<field name="browsetags_defaulttag" type="text" default="" label="COM_RESOURCES_BROWSETAGS_DEFAULT_LABEL" description="COM_RESOURCES_BROWSETAGS_DEFAULT_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="google_id" type="text" menu="hide" default="" label="Google Analytics ID" description="Unique Google Analytics ID (e.g. UA-8810725-2) used to track iTunes/podcast usage. " />
+		<field name="google_id" type="text" menu="hide" default="" label="COM_RESOURCES_GOOGLE_ID_LABEL" description="COM_RESOURCES_GOOGLE_ID_DESC" />
 	</fieldset>
 	<fieldset name="files">
-		<field name="webpath" type="text" menu="hide" default="/site/resources" label="Resources path" description="File path for resources" />
-		<field name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="Tool path" description="File path for tools" />
-		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="Upload path" description="File path for attachments" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="Allowed file types" />
+		<field name="webpath" type="text" menu="hide" default="/site/resources" label="COM_RESOURCES_WEBPATH_LABEL" description="COM_RESOURCES_WEBPATH_DESC" />
+		<field name="toolpath" type="text" menu="hide" default="/site/resources/tools" label="COM_RESOURCES_TOOLPATH_LABEL" description="COM_RESOURCES_TOOLPATH_DESC" />
+		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="COM_RESOURCES_UPLOADPATH_LABEL" description="COM_RESOURCES_UPLOADPATH_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_RESOURCES_MAXUPLOAD_LABEL" description="COM_RESOURCES_MAXUPLOAD_DESC" />
+		<field name="file_ext" type="text" menu="hide" label="COM_RESOURCES_EXTENSIONS_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_RESOURCES_EXTENSIONS_DESC" />
 	</fieldset>
 	<fieldset name="creation">
-		<field name="autoapprove" type="radio" default="0" label="Auto-approve" description="Automatically approve new submissions">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="autoapprove" type="radio" default="0" label="COM_RESOURCES_AUTOAPPROVE_LABEL" description="COM_RESOURCES_AUTOAPPROVE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<field name="cc_license" type="radio" default="1" label="Apply License" description="Show an option for marking new contributions with a specific license.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="autoapproved_users" label="COM_RESOURCES_AUTOAPPROVED_USERS_LABEL" type="textarea" rows="8" cols="40" default="" description="COM_RESOURCES_AUTOAPPROVED_USERS_DESC" />
+		<field name="cc_license" type="radio" default="1" label="COM_RESOURCES_LICENSE_LABEL" description="COM_RESOURCES_LICENSE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="cc_license_custom" type="radio" default="0" label="Allow Custom License" description="Show an option for allowing new contributions to have a custom license.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="cc_license_custom" type="radio" default="0" label="COM_RESOURCES_LICENSE_CUSTOM_LABEL" description="COM_RESOURCES_LICENSE_CUSTOM_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="email_when_approved" type="radio" default="0" label="Email When Published" description="Email contributors when a submitted resource is approved.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="email_when_approved" type="radio" default="0" label="COM_RESOURCES_EMAIL_APPROVED_LABEL" description="COM_RESOURCES_EMAIL_APPROVED_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
 	<fieldset name="entry">
-		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of contributors">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_authors" type="list" default="1" label="COM_RESOURCES_SHOW_AUTHORS_LABEL" description="COM_RESOURCES_SHOW_AUTHORS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_assocs" type="list" default="1" label="Tags" description="Show/Hide the item's tags">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_assocs" type="list" default="1" label="COM_RESOURCES_SHOW_ASSOCS_LABEL" description="COM_RESOURCES_SHOW_ASSOCS_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_ranking" type="list" default="1" label="Ranking" description="Show/Hide the ranking">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_ranking" type="list" default="1" label="COM_RESOURCES_SHOW_RANKING_LABEL" description="COM_RESOURCES_SHOW_RANKING_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_rating" type="list" default="1" label="Rating" description="Show/Hide the rating">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_rating" type="list" default="1" label="COM_RESOURCES_SHOW_RATING_LABEL" description="COM_RESOURCES_SHOW_RATING_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide the item creation date">
-			<option value="0">Hide</option>
-			<option value="1">Created</option>
-			<option value="2">Modified</option>
-			<option value="3">Published</option>
+		<field name="show_date" type="list" default="3" label="COM_RESOURCES_SHOW_DATE_LABEL" description="COM_RESOURCES_SHOW_DATE_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">COM_RESOURCES_SHOW_DATE_CREATED</option>
+			<option value="2">COM_RESOURCES_SHOW_DATE_MODIFIED</option>
+			<option value="3">COM_RESOURCES_SHOW_DATE_PUBLISHED</option>
 		</field>
-		<field name="show_metadata" type="list" default="1" label="Metadata" description="Show/Hide the metadata for this resource">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_metadata" type="list" default="1" label="COM_RESOURCES_SHOW_METADATA_LABEL" description="COM_RESOURCES_SHOW_METADATA_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing this resource">
-			<option value="0">Hide All</option>
-			<option value="1">Manual And Auto</option>
-			<option value="2">Auto Generated</option>
-			<option value="3">Manually Inputed</option>
+		<field name="show_citation" type="list" default="1" label="COM_RESOURCES_SHOW_CITATION_LABEL" description="COM_RESOURCES_SHOW_CITATION_DESC">
+			<option value="0">COM_RESOURCES_SHOW_CITATION_HIDE</option>
+			<option value="1">COM_RESOURCES_SHOW_CITATION_MANUAL_AUTO</option>
+			<option value="2">COM_RESOURCES_SHOW_CITATION_AUTO</option>
+			<option value="3">COM_RESOURCES_SHOW_CITATION_MANUAL</option>
 		</field>
-		<field name="sort_children" type="list" default="1" label="Sort Children" description="Determine the default sort value for children">
-			<option value="date">Date</option>
-			<option value="ordering">Ordering</option>
-			<option value="title">Title</option>
-			<option value="author">Author</option>
+		<field name="sort_children" type="list" default="1" label="COM_RESOURCES_SORT_CHILDREN_LABEL" description="COM_RESOURCES_SORT_CHILDREN_DESC">
+			<option value="date">COM_RESOURCES_SORT_CHILDREN_DATE</option>
+			<option value="ordering">COM_RESOURCES_SORT_CHILDREN_ORDERING</option>
+			<option value="title">COM_RESOURCES_SORT_CHILDREN_TITLE</option>
+			<option value="author">COM_RESOURCES_SORT_CHILDREN_AUTHOR</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="show_audience" type="list" default="0" label="Audience" description="Show audience skill level for this resource">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
+		<field name="show_audience" type="list" default="0" label="COM_RESOURCES_SHOW_AUDIENCE_LABEL" description="COM_RESOURCES_SHOW_AUDIENCE_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
+		<field name="audiencelink" type="text" menu="hide" default="" label="COM_RESOURCES_AUDIENCE_LINK_LABEL" description="COM_RESOURCES_AUDIENCE_LINK_DESC" />
 	</fieldset>
 	<fieldset name="import">
-		<field name="import_uploadpath" type="text" menu="hide" default="/site/resources/import" label="Upload Path" description="Path where resource import files are uploaded to." />
+		<field name="import_uploadpath" type="text" menu="hide" default="/site/resources/import" label="COM_RESOURCES_IMPORT_PATH_LABEL" description="COM_RESOURCES_IMPORT_PATH_DESC" />
 	</fieldset>
 </config>
 

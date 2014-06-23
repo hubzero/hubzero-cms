@@ -253,7 +253,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->category)
 		{
-			$this->addComponentMessage(JText::_('Please choose a category.'), 'error');
+			$this->addComponentMessage(JText::_('COM_RESOURCES_ERROR_SELECT_CATEGORY'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -275,7 +275,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Type successfully saved')
+			JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
 
@@ -315,7 +315,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			// Redirect with error message
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No type selected'),
+				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -333,7 +333,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 				// Redirect with error message
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::sprintf('There are resources with type %s. Please reassign them before deleting this type.', $id),
+					JText::sprintf('COM_RESOURCES_TYPE_BEING_USED', $id),
 					'error'
 				);
 				return;
@@ -346,7 +346,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Type successfully saved')
+			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
 

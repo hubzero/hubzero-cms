@@ -227,7 +227,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('License successfully saved')
+			JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
 
@@ -250,7 +250,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 			// Redirect with error message
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No license selected'),
+				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -260,20 +260,6 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		foreach ($ids as $id)
 		{
-			// Check if the type is being used
-			/*$total = $rt->checkUsage($id);
-
-			if ($total > 0)
-			{
-				// Redirect with error message
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::sprintf('There are resources with license %s. Please reassign them before deleting this license.', $id),
-					'error'
-				);
-				return;
-			}*/
-
 			// Delete the type
 			$rt->delete($id);
 		}
@@ -281,7 +267,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Type successfully saved')
+			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
 

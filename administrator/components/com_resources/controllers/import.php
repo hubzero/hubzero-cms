@@ -231,7 +231,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
-			JText::_('The imports were successfully created.'),
+			JText::_('COM_RESOURCES_IMPORT_CREATED'),
 			'passed'
 		);
 	}
@@ -274,7 +274,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
-			JText::_('The imports were successfully removed.'),
+			JText::_('COM_RESOURCES_IMPORT_REMOVED'),
 			'passed'
 		);
 	}
@@ -293,10 +293,10 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Run Import
 	 *
-	 * @access    public
-	 * @return     void
+	 * @param   integer $dryRun
+	 * @return  void
 	 */
-	public function runTask( $dryRun = 0 )
+	public function runTask($dryRun = 0)
 	{
 		// get request vars
 		$ids = JRequest::getVar('id', array());
@@ -315,7 +315,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
-			JError::raiseError('500', JText::_('jQuery must be enabled for the administrator side to use the resources importer.'));
+			JError::raiseError('500', JText::_('COM_RESOURCES_IMPORT_WARNING_ADMIN_REQUIREMENTS'));
 		}
 
 		// Set any errors

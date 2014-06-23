@@ -170,7 +170,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
-			JText::_('The import hook was successfully created.'),
+			JText::_('COM_RESOURCES_IMPORTHOOK_CREATED'),
 			'passed'
 		);
 	}
@@ -245,7 +245,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
-			JText::_('The hooks were successfully removed.'),
+			JText::_('COM_RESOURCES_IMPORTHOOK_REMOVED'),
 			'passed'
 		);
 	}

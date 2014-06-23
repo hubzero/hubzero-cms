@@ -225,7 +225,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Please select a plugin to manage.')
+				JText::_('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
 			);
 		}
 
@@ -347,13 +347,13 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			case 'apply':
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid[]=' . $row->id,
-					JText::sprintf('Successfully Saved changes to Plugin', $row->name)
+					JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
 			break;
 
 			case 'save':
 			default:
-				$msg = JText::sprintf('Successfully Saved Plugin', $row->name);
+				$msg = JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name);
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
 					$msg
@@ -401,10 +401,10 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		if (count($id) < 1)
 		{
-			$action = $state ? JText::_('publish') : JText::_('unpublish');
+			$action = $state ? JText::_('COM_RESOURCES_PUBLISH') : JText::_('COM_RESOURCES_UNPUBLISH');
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
-				JText::_('Select a plugin to ' . $action),
+				JText::sprintf('COM_RESOURCES_ERROR_SELECT_TO', $action),
 				'error'
 			);
 			return;
@@ -635,7 +635,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('New ordering saved')
+			JText::_('COM_RESOURCES_ORDERING_SAVED')
 		);
 	}
 }
