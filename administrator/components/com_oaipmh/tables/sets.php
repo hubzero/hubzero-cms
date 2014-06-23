@@ -26,7 +26,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // get all custom SQL statements for OAIPMH
 class TablesOaipmhSets
@@ -35,12 +35,21 @@ class TablesOaipmhSets
 	var $name;
 	var $desc;
 
-	public function __construct(&$db,$SQL) 
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db JDatabase
+	 * @param      string $SQL
+	 * @return     void
+	 */
+	public function __construct(&$db, $SQL)
 	{
 		$db->setQuery($SQL);
-		$set = $db->ObjectList();
-		$this->spec = $set[0];
-		$this->name = $set[1];
-		$this->desc = $set[2];
+		if ($set = $db->ObjectList())
+		{
+			$this->spec = $set[0];
+			$this->name = $set[1];
+			$this->desc = $set[2];
+		}
 	}
 }

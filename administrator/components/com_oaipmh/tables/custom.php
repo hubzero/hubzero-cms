@@ -26,7 +26,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // get all custom SQL statements for OAIPMH
 class TablesOaipmhCustom
@@ -49,28 +49,37 @@ class TablesOaipmhCustom
 	var $records;
 	var $sets;
 
-	public function __construct(&$db,$qset) 
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db  JDatabase
+	 * @param      string $qset
+	 * @return     void
+	 */
+	public function __construct(&$db, $qset) 
 	{
 		// set custom query for each element
-		$SQL = "SELECT `query` FROM #__oaipmh_dcspecs WHERE display = $qset ORDER BY id";
-		$db->setQuery($SQL);
-		$dcs = $db->loadResultArray();
-		$this->records = $dcs[0];
-		$this->sets = $dcs[1];
-		$this->title = $dcs[2];
-		$this->creator = $dcs[3];
-		$this->subject = $dcs[4];
-		$this->date = $dcs[5];
-		$this->identifier = $dcs[6];
-		$this->description = $dcs[7];
-		$this->type = $dcs[8];
-		$this->publisher = $dcs[9];
-		$this->rights = $dcs[10];
-		$this->contributor = $dcs[11];
-		$this->relation = $dcs[12];
-		$this->format = $dcs[13];
-		$this->coverage = $dcs[14];
-		$this->language = $dcs[15];
-		$this->source = $dcs[16];
+		$db->setQuery("SELECT `query` FROM `#__oaipmh_dcspecs` WHERE display = $qset ORDER BY id");
+
+		if ($dcs = $db->loadResultArray())
+		{
+			$this->records     = $dcs[0];
+			$this->sets        = $dcs[1];
+			$this->title       = $dcs[2];
+			$this->creator     = $dcs[3];
+			$this->subject     = $dcs[4];
+			$this->date        = $dcs[5];
+			$this->identifier  = $dcs[6];
+			$this->description = $dcs[7];
+			$this->type        = $dcs[8];
+			$this->publisher   = $dcs[9];
+			$this->rights      = $dcs[10];
+			$this->contributor = $dcs[11];
+			$this->relation    = $dcs[12];
+			$this->format      = $dcs[13];
+			$this->coverage    = $dcs[14];
+			$this->language    = $dcs[15];
+			$this->source      = $dcs[16];
+		}
 	}
 }

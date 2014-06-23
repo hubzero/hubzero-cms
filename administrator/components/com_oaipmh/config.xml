@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_jobs/config.xml
+@file           administrator/components/com_oaipmh/config.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,26 +28,25 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="max" label="Max Results" type="text" default="500" description="Max results per page" />
-		<param name="allow_ore" type="radio" default="0" label="Allow ORE" description="Allow metadataPrefix of OAI_ORE in addition to OAI_DC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="repository_name" type="text" default="" label="Repository Name" description="full name of the Repository" />
-		<param name="base_url" type="text" default="" label="Base URL" description="base URL of the Repository" />
-		<param name="email" type="text" default="" label="Admin E-Mail" description="Email address for Repository Admin" />
-		<param name="edate" type="text" default="2012-02-12 00:00:00" label="Earliest Datestamp" description="Earliest datestamp in Repository" />
-		<param name="del" type="list" default="No" label="Deleted Record" description="Deleted Records">
-			<option value="No">No</option>
-			<option value="Transient">Transient</option>
-			<option value="Persistent">Persistent</option>
-		</param>
-		<param name="gran" type="list" default="c" label="Harvesting Granularity" description="Finest harvesting granularity">
+	<fieldset name="basic">
+		<field name="max" label="COM_OAIPMH_MAX_LABEL" type="text" default="500" description="COM_OAIPMH_MAX_DESC" />
+		<field name="allow_ore" type="radio" default="0" label="COM_OAIPMH_ALLOW_ORE_LABEL" description="COM_OAIPMH_ALLOW_ORE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="repository_name" type="text" default="" label="COM_OAIPMH_REPOSITORY_LABEL" description="COM_OAIPMH_REPOSITORY_DESC" />
+		<field name="base_url" type="text" default="" label="COM_OAIPMH_BASE_URL_LABEL" description="COM_OAIPMH_BASE_URL_DESC" />
+		<field name="email" type="text" default="" label="COM_OAIPMH_EMAIL_LABEL" description="COM_OAIPMH_EMAIL_DESC" />
+		<field name="edate" type="text" default="2012-02-12 00:00:00" label="COM_OAIPMH_EDATE_LABEL" description="COM_OAIPMH_EDATE_DESC" />
+		<field name="del" type="list" default="No" label="COM_OAIPMH_DEL_LABEL" description="COM_OAIPMH_DEL_DESC">
+			<option value="No">JNO</option>
+			<option value="Transient">COM_OAIPMH_DEL_TRANSIENT</option>
+			<option value="Persistent">COM_OAIPMH_DEL_PERSISTENT</option>
+		</field>
+		<field name="gran" type="list" default="c" label="COM_OAIPMH_GRAN_LABEL" description="COM_OAIPMH_GRAN_DESC">
 			<option value="c">YYYY-MM-DDThh:mm:ssZ</option>
 			<option value="Y-m-d">YYYY-MM-DD</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-	</params>
+		</field>
+	</fieldset>
 </config>

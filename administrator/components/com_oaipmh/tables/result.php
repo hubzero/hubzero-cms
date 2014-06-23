@@ -26,7 +26,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // get all Dublin Core elements based on custom tables and fields for OAIPMH
 class TablesOaipmhResult
@@ -47,40 +47,60 @@ class TablesOaipmhResult
 	var $language;
 	var $source;
 
-	public function __construct(&$db,$customs,$id) 
-	{	
-		// get element names	
-		$SQL = "SELECT `name` FROM #__oaipmh_dcspecs ORDER BY id LIMIT 15";
-		$db->setQuery($SQL);
-		$elements = $db->loadResultArray();
-		// loop through
-		for ($x=0; $x<15; $x++) { 
-			$var = $elements[$x];
-			// check for hard coded fields
-			if (stristr($customs->$var,"SELECT") === false) { 
-				$hard = $customs->$var;
-				eval("\$hard = \"$hard\";");
-				$this->$var = $hard;
-			} else {
-				$SQL = $customs->$var;
-				// check for empty SQL 
-				if (!empty($SQL)) {
-					// check for DOI as ID
-					// TODO: make generic !!
-					if (preg_match("{^10\.}",$id)) {
-						$SQL2 = "SELECT publication_id FROM #__publication_versions WHERE doi = '$id' AND state = 1";
-						$db->setQuery($SQL2);
-						$id = $db->loadResult();
-					} 
-					eval("\$SQL = \"$SQL\";");
-					$db->setQuery($SQL);
-					$db->query();
-					$count = $db->getNumRows();
-					// check for repeatable entries
-					if ($count > 1) { 
-						$this->$var = $db->loadResultArray();
-					} else {
-						$this->$var = $db->loadResult();
+	/**
+	 * Constructor
+	 * 
+	 * @param      object &$db     JDatabase
+	 * @param      string $customs
+	 * @param      string $id
+	 * @return     void
+	 */
+	public function __construct(&$db, $customs, $id)
+	{
+		// get element names
+		$db->setQuery("SELECT `name` FROM `#__oaipmh_dcspecs` ORDER BY id LIMIT 15");
+		if ($elements = $db->loadResultArray())
+		{
+			// loop through
+			for ($x=0; $x<15; $x++)
+			{
+				$var = $elements[$x];
+				// check for hard coded fields
+				if (stristr($customs->$var,"SELECT") === false)
+				{
+					$hard = $customs->$var;
+					eval("\$hard = \"$hard\";");
+					$this->$var = $hard;
+				}
+				else
+				{
+					$SQL = $customs->$var;
+					// check for empty SQL 
+					if (!empty($SQL))
+					{
+						// check for DOI as ID
+						// TODO: make generic !!
+						if (preg_match("{^10\.}", $id))
+						{
+							$SQL2 = "SELECT publication_id FROM `#__publication_versions` WHERE doi = '$id' AND state = 1";
+							$db->setQuery($SQL2);
+							$id = $db->loadResult();
+						} 
+
+						eval("\$SQL = \"$SQL\";");
+
+						$db->setQuery($SQL);
+						$db->query();
+						$count = $db->getNumRows();
+						// check for repeatable entries
+						if ($count > 1)
+						{
+							$this->$var = $db->loadResultArray();
+						}
+						else
+						{
+							$this->$var = $db->loadResult();
+						}
 					}
 				}
 			}
