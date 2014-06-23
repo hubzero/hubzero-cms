@@ -52,7 +52,7 @@ class ResourcesElement extends JObject
 	 *
 	 * @access protected
 	 */
-	public function __construct($parent = null) 
+	public function __construct($parent = null)
 	{
 		$this->_parent = $parent;
 	}
@@ -63,7 +63,7 @@ class ResourcesElement extends JObject
 	* @access public
 	* @return string type of the parameter
 	*/
-	public function getName() 
+	public function getName()
 	{
 		return $this->_name;
 	}
@@ -81,10 +81,10 @@ class ResourcesElement extends JObject
 		$name	= $element->name;
 		$label	= isset($element->label) ? $element->label : $element->name;
 		$descr	= isset($element->description) ? $element->description : '';
-		
+
 		// Make sure we have a valid label
 		$label = $label ? $label : $name;
-		
+
 		$result = new stdClass;
 		$result->label = $this->fetchTooltip($label, $descr, $element, $control_name, $name);
 		$result->element = $this->fetchElement($name, $value, $element, $control_name);
@@ -110,11 +110,11 @@ class ResourcesElement extends JObject
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
-		if ($description) 
+		if ($description)
 		{
 			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}
@@ -134,11 +134,11 @@ class ResourcesElement extends JObject
 	 * @param   string  $control_name  Control name (eg, control[fieldname])
 	 * @return  string  HTML
 	 */
-	public function fetchElement($name, $value, &$element, $control_name) 
+	public function fetchElement($name, $value, &$element, $control_name)
 	{
 		return '';
 	}
-	
+
 	/**
 	 * Return any options this element may have
 	 *
@@ -148,11 +148,11 @@ class ResourcesElement extends JObject
 	 * @param   string  $control_name  Control name (eg, control[fieldname])
 	 * @return  string  HTML
 	 */
-	public function fetchOptions($name, $value, &$element, $control_name) 
+	public function fetchOptions($name, $value, &$element, $control_name)
 	{
 		return JText::_('COM_RESOURCES_NONE');
 	}
-	
+
 	/**
 	 * Display a value
 	 *

@@ -68,12 +68,12 @@ class ResourcesElementRadio extends ResourcesElement
 		$html = array();
 		$html[] = '<fieldset>';
 
-		$output = '<legend id="'.$control_name.$name.'-lgd"';
-		if (isset($element->description) && $element->description) 
+		$output = '<legend id="' . $control_name . $name . '-lgd"';
+		if (isset($element->description) && $element->description)
 		{
 			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($element->description) . '">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}

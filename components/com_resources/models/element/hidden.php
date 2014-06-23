@@ -63,14 +63,14 @@ class ResourcesElementHidden extends ResourcesElement
 						break;
 					}
 
-					$val  = $option->value;
+					$val = $option->value;
 
 					$k++;
 				}
 			}
 			else if (is_object($element->options))
 			{
-				$val  = $element->options->value;
+				$val = $element->options->value;
 			}
 		}
 
@@ -87,7 +87,7 @@ class ResourcesElementHidden extends ResourcesElement
 	 * @param   string  $name          Name of the field
 	 * @return  string  HTML
 	 */
-	public function fetchTooltip($label, $description, &$element, $control_name='', $name='') 
+	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		return '';
 	}

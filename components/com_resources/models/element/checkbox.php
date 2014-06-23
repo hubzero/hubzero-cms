@@ -33,9 +33,9 @@ class ResourcesElementCheckbox extends ResourcesElement
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Checkboxes';
+	protected $_name = 'Checkboxes';
 
 	/**
 	 * Return any options this element may have
@@ -216,13 +216,13 @@ class ResourcesElementCheckbox extends ResourcesElement
 
 		// case value to array (in case object)
 		$value = array_filter((array) $value);
-		
+
 		// loop through each value prop
 		foreach ($value as $k => $v)
 		{
 			array_push($parts, "<{$k}>{$v}</{$k}>");
 		}
-		
+
 		// build and return tag
 		$html  = "<{$prefix}{$tag}>";
 		$html .= implode("\n", $parts);

@@ -33,14 +33,14 @@ class ResourcesElementGeo extends ResourcesElement
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
 	protected $_name = 'Geo Location';
 
 	/**
 	* Flag for if JS has been pushed to document or not
 	*
-	* @var		string
+	* @var  string
 	*/
 	protected $_script = false;
 
@@ -57,11 +57,11 @@ class ResourcesElementGeo extends ResourcesElement
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
-		if ($description) 
+		if ($description)
 		{
 			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}
