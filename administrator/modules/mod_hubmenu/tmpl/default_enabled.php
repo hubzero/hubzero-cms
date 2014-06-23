@@ -70,7 +70,7 @@ if ($chm || $cam)
 	$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_LDAP'), 'index.php?option=com_system&controller=ldap', 'class:ldap'));
 	$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_GEO'), 'index.php?option=com_system&controller=geodb', 'class:geo'));
 	$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_APC'), 'index.php?option=com_system&controller=apc', 'class:apc'));
-	$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_SCRIPTS'), 'index.php?option=com_system&controller=scripts', 'class:scripts'));
+	//$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_SCRIPTS'), 'index.php?option=com_system&controller=scripts', 'class:scripts'));
 	$menu->addChild(new JMenuNode(JText::_('MOD_HUBMENU_SYS_ROUTES'), 'index.php?option=com_system&controller=routes', 'class:routes'));
 
 	$menu->getParent();

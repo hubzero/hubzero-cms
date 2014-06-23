@@ -93,23 +93,23 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 		// Make the select list for the filter
 		$viewmode = array();
-		$viewmode[] = JHTML::_('select.option', '0', JText::_('Show SEF Urls'), 'value', 'text');
-		$viewmode[] = JHTML::_('select.option', '1', JText::_('Show 404 Log'), 'value', 'text');
-		$viewmode[] = JHTML::_('select.option', '2', JText::_('Show Custom Redirects'), 'value', 'text');
+		$viewmode[] = JHTML::_('select.option', '0', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_SEF'), 'value', 'text');
+		$viewmode[] = JHTML::_('select.option', '1', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_404'), 'value', 'text');
+		$viewmode[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_REDIRECTS'), 'value', 'text');
 
 		$this->view->lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $this->view->filters['ViewModeId'], false, false);
 
 		// Make the select list for the filter
 		$orderby = array();
-		$orderby[] = JHTML::_('select.option', '0', JText::_('SEF Url (asc)'), 'value', 'text');
-		$orderby[] = JHTML::_('select.option', '1', JText::_('SEF Url (desc)'), 'value', 'text');
+		$orderby[] = JHTML::_('select.option', '0', JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_ASC'), 'value', 'text');
+		$orderby[] = JHTML::_('select.option', '1', JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_DESC'), 'value', 'text');
 		if ($this->view->is404mode != true)
 		{
-  			$orderby[] = JHTML::_('select.option', '2', JText::_('Real Url (asc)'), 'value', 'text');
-			$orderby[] = JHTML::_('select.option', '3', JText::_('Real Url (desc)'), 'value', 'text');
+  			$orderby[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_ASC'), 'value', 'text');
+			$orderby[] = JHTML::_('select.option', '3', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_DESC'), 'value', 'text');
 		}
-		$orderby[] = JHTML::_('select.option', '4', JText::_('Hits (asc)'), 'value', 'text');
-		$orderby[] = JHTML::_('select.option', '5', JText::_('Hits (desc)'), 'value', 'text');
+		$orderby[] = JHTML::_('select.option', '4', JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_ASC'), 'value', 'text');
+		$orderby[] = JHTML::_('select.option', '5', JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_DESC'), 'value', 'text');
 
 		$this->view->lists['sortby'] = JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $this->view->filters['SortById'], false, false);
 
@@ -183,7 +183,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 			if (!$id)
 			{
 				// do stuff for new records
-				$this->view->row->dateadd = date("Y-m-d");
+				$this->view->row->dateadd = JFactory::getDate()->toSql();
 			}
 		}
 		else
@@ -254,7 +254,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('SEF saved')
+			JText::_('COM_SYSTEM_ROUTES_ITEM_SAVED')
 		);
 	}
 
@@ -295,7 +295,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('SEF removed')
+			JText::_('COM_SYSTEM_ROUTES_ITEM_REMOVED')
 		);
 	}
 }

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('SEF Manager'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_ROUTES_MANAGER'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
@@ -53,10 +53,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label>ViewMode:</label>
+		<label><?php echo JText::_('COM_SYSTEM_ROUTES_VIEW_MODE'); ?>:</label>
 		<?php echo $this->lists['viewmode']; ?>
 
-		<label>Sort by:</label>
+		<label><?php echo JText::_('COM_SYSTEM_ROUTES_SORT_BY'); ?>:</label>
 		<?php echo $this->lists['sortby']; ?>
 	</fieldset>
 	<div class="clr"></div>
@@ -64,11 +64,11 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col">#</th>
+				<th scope="col"><?php echo JText::_('COM_SYSTEM_ROUTES_COL_NUM'); ?></th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col">Hits</th>
-				<th scope="col"><?php echo (($this->is404mode == true) ? 'Date Added' : '<acronym title="Search Engine Friendly">SEF</acronym> URL'); ?></th>
-				<th scope="col"><?php echo (($this->is404mode == true) ? 'URL' : 'Real URL'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_SYSTEM_ROUTES_COL_HITS'); ?></th>
+				<th scope="col"><?php echo JText::_(($this->is404mode == true ? 'COM_SYSTEM_ROUTES_COL_DATE_ADDED' : 'COM_SYSTEM_ROUTES_COL_SEF_URL')); ?></th>
+				<th scope="col"><?php echo JText::_(($this->is404mode == true ? 'COM_SYSTEM_ROUTES_COL_URL' : 'COM_SYSTEM_ROUTES_COL_REAL_URL')); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -88,20 +88,25 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo 'row'. $k; ?>">
 				<td><?php echo $i; ?></td>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
-				<td><?php echo $row->cpt; ?></td>
-				<td><?php
-				if ($this->is404mode == true) {
-   					echo $row->dateadd;
-				} else {
-					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php
-				} ?></td>
-				<td><?php
-   				if ($this->is404mode == true) {
-   					?><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>"><?php echo $row->oldurl; ?></a><?php
-				} else {
-					$row->newurl = str_replace('&','&amp;', $row->newurl);
-					echo $row->newurl;
-				} ?></td>
+				<td><?php echo $this->escape($row->cpt); ?></td>
+				<td>
+					<?php if ($this->is404mode == true) {
+						echo $this->escape($row->dateadd);
+					} else { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>">
+							<?php echo $this->escape($row->oldurl); ?>
+						</a>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($this->is404mode == true) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;?>">
+							<?php echo $this->escape($row->oldurl); ?>
+						</a>
+					<?php } else {
+						echo $this->escape($row->newurl);
+					} ?>
+				</td>
 			</tr>
 <?php
 	$k = 1 - $k;

@@ -68,16 +68,8 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$table = JTable::getInstance('component');
-			$table->loadByOption($this->_option);
-		}
-		else
-		{
-			$table = new JTableExtension($this->database);
-			$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
-		}
+		$table = new JTableExtension($this->database);
+		$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
 
 		if (class_exists('HubConfig'))
 		{
@@ -98,7 +90,7 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Import completed')
+			JText::_('COM_SYSTEM_GEO_IMPORT_COMPLETE')
 		);
 	}
 }

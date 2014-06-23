@@ -42,34 +42,29 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'system.php');
 
-$controllerName = JRequest::getCmd('controller', 'scripts');
+$controllerName = JRequest::getCmd('controller', 'ldap');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'scripts';
+	$controllerName = 'ldap';
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Scripts'),
-	'index.php?option=' . $option . '&controller=scripts',
-	$controllerName == 'scripts'
-);
-JSubMenuHelper::addEntry(
-	JText::_('LDAP'),
+	JText::_('COM_SYSTEM_LDAP'),
 	'index.php?option=' . $option . '&controller=ldap',
 	$controllerName == 'ldap'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Geo DB'),
+	JText::_('COM_SYSTEM_GEO'),
 	'index.php?option=' . $option . '&controller=geodb',
 	$controllerName == 'geodb'
 );
 JSubMenuHelper::addEntry(
-	JText::_('APC'),
+	JText::_('COM_SYSTEM_APC'),
 	'index.php?option=' . $option . '&controller=apc',
 	$controllerName == 'apc'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Routes'),
+	JText::_('COM_SYSTEM_ROUTES'),
 	'index.php?option=' . $option . '&controller=routes',
 	$controllerName == 'routes'
 );

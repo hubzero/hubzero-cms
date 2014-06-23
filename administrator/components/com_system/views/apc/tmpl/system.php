@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu items
-JToolBarHelper::title(JText::_('APC System Entries'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_APC_SYSTEM'), 'config.png');
 
 $this->MYREQUEST = $this->MYREQUEST;
 $MY_SELF   = $this->MY_SELF;
@@ -39,15 +39,9 @@ $cache     = $this->cache;
 
 ?>
 
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system" class="active">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
-	</ul>
-</div>
+<?php
+	$this->view('_submenu')->display();
+?>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 <?php
@@ -55,7 +49,7 @@ $cache     = $this->cache;
 	{
 		$fieldname = 'filename';
 		$fieldheading = 'Script Filename';
-		if(ini_get("apc.stat")) $fieldkey = 'inode';
+		if (ini_get("apc.stat")) $fieldkey = 'inode';
 		else $fieldkey = 'filename';
 	}
 	if (!empty($this->MYREQUEST['SH']))
@@ -64,12 +58,12 @@ $cache     = $this->cache;
 		echo '<tr><th>Attribute</th><th>Value</th></tr></thead><tbody>';
 
 		$m=0;
-		foreach($this->scope_list as $j => $list)
+		foreach ($this->scope_list as $j => $list)
 		{
-			foreach($cache[$list] as $i => $entry)
+			foreach ($cache[$list] as $i => $entry)
 			{
 				if (md5($entry[$fieldkey])!=$this->MYREQUEST['SH']) continue;
-				foreach($entry as $k => $value)
+				foreach ($entry as $k => $value)
 				{
 					if ($k == "num_hits")
 					{
@@ -77,7 +71,7 @@ $cache     = $this->cache;
 					}
 					if ($k == 'deletion_time')
 					{
-						if(!$entry['deletion_time']) $value = "None";
+						if (!$entry['deletion_time']) $value = "None";
 					}
 					echo
 						"<tr class=tr-$m>",
@@ -86,7 +80,7 @@ $cache     = $this->cache;
 						"</tr>";
 					$m=1-$m;
 				}
-				if($fieldkey == 'info')
+				if ($fieldkey == 'info')
 				{
 					echo "<tr class=tr-$m><td class=td-0>Stored Value</td><td class=td-last><pre>";
 					$output = var_export(apc_fetch($entry[$fieldkey]),true);
@@ -237,10 +231,14 @@ $cache     = $this->cache;
 
 					if ($fieldname=='info')
 					{
-						if($entry['ttl'])
+						if ($entry['ttl'])
+						{
 							echo '<td class="td-n center">'.$entry['ttl'].' seconds</td>';
+						}
 						else
+						{
 							echo '<td class="td-n center">None</td>';
+						}
 					}
 					if ($entry['deletion_time'])
 					{

@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('SEF Manager') . ': ' . $text, 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_ROUTES_MANAGER') . ': ' . $text, 'config.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -48,7 +48,7 @@ function submitbutton(pressbutton)
 	}
 	// do field validation
 	if (form.newurl.value == "") {
-		alert("You must provide a URL for the redirection.");
+		alert("<?php echo JText::_('COM_SYSTEM_ROUTES_ERROR_MISSING_URL'); ?>");
 	} else {
 		submitform(pressbutton);
 	}
@@ -59,21 +59,21 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<?php
 	if ($this->getError()) {
-		echo '<p class="error">' . JText::_('Error:') . ' ' . implode('<br />', $this->getErrors()) . '</p>';
+		echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 	}
 	?>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Details'); ?></span></legend>
+		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="oldurl">New <acronym title="Search Engine Friendly">SEF</acronym> URL:</label><br />
+			<label for="oldurl"><?php echo JText::_('COM_SYSTEM_ROUTES_FIELD_OLD_URL'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" size="80" name="oldurl" id="oldurl" value="<?php echo $this->escape($this->row->oldurl); ?>" />
 		</div>
 
-		<div class="input-wrap">
-			<label for="newurl">Old Non-<acronym title="Search Engine Friendly">SEF</acronym> URL:</label><br />
+		<div class="input-wrap" data-hint="<?php echo JText::_('COM_SYSTEM_ROUTES_FIELD_NEW_URL_HINT'); ?>">
+			<label for="newurl"><?php echo JText::_('COM_SYSTEM_ROUTES_FIELD_NEW_URL'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" size="80" name="newurl" id="newurl" value="<?php echo $this->escape($this->row->newurl); ?>" />
-			<span class="hint">only relative redirection from the document root <em>without</em> a '/' at the begining</span>
+			<span class="hint"><?php echo JText::_('COM_SYSTEM_ROUTES_FIELD_NEW_URL_HINT'); ?></span>
 		</div>
 	</fieldset>
 

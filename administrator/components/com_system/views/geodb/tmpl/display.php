@@ -30,19 +30,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('LDAP Configuration'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_GEO_CONFIGURATION'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
 
 ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('HubConfig'); ?></legend>
+			<legend><?php echo JText::_('COM_SYSTEM_GEO_HUBCONFIG'); ?></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><input type="submit" name="importHubConfig" id="importHubConfig" value="<?php echo JText::_('Import'); ?>" /></td>
-						<td><?php echo JText::_('Import old HubConfig GeoDB settings.'); ?></td>
+						<td class="key"><input type="submit" name="importHubConfig" id="importHubConfig" value="<?php echo JText::_('COM_SYSTEM_GEO_IMPORT'); ?>" /></td>
+						<td><?php echo JText::_('COM_SYSTEM_GEO_IMPORT_HUBCONFIG'); ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -50,8 +50,7 @@ JToolBarHelper::preferences($this->option, '550');
 	</div>
 	<div class="col width-50 fltrt">
 		<p>
-			The Geo DB is used for accessing a centralized database of geolocation data. This data can be available site-wide and can be used by components,
-			for example, to pre-select a value when filling out a form that asks for a user's country.
+			<?php echo JText::_('COM_SYSTEM_GEO_HELP'); ?>
 		</p>
 	</div>
 	<div class="clr"></div>

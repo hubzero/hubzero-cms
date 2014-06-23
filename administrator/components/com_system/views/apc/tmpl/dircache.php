@@ -31,22 +31,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu items
-JToolBarHelper::title(JText::_('APC Directory Entries'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_APC_DIR'), 'config.png');
 
 $this->MYREQUEST = $this->MYREQUEST;
 $MY_SELF   = $this->MY_SELF;
 
 ?>
 
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Host</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache" class="active">Directory</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
-	</ul>
-</div>
+<?php
+	$this->view('_submenu')->display();
+?>
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

@@ -31,30 +31,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu items
-JToolBarHelper::title(JText::_('APC Host Information'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_APC_HOST'), 'config.png');
 
 $time = $this->time;
 
 ?>
 
-<div role="navigation" class="sub-navigation">
-	<ul id="subsubmenu">
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" class="active">Host</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=system">System</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=user">User</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=dircache">Directory</a></li>
-		<li><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=version">Version</a></li>
-	</ul>
-</div>
+<?php
+	$this->view('_submenu')->display();
+?>
 
 <script type="text/javascript">
-window.addEvent('domready', function() {
-	var clrcache = $('clearcache');
-
-	clrcache.addEvent('click', function(e) {
-		var mes = confirm('Are you sure?');
+jQuery(document).ready(function($){
+	$('#clearcache').on('click', function(e) {
+		var mes = confirm('<?php echo JText::_('COM_SYSTEM_APC_CONFIRM'); ?>');
 		if(!mes) {
-			new Event(e).stop();
+			e.preventDefault();
 		}
 		return res;
 	});
@@ -154,8 +146,8 @@ window.addEvent('domready', function() {
 				<tr class="row1"><th scope="row">Cache full count</th><td><?php echo "{$this->cache_user['expunges']}"; ?></td></tr>
 			</tbody>
 		</table>
-</div>
-<div class="col width-50 fltrt">
+	</div>
+	<div class="col width-50 fltrt">
 		<table class="adminlist">
 			<thead>
 				<tr>
@@ -165,29 +157,29 @@ window.addEvent('domready', function() {
 				</tr>
 			</thead>
 			<tbody>
-<?php
-	$j = 0;
-	foreach (ini_get_all('apc') as $k => $v)
-	{
-		echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
-		$j = 1 - $j;
-	}
+				<?php
+					$j = 0;
+					foreach (ini_get_all('apc') as $k => $v)
+					{
+						echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
+						$j = 1 - $j;
+					}
 
-	if($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
-	{
-		$mem_note = "Memory Usage<br /><font size=-2>(multiple slices indicate fragments)</font>";
-	}
-	else
-	{
-		$mem_note = "Memory Usage";
-	}
-?>
+					if ($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
+					{
+						$mem_note = "Memory Usage<br /><font size=-2>(multiple slices indicate fragments)</font>";
+					}
+					else
+					{
+						$mem_note = "Memory Usage";
+					}
+				?>
 			</tbody>
 		</table>
-</div>
-<div class="clr"></div>
+	</div>
+	<div class="clr"></div>
 
-<div class="col width-50 fltlft">
+	<div class="col width-50 fltlft">
 		<table class="adminlist">
 			<thead>
 				<tr>
@@ -201,13 +193,13 @@ window.addEvent('domready', function() {
 					<th scope="col"><?php echo $mem_note; ?></th>
 					<th scope="col">Hits &amp; Misses</th>
 				</tr>
-<?php $size = 'width='.(GRAPH_SIZE+50).' height='.(GRAPH_SIZE+10); ?>
-<?php if ($this->graphics_avail) : ?>
+			<?php $size = 'width=' . (GRAPH_SIZE+50) . ' height=' . (GRAPH_SIZE+10); ?>
+			<?php if ($this->graphics_avail) : ?>
 				<tr class="row0">
 					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=1&amp;time=<?php echo $time; ?>" /></td>
 					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=2&amp;time=<?php echo $time; ?>" /></td>
 				</tr>
-<?php endif; ?>
+			<?php endif; ?>
 				<tr class="row0">
 					<td>
 						<span class="green box">&nbsp;</span>
@@ -243,53 +235,53 @@ window.addEvent('domready', function() {
 			<tbody>
 				<tr>
 					<th colspan="2">
-<?php
-	// Fragementation: (freeseg - 1) / total_seg
-	$nseg = $freeseg = $fragsize = $freetotal = 0;
-	for($i = 0; $i < $this->mem['num_seg']; $i++) {
-		$ptr = 0;
-		foreach($this->mem['block_lists'][$i] as $block)
-		{
-			if ($block['offset'] != $ptr)
-			{
-				++$nseg;
-			}
-			$ptr = $block['offset'] + $block['size'];
-			// Only consider blocks <5M for the fragmentation %
-			if($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
-			$freetotal+=$block['size'];
-		}
-		$freeseg += count($this->mem['block_lists'][$i]);
-	}
+				<?php
+					// Fragementation: (freeseg - 1) / total_seg
+					$nseg = $freeseg = $fragsize = $freetotal = 0;
+					for($i = 0; $i < $this->mem['num_seg']; $i++) {
+						$ptr = 0;
+						foreach($this->mem['block_lists'][$i] as $block)
+						{
+							if ($block['offset'] != $ptr)
+							{
+								++$nseg;
+							}
+							$ptr = $block['offset'] + $block['size'];
+							// Only consider blocks <5M for the fragmentation %
+							if($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
+							$freetotal+=$block['size'];
+						}
+						$freeseg += count($this->mem['block_lists'][$i]);
+					}
 
-	if ($freeseg > 1)
-	{
-		$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100,SystemHtml::bsize($fragsize),SystemHtml::bsize($freetotal),$freeseg);
-	}
-	else
-	{
-		$frag = "0%";
-	}
+					if ($freeseg > 1)
+					{
+						$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100,SystemHtml::bsize($fragsize),SystemHtml::bsize($freetotal),$freeseg);
+					}
+					else
+					{
+						$frag = "0%";
+					}
 
-	if ($this->graphics_avail)
-	{
-		$size='width='.(2*GRAPH_SIZE+150).' height='.(GRAPH_SIZE+10);
-		echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\" />";
-	}
-	echo "</br>Fragmentation: $frag";
-	echo "</th>";
-	echo "</tr>";
-	if(isset($this->mem['adist']))
-	{
-		foreach($this->mem['adist'] as $i=>$v)
-		{
-			$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
-			if($i==0) $range = "1";
-			else $range = "$cur - $nxt";
-			echo "<tr><th align=right>$range</th><td align=right>$v</td></tr>\n";
-		}
-	}
-?>
+					if ($this->graphics_avail)
+					{
+						$size='width='.(2*GRAPH_SIZE+150).' height='.(GRAPH_SIZE+10);
+						echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\" />";
+					}
+					echo "</br>Fragmentation: $frag";
+					echo "</th>";
+					echo "</tr>";
+					if(isset($this->mem['adist']))
+					{
+						foreach($this->mem['adist'] as $i=>$v)
+						{
+							$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
+							if($i==0) $range = "1";
+							else $range = "$cur - $nxt";
+							echo "<tr><th align=right>$range</th><td align=right>$v</td></tr>\n";
+						}
+					}
+				?>
 			</tbody>
 		</table>
 	</div>
