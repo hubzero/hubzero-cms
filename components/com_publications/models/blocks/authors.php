@@ -233,12 +233,12 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pAuthor->publication_version_id 	= $newVersion->id;
 			$pAuthor->created 					= JFactory::getDate()->toSql();
 			$pAuthor->created_by 				= $juser->get('id');
-			if (!$pAuthor->createAssociation()) 
+			if (!$pAuthor->createAssociation())
 			{
 				continue;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -266,7 +266,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			{
 				continue;
 			}
-			
+
 			$pAuthor = new PublicationAuthor( $this->_parent->_db );
 			if ($pAuthor->load($id))
 			{
@@ -320,7 +320,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		// Do we have a registered user with this email?
 		if ($email && !$uid)
-		{			
+		{
 			$uid = $xregistration->getEmailId( $email );
 
 			// Check that profile exists
@@ -338,7 +338,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 		elseif ($email)
 		{
-			$owner = $objO->checkInvited( $pub->_project->id, $email );	
+			$owner = $objO->checkInvited( $pub->_project->id, $email );
 		}
 
 		if ($owner && $objO->load($owner))
@@ -351,7 +351,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$objO->invited_name 	= $objO->userid ? $objO->invited_name : $name;
 			$objO->invited_email 	= $objO->userid ? $objO->invited_email : $email;
 			$objO->store();
-		}			
+		}
 		elseif ($email || trim($name))
 		{
 			$objO = new ProjectOwner( $this->_parent->_db );
@@ -369,7 +369,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				$objO->invited_code = $code;
 			}
 
-			$objO->store();	
+			$objO->store();
 
 			$owner 				 = $objO->id;
 			$sendInvite 		 = $email ? 1 : 0;	
@@ -385,13 +385,13 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// Get author information
 		$pAuthor = new PublicationAuthor( $this->_parent->_db );
 
-		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id )) 
+		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id ))
 		{
 			$pAuthor->modified 		= JFactory::getDate()->toSql();
 			$pAuthor->modified_by 	= $actor;
 			$exists = 1;
 		}
-		else 
+		else
 		{
 			$pAuthor->created 				 = JFactory::getDate()->toSql();
 			$pAuthor->created_by 			 = $actor;
@@ -442,7 +442,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$message = $exists
 			? JText::_('Author already in team, updated author information')
 			: JText::_('New author added');
-		
+
 		$this->set('_message', $message );
 		return true;
 	}
@@ -533,7 +533,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		return true;
 	}
-	
+
 	/**
 	 * Delete author record
 	 *
@@ -564,7 +564,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		return true;
 	}
-	
+
 	/**
 	 * Build panel content
 	 *
@@ -646,7 +646,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		return $status;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
