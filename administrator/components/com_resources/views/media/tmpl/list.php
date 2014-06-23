@@ -56,11 +56,11 @@ $app = JFactory::getApplication();
 			function deleteFolder(folder, numFiles)
 			{
 				if (numFiles > 0) {
-					alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+					alert('<?php echo JText::_('COM_RESOURCES_MEDIA_DIRECTORY_NOT_EMPTY');?> '+numFiles);
 					return false;
 				}
 
-				if (confirm('Delete folder "'+folder+'"?')) {
+				if (confirm('<?php echo JText::_('COM_RESOURCES_MEDIA_DELETE_DIRECTORY'); ?> "'+folder+'"')) {
 					return true;
 				}
 
@@ -70,9 +70,9 @@ $app = JFactory::getApplication();
 	<div id="attachments">
 		<form action="index.php" method="post" id="filelist" name="filelist">
 <?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
+			<p><?php echo JText::_('COM_RESOURCES_NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
-			<table summary="Files for this group">
+			<table>
 				<tbody>
 <?php
 $folders = $this->folders;
@@ -113,8 +113,8 @@ for ($i=0; $i<count($folders); $i++)
 							<?php echo $folderName; ?>
 						</td>
 						<td>
-							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo DS . $folders[$folderName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
+							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo DS . $folders[$folderName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo JText::_('JACTION_DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>
@@ -136,8 +136,8 @@ for ($i=0; $i<count($docs); $i++)
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td>
-							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;delFile=<?php echo $docs[$docName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
+							<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;delFile=<?php echo $docs[$docName]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<img src="components/<?php echo $this->option; ?>/assets/img/trash.gif" width="15" height="15" alt="<?php echo JText::_('JACTION_DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>

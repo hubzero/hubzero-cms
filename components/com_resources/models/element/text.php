@@ -33,9 +33,9 @@ class ResourcesElementText extends ResourcesElement
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Single-line text box';
+	protected $_name = 'Single-line text box';
 
 	/**
 	 * Return any options this element may have
@@ -48,8 +48,8 @@ class ResourcesElementText extends ResourcesElement
 	 */
 	public function fetchElement($name, $value, &$element, $control_name)
 	{
-		$size = ( isset($element->size) ? 'size="'.$element->size.'"' : '' );
-		$class = ( isset($element->class) ? 'class="'.$element->class.'"' : 'class="text_area"' );
+		$size = ( isset($element->size) ? 'size="' . $element->size . '"' : '' );
+		$class = ( isset($element->class) ? 'class="' . $element->class . '"' : 'class="text_area"' );
 		/*
 		 * Required to avoid a cycle of encoding &
 		 * html_entity_decode was used in place of htmlspecialchars_decode because
@@ -57,6 +57,6 @@ class ResourcesElementText extends ResourcesElement
 		 */
 		$value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-		return '<span class="field-wrap"><input type="text" name="'.$control_name.'['.$name.']" id="'.$control_name.'-'.$name.'" value="'.$value.'" '.$class.' '.$size.' /></span>';
+		return '<span class="field-wrap"><input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . '-' . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' /></span>';
 	}
 }

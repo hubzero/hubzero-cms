@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = str_replacE('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
 // Push some styles to the template
 $document = JFactory::getDocument();
@@ -38,9 +38,9 @@ $document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS 
 
 $canDo = ResourcesHelperPermissions::getActions('type');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Resource Type') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_TYPES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -49,13 +49,7 @@ JToolBarHelper::cancel();
 
 JHTML::_('behavior.framework', true);
 
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-
-$params = new $paramsClass($this->row->params);
+$params = new JRegistry($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -63,15 +57,15 @@ function submitbutton(pressbutton)
 	var form = document.getElementById('item-form');
 
 	if (pressbutton == 'canceltype') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
 	if (form.title.value == '') {
-		alert( 'Type must have a title' );
+		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
-		submitform( pressbutton );
+		submitform(pressbutton);
 	}
 }
 </script>
@@ -79,38 +73,38 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></span></legend>
+		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="field-type"><?php echo JText::_('RESOURCES_TYPES_TITLE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+			<label for="field-type"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" name="type" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
 		</div>
-		<div class="input-wrap" data-hint="<?php echo JText::_('If no alias provided, one will be generated from the title.'); ?>">
-			<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+		<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
+			<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
 			<input type="text" name="alias" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
-			<span class="hint"><?php echo JText::_('Letters and numbers only. If no alias provided, one will be generated from the title.'); ?></span>
+			<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 		</div>
 		<div class="input-wrap">
-			<label><?php echo JText::_('RESOURCES_TYPES_CATEGORY'); ?>:</label><br />
-			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, '[ select ]', '', '', ''); ?>
+			<label><?php echo JText::_('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
+			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, 'COM_RESOURCES_SELECT', '', '', ''); ?>
 		</div>
 		<div class="input-wrap">
-			<label for="field-contributable"><?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE'); ?>:</label><br />
-			<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('RESOURCES_TYPES_CONTRIBUTABLE_EXPLANATION'); ?>
+			<label for="field-contributable"><?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
+			<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
 		</div>
-<?php if ($this->row->category != 27) { ?>
+	<?php if ($this->row->category != 27) { ?>
 		<div class="input-wrap">
-			<label for="params-linkaction"><?php echo JText::_('Linked file action'); ?>:</label><br />
+			<label for="params-linkaction"><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION'); ?>:</label><br />
 			<select name="params[linkAction]" id="params-linkaction">
-				<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('Determine by file extension'); ?></option>
-				<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('New window'); ?></option>
-				<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('Lightbox'); ?></option>
-				<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('Download'); ?></option>
+				<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_BY_EXT'); ?></option>
+				<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
+				<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
+				<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
 			</select>
 		</div>
-<?php } ?>
+	<?php } ?>
 		<div class="input-wrap">
-			<label for="field-description"><?php echo JText::_('RESOURCES_TYPES_DESCIPTION'); ?>:</label><br />
+			<label for="field-description"><?php echo JText::_('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
 			<?php
 				$editor = JFactory::getEditor();
 				echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
@@ -125,13 +119,13 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Plugins'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_RESOURCES_FIELDSET_PLUGINS'); ?></span></legend>
 
 			<table class="admintable">
 				<thead>
 					<tr>
-						<th scope="col"><?php echo JText::_('Plugin'); ?></th>
-						<th scope="col" colspan="2"><?php echo JText::_('Active'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_COL_PLUGIN'); ?></th>
+						<th scope="col" colspan="2"><?php echo JText::_('COM_RESOURCES_COL_ACTIVE'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -156,8 +150,8 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<th scope="row"><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></th>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_OFF'); ?></label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_ON'); ?></label></td>
 					</tr>
 					<?php
 				}
@@ -170,23 +164,23 @@ function submitbutton(pressbutton)
 
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
 			<table class="admintable" id="fields">
 				<thead>
 					<tr>
-						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_REORDER'); ?></th>
-						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_FIELD'); ?></th>
-						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_TYPE'); ?></th>
-						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_REQUIRED'); ?></th>
-						<th scope="col"><?php echo JText::_('RESOURCES_TYPES_OPTIONS'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_TYPES_REORDER'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_TYPES_FIELD'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_TYPES_TYPE'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_TYPES_REQUIRED'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_RESOURCES_TYPES_OPTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
 							<button id="add-custom-field" href="#addRow">
-								<span><?php echo JText::_('+ Add new row'); ?></span>
+								<span><?php echo JText::_('COM_RESOURCES_NEW_ROW'); ?></span>
 							</button>
 						</td>
 					</tr>
@@ -210,12 +204,12 @@ function submitbutton(pressbutton)
 					{
 						$f = trim($f);
 						$element = new stdClass();
-						$element->name = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($f));
-						$element->label = ucfirst($f);
-						$element->type = 'text';
-						$element->required = '';
-						$element->value = '';
-						$element->default = '';
+						$element->name        = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($f));
+						$element->label       = ucfirst($f);
+						$element->type        = 'text';
+						$element->required    = '';
+						$element->value       = '';
+						$element->default     = '';
 						$element->description = '';
 
 						$schema->fields[] = $element;
@@ -228,8 +222,8 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<td class="order">
-							<span class="handle hasTip" title="<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>">
-								<?php echo JText::_('RESOURCES_MOVE_HANDLE'); ?>
+							<span class="handle hasTip" title="<?php echo JText::_('COM_RESOURCES_MOVE_HANDLE'); ?>">
+								<?php echo JText::_('COM_RESOURCES_MOVE_HANDLE'); ?>
 							</span>
 						</td>
 						<td>
@@ -238,18 +232,18 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
-								<optgroup label="<?php echo JText::_('Common'); ?>">
-									<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXT'); ?></option>
-									<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_TEXTAREA'); ?></option>
-									<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_LIST'); ?></option>
-									<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_RADIO'); ?></option>
-									<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_CHECKBOX'); ?></option>
-									<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('RESOURCES_TYPES_HIDDEN'); ?></option>
+								<optgroup label="<?php echo JText::_('COM_RESOURCES_FIELD_COMMON'); ?>">
+									<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_TEXT'); ?></option>
+									<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_TEXTAREA'); ?></option>
+									<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_LIST'); ?></option>
+									<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_RADIO'); ?></option>
+									<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_CHECKBOX'); ?></option>
+									<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_TYPES_HIDDEN'); ?></option>
 								</optgroup>
-								<optgroup label="<?php echo JText::_('Pre-defined'); ?>">
-									<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('Date'); ?></option>
-									<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
-									<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('Language List'); ?></option>
+								<optgroup label="<?php echo JText::_('COM_RESOURCES_FIELD_PREDEFINED'); ?>">
+									<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_PREDEFINED_DATE'); ?></option>
+									<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_PREDEFINED_GEO'); ?></option>
+									<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_PREDEFINED_LANG'); ?></option>
 								</optgroup>
 							</select>
 						</td>

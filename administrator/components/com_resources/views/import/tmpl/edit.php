@@ -212,12 +212,12 @@ function submitbutton(pressbutton)
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS'); ?>
 				</label>
 				<select name="params[status]" id="param-status">
-					<option value="2"<?php echo ($this->params->get('status', 1) == 2) ? ' selected="selected"' : ''; ?>>Draft (user created)</option>
-					<option value="5"<?php echo ($this->params->get('status', 1) == 5) ? ' selected="selected"' : ''; ?>>Draft (internal)</option>
-					<option value="3"<?php echo ($this->params->get('status', 1) == 3) ? ' selected="selected"' : ''; ?>>Pending</option>
-					<option value="0"<?php echo ($this->params->get('status', 1) == 0) ? ' selected="selected"' : ''; ?>>Unpublished</option>
-					<option value="1"<?php echo ($this->params->get('status', 1) == 1) ? ' selected="selected"' : ''; ?>>Published</option>
-					<option value="4"<?php echo ($this->params->get('status', 1) == 4) ? ' selected="selected"' : ''; ?>>Delete</option>
+					<option value="2"<?php echo ($this->params->get('status', 1) == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
+					<option value="5"<?php echo ($this->params->get('status', 1) == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
+					<option value="3"<?php echo ($this->params->get('status', 1) == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_PENDING'); ?></option>
+					<option value="0"<?php echo ($this->params->get('status', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->params->get('status', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="4"<?php echo ($this->params->get('status', 1) == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS_HINT'); ?></span>
 			</div>

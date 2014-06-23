@@ -109,17 +109,17 @@ class ResourcesElement extends JObject
 	 */
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
-		$output = '<label id="'.$control_name.'-'.$name.'-lbl" for="'.$control_name.'-'.$name.'"';
+		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description) 
 		{
-			$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($description).'">';
+			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
 		} 
 		else 
 		{
 			$output .= '>';
 		}
 		$output .= JText::_($label);
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -150,7 +150,7 @@ class ResourcesElement extends JObject
 	 */
 	public function fetchOptions($name, $value, &$element, $control_name) 
 	{
-		return JText::_('(none)');
+		return JText::_('COM_RESOURCES_NONE');
 	}
 	
 	/**

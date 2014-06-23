@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Resource') . ': ' . JText::_('Tags') . ' #' . $this->row->id, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_TAGS') . ' #' . $this->row->id, 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -50,7 +50,7 @@ function submitbutton(pressbutton)
 function addtag(tag)
 {
 	var input = document.getElementById('tags-men');
-	if(input.value == '') {
+	if (input.value == '') {
 		input.value = tag;
 	} else {
 		input.value += ', '+tag;
@@ -59,35 +59,31 @@ function addtag(tag)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<h2>Edit Tags for this Resource</h2>
-	<p>Create new tags and assign them to this resource by entering them below separated by commas (e.g. <em>negf theory, NEMS, ion transport</em>).</p>
-		<table class="adminform">
-		 <thead>
-		  <tr>
-		   <th colspan="2"><?php echo $this->row->title; ?></th>
-		  </tr>
-		 </thead>
-		 <tbody>
-		  <tr>
-		   <th><label for="tags-men">Create Tags:</label></th>
-		   <td><input type="text" name="tags" id="tags-men" size="65" value="<?php //echo $this->objtags->tagMen; ?>" />
-		   </td>
-		  </tr>
-		 </tbody>
-		</table>
+	<fieldset class="adminform">
+		<legend><span><?php echo JText::_('COM_RESOURCES_TAGS_CREATE'); ?></span></legend>
 
-	<h3>Existing Tags</h3>
-	<p>Add or remove tags assigned to this resource by checking or unchecking tags below.</p>
-	<table class="adminlist" summary="A list of all tags">
-	 <thead>
-	  <tr>
-	   <th style="width: 15px;"> </th>
-	   <th>Raw Tag</th>
-	   <th>Tag</th>
-	   <th>Admin</th>
-	  </tr>
-	 </thead>
-	 <tbody>
+		<p><?php echo JText::_('COM_RESOURCES_TAGS_CREATE_HELP'); ?></p>
+
+		<div class="input-wrap">
+			<label for="tags-men"><?php echo JText::_('COM_RESOURCES_TAGS_FIELD_NEW_TAGS'); ?>:</label>
+			<input type="text" name="tags" id="tags-men" size="65" value="" />
+		</div>
+	</fieldset>
+
+	<fieldset class="adminform">
+		<legend><span><?php echo JText::_('COM_RESOURCES_TAGS_EXISTING'); ?></span></legend>
+		<p><?php echo JText::_('COM_RESOURCES_TAGS_EXISTING_HELP'); ?></p>
+
+		<table class="adminlist">
+			<thead>
+				<tr>
+					<th></th>
+					<th><?php echo JText::_('COM_RESOURCES_TAGS_RAW_TAG'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_TAGS_TAG'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_TAGS_ADMIN'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
 <?php
 $k = 0;
 for ($i=0, $n=count($this->tags); $i < $n; $i++)
@@ -99,18 +95,20 @@ for ($i=0, $n=count($this->tags); $i < $n; $i++)
 		$check = '<span class="check">admin</span>';
 	}
 ?>
-	  <tr class="<?php echo "row$k"; ?>">
-	   <td><input type="checkbox" name="tgs[]" id="cb<?php echo $i;?>" <?php if (in_array($thistag->tag,$this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo stripslashes($thistag->tag); ?>" /></td>
-	   <td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo stripslashes($thistag->raw_tag); ?></a></td>
-	   <td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo stripslashes($thistag->tag); ?></a></td>
-	   <td><?php echo $check; ?></td>
-	  </tr>
+				<tr class="<?php echo "row$k"; ?>">
+					<td><input type="checkbox" name="tgs[]" id="cb<?php echo $i;?>" <?php if (in_array($thistag->tag, $this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo $this->escape($thistag->tag); ?>" /></td>
+					<td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo $this->escape($thistag->raw_tag); ?></a></td>
+					<td><a href="#" onclick="addtag('<?php echo stripslashes($thistag->tag); ?>');"><?php echo $this->escape($thistag->tag); ?></a></td>
+					<td><?php echo $check; ?></td>
+				</tr>
 <?php
 	$k = 1 - $k;
 }
 ?>
-	 </tbody>
-	</table>
+			</tbody>
+		</table>
+	</fieldset>
+
 	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

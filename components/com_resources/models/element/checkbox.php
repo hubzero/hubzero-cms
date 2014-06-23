@@ -83,17 +83,17 @@ class ResourcesElementCheckbox extends ResourcesElement
 		$html = array();
 		$html[] = '<fieldset>';
 
-		$output = '<legend id="'.$control_name.$name.'-lgd"';
-		if (isset($element->description) && $element->description) 
+		$output = '<legend id="' . $control_name.$name . '-lgd"';
+		if (isset($element->description) && $element->description)
 		{
-			$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($element->description).'">';
-		} 
+			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($element->description) . '">';
+		}
 		else 
 		{
 			$output .= '>';
 		}
 		$output .= JText::_($label);
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</legend>';
 
 		$html[] = $output;
@@ -114,14 +114,16 @@ class ResourcesElementCheckbox extends ResourcesElement
 							break;
 						}
 					}
-				} else {
+				}
+				else
+				{
 					$sel .= ($option->value == $value ? ' checked="checked"' : '');
 				}
-				
+
 				$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
 				$html[] = '<input class="option" type="checkbox" name="' . $control_name . '[' . $name . '][]" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
 				$html[] = JText::_($option->label) . '</label>';
-				
+
 				$k++;
 			}
 		}
@@ -148,7 +150,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tfoot>';
 		$html[] = '<tr>';
-		$html[] = '<td colspan="4" class="option-button"><button rel="'.$name.'" class="add-custom-option"><span>' . JText::_('+ Add new option') . '</span></button></td>';
+		$html[] = '<td colspan="4" class="option-button"><button rel="'.$name.'" class="add-custom-option"><span>' . JText::_('COM_RESOURCES_NEW_OPTION') . '</span></button></td>';
 		$html[] = '</tr>';
 		$html[] = '</tfoot>';
 		$html[] = '<tbody>';
@@ -157,7 +159,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 			foreach ($element->options as $option)
 			{
 				$html[] = '<tr>';
-				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Option') . '</label></td>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('COM_RESOURCES_OPTION') . '</label></td>';
 				$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
 				$html[] = '</tr>';
 

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Plugins'), 'plugin.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_PLUGINS'), 'plugin.png');
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 ?>
@@ -38,36 +38,36 @@ JToolBarHelper::unpublishList();
 	<fieldset id="filter">
 		<?php echo $this->states; ?>
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
 
-	<table class="adminlist" summary="<?php echo JText::_('A list of resource plugins'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" />
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ID', 'p.extension_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col" class="title">
-					<?php echo JHTML::_('grid.sort', 'Plugin Name', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_PLUGIN_NAME', 'p.name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Published', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_PUBLISHED', 'p.published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Order', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
-					<?php echo JHTML::_('grid.order',  $this->rows); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ORDER', 'p.folder', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.order', $this->rows); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'Access', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ACCESS', 'groupname', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 				<th scope="col">
-					<?php echo JText::_('Manage'); ?>
+					<?php echo JText::_('COM_RESOURCES_COL_MANAGE'); ?>
 				</th>
 				<th scope="col">
-					<?php echo JHTML::_('grid.sort', 'File', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_FILE', 'p.element', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -99,20 +99,20 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		case '2':
 			$task = 'publish';
 			$img = 'disabled.png';
-			$alt = JText::_('Trashed');
+			$alt = JText::_('JTRASHED');
 			$cls = 'trashed';
 		break;
 		case '1':
 			$task = 'unpublish';
 			$img = 'publish_g.png';
-			$alt = JText::_('Published');
+			$alt = JText::_('JPUBLISHED');
 			$cls = 'publish';
 		break;
 		case '0':
 		default:
 			$task = 'publish';
 			$img = 'publish_x.png';
-			$alt = JText::_('Unpublished');
+			$alt = JText::_('JUNPUBLISHED');
 			$cls = 'unpublish';
 		break;
 	}
@@ -130,7 +130,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						echo $this->escape($row->name);
 					} else {
 				?>
-					<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
+					<a class="editlinktip hasTip" href="<?php echo $link; ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 				<?php } ?>
@@ -138,25 +138,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
 					<span class="state <?php echo $cls; ?>">
-					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
-						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-					<?php } else { ?>
 						<span class="text"><?php echo $alt; ?></span>
-					<?php } ?>
 					</span>
 				<?php } else { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
-					<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
-						<span><img src="images/<?php echo $img; ?>" width="16" height="16" border="0" alt="<?php echo $alt; ?>" /></span>
-					<?php } else { ?>
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task);?>">
 						<span class="text"><?php echo $alt; ?></span>
-					<?php } ?>
 					</a>
 				<?php } ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $row->ordering); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'Move Down', $row->ordering); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
 					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
@@ -166,7 +158,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td nowrap="nowrap">
 				<?php if (in_array($row->element, $this->manage)) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
-						<span><?php echo JText::_('Manage'); ?></span>
+						<span><?php echo JText::_('COM_RESOURCES_COL_MANAGE'); ?></span>
 					</a>
 				<?php } ?>
 				</td>

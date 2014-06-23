@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelperPermissions::getActions('license');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Resource License') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_LICENSES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -67,26 +67,26 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('RESOURCES_TYPES_DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label></br />
+				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></br />
 				<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-name"><?php echo JText::_('Name'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-name"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[name]" id="field-name" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" /><br />
-				<span class="hint"><?php echo JText::_('If no name is provided, one will be generated from the title.'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-url"><?php echo JText::_('URL'); ?>:</label><br />
+				<label for="field-url"><?php echo JText::_('COM_RESOURCES_FIELD_URL'); ?>:</label><br />
 				<input type="text" name="fields[url]" id="field-url" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" /><br />
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('Content'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label><?php echo JText::_('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php
 				echo JFactory::getEditor()->display('fields[text]', stripslashes($this->row->text), '', '', '45', '10', false);
 				?>
@@ -103,12 +103,12 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 			<?php if ($this->row->id) { ?>
 				<tr>
-					<th><?php echo JText::_('Ordering'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_ORDERING'); ?></th>
 					<td><?php echo $this->row->ordering; ?></td>
 				</tr>
 			<?php } ?>

@@ -34,7 +34,7 @@ $canDo = ResourcesHelperPermissions::getActions('resource');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') . ' #' . $this->row->id : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Resource') . ': ' . $text, 'resources.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . $text, 'resources.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::spacer();
@@ -87,7 +87,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'resethits') {
-		if (confirm('Are you sure you want to reset the Hits to Zero? \nAny unsaved changes to this content will be lost.')){
+		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_HITS_RESET'); ?>'){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -96,7 +96,7 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'resetrating') {
-		if (confirm('Are you sure you want to reset the Rating to Unrated? \nAny unsaved changes to this content will be lost.')){
+		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_RATINGS_RESET'); ?>'){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.title.value == ''){
-		alert('Content item must have a title');
+		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else if (form.type.value == "-1"){
 		alert('You must select a Section.');
 	} else {
@@ -123,17 +123,17 @@ function doFileoptions()
 {
 	var fwindow = window.filer.window.imgManager;
 
-	if(fwindow) {
-		if(fwindow.document) {
+	if (fwindow) {
+		if (fwindow.document) {
 			var fform = fwindow.document.forms['filelist'];
 
-			if(fform) {
+			if (fform) {
 				//var filepath = fform.elements['listdir'];
 				var slctdfiles = fform.slctdfile;
-				if(slctdfiles.length > 1) {
+				if (slctdfiles.length > 1) {
 					for(var i = 0; i < slctdfiles.length; i++)
 					{
-						if(slctdfiles[i].checked) {
+						if (slctdfiles[i].checked) {
 							var filepath = slctdfiles[i].value;
 						}
 					}
@@ -142,24 +142,24 @@ function doFileoptions()
 				}
 
 				box = document.adminForm.fileoptions;
-    			act = box.options[box.selectedIndex].value;
+				act = box.options[box.selectedIndex].value;
 
 				//var selection = window.filer.document.forms[0].dirPath;
 				//var dir = selection.options[selection.selectedIndex].value;
 
-				if(act == '1') {
+				if (act == '1') {
 					document.forms['adminForm'].elements['params[series_banner]'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
-				} else if(act == '2') {
-					//if(filepath) {
+				} else if (act == '2') {
+					//if (filepath) {
 					//document.forms['adminForm'].elements['path'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
 					document.forms['adminForm'].elements['path'].value = filepath;
 					//}
-				} else if(act == '3') {
+				} else if (act == '3') {
 					text = '<img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" />';
 					document.forms['adminForm'].elements['fulltxt'].focus();
 					document.forms['adminForm'].elements['fulltxt'].value  += text;
 					document.forms['adminForm'].elements['fulltxt'].focus();
-				} else if(act == '4') {
+				} else if (act == '4') {
 					text = '<a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a>';
 					document.forms['adminForm'].elements['fulltxt'].focus();
 					document.forms['adminForm'].elements['fulltxt'].value  += text;
@@ -179,89 +179,89 @@ function popratings()
 <form action="index.php" method="post" name="adminForm" id="item-form" class="editform">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title">Title: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label>Type: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label><?php echo JText::_('COM_RESOURCES_FIELD_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php echo $this->lists['type']; ?>
 			</div>
 
 		<?php if ($this->row->standalone == 1) { ?>
 			<div class="input-wrap">
-				<label for="field-alias">Alias:</label><br />
+				<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="alias" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
 			</div>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="attrib-location">Location:</label><br />
+					<label for="attrib-location"><?php echo JText::_('COM_RESOURCES_FIELD_LOCATION'); ?>:</label><br />
 					<input type="text" name="attrib[location]" id="attrib-location" maxlength="250" value="<?php echo $this->attribs->get('location', ''); ?>" />
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="attrib-timeof">Time:</label><br />
+					<label for="attrib-timeof"><?php echo JText::_('COM_RESOURCES_FIELD_TIME'); ?>:</label><br />
 					<input type="text" name="attrib[timeof]" id="attrib-timeof" maxlength="250" value="<?php echo $time ? JHTML::_('date', $time, 'Y-m-d H:i:s') : ''; ?>" placeholder="<?php echo JHTML::_('date', time(), 'Y-m-d H:i:s'); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
-			<div class="input-wrap" data-hint="URL to a canonical version of this resource. Tells search engines to prefer the item entered here.">
-				<label for="attrib-canonical">Canonical:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?>">
+				<label for="attrib-canonical"><?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL'); ?>:</label><br />
 				<input type="text" name="attrib[canonical]" id="attrib-canonical" maxlength="250" value="<?php echo $this->attribs->get('canonical', ''); ?>" />
-				<span class="hint">URL to a canonical version of this resource. Tells search engines to prefer the item entered here.</span>
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?></span>
 			</div>
 		<?php } else { ?>
 			<div class="input-wrap">
-				<label>Logical Type:</label><br />
+				<label><?php echo JText::_('COM_RESOURCES_FIELD_LOGICAL_TYPE'); ?>:</label><br />
 				<?php echo $this->lists['logical_type']; ?>
 				<input type="hidden" name="alias" value="" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-path">File/URL:</label><br />
+				<label for="field-path"><?php echo JText::_('COM_RESOURCES_FIELD_PATH'); ?>:</label><br />
 				<input type="text" name="path" id="field-path" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->path)); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="attrib[duration]">Duration:</label><br />
+				<label for="attrib[duration]"><?php echo JText::_('COM_RESOURCES_FIELD_DURATION'); ?>:</label><br />
 				<input type="text" name="attrib[duration]" id="attrib[duration]" maxlength="100" value="<?php echo $this->attribs->get('duration', ''); ?>" />
 			</div>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap">
-					<label for="attrib[width]">Width:</label><br />
+					<label for="attrib[width]"><?php echo JText::_('COM_RESOURCES_FIELD_WIDTH'); ?>:</label><br />
 					<input type="text" name="attrib[width]" id="attrib[width]" maxlength="250" value="<?php echo $this->attribs->get('width', ''); ?>" />
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="attrib[height]">Height:</label><br />
+					<label for="attrib[height]"><?php echo JText::_('COM_RESOURCES_FIELD_HEIGHT'); ?>:</label><br />
 					<input type="text" name="attrib[height]" id="attrib[height]" maxlength="250" value="<?php echo $this->attribs->get('height', ''); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
 
-			<div class="input-wrap" data-hint="code:silicon, class:one two three, one:more">
-				<label for="attrib[attributes]">Attributes:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ATTRIBUTES_HINT'); ?>">
+				<label for="attrib[attributes]"><?php echo JText::_('COM_RESOURCES_FIELD_ATTRIBUTES'); ?>:</label><br />
 				<input type="text" name="attrib[attributes]" id="attrib[attributes]" maxlength="100" value="<?php echo $this->attribs->get('attributes', ''); ?>" /><br />
-				<span class="hint">code:silicon, class:one two three, one:more</span>
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ATTRIBUTES_HINT'); ?></span>
 			</div>
 		<?php } ?>
 			<div class="input-wrap">
-				<label for="field-introtext">Intro Text: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-introtext"><?php echo JText::_('COM_RESOURCES_FIELD_INTRO_TEXT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php
 				$editor = JFactory::getEditor();
 				echo $editor->display('introtext', $this->escape(stripslashes($this->row->introtext)), '', '', '45', '5', false, 'field-introtext');
 				?>
 			</div>
 			<div class="input-wrap">
-				<label for="field-fulltxt">Main Text:</label><br />
+				<label for="field-fulltxt"><?php echo JText::_('COM_RESOURCES_FIELD_MAIN_TEXT'); ?>:</label><br />
 				<?php
 				echo $editor->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '', '', '45', '15', false, 'field-fulltxt');
 				?>
@@ -286,17 +286,17 @@ function popratings()
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID:'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created:'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_CREATED'); ?></th>
 					<td>
 						<?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_LC2')); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created By:'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_CREATOR'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->created_by_name); ?>
 						<input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" />
@@ -304,13 +304,13 @@ function popratings()
 				</tr>
 			<?php if ($this->row->modified != '0000-00-00 00:00:00') { ?>
 				<tr>
-					<th><?php echo JText::_('Modified:'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_MODIFIED'); ?></th>
 					<td>
 						<?php echo JHTML::_('date', $this->row->modified, JText::_('DATE_FORMAT_LC2')); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Modified By:'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_MODIFIER'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->modified_by_name); ?>
 						<input type="hidden" name="modified_by_id" value="<?php echo $this->row->modified_by; ?>" />
@@ -319,7 +319,7 @@ function popratings()
 			<?php } ?>
 			<?php if ($this->row->standalone == 1) { ?>
 				<tr>
-					<th>Ranking:</th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_RANKING'); ?></th>
 					<td>
 						<?php echo $this->row->ranking; ?>/10
 						<?php if ($this->row->ranking != '0') { ?>
@@ -328,18 +328,18 @@ function popratings()
 					</td>
 				</tr>
 				<tr>
-					<th>Rating:</th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_RATING'); ?></th>
 					<td>
-						<?php echo $this->row->rating.'/5.0 ('.$this->row->times_rated.' reviews)'; ?>
+						<?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
 						<?php if ($this->row->rating != '0.0') { ?>
 							<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
-							<a onclick="popratings();" href="#">View ratings</a>
+							<a onclick="popratings();" href="#"><?php echo JText::_('COM_RESOURCES_VIEW'); ?></a>
 						<?php } ?>
 					</td>
 				</tr>
 			<?php } ?>
 				<tr>
-					<th>Hits:</th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_HITS'); ?></th>
 					<td>
 						<?php echo $this->row->hits; ?>
 						<?php if ($this->row->hits) { ?>
@@ -353,7 +353,7 @@ function popratings()
 
 	<?php if ($this->row->standalone == 1) { ?>
 		<fieldset class="adminform">
-			<legend><span>Contributors</span></legend>
+			<legend><span><?php echo JText::_('COM_RESOURCES_FIELDSET_CONTRIBUTORS'); ?></span></legend>
 
 			<div class="input-wrap" id="resource-authors">
 				<?php echo $this->lists['authors']; ?>
@@ -363,46 +363,46 @@ function popratings()
 
 	<?php
 		echo JHtml::_('sliders.start', 'content-pane');
-		echo JHtml::_('sliders.panel', JText::_('Publishing'), 'publish-page');
+		echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
 	?>
 		<div class="paramlist">
 			<div class="input-wrap">
 				<input type="checkbox" name="standalone" id="field-standalone" value="1" <?php echo ($this->row->standalone ==1) ? 'checked="checked"' : ''; ?> />
-				<label for="field-standalone">Standalone (appears in searches, lists)</label>
+				<label for="field-standalone"><?php echo JText::_('COM_RESOURCES_FIELD_STANDALONE'); ?></label>
 			</div>
 			<div class="input-wrap">
-				<label for="field-published">Status:</label><br />
+				<label for="field-published"><?php echo JText::_('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
 				<select name="published" id="field-published">
-					<option value="2"<?php echo ($this->row->published == 2) ? ' selected="selected"' : ''; ?>>Draft (user created)</option>
-					<option value="5"<?php echo ($this->row->published == 5) ? ' selected="selected"' : ''; ?>>Draft (internal)</option>
-					<option value="3"<?php echo ($this->row->published == 3) ? ' selected="selected"' : ''; ?>>Pending</option>
-					<option value="0"<?php echo ($this->row->published == 0) ? ' selected="selected"' : ''; ?>>Unpublished</option>
-					<option value="1"<?php echo ($this->row->published == 1) ? ' selected="selected"' : ''; ?>>Published</option>
-					<option value="4"<?php echo ($this->row->published == 4) ? ' selected="selected"' : ''; ?>>Delete</option>
+					<option value="2"<?php echo ($this->row->published == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
+					<option value="5"<?php echo ($this->row->published == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
+					<option value="3"<?php echo ($this->row->published == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_PENDING'); ?></option>
+					<option value="0"<?php echo ($this->row->published == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->row->published == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="4"<?php echo ($this->row->published == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JTRASHED'); ?></option>
 				</select>
 			</div>
 			<?php if ($this->row->standalone == 1) { ?>
 				<div class="input-wrap">
-					<label>Group:</label><br />
+					<label><?php echo JText::_('COM_RESOURCES_FIELD_GROUP'); ?>:</label><br />
 					<?php echo $this->lists['groups']; ?>
 				</div>
 			<?php } ?>
 				<div class="input-wrap">
-					<label>Access Level:</label><br />
+					<label><?php echo JText::_('COM_RESOURCES_FIELD_ACCESS'); ?>:</label><br />
 					<?php echo $this->lists['access']; ?>
 				</div>
 				<div class="input-wrap">
-					<label>Change Creator:</label><br />
+					<label><?php echo JText::_('COM_RESOURCES_FIELD_CREATOR'); ?>:</label><br />
 					<?php echo $this->lists['created_by']; ?>
 				</div>
 			<?php // if ($this->row->standalone == 1) { ?>
 				<div class="input-wrap">
-					<label for="publish_up">Start Publishing:</label><br />
+					<label for="publish_up"><?php echo JText::_('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
 					<?php $up = JHTML::_('date', $this->row->publish_up, 'Y-m-d H:i:s'); ?>
 					<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 				</div>
 				<div class="input-wrap">
-					<label for="publish_down">Finish Publishing:</label><br />
+					<label for="publish_down"><?php echo JText::_('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
 					<?php
 						$down = 'Never';
 						if (strtolower($this->row->publish_down) != 'never')
@@ -415,40 +415,41 @@ function popratings()
 			<?php // } ?>
 		</div>
 	<?php
-		echo JHtml::_('sliders.panel', JText::_('Files'), 'file-page');
+		echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 	?>
 		<p>
 			<label>
-				<?php echo JText::_('With selected'); ?>:
+				<?php echo JText::_('COM_RESOURCES_FIELD_WITH_SELECTED'); ?>:
 				<select name="fileoptions" id="fileoptions">
-					<option value="2">Set as main file</option>
-					<option value="3">Insert HTML: image</option>
-					<option value="4">Insert HTML: linked file</option>
+					<option value="2"><?php echo JText::_('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
+					<option value="3"><?php echo JText::_('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
+					<option value="4"><?php echo JText::_('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
 				</select>
 			</label>
-			<input type="button" value="<?php echo JText::_('Apply'); ?>" onclick="doFileoptions();" />
+			<input type="button" value="<?php echo JText::_('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
 		</p>
 		<iframe width="100%" height="400" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;listdir=<?php echo $path . DS . $dir_id; ?>"></iframe>
 		<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
 	<?php
 		if ($this->row->standalone == 1) {
-			echo JHtml::_('sliders.panel', JText::_('Tags'), 'tags-page');
+			echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');
 			?>
 			<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 			<?php
-			echo JHtml::_('sliders.panel', JText::_('Parameters'), 'params-page');
+			echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 			echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
 		} else {
-			echo JHtml::_('sliders.panel', JText::_('Parameters'), 'params-page');
+			echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 			?>
-			<div class="input-wrap" data-hint="Set link action of primary file">
-				<label for="param-link_action">Link action</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>">
+				<label for="param-link_action"><?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION'); ?></label><br />
 				<select name="params[link_action]" id="param-link_action">
-					<option value="0"<?php if (!$this->params->get('link_action')) { echo ' selected="selected"'; } ?>>Default action</option>
-					<option value="1"<?php if ($this->params->get('link_action') == 1) { echo ' selected="selected"'; } ?>>New window</option>
-					<option value="2"<?php if ($this->params->get('link_action') == 2) { echo ' selected="selected"'; } ?>>Lightbox</option>
-					<option value="3"<?php if ($this->params->get('link_action') == 3) { echo ' selected="selected"'; } ?>>Download</option>
+					<option value="0"<?php if (!$this->params->get('link_action')) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT'); ?></option>
+					<option value="1"<?php if ($this->params->get('link_action') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
+					<option value="2"<?php if ($this->params->get('link_action') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
+					<option value="3"<?php if ($this->params->get('link_action') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
 				</select>
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?></span>
 			</div>
 			<?php
 		}

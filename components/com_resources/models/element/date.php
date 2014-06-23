@@ -33,9 +33,9 @@ class ResourcesElementDate extends ResourcesElement
 	/**
 	* Element name
 	*
-	* @var		string
+	* @var  string
 	*/
-	protected	$_name = 'Date';
+	protected $_name = 'Date';
 
 	/**
 	 * Return any options this element may have
@@ -103,17 +103,17 @@ class ResourcesElementDate extends ResourcesElement
 
 			$label = $element->label ? $element->label : $element->name;
 
-			$output = '<legend id="'.$control_name.$name.'-lgd"';
+			$output = '<legend id="' . $control_name . $name . '-lgd"';
 			if (isset($element->description) && $element->description) 
 			{
-				$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($element->description).'">';
+				$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($element->description) . '">';
 			} 
 			else 
 			{
 				$output .= '>';
 			}
 			$output .= JText::_($label);
-			$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+			$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('JOPTION_REQUIRED') . '</span>' : '';
 			$output .= '</legend>';
 
 			$html[] = $output;
@@ -158,7 +158,7 @@ class ResourcesElementDate extends ResourcesElement
 			$options = array_reverse($options);
 			array_unshift($options, JHTML::_('select.option', '0', JText::_('Year...')));
 
-			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
+			$html[] = JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
 		}
 
 		if (isset($element->month) && $element->month)
@@ -176,7 +176,7 @@ class ResourcesElementDate extends ResourcesElement
 				$options[] = JHTML::_('select.option', $i, $this->_getMonth($i));
 			}
 
-			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
+			$html[] = JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
 		}
 
 		if (isset($element->day) && $element->day)
@@ -194,7 +194,7 @@ class ResourcesElementDate extends ResourcesElement
 				$options[] = JHTML::_('select.option', $i, $i);
 			}
 			
-			$html[] = JHTML::_('select.genericlist', $options, $control_name.'['.$name.'][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
+			$html[] = JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
 		}
 
 		if ($c > 1)

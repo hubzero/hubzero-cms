@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelperPermissions::getActions('role');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Resource Role') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_ROLES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -49,14 +49,14 @@ function submitbutton(pressbutton)
 	var form = document.getElementById('adminForm');
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {
-		alert( 'Type must have a title' );
+		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform( pressbutton );
 	}
@@ -66,17 +66,17 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->title); ?>" />
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?>">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias"value="<?php echo $this->escape($this->row->alias); ?>" />
-				<span class="hint"><?php echo JText::_('If no alias is provided, one will be generated from the title.'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Types'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_RESOURCES_FIELDSET_TYPES'); ?></span></legend>
 
 			<?php
 			if ($this->types)
@@ -107,13 +107,13 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_ID'); ?></th>
 					<td>
 						<?php echo $this->row->id; ?>
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Creator'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_CREATOR'); ?></th>
 					<td>
 						<?php
 						$editor = JUser::getInstance($this->row->created_by);
@@ -123,7 +123,7 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Created'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_CREATED'); ?></th>
 					<td>
 						<?php echo $this->row->created; ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->created); ?>" />
@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 				</tr>
 			<?php if ($this->row->modified_by) { ?>
 				<tr>
-					<th><?php echo JText::_('Modifier'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_MODIFIER'); ?></th>
 					<td>
 						<?php
 						$modifier = JUser::getInstance($this->row->modified_by);
@@ -141,7 +141,7 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Modified'); ?></th>
+					<th><?php echo JText::_('COM_RESOURCES_FIELD_MODIFIED'); ?></th>
 					<td>
 						<?php echo $this->row->modified; ?>
 						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->row->modified); ?>" />

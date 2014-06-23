@@ -29,9 +29,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JToolBarHelper::title(JText::_('Resource Path Checker'), 'resources.png');
 
-echo '<h4>' . number_format(count($this->missing)) . ' Total Issues' . '</h4>';
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_PATH_CHECKER'), 'resources.png');
+
+echo '<h4>' . JText::sprintf('COM_RESOURCES_PATH_CHECKER_ISSUES', number_format(count($this->missing))) . '</h4>';
 echo '<br /><hr />';
 echo $this->html;
-?>

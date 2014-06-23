@@ -50,7 +50,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 		$this->view->row->load($this->view->id);
 
 		// Get all tags
-		$query  = "SELECT id, tag, raw_tag, admin FROM #__tags ORDER BY raw_tag ASC";
+		$query  = "SELECT id, tag, raw_tag, admin FROM `#__tags` ORDER BY raw_tag ASC";
 		$this->database->setQuery($query);
 		$this->view->tags = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
@@ -61,9 +61,9 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 
 		// Get tags for this resource
 		$rt = new ResourcesTags($this->database);
-
 		$tagsMen = $rt->getTags($this->view->id, 0, 0, 1);
-		$mytagarray = array();
+
+		$mytagarray    = array();
 		$myrawtagarray = array();
 		foreach ($tagsMen as $tagMen)
 		{
@@ -71,6 +71,8 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 			$myrawtagarray[] = $tagMen->raw_tag;
 		}
 		$this->view->mytagarray = $mytagarray;
+
+		$this->view->objtags = new stdClass;
 		$this->view->objtags->tagMen = implode(', ', $myrawtagarray);
 
 		// Set any errors
@@ -98,8 +100,8 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		$entered = JRequest::getVar('tags', '');
+		$id       = JRequest::getInt('id', 0);
+		$entered  = JRequest::getVar('tags', '');
 		$selected = JRequest::getVar('tgs', array(0));
 
 		// Process tags
@@ -118,7 +120,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=items',
-			JText::_('Tags updated for resource #' . $id)
+			JText::sprintf('COM_RESOURCES_TAGS_UPDATED', $id)
 		);
 	}
 

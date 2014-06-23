@@ -38,7 +38,7 @@ JToolBarHelper::title(JText::_('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script.png');
 $this->js('import');
 $this->css('import');
 ?>
-<script src="/media/system/js/handlebars.js"></script>
+<script src="../media/system/js/handlebars.js"></script>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {

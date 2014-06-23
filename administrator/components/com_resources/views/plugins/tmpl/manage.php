@@ -30,16 +30,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Plugins'), 'resources.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_PLUGINS'), 'resources.png');
 
 if ($this->html)
 {
 	echo $this->html;
-} else {
+}
+else
+{
 	JToolBarHelper::cancel();
 ?>
 	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
-		<p class="warning"><?php echo JText::_('No management interface found for this plugin.'); ?></p>
+		<p class="warning"><?php echo JText::_('COM_RESOURCES_ERROR_PLUGIN_NO_INTERFACE'); ?></p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

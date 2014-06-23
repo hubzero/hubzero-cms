@@ -31,47 +31,47 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->getError()) { ?>
-<p><?php echo $this->getError(); ?></p>
+	<p><?php echo $this->getError(); ?></p>
 <?php } else { ?>
-<table class="adminform">
-	<thead>
-		<tr>
-			<th colspan="3">User ratings and comments</th>
-		</tr>
-	</thead>
-	<tbody>
-<?php
-foreach ($this->rows as $row)
-{
-	if (intval($row->created) <> 0)
-	{
-		$thedate = JHTML::_('date', $row->created);
-	}
-	$juser = JUser::getInstance($row->user_id);
-?>
-	<tr>
-		<th>User:</th>
-		<td><?php echo $this->escape($juser->get('name')); ?></td>
-	</tr>
-	<tr>
-		<th>Rating:</th>
-		<td><?php echo ResourcesHtml::writeRating($row->rating); ?></td>
-	</tr>
-	<tr>
-		<th>Rated:</th>
- 		<td><?php echo $thedate; ?></td>
-	</tr>
-	<tr>
- 		<th style="border-bottom: 2px solid #999;vertical-align:top;">Comment:</th>
-		<td style="border-bottom: 2px solid #999;" class="aLeft"><?php
-			if ($row->comment) {
-				echo $this->escape(stripslashes($row->comment));
-			} else {
-				echo '[ no comment ]';
+	<table class="adminform">
+		<thead>
+			<tr>
+				<th colspan="3"><?php echo JText::_('COM_RESOURCES_RATINGS_TITLE'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach ($this->rows as $row)
+		{
+			if (intval($row->created) <> 0)
+			{
+				$thedate = JHTML::_('date', $row->created);
 			}
-   			?></td>
-		</tr>
-<?php } ?>
-	</tbody>
-</table>
+			$juser = JUser::getInstance($row->user_id);
+		?>
+			<tr>
+				<th><?php echo JText::_('COM_RESOURCES_RATING_USER'); ?>:</th>
+				<td><?php echo $this->escape($juser->get('name')); ?></td>
+			</tr>
+			<tr>
+				<th><?php echo JText::_('COM_RESOURCES_RATING_VALUE'); ?>:</th>
+				<td><?php echo ResourcesHtml::writeRating($row->rating); ?></td>
+			</tr>
+			<tr>
+				<th><?php echo JText::_('COM_RESOURCES_RATING_CREATED'); ?>:</th>
+				<td><?php echo $thedate; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo JText::_('COM_RESOURCES_RATING_COMMENT'); ?>:</th>
+				<td class="aLeft"><?php
+					if ($row->comment) {
+						echo $this->escape(stripslashes($row->comment));
+					} else {
+						echo JText::_('COM_RESOURCES_NONE');
+					}
+					?></td>
+				</tr>
+		<?php } ?>
+		</tbody>
+	</table>
 <?php } ?>

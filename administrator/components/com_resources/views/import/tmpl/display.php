@@ -35,8 +35,8 @@ JToolBarHelper::title(JText::_('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.pn
 
 JToolBarHelper::help('import.html', true);
 JToolBarHelper::spacer();
-JToolBarHelper::custom('run', 'script', 'script', 'Run');
-JToolBarHelper::custom('runtest', 'script', 'script', 'Test Run');
+JToolBarHelper::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
+JToolBarHelper::custom('runtest', 'script', 'script', 'COM_RESOURCES_TEST_RUN');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
@@ -58,95 +58,95 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=com_resources&amp;controller=import" method="post" name="adminForm" id="adminForm">
 
-		<table class="adminlist">
-			<thead>
-				<tr>
-					<th scope="col" width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
-					<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
-					<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-					<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
-					<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
-					<th scope="col" width="30px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if ($this->imports->count() > 0) : ?>
-					<?php foreach ($this->imports as $i => $import) : ?>
-						<tr>
-							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
-							</td>
-							<td>
-								<?php echo $this->escape($import->get('name')); ?> <br />
-								<span class="hint">
-									<?php echo nl2br($this->escape($import->get('notes'))); ?>
-								</span>
-							</td>
-							<td>
-								<?php
-									if ($import->get('count'))
-									{
-										echo number_format($this->escape($import->get('count')));
-									}
-								?>
-							</td>
-							<td>
+	<table class="adminlist">
+		<thead>
+			<tr>
+				<th scope="col" width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
+				<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
+				<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
+				<th scope="col" width="30px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php if ($this->imports->count() > 0) : ?>
+				<?php foreach ($this->imports as $i => $import) : ?>
+					<tr>
+						<td>
+							<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" onclick="isChecked(this.checked);" />
+						</td>
+						<td>
+							<?php echo $this->escape($import->get('name')); ?> <br />
+							<span class="hint">
+								<?php echo nl2br($this->escape($import->get('notes'))); ?>
+							</span>
+						</td>
+						<td>
+							<?php
+								if ($import->get('count'))
+								{
+									echo number_format($this->escape($import->get('count')));
+								}
+							?>
+						</td>
+						<td>
+							<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
+							<?php
+								$created_on = JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a');
+								echo $created_on . '<br />';
+							?>
+							<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
+							<?php
+								if ($created_by = Hubzero\User\Profile::getInstance($import->get('created_by')))
+								{
+									echo $created_by->get('name');
+								}
+							?>
+						</td>
+						<td>
+							<?php
+								$lastRun = $import->runs('list', array(
+									'import' => $import->get('id'),
+									'dry_run' => 0,
+									''
+								))->first();
+							?>
+							<?php if ($lastRun) : ?>
 								<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
 								<?php
-									$created_on = JHTML::_('date', $import->get('created_at'), 'm/d/Y @ g:i a');
+									$created_on = JHTML::_('date', $lastRun->get('ran_at'), 'm/d/Y @ g:i a');
 									echo $created_on . '<br />';
 								?>
 								<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
 								<?php
-									if ($created_by = Hubzero\User\Profile::getInstance($import->get('created_by')))
+									if ($created_by = Hubzero\User\Profile::getInstance($lastRun->get('ran_by')))
 									{
 										echo $created_by->get('name');
 									}
 								?>
-							</td>
-							<td>
-								<?php
-									$lastRun = $import->runs('list', array(
-										'import' => $import->get('id'),
-										'dry_run' => 0,
-										''
-									))->first();
-								?>
-								<?php if ($lastRun) : ?>
-									<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_ON'); ?></strong>
-									<?php
-										$created_on = JHTML::_('date', $lastRun->get('ran_at'), 'm/d/Y @ g:i a');
-										echo $created_on . '<br />';
-									?>
-									<strong><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_BY'); ?></strong>
-									<?php
-										if ($created_by = Hubzero\User\Profile::getInstance($lastRun->get('ran_by')))
-										{
-											echo $created_by->get('name');
-										}
-									?>
-								<?php else: ?>
-									n/a
-								<?php endif; ?>
-							</td>
-							<td>
-								<?php
-									$runs = $import->runs('list', array(
-										'import' => $import->get('id'),
-										'dry_run' => 0
-									));
-									echo $runs->count();
-								?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				<?php else : ?>
-					<tr>
-						<td colspan="6">Currently there are no imports</td>
+							<?php else: ?>
+								n/a
+							<?php endif; ?>
+						</td>
+						<td>
+							<?php
+								$runs = $import->runs('list', array(
+									'import' => $import->get('id'),
+									'dry_run' => 0
+								));
+								echo $runs->count();
+							?>
+						</td>
 					</tr>
-				<?php endif; ?>
-			</tbody>
-		</table>
+				<?php endforeach; ?>
+			<?php else : ?>
+				<tr>
+					<td colspan="6"><?php echo JText::_('COM_RESOURCES_IMPORT_NONE'); ?></td>
+				</tr>
+			<?php endif; ?>
+		</tbody>
+	</table>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">

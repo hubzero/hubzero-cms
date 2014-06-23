@@ -31,13 +31,13 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 	<li id="author_<?php echo $this->id; ?>">
-		<span class="handle"><?php echo JText::_('DRAG HERE'); ?></span>
-		<a class="state trash" data-parent="author_<?php echo $this->id; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $this->id; ?>');return false;"><span><?php echo JText::_('remove'); ?></span></a>
+		<span class="handle"><?php echo JText::_('COM_RESOURCES_AUTHOR_DRAG'); ?></span>
+		<a class="state trash" data-parent="author_<?php echo $this->id; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $this->id; ?>');return false;"><span><?php echo JText::_('JACTION_DELETE'); ?></span></a>
 		<?php echo $this->escape(stripslashes($this->name)); ?> (<?php echo $this->id; ?>)
-		<br /><?php echo JText::_('Affiliation'); ?>: <input type="text" name="<?php echo $this->id; ?>_organization" value="<?php echo $this->escape(stripslashes($this->org)); ?>" />
+		<br /><?php echo JText::_('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $this->id; ?>_organization" value="<?php echo $this->escape(stripslashes($this->org)); ?>" />
 
 		<select name="<?php echo $this->id; ?>_role">
-			<option value=""<?php if ($this->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
+			<option value=""<?php if ($this->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
 <?php
 	if ($this->roles)
 	{

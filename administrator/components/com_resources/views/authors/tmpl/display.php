@@ -33,24 +33,17 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = ResourcesHelperPermissions::getActions('contributor');
 
-JToolBarHelper::title(JText::_('Resources') . ': ' . JText::_('Authors'), 'addedit.png');
+JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_AUTHORS'), 'addedit.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
 	JToolBarHelper::spacer();
 }
-/*if ($canDo->get('core.create'))
-{
-	JToolBarHelper::addNew();
-}*/
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-/*if ($canDo->get('core.delete'))
-{
-	JToolBarHelper::deleteList();
-}*/
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -67,10 +60,10 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -78,10 +71,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Name'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Member'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Resources'), 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_NAME', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_MEMBER', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_RESOURCES_COL_RESOURCES', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -99,13 +92,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->authorid > 0)
 	{
 		$stickyTask = '1';
-		$stickyAlt = JText::_('Member');
+		$stickyAlt = JText::_('JYES');
 		$scls = 'member';
 	}
 	else
 	{
 		$stickyTask = '0';
-		$stickyAlt = JText::_('Not member');
+		$stickyAlt = JText::_('JNO');
 		$scls = 'notmember';
 	}
 	if ($row->authorid > 0 && !$row->name)
@@ -125,12 +118,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>" title="<?php echo JText::_('COM_RESOURCES_EDIT_LIST'); ?>">
-						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->authorid; ?>">
+						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('COM_RESOURCES_UNKNOWN'); ?></span>
 					</a>
 				<?php } else { ?>
 					<span>
-						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('[unknown]'); ?></span>
+						<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('COM_RESOURCES_UNKNOWN'); ?></span>
 					</span>
 				<?php } ?>
 				</td>
@@ -147,7 +140,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<span>
-						<span><?php echo JText::sprintf('%s resource(s)', $this->escape(stripslashes($row->resources))); ?></span>
+						<span><?php echo JText::sprintf('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?></span>
 					</span>
 				</td>
 			</tr>

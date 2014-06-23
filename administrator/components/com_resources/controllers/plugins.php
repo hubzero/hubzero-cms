@@ -45,7 +45,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	{
 		$task = JRequest::getVar('task', '');
 		$plugin = JRequest::getVar('plugin', '');
-		if ($plugin && $task && $task != 'manage') //!isset($this->_taskMap[$task]))
+		if ($plugin && $task && $task != 'manage')
 		{
 			JRequest::setVar('action', $task);
 			JRequest::setVar('task', 'manage');
@@ -135,27 +135,16 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 				$where[] = 'p.published = 0';
 			}
 		}
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$where[] = 'p.type = ' . $this->database->Quote('plugin');
-		}
+		$where[] = 'p.type = ' . $this->database->Quote('plugin');
 
 		$where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
 		$orderby = ' ORDER BY ' . $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'] . ', p.ordering ASC';
 
 		// get the total number of records
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'SELECT COUNT(*)'
-				. ' FROM #__plugins AS p'
-				. $where;
-		}
-		else
-		{
-			$query = 'SELECT COUNT(*)'
-				. ' FROM #__extensions AS p'
-				. $where;
-		}
+		$query = 'SELECT COUNT(*)'
+			. ' FROM #__extensions AS p'
+			. $where;
+
 		$this->database->setQuery($query);
 		$this->view->total = $this->database->loadResult();
 
@@ -166,26 +155,14 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			$this->view->filters['limit']
 		);
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'SELECT p.*, u.name AS editor, g.name AS groupname'
-				. ' FROM #__plugins AS p'
-				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
-				. ' LEFT JOIN #__groups AS g ON g.id = p.access'
-				. $where
-				. ' GROUP BY p.id'
-				. $orderby;
-		}
-		else
-		{
-			$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
-				. ' FROM #__extensions AS p'
-				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
-				. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
-				. $where
-				. ' GROUP BY p.extension_id'
-				. $orderby;
-		}
+		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
+			. ' FROM #__extensions AS p'
+			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
+			. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
+			. $where
+			. ' GROUP BY p.extension_id'
+			. $orderby;
+
 		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);
 		$this->view->rows = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
@@ -302,16 +279,6 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new plugin
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a plugin
 	 *
 	 * @param      object $row JPluginTable
@@ -319,117 +286,12 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row = null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		$cid = JRequest::getVar('cid', array(0), '', 'array');
+		JArrayHelper::toInteger($cid, array(0));
 
-		$this->view->setLayout('edit');
-
-		$client = JRequest::getWord('client', 'site');
-
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
-		{
-			$cid = JRequest::getVar('cid', array(0), '', 'array');
-			JArrayHelper::toInteger($cid, array(0));
-
-			$this->view->row = JTable::getInstance('plugin');
-
-			// load the row from the db table
-			$this->view->row->load($cid[0]);
-		}
-
-		// Is this entry checked out?
-		if ($this->view->row->isCheckedOut($this->juser->get('id')))
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
-				JText::sprintf('DESCBEINGEDITTED', JText::_('The plugin'), $this->view->row->title),
-				'error'
-			);
-			return;
-		}
-
-		$this->view->lists = array();
-
-		// get list of groups
-		if ($this->view->row->access == 99 || $this->view->row->client_id == 1)
-		{
-			$this->view->lists['access'] = 'Administrator<input type="hidden" name="access" value="99" />';
-		}
-		else
-		{
-			// build the html select list for the group access
-			$this->view->lists['access'] = JHTML::_('list.accesslevel', $this->view->row);
-		}
-
-		if ($cid[0])
-		{
-			$this->view->row->checkout($this->juser->get('id'));
-
-			$lang = JFactory::getLanguage();
-			$lang->load('plg_' . trim($this->view->row->folder) . '_' . trim($this->view->row->element), JPATH_ADMINISTRATOR);
-
-			$data = JApplicationHelper::parseXMLInstallFile(JPATH_SITE . DS . 'plugins' . DS  .$this->view->row->folder . DS . $this->view->row->element . '.xml');
-
-			$this->view->row->description = $data['description'];
-
-		}
-		else
-		{
-			$this->view->row->folder 		= $this->_folder;
-			$this->view->row->ordering 		= 999;
-			$this->view->row->published 	= 1;
-			$this->view->row->description 	= '';
-		}
-
-		if ($this->view->row->ordering > -10000 && $this->view->row->ordering < 10000)
-		{
-			// build the html select list for ordering
-			$query = 'SELECT ordering AS value, name AS text'
-				. ' FROM #__plugins'
-				. ' WHERE folder = '.$this->database->Quote($this->_folder)
-				. ' AND published > 0'
-				. ' AND '. ($client == 'admin' ? "client_id='1'" : "client_id='0'")
-				. ' AND ordering > -10000'
-				. ' AND ordering < 10000'
-				. ' ORDER BY ordering'
-			;
-			$order = JHTML::_('list.genericordering',  $query);
-
-			$this->view->lists['ordering'] = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"', 'value', 'text', intval($this->view->row->ordering));
-		}
-		else
-		{
-			$this->view->lists['ordering'] = '<input type="hidden" name="ordering" value="' . $this->view->row->ordering . '" />' . JText::_('This plugin cannot be reordered');
-		}
-
-		$this->view->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->view->row->published);
-
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$this->view->params = new $paramsClass(
-			$this->view->row->params,
-			JApplicationHelper::getPath('plg_xml', $this->view->row->folder . DS . $this->view->row->element),
-			'plugin'
+		$this->setRedirect(
+			'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources'
 		);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		// Output the HTML
-		$this->view->display();
 	}
 
 	/**
@@ -445,14 +307,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		$client = JRequest::getWord('filter_client', 'site');
 
 		// Bind data
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
 		if (!$row->bind(JRequest::get('post')))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -555,18 +410,9 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'UPDATE #__plugins SET published = '.(int) $state
-				. ' WHERE id IN (' . implode(',', $id) . ')'
-				. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
-		}
-		else
-		{
-			$query = "UPDATE #__extensions SET enabled = ".(int) $state
-				. " WHERE extension_id IN (" . implode(',', $id) . ")"
-				. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
-		}
+		$query = "UPDATE #__extensions SET enabled = ".(int) $state
+			. " WHERE extension_id IN (" . implode(',', $id) . ")"
+			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
 
 		$this->database->setQuery($query);
 		if (!$this->database->query())
@@ -581,14 +427,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		if (count($id) == 1)
 		{
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$row = JTable::getInstance('plugin');
-			}
-			else
-			{
-				$row = JTable::getInstance('extension');
-			}
+			$row = JTable::getInstance('extension');
 			$row->checkin($id[0]);
 		}
 
@@ -645,14 +484,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			$where = "client_id = 0";
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
 		$row->load($uid);
 		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
 
@@ -707,14 +539,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
 		$row->load($cid[0]);
 
 		// Set the access
@@ -765,14 +590,8 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		$order = JRequest::getVar('order', array(0), 'post', 'array');
 		JArrayHelper::toInteger($order, array(0));
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
+
 		$conditions = array();
 
 		// update ordering values
