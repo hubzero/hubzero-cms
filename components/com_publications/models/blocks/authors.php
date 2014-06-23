@@ -35,21 +35,21 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	*
 	* @var		string
 	*/
-	protected	$_name 			= 'authors';
+	protected $_name = 'authors';
 	
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= 'authors';	
-	
+	protected $_parentname = 'authors';	
+		
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
-	protected	$_manifest 		= NULL;
+	protected $_manifest = NULL;
 	
 	/**
 	* Step number
