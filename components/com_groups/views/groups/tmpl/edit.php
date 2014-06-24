@@ -153,15 +153,18 @@ else
 						?>
 					</label>
 				</fieldset>
-
-				<?php if ($this->task != 'new' && !$this->group->isSuperGroup()) : ?>
+				
+				<?php if ($this->task != 'new') : ?>
 					<fieldset>
 						<legend>Logo</legend>
 						<p>Upload your logo using the file upload browser to the right then select it in the drop down below.</p>
+						<?php if ($this->group->isSuperGroup()) : ?>
+							<p class="info">Setting a group logo for a super group will not update the logo in the template (seen when viewing the group). This logo is used primarily for branding purposes in resources, courses, &amp; other areas on the hub.</p>
+						<?php endif; ?>
 						<label id="group-logo-label">
 							<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
 								<option value="">Select a group logo...</option>
-								<?php foreach($this->logos as $logo) { ?>
+								<?php foreach ($this->logos as $logo) { ?>
 									<?php
 										$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove,"",$logo) == $this->group->get('logo')) ? 'selected' : '';
@@ -173,7 +176,7 @@ else
 						<label>
 							<div class="preview" id="logo">
 								<div id="logo_picked">
-									<?php if($this->group->get('logo')) { ?>
+									<?php if ($this->group->get('logo')) { ?>
 										<img src="/site/groups/<?php echo $this->group->get('gidNumber'); ?>/uploads/<?php echo $this->group->get('logo'); ?>" alt="<?php echo $this->group->get('cn') ?>" />
 									<?php } else { ?>
 										<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
@@ -242,15 +245,15 @@ else
 							<legend>Set Permissions for each Tab</legend>
 							<ul id="access">
 								<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
-								<?php for($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
+								<?php for ($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
 									<?php if ($this->hub_group_plugins[$i]['display_menu_tab']) { ?>
 										<li class="group_access_control_<?php echo strtolower($this->hub_group_plugins[$i]['title']); ?>">
 											<input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
 											<span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
 											<select name="group_plugin[<?php echo $i; ?>][access]">
-												<?php foreach($levels as $level => $name) { ?>
+												<?php foreach ($levels as $level => $name) { ?>
 													<?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
-													<?php if(($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') { ?>
+													<?php if (($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') { ?>
 														<option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
 													<?php } ?>
 												<?php } ?>
