@@ -150,10 +150,13 @@ else
 					</label>
 				</fieldset>
 				
-				<?php if ($this->task != 'new' && !$this->group->isSuperGroup()) : ?>
+				<?php if ($this->task != 'new') : ?>
 					<fieldset>
 						<legend>Logo</legend>
 						<p>Upload your logo using the file upload browser to the right then select it in the drop down below.</p>
+						<?php if ($this->group->isSuperGroup()) : ?>
+							<p class="info">Setting a group logo for a super group will not update the logo in the template (seen when viewing the group). This logo is used primarily for branding purposes in resources, courses, &amp; other areas on the hub.</p>
+						<?php endif; ?>
 						<label id="group-logo-label">
 							<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
 								<option value="">Select a group logo...</option>
