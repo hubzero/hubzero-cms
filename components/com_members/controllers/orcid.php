@@ -97,7 +97,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	private function _fetchXml($fname, $lname)
 	{
-		$url = 'http://sandbox.orcid.org/search/orcid-bio?q=';
+		$url = 'http://orcid.org/search/orcid-bio?q=';
+		//$url = 'http://sandbox.orcid.org/search/orcid-bio?q=';
 
 		$is_fname = !empty($fname);
 		$is_lname = !empty($lname);
@@ -225,7 +226,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 						'</orcid-profile>'.
 					'</orcid-message>';
 
-		$url = 'http://api.sandbox.orcid.org/orcid-profile';
+		//$url = 'http://api.sandbox.orcid.org/orcid-profile';
+		$url = 'http://api.orcid.org/orcid-profile';
 
 		$initedCurl = curl_init($url);
 		curl_setopt($initedCurl, CURLOPT_POST, 1);
@@ -239,8 +241,13 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		curl_close($initedCurl);
 
 		$parsed_response = $this->_http_parse_headers($curl_response);
-		$parsed_url = parse_url($parsed_response['Location']);
-		$pathComponents = explode('/', trim($parsed_url['path'], '/'));
+
+		$pathComponents = array();
+		if (isset($parsed_response['Location']))
+		{
+			$parsed_url = parse_url($parsed_response['Location']);
+			$pathComponents = explode('/', trim($parsed_url['path'], '/'));
+		}
 		$orcid = '';
 		if (count($pathComponents) > 0 && !empty($pathComponents[0]))
 		{
@@ -266,9 +273,14 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		// Instantiate a new profile object
 		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-		$profile->set('orcid', $orcid);
+		if ($profile)
+		{
+			$profile->set('orcid', $orcid);
 
-		return $profile->update();
+			return $profile->update();
+		}
+
+		return false;
 	}
 
 	/**
