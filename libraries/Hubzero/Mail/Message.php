@@ -130,7 +130,7 @@ class Message extends \Swift_Message
 			default:
 				$transport = \Swift_MailTransport::newInstance();
 				//set mail additional args (mail return path - used for bounces)
-				$transport->setExtraParams('-f hubmail-bounces@' . $_SERVER['HTTP_HOST']);
+				//$transport->setExtraParams('-f hubmail-bounces@' . $_SERVER['HTTP_HOST']);
 			break;
 		}
 
