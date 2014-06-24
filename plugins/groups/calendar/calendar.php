@@ -1231,7 +1231,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			//send email
 			$this->_sendEmail($eventsEvent->email, $from, $subject, $message);
 		}
-
 		
 		//build message to send to event registerer
 		$email = new \Hubzero\Plugin\View(
