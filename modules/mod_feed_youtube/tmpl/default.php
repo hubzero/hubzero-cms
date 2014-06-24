@@ -91,6 +91,14 @@ if ($this->feed)
 ?>
 		<ul class="layout_<?php echo $layout; ?>">
 <?php
+			$path = DS . trim($this->params->get('webpath', '/site/youtube'), DS);
+			if (!is_dir(JPATH_ROOT . $path))
+			{
+				jimport('joomla.filesystem.folder');
+				JFolder::create(JPATH_ROOT . $path);
+			}
+			$isDir = is_dir(JPATH_ROOT . $path);
+
 			$words = $this->params->def('word_count', 0);
 			for ($j = 0; $j < $totalItems; $j ++)
 			{
@@ -99,24 +107,29 @@ if ($this->feed)
 ?>
 			<li>
 <?php
-				if (!is_null($currItem->get_link())) {
+				if (!is_null($currItem->get_link()))
+				{
 					// get video id
 					$match = array();
 					$vid = 0;
 					preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link() , $match);
-					if (count($match) > 1 && strlen($match[1]) > 11) {
+					if (count($match) > 1 && strlen($match[1]) > 11)
+					{
 						$vid = substr($match[1], 0, 11);
 					}
 
 					// copy thumbnail to server
-					if ($vid) {
+					if ($vid && $isDir)
+					{
 						$img_src = 'http://img.youtube.com/vi/' . $vid . '/default.jpg';
-						$thumb  = DS . trim($this->params->get('webpath'), DS) . DS . $vid . '.jpg';
+						$thumb   = $path . DS . $vid . '.jpg';
 
-						if (!is_file(JPATH_ROOT . $thumb)) {
+						if (!is_file(JPATH_ROOT . $thumb))
+						{
 							copy($img_src, JPATH_ROOT . $thumb);
 						}
-						if (!is_file(JPATH_ROOT . $thumb)) {
+						if (!is_file(JPATH_ROOT . $thumb))
+						{
 							$vid = 0;
 						}
 					}
