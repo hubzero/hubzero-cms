@@ -97,8 +97,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	private function _fetchXml($fname, $lname)
 	{
-		$url = 'http://orcid.org/search/orcid-bio?q=';
-		//$url = 'http://sandbox.orcid.org/search/orcid-bio?q=';
+		$url = 'http://' . $this->config->get('orcid_service', 'orcid.org') . '/search/orcid-bio?q=';
 
 		$is_fname = !empty($fname);
 		$is_lname = !empty($lname);
@@ -226,8 +225,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 						'</orcid-profile>'.
 					'</orcid-message>';
 
-		//$url = 'http://api.sandbox.orcid.org/orcid-profile';
-		$url = 'http://api.orcid.org/orcid-profile';
+		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/orcid-profile';
 
 		$initedCurl = curl_init($url);
 		curl_setopt($initedCurl, CURLOPT_POST, 1);
