@@ -1,4 +1,18 @@
-/* Reltionships */
+/* Relationships */
+	.bit-box .closebutton {
+		opacity: 0;
+	}
+	.bit-box:hover .closebutton {
+		opacity: 0.8;
+	}
+	.closebutton:after {
+		content: 'x';
+		color: #900;
+		margin-left: 4px;
+		font-weight: bold;
+		font-family: monospace;
+		vertical-align: super;
+	}
 	line.link  {
 	    stroke: #999999;
 	    stroke-opacity: 0.6;
