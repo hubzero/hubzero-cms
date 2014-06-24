@@ -631,7 +631,8 @@ class CoursesTableGradeBook extends JTable
 					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
 					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
 					WHERE gb.scope='asset'
-					AND cu.offering_id = '".$course->offering()->get('id')."'
+					AND (cu.offering_id = '".$course->offering()->get('id')."'
+					 OR (cu.offering_id IS NULL AND ca.course_id = '".$course->get('id')."'))
 					AND (score IS NOT NULL OR override IS NOT NULL)
 					{$user}
 					GROUP BY member_id, grade_weight";
@@ -691,7 +692,8 @@ class CoursesTableGradeBook extends JTable
 					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
 					WHERE graded = 1
 					AND ca.state = 1
-					AND offering_id = '".$course->offering()->get('id')."'
+					AND (cu.offering_id = '".$course->offering()->get('id')."'
+					 OR (cu.offering_id IS NULL AND ca.course_id = '".$course->get('id')."'))
 					GROUP BY grade_weight;";
 
 		$this->_db->setQuery($query);
