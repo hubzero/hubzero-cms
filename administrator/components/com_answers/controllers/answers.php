@@ -205,9 +205,10 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Save a response
 	 * 
-	 * @return     void
+	 * @param   boolean $redirect
+	 * @return  void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
