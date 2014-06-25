@@ -76,21 +76,21 @@ $base = $this->offering->link();
 						<tr>
 							<td>
 								<span>
-									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student'=>1)) . '</strong>'); ?>
+									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student'=>1)) . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-passing">
 								<span>
-									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
+									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-failing">
 								<span>
-									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
+									<?php echo JText::sprintf('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
