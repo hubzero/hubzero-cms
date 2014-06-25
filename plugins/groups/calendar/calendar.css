@@ -251,7 +251,7 @@ ol.calendar-entries .entry-meta {
 	float: right;
 	margin-left: 10px;
 }
-.event-title-bar:before {
+/*.event-title-bar:before {
 	content: '';
 	position: absolute;
 	bottom: -20px;
@@ -270,11 +270,11 @@ ol.calendar-entries .entry-meta {
 	left: 9px;
 	width: 0;
 	height: 0;
-	border-top: 9px solid #fff;
+	border-top: 9px solid #F7F7F7;
 	border-left: 9px solid transparent;
 	border-right: 9px solid transparent;
 	border-bottom: 9px solid transparent;
-}
+}*/
 .event-sub-menu {
 	height: 1.75em;
 	padding: 0 15px;
