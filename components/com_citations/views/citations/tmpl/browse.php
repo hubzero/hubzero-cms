@@ -93,13 +93,13 @@ if ($label == "none") {
 					<?php
 						$queryString = "";
 						$exclude = array("filter");
-						foreach($this->filters as $k => $v)
+						foreach ($this->filters as $k => $v)
 						{
-							if($v != "" && !in_array($k, $exclude))
+							if ($v != "" && !in_array($k, $exclude))
 							{
-								if(is_array($v))
+								if (is_array($v))
 								{
-									foreach($v as $k2 => $v2)
+									foreach ($v as $k2 => $v2)
 									{
 										$queryString .= "&{$k}[{$k2}]={$v2}";
 									}
@@ -111,13 +111,13 @@ if ($label == "none") {
 							}
 						}
 					?>
-					<li><a <?php if($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>">All</a></li>
-					<li><a <?php if($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>">Affiliated</a></li>
-					<li><a <?php if($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>">Non-Affiliated</a></li>
+					<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>">All</a></li>
+					<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>">Affiliated</a></li>
+					<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>">Non-Affiliated</a></li>
 				</ul>
 				<div class="clearfix"></div>
 
-				<?php if(count($this->citations) > 0) : ?>
+				<?php if (count($this->citations) > 0) : ?>
 					<?php
 						$formatter = new CitationFormat();
 						$formatter->setTemplate($template);
@@ -125,7 +125,7 @@ if ($label == "none") {
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
 						$counter = $this->filters['start'] + 1;
 
-						if($counter == '')
+						if ($counter == '')
 						{
 							$counter = 1;
 						}
@@ -141,13 +141,13 @@ if ($label == "none") {
 								<?php endif; ?>
 								<th colspan="3">Citations</th>
 							</tr>
-							<?php if($this->isAdmin) : ?>
+							<?php if ($this->isAdmin) : ?>
 								<tr class="hidden"></tr>
 							<?php endif; ?>
 						</thead>
 						<tbody>
 							<?php $x = 0; ?>
-							<?php foreach($this->citations as $cite) : ?>
+							<?php foreach ($this->citations as $cite) : ?>
 								<tr>
 									<?php if ($batch_download) : ?>
 										<td class="batch">
@@ -159,14 +159,14 @@ if ($label == "none") {
 										<td class="citation-label <?php echo $citations_label_class; ?>">
 											<?php
 												$type = "";
-												foreach($this->types as $t) {
+												foreach ($this->types as $t) {
 													if ($t['id'] == $cite->type) {
 														$type = $t['type_title'];
 													}
 												}
 												$type = ($type != "") ? $type : "Generic";
 
-												switch($label)
+												switch ($label)
 												{
 													case "number":
 														echo "<span class=\"number\">{$counter}.</span>";
@@ -210,7 +210,7 @@ if ($label == "none") {
 													$final = "";
 													if ($sponsors)
 													{
-														foreach($sponsors as $s)
+														foreach ($sponsors as $s)
 														{
 															$sp = $cs->getSponsor($s);
 															if ($sp)
@@ -228,19 +228,15 @@ if ($label == "none") {
 											</div>
 										<?php endif; ?>
 									</td>
-									<?php if($this->isAdmin === true) { ?>
+									<?php if ($this->isAdmin === true) : ?>
 										<td class="col-edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">Edit</a></td>
-									<?php } ?>
+									<?php endif; ?>
 								</tr>
 								<tr>
-									<?php if($this->isAdmin === true) { ?>
-										<td></td>
-									<?php } ?>
-									<td></td>
-									<td <?php if ($label != "none") { echo 'colspan="2"'; } ?> class="citation-details">
+									<td <?php if ($label == "none") { echo 'colspan="2"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
 										<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView && ($cite->title && $cite->author && $cite->publisher))
+											if (!$singleCitationView)
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl);
 											}
@@ -253,6 +249,9 @@ if ($label == "none") {
 											<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
+									<?php if ($this->isAdmin === true) : ?>
+										<td></td>
+									<?php endif; ?>
 								</tr>
 								<?php $counter++; ?>
 							<?php endforeach; ?>
@@ -297,7 +296,7 @@ if ($label == "none") {
 					<?php echo JText::_('Type'); ?>
 					<select name="type" id="type">
 						<option value="">All</option>
-						<?php foreach($this->types as $t) : ?>
+						<?php foreach ($this->types as $t) : ?>
 							<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
 						<?php endforeach; ?>
@@ -329,7 +328,7 @@ if ($label == "none") {
 					to
 					<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
 				</label>
-				<?php if($this->isAdmin) { ?>
+				<?php if ($this->isAdmin) { ?>
 					<fieldset>
 						<label>
 							<?php echo JText::_('Uploaded Between'); ?>
@@ -346,9 +345,9 @@ if ($label == "none") {
 				<label>
 					<?php echo JText::_('Sort By'); ?>
 					<select name="sort" id="sort" class="">
-						<?php foreach($this->sorts as $k => $v) : ?>
+						<?php foreach ($this->sorts as $k => $v) : ?>
 							<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
-							if(($this->isAdmin !== true) && ($v == "Date uploaded"))
+							if (($this->isAdmin !== true) && ($v == "Date uploaded"))
 							{
 								// Do nothing
 							}

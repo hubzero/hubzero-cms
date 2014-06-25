@@ -249,7 +249,7 @@ class CitationFormat
 				{
 
 					//key specific
-					switch($k)
+					switch ($k)
 					{
 						case 'title':
 							break;
@@ -318,18 +318,18 @@ class CitationFormat
 					$url = $citation->url;
 					if ($url_format == 'custom' && $custom_url != '')
 					{
- 						//parse custom url to make sure we are not using any vars
+						//parse custom url to make sure we are not using any vars
 						preg_match_all('/\{(\w+)\}/', $custom_url, $matches, PREG_SET_ORDER);
 						if ($matches)
 						{
-							foreach($matches as $match)
+							foreach ($matches as $match)
 							{
 								$field = strtolower($match[1]);
 								$replace = $match[0];
 								$replaceWith = '';
-								if(property_exists($citation, $field))
+								if (property_exists($citation, $field))
 								{
-									if(strstr($citation->$field, 'http'))
+									if (strstr($citation->$field, 'http'))
 									{
 										$custom_url = $citation->$field;
 									}
@@ -346,12 +346,12 @@ class CitationFormat
 					}
 
 					//prepare url
-					if(strstr($url, "\r\n"))
+					if (strstr($url, "\r\n"))
 					{
 						$url = array_filter(array_values(explode("\r\n", $url)));
 						$url = $url[0];
 					}
-					elseif(strstr($url, " "))
+					elseif (strstr($url, " "))
 					{
 						$url = array_filter(array_values(explode(" ", $url)));
 						$url = $url[0];
@@ -376,13 +376,13 @@ class CitationFormat
 
 					//add title to coin data but fixing bad chars first
 					$coins_data[] = 'rft.atitle=' . $t;
- 				}
+				}
 
 				if ($k == 'pages')
 				{
 					$replace_values[$v] = "pg: " . $citation->$k;
 				}
- 			}
+			}
 		}
 
 		// Add more to coins
@@ -540,9 +540,9 @@ class CitationFormat
 		$citation_type->load( $citation->type );
 
 		//do we have a title
-		if(isset($citation->title) && $citation->title != '')
+		if (isset($citation->title) && $citation->title != '')
 		{
-			if($citation_type->type == 'journalarticle')
+			if ($citation_type->type == 'journalarticle')
 			{
 				$query[] = 'atitle=' . str_replace(" ", "+", $citation->title);
 			}
@@ -553,31 +553,31 @@ class CitationFormat
 		}
 
 		//do we have a doi to append?
-		if(isset($citation->doi) && $citation->doi != '')
+		if (isset($citation->doi) && $citation->doi != '')
 		{
 			$query[] = 'doi=' . $citation->doi;
 		}
 
 		//do we have an issn or isbn to append?
-		if(isset($citation->isbn) && $citation->isbn != '')
+		if (isset($citation->isbn) && $citation->isbn != '')
 		{
 			//get the issn/isbn in db
 			$issn_isbn = $citation->isbn;;
 
 			//check to see if we need to do any special processing to the issn/isbn before outputting
-			if(strstr($issn_isbn, "\r\n"))
+			if (strstr($issn_isbn, "\r\n"))
 			{
 				$issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
 				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
 			}
-			elseif(strstr($issn_isbn, " "))
+			elseif (strstr($issn_isbn, " "))
 			{
 				$issn_isbn = array_filter(array_values(explode(" ", $issn_isbn)));
 				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
 			}
 
 			//append to url as issn if journal otherwise as isbn
-			if($citation_type->type == 'journalarticle')
+			if ($citation_type->type == 'journalarticle')
 			{
 				$query[] = 'issn=' . $issn_isbn;
 			}
@@ -588,25 +588,25 @@ class CitationFormat
 		}
 
 		//do we have a date/year to append?
-		if(isset($citation->year) && $citation->year != '')
+		if (isset($citation->year) && $citation->year != '')
 		{
 			$query[] = 'date=' . $citation->year;
 		}
 
 		//to we have an issue/number to append?
-		if(isset($citation->number) && $citation->number != '')
+		if (isset($citation->number) && $citation->number != '')
 		{
 			$query[] = 'issue=' . $citation->number;
 		}
 
 		//do we have a volume to append?
-		if(isset($citation->volume) && $citation->volume != '')
+		if (isset($citation->volume) && $citation->volume != '')
 		{
 			$query[] = 'volume=' . $citation->volume;
 		}
 
 		//do we have pages to append?
-		if(isset($citation->pages) && $citation->pages != '')
+		if (isset($citation->pages) && $citation->pages != '')
 		{
 			$query[] = 'pages=' . $citation->pages;
 		}
@@ -684,11 +684,11 @@ class CitationFormat
 					{
 						if ($internally_cited_image)
 						{
-							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';
 						}
 						else
 						{
-							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';
 						}
 					}
 				}
@@ -727,7 +727,7 @@ class CitationFormat
 
 		if ($badges)
 		{
-			if($includeHtml)
+			if ($includeHtml)
 			{
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge)
@@ -772,7 +772,7 @@ class CitationFormat
 
 		if ($tags)
 		{
-			if($includeHtml)
+			if ($includeHtml)
 			{
 				$html  = '<ul class="tags">';
 				foreach ($tags as $tag)
