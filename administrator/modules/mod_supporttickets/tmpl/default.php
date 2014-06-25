@@ -78,12 +78,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 				datasets = [
 					{
 						color: "orange", //#AA4643 #93ACCA
-						label: "Opened",
+						label: "<?php echo JText::_('MOD_SUPPORTTICKETS_OPENED'); ?>",
 						data: [<?php echo $openeddata; ?>]
 					},
 					{
 						color: "#656565", //#CFCFAB
-						label: "Closed",
+						label: "<?php echo JText::_('MOD_SUPPORTTICKETS_CLOSED'); ?>",
 						data: [<?php echo $closeddata; ?>]
 					}
 				];
@@ -140,16 +140,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<tbody>
 				<tr>
 					<td class="major">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[0]->id; ?>" title="<?php echo JText::_('View open tickets'); ?>"><?php echo $this->escape($this->topened[0]->count); ?></a>
-						<span><?php echo JText::_('Open'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[0]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>"><?php echo $this->escape($this->topened[0]->count); ?></a>
+						<span><?php echo JText::_('MOD_SUPPORTTICKETS_OPEN'); ?></span>
 					</td>
 					<td class="critical">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[2]->id; ?>" title="<?php echo JText::_('View unassigned tickets'); ?>"><?php echo $this->escape($this->topened[2]->count); ?></a>
-						<span><?php echo JText::_('Unassigned'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[2]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>"><?php echo $this->escape($this->topened[2]->count); ?></a>
+						<span><?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
 					</td>
 					<td class="newt">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[1]->id; ?>" title="<?php echo JText::_('View new tickets'); ?>"><?php echo $this->escape($this->topened[1]->count); ?></a>
-						<span><?php echo JText::_('New'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[1]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>"><?php echo $this->escape($this->topened[1]->count); ?></a>
+						<span><?php echo JText::_('MOD_SUPPORTTICKETS_NEW'); ?></span>
 					</td>
 				</tr>
 			</tbody>

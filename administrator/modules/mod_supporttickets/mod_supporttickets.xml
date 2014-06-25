@@ -31,7 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Support Tickets</name>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows on the Admin area Home Page and displays items that administrator needs to watch for.</description>
+	<description>MOD_SUPPORTTICKETS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_supporttickets">mod_supporttickets.php</filename>
 		<filename>supporttickets.css</filename>
@@ -39,18 +39,12 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>images/abuse.gif</filename>
 		<filename>images/barbg.gif</filename>
 	</files>
-	<params>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_RESOURCES_CACHE_LABEL" description="MOD_RESOURCES_CACHE_DESC">
+					<option value="1">MOD_RESOURCES_CACHE_GLOBAL</option>
+					<option value="0">MOD_RESOURCES_CACHE_NONE</option>
 				</field>
 			</fieldset>
 		</fields>

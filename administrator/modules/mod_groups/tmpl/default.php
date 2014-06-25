@@ -31,53 +31,61 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<table class="groups-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Visible'); ?></th>
-			<th scope="col"><?php echo JText::_('Hidden'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="public"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=0&amp;policy=" title="<?php echo JText::_('View Visible groups'); ?>"><?php echo $this->escape($this->visible); ?></a></td>
-			<td class="protected"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=1&amp;policy=" title="<?php echo JText::_('View Hidden groups'); ?>"><?php echo $this->escape($this->hidden); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+<div class="mod_groups">
+	<table class="stats-overview">
+		<tbody>
+			<tr>
+				<td class="public">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=0&amp;policy=" title="<?php echo JText::_('MOD_GROUPS_VISIBLE_TITLE'); ?>"><?php echo $this->escape($this->visible); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_VISIBLE'); ?></span>
+				</td>
+				<td class="protected">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=1&amp;policy=" title="<?php echo JText::_('MOD_GROUPS_HIDDEN_TITLE'); ?>"><?php echo $this->escape($this->hidden); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_HIDDEN'); ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<table class="groups-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Closed'); ?></th>
-			<th scope="col"><?php echo JText::_('Invite only'); ?></th>
-			<th scope="col"><?php echo JText::_('Restricted'); ?></th>
-			<th scope="col"><?php echo JText::_('Open'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="closed"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=closed&amp;approved=" title="<?php echo JText::_('View closed groups'); ?>"><?php echo $this->escape($this->closed); ?></a></td>
-			<td class="invite"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=invite&amp;approved=" title="<?php echo JText::_('View invite only groups'); ?>"><?php echo $this->escape($this->invite); ?></a></td>
-			<td class="restricted"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=restricted&amp;approved=" title="<?php echo JText::_('View restricted groups'); ?>"><?php echo $this->escape($this->restricted); ?></a></td>
-			<td class="open"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=open&amp;approved=" title="<?php echo JText::_('View open groups'); ?>"><?php echo $this->escape($this->open); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+	<table class="stats-overview">
+		<tbody>
+			<tr>
+				<td class="closed">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=closed&amp;approved=" title="<?php echo JText::_('MOD_GROUPS_CLOSED_TITLE'); ?>"><?php echo $this->escape($this->closed); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_CLOSED'); ?></span>
+				</td>
+				<td class="invite">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=invite&amp;approved=" title="<?php echo JText::_('MOD_GROUPS_INVITE_TITLE'); ?>"><?php echo $this->escape($this->invite); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_INVITE'); ?></span>
+				</td>
+				<td class="restricted">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=restricted&amp;approved=" title="<?php echo JText::_('MOD_GROUPS_RESTRICTED_TITLE'); ?>"><?php echo $this->escape($this->restricted); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_RESTRICTED'); ?></span>
+				</td>
+				<td class="open">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;discoverability=&amp;policy=open&amp;approved=" title="<?php echo JText::_('MOD_GROUPS_OPEN_TITLE'); ?>"><?php echo $this->escape($this->open); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_OPEN'); ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
-<table class="groups-stats-overview">
-	<thead>
-		<tr>
-			<th scope="col"><?php echo JText::_('Published'); ?></th>
-			<th scope="col"><?php echo JText::_('Pending Approval'); ?></th>
-			<th scope="col"><?php echo JText::_('Last 24 hours'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td class="approved"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;approved=1&amp;discoverability=&amp;policy=" title="<?php echo JText::_('View approved groups'); ?>"><?php echo $this->escape($this->approved); ?></a></td>
-			<td class="pending"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;approved=0&amp;discoverability=&amp;policy=" title="<?php echo JText::_('View pending groups'); ?>"><?php echo $this->escape($this->pending); ?></a></td>
-			<td class="newest"><a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;created=pastday&amp;discoverability=&amp;policy=&amp;approved=" title="<?php echo JText::_('View groups created in the last 24 hours'); ?>"><?php echo $this->escape($this->pastDay); ?></a></td>
-		</tr>
-	</tbody>
-</table>
+	<table class="stats-overview">
+		<tbody>
+			<tr>
+				<td class="approved">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;approved=1&amp;discoverability=&amp;policy=" title="<?php echo JText::_('MOD_GROUPS_PUBLISHED_TITLE'); ?>"><?php echo $this->escape($this->approved); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_PUBLISHED'); ?></span>
+				</td>
+				<td class="pending">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;approved=0&amp;discoverability=&amp;policy=" title="<?php echo JText::_('MOD_GROUPS_PENDING_TITLE'); ?>"><?php echo $this->escape($this->pending); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_PENDING'); ?></span>
+				</td>
+				<td class="newest">
+					<a href="index.php?option=com_groups&amp;controller=manage&amp;type=<?php echo $this->type; ?>&amp;created=pastday&amp;discoverability=&amp;policy=&amp;approved=" title="<?php echo JText::_('MOD_GROUPS_NEW_TITLE'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
+					<span><?php echo JText::_('MOD_GROUPS_NEW'); ?></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

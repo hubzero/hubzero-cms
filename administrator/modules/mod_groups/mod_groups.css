@@ -1,82 +1,47 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/modules/mod_dashboard/dashboard.css
+ * @file        administrator/modules/mod_groups/groups.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-	.groups-stats-overview {
-		border-top: none;
-		border-bottom: none;
-		margin: 0;
+	.mod_groups {
+		padding: 0 0 2em 0;
+	}
+	.mod_groups .stats-overview {
+		border: none;
+		margin: 2em 0 0 0;
 		width: 100%;
 		text-align: left;
 		font-size: 1em;
 		border-collapse: collapse;
-		background: #fff;
+		background: transparent;
 	}
-	.groups-stats-overview thead th {
-		color: #aaa;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		border-bottom: none;
-		padding: 5px 10px;
-	}
-	.groups-stats-overview tbody td {
-		padding: 5px 10px 15px 10px;
-		font-size: 2.5em;
-		font-weight: normal;
-		border-left: 1px solid #dfdfdf;
-		border-right: 1px solid #dfdfdf;
-		color: #777;
-		border-bottom: 1px solid #dfdfdf;
-	}
-	.groups-stats-overview tbody td a {
-		color: #999;
-		border: none;
-		text-decoration: none;
-	}
-	.groups-stats-overview tbody td a:hover {
-		color: #000;
-	}
-	
-	.groups-stats-overview tbody td.newest,
-	.groups-stats-overview tbody td.newest a {
-	}
-	.groups-stats-overview tbody td.approved,
-	.groups-stats-overview tbody td.approved a {
-	}
-	.groups-stats-overview tbody td.pending,
-	.groups-stats-overview tbody td.pending a {
-	}
-	.groups-stats-overview tbody td.private,
-	.groups-stats-overview tbody td.private a {
-	}
-	.groups-stats-overview tbody td.public,
-	.groups-stats-overview tbody td.public a {
-	}
-	.groups-stats-overview tbody td.protected,
-	.groups-stats-overview tbody td.protected a {
-	}
-	.groups-stats-overview tbody td.closed,
-	.groups-stats-overview tbody td.closed a {
-	}
-	.groups-stats-overview tbody td.invite,
-	.groups-stats-overview tbody td.invite a {
-	}
-	.groups-stats-overview tbody td.restricted,
-	.groups-stats-overview tbody td.restricted a {
-	}
-	.groups-stats-overview tbody td.open,
-	.groups-stats-overview tbody td.open a {
-	}
-	
-	.groups-stats-overview tbody td span {
-		color: #aaa;
-		font-size: 14px;
-		line-height: 14px;
-		font-weight: normal;
-		margin: 0 1.5em 0 0;
+	.mod_groups .stats-overview tbody tr td,
+	.mod_groups .stats-overview tbody tr td:first-child,
+	.mod_groups .stats-overview tbody tr td:last-child {
+		text-align: center;
+		font-size: 3em;
+		font-weight: 300;
 		padding: 0;
+		line-height: 1;
+		border: none;
+	}
+	.mod_groups .stats-overview tbody tr td a {
+		color: #666;
+	}
+	.mod_groups .stats-overview tbody tr td.pending a {
+		color: orange;
+	}
+	.mod_groups .stats-overview tbody tr td>span {
+		font-size: 0.35em;
+		font-weight: 400;
+		display: block;
+		margin: 1em 0 0 0;
+		color: #999;
+	}
+
+	.mod_groups .stats-overview tbody td.pending:before,
+	.mod_groups .stats-overview tbody td.pending a:before {
+		display: none;
 	}

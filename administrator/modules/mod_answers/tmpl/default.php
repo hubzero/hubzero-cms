@@ -40,19 +40,19 @@ $total = $this->closed + $this->open;
 				<td colspan="2">
 					<div>
 						<div class="graph">
-							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo round(($this->closed / $total) * 100, 2); ?>% closed</span></strong>
+							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo JText::sprintf('MOD_ANSWERS_TOTAL_CLOSED', round(($this->closed / $total) * 100, 2)); ?></span></strong>
 						</div>
 					</div>
 				</td>
 			</tr>
 			<tr>
 				<td class="closed">
-					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('View closed questions'); ?>"><?php echo $this->escape($this->closed); ?></a>
-					<span><?php echo JText::_('Closed'); ?></span>
+					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('MOD_ANSWERS_CLOSED_TITLE'); ?>"><?php echo $this->escape($this->closed); ?></a>
+					<span><?php echo JText::_('MOD_ANSWERS_CLOSED'); ?></span>
 				</td>
 				<td class="asked">
-					<a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('View open questions'); ?>"><?php echo $this->escape($this->open); ?></a>
-					<span><?php echo JText::_('Asked'); ?></span>
+					<a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('MOD_ANSWERS_ASKED_TITLE'); ?>"><?php echo $this->escape($this->open); ?></a>
+					<span><?php echo JText::_('MOD_ANSWERS_ASKED'); ?></span>
 				</td>
 			</tr>
 		</tbody>

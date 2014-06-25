@@ -47,17 +47,17 @@ $total = $this->confirmed + $this->unconfirmed;
 			</tr>
 			<tr>
 				<td class="confirmed">
-					<a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('View confirmed members'); ?>"><?php echo $this->escape($this->confirmed); ?></a>
-					<span><?php echo JText::_('Confirmed'); ?></span>
+					<a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_CONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->confirmed); ?></a>
+					<span><?php echo JText::_('MOD_MEMBERS_CONFIRMED'); ?></span>
 				</td>
 				<td class="unconfirmed">
-					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('View unconfirmed members'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
-					<span><?php echo JText::_('Unconfirmed'); ?></span>
+					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
+					<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
 				</td>
-				<!-- <td class="newest">
-					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('View newest members'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
-					<span><?php echo JText::_('~24 hours'); ?></span>
-				</td> -->
+				<?php /*<td class="newest">
+					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
+					<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
+				</td>*/ ?>
 			</tr>
 		</tbody>
 	</table>

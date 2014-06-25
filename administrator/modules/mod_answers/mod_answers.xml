@@ -41,13 +41,13 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="showMine" type="radio" default="0" label="Show Your Entries" description="Show/Hide entries created by you">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
+				<field name="showMine" type="radio" default="0" label="MOD_ANSWERS_MINE_LABEL" description="MOD_ANSWERS_MINE_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_ANSWERS_CACHE_LABEL" description="MOD_ANSWERS_CACHE_DESC">
+					<option value="1">MOD_ANSWERS_CACHE_GLOBAL</option>
+					<option value="0">MOD_ANSWERS_CACHE_NONE</option>
 				</field>
 			</fieldset>
 		</fields>

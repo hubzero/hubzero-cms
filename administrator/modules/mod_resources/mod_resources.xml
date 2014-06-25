@@ -41,17 +41,17 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_RESOURCES_CACHE_LABEL" description="MOD_RESOURCES_CACHE_DESC">
+					<option value="1">MOD_RESOURCES_CACHE_GLOBAL</option>
+					<option value="0">MOD_RESOURCES_CACHE_NONE</option>
 				</field>
 			</fieldset>
 			<fieldset name="colors">
-				<field name="color_published" type="text" default="#656565" label="Published" description="The graph color for published items." />
-				<field name="color_draft" type="text" default="#999999" label="Draft" description="The graph color for draft items." />
-				<field name="color_pending" type="text" default="#f9d180" label="Pending" description="The graph color for pending items." />
-				<field name="color_removed" type="text" default="#cccccc" label="Removed" description="The graph color for removed items." />
-				<field name="color_unpublished" type="text" default="#ffffff" label="Unpublished" description="The graph color for unpublished items." />
+				<field name="color_published" type="text" default="#656565" label="MOD_RESOURCES_COLOR_PUBLISHED_LABEL" description="MOD_RESOURCES_COLOR_PUBLISHED_DESC" />
+				<field name="color_draft" type="text" default="#999999" label="MOD_RESOURCES_COLOR_DRAFT_LABEL" description="MOD_RESOURCES_COLOR_DRAFT_DESC" />
+				<field name="color_pending" type="text" default="#f9d180" label="MOD_RESOURCES_COLOR_PENDING_LABEL" description="MOD_RESOURCES_COLOR_PENDING_DESC" />
+				<field name="color_removed" type="text" default="#cccccc" label="MOD_RESOURCES_COLOR_REMOVED_LABEL" description="MOD_RESOURCES_COLOR_REMOVED_DESC" />
+				<field name="color_unpublished" type="text" default="#ffffff" label="MOD_RESOURCES_COLOR_UNPUBLISHED_LABEL" description="MOD_RESOURCES_COLOR_UNPUBLISHED_DESC" />
 			</fieldset>
 		</fields>
 	</config>

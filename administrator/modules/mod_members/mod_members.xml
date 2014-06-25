@@ -41,9 +41,9 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_MEMBERS_CACHE_LABEL" description="MOD_MEMBERS_CACHE_DESC">
+					<option value="1">MOD_MEMBERS_CACHE_GLOBAL</option>
+					<option value="0">MOD_MEMBERS_CACHE_NONE</option>
 				</field>
 			</fieldset>
 		</fields>

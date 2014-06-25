@@ -41,19 +41,19 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="wishlist" type="text" default="" label="Wishlist" description="The name of the wishlist to display stats for. If left blank, it will use the 'main' site list." />
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="wishlist" type="text" default="" label="MOD_WISHLIST_LIST_LABEL" description="MOD_WISHLIST_LIST_DESC" />
+				<field name="cache" type="list" default="1" label="MOD_WISHLIST_CACHE_LABEL" description="MOD_WISHLIST_CACHE_DESC">
+					<option value="1">MOD_WISHLIST_CACHE_GLOBAL</option>
+					<option value="0">MOD_WISHLIST_CACHE_NONE</option>
 				</field>
 			</fieldset>
 			<fieldset name="colors">
-				<field name="color_pending" type="text" default="#656565" label="Pending" description="The graph color for pending items." />
-				<field name="color_granted" type="text" default="#999999" label="Granted" description="The graph color for granted items." />
-				<field name="color_accepted" type="text" default="#f9d180" label="Accepted" description="The graph color for accepted items." />
-				<field name="color_removed" type="text" default="#cccccc" label="Removed" description="The graph color for removed items." />
-				<field name="color_withdrawn" type="text" default="#ffffff" label="Withdrawn" description="The graph color for withdrawn items." />
-				<field name="color_rejected" type="text" default="#333333" label="Rejected" description="The graph color for rejected items." />
+				<field name="color_pending" type="text" default="#656565" label="MOD_WISHLIST_COLOR_PENDING_LABEL" description="MOD_WISHLIST_COLOR_PENDING_DESC" />
+				<field name="color_granted" type="text" default="#999999" label="MOD_WISHLIST_COLOR_GRANTED_LABEL" description="MOD_WISHLIST_COLOR_GRANTED_DESC" />
+				<field name="color_accepted" type="text" default="#f9d180" label="MOD_WISHLIST_COLOR_ACCEPTED_LABEL" description="MOD_WISHLIST_COLOR_ACCEPTED_DESC" />
+				<field name="color_removed" type="text" default="#cccccc" label="MOD_WISHLIST_COLOR_REMOVED_LABEL" description="MOD_WISHLIST_COLOR_REMOVED_DESC" />
+				<field name="color_withdrawn" type="text" default="#ffffff" label="MOD_WISHLIST_COLOR_WITHDRAWN_LABEL" description="MOD_WISHLIST_COLOR_WITHDRAWN_DESC" />
+				<field name="color_rejected" type="text" default="#333333" label="MOD_WISHLIST_COLOR_REJECTED_LABEL" description="MOD_WISHLIST_COLOR_REJECTED_DESC" />
 			</fieldset>
 		</fields>
 	</config>

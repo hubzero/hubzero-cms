@@ -38,30 +38,18 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="type" type="list" default="1" label="Type" description="Select the type of group to display stats for">
-			<option value="1">Hub</option>
-			<option value="0">System</option>
-			<option value="2">Project</option>
-			<option value="3">Partner</option>
-		</param>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="type" type="list" default="1" label="Type" description="Select the type of group to display stats for">
-					<option value="1">Hub</option>
-					<option value="0">System</option>
-					<option value="2">Project</option>
-					<option value="3">Partner</option>
+				<field name="type" type="list" default="1" label="MOD_GROUPS_TYPE_LABEL" description="MOD_GROUPS_TYPE_DESC">
+					<option value="1">MOD_GROUPS_TYPE_HUB</option>
+					<option value="0">MOD_GROUPS_TYPE_SYSTEM</option>
+					<option value="2">MOD_GROUPS_TYPE_PROJECT</option>
+					<option value="3">MOD_GROUPS_TYPE_PARTNER</option>
 				</field>
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_GROUPS_CACHE_LABEL" description="MOD_GROUPS_CACHE_DESC">
+					<option value="1">MOD_GROUPS_CACHE_GLOBAL</option>
+					<option value="0">MOD_GROUPS_CACHE_NONE</option>
 				</field>
 			</fieldset>
 		</fields>
