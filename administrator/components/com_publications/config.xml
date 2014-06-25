@@ -157,6 +157,10 @@
 			<option value="0">Hide</option>
 			<option value="3">Published</option>
 		</field>
+		<field name="show_linked_data" type="list" default="1" label="Linked Data" description="Show/Hide a link to an OAI-ORE compliant linked data representation in the HTML source for each publication">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
 		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing publication">
 			<option value="0">Hide All</option>
 			<option value="1">Manual And Auto</option>
