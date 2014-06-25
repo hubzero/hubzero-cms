@@ -369,19 +369,15 @@ if ($label == "none") {
 											</div>
 										<?php endif; ?>
 									</td>
-									<?php if($this->isAdmin === true) { ?>
+									<?php if($this->isAdmin === true) : ?>
 										<td class="col-edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">Edit</a></td>
-									<?php } ?>
+									<?php endif; ?>
 								</tr>
 								<tr>
-									<?php if($this->isAdmin === true) { ?>
-										<td></td>
-									<?php } ?>
-									<td></td>
-									<td <?php if ($label != "none") { echo 'colspan="2"'; } ?> class="citation-details">
+									<td <?php if ($label == "none") { echo 'colspan="2"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
 										<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
-											if (!$singleCitationView && ($cite->title && $cite->author && $cite->publisher))
+											if (!$singleCitationView)
 											{
 												echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); 
 											}
@@ -394,6 +390,9 @@ if ($label == "none") {
 											<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
+									<?php if($this->isAdmin === true) : ?>
+										<td></td>
+									<?php endif; ?>
 								</tr>
 								<?php $counter++; ?>
 							<?php endforeach; ?>

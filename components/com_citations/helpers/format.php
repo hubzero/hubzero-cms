@@ -684,11 +684,11 @@ class CitationFormat
 					{
 						if ($internally_cited_image)
 						{
-							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';  
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';  
 						}   
 						else
 						{
-							$html .= ' <span>|</span> <a href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';  
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';  
 						}
 					}
 				}
