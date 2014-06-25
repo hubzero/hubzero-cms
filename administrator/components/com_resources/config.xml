@@ -53,6 +53,11 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="uploadpath" type="text" menu="hide" default="/site/resources" label="COM_RESOURCES_UPLOADPATH_LABEL" description="COM_RESOURCES_UPLOADPATH_DESC" />
 		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_RESOURCES_MAXUPLOAD_LABEL" description="COM_RESOURCES_MAXUPLOAD_DESC" />
 		<field name="file_ext" type="text" menu="hide" label="COM_RESOURCES_EXTENSIONS_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_RESOURCES_EXTENSIONS_DESC" />
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="file_video_html5" type="list" default="1" label="COM_RESOURCES_HTML5VIDEO_LABEL" description="COM_RESOURCES_EXTENSIONS_DESCRIPTION">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 	</fieldset>
 	<fieldset name="creation">
 		<field name="autoapprove" type="radio" default="0" label="COM_RESOURCES_AUTOAPPROVE_LABEL" description="COM_RESOURCES_AUTOAPPROVE_DESC">
