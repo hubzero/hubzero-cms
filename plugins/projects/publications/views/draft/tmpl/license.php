@@ -60,7 +60,6 @@ $agreed			= $versionParams->get('licenseagreement', 0);
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
-
 ?>
 
 <!-- Load content selection browser //-->
@@ -70,14 +69,22 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 		<div class="pane-wrapper">
 			<span class="checker">&nbsp;</span>
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required && ($complete == 0 && !$this->license)) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?>
-				<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_LICENSE')); ?> <?php if ($this->license) { ?>
+				<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_LICENSE')); ?> <?php if ($this->license && count($this->selections) > 1) { ?>
 				<span class="edit-choice"><a href="<?php echo $selectUrl; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LICENSE_CHOICE'); ?></a></span><?php } ?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 				<?php if ($this->license) {
 						$info = $this->license->info;
 						if ($this->license->url) {
-							 $info .= ' <a href="' . $this->license->url . '" class="popup">Read license terms &rsaquo;</a>';
+							 $info .= ' <a href="' . $this->license->url . '" class="popup">' . JText::_('PLG_PROJECTS_PUBLICATIONS_READ_LICENSE_TERMS') . '</a>';
+						} elseif ($this->license->text)
+						{
+							$info .= ' <a href="#more-lic" class="more-content">'
+							. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_LICENSE_TERMS')
+							. '</a>';
+							$info .= ' <div class="hidden">';
+							$info .= ' 	<div class="full-content" id="more-lic"><pre>' . $this->license->text . '</pre></div>';
+							$info .= ' </div>';
 						} ?>
 				<div class="chosenitem">
 						<p class="item-title">

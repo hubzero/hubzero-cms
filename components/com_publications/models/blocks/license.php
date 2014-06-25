@@ -140,6 +140,15 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		// Get selected license
 		$view->license = $objL->getPubLicense( $pub->version_id );
 
+		$view->selections = $objL->getBlockLicenses( $this->_manifest );
+
+		// Pre-select single available license
+		if (!$view->license && count($view->selections) == 1)
+		{
+			$view->license = new PublicationLicense( $this->_parent->_db );;
+			$view->license->load($view->selections[0]->id);
+		}
+
 		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
