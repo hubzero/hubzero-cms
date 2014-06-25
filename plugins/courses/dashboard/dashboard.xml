@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" course="courses">
 	<name>Courses - Dashboard</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Display a course manager dashboard</description>
@@ -42,14 +42,12 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="plugin_access" type="list" default="managers" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
-					<option value="anyone">Any HUB Visitor</option>
-					<option value="registered">Only Registered HUB Users</option>
-					<option value="members">Only Course Members</option>
-					<option value="nobody">Disabled/Off</option>
+				<field name="plugin_access" type="list" default="members" label="PLG_COURSES_DASHBOARD_ACCESS_LABEL" description="PLG_COURSES_DASHBOARD_ACCESS_DESC">
+					<option value="anyone">PLG_COURSES_DASHBOARD_ACCESS_ANYONE</option>
+					<option value="registered">PLG_COURSES_DASHBOARD_ACCESS_REGISTERED</option>
+					<option value="members">PLG_COURSES_DASHBOARD_ACCESS_MEMBERS</option>
+					<option value="nobody">PLG_COURSES_DASHBOARD_ACCESS_NOBODY</option>
 				</field>
-				<field type="spacer" />
-				<field name="display_limit" type="text" size="3" default="50" label="Display Limit" description="Number of items to return"/>
 			</fieldset>
 		</fields>
 	</config>

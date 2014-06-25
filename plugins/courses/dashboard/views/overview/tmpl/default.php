@@ -64,9 +64,9 @@ $base = $this->offering->link();
 	<div class="sub-section">
 		<div class="sub-section-overview">
 			<h3>
-				Overview
+				<?php echo JText::_('PLG_COURSES_DASHBOARD_OVERVIEW'); ?>
 			</h3>
-			<p>This is a quick overview of how students are doing and what's coming up.</p>
+			<p><?php echo JText::_('PLG_COURSES_DASHBOARD_OVERVIEW_ABOUT'); ?></p>
 		</div>
 		<div class="sub-section-content">
 			<div class="grid">
@@ -76,21 +76,21 @@ $base = $this->offering->link();
 						<tr>
 							<td>
 								<span>
-									<strong><?php echo $this->offering->members(array('count' => true, 'student'=>1)); ?></strong> enrolled
+									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student'=>1)) . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-passing">
 								<span>
-									<strong><?php echo $this->offering->gradebook()->countPassing(); ?></strong> passing
+									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="gradebook-failing">
 								<span>
-									<strong><?php echo $this->offering->gradebook()->countFailing(); ?></strong> failing
+									<strong><?php echo JText::sprintf('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
 								</span>
 							</td>
 						</tr>
@@ -101,54 +101,54 @@ $base = $this->offering->link();
 				<div class="dashboard-timeline-start">
 					<p><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
-			<?php if ($rows) { ?>
-				<ul class="dashboard-timeline">
-				<?php
-				foreach ($rows as $i => $row)
-				{
-					switch ($row->scope)
+				<?php if ($rows) { ?>
+					<ul class="dashboard-timeline">
+					<?php
+					foreach ($rows as $i => $row)
 					{
-						case 'unit':
-							$obj = CoursesModelUnit::getInstance($row->scope_id);
-							$url = $base . '&active=outline';
-						break;
-						case 'asset_group':
-							$obj = new CoursesModelAssetGroup($row->scope_id);
-							$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
-							$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
-						break;
-						case 'asset':
-							$obj = new CoursesModelAsset($row->scope_id);
-							$url = $base . '&active=outline&unit=&b=&c=';
-						break;
-					}
-					if (!$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group' && !$obj->get('parent')))
-					{
-						// skip containers
-						continue;
+						switch ($row->scope)
+						{
+							case 'unit':
+								$obj = CoursesModelUnit::getInstance($row->scope_id);
+								$url = $base . '&active=outline';
+							break;
+							case 'asset_group':
+								$obj = new CoursesModelAssetGroup($row->scope_id);
+								$unit = CoursesModelUnit::getInstance($obj->get('unit_id'));
+								$url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
+							break;
+							case 'asset':
+								$obj = new CoursesModelAsset($row->scope_id);
+								$url = $base . '&active=outline&unit=&b=&c=';
+							break;
+						}
+						if (!$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group' && !$obj->get('parent')))
+						{
+							// skip containers
+							continue;
+						}
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($url); ?>">
+								<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
+							</a>
+							<span class="details">
+								<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
+							</span>
+						</li>
+						<?php
+						if ($i > 0 && $row->scope == 'unit')
+						{
+							break;
+						}
 					}
 					?>
-					<li>
-						<a href="<?php echo JRoute::_($url); ?>">
-							<?php echo $this->escape(stripslashes($obj->get('title'))); ?>
-						</a>
-						<span class="details">
-							<time datetime="<?php echo $row->publish_up; ?>"><?php echo JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); ?></time>
-						</span>
-					</li>
-					<?php
-					if ($i > 0 && $row->scope == 'unit')
-					{
-						break;
-					}
-				}
-				?>
-				</ul>
-			<?php } else { ?>
-				<ul class="dashboard-timeline">
-					<li class="noresults">Nothing coming up in the next week.</li>
-				</ul>
-			<?php } ?>
+					</ul>
+				<?php } else { ?>
+					<ul class="dashboard-timeline">
+						<li class="noresults"><?php echo JText::_('PLG_COURSES_DASHBOARD_NOTHING_HAPPENING'); ?></li>
+					</ul>
+				<?php } ?>
 				<div class="dashboard-timeline-start">
 					<p><?php echo JHTML::_('date', $weeklater, JText::_('DATE_FORMAT_HZ1')); ?></p>
 				</div>
