@@ -69,6 +69,7 @@ HUB.Video = {
 			{
 				window.resizeTo(flash_width, flash_height + toolbar);
 			}
+			$jQ("#video-player").addClass('sized');
 		}
 		else
 		{
@@ -80,6 +81,7 @@ HUB.Video = {
 			if(isPopup) {
 				window.resizeTo(resize_width + padding, resize_height + toolbar);
 			}
+			$jQ("#video-player").addClass('sized');
 		}
 		
 		//remove the overlay
