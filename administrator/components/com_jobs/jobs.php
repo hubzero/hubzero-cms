@@ -61,17 +61,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Jobs'),
+	JText::_('COM_JOBS_JOBS'),
 	'index.php?option=com_jobs&controller=jobs',
 	$controllerName == 'jobs'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Categories'),
+	JText::_('COM_JOBS_CATEGORIES'),
 	'index.php?option=com_jobs&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Types'),
+	JText::_('COM_JOBS_TYPES'),
 	'index.php?option=com_jobs&controller=types',
 	$controllerName == 'types'
 );

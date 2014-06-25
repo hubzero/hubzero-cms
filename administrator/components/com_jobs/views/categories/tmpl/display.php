@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('category');
 
-JToolBarHelper::title(JText::_('Jobs Manager') . ': Categories', 'addedit.png');
+JToolBarHelper::title(JText::_('COM_JOBS') . ': ' . JText::_('COM_JOBS_CATEGORIES'), 'addedit.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -42,7 +42,7 @@ if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::editList();
 }
-JToolBarHelper::save('saveorder', 'Save Order');
+JToolBarHelper::save('saveorder', 'COM_JOBS_SAVE_ORDER');
 if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
@@ -59,13 +59,13 @@ JToolBarHelper::help('categories');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" />
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort', JText::_('ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort', JText::_('Order'), 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th>
-					<?php echo JHTML::_('grid.sort', JText::_('Title'), 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>

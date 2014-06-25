@@ -88,23 +88,23 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 			$default = array(
 				array(
 					'id' => 0,
-					'category' => ucfirst(JText::_('Full-time'))
+					'category' => ucfirst(JText::_('COM_JOBS_CATEGORY_FULLTIME'))
 				),
 				array(
 					'id' => 0,
-					'category' => ucfirst(JText::_('Part-time'))
+					'category' => ucfirst(JText::_('COM_JOBS_CATEGORY_PARTTIME'))
 				),
 				array(
 					'id' => 0,
-					'category' => ucfirst(JText::_('Contract'))
+					'category' => ucfirst(JText::_('COM_JOBS_CATEGORY_CONTRACT'))
 				),
 				array(
 					'id' => 0,
-					'category' => ucfirst(JText::_('Internship'))
+					'category' => ucfirst(JText::_('COM_JOBS_CATEGORY_INTERNSHIP'))
 				),
 				array(
 					'id' => 0,
-					'category' => ucfirst(JText::_('Temporary'))
+					'category' => ucfirst(JText::_('COM_JOBS_CATEGORY_TEMPORARY'))
 				)
 			);
 
@@ -228,7 +228,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Type successfully saved')
+			JText::_('COM_JOBS_ITEM_SAVED')
 		);
 	}
 
@@ -250,7 +250,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No type selected'),
+				JText::_('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -267,7 +267,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Type(s) successfully removed')
+			JText::sprintf('COM_JOBS_ITEMS_REMOVED', count($ids))
 		);
 	}
 

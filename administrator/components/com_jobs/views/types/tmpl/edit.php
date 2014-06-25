@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('type');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Job Types') . ': ' . $text, 'addedit.png');
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+JToolBarHelper::title(JText::_('COM_JOBS') . ': ' . JText::_('COM_JOBS_TYPES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if (form.category.value == '') {
-		alert('Type must have a title');
+		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -64,15 +64,15 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<?php if ($this->task == 'edit') { ?>
 	<p class="warning">
-		<?php echo JText::_('Warning: changing the type title will affect all currently available job postings with this type.'); ?>
+		<?php echo JText::_('COM_JOBS_WARNING_EDIT_TYPE'); ?>
 	</p>
 	<?php } ?>
 
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Edit type title'); ?></span></legend>
+		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="category"><?php echo JText::_('Type Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<label for="category"><?php echo JText::_('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 			<input type="text" name="category" id="category" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
 		</div>
 

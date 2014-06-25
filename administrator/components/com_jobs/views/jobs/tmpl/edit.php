@@ -33,8 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = JobsHelper::getActions('job');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Job').': '. $text, 'addedit.png');
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_JOBS') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -46,8 +47,8 @@ JToolBarHelper::help('job');
 $now = JFactory::getDate()->toSql();
 
 $usonly = $this->config->get('usonly');
-$this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : htmlentities(JText::_('United States'));
-$this->row->code = !$this->isnew ? $this->row->code : JText::_('N/A (new job)');
+$this->row->companyLocationCountry = !$this->isnew ? $this->row->companyLocationCountry : JText::_('COM_JOBS_USA');
+$this->row->code = !$this->isnew ? $this->row->code : JText::_('COM_JOBS_ISNEW');
 
 $startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->startdate, 'Y-M-d') : '';
 $closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->closedate, 'Y-M-d') : '';
@@ -66,27 +67,27 @@ $expired = $this->subscription->expires && $this->subscription->expires < $now ?
 	switch ($this->row->status)
 	{
 		case 0:
-			$alt   = 'Pending approval';
+			$alt   = JText::_('COM_JOBS_STATUS_PENDING');
 			$class = 'post_pending';
 			break;
 		case 1:
 			$alt 	= $expired
-					? JText::_('Expired/Invalid Subscription')
-					: JText::_('Active');
+					? JText::_('COM_JOBS_STATUS_EXPIRED')
+					: JText::_('COM_JOBS_STATUS_ACTIVE');
 			$class  = $expired
 					? 'post_invalidsub'
 					: 'post_active';
 			break;
 		case 2:
-			$alt   = 'Deleted';
+			$alt   = JText::_('COM_JOBS_STATUS_DELETED');
 			$class = 'post_deleted';
 			break;
 		case 3:
-			$alt   = 'Inactive';
+			$alt   = JText::_('COM_JOBS_STATUS_INACTIVE');
 			$class = 'post_inactive';
 			break;
 		case 4:
-			$alt   = 'Draft';
+			$alt   = JText::_('COM_JOBS_STATUS_DRAFT');
 			$class = 'post_draft';
 			break;
 		default:
@@ -109,13 +110,13 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.title.value == ''){
-		alert('Job must have a title.');
+		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_TITLE'); ?>');
 	} else if (form.description.value == ''){
-		alert('Job must have a description.');
+		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_DESCRIPTION'); ?>');
 	} else if (form.companyLocation.value == ''){
-		alert('Job must have a location.');
+		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_LOCATION'); ?>');
 	} else if (form.companyName.value == ''){
-		alert('Job must have a company name.');
+		alert('<?php echo JText::_('COM_JOBS_ERROR_MISSING_COMPANY'); ?>');
 	} else {
 		form.task.value = 'save';
 		form.submit();
@@ -127,43 +128,43 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Company'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_JOBS_FIELDSET_COMPANY'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="companyName"><?php echo JText::_('Name'); ?>: <span class="required">required</span></label><br />
+				<label for="companyName"><?php echo JText::_('COM_JOBS_FIELD_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="companyName" id="companyName" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyName)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="companyWebsite"><?php echo JText::_('URL'); ?>:</label><br />
+				<label for="companyWebsite"><?php echo JText::_('COM_JOBS_FIELD_URL'); ?>:</label><br />
 				<input type="text" name="companyWebsite" id="companyWebsite" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyWebsite)); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('City, State'); ?>">
-				<label for="companyLocation"><?php echo JText::_('Location'); ?>: <span class="required">required</span></label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_JOBS_FIELD_LOCATION_HINT'); ?>">
+				<label for="companyLocation"><?php echo JText::_('COM_JOBS_FIELD_LOCATION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="companyLocation" id="companyLocation" size="60" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->companyLocation)); ?>" />
-				<span class="hint"><?php echo JText::_('City, State'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_JOBS_FIELD_LOCATION_HINT'); ?></span>
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Job'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_JOBS_FIELDSET_JOB'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="cid"><?php echo JText::_('Category'); ?>:</label><br />
+				<label for="cid"><?php echo JText::_('COM_JOBS_FIELD_CATEGORY'); ?>:</label><br />
 				<?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="type"><?php echo JText::_('Type'); ?>:</label><br />
+				<label for="type"><?php echo JText::_('COM_JOBS_FIELD_TYPE'); ?>:</label><br />
 				<?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="companyLocationCountry"><?php echo JText::_('Country'); ?>:</label><br />
+				<label for="companyLocationCountry"><?php echo JText::_('COM_JOBS_FIELD_COUNTRY'); ?>:</label><br />
 				<?php if ($usonly) { ?>
-					<?php echo JText::_('United States'); ?>
-					<p class="hint"><?php echo JText::_('Only US-based jobs can be advertised on this site.'); ?></p>
+					<?php echo JText::_('COM_JOBS_USA'); ?>
+					<p class="hint"><?php echo JText::_('COM_JOBS_USA_HINT'); ?></p>
 					<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
 				<?php } else {
 					$out  = "\t\t\t\t".'<select name="companyLocationCountry" id="companyLocationCountry">'."\n";
-					$out .= "\t\t\t\t".' <option value="">(select from list)</option>'."\n";
+					$out .= "\t\t\t\t".' <option value="">' . JText::_('COM_JOBS_SELECT') . '</option>'."\n";
 					//$countries = getcountries();
 
 					$countries = \Hubzero\Geocode\Geocode::countries();
@@ -182,45 +183,45 @@ function submitbutton(pressbutton)
 				<?php } ?>
 			</div>
 			<div class="input-wrap">
-				<label for="title"><?php echo JText::_('Title'); ?>: <span class="required">required</span></label><br />
+				<label for="title"><?php echo JText::_('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="title" id="title" maxlength="200" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('Wiki formatting is enabled.'); ?>">
-				<label for="description"><?php echo JText::_('Description'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?>">
+				<label for="description"><?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION'); ?>:</label><br />
 				<textarea name="description" id="description"  cols="55" rows="30"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
-				<span class="hint"><?php echo JText::_('Wiki formatting is enabled.'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="startdate"><?php echo JText::_('Position Start Date'); ?>:</label><br />
+				<label for="startdate"><?php echo JText::_('COM_JOBS_FIELD_STARTDATE'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $startdate, 'startdate', 'startdate'); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="closedate"><?php echo JText::_('Applications Due'); ?>:</label><br />
+				<label for="closedate"><?php echo JText::_('COM_JOBS_FIELD_DUEDATE'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $closedate, 'closedate', 'closedate'); ?>
 			</div>
-			<div class="input-wrap">
-				<label for="applyExternalUrl"><?php echo JText::_('External URL for a job application'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?>">
+				<label for="applyExternalUrl"><?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL'); ?>:</label><br />
 				<input type="text" name="applyExternalUrl" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
-				<span class="hint"><?php echo JText::_('Include http://'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
 				<input type="checkbox" class="option" name="applyInternal" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
-				<label><?php echo JText::_('Allow internal application'); ?></label>
+				<label><?php echo JText::_('COM_JOBS_FIELD_APPLY_INTERNAL'); ?></label>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Contact Information') . ' ' . JText::_('(optional)'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_JOBS_FIELDSET_CONTACT_INFO'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="contactName"><?php echo JText::_('Contact Name'); ?>:</label>
+				<label for="contactName"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_NAME'); ?>:</label>
 				<input type="text" name="contactName" id="contactName" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactName)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="contactEmail"><?php echo JText::_('Contact Email'); ?>:</label></th>
+				<label for="contactEmail"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_EMAIL'); ?>:</label></th>
 				<input type="text" name="contactEmail" id="contactEmail" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactEmail)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="contactPhone"><?php echo JText::_('Contact Phone'); ?>:</label></th>
+				<label for="contactPhone"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_PHONE'); ?>:</label></th>
 				<input type="text" name="contactPhone" id="contactPhone" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactPhone)); ?>" />
 			</div>
 		</fieldset>
@@ -230,41 +231,41 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('Added'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_CREATED'); ?>:</th>
 					<td><?php echo $this->row->added; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Added by'); ?>:</th>
-					<td><?php echo $this->row->addedBy; if ($this->job->employerid == 1) { echo ' ' . JText::_('(admin subscription)'); } ?></td>
+					<th><?php echo JText::_('COM_JOBS_FIELD_CREATOR'); ?>:</th>
+					<td><?php echo $this->row->addedBy; if ($this->job->employerid == 1) { echo ' ' . JText::_('COM_JOBS_ADMIN'); } ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Last changed'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_MODIFIED'); ?>:</th>
 					<td>
-						<?php echo ($this->job->edited && $this->job->edited !='0000-00-00 00:00:00') ? $this->job->edited : 'N/A'; ?>
+						<?php echo ($this->job->edited && $this->job->edited !='0000-00-00 00:00:00') ? $this->job->edited : JText::_('COM_JOBS_NOT_APPLICABLE'); ?>
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Last changed by'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_MODIFIER'); ?>:</th>
 					<td>
-						<?php echo ($this->job->editedBy) ? $this->job->editedBy : 'N/A'; ?>
+						<?php echo ($this->job->editedBy) ? $this->job->editedBy : JText::_('COM_JOBS_NOT_APPLICABLE'); ?>
 					</td>
 				</tr>
 			<?php if (isset($this->subscription->id)) { ?>
 				<tr>
-					<th><?php echo JText::_('User subscription'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_USER_SUBSCRIPTION'); ?>:</th>
 					<td>
 						<?php echo $this->subscription->code;
-						if (!$this->job->inactive) { echo ' ' . JText::_('(active') . ' ' . JText::_(', expires') . ' ' . $this->subscription->expires . ')';  } ?>
+						if (!$this->job->inactive) { echo ' ' . JText::sprintf('COM_JOBS_FIELD_USER_SUBSCRIPTION_EXPIRES', $this->subscription->expires); } ?>
 					</td>
 				</tr>
 			<?php } ?>
 				<tr>
-					<th><?php echo JText::_('Job Ad Status'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_STATUS'); ?>:</th>
 					<td><?php echo $alt; ?></td>
 				</tr>
 			<?php if ($opendate) { ?>
 				<tr>
-					<th><?php echo JText::_('Job Ad Published'); ?>:</th>
+					<th><?php echo JText::_('COM_JOBS_FIELD_AD_PUBLISHED'); ?>:</th>
 					<td><?php echo $this->row->opendate; ?></td>
 				</tr>
 			<?php } ?>
@@ -272,30 +273,30 @@ function submitbutton(pressbutton)
 		</table>
 <?php } ?>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Manage this Job'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_JOBS_FIELDSET_MANAGE'); ?></span></legend>
 
 			<?php if (!$this->isnew) { ?>
 				<fieldset>
-					<legend><span><?php echo JText::_('Change Status / Take Action'); ?>:</span></legend>
+					<legend><span><?php echo JText::_('COM_JOBS_FIELDSET_TAKE_ACTION'); ?>:</span></legend>
 
 					<div class="input-wrap">
-						<input type="radio" name="action" value="message" /><?php echo JText::_('No action / Send message to author'); ?><br />
+						<input type="radio" name="action" value="message" /><?php echo JText::_('COM_JOBS_FIELD_ACTION_NONE'); ?><br />
 						<?php if ($this->row->status != 1) { ?>
-							<input type="radio" name="action" value="publish" /> <?php echo JText::_('Publish Ad'); ?>
+							<input type="radio" name="action" value="publish" /> <?php echo JText::_('COM_JOBS_FIELD_ACTION_PUBLISH'); ?>
 						<?php } else { ?>
-							<input type="radio" name="action" value="unpublish" /> <?php echo JText::_('Unpublish Ad'); ?>
+							<input type="radio" name="action" value="unpublish" /> <?php echo JText::_('COM_JOBS_FIELD_ACTION_UNPUBLISH'); ?>
 						<?php } ?>
 						<br />
-						<input type="radio" name="action" value="delete" /> <?php echo JText::_('Delete Ad'); ?><br />
+						<input type="radio" name="action" value="delete" /> <?php echo JText::_('COM_JOBS_FIELD_ACTION_DELETE'); ?><br />
 					</div>
 				</fieldset>
 
 				<div class="input-wrap">
-					<?php echo JText::_('Message to author'); ?>: <br />
+					<?php echo JText::_('COM_JOBS_FIELD_MESSAGE'); ?>: <br />
 					<textarea name="message" id="message"  cols="30" rows="5"></textarea>
 				</div>
 			<?php } else { ?>
-				<p><?php echo JText::_('This is a new job ad. Please save it as draft before admin option become available.'); ?></p>
+				<p><?php echo JText::_('COM_JOBS_WARNING_MUST_SAVE_FIRST'); ?></p>
 			<?php } ?>
 
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

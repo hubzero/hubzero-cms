@@ -175,7 +175,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Error: job not found.'),
+				JText::_('COM_JOBS_ERROR_MISSING_JOB'),
 				'error'
 			);
 			return;
@@ -190,7 +190,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Employer information not found.'),
+					JText::_('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
 					'error'
 				);
 				return;
@@ -216,11 +216,11 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 
 		// get job types
 		$this->view->types = $jt->getTypes();
-		$this->view->types[0] = JText::_('Any type');
+		$this->view->types[0] = JText::_('COM_JOBS_TYPE_ANY');
 
 		// get job categories
 		$this->view->cats = $jc->getCats();
-		$this->view->cats[0] = JText::_('No specific category');
+		$this->view->cats[0] = JText::_('COM_JOBS_CATEGORY_UNSPECIFIED');
 
 		$this->view->config = $this->config;
 		$this->view->isnew = $isnew;
@@ -266,7 +266,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Error: job not found.'),
+					JText::_('COM_JOBS_ERROR_MISSING_JOB'),
 					'error'
 				);
 				return;
@@ -283,7 +283,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			$job->addedBy = $this->juser->get('id');
 		}
 
-		$subject = $id ? JText::_('Status update on your job ad #') . $job->code : '';
+		$subject = $id ? JText::sprintf('COM_JOBS_MESSAGE_SUBJECT', $job->code) : '';
 
 		// save any new info
 		$job->bind($_POST);
@@ -303,28 +303,31 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 					// make sure we aren't over quota
 					$allowed_ads = $employerid==1 ? 1 : $this->_checkQuota($job, $employerid, $this->database);
 
-					if ($allowed_ads <= 0) {
-						$statusmsg .= JobsHtml::error(JText::_('Failed to publish this ad because user is over the limit according to the terms of his/her subscription.'));
+					if ($allowed_ads <= 0)
+					{
+						$statusmsg .= JobsHtml::error(JText::_('COM_JOBS_ERROR_OVER_LIMIT'));
 						$action = '';
-					} else {
-						$job->status 	= 1;
-						$job->opendate	= JFactory::getDate()->toSql();
-						$statusmsg .= JText::_('The job ad has been approved and published by site administrators.');
+					}
+					else
+					{
+						$job->status   = 1;
+						$job->opendate = JFactory::getDate()->toSql();
+						$statusmsg .= JText::_('COM_JOBS_MESSAGE_JOB_APPROVED');
 					}
 				break;
 
 				case 'unpublish':
 					$job->status 	= 3;
-					$statusmsg .= JText::_('The job ad has been unpublished by site administrators.');
+					$statusmsg .= JText::_('COM_JOBS_MESSAGE_JOB_UNPUBLISHED');
 				break;
 
 				case 'message':
-					//$statusmsg = $message ? JText::_('Site administrators sent a new message.') : '';
+
 				break;
 
 				case 'delete':
 					$job->status 	= 2;
-					$statusmsg .= JText::_('The job ad has been permanently deleted by site administrators.');
+					$statusmsg .= JText::_('COM_JOBS_MESSAGE_JOB_DELETED');
 				break;
 			}
 
@@ -350,28 +353,28 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			// E-mail "from" info
 			$from = array();
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('Jobs');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_JOBS_JOBS');
 
-			$juri 	 = JURI::getInstance();
+			$juri    = JURI::getInstance();
 			$jconfig = JFactory::getConfig();
 
 			$base 	 = rtrim($juri->base(), DS);
 			if (substr($base, -13) == 'administrator')
 			{
-				$base 		= substr($base, 0, strlen($base)-13);
+				$base = substr($base, 0, strlen($base)-13);
 			}
-			$sef 		= 'jobs/job/' . $job->code;
-			$link 		= rtrim($base, DS) . DS . trim($sef, DS);
+			$sef  = 'jobs/job/' . $job->code;
+			$link = rtrim($base, DS) . DS . trim($sef, DS);
 
 			// start email message
-			$emailbody .= $subject.':'."\r\n";
-			$emailbody .= $statusmsg."\r\n";
-			$emailbody  .= JText::_('Job Ad:') . ' ' . $link."\r\n";
+			$emailbody .= $subject . ':' . "\r\n";
+			$emailbody .= $statusmsg . "\r\n";
+			$emailbody  .= JText::_('COM_JOBS_MESSAGE_JOB') . ': ' . $link . "\r\n";
 			if ($message)
 			{
 				$emailbody .= "\n";
-				$emailbody .= '----------------------------------------------------------'."\r\n";
-				$emailbody .= "\n" . JText::_('Message from Administrator:') . "\n";
+				$emailbody .= '----------------------------------------------------------' . "\r\n";
+				$emailbody .= "\n" . JText::_('COM_JOBS_MESSAGE_FROM_ADMIN:') . "\n";
 				$emailbody .= $message;
 			}
 
@@ -380,14 +383,14 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject,
 				$emailbody, $from, array($job->addedBy), $this->_option)))
 			{
-				$this->setError(JText::_('Failed to message users.'));
+				$this->setError(JText::_('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Job successfully saved.') . ($statusmsg ? ' '.$statusmsg : '')
+			JText::_('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
 		);
 	}
 
@@ -430,7 +433,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No job selected'),
+				JText::_('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -447,7 +450,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Job(s) successfully removed')
+			JText::sprintf('COM_JOBS_ITEMS_REMOVED', count($ids))
 		);
 	}
 

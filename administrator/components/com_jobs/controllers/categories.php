@@ -131,7 +131,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Order successfully saved')
+			JText::_('COM_JOBS_ORDER_SAVED')
 		);
 	}
 
@@ -215,7 +215,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Category successfully saved')
+			JText::_('COM_JOBS_ITEM_SAVED')
 		);
 	}
 
@@ -237,7 +237,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No category selected'),
+				JText::_('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -254,7 +254,7 @@ class JobsControllerCategories extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Category(ies) successfully removed')
+			JText::sprint('COM_JOBS_ITEMS_REMOVED', count($ids))
 		);
 	}
 
