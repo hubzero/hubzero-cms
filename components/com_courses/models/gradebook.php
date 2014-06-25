@@ -230,7 +230,40 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
 			case 'forms':
 			case 'graded':
-				$views = $this->_tbl->getGradedItemCompletions($this->course->get('id'), $member_id);
+				// Get the graded assets (only need those attached to units for this calculation)
+				$asset  = new CoursesTableAsset(JFactory::getDBO());
+				$assets = $asset->find(
+					array(
+						'w' => array(
+							'course_id'   => $this->course->get('id'),
+							'section_id'  => $this->course->offering()->section()->get('id'),
+							'offering_id' => $this->course->offering()->get('id'),
+							'graded'      => true,
+							'state'       => 1,
+							'asset_scope' => 'asset_group'
+						),
+						'order_by'  => 'title',
+						'order_dir' => 'ASC'
+					)
+				);
+
+				// Get count of graded items taken
+				$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'asset_scope'=>'asset_group');
+				$grades  = $this->_tbl->find($filters);
+
+				$views = array();
+				foreach ($grades as $g)
+				{
+					if (!is_null($g->score) || !is_null($g->override))
+					{
+						$views[] = (object)array(
+							'member_id'    => $g->member_id,
+							'grade_weight' => $g->grade_weight,
+							'unit_id'      => $g->unit_id,
+							'asset_id'     => $g->scope_id
+						);
+					}
+				}
 			break;
 
 			case 'manual':
@@ -716,16 +749,79 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 **/
 	public function isEligibleForRecognition($member_id=null)
 	{
+		static $assets = null;
+		static $grades = null;
+
 		// Get a grade policy object
 		$gradePolicy = new CoursesModelGradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
 
-		// Get count of graded items taken
-		$results = $this->_tbl->getGradedItemsCompletionCount($this->course, $member_id);
+		if (!isset($assets))
+		{
+			// Get the graded assets
+			$asset  = new CoursesTableAsset(JFactory::getDBO());
+			$assets = $asset->find(
+				array(
+					'w' => array(
+						'course_id'   => $this->course->get('id'),
+						'section_id'  => $this->course->offering()->section()->get('id'),
+						'offering_id' => $this->course->offering()->get('id'),
+						'graded'      => true,
+						'state'       => 1,
+						'asset_scope' => 'asset_group'
+					),
+					'order_by'  => 'title',
+					'order_dir' => 'ASC'
+				)
+			);
+
+			// Get gradebook auxiliary assets
+			$auxiliary = $asset->findByScope(
+				'offering',
+				$this->course->offering()->get('id'),
+				array(
+					'asset_type'    => 'gradebook',
+					'asset_subtype' => 'auxiliary',
+					'graded'        => true,
+					'state'         => 1
+				)
+			);
+
+			$assets = array_merge($assets, $auxiliary);
+		}
+
+		// Get totals by type
+		$totals = array('exam'=>0, 'quiz'=>0, 'homework'=>0);
+		$counts = array();
+
+		if ($assets && count($assets) > 0)
+		{
+			foreach ($assets as $asset)
+			{
+				++$totals[$asset->grade_weight];
+			}
+		}
+
+		if (!isset($grades))
+		{
+			// Get count of graded items taken
+			$filters = array('member_id'=>$member_id, 'scope'=>'asset');
+			$grades  = $this->_tbl->find($filters);
+		}
 
 		// Restructure data
-		foreach ($results as $r)
+		foreach ($grades as $g)
 		{
-			$counts[$r->member_id][$r->grade_weight] = $r->count;
+			if (!is_null($g->score) || !is_null($g->override))
+			{
+				if (isset($counts[$g->member_id][$g->grade_weight]))
+				{
+					++$counts[$g->member_id][$g->grade_weight];
+				}
+				else
+				{
+					$counts[$g->member_id][$g->grade_weight] = 1;
+				}
+			}
 		}
 
 		// Get weights to determine what counts toward the final grade
@@ -733,8 +829,6 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$quiz_weight     = $gradePolicy->get('quiz_weight');
 		$homework_weight = $gradePolicy->get('homework_weight');
 
-		// Get count of total graded items
-		$totals = $this->_tbl->getGradedItemsCount($this->course);
 		$return = false;
 
 		if (isset($counts))
@@ -759,9 +853,9 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
 				if (
-					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']->count     == $counts[$m]['exam']))     &&
-					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']->count     == $counts[$m]['quiz']))     &&
-					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework']->count == $counts[$m]['homework'])) &&
+					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']     == $counts[$m]['exam']))     &&
+					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']     == $counts[$m]['quiz']))     &&
+					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework'] == $counts[$m]['homework'])) &&
 					$passing[$m]
 					)
 				{

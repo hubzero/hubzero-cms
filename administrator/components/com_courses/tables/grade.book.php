@@ -151,6 +151,10 @@ class CoursesTableGradeBook extends JTable
 			}
 			$where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
 		}
+		if (isset($filters['asset_scope']) && $filters['asset_scope'])
+		{
+			$where[] = "caa.scope = " . $this->_db->quote($filters['asset_scope']);
+		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
 			if (!is_array($filters['scope_id']))
@@ -612,90 +616,5 @@ class CoursesTableGradeBook extends JTable
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
-	}
-
-	/**
-	 * Get graded asset completion count
-	 *
-	 * @param      obj $course
-	 * @param      int $member_id
-	 * @return     void
-	 */
-	public function getGradedItemsCompletionCount($course, $member_id=null)
-	{
-		$user = (!is_null($member_id)) ? "AND gb.member_id = {$member_id}" : '';
-		$query   = "SELECT gb.member_id, ca.grade_weight, count(*) as count
-					FROM $this->_tbl AS gb
-					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
-					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
-					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
-					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
-					WHERE gb.scope='asset'
-					AND cu.offering_id = '".$course->offering()->get('id')."'
-					AND (score IS NOT NULL OR override IS NOT NULL)
-					{$user}
-					GROUP BY member_id, grade_weight";
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get asset completion count
-	 *
-	 * @FIXME: combine with function above
-	 *
-	 * @param      int $course_id
-	 * @param      int $member_id
-	 * @return     void
-	 */
-	public function getGradedItemCompletions($course_id, $member_id=null)
-	{
-		$user = '';
-		if (!is_null($member_id))
-		{
-			if (!is_array($member_id))
-			{
-				$member_id = (array) $member_id;
-			}
-
-			$user = "AND gb.member_id IN (" . implode(",", $member_id) . ")";
-		}
-
-		$query   = "SELECT gb.member_id, ca.grade_weight, cag.unit_id, ca.id as asset_id
-					FROM $this->_tbl AS gb
-					LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id
-					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
-					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
-					WHERE gb.scope='asset'
-					AND ca.course_id = '{$course_id}'
-					AND caa.scope = 'asset_group'
-					AND (score IS NOT NULL OR override IS NOT NULL)
-					{$user}";
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get graded asset count
-	 *
-	 * @param      obj $course
-	 * @return     void
-	 */
-	public function getGradedItemsCount($course)
-	{
-		$query   = "SELECT grade_weight, count(*) as count
-					FROM `#__courses_assets` ca
-					LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id
-					LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id
-					LEFT JOIN `#__courses_units` cu ON cag.unit_id = cu.id
-					WHERE graded = 1
-					AND ca.state = 1
-					AND offering_id = '".$course->offering()->get('id')."'
-					GROUP BY grade_weight;";
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList('grade_weight');
 	}
 }
