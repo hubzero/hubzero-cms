@@ -53,7 +53,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->_parseXml($ch, &$fields);
+				$this->_parseXml($ch, $fields);
 			}
 		}
 	}
