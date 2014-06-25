@@ -133,7 +133,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 						<?php
 							$end          = JRequest::getVar('end', '', 'get');
-							$publish_down = ($this->event->get('publish_down') != '0000-00-00 00:00:00') ? $this->event->get('publish_down') : $end;
+							$publish_down = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
 								$publish_down = JHTML::_('date', $publish_down, 'm/d/Y @ g:i a');
