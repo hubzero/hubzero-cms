@@ -334,6 +334,12 @@
 		padding-right: 3em;
 		padding-left: 0;
 	}
+	.item-sub-details {
+		display: block;
+		margin-left: 0;
+		color: #999;
+		padding-left: 3em;
+	}
 	ul.itemlist li.item-new,
 	div.item-new {
 		text-align: center;

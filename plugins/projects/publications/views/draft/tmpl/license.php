@@ -81,7 +81,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 						} ?>
 				<div class="chosenitem">
 						<p class="item-title">
-					<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?> 						<span class="item-details"><?php echo $info; ?></span></p>
+					<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?> 						<span class="item-sub-details"><?php echo $info; ?></span></p>
 					<input type="hidden" name="license" id="license" value="<?php echo $this->license->id; ?>" />
 					<?php if ($this->license->customizable) { ?>
 					<div class="agreements">
