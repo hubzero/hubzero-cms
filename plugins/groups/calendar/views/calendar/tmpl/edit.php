@@ -37,7 +37,7 @@ $includeRegistration = JRequest::getVar('includeRegistration', 0);
 //set button and form title
 $formTitle = JText::_('Add Group Event');
 $submitBtn = JText::_('Submit New Event');
-if($this->event->get('id'))
+if ($this->event->get('id'))
 {
 	$formTitle = JText::_('Edit Group Event');
 	$submitBtn = JText::_('Update Event');
@@ -50,7 +50,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 }
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
@@ -176,7 +176,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<div class="reccurance-options options-daily">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][daily]" class="daily-days">
-								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php endfor; ?>
@@ -188,7 +188,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<div class="reccurance-options options-weekly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][weekly]" class="weekly-weeks">
-								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php endfor; ?>
@@ -200,7 +200,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<div class="reccurance-options options-monthly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][monthly]" class="monthly-months">
-								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php endfor; ?>
@@ -212,7 +212,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<div class="reccurance-options options-yearly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
 							<select name="reccurance[interval][yearly]" class="yearly-years">
-								<?php for($i=1, $n=31; $i < $n; $i++) : ?>
+								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 								<?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
 								<?php endfor; ?>
@@ -247,7 +247,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						<?php echo JText::_('Include registration for this event.'); ?>
 					</label>
 
-					<div id="registration-fields" class="<?php if($ckd == '') { echo ' hide'; } ?>">
+					<div id="registration-fields" class="<?php if ($ckd == '') { echo ' hide'; } ?>">
 						<label><?php echo JText::_('Deadline:'); ?> <span class="required">Required for Registration Tab to Appear</span>
 							<?php
 								$register_by = '';
