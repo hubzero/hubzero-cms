@@ -1278,6 +1278,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				'layout'	=> $this->_name
 			)
 		);
+
 		$view->data 	= $data;
 		$view->params   = $params;
 
