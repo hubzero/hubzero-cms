@@ -261,7 +261,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-		 	$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
