@@ -508,7 +508,7 @@ class plgProjectsPublications extends JPlugin
 		// Load master type
 		$mt   							= new PublicationMasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->_project;
+		$view->publication->_project	= $this->_project;
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration($this->_database,
@@ -951,7 +951,7 @@ class plgProjectsPublications extends JPlugin
 			$objAA = new ProjectActivity ( $this->_database );
 			$aid   = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-				 	.' (id ' . $row->publication_id . ')', $row->publication_id, 'publication',
+					.' (id ' . $row->publication_id . ')', $row->publication_id, 'publication',
 				   JRoute::_('index.php?option=' . $this->_option . a .
 				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
 				   'pid=' . $row->publication_id), 'publication', 1 );
@@ -2708,7 +2708,7 @@ class plgProjectsPublications extends JPlugin
 					$access_groups = $pAccess->getGroups($oldid);
 					if ($access_groups)
 					{
-						foreach($access_groups as $ag)
+						foreach ($access_groups as $ag)
 						{
 							$pNewAccess = new PublicationAccess( $this->_database );
 							$pNewAccess->publication_version_id = $newid;
@@ -3560,7 +3560,7 @@ class plgProjectsPublications extends JPlugin
 			$objAA = new ProjectActivity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-				 	.' (id '.$pid.')', $pid, 'publication',
+					.' (id '.$pid.')', $pid, 'publication',
 				   JRoute::_('index.php?option=' . $this->_option . a .
 				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
 				   'pid='.$pid), 'publication', 1 );
@@ -3592,7 +3592,7 @@ class plgProjectsPublications extends JPlugin
 					'publication',
 					$profile->get('name') . ' '
 						. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-					 	.' (id '.$pid.')' . ' - ' . $juri->base()
+						.' (id '.$pid.')' . ' - ' . $juri->base()
 						. $sef . '/?version=' . $row->version_number
 				);
 			}
@@ -4297,7 +4297,7 @@ class plgProjectsPublications extends JPlugin
 			// Get dc:contibutor
 			$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 			$owner 	 = $this->_project->owned_by_user ? $this->_project->owned_by_user : $this->_project->created_by_user;
-			if($profile->load( $owner ))
+			if ($profile->load( $owner ))
 			{
 				$metadata['contributor'] = $profile->get('name');
 			}
@@ -5234,7 +5234,7 @@ class plgProjectsPublications extends JPlugin
 		// Delete authors if not selected
 		if (count($oauthors) > 0)
 		{
-			foreach($oauthors as $old)
+			foreach ($oauthors as $old)
 			{
 				if (!in_array($old->project_owner_id, $selections))
 				{
@@ -5871,7 +5871,7 @@ class plgProjectsPublications extends JPlugin
 		// Build our object
 		if (!empty($levels))
 		{
-			for($k=0; $k < count($levels); $k++)
+			for ($k=0; $k < count($levels); $k++)
 			{
 				$label = 'label'.$k;
 				$desc = 'desc'.$k;
@@ -5892,7 +5892,7 @@ class plgProjectsPublications extends JPlugin
 
 		if ($result == 1)
 		{
-		 	return PublicationsHtml::showSkillLevel($pAudience);
+			return PublicationsHtml::showSkillLevel($pAudience);
 		}
 		else
 		{
@@ -5938,7 +5938,7 @@ class plgProjectsPublications extends JPlugin
 		if (isset($selections['files']) && count($selections['files']) > 0)
 		{
 			$ordering = 1;
-			foreach($selections['files'] as $file)
+			foreach ($selections['files'] as $file)
 			{
 				$file = urldecode($file);
 
@@ -5983,7 +5983,7 @@ class plgProjectsPublications extends JPlugin
 			$selected = isset($selections['files']) && count($selections['files']) > 0	? $selections['files'] : array();
 			$ih = new ProjectsImgHandler();
 			jimport('joomla.filesystem.file');
-			foreach($originals as $old)
+			foreach ($originals as $old)
 			{
 				if (!in_array($old->filename, $selected))
 				{
@@ -6947,7 +6947,7 @@ class plgProjectsPublications extends JPlugin
 			{
 		        $last_idx = key($this->_panels);
 		    }
-		 	if ($panel == $current)
+			if ($panel == $current)
 			{
 		        $current_idx = key($this->_panels);
 				$next_idx = key($this->_panels) + 1;
@@ -7105,7 +7105,7 @@ class plgProjectsPublications extends JPlugin
 			$email = $profile->get('email');
 			$author = escapeshellarg($name.' <'.$email.'> ');
 
-			foreach($get as $file)
+			foreach ($get as $file)
 			{
 				if (is_file($path . DS . $file))
 				{
