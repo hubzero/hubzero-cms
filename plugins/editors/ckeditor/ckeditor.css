@@ -2,3 +2,6 @@
 .cke_button__hubzeromacro_label {
 	display: inline-block !important;
 }
+.cke {
+	visibility: visible !important;
+}
