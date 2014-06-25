@@ -164,7 +164,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend>
 						<?php echo JText::_('Repeating Settings'); ?>
 					</legend>
-					<label><?php echo JText::_('Reccurance:'); ?> <span class="optional">Optional</span>
+					<label><?php echo JText::_('Recurrence:'); ?> <span class="optional">Optional</span>
 						<select name="reccurance[freq]">
 							<?php foreach ($freqs as $k => $v) : ?>
 								<?php $sel = ($repeating['freq'] == $k) ? 'selected="selected"' : ''; ?>
