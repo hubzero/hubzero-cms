@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->css();
-$this->js();
+$this->css()
+     ->js();
 
 $juser = JFactory::getUser();
 
@@ -62,6 +62,7 @@ $base = $this->offering->link() . '&active=announcements';
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
 			</fieldset>
 		</div><!-- / .container -->
+
 		<?php if ($manager) { ?>
 			<p class="btn-container">
 				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
@@ -69,47 +70,47 @@ $base = $this->offering->link() . '&active=announcements';
 				</a>
 			</p>
 		<?php } ?>
-		<div class="acontainer">
 
-	<?php if ($rows->total() > 0) { ?>
-		<?php foreach ($rows as $row) { ?>
-			<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-				<?php echo $row->content('parsed'); ?>
-				<dl class="entry-meta">
-					<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
+		<div class="container">
+			<?php if ($rows->total() > 0) { ?>
+				<?php foreach ($rows as $row) { ?>
+					<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
+						<?php echo $row->content('parsed'); ?>
+						<dl class="entry-meta">
+							<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
+							<?php if ($manager) { ?>
+								<dd class="entry-author">
+									<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+								</dd>
+							<?php } ?>
+							<dd class="time">
+								<time datetime="<?php echo $row->published(); ?>">
+									<?php echo $row->published('time'); ?>
+								</time>
+							</dd>
+							<dd class="date">
+								<time datetime="<?php echo $row->published(); ?>">
+									<?php echo $row->published('date'); ?>
+								</time>
+							</dd>
 					<?php if ($manager) { ?>
-						<dd class="entry-author">
-							<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
-						</dd>
+							<dd class="entry-options">
+							<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+								<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
+									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
+								</a>
+								<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
+									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
+								</a>
+							<?php } ?>
+							</dd>
 					<?php } ?>
-					<dd class="time">
-						<time datetime="<?php echo $row->published(); ?>">
-							<?php echo $row->published('time'); ?>
-						</time>
-					</dd>
-					<dd class="date">
-						<time datetime="<?php echo $row->published(); ?>">
-							<?php echo $row->published('date'); ?>
-						</time>
-					</dd>
-			<?php if ($manager) { ?>
-					<dd class="entry-options">
-					<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-						<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
-						</a>
-						<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
-							<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
-						</a>
-					<?php } ?>
-					</dd>
+						</dl>
+					</div>
+				<?php } ?>
+			<?php } else { ?>
+					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 			<?php } ?>
-				</dl>
-			</div>
-		<?php } ?>
-	<?php } else { ?>
-			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
-	<?php } ?>
 
 			<?php
 			jimport('joomla.html.pagination');
@@ -132,6 +133,5 @@ $base = $this->offering->link() . '&active=announcements';
 		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 		<input type="hidden" name="active" value="announcements" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-
 	</form>
 </div><!--/ #course_members -->

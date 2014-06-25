@@ -172,7 +172,6 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseDashboard($course, $offering)
 	{
-		// Instantiate a vew
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
@@ -191,21 +190,22 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		// Set any errors
 		if ($this->getError())
 		{
-			$view->setError($this->getError());
+			foreach ($this->getErrors() as $error)
+			{
+				$view->setError($error);
+			}
 		}
 
 		return $view->loadTemplate();
 	}
 
 	/**
-	 * Display a list of all announcements
+	 * Display a list of all entries
 	 *
-	 * @return     string HTML
+	 * @return  string HTML
 	 */
 	private function _list()
 	{
-		// Get course members based on their status
-		// Note: this needs to happen *after* any potential actions ar performed above
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',
@@ -214,16 +214,20 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			)
 		);
 
+		$jconfig = JFactory::getConfig();
+
 		$view->option   = $this->option;
 		$view->course   = $this->course;
 		$view->offering = $this->offering;
 		$view->params   = $this->params;
 
-		$view->filters  = array();
-		$view->filters['search'] = JRequest::getVar('q', '');
-		$view->filters['limit']  = JRequest::getInt('limit', $this->params->get('display_limit', 50));
-		$view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$view->filters['start']  = ($view->filters['limit'] == 0) ? 0 : $view->filters['start'];
+		// Get filters for the entries list
+		$view->filters  = array(
+			'search' => JRequest::getVar('q', ''),
+			'limit'  => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'  => JRequest::getInt('limitstart', 0),
+			'start'  => ($view->filters['limit'] == 0 ? 0 : $view->filters['start'])
+		);
 
 		$view->no_html = JRequest::getInt('no_html', 0);
 
@@ -239,12 +243,13 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display a list of all announcements
+	 * Display a form for editing or creating an entry
 	 *
-	 * @return     string HTML
+	 * @return  string HTML
 	 */
 	private function _edit($model=null)
 	{
+		// Permissions check
 		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();
@@ -285,10 +290,11 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return     string HTML
+	 * @return  string HTML
 	 */
 	private function _save()
 	{
+		// Permissions check
 		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();
@@ -364,10 +370,11 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an entry as deleted
 	 *
-	 * @return     string HTML
+	 * @return  string HTML
 	 */
 	private function _delete()
 	{
+		// Permissions check
 		if (!$this->offering->access('manage', 'section'))
 		{
 			return $this->_list();

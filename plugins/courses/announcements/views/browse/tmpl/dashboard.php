@@ -43,38 +43,38 @@ $rows = $this->offering->announcements(array(
 		<div class="grid">
 			<div class="col span-half">
 				<h3><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_LATEST'); ?></h3>
-		<?php
-		if ($rows->total() > 0)
-		{
-			foreach ($rows as $row)
-			{
-				?>
-				<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
-					<?php echo $row->content('parsed'); ?>
-					<dl class="entry-meta">
-						<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
-						<dd class="time">
-							<time datetime="<?php echo $row->published(); ?>">
-								<?php echo $row->published('time'); ?>
-							</time>
-						</dd>
-						<dd class="date">
-							<time datetime="<?php echo $row->published(); ?>">
-								<?php echo $row->published('date'); ?>
-							</time>
-						</dd>
-					</dl>
-				</div><!-- / .announcement -->
 				<?php
-			}
-		}
-		else
-		{
-		?>
-			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NONE_MADE'); ?></p>
-		<?php
-		}
-		?>
+				if ($rows->total() > 0)
+				{
+					foreach ($rows as $row)
+					{
+						?>
+						<div class="announcement<?php if ($row->get('priority')) { echo ' high'; } ?>">
+							<?php echo $row->content('parsed'); ?>
+							<dl class="entry-meta">
+								<dt class="entry-id"><?php echo $row->get('id'); ?></dt>
+								<dd class="time">
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('time'); ?>
+									</time>
+								</dd>
+								<dd class="date">
+									<time datetime="<?php echo $row->published(); ?>">
+										<?php echo $row->published('date'); ?>
+									</time>
+								</dd>
+							</dl>
+						</div><!-- / .announcement -->
+						<?php
+					}
+				}
+				else
+				{
+				?>
+					<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_NONE_MADE'); ?></p>
+				<?php
+				}
+				?>
 			</div><!-- / .col -->
 
 			<div class="col span-half omega">
