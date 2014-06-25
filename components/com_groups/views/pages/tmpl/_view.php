@@ -72,8 +72,8 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 		<?php
 			$firstVersion     = $versions->last();
 			$currentVersion   = $this->version;
-			$createdDate      = ($firstVersion->get('created')) ? JHTML::_('date', $firstVersion->get('created'), 'D F n, Y') : JText::_('n/a');
-			$modifiedDate     = ($currentVersion->get('created')) ? JHTML::_('date', $currentVersion->get('created'), 'D F n, Y g:i a') : JText::_('n/a');
+			$createdDate      = ($firstVersion->get('created')) ? JHTML::_('date', $firstVersion->get('created'), 'D F j, Y') : JText::_('n/a');
+			$modifiedDate     = ($currentVersion->get('created')) ? JHTML::_('date', $currentVersion->get('created'), 'D F j, Y g:i a') : JText::_('n/a');
 			$createdProfile   = \Hubzero\User\Profile::getInstance( $firstVersion->get("created_by") );
 			$modifiedProfile  = \Hubzero\User\Profile::getInstance( $currentVersion->get("created_by") );
 			$createdBy        = (is_object($createdProfile)) ? $createdProfile->get('name') : JText::_('System');
@@ -106,7 +106,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 		
 		<div class="page-meta col span10">
 			<?php if ($this->page->get('id') != 0) : ?>
-				<span class="created" title="<?php echo JText::sprintf('Created on %s by %s', $createdDate, $createdBy); ?>">
+				<span class="created" title="<?php echo JText::sprintf('Created by %s', $createdDate, $createdBy); ?>">
 					<?php echo JText::sprintf('Created by %s', $createdLink); ?>
 				</span>
 				<span class="modified" title="<?php echo JText::sprintf('Last Modified %s by %s', $modifiedDate, $modifiedBy); ?>">
