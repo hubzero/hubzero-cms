@@ -77,7 +77,7 @@ if ($useBlocks)
 elseif ($this->docs) {
 	$dls = '';
 	$dls .= '<ul>'."\n";
-	foreach($this->docs as $child) {
+	foreach ($this->docs as $child) {
 
 		$child->title = $child->title ? stripslashes($child->title) : '';
 		$child->title = str_replace( '"', '&quot;', $child->title );
