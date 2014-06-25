@@ -28,10 +28,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( JText::_( 'Usage Manager' ), 'usage.png' );
-JToolBarHelper::preferences('com_usage', '550');
+defined('_JEXEC') or die('Restricted access');
 
+JToolBarHelper::title(JText::_('COM_USAGE'), 'usage.png');
+JToolBarHelper::preferences('com_usage', '550');
 ?>
 
-<p class="warning">There are currently no administrative capabilities for this component. Configuration may be done via the <strong>options</strong> button in the toolbar.</p>
+<form action="index.php?option=com_usage" name="adminForm" id="item-form">
+	<p class="warning"><?php echo JText::_('COM_USAGE_WARNING'); ?></p>
+</form>

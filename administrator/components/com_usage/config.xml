@@ -28,34 +28,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="statsDBDriver" type="text" menu="hide" label="Stats DB Driver" default="mysql" description="Stats DB Driver" />
-		<param name="statsDBHost" type="text" menu="hide" label="Stats DB Host" default="localhost" description="Stats DB Host" />
-		<param name="statsDBPort" type="text" menu="hide" label="Stats DB Port" default="" description="Stats DB Port" />
-		<param name="statsDBUsername" type="text" menu="hide" label="Stats DB Username" default="" description="Stats DB Username" />
-		<param name="statsDBPassword" type="text" menu="hide" label="Stats DB Password" default="" description="Stats DB Password" />
-		<param name="statsDBDatabase" type="text" menu="hide" label="Stats Database" default="" description="Stats Database" />
-		<param name="statsDBPrefix" type="text" menu="hide" label="Stats DB Prefix" default="" description="Stats DB Prefix" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="mapsApiKey" type="text" menu="hide" label="Maps API Key" default="" description="Google Maps API Key for this site" />
-		<param name="stats_path" type="text" menu="hide" label="Path" default="/site/usage" description="General path for storing stats related files" />
-		<param name="maps_path" type="text" menu="hide" label="Maps" default="/site/usage/maps" description="Path to maps" />
-		<param name="plots_path" type="text" menu="hide" label="Plots" default="/site/usage/plots" description="Path to plots" />
-		<param name="charts_path" type="text" menu="hide" label="Charts" default="/site/usage/charts" description="Path to charts" />
-	</params>
 	<fieldset name="basic">
-		<field name="statsDBDriver" type="text" menu="hide" label="Stats DB Driver" default="mysql" description="Stats DB Driver" />
-		<field name="statsDBHost" type="text" menu="hide" label="Stats DB Host" default="localhost" description="Stats DB Host" />
-		<field name="statsDBPort" type="text" menu="hide" label="Stats DB Port" default="" description="Stats DB Port" />
-		<field name="statsDBUsername" type="text" menu="hide" label="Stats DB Username" default="" description="Stats DB Username" />
-		<field name="statsDBPassword" type="text" menu="hide" label="Stats DB Password" default="" description="Stats DB Password" />
-		<field name="statsDBDatabase" type="text" menu="hide" label="Stats Database" default="" description="Stats Database" />
-		<field name="statsDBPrefix" type="text" menu="hide" label="Stats DB Prefix" default="" description="Stats DB Prefix" />
+		<field name="statsDBDriver" type="text" menu="hide" label="COM_USAGE_DBDRIVER_LABEL" default="mysql" description="COM_USAGE_DBDRIVER_DESC" />
+		<field name="statsDBHost" type="text" menu="hide" label="COM_USAGE_DBHOST_LABEL" default="localhost" description="COM_USAGE_DBHOST_DESC" />
+		<field name="statsDBPort" type="text" menu="hide" label="COM_USAGE_DBPORT_LABEL" default="" description="COM_USAGE_DBPORT_DESC" />
+		<field name="statsDBUsername" type="text" menu="hide" label="COM_USAGE_DBUSERNAME_LABEL" default="" description="COM_USAGE_DBUSERNAME_DESC" />
+		<field name="statsDBPassword" type="text" menu="hide" label="COM_USAGE_DBPASSWORD_LABEL" default="" description="COM_USAGE_DBPASSWORD_DESC" />
+		<field name="statsDBDatabase" type="text" menu="hide" label="COM_USAGE_DBDATABASE_LABEL" default="" description="COM_USAGE_DBDATABASE_DESC" />
+		<field name="statsDBPrefix" type="text" menu="hide" label="COM_USAGE_DBPREFIX_LABEL" default="" description="COM_USAGE_DBPREFIX_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="mapsApiKey" type="text" menu="hide" label="Maps API Key" default="" description="Google Maps API Key for this site" />
-		<field name="stats_path" type="text" menu="hide" label="Path" default="/site/usage" description="General path for storing stats related files" />
-		<field name="maps_path" type="text" menu="hide" label="Maps" default="/site/usage/maps" description="Path to maps" />
-		<field name="plots_path" type="text" menu="hide" label="Plots" default="/site/usage/plots" description="Path to plots" />
-		<field name="charts_path" type="text" menu="hide" label="Charts" default="/site/usage/charts" description="Path to charts" />
+		<field name="mapsApiKey" type="text" menu="hide" label="COM_USAGE_MAPSAPIKEY_LABEL" default="" description="COM_USAGE_MAPSAPIKEY_DESC" />
+		<field name="stats_path" type="text" menu="hide" label="COM_USAGE_PATH_STATS_LABEL" default="/site/usage" description="COM_USAGE_PATH_STATS_DESC" />
+		<field name="maps_path" type="text" menu="hide" label="COM_USAGE_PATH_MAPS_LABEL" default="/site/usage/maps" description="COM_USAGE_PATH_MAPS_DESC" />
+		<field name="plots_path" type="text" menu="hide" label="COM_USAGE_PATH_PLOTS_LABEL" default="/site/usage/plots" description="COM_USAGE_PATH_PLOTS_DESC" />
+		<field name="charts_path" type="text" menu="hide" label="COM_USAGE_PATH_CHARTS_LABEL" default="/site/usage/charts" description="COM_USAGE_PATH_CHARTS_DESC" />
 	</fieldset>
 </config>
