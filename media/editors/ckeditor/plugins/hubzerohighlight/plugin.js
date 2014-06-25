@@ -4,15 +4,13 @@
 		init: function( editor ) {
 			var $      = (typeof(jq) !== "undefined" ? jq : jQuery),
 				mode   = '', 
-				plugin = this;
+				plugin = this,
+				ready  = false;
 
-			// dont highlight for ie8
-			if ($('html').hasClass('ie8'))
-			{
-				return;
-			}
+			editor.on('instanceReady', function(event){
+				ready = true;
 
-			editor.on('mode', function(event) {
+				// highlight
 				plugin.highlight(editor);
 
 				// add css for mark elements
@@ -22,13 +20,31 @@
 				}
 			});
 
-			editor.on('blur', function(event) {
-				plugin.highlight(editor);
-
-				// add css for mark elements
-				if (editor.mode != 'source')
+			editor.on('mode', function(event) {
+				if (ready)
 				{
-					this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+					console.log('mode highlight');
+					plugin.highlight(editor);
+
+					// add css for mark elements
+					if (editor.mode != 'source')
+					{
+						this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+					}
+				}
+			});
+
+			editor.on('blur', function(event) {
+				if (ready)
+				{
+					console.log('blur highlight');
+					plugin.highlight(editor);
+
+					// add css for mark elements
+					if (editor.mode != 'source')
+					{
+						this.document.appendStyleSheet('/media/editors/ckeditor/plugins/hubzerohighlight/plugin.css');
+					}
 				}
 			});
 			
