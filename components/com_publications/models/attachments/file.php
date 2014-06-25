@@ -81,8 +81,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		// Allow changes in non-draft version?
 		$configs->freeze 	= isset($blockParams->published_editing)
-					 		&& $blockParams->published_editing == 0
-					 		&& ($pub->state == 1 || $pub->state == 5)
+							&& $blockParams->published_editing == 0
+							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 
 		// Preserve directory structure when copying from project?
