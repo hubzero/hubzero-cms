@@ -66,7 +66,7 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 		<div class="col span6">
 		  <div class="launcher-inside-wrap">
 			<?php // Show published date and category
-			 	echo PublicationsHtml::showSubInfo( $this->publication, $this->option );
+				echo PublicationsHtml::showSubInfo( $this->publication, $this->option );
 			?>
 			<h3><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->publication->title), 150); ?></h3>
 			<?php

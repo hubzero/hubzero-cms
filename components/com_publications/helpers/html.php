@@ -209,7 +209,7 @@ class PublicationsHtml
 		foreach ($levels as $level)  {
 			$class = $level->label != $sel ? ' isoff' : '';
 			$class = $level->label != $sel && $level->label == 'level0' ? '_isoff' : $class;
-			if($level->label != $sel && $sel == 'level0') {
+			if ($level->label != $sel && $sel == 'level0') {
 				$class .= " hidden";
 			}
 			$html .= t.t.t.' <li class="'.$level->label.$class.'"><span>&nbsp;</span></li>'.n;

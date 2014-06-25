@@ -74,10 +74,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
-        {
-            $this->_resourceMap();
+		{
+			$this->_resourceMap();
 			return;
-        }
+		}
 		if (($this->_id || $this->_alias) && !$this->_task)
 		{
 			$this->_task = 'view';
@@ -262,7 +262,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Return first message of type
 		if ($messages && count($messages) > 0)
 		{
-			foreach($messages as $message)
+			foreach ($messages as $message)
 			{
 				if ($message['type'] == $type)
 				{
@@ -466,23 +466,23 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	/**
      * Retrieves the data from database and compose the RDF file for download.
      */
-    protected function _resourceMap()
-    {
-        $resourceMap = new ResourceMapGenerator();
-        $id = "";
+	protected function _resourceMap()
+	{
+		$resourceMap = new ResourceMapGenerator();
+		$id = "";
 
-        // Retrieves the ID from alias
-        if (substr(strtolower($this->_alias), -4) == ".rdf")
-        {
-                $lastSlash = strrpos($this->_alias, "/");
-                $lastDot = strrpos($this->_alias, ".rdf");
-                $id = substr($this->_alias, $lastSlash, $lastDot);
-        }
+		// Retrieves the ID from alias
+		if (substr(strtolower($this->_alias), -4) == ".rdf")
+		{
+			$lastSlash = strrpos($this->_alias, "/");
+			$lastDot = strrpos($this->_alias, ".rdf");
+			$id = substr($this->_alias, $lastSlash, $lastDot);
+		}
 
-        // Create download headers
-        $resourceMap->pushDownload($this->config->get('webpath'));
-        exit;
-    }
+		// Create download headers
+		$resourceMap->pushDownload($this->config->get('webpath'));
+		exit;
+	}
 
 	/**
 	 * View publication
@@ -878,7 +878,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$view->display();
 
 		// Insert .rdf link in the header
-        ResourceMapGenerator::putRDF($id);
+		ResourceMapGenerator::putRDF($id);
 	}
 
 	/**
@@ -1832,7 +1832,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$slide_video = array();
 
 			// build array for checking slide video formats
-			foreach($slides as $s)
+			foreach ($slides as $s)
 			{
 				$parts = explode(".",$s);
 				$ext = array_pop($parts);
@@ -2138,9 +2138,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$doc .= "%D " . JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($publication->title)) . "\r\n";
 
-				if($authors)
+				if ($authors)
 				{
-					foreach($authors as $author)
+					foreach ($authors as $author)
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$auth = preg_replace( '/{{(.*?)}}/s', '', $name );
@@ -2180,10 +2180,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$addarray['cite']    = $sitename.$publication->id;
 				$addarray['title']   = stripslashes($publication->title);
 
-				if($authors)
+				if ($authors)
 				{
 					$i = 0;
-					foreach($authors as $author)
+					foreach ($authors as $author)
 					{
 						$name = $author->name ? $author->name : $author->p_name;
 						$author_arr = explode(',',$name);
@@ -2277,23 +2277,23 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		$cont_dis = $inline ? 'inline' : 'attachment';
 
-        header("Pragma: public");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Expires: 0");
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Expires: 0");
 
-        header("Content-Transfer-Encoding: binary");
+		header("Content-Transfer-Encoding: binary");
 		header('Content-Disposition:' . $cont_dis .';'
 			. ' filename="' . $f . '";'
 			. ' modification-date="' . $mod_date . '";'
 			. ' size=' . $fsize .';'
 			); //RFC2183
-        header("Content-Type: "    . $mime ); // MIME type
-        header("Content-Length: "  . $fsize);
+			header("Content-Type: "    . $mime ); // MIME type
+			header("Content-Length: "  . $fsize);
 
  		// No encoding - we aren't using compression... (RFC1945)
 
-        $this->_readfile_chunked($file);
-    }
+		$this->_readfile_chunked($file);
+	}
 
 	/**
 	 * Read file contents
@@ -2535,7 +2535,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Plugin params
 		$plugin_params = array( $project,
-							   	$this->_option,
+								$this->_option,
 								$authorized,
 								$this->juser->get('id'),
 								$this->getNotifications('success'),

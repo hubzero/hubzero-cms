@@ -130,8 +130,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
- 				}
- 			}  ?>
+				}
+			}  ?>
 				</ul>
 				<?php if ($max > count($this->attachments)) { ?>
 				<div class="item-new">

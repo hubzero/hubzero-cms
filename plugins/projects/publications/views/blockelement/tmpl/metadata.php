@@ -47,7 +47,7 @@ $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
 $size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
 				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
-			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
+				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;

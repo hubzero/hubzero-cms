@@ -54,8 +54,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		// Allow changes in non-draft version?
 		$configs->freeze 	= isset($blockParams->published_editing)
-					 		&& $blockParams->published_editing == 0
-					 		&& ($pub->state == 1 || $pub->state == 5)
+							&& $blockParams->published_editing == 0
+							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 
 		// Get publications helper
@@ -151,7 +151,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-		 	$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';

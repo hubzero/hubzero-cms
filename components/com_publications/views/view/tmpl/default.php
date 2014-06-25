@@ -190,7 +190,7 @@ if ($experiment == false)
 	$editurl = JRoute::_($route . '&pid=' . $publication->id).'?version='.$version;
 
 	// Show status for authorized users
-	if($this->contributable)
+	if ($this->contributable)
 	{
 		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );
 	}

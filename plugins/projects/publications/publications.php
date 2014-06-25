@@ -512,7 +512,7 @@ class plgProjectsPublications extends JPlugin
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-		 	$view->publication->_type->curation);
+			$view->publication->_type->curation);
 
 		// Set block
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
