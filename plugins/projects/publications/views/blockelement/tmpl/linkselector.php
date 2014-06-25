@@ -32,7 +32,7 @@ $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0
 $elName   		= 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = ($this->elementId > $this->active && $this->collapse) ? 1 : 0;
+$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max 	= $this->manifest->params->max;
 $prov 	= $this->pub->_project->provisioned == 1 ? 1 : 0;

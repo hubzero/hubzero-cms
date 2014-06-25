@@ -840,8 +840,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			$authorized = 'admin';
 		}
 
-		// Check if they are curator
-
 		$curatorgroup = $this->config->get('curatorgroup', '');
 		if ($curatorgroup)
 		{

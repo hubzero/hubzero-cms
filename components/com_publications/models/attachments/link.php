@@ -25,9 +25,9 @@
 // Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'helper.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'html.php');
 
 /**
@@ -41,7 +41,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	* @var		string
 	*/
 	protected	$_name = 'link';
-		
+
 	/**
 	 * Get configs
 	 *
@@ -51,59 +51,100 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	{
 		$configs	= new stdClass;
 		$typeParams = $element->typeParams;
-				
+
 		// Allow changes in non-draft version?
-		$configs->freeze 	= isset($blockParams->published_editing) 
-					 		&& $blockParams->published_editing == 0 
-					 		&& ($pub->state == 1 || $pub->state == 5) 
-							? 1 : 0; 
-																				
+		$configs->freeze 	= isset($blockParams->published_editing)
+					 		&& $blockParams->published_editing == 0
+					 		&& ($pub->state == 1 || $pub->state == 5)
+							? 1 : 0;
+
 		// Get publications helper
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
-		
+
 		// Log path
 		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
-		
+
 		// replace current attachments?
-		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post'); 
-		
+		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');
+
 		// Verify file type against allowed before attaching?
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
-						
+
 		// Get default title
 		$configs->title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
-						
-		return $configs;		
+
+		return $configs;
 	}
-	
+
+	/**
+	 * Draw list
+	 *
+	 * @return  string HTML
+	 */
+	public function drawList( $attachments, $element, $elementId,
+		$pub, $blockParams, $authorized)
+	{
+		// Get configs
+		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		$html = '';
+
+		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+				. $pub->id . '&v=' . $pub->version_number )
+				. '?el=' . $elementId;
+
+		if ($attachments)
+		{
+			// Serve individually
+			foreach ($attachments as $attach)
+			{
+				$itemUrl 	= $url . '&a=' . $attach->id;
+				$title 		= $attach->title ? $attach->title : $configs->title;
+				$title 		= $title ? $title : $attach->path;
+				$pop		= JText::_('View link') . ' ' . $title;
+
+				$html .= '<li>';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="external">' . $title . '</a>';
+				$html .='</li>';
+			}
+		}
+
+		return $html;
+	}
+
 	/**
 	 * Draw launcher
 	 *
-	 * @return  boolean
+	 * @return  string HTML
 	 */
 	public function drawLauncher( $element, $elementId, $pub, $blockParams, $authorized)
 	{
-		// Get configs		
+		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
-		
+
 		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+		$attachments = isset($attachments['elements'][$elementId])
+					 ? $attachments['elements'][$elementId] : NULL;
 
 		// Sort out attachments for this element
-		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
-		
+		$attachments = $this->_parent->getElementAttachments(
+			$elementId,
+			$attachments,
+			$this->_name
+		);
+
 		$disabled = 0;
 		$pop 	  = NULL;
-		
-		if ($pub->state == 0) 
+
+		if ($pub->state == 0)
 		{
 			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;
 		}
-		elseif (!$authorized) 
+		elseif (!$authorized)
 		{
-			$pop = $pub->access == 1 
-			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP') 
+			$pop = $pub->access == 1
+			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP')
 			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
@@ -112,19 +153,19 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$disabled = 1;
 		 	$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
-		
+
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
-				
+
 		$html = '';
-		
+
 		// Which role?
 		$role = $element->params->role;
-		
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id=' 
-				. $pub->id . '&v=' . $pub->version_number ) 
+
+		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+				. $pub->id . '&v=' . $pub->version_number )
 				. '?el=' . $elementId;
-		
-		// Primary button		
+
+		// Primary button
 		if ($role == 1)
 		{
 			$attach = $attachments[0];
@@ -132,51 +173,38 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			{
 				// TBD
 			}
-			
+
 			// One launcher for all files
-			$label = JText::_('View publication');			
+			$label = JText::_('View publication');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : JText::_('View publication');
-			$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL, 
-					$title, 'rel="external"', $disabled, $pop);		
+			$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL,
+					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
 		{
 			$html .= '<ul>';
-			if ($attachments)
-			{
-				// Serve individually
-				foreach ($attachments as $attach)
-				{										
-					$itemUrl 	= $url . '&a=' . $attach->id;
-					$title 		= $attach->title ? $attach->title : $configs->title;
-					$title 		= $title ? $title : $attach->path;
-					$pop		= JText::_('View link') . ' ' . $title;
-					
-					$html .= '<li>';
-					$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="external">' . $title . '</a>';
-					$html .='</li>';
-				}
-			}
+			$html .= self::drawList( $attachments, $element, $elementId,
+					$pub, $blockParams, $authorized);
 			$html .= '</ul>';
 		}
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Transfer files from one version to another
 	 *
 	 * @return  boolean
 	 */
-	public function transferData( $elementparams, $elementId, $pub, $blockParams, 
+	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
 		$juser = JFactory::getUser();
-		
+
 		// Loop through attachments
-		foreach ($attachments as $att) 
+		foreach ($attachments as $att)
 		{
 			// Make new attachment record
 			$pAttach = new PublicationAttachment( $this->_parent->_db );
@@ -198,13 +226,13 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$pAttach->publication_version_id= $newVersion->id;
 			$pAttach->created_by 			= $juser->get('id');
 			$pAttach->created 				= JFactory::getDate()->toSql();
-			if (!$pAttach->store()) 
+			if (!$pAttach->store())
 			{
 				continue;
 			}
 		}
 	}
-	
+
 	/**
 	 * Serve
 	 *
@@ -214,16 +242,16 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	{
 		// Incoming
 		$forceDownload = JRequest::getInt( 'download', 0 );		// Force downlaod action?
-		
-		// Get configs		
+
+		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
-		
+
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
-		
+
 		$path = NULL;
 		if ($itemId)
 		{
@@ -240,42 +268,42 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$attach = $attachments[0];
 			$path   = $attach->path;
 		}
-		
+
 		if (!$path)
 		{
 			$this->setError( JText::_('Oups! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
-		
+
 		$v = "/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i";
-		
+
 		// Absolute or relative link?
 		$where = preg_match($v, $path) ? $path : DS . trim($path, DS);
 		$this->_parent->set('redirect', $where);
 		return true;
 	}
-	
+
 	/**
 	 * Save incoming
 	 *
 	 * @return  boolean
 	 */
 	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
-	{										
+	{
 		$toAttach   = $toAttach ? $toAttach : JRequest::getVar( 'url', '', 'post', 'array');
 		$titles 	= JRequest::getVar( 'title', '', 'post', 'array');
 		$desc 		= JRequest::getVar( 'desc', '', 'post', 'array');
-		
+
 		// Incoming selections
 		if (empty($toAttach))
-		{			
-			$toAttach = array($url);				
+		{
+			$toAttach = array($url);
 		}
-				
-		// Get configs		
+
+		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
-		
-		// Cannot make changes			
+
+		// Cannot make changes
 		if ($configs->freeze)
 		{
 			return false;
@@ -286,86 +314,86 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			return false;
 		}
-		
+
 		// Get existing attachments for the elemnt
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
-		
-		// Get actor						
+
+		// Get actor
 		$juser = JFactory::getUser();
 		$uid   = $juser->get('id');
 		if (!$uid)
 		{
 			return false;
 		}
-				
+
 		// Counters
 		$i = 0;
 		$a = 0;
-		
+
 		// Default title for publication
-		$defaultTitle = $pub->_curationModel->_manifest->params->default_title; 
-		
-		// Attach/refresh each selected item		
+		$defaultTitle = $pub->_curationModel->_manifest->params->default_title;
+
+		// Attach/refresh each selected item
 		foreach ($toAttach as $identifier)
 		{
 			if (!trim($identifier))
 			{
 				continue;
 			}
-			
+
 			$a++;
 			$ordering = $i + 1;
-			
+
 			$title = isset($titles[$i]) ? $titles[$i] : NULL;
 			$desc  = isset($desc[$i]) ? $desc[$i] : NULL;
-			
+
 			if ($this->addAttachment($identifier, $title, $pub, $configs, $uid, $elementId, $element, $ordering))
-			{				
+			{
 				// Do we also set draft title and metadata from the link?
-				if ($i == 0 && $title && $element->role == 1 
+				if ($i == 0 && $title && $element->role == 1
 					&& stripos($pub->title, $defaultTitle) !== false )
 				{
 					// Load publication version
 					$row = new PublicationVersion( $this->_parent->_db );
-					if (!$row->load($pub->version_id)) 
+					if (!$row->load($pub->version_id))
 					{
 						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 						return false;
 					}
-					
+
 					$row->title    		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($title));
 					$description	   	= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($desc));
 					$row->description 	= $description;
 					$row->abstract		= \Hubzero\Utility\String::truncate($description, 255);
 					$row->store();
 				}
-				
+
 				$i++;
 			}
 		}
-		
+
 		// Success
 		if ($i > 0 && $i == $a)
 		{
 			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
 			$this->set('_message', $message);
-		}	
-						
+		}
+
 		return true;
 	}
-	
+
 	/**
 	 * Add/edit file attachment
-	 * 
+	 *
 	 *
 	 * @return     boolean or error
 	 */
-	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1) 
-	{							
+	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
+	{
 		// Need to check against allowed types
 		if ($configs->check)
 		{
@@ -374,10 +402,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				return false;
 			}
 		}
-		
+
 		$objPA = new PublicationAttachment( $this->_parent->_db );
-		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $path), 
-			$elementId, $this->_name, $element->role)) 
+		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $path),
+			$elementId, $this->_name, $element->role))
 		{
 			// Link already attached
 			$this->setError(JText::_('The link is already attached'));
@@ -393,98 +421,98 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$objPA->created 				= JFactory::getDate()->toSql();
 			$objPA->role 					= $element->role;
 			$objPA->title 					= $title;
-			
+
 			// Reflect the update in curation record
-			$this->_parent->set('_update', 1);								
+			$this->_parent->set('_update', 1);
 		}
-		
+
 		$objPA->element_id 	= $elementId;
 		$objPA->ordering 	= $ordering;
-		
-		if (!$objPA->store()) 
+
+		if (!$objPA->store())
 		{
 			$this->setError(JText::_('There was a problem attaching the link'));
 			return false;
 		}
-		
-		return true;			
+
+		return true;
 	}
-	
+
 	/**
 	 * Remove attachment
-	 * 
+	 *
 	 *
 	 * @return     boolean or error
 	 */
-	public function removeAttachment($row, $element, $elementId, $pub, $blockParams) 
-	{		
+	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
+	{
 		$juser = JFactory::getUser();
 		$uid   = $juser->get('id');
-		
-		// Get configs		
+
+		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
-		
-		// Cannot make changes			
+
+		// Cannot make changes
 		if ($configs->freeze)
 		{
 			return false;
 		}
-				
+
 		// Remove link
 		if (!$this->getError())
 		{
 			$row->delete();
 			$this->set('_message', JText::_('Item removed'));
-			
+
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 
-			return true;			
+			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Update file attachment properties
-	 * 
+	 *
 	 *
 	 * @return     boolean or error
 	 */
-	public function updateAttachment($row, $element, $elementId, $pub, $blockParams) 
+	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
 		$title 	= JRequest::getVar( 'title', '' );
 		$thumb 	= JRequest::getInt( 'makedefault', 0 );
-		
+
 		$juser = JFactory::getUser();
 		$uid   = $juser->get('id');
-		
-		// Get configs		
+
+		// Get configs
 		$configs = $this->getConfigs($element, $elementId, $pub, $blockParams);
-		
-		// Cannot make changes			
+
+		// Cannot make changes
 		if ($configs->freeze)
 		{
 			return false;
 		}
-		
+
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
 		$row->modified 		= JFactory::getDate()->toSql();
-		
+
 		// Update record
 		if (!$row->store())
 		{
 			$this->setError(JText::_('Error updating item record'));
 		}
-		
+
 		$this->set('_message', JText::_('Update successful'));
-				
+
 		return true;
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
@@ -493,22 +521,22 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	public function getStatus( $element, $attachments )
 	{
 		$status = new PublicationsModelStatus();
-	
+
 		// Get requirements to check against
 		$max 		= $element->max;
 		$min 		= $element->min;
 		$role 		= $element->role;
 		$params		= $element->typeParams;
-		$required	= $element->required;		
+		$required	= $element->required;
 		$counter 	= count($attachments);
 		$allowed 	= $params->accept;
-		
+
 		if (!$required)
 		{
 			$status->status = $counter ? 1 : 2;
 			return $status;
 		}
-						
+
 		// Check for correct number of attachments
 		if ($min > 0 && $counter < $min)
 		{
@@ -522,11 +550,11 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$status->status = 0;
 				return $status;
 			}
-		}		
+		}
 		elseif ($max > 0 && $counter > $max)
 		{
 			$status->setError( JText::_('Maximum ' . $max . ' attachment(s) allowed') );
-		}		
+		}
 		// Check allowed formats
 		elseif (!self::checkAllowed($attachments, $allowed))
 		{
@@ -540,13 +568,13 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$error = substr($error, 0, strlen($error) - 1);
 				$status->setError( $error );
 			}
-		}		
-		
+		}
+
 		$status->status = $status->getError() ? 0 : 1;
-			
+
 		return $status;
 	}
-	
+
 	/**
 	 * Check for allowed formats
 	 *
@@ -558,7 +586,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			return true;
 		}
-		
+
 		foreach ($attachments as $attach)
 		{
 			$path = isset($attach->path) ? $attach->path : $attach;
@@ -569,19 +597,19 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 					return true;
 				}
 			}
-			
+
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Draw attachment
 	 *
 	 * @return  HTML string
 	 */
 	public function drawAttachment($data, $params)
-	{				
+	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -593,11 +621,11 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		);
 		$view->data 	= $data;
 		$view->params   = $params;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
-		return $view->loadTemplate();		
+		return $view->loadTemplate();
 	}
 }

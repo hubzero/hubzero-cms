@@ -23,6 +23,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+	$useBlocks  = $this->config->get('curation', 0);
+	$experiment = $useBlocks ? true : false;
+
 	/* Non-Tool Publication page view  */
 
 	$option 		= $this->option;
@@ -44,6 +47,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$juser = JFactory::getUser();
 
+if ($experiment == false)
+{
+
 	$html  = '<section class="main upperpane">'."\n";
 	$html .= '<div class="aside rankarea">'."\n";
 
@@ -61,10 +67,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if ($params->get('show_audience'))
 	{
 		$ra 		= new PublicationAudience( $database );
-		$audience 	= $ra->getAudience($publication->id, $publication->version_id , $getlabels = 1, $numlevels = 4);
+		$audience 	= $ra->getAudience(
+			$publication->id,
+			$publication->version_id,
+			$getlabels = 1,
+			$numlevels = 4
+		);
 		$ral 		= new PublicationAudienceLevel ( $database );
 		$levels 	= $ral->getLevels( 4, array(), 0 );
-		$skillpop 	=  PublicationsHtml::skillLevelPopup($levels, $params->get('audiencelink') );
+		$skillpop 	=  PublicationsHtml::skillLevelPopup($levels, $params->get('audiencelink'));
 		$xtra 	   .= PublicationsHtml::showSkillLevel($audience, $numlevels = 4, $skillpop);
 	}
 
@@ -115,8 +126,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
 	$html .= ' <div class="aside launcharea">'."\n";
 	$feeds = '';
-
-	$useBlocks = $this->config->get('curation', 0);
 
 	// Sort out primary files and draw a launch button
 	if ($useBlocks && $tab != 'play')
@@ -193,6 +202,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	} else {
 		$html .= '<div class="clear sep"></div>'."\n";
 		$html .= '</section><!-- / .main section -->'."\n";
+
 		$html .= '<section class="main section noborder">'."\n";
 		$html .= ' <div class="subject tabbed">'."\n";
 		$html .= PublicationsHtml::tabs( $option, $publication->id, $cats, $tab, $publication->alias, $version );
@@ -225,3 +235,66 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$html .= '<div class="clear"></div>'."\n";
 
 	echo $html;
+
+}
+else
+{
+	// New launcher layout
+	$view = new JView(
+		array('name' => 'view', 'layout' => 'launcher')
+	);
+	$view->publication 	 	= $publication;
+	$view->contributable 	= $this->contributable;
+	$view->option 		 	= $this->option;
+	$view->config 		 	= $this->config;
+	$view->params 		 	= $this->params;
+	$view->authorized 	 	= $this->authorized;
+	$view->restricted 	 	= $this->restricted;
+	$view->database 	 	= $this->database;
+	$view->lastPubRelease 	= $this->lastPubRelease;
+	$view->version		 	= $this->version;
+	$view->license			= $this->license;
+	$view->sections			= $this->sections;
+	$view->cats				= $this->cats;
+	echo $view->loadTemplate();
+
+	// Tabbed areas
+	$html = '';
+	$html .= '<section class="main section noborder">'."\n";
+	$html .= ' <div class="subject tabbed">'."\n";
+	$html .= PublicationsHtml::tabs(
+		$option,
+		$publication->id,
+		$cats,
+		$tab,
+		$publication->alias,
+		$version
+	);
+	$html .= PublicationsHtml::sections( $sections, $cats, $tab, 'hide', 'main' );
+	$html .= '</div><!-- / .subject -->'."\n";
+	$html .= ' <div class="aside extracontent">'."\n";
+
+	// Get Related Resources plugin
+	JPluginHelper::importPlugin( 'resources', 'related' );
+	$dispatcher = JDispatcher::getInstance();
+
+	// Show related content
+	$out = $dispatcher->trigger( 'onPublicationSub', array($publication, $option, 1) );
+	if (count($out) > 0) {
+		foreach ($out as $ou)
+		{
+			if (isset($ou['html'])) {
+				$html .= $ou['html'];
+			}
+		}
+	}
+
+	// Show what's popular
+	if ($tab == 'about') {
+		$html .= \Hubzero\Module\Helper::renderModules('extracontent');
+	}
+	$html .= ' </div><!-- / .aside extracontent -->'."\n";
+	$html .= '</section><!-- / .main section -->'."\n";
+
+	echo $html;
+}

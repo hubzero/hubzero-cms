@@ -53,8 +53,8 @@ $error 			= $this->status->getError();
 
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = ($this->elementId > $this->active && $this->collapse) ? 1 : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
+$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
 
 $prov = $this->pub->_project->provisioned == 1 ? 1 : 0;
 
@@ -86,7 +86,6 @@ $selectUrl   = $prov
 			. $this->pub->id . '&vid=' . $this->pub->version_id;
 
 $editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
-$nextEl  = 'element' . ($this->elementId + 1);
 
 // Get handler model
 $modelHandler = new PublicationsModelHandlers($this->database);

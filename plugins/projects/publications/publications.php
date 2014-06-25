@@ -840,6 +840,12 @@ class plgProjectsPublications extends JPlugin
 		$sequence = $pub->_curationModel->_blockorder;
 		$total	  = $pub->_curationModel->_blockcount;
 
+		// Get next element
+		if ($next)
+		{
+			$next = $pub->_curationModel->getNextElement($block, $sequence, $element);
+		}
+
 		// What's next?
 		$nextnum 	 = ($sequence + 1) <= $total ? $sequence + 1 : 0;
 		$nextsection = isset($pub->_curationModel->_blocks->$nextnum)

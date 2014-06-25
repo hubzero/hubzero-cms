@@ -36,48 +36,48 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected	$_name 			= 'content';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= 'content';	
-	
+	protected	$_parentname 	= 'content';
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 		= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence = 0;
-			
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
-	{	
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-				
+
 		// Get extra params
 		$params 	 = $this->_manifest->params;
 		$useHanlders = isset($params->use_hanlders) && $params->use_hanlders == 1 ? true : false;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -97,49 +97,49 @@ class PublicationsBlockContent extends PublicationsModelBlock
 				)
 			);
 		}
-		
-		// Build url
-		$route = $pub->_project->provisioned 
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias=' 
-						. $pub->_project->alias . '&active=publications';		
 
-		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section=' 
-			. $this->_name . '&step=' . $sequence . '&move=continue');		
-		
+		// Build url
+		$route = $pub->_project->provisioned
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $pub->_project->alias . '&active=publications';
+
+		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
+			. $this->_name . '&step=' . $sequence . '&move=continue');
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
-		$view->step			= $sequence;			
+		$view->step			= $sequence;
 		$view->showControls	= 1;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function save( $manifest = NULL, $sequence = 0, $pub = NULL, $actor = 0, $elementId = 0)
-	{				
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
-		// Make sure changes are allowed			
+
+		// Make sure changes are allowed
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;
 		}
-				
+
 		// Make sure we have current attachments
 		if (!isset($pub->_attachments))
 		{
@@ -147,7 +147,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
-				
+
 		// Save each element
 		$saved = 0;
 		foreach ($this->_manifest->elements as $id => $element)
@@ -157,11 +157,11 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			{
 				continue;
 			}
-			
+
 			if ($this->saveElement($id, $element->params, $pub, $this->_manifest->params))
 			{
 				$saved++;
-				
+
 				if ($this->get('_update'))
 				{
 					// Record update time
@@ -170,15 +170,15 @@ class PublicationsBlockContent extends PublicationsModelBlock
 					$data->updated_by 	= $actor;
 					$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $sequence);
 				}
-			}						
+			}
 		}
-				
+
 		// Set success message
 		$this->_parent->set('_message', $this->get('_message'));
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Transfer data from one version to another
 	 *
@@ -193,29 +193,29 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
-		
+
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-		
+
 		// Transfer data of each element
 		foreach ($manifest->elements as $elementId => $element)
-		{			
-			$attModel->transferData($element->params->type, $element, 
+		{
+			$attModel->transferData($element->params->type, $element,
 				$elementId, $pub, $this->_manifest->params,
 				$oldVersion, $newVersion
 			);
-		}		
+		}
 	}
-	
+
 	/**
 	 * Build panel content
 	 *
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit' )
-	{				
+	{
 		$html = '';
-						
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
@@ -223,58 +223,58 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
-		
+
 		// Get selector styles
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS 
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS
 			. 'css' . DS . 'selector.css');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		
+
 		// Get block status
 		$status = self::getStatus($pub);
-		
+
 		// Get block status review
 		$step 			= $this->_sequence;
 		$status->review = $pub->_curationModel->_progress->blocks->$step->review;
-		
+
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
-		
+
 		// Properties object
 		$master 			= new stdClass;
 		$master->block 		= $this->_name;
 		$master->sequence 	= $this->_sequence;
 		$master->params		= $this->_manifest->params;
 		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
-		
+
 		// Build each element
 		$o = 1;
 		foreach ($this->_manifest->elements as $elementId => $element)
-		{				
+		{
 			$html  .= $elModel->drawElement(
 						$element->name, $elementId, $element, $master,
-						$pub, $status, $viewname, $o 
+						$pub, $status, $viewname, $o
 			);
 			$o++;
 		}
-					
+
 		return $html;
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
@@ -282,10 +282,10 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
-				
+
 		// Start status
-		$status 	 = new PublicationsModelStatus();	
-		
+		$status 	 = new PublicationsModelStatus();
+
 		// Check against manifested requirements
 		if ($this->_manifest)
 		{
@@ -298,13 +298,13 @@ class PublicationsBlockContent extends PublicationsModelBlock
 					$mAttach[$id] = $element->params;
 				}
 			}
-			
+
 			// Return element status
 			if ($elementId && isset($mAttach[$elementId]))
 			{
 				return self::getElementStatus($elementId, $mAttach[$elementId], $pub->_attachments);
 			}
-			
+
 			// Check if requirements are satisfied for each attachment element
 			$i 		 	= 0;
 			$success 	= 0;
@@ -312,7 +312,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			foreach ($mAttach as $elementId => $elementparams)
 			{
 				$status->elements->$elementId = self::getElementStatus($elementId, $elementparams, $pub->_attachments);
-				
+
 				if ($status->elements->$elementId->status >= 1)
 				{
 					$success++;
@@ -321,17 +321,17 @@ class PublicationsBlockContent extends PublicationsModelBlock
 				{
 					$incomplete++;
 				}
-				
+
 				$i++;
 			}
-			
+
 			$success = $success == $i ? 1 : 0;
 			$status->status = $success == 1 && $incomplete ? 2 : $success;
 		}
-		
+
 		return $status;
 	}
-	
+
 	/**
 	 * Check element status
 	 *
@@ -341,11 +341,11 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	{
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-				
+
 		$status = $attModel->getStatus( $elementparams->type, $elementparams, $elementId, $attachments );
-		return $status;		
+		return $status;
 	}
-	
+
 	/**
 	 * Save element
 	 *
@@ -355,7 +355,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	{
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-				
+
 		if ($attModel->attach( $elementparams->type, $elementparams, $elementId, $pub, $params ))
 		{
 			// Pick up status message
@@ -363,34 +363,34 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			{
 				$this->set('_message', $attModel->get('_message'));
 			}
-			
+
 			// Set request to update curation record
 			if ($attModel->get('_update'))
 			{
 				$this->set('_update', 1);
 			}
-									
+
 			return true;
 		}
-		
+
 		// Pick up attachment error messages
 		if ($attModel->getError())
 		{
 			$this->setError($attModel->getError());
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Update attachment record
 	 *
 	 * @return  void
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
-	{				
+	{
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
-				
+
 		// Load attachment
 		$row = new PublicationAttachment( $this->_parent->_db );
 
@@ -398,43 +398,43 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!$aid || !$row->load($aid))
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
-			return false;			
+			return false;
 		}
-		
+
 		// Attachment type
 		$type = $row->type;
-		
+
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-				
+
 		// Save incoming attachment info
-		$attModel->update($type, $row, $pub, $actor, $elementId, 
+		$attModel->update($type, $row, $pub, $actor, $elementId,
 			$manifest->elements->$elementId, $manifest->params);
-			
+
 		// Set success message
 		if ($attModel->get('_message'))
 		{
 			$this->set('_message', $attModel->get('_message'));
 		}
-		
+
 		// Set request to update curation record
 		if ($attModel->get('_update'))
 		{
 			$this->_parent->set('_update', 1);
 		}
-				
+
 		return true;
 	}
-	
+
 	/**
 	 * Delete attachment record
 	 *
 	 * @return  void
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
-	{				
+	{
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
-				
+
 		// Load attachment
 		$row = new PublicationAttachment( $this->_parent->_db );
 
@@ -442,25 +442,25 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!$aid || !$row->load($aid))
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
-			return false;			
+			return false;
 		}
-		
+
 		// Attachment type
 		$type = $row->type;
 
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-				
+
 		// Save incoming attachment info
-		$attModel->remove($type, $row, $pub, $actor, $elementId, 
+		$attModel->remove($type, $row, $pub, $actor, $elementId,
 			$manifest->elements->$elementId, $manifest->params);
-			
+
 		// Set success message
 		if ($attModel->get('_message'))
 		{
 			$this->set('_message', $attModel->get('_message'));
 		}
-		
+
 		// Set request to update curation record
 		if ($attModel->get('_update'))
 		{
@@ -469,7 +469,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 
 		return true;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
@@ -478,9 +478,9 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	public function getManifest()
 	{
 		// Load config from db
-		$obj = new PublicationBlock($this->_parent->_db);		
+		$obj = new PublicationBlock($this->_parent->_db);
 		$manifest = $obj->getManifest($this->_name);
-		
+
 		// Fall back
 		if (!$manifest)
 		{
@@ -509,7 +509,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 							'role' 			=> 1,
 							'typeParams'	=> array(
 								'allowed_ext' 		=> array(),
-								'required_ext'  	=> array(),							
+								'required_ext'  	=> array(),
 								'handler' 			=> NULL,
 								'handlers'			=> NULL,
 								'directory'			=> '',
@@ -520,17 +520,17 @@ class PublicationsBlockContent extends PublicationsModelBlock
 						)
 					)
 				),
-				'params'	=> array( 
-					'required' 			=> 1, 
-					'published_editing' => 0, 
+				'params'	=> array(
+					'required' 			=> 1,
+					'published_editing' => 0,
 					'collapse_elements' => 1,
 					'verify_types'		=> 1
 				)
 			);
-			
+
 			return json_decode(json_encode($manifest), FALSE);
 		}
-		
+
 		return $manifest;
 	}
 }

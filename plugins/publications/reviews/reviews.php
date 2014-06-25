@@ -156,6 +156,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$r = new PublicationReview( $database );
 		$reviews = $r->getRatings( $publication->id );
 
+		$arr['count'] = count($reviews);
+		$arr['name']  = 'reviews';
+
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{

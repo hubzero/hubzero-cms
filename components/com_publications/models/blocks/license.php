@@ -36,44 +36,44 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected	$_name 			= 'license';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= NULL;	
-	
+	protected	$_parentname 	= NULL;
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 		= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence 		= 0;
-		
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
-	{	
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -93,35 +93,34 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 				)
 			);
 		}
-		
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 2;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Build panel content
 	 *
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit' )
-	{				
-
+	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
-		
+
 		// Get selector styles
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'selector.css');
-						
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -131,23 +130,23 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 				'layout'	=> 'license'
 			)
 		);
-							
+
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
-		
+
 		$objL = new PublicationLicense( $this->_parent->_db );
-		
+
 		// Get selected license
 		$view->license = $objL->getPubLicense( $pub->version_id );
-						
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block content
 	 *
@@ -160,73 +159,73 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
-		// Make sure changes are allowed			
+
+		// Make sure changes are allowed
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;
 		}
-		
+
 		// Load publication version
 		$row = new PublicationVersion( $this->_parent->_db );
-		
-		if (!$row->load($pub->version_id)) 
+
+		if (!$row->load($pub->version_id))
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 			return false;
 		}
-		
+
 		$originalType = $row->license_type;
 		$originalText = $row->license_text;
-		
+
 		// Load license class
 		$objL = new PublicationLicense( $this->_parent->_db );
-		
+
 		// Incoming - license screen agreements
-		$license = trim(JRequest::getVar( 'license', 0, 'post' )); 
+		$license = trim(JRequest::getVar( 'license', 0, 'post' ));
 		$text 	 = JRequest::getVar( 'license_text', '', 'post');
 		$agree 	 = JRequest::getInt( 'agree', 0, 'post');
-		
+
 		if ($license)
-		{			
+		{
 			if (!$objL->load($license))
 			{
-				$this->setError( JText::_('There was a problem saving license selection') );		
+				$this->setError( JText::_('There was a problem saving license selection') );
 				return false;
 			}
-			
-			if ($objL->agreement == 1 && !$agree) 
+
+			if ($objL->agreement == 1 && !$agree)
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 				return false;
 			}
-			elseif ($objL->customizable == 1 && !$text) 
+			elseif ($objL->customizable == 1 && !$text)
 			{
 				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
 				return false;
 			}
-			
+
 			$row->license_type = $license;
 			$row->license_text = $text;
-						
+
 			// Save agreement
 			$row->saveParam($pub->version_id, 'licenseagreement', 1);
-			
+
 			$row->store();
-			
+
 			if ($license != $originalType || $text != $originalText)
 			{
 				$this->_parent->set('_update', 1);
 			}
-			
+
 			// Check agreements
 			return true;
 		}
-		
+
 		// Incoming - selector screen
 		$selections = JRequest::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
-		
+
 		$i = 0;
 		foreach ($toAttach as $license)
 		{
@@ -234,75 +233,75 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			{
 				continue;
 			}
-			
+
 			// Make sure license exists
 			if ($objL->load($license))
 			{
-				$row->license_type = $license;			
+				$row->license_type = $license;
 				$i++;
 				$row->store();
-				
+
 				// Clear agreement if license is changed
 				if ($originalType != $license)
 				{
 					// Save agreement
 					$row->saveParam($pub->version_id, 'licenseagreement', 0);
-					$this->_parent->set('_update', 1);					
+					//$this->_parent->set('_update', 1);
 				}
-				
+
 				// Only one choice
 				break;
-			}			
+			}
 		}
-		
+
 		if ($i)
-		{						
-			$this->set('_message', JText::_('License selection saved') );		
+		{
+			$this->set('_message', JText::_('License selection saved') );
 			return true;
 		}
 		else
 		{
-			$this->setError( JText::_('There was a problem saving license selection') );		
+			$this->setError( JText::_('There was a problem saving license selection') );
 			return false;
-		}		
+		}
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		// Start status
 		$status 	 = new PublicationsModelStatus();
-		
+
 		// Get version params
 		$pubParams = new JParameter( $pub->params );
-		
+
 		$status->status = 1;
-		
+
 		// Load license class
 		$objL = new PublicationLicense( $this->_parent->_db );
-		
+
 		if ($pub->license_type && $objL->load($pub->license_type))
 		{
 			$agreement = $pubParams->get('licenseagreement');
-			
+
 			// Missing agreement?
 			if ($objL->agreement == 1 && !$agreement)
 			{
 				$status->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 				$status->status = 0;
 			}
-			
-			if ($objL->customizable == 1 
-				&& $objL->text && !$pub->license_text) 
+
+			if ($objL->customizable == 1
+				&& $objL->text && !$pub->license_text)
 			{
 				$status->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
 				$status->status = 0;
 			}
-			
+
 			if ($pub->license_text)
 			{
 				preg_replace('/\[([^]]+)\]/', ' ', $pub->license_text, -1, $bingo);
@@ -311,16 +310,16 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 					$status->setError( JText::_('Default values need to be substituted') );
 					$status->status = 0;
 				}
-			}			
+			}
 		}
 		else
 		{
 			$status->status = 0;
 		}
-				
+
 		return $status;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
@@ -339,7 +338,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			'elements' 		=> array(),
 			'params'		=> array( 'required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
 		);
-		
+
 		return json_decode(json_encode($manifest), FALSE);
 	}
 }

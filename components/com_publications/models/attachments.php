@@ -197,6 +197,50 @@ class PublicationsModelAttachments extends JObject
 	}
 
 	/**
+	 * Draw list of element items
+	 *
+	 * @return object
+	 */
+	public function listItems($elements = NULL, $pub = NULL, $authorized = true)
+	{
+		if (empty($elements) || $pub === NULL)
+		{
+			return false;
+		}
+
+		$output = '<ul class="element-list">';
+
+		foreach ($elements as $element)
+		{
+			// Load attachment type
+			$type = $this->loadAttach($element->manifest->params->type);
+
+			if ($type === false)
+			{
+				return false;
+			}
+
+			$attachments = $pub->_attachments;
+			$attachments = isset($attachments['elements'][$element->id])
+						 ? $attachments['elements'][$element->id] : NULL;
+
+			// Draw link(s)
+			$output .= $type->drawList(
+				$attachments,
+				$element->manifest,
+				$element->id,
+				$pub,
+				$element->block,
+				$authorized
+			);
+		}
+
+		$output .= '</ul>';
+
+		return $output;
+	}
+
+	/**
 	 * Draw launching button/link for element
 	 *
 	 * @return object

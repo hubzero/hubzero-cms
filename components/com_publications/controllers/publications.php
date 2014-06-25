@@ -716,7 +716,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						: $publication->_type->curation;
 
 			// Get curation model
-			$this->publication->_curationModel = new PublicationsCuration(
+			$publication->_curationModel = new PublicationsCuration(
 				$this->database,
 				$manifest
 			);

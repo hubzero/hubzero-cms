@@ -266,6 +266,12 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 			'metadata'=>$metadata
 		);
 
+		if ($publication->state == 1)
+		{
+			$arr['count'] = $items;
+			$arr['name']  = 'wishlist';
+		}
+
 		return $arr;
 	}
 }

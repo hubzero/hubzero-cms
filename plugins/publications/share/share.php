@@ -90,7 +90,8 @@ class plgPublicationsShare extends JPlugin
 	{
 		$arr = array(
 			'html'=>'',
-			'metadata'=>''
+			'metadata'=>'',
+			'name'=>'share'
 		);
 
 		// Hide if version not published

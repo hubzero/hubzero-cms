@@ -771,7 +771,8 @@ class PublicationsCuration extends JObject
 
 			if (!$result->firstBlock)
 			{
-				if ($reviewStatus && $reviewStatus->status == 0 && !$reviewStatus->lastupdate)
+				if (($reviewStatus && $reviewStatus->status == 0
+					&& !$reviewStatus->lastupdate) || $autoStatus->status == 0)
 				{
 					$result->firstBlock = $sequence;
 				}
@@ -893,6 +894,87 @@ class PublicationsCuration extends JObject
 
 		// Return status
 		return $elementId;
+	}
+
+	/**
+	 * Get next element ID
+	 *
+	 * @param      string $name
+	 * @return     string
+	 */
+	public function getNextElement( $name, $sequence = 0, $activeId = 1)
+	{
+		$sequence = $sequence ? $sequence : $this->_blockorder;
+		if (!$sequence)
+		{
+			$sequence = $this->getBlockSequence($name);
+		}
+
+		if (!$sequence)
+		{
+			$this->setError( JText::_('Error loading block') );
+			return $activeId;
+		}
+
+		$remaining = array();
+		$start	   = 0;
+		if ($this->_blocks->$sequence->elements)
+		{
+			foreach ($this->_blocks->$sequence->elements as $id => $element)
+			{
+				if ($id == $activeId)
+				{
+					$start = 1;
+				}
+				if ($start == 1 && $id != $activeId)
+				{
+					$remaining[] = $id;
+				}
+			}
+		}
+
+		// Return element ID
+		return empty($remaining) ? $activeId : $remaining[0];
+	}
+
+	/**
+	 * Determine if element is coming
+	 *
+	 * @param      string $name
+	 * @return     string
+	 */
+	public function isComing( $name, $sequence = 0, $activeId = 1, $elementId = 0)
+	{
+		$sequence = $sequence ? $sequence : $this->_blockorder;
+		if (!$sequence)
+		{
+			$sequence = $this->getBlockSequence($name);
+		}
+
+		if (!$sequence)
+		{
+			$this->setError( JText::_('Error loading block') );
+			return $activeId;
+		}
+
+		$remaining = array();
+		$start	   = 0;
+		if ($this->_blocks->$sequence->elements)
+		{
+			foreach ($this->_blocks->$sequence->elements as $id => $element)
+			{
+				if ($id == $activeId)
+				{
+					$start = 1;
+				}
+				if ($start == 1 && $id != $activeId)
+				{
+					$remaining[] = $id;
+				}
+			}
+		}
+
+		return in_array($elementId, $remaining) ? true : false;
 	}
 
 	/**

@@ -35,28 +35,28 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	*
 	* @var		string
 	*/
-	protected $_name = 'authors';
+	protected $_name 			= 'authors';
 
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected $_parentname = 'authors';
+	protected $_parentname 		= 'authors';
 
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
-	protected $_manifest = NULL;
+	protected $_manifest 		= NULL;
 
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
-	protected	$_sequence 		= 0;
+	protected $_sequence 		= 0;
 
 	/**
 	 * Display block content
@@ -121,7 +121,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
 
-		// Make sure changes are allowed			
+		// Make sure changes are allowed
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;

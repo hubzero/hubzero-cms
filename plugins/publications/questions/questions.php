@@ -138,6 +138,9 @@ class plgPublicationsQuestions extends JPlugin
 
 		$this->count = $this->a->getCount($this->filters);
 
+		$arr['count'] = $this->count;
+		$arr['name']  = 'questions';
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{

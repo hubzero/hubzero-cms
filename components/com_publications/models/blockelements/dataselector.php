@@ -36,58 +36,58 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	* @var		string
 	*/
 	protected	$_name = 'dataselector';
-	
+
 	/**
 	 * Render
 	 *
 	 * @return  object
 	 */
-	public function render( $elementid, $manifest, $pub = NULL, $viewname = 'edit', 
+	public function render( $elementid, $manifest, $pub = NULL, $viewname = 'edit',
 		$status = NULL, $master = NULL, $order = 0 )
 	{
 		$html = '';
-		
+
 		// Get project path
 		$config 	= JComponentHelper::getParams( 'com_projects' );
-		$path 		= ProjectsHelper::getProjectPath($pub->_project->alias, 
+		$path 		= ProjectsHelper::getProjectPath($pub->_project->alias,
 					  $config->get('webpath'), $config->get('offroot'));
-		
+
 		$showElement 	= $master->props['showElement'];
 		$total 			= $master->props['total'];
-		
+
 		// Incoming
 		$activeElement  = JRequest::getInt( 'el', $showElement );
-				
+
 		// Do we need to collapse inactive elements?
-		$collapse = isset($master->params->collapse_elements) && $master->params->collapse_elements ? 1 : 0;	
-		
-		switch ($viewname) 
+		$collapse = isset($master->params->collapse_elements) && $master->params->collapse_elements ? 1 : 0;
+
+		switch ($viewname)
 		{
 			case 'edit':
 			default:
-				$html = $this->drawSelector( $elementid, $manifest, $pub, 
-						$status->elements->$elementid, $path, $activeElement, 
+				$html = $this->drawSelector( $elementid, $manifest, $pub,
+						$status->elements->$elementid, $path, $activeElement,
 						$collapse, $total, $master, $order
 				);
-			
+
 			break;
-			
+
 			case 'curator':
-				$html = $this->drawCurationItem( $elementid, $manifest, $pub, 
+				$html = $this->drawCurationItem( $elementid, $manifest, $pub,
 						$status->elements->$elementid, $path, $master
 				);
 			break;
-			
+
 			case 'freeze':
-				$html = $this->drawItem( $elementid, $manifest, $pub, 
+				$html = $this->drawItem( $elementid, $manifest, $pub,
 						$status->elements->$elementid, $path, $master
 				);
 			break;
 		}
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Draw element without editing capabilities
 	 *
@@ -95,32 +95,33 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	 */
 	public function drawItem( $elementId, $manifest, $pub = NULL, $status = NULL, $path = NULL, $master = NULL)
 	{
+		$layout = $manifest->params->type . 'selector';
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'publications',
 				'name'		=>'freeze',
-				'layout'	=>'urlselector'
+				'layout'	=>$layout
 			)
 		);
-		
+
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-		
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}		
-				
+		}
+
 		// Get attached items
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-		$attachments = $attModel->getElementAttachments($elementId, $attachments, 
+		$attachments = $attModel->getElementAttachments($elementId, $attachments,
 					   $manifest->params->type, $manifest->params->role);
-		
+
 		$view->path			 = $path;
 		$view->pub 			 = $pub;
 		$view->manifest		 = $manifest;
@@ -132,7 +133,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Draw curation element
 	 *
@@ -141,7 +142,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	public function drawCurationItem( $elementId, $manifest, $pub = NULL, $status = NULL, $path = NULL, $master = NULL)
 	{
 		$layout = $manifest->params->type . 'selector';
-		
+
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=> 'projects',
@@ -150,24 +151,24 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 				'layout'	=>  $layout
 			)
 		);
-		
+
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-		
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}		
-				
+		}
+
 		// Get attached items
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-		$attachments = $attModel->getElementAttachments($elementId, $attachments, 
+		$attachments = $attModel->getElementAttachments($elementId, $attachments,
 					   $manifest->params->type, $manifest->params->role);
-		
+
 		$view->path			 = $path;
 		$view->pub 			 = $pub;
 		$view->manifest		 = $manifest;
@@ -179,35 +180,35 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Draw file selector
 	 *
 	 * @return  object
 	 */
-	public function drawSelector( $elementId, $manifest, $pub = NULL, $status = NULL, 
-		$path, $active = 0, $collapse = 0, $total = 0, 
+	public function drawSelector( $elementId, $manifest, $pub = NULL, $status = NULL,
+		$path, $active = 0, $collapse = 0, $total = 0,
 		$master = NULL, $order = 0)
-	{				
+	{
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-		
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}		
-				
+		}
+
 		// Get attached items
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-		$attachments = $attModel->getElementAttachments($elementId, $attachments, 
+		$attachments = $attModel->getElementAttachments($elementId, $attachments,
 					   $manifest->params->type, $manifest->params->role);
-					
+
 		$layout = $manifest->params->type . 'selector';
-		
+
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=> 'projects',
@@ -216,7 +217,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 				'layout'	=>  $layout
 			)
 		);
-				
+
 		$view->path			 = $path;
 		$view->pub 			 = $pub;
 		$view->manifest		 = $manifest;
@@ -229,7 +230,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$view->master 		 = $master;
 		$view->database		 = $this->_parent->_db;
 		$view->order		 = $order;
-		
+
 		return $view->loadTemplate();
 	}
 }

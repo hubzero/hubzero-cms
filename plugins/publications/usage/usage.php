@@ -206,6 +206,12 @@ class plgPublicationsUsage extends JPlugin
 			}
 		}
 
+		if ($stats->users)
+		{
+			$arr['name']  = 'usage';
+			$arr['count'] = $stats->users;
+		}
+
 		return $arr;
 	}
 

@@ -350,6 +350,49 @@ class PublicationsHtml
 	}
 
 	/**
+	 * Write metadata information for a publication (new version)
+	 *
+	 * @param      string  $option 			Component name
+	 * @param      object  $params    		Publication params
+	 * @param      object  $publication   	Publication object
+	 * @param      string  $statshtml 		Usage data to append
+	 * @param      array   $sections  		Active plugins' names
+	 * @param      string  $version     	Version name
+	 * @param      string  $xtra      		Extra content to append
+	 * @param      object  $lastPubRelease  Publication latest public version
+	 * @return     string HTML
+	 */
+	public static function drawMetadata($option, $params, $publication,
+		$sections, $version = 'default', $lastPubRelease = '')
+	{
+		if ($publication->main == 1)
+		{
+			echo '<ul class="metaitems">';
+			foreach ($sections as $section)
+			{
+				if (isset($section['name']) && isset($section['count']))
+				{
+					echo '<li class="meta-' . $section['name']
+					. '">';
+
+					if ($section['name'] != 'usage')
+					{
+						echo '<a href="' . JRoute::_('index.php?option=' . $option . '&id=' . $publication->id.'&active=' . $section['name'] ) . '" title="' . JText::_('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
+					}
+
+					echo '<span class="icon"></span><span class="label">' . $section['count'] . '</span>';
+					if ($section['name'] != 'usage')
+					{
+						echo '</a>';
+					}
+					echo '</li>';
+				}
+			}
+			echo '</ul>';
+		}
+	}
+
+	/**
 	 * Write metadata information for a publication
 	 *
 	 * @param      string  $option 			Component name
@@ -919,7 +962,10 @@ class PublicationsHtml
 					$class = 'ready';
 					break;
 				case 5:
-					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_PENDING_APPROVAL')).')';
+				case 7:
+					$text .= $publication->state == 5
+							? ' ('.strtolower(JText::_('COM_PUBLICATIONS_PENDING_APPROVAL')).')'
+							: ' ('.strtolower(JText::_('COM_PUBLICATIONS_PENDING_WIP')).')';
 					$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_SUBMITTED').' ';
 					$text .= JText::_('COM_PUBLICATIONS_ON') . ' '
 					.JHTML::_('date', $publication->submitted, $dateFormat, $tz).'</span>';
@@ -1086,6 +1132,9 @@ class PublicationsHtml
 					break;
 				case 6:
 					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_DARK_ARCHIVE');
+					break;
+				case 7:
+					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_WIP');
 					break;
 			}
 			if ($authorized == 3)
@@ -1282,6 +1331,36 @@ class PublicationsHtml
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
 
 		return PublicationsHtml::primaryButton($class, $url, $msg, $xtra, $title, $action, $disabled, $pop);
+	}
+
+	/**
+	 * Generate the primary resources button
+	 *
+	 * @param      string  $class    Class to add
+	 * @param      string  $href     Link url
+	 * @param      string  $msg      Link text
+	 * @param      string  $xtra     Extra parameters to add (deprecated)
+	 * @param      string  $title    Link title
+	 * @param      string  $action   Link action
+	 * @param      boolean $disabled Is the button disable?
+	 * @param      string  $pop      Pop-up content
+	 * @return     string
+	 */
+	public static function drawLauncher( $icon, $pub, $url, $title, $disabled, $pop, $action = '' )
+	{
+		if ($disabled)
+		{
+			// TBD
+			echo '<p class="unavailable warning">' . JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE') . '</p>';
+		}
+		else
+		{
+			?>
+			<div class="button-highlighter">
+				<p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" <?php echo $action; ?>></a></p>
+			</div>
+
+	<?php	}
 	}
 
 	/**

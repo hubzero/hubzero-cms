@@ -134,6 +134,9 @@ class plgPublicationsCitations extends JPlugin
 		$c = new CitationsCitation( $database );
 		$citations = $c->getCitations( 'publication', $publication->id );
 
+		$arr['count'] = $citations ? count($citations) : 0;
+		$arr['name']  = 'citations';
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{

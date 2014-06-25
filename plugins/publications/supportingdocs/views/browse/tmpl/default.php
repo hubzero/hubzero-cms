@@ -49,7 +49,11 @@ if ($useBlocks)
 	// Get attachment type model
 	$attModel = new PublicationsModelAttachments($database);
 
-	if ($elements)
+	$attachments = $this->publication->_attachments;
+	$attachments = isset($attachments[2])
+				 ? $attachments[2] : NULL;
+
+	if ($elements && $attachments)
 	{
 		foreach ($elements as $element)
 		{
@@ -64,6 +68,11 @@ if ($useBlocks)
 			echo $launcher;
 		}
 	}
+	else
+	{
+		?>
+		<p class="noresults"><?php echo JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND'); ?></p>
+<?php	}
 }
 elseif ($this->docs) {
 	$dls = '';
