@@ -2290,7 +2290,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			header("Content-Type: "    . $mime ); // MIME type
 			header("Content-Length: "  . $fsize);
 
- 		// No encoding - we aren't using compression... (RFC1945)
+		// No encoding - we aren't using compression... (RFC1945)
 
 		$this->_readfile_chunked($file);
 	}
