@@ -57,10 +57,12 @@ class Progress extends Output
 	/**
 	 * Initialize progress counter
 	 *
-	 * @param  (strign) $initMessage - initial message
+	 * @param  (string) $initMessage - initial message
+	 * @param  (string) $type        - progress type
+	 * @param  (int)    $total       - total number of progress points
 	 * @return void
 	 **/
-	public function init($initMessage=null)
+	public function init($initMessage=null, $type='percentage', $total=null)
 	{
 		// Force interactivity of this class (this doesn't affect our primary output class)
 		$this->makeInteractive();
@@ -74,17 +76,27 @@ class Progress extends Output
 			$this->initMessageLength = strlen($initMessage);
 		}
 
-		// Set current progress to 0
-		$this->setProgress('0');
+		switch ($type)
+		{
+			case 'ratio':
+				$this->setProgress(0, $total);
+				break;
+			case 'percentage':
+			default:
+				// Set current progress to 0
+				$this->setProgress('0');
+				break;
+		}
 	}
 
 	/**
 	 * Set the current progress val
 	 *
 	 * @param  (int) $val - progress value
+	 * @param  (int) $tot - total value
 	 * @return void
 	 **/
-	public function setProgress($val)
+	public function setProgress($val, $tot=null)
 	{
 		if ($this->contentLength > 0)
 		{
@@ -92,8 +104,15 @@ class Progress extends Output
 			$this->backspace($this->contentLength);
 		}
 
-		// Get new content
-		$content = "{$val}%";
+		if (!is_null($tot))
+		{
+			$content = "({$val}/{$tot})";
+		}
+		else
+		{
+			// Get new content
+			$content = "{$val}%";
+		}
 
 		// Save length of content for next call
 		$this->contentLength = strlen($content);
