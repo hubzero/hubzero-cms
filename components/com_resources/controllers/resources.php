@@ -1049,7 +1049,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$activechild = new ResourcesResource($this->database);
 		$activechild->load($child);
 		
-		//check to see if we have a manifest
+		// check to see if we have a manifest
 		if (!$this->videoManifestExistsForResource( $activechild ))
 		{
 			$this->createVideoManifestForResource( $activechild );
@@ -1165,9 +1165,6 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	private function createVideoManifestForResource( $resource )
 	{
-		//var to hold manifest data
-		$manifest = new stdClass;
-		
 		//base url for the resource
 		$base = DS . trim($this->config->get('uploadpath'), DS);
 		
@@ -1178,7 +1175,9 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
 		$attributes  = new $paramsClass( $resource->attribs );
 		
-		//set vars for manifest
+		//var to hold manifest data
+		$manifest                          = new stdClass;
+		$manifest->presentation            = new stdClass;
 		$manifest->presentation->title     = $resource->title;
 		$manifest->presentation->type      = 'Video';
 		$manifest->presentation->width     = intval($attributes->get('width', 0));
@@ -1193,9 +1192,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		//add each video to manifest
 		foreach ($videos as $k => $video)
 		{
+			// get info about video
 			$videoInfo = pathinfo( $video );
-			$manifest->presentation->media[$k]->type   = $videoInfo['extension'];
-			$manifest->presentation->media[$k]->source = $path . DS . $video;
+
+			// object to hold media type & source
+			$media         = new stdClass;
+			$media->type   = $videoInfo['extension'];
+			$media->source = $path . DS . $video;
+
+			// add media object to array of media
+			$manifest->presentation->media[] = $media;
 		}
 		
 		//get the subs
@@ -1208,25 +1214,27 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$info = pathinfo( $subtitle );
 			$name = str_replace('-auto', '', $info['filename']);
 			$name = ucfirst( $name );
+
+			// object to hold subtitle info
+			$sub           = new stdClass;
+			$sub->type     = 'SRT';
+			$sub->name     = $name;
+			$sub->source   = $path . DS . $subtitle;
+			$sub->autoplay = (strstr($subtitle, '-')) ? 1 : 0;
 			
-			$manifest->presentation->subtitles[$k]->type     = 'SRT';
-			$manifest->presentation->subtitles[$k]->name     = $name;
-			$manifest->presentation->subtitles[$k]->source   = $path . DS . $subtitle;
-			$manifest->presentation->subtitles[$k]->autoplay = 0;
-			
-			//do we want to autoplay
-			if (strstr($subtitle, '-'))
-			{
-				$manifest->presentation->subtitles[$k]->autoplay = 1;
-			}
+			// add sub object to array of subtitles
+			$manifest->presentation->subtitles[] = $sub;
 		}
 		
 		//reset array of subs and media
 		$manifest->presentation->media     = array_values($manifest->presentation->media);
 		$manifest->presentation->subtitles = array_values($manifest->presentation->subtitles);
 		
-		//attempt to create manifest file
-		if (!JFile::write(JPATH_ROOT . DS . $base . $path . DS . 'presentation.json', json_encode($manifest)))
+		// json encode manifest
+		$manifest = json_encode($manifest, JSON_PRETTY_PRINT);
+
+		// attempt to create manifest file
+		if (!JFile::write(JPATH_ROOT . DS . $base . $path . DS . 'presentation.json', $manifest))
 		{
 			return false;
 		}

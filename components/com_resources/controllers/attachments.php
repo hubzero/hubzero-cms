@@ -355,6 +355,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$row->path         = ''; // make sure no path is specified just yet
 		$row->type         = $this->_getChildType($filename . '.' . $ext);
 
+		// setup videos to auto-play in hub
+		if ($this->config->get('file_video_html5', 1))
+		{
+			if (in_array($ext, array('mp4', 'webm', 'ogv')))
+			{
+				$row->type = 41; // Video type
+			}
+		}
+
 		// Check content
 		if (!$row->check()) 
 		{
