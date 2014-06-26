@@ -210,8 +210,8 @@ if ($experiment == false)
 		$html .= '</div><!-- / .subject -->'."\n";
 		$html .= ' <div class="aside extracontent">'."\n";
 
-		// Get Related Resources plugin
-		JPluginHelper::importPlugin( 'resources', 'related' );
+		// Get Related plugin
+		JPluginHelper::importPlugin( 'publications' );
 		$dispatcher = JDispatcher::getInstance();
 
 		// Show related content
@@ -274,8 +274,7 @@ else
 	$html .= '</div><!-- / .subject -->'."\n";
 	$html .= ' <div class="aside extracontent">'."\n";
 
-	// Get Related Resources plugin
-	JPluginHelper::importPlugin( 'resources', 'related' );
+	JPluginHelper::importPlugin( 'publications');
 	$dispatcher = JDispatcher::getInstance();
 
 	// Show related content

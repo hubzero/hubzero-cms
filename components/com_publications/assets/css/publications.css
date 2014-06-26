@@ -34,7 +34,7 @@
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {
 		display: block;
-		left: -1.2em;
+		left: -1em;
 		top: 0.3em;
 	}
 	.com_publications .aside.extracontent ul {
@@ -46,6 +46,8 @@
 	}
 	.com_publications .aside.extracontent li {
 		border-bottom: 1px solid #e2dbe8;
+		padding-bottom: 0.5em;
+		padding-top: 0.3em;
 	}
 	.com_publications .aside.extracontent li:last-child {
 		border: none;
