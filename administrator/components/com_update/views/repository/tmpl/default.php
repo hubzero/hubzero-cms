@@ -56,7 +56,7 @@ $this->css();
 
 	<div class="clr"></div>
 
-	<table id="repository-list">
+	<table id="repository-list" class="adminlist">
 		<thead>
 			<tr>
 				<th>Author</th>
