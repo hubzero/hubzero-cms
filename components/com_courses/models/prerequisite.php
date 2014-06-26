@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php');
 
 /**
@@ -83,6 +84,13 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 	protected $views = null;
 
 	/**
+	 * Grades
+	 *
+	 * @var array
+	 **/
+	protected $grades = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param  (int) $section_id
@@ -112,6 +120,16 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 
 		$this->progress = $gradebook->progress($member_id);
 		$this->views    = $gradebook->views($member_id);
+		$grades         = $gradebook->_tbl->find(array('member_id'=>$member_id, 'scope'=>'asset'));
+
+		if ($grades && count($grades) > 0)
+		{
+			$this->grades = array();
+			foreach ($grades as $grade)
+			{
+				$this->grades[$grade->scope_id] = (!is_null($grade->override)) ? $grade->override : $grade->score;
+			}
+		}
 	}
 
 	/**
@@ -127,7 +145,7 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 	/**
 	 * See if item prerequisite has been fulfilled
 	 *
-	 * For now, we're going to place all of the logic here for checking
+	 * @TODO: For now, we're going to place all of the logic here for checking
 	 * whether or not different types of items have been fulfilled.
 	 * Eventually this should be abstracted out elsewhere.
 	 *
@@ -165,10 +183,25 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 				{
 					foreach ($this->prerequisites[$key] as $prerequisite)
 					{
-						if (!in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
+						$asset = new CoursesModelAsset($prerequisite['scope_id']);
+
+						switch ($asset->get('type'))
 						{
-							$return = false;
-							continue;
+							case 'form':
+								if (!isset($this->grades[$prerequisite['scope_id']]))
+								{
+									$return = false;
+									continue;
+								}
+								break;
+
+							default:
+								if (!in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
+								{
+									$return = false;
+									continue;
+								}
+								break;
 						}
 					}
 				}
