@@ -203,19 +203,74 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	 */
 	public function hierarchyTask()
 	{
+		static $DEPTH = 7;
 		$tag = isset($_GET['tag']) ? $_GET['tag'] : 0;
 
-		$nodes = array();
 		$links = array();
 		$id = null;
 		$descr = '';
 
-		$rv = $tag =  $this->get_tag($tag);
-		$nodes[] = array(
+		$rv = $tag = $this->get_tag($tag);
+		$tag['type'] = 'center';
+		$nodes = array(array(
 			'id'      => $rv['id'],
 			'tag'     => $rv['tag'],
 			'raw_tag' => $rv['raw_tag']
-		);
+		));
+		$tagIdMap = array($rv['id'] => 0);
+		$byDepth = array(array($tag));
+
+		for ($depth = 0; $depth < $DEPTH; ++$depth) {
+			if (!$byDepth[$depth]) {
+				break;
+			}
+			foreach ($byDepth[$depth] as $tag) {
+				$parents = 'SELECT DISTINCT t.id, t.tag, t.raw_tag, to1.label, \'in\' AS direction
+					FROM #__tags_object to1
+					INNER JOIN #__tags t ON t.id = to1.tagid
+					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.objectid = ' . $tag['id'];
+				$children = 'SELECT DISTINCT t.id, t.tag, t.raw_tag, to1.label, \'out\' AS direction
+					FROM #__tags_object to1
+					INNER JOIN #__tags t ON t.id = to1.objectid
+					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.tagid = ' . $tag['id'];
+
+				$this->database->setQuery(
+					$tag['type'] == 'child' ? $children :
+					($tag['type'] == 'parent' ? $parents : "$parents UNION $children")
+				);
+				foreach ($this->database->loadAssocList() as $subTag) {
+					if (!array_key_exists($subTag['id'], $tagIdMap)) {
+						if ($subTag['direction'] == 'in' || $subTag['label'] != 'parent') {
+							$subTag['type'] = $subTag['label'];
+						}
+						else if ($subTag['label'] == 'parent') {
+							$subTag['type'] = 'child';
+						}
+						$nodes[] = $subTag;
+						$tagIdMap[$subTag['id']] = count($nodes) - 1;
+						if ($subTag['label'] == 'parent') {
+							if (!array_key_exists($depth + 1, $byDepth)) {
+								$byDepth[$depth + 1] = array();
+							}
+							$byDepth[$depth + 1][] = $subTag;
+						}
+					}
+					elseif ($subTag['label'] == 'parent') {
+					}
+					$links[] = array(
+						'source' => $tagIdMap[$tag['id']],
+						'target' => $tagIdMap[$subTag['id']]
+					);
+				}
+			}
+		}
+
+		header('Content-type: text/plain');
+		$rv['nodes'] = $nodes;
+		$rv['links'] = $links;
+		echo json_encode($rv, \JSON_PRETTY_PRINT);
+		exit();
+
 		if (!$rv['new'] && isset($tag['id']))
 		{
 			$t_idx = 0;
@@ -280,10 +335,10 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			}
 		}
 
-		header('Content-type: application/octet-stream');
+		header('Content-type: text/plain');
 		$rv['nodes'] = $nodes;
 		$rv['links'] = $links;
-		echo json_encode($rv);
+		echo json_encode($rv, \JSON_PRETTY_PRINT);
 		exit();
 	}
 

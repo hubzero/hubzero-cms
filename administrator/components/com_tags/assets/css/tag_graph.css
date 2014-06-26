@@ -1,10 +1,4 @@
 /* Relationships */
-	.bit-box .closebutton {
-		opacity: 0;
-	}
-	.bit-box:hover .closebutton {
-		opacity: 0.8;
-	}
 	.closebutton:after {
 		content: 'x';
 		color: #900;
