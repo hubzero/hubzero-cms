@@ -121,7 +121,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 		if ($category == 'review')
 		{
 			$database->setQuery("SELECT publication_id FROM #__publication_ratings WHERE id=" . $refid);
-		 	return $database->loadResult();
+			return $database->loadResult();
 		}
 	}
 

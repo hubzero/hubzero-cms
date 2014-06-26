@@ -125,7 +125,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		if ($category == 'wish')
 		{
 			$database->setQuery("SELECT wishlist FROM `#__wishlist_item` WHERE id=" . $refid);
-		 	return $database->loadResult();
+			return $database->loadResult();
 		}
 	}
 

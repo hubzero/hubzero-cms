@@ -121,7 +121,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 		if ($category == 'review')
 		{
 			$database->setQuery("SELECT resource_id FROM #__resource_ratings WHERE id=" . $refid);
-		 	return $database->loadResult();
+			return $database->loadResult();
 		}
 	}
 

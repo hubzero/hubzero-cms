@@ -132,12 +132,12 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		if ($category == 'answer')
 		{
 			$database->setQuery("SELECT question_id FROM `#__answers_responses` WHERE id=" . $refid);
-		 	return $database->loadResult();
+			return $database->loadResult();
 		}
 
 		if ($category == 'question')
 		{
-		 	return $refid;
+			return $refid;
 		}
 	}
 
@@ -285,7 +285,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 									$mes .= JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
 									SupportUtilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
-							 	}
+								}
 							}
 						}
 					}
