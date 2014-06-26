@@ -255,22 +255,14 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to add a message to the component message que
 	 *
-	 * @param	string	$message	The message to add
-	 * @return	void
+	 * @param   string $message The message to add
+	 * @return  void
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
 		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&id=' . $this->obj->id . '&active=comments'), 'server');
-		$url = str_replace('&amp;', '&', $url);
 
-		$msg = ($msg) ? $msg : '';
-		$msgType = ($msgType) ? $msgType : 'message';
-
-		if ($url)
-		{
-			$app = JFactory::getApplication();
-			$app->redirect($url, $msg, $msgType);
-		}
+		parent::redirect($url, $msg, $msgType);
 	}
 
 	/**

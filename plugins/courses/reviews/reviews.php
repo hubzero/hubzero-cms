@@ -209,21 +209,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 				'admin', 'manage', 'edit', 'edit-own', 'create', 'delete'
 			);
 
-			// Joomla 1.6+
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$yearFormat  = "Y";
-				$monthFormat = "m";
-				$dayFormat   = "d";
-			}
-			else
-			{
-				// Joomla 1.5
+			$yearFormat  = "Y";
+			$monthFormat = "m";
+			$dayFormat   = "d";
 
-				$yearFormat  = "%Y";
-				$monthFormat = "%m";
-				$dayFormat   = "%d";
-			}
 			if ($this->obj->isManager())
 			{
 				foreach ($actions as $action)
@@ -292,22 +281,14 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	/**
 	 * Method to add a message to the component message que
 	 *
-	 * @param	string	$message	The message to add
-	 * @return	void
+	 * @param   string $message The message to add
+	 * @return  void
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
 		$url = ($url != '') ? $url : JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews'), 'server');
-		$url = str_replace('&amp;', '&', $url);
 
-		$msg = ($msg) ? $msg : '';
-		$msgType = ($msgType) ? $msgType : 'message';
-
-		if ($url)
-		{
-			$app = JFactory::getApplication();
-			$app->redirect($url, $msg, $msgType);
-		}
+		parent::redirect($url, $msg, $msgType);
 	}
 
 	/**
