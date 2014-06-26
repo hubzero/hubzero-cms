@@ -453,7 +453,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		}
 
 		// are we allowed to display group modules
-		if(!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0))
+		if (!$this->group->isSuperGroup() && !$this->config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
@@ -489,7 +489,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$pageCss = GroupsHelperView::GetPageCss($this->group);
 
 		$css = '';
-		foreach($pageCss as $p)
+		foreach ($pageCss as $p)
 		{
 			$css .= '<link rel="stylesheet" href="'.$p.'" />';
 		}
@@ -830,7 +830,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		$module->store(false, $this->group->isSuperGroup());
-		
+
 		// send approved notifcation
 		GroupsHelperPages::sendApprovedNotification('module', $module);
 

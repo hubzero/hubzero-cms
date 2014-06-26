@@ -88,7 +88,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
@@ -286,13 +286,13 @@ class GroupsModelPage extends \Hubzero\Base\Model
 
 		// base link
 		$pageLink = 'index.php?option=com_groups&cn=' . $group->get('cn');
-		
+
 		// if we not linking to the home page
 		if (!$this->get('home'))
 		{
 			$pageLink .= '&active=' . $this->get('alias');
 		}
-		
+
 		// return routed link
 		return JRoute::_($pageLink);
 	}

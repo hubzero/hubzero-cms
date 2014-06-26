@@ -76,7 +76,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}

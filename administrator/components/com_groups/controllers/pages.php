@@ -589,7 +589,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 
 		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
 		$currentVersion->store(false, $this->group->isSuperGroup());
-		
+
 		// redirect to scan url
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id')
@@ -635,7 +635,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id')
 		);
 	}
-	
+
 	/**
 	 * Approve a group page
 	 *

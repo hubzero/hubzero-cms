@@ -530,7 +530,7 @@ class GroupsHelperPages
 		$config = JComponentHelper::getParams('com_groups');
 
 		// are we allowed to display group modules
-		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
+		if (!$group->isSuperGroup() && !$config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
@@ -583,7 +583,7 @@ class GroupsHelperPages
 
 		// load page version
 		$content = $page->version($version)->content('parsed');
-		
+
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
 
@@ -595,7 +595,7 @@ class GroupsHelperPages
 		}
 
 		// are we allowed to display group modules
-		if(!$group->isSuperGroup() && !$config->get('page_modules', 0))
+		if (!$group->isSuperGroup() && !$config->get('page_modules', 0))
 		{
 			$groupDocument->set('allowed_tags', array());
 		}
@@ -630,7 +630,7 @@ class GroupsHelperPages
 		$pageCss = GroupsHelperView::GetPageCss($group);
 
 		$css = '';
-		foreach($pageCss as $p)
+		foreach ($pageCss as $p)
 		{
 			$p = rtrim(JURI::root(), DS) . DS . ltrim($p, DS);
 			$css .= '<link rel="stylesheet" href="'.$p.'" />';
