@@ -31,29 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for transfer
  */
-class plgSupportTransfer extends JPlugin
+class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-
-		$upconfig = JComponentHelper::getParams('com_members');
-		$this->banking = $upconfig->get('bankAccounts');
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieves a row from the database
@@ -65,18 +53,21 @@ class plgSupportTransfer extends JPlugin
 	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
+		$upconfig = JComponentHelper::getParams('com_members');
+		$this->banking = $upconfig->get('bankAccounts');
+
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
 		if ($from_type == NULL or $from_id == NULL or $to_type == NULL)
 		{
-			$this->setError(JText::_('Missing required information to complete the transfer.'));
+			$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_MISSING_INFO'));
 			return false;
 		}
 
 		if ($from_type == $to_type)
 		{
-			$this->setError(JText::_('Cannot proceed with the transfer. Categories need to be different.'));
+			$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_CATEGORIES_MUST_BE_DIFFERENT'));
 			return false;
 		}
 
@@ -121,7 +112,7 @@ class plgSupportTransfer extends JPlugin
 				if ($row->id)
 				{
 					$author  = $row->login;
-					$subject = $this->shortenText($row->summary, 200); // max 200 characters
+					$subject = \Hubzero\Utility\String::truncate($row->summary, 200); // max 200 characters
 					$body    = $row->summary;
 					$owner   = $row->group;
 
@@ -137,7 +128,7 @@ class plgSupportTransfer extends JPlugin
 				}
 				else
 				{
-					$this->setError(JText::_('ERROR: Original item not found.'));
+					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
@@ -150,7 +141,7 @@ class plgSupportTransfer extends JPlugin
 				if ($row->id)
 				{
 					$author     = $row->created_by;
-					$subject    = $this->shortenText($row->subject, 200); // max 200 characters
+					$subject    = \Hubzero\Utility\String::truncate($row->subject, 200); // max 200 characters
 					$body       = $row->question;
 					$anonymous  = $row->anonymous;
 
@@ -167,7 +158,7 @@ class plgSupportTransfer extends JPlugin
 				}
 				else
 				{
-					$this->setError(JText::_('ERROR: Original item not found.'));
+					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
@@ -180,7 +171,7 @@ class plgSupportTransfer extends JPlugin
 				if ($row->id)
 				{
 					$author    = $row->proposed_by;
-					$subject   = $this->shortenText($row->subject, 200); // max 200 characters
+					$subject   = \Hubzero\Utility\String::truncate($row->subject, 200); // max 200 characters
 					$body      = $row->about;
 					$anonymous = $row->anonymous;
 
@@ -196,7 +187,7 @@ class plgSupportTransfer extends JPlugin
 					}
 
 					// get owner
-					$objG 	  = new WishlistOwnerGroup($database);
+					$objG = new WishlistOwnerGroup($database);
 					$nativegroups = $objG->get_owner_groups($row->wishlist, $admingroup, '',1);
 					$owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup) ? $nativegroups[0] : ''; // tool group
 
@@ -210,7 +201,7 @@ class plgSupportTransfer extends JPlugin
 				}
 				else
 				{
-					$this->setError(JText::_('ERROR: Original item not found.'));
+					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
@@ -261,7 +252,7 @@ class plgSupportTransfer extends JPlugin
 			case 'wish':
 				$newrow = new Wish($database);
 				$newrow->subject     = $subject;
-				$newrow->about    	 = $body;
+				$newrow->about       = $body;
 				$newrow->proposed    = $today;
 				$newrow->proposed_by = $author->get('id');
 				$newrow->status      = 0;
@@ -294,7 +285,6 @@ class plgSupportTransfer extends JPlugin
 		{
 			// Checkin ticket
 			$newrow->checkin();
-			//$tags .= ', Transferred from a '.ucfirst($from_type);
 
 			// Extras
 			if ($newrow->id)
@@ -371,12 +361,10 @@ class plgSupportTransfer extends JPlugin
 	}
 
 	/**
-	 * Short description for 'getResourceIdFromTag'
+	 * Get a resource ID via a tag
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $tag Tag
+	 * @return     mixed  False on error, Integer on success
 	 */
 	public function getResourceIdFromTag($tag)
 	{
@@ -385,51 +373,29 @@ class plgSupportTransfer extends JPlugin
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT t.objectid FROM #__tags_object as t LEFT JOIN #__tags as tt ON tt.id = t.tagid WHERE t.tbl="resources" AND (tt.raw_tag="' . $tag . '" OR tt.tag="' . $tag . '")');
-		return $this->_db->loadResult();
+
+		$database = JFactory::getDBO();
+		$database->setQuery('SELECT t.objectid FROM `#__tags_object` as t LEFT JOIN `#__tags` as tt ON tt.id = t.tagid WHERE t.tbl="resources" AND (tt.raw_tag=' . $database->quote($tag) . ' OR tt.tag=' . $database->quote($tag) . ')');
+		return $database->loadResult();
 	}
 
 	/**
-	 * Short description for 'getResourceIdFromGroup'
+	 * Get a resource ID via a group's alias (CN)
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $groupname Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $groupname Group CN
+	 * @return     mixed  False on error, Integer on success
 	 */
 	public function getResourceIdFromGroup($groupname)
 	{
 		// intended to find a resource from the name of owner group, e.g. app-cntbands
-		if ($tag === NULL)
+		if ($groupname === NULL)
 		{
 			return false;
 		}
-		$this->_db->setQuery('SELECT r.id FROM #__resources as r LEFT JOIN #__xgroups as g ON g.cn = r.alias WHERE g.cn="' . $groupname . '"');
-		return $this->_db->loadResult();
-	}
 
-	/**
-	 * Short description for 'shortenText'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $text Parameter description (if any) ...
-	 * @param      integer $chars Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public function shortenText($text, $chars=200)
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-
-		if (strlen($text) > $chars)
-		{
-			$text = $text . ' ';
-			$text = substr($text, 0, $chars);
-			$text = substr($text, 0, strrpos($text,' '));
-		}
-
-		return $text;
+		$database = JFactory::getDBO();
+		$database->setQuery('SELECT r.id FROM `#__resources` as r LEFT JOIN `#__xgroups` as g ON g.cn = r.alias WHERE g.cn=' . $database->quote($groupname));
+		return $database->loadResult();
 	}
 }
 

@@ -31,25 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 /**
  * Plugin for abuse reports for forum posts
  */
-class plgSupportForum extends JPlugin
+class plgSupportForum extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
 	/**
 	 * Get items reported as abusive
 	 *
@@ -67,9 +53,9 @@ class plgSupportForum extends JPlugin
 
 		$query  = "SELECT rc.id, rc.comment as `text`, rc.parent, rc.created_by as author, rc.created, rc.title as subject, rc.anonymous as anon, 'forum' AS parent_category,
 					s.alias AS section, c.alias AS category, rc.scope, rc.scope_id, rc.object_id, rc.thread
-					FROM #__forum_posts AS rc
-					LEFT JOIN #__forum_categories AS c ON c.id = rc.category_id
-					LEFT JOIN #__forum_sections AS s ON s.id = c.section_id
+					FROM `#__forum_posts` AS rc
+					LEFT JOIN `#__forum_categories` AS c ON c.id = rc.category_id
+					LEFT JOIN `#__forum_sections` AS s ON s.id = c.section_id
 					WHERE rc.id=" . $refid;
 
 		$database = JFactory::getDBO();
@@ -97,7 +83,7 @@ class plgSupportForum extends JPlugin
 						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 						$offering = CoursesModelOffering::getInstance($row->scope_id);
-						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+						$course   = CoursesModelCourse::getInstance($offering->get('course_id'));
 
 						$url = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&controller=offering&offering=' . $offering->get('alias') . '&active=discussions&thread=' . $row->thread;
 					break;
@@ -159,7 +145,9 @@ class plgSupportForum extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
-		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+		$this->loadLanguage();
+
+		$msg = JText::_('PLG_SUPPORT_FORUM_CONTENT_FOUND_OBJECTIONABLE');
 
 		$database = JFactory::getDBO();
 
@@ -167,7 +155,7 @@ class plgSupportForum extends JPlugin
 		$comment->load($refid);
 		$comment->anonymous = 1;
 		$comment->state     = 2;
-		//$comment->comment   = '[[Span(This comment was found to contain objectionable material and was removed by the administrator., class="warning")]]' . "\n\n" . $comment->comment;
+
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->comment, $matches))
 		{
 			$format = strtolower(trim($matches[1]));

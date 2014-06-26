@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for CAPTCHA
  */
-class plgSupportCaptcha extends JPlugin
+class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * If the user is a verified, logged-in user

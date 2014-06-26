@@ -31,27 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for com_wishlist entries
  */
-class plgSupportWishlist extends JPlugin
+class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
 	/**
 	 * Retrieves a row from the database
 	 *
@@ -140,7 +124,7 @@ class plgSupportWishlist extends JPlugin
 
 		if ($category == 'wish')
 		{
-			$database->setQuery("SELECT wishlist FROM #__wishlist_item WHERE id=" . $refid);
+			$database->setQuery("SELECT wishlist FROM `#__wishlist_item` WHERE id=" . $refid);
 		 	return $database->loadResult();
 		}
 	}
@@ -175,15 +159,17 @@ class plgSupportWishlist extends JPlugin
 			return null;
 		}
 
+		$this->loadLanguage();
+
 		switch ($category)
 		{
 			case 'wish':
-				return JText::sprintf('Wish from list #%s', $parentid);
-         	break;
+				return JText::sprintf('PLG_SUPPORT_WISHLIST_WISH_OF', $parentid);
+			break;
 
 			case 'wishcomment':
-				return JText::sprintf('Comment to wish  #%s', $parentid);
-         	break;
+				return JText::sprintf('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
+			break;
 		}
 	}
 
@@ -202,6 +188,8 @@ class plgSupportWishlist extends JPlugin
 		{
 			return null;
 		}
+
+		$this->loadLanguage();
 
 		$database = JFactory::getDBO();
 
@@ -224,7 +212,7 @@ class plgSupportWishlist extends JPlugin
 				$objR = new WishRank($database);
 				$objR->remove_vote($referenceid);
 
-				$message .= JText::sprintf('This is to notify you that your wish on wish list #%s ' . $parentid . ' was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);
 			break;
 
 			case 'wishcomment':
@@ -237,7 +225,7 @@ class plgSupportWishlist extends JPlugin
 					return false;
 				}
 
-				$message .= JText::sprintf('This is to notify you that your comment on wish #%s ' . $parentid . ' was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_COMMENT_REMOVAL', $parentid);
 			break;
 		}
 

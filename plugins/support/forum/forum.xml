@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Various functions for the Report Abuse Component</description>
+	<description>PLG_SUPPORT_FORUM_XML_DESC</description>
 	<files>
 		<filename plugin="forum">forum.php</filename>
 	</files>

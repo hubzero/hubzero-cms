@@ -174,15 +174,15 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'answer':
-				return JText::sprintf('Answer to question #%s', $parentid);
+				return JText::sprintf('PLG_SUPPORT_ANSWERS_ANSWER_TO', $parentid);
 			break;
 
 			case 'question':
-				return JText::sprintf('Question #%s', $parentid);
+				return JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $parentid);
 			break;
 
 			case 'answercomment':
-				return JText::sprintf('Comment to an answer for question #%s', $parentid);
+				return JText::sprintf('PLG_SUPPORT_ANSWERS_COMMENT_TO', $parentid);
 			break;
 		}
 	}

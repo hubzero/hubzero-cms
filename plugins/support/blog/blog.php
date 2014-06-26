@@ -37,13 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class plgSupportBlog extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var    boolean
-	 */
-	protected $_autoloadLanguage = true;
-
-	/**
 	 * Retrieves a row from the database
 	 *
 	 * @param      string $refid    ID of the database table row
@@ -101,6 +94,8 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 		{
 			return null;
 		}
+
+		$this->loadLanguage();
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 

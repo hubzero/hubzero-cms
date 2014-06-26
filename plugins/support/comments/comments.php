@@ -31,12 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for comments
  */
-class plgSupportComments extends JPlugin
+class plgSupportComments extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Retrieves a row from the database
@@ -183,7 +181,9 @@ class plgSupportComments extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+		$this->loadLanguage();
+
+		$msg = JText::_('PLG_SUPPORT_COMMENTS_CONTENT_FOUND_OBJECTIONABLE');
 
 		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);

@@ -31,36 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Support plugin class for com_resources entries
  */
-class plgSupportResources extends JPlugin
+class plgSupportResources extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Get items reported as abusive
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
-	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
-	 * Short description for 'getReportedItem'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $refid Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @param      string $parent Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param      integer $refid    Comment ID
+	 * @param      string  $category Item type (kb)
+	 * @param      integer $parent   Parent ID
+	 * @return     array
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
@@ -173,15 +155,17 @@ class plgSupportResources extends JPlugin
 			return null;
 		}
 
+		$this->loadLanguage();
+
 		switch ($category)
 		{
 			case 'review':
-				return JText::sprintf('Review of resource #%s', $parentid);
-         	break;
+				return JText::sprintf('PLG_SUPPORT_RESOURCES_REVIEW_OF', $parentid);
+			break;
 
 			case 'reviewcomment':
-				return JText::sprintf('Comment to review of resource #%s', $parentid);
-         	break;
+				return JText::sprintf('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
+			break;
 		}
 	}
 
@@ -201,7 +185,9 @@ class plgSupportResources extends JPlugin
 			return null;
 		}
 
-		$msg = 'This comment was found to contain objectionable material and was removed by the administrator.';
+		$this->loadLanguage();
+
+		$msg = JText::_('PLG_SUPPORT_RESOURCES_CONTENT_FOUND_OBJECTIONABLE');
 
 		$database = JFactory::getDBO();
 
@@ -248,7 +234,7 @@ class plgSupportResources extends JPlugin
 					return false;
 				}
 
-				$message .= JText::sprintf('This is to notify you that your review to resource #%s was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 
 			case 'reviewcomment':
@@ -281,7 +267,7 @@ class plgSupportResources extends JPlugin
 					return false;
 				}
 
-				$message .= JText::sprintf('This is to notify you that your comment on review for resource #%s was removed from the site due to granted complaint received from a user.', $parentid);
+				$message .= JText::sprintf('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 		}
 
