@@ -52,7 +52,9 @@ $complete =  $this->pub->_curationModel->_progress->blocks->$step->status->statu
 $required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest->params->required)
 	? $this->pub->_curationModel->_progress->blocks->$step->manifest->params->required : 0;
 
-$element = JRequest::getInt( 'el', 0 );
+$activeEl = isset($this->master->props['showElement'])
+			? $this->master->props['showElement'] : 0;
+$element =  JRequest::getInt( 'el', $activeEl );
 ?>
 <div id="pub-editor" class="pane-desc">
 	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
