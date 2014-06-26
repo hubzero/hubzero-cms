@@ -106,7 +106,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 
 		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
 			. $this->_name . '&step=' . $sequence . '&move=continue');
-			
+
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
 		{
@@ -114,16 +114,16 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$pContent = new PublicationAttachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
-		
+
 		// Get block status
 		$status = self::getStatus($pub);
 
 		// Get block status review
 		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
-		
+
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
-		
+
 		// Properties object
 		$master 			= new stdClass;
 		$master->block 		= $this->_name;

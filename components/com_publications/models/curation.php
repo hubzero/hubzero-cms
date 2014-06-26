@@ -1335,7 +1335,7 @@ class PublicationsCuration extends JObject
 
 			case 5:
 				// Submitted
-				$changelog .= $oldStatus == 7 
+				$changelog .= $oldStatus == 7
 				? 'updated and re-submitted for review' : ' submitted for review';
 			break;
 
@@ -1346,7 +1346,7 @@ class PublicationsCuration extends JObject
 
 			case 4:
 				// Saved or reverted
-				$changelog .= $oldStatus == 1 
+				$changelog .= $oldStatus == 1
 				? 'reverted to draft' : 'saved draft for internal review';
 			break;
 		}
@@ -1355,7 +1355,7 @@ class PublicationsCuration extends JObject
 		if ($pub->_curationModel->_progress && ($newStatus == 7 || $oldStatus == 7))
 		{
 			$changelog .= '<hr />';
-			$changelog .= $newStatus == 7 
+			$changelog .= $newStatus == 7
 						? '<p>Changes requested for sections: </p>'
 						: '<p>Updated sections include: </p>';
 			$changelog .= '<ul>';

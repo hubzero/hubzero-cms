@@ -36,44 +36,44 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected	$_name 			= 'description';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= 'description';	
-	
+	protected	$_parentname 	= 'description';
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 		= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence 		= 0;
-	
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
-	{			
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -93,19 +93,19 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 				)
 			);
 		}
-		
-		// Build url
-		$route = $pub->_project->provisioned 
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias=' 
-						. $pub->_project->alias . '&active=publications';		
 
-		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section=' 
-			. $this->_name . '&step=' . $sequence . '&move=continue');	
-			
+		// Build url
+		$route = $pub->_project->provisioned
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $pub->_project->alias . '&active=publications';
+
+		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
+			. $this->_name . '&step=' . $sequence . '&move=continue');
+
 		// Get block status
 		$status = self::getStatus($pub);
-		
+
 		// Get block status review
 		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
 
@@ -117,8 +117,8 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		$master->block 		= $this->_name;
 		$master->sequence 	= $this->_sequence;
 		$master->params		= $this->_manifest->params;
-		$master->props		= $elModel->getActiveElement($status->elements, $status->review);	
-		
+		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname, $status, $master );
 		$view->pub			= $pub;
@@ -128,13 +128,13 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		$view->status		= $status;
 		$view->master		= $master;
 
-		if ($this->getError()) 
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block
 	 *
@@ -147,40 +147,40 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
-		// Make sure changes are allowed			
+
+		// Make sure changes are allowed
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;
 		}
-		
+
 		// Load publication version
 		$row = new PublicationVersion( $this->_parent->_db );
-		
-		if (!$row->load($pub->version_id)) 
+
+		if (!$row->load($pub->version_id))
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 			return false;
 		}
-		
+
 		// Track changes
 		$changed = 0;
 		$missed  = 0;
-		
+
 		// Incoming
 		$nbtags = JRequest::getVar( 'nbtag', array(), 'request', 'array' );
-		
+
 		// Parse metadata
 		$data = array();
 		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $pub->metadata, $matches, PREG_SET_ORDER);
-		if (count($matches) > 0) 
+		if (count($matches) > 0)
 		{
 			foreach ($matches as $match)
 			{
 				$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
 			}
 		}
-				
+
 		// Save each element
 		foreach ($this->_manifest->elements as $id => $element)
 		{
@@ -189,16 +189,16 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 			{
 				continue;
 			}
-			
+
 			$field 	  = $element->params->field;
 			$aliasmap = $element->params->aliasmap;
 			$input 	  = $element->params->input;
 			$required = $element->params->required;
-						
+
 			if ($field == 'metadata')
 			{
 				$value = isset($nbtags[$aliasmap]) ? trim(stripslashes($nbtags[$aliasmap])) : NULL;
-				
+
 				if (!$value && $required)
 				{
 					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
@@ -209,27 +209,27 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 					{
 						$changed++;
 					}
-					
+
 					// Replace data
 					$data[$aliasmap] = $value;
-					
+
 					// Save all in one field
 					$tagCollect = '';
-					foreach ($data as $tagname => $tagcontent) 
+					foreach ($data as $tagname => $tagcontent)
 					{
 						$tagCollect .= "\n".'<nb:' . $tagname . '>' . $tagcontent . '</nb:' . $tagname . '>' . "\n";
 					}
-					
+
 					$row->metadata = $tagCollect;
 				}
-			}			
-			else 
+			}
+			else
 			{
 				$value = trim(JRequest::getVar( $field, '', 'post' ));
-				$value = ($input == 'editor') 
-					? stripslashes($value) 
+				$value = ($input == 'editor')
+					? stripslashes($value)
 					: \Hubzero\Utility\Sanitize::clean(htmlspecialchars($value));
-				
+
 				if (!$value && $required)
 				{
 					$missed++;
@@ -239,7 +239,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 					if ($row->$field != $value)
 					{
 						$changed++;
-						
+
 						// Record update time
 						$data 				= new stdClass;
 						$data->updated 		= JFactory::getDate()->toSql();
@@ -250,33 +250,33 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 				}
 			}
 		}
-		
+
 		// Update modified info
 		if ($changed)
 		{
 			$row->modified 	  = JFactory::getDate()->toSql();
-			$row->modified_by = $actor;			
+			$row->modified_by = $actor;
 		}
-		
+
 		// Report error
 		if ($missed && $this->_manifest->params->collapse_elements == 0)
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 		}
-		
+
 		// Save
-		if (!$row->store()) 
+		if (!$row->store())
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_SAVE_PUBLICATION'));
 			return false;
 		}
-		
+
 		// Set success message
 		$this->_parent->set('_message', $this->get('_message'));
 
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Build panel content
 	 * Draw each manifested element
@@ -284,49 +284,49 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit', $status, $master )
-	{	
+	{
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
-		
+
 		$html = '';
-		
+
 		// Build each element
 		$o = 1;
-		
+
 		foreach ($this->_manifest->elements as $elementId => $element)
-		{				
+		{
 			$html  .= $elModel->drawElement(
 						$element->name, $elementId, $element, $master,
 						$pub, $status, $viewname, $o
 			);
 			$o++;
 		}
-					
+
 		return $html;
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-				
+
 		// Start status
-		$status 	 = new PublicationsModelStatus();	
-		
+		$status 	 = new PublicationsModelStatus();
+
 		// Return element status
 		if ($elementId !== NULL && isset($this->_manifest->elements->$elementId))
 		{
 			return self::getElementStatus($this->_manifest->elements->$elementId, $pub);
-		}		
-		
+		}
+
 		// Check against manifested requirements
 		if ($this->_manifest && $this->_manifest->elements)
 		{
@@ -334,7 +334,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 			$i 		 	= 0;
 			$success 	= 0;
 			$incomplete = 0;
-			
+
 			foreach ($this->_manifest->elements as $elementId => $element)
 			{
 				$status->elements->$elementId = self::getElementStatus($element, $pub);
@@ -355,7 +355,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 
 		return $status;
 	}
-	
+
 	/**
 	 * Check element status
 	 *
@@ -365,11 +365,11 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	{
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db );
-				
+
 		$status = $elModel->getStatus( $element->type, $element, $pub );
-		return $status;		
+		return $status;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
@@ -441,7 +441,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 			),
 			'params'	=> array( 'required' => 1, 'published_editing' => 0, 'collapse_elements' => 1 )
 		);
-		
+
 		return json_decode(json_encode($manifest), FALSE);
 	}
 }
