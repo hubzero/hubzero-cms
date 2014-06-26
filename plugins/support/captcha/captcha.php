@@ -79,111 +79,111 @@ class plgSupportCaptcha extends JPlugin
 	 */
 	private $_questions = array(
 		array(
-			'type' => 'math',
+			'type'     => 'math',
 			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MATH',
-			'answer' => '@dynamic'
+			'answer'   => '@dynamic'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'What day comes after Tuesday?',
-			'options' => array(
-				'Wednesday',
-				'Monday',
-				'Thursday',
-				'Tuesday',
-				'Friday'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_WHAT_DAY_AFTER_TUESDAY',
+			'options'  => array(
+				'WEDNESDAY',
+				'MONDAY',
+				'THURSDAY',
+				'TUESDAY',
+				'FRIDAY'
 			),
-			'answer' => 'Wednesday'
+			'answer'   => 'WEDNESDAY'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'Eye, ankle or arm: which is part of the head?',
-			'answer' => 'eye'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM',
+			'answer'   => 'eye'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'Where does the sun rise?',
-			'options' => array(
-				'In the East',
-				'At night',
-				'In the South',
-				'In the West',
-				'Chickens'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES',
+			'options'  => array(
+				'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST',
+				'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_NIGHT',
+				'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_SOUTH',
+				'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_WEST',
+				'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_CHICKENS'
 			),
-			'answer' => 'In the East'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SUN_RISES_EAST'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'The Great Pyramid is found in...',
-			'options' => array(
-				'Egypt',
-				'Rocks',
-				'Japan',
-				'The North Pole',
-				'Canada'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS',
+			'options'  => array(
+				'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT',
+				'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_ROCKS',
+				'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_JAPAN',
+				'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_NORTH_POLE',
+				'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_CANADA'
 			),
-			'answer' => 'Egypt'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_PYRAMIDS_EGYPT'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'The moon can be seen...',
-			'options' => array(
-				'In the sky',
-				'Under automobiles',
-				'In the closet',
-				'Going to the movies',
-				'In a desk drawer'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MOON',
+			'options'  => array(
+				'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY',
+				'PLG_SUPPORT_TEXTCAPTCHA_MOON_AUTOMOBILES',
+				'PLG_SUPPORT_TEXTCAPTCHA_MOON_CLOSET',
+				'PLG_SUPPORT_TEXTCAPTCHA_MOON_MOVIES',
+				'PLG_SUPPORT_TEXTCAPTCHA_MOON_DRAWER'
 			),
-			'answer' => 'In the sky'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MOON_SKY'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'Is ice hot or cold?',
-			'answer' => 'cold'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_ICE',
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_ICE_ANSWER'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'Which of arm, chips or prison is a body part?',
-			'answer' => 'arm'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART',
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_BODY_PART_ANSWER'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'Sharks live in...',
-			'options' => array(
-				'The Sea',
-				'Apricots',
-				'Greenhouses',
-				'Beer barrels',
-				'House'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS',
+			'options'  => array(
+				'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA',
+				'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_APRICOTS',
+				'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_GREENHOUSES',
+				'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_BARRELS',
+				'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_HOUSE'
 			),
-			'answer' => 'The Sea'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_SHARKS_SEA'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'Is night dark or light?',
-			'answer' => 'dark'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT',
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_NIGHT_ANSWER'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'Which of hair, yellow or prison is a color?',
-			'answer' => 'yellow'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR',
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_COLOR_ANSWER'
 		),
 		array(
-			'type' => 'text',
-			'question' => 'What is the capital of France?',
-			'answer' => 'Paris'
+			'type'     => 'text',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE',
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_CAPITAL_OF_FRANCE_ANSWER'
 		),
 		array(
-			'type' => 'list',
-			'question' => 'Mickey Mouse is a...',
-			'options' => array(
-				'Mouse',
-				'Teapot',
-				'Suitcase',
-				'Penguin',
-				'Chicken'
+			'type'     => 'list',
+			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY',
+			'options'  => array(
+				'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE',
+				'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_TEAPOT',
+				'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_SUITCASE',
+				'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_PENGUIN',
+				'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_CHICKEN'
 			),
-			'answer' => 'Mouse'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_MICKEY_MOUSE'
 		)
 	);
 
@@ -337,7 +337,7 @@ class plgSupportCaptcha extends JPlugin
 
 				$html .= "\t" . JText::_($question['question']) . "\n";
 				$html .= "\t" . '<select name="captcha[answer]" id="captcha-answer">' . "\n";
-				$html .= "\t\t" . '<option value="">' . JText::_('- Select an answer -') . '</option>' . "\n";
+				$html .= "\t\t" . '<option value="">' . JText::_('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
 				foreach ($this->_sequence[$set] as $row)
 				{
 					$html .= "\t\t" . '<option value="' . $question['options'][$row] . '">' . JText::_($question['options'][$row]) . '</option>' . "\n";
@@ -466,20 +466,17 @@ class plgSupportCaptcha extends JPlugin
 
 		$GLOBALS['totalCaptchas']++;
 
-		\Hubzero\Document\Assets::addPluginStyleSheet('support', 'captcha');
-
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder' => 'support',
-				'element' => 'captcha',
-				'name' => 'image'
+				'folder'  => $this->_type,
+				'element' => $this->_name,
+				'name'    => 'image'
 			)
 		);
-
-		$view->task = JRequest::getVar('task', '');
+		$view->task       = JRequest::getVar('task', '');
 		$view->controller = JRequest::getVar('controller', '');
-		$view->option = JRequest::getVar('option', '');
-		$view->total = $GLOBALS['totalCaptchas'];
+		$view->option     = JRequest::getVar('option', '');
+		$view->total      = $GLOBALS['totalCaptchas'];
 
 		return $view->loadTemplate();
 	}
@@ -769,9 +766,9 @@ class plgSupportCaptcha extends JPlugin
 		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
 
-		$width = 120;
+		$width  = 120;
 		$height = 40;
-		$image = imagecreate($width, $height);
+		$image  = imagecreate($width, $height);
 		$this->_setColors();
 		$foreground_color = $this->_hexToRgb($this->_textColor);
 		$background_color = $this->_hexToRgb($this->_bgColor);
@@ -779,7 +776,7 @@ class plgSupportCaptcha extends JPlugin
 		// We are making three colors, white, black and gray
 		$white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
 		$black = imagecolorallocate($image, $background_color[0], $background_color[1], $background_color[2]);
-		$grey = imagecolorallocate($image, 204, 204, 204);
+		$grey  = imagecolorallocate($image, 204, 204, 204);
 
 		// Make the background black
 		imagefill($image, 0, 0, $black);

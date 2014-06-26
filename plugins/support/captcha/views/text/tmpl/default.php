@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <label for="captcha-answer<?php echo $this->total; ?>">
-	<?php echo $this->question['question']; ?> <span class="required"><?php echo JText::_('PLG_HUBZERO_CAPTCHA_REQUIRED'); ?></span>
+	<?php echo $this->question['question']; ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 	<input type="text" name="captcha[answer]" id="captcha-answer<?php echo $this->total; ?>" value="" />
 </label>
 <input type="hidden" name="captcha[instance]" id="captcha-instance" value="<?php echo $this->total; ?>" />

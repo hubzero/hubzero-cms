@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $base = JURI::base();
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 {
@@ -40,7 +42,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 <div class="captcha-block">
 
 	<div class="grid">
-		<div class="col span-two-thirds">
+		<div class="col span8">
 			<label for="imgCatchaTxt<?php echo $this->total; ?>">
 				<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_ENTER_CAPTCHA_VALUE'); ?>
 				<input type="text" name="captcha[answer]" id="imgCatchaTxt<?php echo $this->total; ?>" />
@@ -48,7 +50,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 
 			<input type="hidden" name="captcha[instance]" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
 		</div>
-		<div class="col span-third omega">
+		<div class="col span4 omega">
 			<div class="captcha-wrap">
 				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="CAPTCHA Image" />
 				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" title="<?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?>"><?php echo JText::_('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>

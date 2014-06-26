@@ -32,27 +32,28 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Captcha plugin for support tickets</description>
+	<description>PLG_SUPPORT_CAPTCHA_XML_DESC</description>
 	<files>
 		<filename plugin="captcha">captcha.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="modCaptcha" type="list" default="text" label="Module CAPTCHA Type" description="Select the type of CAPTCHA to use for module forms.">
-					<option value="text">Text-based</option>
-					<option value="image">Image-based</option>
+				<field name="modCaptcha" type="list" default="text" label="PLG_SUPPORT_CAPTCHA_MODTYPE_LABEL" description="PLG_SUPPORT_CAPTCHA_MODTYPE_DESC">
+					<option value="text">PLG_SUPPORT_CAPTCHA_TYPE_TEXT</option>
+					<option value="image">PLG_SUPPORT_CAPTCHA_TYPE_IMAGE</option>
 				</field>
-				<field name="comCaptcha" type="list" default="image" label="Component CAPTCHA Type" description="Select the type of CAPTCHA to use for component forms.">
-					<option value="text">Text-based</option>
-					<option value="image">Image-based</option>
+				<field name="comCaptcha" type="list" default="image" label="PLG_SUPPORT_CAPTCHA_COMTYPE_LABEL" description="PLG_SUPPORT_CAPTCHA_COMTYPE_DESC">
+					<option value="text">PLG_SUPPORT_CAPTCHA_TYPE_TEXT</option>
+					<option value="image">PLG_SUPPORT_CAPTCHA_TYPE_IMAGE</option>
 				</field>
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="bgColor" type="text" size="25" default="#2c8007" label="Background Color" description="Enter color(6 letter hex value )" />
-				<field name="textColor" type="text" size="25" default="#ffffff" label="Text Color" description="Enter color(6 letter hex value)" />
-				<field name="imageFunction" type="list" default="Adv" label="Select Image Function" description="Select wether you want to show distorted letters or plane letters">
-					<option value="Plain">Plain letters</option>
-					<option value="Adv">Distorted letters</option>
+			</fieldset>
+			<fieldset name="image">
+				<field name="bgColor" type="text" size="25" default="#2c8007" label="PLG_SUPPORT_CAPTCHA_IMG_BGCOLOR_LABEL" description="PLG_SUPPORT_CAPTCHA_IMG_BGCOLOR_DESC" />
+				<field name="textColor" type="text" size="25" default="#ffffff" label="PLG_SUPPORT_CAPTCHA_IMG_TXTCOLOR_LABEL" description="PLG_SUPPORT_CAPTCHA_IMG_TXTCOLOR_DESC" />
+				<field name="imageFunction" type="list" default="Adv" label="PLG_SUPPORT_CAPTCHA_IMG_LETTERS_LABEL" description="PLG_SUPPORT_CAPTCHA_IMG_LETTERS_DESC">
+					<option value="Plain">PLG_SUPPORT_CAPTCHA_IMG_LETTERS_PLAIN</option>
+					<option value="Adv">PLG_SUPPORT_CAPTCHA_IMG_LETTERS_DISTORTED</option>
 				</field>
 			</fieldset>
 		</fields>

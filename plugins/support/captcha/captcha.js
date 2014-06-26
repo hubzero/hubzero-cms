@@ -1,18 +1,13 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/support/captcha/captcha.jquery.js
+ * @file        plugins/support/captcha/captcha.js
  * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Ensure we have our namespace
-var HUB = HUB || {};
-
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
+if (!jq) {
+	var jq = $;
 }
-
-var jq = jq || $;
 
 // Initialize script
 jQuery(document).ready(function(jq){
