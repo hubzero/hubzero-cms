@@ -1288,8 +1288,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		if (!empty($toolinfo))
 		{
-            $ldap_params = JComponentHelper::getParams('com_system');
-            $pw = $ldap_params->get('ldap_searchpw','');
+			$ldap_params = JComponentHelper::getParams('com_system');
+			$pw = $ldap_params->get('ldap_searchpw','');
 
 			$command = '/usr/bin/addrepo ' . $toolinfo['toolname'] . ' -title "' . $toolinfo['title'] . '" -description "' . $toolinfo['description'] . '" -password "' . $pw . '"' . " -hubdir " . JPATH_ROOT;
 
@@ -1778,7 +1778,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		// collector for those who need to get notified
 		$users = array();
 
-		switch($action)
+		switch ($action)
 		{
 			case 1:
 				$action = 'contribtool_info_changed';
@@ -1790,7 +1790,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				$action = 'contribtool_status_changed';
 				$headline = $summary;
 				//$users = $this->config->get('access-admin-component') ? $team : $admins;
-				//if(!$inteam) {
+				//if (!$inteam)
+				//{
 					//$users[] = $juser->get('id'); // cc person who made the change if not in team
 				//}
 			break;
