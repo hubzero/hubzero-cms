@@ -72,7 +72,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				. $this->_option . '&controller=' . $this->_controller . '&task='
 				. JRequest::getWord('task', ''), false, true), 'server'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . $return)
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
 		}
