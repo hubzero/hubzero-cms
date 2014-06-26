@@ -863,6 +863,12 @@
 		content: '\2709';
 	}
 
+	ol.comments .attachment:before {
+		content: '\f092';
+		font-family: 'Fontcons';
+		margin-right: 0.4em;
+	}
+
 /* Abuse Item */
 	.abuseitem {
 		padding: 10px 10px 10px 50px; 

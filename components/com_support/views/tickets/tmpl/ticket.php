@@ -328,6 +328,11 @@ $cc = array();
 						<?php
 						foreach ($comment->attachments() as $attachment)
 						{
+							if (!trim($attachment->get('description')))
+							{
+								$attachment->set('description', $attachment->get('filename'));
+							}
+
 							if ($attachment->isImage()) 
 							{
 								if ($attachment->width() > 400) 
@@ -342,7 +347,7 @@ $cc = array();
 							} 
 							else 
 							{
-								echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description', $this->get('filename')) . '</a></p>';
+								echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
 							}
 						}
 						?>
