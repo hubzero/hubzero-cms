@@ -212,7 +212,7 @@ class plgTagsWiki extends JPlugin
 		{
 			$query .= ", #__tags_object AS t ";
 		}
-		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND w.state < 2 ";
+		$query .= "WHERE w.id=v.pageid AND v.id=w.version_id AND v.approved=1 AND w.state < 2 ";
 		if (isset($filters['tags'])) 
 		{
 			$ids = implode(',', $filters['tags']);
