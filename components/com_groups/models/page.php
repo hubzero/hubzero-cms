@@ -274,4 +274,26 @@ class GroupsModelPage extends \Hubzero\Base\Model
 			$this->_tbl->move($dir.'1', $where);
 		}
 	}
+
+	/**
+	 * Method to build url to page
+	 * @return [type] [description]
+	 */
+	public function url()
+	{
+		// loag group
+		$group = \Hubzero\User\Group::getInstance($this->get('gidNumber'));
+
+		// base link
+		$pageLink = 'index.php?option=com_groups&cn=' . $group->get('cn');
+		
+		// if we not linking to the home page
+		if (!$this->get('home'))
+		{
+			$pageLink .= '&active=' . $this->get('alias');
+		}
+		
+		// return routed link
+		return JRoute::_($pageLink);
+	}
 }

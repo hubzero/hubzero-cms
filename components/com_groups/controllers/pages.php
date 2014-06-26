@@ -401,14 +401,18 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		
 		// check page back in
 		GroupsHelperPages::checkin($this->page->get('id'));
-		
-		// Push success message and redirect
-		$this->setNotification("You have successfully {$task}d the page.", 'passed');
-		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages') );
+
+		// redirect to return url
 		if ($return = JRequest::getVar('return', '','post'))
 		{
+			$this->setNotification("You have successfully {$task}d the page.", 'passed');
 			$this->setRedirect(base64_decode($return));
+			return;
 		}
+
+		// Push success message and redirect
+		$this->setNotification("You have successfully {$task}d the page. You can view the page by <a rel=\"external\" href=\"{$this->page->url()}\">clicking here</a>.", 'passed');
+		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) );
 	}
 	
 	/**
