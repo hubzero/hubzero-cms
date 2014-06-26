@@ -100,7 +100,7 @@ class GroupsHelperPages
 		$approvers = self::getPageApproversEmail();
 		
 		// get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// subject details
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
@@ -170,7 +170,7 @@ class GroupsHelperPages
 		}
 		
 		// get site config
-		$jconfig =& JFactory::getConfig();
+		$jconfig = JFactory::getConfig();
 		
 		// subject details
 		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
@@ -582,7 +582,7 @@ class GroupsHelperPages
 		$config = JComponentHelper::getParams('com_groups');
 		
 		// load page version
-		$content = $page->version($version)->get('content');
+		$content = $page->version($version)->content('parsed');
 		
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();

@@ -134,7 +134,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 				if ($content == null)
 				{
 					// get group
-					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', ''));
+					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', JRequest::getVar('gid', '')));
 
 					// get base path 
 					$basePath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
