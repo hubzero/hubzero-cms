@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Resources Plugin class for classroom cluster visualization
  */
-class plgResourcesClassrooms extends JPlugin
+class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Return the alias and name for this category of content
