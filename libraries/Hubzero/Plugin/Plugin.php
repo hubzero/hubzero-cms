@@ -44,27 +44,6 @@ class Plugin extends \JPlugin
 	public $pluginMessageQueue = array();
 
 	/**
-	 * URL to redirect to
-	 *
-	 * @var string
-	 */
-	public $_redirect = NULL;
-
-	/**
-	 * Message to send
-	 *
-	 * @var string
-	 */
-	public $_message = NULL;
-
-	/**
-	 * Message type [error, message, warning]
-	 *
-	 * @var string
-	 */
-	public $_messageType = NULL;
-
-	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
 	 * @var    boolean
@@ -87,9 +66,6 @@ class Plugin extends \JPlugin
 		{
 			$this->loadLanguage();
 		}
-
-		$this->option = 'com_' . $config['type'];
-		$this->plugin = $config['name'];
 	}
 
 	/**
@@ -102,23 +78,17 @@ class Plugin extends \JPlugin
 	 */
 	public function redirect($url, $msg='', $msgType='')
 	{
-		$url = ($url != '') ? $url : $this->_redirect;
-		$url = str_replace('&amp;', '&', $url);
-
-		$msg = ($msg) ? $msg : $this->_message;
-		$msgType = ($msgType) ? $msgType : $this->_messageType;
-
 		if ($url)
 		{
+			$url = str_replace('&amp;', '&', $url);
+
 			//preserve plugin messages after redirect
 			if (count($this->pluginMessageQueue))
 			{
-				$session = \JFactory::getSession();
-				$session->set('plugin.message.queue', $this->pluginMessageQueue);
+				\JFactory::getSession()->set('plugin.message.queue', $this->pluginMessageQueue);
 			}
 
-			$app = \JFactory::getApplication();
-			$app->redirect($url, $msg, $msgType);
+			\JFactory::getApplication()->redirect($url, $msg, $msgType);
 		}
 	}
 
