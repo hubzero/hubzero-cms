@@ -272,7 +272,8 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		}
 		
 		// save version settings
-		if (!$this->version->store(true, $this->group->isSuperGroup()))
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!$this->version->store(false, $this->group->isSuperGroup()))
 		{
 			$this->setNotification($this->version->getError(), 'error');
 			$this->editTask();
@@ -339,7 +340,11 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		);
 	}
 	
-	
+	/**
+	 * Scan group page for possible issues
+	 *
+	 * @return void
+	 */
 	public function scanTask()
 	{
 		// make sure we are approvers
@@ -422,7 +427,9 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		
 		// marked as scanned for potential issues!
 		$currentVersion->set('scanned', 1);
-		$currentVersion->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$currentVersion->store(false, $this->group->isSuperGroup());
 		
 		// were all set
 		$this->setRedirect(
@@ -431,7 +438,6 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			'passed'
 		);
 	}
-	
 	
 	/**
 	 * Check for PHP Errors
@@ -503,7 +509,9 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		
 		// marked as checked for errors!
 		$currentVersion->set('checked_errors', 1);
-		$currentVersion->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$currentVersion->store(false, $this->group->isSuperGroup());
 		
 		// delete temp file
 		register_shutdown_function(function($file){
@@ -518,7 +526,11 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		);
 	}
 	
-	
+	/**
+	 * Mark Page Scanned
+	 *
+	 * @return void
+	 */
 	public function markScannedTask()
 	{
 		// make sure we are approvers
@@ -544,7 +556,9 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// set the new content 
 		$currentVersion->set('content', $page['content']);
 		$currentVersion->set('scanned', 1);
-		$currentVersion->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$currentVersion->store(false, $this->group->isSuperGroup());
 		
 		// inform user and redirect
 		$this->setRedirect(
@@ -554,6 +568,11 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		);
 	}
 	
+	/**
+	 * Save content added in textarea & send off to scanner
+	 *
+	 * @return void
+	 */
 	public function scanAgainTask()
 	{
 		// make sure we are approvers
@@ -578,9 +597,11 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		
 		// set the new content 
 		$currentVersion->set('content', $page['content']);
-		$currentVersion->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$currentVersion->store(false, $this->group->isSuperGroup());
 		
-		//go back to error checker
+		// redirect to scan url
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=scan&id=' . $groupPage->get('id')
 		);
@@ -616,14 +637,15 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		
 		// set the new content 
 		$currentVersion->set('content', $page['content']);
-		$currentVersion->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$currentVersion->store(false, $this->group->isSuperGroup());
 		
 		//go back to error checker
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid . '&task=errors&id=' . $groupPage->get('id')
 		);
 	}
-	
 	
 	/**
 	 * Approve a group page
@@ -670,7 +692,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$currentVersion->set('approved_by', $this->juser->get('id'));
 		
 		// save version with approved status
-		if (!$currentVersion->store(true, $this->group->isSuperGroup()))
+		if (!$currentVersion->store(false, $this->group->isSuperGroup()))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
@@ -742,11 +764,12 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// output page version
 		if ($escape)
 		{
-			echo '<pre>' . $this->view->escape($pageVersion->get('content')) . '</pre>';
+			echo highlight_string($pageVersion->content('raw'), true);
+			//echo '<pre>' . $this->view->escape($pageVersion->content('raw')) . '</pre>';
 		}
 		else
 		{
-			echo $pageVersion->get('content');
+			echo $pageVersion->content('raw');
 		}
 		exit();
 	}

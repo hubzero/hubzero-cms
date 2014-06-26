@@ -263,7 +263,8 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$this->module->set('modified_by', JFactory::getUser()->get('id'));
 		
 		// save version settings
-		if (!$this->module->store(true, $this->group->isSuperGroup()))
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		if (!$this->module->store(false, $this->group->isSuperGroup()))
 		{
 			$this->addComponentMessage($this->module->getError(), 'error');
 			$this->editTask();
@@ -380,7 +381,8 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// output page version
 		if ($escape)
 		{
-			echo '<pre>' . $this->view->escape($module->get('content')) . '</pre>';
+			echo highlight_string($module->content('raw'), true);
+			//echo '<pre>' . $this->view->escape($module->get('content')) . '</pre>';
 		}
 		else
 		{
@@ -441,7 +443,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$page = new GroupsModelPage( $pageid );
 		
 		// load page version
-		$content = $page->version()->get('content');
+		$content = $page->version()->content('parsed');
 		
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
@@ -579,7 +581,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		
 		// marked as checked for errors!
 		$module->set('checked_errors', 1);
-		$module->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$module->store(false, $this->group->isSuperGroup());
 		
 		// delete temp file
 		register_shutdown_function(function($file){
@@ -620,7 +624,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		
 		// set the new content 
 		$groupModule->set('content', $module['content']);
-		$groupModule->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$groupModule->store(false, $this->group->isSuperGroup());
 		
 		//go back to error checker
 		$this->setRedirect(
@@ -628,6 +634,11 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		);
 	}
 	
+	/**
+	 * Scan module content
+	 *
+	 * @return void
+	 */
 	public function scanTask()
 	{
 		// make sure we are approvers
@@ -666,6 +677,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$content = explode("\n", $module->get('content'));
 		
 		// get any issues
+		$issues        = new stdClass;
 		$issues->count = 0;
 		foreach ($flags as $lang => $flag)
 		{
@@ -675,6 +687,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			$minor    = implode('|', $flag['minor']);
 			
 			// do case insensitive search for any flags
+			$issues->$lang           = new stdClass;
 			$issues->$lang->severe   = ($severe != '') ? preg_grep("/$severe/i", $content) : array();
 			$issues->$lang->elevated = ($elevated != '') ? preg_grep("/$elevated/i", $content) : array();
 			$issues->$lang->minor    = ($minor != '') ? preg_grep("/$minor/i", $content) : array();
@@ -702,7 +715,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		
 		// marked as scanned for potential issues!
 		$module->set('scanned', 1);
-		$module->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$module->store(false, $this->group->isSuperGroup());
 		
 		// were all set
 		$this->setRedirect(
@@ -712,6 +727,11 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		);
 	}
 	
+	/**
+	 * Mark Module scanned
+	 *
+	 * @return void
+	 */
 	public function markScannedTask()
 	{
 		// make sure we are approvers
@@ -734,7 +754,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// set the new content 
 		$groupModule->set('content', $module['content']);
 		$groupModule->set('scanned', 1);
-		$groupModule->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$groupModule->store(false, $this->group->isSuperGroup());
 		
 		// inform user and redirect
 		$this->setRedirect(
@@ -744,6 +766,11 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		);
 	}
 	
+	/**
+	 * Run module scan again
+	 *
+	 * @return void
+	 */
 	public function scanAgainTask()
 	{
 		// make sure we are approvers
@@ -765,7 +792,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		
 		// set the new content 
 		$groupModule->set('content', $module['content']);
-		$groupModule->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$groupModule->store(false, $this->group->isSuperGroup());
 		
 		//go back to scanner
 		$this->setRedirect(
@@ -813,7 +842,9 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		$module->set('approved', 1);
 		$module->set('approved_on', JFactory::getDate()->toSql());
 		$module->set('approved_by', $this->juser->get('id'));
-		$module->store(true, $this->group->isSuperGroup());
+
+		// DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
+		$module->store(false, $this->group->isSuperGroup());
 		
 		// send approved notifcation
 		GroupsHelperPages::sendApprovedNotification('module', $module);
