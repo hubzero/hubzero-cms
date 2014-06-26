@@ -156,7 +156,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
 						</p>
 						<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
-							<input type="text" name="element[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
+							<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
 							<span class="save-param-status"></span>
 							<span class="save-param-wrap"><a href="<?php echo $prov ? JRoute::_( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : JRoute::_( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
 						</label>

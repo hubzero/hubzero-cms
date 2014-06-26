@@ -101,15 +101,33 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 						. $pub->_project->alias . '&active=publications';		
 
 		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section=' 
-			. $this->_name . '&step=' . $sequence . '&move=continue');		
+			. $this->_name . '&step=' . $sequence . '&move=continue');	
+			
+		// Get block status
+		$status = self::getStatus($pub);
+		
+		// Get block status review
+		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
+
+		// Get block element model
+		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+
+		// Properties object
+		$master 			= new stdClass;
+		$master->block 		= $this->_name;
+		$master->sequence 	= $this->_sequence;
+		$master->params		= $this->_manifest->params;
+		$master->props		= $elModel->getActiveElement($status->elements, $status->review);	
 		
 		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname );
+		$view->content 		= self::buildContent( $pub, $viewname, $status, $master );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 1;
-		
+		$view->status		= $status;
+		$view->master		= $master;
+
 		if ($this->getError()) 
 		{
 			$view->setError( $this->getError() );
@@ -265,26 +283,12 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent( $pub = NULL, $viewname = 'edit', $status, $master )
 	{	
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
 		
 		$html = '';
-		
-		// Get block status
-		$status = self::getStatus($pub);
-		
-		// Get block status review
-		$step 			= $this->_sequence;
-		$status->review = $pub->_curationModel->_progress->blocks->$step->review;
-				
-		// Properties object
-		$master 			= new stdClass;
-		$master->block 		= $this->_name;
-		$master->sequence 	= $this->_sequence;
-		$master->params		= $this->_manifest->params;
-		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
 		
 		// Build each element
 		$o = 1;

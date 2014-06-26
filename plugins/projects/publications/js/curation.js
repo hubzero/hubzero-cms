@@ -434,7 +434,6 @@ HUB.ProjectPublicationsDraft = {
 		{
 			var element = $(item).attr('id').replace('-apply','');
 			var parent 	= $('#' + element);
-			var id 		= element.replace('element', '');
 
 			if ($(parent).length)
 			{

@@ -519,6 +519,8 @@
 	}
 	.history-blocks {
 		font-size: 85%;
+		max-height: 400px;
+		overflow: auto;
 	}
 	.history-blocks hr {
 		padding: 0;
@@ -531,16 +533,24 @@
 		margin: 0 0 1em 0;
 	}
 	.even {
-		background: #f7f7fa;			
+		background: #f7f7fa;
 	}
 	.even {
-		background: #f7f7fa;			
+		background: #f7f7fa;
 	}
 	.odd {
-		background: #f4fefe;			
+		background: #f4fefe;
 	}
 	.odd .changelog-text {
-		background: #e2efef;	
+		background: #e2efef;
+	}
+	.changelog-text span {
+		display: block;
+		line-height: 1.5em;
+		margin-left: 1em;
+	}
+	.changelog-text span.italic {
+		font-style: italic;
 	}
 	.even .changelog-text {
 		background: #ebebef;

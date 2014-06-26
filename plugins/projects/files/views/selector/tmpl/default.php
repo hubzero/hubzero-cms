@@ -193,7 +193,6 @@ if ($this->task == 'filter')
 		<input type="hidden" name="section" value="<?php echo $block; ?>" />
 		<input type="hidden" name="element" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="el" value="<?php echo $elId; ?>" />
-		<input type="hidden" name="next" value="<?php echo $elId; ?>" />
 		<input type="hidden" name="step" value="<?php echo $step; ?>" />
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />

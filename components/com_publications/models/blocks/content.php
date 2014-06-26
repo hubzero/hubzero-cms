@@ -106,13 +106,39 @@ class PublicationsBlockContent extends PublicationsModelBlock
 
 		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
 			. $this->_name . '&step=' . $sequence . '&move=continue');
+			
+		// Make sure we have attachments
+		if (!isset($pub->_attachments))
+		{
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+		}
+		
+		// Get block status
+		$status = self::getStatus($pub);
+
+		// Get block status review
+		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
+		
+		// Get block element model
+		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+		
+		// Properties object
+		$master 			= new stdClass;
+		$master->block 		= $this->_name;
+		$master->sequence 	= $this->_sequence;
+		$master->params		= $this->_manifest->params;
+		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
 
 		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent( $pub, $viewname );
+		$view->content 		= self::buildContent( $pub, $viewname, $status, $master );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 1;
+		$view->status		= $status;
+		$view->master		= $master;
 
 		if ($this->getError())
 		{
@@ -212,17 +238,9 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent( $pub = NULL, $viewname = 'edit', $status, $master )
 	{
 		$html = '';
-
-		// Make sure we have attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
 
 		// Get selector styles
 		$document = JFactory::getDocument();
@@ -231,22 +249,8 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			. 'css' . DS . 'selector.css');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
 
-		// Get block status
-		$status = self::getStatus($pub);
-
-		// Get block status review
-		$step 			= $this->_sequence;
-		$status->review = $pub->_curationModel->_progress->blocks->$step->review;
-
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
-
-		// Properties object
-		$master 			= new stdClass;
-		$master->block 		= $this->_name;
-		$master->sequence 	= $this->_sequence;
-		$master->params		= $this->_manifest->params;
-		$master->props		= $elModel->getActiveElement($status->elements, $status->review);
 
 		// Build each element
 		$o = 1;

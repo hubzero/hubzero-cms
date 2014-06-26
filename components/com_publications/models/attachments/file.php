@@ -1194,7 +1194,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	{
 		if (empty($attachments))
 		{
-			return false;
+			return true;
 		}
 
 		if (empty($formats))
@@ -1226,7 +1226,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	{
 		if (empty($attachments))
 		{
-			return false;
+			return true;
 		}
 
 		if (empty($formats))

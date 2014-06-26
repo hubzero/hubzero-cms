@@ -1219,7 +1219,6 @@ class PublicationsCuration extends JObject
 			}
 		}
 
-
 		return $status;
 	}
 
@@ -1336,7 +1335,8 @@ class PublicationsCuration extends JObject
 
 			case 5:
 				// Submitted
-				$changelog .= $oldStatus == 7 ? 'updated and re-submitted for review' : ' submitted for review';
+				$changelog .= $oldStatus == 7 
+				? 'updated and re-submitted for review' : ' submitted for review';
 			break;
 
 			case 1:
@@ -1346,7 +1346,8 @@ class PublicationsCuration extends JObject
 
 			case 4:
 				// Saved or reverted
-				$changelog .= $oldStatus == 1 ? 'reverted to draft' : 'saved draft for internal review';
+				$changelog .= $oldStatus == 1 
+				? 'reverted to draft' : 'saved draft for internal review';
 			break;
 		}
 
@@ -1354,14 +1355,48 @@ class PublicationsCuration extends JObject
 		if ($pub->_curationModel->_progress && ($newStatus == 7 || $oldStatus == 7))
 		{
 			$changelog .= '<hr />';
-			$changelog .= $newStatus == 7 ? '<p>Changes requested for sections: </p>' : '<p>Updated sections include: </p>';
+			$changelog .= $newStatus == 7 
+						? '<p>Changes requested for sections: </p>'
+						: '<p>Updated sections include: </p>';
 			$changelog .= '<ul>';
 			foreach ($this->_progress->blocks as $sequence => $block)
 			{
 				if ($block->review && (($newStatus == 7 && $block->review->status == 0)
 					|| ($oldStatus == 7 && $block->review->lastupdate)))
 				{
-					$changelog .= '<li>' . $block->manifest->name . '</li>';
+					$changelog .= '<li>';
+					$changelog .= $block->manifest->label;
+					if ($block->review->elements)
+					{
+						foreach ($block->review->elements as $element)
+						{
+							if ($element->getError() || $element->message)
+							{
+								$changelog .= '<span class="prominent">' . $element->label . '</span>';
+							}
+							if ($element->getError())
+							{
+								$changelog .= '<span class="italic">Change request:</span>';
+								$changelog .= '<span>' . $element->getError() . '</span>';
+							}
+							if ($element->message)
+							{
+								$changelog .= '<span class="italic">Author response:</span>';
+								$changelog .= '<span>' . $element->message . '</span>';
+							}
+						}
+					}
+					if ($block->review->getError())
+					{
+						$changelog .= '<span class="italic">Change request:</span>';
+						$changelog .= '<span>' . $block->review->getError() . '</span>';
+					}
+					if ($block->review->message)
+					{
+						$changelog .= '<span class="italic">Author response:</span>';
+						$changelog .= '<span>' . $block->review->message . '</span>';
+					}
+					$changelog .= '</li>';
 				}
 			}
 			$changelog .= '</ul>';

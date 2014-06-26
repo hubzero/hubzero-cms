@@ -875,7 +875,7 @@ class plgProjectsPublications extends JPlugin
 			}
 			elseif ($element)
 			{
-				$route .= '#element' . $element;
+				$route .= a . 'el=' . $element . '#element' . $element;
 			}
 		}
 		elseif ($this->_task == 'rewind')
