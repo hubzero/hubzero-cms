@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'comment.php');
 
 /**
  * Manage support tickets
@@ -87,11 +86,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				);
 			}
 		}
-		if (is_object($ticket) && $ticket->id)
+		if (is_object($ticket) && $ticket->exists())
 		{
 			$pathway->addItem(
-				'#' . $ticket->id,
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id='.$ticket->id
+				'#' . $ticket->get('id'),
+				$ticket->link()
 			);
 		}
 	}
@@ -116,9 +115,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$this->_title .= ': ' . JText::_(strtoupper($this->_task));
 			}
 		}
-		if (is_object($ticket) && $ticket->id)
+		if (is_object($ticket) && $ticket->exists())
 		{
-			$this->_title .= ' #' . $ticket->id;
+			$this->_title .= ' #' . $ticket->get('id');
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
@@ -1669,23 +1668,27 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Initiate database class and load info
+		$this->view->row = SupportModelTicket::getInstance($id);
+		if (!$this->view->row->exists())
+		{
+			JError::raiseError(404, JText::_('SUPPORT_TICKET_NOT_FOUND'));
+			return;
+		}
+
 		// Check authorization
 		if ($this->juser->get('guest'))
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&id=' . $id, false, true));
+			$return = base64_encode(JRoute::_($this->view->row->link(), false, true));
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
 
-		$this->view->database = $this->database;
-
 		// Incoming
-		// Incoming
-		//$this->view->filters = $this->_getFilters();
 		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$app    = JFactory::getApplication();
 
 		$this->view->filters = array();
 		// Paging
@@ -1715,134 +1718,33 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			''
 		));
 
-		// Initiate database class and load info
-		$this->view->row = new SupportTicket($this->database);
-		$this->view->row->load($id);
-
-		if (!$this->view->row->id)
-		{
-			JError::raiseError(404, JText::_('SUPPORT_TICKET_NOT_FOUND'));
-			return;
-		}
-
-		if ($this->view->row->login == $this->juser->get('username')
-		 || $this->view->row->owner == $this->juser->get('username'))
-		{
-			if (!$this->acl->check('read', 'tickets'))
-			{
-				$this->acl->setAccess('read', 'tickets', 1);
-			}
-			if (!$this->acl->check('update', 'tickets'))
-			{
-				$this->acl->setAccess('update', 'tickets', -1);
-			}
-			if (!$this->acl->check('create', 'comments'))
-			{
-				$this->acl->setAccess('create', 'comments', -1);
-			}
-			if (!$this->acl->check('read', 'comments'))
-			{
-				$this->acl->setAccess('read', 'comments', 1);
-			}
-		}
-
-		if ($this->acl->authorize($this->view->row->group))
-		{
-			$this->acl->setAccess('read',   'tickets',  1);
-			$this->acl->setAccess('update', 'tickets',  1);
-			$this->acl->setAccess('delete', 'tickets',  1);
-			$this->acl->setAccess('create', 'comments', 1);
-			$this->acl->setAccess('read',   'comments', 1);
-			$this->acl->setAccess('create', 'private_comments', 1);
-			$this->acl->setAccess('read',   'private_comments', 1);
-		}
-
 		// Ensure the user is authorized to view this ticket
-		$this->view->authorized = $this->_authorize($this->view->row->group);
-		if (!$this->acl->check('read','tickets'))
+		//$this->view->authorized = $this->_authorize($this->view->row->get('group'));
+		if (!$this->view->row->access('read', 'tickets'))
 		{
 			JError::raiseError(403, JText::_('SUPPORT_NOT_AUTH'));
 			return;
 		}
 
-		// Get the next and previous support tickets
-		//$this->view->row->prev = $this->view->row->getTicketId('prev', $this->view->filters, $this->view->authorized);
-		//$this->view->row->next = $this->view->row->getTicketId('next', $this->view->filters, $this->view->authorized);
-
-		// Create a summary title from the report
-		$summary = substr($this->view->row->report, 0, 70);
-		if (strlen($summary) >= 70)
-		{
-			$summary .= '...';
-		}
-		if ($this->view->row->summary == $summary)
-		{
-			$this->view->row->summary = '';
-		}
-		else
-		{
-			// Do some text cleanup
-			//$this->view->row->summary = html_entity_decode(stripslashes($this->view->row->summary), ENT_COMPAT, 'UTF-8');
-			//$this->view->row->summary = str_replace('&quote;','&quot;',$this->view->row->summary);
-			//$this->view->row->summary = htmlentities($this->view->row->summary, ENT_COMPAT, 'UTF-8');
-		}
-
-		//$this->view->row->report = html_entity_decode(stripslashes($this->view->row->report), ENT_COMPAT, 'UTF-8');
-		//$this->view->row->report = str_replace('&quote;','&quot;',$this->view->row->report);
-		//if (!strstr($this->view->row->report, '</p>') && !strstr($this->view->row->report, '<pre class="wiki">'))
-		//{
-			//$this->view->row->report = str_replace('<br />', '', $this->view->row->report);
-			$this->view->row->report = $this->view->escape($this->view->row->report);
-			$this->view->row->report = nl2br($this->view->row->report);
-			$this->view->row->report = str_replace("\t",' &nbsp; &nbsp;',$this->view->row->report);
-			//$this->view->row->report = preg_replace('/  /', ' &nbsp;', $this->view->row->report);
-		//}
-		$juri = JURI::getInstance();
-
-		$webpath = str_replace('//', '/', $juri->base() . $this->config->get('webpath') . DS . $id);
-		if (isset($_SERVER['HTTPS']))
-		{
-			$webpath = str_replace('http:', 'https:', $webpath);
-		}
-		if (!strstr($webpath, '://'))
-		{
-			$webpath = str_replace(':/', '://', $webpath);
-		}
-		$attach = new SupportAttachment($this->database);
-		$attach->webpath = $webpath;
-		$attach->uppath  = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $id;
-		$attach->output  = 'web';
-
-		$this->view->row->report = $attach->parse($this->view->row->report);
-
 		if ($watch = JRequest::getWord('watch', ''))
 		{
-			$watch = strtolower($watch);
-
-			$watching = new SupportTableWatching($this->database);
-			$watching->load($this->view->row->id, $this->juser->get('id'));
-
-			// Not already watching
-			if (!$watching->id)
-			{
-				// Start watching?
-				if ($watch == 'start')
-				{
-					$watching->ticket_id = $this->view->row->id;
-					$watching->user_id   = $this->juser->get('id');
-					$watching->store();
-				}
-				// Otherwise, do nothing
-			}
-			else
 			// Already watching
+			if ($this->view->row->isWatching($this->juser))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$watching->delete();
+					$this->view->row->stopWatching($this->juser);
 				}
-				// Otherwise, do nothing
+			}
+			// Not already watching
+			else
+			{
+				// Start watching?
+				if ($watch == 'start')
+				{
+					$this->view->row->watch($this->juser);
+				}
 			}
 		}
 
@@ -1859,39 +1761,25 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$sm = new SupportMessage($this->database);
 		$this->view->lists['messages'] = $sm->getMessages();
 
-		// Get Tags
-		$st = new SupportTags($this->database);
-		$this->view->lists['tags'] = $st->get_tag_string($this->view->row->id, 0, 0, NULL, 0, 1);
-		$this->view->lists['tagcloud'] = $st->get_tag_cloud(3, 1, $this->view->row->id);
-
-		// Get comments
-		$sc = new SupportComment($this->database);
-		$this->view->comments = $sc->getComments($this->acl->check('read', 'private_comments'), $this->view->row->id);
-
-		foreach ($this->view->comments as $i => $comment)
-		{
-			$this->view->comments[$i] = new SupportModelComment($comment);
-		}
-
 		// Get severities
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 
 		// Populate the list of assignees based on if the ticket belongs to a group or not
-		if (trim($this->view->row->group))
+		if (trim($this->view->row->get('group')))
 		{
 			$this->view->lists['owner'] = $this->_userSelectGroup(
 				'ticket[owner]',
-				$this->view->row->owner,
+				$this->view->row->get('owner'),
 				1,
 				'',
-				trim($this->view->row->group)
+				trim($this->view->row->get('group'))
 			);
 		}
 		elseif (trim($this->config->get('group')))
 		{
 			$this->view->lists['owner'] = $this->_userSelectGroup(
 				'ticket[owner]',
-				$this->view->row->owner,
+				$this->view->row->get('owner'),
 				1,
 				'',
 				trim($this->config->get('group'))
@@ -1901,7 +1789,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		{
 			$this->view->lists['owner'] = $this->_userSelect(
 				'ticket[owner]',
-				$this->view->row->owner,
+				$this->view->row->get('owner'),
 				1
 			);
 		}
@@ -1913,8 +1801,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$this->_buildTitle($this->view->row);
 
 		$this->view->title = $this->_title;
-
-		$this->view->acl = $this->acl;
+		$this->view->database = $this->database;
 
 		if ($this->getComponentMessage())
 		{
@@ -1999,16 +1886,16 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$row = new SupportTicket($this->database);
 		if (!$row->bind($incoming))
 		{
-			echo SupportHtml::alert($row->getError());
-			exit();
+			JError::raiseError(500, $row->getError());
+			return;
 		}
 
 
 		// Check content
 		if (!$row->check())
 		{
-			echo SupportHtml::alert($row->getError());
-			exit();
+			JError::raiseError(500, $row->getError());
+			return;
 		}
 
 		// If an existing ticket AND closed AND previously open
@@ -2021,8 +1908,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Store new content
 		if (!$row->store())
 		{
-			echo SupportHtml::alert($row->getError());
-			exit();
+			JError::raiseError(500, $row->getError());
+			return;
 		}
 
 		$row->load($id);
@@ -2182,8 +2069,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				// Save the data
 				if (!$rowc->store())
 				{
-					echo SupportHtml::alert($rowc->getError());
-					exit();
+					JError::raiseError(500, $rowc->getError());
+					return;
 				}
 
 				JPluginHelper::importPlugin('support');
@@ -2479,8 +2366,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 						// Save the data
 						if (!$rowc->store())
 						{
-							echo SupportHtml::alert($rowc->getError());
-							exit();
+							JError::raiseError(500, $rowc->getError());
+							return;
 						}
 					}
 

@@ -37,37 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class SupportControllerIndex extends \Hubzero\Component\SiteController
 {
 	/**
-	 * Method to set the document path
-	 *
-	 * @return	void
-	 */
-	protected function _buildPathway()
-	{
-		$pathway = JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
-		{
-			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-	}
-
-	/**
-	 * Method to build and set the document title
-	 *
-	 * @return	void
-	 */
-	protected function _buildTitle()
-	{
-		$this->_title = JText::_(strtoupper($this->_name));
-
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
-	}
-
-	/**
 	 * Displays the main page for support
 	 *
 	 * @return     void
@@ -75,21 +44,21 @@ class SupportControllerIndex extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// Set the page title
-		$this->_buildTitle();
+		$this->view->title = JText::_(strtoupper($this->_name));
 
-		$this->view->title = $this->_title;
+		JFactory::getDocument()->setTitle($this->view->title);
 
 		// Set the pathway
-		$this->_buildPathway();
+		$pathway = JFactory::getApplication()->getPathway();
+		if (count($pathway->getPathWay()) <= 0)
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
 
 		// Output HTML
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
 		$this->view->display();
 	}
 }

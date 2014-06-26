@@ -37,17 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class SupportHtml
 {
 	/**
-	 * Display an error message with javascript and then back the page up one view
-	 *
-	 * @param      string $msg Message to display
-	 * @return     string Javascript
-	 */
-	public static function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
-	}
-
-	/**
 	 * Get the status text for a status number
 	 *
 	 * @param      integer $int Status number
@@ -55,14 +44,6 @@ class SupportHtml
 	 */
 	public static function getStatus($open=0, $status=0)
 	{
-		/* Old values
-		switch ($int)
-		{
-			case 0: $status = JText::_('TICKET_STATUS_NEW');      break;
-			case 1: $status = JText::_('TICKET_STATUS_WAITING');  break;
-			case 2: $status = JText::_('TICKET_STATUS_RESOLVED'); break;
-		}
-		return $status;*/
 		switch ($open)
 		{
 			case 1:
@@ -135,29 +116,6 @@ class SupportHtml
 		}
 		$html .= '</select>' . "\n";
 		return $html;
-	}
-
-	/**
-	 * Collapse (concatenate) querystring filters into a single line
-	 *
-	 * @param      array $filters Filters to collapse
-	 * @return     string
-	 */
-	public static function collapseFilters($filters)
-	{
-		$fstring = array();
-		foreach ($filters as $key => $val)
-		{
-			if (substr($key,0,1) != '_' && $key != 'limit' && $key != 'start')
-			{
-				if ($val !== '')
-				{
-					$fstring[] = $key . ':' . $val;
-				}
-			}
-		}
-		$fstring = implode(' ', $fstring);
-		return trim($fstring);
 	}
 }
 

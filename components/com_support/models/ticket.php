@@ -31,6 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'watching.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'comment.php');
@@ -192,7 +193,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the question open?
+	 * Is the ticket owned?
 	 *
 	 * @return     boolean
 	 */
@@ -202,6 +203,44 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		{
 			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * Is the user the owner of the ticket?
+	 *
+	 * @param   string  $username
+	 * @return  boolean
+	 */
+	public function isOwner($username='')
+	{
+		if ($this->isOwned())
+		{
+			$username = $username ?: JFactory::getUser()->get('username');
+
+			if ($this->get('owner') == $username)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Is the user the owner of the ticket?
+	 *
+	 * @param   string  $username
+	 * @return  boolean
+	 */
+	public function isSubmitter($username='')
+	{
+		$username = $username ?: JFactory::getUser()->get('username');
+
+		if ($this->get('login') == $username)
+		{
+			return true;
+		}
+
 		return false;
 	}
 
@@ -456,9 +495,9 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 */
 	public function watchers($rtrn='list', $filters=array(), $clear=false)
 	{
-		if (!isset($filters['ticket']))
+		if (!isset($filters['ticket_id']))
 		{
-			$filters['ticket'] = $this->get('id');
+			$filters['ticket_id'] = $this->get('id');
 		}
 
 		switch (strtolower($rtrn))
@@ -480,13 +519,6 @@ class SupportModelTicket extends \Hubzero\Base\Model
 					$tbl = new SupportTableWatching($this->_db);
 					if (!($results = $tbl->find($filters)))
 					{
-						/*foreach ($results as $key => $result)
-						{
-							$results[$key] = new SupportModelComment($result);
-						}
-					}
-					else
-					{*/
 						$results = array();
 					}
 					$this->_data->set('watchers.list', new \Hubzero\Base\ItemList($results));
@@ -528,64 +560,68 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('report_parsed'))
+				$content = $this->get('report_parsed', null);
+
+				if ($content === null)
 				{
-					if ($shorten)
+					$config = JComponentHelper::getParams('com_support');
+					$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
+
+					$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
+					if (isset($_SERVER['HTTPS']))
 					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+						$webpath = str_replace('http:', 'https:', $webpath);
 					}
-					return $content;
+					if (!strstr($webpath, '://'))
+					{
+						$webpath = str_replace(':/', '://', $webpath);
+					}
+
+					$attach = new SupportAttachment($this->_db);
+					$attach->webpath = $webpath;
+					$attach->uppath  = JPATH_ROOT . DS . $path;
+					$attach->output  = 'web';
+
+					// Escape potentially bad characters
+					$this->set('report_parsed', htmlentities($this->get('report'), ENT_COMPAT, 'UTF-8'));
+					// Convert line breaks to <br /> tags
+					$this->set('report_parsed', nl2br($this->get('report_parsed')));
+					// Convert tabs to spaces to preserve indention
+					$this->set('report_parsed', str_replace("\t",' &nbsp; &nbsp;', $this->get('report_parsed')));
+					// Look for any attachments (old style)
+					$this->set('report_parsed', $attach->parse($this->get('report_parsed')));
+
+					if (!$this->get('report_parsed'))
+					{
+						$this->set('report_parsed', JText::_('(no content found)'));
+					}
+
+					return $this->content('parsed');
 				}
 
-				$config = JComponentHelper::getParams('com_support');
-				$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
-
-				$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
-				if (isset($_SERVER['HTTPS']))
-				{
-					$webpath = str_replace('http:', 'https:', $webpath);
-				}
-				if (!strstr($webpath, '://'))
-				{
-					$webpath = str_replace(':/', '://', $webpath);
-				}
-
-				$attach = new SupportAttachment($this->_db);
-				$attach->webpath = $webpath;
-				$attach->uppath  = JPATH_ROOT . DS . $path;
-				$attach->output  = 'web';
-
-				$this->set('report_parsed', htmlentities($this->get('report'), ENT_COMPAT, 'UTF-8'));
-				$this->set('report_parsed', nl2br($this->get('report_parsed')));
-				$this->set('report_parsed', str_replace("\t",' &nbsp; &nbsp;', $this->get('report_parsed')));
-				$this->set('report_parsed', $attach->parse($this->get('report_parsed')));
-
-				return $this->content('parsed');
+				$options = array('html' => true);
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('report'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**
@@ -744,6 +780,15 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				$link .= '&controller=tickets&task=delete&id=' . $this->get('id');
 			break;
 
+			case 'stopWatching':
+				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=start';
+			break;
+
+			case 'watch':
+			case 'startWatching':
+				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=start';
+			break;
+
 			case 'comments':
 				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '#comments';
 			break;
@@ -758,20 +803,19 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Tag the entry
+	 * Access check
 	 *
+	 * @param      string $action The action to check
+	 * @param      string $item   The item to check the action against
 	 * @return     boolean
 	 */
 	public function access($action='view', $item='tickets')
 	{
-		$juser = JFactory::getUser();
-
 		if (!$this->get('_access-check-done', false))
 		{
 			$this->_acl = SupportACL::getACL();
 
-			if ($this->get('login') == $juser->get('username')
-			 || $this->get('owner') == $juser->get('username'))
+			if ($this->isSubmitter() || $this->isOwner())
 			{
 				if (!$this->_acl->check('read', 'tickets'))
 				{

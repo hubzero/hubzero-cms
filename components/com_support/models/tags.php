@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
- * Answers Tagging class
+ * Support Tagging class
  */
 class SupportModelTags extends TagsModelCloud
 {
@@ -78,7 +78,7 @@ class SupportModelTags extends TagsModelCloud
 	 */
 	public function checkTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
-		$sql = "SELECT t.tag, t.raw_tag, t.description, t.admin, rt.id, rt.objectid FROM #__tags_object AS rt JOIN #__tags AS t ON t.id=rt.tagid WHERE ";
+		$sql = "SELECT t.tag, t.raw_tag, t.description, t.admin, rt.id, rt.objectid FROM `#__tags_object` AS rt JOIN `#__tags` AS t ON t.id=rt.tagid WHERE ";
 
 		if (is_array($id))
 		{
