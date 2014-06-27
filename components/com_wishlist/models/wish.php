@@ -38,6 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'plan.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'vote.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
 
 /**
  * Courses model class for a forum
@@ -138,8 +139,35 @@ class WishlistModelWish extends WishlistModelAbstract
 		'comments.count'   => null,
 		'comments.list'    => null,
 		'comments.authors' => null,
+		'votes.count'      => null,
+		'votes.list'       => null,
+		'votes.positive'   => null,
+		'votes.negative'   => null,
 		'ranks.list'       => null
 	);
+
+	/**
+	 * Constructor
+	 * 
+	 * @param      mixed $oid Integer (ID), string (alias), object or array
+	 * @return     void
+	 */
+	public function __construct($oid=null)
+	{
+		parent::__construct($oid);
+
+		if ($this->exists())
+		{
+			if ($this->get('positive') === null)
+			{
+				$this->set('positive', $this->votes('positive'));
+			}
+			if ($this->get('negative') === null)
+			{
+				$this->set('negative', $this->votes('negative'));
+			}
+		}
+	}
 
 	/**
 	 * Returns a reference to a forum post model
@@ -768,14 +796,18 @@ class WishlistModelWish extends WishlistModelAbstract
 			return false;
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
-
 		$tbl = new Vote($this->_db);
 
+		$vote = strtolower($vote);
+
 		// Check if the user already voted
-		if ($voted = $tbl->get_vote($this->get('id'), 'wish', $juser->get('id')))
+		if ($voted = $tbl->checkVote($this->get('id'), 'wish', $juser->get('id')))
 		{
-			return true;
+			$tbl->loadVote($this->get('id'), 'wish', $juser->get('id'));
+			if ($vote == $tbl->helpful)
+			{
+				return true;
+			}
 		}
 
 		$tbl->referenceid = $this->get('id');
@@ -797,6 +829,71 @@ class WishlistModelWish extends WishlistModelAbstract
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get a list or count of votes
+	 *
+	 * @param      string  $rtrn    Data format to return
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed
+	 */
+	public function votes($rtrn='list', $filters=array(), $clear = false)
+	{
+		if (!isset($filters['id']))
+		{
+			$filters['id'] = $this->get('id');
+		}
+		if (!isset($filters['category']))
+		{
+			$filters['category'] = 'wish';
+		}
+
+		switch (strtolower($rtrn))
+		{
+			case 'positive':
+			case 'negative':
+			case 'count':
+				if (!is_numeric($this->_cache['votes.count']) || $clear)
+				{
+					$this->_cache['votes.count']    = 0;
+					$this->_cache['votes.positive'] = 0;
+					$this->_cache['votes.negative'] = 0;
+
+					foreach ($this->votes('list') as $vote)
+					{
+						if ($vote->helpful == 'yes')
+						{
+							$this->_cache['votes.positive']++;
+						}
+						else
+						{
+							$this->_cache['votes.negative']++;
+						}
+						$this->_cache['votes.count']++;
+					}
+				}
+				return $this->_cache['votes.' . $rtrn];
+			break;
+
+			case 'list':
+			case 'results':
+			default:
+				if (!($this->_cache['votes.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				{
+					$tbl = new Vote($this->_db);
+
+					$results = $tbl->getResults($filters);
+					if (!$results)
+					{
+						$results = array();
+					}
+					$this->_cache['votes.list'] = new \Hubzero\Base\ItemList($results);
+				}
+				return $this->_cache['votes.list'];
+			break;
+		}
 	}
 
 	/**

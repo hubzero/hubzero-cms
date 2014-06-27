@@ -82,16 +82,16 @@ else
 }
 ?>
 <span class="vote-like<?php echo $lcls; ?>">
-<?php if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
+<?php if ($juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { //if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
 	<span class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote up'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive'); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_LIKE'); ?></span></span>
 <?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive'); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
+	<a class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive', 0); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
 <?php } ?>
 </span>
 <span class="vote-dislike<?php echo $dcls; ?>">
-<?php if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
+<?php if ($juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { //if ($this->item->get('vote') || $juser->get('guest') || $juser->get('id') == $this->item->get('proposed_by')) { ?>
 	<span class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo JText::_('Vote down'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative'); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_DISLIKE'); ?></span></span>
 <?php } else { ?>
-	<a class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative'); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
+	<a class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike'; echo $cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo JText::_('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative', 0); ?><span> <?php echo JText::_('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
 <?php } ?>
 </span>

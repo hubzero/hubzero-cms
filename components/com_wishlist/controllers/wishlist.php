@@ -454,7 +454,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// check available user funds
 			if ($action == 'addbonus' && $this->banking)
 			{
-				$BTL 		= new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+				$BTL 		= new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 				$balance 	= $BTL->summary();
 				$credit 	= $BTL->credit_summary();
 				$funds 		= $balance - $credit;
@@ -472,26 +472,6 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$wish->set('saved', $saved);
 			$wish->set('com', $com);
 		//}
-
-		/*if (isset($this->comment))
-		{
-			$addcomment =& $this->comment;
-		}
-		else
-		{
-			$addcomment = NULL;
-		}
-
-		if ($this->_task == 'reply')
-		{
-			$addcomment = new Hubzero_Comment($this->database);
-			$addcomment->referenceid = $wishlist->get('referenceid');
-			$addcomment->category    = $wishlist->get('category');
-		}
-		else
-		{
-			$addcomment = NULL;
-		}*/
 
 		// Turn on/off banking
 		$wishlist->set('banking', ($wishlist->get('category') == 'user' ? 0 : $this->banking));
@@ -1567,7 +1547,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// check available user funds
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -1591,7 +1571,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// put the  amount on hold
-		$BTL = new Hubzero_Bank_Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
 		$BTL->hold(
 			$amount,
 			JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
@@ -1890,7 +1870,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 		if ($id && $category)
 		{
-			$row = new WishlistModelComment(); //Hubzero_Comment($this->database);
+			$row = new WishlistModelComment();
 			if (!$row->bind($_POST))
 			{
 				JError::raiseError(500, $row->getError());
@@ -2149,7 +2129,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		//$this->authorize_admin($listid);
 		$filters = self::getFilters($wishlist->access('manage'));
 
-		if ($row->vote($vote))
+		if ($wish->vote($vote))
 		{
 			$wishlist->rank();
 		}
@@ -2172,13 +2152,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if ($page == 'wishlist')
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=wishlist&category=' . $wishlist->get('category') . '&rid=' . $wishlist->referenceid . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag'])
+				str_replace('&amp;', '&', JRoute::_($wishlist->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				JRoute::_($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag'])
+				str_replace('&amp;', '&', JRoute::_($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
 	}

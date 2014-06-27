@@ -168,6 +168,25 @@ class Vote extends JTable
 	}
 
 	/**
+	 * Load a vote record
+	 *
+	 * @param      integer $refid    Reference ID
+	 * @param      string  $category Reference type
+	 * @param      integer $voter    User ID
+	 * @return     mixed False on error, integer on success
+	 */
+	public function loadVote($refid=null, $category=null, $voter=null)
+	{
+		$fields = array(
+			'referenceid' => $refid,
+			'category'    => $category,
+			'voter'       => $voter
+		);
+
+		return parent::load($fields);
+	}
+
+	/**
 	 * Get records
 	 *
 	 * @param      array $filters Filters to build query from
