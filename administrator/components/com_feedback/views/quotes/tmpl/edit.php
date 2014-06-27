@@ -37,9 +37,13 @@ $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CR
 JToolBarHelper::title(JText::_('COM_FEEDBACK') . ': ' . $text, 'feedback.png');
 if ($canDo->get('core.edit'))
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('quote');
 
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();

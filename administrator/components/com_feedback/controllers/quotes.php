@@ -131,7 +131,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -143,14 +143,22 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			JRequest::checkToken() or jexit('Invalid Token');
 		}
 
-		// Incoming ID
-		$id = JRequest::getInt('id', 0);
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+			$this->view->id  = $row->id;
+		}
+		else
+		{
+			// Incoming ID
+			$id = JRequest::getInt('id', 0);
 
-		// Initiate database class and load info
-		$this->view->row = new FeedbackQuotes($this->database);
-		$this->view->row->load($id);
+			// Initiate database class and load info
+			$this->view->row = new FeedbackQuotes($this->database);
+			$this->view->row->load($id);
 
-		$this->view->id = $id;
+			$this->view->id = $id;
+		}
 
 		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
 		$path = JPATH_ROOT . $this->view->path . $id . DS;
@@ -196,11 +204,20 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save an entry
+	 *
+	 * @return     void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-
 
 		// Initiate class and bind posted items to database fields
 		$row = new FeedbackQuotes($this->database);
@@ -263,10 +280,15 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('COM_FEEDBACK_QUOTE_SAVED',  $row->fullname)
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::sprintf('COM_FEEDBACK_QUOTE_SAVED',  $row->fullname)
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
