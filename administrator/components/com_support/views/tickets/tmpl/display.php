@@ -55,10 +55,10 @@ $this->css();
 				<h3 data-views="common-views"><span><?php echo JText::_('COM_SUPPORT_QUERIES_COMMON'); ?></span></h3>
 				<ul id="common-views" class="views">
 			<?php if (count($this->queries['common']) > 0) { ?>
-				<?php
+				<?php 
 				$i = 0;
-				foreach ($this->queries['common'] as $query)
-				{
+				foreach ($this->queries['common'] as $query) 
+				{ 
 					?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
@@ -77,9 +77,9 @@ $this->css();
 					<?php } else if ($i > 2) { ?>
 					</li>
 					<?php } ?>
-					<?php
+					<?php 
 					$i++;
-				}
+				} 
 				?>
 			<?php } else { ?>
 					<li>
@@ -141,7 +141,7 @@ $this->css();
 						<tr>
 							<td colspan="2">
 								<fieldset id="filter-bar">
-									<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label>
+									<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label> 
 									<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
 
 									<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
@@ -202,105 +202,76 @@ $this->css();
 						</tr>
 					</tfoot>
 					<tbody>
-			<?php
-			$k = 0;
-			$database = JFactory::getDBO();
-			$sc = new SupportComment($database);
-			$st = new SupportTags($database);
+					<?php
+					$k = 0;
+					$database = JFactory::getDBO();
+					$sc = new SupportComment($database);
+					$st = new SupportTags($database);
 
-			// Collect all the IDs
-			$ids = array();
-			if ($this->rows)
-			{
-				foreach ($this->rows as $row)
-				{
-					$ids[] = $row->id;
-				}
-			}
-
-			// Pull out the last activity date for all the IDs
-			$lastactivities = array();
-			if (count($ids))
-			{
-				$lastactivities = $sc->newestCommentsForTickets(true, $ids);
-				$alltags = $st->checkTags($ids);
-			}
-
-			$tsformat = JFactory::getDBO()->getDateFormat();
-
-			for ($i=0, $n=count($this->rows); $i < $n; $i++)
-			{
-				$row = &$this->rows[$i];
-
-				$comments = 0;
-
-				$lastcomment = '0000-00-00 00:00:00';
-				if (isset($lastactivities[$row->id]))
-				{
-					$lastcomment = $lastactivities[$row->id]['lastactivity'];
-				}
-				// Was there any activity on this item?
-				if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
-				{
-					$comments = 1;
-				}
-
-				switch ($row->open)
-				{
-					case 1:
-						switch ($row->status)
+					// Collect all the IDs
+					$ids = array();
+					if ($this->rows)
+					{
+						foreach ($this->rows as $row)
 						{
-							case 2:
-								$status = 'waiting';
-							break;
-							case 1:
-								$status = 'open';
-							break;
-							case 0:
-							default:
-								$status = 'new';
-							break;
+							$ids[] = $row->id;
 						}
-					break;
-					case 0:
-						$status = 'closed';
-					break;
-				}
+					}
 
-				$row->severity = ($row->severity) ? $row->severity : 'normal';
+					// Pull out the last activity date for all the IDs
+					$lastactivities = array();
+					if (count($ids))
+					{
+						$lastactivities = $sc->newestCommentsForTickets(true, $ids);
+						$alltags = $st->checkTags($ids);
+					}
 
-				$row->summary = substr($row->report, 0, 200);
-				if (strlen($row->summary) >= 200)
-				{
-					$row->summary .= '...';
-				}
-				if (!trim($row->summary))
-				{
-					$row->summary = JText::_('COM_SUPPORT_TICKET_NO_CONTENT');
-				}
+					$tsformat = JFactory::getDBO()->getDateFormat();
 
-				$tags = '';
-				if (isset($alltags[$row->id]))
-				{
-					$tags = $st->get_tag_cloud(3, 1, $row->id);
-				}
-			?>
-						<tr class="<?php echo ($row->status == 2) ? 'closed' : ''; ?>">
+					for ($i=0, $n=count($this->rows); $i < $n; $i++)
+					{
+						$row = &$this->rows[$i];
+
+						if (!($row instanceof SupportModelTicket))
+						{
+							$row = new SupportModelTicket($row);
+						}
+
+						$comments = 0;
+
+						$lastcomment = '0000-00-00 00:00:00';
+						if (isset($lastactivities[$row->get('id')]))
+						{
+							$lastcomment = $lastactivities[$row->get('id')]['lastactivity'];
+						}
+						// Was there any activity on this item?
+						if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
+						{
+							$comments = 1;
+						}
+
+						$tags = '';
+						if (isset($alltags[$row->get('id')]))
+						{
+							$tags = $st->get_tag_cloud(3, 1, $row->get('id'));
+						}
+						?>
+						<tr class="<?php echo (!$row->isOpen() ? 'closed' : ''); ?>">
 							<th>
 								<span class="ticket-id">
-									<?php echo $row->id; ?>
+									<?php echo $row->get('id'); ?>
 								</span>
-								<span class="<?php echo $status; ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . JText::_('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $status; echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>">
-									<?php echo JText::_('COM_SUPPORT_TICKET_STATUS_' . strtoupper($status)); echo ($row->open == 0) ? ' (' . $this->escape($row->resolved) . ')' : ''; ?>
+								<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . JText::_('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status('text'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
+									<?php echo JText::_('COM_SUPPORT_TICKET_STATUS_' . strtoupper($status)); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 								</span>
 							</th>
 							<td>
 								<p>
 									<span class="ticket-author">
-										<?php echo $row->name; echo ($row->login) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->escape($row->login) . '">' . $this->escape($row->login) . '</a>)' : ''; ?>
+										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->escape($row->get('login')) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">
-										@ <time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, $tsformat); ?></time>
+										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created(); ?></time>
 									</span>
 								<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 									<span class="ticket-activity">
@@ -309,43 +280,41 @@ $this->css();
 								<?php } ?>
 								</p>
 								<p>
-									<a class="ticket-content" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-										<?php echo $this->escape($row->summary); ?>
+									<a class="ticket-content" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+										<?php echo $this->escape($row->get('summary', JText::_('COM_SUPPORT_TICKET_NO_CONTENT'))); ?>
 									</a>
 								</p>
-							<?php if ($tags || $row->owner) { ?>
+							<?php if ($tags || $row->isOwned()) { ?>
 								<p class="ticket-details">
 								<?php if ($tags) { ?>
 									<span class="ticket-tags">
 										<?php echo $tags; ?>
 									</span>
 								<?php } ?>
-								<?php if ($row->group) { ?>
+								<?php if ($row->get('group')) { ?>
 									<span class="ticket-group">
-										<?php echo $this->escape(stripslashes($row->group)); ?>
+										<?php echo $this->escape(stripslashes($row->get('group'))); ?>
 									</span>
 								<?php } ?>
-								<?php if ($row->owner) {
-									$owner = \Hubzero\User\Profile::getInstance($row->owner);
-								?>
-									<span class="ticket-owner hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $owner->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($owner->get('username'))); ?><br /><?php echo ($owner->get('organization')) ? $this->escape(stripslashes($owner->get('organization'))) : JText::_('COM_SUPPORT_USER_ORG_UNKNOWN'); ?>">
-										<?php echo $this->escape(stripslashes($owner->get('name'))); ?>
+								<?php if ($row->isOwned()) { ?>
+									<span class="ticket-owner hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner('organization', JText::_('COM_SUPPORT_USER_ORG_UNKNOWN')))); ?>">
+										<?php echo $this->escape(stripslashes($row->owner('name'))); ?>
 									</span>
 								<?php } ?>
 								</p>
 							<?php } ?>
 							</td>
 							<td class="tkt-severity">
-								<span class="ticket-severity <?php echo $this->escape($row->severity); ?> hasTip" title="<?php echo '<strong>' . JText::_('COM_SUPPORT_TICKET_PRIORITY') . ':</strong>&nbsp;' . $this->escape($row->severity); ?>">
-									<span><?php echo $this->escape($row->severity); ?></span>
+								<span class="ticket-severity <?php echo $this->escape($row->get('severity', 'normal')); ?> hasTip" title="<?php echo '<strong>' . JText::_('COM_SUPPORT_TICKET_PRIORITY') . ':</strong>&nbsp;' . $this->escape($row->get('severity', 'normal')); ?>">
+									<span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
 								</span>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 							</td>
 						</tr>
-			<?php
-				$k = 1 - $k;
-			}
-			?>
+						<?php
+						$k = 1 - $k;
+					}
+					?>
 					</tbody>
 				</table>
 
@@ -385,7 +354,7 @@ $this->css();
 			$.get(href, {}, function(response){
 				$('#custom-views').html(response);
 			});
-
+			
 			return false;
 		});
 		$('.fltlft h3').on('click', function (e){

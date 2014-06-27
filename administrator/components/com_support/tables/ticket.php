@@ -86,9 +86,9 @@ class SupportTicket extends JTable
 	var $severity   = NULL;
 
 	/**
-	 * string(50)
+	 * int(11)
 	 *
-	 * @var string
+	 * @var integer
 	 */
 	var $owner      = NULL;
 
@@ -321,7 +321,7 @@ class SupportTicket extends JTable
 			case 'open':    $filter .= " AND open=1"; break;
 			case 'closed':  $filter .= " AND open=0";               break;
 			case 'all':     $filter .= "";                            break;
-			case 'new':     $filter .= " AND open=1 AND status=0 AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
+			case 'new':     $filter .= " AND open=1 AND status=0 AND owner=0 AND (resolved IS NULL OR resolved='') AND ((SELECT COUNT(*) FROM #__support_comments AS k WHERE k.ticket=f.id) <= 0)"; break;
 			case 'waiting': $filter .= " AND open=1 AND status=2";               break;
 		}
 		if (isset($filters['severity']) && $filters['severity'] != '')
@@ -362,11 +362,11 @@ class SupportTicket extends JTable
 			}
 			if ($filters['owner'] == 'none')
 			{
-				$filter .= "(owner='' OR owner IS NULL)";
+				$filter .= "owner=0";
 			}
 			else
 			{
-				$filter .= "owner='" . $this->_db->getEscaped($filters['owner']) . "'";
+				$filter .= "owner=" . $this->_db->quote($filters['owner']);
 			}
 		}
 		if (isset($filters['reportedby']) && $filters['reportedby'] != '')
@@ -434,7 +434,7 @@ class SupportTicket extends JTable
 		{
 			$from = "(
 						(SELECT f.id, f.summary, f.report, f.category, f.status, f.severity, f.resolved, f.owner, f.created, f.closed, f.login, f.name, f.email, f.type, f.section, f.group, u.name AS owner_name, u.id AS owner_id
-							FROM $this->_tbl AS f LEFT JOIN #__users AS u ON u.username=f.owner ";
+							FROM $this->_tbl AS f LEFT JOIN #__users AS u ON u.id=f.owner ";
 			if (isset($filters['tag']) && $filters['tag'] != '')
 			{
 				$from .= ", #__tags_object AS st, #__tags as t ";
@@ -444,7 +444,7 @@ class SupportTicket extends JTable
 				$from .= "WHERE ";
 				$from .= "(LOWER(f.summary) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.owner) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
+						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 
@@ -469,7 +469,7 @@ class SupportTicket extends JTable
 			}
 			$from .= ") UNION (
 				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, ug.name AS owner_name, ug.id AS owner_id
-				FROM #__support_comments AS w, $this->_tbl AS g LEFT JOIN #__users AS ug ON ug.username=g.owner
+				FROM #__support_comments AS w, $this->_tbl AS g LEFT JOIN #__users AS ug ON ug.id=g.owner
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '')
 			{
@@ -480,7 +480,7 @@ class SupportTicket extends JTable
 		else
 		{
 			$from = "$this->_tbl AS f
-					LEFT JOIN #__users AS u ON u.username=f.owner";
+					LEFT JOIN #__users AS u ON u.id=f.owner";
 			if (isset($filters['tag']) && $filters['tag'] != '')
 			{
 				$from .= ", #__tags_object AS st, #__tags as t";
@@ -535,7 +535,7 @@ class SupportTicket extends JTable
 			$sql .= " AND ";
 			$sql .= "(
 						LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.owner) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
+						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 			if (is_numeric($filters['search']))
@@ -594,7 +594,6 @@ class SupportTicket extends JTable
 			$sql .= " AND ";
 			$sql .= "(
 						LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.owner) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
 						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
 			if (is_numeric($filters['search']))
@@ -605,7 +604,7 @@ class SupportTicket extends JTable
 		}
 		$sql .= $having;
 
-		if($filters['sort'] == 'severity')
+		if ($filters['sort'] == 'severity')
 		{
 			$sql .= " ORDER BY CASE severity ";
 			$sql .= " WHEN 'critical' THEN 5";
@@ -800,9 +799,9 @@ class SupportTicket extends JTable
 				// Start by impoloding the array
 				$usernames = implode("','", $username);
 				$sql .= " AND (";
-					$sql .= "f.owner NOT IN ('" . $usernames . "')";
-					// Include unassigned tickets in this number
-					$sql .= " OR f.owner IS NULL OR f.owner = ''";
+				$sql .= "f.owner NOT IN ('" . $usernames . "')";
+				// Include unassigned tickets in this number
+				$sql .= " OR f.owner=0";
 				$sql .= ")";
 			}
 			else
@@ -840,7 +839,7 @@ class SupportTicket extends JTable
 		}
 		if ($unassigned)
 		{
-			$sql .= " AND (owner IS NULL OR owner='') AND (resolved IS NULL OR resolved='')";
+			$sql .= " AND owner=0 AND (resolved IS NULL OR resolved='')";
 		}
 
 		$this->_db->setQuery($sql);
@@ -881,7 +880,7 @@ class SupportTicket extends JTable
 		}
 		if ($username)
 		{
-			$sql .= " AND k.created_by=" . $this->_db->Quote($username);
+			$sql .= " AND k.created_by=" . $this->_db->Quote(JUser::getInstance($username)->get('id'));
 		}
 
 		$this->_db->setQuery($sql);
@@ -971,9 +970,9 @@ class SupportTicket extends JTable
 				$difference = 0;
 			}
 
-			$days = floor($difference/60/60/24);
-			$hours = floor(($difference - $days*60*60*24)/60/60);
-			$minutes = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
+			$days     = floor($difference/60/60/24);
+			$hours    = floor(($difference - $days*60*60*24)/60/60);
+			$minutes  = floor(($difference - $days*60*60*24 - $hours*60*60)/60);
 
 			$lifetime = array($days, $hours, $minutes);
 		}

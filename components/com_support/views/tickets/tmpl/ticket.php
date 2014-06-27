@@ -203,20 +203,20 @@ $cc = array();
 				<strong><?php echo (!$this->row->isOpen()) ? JText::_('TICKET_STATUS_CLOSED_TICKET') : JText::_('TICKET_STATUS_OPEN_TICKET'); ?></strong>
 			</p>
 			<?php if (!$this->row->isOpen()) { ?>
-				<p><strong>Note:</strong> To reopen this issue, add a comment below.</p>
+				<p><?php echo JText::_('<strong>Note:</strong> To reopen this issue, add a comment below.'); ?></p>
 			<?php } ?>
 		</div><!-- / .entry-status -->
 
 		<div class="ticket-watch">
 			<?php if ($this->row->isWatching()) { ?>
 				<div id="watching">
-					<p>This ticket is saved in your watch list.</p>
+					<p><?php echo JText::_('This ticket is saved in your watch list.'); ?></p>
 					<p><a class="stop-watching btn" href="<?php echo JRoute::_($this->row->link('stopWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">Stop watching</a></p>
 				</div>
 			<?php } else { ?>
 				<p><a class="start-watching btn" href="<?php echo JRoute::_($this->row->link('startWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='.$this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">Watch ticket</a></p>
 			<?php } ?>
-			<p>When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.</p>
+			<p><?php echo JText::_('When watching a ticket, you will be notified of any comments added or changes made. You may stop watching at any time.'); ?></p>
 		</div>
 	</aside><!-- / .aside -->
 </section><!-- / .main section -->
@@ -251,7 +251,7 @@ $cc = array();
 			{
 				$access = 'public';
 			}
-			if ($comment->get('created_by') == $this->row->get('login') && !$comment->isPrivate())
+			if ($comment->get('created_by') == $this->row->submitter('username') && !$comment->isPrivate())
 			{
 				$access = 'submitter';
 			}
@@ -262,7 +262,7 @@ $cc = array();
 			if ($comment->creator())
 			{
 				$cite = $this->escape(stripslashes($comment->creator('name')));
-				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $comment->creator('id')) . '">' . $cite . '</a>';
+				$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $comment->creator('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator('username'))) . ')</a>';
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
@@ -345,7 +345,7 @@ $cc = array();
 		<h3>
 			<?php echo JText::_('COMMENT_FORM'); ?>
 		</h3>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update'); ?>" method="post" id="commentform" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_($this->row->link('update')); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
 				<span class="comment-anchor"></span>
 				<?php
@@ -431,7 +431,7 @@ $cc = array();
 							<select name="ticket[resolved]" id="status">
 								<option value=""<?php if ($this->row->isOpen() && $this->row->get('status') != 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
 								<option value="1"<?php if ($this->row->isOpen() && $this->row->get('status') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
-								<optgroup label="Closed">
+								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"<?php if (!$this->row->isOpen() && $this->row->get('resolved') == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
 									<?php
 									if (isset($this->lists['resolutions']) && $this->lists['resolutions'] != '')
@@ -594,7 +594,7 @@ $cc = array();
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">
-		<p>Please remember to describe problems in detail, including any steps you may have taken before encountering an error.</p>
+		<p><?php echo JText::_('Please remember to describe problems in detail, including any steps you may have taken before encountering an error.'); ?></p>
 	</aside><!-- / .aside -->
 </section><!-- / .section -->
 <?php } // ACL can create comments ?>

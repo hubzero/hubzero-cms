@@ -370,7 +370,7 @@ if ($this->rows)
 							</p>
 						<?php if ($tags || $row->owner || $row->group) { ?>
 							<p class="ticket-details">
-							<?php if ($tags) { ?>
+							<?php if ($this->acl->check('update', 'tickets') && $tags) { ?>
 								<span class="ticket-tags">
 									<?php echo $tags; ?>
 								</span>

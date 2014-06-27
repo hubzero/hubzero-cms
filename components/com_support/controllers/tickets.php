@@ -187,7 +187,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		{
 			$query = "SELECT DISTINCT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
+				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"	// map user to aro
 				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . " AND (s.group IS NULL OR s.group='')"
 				. "\n ORDER BY a.name";
 		}
@@ -202,7 +202,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		{
 			$query = "SELECT DISTINCT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
+				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"	// map user to aro
 				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . ""
 				. "\n ORDER BY a.name";
 		}
@@ -227,7 +227,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				{
 					$user->closed = array();
 				}
-				$users[$user->username] = $user;
+				$users[$user->id] = $user;
 			}
 		}
 
@@ -483,9 +483,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		foreach ($users as $k => $user)
 		{
 			$user->assigned = 0;
-			if (isset($owners[$user->username]))
+			if (isset($owners[$user->id]))
 			{
-				$user->assigned = $owners[$user->username];
+				$user->assigned = $owners[$user->id];
 			}
 			$key = (string) $user->total;
 			if (isset($u[$key]))
@@ -1252,7 +1252,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$log['changes'][] = array(
 				'field'  => JText::_('TICKET_FIELD_OWNER'),
 				'before' => '',
-				'after'  => $row->owner
+				'after'  => JUser::getInstance($row->owner)->get('username')
 			);
 		}
 		if ($row->resolved)
@@ -1935,8 +1935,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					$row->store();
 				}
 				// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-				$ccreated_by = JRequest::getVar('username', '');
-				if ($row->status == 2 && $ccreated_by == $row->login)
+				//$ccreated_by = JRequest::getVar('username', '');
+				if ($row->status == 2 && $this->juser->get('username') == $row->login)
 				{
 					$row->status = 1;
 					$row->resolved = '';
@@ -1980,8 +1980,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('TICKET_FIELD_OWNER'),
-					'before' => $old->owner,
-					'after'  => $row->owner
+					'before' => JUser::getInstance($old->owner)->get('username'),
+					'after'  => JUser::getInstance($row->owner)->get('username')
 				);
 			}
 			if ($row->resolved != $old->resolved)
@@ -2019,7 +2019,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
 			$rowc->created    = JFactory::getDate()->toSql();
-			$rowc->created_by = JRequest::getVar('username', '');
+			$rowc->created_by = $this->juser->get('id'); //JRequest::getVar('username', '');
 			$rowc->access     = JRequest::getInt('access', 0);
 
 			// Add any CCs to the e-mail list
@@ -2619,7 +2619,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$rowc->ticket     = $ticket;
 				$rowc->comment    = '';
 				$rowc->created    = JFactory::getDate()->toSql();
-				$rowc->created_by = $row->login;
+				$rowc->created_by = $this->juser->get('id');//$row->login;
 				$rowc->changelog  = $changelog;
 				$rowc->access     = 1;
 
@@ -2751,7 +2751,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Load ACL
 		if ($row->login == $this->juser->get('username')
-		 || $row->owner == $this->juser->get('username'))
+		 || $row->owner == $this->juser->get('id'))
 		{
 			if (!$this->acl->check('read', 'tickets'))
 			{
@@ -3045,6 +3045,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					}
 				break;
 				case 'owner':
+					if (isset($pieces[1]) && $pieces[1] == 'me')
+					{
+						$pieces[1] = $this->juser->get('id');
+					}
+				break;
 				case 'reportedby':
 					if (isset($pieces[1]) && $pieces[1] == 'me')
 					{
@@ -3079,7 +3084,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	 */
 	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$query = "SELECT a.username AS value, a.name AS text"
+		$query = "SELECT a.id AS value, a.name AS text"
 			. " FROM #__users AS a"
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='user' AND aro.foreign_key = a.id"
 			. " WHERE a.block = '0'"
@@ -3096,7 +3101,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$users = $this->database->loadObjectList();
 		}
 
-		$query = "SELECT a.username AS value, a.name AS text, aro.alias"
+		$query = "SELECT a.id AS value, a.name AS text, aro.alias"
 			. " FROM #__users AS a"
 			. " INNER JOIN #__xgroups_members AS m ON m.uidNumber = a.id"
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='group' AND aro.foreign_key = m.gidNumber"
@@ -3141,7 +3146,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$users = array();
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
+			$users[] = JHTML::_('select.option', '0', 'No User', 'value', 'text');
 		}
 
 		if (strstr($group, ','))
@@ -3167,7 +3172,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 							}
 
 							$m = new stdClass();
-							$m->value = $u->get('username');
+							$m->value = $u->get('id');
 							$m->text  = $u->get('name');
 							$m->groupname = $g;
 
@@ -3195,7 +3200,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					}
 
 					$m = new stdClass();
-					$m->value = $u->get('username');
+					$m->value = $u->get('id');
 					$m->text  = $u->get('name');
 					$m->groupname = $group;
 

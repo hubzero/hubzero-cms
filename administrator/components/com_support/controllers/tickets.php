@@ -34,7 +34,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'query.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'comment.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ticket.php');
 
 /**
  * Support controller class for tickets
@@ -109,10 +109,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			foreach ($queries as $k => $query)
 			{
 				// Build the query from the condition set
-				if (!$query->query)
-				{
+				//if (!$query->query)
+				//{
 					$query->query = $sq->getQuery($query->conditions);
-				}
+				//}
 				$filters = $this->view->filters;
 				if ($query->id != $this->view->filters['show'])
 				{
@@ -237,78 +237,36 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
-		$this->view->filters = SupportUtilities::getFilters();
-
 		// Initiate database class and load info
-		$row = new SupportTicket($this->database);
-		$row->load($id);
+		$row = SupportModelTicket::getInstance($id);
 
 		// Editing or creating a ticket?
-		if ($id)
-		{
-			// Get comments
-			$sc = new SupportComment($this->database);
-			$comments = $sc->getComments('admin', $row->id);
-
-			// Parse comment text for attachment tags
-			$juri = JURI::getInstance();
-			$webpath = str_replace('/administrator/', '/', $juri->base() . $this->config->get('webpath', '/site/tickets') . DS . $id);
-			$webpath = str_replace('//','/',$webpath);
-			if (isset($_SERVER['HTTPS']))
-			{
-				$webpath = str_replace('http:','https:',$webpath);
-			}
-			if (!strstr($webpath, '://'))
-			{
-				$webpath = str_replace(':/','://',$webpath);
-			}
-
-			$attach = new SupportAttachment($this->database);
-			$attach->webpath = $webpath;
-			$attach->uppath  = JPATH_ROOT . $this->config->get('webpath') . DS . $id;
-			$attach->output  = 'web';
-
-			foreach ($comments as $i => $comment)
-			{
-				$comments[$i] = new SupportModelComment($comment);
-			}
-
-			$row->statustext = SupportHtml::getStatus($row->status);
-
-			// Do some text cleanup
-			$row->report = $this->view->escape($row->report);
-			$row->report = nl2br($row->report);
-			$row->report = str_replace("\t",' &nbsp; &nbsp;', $row->report);
-
-			$row->report = $attach->parse($row->report);
-		}
-		else
+		if (!$row->exists())
 		{
 			$this->view->setLayout('add');
 
 			// Creating a new ticket
-			$row->severity = 'normal';
-			$row->status   = 0;
-			$row->created  = JFactory::getDate()->toSql();
-			$row->login    = $this->juser->get('username');
-			$row->name     = $this->juser->get('name');
-			$row->email    = $this->juser->get('email');
-			$row->cookies  = 1;
+			$row->set('severity', 'normal');
+			$row->set('status', 0);
+			$row->set('created', JFactory::getDate()->toSql());
+			$row->set('login', $this->juser->get('username'));
+			$row->set('name', $this->juser->get('name'));
+			$row->set('email', $this->juser->get('email'));
+			$row->set('cookies', 1);
 
 			$browser = new \Hubzero\Browser\Detector();
 
-			$row->os = $browser->platform() . ' ' . $browser->platformVersion();
-			$row->browser = $browser->name() . ' ' . $browser->version();
+			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
+			$row->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->uas = JRequest::getVar('HTTP_USER_AGENT','','server');
+			$row->set('uas', JRequest::getVar('HTTP_USER_AGENT','','server'));
 
-			$row->ip = JRequest::ip();
-			$row->hostname = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
-			$row->section = 1;
-
-			$comments = array();
+			$row->set('ip', JRequest::ip());
+			$row->set('hostname', gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server')));
+			$row->set('section', 1);
 		}
 
+		$this->view->filters = SupportUtilities::getFilters();
 		$this->view->lists = array();
 
 		// Get resolutions
@@ -327,58 +285,45 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$sa = new SupportCategory($this->database);
 		$this->view->lists['categories'] = $sa->find('list');
 
-		// Get Tags
-		$st = new SupportTags($this->database);
-		$this->view->lists['tags'] = $st->get_tag_string($row->id, 0, 0, NULL, 0, 1);
-		$this->view->lists['tagcloud'] = $st->get_tag_cloud(3, 1, $row->id);
-
 		// Get severities
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 
-		if (trim($row->group))
+		if (trim($row->get('group')))
 		{
-			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->owner, 1, '', trim($row->group));
+			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($row->get('group')));
 		}
 		elseif (trim($this->config->get('group')))
 		{
-			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->owner, 1, '', trim($this->config->get('group')));
+			$this->view->lists['owner'] = $this->_userSelectGroup('owner', $row->get('owner'), 1, '', trim($this->config->get('group')));
 		}
 		else
 		{
-			$this->view->lists['owner'] = $this->_userSelect('owner', $row->owner, 1);
+			$this->view->lists['owner'] = $this->_userSelect('owner', $row->get('owner'), 1);
 		}
 
 		$this->view->row = $row;
-		$this->view->comments = $comments;
 
 		if ($watch = JRequest::getWord('watch', ''))
 		{
 			$watch = strtolower($watch);
 
-			$watching = new SupportTableWatching($this->database);
-			$watching->load($this->view->row->id, $this->juser->get('id'));
-
-			// Not already watching
-			if (!$watching->id)
-			{
-				// Start watching?
-				if ($watch == 'start')
-				{
-					$watching->ticket_id = $this->view->row->id;
-					$watching->user_id   = $this->juser->get('id');
-					$watching->store();
-				}
-				// Otherwise, do nothing
-			}
-			else
 			// Already watching
+			if ($this->view->row->isWatching($this->juser))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$watching->delete();
+					$this->view->row->stopWatching($this->juser);
 				}
-				// Otherwise, do nothing
+			}
+			// Not already watching
+			else
+			{
+				// Start watching?
+				if ($watch == 'start')
+				{
+					$this->view->row->watch($this->juser);
+				}
 			}
 		}
 
@@ -484,8 +429,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$row->store();
 				}
 				// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-				$ccreated_by = JRequest::getVar('username', '');
-				if ($row->status == 1 && $ccreated_by == $row->login)
+				//$ccreated_by = JRequest::getVar('username', '');
+				if ($row->status == 1 && $this->juser->get('username') == $row->login)
 				{
 					$row->open = 1;
 					$row->status = 1;
@@ -533,8 +478,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			{
 				$log['changes'][] = array(
 					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_OWNER'),
-					'before' => $old->owner,
-					'after'  => $row->owner
+					'before' => JUser::getInstance($old->owner)->get('id'),
+					'after'  => JUser::getInstance($row->owner)->get('id')
 				);
 			}
 			// Did the resolution change?
@@ -574,7 +519,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$rowc->comment    = nl2br($comment);
 			$rowc->comment    = str_replace('<br>', '<br />', $rowc->comment);
 			$rowc->created    = JFactory::getDate()->toSql();
-			$rowc->created_by = JRequest::getVar('username', '');
+			$rowc->created_by = $this->juser->get('id'); //JRequest::getVar('username', '');
 			$rowc->access     = JRequest::getInt('access', 0);
 
 			// Add any CCs to the e-mail list
@@ -1109,7 +1054,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	 */
 	private function _userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$query = "SELECT a.username AS value, a.name AS text"
+		$query = "SELECT a.id AS value, a.name AS text"
 			. " FROM #__users AS a"
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='user' AND aro.foreign_key = a.id"
 			. " WHERE a.block = '0'"
@@ -1118,7 +1063,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
+			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
 		}
 		else
@@ -1126,7 +1071,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$users = $this->database->loadObjectList();
 		}
 
-		$query = "SELECT a.username AS value, a.name AS text, aro.alias"
+		$query = "SELECT a.id AS value, a.name AS text, aro.alias"
 			. " FROM #__users AS a"
 			. " INNER JOIN #__xgroups_members AS m ON m.uidNumber = a.id"
 			. " INNER JOIN #__support_acl_aros AS aro ON aro.model='group' AND aro.foreign_key = m.gidNumber"
@@ -1171,7 +1116,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$users = array();
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
+			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
 		}
 
 		if (strstr($group, ','))
@@ -1198,7 +1143,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							}
 
 							$m = new stdClass();
-							$m->value = $u->get('username');
+							$m->value = $u->get('id');
 							$m->text  = $u->get('name');
 							$m->groupname = $g;
 
@@ -1227,7 +1172,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					}
 
 					$m = new stdClass();
-					$m->value = $u->get('username');
+					$m->value = $u->get('id');
 					$m->text  = $u->get('name');
 					$m->groupname = $group;
 

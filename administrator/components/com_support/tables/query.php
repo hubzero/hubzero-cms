@@ -359,6 +359,12 @@ class SupportQuery extends JTable
 
 		for ($i = 0; $i < $elen; $i++)
 		{
+			$uid = 'username';
+			if (strtolower($expr->fldval) == 'owner')
+			{
+				$uid = 'id';
+			}
+
 			$expr = $condition->expressions[$i];
 			switch ($expr->opval)
 			{
@@ -426,7 +432,7 @@ class SupportQuery extends JTable
 			{
 				if ($expr->val == '$me')
 				{
-					$expr->val = $juser->get('username');
+					$expr->val = $juser->get($uid);
 				}
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
 			}

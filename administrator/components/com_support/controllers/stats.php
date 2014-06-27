@@ -69,7 +69,7 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 				FROM #__support_tickets AS s
 				LEFT JOIN #__xgroups AS g ON g.cn=s.`group`
 				WHERE s.`group` !='' AND s.`group` IS NOT NULL
-				AND s.type=" . $this->view->type . "
+				AND s.type=" . $this->database->quote($this->view->type) . "
 				ORDER BY g.description ASC";
 		$this->database->setQuery($sql);
 		$this->view->groups = $this->database->loadObjectList();
@@ -81,15 +81,15 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 		{
 			$query = "SELECT a.username, a.name, a.id"
 				. "\n FROM #__users AS a, #__xgroups AS g, #__xgroups_members AS gm"
-				. "\n WHERE g.cn='".$this->view->group."' AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
+				. "\n WHERE g.cn=" . $this->database->quote($this->view->group) . " AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id"
 				. "\n ORDER BY a.name";
 		}
 		else
 		{
 			$query = "SELECT DISTINCT a.username, a.name, a.id"
 				. "\n FROM #__users AS a"
-				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.username"	// map user to aro
-				. "\n WHERE a.block = '0' AND s.type=" . $this->view->type . ""
+				. "\n INNER JOIN #__support_tickets AS s ON s.owner = a.id"	// map user to aro
+				. "\n WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type)
 				. "\n ORDER BY a.name";
 		}
 
@@ -100,7 +100,7 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 		$sql = "SELECT YEAR(created)
 				FROM #__support_tickets
 				WHERE report!=''
-				AND type='{$this->view->type}' ORDER BY created ASC LIMIT 1";
+				AND type=" . $this->database->quote($this->view->type) . " ORDER BY created ASC LIMIT 1";
 		$this->database->setQuery($sql);
 		$first = intval($this->database->loadResult());
 
@@ -108,14 +108,14 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM #__support_tickets
 				WHERE report!=''
-				AND type=" . $this->view->type . " AND open=1";
+				AND type=" . $this->database->quote($this->view->type) . " AND open=1";
 		if (!$this->view->group)
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
 		}
 		else
 		{
-			$sql .= " AND `group`='{$this->view->group}'";
+			$sql .= " AND `group`=" . $this->database->quote($this->view->group);
 		}
 		$sql .= " ORDER BY created ASC";
 		$this->database->setQuery($sql);
@@ -267,7 +267,7 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 						{
 							if (intval($c->year) == intval($k) && intval($c->month) == intval($i))
 							{
-								if ($c->created_by == $user->username)
+								if ($c->created_by == $user->id)
 								{
 									$user->closed[$k][$i]++;
 									$user->total++;
@@ -287,9 +287,9 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 		foreach ($users as $k => $user)
 		{
 			$user->assigned = 0;
-			if (isset($owners[$user->username]))
+			if (isset($owners[$user->id]))
 			{
-				$user->assigned = $owners[$user->username];
+				$user->assigned = $owners[$user->id];
 			}
 
 			$key = (string) $user->total;

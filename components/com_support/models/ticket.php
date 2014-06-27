@@ -127,7 +127,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * @param      string $property User property to look up
 	 * @return     mixed
 	 */
-	public function submitter($property=null)
+	public function submitter($property=null, $default=null)
 	{
 		if (!($this->_data->get('submitter.profile') instanceof \Hubzero\User\Profile))
 		{
@@ -144,7 +144,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		if ($property)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
-			return $this->_data->get('submitter.profile')->get($property);
+			return $this->_data->get('submitter.profile')->get($property, $default);
 		}
 		return $this->_data->get('submitter.profile');
 	}
@@ -159,7 +159,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * @param      string $property User property to look up
 	 * @return     mixed
 	 */
-	public function owner($property=null)
+	public function owner($property=null, $default=null)
 	{
 		if (!($this->_data->get('owner.profile') instanceof \Hubzero\User\Profile))
 		{
@@ -173,7 +173,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		if ($property)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
-			return $this->_data->get('owner.profile')->get($property);
+			return $this->_data->get('owner.profile')->get($property, $default);
 		}
 		return $this->_data->get('owner.profile');
 	}
@@ -209,16 +209,16 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Is the user the owner of the ticket?
 	 *
-	 * @param   string  $username
+	 * @param   integer $id
 	 * @return  boolean
 	 */
-	public function isOwner($username='')
+	public function isOwner($id='')
 	{
 		if ($this->isOwned())
 		{
-			$username = $username ?: JFactory::getUser()->get('username');
+			$id = $id ?: JFactory::getUser()->get('id');
 
-			if ($this->get('owner') == $username)
+			if ($this->get('owner') == $id)
 			{
 				return true;
 			}
@@ -227,7 +227,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the user the owner of the ticket?
+	 * Is the user the submitter of the ticket?
 	 *
 	 * @param   string  $username
 	 * @return  boolean
@@ -274,6 +274,30 @@ class SupportModelTicket extends \Hubzero\Base\Model
 					break;
 					case 0:
 						$status = JText::_('TICKET_STATUS_RESOLVED');
+					break;
+				}
+			break;
+
+			case 'class':
+				switch ($this->get('open'))
+				{
+					case 1:
+						switch ($this->get('status'))
+						{
+							case 2:
+								$status = 'waiting';
+							break;
+							case 1:
+								$status = 'open';
+							break;
+							case 0:
+							default:
+								$status = 'new';
+							break;
+						}
+					break;
+					case 0:
+						$status = 'closed';
 					break;
 				}
 			break;
@@ -425,12 +449,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a count of or list of comments on this model
+	 * Mark a user as "watching" this ticket
 	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
+	 * @param      mixed   $user User object, username, or ID
 	 * @return     boolean
 	 */
-	public function watch($user_id)
+	public function watch($user)
 	{
 		$user_id = $this->_resolveUserID($user);
 
@@ -458,9 +482,9 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a count of or list of comments on this model
+	 * Remove a user from the watch list for this ticket
 	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
+	 * @param      mixed   $user User object, username, or ID
 	 * @return     boolean
 	 */
 	public function stopWatching($user)
@@ -486,7 +510,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a count of or list of comments on this model
+	 * Get a count of or list of watchers on this ticket
 	 *
 	 * @param      string  $rtrn    Data to return state in [count, list]
 	 * @param      array   $filters Filters to apply to the query
@@ -529,12 +553,10 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a count of or list of comments on this model
+	 * Check if a user is watching this ticket
 	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
-	 * @param      array   $filters Filters to apply to the query
-	 * @param      boolean $clear   Clear data cache?
-	 * @return     mixed
+	 * @param      mixed   $user User object, username, or ID
+	 * @return     boolean True if watching, False if not
 	 */
 	public function isWatching($user=null)
 	{
@@ -555,7 +577,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -778,6 +800,10 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 			case 'delete':
 				$link .= '&controller=tickets&task=delete&id=' . $this->get('id');
+			break;
+
+			case 'update':
+				$link .= '&controller=tickets&task=update';
 			break;
 
 			case 'stopWatching':

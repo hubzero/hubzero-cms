@@ -127,7 +127,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	 *
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
@@ -144,7 +144,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 			{
 				return $this->_creator->getPicture(($this->_creator->get('uidNumber') ? 0 : 1));
 			}
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}

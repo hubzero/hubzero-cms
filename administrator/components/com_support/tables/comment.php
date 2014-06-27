@@ -65,9 +65,9 @@ class SupportComment extends JTable
 	var $created    = NULL;
 
 	/**
-	 * var(50)
+	 * int(11)
 	 *
-	 * @var string
+	 * @var integer
 	 */
 	var $created_by = NULL;
 
@@ -103,10 +103,27 @@ class SupportComment extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->comment) == '' && trim($this->changelog) == '')
+		$this->comment = trim($this->comment);
+		if (!$this->comment && trim($this->changelog) == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_COMMENT'));
 			return false;
+		}
+
+		$this->ticket = intval($this->ticket);
+		if (!$this->ticket)
+		{
+			$this->setError(JText::_('SUPPORT_ERROR_BLANK_TICKET'));
+			return false;
+		}
+
+		if (!$this->created_by)
+		{
+			$this->created_by = JFactory::getUser()->get('id');
+		}
+		if (!$this->created)
+		{
+			$this->created = JFactory::getDate()->toSql();
 		}
 
 		return true;

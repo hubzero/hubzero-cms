@@ -65,7 +65,7 @@ class modMyTickets extends \Hubzero\Module\Module
 				SELECT id, summary, category, open, status, severity, owner, created, login, name,
 					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 				FROM #__support_tickets as st
-				WHERE st.owner='" . $juser->get('username') . "' AND st.open=1 AND type=0
+				WHERE st.owner='" . $juser->get('id') . "' AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
 			)"
@@ -84,7 +84,7 @@ class modMyTickets extends \Hubzero\Module\Module
 		{
 			foreach ($this->rows as $row)
 			{
-				if ($row->owner == $juser->get('username'))
+				if ($row->owner == $juser->get('id'))
 				{
 					$rows2[] = $row;
 				}

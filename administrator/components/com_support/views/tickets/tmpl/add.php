@@ -67,23 +67,23 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<input type="hidden" name="summary" id="field-summary" value="<?php echo $this->escape($this->row->summary); ?>" size="50" />
+			<input type="hidden" name="summary" id="field-summary" value="<?php echo $this->escape($this->row->get('summary')); ?>" size="50" />
 
 			<div class="input-wrap">
 				<label for="field-login"><?php echo JText::_('COM_SUPPORT_TICKET_FIELD_LOGIN'); ?>:</label>
-				<input type="text" name="login" id="field-login" value="<?php echo $this->escape(trim($this->row->login)); ?>" size="50" />
+				<input type="text" name="login" id="field-login" value="<?php echo $this->escape(trim($this->row->get('login'))); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
 				<label for="field-name"><?php echo JText::_('COM_SUPPORT_TICKET_FIELD_NAME'); ?>:</label>
-				<input type="text" name="name" id="field-name" value="<?php echo $this->escape(trim($this->row->name)); ?>" size="50" />
+				<input type="text" name="name" id="field-name" value="<?php echo $this->escape(trim($this->row->get('name'))); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
 				<label for="field-email"><?php echo JText::_('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
-				<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->email); ?>" size="50" />
+				<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
 				<label for="field-report"><?php echo JText::_('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
-				<textarea name="report" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->report)); ?></textarea>
+				<textarea name="report" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->content('raw'))); ?></textarea>
 			</div>
 			<div class="input-wrap">
 				<label for="actags"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>
@@ -173,7 +173,7 @@ function submitbutton(pressbutton)
 	</div><!-- / .col width-30 -->
 	<div class="clr"></div>
 
-	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="username" value="<?php echo $this->escape($juser->get('username')); ?>" />
