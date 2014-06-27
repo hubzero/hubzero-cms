@@ -55,9 +55,9 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		// Ensure we have an ID to work with
 		$ticket  = JRequest::getInt('ticket', 0);
 		$comment = JRequest::getInt('comment', 0);
-		if (!$ticket || !$comment)
+		if (!$ticket)
 		{
-			echo json_encode(array('error' => JText::_('COM_SUPPORT_NO_ID'), 'comment' => $comment));
+			echo json_encode(array('error' => JText::_('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
 			return;
 		}
 

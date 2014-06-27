@@ -1352,6 +1352,7 @@
 		left: 0;
 		right: 0;
 	}
+	#hubForm .file-list .item-asset,
 	.file-list .item-asset {
 		background: #f7f7f7;
 		border-radius: 0.25em;

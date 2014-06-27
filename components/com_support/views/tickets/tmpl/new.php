@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->css();
+$this->css()
+     ->js('new.js');
 
 $browsers = array(
 	'[unspecified]' => JText::_('COM_SUPPORT_TROUBLE_SELECT_BROWSER'),
@@ -166,14 +167,37 @@ $group = JRequest::getVar('group', '');
 				<textarea name="problem[long]" cols="40" rows="10" id="problem_long"><?php echo (isset($this->problem['long'])) ? $this->escape(stripslashes($this->problem['long'])) : ''; ?></textarea>
 			</label>
 			<?php if ($this->getError() && (!isset($this->problem['long']) || $this->problem['long'] == '')) { ?>
-			<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
+				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
 			<?php } ?>
 
-			<label for="problem-upload">
-				<?php echo JText::_('Attach a screenshot'); ?>:
-				<small>(.<?php echo str_replace(',', ', .', $this->file_types); ?>)</small>
-				<input type="file" name="upload" id="problem-upload" />
-			</label>
+			<fieldset>
+				<legend><?php echo JText::_('COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
+				<?php
+				$tmp = ('-' . time());
+				$this->js('jquery.fileuploader.js', 'system');
+				$jbase = rtrim(JURI::getInstance()->base(true), '/');
+				?>
+				<div class="field-wrap">
+				<div id="ajax-uploader" data-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $tmp; ?>">
+					<noscript>
+						<label for="upload">
+							<?php echo JText::_('Attach a file'); ?>:
+							<input type="file" name="upload" id="upload" />
+						</label>
+
+						<label for="field-description">
+							<?php echo JText::_('File description'); ?>:
+							<input type="text" name="description" id="field-description" value="" />
+						</label>
+					</noscript>
+				</div>
+				<div class="file-list" id="ajax-uploader-list">
+				</div>
+				<input type="hidden" name="tmp_dir" id="ticket-tmp_dir" value="<?php echo $tmp; ?>" />
+
+				<span class="hint">(.<?php echo str_replace(',', ', .', $this->file_types); ?>)</span>
+			</div>
+			</fieldset>
 		</fieldset><div class="clear"></div>
 
 		<?php if ($this->verified && $this->acl->check('update', 'tickets') > 0) { ?>

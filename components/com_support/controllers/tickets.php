@@ -2842,6 +2842,26 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return '';
 		}
 
+		// Construct our file path
+		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
+
+		$row = new SupportAttachment($this->database);
+
+		// Rename temp directories
+		if ($tmp = JRequest::getInt('tmp_dir'))
+		{
+			$tmpPath = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
+			if (is_dir($tmpPath))
+			{
+				if (!JFolder::move($tmpPath, $path))
+				{
+					$this->setError(JText::_('UNABLE_TO_MOVE_UPLOAD_PATH'));
+					return '';
+				}
+				$row->updateTicketId($tmp, $listdir);
+			}
+		}
+
 		// Incoming file
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!isset($file['name']) || !$file['name'])
@@ -2852,9 +2872,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$description = JRequest::getVar('description', '');
-
-		// Construct our file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
 
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
@@ -2912,7 +2929,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			// Create database entry
 			$description = htmlspecialchars($description);
 
-			$row = new SupportAttachment($this->database);
 			$row->bind(array(
 				'id'          => 0,
 				'ticket'      => $listdir,

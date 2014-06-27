@@ -57,8 +57,8 @@ $this->css();
 			<?php if (count($this->queries['common']) > 0) { ?>
 				<?php 
 				$i = 0;
-				foreach ($this->queries['common'] as $query) 
-				{ 
+				foreach ($this->queries['common'] as $query)
+				{
 					?>
 					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
@@ -79,7 +79,7 @@ $this->css();
 					<?php } ?>
 					<?php 
 					$i++;
-				} 
+				}
 				?>
 			<?php } else { ?>
 					<li>

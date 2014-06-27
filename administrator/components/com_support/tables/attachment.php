@@ -289,6 +289,24 @@ class SupportAttachment extends JTable
 	}
 
 	/**
+	 * Update the ticket ID for multiple records
+	 *
+	 * @param   integer $before Old ID
+	 * @param   integer $after  New ID
+	 * @return  boolean  True on success.
+	 */
+	public function updateTicketId($before, $after)
+	{
+		$this->_db->setQuery("UPDATE $this->_tbl SET ticket=" . $this->_db->Quote($after) . " WHERE ticket=" . $this->_db->Quote($before));
+		if (!$this->_db->query())
+		{
+			$this->setError($database->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Get records
 	 *
 	 * @param      array $filters Filters to build query from
