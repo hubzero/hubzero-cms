@@ -91,6 +91,6 @@ class LanguagesViewInstalled extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		JToolBarHelper::help('JHELP_EXTENSIONS_LANGUAGE_MANAGER_INSTALLED');
+		JToolBarHelper::help('installed');
 	}
 }

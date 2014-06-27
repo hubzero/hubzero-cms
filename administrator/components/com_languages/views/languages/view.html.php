@@ -84,6 +84,6 @@ class LanguagesViewLanguages extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		JToolBarHelper::help('JHELP_EXTENSIONS_LANGUAGE_MANAGER_CONTENT');
+		JToolBarHelper::help('languages');
 	}
 }
