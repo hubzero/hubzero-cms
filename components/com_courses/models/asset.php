@@ -455,5 +455,38 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		return $results;
 	}
-}
 
+	/**
+	 * Get the unit(s) to which this asset is attached
+	 *
+	 * @return void
+	 **/
+	public function units()
+	{
+		if (isset($this->units))
+		{
+			return $this->units;
+		}
+		else
+		{
+			$this->units = array();
+		}
+
+		$assets = $this->_tbl->find(array('w'=>array('asset_id'=>$this->get('id'))));
+		if ($assets && count($assets) > 0)
+		{
+			foreach ($assets as $asset)
+			{
+				if (isset($asset->unit_id))
+				{
+					if (!isset($this->units[$asset->unit_id]))
+					{
+						$this->units[$asset->unit_id] = new CoursesModelUnit($asset->unit_id);
+					}
+				}
+			}
+		}
+
+		return $this->units;
+	}
+}

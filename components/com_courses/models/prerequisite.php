@@ -118,6 +118,11 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 			);
 		}
 
+		if (!isset($member_id))
+		{
+			return false;
+		}
+
 		$this->progress = $gradebook->progress($member_id);
 		$this->views    = $gradebook->views($member_id);
 		$grades         = $gradebook->_tbl->find(array('member_id'=>$member_id, 'scope'=>'asset'));

@@ -180,6 +180,11 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
+		if (!$course->offering()->section()->access('view'))
+		{
+			return;
+		}
+
 		$this->view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'courses',

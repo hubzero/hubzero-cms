@@ -48,6 +48,8 @@ if ($notes)
 
 $base = $this->offering->link();
 ?>
+
+<?php if ($this->course->offering()->section()->access('view')) : ?>
 <form action="<?php echo JRoute::_($base . '&active=notes'); ?>" method="get">
 	<fieldset class="filters">
 		<div class="filters-inner">
@@ -135,3 +137,12 @@ $base = $this->offering->link();
 	</div><!-- / #collection-introduction -->
 <?php } ?>
 </div>
+<?php else : ?>
+	<?php
+		$this->view('_not_enrolled')
+		     ->set('course', $this->course)
+		     ->set('option', $this->option)
+		     ->set('message', 'You must be enrolled to utilize the notes feature.')
+		     ->display();
+	?>
+<?php endif; ?>

@@ -99,7 +99,8 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check to see if user is member and plugin access requires members
-		if (!$course->offering()->section()->access('view'))
+		$sparams = new JRegistry($course->offering()->section()->get('params'));
+		if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0))
 		{
 			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 			return $arr;

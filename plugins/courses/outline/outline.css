@@ -282,6 +282,52 @@
 		left: 5px;
 		font-size: 12px;
 	}
+	#course-outline .advertise-enroll {
+		text-align: center;
+		padding: 15px;
+		background-color: rgba(255, 255, 0, .2);
+		overflow: hidden;
+	}
+	#course-outline .advertise-enroll div {
+		display: block;
+		float: left;
+	}
+	#course-outline .advertise-enroll .advertise-text {
+		padding: 0.4em 0;
+	}
+	#course-outline .advertise-enroll .advertise-help {
+		float: right;
+	}
+	#course-outline .advertise-enroll .advertise-action,
+	#course-outline .advertise-enroll .advertise-help {
+		margin-left: 10px;
+		background: rgba(255, 255, 0, .1);
+		padding: 0.4em 3em 0.4em 0.61em;
+	}
+	#course-outline .advertise-enroll .advertise-help {
+		float: right;
+		padding: 0.4em 0.61em;
+	}
+	#course-outline .advertise-enroll .advertise-action:after {
+		font-family: "Fontcons";
+		content: "\203a";
+		-webkit-border-radius: 0 0.25em 0.25em 0;
+		-moz-border-radius: 0 0.25em 0.25em 0;
+		border-radius: 0 0.25em 0.25em 0;
+		line-height: 2;
+		padding: 0 0.4em;
+		margin-left: 0.2em;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 1em;
+		text-align: center;
+		font-size: 1.2em;
+		font-weight: normal;
+		background: #e3e3e3;
+		background: rgba(0,0,0,0.08);
+	}
 
 /* Buttons */
 	.btn.link,

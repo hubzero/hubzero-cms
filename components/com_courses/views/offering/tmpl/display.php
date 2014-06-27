@@ -34,6 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 //get no_html request var
 $no_html = JRequest::getInt( 'no_html', 0 );
 $tmpl    = JRequest::getWord('tmpl', false);
+$sparams = new JRegistry($this->course->offering()->section()->get('params'));
 
 if (!$no_html && $tmpl != 'component') :
 	$this->css('offering.css')
@@ -71,7 +72,7 @@ if (!$no_html && $tmpl != 'component') :
 		<div id="page_container">
 <?php endif; ?>
 
-<?php if (!$this->course->offering()->access('view')) { ?>
+<?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
 					<p class="warning"><?php echo JText::_('You must be enrolled in this course to view the content.'); ?></p>
@@ -132,7 +133,7 @@ if (!$no_html && $tmpl != 'component') :
 									$true_active_tab = JRequest::getVar('active', 'outline');
 									$li_cls = ($true_active_tab != $this->active) ? '' : $li_cls;
 
-									if (!$this->course->offering()->access('view'))
+									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
 									{
 										$menu_item  = '<li class="protected course-overview-tab"><span class="outline">' . JText::_('Outline') . '</span>';
 									}
@@ -146,7 +147,7 @@ if (!$no_html && $tmpl != 'component') :
 								}
 								else
 								{
-									if (!$this->course->offering()->access('view'))
+									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
 									{
 										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="' . JText::_('This page is restricted to course members only!') . '">';
 										$menu_item .= '<span class="' . $cls . '" data-icon="&#x' . $cat['icon'] . '">' . $title . '</span>';

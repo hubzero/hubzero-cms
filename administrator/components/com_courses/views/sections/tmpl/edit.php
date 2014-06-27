@@ -380,6 +380,14 @@ jQuery(document).ready(function($){
 							<option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?></option>
 						</select>
 					</div>
+					<div class="input-wrap">
+						<label for="params-progress-calculation"><?php echo JText::_('COM_COURSES_PREVIEW_MODE'); ?>:</label><br />
+						<select name="params[preview]" id="params-preview">
+							<option value="0"<?php echo ($params->get('preview', '') == '0') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PREVIEW_NO'); ?></option>
+							<option value="1"<?php echo ($params->get('preview', '') == '1') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PREVIEW_YES_FULL'); ?></option>
+							<option value="2"<?php echo ($params->get('preview', '') == '2') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PREVIEW_YES_FIRST_UNIT'); ?></option>
+						</select>
+					</div>
 				</fieldset>
 
 				<?php

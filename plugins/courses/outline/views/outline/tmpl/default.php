@@ -39,6 +39,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 $isMember       = $this->course->access('view'); //$this->config->get('access-view-course');
 $isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
 $isNowOnManager = ($isManager) ? true : false;
+$oparams        = new JRegistry($this->course->offering()->get('params'));
+$sparams        = new JRegistry($this->course->offering()->section()->get('params'));
+
+$price = 'free';
+if ($oparams->get('store_price', false))
+{
+	$price = 'only $' . $oparams->get('store_price');
+}
 
 $filters = array();
 if ($isManager)
@@ -60,7 +68,7 @@ $now = JFactory::getDate()->toSql();
 
 $i = 0;
 
-if (!$this->course->offering()->access('view')) { ?>
+if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
 	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
 <?php } else { ?>
 
@@ -71,6 +79,19 @@ if (!$this->course->offering()->access('view')) { ?>
 	<?php } ?>
 
 	<div id="course-outline">
+		<?php if (!$this->course->offering()->access('view') && $sparams->get('preview', 0)) : ?>
+			<div class="advertise-enroll">
+				<div class="advertise-text">
+					<?php echo JText::_('You\'re currently viewing this course in preview mode. Some features may be disabled.'); ?>
+				</div>
+				<a href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">
+					<div class="advertise-action btn">Enroll for <?php echo $price; ?>!</div>
+				</a>
+				<a target="_blank" class="advertise-popup" href="<?php echo JRoute::_('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+					<div class="advertise-help btn">Why enroll?</div>
+				</a>
+			</div>
+		<?php endif; ?>
 		<div class="outline-head">
 			<?php
 				// Trigger event
@@ -84,6 +105,10 @@ if (!$this->course->offering()->access('view')) { ?>
 
 				$this->member  = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
 				$progress      = $this->course->offering()->gradebook()->progress($this->member->get('id'));
+				if (is_null($this->member->get('section_id')))
+				{
+					$this->member->set('section_id', $this->course->offering()->section()->get('id'));
+				}
 				$prerequisites = $this->member->prerequisites($this->course->offering()->gradebook());
 			?>
 		</div>
@@ -144,7 +169,16 @@ if (!$this->course->offering()->access('view')) { ?>
 								<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
 							</div>
 
-				<?php if (!$isManager && !$unit->started()) { ?>
+				<?php if (!$this->course->offering()->access('view') && $sparams->get('preview', 0) == 2 && $unit->get('ordering') > 1) { ?>
+							<div class="grid">
+								<p class="info">
+									Content for this unit is only available to enrolled students.
+									<a href="<?php echo JRoute::_($this->course->offering()->link('enroll')); ?>">
+										Enroll for <?php echo $price; ?>!
+									</a>
+								</p>
+							</div>
+				<?php } elseif (!$isManager && !$unit->started()) { ?>
 							<div class="grid">
 								<p class="info">
 									Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.

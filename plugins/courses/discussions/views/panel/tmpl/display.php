@@ -16,6 +16,17 @@ if (count($inst) > 0)
 	}
 }
 ?>
+<?php if (!$this->course->offering()->section()->access('view')) : ?>
+	<?php
+		$this->view('_not_enrolled')
+		     ->set('course', $this->course)
+		     ->set('option', $this->option)
+		     ->set('message', 'You must be enrolled to utilize the discussion feature.')
+		     ->display();
+
+		return;
+	?>
+<?php endif; ?>
 <?php if ($this->course->access('manage', 'offering')) { ?>
 	<div id="manager-options">
 		<p><a class="btn" href="<?php echo JRoute::_($base . '&unit=manage'); ?>"><?php echo JText::_('Manage'); ?></a></p>

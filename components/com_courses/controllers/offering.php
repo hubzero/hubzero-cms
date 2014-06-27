@@ -450,22 +450,67 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function assetTask()
 	{
-		// Check if they're logged in
-		if ($this->juser->get('guest'))
-		{
-			$this->loginTask('You must be logged in to save course settings.');
-			return;
-		}
+		$sparams    = new JRegistry($this->course->offering()->section()->get('params'));
+		$section_id = $this->course->offering()->section()->get('id');
+		$asset      = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+		$asset->set('section_id', $section_id);
 
+		// First, check if current user has access to course
 		if (!$this->course->offering()->access('view'))
 		{
-			JError::raiseError(401, JText::_('Not Authorized'));
-			return;
-		}
+			// Is a preview available?
+			$preview = $sparams->get('preview', 0);
 
-		$section_id = $this->course->offering()->section()->get('id');
-		$asset = new CoursesModelAsset(JRequest::getInt('asset_id', null));
-		$asset->set('section_id', $section_id);
+			// If no preview is available or if type  is form (i.e. you can never preview forms)
+			if (!$preview || $asset->get('type') == 'form')
+			{
+				// Check if they're logged in
+				if ($this->juser->get('guest'))
+				{
+					$this->loginTask('You must be enrolled to utilize this asset.');
+					return;
+				}
+				else
+				{
+					// Redirect back to the course outline
+					$this->setRedirect(
+						JRoute::_($this->course->offering()->link()),
+						'You must be enrolled to utilize this asset.',
+						'warning'
+					);
+					return;
+				}
+			}
+			elseif ($preview == 2) // Preview is only for first unit
+			{
+				$units = $asset->units();
+				if ($units && count($units) > 0)
+				{
+					foreach ($units as $unit)
+					{
+						if ($unit->get('ordering') > 1)
+						{
+							// Check if they're logged in
+							if ($this->juser->get('guest'))
+							{
+								$this->loginTask('You must be enrolled to utilize this asset.');
+								return;
+							}
+							else
+							{
+								// Redirect back to the course outline
+								$this->setRedirect(
+									JRoute::_($this->course->offering()->link()),
+									'You must be enrolled to utilize this asset.',
+									'warning'
+								);
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
 
 		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
 		{
@@ -483,7 +528,11 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Check prerequisites
-		$member        = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+		$member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+		if (is_null($member->get('section_id')))
+		{
+			$member->set('section_id', $section_id);
+		}
 		$prerequisites = $member->prerequisites($this->course->offering()->gradebook());
 
 		if (!$this->course->offering()->access('manage') && !$prerequisites->hasMet('asset', $asset->get('id')))

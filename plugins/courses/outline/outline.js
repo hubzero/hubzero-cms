@@ -37,6 +37,12 @@ jQuery(document).ready(function(jq) {
 		}
 	});
 
+	$('.advertise-popup').fancybox({
+		type: 'iframe',
+		height:($(window).height())*5/6,
+		autoSize: false
+	});
+
 	$('.notempty').masonry({
 		itemSelector: '.weeksection',
 		columnWidth: function(container) {

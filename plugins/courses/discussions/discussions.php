@@ -499,6 +499,22 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
+		if (!$course->offering()->section()->access('view'))
+		{
+			$view = new \Hubzero\Plugin\View(array(
+				'folder'  => 'courses',
+				'element' => 'discussions',
+				'name'    => 'panel',
+				'layout'  => '_not_enrolled'
+			));
+
+			$view->set('course', $course)
+			     ->set('option', 'com_courses')
+			     ->set('message', 'You must be enrolled to utilize the discussion feature.');
+
+			return $view->loadTemplate();
+		}
+
 		// Are discussions turned on?
 		if (!$lecture->params('discussions_category'))
 		{

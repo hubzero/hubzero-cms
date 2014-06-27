@@ -114,7 +114,16 @@ class plgCoursesProgress extends JPlugin
 		// Check to see if user is member and plugin access requires members
 		if (!$course->offering()->section()->access('view'))
 		{
-			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+			$view = new \Hubzero\Plugin\View(array(
+				'folder'  => 'courses',
+				'element' => 'progress',
+				'name'    => 'report',
+				'layout'  => '_not_enrolled'
+			));
+			$view->set('course', $course)
+			     ->set('option', 'com_courses')
+			     ->set('message', 'You must be enrolled to utilize the progress feature.');
+			$arr['html'] = $view->__toString();
 			return $arr;
 		}
 

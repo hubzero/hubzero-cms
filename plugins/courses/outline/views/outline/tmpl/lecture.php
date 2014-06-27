@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 
+$sparams = new JRegistry($this->course->offering()->section()->get('params'));
+
 $units = $this->course->offering()->units();
 $unit  = $this->course->offering()->unit($this->unit);
 
@@ -53,8 +55,8 @@ $base    = $this->course->offering()->link() . '&active=outline';
 $altBase = $this->course->offering()->link();
 $current = $unit->assetgroups()->key();
 
-if (!$this->course->offering()->access('view')) { ?>
-	<p class="info"><?php echo JText::_('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2 && $unit->get('ordering') > 1))) { ?>
+	<p class="info"><?php echo JText::_('Access to this content is restricted to students only. You must be enrolled to view the content.'); ?></p>
 <?php } else { ?>
 
 	<?php if ($this->course->offering()->access('manage')) { ?>

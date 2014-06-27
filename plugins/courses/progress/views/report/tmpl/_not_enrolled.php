@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2013 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,20 +32,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<h1>Courses Help</h1>
-<p>
-	The HUBzero courses platform offers many features to get you up and running, distributing online course materials and interactive content to a local classroom, or around the world. Though the platform has been designed to be simple and self-serve, there are also plenty of options to keep you busy. Follow a link below to help clear up those options, or dive deeper into the intricacies of the HUBzero courses platform!
-</p>
-<h2>Students</h2>
-<ul>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=courses&page=basics'); ?>">Why enroll?</a>
-	</li>
-</ul>
-<h2>Instructors:</h2>
-<h4>Building a course</h4>
-<ul>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=courses&page=builder'); ?>">Using the interactive builder</a>
-	</li>
-</ul>
+<div id="offering-introduction">
+	<div class="instructions">
+		<p class="warning"><?php echo JText::_($this->message); ?></p>
+	</div>
+	<div class="questions">
+		<p><strong><?php echo JText::_('How can I enroll?'); ?></strong></p>
+		<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($this->course->link())); ?></p>
+		<p><strong><?php echo JText::_('Where can I learn more bout this course?'); ?></strong></p>
+		<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+	</div>
+</div>
