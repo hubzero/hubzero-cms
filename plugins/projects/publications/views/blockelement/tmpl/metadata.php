@@ -44,7 +44,8 @@ $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
 $field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
-$size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
+$size  			= isset($this->manifest->params->maxlength) 
+				&& $this->manifest->params->maxlength
 				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
 				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
@@ -69,6 +70,12 @@ $last   = ($this->order == $this->total) ? 1 : 0;
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
 
+$aboutText = $this->manifest->about ? $this->manifest->about : NULL;
+
+if ($this->pub->_project->provisioned == 1 && isset($this->manifest->aboutProv))
+{
+	$aboutText = $this->manifest->aboutProv;
+}
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
@@ -96,26 +103,26 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
 		<div class="block-aside">
-			<div class="block-info"><?php
+			<div class="block-info">	
+			<?php
+				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
 
-			$shorten = ($this->manifest->about && strlen($this->manifest->about) > 200) ? 1 : 0;
+				if ($shorten)
+				{
+					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
+					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
+								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+					$about.= ' <div class="hidden">';
+					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
+					$about.= ' </div>';
+				}
+				else
+				{
+					$about = $aboutText;
+				}
 
-			if ($shorten)
-			{
-				$about = \Hubzero\Utility\String::truncate($this->manifest->about, 200);
-				$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-							. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
-				$about.= ' <div class="hidden">';
-				$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $this->manifest->about . '</div>';
-				$about.= ' </div>';
-			}
-			else
-			{
-				$about = $this->manifest->about;
-			}
-
-			echo $about;
-	?>		</div>
+				echo $about;
+			?></div>
 		</div>
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>

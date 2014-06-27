@@ -608,7 +608,11 @@
 		border-bottom: 4px solid #d8f1d0;
 		padding: 0.3em 0 0.3em 0;
 	}
-	#pub-editor .columns .draftflow .el-incomplete h5.element-title {
+	#pub-editor .columns .draftflow .el-optional.el-incomplete h5.element-title,
+	#pub-editor .columns .draftflow .el-required.el-incomplete.el-coming h5.element-title {
+		border-bottom: 4px solid #E2E2E2;
+	}
+	#pub-editor .columns .draftflow .el-required.el-incomplete h5.element-title {
 		border-bottom: 4px solid #ecd8cf;
 	}
 	.element-options {
@@ -617,10 +621,11 @@
 		font-size: 90%;
 		display: none;
 	}
-	.el-incomplete h5.element-title:hover {
+	.el-required.el-incomplete h5.element-title:hover {
 		background: #fef5f1;
 	}
-	.el-coming h5.element-title:hover {
+	.el-coming h5.element-title:hover,
+	.el-required.el-incomplete.el-coming h5.element-title:hover {
 		background: none;
 	}
 	h5.element-title:hover {

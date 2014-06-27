@@ -125,45 +125,54 @@ class PublicationsModelBlockElements
 		$lastIncomplete = 0;
 		$total 			= 0;
 		$showElement 	= 1;
+		$collector		= array();
+		$i				= 1;
 
 		foreach ($elements as $elId => $el)
 		{
+			$collector[$i] = $elId;
 			if ($el->status == 1)
 			{
-				$lastComplete = $elId;
+				$lastComplete = $i;
 			}
 			if (!$lastIncomplete)
 			{
 				// Curator review?
-				if (($review && $review->elements && isset($review->elements->$elId)) && $el->status != 0)
+				if (($review && $review->elements 
+					&& isset($review->elements->$elId)) 
+					&& $el->status != 0)
 				{
 					$reviewStatus = $review->elements->$elId;
 					if ($reviewStatus->status == 0 && !$reviewStatus->lastupdate)
 					{
-						$lastIncomplete = $elId;
+						$lastIncomplete = $i;
 					}
-					if ($reviewStatus->status == 1)
+					if ($reviewStatus->status >= 1)
 					{
-						$lastComplete = $elId;
+						$lastComplete = $i;
 					}
 				}
 				elseif ($el->status != 1)
 				{
-					$lastIncomplete = $elId;
+					$lastIncomplete = $i;
 				}
 			}
 
 			$total++;
+			$i++;
 		}
-		$nextElement = $lastComplete + 1;
+
+		$nextElement = isset($collector[$lastComplete + 1]) 
+					 ? $collector[$lastComplete + 1] : $collector[$lastComplete];
 
 		if ($lastIncomplete)
 		{
-			$showElement = $lastIncomplete;
+			$showElement = $collector[$lastIncomplete];
 		}
 		else
 		{
-			$showElement = isset($elements->$nextElement) ? $nextElement : $lastComplete;
+			$showElement = isset($elements->$nextElement) 
+						? $nextElement : $collector[$lastComplete];
 		}
 
 		return array('showElement' => $showElement, 'total' => $total);

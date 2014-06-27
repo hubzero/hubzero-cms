@@ -85,7 +85,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="block-aside">
 			<div class="block-info">
 			<?php
-				$shorten = ($this->manifest->about && strlen($about) > 200) ? 1 : 0;
+				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
 
 				if ($shorten)
 				{
