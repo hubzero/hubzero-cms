@@ -375,7 +375,7 @@ class Comment extends \JTable
 	 */
 	private function checkFileName($uploadDir, $fileName)
 	{
-		$ext = strrchr($fileName, '.');
+		$ext    = strrchr($fileName, '.');
 		$prefix = substr($fileName, 0, -strlen($ext));
 
 		// rename file if exists
@@ -626,14 +626,7 @@ class Comment extends \JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = "FROM $this->_tbl AS c";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
-		}
-		else
-		{
-			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
-		}
+		$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 
 		$where = array();
 
@@ -691,14 +684,7 @@ class Comment extends \JTable
 	public function getRecords($filters=array())
 	{
 		$query  = "SELECT c.*";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= ", a.name AS access_level";
-		}
-		else
-		{
-			$query .= ", a.title AS access_level";
-		}
+		$query .= ", a.title AS access_level";
 		$query .= " " . $this->buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort'])
@@ -729,14 +715,7 @@ class Comment extends \JTable
 	private function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS r LEFT JOIN #__users AS u ON u.id=r.created_by";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= " LEFT JOIN #__groups AS a ON r.access=a.id";
-		}
-		else
-		{
-			$query .= " LEFT JOIN #__viewlevels AS a ON r.access=a.id";
-		}
+		$query .= " LEFT JOIN #__viewlevels AS a ON r.access=a.id";
 
 		$where = array();
 		if (isset($filters['item_id']))
@@ -749,7 +728,15 @@ class Comment extends \JTable
 		}
 		if (isset($filters['state']))
 		{
-			$where[] = "r.`state`=" . $this->_db->Quote($filters['state']);
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "r.`state` IN (" . implode(',', $filters['state']) . ")";
+			}
+			else
+			{
+				$where[] = "r.`state`=" . $this->_db->Quote($filters['state']);
+			}
 		}
 		if (isset($filters['access']))
 		{
@@ -800,14 +787,7 @@ class Comment extends \JTable
 	public function find($filters=array())
 	{
 		$query  = "SELECT r.*, u.name";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= ", a.name AS access_level";
-		}
-		else
-		{
-			$query .= ", a.title AS access_level";
-		}
+		$query .= ", a.title AS access_level";
 		$query .= $this->_buildquery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort'])
