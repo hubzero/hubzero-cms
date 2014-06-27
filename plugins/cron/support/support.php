@@ -65,10 +65,52 @@ class plgCronSupport extends JPlugin
 				'name'   => 'sendTicketList',
 				'label'  =>  JText::_('PLG_CRON_SUPPORT_EMAIL_LIST'),
 				'params' => 'ticketlist'
+			),
+			array(
+				'name'   => 'cleanTempUploads',
+				'label'  =>  JText::_('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
+				'params' => 'tickettemp'
 			)
 		);
 
 		return $obj;
+	}
+
+	/**
+	 * Close tickets in a pending state for a specific amount of time
+	 *
+	 * @return     boolean
+	 */
+	public function cleanTempUploads($params=null)
+	{
+		$sconfig = JComponentHelper::getParams('com_support');
+		$path = JPATH_ROOT . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
+
+		$days = intval($params->get('support_tickettemp_age', '7'));
+
+		$old = time() - ($days * 24 * 60 * 60);
+
+		jimport('joomla.filesystem.file');
+
+		$dirIterator = new DirectoryIterator($path);
+		foreach ($dirIterator as $file)
+		{
+			if (!$file->isDir())
+			{
+				continue;
+			}
+
+			$name = $file->getFilename();
+			if (substr($name, 0, 1) != '-')
+			{
+				continue;
+			}
+
+			if (abs($name) < $old)
+			{
+				JFolder::delete($file->getPathname());
+			}
+		}
 	}
 
 	/**

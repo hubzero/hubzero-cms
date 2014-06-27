@@ -43,38 +43,38 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="fields">
 			<fieldset group="ticketpending">
 				<field name="support_ticketpending_new" type="list" default="0" label="Has status: New" description="Ticket is open and new (no action taken yet).">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketpending_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketpending_accepted" type="list" default="0" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketpending_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-					<option value="all">All</option>
-					<option value="critical,major">High</option>
-					<option value="normal">Normal</option>
-					<option value="minor,trivial">Low</option>
+					<option value="all">PLG_CRON_SUPPORT_ALL</option>
+					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketpending_activity" type="list" default="-2week" label="Last activity" description="When the last activity on the ticket was.">
 					<option value="all">--</option>
-					<option value="-day">Older than 1 day</option>
-					<option value="-week">Older than 1 week</option>
-					<option value="-2week">Older than 2 weeks</option>
-					<option value="-3week">Older than 3 weeks</option>
-					<option value="-month">Older than 1 month</option>
-					<option value="-6month">Older than 6 months</option>
-					<option value="-year">Older than 1 year</option>
+					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+					<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+					<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+					<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+					<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+					<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+					<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
 				</field>
 				<field name="support_ticketpending_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
 				<field name="support_ticketpending_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
-					<option value="0">all</option>
-					<option value="1">no</option>
-					<option value="2">yes</option>
+					<option value="0">PLG_CRON_SUPPORT_ALL</option>
+					<option value="1">JNO</option>
+					<option value="2">JYES</option>
 				</field>
 				<field name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
 				<field name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
@@ -84,73 +84,84 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 			<fieldset group="ticketreminder">
 				<field name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-					<option value="all">All</option>
-					<option value="critical,major">High</option>
-					<option value="normal">Normal</option>
-					<option value="minor,trivial">Low</option>
+					<option value="all">PLG_CRON_SUPPORT_ALL</option>
+					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketreminder_group" type="text" menu="hide" label="For users in group" default="" description="Only users within the group specified will be messaged." />
 			</fieldset>
 			<fieldset group="ticketlist">
 				<field name="support_ticketlist_open" type="list" default="1" label="Open/Closed" description="Ticket is open or closed.">
-					<option value="1">Open</option>
-					<option value="0">Closed</option>
+					<option value="1">PLG_CRON_SUPPORT_OPEN</option>
+					<option value="0">PLG_CRON_SUPPORT_CLOSED</option>
 				</field>
 				<field name="support_ticketlist_new" type="list" default="1" label="Has status: New" description="Ticket is open and new (no action taken yet).">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketlist_waiting" type="list" default="1" label="Has status: Waiting" description="Ticket has a status of waiting user action.">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketlist_accepted" type="list" default="1" label="Has status: Accepted" description="Ticket is open and has some action taken on it (tagged, comments, etc).">
-					<option value="0">no</option>
-					<option value="1">yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="support_ticketlist_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
-					<option value="all">All</option>
-					<option value="critical,major">High</option>
-					<option value="normal">Normal</option>
-					<option value="minor,trivial">Low</option>
+					<option value="all">PLG_CRON_SUPPORT_ALL</option>
+					<option value="critical,major">PLG_CRON_SUPPORT_HIGH</option>
+					<option value="normal">PLG_CRON_SUPPORT_NORMAL</option>
+					<option value="minor,trivial">PLG_CRON_SUPPORT_LOW</option>
 				</field>
 				<field name="support_ticketlist_created" type="list" default="+week" label="Created" description="Ticket creation time.">
-					<option value="-day">Older than 1 day</option>
-					<option value="-week">Older than 1 week</option>
-					<option value="-2week">Older than 2 weeks</option>
-					<option value="-3week">Older than 3 weeks</option>
-					<option value="-month">Older than 1 month</option>
-					<option value="-6month">Older than 6 months</option>
-					<option value="-year">Older than 1 year</option>
-					<option value="+day">Created in the past day</option>
-					<option value="+week">Created in the past week</option>
-					<option value="+2week">Created in the past 2 weeks</option>
-					<option value="+3week">Created in the past 3 weeks</option>
-					<option value="+month">Created in the past month</option>
-					<option value="+6month">Created in the past 6 months</option>
-					<option value="+year">Created in the past year</option>
+					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+					<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+					<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+					<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+					<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+					<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+					<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
+					<option value="+day">PLG_CRON_SUPPORT_CREATED_PAST_DAY</option>
+					<option value="+week">PLG_CRON_SUPPORT_CREATED_PAST_WEEK</option>
+					<option value="+2week">PLG_CRON_SUPPORT_CREATED_PAST_TWO_WEEKS</option>
+					<option value="+3week">PLG_CRON_SUPPORT_CREATED_PAST_THREE_WEEKS</option>
+					<option value="+month">PLG_CRON_SUPPORT_CREATED_PAST_MONTH</option>
+					<option value="+6month">PLG_CRON_SUPPORT_CREATED_PAST_SIX_MONTHS</option>
+					<option value="+year">PLG_CRON_SUPPORT_CREATED_PAST_YEAR</option>
 				</field>
 				<field name="support_ticketlist_activity" type="list" default="all" label="Last activity" description="When the last activity on the ticket was.">
 					<option value="all">--</option>
-					<option value="-day">Older than 1 day</option>
-					<option value="-week">Older than 1 week</option>
-					<option value="-2week">Older than 2 weeks</option>
-					<option value="-3week">Older than 3 weeks</option>
-					<option value="-month">Older than 1 month</option>
-					<option value="-6month">Older than 6 months</option>
-					<option value="-year">Older than 1 year</option>
+					<option value="-day">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+					<option value="-week">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+					<option value="-2week">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+					<option value="-3week">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+					<option value="-month">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+					<option value="-6month">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+					<option value="-year">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
 				</field>
 				<field name="support_ticketlist_group" type="text" menu="hide" label="For group" default="" description="Only users within the group specified will be messaged." />
 				<field name="support_ticketlist_owned" type="list" default="0" label="Is assigned?" description="Ticket is assigned to someone or not.">
-					<option value="0">all</option>
-					<option value="1">no</option>
-					<option value="2">yes</option>
+					<option value="0">PLG_CRON_SUPPORT_ALL</option>
+					<option value="1">JNO</option>
+					<option value="2">JYES</option>
 				</field>
 				<field name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
 				<field name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
 				<field name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
 				<field name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
 				<field name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="Include tickets tagged with" description="A comma-separated list of tags." />
+			</fieldset>
+			<fieldset group="tickettemp">
+				<field name="support_tickettemp_age" type="list" default="-week" label="PLG_CRON_SUPPORT_TICKETTEMP_AGE_LABEL" description="PLG_CRON_SUPPORT_TICKETTEMP_AGE_DESC">
+					<option value="1">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+					<option value="7">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+					<option value="14">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+					<option value="21">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+					<option value="30">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+					<option value="181">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+					<option value="365">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
@@ -264,5 +275,16 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_DESC" />
 		<param name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_DESC" />
 		<param name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_DESC" />
+	</params>
+	<params group="tickettemp">
+		<param name="support_tickettemp_age" type="list" default="7" label="PLG_CRON_SUPPORT_TICKETTEMP_AGE_LABEL" description="PLG_CRON_SUPPORT_TICKETTEMP_AGE_DESC">
+			<option value="1">PLG_CRON_SUPPORT_OLDER_THAN_ONE_DAY</option>
+			<option value="7">PLG_CRON_SUPPORT_OLDER_THAN_ONE_WEEK</option>
+			<option value="14">PLG_CRON_SUPPORT_OLDER_THAN_TWO_WEEKS</option>
+			<option value="21">PLG_CRON_SUPPORT_OLDER_THAN_THREE_WEEKS</option>
+			<option value="30">PLG_CRON_SUPPORT_OLDER_THAN_ONE_MONTH</option>
+			<option value="181">PLG_CRON_SUPPORT_OLDER_THAN_SIX_MONTHS</option>
+			<option value="365">PLG_CRON_SUPPORT_OLDER_THAN_ONE_YEAR</option>
+		</param>
 	</params>
 </extension>
