@@ -565,7 +565,7 @@ class plgCoursesProgress extends JPlugin
 			$row   = array();
 			$row[] = JFactory::getUser($m->get('user_id'))->get('name');
 			$row[] = JFactory::getUser($m->get('user_id'))->get('email');
-			foreach($assets as $a)
+			foreach ($assets as $a)
 			{
 				$row[] = (isset($grades[$m->get('id')]['assets'][$a->id]['score'])) ? $grades[$m->get('id')]['assets'][$a->id]['score'] : '-';
 			}
