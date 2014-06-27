@@ -31,57 +31,42 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$option = 'com_publications';
+$option = JRequest::getCmd('option', 'com_publications');
+$task = JRequest::getWord('task', '');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
+if (!JFactory::getUser()->authorise('core.manage', $option))
 {
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-
-	// Authorization check
-	$user = JFactory::getUser();
-	if (!$user->authorize($option, 'manage'))
-	{
-		$app = JFactory::getApplication();
-		$app->redirect('index.php', JText::_('ALERTNOTAUTH'));
-	}
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-else
-{
-	if (!JFactory::getUser()->authorise('core.manage', $option))
-	{
-		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
-}
-
-jimport('joomla.application.component.helper');
 
 // Include scripts
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'publication.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'access.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'review.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'audience.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'audience.level.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'license.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'master.type.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'screenshot.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'version.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'access.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.level.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'master.type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'tags.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');
 
 // Projects
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'. DS . 'helpers' . DS . 'html.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'. DS . 'helpers' . DS . 'helper.php');
+require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+	. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+	. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'. DS
+	. 'helpers' . DS . 'html.php');
+require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'. DS
+	. 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', 'items');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -118,4 +103,3 @@ $controllerName = 'PublicationsController' . ucfirst($controllerName);
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-
