@@ -712,6 +712,15 @@
 	#tktlist .trivial:after {
 		content: "\2746";
 	}
+	#tktlist .ticket-group {
+		font-weight: bold;
+	}
+	#tktlist .ticket-group:before {
+		font-family: 'Fontcons';
+		content: "\f042";
+		font-weight: normal;
+		padding-right: 0.2em;
+	}
 
 /* Ticket */
 	.ticket .entry-content {

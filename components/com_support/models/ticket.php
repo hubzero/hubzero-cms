@@ -261,19 +261,19 @@ class SupportModelTicket extends \Hubzero\Base\Model
 						switch ($this->get('status'))
 						{
 							case 2:
-								$status = JText::_('TICKET_STATUS_WAITING');
+								$status = JText::_('COM_SUPPORT_TICKET_STATUS_WAITING');
 							break;
 							case 1:
-								$status = 'accepted';
+								$status = JText::_('COM_SUPPORT_TICKET_STATUS_OPEN');
 							break;
 							case 0:
 							default:
-								$status = JText::_('TICKET_STATUS_NEW');
+								$status = JText::_('COM_SUPPORT_TICKET_STATUS_NEW');
 							break;
 						}
 					break;
 					case 0:
-						$status = JText::_('TICKET_STATUS_RESOLVED');
+						$status = JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED');
 					break;
 				}
 			break;

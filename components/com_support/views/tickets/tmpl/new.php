@@ -163,7 +163,7 @@ $group = JRequest::getVar('group', '');
 			<legend><?php echo JText::_('COM_SUPPORT_TROUBLE_YOUR_PROBLEM'); ?></legend>
 
 			<label<?php echo ($this->getError() && $this->problem['long'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
-				<?php echo JText::_('COM_SUPPORT_TROUBLE_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
+				<?php echo JText::_('COM_SUPPORT_TROUBLE_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 				<textarea name="problem[long]" cols="40" rows="10" id="problem_long"><?php echo (isset($this->problem['long'])) ? $this->escape(stripslashes($this->problem['long'])) : ''; ?></textarea>
 			</label>
 			<?php if ($this->getError() && (!isset($this->problem['long']) || $this->problem['long'] == '')) { ?>
@@ -171,22 +171,22 @@ $group = JRequest::getVar('group', '');
 			<?php } ?>
 
 			<fieldset>
-				<legend><?php echo JText::_('COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
+				<legend><?php echo JText::_('COM_SUPPORT_COMMENT_LEGEND_ATTACHMENTS'); ?></legend>
 				<?php
 				$tmp = ('-' . time());
 				$this->js('jquery.fileuploader.js', 'system');
 				$jbase = rtrim(JURI::getInstance()->base(true), '/');
 				?>
 				<div class="field-wrap">
-				<div id="ajax-uploader" data-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $tmp; ?>">
+				<div id="ajax-uploader" data-instructions="<?php echo JText::_('COM_SUPPORT_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $tmp; ?>">
 					<noscript>
 						<label for="upload">
-							<?php echo JText::_('Attach a file'); ?>:
+							<?php echo JText::_('COM_SUPPORT_COMMENT_FILE'); ?>:
 							<input type="file" name="upload" id="upload" />
 						</label>
 
 						<label for="field-description">
-							<?php echo JText::_('File description'); ?>:
+							<?php echo JText::_('COM_SUPPORT_COMMENT_FILE_DESCRIPTION'); ?>:
 							<input type="text" name="description" id="field-description" value="" />
 						</label>
 					</noscript>
@@ -202,10 +202,10 @@ $group = JRequest::getVar('group', '');
 
 		<?php if ($this->verified && $this->acl->check('update', 'tickets') > 0) { ?>
 			<fieldset>
-				<legend><?php echo JText::_('Details'); ?></legend>
+				<legend><?php echo JText::_('COM_SUPPORT_DETAILS'); ?></legend>
 
 				<label>
-					<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
+					<?php echo JText::_('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 					<?php
 					JPluginHelper::importPlugin('hubzero');
 					$dispatcher = JDispatcher::getInstance();
@@ -221,7 +221,7 @@ $group = JRequest::getVar('group', '');
 				<div class="grid">
 					<div class="col span6">
 						<label>
-							<?php echo JText::_('COMMENT_GROUP'); ?>:
+							<?php echo JText::_('COM_SUPPORT_COMMENT_GROUP'); ?>:
 							<?php
 							$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', '', '', 'ticketowner')));
 							if (count($gc) > 0) {
@@ -233,7 +233,7 @@ $group = JRequest::getVar('group', '');
 					</div>
 					<div class="col span6 omega">
 						<label>
-							<?php echo JText::_('COMMENT_OWNER'); ?>:
+							<?php echo JText::_('COM_SUPPORT_COMMENT_OWNER'); ?>:
 							<?php echo $this->lists['owner']; ?>
 						</label>
 					</div>
@@ -242,18 +242,18 @@ $group = JRequest::getVar('group', '');
 				<div class="grid">
 					<div class="col span6">
 						<label for="ticket-field-severity">
-							<?php echo JText::_('COMMENT_SEVERITY'); ?>
+							<?php echo JText::_('COM_SUPPORT_COMMENT_SEVERITY'); ?>
 							<?php echo SupportHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
 						</label>
 					</div>
 					<div class="col span6 omega">
 						<label for="ticket-field-status">
-							<?php echo JText::_('COMMENT_STATUS'); ?>
+							<?php echo JText::_('COM_SUPPORT_COMMENT_STATUS'); ?>
 							<select name="problem[resolved]" id="ticket-field-status">
-								<option value=""><?php echo JText::_('COMMENT_OPT_OPEN'); ?></option>
-								<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
-								<optgroup label="<?php echo JText::_('Closed'); ?>">
-									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
+								<option value=""><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_OPEN'); ?></option>
+								<option value="1"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_WAITING'); ?></option>
+								<optgroup label="<?php echo JText::_('COM_SUPPORT_CLOSED'); ?>">
+									<option value="noresolution"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
 									<?php
 									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
 									{
@@ -273,9 +273,9 @@ $group = JRequest::getVar('group', '');
 
 				<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
 				<label for="ticket-field-category">
-					<?php echo JText::_('Category'); ?>
+					<?php echo JText::_('COM_SUPPORT_COMMENT_CATEGORY'); ?>
 					<select name="problem[category]" id="ticket-field-category">
-						<option value=""><?php echo JText::_('[ none ]'); ?></option>
+						<option value=""><?php echo JText::_('COM_SUPPORT_NONE'); ?></option>
 						<?php
 						foreach ($this->lists['categories'] as $category)
 						{
@@ -289,11 +289,11 @@ $group = JRequest::getVar('group', '');
 				<?php } ?>
 
 				<label>
-					<?php echo JText::_('COMMENT_SEND_EMAIL_CC'); ?>: <?php
+					<?php echo JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
 					$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', '')));
 					if (count($mc) > 0) {
-						echo '<span class="hint">'.JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
-					} else { ?> <span class="hint"><?php echo JText::_('COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+						echo '<span class="hint">'.JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE').'</span>'.$mc[0];
+					} else { ?> <span class="hint"><?php echo JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
 					<input type="text" name="cc" id="acmembers" value="" size="35" />
 					<?php } ?>
 				</label>
@@ -305,10 +305,10 @@ $group = JRequest::getVar('group', '');
 				<p><?php echo JText::_('COM_SUPPORT_MATH_EXPLANATION'); ?></p>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('Human Check'); ?></legend>
+				<legend><?php echo JText::_('COM_SUPPORT_HUMAN_CHECK'); ?></legend>
 
 				<label id="fbBotcheck-label" for="fbBotcheck">
-					<?php echo JText::_('Please leave this field blank.'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
+					<?php echo JText::_('COM_SUPPORT_LEAVE_FIELD_BLANK'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 					<input type="text" name="botcheck" id="fbBotcheck" value="" />
 				</label>
 				<?php
