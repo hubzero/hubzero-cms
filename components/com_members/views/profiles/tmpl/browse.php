@@ -181,13 +181,6 @@ $juser = JFactory::getUser();
 
 						$cls = ''; //'even';
 
-						// Default thumbnail
-						$config = JComponentHelper::getParams('com_members');
-						//$thumb = DS . trim($config->get('webpath', '/site/members'), DS);
-
-						//$dfthumb = DS . ltrim($config->get('defaultpic'), DS);
-						//$dfthumb = \Hubzero\User\Profile\Helper::thumbit($dfthumb);
-
 						// User messaging
 						$messaging = false;
 						if ($this->config->get('user_messaging') > 0 && !$juser->get('guest'))
@@ -273,29 +266,6 @@ $juser = JFactory::getUser();
 								$name = JText::_('COM_MEMBERS_UNKNOWN') . ' (' . $row->username . ')';
 							}
 
-							// User picture
-							/*$new_thumb = '';
-							$old_thumb = '';
-							if ($row->picture)
-							{
-								$new_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . 'thumb.png';
-
-								$old_thumb = $thumb . DS . \Hubzero\Utility\String::pad($row->uidNumber) . DS . $row->picture;
-								$old_thumb = \Hubzero\User\Profile\Helper::thumbit($old_thumb);
-							}
-
-							if ($new_thumb && is_file(JPATH_ROOT . $new_thumb))
-							{
-								$p = $new_thumb;
-							}
-							else if($old_thumb && is_file(JPATH_ROOT . $old_thumb))
-							{
-								$p = $old_thumb;
-							}
-							else
-							{
-								$p = $dfthumb;
-							}*/
 							$profile = new \Hubzero\User\Profile();
 							$profile->set('uidNumber', $row->uidNumber);
 							$profile->set('email', $row->email);
@@ -353,10 +323,12 @@ $juser = JFactory::getUser();
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $id); ?>">
 									<?php echo $name; ?>
 								</a>
+							<?php if ($row->organization && $this->registration->Organization != REG_HIDE) { ?>
 								<br />
 								<span class="entry-details">
 									<span class="organization"><?php echo $this->escape(stripslashes($row->organization)); ?></span>
 								</span>
+							<?php } ?>
 							</td>
 							<td>
 								<?php if ($this->contribution_counting) { ?>
