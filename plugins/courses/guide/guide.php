@@ -57,6 +57,12 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
+		elseif (!$member->get('id')
+			&& is_object(\Hubzero\Utility\Cookie::eat('plugin.courses.guide'))
+			&& isset(\Hubzero\Utility\Cookie::eat('plugin.courses.guide')->first_visit))
+		{
+			return;
+		}
 
 		$this->view = new \Hubzero\Plugin\View(
 			array(
@@ -213,6 +219,19 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 		if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00')
 		{
 			return;
+		}
+		elseif (!$member->get('id'))
+		{
+			$cookie = \Hubzero\Utility\Cookie::eat('plugin.courses.guide');
+			if (!is_object($cookie) || !isset($cookie->first_visit))
+			{
+				// Drop cookie
+				$prefs                = array();
+				$prefs['first_visit'] = JFactory::getDate()->toSql();
+				$lifetime             = time() + 365*24*60*60;
+
+				\Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, $prefs);
+			}
 		}
 		$member->set('first_visit', JFactory::getDate()->toSql());
 		$member->store();
