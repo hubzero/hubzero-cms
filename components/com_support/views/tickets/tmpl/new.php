@@ -101,9 +101,9 @@ $group = JRequest::getVar('group', '');
 			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->problem['osver']); ?>" />
 			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->problem['browserver']); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->problem['short']); ?>" />
-			<?php if($group) : ?>
+			<?php if ($group) { ?>
 				<input type="hidden" name="group" value="<?php echo $group; ?>" />
-			<?php endif; ?>
+			<?php } ?>
 			<input type="hidden" name="no_html" value="0" />
 			<?php if ($this->verified) { ?>
 				<input type="hidden" name="botcheck" value="" />
