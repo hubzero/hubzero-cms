@@ -151,7 +151,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		$output .= "VERSION:2.0\r\n";
 		$output .= "PRODID:PHP\r\n";
 		$output .= "METHOD:PUBLISH\r\n";
-		$output .= "X-WR-CALNAME;VALUE=TEXT" . $name . "\r\n";
+		$output .= "X-WR-CALNAME;VALUE=TEXT:" . $name . "\r\n";
 		$output .= "X-PUBLISHED-TTL:PT15M\r\n";
 		$output .= "X-ORIGINAL-URL:https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "\r\n";
 		$output .= "CALSCALE:GREGORIAN\r\n";
