@@ -44,7 +44,7 @@ $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
 $field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
-$size  			= isset($this->manifest->params->maxlength) 
+$size  			= isset($this->manifest->params->maxlength)
 				&& $this->manifest->params->maxlength
 				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)

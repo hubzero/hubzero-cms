@@ -138,8 +138,8 @@ class PublicationsModelBlockElements
 			if (!$lastIncomplete)
 			{
 				// Curator review?
-				if (($review && $review->elements 
-					&& isset($review->elements->$elId)) 
+				if (($review && $review->elements
+					&& isset($review->elements->$elId))
 					&& $el->status != 0)
 				{
 					$reviewStatus = $review->elements->$elId;
@@ -162,7 +162,7 @@ class PublicationsModelBlockElements
 			$i++;
 		}
 
-		$nextElement = isset($collector[$lastComplete + 1]) 
+		$nextElement = isset($collector[$lastComplete + 1])
 					 ? $collector[$lastComplete + 1] : $collector[$lastComplete];
 
 		if ($lastIncomplete)
@@ -171,7 +171,7 @@ class PublicationsModelBlockElements
 		}
 		else
 		{
-			$showElement = isset($elements->$nextElement) 
+			$showElement = isset($elements->$nextElement)
 						? $nextElement : $collector[$lastComplete];
 		}
 
