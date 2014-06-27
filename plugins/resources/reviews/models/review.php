@@ -202,6 +202,10 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 		{
 			$filters['parent'] = 0;
 		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(1, 3);
+		}
 
 		switch (strtolower($rtrn))
 		{

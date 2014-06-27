@@ -30,6 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->comment->get('resource_id'))
 	{
+		$this->comment->set('created_by', $this->comment->get('user_id'));
 		$this->comment->set('item_id', $this->comment->get('id'));
 		$this->comment->set('parent', 0);
 
@@ -135,12 +136,10 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
-				<?php /*if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_DELETE'); ?><!--
 					--></a>
-				<?php }*/ ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')); ?>"><!--
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_EDIT'); ?><!--
 					--></a>
 			<?php } ?>

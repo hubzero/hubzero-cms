@@ -414,7 +414,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource =& $this->resource;
 
 		// Incoming
-		$replyid = JRequest::getInt('refid', 0);
+		$replyid = JRequest::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$replyid)
@@ -432,20 +432,18 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		// Delete the review
 		$reply = new \Hubzero\Item\Comment($database);
+		$reply->load($replyid);
 
-		$comments = $reply->find(array(
-			'parent'    => $replyid,
-			'item_type' => 'review',
-			'item_id'   => $resource->id
-		));
-		if (count($comments) > 0)
+		// Permissions check
+		if ($reply->created_by != JFactory::getUser()->get('id'))
 		{
-			foreach ($comments as $comment)
-			{
-				$reply->delete($comment->id);
-			}
+			return;
 		}
-		$reply->delete($replyid);
+
+		$reply->setState($replyid, 2);
+
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
+		$this->redirect();
 	}
 
 	/**
@@ -555,13 +553,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Incoming
-		$myr = JRequest::getInt('myrating', 0);
+		$myr = JRequest::getInt('comment', 0);
 
 		$database = JFactory::getDBO();
 
 		$review = new ResourcesReview($database);
 		$review->loadUserReview($resource->id, $juser->get('id'));
-		if (!$review->id) {
+		if (!$review->id)
+		{
 			// New review, get the user's ID
 			$review->user_id = $juser->get('id');
 			$review->resource_id = $resource->id;
@@ -613,8 +612,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		// Perform some text cleaning, etc.
 		$row->id        = JRequest::getInt('reviewid', 0);
+		if (!$row->id)
+		{
+			$row->state = 1;
+		}
 		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
-		//$row->comment   = nl2br($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
 		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
 
@@ -695,7 +697,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$resource =& $this->resource;
 
 		// Incoming
-		$reviewid = JRequest::getInt('reviewid', 0);
+		$reviewid = JRequest::getInt('comment', 0);
 
 		// Do we have a review ID?
 		if (!$reviewid)
@@ -712,41 +714,39 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		$review = new ResourcesReview($database);
+		$review->load($reviewid);
+
+		// Permissions check
+		if ($review->user_id != JFactory::getUser()->get('id'))
+		{
+			return;
+		}
+
+		$review->state = 2;
+		$review->store();
 
 		// Delete the review's comments
 		$reply = new \Hubzero\Item\Comment($database);
 
-		$comments1 = $reply->find(array('parent'=>$reviewid, 'item_type'=>'review', 'item_id' => $resource->id));
+		$comments1 = $reply->find(array(
+			'parent'    => $reviewid,
+			'item_type' => 'review',
+			'item_id'   => $resource->id
+		));
 		if (count($comments1) > 0)
 		{
 			foreach ($comments1 as $comment1)
 			{
-				$comments2 = $reply->find(array('parent'=>$comment1->id, 'item_type'=>'review', 'item_id' => $resource->id));
-				if (count($comments2) > 0)
-				{
-					foreach ($comments2 as $comment2)
-					{
-						$comments3 = $reply->find(array('parent'=>$comment2->id, 'item_type'=>'review', 'item_id' => $resource->id));
-						if (count($comments3) > 0)
-						{
-							foreach ($comments3 as $comment3)
-							{
-								$reply->delete($comment3->id);
-							}
-						}
-						$reply->delete($comment2->id);
-					}
-				}
-				$reply->delete($comment1->id);
+				$reply->setState($comment1->id, 2);
 			}
 		}
-
-		// Delete the review
-		$review->delete($reviewid);
 
 		// Recalculate the average rating for the parent resource
 		$resource->calculateRating();
 		$resource->updateRating();
+
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id . '&active=reviews');
+		$this->redirect();
 	}
 }
 

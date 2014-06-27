@@ -16,6 +16,14 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	$('a.delete').on('click', function (e) {
+		var res = confirm('Are you sure you wish to delete this item?');
+		if (!res) {
+			e.preventDefault();
+		}
+		return res;
+	});
+
 	// Reply to review or comment
 	$('a.reply').on('click', function (e) {
 		e.preventDefault();
