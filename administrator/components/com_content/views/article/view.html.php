@@ -99,6 +99,6 @@ class ContentViewArticle extends JViewLegacy
 		}
 
 		JToolBarHelper::divider();
-		JToolBarHelper::help('JHELP_CONTENT_ARTICLE_MANAGER_EDIT');
+		JToolBarHelper::help('article');
 	}
 }
