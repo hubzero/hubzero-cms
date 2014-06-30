@@ -191,7 +191,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$objL = new PublicationLicense( $this->_parent->_db );
 
 		// Incoming - license screen agreements
-		$license = trim(JRequest::getVar( 'license', 0, 'post' ));
+		$license = JRequest::getInt( 'license', 0, 'post' );
 		$text 	 = JRequest::getVar( 'license_text', '', 'post');
 		$agree 	 = JRequest::getInt( 'agree', 0, 'post');
 
@@ -217,10 +217,11 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			$row->license_type = $license;
 			$row->license_text = $text;
 
+			$row->store();
+
 			// Save agreement
 			$row->saveParam($pub->version_id, 'licenseagreement', 1);
-
-			$row->store();
+			
 
 			if ($license != $originalType || $text != $originalText)
 			{

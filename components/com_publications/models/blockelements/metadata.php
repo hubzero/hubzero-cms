@@ -73,7 +73,7 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		}
 		
 		// Default value not replaced?
-		if ($default && $value && strpos($value, $default) !== false)
+		if ($default && $value && $value == $default)
 		{
 			$status->setError( JText::_('Default value needs to be replaced') );
 		}		
