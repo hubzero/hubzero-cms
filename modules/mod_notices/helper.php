@@ -127,6 +127,23 @@ class modNotices extends \Hubzero\Module\Module
 	}
 
 	/**
+	 * Auto Link Text
+	 * @param  [type] $text [description]
+	 * @return [type]       [description]
+	 */
+	private static function _autoLinkText($text)
+	{
+		//replace email links
+		$text = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $text);
+		
+		//replace url links
+		$text = preg_replace('#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#', '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
+		
+		//return auto-linked text
+		return $text;
+	}
+
+	/**
 	 * Display module content
 	 * 
 	 * @return     void
@@ -250,6 +267,12 @@ class modNotices extends \Hubzero\Module\Module
 			$message = str_replace('<notice:countdowntostart>', $time_cd_tostart, $message);
 			$message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
 			$message = str_replace('<notice:timezone>', $timezone, $message);
+
+			// auto link?
+			if ($this->params->get('autolink', 1))
+			{
+				$message = self::_autoLinkText($message);
+			}
 
 			$this->message = $message;
 
