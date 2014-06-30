@@ -1789,7 +1789,7 @@ class SimplePie
 					}
 				}
 			}
-			if(isset($parser))
+			if (isset($parser))
 			{
 				// We have an error, just set SimplePie_Misc::error to it and quit
 				$this->error = sprintf('XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
@@ -6936,7 +6936,7 @@ class SimplePie_Enclosure
 		else
 		{
 			$options = explode(',', $options);
-			foreach($options as $option)
+			foreach ($options as $option)
 			{
 				$opt = explode(':', $option, 2);
 				if (isset($opt[0], $opt[1]))
@@ -11557,7 +11557,7 @@ class SimplePie_Decode_HTML_Entities
 
 				if ($match !== null)
 				{
- 					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
+					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
 					$this->position += strlen($entities[$match]) - strlen($consumed) - 1;
 				}
 				break;
