@@ -1,0 +1,79 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2014 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+\Hubzero\Document\Assets::addComponentStylesheet('com_collections', 'help');
+?>
+
+<h1>Collections Help</h1>
+
+<article>
+	<p class="tagline">Collections are a quick and easy way to share, favorite, and organize information on a hub.</p>
+
+	<section class="about-odd posts">
+		<h2>Post</h2>
+		<p>A post starts with an image, link, or file you want to share. You can add a post by collecting content on the site or upload a file right from your computer. Any post can be reposted, and all posts link back to their source.</p>
+	</section>
+
+	<section class="about-even collections">
+		<h2>Collect</h2>
+		<p>A collection is where you organize your posts by topic. You could collect resources for creating an introduction to Nanotechnology, for example. Collections can be secret or public, and you can even put a collection inside another collection!</p>
+	</section>
+
+	<section class="about-odd following">
+		<h2>Follow</h2>
+		<p>When you follow someone, their posts show up in your live feed. You can follow all of someone's collections or just the ones you like best. To manage who you're following, go to your profile, find Collections, and click Following.</p>
+	</section>
+
+	<section class="about-even unfollowing">
+		<h2>Unfollow</h2>
+		<p>When you unfollow someone, their collections won't show up in your live feed anymore. You can unfollow all of someone's collections, or just the ones you're not that interested in.</p>
+	</section>
+</article>
+<?php /*
+<h2>Like</h2>
+<p></p>
+
+<h2>Comment</h2>
+<p></p>
+<ul>
+	<li>
+		<a href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=posts'); ?>">Posts</a>
+	</li>
+	<li>
+		<a href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=collections'); ?>">Collections</a>
+	</li>
+	<li>
+		<a href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=following'); ?>">Following</a>
+	</li>
+</ul>
+*/?>

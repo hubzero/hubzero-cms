@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for forum posts
+ * Table class for collection item asset
  */
 class CollectionsTableAsset extends JTable
 {
@@ -121,14 +121,14 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->item_id)
 		{
-			$this->setError(JText::_('Please provide an item ID'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 			return false;
 		}
 
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(JText::_('Please provide a file name'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
 			return false;
 		}
 
@@ -308,7 +308,7 @@ class CollectionsTableAsset extends JTable
 		}
 		if (!$id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
 			return false;
 		}
 
@@ -316,12 +316,11 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->filename)
 		{
-			$this->setError(JText::_('No filename found.'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
 			return false;
 		}
 
 		//$UrlPtn = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-
 		//if (!preg_match("/$UrlPtn/", $this->filename) && $this->filename != 'http://')
 		if ($this->type == 'file')
 		{
@@ -337,13 +336,13 @@ class CollectionsTableAsset extends JTable
 
 			if (!file_exists($file) or !$file)
 			{
-				$this->setError(JText::_('FILE_NOT_FOUND'));
+				$this->setError(JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
 				return false;
 			}
 
 			if (!JFile::move($file, $path . DS . $fileRemoved))
 			{
-				$this->setError(JText::_('Unable to rename file'));
+				$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
 				return false;
 			}
 
@@ -354,7 +353,7 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->store())
 		{
-			$this->setError(JText::_('Unable to update record'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPDATE_RECORD'));
 			return false;
 		}
 
@@ -383,28 +382,9 @@ class CollectionsTableAsset extends JTable
 		jimport('joomla.filesystem.file');
 		if (!JFile::delete($path . DS . $this->filename))
 		{
-			$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 		}
 
 		return parent::delete();
 	}
-
-	/**
-	 * Inserts a new row if id is zero or updates an existing row in the database table
-	 *
-	 * Can be overloaded/supplemented by the child class
-	 *
-	 * @access public
-	 * @param boolean If false, null object variables are not updated
-	 * @return null|string null if successful otherwise returns and error message
-	 */
-	/*public function store($updateNulls=false)
-	{
-		$res = parent::store($updateNulls);
-		if ($res)
-		{
-			$this->reorder("item_id=" . $this->_db->Quote(intval($this->item_id)));
-		}
-		return $res;
-	}*/
 }

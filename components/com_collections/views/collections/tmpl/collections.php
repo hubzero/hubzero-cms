@@ -56,13 +56,11 @@ $base = 'index.php?option=' . $this->option;
 	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&task=about'); ?>">
-					<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+			</a>
+		</p>
 	</div>
 </header>
 
@@ -127,35 +125,42 @@ if ($this->rows->total() > 0)
 							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_POSTS', $row->get('posts', 0)); ?>
 						</span>
 					</p>
-				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-						<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $this->juser->get('id')) { ?>
-							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
-								<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/edit'); ?>">
-									<span><?php echo JText::_('COM_COLLECTIONS_EDIT'); ?></span>
-								</a>
-							<?php //} ?>
-							<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
-								<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/delete'); ?>">
-									<span><?php echo JText::_('COM_COLLECTIONS_DELETE'); ?></span>
-								</a>
-							<?php // } ?>
-						<?php } else { ?>
-								<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>">
-									<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
-								</a>
-							<?php if ($row->isFollowing()) { ?>
-								<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/unfollow'); ?>">
-									<span><?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?></span>
-								</a>
+						<?php if (!$this->juser->get('guest')) { ?>
+							<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $this->juser->get('id')) { ?>
+								<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
+									<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/edit'); ?>">
+										<span><?php echo JText::_('COM_COLLECTIONS_EDIT'); ?></span>
+									</a>
+								<?php //} ?>
+								<?php //if ($this->juser->get('id') == $item->get('object_id')) { ?>
+									<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($row->link() . '/delete'); ?>">
+										<span><?php echo JText::_('COM_COLLECTIONS_DELETE'); ?></span>
+									</a>
+								<?php // } ?>
 							<?php } else { ?>
-								<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/follow'); ?>">
-									<span><?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?></span>
-								</a>
+									<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>">
+										<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
+									</a>
+								<?php if ($row->isFollowing()) { ?>
+									<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/unfollow'); ?>">
+										<span><?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?></span>
+									</a>
+								<?php } else { ?>
+									<a class="follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo JRoute::_($row->link() . '/follow'); ?>">
+										<span><?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?></span>
+									</a>
+								<?php } ?>
 							<?php } ?>
+						<?php } else { ?>
+							<a class="repost tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($base . '&controller=posts&board=' . $row->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo JText::_('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+								<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
+							</a>
+							<a class="follow tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($row->link() . '/follow')), false); ?>" title="<?php echo JText::_('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+								<span><?php echo JText::_('COM_COLLECTIONS_FOLLOW'); ?></span>
+							</a>
 						<?php } ?>
 					</div><!-- / .actions -->
-				<?php } ?>
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator()->get('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">

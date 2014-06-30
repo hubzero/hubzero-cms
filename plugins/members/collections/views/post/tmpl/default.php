@@ -54,8 +54,10 @@ $this->css()
 				</a> created this post
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $item->created('time'); ?></span>
-					<span class="entry-date-on">on</span> <span class="date"><?php echo $item->created('date'); ?></span>
+					<span class="entry-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+					<span class="entry-date-on">on</span>
+					<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -101,8 +103,10 @@ $this->css()
 				</a>
 				<br />
 				<span class="entry-date">
-					<span class="entry-date-at">@</span> <span class="time"><?php echo $this->post->created('time'); ?></span>
-					<span class="entry-date-on">on</span> <span class="date"><?php echo $this->post->created('date'); ?></span>
+					<span class="entry-date-at">@</span>
+					<span class="time"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('time'); ?></time></span>
+					<span class="entry-date-on">on</span>
+					<span class="date"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('date'); ?></time></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -125,8 +129,10 @@ if ($item->get('comments'))
 					said
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span>
-						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<span class="entry-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="entry-date-on">on</span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<blockquote>
@@ -139,8 +145,11 @@ if ($item->get('comments'))
 		</div>
 	<?php
 }
-$now = JFactory::getDate();
-?>
+
+	if (!$this->juser->get('guest'))
+	{
+		$now = JFactory::getDate();
+	?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
@@ -151,8 +160,10 @@ $now = JFactory::getDate();
 					will say
 					<br />
 					<span class="entry-date">
-						<span class="entry-date-at">@</span> <span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span>
-						<span class="entry-date-on">on</span> <span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<span class="entry-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+						<span class="entry-date-on">on</span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<form action="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
@@ -176,5 +187,8 @@ $now = JFactory::getDate();
 				</form>
 			</div>
 		</div>
+	<?php
+	}
+	?>
 	</div><!-- / .content -->
 </div><!-- / .bulletin -->

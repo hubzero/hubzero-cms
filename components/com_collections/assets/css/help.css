@@ -1,0 +1,70 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_collections/assets/css/help.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* About page */
+	.tagline {
+		font-size: 1.8em;
+		line-height: 1.2;
+		margin: 1em 0;
+		padding: 0;
+	}
+	.about-odd h2,
+	.about-even h2 {
+		margin-top: 0.5em;
+	}
+	.about-odd {
+		background: #e9e9e9;
+		background: rgba(0, 0, 0, 0.05);
+		border: none;
+		position: relative;
+		padding: 20px 20px 20px 50%;
+		margin: 0 -20px;
+	}
+	.about-even {
+		border: none;
+		position: relative;
+		padding: 20px 50% 20px 20px;
+		margin: 0 -20px;
+	}
+	.about-odd:after,
+	.about-even:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 30px;
+		z-index: 100;
+	}
+	.about-odd:after,
+	.about-even:after {
+		font-family: 'Fontcons';
+		font-size: 150px;
+		line-height: 1;
+		left: 17.5%;
+		color: #bbb;
+		content: "";
+	}
+	.about-even:after {
+		left: auto;
+		right: 17.5%;
+	}
+	.about-odd.posts:after {
+		content: "\f08c";
+	}
+	.about-even.collections:after {
+		content: "\f005";
+	}
+	.about-odd.following:after {
+		content: "\f06e";
+	}
+	.about-even.unfollowing:after {
+		content: "\f070";
+	}
+	.about-odd.livefeed:after {
+		content: "\f056";
+	}

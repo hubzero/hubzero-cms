@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for forum posts
+ * Table class for collection items
  */
 class CollectionsTableItem extends JTable
 {
@@ -152,26 +152,26 @@ class CollectionsTableItem extends JTable
 	 */
 	public function check()
 	{
-		$this->title = trim($this->title);
+		$this->title       = trim($this->title);
 		$this->description = trim($this->description);
-		$this->url = trim($this->url);
+		$this->url         = trim($this->url);
 
 		if ($this->type != 'image' && $this->type != 'file'
 		 && (!$this->title && !$this->description && !$this->url))
 		{
-			$this->setError(JText::_('Please provide some content'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_CONTENT'));
 			return false;
 		}
 
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified    = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 			if (!$this->created_by)
 			{
@@ -372,8 +372,8 @@ class CollectionsTableItem extends JTable
 	public function getRecords($filters=array())
 	{
 		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
-				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
-				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
+				(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
+				(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= ", v.id AS voted ";
@@ -411,7 +411,7 @@ class CollectionsTableItem extends JTable
 			return false;
 		}
 
-		$query = "SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
+		$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -437,7 +437,7 @@ class CollectionsTableItem extends JTable
 
 		$juser = JFactory::getUser();
 
-		$query = "SELECT v.id FROM #__collections_votes AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
+		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -485,8 +485,8 @@ class CollectionsTableItem extends JTable
 	{
 		$filters['collection_id'] = 0;
 		$query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
-				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
-				(SELECT COUNT(*) FROM #__item_comments AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
+				(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
+				(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= ", v.id AS voted ";

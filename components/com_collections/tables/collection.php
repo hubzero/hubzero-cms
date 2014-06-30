@@ -219,13 +219,13 @@ class CollectionsTableCollection extends JTable
 	{
 		$result = array(
 			'id'          => 0,
-			'title'       => JText::_('Favorites'),
-			'description' => JText::_('This is a default collection we set up for you. Feel free to change it how you like.'),
+			'title'       => JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
 			'created_by'  => $object_id,
-			'access'      => 0
+			'access'      => 4 // Private by default
 		);
 		if (!$result['created_by'])
 		{
@@ -257,7 +257,7 @@ class CollectionsTableCollection extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'));
 			return false;
 		}
 
@@ -270,14 +270,14 @@ class CollectionsTableCollection extends JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
 		{
-			$this->setError(JText::_('Please provide an object ID'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'));
 			return false;
 		}
 
 		$this->object_type = trim($this->object_type);
 		if (!$this->object_type)
 		{
-			$this->setError(JText::_('Please provide an object type'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'));
 			return false;
 		}
 
@@ -288,7 +288,7 @@ class CollectionsTableCollection extends JTable
 		{
 			if ($tbl->id && $tbl->state != 2)
 			{
-				$this->setError(JText::_('A collection with this name already exists.'));
+				$this->setError(JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 
@@ -303,7 +303,7 @@ class CollectionsTableCollection extends JTable
 			 && $tbl->id != $this->id
 			 && $tbl->state != 2)
 			{
-				$this->setError(JText::_('A collection with this name already exists.'));
+				$this->setError(JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 		}
@@ -320,14 +320,14 @@ class CollectionsTableCollection extends JTable
 	public function buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
-		$query .= " LEFT JOIN #__collections_following AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
+		$query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= " AND f.follower_type='member' AND f.follower_id=" . $this->_db->Quote($filters['user_id']);
 		}
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group')
 		{
-			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->Quote('group');
+			$query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->Quote('group');
 		}
 
 		$where = array();
@@ -430,7 +430,7 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM #__collections_items AS i INNER JOIN #__collections_posts AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1) AS posts";
+		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM `#__collections_items` AS i INNER JOIN `#__collections_posts` AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1) AS posts";
 		if (isset($filters['object_type']) && $filters['object_type'] == 'group')
 		{
 			$query .= ", g.cn AS group_alias";
@@ -461,13 +461,13 @@ class CollectionsTableCollection extends JTable
 		$collection_id = intval($collection_id);
 		if (!$collection_id)
 		{
-			$this->setError(JText::_('No board ID provided'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
 			return false;
 		}
 
 		$query = "SELECT b.id, b.type
-				FROM #__collections_items AS b
-				INNER JOIN #__collections_posts AS s ON s.item_id=b.id
+				FROM `#__collections_items` AS b
+				INNER JOIN `#__collections_posts` AS s ON s.item_id=b.id
 				WHERE s.collection_id=" . $this->_db->Quote(intval($collection_id)) . "
 				AND b.state=1";
 

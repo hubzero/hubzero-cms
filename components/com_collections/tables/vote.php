@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for forum posts
+ * Table class for post votes
  */
 class CollectionsTableVote extends JTable
 {
@@ -115,14 +115,14 @@ class CollectionsTableVote extends JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(JText::_('Please provide a bulletin ID'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 			return false;
 		}
 
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->voted = JFactory::getDate()->toSql();
+			$this->voted   = JFactory::getDate()->toSql();
 			$this->user_id = $juser->get('id');
 		}
 
@@ -138,10 +138,9 @@ class CollectionsTableVote extends JTable
 	public function getLikes($filters=array())
 	{
 		$query = "SELECT COUNT(*) FROM $this->_tbl AS v
-				INNER JOIN #__bulletinboard_sticks AS s ON s.item_id=v.item_id";
+				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
 		$where = array();
-		//$where[] = "v.vote >= '1'";
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
@@ -178,10 +177,9 @@ class CollectionsTableVote extends JTable
 	public function getDislikes($filters=array())
 	{
 		$query = "SELECT COUNT(*) FROM $this->_tbl AS v
-				INNER JOIN #__bulletinboard_sticks AS s ON s.item_id=v.item_id";
+				INNER JOIN `#__collections_posts` AS s ON s.item_id=v.item_id";
 
 		$where = array();
-		//$where[] = "v.vote <= '0'";
 
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{

@@ -36,6 +36,8 @@ $this->css()
 
 $item = $this->post->item();
 
+$juser = JFactory::getUser();
+
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
 
@@ -50,9 +52,9 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<br />
 				<span class="entry-date">
 					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-					<span class="time"><?php echo $item->created('time'); ?></span>
+					<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
 					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-					<span class="date"><?php echo $item->created('date'); ?></span>
+					<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -101,9 +103,9 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<br />
 				<span class="entry-date">
 					<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-					<span class="time"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
+					<span class="time"><time datetime="<?php echo $this->post->get('created'); ?>"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
 					<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-					<span class="date"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+					<span class="date"><time datetime="<?php echo $this->post->get('created'); ?>"><?php echo JHTML::_('date', $this->post->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 				</span>
 			</p>
 		</div><!-- / .attribution -->
@@ -127,9 +129,9 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					<br />
 					<span class="entry-date">
 						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-						<span class="time"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></span>
+						<span class="time"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-						<span class="date"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<span class="date"><time datetime="<?php echo $comment->created; ?>"><?php echo JHTML::_('date', $comment->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<blockquote>
@@ -139,7 +141,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<?php } ?>
 		</div>
 	<?php } ?>
-
+	<?php if (!$juser->get('guest')) { ?>
 		<div class="commnts">
 			<div class="comment convo clearfix">
 				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id')); ?>" class="img-link">
@@ -156,9 +158,9 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						$now = JFactory::getDate()->toSql();
 						?>
 						<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-						<span class="time"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></span>
+						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
 						<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-						<span class="date"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></span>
+						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo JHTML::_('date', $now, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
 					</span>
 				</p>
 				<form action="<?php echo JRoute::_($base . '&post=' . $this->post->get('id') . '&task=savecomment' . ($this->no_html ? '&no_html=' . $this->no_html  : '')); ?>" id="comment-form" method="post" enctype="multipart/form-data">
@@ -182,5 +184,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				</form>
 			</div><!-- / .comment -->
 		</div><!-- / .commnts -->
+	<?php } ?>
 	</div><!-- / .content -->
 </div><!-- / .bulletin -->

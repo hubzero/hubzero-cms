@@ -387,7 +387,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		$no_html = JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
-			echo JText::sprintf('%s likes', $post->item()->get('positive'));
+			echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive'));
 			exit;
 		}
 
@@ -481,7 +481,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+			echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 

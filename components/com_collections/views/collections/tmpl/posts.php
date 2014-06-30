@@ -54,13 +54,11 @@ $base = 'index.php?option=' . $this->option;
 	<h2><?php echo JText::_('COM_COLLECTIONS'); ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-info about btn" href="<?php echo JRoute::_($base . '&controller=' . $this->controller . '&task=about'); ?>">
-					<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+				<span><?php echo JText::_('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
+			</a>
+		</p>
 	</div>
 </header>
 
@@ -108,11 +106,11 @@ if ($this->rows->total() > 0)
 					     ->set('row', $row)
 					     ->display();
 				?>
-			<?php if (count($item->tags()) > 0) { ?>
-				<div class="tags-wrap">
-					<?php echo $item->tags('render'); ?>
-				</div>
-			<?php } ?>
+				<?php if (count($item->tags()) > 0) { ?>
+					<div class="tags-wrap">
+						<?php echo $item->tags('render'); ?>
+					</div>
+				<?php } ?>
 				<div class="meta">
 					<p class="stats">
 						<span class="likes">
@@ -125,25 +123,35 @@ if ($this->rows->total() > 0)
 							<?php echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 						</span>
 					</p>
-				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-				<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=edit'); ?>">
-							<span><?php echo JText::_('COM_COLLECTIONS_EDIT'); ?></span>
-						</a>
-				<?php } else { ?>
-						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo JText::_('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo JText::_('COM_COLLECTIONS_UNLIKE'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>">
-							<span><?php echo ($item->get('voted')) ? JText::_('COM_COLLECTIONS_UNLIKE') : JText::_('COM_COLLECTIONS_LIKE'); ?></span>
-						</a>
-				<?php } ?>
-						<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
-							<span><?php echo JText::_('COM_COLLECTIONS_COMMENT'); ?></span>
-						</a>
-						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
-							<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
-						</a>
+						<?php if (!$this->juser->get('guest')) { ?>
+							<?php if ($row->get('created_by') == $this->juser->get('id')) { ?>
+								<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=edit'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_EDIT'); ?></span>
+								</a>
+							<?php } else { ?>
+								<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo JText::_('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo JText::_('COM_COLLECTIONS_UNLIKE'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>">
+									<span><?php echo ($item->get('voted')) ? JText::_('COM_COLLECTIONS_UNLIKE') : JText::_('COM_COLLECTIONS_LIKE'); ?></span>
+								</a>
+							<?php } ?>
+								<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_COMMENT'); ?></span>
+								</a>
+								<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
+								</a>
+						<?php } else { ?>
+								<a class="vote like tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=vote', false, true)), false); ?>" title="<?php echo JText::_('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_LIKE'); ?></span>
+								</a>
+								<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_COMMENT'); ?></span>
+								</a>
+								<a class="repost tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($base . '&controller=posts&post=' . $row->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo JText::_('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+									<span><?php echo JText::_('COM_COLLECTIONS_COLLECT'); ?></span>
+								</a>
+						<?php } ?>
 					</div><!-- / .actions -->
-					<?php } ?>
 				</div><!-- / .meta -->
 				<div class="convo attribution clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
@@ -175,25 +183,26 @@ else
 {
 ?>
 		<div id="collections-introduction">
-	<?php if ($this->config->get('access-create-bulletin')) { ?>
-			<div class="instructions">
-				<ol>
-					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP1'); ?></li>
-					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP2'); ?></li>
-					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP3'); ?></li>
-					<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP4'); ?></li>
-				</ol>
-			</div>
-	<?php } else { ?>
-			<div class="instructions">
-				<p><?php echo JText::_('COM_COLLECTIONS_NO_POSTS_FOUND'); ?></p>
-			</div>
-	<?php } ?>
+			<?php if ($this->config->get('access-create-bulletin')) { ?>
+				<div class="instructions">
+					<ol>
+						<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP1'); ?></li>
+						<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP2'); ?></li>
+						<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP3'); ?></li>
+						<li><?php echo JText::_('COM_COLLECTIONS_INSTRUCTIONS_STEP4'); ?></li>
+					</ol>
+				</div>
+			<?php } else { ?>
+				<div class="instructions">
+					<p><?php echo JText::_('COM_COLLECTIONS_NO_POSTS_FOUND'); ?></p>
+				</div>
+			<?php } ?>
 		</div><!-- / #collections-introduction -->
 <?php
 }
 ?>
 		</div><!-- / #posts -->
+
 		<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
 		<div class="clear"></div>
 	</section><!-- / .main section -->

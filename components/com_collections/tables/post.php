@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for forum posts
+ * Table class for collection posts
  */
 class CollectionsTablePost extends JTable
 {
@@ -137,7 +137,7 @@ class CollectionsTablePost extends JTable
 
 		if (!$this->collection_id)
 		{
-			$this->setError(JText::_('Please provide a collection.'));
+			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'));
 			return false;
 		}
 
@@ -285,8 +285,8 @@ class CollectionsTablePost extends JTable
 				i.negative AS item_negative,
 				i.type AS item_type,
 				i.object_id As item_object_id,
-				(SELECT COUNT(*) FROM #__collections_posts AS s WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts,
-				(SELECT COUNT(*) FROM #__item_comments AS ct WHERE ct.item_id=p.item_id AND ct.item_type='collection' AND ct.state IN (1, 3)) AS item_comments";
+				(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts,
+				(SELECT COUNT(*) FROM `#__item_comments` AS ct WHERE ct.item_id=p.item_id AND ct.item_type='collection' AND ct.state IN (1, 3)) AS item_comments";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
 			$query .= ", v.id AS item_voted ";
