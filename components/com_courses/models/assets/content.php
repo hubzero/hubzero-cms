@@ -68,13 +68,17 @@ class ContentAssetHandler extends AssetHandler
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$asset->set('title',      ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
-		$asset->set('type',       ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
-		$asset->set('subtype',    ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
-		$asset->set('content',    ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
-		$asset->set('created',    JFactory::getDate()->toSql());
-		$asset->set('created_by', JFactory::getApplication()->getAuthn('user_id'));
-		$asset->set('course_id',  JRequest::getInt('course_id', 0));
+		$asset->set('title',        ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
+		$asset->set('type',         ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
+		$asset->set('subtype',      ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
+		$asset->set('content',      ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
+		$asset->set('url',          ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
+		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
+		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
+		$asset->set('created',      JFactory::getDate()->toSql());
+		$asset->set('created_by',   JFactory::getApplication()->getAuthn('user_id'));
+		$asset->set('course_id',    JRequest::getInt('course_id', 0));
+		$asset->set('state',        0);
 
 		// Check whether asset should be graded
 		if ($graded = JRequest::getInt('graded', false))
