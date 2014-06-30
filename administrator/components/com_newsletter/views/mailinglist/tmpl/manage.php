@@ -153,13 +153,13 @@ function submitbutton(pressbutton)
 							?>
 						</td>
 						<td>
-							<?php echo date('F, l d, Y @ g:ia', strtotime($le->date_added)); ?>
+							<?php echo JFactory::getDate($le->date_added)->format('l, F d, Y @ g:ia'); ?>
 						</td>
 						<td>
 							<?php
 								if($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00')
 								{
-									echo date('F, l d, Y @ g:ia', strtotime($le->date_confirmed));
+									echo JFactory::getDate($le->date_confirmed)->format('l, F d, Y @ g:ia');
 								}
 								else
 								{
