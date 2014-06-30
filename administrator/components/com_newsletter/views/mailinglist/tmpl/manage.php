@@ -122,7 +122,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tbody>
 			<?php if (count($this->list_emails) > 0) : ?>
-				<?php foreach($this->list_emails as $k => $le) : ?>
+				<?php foreach ($this->list_emails as $k => $le) : ?>
 					<tr>
 						<td width="30">
 							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="isChecked(this.checked);" />
@@ -157,7 +157,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<?php
-								if($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00')
+								if ($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00')
 								{
 									echo JFactory::getDate($le->date_confirmed)->format('l, F d, Y @ g:ia');
 								}
