@@ -66,6 +66,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
+				<field name="autolink" type="radio" default="1" label="Autolink message" description="Autolink urls &amp; email addresses in notice content.">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
