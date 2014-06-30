@@ -643,7 +643,7 @@ class GroupsHelperPages
 						<title>'.$group->get('description').'</title>
 						'.$css.'
 					</head>
-					<body>
+					<body class="group-page-preview">
 						'. $content .'
 					</body>
 				</html>';

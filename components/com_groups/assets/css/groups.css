@@ -895,7 +895,11 @@ html.chrome #group_options .dropdown-toggle {
 .page-controls a:hover span:before {
 	color: #FFF;
 }
-
+body.group-page-preview {
+	background: #FFF;
+	padding: 10px;
+	min-height: 200px;
+}
 
 /*
 	Newer Version Notification
