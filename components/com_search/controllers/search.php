@@ -76,7 +76,7 @@ class SearchControllerSearch extends \Hubzero\Component\SiteController
 		$terms = new SearchModelTerms(JRequest::getString('terms'));
 
 		// Set the document title
-		JFactory::getDocument()->setTitle($terms->is_set() ? JText::sprintf('Search results for "%s"', $this->view->escape($terms->get_raw())) : 'Search');
+		JFactory::getDocument()->setTitle($terms->is_set() ? JText::sprintf('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
 
 		// Get search results
 		$results = new SearchModelResultSet($terms);

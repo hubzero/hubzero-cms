@@ -38,17 +38,17 @@ $this->css()
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
 <header id="content-header">
-	<h2><?php echo JText::_('Search'); ?></h2>
+	<h2><?php echo JText::_('COM_SEARCH'); ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
 	<div class="subject">
 		<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_SEARCH_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('Search site'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('Search terms'); ?></label>
-				<input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+				<legend><?php echo JText::_('COM_SEARCH_SITE'); ?></legend>
+				<label for="entry-search-field"><?php echo JText::_('COM_SEARCH_TERMS'); ?></label>
+				<input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo JText::_('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->results->valid()) : ?>
@@ -66,8 +66,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				$total_pages  = ceil($total / $limit);
 				?>
 				<h3>
-					Results
-					<span>(page <?php echo $current_page; ?> of <?php echo $total_pages; ?>)</span>
+					<?php echo JText::_('COM_SEARCH_RESULTS'); ?>
+					<span>(<?php echo JText::sprintf('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
 				</h3>
 			<?php if (($tags = $this->results->get_tags())): ?>
 				<ol class="tags">
@@ -182,27 +182,27 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			</form>
 		</div><!-- / .container -->
 <?php elseif (($raw = $this->terms->get_raw())): ?>
-	<p>No results were found for '<?php echo $this->escape($raw); ?>'</p>
+	<p><?php echo JText::sprintf('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
 	<?php
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 		if (!$this->terms->any() || strlen($raw) <= 3):
 	?>
-		<p><em>Note: Due to technical limitations, we are unable to search the site for very common or very short words.</em></p>
+		<p class="warning"><?php echo JText::_('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
 	<?php endif; ?>
 <?php endif; ?>
 	</div><!-- / .subject -->
 	<div class="aside">
 		<div class="container">
 			<h3>
-				Filter results
+				<?php echo JText::_('COM_SEARCH_FILTER_RESULTS'); ?>
 			</h3>
 		<?php if ($this->results->get_total_count()): ?>
 			<ul class="sub-nav">
 				<li>
 					<?php if ($this->plugin): ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $this->url_terms); ?>">All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo JText::_('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
 					<?php else: ?>
-						<strong>All Categories <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
+						<strong><?php echo JText::_('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
 				</li>
 			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
