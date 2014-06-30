@@ -130,7 +130,7 @@ $this->css()
 					<dl class="entry-meta">
 						<dt>
 							<span>
-								<?php echo JText::sprintf('Entry #%s', $row->get('id')); ?>
+								<?php echo JText::sprintf('PLG_MEMBERS_BLOG_ENTRY_NUMBER', $row->get('id')); ?>
 							</span>
 						</dt>
 						<dd class="date">
