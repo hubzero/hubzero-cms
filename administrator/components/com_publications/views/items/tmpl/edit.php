@@ -393,12 +393,12 @@ function popratings()
 		<textarea name="message" id="message" rows="5" cols="50"></textarea>
 		<input type="hidden" name="admin_action" value="" />
 		<input type="submit" value="<?php echo JText::_('Send message'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" />
-		<?php if($this->row->state == 1) { ?>
+		<?php if ($this->row->state == 1) { ?>
 			<input type="submit" value="<?php echo JText::_('Unpublish Version'); ?>" class="btn" id="do-unpublish" onclick="javascript: submitbutton('unpublish')" />
-		<?php } else if($this->row->state == 0) { ?>
+		<?php } else if ($this->row->state == 0) { ?>
 			<input type="submit" value="<?php echo JText::_('Re-publish Version'); ?>" class="btn" id="do-republish" onclick="javascript: submitbutton('republish')" />
-		<?php } else if($this->row->state == 5) { ?>
-			<input type="submit" value="<?php echo JText::_('Approve &amp; Publish'); ?>" class="btn" id="do-publish" <?php if($this->pub_allowed) { ?> onclick="javascript: submitbutton('publish')" <?php } ?> />
+		<?php } else if ($this->row->state == 5) { ?>
+			<input type="submit" value="<?php echo JText::_('Approve &amp; Publish'); ?>" class="btn" id="do-publish" <?php if ($this->pub_allowed) { ?> onclick="javascript: submitbutton('publish')" <?php } ?> />
 			<input type="submit" value="<?php echo JText::_('Revert to Draft'); ?>" class="btn" id="do-revert" onclick="javascript: submitbutton('revert')" />
 		<?php } ?>
 	</div>

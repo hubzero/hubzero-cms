@@ -748,7 +748,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						$row->state = 1;	// published
 					}
 
-				 	$activity = $action == 'publish'
+					$activity = $action == 'publish'
 						? JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
 						: JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REPUBLISHED');
 					$subject .= $action == 'publish'
@@ -922,7 +922,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						$what = JText::_('COM_PROJECTS_AN_ACTIVITY');
 						$curl = '#tr_'.$aid; // same-page link
 						$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'),
-						 	JText::_('COM_PROJECTS_COMMENTED') . ' ' . JText::_('COM_PROJECTS_ON')
+						JText::_('COM_PROJECTS_COMMENTED') . ' ' . JText::_('COM_PROJECTS_ON')
 							. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
 
 						// Store activity ID

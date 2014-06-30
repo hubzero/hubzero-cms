@@ -221,7 +221,6 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 
 			// Save agreement
 			$row->saveParam($pub->version_id, 'licenseagreement', 1);
-			
 
 			if ($license != $originalType || $text != $originalText)
 			{
