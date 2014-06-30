@@ -91,7 +91,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<dl class="entry-meta">
 					<dt>
 						<span>
-							<?php echo JText::sprintf('Entry #%s', $this->row->get('id')); ?>
+							<?php echo JText::sprintf('COM_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
 						</span>
 					</dt>
 					<dd class="date">
