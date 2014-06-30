@@ -56,6 +56,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php')
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');
 
 // Projects
@@ -65,8 +66,6 @@ require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'. DS
 	. 'helpers' . DS . 'html.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'. DS
-	. 'helpers' . DS . 'helper.php');
 
 $controllerName = JRequest::getCmd('controller', 'items');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -167,7 +167,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->isnew = 1;
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('New publications can only be added via projects on the front-end.'),
+				JText::_('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
 				'notice'
 			);
 			return;
@@ -217,7 +217,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('This resource is currently being edited by another administrator'),
+				JText::_('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
 				'notice'
 			);
 			return;
@@ -228,14 +228,15 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (trim($this->view->row->published_down) == '0000-00-00 00:00:00')
 		{
-			$this->view->row->published_down = JText::_('Never');
+			$this->view->row->published_down = JText::_('COM_PUBLICATIONS_NEVER');
 		}
 
 		// Get name of resource creator
 		$creator = JUser::getInstance($this->view->row->created_by);
 
 		$this->view->row->created_by_name = $creator->get('name');
-		$this->view->row->created_by_name = ($this->view->row->created_by_name) ? $this->view->row->created_by_name : JText::_('Unknown');
+		$this->view->row->created_by_name = ($this->view->row->created_by_name)
+			? $this->view->row->created_by_name : JText::_('COM_PUBLICATIONS_UNKNOWN');
 
 		// Get name of last person to modify resource
 		if ($this->view->row->modified_by)
@@ -243,7 +244,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$modifier = JUser::getInstance($this->view->row->modified_by);
 
 			$this->view->row->modified_by_name = $modifier->get('name');
-			$this->view->row->modified_by_name = ($this->view->row->modified_by_name) ? $this->view->row->modified_by_name : JText::_('Unknown');
+			$this->view->row->modified_by_name = ($this->view->row->modified_by_name)
+				? $this->view->row->modified_by_name : JText::_('COM_PUBLICATIONS_UNKNOWN');
 		}
 		else
 		{
@@ -258,10 +260,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$path = $helper->buildPath($id, $this->view->row->id, $base_path);
 
 		// Archival package?
-		$this->view->archPath = JPATH_ROOT . $path . DS . JText::_('Publication').'_'.$id.'.zip';
+		$this->view->archPath = JPATH_ROOT . $path . DS
+			. JText::_('Publication').'_'.$id.'.zip';
 
 		// Get params definitions
-		$this->view->params  = new JParameter($this->view->row->params, JPATH_COMPONENT . DS . 'publications.xml');
+		$this->view->params  = new JParameter(
+			$this->view->row->params,
+			JPATH_COMPONENT . DS . 'publications.xml'
+		);
 
 		// Build selects of various categories
 		$rt = new PublicationCategory($this->database);
@@ -293,7 +299,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Get submitter
-		$this->view->submitter = $pa->getSubmitter($this->view->row->id, $this->view->row->created_by);
+		$this->view->submitter = $pa->getSubmitter(
+			$this->view->row->id,
+			$this->view->row->created_by
+		);
 
 		// Build <select> of project owners
 		$this->view->lists['authors'] = PublicationsHtml::selectAuthorsNoEdit($authors, $this->_option);
@@ -344,7 +353,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		$this->view->row = new PublicationVersion( $this->database );
-		$this->view->pub  = new Publication( $this->database );
+		$this->view->pub = new Publication( $this->database );
 
 		// Load version
 		$this->view->row->load($this->view->author->publication_version_id);
@@ -363,7 +372,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
 		$this->view->display();
@@ -384,7 +394,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Cannot load publication author to delete.'),
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
 				'error'
 			);
 			return;
@@ -396,14 +406,15 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row = new PublicationVersion($this->database);
 		if ($row->load($pAuthor->publication_version_id))
 		{
-			$url .= '&task=edit' . '&id[]=' . $row->publication_id . '&version=' . $row->version_number;
+			$url .= '&task=edit' . '&id[]=' . $row->publication_id
+				. '&version=' . $row->version_number;
 		}
 
 		if (!$pAuthor->delete())
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('Failed to delete author information'),
+				JText::_('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
 				'error'
 			);
 			return;
@@ -412,7 +423,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Redirect back to publication
 		$this->setRedirect(
 			$url,
-			JText::_('Author deleted')
+			JText::_('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR')
 		);
 		return;
 	}
@@ -441,7 +452,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Cannot load publication author to save.'),
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
 				'error'
 			);
 			return;
@@ -463,7 +474,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('Failed to save author information'),
+				JText::_('COM_PUBLICATIONS_ERROR_FAILED_TO_SAVE_AUTHOR'),
 				'error'
 			);
 			return;
@@ -495,7 +506,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Redirect back to publication
 		$this->setRedirect(
 			$url,
-			JText::_('Author information updated')
+			JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
 		);
 	}
 
@@ -531,7 +542,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Cannot load the publication to save.'),
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'error'
 			);
 			return;
@@ -545,6 +556,12 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Instantiate Version
 		$row = new PublicationVersion($this->database);
+
+		if (!$row->bind($_POST))
+		{
+			echo PublicationsHtml::alert($row->getError());
+			exit();
+		}
 
 		// Check that version exists
 		$version = $row->checkVersion($id, $version) ? $version : 'default';
@@ -594,6 +611,11 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$metadata 		= '';
 		$activity 		= '';
 
+		// Save publication record
+		$objP->alias    = trim(JRequest::getVar( 'alias', '', 'post' ));
+		$objP->category = trim(JRequest::getInt( 'category', 0, 'post' ));
+		$objP->store();
+
 		// Get metadata
 		if (isset($_POST['nbtag']))
 		{
@@ -632,29 +654,57 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Save title, abstract and description
+		// Save incoming
 		$row->title 		= $title ? $title : $row->title;
-		$row->abstract 		= $abstract ? \Hubzero\Utility\String::truncate($abstract, 250) : $row->abstract;
+		$row->abstract 		= $abstract
+							? \Hubzero\Utility\String::truncate($abstract, 250)
+							: $row->abstract;
 		$row->description 	= $description ? $description : $row->description;
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;
 		$row->published_up 	= $published_up ? $published_up : $row->published_up;
 		$row->release_notes	= $release_notes;
 
+		// Determine action (if status is flipped)
+		$state = JRequest::getInt( 'state', 0 );
+		if ($old->state != $state)
+		{
+			switch ($state)
+			{
+				case 1:
+					$action = $old->state == 0 ? 'republish' : 'publish';
+					break;
+				case 0:
+					$action = 'unpublish';
+					break;
+				case 3:
+				case 4:
+					$action = 'revert';
+					break;
+			}
+
+			$row->state = $state;
+		}
+
 		// Update DOI with latest information
-		if ($row->doi && !$action
-			&& ($row->title != $old->title
-			|| $row->abstract != $old->abstract))
+		if ($row->doi && !$action && $row != $old)
 		{
 			// Collect DOI metadata
 			$metadata = $this->_collectMetadata($row, $objP, $authors);
 
-			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
+			if (!PublicationUtilities::updateDoi(
+				$row->doi,
+				$row,
+				$authors,
+				$this->config,
+				$metadata,
+				$doierr
+			))
 			{
 				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 			}
 		}
 
-		// Get parameters
+		// Save parameters
 		$params = JRequest::getVar('params', '', 'post');
 		if (is_array($params))
 		{
@@ -667,10 +717,12 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Email config
 		$pubtitle 	= \Hubzero\Utility\String::truncate($row->title, 100);
 		$subject 	= JText::_('Version') . ' ' . $row->version_label . ' '
-					. JText::_('COM_PUBLICATIONS_OF') . ' ' . JText::_('publication') . ' "' . $pubtitle . '" ';
+					. JText::_('COM_PUBLICATIONS_OF') . ' '
+					. strtolower(JText::_('COM_PUBLICATIONS_PUBLICATION'))
+					. ' "' . $pubtitle . '" ';
 		$sendmail 	= 0;
 		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'message', '' )));
-		$output 	= JText::_('Item successfully saved.');
+		$output 	= JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_ITEM');
 
 		// Admin actions
 		if ($action)
@@ -706,18 +758,26 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$row->published_down = '0000-00-00 00:00:00';
 					if ( $action == 'publish')
 					{
-						$row->published_up 	 = $published_up ? $published_up : JFactory::getDate()->toSql();
+						$row->published_up 	 = $published_up
+							? $published_up : JFactory::getDate()->toSql();
 					}
 
 					// Collect DOI metadata
 					$metadata = $this->_collectMetadata($row, $objP, $authors);
 
 					// Issue a DOI
-					if ($this->config->get('doi_service') && $this->config->get('doi_shoulder'))
+					if ($this->config->get('doi_service')
+						&& $this->config->get('doi_shoulder'))
 					{
 						if (!$row->doi)
 						{
-							$doi = PublicationUtilities::registerDoi($row, $authors, $this->config, $metadata, $doierr);
+							$doi = PublicationUtilities::registerDoi(
+								$row,
+								$authors,
+								$this->config,
+								$metadata,
+								$doierr
+							);
 
 							if ($doi)
 							{
@@ -797,7 +857,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					break;
 
 				case 'revert':
-					$row->state 		 	= 4; // revert to draft
+					$row->state 		 	= $state ? $state : 4;
 					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
 					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
 					$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
@@ -939,7 +999,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$output
 			);
 		}
-
 	}
 
 	/**
@@ -1030,7 +1089,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('PUBLICATIONS');
 
-			$subject = $subject ? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
+			$subject = $subject
+				? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
 
 			// Get message body
 			$eview 					= new \Hubzero\Component\View( array('name'=>'emails', 'layout' => 'admin_plain' ) );
@@ -1062,7 +1122,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$this->_option)
 			))
 			{
-				$this->setError(JText::_('Failed to message authors.'));
+				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
 			}
 		}
 	}
@@ -1089,7 +1149,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Publication not found.'),
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
 			);
 			return;
@@ -1108,7 +1168,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
 		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND') );
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
 			return;
 		}
 
@@ -1145,7 +1205,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Cannot load the publication to delete.'),
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
 			);
 			return;
@@ -1181,7 +1241,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$output = ($version != 'all') ? JText::_('Publication version deleted.') : JText::_('Publication records deleted.');
+		$output = ($version != 'all')
+			? JText::_('COM_PUBLICATIONS_SUCCESS_VERSION_DELETED')
+			: JText::_('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED');
 		$this->setRedirect(
 			$this->buildRedirectURL(),
 			$output
@@ -1209,7 +1271,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->checkin();
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL($id);
+		$this->_redirect = $this->buildRedirectURL();
 	}
 
 	/**
@@ -1236,12 +1298,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('Successfully reset Rating');
+			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_RATING_RESET');
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id,
+			'index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id,
 			$this->_message
 		);
 	}
@@ -1269,12 +1333,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('Successfully reset Ranking');
+			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_RANKING_RESET');
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id,
+			'index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id,
 			$this->_message
 		);
 	}
@@ -1292,7 +1358,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$vid 		= JRequest::getInt('vid', 0);
 		$version 	= JRequest::getVar( 'version', '' );
 
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS
+			. 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 
 		if ($pid)
 		{
@@ -1300,7 +1367,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$dispatcher = JDispatcher::getInstance();
 			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
 
-			$this->_message = JText::_('Archival package produced');
+			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
 		}
 
 		// Checkin the resource
@@ -1338,62 +1405,20 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->_redirect = 'index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller;
 	}
 
 	/**
 	 * Builds the appropriate URL for redirction
 	 *
-	 * @param      integer $pid Parent resource ID (optional)
 	 * @return     string
 	 */
-	private function buildRedirectURL($pid=0)
+	private function buildRedirectURL()
 	{
-		$url  = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$url  = 'index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller;
 		return $url;
-	}
-
-	/**
-	 * Builds a select list of users
-	 *
-	 * @param      string  $name       Name of the select element
-	 * @param      string  $active     Selected value
-	 * @param      integer $nouser     Display an empty start option
-	 * @param      string  $javascript Any JS to attach to the select element
-	 * @param      string  $order      Field to order the users by
-	 * @return     string
-	 */
-	private function userSelect($name, $active, $nouser=0, $javascript=NULL, $order='a.name')
-	{
-		$database = JFactory::getDBO();
-
-		$group_id = 'g.id';
-		$aro_id = 'aro.id';
-
-		$query = "SELECT a.id AS value, a.name AS text, g.name AS groupname"
-			. "\n FROM #__users AS a"
-			. "\n INNER JOIN #__core_acl_aro AS aro ON aro.value = a.id"	// map user to aro
-			. "\n INNER JOIN #__core_acl_groups_aro_map AS gm ON gm.aro_id = " . $aro_id . ""	// map aro to group
-			. "\n INNER JOIN #__core_acl_aro_groups AS g ON " . $group_id . " = gm.group_id"
-			. "\n WHERE a.block = '0' AND " . $group_id . "=25"
-			. "\n ORDER BY ". $order;
-
-		$database->setQuery($query);
-		$result = $database->loadObjectList();
-
-		if ($nouser)
-		{
-			$users[] = JHTML::_('select.option', '0', 'Do not change', 'value', 'text');
-			$users = array_merge($users, $result);
-		}
-		else
-		{
-			$users = $result;
-		}
-
-		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
-
-		return $users;
 	}
 
 	/**
@@ -1422,4 +1447,3 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		echo $name . ' (' . $profile->get('uidNumber') . ')';
 	}
 }
-

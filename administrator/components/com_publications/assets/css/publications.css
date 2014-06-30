@@ -19,13 +19,13 @@
 	.no,
 	.disabled,
 	.unwriteable,
-	.registered, 
+	.registered,
 	a.registered {
 		color: red;
 		}
-	.special, 
-	a.special { 
-		color: black; 
+	.special,
+	a.special {
+		color: black;
 		}
 	.enabled,
 	.writeable,
@@ -33,13 +33,13 @@
 	.unwriteable {
 		font-weight: bold;
 		}
-	
+
 	.clear {
 		clear: both;
 		margin: 0;
 		padding: 0;
 		}
-	
+
 	.draft,
 	.draftinternal,
 	.draftexternal,
@@ -54,13 +54,13 @@
 	.upload,
 	.archived,
 	.ready,
-	.wip { 
-		padding: 0; 
-		display: block; 
-		width: 12px; 
-		height: 12px; 
+	.wip {
+		padding: 0;
+		display: block;
+		width: 12px;
+		height: 12px;
 		}
-	
+
 	.draft span,
 	.draftinternal span,
 	.draftexternal span,
@@ -76,11 +76,11 @@
 	.upload span,
 	.ready span,
 	.archived span,
-	.wip span { 
-		display: none; 
-		}	
-	
-	/* Status color 
+	.wip span {
+		display: none;
+		}
+
+	/* Status color
 	--------------------------------------------- */
 	.published {
 		color: #52ad4b;
@@ -103,10 +103,10 @@
 	.preserving {
 		color: blue;
 	}
-	
+
 	/* Publication status
 	--------------------------------------------- */
-	.draft, .published, .unpublished, .expired, .pending, 
+	.draft, .published, .unpublished, .expired, .pending,
 	.preserving, .posted, .archived, .ready, .new, .wip {
 		padding: 0.2em 0.5em;
 	}
@@ -136,8 +136,8 @@
 	.archived:before, .archival:before {
 		content: "\f005";
 	}
-	.published:before, 
-	.preserving:before, 
+	.published:before,
+	.preserving:before,
 	.ready:before,
 	.unpublished:before,
 	.pending:before,
@@ -165,7 +165,7 @@
 	}
 	.item_on {
 		color: green;
-	}			
+	}
 	td.status {
 		width: 150px;
 	}
@@ -178,9 +178,9 @@
 	.status a span {
 		color: #666;
 		border: none;
-	}	
+	}
 	.hasassoc,
-	.noassoc { 
+	.noassoc {
 		padding: 0;
 		margin: 0;
 		display: block;
@@ -198,13 +198,13 @@
 		padding: 0;
 		list-style: none;
 		}
-	.key li { 
+	.key li {
 		margin: 0;
 		padding-left: 18px;
 		width: auto;
 		height: auto;
 		}
-	
+
 	.draft:hover,
 	.draftinternal:hover,
 	.draftexternal:hover,
@@ -220,10 +220,10 @@
 	.archived:hover,
 	.upload:hover,
 	.wip:hover { border: none; }
-	
+
 	.check { text-indent: 50px; overflow: hidden; }
-	
-	#author-list, .content-list { 
+
+	#author-list, .content-list {
 		list-style: none;
 		margin: 0.5em;
 		padding-left: 0;
@@ -246,7 +246,7 @@
 		font-weight: bold;
 		color: #999;
 		}
-		
+
 	.notice {
 		padding: 0.3em 1em;
 		border: 1px solid #f6bc56;
@@ -274,9 +274,6 @@
 		border-top: 4px solid #CCC;
 		border-bottom: 4px solid #CCC;
 	}
-	.adminform fieldset {
-		margin-top: 2em;
-	}
 	.allowed, .disallowed {
 		display: block;
 		margin-top: 1em;
@@ -294,7 +291,7 @@
 		border: 1px solid #fbeec5 !important;
 	}
 	.block {
-	 	display: block;	
+	 	display: block;
 	}
 	.faded {
 		color: #CCC;
@@ -320,7 +317,7 @@
 	.narrow {
 		width: 5%;
 	}
-	
+
 /* Publication editing
 --------------------------------------------- */
 	#system-message .message {
