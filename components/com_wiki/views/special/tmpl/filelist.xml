@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Rename Layout">
+	<layout title="Special: List Files in this wiki">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE RENAME LAYOUT DESC]]>
+			<![CDATA[Special: List Files in this wiki]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Rename Layout</name>
-		<description>STANDARD WIKI PAGE RENAME LAYOUT DESC</description>
+		<name>Special: List Files in this wiki</name>
+		<description>Special: List Files in this wiki</description>
 		<params>
 		</params>
 	</state>

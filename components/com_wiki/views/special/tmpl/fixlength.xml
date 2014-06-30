@@ -28,13 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Fix page length">
+	<layout title="Special: Fix page length">
 		<message>
-			<![CDATA[Fix page length]]>
+			<![CDATA[Special: Fix page length]]>
 		</message>
 	</layout>
 	<state>
-		<name>Fix page length</name>
-		<description>Fix page length</description>
+		<name>Special: Fix page length</name>
+		<description>Special: Fix page length</description>
 	</state>
 </metadata>

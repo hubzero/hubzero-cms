@@ -28,13 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="List pages by increasing length">
+	<layout title="Special: List pages by increasing length">
 		<message>
-			<![CDATA[List pages by increasing length]]>
+			<![CDATA[Special: List pages by increasing length]]>
 		</message>
 	</layout>
 	<state>
-		<name>List pages by increasing length</name>
-		<description>List pages by increasing length</description>
+		<name>Special: List pages by increasing length</name>
+		<description>Special: List pages by increasing length</description>
 	</state>
 </metadata>

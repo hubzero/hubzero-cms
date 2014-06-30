@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Wiki Page Comments Layout">
+	<layout title="Wiki Page Comments">
 		<message>
-			<![CDATA[STANDARD WIKI PAGE COMMENTS LAYOUT DESC]]>
+			<![CDATA[Wiki Page Comments]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Wiki Page Comments Layout</name>
-		<description>STANDARD WIKI PAGE COMMENTS LAYOUT DESC</description>
+		<name>Wiki Page Comments</name>
+		<description>Wiki Page Comments</description>
 		<params>
 		</params>
 	</state>

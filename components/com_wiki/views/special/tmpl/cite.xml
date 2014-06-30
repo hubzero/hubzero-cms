@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Citation instructions">
+	<layout title="Special: Citation instructions">
 		<message>
-			<![CDATA[Citation instructions]]>
+			<![CDATA[Special: Citation instructions]]>
 		</message>
 	</layout>
 	<state>
-		<name>Citation instructions</name>
-		<description>Citation instructions</description>
+		<name>Special: Citation instructions</name>
+		<description>Special: Citation instructions</description>
 		<params>
 	 		<param name="page" type="text" label="Page" description="Page to display instructions for" />
 		</params>

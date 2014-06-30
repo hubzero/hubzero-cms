@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="List newest pages">
+	<layout title="Special: List newest pages">
 		<message>
-			<![CDATA[List newest pages]]>
+			<![CDATA[Special: List newest pages]]>
 		</message>
 	</layout>
 	<state>
-		<name>List newest pages</name>
-		<description>List newest pages</description>
+		<name>Special: List newest pages</name>
+		<description>Special: List newest pages</description>
 		<params>
 		</params>
 	</state>

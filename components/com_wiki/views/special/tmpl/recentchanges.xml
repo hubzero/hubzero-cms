@@ -28,14 +28,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="List all recent changes in this wiki">
+	<layout title="Special: List all recent changes in this wiki">
 		<message>
-			<![CDATA[List all recent changes in this wiki]]>
+			<![CDATA[Special: List all recent changes in this wiki]]>
 		</message>
 	</layout>
 	<state>
-		<name>List all recent changes in this wiki</name>
-		<description>List all recent changes in this wiki</description>
+		<name>Special: List all recent changes in this wiki</name>
+		<description>Special: List all recent changes in this wiki</description>
 		<params>
 	 		<param name="namespace" type="text" label="Namespace" description="Optional namespace to filter results" />
 		</params>

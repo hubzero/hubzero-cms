@@ -28,13 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Search pages">
+	<layout title="Special: Search pages">
 		<message>
-			<![CDATA[Search pages]]>
+			<![CDATA[Special: Search pages]]>
 		</message>
 	</layout>
 	<state>
-		<name>Search pages</name>
-		<description>Search pages</description>
+		<name>Special: Search pages</name>
+		<description>Special: Search pages</description>
 	</state>
 </metadata>
