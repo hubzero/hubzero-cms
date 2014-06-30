@@ -291,7 +291,7 @@ class Sanitize
 	public static function html($text, $options=array())
 	{
 		$config = \HTMLPurifier_Config::createDefault();
-		$config->set('AutoFormat.Linkify', true);
+		$config->set('AutoFormat.Linkify', false);
 		$config->set('AutoFormat.RemoveEmpty', true);
 		$config->set('AutoFormat.RemoveEmpty.RemoveNbsp', true);
 		$config->set('Output.CommentScriptContents', false);
