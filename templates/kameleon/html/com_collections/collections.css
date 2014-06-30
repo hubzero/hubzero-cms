@@ -1,0 +1,112 @@
+@import url("../../../../components/com_collections/assets/css/collections.css");
+
+/* Layout */
+	#content {
+		padding: 0;
+	}
+	#content .main {
+		display: block;
+		margin: 0;
+		padding: 30px 50px 30px 60px;
+		background: #e1e1e1;
+	}
+	#content #content-header h2 {
+		padding: 30px 60px;
+	}
+
+/* Filters bar */
+	fieldset.filters {
+		padding: 0;
+		border: none;
+	}
+	fieldset.filters li a {
+		border: none;
+	}
+	fieldset.filters li a:hover {
+		border: none;
+	}
+	fieldset.filters li a.active {
+		background: #e1e1e1;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+		border: none;
+	}
+	fieldset.overview p, 
+	fieldset.filters div.filters-inner {
+		-webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
+		background: #fff;
+		padding: 0 60px;
+		margin: 0;
+		border: none;
+	}
+	fieldset.filters p {
+		min-width: 185px;
+		right: 60px;
+	}
+	fieldset.filters input {
+		line-height: 1.61803399em;
+		-webkit-border-radius: 0;
+		   -moz-border-radius: 0;
+		    -ms-border-radius: 0;
+		     -o-border-radius: 0;
+		        border-radius: 0;
+		border-color: #ddd;
+		background: transparent;
+	}
+	fieldset.filters label {
+		margin: 0;
+		padding: 0;
+		width: 80%;
+		float: left;
+	}
+	fieldset.filters input.filter-submit {
+		width: 20%;
+		background: transparent;
+		-webkit-border-radius: 0;
+		   -moz-border-radius: 0;
+		    -ms-border-radius: 0;
+		     -o-border-radius: 0;
+		        border-radius: 0;
+		border-color: #ddd;
+	}
+	fieldset.filters input.filter-submit:hover {
+		background: #f0f0f0;
+	}
+
+/* Posts */
+	.post {
+		width: 284px;
+		-webkit-box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
+	}
+	.post:hover {
+		-webkit-box-shadow: 0 0 0 4px rgba(0, 0, 0, .08);
+		   -moz-box-shadow: 0 0 0 4px rgba(0, 0, 0, .08);
+		    -ms-box-shadow: 0 0 0 4px rgba(0, 0, 0, .08);
+		     -o-box-shadow: 0 0 0 4px rgba(0, 0, 0, .08);
+		        box-shadow: 0 0 0 4px rgba(0, 0, 0, .08);
+	}
+	.post .stats {
+		border-bottom: 1px solid #e1e1e1;
+	}
+	.post ul + .meta .stats {
+		border-top: none;
+	}
+	.comment, 
+	.attribution {
+		border-top: none;
+	}
+	.post.collection::before,
+	.post.collection::after {
+		display: none;
+	}
