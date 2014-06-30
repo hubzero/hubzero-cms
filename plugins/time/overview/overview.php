@@ -99,10 +99,10 @@ class plgTimeOverview extends \Hubzero\Plugin\Plugin
 		$this->juser   = JFactory::getUser();
 
 		// Include needed DB class(es)
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'charts.php');
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'time' . DS . 'tables'  . DS . 'hubs.php';
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'time' . DS . 'tables'  . DS . 'records.php';
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'time' . DS . 'tables'  . DS . 'tasks.php';
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'time' . DS . 'helpers' . DS . 'charts.php';
 
 		// Add some styles to the view
 		\Hubzero\Document\Assets::addPluginStylesheet('time','overview');

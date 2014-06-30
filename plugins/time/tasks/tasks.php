@@ -91,10 +91,11 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Set some values for use later
-		$this->_option   =  $option;
-		$this->action    =  $action;
-		$this->active    =  $active;
-		$this->db        =  JFactory::getDBO();
+		$this->_option   = $option;
+		$this->option    = $option;
+		$this->action    = $action;
+		$this->active    = $active;
+		$this->db        = JFactory::getDBO();
 		$this->juser     = JFactory::getUser();
 		$this->mainframe = JFactory::getApplication();
 
@@ -285,7 +286,7 @@ class plgTimeTasks extends \Hubzero\Plugin\Plugin
 		$count   = $records->getCount($filters = array('task'=>$tid));
 
 		// If there are active records, don't allow deletion
-		if($count > 0)
+		if ($count > 0)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&active=tasks&action=edit&id=' . $tid),

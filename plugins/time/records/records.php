@@ -91,10 +91,11 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		);
 
 		// Set some values for use later
-		$this->_option   =  $option;
-		$this->action    =  $action;
-		$this->active    =  $active;
-		$this->db        =  JFactory::getDBO();
+		$this->_option   = $option;
+		$this->option    = $option;
+		$this->action    = $action;
+		$this->active    = $active;
+		$this->db        = JFactory::getDBO();
 		$this->juser     = JFactory::getUser();
 		$this->mainframe = JFactory::getApplication();
 
@@ -208,7 +209,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 			$view->row = $record->getRecord($rid);
 
 			// Prepopulate the task passed in URL if it's given
-			if($task = JRequest::getInt('task', NULL))
+			if ($task = JRequest::getInt('task', NULL))
 			{
 				$view->row->task_id = $task;
 			}
@@ -218,7 +219,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$subordinates = TimeHTML::getSubordinates($this->juser->get('id'));
 
 		// Only allow creator of the record to edit or delete or the manager of the user
-		if(!empty($view->row->id) && ($view->row->user_id != $this->juser->get('id') && !in_array($view->row->user_id, $subordinates)))
+		if (!empty($view->row->id) && ($view->row->user_id != $this->juser->get('id') && !in_array($view->row->user_id, $subordinates)))
 		{
 			// Set the redirect
 			$this->setRedirect(
@@ -229,7 +230,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// If record is marked as billed, don't allow editing
-		if($view->row->billed == 1)
+		if ($view->row->billed == 1)
 		{
 			// Set the redirect
 			$this->setRedirect(
@@ -240,7 +241,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// Explode the time
-		if(strstr($view->row->time, '.') !== false)
+		if (strstr($view->row->time, '.') !== false)
 		{
 			list($hrs, $mins) = explode(".", $view->row->time);
 		}
@@ -263,7 +264,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is this a new record?
-		if(empty($view->row->user_id))
+		if (empty($view->row->user_id))
 		{
 			// Set some defaults
 			$view->row->user_id = $this->juser->get('id');
@@ -342,7 +343,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$subordinates = TimeHTML::getSubordinates($this->juser->get('id'));
 
 		// Only create records for yourself or your subordinates
-		if($record['user_id'] != $this->juser->get('id') && !in_array($record['user_id'], $subordinates))
+		if ($record['user_id'] != $this->juser->get('id') && !in_array($record['user_id'], $subordinates))
 		{
 			// Set the redirect
 			$this->setRedirect(
@@ -403,7 +404,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		$records->load($record);
 
 		// Only allow creator of the record to edit or delete
-		if($records->user_id != $this->juser->get('id'))
+		if ($records->user_id != $this->juser->get('id'))
 		{
 			// Set the redirect
 			$this->setRedirect(
@@ -414,7 +415,7 @@ class plgTimeRecords extends \Hubzero\Plugin\Plugin
 		}
 
 		// If record is marked as billed, don't allow deletion
-		if($records->billed == 1)
+		if ($records->billed == 1)
 		{
 			// Set the redirect
 			$this->setRedirect(

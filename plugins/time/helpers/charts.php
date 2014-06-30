@@ -41,24 +41,27 @@ class ChartsHtml
 	 *
 	 * @return string Return javascript
 	 */
-	public function drawColumn()
+	public static function drawColumn()
 	{
 		// Variables
-		$jsObj = "";
+		$jsObj  = "";
 		$script = "";
+		$db     = JFactory::getDbo();
 
 		// Get records summary
-		$records = new TimeRecords($this->db);
+		$records = new TimeRecords($db);
 		$limit   = 5;
 		$total   = $records->getCount();
 		$rows    = $records->getSummaryHours($limit);
 		$count   = 0;
 
 		// Go through the rows and build the data for the chart
-		foreach($rows as $row) {
+		foreach ($rows as $row)
+		{
 			$count++;
 			$jsObj .= "[\"{$row->pname}\", {$row->hours}]";
-			if($count < $total) {
+			if ($count < $total)
+			{
 				$jsObj .= ", \n \t\t\t\t";
 			}
 		}
@@ -113,24 +116,27 @@ class ChartsHtml
 	 *
 	 * @return string Return javascript
 	 */
-	public function drawPieHubs()
+	public static function drawPieHubs()
 	{
 		// Variables
-		$jsObj = "";
+		$jsObj  = "";
 		$script = "";
+		$db     = JFactory::getDbo();
 
 		// Get records summary
-		$records = new TimeRecords($this->db);
+		$records = new TimeRecords($db);
 		$limit   = 10;
 		$total   = $records->getCount();
 		$rows    = $records->getSummaryHoursByHub($limit);
 		$count   = 0;
 
 		// Go through the rows and build the data for the chart
-		foreach($rows as $row) {
+		foreach ($rows as $row)
+		{
 			$count++;
 			$jsObj .= "[\"{$row->hname}\", {$row->hours}]";
-			if($count < $total) {
+			if ($count < $total)
+			{
 				$jsObj .= ", \n \t\t\t\t";
 			}
 		}
@@ -167,14 +173,15 @@ class ChartsHtml
 	 *
 	 * @return string Return javascript
 	 */
-	public function drawPieUser($uid)
+	public static function drawPieUser($uid)
 	{
 		// Variables
-		$jsObj = "";
+		$jsObj  = "";
 		$script = "";
+		$db     = JFactory::getDbo();
 
 		// Get records summary
-		$records = new TimeRecords($this->db);
+		$records = new TimeRecords($db);
 		$limit   = 10;
 		$total   = $records->getCount();
 		$rows    = $records->getSummaryHours($limit, $uid);
@@ -183,10 +190,12 @@ class ChartsHtml
 		$user =  JFactory::getUser($uid);
 
 		// Go through the rows and build the data for the chart
-		foreach($rows as $row) {
+		foreach ($rows as $row)
+		{
 			$count++;
 			$jsObj .= "[\"{$row->pname}\", {$row->hours}]";
-			if($count < $total) {
+			if ($count < $total)
+			{
 				$jsObj .= ", \n \t\t\t\t";
 			}
 		}
@@ -223,12 +232,13 @@ class ChartsHtml
 	 *
 	 * @return string Return javascript
 	 */
-	public function drawBar()
+	public static function drawBar()
 	{
 		// Variables
 		$jsObj   = "";
 		$columns = "";
 		$script  = "";
+		$db      = JFactory::getDbo();
 
 		// Get date range
 		$date = array();
@@ -236,17 +246,19 @@ class ChartsHtml
 		$date['start'] = date("Y-m-d", strtotime('-14 days'));
 
 		// Get records summary
-		$records = new TimeRecords($this->db);
+		$records = new TimeRecords($db);
 		$total   = $records->getCount();
 		$rows    = $records->getSummaryEntries($date);
 
 		// Go through the rows and build the data for the chart
 		$count   = 0;
 
-		foreach($rows as $row) {
+		foreach ($rows as $row)
+		{
 			$count++;
 			$jsObj .= "[\"{$row->name}\", {$row->entries}]";
-			if($count < $total) {
+			if ($count < $total)
+			{
 				$jsObj .= ", \n \t\t\t\t";
 			}
 		}

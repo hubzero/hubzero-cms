@@ -89,6 +89,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 
 		// Set some values for use later
 		$this->_option   = $option;
+		$this->option    = $option;
 		$this->action    = $action;
 		$this->active    = $active;
 		$this->db        = JFactory::getDBO();
@@ -235,7 +236,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		{
 			// Get the contacts for the hub (only if we're editing)
 			$view->contacts = array();
-			if(!empty($view->row->id))
+			if (!empty($view->row->id))
 			{
 				$contacts          = new TimeContacts($this->db);
 				$filters['hub_id'] = $view->row->id;
@@ -434,7 +435,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$start = ($startnum != 0) ? '&start='.$startnum : '';
 
 		// If there are active tasks, don't allow deletion
-		if($count > 0)
+		if ($count > 0)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&active=hubs&action=readonly&id=' . $hub),
@@ -453,7 +454,7 @@ class plgTimeHubs extends \Hubzero\Plugin\Plugin
 		$contacts          = $contacts->getRecords($filters);
 
 		// Delete contacts from the hub
-		foreach($contacts as $contact)
+		foreach ($contacts as $contact)
 		{
 			$ct = new TimeContacts($this->db);
 			$ct->load($contact->id);

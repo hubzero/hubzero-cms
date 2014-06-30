@@ -197,26 +197,8 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 		$this->view->sections      = $sections;
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->setName('view')
-				->setLayout('default')
-				->display();
-	}
-
-	/**
-	 * Ajax method
-	 *
-	 * @return void
-	 */
-	public function ajaxTask()
-	{
-		// Get time plugins
-		JPluginHelper::importPlugin('time');
-		$dispatcher = JDispatcher::getInstance();
-
-		// Trigger the functions that return the areas we'll be using
-		$time_plugins = $dispatcher->trigger('onTimeAreas', array());
-
-		// Get the sections
-		$sections = $dispatcher->trigger('onTime', array($this->action, $this->_option, $this->active_tab));
+		           ->setLayout('default')
+		           ->display();
 	}
 
 	/**
@@ -227,7 +209,7 @@ class TimeControllerTime extends \Hubzero\Component\SiteController
 	protected function _authorize()
 	{
 		// @FIXME: add parameter for group access
-		$accessgroup = isset($this->config->parameters['accessgroup']) ? trim($this->config->parameters['accessgroup']) : 'jla';
+		$accessgroup = isset($this->config->parameters['accessgroup']) ? trim($this->config->parameters['accessgroup']) : 'time';
 
 		// Check if they're a member of admin group
 		$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
