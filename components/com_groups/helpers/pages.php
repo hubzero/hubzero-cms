@@ -449,7 +449,7 @@ class GroupsHelperPages
 		}
 
 		// parse old wiki content
-		//$content = self::parseWiki($group, $version->get('content'));
+		//$content = self::parseWiki($group, $version->get('content'), $fullparse = true);
 		$content = $version->get('content');
 
 		// parse php tags and modules
@@ -480,7 +480,7 @@ class GroupsHelperPages
 	public static function parseWiki( $group, $content, $fullparse = true )
 	{
 		// do we have wiki content that needs parsing?
-		if (!preg_match("/<[^<]+>/", $content, $matches))
+		if (self::_isWiki($content))
 		{
 			// create path
 			$path = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
@@ -508,6 +508,41 @@ class GroupsHelperPages
 		return $content;
 	}
 
+	/**
+	 * Function to determine if content contains wiki syntax
+	 * 
+	 * @param  [type]  $content [description]
+	 * @return boolean          [description]
+	 */
+	private static function _isWiki($content)
+	{
+		// trim content
+		$content = trim($content);
+
+		// First, remove <pre> tags
+		//   This is in case the content is HTML but contains a block of 
+		//   sample wiki markup.
+		$content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
+
+		// If wiki <pre> syntax is found
+		if ((strstr($content, '{{{') && strstr($content, '}}}')) || strstr($content, '#!html'))
+		{
+			return true;
+		}
+
+		// If wiki bold syntax is found (highly unlikely HTML content will contain this string)
+		if (preg_match('/\'\'\'(.*?)\'\'\'/i', $content) || preg_match('/===(.*?)===/i', $content))
+		{
+			return true;
+		}
+
+		// If no HTML tags found ...
+		if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 *  Parse Page Includes & php
@@ -546,6 +581,13 @@ class GroupsHelperPages
 		// get doc content
 		$document = $groupDocument->output();
 
+		// if there is PHP were safe to assume its not Wiki content
+		$formatHandler = '';
+		if (strpos($document, '<?php') !== false)
+		{
+			$formatHandler = '<!-- {FORMAT:HTML} -->';
+		}
+
 		// only parse php if Super Group
 		if ($group->isSuperGroup())
 		{
@@ -562,7 +604,9 @@ class GroupsHelperPages
 		}
 
 		// return content
-		return $document;
+		// add HTML format handler. Basically if php is in content lets make sure wiki handler doesnt touch it.
+		// addresses cases where html an html tag not the first string in the content block 
+		return $formatHandler . $document;
 	}
 
 
