@@ -42,6 +42,14 @@ $this->css()
      ->js();
 ?>
 
+<ul id="page_options">
+	<li>
+		<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=index'); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
+		</a>
+	</li>
+</ul>
+
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
 	<fieldset class="filters">

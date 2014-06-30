@@ -37,8 +37,13 @@ $this->css()
      ->js();
 ?>
 
-<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
 <ul id="page_options">
+	<li>
+		<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=index'); ?>">
+			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
+		</a>
+	</li>
+<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
 		<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
@@ -50,8 +55,8 @@ $this->css()
 		</a>
 		<?php } ?>
 	</li>
-</ul>
 <?php } ?>
+</ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=followers'); ?>" id="collections">
 
