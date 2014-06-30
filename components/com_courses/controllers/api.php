@@ -1200,10 +1200,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
 
 		$id = JRequest::getInt('id', 0);
+		$version = JRequest::getInt('version', false);
 
 		$filename = JRequest::getVar('file', '');
 		$filename = urldecode($filename);
-		$filename = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . ltrim($filename, DS);
+		$filename = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename))

@@ -36,6 +36,9 @@ input.placeholder {
 label {
 	display: block;
 }
+.courses-form form {
+	margin-top: 50px;
+}
 #group-box {
 	opacity: 0.5;
 	background: #ddd;
@@ -104,7 +107,7 @@ label {
 }
 #layout-error, #title-error {
 	position: fixed;
-	top: 0;
+	top: 50px;
 	left: 50%;
 	right: 0;
 	margin: 20px;
@@ -123,9 +126,28 @@ label {
 .navbar {
 	margin-top: 20px;
 	overflow: hidden;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #222222;
+	background-color: rgba(0, 0, 0, .7);
+}
+.toolbar {
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: #222222;
+	background-color: rgba(0, 0, 0, .7);
+	height: 62px;
 }
 .navbar button,
-.navbar a {
+.toolbar button,
+.navbar a,
+.toolbar a,
+.new-upload-button {
 	display: block;
 	border: 1px solid #888;
 	border-radius: 4px;
@@ -134,6 +156,7 @@ label {
 	line-height: 1.5em;
 	padding: 7px;
 	margin-right: 10px;
+	text-align: center;
 	-webkit-transition: all ease-in-out 0.1s;
 	-moz-transition: all ease-in-out 0.1s;
 	-o-transition: all ease-in-out 0.1s;
@@ -154,39 +177,60 @@ label {
 	margin: 12px;
 }
 .navbar div,
-.navbar button {
+.toolbar div,
+.navbar button,
+.toolbar button {
 	float: right;
 	margin: 12px 2px;
 }
 .navbar a:hover,
-.navbar button:hover {
+.toolbar a:hover,
+.navbar button:hover,
+.toolbar button:hover,
+.new-upload-button:hover {
 	cursor: pointer;
 	-webkit-box-shadow: inset 0 2px 7px #999;
 	-moz-box-shadow: inset 0 2px 7px #999;
 	box-shadow: inset 0 2px 7px #999;
 }
 .navbar a:active,
-.navbar button:active {
+.toolbar a:active,
+.navbar button:active,
+.toolbar button:active,
+.new-upload-button:active {
 	-webkit-box-shadow: inset 1px 2px 3px #111;
 	-moz-box-shadow: inset 1px 2px 3px #111;
 	box-shadow: inset 0 2px 2px #111;
 }
-.navbar .question-info {
+.toolbar .question-info {
 	margin-right: 20px;
+	color: #FFFFFF;
 }
-.navbar .question-info p {
+.toolbar .question-info p {
 	margin: 0.7em 0;
 }
-.navbar .unsaved {
+.toolbar .unsaved {
 	transition: box-shadow 0.5s ease-in-out;
 	-webkit-transition: box-shadow 0.5s ease-in-out;
 	-o-transition: box-shadow 0.5s ease-in-out;
 	-moz-transition: box-shadow 0.5s ease-in-out;
 	box-shadow: 0 0 10px red;
 }
+#new-upload {
+	opacity: 0;
+	width: 8em;
+	position: absolute;
+}
+#new-upload:hover {
+	cursor: pointer;
+}
+.new-upload-button {
+	width: 8em;
+	color: #FFFFFF;
+}
 #saved-notification {
 	position: fixed;
-	top: 0;
+	top: 62px;
 	left: 0;
 	right: 0;
 	z-index: 999;

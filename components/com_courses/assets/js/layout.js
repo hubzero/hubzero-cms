@@ -3,19 +3,6 @@ jQuery(function($) {
 		tabs = $('#page-tabs li a'),
 		currentPage = $('#page-1');
 
-	// Register some changes based on whether we're in an iframe or not
-	if(window.location != window.parent.location) {
-		// Move Pagination, save and done (navigation bar) if in iframe
-		$('.navbar').css({
-			'position': 'fixed',
-			'bottom': 0,
-			'left': 0,
-			'right': 0,
-			'background': '#222'
-		});
-		$('.navbar .question-info').css('color', '#FFF');
-	}
-
 	$('.main.section.courses-form').submit(function ( e ) {
 		e.preventDefault();
 	});
@@ -191,8 +178,18 @@ jQuery(function($) {
 		marker.resizable();
 	});
 
+	var uploadButton = $('#new-upload');
+	uploadButton.fileupload({
+		submit: function() {
+			$('.new-upload-button').find('span').html('uploading...');
+		},
+		done: function() {
+			saveButton.trigger('click', [true]);
+		}
+	});
+
 	var saveButton = $('#save');
-	saveButton.click(function(evt) {
+	saveButton.click(function(evt, doRefresh) {
 		evt.preventDefault();
 		saveButton.text('Saving...').attr('disabled', true);
 		var serialized = {
@@ -200,8 +197,7 @@ jQuery(function($) {
 			'controller' : 'form',
 			'task'       : 'saveLayout',
 			'pages'      : [],
-			'title'      : $('#title').val().replace(/^\s+|\s+$/g, ''),
-			'type'       : $('#asset-type').val()
+			'title'      : $('#title').val().replace(/^\s+|\s+$/g, '')
 		};
 		if (serialized.title === '') {
 			$('#title-error').text('Please enter a title for this document').show();
@@ -264,11 +260,17 @@ jQuery(function($) {
 				saveButton.text('Save and Close').attr('disabled', false);
 				$('#saved-notification').slideDown('slow');
 				if (response && response.result && response.result == 'success') {
-					setTimeout(function() {
-						$('#saved-notification').slideUp('slow');
-						parent.$('body').trigger('savesuccessful');
-						window.location.href = '/courses/form';
-					}, 2000);
+					if (doRefresh) {
+						setTimeout(function() {
+							window.location.reload();
+						}, 1000);
+					} else {
+						setTimeout(function() {
+							$('#saved-notification').slideUp('slow');
+							parent.$('body').trigger('savesuccessful');
+							window.location.href = '/courses/form';
+						}, 2000);
+					}
 				}
 			}, 'JSON');
 			$('.questions-unsaved').html(0);

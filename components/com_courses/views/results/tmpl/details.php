@@ -32,11 +32,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css('form.css');
 
-$pdf = $this->pdf;
-$dep = $this->dep;
-$resp = $this->resp;
-$record = $resp->getAnswers();
-$layout = $pdf->getPageLayout($record['summary']['version']);
+$pdf     = $this->pdf;
+$dep     = $this->dep;
+$resp    = $this->resp;
+$record  = $resp->getAnswers();
+$layout  = $pdf->getPageLayout($record['summary']['version']);
+$version = $record['summary']['version'];
 ?>
 
 <header id="content-header">
@@ -100,6 +101,6 @@ $layout = $pdf->getPageLayout($record['summary']['version']);
 				endforeach;
 			endif; ?>
 		</li>
-	<?php }); ?>
+	<?php }, $version); ?>
 	</ol>
 </section>

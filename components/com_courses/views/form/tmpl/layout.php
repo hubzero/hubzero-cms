@@ -32,6 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css('form.css')
      ->js('layout.js');
+
+\Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
+\Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
+
 ?>
 <section class="main section courses-form">
 	<noscript>
@@ -48,18 +52,6 @@ $this->css('form.css')
 			<?php endif; ?>
 				<span>
 			<p id="title-error" class="error"></p>
-		</label>
-		<label>
-			<?php echo ($this->pdf->getAssetType() !== false) ? 'Type:' : '' ?>
-			<?php if (!$this->readonly && $this->pdf->getAssetType() !== false) : ?>
-				<select name="type" id="asset-type">
-					<option value="exam"<?php echo ($this->pdf->getAssetType() == 'exam') ? 'selected=selected': '' ?>>Exam</option>
-					<option value="quiz"<?php echo ($this->pdf->getAssetType() == 'quiz') ? 'selected=selected': '' ?>>Quiz</option>
-					<option value="homework"<?php echo ($this->pdf->getAssetType() == 'homework') ? 'selected=selected': '' ?>>Homework</option>
-				</select>
-			<?php else : ?>
-				<?php echo $this->pdf->getAssetType() ?>
-			<?php endif; ?>
 		</label>
 		<ol id="pages"<?php echo ($this->readonly) ? ' class="readonly"' : '' ?>>
 			<?php
@@ -88,12 +80,13 @@ $this->css('form.css')
 					echo '</li>';
 			}); ?>
 		</ol>
-		<div class="navbar">
-			<ol id="page-tabs">
-				<?php echo implode("\n", $tabs); ?>
-			</ol>
+		<div class="toolbar">
 			<?php if (!$this->readonly) : ?>
 				<div><a href="" id="save">Save and Close</a></div>
+				<div class="new-upload-button">
+					<input data-url="<?php echo JRoute::_($this->base.'&task=form.saveLayout&formId='.$this->pdf->getId()); ?>" type="file" name="pdf" id="new-upload" />
+					<span>Upload New PDF</span>
+				</div>
 			<?php endif; ?>
 			<div><a href="/courses/form" id="done"><?php echo ($this->readonly) ? 'Done' : 'Cancel' ?></a></div>
 			<?php if (!$this->readonly) : ?>
@@ -103,6 +96,11 @@ $this->css('form.css')
 					</p>
 				</div>
 			<?php endif; ?>
+		</div>
+		<div class="navbar">
+			<ol id="page-tabs">
+				<?php echo implode("\n", $tabs); ?>
+			</ol>
 		</div>
 		<p id="layout-error" class="error"></p>
 		<div class="clear"></div>

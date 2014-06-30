@@ -213,6 +213,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		$this->view->pdf      = new PdfForm($this->assertFormId());
 		$this->view->title    = $this->view->pdf->getTitle();
 		$this->view->readonly = JRequest::getInt('readonly', false);
+		$this->view->base     = $this->base;
 		$this->view->display();
 	}
 
@@ -227,11 +228,21 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		$this->authorize();
 
 		$pdf = $this->assertExistentForm();
-		$pdf->setTitle($_POST['title']);
+
+		if (JRequest::getVar('title', false))
+		{
+			$pdf->setTitle($_POST['title']);
+		}
 
 		if (isset($_POST['pages']))
 		{
 			$pdf->setPageLayout($_POST['pages']);
+		}
+
+		if (isset($_FILES['pdf']))
+		{
+			$pdf->setFname((is_array($_FILES['pdf']['tmp_name'])) ? $_FILES['pdf']['tmp_name'][0] : $_FILES['pdf']['tmp_name']);
+			$pdf->renderPageImages();
 		}
 
 		echo json_encode(array('result'=>'success'));

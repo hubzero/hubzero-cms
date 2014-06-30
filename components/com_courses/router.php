@@ -286,6 +286,7 @@ function CoursesParseRoute($segments)
 	{
 		if ($segments[2] == 'form.index'
 			|| $segments[2] == 'form.layout'
+			|| $segments[2] == 'form.saveLayout'
 			|| $segments[2] == 'form.upload'
 			|| $segments[2] == 'form.deploy'
 			|| $segments[2] == 'form.showDeployment'
