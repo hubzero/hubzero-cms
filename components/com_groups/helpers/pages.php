@@ -586,7 +586,7 @@ class GroupsHelperPages
 		$formatHandler = '';
 		if (strpos($document, '<?php') !== false)
 		{
-			$formatHandler = '<!-- {FORMAT:WIKI_TO} -->';
+			$formatHandler = '<!-- {FORMAT:HTML} -->';
 		}
 
 		// only parse php if Super Group
