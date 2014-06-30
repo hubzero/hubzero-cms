@@ -106,7 +106,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		if ($alias == 'all')
 		{
 			$this->view->category->set('alias', 'all');
-			$this->view->category->set('title', JText::_('All Articles'));
+			$this->view->category->set('title', JText::_('COM_KB_ALL_ARTICLES'));
 			$this->view->category->set('id', 0);
 			$this->view->category->set('state', 1);
 		}
@@ -134,18 +134,19 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		// Get configuration
 		$jconfig = JFactory::getConfig();
 
-		$this->view->filters = array();
-		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['sort']    = JRequest::getWord('sort', 'recent');
+		$this->view->filters = array(
+			'limit'    => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'    => JRequest::getInt('limitstart', 0),
+			'sort'     => JRequest::getWord('sort', 'recent'),
+			'section'  => $sect,
+			'category' => $cat,
+			'search'   => JRequest::getVar('search',''),
+			'state'    => 1
+		);
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
 		{
 			$this->view->filters['sort'] = 'recent';
 		}
-		$this->view->filters['section']  = $sect;
-		$this->view->filters['category'] = $cat;
-		$this->view->filters['search']   = JRequest::getVar('search','');
-		$this->view->filters['state']    = 1;
 		if (!$this->juser->get('guest'))
 		{
 			$this->view->filters['user_id'] = $this->juser->get('id');
@@ -372,7 +373,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		{
 			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -456,7 +457,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		{
 			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
