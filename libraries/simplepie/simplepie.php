@@ -1532,7 +1532,7 @@ class SimplePie
 		$this->sanitize->pass_file_data($this->file_class, $this->timeout, $this->useragent, $this->force_fsockopen);
 
 		if ($this->feed_url !== null || $this->raw_data !== null)
-		{			
+		{
 			$this->data = array();
 			$this->multifeed_objects = array();
 			$cache = false;
@@ -1789,7 +1789,7 @@ class SimplePie
 					}
 				}
 			}
-			if(isset($parser))
+			if (isset($parser))
 			{
 				// We have an error, just set SimplePie_Misc::error to it and quit
 				$this->error = sprintf('XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
@@ -6936,7 +6936,7 @@ class SimplePie_Enclosure
 		else
 		{
 			$options = explode(',', $options);
-			foreach($options as $option)
+			foreach ($options as $option)
 			{
 				$opt = explode(':', $option, 2);
 				if (isset($opt[0], $opt[1]))
@@ -9195,7 +9195,7 @@ class SimplePie_Misc
 		return $return;
 	}
 
-	function element_implode($element)
+	static function element_implode($element)
 	{
 		$full = "<$element[tag]";
 		foreach ($element['attribs'] as $key => $value)
@@ -10857,7 +10857,7 @@ class SimplePie_Misc
 	 * @param string $data Input data
 	 * @return string Output data
 	 */
-	function entities_decode($data)
+	static function entities_decode($data)
 	{
 		$decoder = new SimplePie_Decode_HTML_Entities($data);
 		return $decoder->parse();
@@ -11061,7 +11061,7 @@ class SimplePie_Misc
 		return $tokens;
 	}
 
-	function array_unique($array)
+	static function array_unique($array)
 	{
 		if (version_compare(PHP_VERSION, '5.2', '>='))
 		{
@@ -11557,7 +11557,7 @@ class SimplePie_Decode_HTML_Entities
 
 				if ($match !== null)
 				{
- 					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
+					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
 					$this->position += strlen($entities[$match]) - strlen($consumed) - 1;
 				}
 				break;
