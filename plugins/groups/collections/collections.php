@@ -44,6 +44,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Custom params
+	 *
+	 * @var    object
+	 */
+	protected $_params = null;
+
+	/**
 	 * Return the alias and name for this category of content
 	 *
 	 * @return     array
@@ -105,8 +112,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
-		$p = new \Hubzero\Plugin\Params($this->database);
-		$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
+		//$p = new \Hubzero\Plugin\Params($this->database);
+		//$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 		$this->members = $group->get('members');
 		$this->authorized = $authorized;
 
@@ -1789,6 +1796,23 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get the group's custom params
+	 *
+	 * @param      integer  $group_id
+	 * @return     object
+	 */
+	protected function _params($group_id)
+	{
+		if (!$this->_params)
+		{
+			$database = JFactory::getDBO();
+			$p = new \Hubzero\Plugin\Params($database);
+			$this->_params = $p->getCustomParams($group_id, 'groups', $this->_name);
+		}
+		return $this->_params;
+	}
+
+	/**
 	 * Set permissions
 	 *
 	 * @param      string  $assetType Type of asset to set permissions for (component, section, category, thread, post)
@@ -1802,8 +1826,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->params->set('access-can-follow', false);
 		if (!$this->juser->get('guest'))
 		{
-			$p = new \Hubzero\Plugin\Params($this->database);
-			$customParams = $p->getCustomParams($this->group->get('gidNumber'), 'groups', $this->_name);
+			$customParams = $this->_params($this->group->get('gidNumber'));
 			$this->params->merge($customParams);
 
 			// Set asset to viewable
