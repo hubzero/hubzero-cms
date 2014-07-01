@@ -459,7 +459,7 @@ final class JSite extends JApplication
 
 			$db->setQuery($query);
 			$templates = $db->loadObjectList('id');
-			foreach($templates as &$template) {
+			foreach ($templates as &$template) {
 				$registry = new JRegistry;
 				$registry->loadString($template->params);
 				$template->params = $registry;
