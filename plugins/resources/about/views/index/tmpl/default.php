@@ -106,7 +106,7 @@ if (!$this->model->access('view-all')) {
 ?>
 		<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 		<div class="resource-content">
-			<?php echo $this->escape($this->model->resource->introtext); ?>
+			<?php echo $maintext; ?>
 		</div>
 <?php
 } else {
