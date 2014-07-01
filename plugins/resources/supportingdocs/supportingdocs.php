@@ -53,7 +53,8 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if (!$archive && $model->type->params->get('plg_' . $this->_name))
+		if (!$archive && $model->type->params->get('plg_' . $this->_name)
+			&& $model->access('view-all'))
 		{
 			$areas['supportingdocs'] = JText::_('PLG_RESOURCES_SUPPORTINGDOCS');
 		}

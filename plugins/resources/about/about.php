@@ -53,7 +53,8 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_about', 0))
+		if ($model->type->params->get('plg_about', 0)
+			&& $model->access('view'))
 		{
 			$areas['about'] = JText::_('PLG_RESOURCES_ABOUT');
 		}

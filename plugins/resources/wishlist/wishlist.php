@@ -53,7 +53,8 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_' . $this->_name))
+		if ($model->type->params->get('plg_' . $this->_name)
+			&& $model->access('view-all'))
 		{
 			$areas['wishlist'] = JText::_('PLG_RESOURCES_WISHLIST');
 		}

@@ -69,7 +69,8 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_reviews'))
+		if ($model->type->params->get('plg_reviews')
+			&& $model->access('view-all'))
 		{
 			$areas['reviews'] = JText::_('PLG_RESOURCES_REVIEWS');
 		}

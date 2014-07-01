@@ -135,7 +135,7 @@ $juser = JFactory::getUser();
 	</aside><!-- / .aside -->
 </section><!-- / .main section -->
 
-<?php if ($this->model->access('view-all')) { ?>
+<?php if ($this->model->access('view')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
 			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>

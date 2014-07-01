@@ -105,7 +105,7 @@ $maintext = $this->model->description('parsed');
 		<?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h4>
 			<div class="resource-content">
-				<?php echo $this->escape($this->model->resource->introtext); ?>
+				<?php echo $maintext; ?>
 			</div>
 		<?php } else { ?>
 			<?php if (trim($maintext)) { ?>

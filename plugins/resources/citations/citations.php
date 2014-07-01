@@ -53,7 +53,8 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_citations'))
+		if ($model->type->params->get('plg_citations')
+			&& $model->access('view-all'))
 		{
 			$areas['citations'] = JText::_('PLG_RESOURCES_CITATIONS');
 		}
