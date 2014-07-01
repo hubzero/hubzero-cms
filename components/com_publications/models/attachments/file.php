@@ -150,9 +150,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
+		$url = preg_replace('/\/administrator/', '', $url);
 		$html = '';
 
 		// Draw bundles
@@ -166,7 +166,6 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// Get size
 			$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
 			$size = $size ? PublicationsHtml::formatsize($size) : '';
-
 			$ext  = 'zip';
 
 			// Get file icon

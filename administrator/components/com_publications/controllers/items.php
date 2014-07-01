@@ -55,7 +55,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	{
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Get configuration
 		$app = JFactory::getApplication();
@@ -150,9 +151,13 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get the publications component config
 		$this->view->config = $this->config;
 
+		// Use new curation flow?
+		$this->view->useBlocks  = $this->view->config->get('curation', 0);
+
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Incoming publication ID
 		$id = JRequest::getVar('id', array(0));
@@ -207,9 +212,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Load version
 		$vid = $this->view->pub->version_id;
 		$this->view->row->load($vid);
-
-		// Check if pub is ready to be released
-		$checked = array('content' => 0, 'description' => 0, 'authors' => 0);
 
 		// Fail if checked out not by 'me'
 		if ($this->view->objP->checked_out
@@ -269,57 +271,61 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			JPATH_COMPONENT . DS . 'publications.xml'
 		);
 
-		// Build selects of various categories
-		$rt = new PublicationCategory($this->database);
-		$this->view->lists['category'] = PublicationsHtml::selectCategory(
-			$rt->getContribCategories(), 'category', $this->view->pub->category, '', '', '', ''
+		// Get category
+		$this->view->pub->_category = new PublicationCategory( $this->database );
+		$this->view->pub->_category->load($this->view->pub->category);
+		$this->view->pub->_category->_params = new JParameter( $this->view->pub->_category->params );
+
+		$this->view->lists['category'] = PublicationsAdminHtml::selectCategory(
+			$this->view->pub->_category->getContribCategories(),
+			'category',
+			$this->view->pub->category,
+			'',
+			'',
+			'',
+			''
 		);
 
 		// Get master type info
-		$mtObj = new PublicationMasterType( $this->database );
-		$mtObj->load($this->view->pub->master_type);
-		$this->view->typeParams = new JParameter( $mtObj->params );
+		$mt = new PublicationMasterType( $this->database );
+		$pub->_project 	= $this->_project;
+		$this->view->pub->_type = $mt->getType($this->view->pub->base);
+		$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
 		// Get attachments
 		$pContent = new PublicationAttachment( $this->database );
-		$primary = $pContent->getAttachments( $this->view->row->id, $filters = array('role' => '1') );
-		$secondary = $pContent->getAttachments( $this->view->row->id, $filters = array('role' => '0') );
-		if (count($primary) > 0)
-		{
-			$checked['content'] = 1;
-		}
-		$this->view->lists['content'] = PublicationsHtml::selectContent($primary, $secondary, $this->_option);
+		$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
 
-		// Get pub authors
-		$pa = new PublicationAuthor( $this->database );
-		$authors = $pa->getAuthors($vid);
-		if (count($authors) > 0)
+		// Curation
+		if ($this->view->useBlocks)
 		{
-			$checked['authors'] = 1;
+			// Get manifest from either version record (published) or master type
+			$manifest   = $this->view->pub->curation
+						? $this->view->pub->curation
+						: $this->view->pub->_type->curation;
+
+			// Get curation model
+			$this->view->pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+
+			// Set pub assoc and load curation
+			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
 		}
 
-		// Get submitter
-		$this->view->submitter = $pa->getSubmitter(
-			$this->view->row->id,
-			$this->view->row->created_by
+		// Draw content
+		$this->view->lists['content'] = PublicationsAdminHtml::selectContent(
+			$this->view->pub,
+			$this->_option,
+			$this->view->useBlocks,
+			$this->database
 		);
 
-		// Build <select> of project owners
-		$this->view->lists['authors'] = PublicationsHtml::selectAuthorsNoEdit($authors, $this->_option);
+		// Get pub authors
+		$pAuthors 			= new PublicationAuthor( $this->database );
+		$this->view->pub->_authors 		= $pAuthors->getAuthors($this->view->pub->version_id);
+		$this->view->pub->_submitter 	= $pAuthors->getSubmitter($this->view->pub->version_id, $this->view->pub->created_by);
 
-		// Description is there?
-		$checked['description'] = $this->view->row->title && $this->view->row->abstract && $this->view->row->description ? 1 : 0;
-		$this->view->checked = $checked;
-
-		// Is publishing allowed?
-		if ($checked['content'] == 1 && $checked['authors'] == 1 && $checked['description'] == 1)
-		{
-			$this->view->pub_allowed = 1;
-		}
-		else
-		{
-			$this->view->pub_allowed = 0;
-		}
+		// Draw publication authors
+		$this->view->lists['authors'] = PublicationsAdminHtml::selectAuthorsNoEdit($this->view->pub->_authors, $this->_option);
 
 		// Get tags on this item
 		$tagsHelper = new PublicationTags( $this->database);
@@ -559,7 +565,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (!$row->bind($_POST))
 		{
-			echo PublicationsHtml::alert($row->getError());
+			echo PublicationsAdminHtml::alert($row->getError());
 			exit();
 		}
 
@@ -646,7 +652,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo PublicationsHtml::alert(JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							echo PublicationsAdminHtml::alert(JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
 							exit();
 						}
 					}

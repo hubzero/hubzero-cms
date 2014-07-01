@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 		</select>
 
 		<label for="category"><?php echo JText::_('Category'); ?>:</label>
-		<?php echo PublicationsHtml::selectCategory($this->categories, 'category', $this->filters['category'], '[ all categories ]', '', '', ''); ?>
+		<?php echo PublicationsAdminHtml::selectCategory($this->categories, 'category', $this->filters['category'], '[ all categories ]', '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
 	</fieldset>
@@ -132,9 +132,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// What's the publication status?
-	$status = PublicationsHtml::getPubStateProperty($row, 'status');
-	$class 	= PublicationsHtml::getPubStateProperty($row, 'class');
-	$task 	= PublicationsHtml::getPubStateProperty($row, 'task');
+	$status = PublicationsAdminHtml::getPubStateProperty($row, 'status');
+	$class 	= PublicationsAdminHtml::getPubStateProperty($row, 'class');
+	$task 	= PublicationsAdminHtml::getPubStateProperty($row, 'task');
 	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
 			? JHTML::_('date', $row->modified, $dateFormat, $tz)
 			: JHTML::_('date', $row->created, $dateFormat, $tz);
@@ -177,7 +177,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<?php PublicationsHtml::statusKey(); ?>
+	<?php PublicationsAdminHtml::statusKey(); ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

@@ -58,6 +58,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.ph
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'curation.php');
 
 // Projects
 require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
@@ -74,28 +75,28 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Publications'),
+	JText::_('COM_PUBLICATIONS_PUBLICATIONS'),
 	'index.php?option=' .  $option . '&controller=items',
 	$controllerName == 'items'
 );
 
 JSubMenuHelper::addEntry(
-	JText::_('Licenses'),
+	JText::_('COM_PUBLICATIONS_LICENSES'),
 	'index.php?option=' .  $option . '&controller=licenses',
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Categories'),
+	JText::_('COM_PUBLICATIONS_CATEGORIES'),
 	'index.php?option=' .  $option . '&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Master Types'),
+	JText::_('COM_PUBLICATIONS_MASTER_TYPES'),
 	'index.php?option=' .  $option . '&controller=types',
 	$controllerName == 'types'
 );
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'PublicationsController' . ucfirst($controllerName);
 
 // Instantiate controller

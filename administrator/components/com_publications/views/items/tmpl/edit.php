@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$htmlHelper	  = new PublicationsHtml();
+$htmlHelper	  = new PublicationsAdminHtml();
 
 // Get hub config
 $juri 	 = JURI::getInstance();
@@ -40,10 +40,10 @@ $site 	 = $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $text = ($this->task == 'edit'
-	? JText::_('Edit') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
-	: JText::_('New'));
+	? JText::_('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
+	: JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('Publication') . ': [ ' . $text . ' ]', 'addedit.png');
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::apply();
 JToolBarHelper::save();
@@ -74,25 +74,12 @@ $elements 	= new PublicationsElements($data, $customFields);
 $fields 	= $elements->render();
 $schema 	= $elements->getSchema();
 
-// Admins can always edit
 $canedit 	= 1;
 $now 		= JFactory::getDate()->toSql();
-
 $status 	= $htmlHelper->getPubStateProperty($this->row, 'status');
-$class 		= $htmlHelper->getPubStateProperty($this->row, 'class');
 
 $v = $this->version == 'default' ? '' : '?v=' . $this->version;
-
-// Build the path for publication attachments
-$base_path 	= $this->config->get('webpath');
-$path 		= $htmlHelper->buildPath($this->pub->id, $this->pub->version_id, $base_path, $this->pub->secret);
-
-// Instantiate the sliders object
-jimport('joomla.html.pane');
-$tabs = JPane::getInstance('sliders');
-
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
-
 $params = new JParameter($this->row->params, JPATH_COMPONENT . DS . 'publications.xml');
 
 // Available panels and default config
@@ -115,8 +102,8 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'resetrating') {
-		if (confirm('Are you sure you want to reset the Rating to Unrated? \nAny unsaved changes to this content will be lost.')){
-			submitform( pressbutton );
+		if (confirm('<?php echo JText::_('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>'){
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -160,7 +147,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.title.value == ''){
-		alert( 'Content item must have a title' );
+		alert('<?php echo JText::_('COM_PUBLICATIONS_ERROR_MISSING_TITLE'); ?>');
 	}
 	else {
 		submitform( pressbutton );
@@ -351,33 +338,33 @@ function popratings()
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="paramlist_key">Submitter:</td>
+					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</td>
 					<td><?php echo $this->submitter->name; ?></td>
 				</tr>
 		<?php if ($this->row->state == 5) { ?>
 				<tr>
-					<td class="paramlist_key">Submitted:</td>
+					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>
 					<td><?php echo $this->row->submitted; ?></td>
 				</tr>
 		<?php } else if ($this->row->state == 1 || $this->row->state == 0)  { ?>
 			<?php if ($this->row->submitted != '0000-00-00 00:00:00') { ?>
 					<tr>
-						<td class="paramlist_key">Submitted</td>
+						<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?></td>
 						<td><?php echo $this->row->submitted; ?></td>
 					</tr>
 			<?php } ?>
 			<?php if ($this->row->accepted != '0000-00-00 00:00:00') { ?>
 					<tr>
-						<td class="paramlist_key">Accepted</td>
+						<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCEPTED'); ?></td>
 						<td><?php echo $this->row->accepted; ?></td>
 					</tr>
 			<?php } ?>
 			<tr>
 				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVAL'); ?></td>
 				<td>	<?php if (file_exists($this->archPath)) { ?>
-						<a href="<?php echo str_replace(JPATH_ROOT, '', $this->archPath); ?>" class="archival">Archival package</a> &nbsp;&nbsp;<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>">[repackage]</a>
+						<a href="<?php echo str_replace(JPATH_ROOT, '', $this->archPath); ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVAL'); ?></a> &nbsp;&nbsp;<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>">[<?php echo JText::_('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
 					<?php  }  else { ?>
-					<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>" class="archival">Produce archival package</a>
+					<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_PRODUCE_ARCHIVAL'); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
@@ -392,14 +379,14 @@ function popratings()
 	<div class="input-wrap">
 		<textarea name="message" id="message" rows="5" cols="50"></textarea>
 		<input type="hidden" name="admin_action" value="" />
-		<input type="submit" value="<?php echo JText::_('Send message'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" />
+		<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" />
 		<?php if ($this->row->state == 1) { ?>
-			<input type="submit" value="<?php echo JText::_('Unpublish Version'); ?>" class="btn" id="do-unpublish" onclick="javascript: submitbutton('unpublish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="javascript: submitbutton('unpublish')" />
 		<?php } else if ($this->row->state == 0) { ?>
-			<input type="submit" value="<?php echo JText::_('Re-publish Version'); ?>" class="btn" id="do-republish" onclick="javascript: submitbutton('republish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="javascript: submitbutton('republish')" />
 		<?php } else if ($this->row->state == 5) { ?>
-			<input type="submit" value="<?php echo JText::_('Approve &amp; Publish'); ?>" class="btn" id="do-publish" <?php if ($this->pub_allowed) { ?> onclick="javascript: submitbutton('publish')" <?php } ?> />
-			<input type="submit" value="<?php echo JText::_('Revert to Draft'); ?>" class="btn" id="do-revert" onclick="javascript: submitbutton('revert')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="javascript: submitbutton('publish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="javascript: submitbutton('revert')" />
 		<?php } ?>
 	</div>
 </fieldset>
@@ -430,6 +417,7 @@ function popratings()
 	</table>
 <?php echo JHtml::_('sliders.end'); ?>
 	</div>
+	<div class="clr"></div>
 
 	<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -438,6 +426,5 @@ function popratings()
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 
-	<div class="clr"></div>
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
