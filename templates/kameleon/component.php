@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->template = 'kameleon';
 
+JHTML::_('behavior.modal');
+
 $browser = new \Hubzero\Browser\Detector();
 
 $cls = array(
