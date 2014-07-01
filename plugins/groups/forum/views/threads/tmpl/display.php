@@ -151,7 +151,8 @@ $this->css()
 				foreach ($this->thread->attachments() as $attachment)
 				{
 					$cls = 'file';
-					$title = $attachment->get('description', $attachment->get('filename'));
+					$title = trim($attachment->get('description'));
+					$title = $title ?: $attachment->get('filename');
 					if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
 					{
 						$cls = 'img';
