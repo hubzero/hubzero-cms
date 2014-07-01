@@ -30,20 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('Publications') . '</a>: <small><small>[' . JText::_('Admin Controls') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_PUBLICATIONS_PUBLICATIONS') . '</a>: <small><small>[' . JText::_('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS') . ']</small></small>', 'addedit.png');
 ?>
-<form action="index.php" method="post" name="adminForm" id="resourceForm" >
-	<table>
-		<tr>
-			<th>
-			<?php echo JText::_('Convert a resource into a publication:'); ?>
-			</th>
-			<th></th>
-		</tr>
-		<tr>
-			<td class="key"><label>Resource ID:</label></td>
-			<td></td>
-		</tr>
-	</table>
-</form>
 
