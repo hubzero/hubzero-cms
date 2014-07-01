@@ -34,7 +34,7 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_PUBLICATIONS').': [ ' . JText::_('Edit Author Info for Publication') . ' #'
+	JToolBarHelper::title(JText::_('COM_PUBLICATIONS').': [ ' . JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_FOR_PUB') . ' #'
 	. $this->pub->id . ' (v.' . $this->row->version_label . ')' . ' ]', 'groups.png');
 	JToolBarHelper::save('saveauthor');
 	JToolBarHelper::cancel();
@@ -78,8 +78,8 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
 <p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
-. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('Publication') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('Edit Author Info'); ?></p>
+. $this->controller; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
+. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_INFO'); ?></p>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
@@ -89,13 +89,13 @@ function submitbutton(pressbutton)
 			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
 		</div>
 		<div class="configuration" >
-			<?php echo JText::_('Edit author') ?>
+			<?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
 		</div>
 	</fieldset>
 <?php } ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Edit Author Information'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_INFO'); ?></span></legend>
 
 			<input type="hidden" name="author" value="<?php echo $this->author->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -108,14 +108,14 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Author Name'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME'); ?>:</label></td>
 						<td>
-							<?php echo JText::_('First Name (and middle initial):'); ?> <input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
-							<?php echo JText::_('Last Name:'); ?> <input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
+							<?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?> <input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
+							<?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?> <input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('Organization'); ?>:</label></td>
+						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:</label></td>
 						<td>
 							<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
 						</td>
