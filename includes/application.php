@@ -184,11 +184,11 @@ final class JSite extends JApplication
 			// Add version number or not based on global configuration
 			if ($this->getCfg('MetaVersion', 0))
 			{
-				$document->setGenerator('Joomla! - Open Source Content Management  - Version ' . JVERSION);
+				$document->setGenerator('HUBzero - The open source platform for scientific and educational collaboration (version ' . \Hubzero\Version\Version::VERSION . ')');
 			}
 			else
 			{
-				$document->setGenerator('Joomla! - Open Source Content Management');
+				$document->setGenerator('HUBzero - The open source platform for scientific and educational collaboration');
 			}
 
 			$contents = JComponentHelper::renderComponent($component);
