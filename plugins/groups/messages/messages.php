@@ -389,7 +389,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 					{
 						$role = explode('_', $mbr);
 						$db = JFactory::getDBO();
-						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE role=" . $db->Quote($role[1]);
+						$sql = "SELECT uidNumber FROM #__xgroups_member_roles WHERE roleid=" . $db->Quote($role[1]);
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
 						foreach ($member_roles as $member) 

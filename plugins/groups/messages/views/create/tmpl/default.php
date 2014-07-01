@@ -37,12 +37,17 @@ $group_statuses = array(
 	'invitees' => JText::_('All Group Invitees'),
 	'applicants' => JText::_('All Group Applicants')
 );
-
+echo '<pre>';
+print_r($this->member_roles);
+echo '</pre>';
 $role_id = JRequest::getVar('role_id');
-if($role_id) {
-	foreach($this->member_roles as $role) {
-		if($role['id'] == $role_id) {
-			$role_name = $role['role'];
+if ($role_id)
+{
+	foreach ($this->member_roles as $role)
+	{
+		if ($role['id'] == $role_id)
+		{
+			$role_name = $role['name'];
 			break;
 		}
 	}
@@ -72,8 +77,8 @@ if($role_id) {
 						<?php if(count($this->member_roles) > 0) { ?>
 							<optgroup label="Group Member Roles">
 								<?php foreach($this->member_roles as $role) { ?>
-									<?php $sel = ($role['role'] == $role_name) ? "selected" : ""; ?>
-									<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['role']; ?></option>
+									<?php $sel = ($role['name'] == $role_name) ? "selected" : ""; ?>
+									<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['name']; ?></option>
 								<?php } ?>
 							</optgroup>
 						<?php } ?>
