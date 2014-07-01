@@ -110,7 +110,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 						?>
 					</select>
 				</label>
-				<input type="hidden" name="task" value="comments" />
 				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
 			<?php if ($this->sub) { ?>
 				<input type="hidden" name="action" value="comments" />
