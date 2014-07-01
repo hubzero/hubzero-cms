@@ -678,7 +678,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->view->group->set('join_policy', $this->config->get('join_policy'));
 			$this->view->group->set('discoverability', $this->config->get('discoverability', 0));
 			$this->view->group->set('discussion_email_autosubscribe', null);
-			
+
 			$this->view->tags = "";
 
 			//set title
