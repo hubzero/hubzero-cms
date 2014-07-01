@@ -39,21 +39,21 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	* @var		string
 	*/
 	protected	$_name 		= 'imageviewer';
-	
+
 	/**
 	* Configs
 	*
-	* @var	
+	* @var
 	*/
 	protected	$_config 	= NULL;
-	
+
 	/**
 	* Image Helper
 	*
-	* @var	
+	* @var
 	*/
 	protected	$_imgHelper = NULL;
-	
+
 	/**
 	 * Get default params for the handler
 	 *
@@ -63,9 +63,9 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	{
 		// Load config from db
 		$obj = new PublicationHanlder($this->_parent->_db);
-		
+
 		$this->_config = $obj->getConfig($this->_name);
-		
+
 		// Fall back
 		if (!$this->_config)
 		{
@@ -74,9 +74,9 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 				'label' 		=> 'Image Gallery',
 				'title' 		=> 'Viewer for image files',
 				'about'			=> 'Selected images will be viewed together in a slideshow',
-				'params'	=> array( 
-					'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'), 
-					'required_ext' 		=> array(), 
+				'params'	=> array(
+					'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
+					'required_ext' 		=> array(),
 					'min_allowed' 		=> 1,
 					'max_allowed' 		=> 1000,
 					'thumbSuffix' 		=> '-thumb',
@@ -91,10 +91,10 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 			$this->_config = json_decode(json_encode($configs), FALSE);
 		}
-		
+
 		return $this->_config;
 	}
-	
+
 	/**
 	 * Clean-up related files
 	 *
@@ -107,33 +107,33 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$this->getConfig();
 		}
-		
+
 		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
 				? $this->_config->params->thumbSuffix : '-tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
-		
+
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
-		
+
 		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
 		$thumbPath = dirname($path) . DS . $thumbName;
-		
+
 		if (is_file($thumbPath))
 		{
 			JFile::delete($thumbPath);
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Make image default for publication
 	 *
@@ -146,43 +146,43 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$this->getConfig();
 		}
-		
+
 		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
 				? $this->_config->params->thumbSuffix : '-tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
-		
-		// TBD - to come from component configs		
+
+		// TBD - to come from component configs
 		$defaultMasterName  = 'master.png';
 		$defaultThumbName 	= 'thumb.gif';
-				
+
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
-		
+
 		if ($configs->dirHierarchy)
-		{			
+		{
 			$path = $configs->pubPath . DS . $row->path;
 		}
 		else
 		{
 			// Attach record number to file name
-			$name 	= ProjectsHtml::fixFileName(basename($row->path), '-' . $row->id);			
+			$name 	= ProjectsHtml::fixFileName(basename($row->path), '-' . $row->id);
 			$path = $configs->pubPath . DS . $name;
 		}
-		
+
 		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
 		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
-				
+
 		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
 		$thumbPath = dirname($path) . DS . $thumbName;
-				
+
 		// Copy to thumb
 		if (is_file($thumbPath))
 		{
@@ -192,7 +192,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			return false;
 		}
-		
+
 		// Copy to master
 		if (is_file($path))
 		{
@@ -202,24 +202,24 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			return false;
 		}
-		
+
 		// Get current default
 		$currentDefault = new PublicationAttachment( $this->_parent->_db );
 		$currentDefault->getDefault($row->publication_version_id);
-		
+
 		// Unmark as default
 		if ($currentDefault->id)
 		{
 			$currentDefault->saveParam($currentDefault, 'pubThumb', '');
 		}
-		
+
 		// Mark this image as default
 		$currentDefault->saveParam($row, 'pubThumb', '1');
-		
+
 		return true;
-		
+
 	}
-	
+
 	/**
 	 * Show attachments in an image band (gallery)
 	 *
@@ -229,56 +229,56 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	{
 		// Get element manifest to deliver content as intended
 		$elements = $pub->_curationModel->getElements(3);
-		
+
 		if (empty($elements))
 		{
 			return false;
 		}
-		
+
 		// Show first element
 		$element = $elements[0];
-				
+
 		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
 				? $this->_config->params->thumbSuffix : '-tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
-				
+
 		$manifest 		= $element->manifest;
 		$params   		= $manifest->params->typeParams;
 		$dirHierarchy 	= isset($params->dirHierarchy) ? $params->dirHierarchy : 1;
-			
+
 		// Do we have attachments?
-		$attachments = isset($pub->_attachments['elements'][$element->id]) 
+		$attachments = isset($pub->_attachments['elements'][$element->id])
 					? $pub->_attachments['elements'][$element->id] : NULL;
-					
+
 		if (!$attachments)
 		{
 			return false;
 		}
-		
+
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
-				
+
 		$html 	= '';
 		$els 	= '';
 		$i 		= 0;
 		$k 		= 0;
 		$g 		= 0;
-				
+
 		// Get files directory
-		$directory = isset($params->directory) && $params->directory 
-							? $params->directory : $pub->secret; 
+		$directory = isset($params->directory) && $params->directory
+							? $params->directory : $pub->secret;
 		$pubPath = $pub->_helpers->pubHelper->buildPath($pub->id, $pub->version_id, '', $directory, 0);
-		
+
 		$i = 0;
-		
+
 		$els .=  '<div class="showcase-pane">'."\n";
 		foreach ($attachments as $attach)
 		{
@@ -289,27 +289,27 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			else
 			{
 				// Attach record number to file name
-				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);			
+				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);
 				$fpath  = $pubPath . DS . $name;
 			}
-			
+
 			$thumbName = $this->_imgHelper->createThumbName(basename($fpath), $suffix, $format);
 			$thumbPath = dirname($fpath) . DS . $thumbName;
-			
+
 			if (is_file(JPATH_ROOT . DS . $fpath) && is_file(JPATH_ROOT . DS . $thumbPath))
 			{
 				// Get extentsion
 				$ext = explode('.', basename($fpath));
 				$ext = strtolower(end($ext));
-				
+
 				$title = $attach->title ? $attach->title : basename($attach->path);
-				if ($ext == 'swf' || $ext == 'mov') 
+				if ($ext == 'swf' || $ext == 'mov')
 				{
-					$g++;					
+					$g++;
 					$els .= ' <a class="video"  href="' . $fpath . '" title="' . $title . '">';
 					$els .= '<img src="' . $thumbPath . '" alt="' . $title . '" /></a>';
-				} 
-				else 
+				}
+				else
 				{
 					$k++;
 					$els .= ' <a rel="lightbox" href="' . $fpath . '" title="' . $title . '">';
@@ -319,22 +319,22 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			}
 		}
 		$els .=  '</div>'."\n";
-		
-		if ($i > 0) 
+
+		if ($i > 0)
 		{
 			$html .= '<div id="showcase">'."\n" ;
 			$html .= '<div id="showcase-prev" ></div>'."\n";
-			$html .= '  <div id="showcase-window">'."\n";							
+			$html .= '  <div id="showcase-window">'."\n";
 			$html .= $els;
 			$html .= '  </div>'."\n";
-			$html .= '  <div id="showcase-next" ></div>'."\n";	
-			$html .= '</div>'."\n";	
+			$html .= '  <div id="showcase-next" ></div>'."\n";
+			$html .= '</div>'."\n";
 		}
-		
+
 		return $html;
-	
+
 	}
-	
+
 	/**
 	 * Side controls for handler
 	 *
@@ -347,17 +347,17 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$this->getConfig();
 		}
-		
+
 		$html = '<div class="' . $this->_name . '">';
 		$html.= '<h5>' . $this->_config->label . '</h5>';
 		$html.= '<p>' . $this->_config->title . '</p>';
 		$html.= '<p class="hint">' . $this->_config->about . '</p>';
-		
+
 		$html.= '</div>';
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Side controls for handler
 	 *
@@ -370,12 +370,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$this->getConfig();
 		}
-				
+
 		$html = '<div class="handler-' . $this->_name . '">';
 		$html.= '<h3>' . JText::_('Presentation') . ': ' . $this->_config->label . '</h3>';
-		$html.= '<p>' . $this->_config->about . '</p>';		
+		$html.= '<p>' . $this->_config->about . '</p>';
 		$html.= '</div>';
-		
+
 		return $html;
 	}
 
@@ -390,7 +390,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			return false;
 		}
-		
+
 		// Make sure we got config
 		if (!$this->_config)
 		{
@@ -398,7 +398,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		}
 
 		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
 				? $this->_config->params->thumbSuffix : '-tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
@@ -407,7 +407,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
@@ -425,7 +425,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			else
 			{
 				// Attach record number to file name
-				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);			
+				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);
 				$fpath  = $path . DS . $name;
 			}
 
@@ -451,7 +451,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		return $html;
 
 	}
-	
+
 	/**
 	 * Draw attachment
 	 *
@@ -464,18 +464,18 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$this->getConfig();
 		}
-		
+
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
 
 		// Metadata file?
 		$layout =  ($data->ext == 'csv') ? 'file' : 'image';
-		
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -489,8 +489,8 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$view->config  		= $this->_config;
 		$view->ih	   		= $this->_imgHelper;
 		$view->params 		= $params;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
