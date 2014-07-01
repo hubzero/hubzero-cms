@@ -652,6 +652,7 @@
 		min-height: 6em;
 		max-width: 6em;
 		max-height: 6em;
+		overflow: hidden;
 	}
 	#page_identity img {
 		-webkit-border-radius: 0;

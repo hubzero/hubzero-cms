@@ -772,6 +772,7 @@
 	#page_identity a {
 		min-width: 6em;
 		min-height: 6em;
+		overflow: hidden;
 	}
 	#page_identity img {
 		-webkit-border-radius: 0;
