@@ -1568,6 +1568,12 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$rt = new EventsTags($this->database);
 		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
 
+		// get tags passed from failed save
+		if (isset($this->tags))
+		{
+			$lists['tags'] = $this->tags;
+		}
+
 		// Set the title
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . JText::_(strtoupper($this->_name) . '_' . strtoupper($this->_task)));
@@ -1724,6 +1730,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$end_time   = ($end_time) ? $end_time : '17:00';
 		$end_pm     = JRequest::getInt('end_pm', 0, 'post');
 		$time_zone	= JRequest::getVar('time_zone', -5, 'post');
+		$tags       = JRequest::getVar('tags', '', 'post');
 
 		// Bind the posted data to an event object
 		$row = new EventsEvent($this->database);
@@ -1899,6 +1906,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		{
 			// Set the error message
 			$this->setError($row->getError());
+			$this->tags = $tags;
 			// Fall through to the edit view
 			$this->edit($row);
 			return;
@@ -1907,14 +1915,13 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		{
 			// Set the error message
 			$this->setError($row->getError());
+			$this->tags = $tags;
 			// Fall through to the edit view
 			$this->edit($row);
+
 			return;
 		}
 		$row->checkin();
-
-		// Incoming tags
-		$tags = JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
 		$rt = new EventsTags($this->database);
