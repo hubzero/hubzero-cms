@@ -37,9 +37,7 @@ $group_statuses = array(
 	'invitees' => JText::_('All Group Invitees'),
 	'applicants' => JText::_('All Group Applicants')
 );
-echo '<pre>';
-print_r($this->member_roles);
-echo '</pre>';
+
 $role_id = JRequest::getVar('role_id');
 if ($role_id)
 {
@@ -54,7 +52,7 @@ if ($role_id)
 }
 ?>
 <div class="subject">
-	<?php if(!$this->no_html): ?>
+	<?php if (!$this->no_html): ?>
 	<ul class="entries-menu">
 		<li><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
 		<li><a class="active" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo JText::_('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
@@ -69,22 +67,22 @@ if ($role_id)
 				<label class="width-65"><?php echo JText::_('GROUP_MESSAGE_USERS'); ?>  <span class="required">Required</span>
 					<select name="users[]" id="msg-recipient">
 						<optgroup label="Group Status">
-							<?php foreach($group_statuses as $val => $name) { ?>
+							<?php foreach ($group_statuses as $val => $name) { ?>
 								<?php $sel = ($val == $this->users[0]) ? "selected" : ""; ?>
 								<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
 							<?php } ?>
 						</optgroup>
-						<?php if(count($this->member_roles) > 0) { ?>
+						<?php if (count($this->member_roles) > 0) { ?>
 							<optgroup label="Group Member Roles">
-								<?php foreach($this->member_roles as $role) { ?>
+								<?php foreach ($this->member_roles as $role) { ?>
 									<?php $sel = ($role['name'] == $role_name) ? "selected" : ""; ?>
 									<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['name']; ?></option>
 								<?php } ?>
 							</optgroup>
 						<?php } ?>
-						<?php if(count($this->members) > 0) { ?>
+						<?php if (count($this->members) > 0) { ?>
 							<optgroup label="Group Members">
-								<?php foreach($this->members as $m) { ?>
+								<?php foreach ($this->members as $m) { ?>
 									<?php $u = JUser::getInstance($m); ?>
 									<?php $sel = ($u->get('id') == $this->users[0]) ? "selected" : ""; ?>
 									<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
