@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('New Pages'),
+	JText::_('COM_WIKI_SPECIAL_NEW_PAGES'),
 	$this->page->link()
 );
 
@@ -98,7 +98,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page shows all the new pages of this wiki. By default the newest pages are shown at top of the list.
+		<?php echo JText::_('COM_WIKI_SPECIAL_NEW_PAGES_ABOUT'); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
@@ -106,22 +106,22 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				<tr>
 					<th scope="col">
 						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
-							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Date'); ?>
+							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_DATE'); ?>
 						</a>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'title') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
-							<?php if ($sort == 'title') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Title'); ?>
+							<?php if ($sort == 'title') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_TITLE'); ?>
 						</a>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created_by&dir=' . $altdir); ?>">
-							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Created by'); ?>
+							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_CREATOR'); ?>
 						</a>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'summary') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=summary&dir=' . $altdir); ?>">
-							<?php if ($sort == 'summary') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Summary'); ?>
+							<?php if ($sort == 'summary') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_EDIT_SUMMARY'); ?>
 						</a>
 					</th>
 				</tr>
@@ -132,7 +132,7 @@ if ($rows)
 {
 	foreach ($rows as $row)
 	{
-		$name = JText::_('(unknown)');
+		$name = JText::_('COM_WIKI_UNKNOWN');
 		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
 		{
@@ -163,7 +163,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

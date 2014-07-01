@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('File List'),
+	JText::_('COM_WIKI_SPECIAL_FILE_LIST'),
 	$this->page->link()
 );
 
@@ -98,7 +98,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page shows all uploaded files of this wiki. By default the last uploaded files are shown at top of the list. A click on a column header changes the sorting. Deleted files are not shown here.
+		<?php echo JText::_('COM_WIKI_SPECIAL_FILE_LIST_ABOUT'); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
@@ -106,28 +106,28 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				<tr>
 					<th scope="col">
 						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
-							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Date'); ?>
+							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_DATE'); ?>
 						</a>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'filename') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=filename&dir=' . $altdir); ?>">
-							<?php if ($sort == 'filename') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Name'); ?>
+							<?php if ($sort == 'filename') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_NAME'); ?>
 						</a>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Preview'); ?>
+						<?php echo JText::_('COM_WIKI_COL_PREVIEW'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Size'); ?>
+						<?php echo JText::_('COM_WIKI_COL_SIZE'); ?>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'created_by') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=created_by&dir=' . $altdir); ?>">
-							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Uploaded by'); ?>
+							<?php if ($sort == 'created_by') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_UPLOADER'); ?>
 						</a>
 					</th>
 					<th scope="col">
 						<a<?php if ($sort == 'description') { echo ' class="active"'; } ?> href="<?php echo JRoute::_($this->page->link() . '&sort=description&dir=' . $altdir); ?>">
-							<?php if ($sort == 'description') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('Description'); ?>
+							<?php if ($sort == 'description') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo JText::_('COM_WIKI_COL_DESCRIPTION'); ?>
 						</a>
 					</th>
 				</tr>
@@ -146,7 +146,7 @@ if ($rows)
 			$fsize = \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
 		}
 
-		$name = JText::_('(unknown)');
+		$name = JText::_('COM_WIKI_UNKNOWN');
 		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
 		{
@@ -191,7 +191,7 @@ else
 ?>
 				<tr>
 					<td colspan="5">
-						<?php echo JText::_('No files found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

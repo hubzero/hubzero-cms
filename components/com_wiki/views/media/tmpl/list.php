@@ -59,11 +59,11 @@ if (!$no_html) {
 	function deleteFolder(folder, numFiles)
 	{
 		if (numFiles > 0) {
-			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+			alert('<?php echo JText::_('COM_WIKI_WARNING_FOLDER_NOT_EMPTY'); ?>');
 			return false;
 		}
 
-		if (confirm('Delete folder "'+folder+'"?')) {
+		if (confirm('<?php echo JText::_('COM_WIKI_WARNING_DELETE_FOLDER'); ?> "'+folder+'"')) {
 			return true;
 		}
 
@@ -76,38 +76,34 @@ if (!$no_html) {
 		<form action="index.php" method="post" id="filelist">
 <?php } ?>
 <?php if (count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
+			<p><?php echo JText::_('COM_WIKI_ERROR_NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
-			<table summary="<?php echo JText::_('Files for this page'); ?>">
+			<table>
 				<tbody>
-<?php
-if ($this->docs)
-{
-	jimport('joomla.filesystem.file');
+				<?php
+				if ($this->docs)
+				{
+					jimport('joomla.filesystem.file');
+					$base = JURI::base(true);
 
-	foreach ($this->docs as $path => $name)
-	{
-		$ext = JFile::getExt($name);
-?>
+					foreach ($this->docs as $path => $name)
+					{
+						$ext = JFile::getExt($name);
+				?>
 					<tr>
-						<!-- <td>
-							<span class="<?php echo $ext; ?> file">
-								<?php echo JText::_('File type'); ?>: <?php echo $ext; ?>
-							</span>
-						</td> -->
 						<td>
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="delete" href="/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('DELETE'); ?>">
-								<img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" />
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<?php echo JText::_('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
-<?php
-	}
-}
-?>
+				<?php
+					}
+				}
+				?>
 				</tbody>
 			</table>
 <?php } ?>

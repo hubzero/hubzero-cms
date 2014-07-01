@@ -105,7 +105,7 @@ if (!$this->sub)
 		</fieldset><div class="clear"></div>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
+			<input type="submit" class="btn btn-danger" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
 

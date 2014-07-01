@@ -84,18 +84,18 @@ $rows = $database->loadObjectList();
 ?>
 	<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 		<fieldset>
-			<legend><?php echo JText::_('Filter list'); ?></legend>
+			<legend><?php echo JText::_('COM_WIKI_FILTER_LIST'); ?></legend>
 
 			<label for="field-namespace">
-				<?php echo JText::_('Namespace'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_NAMESPACE'); ?>
 				<select name="namespace" id="field-namespace">
-					<option value=""<?php if ($namespace == '') { echo ' selected="selected"'; } ?>>all</option>
+					<option value=""<?php if ($namespace == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_ALL'); ?></option>
 					<option value="Help:"<?php if ($namespace == 'Help:') { echo ' selected="selected"'; } ?>>Help:</option>
 					<option value="Template:"<?php if ($namespace == 'Template:') { echo ' selected="selected"'; } ?>>Template:</option>
 				</select>
 			</label>
 
-			<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" />
 		</fieldset>
 
 		<div class="grid">
@@ -136,7 +136,7 @@ if ($rows)
 					else if ($k == 0)
 					{
 						?>
-						<h3><?php echo $index; ?> contd.</h3>
+						<h3><?php echo JText::sprintf('COM_WIKI_INDEX_CONTINUED', $index); ?></h3>
 						<ul>
 						<?php
 					}
@@ -164,7 +164,7 @@ if ($rows)
 
 		<hr />
 
-		<h3><?php echo JText::_('Special Pages'); ?></h3>
+		<h3><?php echo JText::_('COM_WIKI_SPECIAL_PAGES'); ?></h3>
 		<ul>
 		<?php
 		foreach ($this->book->special() as $key => $page)

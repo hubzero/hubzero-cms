@@ -36,10 +36,9 @@ if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_au
 	$author = ($this->page->creator('name') ? $this->page->creator('name') : JText::_('Unknown'));
 
 	$auths = array();
-	$auths[] = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $this->page->get('created_by')) . '">' . $this->escape(stripslashes($author)) . '</a>';
+	$auths[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->page->get('created_by')) . '">' . $this->escape(stripslashes($author)) . '</a>';
 	foreach ($this->page->authors() as $auth)
 	{
-		//if (strtolower(stripslashes($auth->get('name'))) == strtolower(stripslashes($author)))
 		if ($auth->get('user_id') == $this->page->get('created_by'))
 		{
 			continue;
@@ -47,6 +46,6 @@ if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_au
 		$auths[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $auth->get('user_id')) . '">' . $this->escape(stripslashes($auth->get('name'))) . '</a>';
 	}
 	?>
-	<p class="topic-authors"><?php echo JText::_('by') .' '. implode(', ', $auths); ?></p>
+	<p class="topic-authors"><?php echo JText::sprintf('COM_WIKI_BY_AUTHORS', implode(', ', $auths)); ?></p>
 	<?php
 }

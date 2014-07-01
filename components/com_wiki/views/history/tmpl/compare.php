@@ -36,8 +36,8 @@ if (!$this->sub)
 	$this->css();
 }
 
-$orauthor = $this->or->creator('name') ? $this->or->creator('name') : JText::_('Unknown');
-$drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('Unknown');
+$orauthor = $this->or->creator('name') ? $this->or->creator('name') : JText::_('COM_WIKI_UNKNOWN');
+$drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('COM_WIKI_UNKNOWN');
 ?>
 	<header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
 		<h2><?php echo $this->escape($this->title); ?></h2>
@@ -76,15 +76,15 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 		<div class="col span-half">
 			<dl class="diff-versions">
 				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?><dt>
-				<dd><time datetime="<?php echo $this->or->get('created'); ?>"><?php echo $this->or->get('created'); ?></time> by <?php echo $this->escape($orauthor); ?><dd>
+				<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . $this->or->get('created') . '</time>', $this->escape($orauthor)); ?><dd>
 
 				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
-				<dd><time datetime="<?php echo $this->dr->get('created'); ?>"><?php echo $this->dr->get('created'); ?></time> by <?php echo $this->escape($drauthor); ?><dd>
+				<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?><dd>
 			</dl>
 		</div><!-- / .aside -->
 		<div class="col span-half omega">
-			<p class="diff-deletedline"><del class="diffchange">Deletions</del> or items before changed</p>
-			<p class="diff-addedline"><ins class="diffchange">Additions</ins> or items after changed</p>
+			<p class="diff-deletedline"><?php echo JText::_('COM_WIKI_HISTORY_DELETIONS'); ?></p>
+			<p class="diff-addedline"><?php echo JText::_('COM_WIKI_HISTORY_ADDITIONS'); ?></p>
 		</div><!-- / .subject -->
 	</div><!-- / .section -->
 

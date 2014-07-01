@@ -59,9 +59,9 @@ $this->js();
 
 	<?php if ($this->page->isStatic() && $this->page->access('admin') && $this->controller == 'page' && $this->task == 'display') { ?>
 		<div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
-			<ul><!--  id="<?php echo ($this->sub) ? 'section-useroptions' : 'useroptions'; ?>"> -->
-				<li><a class="icon-edit edit btn" href="<?php echo JRoute::_($this->page->link('edit')); ?>">Edit</a></li>
-				<li><a class="icon-history history btn" href="<?php echo JRoute::_($this->page->link('history')); ?>">History</a></li>
+			<ul>
+				<li><a class="icon-edit edit btn" href="<?php echo JRoute::_($this->page->link('edit')); ?>"><?php echo JText::_('JACTION_EDIT'); ?></a></li>
+				<li><a class="icon-history history btn" href="<?php echo JRoute::_($this->page->link('history')); ?>"><?php echo JText::_('COM_WIKI_HISTORY'); ?></a></li>
 			</ul>
 		</div><!-- /#content-header-extra -->
 	<?php } ?>
@@ -93,10 +93,10 @@ if (!$this->page->isStatic()) {
 			<?php echo $this->revision->get('pagehtml'); ?>
 
 			<p class="timestamp">
-				<?php echo JText::_('COM_WIKI_PAGE_CREATED').' <time datetime="' . $this->page->created() . '">'.$this->page->created('date') . '</time>, '.JText::_('COM_WIKI_PAGE_LAST_MODIFIED').' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
+				<?php echo JText::_('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">'.$this->page->created('date') . '</time>, ' . JText::_('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
 				<?php /*if ($stats = $this->page->getMetrics()) { ?>
 				<span class="article-usage">
-					<?php echo $stats['visitors']; ?> Visitors, <?php echo $stats['visits']; ?> Visits
+					<?php echo JText::sprintf('COM_WIKI_PAGE_METRICS', $stats['visitors'], $stats['visits']); ?>
 				</span>
 				<?php }*/ ?>
 			</p>

@@ -65,5 +65,5 @@ if ($this->page->exists())
 ?>
 
 <section class="main section">
-	<p class="warning"><?php echo JText::sprintf('A page could not be found matching the version number "%s".', $this->version); ?></p>
+	<p class="warning"><?php echo JText::sprintf('COM_WIKI_WARNING_NO_REVISION_FOUND', $this->version); ?></p>
 </section><!-- / .main section -->

@@ -207,7 +207,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}

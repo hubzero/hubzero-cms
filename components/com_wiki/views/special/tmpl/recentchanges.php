@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('New Pages'),
+	JText::_('COM_WIKI_SPECIAL_RECENT_CHANGES'),
 	$this->page->link()
 );
 
@@ -52,8 +52,8 @@ $start = JRequest::getInt('limitstart', 0);
 $database = JFactory::getDBO();
 
 $query = "SELECT COUNT(*)
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
@@ -64,8 +64,8 @@ $database->setQuery($query);
 $total = $database->loadResult();
 
 $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created, wv.summary
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
@@ -91,26 +91,26 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page shows all the recent changes in this wiki. The most recent changes are shown at top of the list.
+		<?php echo JText::_('COM_WIKI_SPECIAL_RECENT_CHANGES_ABOUT'); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Diff'); ?>
+						<?php echo JText::_('COM_WIKI_COL_DIFF'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Date'); ?>
+						<?php echo JText::_('COM_WIKI_COL_DATE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Title'); ?>
+						<?php echo JText::_('COM_WIKI_COL_TITLE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Created by'); ?>
+						<?php echo JText::_('COM_WIKI_COL_CREATOR'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Edit summary'); ?>
+						<?php echo JText::_('COM_WIKI_COL_EDIT_SUMMARY'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -131,11 +131,11 @@ if ($rows)
 					<td>
 						(
 						<?php if ($row->version > 1) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=compare&oldid=' . ($row->version - 1). '&diff=' . $row->version); ?>">diff</a> |
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=compare&oldid=' . ($row->version - 1). '&diff=' . $row->version); ?>"><?php echo JText::_('COM_WIKI_DIFF'); ?></a> |
 						<?php } else { ?>
-							diff |
+							<?php echo JText::_('COM_WIKI_DIFF'); ?> |
 						<?php } ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=history'); ?>">hist</a>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename . '&task=history'); ?>"><?php echo JText::_('COM_WIKI_HIST'); ?></a>
 						)
 					</td>
 					<td>
@@ -161,7 +161,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

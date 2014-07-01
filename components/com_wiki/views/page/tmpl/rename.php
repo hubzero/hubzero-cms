@@ -105,7 +105,7 @@ if ($this->page->exists())
 		</fieldset><div class="clear"></div>
 
 		<p class="submit">
-			<input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
 

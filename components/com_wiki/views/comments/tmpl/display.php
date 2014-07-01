@@ -116,11 +116,11 @@ if (!$this->sub)
 		{
 			if ($this->v)
 			{
-				echo '<p>No comments found for this version.</p>';
+				echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS_FOR_VERSION') . '</p>';
 			}
 			else
 			{
-				echo '<p>No comments found. Be the first to add a comment!</p>';
+				echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS') . '</p>';
 			}
 		}
 		?>
@@ -131,18 +131,18 @@ if (!$this->sub)
 				<label for="filter-version">
 					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
 					<select name="version" id="filter-version">
-						<option value=""><?php echo JText::_('ALL'); ?></option>
+						<option value=""><?php echo JText::_('COM_WIKI_ALL'); ?></option>
 						<?php
 						foreach ($this->page->revisions('list') as $ver)
 						{
 						?>
-						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->get('version'); ?></option>
+						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>><?php echo JText::sprintf('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></option>
 						<?php
 						}
 						?>
 					</select>
 				</label>
-				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
+				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" /></p>
 			<?php if ($this->sub) { ?>
 				<input type="hidden" name="action" value="comments" />
 				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
@@ -166,7 +166,7 @@ if (!$this->sub)
 				$juser = JFactory::getUser();
 				$anon = (!$juser->get('guest')) ? 0 : 1;
 				?>
-				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="Member photo" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php ech JText::_('COM_WIKI_MEMBER_PICTURE'); ?>" />
 			</p>
 			<fieldset>
 			<?php if (!$this->mycomment->get('parent')) { ?>
@@ -213,13 +213,13 @@ if (!$this->sub)
 
 				<?php echo JHTML::_('form.token'); ?>
 
-				<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>
+				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" /></p>
 				<div class="sidenote">
 					<p>
-						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
+						<strong><?php echo JText::_('COM_WIKI_COMMENT_KEEP_RELEVANT'); ?></strong>
 					</p>
 					<p>
-						Line breaks and paragraphs are automatically converted. URLs (starting with http://) or email addresses will automatically be linked. <a href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>" class="popup">Wiki syntax</a> is supported.
+						<?php echo JText::_('COM_WIKI_COMMENT_FORMATTING_HINT'); ?>
 					</p>
 				</div>
 			</fieldset>

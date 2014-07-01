@@ -41,30 +41,30 @@ if (!isset($this->controller))
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
 		<?php if (!$juser->get('guest') && $this->page->access('create')) { ?>
-			<li class="page-new" data-title="<?php echo JText::_('New Page'); ?>">
+			<li class="page-new" data-title="<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>">
 				<a class="icon-add add btn" href="<?php echo JRoute::_($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 					<?php echo JText::_('COM_WIKI_NEW_PAGE'); ?>
 				</a>
 			</li>
 		<?php } ?>
-			<li class="page-index" data-title="<?php echo JText::_('Page Index'); ?>">
+			<li class="page-index" data-title="<?php echo JText::_('COM_WIKI_PAGE_INDEX'); ?>">
 				<a class="icon-index index btn" href="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:AllPages'); ?>">
-					<span><?php echo JText::_('Index'); ?></span>
+					<span><?php echo JText::_('COM_WIKI_INDEX'); ?></span>
 				</a>
 			</li>
-			<li class="page-search" data-title="<?php echo JText::_('Search'); ?>">
+			<li class="page-search" data-title="<?php echo JText::_('COM_WIKI_SEARCH'); ?>">
 				<a class="icon-search search btn" href="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>">
-					<?php echo JText::_('Search'); ?>
+					<?php echo JText::_('COM_WIKI_SEARCH'); ?>
 				</a>
 				<div class="page-search-form">
 					<form action="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:Search'); ?>" method="post">
 						<fieldset>
-							<legend><?php echo JText::_('Search pages'); ?></legend>
+							<legend><?php echo JText::_('COM_WIKI_SEARCH_LEGEND'); ?></legend>
 							<label for="page-search-q">
-								<span><?php echo JText::_('Search'); ?></span>
-								<input type="text" name="q" id="page-search-q" value="" placeholder="<?php echo JText::_('Search this wiki'); ?>" />
+								<span><?php echo JText::_('COM_WIKI_SEARCH'); ?></span>
+								<input type="text" name="q" id="page-search-q" value="" placeholder="<?php echo JText::_('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
 							</label>
-							<input type="submit" class="page-search-submit" value="<?php echo JText::_('Go'); ?>" />
+							<input type="submit" class="page-search-submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" />
 						</fieldset>
 					</form>
 				</div>

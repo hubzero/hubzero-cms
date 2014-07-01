@@ -54,11 +54,11 @@ $this->js();
 
 <section class="main section">
 	<p class="warning">
-		This page does not exist. Would you like to <a href="<?php echo JRoute::_($this->page->link('new')); ?>">create it?</a>
+		<?php echo JText::sprintf('COM_WIKI_WARNING_PAGE_DOES_NOT_EXIST', JRoute::_($this->page->link('new'))); ?>
 	</p>
 <?php if (count($this->book->templates('list', array(), 'true'))) { ?>
 	<p>
-		<?php echo JText::_('Or choose a page template to create an already-formatted page:'); ?>
+		<?php echo JText::_('COM_WIKI_CHOOSE_TEMPLATE'); ?>
 	</p>
 	<ul>
 	<?php foreach ($this->book->templates() as $template) { ?>

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('Short Pages'),
+	JText::_('COM_WIKI_SPECIAL_SHORT_PAGES'),
 	$this->page->link()
 );
 
@@ -46,8 +46,8 @@ $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 
 $query = "SELECT COUNT(*)
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
@@ -59,8 +59,8 @@ $database->setQuery($query);
 $total = $database->loadResult();
 
 $query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
@@ -85,23 +85,23 @@ $pageNav = new JPagination(
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page lists all pages in order of decreasing size. Related: <a href="<?php echo JRoute::_($this->page->link('base') . '&pagename=Special:LongPages'); ?>">Special: Long Pages</a>
+		<?php echo JText::sprintf('COM_WIKI_SPECIAL_SHORT_PAGES_ABOUT', JRoute::_($this->page->link('base')); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Date'); ?>
+						<?php echo JText::_('COM_WIKI_COL_DATE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Title'); ?>
+						<?php echo JText::_('COM_WIKI_COL_TITLE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Created by'); ?>
+						<?php echo JText::_('COM_WIKI_COL_CREATOR'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Length'); ?>
+						<?php echo JText::_('COM_WIKI_COL_LENGTH'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -111,7 +111,7 @@ if ($rows)
 {
 	foreach ($rows as $row)
 	{
-		$name = JText::_('(unknown)');
+		$name = JText::_('COM_WIKI_UNKNOWN');
 		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
 		{
@@ -131,7 +131,7 @@ if ($rows)
 						<?php echo $name; ?>
 					</td>
 					<td>
-						<?php echo JText::sprintf('%s bytes', number_format($row->length)); ?>
+						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', number_format($row->length)); ?>
 					</td>
 				</tr>
 <?php
@@ -142,7 +142,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

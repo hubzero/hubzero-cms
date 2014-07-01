@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('Fix Version'),
+	JText::_('COM_WIKI_SPECIAL_FIX_VERSION'),
 	$this->page->link()
 );
 
@@ -66,23 +66,23 @@ $rows = $database->loadObjectList();
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page updates the version ID of a page to the latest approved version for every page.
+		<?php echo JText::_('COM_WIKI_SPECIAL_FIX_VERSION_ABOUT'); ?>
 	</p>
 	<div class="container">
 		<table class="entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Revision ID'); ?>
+						<?php echo JText::_('COM_WIKI_COL_REVISION_ID'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Revision timestamp'); ?>
+						<?php echo JText::_('COM_WIKI_COL_REVISION_TIME'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Page ID'); ?>
+						<?php echo JText::_('COM_WIKI_COL_PAGE_ID'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Page'); ?>
+						<?php echo JText::_('COM_WIKI_COL_PAGE'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -92,7 +92,7 @@ if ($rows)
 {
 	foreach ($rows as $row)
 	{
-		$database->setQuery("UPDATE #__wiki_page SET `version_id` = '" . $row->versionid . "', `modified`='" . $row->created . "' WHERE `id`='" . $row->pageid . "'");
+		$database->setQuery("UPDATE `#__wiki_page` SET `version_id` = " . $database->quote($row->versionid) . ", `modified`=" . $database->quote($row->created) . " WHERE `id`=" . $database->quote($row->pageid));
 		if (!$database->query())
 		{
 			$this->setError($database->getErrorMsg());
@@ -122,7 +122,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages needed updating.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

@@ -195,7 +195,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		}
 
 		// If no initial page is given, compare to the current revision
-		$this->view->revision = $this->page->revision('current'); //$this->page->getRevision(0);
+		$this->view->revision = $this->page->revision('current');
 
 		$this->view->or = $this->page->revision($oldid);
 		$this->view->dr = $this->page->revision($diff);
@@ -261,7 +261,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -298,7 +298,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_($this->page->link('history')),
-				JText::_('Error occurred while removing revision.'),
+				JText::_('COM_WIKI_ERROR_REMOVING_REVISION'),
 				'error'
 			);
 			return;
@@ -306,25 +306,9 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		// If we're deleting the current revision, set the current
 		// revision number to the previous available revision
-		//if ($id == $this->page->version_id)
-		//{
-			//$this->page->setRevisionId();
-		//}
 		$this->page->revisions('list', array(), true)->last();
 		$this->page->set('version_id', $this->page->revisions()->current()->get('id'));
 		$this->page->store(false, 'revision_removed');
-
-		// Log the action
-		/*$log = new WikiLog($this->database);
-		$log->pid       = $this->page->id;
-		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'revision_removed';
-		$log->actorid   = $this->juser->get('id');
-		if (!$log->store())
-		{
-			$this->setError($log->getError());
-		}*/
 
 		$this->setRedirect(
 			JRoute::_($this->page->link('history'))
@@ -343,7 +327,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -381,18 +365,6 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		{
 			$this->page->log('revision_approved');
 		}
-
-		// Log the action
-		/*$log = new WikiLog($this->database);
-		$log->pid       = $this->page->id;
-		$log->uid       = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action    = 'revision_approved';
-		$log->actorid   = $this->juser->get('id');
-		if (!$log->store())
-		{
-			$this->setError($log->getError());
-		}*/
 
 		$this->setRedirect(
 			JRoute::_($this->page->link())

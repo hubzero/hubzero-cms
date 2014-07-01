@@ -98,7 +98,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 <?php if ($this->preview) { ?>
 	<div id="preview">
 		<section class="main section">
-			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_PREVIEW_ONLY'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->get('pagehtml'); ?>
@@ -111,30 +111,30 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 <?php if (!$this->sub) { ?>
 	<div class="explaination" id="file-manager" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_($this->page->link('rename')); ?>">here</a>.</p>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
 	<?php } ?>
-		<p><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
-		<p><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
+		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
 
 		<div id="file-uploader">
-			<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<div id="file-uploader-list"></div>
 	</div>
 <?php } else { ?>
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-		<p>To change the page name (the portion used for URLs), go <a class="page-rename" href="<?php echo JRoute::_($this->page->link('rename')); ?>">here</a>.</p>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
 	<?php } ?>
 <?php } ?>
 	<fieldset>
-		<legend><?php echo JText::_('Page'); ?></legend>
+		<legend><?php echo JText::_('COM_WIKI_FIELDSET_PAGE'); ?></legend>
 
 		<div class="grid">
 			<div class="col span6">
 				<label for="parent">
-					<?php echo JText::_('Parent page'); ?>:
+					<?php echo JText::_('COM_WIKI_FIELD_PARENT'); ?>:
 					<select name="scope" id="parent">
-						<option value=""><?php echo JText::_('[ none ]'); ?></option>
+						<option value=""><?php echo JText::_('COM_WIKI_NONE'); ?></option>
 					<?php
 						if ($this->tree)
 						{
@@ -155,9 +155,9 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			</div>
 			<div class="col span6 omega">
 				<label for="templates">
-					<?php echo JText::_('Template'); ?>:
+					<?php echo JText::_('COM_WIKI_FIELD_TEMPLATE'); ?>:
 					<select name="tplate" id="templates">
-						<option value="tc"><?php echo JText::_('Select a template...'); ?></option>
+						<option value="tc"><?php echo JText::_('COM_WIKI_FIELD_TEMPLATE_SELECT'); ?></option>
 						<?php
 							$hi = array();
 
@@ -169,7 +169,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 									$tags = $tmpltags;
 								}
 
-								echo "\t".'<option value="t'.$template->get('id').'"';
+								echo "\t" . '<option value="t' . $template->get('id') . '"';
 								if (strtolower($this->tplate) == strtolower($template->get('pagename'))
 								 || strtolower($this->tplate) == 't' . $template->get('id'))
 								{
@@ -179,10 +179,10 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 										$this->revision->set('pagetext', stripslashes($template->revision()->get('pagetext')));
 									}
 								}
-								echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>'."\n";
+								echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>' . "\n";
 
-								$j  = '<input type="hidden" name="t'.$template->get('id').'" id="t'.$template->get('id').'" value="'.$this->escape(stripslashes($template->revision()->get('pagetext'))).'" />'."\n";
-								$j .= '<input type="hidden" name="t'.$template->get('id').'_tags" id="t'.$template->get('id').'_tags" value="'.$this->escape(stripslashes($tmpltags)).'" />'."\n";
+								$j  = '<input type="hidden" name="t' . $template->get('id') . '" id="t' . $template->get('id') . '" value="' . $this->escape(stripslashes($template->revision()->get('pagetext'))) . '" />' . "\n";
+								$j .= '<input type="hidden" name="t' . $template->get('id') . '_tags" id="t' . $template->get('id') . '_tags" value="' . $this->escape(stripslashes($tmpltags)) . '" />' . "\n";
 
 								$hi[] = $j;
 							}
@@ -211,7 +211,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			?>
 		</label>
 		<p class="ta-right hint">
-			See <a class="wiki-formatting popup" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
+			<?php echo JText::sprintf('COM_WIKI_FIELD_PAGETEXT_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
 		</p>
 
 	<?php if ($this->sub) { ?>
@@ -219,13 +219,13 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<div class="grid">
 				<div class="col span-half" id="file-manager" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 					<div id="file-uploader">
-						<iframe width="100%" height="370" name="filer" id="filer" style="border:2px solid #eee;margin-top: 0;" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+						<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 					</div>
 					<div id="file-uploader-list"></div>
 				</div>
 				<div class="col span-half omega">
-					<p><a class="wiki-macros image-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:WikiMacros#image'); ?>">[[Image(filename.jpg)]]</a> to include an image.</p>
-					<p><a class="wiki-macros file-macro" href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$this->page->get('scope').'&pagename=Help:WikiMacros#file'); ?>">[[File(filename.pdf)]]</a> to include a file.</p>
+					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
 				</div>
 			</div><!-- / .grid -->
 		</div>
@@ -233,7 +233,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	</fieldset><div class="clear"></div>
 
 	<fieldset>
-		<legend><?php echo JText::_('Access'); ?></legend>
+		<legend><?php echo JText::_('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
 	<?php if ($this->page->access('edit')) {
 		$mode = $this->page->param('mode', 'wiki');
@@ -248,10 +248,10 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<label for="params_mode">
 				<?php echo JText::_('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 				<select name="params[mode]" id="params_mode">
-					<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>>Knowledge article with specific authors</option>
-					<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>>Wiki page anyone can edit</option>
+					<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
+					<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
 				<?php if ($this->page->access('admin')) { ?>
-					<option value="static"<?php if ($mode == 'static') { echo ' selected="selected"'; } ?>>Static (open layout)</option>
+					<option value="static"<?php if ($mode == 'static') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
 				<?php } ?>
 				</select>
 			</label>
@@ -281,7 +281,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 			<label<?php echo $cls; ?>>
 				<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('Hide author list'); ?>
+				<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
 			</label>
 			&nbsp;
 
@@ -370,8 +370,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp;
-			<input type="submit" name="submit" value="<?php echo JText::_('SUBMIT'); ?>" />
+			<input type="submit" class="btn" name="preview" value="<?php echo JText::_('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
+			<input type="submit" class="btn btn-success" name="submit" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
 </section><!-- / .main section -->

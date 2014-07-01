@@ -62,11 +62,6 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			$this->_group = $config['group'];
 		}
 
-		/*if ($this->_sub)
-		{
-			JRequest::setVar('task', JRequest::getWord('action'));
-		}*/
-
 		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
 
 		parent::__construct($config);
@@ -79,21 +74,6 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		/*if ($this->_sub || $this->_option != 'com_wiki')
-		{
-			$this->config = JComponentHelper::getParams('com_wiki');
-		}
-
-		if (!$this->book->pages('count'))
-		{
-			if ($result = $this->book->scribe($this->_option))
-			{
-				$this->setError($result);
-			}
-
-			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
-		}*/
-
 		$this->page = $this->book->page();
 
 		parent::execute();
@@ -138,14 +118,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Check if the page is group restricted and the user is authorized
 		if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view'))
 		{
-			/*if ($this->_sub)
-			{
-				echo '<p class="warning">' . JText::_('COM_WIKI_WARNING_NOT_AUTH') . '</p>';
-			}
-			else
-			{*/
-				JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
-			//}
+			JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			return;
 		}
 
@@ -211,7 +184,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_WARNING_LOGIN')));
 			return;
 		}
 
@@ -246,7 +219,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_NO_FILE')));
 			return;
 		}
 
@@ -257,27 +230,27 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_DIRECTORY_NOT_WRITABLE')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => JText::_('COM_WIKI_ERROR_NO_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('COM_WIKI_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -388,7 +361,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
+				$this->setError(JText::_('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
 				$this->displayTask();
 				return;
 			}
@@ -403,7 +376,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Upload new files
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_WIKI_ERROR_UPLOADING'));
 		}
 		// File was uploaded
 		else
@@ -472,7 +445,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(JText::_('COM_WIKI_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		}
 		else
@@ -528,7 +501,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		// Delete the file
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_WIKI_ERROR_NO_FILE'));
 			$this->displayTask();
 		}
 		else
@@ -537,7 +510,7 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::sprintf('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
 			}
 			else
 			{

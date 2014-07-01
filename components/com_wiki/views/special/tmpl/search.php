@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('Search'),
+	JText::_('COM_WIKI_SEARCH'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'
 );
 
@@ -61,8 +61,8 @@ $database = JFactory::getDBO();
 $weight = '(match(wp.title) against (' . $database->Quote($term) . ') + match(wv.pagetext) against (' . $database->Quote($term) . '))';
 
 $query = "SELECT COUNT(*)
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . "
@@ -76,8 +76,8 @@ $total = $database->loadResult();
 
 //(SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created AS modified, wv.summary
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
 				AND wp.group_cn = " . $database->Quote($this->page->get('group_cn')) . "
@@ -104,11 +104,11 @@ $pageNav = new JPagination(
 ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
 	<div class="container data-entry">
-		<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+		<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_WIKI_SEARCH'); ?>" />
 		<fieldset class="entry-search">
-			<legend><?php echo JText::_('Search pages'); ?></legend>
-			<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-			<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+			<legend><?php echo JText::_('COM_WIKI_SEARCH_LEGEND'); ?></legend>
+			<label for="entry-search-field"><?php echo JText::_('COM_WIKI_SEARCH_PLACEHOLDER'); ?></label>
+			<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo JText::_('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="page" />
 			<input type="hidden" name="pagename" value="Special:Search" />
@@ -121,13 +121,13 @@ $pageNav = new JPagination(
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Title'); ?>
+						<?php echo JText::_('COM_WIKI_COL_TITLE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Path'); ?>
+						<?php echo JText::_('COM_WIKI_COL_PATH'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Last Modified'); ?>
+						<?php echo JText::_('COM_WIKI_COL_MODIFIED'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -159,7 +159,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

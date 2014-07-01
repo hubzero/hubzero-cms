@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('Fix Length'),
+	JText::_('COM_WIKI_SPECIAL_FIX_LENGTH'),
 	$this->page->link()
 );
 
@@ -42,7 +42,7 @@ $juser = JFactory::getUser();
 
 $database = JFactory::getDBO();
 
-$query = "SELECT wv.id, wv.pageid, wv.pagetext FROM #__wiki_version AS wv WHERE wv.length = '0'";
+$query = "SELECT wv.id, wv.pageid, wv.pagetext FROM `#__wiki_version` AS wv WHERE wv.length = '0'";
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
@@ -50,20 +50,20 @@ $rows = $database->loadObjectList();
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		This special page updates the page length for every page revision.
+		<?php echo JText::_('COM_WIKI_SPECIAL_FIX_LENGTH_ABOUT'); ?>
 	</p>
 	<div class="container">
 		<table class="entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Revision ID'); ?>
+						<?php echo JText::_('COM_WIKI_COL_REVISION_ID'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Page ID'); ?>
+						<?php echo JText::_('COM_WIKI_COL_PAGE_ID'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Length'); ?>
+						<?php echo JText::_('COM_WIKI_COL_LENGTH'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -74,7 +74,7 @@ if ($rows)
 	foreach ($rows as $row)
 	{
 		$lngth = strlen($row->pagetext);
-		$database->setQuery("UPDATE #__wiki_version SET `length` = '" . $lngth . "' WHERE `id`='" . $row->id . "'");
+		$database->setQuery("UPDATE `#__wiki_version` SET `length` = " . $database->quote($lngth) . " WHERE `id`=" . $database->quote($row->id));
 		if (!$database->query())
 		{
 			$this->setError($database->getErrorMsg());
@@ -88,7 +88,7 @@ if ($rows)
 						<?php echo $row->pageid; ?>
 					</td>
 					<td>
-						<?php echo $lngth; ?> bytes
+						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', $lngth); ?>
 					</td>
 				</tr>
 <?php
@@ -99,7 +99,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No revisions needed updating.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php

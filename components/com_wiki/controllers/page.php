@@ -133,7 +133,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$document->setTitle(($this->_sub ? JText::_('Groups') . ': ' : '') . JText::_('Wiki') . ': ' . $this->view->title);
+			$document->setTitle(($this->_sub ? JText::_('COM_GROUPS') . ': ' : '') . JText::_('COM_WIKI') . ': ' . $this->view->title);
 		}
 
 		// Set the pathway
@@ -359,7 +359,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -420,7 +420,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->revision->set('pagetext', '');
 				$this->page->set('scope', $this->page->get('scope') . ($this->page->get('scope') ? '/' . $this->page->get('pagename') : $this->page->get('pagename')));
 				$this->page->set('pagename', '');
-				$this->page->set('title', JText::_('New Page'));
+				$this->page->set('title', JText::_('COM_WIKI_NEW_PAGE'));
 			}
 		}
 
@@ -548,7 +548,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -581,13 +581,9 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->page->set('scope', trim(JRequest::getVar('scope', '', 'post')));
 
 		// Get parameters
-		$paramClass = 'JParameter';
-		$bindMethod = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-			$bindMethod = 'loadArray';
-		}
+		$paramClass = 'JRegistry';
+		$bindMethod = 'loadArray';
+
 		$params = new $paramClass($this->page->get('params', ''));
 		$params->$bindMethod(JRequest::getVar('params', array(), 'post'));
 
@@ -632,7 +628,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// First, make sure the pagetext isn't empty
 		if ($this->revision->get('pagetext') == '')
 		{
-			$this->setError(JText::_('Page text is required'));
+			$this->setError(JText::_('COM_WIKI_ERROR_MISSING_PAGETEXT'));
 			$this->editTask();
 			return;
 		}
@@ -717,7 +713,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			// Store content
 			if (!$this->revision->store(true))
 			{
-				$this->setError(JText::_('An error occurred when attempting to save the revision.'));
+				$this->setError(JText::_('COM_WIKI_ERROR_SAVING_REVISION'));
 				$this->editTask();
 				return;
 			}
@@ -733,7 +729,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!$this->page->store(true))
 		{
 			// This really shouldn't happen.
-			$this->setError(JText::_('An error occurred when attempting to save the page.'));
+			$this->setError(JText::_('COM_WIKI_ERROR_SAVING_PAGE'));
 			$this->editTask();
 			return;
 		}
@@ -759,7 +755,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -867,7 +863,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -914,7 +910,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper('RENAME')),
+			JText::_(strtoupper('COM_WIKI_RENAME')),
 			$this->page->link('rename')
 		);
 
@@ -948,7 +944,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			$url = JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($url))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}

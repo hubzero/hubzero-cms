@@ -85,23 +85,23 @@ $pageNav = new JPagination(
 ?>
 <form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'); ?>">
 	<p>
-		This special page lists all pages in order of increasing size. Related: <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:ShortPages'); ?>">Special: Short Pages</a>
+		<?php echo JText::sprintf('COM_WIKI_SPECIAL_LONG_PAGES_ABOUT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:ShortPages')); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<?php echo JText::_('Date'); ?>
+						<?php echo JText::_('COM_WIKI_COL_DATE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Title'); ?>
+						<?php echo JText::_('COM_WIKI_COL_TITLE'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Created by'); ?>
+						<?php echo JText::_('COM_WIKI_COL_CREATOR'); ?>
 					</th>
 					<th scope="col">
-						<?php echo JText::_('Length'); ?>
+						<?php echo JText::_('COM_WIKI_COL_LENGTH'); ?>
 					</th>
 				</tr>
 			</thead>
@@ -111,7 +111,7 @@ if ($rows)
 {
 	foreach ($rows as $row)
 	{
-		$name = JText::_('(unknown)');
+		$name = JText::_('COM_WIKI_UNKNOWN');
 		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 		if (is_object($xprofile))
 		{
@@ -131,7 +131,7 @@ if ($rows)
 						<?php echo $name; ?>
 					</td>
 					<td>
-						<?php echo JText::sprintf('%s bytes', number_format($row->length)); ?>
+						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', number_format($row->length)); ?>
 					</td>
 				</tr>
 <?php
@@ -142,7 +142,7 @@ else
 ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('No pages found.'); ?>
+						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
 <?php
