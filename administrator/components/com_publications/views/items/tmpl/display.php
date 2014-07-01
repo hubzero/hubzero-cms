@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<?php if($this->config->get('enabled') == 0) { ?>
+<?php if ($this->config->get('enabled') == 0) { ?>
 <p class="warning">This component is currently disabled and is inaccessible to end users.</p>
 <?php } ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
@@ -146,7 +146,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_( 'Publish Information' );?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a><?php if($checked) { echo $checked; } ?>
+					</a><?php if ($checked) { echo $checked; } ?>
 				</td>
 				<td>
 					<?php echo $row->version_label; ?>

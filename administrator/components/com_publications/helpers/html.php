@@ -142,7 +142,7 @@ class PublicationsAdminHtml
 	 * @return     unknown Return description (if any) ...
 	 */
 
-	public static function buildPath( 
+	public static function buildPath(
 		$pid = NULL,
 		$vid = NULL,
 		$base = '',
@@ -150,7 +150,7 @@ class PublicationsAdminHtml
 		$root = 0
 	)
 	{
-		if ($vid === NULL or $pid === NULL ) 
+		if ($vid === NULL or $pid === NULL )
 		{
 			return false;
 		}
@@ -360,9 +360,9 @@ class PublicationsAdminHtml
 				$authIDs[] = $authname->id;
 				$name = $authname->name;
 
-				$org = ($authname->organization) 
+				$org = ($authname->organization)
 					? htmlentities($authname->organization,ENT_COMPAT,'UTF-8') : '';
-				$credit = ($authname->credit) 
+				$credit = ($authname->credit)
 					? htmlentities($authname->credit,ENT_COMPAT,'UTF-8') : '';
 				$userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
