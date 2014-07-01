@@ -37,9 +37,7 @@ $group_statuses = array(
 	'invitees' => JText::_('All Group Invitees'),
 	'applicants' => JText::_('All Group Applicants')
 );
-echo '<pre>';
-print_r($this->member_roles);
-echo '</pre>';
+
 $role_id = JRequest::getVar('role_id');
 if ($role_id)
 {
