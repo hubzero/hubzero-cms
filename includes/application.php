@@ -154,7 +154,7 @@ final class JSite extends JApplication
 			$router		= $this->getRouter();
 			$params		= $this->getParams();
 
-			switch($document->getType())
+			switch ($document->getType())
 			{
 				case 'html':
 					// Get language
@@ -414,7 +414,7 @@ final class JSite extends JApplication
 	 */
 	public function getTemplate($params = false)
 	{
-		if(is_object($this->template))
+		if (is_object($this->template))
 		{
 			if ($params) {
 				return $this->template;
@@ -487,10 +487,10 @@ final class JSite extends JApplication
 		// Fallback template
 		if (!file_exists(JPATH_THEMES . '/' . $template->template . '/index.php')) {
 			JError::raiseWarning(0, JText::_('JERROR_ALERTNOTEMPLATE'));
-		    $template->template = 'beez_20';
-		    if (!file_exists(JPATH_THEMES . '/beez_20/index.php')) {
-		    	$template->template = '';
-		    }
+			$template->template = 'beez_20';
+			if (!file_exists(JPATH_THEMES . '/beez_20/index.php')) {
+				$template->template = '';
+			}
 		}
 
 		// Cache the result
@@ -508,18 +508,18 @@ final class JSite extends JApplication
 	 * @param mixed		The template style parameters
 	 */
 	public function setTemplate($template, $styleParams=null)
- 	{
- 		if (is_dir(JPATH_THEMES . '/' . $template)) {
- 			$this->template = new stdClass();
- 			$this->template->template = $template;
+	{
+		if (is_dir(JPATH_THEMES . '/' . $template)) {
+			$this->template = new stdClass();
+			$this->template->template = $template;
 			if ($styleParams instanceof JRegistry) {
 				$this->template->params = $styleParams;
 			}
 			else {
 				$this->template->params = new JRegistry($styleParams);
 			}
- 		}
- 	}
+		}
+	}
 
 	/**
 	 * Return a reference to the JPathway object.

@@ -90,7 +90,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					</h1>
 
 					<div id="account" role="navigation">
-					<?php if (!$juser->get('guest')) { 
+					<?php if (!$juser->get('guest')) {
 							$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					?>
 						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
