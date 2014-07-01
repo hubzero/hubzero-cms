@@ -1129,7 +1129,7 @@ class WikiParser
 					}
 					else
 					{
-						return '<strong>' . JText::_('Wiki HTML blocks not allowed') . '</strong>';
+						return '<strong>' . JText::_('PLG_WIKI_PARSERDEFAULT_HTML_NOT_ALLOWED') . '</strong>';
 					}
 				break;
 

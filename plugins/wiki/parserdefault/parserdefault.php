@@ -37,6 +37,13 @@ defined('_JEXEC') or die('Restricted access');
 class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Holds the parser for re-use
 	 *
 	 * @var object
