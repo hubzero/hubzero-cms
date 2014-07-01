@@ -26,9 +26,6 @@
 		border-color: transparent #fff #fff transparent;
 		z-index: 2;
 	}
-	#page_identity a {
-		width: 160px;
-	}
 	/* Right corner */
 	#page_header:after {
 		left: auto;
@@ -64,9 +61,6 @@
 		     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 		        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 	}
-	#page_menu {
-		width: 215px;
-	}
 	#page_menu li {
 		border-bottom: 1px solid #d1d1d1;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.075);
@@ -85,3 +79,12 @@
 	#page_menu li span {
 		color: #888;
 	}
+
+@media (max-width: 800px) {
+	#page_header:before {
+		left: 6em;
+	}
+	#page_header h2:after {
+		left: 95px;
+	}
+}

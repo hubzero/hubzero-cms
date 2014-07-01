@@ -911,6 +911,7 @@
 
 /* Content */
 	#content {
+		display: block;
 		margin: 0 30px;
 		background: #f9f9f9 url("../images/layout/noise-lite.png");
 		position: relative;
