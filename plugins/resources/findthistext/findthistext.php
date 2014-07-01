@@ -58,7 +58,8 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		if ($model->type->params->get('plg_findthistext', 0)) 
+		if ($model->type->params->get('plg_findthistext', 0)
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'findthistext' => JText::_('PLG_RESOURCES_FINDTHISTEXT')

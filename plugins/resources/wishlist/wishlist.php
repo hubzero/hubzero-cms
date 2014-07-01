@@ -65,7 +65,8 @@ class plgResourcesWishlist extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		if ($model->type->params->get('plg_' . $this->_name)) 
+		if ($model->type->params->get('plg_' . $this->_name)
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'wishlist' => JText::_('Wishlist')

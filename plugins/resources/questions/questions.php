@@ -69,7 +69,8 @@ class plgResourcesQuestions extends JPlugin
 				$model->type->params->set('plg_questions', 0);
 			}
 		}
-		if ($model->type->params->get('plg_questions')) 
+		if ($model->type->params->get('plg_questions')
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'questions' => JText::_('PLG_RESOURCES_QUESTIONS')

@@ -433,7 +433,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				$this->params->set('access-edit-own-resource', true);
 			}
 			// Check group access
-			/*else if ($this->resource->group_owner) // && ($this->resource->access == 3 || $this->resource->access == 4))
+			else if ($this->resource->group_owner) // && ($this->resource->access == 3 || $this->resource->access == 4))
 			{
 				// For protected resources, make sure users can see abstract
 				if ($this->resource->access < 3)
@@ -472,22 +472,22 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				{
 					$this->params->set('access-view-resource', true);
 					$this->params->set('access-view-all-resource', true);
-					if (!empty($xgroups)) 
-					{
-						foreach ($xgroups as $group)
-						{
-							if ($this->resource->group_owner == $group->cn && $group->manager) 
-							{
-								$this->params->set('access-delete-resource', true);
-								$this->params->set('access-edit-resource', true);
-								$this->params->set('access-edit-state-resource', true);
-								$this->params->set('access-edit-own-resource', true);
-								break;
-							}
-						}
-					}
+					// if (!empty($xgroups)) 
+					// {
+					// 	foreach ($xgroups as $group)
+					// 	{
+					// 		if ($this->resource->group_owner == $group->cn && $group->manager) 
+					// 		{
+					// 			$this->params->set('access-delete-resource', true);
+					// 			$this->params->set('access-edit-resource', true);
+					// 			$this->params->set('access-edit-state-resource', true);
+					// 			$this->params->set('access-edit-own-resource', true);
+					// 			break;
+					// 		}
+					// 	}
+					// }
 				}
-			}*/
+			}
 			else
 			{
 				$this->params->set('access-view-resource', true);

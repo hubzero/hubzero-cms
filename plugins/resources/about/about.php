@@ -60,7 +60,8 @@ class plgResourcesAbout extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		if ($model->type->params->get('plg_about', 0)) 
+		if ($model->type->params->get('plg_about', 0)
+			&& $model->access('view')) 
 		{
 			$areas = array(
 				'about' => JText::_('PLG_RESOURCES_ABOUT')

@@ -64,7 +64,8 @@ class plgResourcesReviews extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		if ($model->type->params->get('plg_reviews')) 
+		if ($model->type->params->get('plg_reviews')
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'reviews' => JText::_('PLG_RESOURCES_REVIEWS')

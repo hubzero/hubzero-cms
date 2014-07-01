@@ -60,7 +60,8 @@ class plgResourcesCitations extends JPlugin
 	 */
 	public function &onResourcesAreas($model)
 	{
-		if ($model->type->params->get('plg_citations')) 
+		if ($model->type->params->get('plg_citations')
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'citations' => JText::_('PLG_RESOURCES_CITATIONS')

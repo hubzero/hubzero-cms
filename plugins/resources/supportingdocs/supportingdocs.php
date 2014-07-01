@@ -64,7 +64,8 @@ class plgResourcesSupportingDocs extends JPlugin
 		{
 			$areas = array();
 		} 
-		else if ($model->type->params->get('plg_' . $this->_name)) 
+		else if ($model->type->params->get('plg_' . $this->_name)
+			&& $model->access('view-all')) 
 		{
 			$areas = array(
 				'supportingdocs' => JText::_('PLG_RESOURCES_SUPPORTINGDOCS')

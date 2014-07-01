@@ -144,7 +144,7 @@ $juser = JFactory::getUser();
 			</div><!-- / .subject -->
 <?php
 	//if ($this->resource->access == 3 && (!in_array($this->resource->group_owner, $this->usersgroups) && !$this->authorized)) {
-	if (!$this->model->access('view-all')) 
+	if (!$this->model->access('view')) 
 	{ // show nothing else 
 ?>
 		
