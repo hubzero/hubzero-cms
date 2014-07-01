@@ -23,24 +23,30 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$juser = JFactory::getUser();
 ?>
-<h1>Forum Sections</h1>
+<article>
+	<h1>Forum Sections</h1>
 
-<p>Sections are a way to organize or group related categories (topics).</p>
+	<p>Sections are a way to organize or group related categories (topics). By default, sections are sequenced alphabetically by title.</p>
 
-<hr />
+	<?php /*if ($juser->authorise('core.admin', 'com_forum.component') || $juser->authorise('core.manage', 'com_forum.component')) { ?>
+		<section>
+			<h2>Creating a Section</h2>
+			<p>--</p>
+		</section>
 
-<h2>Creating a Section</h2>
-<p>You can <a target="_blank" href="<?php echo JRoute::_('index.php?option=com_forum&task=new'); ?>">create your own group</a> as a registered user. Just fill in a simple form choosing a group name, a title, and a brief description, so that others will know what your group is about. Once created, your group title and description will be available for all to see in the <a target="_blank" href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>">list of all groups.</a> Each group also has its own page, which contains a link that other users can click on to request membership.</p>
-
-<hr />
-
-<h2>Organizing Sections</h2>
-<p>By default, sections are sequenced by their creation time (oldest to newest), but may be reordered manually.</p>
+		<section>
+			<h2>Organizing Sections</h2>
+			<p>--</p>
+		</section>
+	<?php }*/ ?>
+</article>

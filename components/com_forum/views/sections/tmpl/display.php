@@ -37,6 +37,14 @@ $juser = JFactory::getUser();
 ?>
 <header id="content-header">
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+				<span><?php echo JText::_('COM_FORUM_GETTING_STARTED'); ?></span>
+			</a>
+		</p>
+	</div>
 </header>
 
 <?php foreach ($this->notifications as $notification) { ?>

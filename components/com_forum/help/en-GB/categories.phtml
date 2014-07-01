@@ -23,52 +23,69 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$juser = JFactory::getUser();
 ?>
+<article>
+	<h1>Forum Categories</h1>
+	<p>Forum categories are a simple way to group related threads or discussions together.</p>
 
-<h1>Forum Categories</h1>
-<p>Forum categories are a simple way to group related threads or discussions together.</p>
+	<hr />
 
-<hr />
+	<section>
+		<h2>Locked Categories</h2>
+		<p>When a category is locked, no new threads may be created within that category. Typically, a locked category will be indicated as such by a <span class="icon-lock">padloack</span> icon.</p>
+	</section>
+<?php if ($juser->authorise('core.admin', 'com_forum.component') || $juser->authorise('core.manage', 'com_forum.component')) { ?>
+	<hr />
 
-<h3>Creating a Category</h3>
-<p>Note that a category <strong>must</strong> be assigned to a section. If a suitable section does not exist, it can be created.</p>
-<p>At the bottom of each section, a "New Category" button can be found.</p>
-<ol>
-	<li>Click the "New Category".</li>
-	<li>Provide a title for the category.</li>
-	<li>(optional) Provide a description. This is typically a short, one or two lines.</li>
-	<li>Click "Save".</li>
-</ol>
-<p>After saving, the newly created category will be ready for immediate use (i.e., new threads).</p>
-
-<h3>Locking a Category</h3>
-<p>When a category is locked, no new threads may be created within that category.</p>
-<ol>
-	<li>From the main forum page, find the desired category.</li>
-	<li>Click the edit button, typically a small pencil icon.</li>
-	<li>Check the box labeled "Lock Category".</li>
-	<li>Click "Save".</li>
-</ol>
-
-<hr />
-
-<h3>Editing a Category</h3>
-<ol>
-	<li>Navigate to the page manager.</li>
-	<li>Click on the "Manage Page Categories" tab.</li>
-	<li>Here you will see any current page categories.</li>
-	<li>Click on the "Manage Page Category" button for the category you wish to edit.</li>
-	<li>Change the name or color settings, then click the "Save Category" button to finish.</li>
-</ol>
-
-<hr />
-
-<h3>Deleting a Category</h3>
-<p>When a category is removed, all content within that category will no longer be available. If it is wished that the threads within are preserved, they must be re-assigned to a new category before the category is deleted.</p>
+	<section>
+		<h2>Creating a Category</h2>
+		<p>Note that a category <strong>must</strong> be assigned to a section. If a suitable section does not exist, it can be created.</p>
+		<p>At the bottom of each section, a "New Category" button can be found.</p>
+		<ol>
+			<li>Click the "New Category".</li>
+			<li>Provide a title for the category.</li>
+			<li>(optional) Provide a description. This is typically a short, one or two lines.</li>
+			<li>Click "Save".</li>
+		</ol>
+		<p>After saving, the newly created category will be ready for immediate use (i.e., new threads).</p>
+	</section>
+	<section>
+		<h2>Editing a Category</h2>
+		<ol>
+			<li>From the main forum page, find the desired category.</li>
+			<li>Click the edit button, typically a small <span class="icon-edit">pencil</span> icon.</li>
+			<li>Make any desired changes.</li>
+			<li>Click "Save".</li>
+		</ol>
+	</section>
+	<section>
+		<h2>Locking a Category</h2>
+		<p>When a category is locked, no new threads may be created within that category.</p>
+		<ol>
+			<li>From the main forum page, find the desired category.</li>
+			<li>Click the edit button, typically a small <span class="icon-edit">pencil</span> icon.</li>
+			<li>Check the box labeled "Lock Category".</li>
+			<li>Click "Save".</li>
+		</ol>
+	</section>
+	<section>
+		<h2>Deleting a Category</h2>
+		<p>When a category is removed, all content within that category will no longer be available. If it is wished that the threads within are preserved, they must be re-assigned to a new category before the category is deleted.</p>
+		<ol>
+			<li>From the main forum page, find the desired category.</li>
+			<li>Click the delete button, typically a small <span class="icon-delete">trash can</span> icon.</li>
+			<li>You will be asked to confirm deletion.</li>
+			<li>Click "Yes".</li>
+		</ol>
+	</section>
+<?php } ?>
+</article>

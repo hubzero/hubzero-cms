@@ -31,25 +31,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+<article>
+	<h1>Forum Help</h1>
 
-<h1>Forum Help</h1>
-<p>A forum, or message board, is an online discussion area where people can hold conversations in the form of posted messages.</p>
-<p>Forums have a specific set of jargon associated with them; e.g. a single conversation is called a "thread" or discussion.</p>
-<p>A discussion forum is hierarchical or tree-like in structure: a forum can contain a number of <strong>sections</strong>, each of which may have several categories. Within a forum's <strong>category</strong>, each new discussion started is called a <strong>thread</strong>, and can be replied to by as many people as so wish.</p>
-<ul>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=sections'); ?>">Sections</a>
-	</li>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=categories'); ?>">Categories</a>
-	</li>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=threads'); ?>">Threads</a>
-	</li>
-	<?php /*<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=guidelines'); ?>">Guidelines &amp; Tips</a>
-	</li> */ ?>
-	<li>
-		<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=faq'); ?>">FAQs</a>
-	</li>
-</ul>
+	<p>A forum, or message board, is an online discussion area where people can hold conversations in the form of posted messages.</p>
+	<p>Forums have a specific set of jargon associated with them; e.g. a single conversation is called a "thread" or discussion.</p>
+	<p>A discussion forum is hierarchical or tree-like in structure: a forum can contain a number of <strong>sections</strong>, each of which may have several categories. Within a forum's <strong>category</strong>, each new discussion started is called a <strong>thread</strong>, and can be replied to by as many people as so wish.</p>
+
+	<nav>
+		<ul>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=sections'); ?>">Sections</a>
+			</li>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=categories'); ?>">Categories</a>
+			</li>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=threads'); ?>">Threads</a>
+			</li>
+			<?php /*<li>
+				<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=guidelines'); ?>">Guidelines &amp; Tips</a>
+			</li> */ ?>
+			<li>
+				<a href="<?php echo JRoute::_('index.php?option=com_help&component=forum&page=faqs'); ?>">FAQs</a>
+			</li>
+		</ul>
+	</nav>
+</article>
