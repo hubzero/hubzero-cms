@@ -63,13 +63,13 @@ if ($pic && file_exists(JPATH_ROOT . $path . $pic))
 	<form action="index.php" method="post" enctype="multipart/form-data">
 		<h2>Upload a New Profile Picture</h2>
 		<div id="ajax-upload-left">
-			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/components/com_members/images/profile.gif'); ?>" />
+			<img id="picture-src" src="<?php echo $picture->src; ?>" alt="<?php echo $picture->name; ?>" data-default-pic="<?php echo $this->config->get('defaultpic', '/components/com_members/assets/img/profile.gif'); ?>" />
 			<?php if ($this->profile->get("picture") != '') : ?>
 			<a href="#" id="remove-picture">[Remove Picture]</a>
 			<?php endif; ?>
 		</div><!-- /#ajax-upload-left -->
 		<div id="ajax-upload-right">
-			<div id="ajax-uploader" data-action="/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1"></div>
+			<div id="ajax-uploader" data-action="<?php echo JURI::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>&amp;task=doajaxupload&amp;no_html=1"></div>
 			<table>
 				<tbody>
 					<tr>
