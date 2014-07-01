@@ -87,7 +87,10 @@ abstract class JHtmlBehavior
 		else
 		{
 			JHtml::_('script', 'system/jquery' . ($type != 'core' ? '.' . $type : '') . '.js', false, true, false, false, $debug);
-			JHtml::_('script', 'system/core.js', false, true);
+			if (JFactory::getApplication()->isAdmin())
+			{
+				JHtml::_('script', 'system/core.js', false, true);
+			}
 		}
 		self::$loaded[__METHOD__][$type] = true;
 
@@ -133,18 +136,8 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		// Include MooTools framework
+		// Include framework
 		self::framework(true);
-
-		/*JHtml::_('script', 'system/caption.js', true, true);
-
-		// Attach caption to document
-		JFactory::getDocument()->addScriptDeclaration(
-			"window.addEvent('load', function() {
-				new JCaption('" . $selector . "');
-			});"
-		);*/
-		//JHtml::_('script', 'system/jquery.ui.js', true, true);
 
 		JFactory::getDocument()->addScriptDeclaration(
 			"jQuery(document).ready(function($){
@@ -191,7 +184,7 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		// Include MooTools framework
+		// Include framework
 		self::framework();
 
 		JHtml::_('script', 'system/validate.js', true, true);
@@ -211,7 +204,7 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		// Include MooTools framework
+		// Include framework
 		if ($type != 'core')
 		{
 			self::chart();
@@ -248,7 +241,7 @@ abstract class JHtmlBehavior
 			return;
 		}
 
-		// Include MooTools framework
+		// Include framework
 		self::framework(true);
 
 		$script = "
@@ -278,7 +271,8 @@ abstract class JHtmlBehavior
 		{
 			return;
 		}
-		// Include MooTools framework
+
+		// Include framework
 		self::framework();
 
 		JHtml::_('script', 'system/combobox.js', true, true);
@@ -399,12 +393,11 @@ abstract class JHtmlBehavior
 		// Load the necessary files if they haven't yet been loaded
 		if (!isset(self::$loaded[__METHOD__]))
 		{
-			// Include MooTools framework
+			// Include framework
 			self::framework();
 
 			// Load the javascript and css
 			JHtml::_('script', 'system/jquery.fancybox.js', true, true);
-			JHtml::_('stylesheet', 'system/jquery.fancybox.css', array(), true);
 		}
 
 		$sig = md5(serialize(array($selector, $params)));
@@ -414,7 +407,8 @@ abstract class JHtmlBehavior
 		}
 
 		// Setup options object
-		/*$opt['ajaxOptions']		= (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+		/*
+		$opt['ajaxOptions']		= (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
 		$opt['handler']			= (isset($params['handler'])) ? $params['handler'] : null;
 		$opt['fullScreen']		= (isset($params['fullScreen'])) ? (bool) $params['fullScreen'] : null;
 		$opt['parseSecure']		= (isset($params['parseSecure'])) ? (bool) $params['parseSecure'] : null;
@@ -432,51 +426,41 @@ abstract class JHtmlBehavior
 		$opt['onMove']			= (isset($params['onMove'])) ? $params['onMove'] : null;
 		$opt['onShow']			= (isset($params['onShow'])) ? $params['onShow'] : null;
 		$opt['onHide']			= (isset($params['onHide'])) ? $params['onHide'] : null;
-
-		$options = JHtmlBehavior::_getJSObject($opt);
-
-		// Attach modal behavior to document
-		$document
-			->addScriptDeclaration(
-			"
-		window.addEvent('domready', function() {
-
-			SqueezeBox.initialize(" . $options . ");
-			SqueezeBox.assign($$('" . $selector . "'), {
-				parse: 'rel'
-			});
-		});"
 		);*/
-		$opt = array('arrows' => false);
-		$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
-		$opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
-		$opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
-		$opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
-		$opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
-		if (isset($params['size'])
-		 && is_array($params['size']))
+
+		if (!empty($params) || JFactory::getApplication()->isAdmin())
 		{
-			$opt['width']  = $params['size']['width'];
-			$opt['height'] = $params['size']['height'];
+			$opt = array('arrows' => false);
+			$opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+			$opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
+			$opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
+			$opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
+			$opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+			if (isset($params['size'])
+			 && is_array($params['size']))
+			{
+				$opt['width']  = $params['size']['width'];
+				$opt['height'] = $params['size']['height'];
+			}
+			$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("rel"); }';
+			$opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
+			$opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
+			$opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
+			$opt['afterShow']  = (isset($params['onShow'])) ? $params['onShow'] : null;
+			$opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
+			$opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
+			$opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
+			$opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : false;
+
+			$options = JHtmlBehavior::_getJSObject($opt);
+
+			// Attach modal behavior to document
+			$document->addScriptDeclaration(
+				'jQuery(document).ready(function($){
+					$("' . $selector . '").fancybox(' . $options . ');
+				});'
+			);
 		}
-		$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("rel"); }';
-		$opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
-		$opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
-		$opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
-		$opt['afterShow']  = (isset($params['onShow'])) ? $params['onShow'] : null;
-		$opt['afterClose'] = (isset($params['onHide'])) ? $params['onHide'] : null;
-		$opt['tpl']        = (isset($params['tpl'])) ? $params['tpl'] : null;
-		$opt['autoSize']   = (isset($params['autoSize'])) ? $params['autoSize'] : false;
-		$opt['fitToView']  = (isset($params['fitToView'])) ? $params['fitToView'] : false;
-
-		$options = JHtmlBehavior::_getJSObject($opt);
-
-		// Attach modal behavior to document
-		$document->addScriptDeclaration(
-			'jQuery(document).ready(function($){
-				$("' . $selector . '").fancybox(' . $options . ');
-			});'
-		);
 
 		// Set static array
 		self::$loaded[__METHOD__][$sig] = true;

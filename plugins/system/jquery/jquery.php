@@ -73,16 +73,16 @@ class plgSystemJquery extends JPlugin
 		{
 			if ($value == 1)
 			{
-				$version = $this->params->get('jqueryuiVersion', '1.8.6');
-
-				$document->addScript($root . '/media/system/js/jquery.ui.js');
+				//$version = $this->params->get('jqueryuiVersion', '1.8.6');
+				//$document->addScript($root . '/media/system/js/jquery.ui.js');
+				JHTML::_('behavior.framework', true);
 			}
 			elseif ($value == 2)
 			{
 				$document->addScript($this->params->get('jqueryuicdnpath'));
 			}
 
-			if ($value = $this->params->get('jqueryuicss'))
+			/*if ($value = $this->params->get('jqueryuicss'))
 			{
 				if ($value == 1)
 				{
@@ -100,22 +100,24 @@ class plgSystemJquery extends JPlugin
 						\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 					}
 				}
-			}
+			}*/
 		}
 		if ($value = $this->params->get('jqueryfb'))
 		{
 			if ($value == 1)
 			{
-				$version = $this->params->get('jqueryfbVersion', '2.0.4');
+				//$version = $this->params->get('jqueryfbVersion', '2.0.4');
 
-				$document->addScript($root . '/media/system/js/jquery.fancybox.js');
+				//$document->addScript($root . '/media/system/js/jquery.fancybox.js');
+
+				JHTML::_('behavior.modal');
 			}
 			elseif ($value == 2)
 			{
 				$document->addScript($this->params->get('jqueryfbcdnpath'));
 			}
 
-			if ($value = $this->params->get('jqueryfbcss'))
+			/*if ($value = $this->params->get('jqueryfbcss'))
 			{
 				if ($value == 1)
 				{
@@ -133,7 +135,7 @@ class plgSystemJquery extends JPlugin
 						\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancybox.css');
 					}
 				}
-			}
+			}*/
 		}
 		/*if ($value = $this->params->get('jquerytools')) 
 		{

@@ -186,15 +186,17 @@ class Assets
 		foreach ($paths as $i => $path)
 		{
 			$base = JPATH_ROOT;
+			$b = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
 			if ($i == 0)
 			{
-				$base = JPATH_SITE;
+				$base = (JFactory::getApplication()->isAdmin() ? JPATH_ADMINISTRATOR : JPATH_SITE);
+				$b = rtrim(JURI::getInstance()->base(true), DS);
 			}
 			if (file_exists($base . $path))
 			{
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime($base . $path), $type, $media, $attribs);
+				$jdocument->addStyleSheet($b . $path . '?v=' . filemtime($base . $path), $type, $media, $attribs);
 				break;
 			}
 		}
