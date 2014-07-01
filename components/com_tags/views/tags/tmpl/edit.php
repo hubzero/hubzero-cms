@@ -62,7 +62,7 @@ $this->css()
 
 			<label for="field-raw_tag">
 				<?php echo JText::_('COM_TAGS_FIELD_TAG'); ?>
-				<input type="text" name="fields[raw_tag]" id="field-raw_tag" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
+				<input type="text" name="fields[raw_tag]" id="field-raw_tag" data-error="<?php echo JText::_('COM_TAGS_FIELD_TAG_BLANK'); ?>" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
 			</label>
 
 			<label for="field-admin">

@@ -17,7 +17,7 @@ jQuery(document).ready(function(jq){
 		form.on('submit', function (e){
 			// do field validation
 			if ($('#field-raw_tag').val() == ''){
-				alert( 'You must fill in a tag name' );
+				alert($('#field-raw_tag').attr('data-error'));
 				e.preventDefault();
 				return false;
 			}
@@ -26,15 +26,15 @@ jQuery(document).ready(function(jq){
 	}
 
 	//add count to url
-	$(".delete-tag").each(function(index) {
-		var count = index + 1,
-			url = $(this).attr("href");
+	$(".delete-tag").each(function(i, el) {
+		var count = i + 1,
+			url = $(el).attr("href");
 
 		url += (url.indexOf("?") == -1) ? "?count="+count : "&count="+count;
-		$(this).attr("href", url);
+		$(el).attr("href", url);
 
-		$(this).on('click', function (e) {
-			var res = confirm('Are you sure you wish to delete this tag?');
+		$(el).on('click', function (e) {
+			var res = confirm($(el).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
@@ -46,7 +46,7 @@ jQuery(document).ready(function(jq){
 	if (window.location.hash) {
 		var row_id = window.location.hash.replace("#count", ""),
 			row = $($(".entries tr")[row_id]);
-		
+
 		$("body").animate({
 			scrollTop: row.offset().top
 		}, 500);

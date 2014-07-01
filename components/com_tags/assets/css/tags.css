@@ -69,13 +69,13 @@
 	.container .results .event .event-date {
 		margin-right: 1em;
 	}
-	
+
 	.container .results .member p.photo {
 		margin-right: 1em;
 		margin-left: 0;
 		float: left;
 	}
-	
+
 	.com_tags .block {
 		padding: 1em;
 	}
@@ -96,8 +96,10 @@
 		display: inline-block !important;
 		border: 0;
 		-webkit-border-radius: 0 3px 3px 0 !important;
-		-moz-border-radius: 0 3px 3px 0 !important;
-		border-radius: 0 3px 3px 0 !important;
+		   -moz-border-radius: 0 3px 3px 0 !important;
+		    -ms-border-radius: 0 3px 3px 0 !important;
+		     -o-border-radius: 0 3px 3px 0 !important;
+		        border-radius: 0 3px 3px 0 !important;
 		line-height: 2em !important;
 		margin: 0 0 0 14px !important;
 		background: #333 !important;
@@ -111,8 +113,10 @@
 		margin: -2px -6px -2px 4px;
 		padding: 2px 6px 2px 6px;
 		-webkit-border-radius: 0 3px 3px 0;
-		-moz-border-radius: 0 3px 3px 0;
-		border-radius: 0 3px 3px 0;
+		   -moz-border-radius: 0 3px 3px 0;
+		    -ms-border-radius: 0 3px 3px 0;
+		     -o-border-radius: 0 3px 3px 0;
+		        border-radius: 0 3px 3px 0;
 	}
 	.entries tbody td a.entry-title:before {
 		content: "";
@@ -139,8 +143,10 @@
 		left: -3px;
 		background-color: #f6f6f6;
 		-webkit-border-radius: 4px;
-		-moz-border-radius: 4px;
-		border-radius: 4px;
+		   -moz-border-radius: 4px;
+		    -ms-border-radius: 4px;
+		     -o-border-radius: 4px;
+		        border-radius: 4px;
 	}
 	.entries tbody td a.entry-title:hover {
 		color: #fff;
@@ -179,38 +185,37 @@
 	}
 
 /* Related tags */
-#related h3 {
-	display: block;
-	font-size: small;
-	margin: 0;
-}
-#related {
-	background: #e8e8e9;
-	margin-top: -15px;
-	padding: 10px;
-	padding-bottom: 6px;
-	-webkit-border-bottom-right-radius: 15px;
-	-webkit-border-bottom-left-radius: 15px;
-	-moz-border-radius-bottomright: 15px;
-	-moz-border-radius-bottomleft: 15px;
-	border-bottom-right-radius: 15px;
-	border-bottom-left-radius: 15px;
-}
-#related .clear {
-	clear: left;
-	margin: 0;
-	height: 0;
-}
-#parents, #children, #co-tagged {
-	width: 33%;
-	float: left;
-}
-#co-tagged {
-	text-align: center;
-}
-#children {
-	text-align: right;
-}
-#children li {
-	float: right;
-}
+	#related h3 {
+		display: block;
+		font-size: small;
+		margin: 0;
+	}
+	#related {
+		background: #e8e8e9;
+		margin-top: -15px;
+		padding: 10px;
+		padding-bottom: 6px;
+		-webkit-border-radius: 0 0 15px 15px;
+		   -moz-border-radius: 0 0 15px 15px;
+		    -ms-border-radius: 0 0 15px 15px;
+		     -o-border-radius: 0 0 15px 15px;
+		        border-radius: 0 0 15px 15px;
+	}
+	#related .clear {
+		clear: left;
+		margin: 0;
+		height: 0;
+	}
+	#parents, #children, #co-tagged {
+		width: 33%;
+		float: left;
+	}
+	#co-tagged {
+		text-align: center;
+	}
+	#children {
+		text-align: right;
+	}
+	#children li {
+		float: right;
+	}

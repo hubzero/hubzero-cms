@@ -40,13 +40,11 @@ $this->filters['sort'] = '';
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header>
 
@@ -138,7 +136,7 @@ $this->filters['sort'] = '';
 					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
 						<?php if ($this->config->get('access-delete-tag')) { ?>
-								<a class="icon-delete delete delete-tag" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+								<a class="icon-delete delete delete-tag" data-confirm="<?php echo JText::_('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 									<?php echo JText::_('COM_TAGS_DELETE_TAG'); ?>
 								</a>
 						<?php } ?>
