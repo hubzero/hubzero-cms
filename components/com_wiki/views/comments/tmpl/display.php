@@ -166,7 +166,7 @@ if (!$this->sub)
 				$juser = JFactory::getUser();
 				$anon = (!$juser->get('guest')) ? 0 : 1;
 				?>
-				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php ech JText::_('COM_WIKI_MEMBER_PICTURE'); ?>" />
+				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo JText::_('COM_WIKI_MEMBER_PICTURE'); ?>" />
 			</p>
 			<fieldset>
 			<?php if (!$this->mycomment->get('parent')) { ?>

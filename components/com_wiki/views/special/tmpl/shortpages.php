@@ -85,7 +85,7 @@ $pageNav = new JPagination(
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
-		<?php echo JText::sprintf('COM_WIKI_SPECIAL_SHORT_PAGES_ABOUT', JRoute::_($this->page->link('base')); ?>
+		<?php echo JText::sprintf('COM_WIKI_SPECIAL_SHORT_PAGES_ABOUT', JRoute::_($this->page->link('base'))); ?>
 	</p>
 	<div class="container">
 		<table class="file entries">

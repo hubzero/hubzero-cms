@@ -3092,6 +3092,6 @@ class WikiParser
 	private function _tocLineEnd()
 	{
 		return "</li>\n";
- 	}
+	}
 }
 
