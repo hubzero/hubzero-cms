@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Publication Manager') . ' - ' . JText::_('Publication') . ': #' . $this->pub->id . ' - Versions', 'addedit.png');
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . JText::_('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . JText::_('COM_PUBLICATIONS_VERSIONS') , 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
@@ -47,15 +47,14 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<?php if($this->config->get('enabled') == 0) { ?>
-<p class="warning">This component is currently disabled and is inaccessible to end users.</p>
+<?php if ($this->config->get('enabled') == 0) { ?>
+<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
 <p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
-. $this->controller; ?>"><?php echo JText::_('Publication Manager'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('Publication') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('Versions'); ?></p>
+. $this->controller; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
+. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_VERSIONS'); ?></p>
 
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
-
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -70,16 +69,16 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-
-	foreach($this->versions as $v) {
+	foreach ($this->versions as $v) {
 	// Get DOI
 	$doi = $v->doi ? 'doi:'.$v->doi : '';
 	$ark = $v->ark ? 'ark:'.$v->ark : '';
-	if($ark || $doi)
+	if ($ark || $doi)
 	{
 		$doi_notice = $doi ? $doi : $ark;
 	}
-	else {
+	else 
+	{
 		$doi_notice = JText::_('COM_PUBLICATIONS_NA');
 	}
 
@@ -91,7 +90,6 @@ $k = 0;
 	$options = '<a href="index.php?option=' . $this->option . '&amp;controller='
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
 	.JText::_('COM_PUBLICATIONS_MANAGE_VERSION').'</a>';
-
 	?>
 	<tr class="mini <?php if($v->main == 1) { echo ' vprime'; } ?>">
 		<td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
