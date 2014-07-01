@@ -77,7 +77,7 @@ $k = 0;
 	{
 		$doi_notice = $doi ? $doi : $ark;
 	}
-	else 
+	else
 	{
 		$doi_notice = JText::_('COM_PUBLICATIONS_NA');
 	}
@@ -91,13 +91,13 @@ $k = 0;
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
 	.JText::_('COM_PUBLICATIONS_MANAGE_VERSION').'</a>';
 	?>
-	<tr class="mini <?php if($v->main == 1) { echo ' vprime'; } ?>">
+	<tr class="mini <?php if ($v->main == 1) { echo ' vprime'; } ?>">
 		<td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
 		<td><?php echo $v->version_label; ?></td>
 		<td><?php echo $v->title; ?></td>
 		<td class="v-status">
 			<span class="<?php echo $class; ?>"><?php echo $status; ?></span>
-			<?php if($date) { echo '<span class="block faded">'.$date.'</span>';  } ?>
+			<?php if ($date) { echo '<span class="block faded">'.$date.'</span>';  } ?>
 		</td>
 		<td><?php echo $doi_notice; ?></td>
 		<td><?php echo $options; ?></td>
