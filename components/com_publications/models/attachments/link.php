@@ -89,9 +89,9 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		$html = '';
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
-				. $pub->id . '&v=' . $pub->version_number )
-				. '?el=' . $elementId;
+		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
+		$url = preg_replace('/\/administrator/', '', $url);
 
 		if ($attachments)
 		{
@@ -104,7 +104,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$pop		= JText::_('View link') . ' ' . $title;
 
 				$html .= '<li>';
-				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="external">' . $title . '</a>';
+				$html .= $authorized == 'administrator' ? '[' . $this->_name . '] ' : '';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blanl">' . $title . '</a>';
 				$html .='</li>';
 			}
 		}

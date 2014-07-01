@@ -155,6 +155,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$url = preg_replace('/\/administrator/', '', $url);
 		$html = '';
 
+		// Is handler assigned?
+		$handler =  $configs->handler;
+		if ($handler)
+		{
+			// Handler will draw list
+			return $handler->drawList($attachments, $configs, $pub, $authorized);
+		}
+
 		// Draw bundles
 		if ($configs->multiZip && $attachments && count($attachments) > 1)
 		{

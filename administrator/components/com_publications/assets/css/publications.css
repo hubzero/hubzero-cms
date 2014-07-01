@@ -222,7 +222,6 @@
 	.wip:hover { border: none; }
 
 	.check { text-indent: 50px; overflow: hidden; }
-
 	#author-list, .content-list {
 		list-style: none;
 		margin: 0.5em;
@@ -248,11 +247,12 @@
 		}
 
 	.notice {
-		padding: 0.3em 1em;
-		border: 1px solid #f6bc56;
+		padding: 0.2em 0.5em;
+		border: none;
 		background: #ffefd3;
 		color: #7f3e0f;
 		margin: 0.5em 0;
+		font-size: 85%;
 	}
 	.adminform label {
 		font-style: italic;
@@ -444,8 +444,35 @@
 	ul.element-list li {
 		padding: 0.3em 0;
 		border-bottom: 1px dotted #CCC;
+		clear: both;
 	}
 	.extras {
 		float: right;
 		font-size: 85%;
+	}
+	ul.element-list li .item-image {
+		margin-right: 0.5em;
+		float: left;
+		height: 50px;
+	}
+	ul.element-list li .item-image img {
+		width: 60px;	
+	}
+	ul.element-list li .item-title {
+		float: left;
+	}
+	ul.element-list li .item-title .details {
+		display: block;
+		color: #CCCCCC;
+		font-size: 85%;
+	}
+	.starred:before {
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+		font-family: 'Fontcons';
+		color: #5ec1da;
+		border: none;
+		content: "\2605";
+		position: absolute;
 	}

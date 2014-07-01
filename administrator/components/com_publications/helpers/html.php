@@ -403,15 +403,17 @@ class PublicationsAdminHtml
 		$html 	= '';
 		$prime  = $pub->_attachments[1];
 		$second = $pub->_attachments[2];
+
 		if ($useBlocks && isset($pub->_curationModel))
 		{
 			$prime    = $pub->_curationModel->getElements(1);
 			$second   = $pub->_curationModel->getElements(2);
+			$gallery  = $pub->_curationModel->getElements(3);
 
 			// Get attachment type model
 			$attModel = new PublicationsModelAttachments($database);
 
-			// Draw list
+			// Draw list of primary elements
 			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
 			$list  = $attModel->listItems(
 				$prime,
@@ -420,6 +422,7 @@ class PublicationsAdminHtml
 			);
 			$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
+			// Draw list of secondary elements
 			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
 			$list  = $attModel->listItems(
 				$second,
@@ -427,6 +430,66 @@ class PublicationsAdminHtml
 				'administrator'
 			);
 			$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+
+			// Draw list of gallery elements
+			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_GALLERY') . '</h5>';
+			$list  = $attModel->listItems(
+				$gallery,
+				$pub,
+				'administrator'
+			);
+			$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+		}
+		else
+		{
+			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
+			if ($prime)
+			{
+				$html .= '<ul class="content-list">';
+				foreach ($prime as $att)
+				{
+					$type = $att->type;
+					if ($att->type == 'file')
+					{
+						$ext  = explode('.', $att->path);
+						$type = strtoupper(end($ext));
+					}
+					$title = $att->title ? $att->title : $att->path;
+					$html .= '<li>('.$type.') ';
+					$html .= $att->title ? $att->title : $att->path;
+					$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path.'</span>' : '';
+					$html .= '</li>'."\n";
+				}
+				$html .= '</ul>';
+			}
+			else
+			{
+				$html .= '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+			}
+			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
+			if ($second)
+			{
+				$html .= '<ul class="content-list">';
+				foreach ($second as $att)
+				{
+					$type = $att->type;
+					if ($att->type == 'file')
+					{
+						$ext  = explode('.', $att->path);
+						$type = strtoupper(end($ext));
+					}
+					$title = $att->title ? $att->title : $att->path;
+					$html .= '<li>('.$type.') ';
+					$html .= $att->title ? $att->title : $att->path;
+					$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path.'</span>' : '';
+					$html .= '</li>'."\n";
+				}
+				$html .= '</ul>';
+			}
+			else
+			{
+				$html .= '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+			}
 		}
 
 		return $html;

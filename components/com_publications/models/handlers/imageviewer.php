@@ -378,6 +378,79 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		
 		return $html;
 	}
+
+	/**
+	 * Draw list of included files
+	 *
+	 * @return  void
+	 */
+	public function drawList($attachments, $attConfigs, $pub, $authorized )
+	{
+		if (!$attachments)
+		{
+			return false;
+		}
+		
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+
+		// Get settings
+		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix 
+				? $this->_config->params->thumbSuffix : '-tn';
+
+		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
+				? $this->_config->params->thumbFormat : 'png';
+
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' 
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+
+		$path = str_replace(JPATH_ROOT, '', $attConfigs->pubPath);
+
+		$html = '';
+
+		foreach ($attachments as $attach)
+		{
+			if ($attConfigs->dirHierarchy)
+			{
+				$fpath = $path . DS . trim($attach->path, DS);
+			}
+			else
+			{
+				// Attach record number to file name
+				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);			
+				$fpath  = $path . DS . $name;
+			}
+
+			$thumbName = $this->_imgHelper->createThumbName(basename($fpath), $suffix, $format);
+			$thumbPath = dirname($fpath) . DS . $thumbName;
+
+			$title 		= $attach->title ? $attach->title : $attConfigs->title;
+			$title 		= $title ? $title : basename($attach->path);
+
+			$params = new JParameter( $attach->params );
+
+			$html .= '<li>';
+			$html .= ' <a rel="lightbox" href="' . $fpath . '">';
+			$html .= '<span class="item-image';
+			$html .= $params->get('pubThumb', NULL) && $authorized == 'administrator' ? ' starred' : '';
+			$html .= '"><img src="' . $thumbPath . '" alt="' . $title . '" class="thumbima" /></span>';
+			$html .= '<span class="item-title">' . $title . '<span class="details">' . $attach->path . '</span></span>';
+			$html .= '</a>';
+			$html .= '<span class="clear"></span>';
+			$html .= '</li>';
+		}
+
+		return $html;
+
+	}
 	
 	/**
 	 * Draw attachment
@@ -399,6 +472,9 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 				. DS . 'helpers' . DS . 'imghandler.php' );
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
+
+		// Metadata file?
+		$layout =  ($data->ext == 'csv') ? 'file' : 'image';
 		
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -406,7 +482,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 				'folder'	=>'projects',
 				'element'	=>'publications',
 				'name'		=>'attachments',
-				'layout'	=>'image'
+				'layout'	=>$layout
 			)
 		);
 		$view->data    		= $data;

@@ -184,37 +184,34 @@ function popratings()
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<textarea name="description" id="pub_description" cols="40" rows="10" class="pubinput"><?php echo $this->row->description; ?></textarea>
 			</div>
-			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?>:</label>
-			</div>
+		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
 			<div class="input-wrap">
 				<?php echo $fields; ?>
 			</div>
+		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
-				<textarea name="release_notes" id="release_notes" cols="40" rows="10" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>
+				<textarea name="release_notes" id="release_notes" cols="40" rows="5" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>
 			</div>
 	</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span></legend>
-		<label></label>
+		<fieldset>
 		<div class="input-wrap" id="publiction-authors">
 			<?php echo $this->lists['authors']; ?>
 		</div>
+		</fieldset>
 	</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
-		<label></label>
+		<fieldset>
 		<div class="input-wrap">
 			<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="80" />
 		</div>
-	</fieldset>
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
-		<label></label>
-		<div class="input-wrap">
-			<?php echo $this->lists['content']; ?>
-		</div>
+		</fieldset>
 	</fieldset>
 </div>
 <div class="col width-40 fltrt">
@@ -416,6 +413,13 @@ function popratings()
 		</tbody>
 	</table>
 <?php echo JHtml::_('sliders.end'); ?>
+	<fieldset class="adminform">
+		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
+		<label></label>
+		<div class="input-wrap">
+			<?php echo $this->lists['content']; ?>
+		</div>
+	</fieldset>
 	</div>
 	<div class="clr"></div>
 

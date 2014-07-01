@@ -224,6 +224,11 @@ class PublicationsModelAttachments extends JObject
 			$attachments = isset($attachments['elements'][$element->id])
 						 ? $attachments['elements'][$element->id] : NULL;
 
+			if (!$attachments)
+			{
+				return false;
+			}
+
 			// Draw link(s)
 			$output .= $type->drawList(
 				$attachments,
