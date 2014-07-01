@@ -922,7 +922,7 @@ class ForumTablePost extends JTable
 	{
 		$query = "SELECT DISTINCT c.anonymous, c.created_by, u.name
 					FROM $this->_tbl AS c
-					LEFT JOIN #__users AS u ON c.created_by=u.id
+					LEFT JOIN `#__users` AS u ON c.created_by=u.id
 					WHERE ";
 
 		if (isset($filters['category_id']))
@@ -930,7 +930,14 @@ class ForumTablePost extends JTable
 			$where[] = "c.category_id = " . $this->_db->Quote($filters['category_id']);
 		}
 		$where[] = "c.state = " . $this->_db->Quote(1);
-		$where[] = "(c.parent = " . $this->_db->Quote($filters['parent']) . " OR c.id = " . $this->_db->Quote($filters['parent']) . ")";
+		if (isset($filters['parent']))
+		{
+			$where[] = "(c.parent = " . $this->_db->Quote($filters['parent']) . " OR c.id = " . $this->_db->Quote($filters['parent']) . ")";
+		}
+		if (isset($filters['thread']))
+		{
+			$where[] = "c.thread = " . $this->_db->Quote($filters['thread']);
+		}
 
 		$query .= implode(" AND ", $where);
 
@@ -944,18 +951,18 @@ class ForumTablePost extends JTable
 	 * @param      integer $parent Thread ID
 	 * @return     object
 	 */
-	public function getLastPost($parent=null)
+	public function getLastPost($thread=null)
 	{
-		if (!$parent)
+		if (!$thread)
 		{
-			$parent = $this->parent;
+			$thread = $this->thread;
 		}
-		if (!$parent)
+		if (!$thread)
 		{
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.parent=" . $this->_db->Quote($parent) . " AND r.state=1 ORDER BY id DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1 ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();

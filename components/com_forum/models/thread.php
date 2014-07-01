@@ -266,7 +266,7 @@ class ForumModelThread extends ForumModelPost
 	public function participants($filters=array(), $clear=false)
 	{
 		$filters['thread'] = isset($filters['thread']) ? $filters['thread'] : $this->get('thread');
-		$filters['parent'] = isset($filters['parent']) ? $filters['parent'] : $this->get('id');
+		//$filters['parent'] = isset($filters['parent']) ? $filters['parent'] : $this->get('id');
 		$filters['state']  = isset($filters['state'])  ? $filters['state']  : self::APP_STATE_PUBLISHED;
 
 		if (!isset($this->_cache['participants']) || !($this->_cache['participants'] instanceof \Hubzero\Base\ItemList) || $clear)
