@@ -83,7 +83,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS 
+		$document->addStyleSheet('components' . DS . $this->_option . DS
 		. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
@@ -167,7 +167,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS 
+		$document->addStyleSheet('components' . DS . $this->_option . DS
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
@@ -186,7 +186,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		$prop = JRequest::getVar('prop', array(), 'post');
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' 
+		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
 
 		// Initiate extended database class
@@ -240,7 +240,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				}
 			}
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'elements.php');
 			$re = new PublicationsElements($elements);
 			$row->customFields = $re->toString();
