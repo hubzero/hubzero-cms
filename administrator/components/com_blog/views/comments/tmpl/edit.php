@@ -56,9 +56,11 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if ($('field-content').value == ''){
+	if ($('#field-content').val() == ''){
 		alert("<?php echo JText::_('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -76,7 +78,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<textarea name="fields[content]" id="field-content" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->content('raw'))); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-content', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>
@@ -109,6 +111,20 @@ function submitbutton(pressbutton)
 				</tr>
 			</tbody>
 		</table>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
+
+			<div class="input-wrap">
+				<label for="field-state"><?php echo JText::_('COM_BLOG_FIELD_STATE'); ?>:</label><br />
+				<select name="fields[state]" id="field-state">
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JPUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
+					<option value="3"<?php if ($this->row->get('state') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_FLAGGED'); ?></option>
+				</select>
+			</div>
+		</fieldset>
 	</div>
 	<div class="clr"></div>
 

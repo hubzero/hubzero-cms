@@ -60,6 +60,8 @@ function submitbutton(pressbutton)
 	} else if ($('#field-content').val() == ''){
 		alert("<?php echo JText::_('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -129,7 +131,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape($this->row->content('raw')), '', '', 50, 30, false, 'field-content'); ?>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?>">

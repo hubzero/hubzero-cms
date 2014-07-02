@@ -125,7 +125,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						<a class="edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('COM_BLOG_EDIT'); ?>">
 							<span><?php echo JText::_('COM_BLOG_EDIT'); ?></span>
 						</a>
-						<a class="delete" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
+						<a class="delete" data-confirm="<?php echo JText::_('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
 							<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
 						</a>
 					</dd>

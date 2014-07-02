@@ -126,7 +126,7 @@ $first = $this->model->entries('first', $filters);
 								<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('COM_BLOG_EDIT'); ?>">
 									<?php echo JText::_('COM_BLOG_EDIT'); ?>
 								</a>
-								<a class="delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
+								<a class="delete" data-confirm="<?php echo JText::_('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
 									<?php echo JText::_('COM_BLOG_DELETE'); ?>
 								</a>
 							<?php } ?>

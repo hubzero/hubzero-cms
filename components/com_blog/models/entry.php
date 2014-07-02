@@ -313,7 +313,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = 1;
+			$filters['state'] = array(1, 3);
 		}
 
 		switch (strtolower($rtrn))
@@ -351,7 +351,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					if ($results = $tbl->getAllComments($this->get('id')))
+					if ($results = $tbl->getAllComments($this->get('id'), $filters))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -631,27 +631,12 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			else
 			{
 				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					if ($juser->authorize('com_blog', 'manage'))
-					{
-						$this->params->set('access-admin-entry', true);
-						$this->params->set('access-manage-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-				}
-				else
-				{
-					$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-					$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
-				}
+				$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
+				$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
 
 				// If they're not an admin
 				if (!$this->params->get('access-admin-entry')

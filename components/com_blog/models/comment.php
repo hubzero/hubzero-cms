@@ -100,33 +100,15 @@ class BlogModelComment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * HAs this comment been reported
+	 * Has this comment been reported
 	 *
 	 * @return     boolean True if reported, False if not
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('state') == 3)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'blogcomment'
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -184,6 +166,44 @@ class BlogModelComment extends \Hubzero\Base\Model
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 * 
+	 * @param      string $as What data to return
+	 * @return     boolean
+	 */
+	public function modified($rtrn='')
+	{
+		switch (strtolower($rtrn))
+		{
+			case 'date':
+				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return JHTML::_('date', $this->get('modified'), JText::_('TIME_FORMAT_HZ1'));
+			break;
+
+			default:
+				return $this->get('modified');
+			break;
+		}
+	}
+
+	/**
+	 * Determine if record was modified
+	 * 
+	 * @return     boolean True if modified, false if not
+	 */
+	public function wasModified()
+	{
+		if ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00')
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**

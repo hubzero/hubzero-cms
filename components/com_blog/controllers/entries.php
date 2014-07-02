@@ -47,6 +47,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		$this->_authorize();
 		$this->_authorize('entry');
+		$this->_authorize('comment');
 
 		$this->registerTask('comments.rss', 'comments');
 		$this->registerTask('commentsrss', 'comments');
@@ -360,7 +361,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -416,7 +417,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -469,7 +470,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -650,7 +651,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -734,37 +735,45 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$id = JRequest::getInt('comment', 0);
+		$id    = JRequest::getInt('comment', 0);
+		$year  = JRequest::getVar('year', '');
+		$month = JRequest::getVar('month', '');
+		$alias = JRequest::getVar('alias', '');
+
 		if (!$id)
 		{
-			return $this->entryTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+			);
+			return;
 		}
 
 		// Initiate a blog comment object
 		$comment = new BlogTableComment($this->database);
 		$comment->load($id);
 
-		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-manage-entry'))
+		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
 		{
-			return $this->entryTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+			);
+			return;
 		}
 
 		// Mark all comments as deleted
 		$comment->setState($id, 2);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		/*if (!$comment->store())
 		{
 			$this->setError($comment->getError());
-		}
+		}*/
 
 		// Return the topics list
-		//return $this->entryTask();
-		$year  = JRequest::getVar('year', '');
-		$month = JRequest::getVar('month', '');
-		$alias = JRequest::getVar('alias', '');
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $row->alias)
+			JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
+			($this->getError() ? $this->getError() : null),
+			($this->getError() ? 'error' : null)
 		);
 	}
 

@@ -87,6 +87,27 @@ class BlogTableComment extends JTable
 	var $parent     = NULL;
 
 	/**
+	 * tinyint(2)
+	 *
+	 * @var integer
+	 */
+	var $state     = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var string
+	 */
+	var $modified    = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var integer
+	 */
+	var $modified_by = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -125,6 +146,11 @@ class BlogTableComment extends JTable
 		if (!$this->id)
 		{
 			$this->created = JFactory::getDate()->toSql();
+		}
+		else
+		{
+			$this->modified    = JFactory::getDate()->toSql();
+			$this->modified_by = $juser->get('id');
 		}
 
 		return true;
@@ -178,9 +204,10 @@ class BlogTableComment extends JTable
 	 * Get all comments on an entry
 	 *
 	 * @param      integer $entry_id Blog entry
-	 * @return     array..
+	 * @param      array   $filters  Extra filters to apply to the query
+	 * @return     array
 	 */
-	public function getAllComments($entry_id=NULL)
+	public function getAllComments($entry_id=NULL, $filters=array())
 	{
 		if (!$entry_id)
 		{
@@ -189,16 +216,11 @@ class BlogTableComment extends JTable
 
 		$comments = array();
 
-		$rows = $this->getComments($entry_id);
+		$filters['entry_id'] = $entry_id;
+
+		$rows = $this->getEntries($filters);
 		if ($rows)
 		{
-			$ra = null;
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-			}
-
 			$children = array(
 				0 => array()
 			);
@@ -208,11 +230,7 @@ class BlogTableComment extends JTable
 			foreach ($rows as $v)
 			{
 				$v->replies = 0;
-				$v->reports = 0;
-				if (is_object($ra))
-				{
-					$v->reports = $ra->getCount(array('id' => $v->id, 'category' => 'blog'));
-				}
+
 				$pt      = $v->parent;
 				$list    = @$children[$pt] ? $children[$pt] : array();
 				array_push($list, $v);
@@ -405,17 +423,33 @@ class BlogTableComment extends JTable
 		{
 			$where[] = "c.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 		}
+		if (isset($filters['modified_by']) && (int) $filters['modified_by'] != 0)
+		{
+			$where[] = "c.modified_by=" . $this->_db->Quote(intval($filters['modified_by']));
+		}
 		if (isset($filters['entry_id']) && (int) $filters['entry_id'] != 0)
 		{
 			$where[] = "c.entry_id=" . $this->_db->Quote(intval($filters['entry_id']));
 		}
 		if (isset($filters['parent']))
 		{
-			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent'])) . "'";
+			$where[] = "c.parent=" . $this->_db->Quote(intval($filters['parent']));
+		}
+		if (isset($filters['state']))
+		{
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
+			}
+			else if ($filters['state'] >= 0)
+			{
+				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			}
 		}
 		if (isset($filters['anonymous']))
 		{
-			$where[] = "c.anonymous=" . $this->_db->Quote(intval($filters['anonymous'])) . "'";
+			$where[] = "c.anonymous=" . $this->_db->Quote(intval($filters['anonymous']));
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

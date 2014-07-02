@@ -161,6 +161,10 @@ function BlogParseRoute($segments)
 				$vars['file'] = trim($parts[1]);
 			}
 		}
+		else if ($segments[3] == 'editcomment')
+		{
+			$vars['action'] = $segments[3];
+		}
 		else
 		{
 			$vars['task'] = $segments[3];
