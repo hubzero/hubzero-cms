@@ -281,6 +281,8 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	private function _buildConfig($params = array())
 	{
+		static $template;
+
 		// merge incoming params with
 		$this->params->loadArray($params);
 
@@ -424,8 +426,11 @@ class plgEditorCkeditor extends JPlugin
 			$doc = JFactory::getDocument();
 
 			// always get front end template
-			$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
-			$template = $db->loadResult();
+			if (!$template)
+			{
+				$db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id`='0' AND `home`='1'");
+				$template = $db->loadResult();
+			}
 
 			// vars to hold css
 			$css         = array();
