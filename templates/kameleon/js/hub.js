@@ -63,34 +63,44 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	// Set the overlay trigger for launch tool links
-	/*$('.launchtool').on('click', function(e) {
-		$.fancybox({
-			closeBtn: false, 
-			href: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
+	if (jQuery.fancybox) {
+		// Set the overlay trigger for launch tool links
+		/*
+		$('.launchtool').on('click', function(e) {
+			$.fancybox({
+				closeBtn: false, 
+				href: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
+			});
 		});
-	});*/
+		*/
 
-	// Set overlays for lightboxed elements
-	$('a[rel=lightbox]').fancybox();
+		// Set overlays for lightboxed elements
+		$('a[rel=lightbox]').fancybox();
+	}
 
 	// Init tooltips
-	$('.hasTip, .tooltips').tooltip({
-		position: {
-			my: 'center bottom',
-			at: 'center top'
-		},
-		create: function(event, ui) {
-			var tip = $(this),
-				tipText = tip.attr('title');
+	if (jQuery.ui && jQuery.ui.tooltip) {
+		$('.hasTip, .tooltips').tooltip({
+			position: {
+				my: 'center bottom',
+				at: 'center top'
+			},
+			// When moving between hovering over many elements quickly, the tooltip will jump around
+			// because it can't start animating the fade in of the new tip until the old tip is
+			// done. Solution is to disable one of the animations.
+			hide: false,
+			create: function(event, ui) {
+				var tip = $(this),
+					tipText = tip.attr('title');
 
-			if (tipText.indexOf('::') != -1) {
-				var parts = tipText.split('::');
-				tip.attr('title', parts[1]);
-			}
-		},
-		tooltipClass: 'tooltip'
-	});
+				if (tipText.indexOf('::') != -1) {
+					var parts = tipText.split('::');
+					tip.attr('title', parts[1]);
+				}
+			},
+			tooltipClass: 'tooltip'
+		});
+	}
 
 	//test for placeholder support
 	var test = document.createElement('input'),

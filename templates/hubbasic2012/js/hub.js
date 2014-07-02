@@ -113,6 +113,10 @@ HUB.Base = {
 				my: 'center bottom',
 				at: 'center top'
 			},
+			// When moving between hovering over many elements quickly, the tooltip will jump around
+			// because it can't start animating the fade in of the new tip until the old tip is
+			// done. Solution is to disable one of the animations.
+			hide: false,
 			create: function(event, ui) {
 				var tip = $(this),
 					tipText = tip.attr('title');

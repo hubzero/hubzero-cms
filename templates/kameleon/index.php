@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $config = JFactory::getConfig();
 $juser  = JFactory::getUser();
 
+JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
 // Include global scripts

@@ -4,6 +4,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->template = 'hubbasic2012';
 
+JHTML::_('behavior.framework', true);
+
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
@@ -15,7 +17,7 @@ $v = $browser->major();
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('reset', 'fontcons', 'columns', 'notifications', 'tabs')); /* reset MUST come before all others except fontcons */ ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 
 <?php if ($this->direction == 'rtl' && (!file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component_rtl.css') || !file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component.css'))) : ?>
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/template_rtl.css" type="text/css" />

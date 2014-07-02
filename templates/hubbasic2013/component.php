@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->template = 'hubbasic2013';
 
-JHTML::_('behavior.modal');
+JHTML::_('behavior.framework', true);
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
