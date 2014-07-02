@@ -96,9 +96,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$model = CollectionsModel::getInstance();
 
 		$this->view->collections = $model->collections(array(
-			'count'  => true,
-			'state'  => 1,
-			'access' => (!$this->juser->get('guest') ? array(0, 1) : 0)
+			'count'      => true,
+			'access'     => (!$this->juser->get('guest') ? array(0, 1) : 0),
+			'state'      => 1,
+			'is_default' => 0
 		));
 
 		// Initiate paging
@@ -139,7 +140,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			'start'   => JRequest::getInt('limitstart', 0),
 			'search'  => JRequest::getVar('search', ''),
 			'id'      => JRequest::getInt('id', 0),
-			'user_id' => $this->juser->get('id'),
 			'state'   => 1,
 			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
 		);
@@ -157,7 +157,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = true;
 		$this->view->total = $model->collections($this->view->filters);
 
+		$this->view->filters['user_id'] = $this->juser->get('id');
+
 		$this->view->posts = $model->posts($this->view->filters);
+		unset($this->view->filters['user_id']);
 
 		$this->view->filters['count'] = false;
 		$this->view->rows = $model->collections($this->view->filters);
@@ -196,7 +199,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		// Filters for returning results
 		$this->view->filters = array(
 			'id'      => JRequest::getInt('id', 0),
-			'user_id' => $this->juser->get('id'),
+//			'user_id' => $this->juser->get('id'),
 			'search'  => JRequest::getVar('search', ''),
 			'sort'    => 'p.created',
 			'state'   => 1,
