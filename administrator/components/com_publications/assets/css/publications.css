@@ -245,7 +245,10 @@
 		font-weight: bold;
 		color: #999;
 		}
-
+	fieldset.adminform fieldset legend {
+		padding-left: 1.5em !important;
+		background-color: #E2E2E2;
+	}
 	.notice {
 		padding: 0.2em 0.5em;
 		border: none;
