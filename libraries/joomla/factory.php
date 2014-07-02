@@ -615,7 +615,7 @@ abstract class JFactory
 				$path = '/var/log/hubzero';
 			}
 
-			$instance->useFiles($path . '/cmsauth.log', 'info');
+			$instance->useFiles($path . '/cmsauth.log', 'info', "%datetime% %message%\n");
 		}
 
 		return $instance;

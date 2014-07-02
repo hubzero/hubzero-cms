@@ -6,6 +6,7 @@ use JDispatcher;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Formatter\LineFormatter;
 
 class Writer
 {
@@ -78,13 +79,20 @@ class Writer
 	 *
 	 * @param  string  $path
 	 * @param  string  $level
+	 * @param  string  $format
 	 * @return void
 	 */
-	public function useFiles($path, $level = 'debug')
+	public function useFiles($path, $level = 'debug', $format='')
 	{
 		$level = $this->parseLevel($level);
 
-		$this->monolog->pushHandler(new StreamHandler($path, $level));
+		$handler = new StreamHandler($path, $level);
+		if ($format)
+		{
+			$handler->setFormatter(new LineFormatter($format, 'Y-m-d H:i:s'));
+		}
+
+		$this->monolog->pushHandler($handler);
 	}
 
 	/**
@@ -93,13 +101,20 @@ class Writer
 	 * @param  string  $path
 	 * @param  int     $days
 	 * @param  string  $level
+	 * @param  string  $format
 	 * @return void
 	 */
-	public function useDailyFiles($path, $days = 0, $level = 'debug')
+	public function useDailyFiles($path, $days = 0, $level = 'debug', $format='')
 	{
 		$level = $this->parseLevel($level);
 
-		$this->monolog->pushHandler(new RotatingFileHandler($path, $days, $level));
+		$handler = new RotatingFileHandler($path, $days, $level);
+		if ($format)
+		{
+			$handler->setFormatter(new LineFormatter($format, 'Y-m-d H:i:s'));
+		}
+
+		$this->monolog->pushHandler($handler);
 	}
 
 	/**
