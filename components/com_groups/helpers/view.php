@@ -433,9 +433,28 @@ class GroupsHelperView
 	 */
 	public static function getPageCss($group)
 	{
-		// group url, make sure to remove administrator
-		$url  = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'groups' . DS . $group->get('cn');
+		// load stylesheets from specific group first
+		$url = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'groups' . DS . $group->get('cn');
+		$stylesheets = self::stylesheetsForUrl($url);
 		
+		// if we got nothing back lets get styles from groups intro page
+		if (empty($stylesheets))
+		{
+			$url  = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'groups';
+			$stylesheets = self::stylesheetsForUrl($url);
+		}
+	
+		return $stylesheets;
+	}
+
+	/**
+	 * Get Stylesheets for URL (with cURL)
+	 * 
+	 * @param  string    $url
+	 * @return array
+	 */
+	private static function stylesheetsForUrl($url)
+	{
 		// get contents of main group page
 		// we need to get all css files loaded on this page.
 		$ch = curl_init();
@@ -444,8 +463,15 @@ class GroupsHelperView
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		$html = curl_exec($ch);
+		$info = curl_getinfo($ch);
 		curl_close($ch);
-		
+
+		// make sure it was a success
+		if ($info['http_code'] != '200')
+		{
+			return array();
+		}
+
 		// load html through dom document object
 		$domDocument = new DOMDocument();
 		$domDocument->loadHTML($html);
