@@ -52,7 +52,7 @@ function submitbutton(pressbutton)
 
 	if (pressbutton =='resethelpful') {
 		if (confirm('<?php echo JText::_("COM_ANSWERS_CONFIRM_RESET"); ?>')){
-			submitform( pressbutton );
+			submitform(pressbutton);
 			return;
 		} else {
 			return;
@@ -60,12 +60,18 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// do field validation
-	submitform( pressbutton );
+	if (document.getElementById('field-answer').value == ''){
+		alert('<?php echo JText::_('COM_ANSWERS_ERROR_MISSING_ANSWER'); ?>');
+	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
+		submitform(pressbutton);
+	}
 }
 </script>
 
@@ -84,7 +90,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-answer"><?php echo JText::_('COM_ANSWERS_FIELD_ANSWER'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo JFactory::getEditor()->display('answer[answer]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-answer'); ?>
+				<?php echo JFactory::getEditor()->display('answer[answer]', $this->escape($this->row->content('raw')), '', '', 50, 15, false, 'field-answer', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>
