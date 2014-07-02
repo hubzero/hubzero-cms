@@ -76,11 +76,11 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo JHTML::_('grid.sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JText::_('@v.'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th><?php echo JHTML::_('grid.sort', 'COM_PUBLICATIONS_FIELD_PROJECT', 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
 				<th colspan="2"><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
