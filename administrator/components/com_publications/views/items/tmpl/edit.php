@@ -242,7 +242,7 @@ function popratings()
 		<tr>
 			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
 			<td>
-				<?php echo $this->pub->base; ?>
+				<?php echo $this->pub->_type->type; ?>
 			</td>
 		</tr>
 		<?php if ($this->row->state == 1 || $this->row->state == 0) { ?>
