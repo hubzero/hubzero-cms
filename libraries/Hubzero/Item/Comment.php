@@ -632,7 +632,15 @@ class Comment extends \JTable
 
 		if (isset($filters['state']))
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
+			}
+			else if ($filters['state'] >= 0)
+			{
+				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			}
 		}
 
 		if (isset($filters['item_type']) && $filters['item_type'] >= 0)

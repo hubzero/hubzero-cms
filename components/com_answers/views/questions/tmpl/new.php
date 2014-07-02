@@ -37,13 +37,11 @@ $this->css();
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
-					<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-search search btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=search'); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 

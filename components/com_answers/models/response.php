@@ -56,13 +56,6 @@ class AnswersModelResponse extends AnswersModelAbstract
 	protected $_context = 'com_answers.response.answer';
 
 	/**
-	 * Class scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'answer';
-
-	/**
 	 * \Hubzero\Base\ItemList
 	 *
 	 * @var object
@@ -104,6 +97,10 @@ class AnswersModelResponse extends AnswersModelAbstract
 		if (!isset($filters['parent']))
 		{
 			$filters['parent'] = 0;
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

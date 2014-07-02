@@ -81,13 +81,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	protected $_context = 'com_answers.question.question';
 
 	/**
-	 * Class scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'question';
-
-	/**
 	 * AnswersModelComment
 	 *
 	 * @var object
@@ -260,7 +253,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state']    = 1;
+			$filters['state']    = 0;
 		}
 		if (!isset($filters['filterby']))
 		{
@@ -716,7 +709,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			return false;
 		}
 
-		$al->expires = date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
+		$al->expires = gmdate('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)); // in a week
 
 		if (!$al->check())
 		{
@@ -835,13 +828,6 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function delete()
 	{
-		// Ensure we have a database to work with
-		if (empty($this->_db))
-		{
-			$this->setError(JText::_('Database not found.'));
-			return false;
-		}
-
 		// Can't delete what doesn't exist
 		if (!$this->exists())
 		{

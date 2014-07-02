@@ -50,11 +50,11 @@ if (!$this->filters['filterby'] == 'none')
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>" class="icon-add add btn"><span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span></a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<span><?php echo JText::_('COM_ANSWERS_NEW_QUESTION'); ?></span>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header>
 

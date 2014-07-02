@@ -53,13 +53,6 @@ class AnswersModelComment extends AnswersModelAbstract
 	protected $_context = 'com_answers.comment.content';
 
 	/**
-	 * Class scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'answer';
-
-	/**
 	 * \Hubzero\Base\ItemList
 	 *
 	 * @var object
@@ -79,28 +72,6 @@ class AnswersModelComment extends AnswersModelAbstract
 	 * @var string
 	 */
 	private $_base = null;
-
-	/**
-	 * Was the entry reported?
-	 *
-	 * @return     boolean True if reported, False if not
-	 */
-	public function isReported()
-	{
-		if ($this->get('reports', -1) > 0)
-		{
-			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if ($this->get('state') == 3)
-			{
-				$this->set('reports', 1);
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Get a list or count of comments
@@ -123,6 +94,10 @@ class AnswersModelComment extends AnswersModelAbstract
 		if (!isset($filters['item_id']))
 		{
 			$filters['item_id'] = $this->get('item_id');
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

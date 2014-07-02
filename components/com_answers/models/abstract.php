@@ -37,13 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class AnswersModelAbstract extends \Hubzero\Base\Model
 {
 	/**
-	 * Item scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = NULL;
-
-	/**
 	 * JUser
 	 *
 	 * @var object
@@ -115,28 +108,9 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => $this->_scope,
-					'state'    => 0
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}

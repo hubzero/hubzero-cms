@@ -16,13 +16,11 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('COM_ANSWERS_ANONYMOUS');
-	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = $this->comment->creator(); //\Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
-		if (is_object($huser) && $huser->get('name'))
+		if ($this->comment->creator('name'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->creator('uidNumber')) . '">' . $this->escape(stripslashes($this->comment->creator('name'))) . '</a>';
 		}
 	}
 
@@ -41,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo $huser->getPicture($this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
@@ -69,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span>
+					<span class="comment-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
@@ -91,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
-			<?php if (!$this->comment->get('reports')) { ?>
+			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_ANSWERS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
@@ -129,6 +127,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1 ? 0 : $this->comment->get('id')); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="comment[state]" value="1" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="questions" />
 						<input type="hidden" name="rid" value="<?php echo $this->question->get('id'); ?>" />
@@ -143,8 +142,8 @@ defined('_JEXEC') or die('Restricted access');
 							?>
 						</label>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+						<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
 							<?php echo JText::_('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>
 
