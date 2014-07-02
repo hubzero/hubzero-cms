@@ -46,8 +46,8 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</p>
 
-		<?php if (JRequest::getWord('action') == 'editcomment' 
-				&& JRequest::getInt('comment') == $this->comment->get('id') 
+		<?php if (JRequest::getWord('action') == 'editcomment'
+				&& JRequest::getInt('comment') == $this->comment->get('id')
 				&& ($this->config->get('access-edit-comment') || $juser->get('id') == $this->comment->get('created_by'))) { ?>
 			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
 				<fieldset>
