@@ -191,12 +191,12 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-publish_up"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_up')), 'fields[publish_up]', 'field-publish_up'); ?>
+				<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape($this->row->get('publish_up')) : ''), 'fields[publish_up]', 'field-publish_up'); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-publish_down"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->escape($this->row->get('publish_down')), 'fields[publish_down]', 'field-publish_down'); ?>
+				<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape($this->row->get('publish_down')) : ''), 'fields[publish_down]', 'field-publish_down'); ?>
 			</div>
 		</fieldset>
 	</div>
