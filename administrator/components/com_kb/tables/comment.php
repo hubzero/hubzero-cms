@@ -211,7 +211,7 @@ class KbTableComment extends JTable
 		{
 			$sql = "SELECT c.* FROM $this->_tbl AS c ";
 		}
-		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state=" . $this->_db->Quote(1) . " ORDER BY created ASC";
+		$sql .= "WHERE c.entry_id=" . $this->_db->Quote($entry_id) . " AND c.parent=" . $this->_db->Quote($parent) . " AND c.state IN (1, 3) ORDER BY created ASC";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();

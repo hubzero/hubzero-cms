@@ -157,13 +157,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 			}
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$params = new $paramsClass($this->get('params'));
+		$params = new JRegistry($this->get('params'));
 
 		$this->_params = JComponentHelper::getParams('com_kb');
 		$this->_params->merge($params);
@@ -336,7 +330,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state']    = self::APP_STATE_PUBLISHED;
+			$filters['state']    = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		$filters['sort']     = 'created';

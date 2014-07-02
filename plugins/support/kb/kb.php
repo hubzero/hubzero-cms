@@ -80,6 +80,53 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Mark an item as flagged
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     string
+	 */
+	public function onReportItem($refid, $category)
+	{
+		if ($category != 'kb')
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+
+		$comment = new KbModelComment($refid);
+		$comment->set('state', 3);
+		$comment->store(false);
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if ($category != 'kb')
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
+
+		$comment = new KbModelComment($refid);
+		$comment->set('state', 1);
+		$comment->store(false);
+
+		return '';
+	}
+
+	/**
 	 * Retrieves a row from the database
 	 *
 	 * @param      string $refid    ID of the database table row
@@ -98,8 +145,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
 
 		$comment = new KbModelComment($refid);
-		$comment->set('state', 3);
-
+		$comment->set('state', 2);
 		$comment->store(false);
 
 		return '';

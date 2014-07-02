@@ -140,12 +140,21 @@ class KbModelComment extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null)
 	{
-		if (!($this->_creator instanceof JUser))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
+			$property = ($property == 'id') ? 'uidNumber' : $property;
+			if ($property == 'picture')
+			{
+				return $this->_creator->getPicture($this->get('anonymous'));
+			}
 			return $this->_creator->get($property);
 		}
 		return $this->_creator;
@@ -158,28 +167,9 @@ class KbModelComment extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'kb',
-					'state'    => 0
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
