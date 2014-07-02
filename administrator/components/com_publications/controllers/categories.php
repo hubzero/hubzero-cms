@@ -83,7 +83,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS 
+		. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
 		$rt = new PublicationCategory($this->database);
@@ -166,7 +167,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS 
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
 		$this->view->display();
@@ -184,7 +186,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		$prop = JRequest::getVar('prop', array(), 'post');
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $prop['id'];
+		$url = 'index.php?option=' . $this->_option . '&controller=' 
+			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
 
 		// Initiate extended database class
 		$row = new PublicationCategory($this->database);
@@ -237,7 +240,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				}
 			}
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' 
+				. DS . 'models' . DS . 'elements.php');
 			$re = new PublicationsElements($elements);
 			$row->customFields = $re->toString();
 		}
@@ -269,8 +273,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		}
 
 		// Redirect
-		$this->setRedirect($url, JText::_('Publication Category successfully saved')
-		);
+		$this->setRedirect($url, JText::_('COM_PUBLICATIONS_CATEGORY_SAVED'));
 	}
 
 	/**
@@ -313,7 +316,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Item(s) successfully published/unpublished')
+			JText::_('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED')
 		);
 	}
 
