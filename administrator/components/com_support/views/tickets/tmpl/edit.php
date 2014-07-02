@@ -644,7 +644,26 @@ if ($this->row->id) {
 						</label>
 					</div>
 					<div class="clr"></div>
-					
+
+				<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
+					<div class="input-wrap">
+						<label for="ticket-field-category">
+							<?php echo JText::_('Category'); ?>
+							<select name="category" id="ticket-field-category">
+								<option value=""><?php echo JText::_('(none)'); ?></option>
+								<?php
+								foreach ($this->lists['categories'] as $category)
+								{
+									?>
+								<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($category->alias == $this->row->get('category')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+									<?php
+								}
+								?>
+							</select>
+						</label>
+					</div>
+				<?php } ?>
+
 					<div class="col width-50 fltlft">
 						<label for="ticket-field-severity">
 							<?php echo JText::_('COMMENT_SEVERITY'); ?>

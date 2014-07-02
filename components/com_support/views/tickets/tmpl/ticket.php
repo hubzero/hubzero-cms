@@ -478,6 +478,23 @@ $cc = array();
 						</label>
 			<?php if ($this->acl->check('update', 'tickets') > 0) { ?>
 					</div>
+
+					<?php if (isset($this->lists['categories']) && $this->lists['categories'])  { ?>
+					<label for="ticket-field-category">
+						<?php echo JText::_('Category:'); ?>
+						<select name="ticket[category]" id="ticket-field-category">
+							<option value=""><?php echo JText::_('(none)'); ?></option>
+							<?php
+							foreach ($this->lists['categories'] as $category)
+							{
+								?>
+								<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->get('category') == $category->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+								<?php
+							}
+							?>
+						</select>
+					</label>
+					<?php } ?>
 			<?php } ?>
 					<div class="clear"></div>
 				</fieldset>

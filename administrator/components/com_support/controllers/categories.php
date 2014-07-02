@@ -61,25 +61,36 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 			0,
 			'int'
 		);
+		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.categories.sort',
+			'filter_order',
+			'title'
+		));
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.categories.sortdir',
+			'filter_order_Dir',
+			'ASC'
+		));
 
 		$model = new SupportCategory($this->database);
 
 		// Record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$this->view->total = $model->find('count', $this->view->filters);
 
 		// Fetch results
-		$this->view->rows  = $model->getRecords($this->view->filters);
+		$this->view->rows  = $model->find('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$pageNav = new JPagination(
+		$this->view->pageNav = new JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError()) {
+		if ($this->getError())
+		{
 			$this->view->setError($this->getError());
 		}
 
@@ -105,7 +116,11 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		if (is_object($edit))
+		JRequest::setVar('hidemainmenu', 1);
+
+		$this->view->setLayout('edit');
+
+		if (is_object($row))
 		{
 			$this->view->row = $row;
 		}
@@ -117,18 +132,7 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 			// Initiate database class and load info
 			$this->view->row = new SupportCategory($this->database);
 			$this->view->row->load($id);
-
-			// Set action
-			if (!$this->view->row->id)
-			{
-				$this->view->row->category = '';
-				$this->view->row->section = 1;
-			}
 		}
-
-		// Get support sections
-		$ss = new SupportSection($this->database);
-		$this->view->sections = $ss->getSections();
 
 		// Set any errors
 		if ($this->getError())
@@ -145,24 +149,31 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 	 *
 	 * @return	void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save changes to a record
+	 *
+	 * @return	void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$cat = JRequest::getVar('cat', array(), 'post');
-		$cat = array_map('trim', $cat);
+		$fields = JRequest::getVar('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
 		$row = new SupportCategory($this->database);
-		if (!$row->bind($cat)) {
+		if (!$row->bind($fields))
+		{
 			JError::raiseError(500, $row->getError());
 			return;
 		}
-
-		// Code cleaner for xhtml transitional compliance
-		$row->category = trim($row->category);
 
 		// Check content
 		if (!$row->check())
@@ -180,9 +191,17 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('CATEGORY_SUCCESSFULLY_SAVED');
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SUPPORT_CATEGORY_SUCCESSFULLY_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
@@ -205,8 +224,11 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE');
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SUPPORT_ERROR_SELECT_CATEGORY_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
@@ -218,8 +240,10 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::sprintf('CATEGORY_SUCCESSFULLY_DELETED', count($ids));
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::sprintf('COM_SUPPORT_CATEGORY_SUCCESSFULLY_DELETED', count($ids))
+		);
 	}
 
 	/**
@@ -229,6 +253,8 @@ class SupportControllerCategories extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 }

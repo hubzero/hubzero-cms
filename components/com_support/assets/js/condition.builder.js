@@ -44,6 +44,7 @@ statement += '<select class="fld">';
 	statement += '<option value="tag">Tag</option>';
 	statement += '<option value="type" selected="selected">Type</option>';
 	statement += '<option value="created">Created</option>';
+	statement += '<option value="category">Category</option>';
 statement += '</select>';
 
 statement += '<select class="op">';

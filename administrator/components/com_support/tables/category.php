@@ -37,27 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class SupportCategory extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 * 
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * varchar(50)
-	 * 
-	 * @var string
-	 */
-	var $category = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $section  = NULL;
-
-	/**
 	 * Constructor
 	 * 
 	 * @param      object &$db JDatabase
@@ -75,70 +54,65 @@ class SupportCategory extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->category) == '') 
+		$this->title = trim($this->title);
+		if (!$this->title) 
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
+		if (!$this->alias)
+		{
+			$this->alias = $this->title;
+		}
+		$this->alias = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->alias));
+
 		return true;
 	}
 
 	/**
-	 * Get categories for a section
-	 * 
-	 * @param      integer $section Section ID
-	 * @return     array
-	 */
-	public function getCategories($section=NULL)
-	{
-		if ($section !== NULL) 
-		{
-			$section = ($section) ? $section : 1;
-			$where = "WHERE section=" . $this->_db->Quote($section);
-		} 
-		else 
-		{
-			$where = "";
-		}
-
-		$this->_db->setQuery("SELECT category AS id, category AS txt FROM $this->_tbl $where ORDER BY category");
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Build a query from filters
+	 * Build an SQL statement based off of filters passed
 	 * 
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	protected function _buildQuery($filters=array())
 	{
-		$query = " FROM $this->_tbl AS c, #__support_sections AS s"
-				. " WHERE c.section=s.id";
-		if (isset($filters['order']) && $filters['order'] != '') 
+		$query = "FROM $this->_tbl";
+
+		$where = array();
+
+		if (isset($filters['id'])) 
 		{
-			$query .= " ORDER BY " . $filters['order'];
+			$where[] = "`id`=" . $this->_db->Quote($filters['uid']);
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0) 
+		if (isset($filters['alias']) && $filters['alias']) 
 		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+		}
+		if (isset($filters['title']) && $filters['title']) 
+		{
+			$where[] = "`title`=" . $this->_db->Quote($filters['title']);
+		}
+		if (isset($filters['section_id']) && $filters['section_id']) 
+		{
+			$where[] = "`section_id`=" . $this->_db->Quote($filters['section_id']);
+		}
+		if (isset($filters['created_by']) && $filters['created_by']) 
+		{
+			$where[] = "`created_by`=" . $this->_db->Quote($filters['created_by']);
+		}
+		if (isset($filters['modified_by']) && $filters['modified_by']) 
+		{
+			$where[] = "`modified_by`=" . $this->_db->Quote($filters['modified_by']);
+		}
+
+		if (count($where))
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
-	}
-
-	/**
-	 * Get a record count
-	 * 
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
-	 */
-	public function getCount($filters=array())
-	{
-		$query  = "SELECT COUNT(*)" . $this->buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
 	}
 
 	/**
@@ -147,13 +121,68 @@ class SupportCategory extends JTable
 	 * @param      array $filters Filters to build query from
 	 * @return     array
 	 */
-	public function getRecords($filters=array())
+	public function find($what='', $filters=array())
 	{
-		$filters['order'] = 'section, category';
+		$what = strtolower($what);
 
-		$query  = "SELECT c.id, c.category, s.section" . $this->buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query  = "SELECT * " . $this->_buildQuery($filters);
+				$query .= " ORDER BY `title` ASC";
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }
 

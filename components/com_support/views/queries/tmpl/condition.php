@@ -62,6 +62,7 @@ if ($this->condition->expressions)
 				<option value="tag"<?php if ($expression->fldval == 'tag') { echo ' selected="selected"'; } ?>>Tag</option>
 				<option value="type"<?php if ($expression->fldval == 'type') { echo ' selected="selected"'; } ?>>Type</option>
 				<option value="created"<?php if ($expression->fldval == 'created') { echo ' selected="selected"'; } ?>>Created</option>
+				<option value="category"<?php if ($expression->fldval == 'category') { echo ' selected="selected"'; } ?>>Category</option>
 			</select>
 			<select class="op">
 <?php 

@@ -63,6 +63,7 @@ include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'comment.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'message.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'resolution.php');
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'attachment.php');
+include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'category.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'utilities.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'acl.php');
 include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
@@ -78,6 +79,11 @@ JSubMenuHelper::addEntry(
 	JText::_('Tickets'),
 	'index.php?option=com_support&controller=tickets',
 	$controllerName == 'tickets'
+);
+JSubMenuHelper::addEntry(
+	JText::_('Categories'),
+	'index.php?option=com_support&controller=categories',
+	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
 	JText::_('Queries'),

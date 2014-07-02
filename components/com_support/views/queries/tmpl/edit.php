@@ -104,6 +104,7 @@ if (!$tmpl && !$no_html) {
 									<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>>Tag</option>
 									<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>>Type</option>
 									<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>>Created</option>
+									<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>>Category</option>
 								</select>
 							</td>
 							<td>
@@ -221,6 +222,7 @@ if (!$tmpl && !$no_html) {
 					<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>>Tag</option>
 					<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>>Type</option>
 					<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>>Created</option>
+					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>>Category</option>
 				</select>
 				<select name="fields[sort_dir]" id="field-sort_dir">
 					<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; }; ?>>desc</option>

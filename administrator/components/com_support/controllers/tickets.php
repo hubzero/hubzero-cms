@@ -342,8 +342,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		//$this->view->listslists['sections'] = $ss->getSections();
 
 		// Get categories
-		//$sa = new SupportCategory($this->database);
-		//$this->view->listslists['categories'] = $sa->getCategories($row->section);
+		$sa = new SupportCategory($this->database);
+		$this->view->lists['categories'] = $sa->find('list');
 
 		// Get Tags
 		$st = new SupportTags($this->database);
@@ -572,6 +572,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					'field'  => JText::_('TICKET_FIELD_STATUS'),
 					'before' => SupportHtml::getStatus($old->open, $old->status),
 					'after'  => SupportHtml::getStatus($row->open, $row->status)
+				);
+			}
+			if ($row->category != $old->category)
+			{
+				$log['changes'][] = array(
+					'field'  => JText::_('COM_SUPPORT_TICKET_FIELD_CATEGORY'),
+					'before' => ($old->category ? $old->category : JText::_('COM_SUPPORT_BLANK')),
+					'after'  => ($row->category ? $row->category : JText::_('COM_SUPPORT_BLANK'))
 				);
 			}
 
