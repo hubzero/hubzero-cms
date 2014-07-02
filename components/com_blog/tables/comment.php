@@ -145,6 +145,7 @@ class BlogTableComment extends JTable
 		}
 		if (!$this->id)
 		{
+			$this->state   = ($this->state !== null ? $this->state : 1);
 			$this->created = JFactory::getDate()->toSql();
 		}
 		else

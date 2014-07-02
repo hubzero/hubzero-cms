@@ -363,6 +363,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
 
