@@ -209,7 +209,7 @@ class PublicationsModelAttachments extends JObject
 		}
 
 		$output = '<ul class="element-list">';
-
+		$i = 0;
 		foreach ($elements as $element)
 		{
 			// Load attachment type
@@ -224,11 +224,10 @@ class PublicationsModelAttachments extends JObject
 			$attachments = isset($attachments['elements'][$element->id])
 						 ? $attachments['elements'][$element->id] : NULL;
 
-			if (!$attachments)
+			if ($attachments)
 			{
-				return false;
+				$i++;
 			}
-
 			// Draw link(s)
 			$output .= $type->drawList(
 				$attachments,
@@ -242,7 +241,7 @@ class PublicationsModelAttachments extends JObject
 
 		$output .= '</ul>';
 
-		return $output;
+		return $i > 0 ? $output : false;
 	}
 
 	/**
