@@ -105,7 +105,12 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 
 		$model = CollectionsModel::getInstance();
 
-		$this->view->collections = $model->collections(array('count' => true, 'access' => 0, 'state' => 1, 'is_default' => 0));
+		$this->view->collections = $model->collections(array(
+			'count'      => true,
+			'access'     => (!$this->juser->get('guest') ? array(0, 1) : 0),
+			'state'      => 1,
+			'is_default' => 0
+		));
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -151,7 +156,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['id']     = JRequest::getInt('id', 0);
-		$this->view->filters['user_id'] = $this->juser->get('id');
+
 		//$this->view->filters['sort']   = 'p.created';
 		$this->view->filters['state']   = 1;
 		$this->view->filters['is_default'] = 0;
@@ -171,7 +176,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = true;
 		$this->view->total = $model->collections($this->view->filters);
 
+		$this->view->filters['user_id'] = $this->juser->get('id');
+
 		$this->view->posts = $model->posts($this->view->filters);
+		unset($this->view->filters['user_id']);
 
 		$this->view->filters['count'] = false;
 		$this->view->rows = $model->collections($this->view->filters);
@@ -212,7 +220,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		// Filters for returning results
 		$this->view->filters = array();
 		$this->view->filters['id']      = JRequest::getInt('id', 0);
-		$this->view->filters['user_id'] = $this->juser->get('id');
+		// $this->view->filters['user_id'] = $this->juser->get('id');
 		$this->view->filters['search'] = JRequest::getVar('search', '');
 		$this->view->filters['sort']    = 'p.created';
 		$this->view->filters['state']   = 1;
