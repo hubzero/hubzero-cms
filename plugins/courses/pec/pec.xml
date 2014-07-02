@@ -42,6 +42,13 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.plg_courses_blog.ini</language>
 	</languages>
+	<params group="onOfferingEdit">
+		<param name="pec_register" type="radio" default="0" label="PEC Registration" description="Enable PEC registration?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="pec_course" type="text" size="15" default="" label="PEC Course ID" description="The PEC course ID" />
+	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
