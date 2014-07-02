@@ -470,24 +470,24 @@ class EventsEvent extends JTable
 
 				if (version_compare(JVERSION, '1.6', 'lt'))
 				{
-					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
-						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid AND
-							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')";
+					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl 
+						WHERE $this->_tbl.catid = b.id AND b.access <= $gid AND $this->_tbl.access <= $gid AND 
+							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59'))";
 				}
 				else
 				{
 					$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
 						WHERE $this->_tbl.catid = b.id AND
-							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59')
-							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59')";
+							((publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_up <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_down >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up <= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down >= '" . $this->_db->getEscaped($select_date) . " 23:59:59') 
+							OR (publish_up >= '" . $this->_db->getEscaped($select_date) . " 00:00:00' AND publish_down <= '" . $this->_db->getEscaped($select_date) . " 23:59:59'))";
 				}
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
-				$sql .= ") AND $this->_tbl.state = '1'";
+				$sql .= " AND $this->_tbl.state = '1'";
 
 				//did we pass in a scope filter
 				if (isset($filters['scope']) && $filters['scope'] != '')
