@@ -81,7 +81,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
 		$rt = new PublicationLicense($this->database);
@@ -158,7 +159,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option
+			. DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
 		$this->view->display();
@@ -220,7 +222,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('License successfully saved')
+			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 		);
 	}
 
@@ -276,7 +278,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		if(count($id) > 1)
 		{
-			$this->addComponentMessage(JText::_('Please select only one license to make default'), 'error');
+			$this->addComponentMessage(JText::_('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
@@ -310,7 +312,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('License successfully made default')
+			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT')
 		);
 	}
 
@@ -354,7 +356,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('License(s) successfully published/unpublished')
+			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
 		);
 	}
 
