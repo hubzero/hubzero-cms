@@ -104,7 +104,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							</h1>
 
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
-							<?php if (!$juser->get('guest')) { 
+							<?php if (!$juser->get('guest')) {
 									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 							?>
 								<li id="account-info">
