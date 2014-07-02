@@ -44,6 +44,21 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Is the category one this plugin handles?
+	 *
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     boolean
+	 */
+	private function _canHandle($category)
+	{
+		if (in_array($category, array('answer', 'question', 'answercomment')))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieves a row from the database
 	 *
 	 * @param      string $refid    ID of the database table row
@@ -53,7 +68,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'answer' && $category != 'question') // && $category != 'answercomment'
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -117,6 +132,11 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getParentId($parentid, $category)
 	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
 		$database = JFactory::getDBO();
 		$refid = $parentid;
 
@@ -166,7 +186,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'answer' && $category != 'question' && $category != 'answercomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -188,6 +208,85 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Mark an item as flagged
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     string
+	 */
+	public function onReportItem($refid, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+
+		$database = JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'answer':
+				$comment = new AnswersTableResponse($database);
+			break;
+
+			case 'question':
+				$comment = new AnswersTableQuestion($database);
+			break;
+
+			case 'answercomment':
+				$comment = new \Hubzero\Item\Comment($database);
+			break;
+		}
+		$comment->load($refid);
+		$comment->state = 3;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+
+		$database = JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'answer':
+				$comment = new AnswersTableResponse($database);
+			break;
+
+			case 'question':
+				$comment = new AnswersTableQuestion($database);
+			break;
+
+			case 'answercomment':
+				$comment = new \Hubzero\Item\Comment($database);
+			break;
+		}
+		$comment->load($refid);
+		$comment->state = 1;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
 	 * Removes an item reported as abusive
 	 *
 	 * @param      integer $referenceid ID of the database table row
@@ -198,7 +297,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'answer' && $category != 'question' && $category != 'answercomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
