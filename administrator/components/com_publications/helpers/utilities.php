@@ -58,7 +58,7 @@ class PublicationUtilities
 
 		if (!$service || !$userpw || !$shoulder)
 		{
-			$doierr .= 'Oups! Can\'t publish! DOI service is not available, please contact Support.';
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
 			return false;
 		}
 
@@ -87,7 +87,7 @@ class PublicationUtilities
 			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 		if (!$livesite)
 		{
-			$doierr .= 'Missing live site configuration';
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
 			return false;
 		}
 
@@ -194,7 +194,7 @@ class PublicationUtilities
 			}
 			else
 			{
-				$doierr .= "XML is invaild. DOI has been created but unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
+				$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
 			}
 		}
 
@@ -219,13 +219,13 @@ class PublicationUtilities
 	{
 		if (!$doi)
 		{
-			$doierr .= 'Missing DOI handle for update';
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE');
 			return false;
 		}
 
 		// Check that this is hub-created DOI
 		$shoulder   = $config->get('doi_shoulder');
-		$rShoulder = substr($doi, 0, strlen($shoulder));
+		$rShoulder  = substr($doi, 0, strlen($shoulder));
 		if ($rShoulder != $shoulder)
 		{
 			// We are not updating DOIs issued by others
@@ -250,13 +250,13 @@ class PublicationUtilities
 			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 		if (!$livesite)
 		{
-			$doierr .= 'Missing live site configuration';
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
 			return false;
 		}
 
 		if (!$service || !$userpw)
 		{
-			$doierr .= 'Oups! Can\'t publish! DOI service is not available, please contact Support.';
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
 			return false;
 		}
 
@@ -310,7 +310,7 @@ class PublicationUtilities
 		}
 		elseif ($sendXML == true)
 		{
-			$doierr .= "XML is invaild. Unable to upload XML as it is invalid. Please modify the created DOI with a valid XML .\n";
+			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
 			return false;
 		}
 
@@ -451,7 +451,6 @@ class PublicationUtilities
 
 		$metadata['typetitle'] 		= $pub->_category->alias;
 		$metadata['resourceType'] 	= $pub->_category->dc_type ? $pub->_category->dc_type : 'Dataset';
-
 		$metadata['language'] 		= 'en';
 		$metadata['version']		= $pub->version_label;
 		$metadata['title'] 			= stripslashes(htmlspecialchars($pub->title));
@@ -500,4 +499,3 @@ class PublicationUtilities
 		return $metadata;
 	}
 }
-
