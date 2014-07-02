@@ -108,7 +108,7 @@ $this->css()
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
 						<span><?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?></span>
 					</a>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
+					<a class="icon-delete delete" data-confirm="<?php echo JText::_('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
 						<span><?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?></span>
 					</a>
 				</dd>
@@ -275,7 +275,7 @@ $this->css()
 					<?php if (!$this->juser->get('guest')) { ?>
 						<label for="comment_content">
 							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-							<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'comment_content'); ?>
+							<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'comment_content', null, null, array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<label id="comment-anonymous-label">
@@ -298,6 +298,7 @@ $this->css()
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->juser->get('id'); ?>" />
+					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="active" value="blog" />
 					<input type="hidden" name="action" value="savecomment" />

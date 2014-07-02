@@ -192,7 +192,7 @@ $this->css()
 									<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
 										<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>
 									</a>
-									<a class="icon-delete delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
+									<a class="icon-delete delete" data-confirm="<?php echo JText::_('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
 										<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>
 									</a>
 								<?php } ?>

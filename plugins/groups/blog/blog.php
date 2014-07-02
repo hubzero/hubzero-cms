@@ -159,6 +159,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($group->gidNumber, 'groups', $this->_name);
 
+			if ($authorized == 'manager' || $authorized == 'admin')
+			{
+				$this->params->set('access-edit-comment', true);
+				$this->params->set('access-delete-comment', true);
+			}
+
 			// Append to document the title
 			$document = JFactory::getDocument();
 			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_GROUPS_BLOG'));
@@ -183,7 +189,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				// Comments
 				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
 				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
+				case 'editcomment':   $arr['html'] = $this->_entry();         break;
 				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
 
 				// Entries
@@ -904,7 +910,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		if (!$comment->store(false))
 		{
 			$this->setError($comment->getError());
 		}
