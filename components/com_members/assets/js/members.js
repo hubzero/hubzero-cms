@@ -12,6 +12,10 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+};
+
 jQuery(document).ready(function($){
 	if (!jQuery().fancybox) {
 		return;
@@ -35,12 +39,7 @@ jQuery(document).ready(function($){
 		},
 		beforeLoad: function() {
 			href = $(this).attr('href');
-			if (href.indexOf('?') == -1) {
-				href += '?no_html=1';
-			} else {
-				href += '&no_html=1';
-			}
-			$(this).attr('href', href);	
+			$(this).attr('href', href.nohtml());
 		},
 		afterLoad: function(upcomingObject, currentObject) {
 			var dom = $(upcomingObject.content);
