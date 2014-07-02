@@ -276,7 +276,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = JRequest::getVar('id', array(0), '', 'array');
 
-		if(count($id) > 1)
+		if (count($id) > 1)
 		{
 			$this->addComponentMessage(JText::_('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
 			$this->setRedirect(
