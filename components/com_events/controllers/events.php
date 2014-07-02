@@ -1894,9 +1894,26 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$end_time = $hrs . ':' . $mins;
 		}
 		
-		
-		// get timezone name from offset
-		$tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+		// hack to fix where timezones cant be found by offset int
+		// really need to figure datetimes out
+		switch ($row->time_zone)
+		{
+			case -12:    $tz = 'Pacific/Kwajalein';      break;
+			case -9.5:   $tz = 'Pacific/Marquesa';       break;
+			case -3.5:   $tz = 'Canada/Newfoundland';    break;
+			case -2:     $tz = 'America/Noronha';        break;
+			case 3.5:    $tz = 'Asia/Tehran';            break;
+			case 4.5:    $tz = 'Asia/Kabul';             break;
+			case 6:      $tz = 'Asia/Dhaka';             break;
+			case 6.5:    $tz = 'Asia/Rangoon';           break;
+			case 8.75:   $tz = 'Asia/Shanghai';          break;
+			case 9.5:    $tz = 'Australia/Adelaide';     break;
+			case 11:     $tz = 'Asia/Vladivostok';       break;
+			case 11.5:   $tz = 'Asia/Vladivostok';       break;
+			case 13:     $tz = 'Pacific/Tongatapu';      break;
+			case 14:     $tz = 'Pacific/Kiritimati';     break;
+			default:     $tz = timezone_name_from_abbr('',$row->time_zone*3600, NULL);
+		}
 		
 		// create timezone objects
 		$utcTimezone   = new DateTimezone('UTC');
