@@ -171,7 +171,7 @@ $this->css()
 							<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>
 							</a>
-							<a class="delete" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
+							<a class="delete" data-confirm="<?php echo JText::_('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>
 							</a>
 						<?php } ?>

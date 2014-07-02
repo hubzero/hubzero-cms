@@ -228,77 +228,22 @@
 		right: 40px;
 	}
 
-	ol.comments .comment-options a {
-		visibility: hidden;
+	ol.comments .edit,
+	ol.comments .delete {
+		float: right;
 	}
-	ol.comments .comment-options,
-	ol.comments .comment-options:hover a,
-	ol.comments .comment-options a.reply {
-		visibility: visible;
-	}
-	ol.comments .comment-options a {
-		color: #ccc;
-		border: none;
-	}
-	ol.comments .comment-options:hover a {
-		color: #999;
-	}
-	ol.comments .comment-options a.active,
-	ol.comments .comment-options a:hover {
-		color: #333;
-	}
-	ol.comments .comment-options a.abuse:hover,
-	ol.comments .comment-options a.delete:hover {
-		color: #c00;
-	}
-	ol.comments .comment-options a:before {
-		margin-right: 0.4em;
-	}
-	ol.comments .comment-options a.active:before {
-		content: "\2716";
-	}
-/* Add comment */
-	.comment-add {
-		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
-		padding: 1.61803399em;
-		border: 1px solid #ddd;
-		background-color: #f1f1f1;
-		border: none;
-		border-top: 1px solid #ddd;
-	}
-	.comment-add legend {
+	ol.comments form legend,
+	ol.comments span.label-text {
 		display: none;
 	}
-	.comment-add label {
-		display: block;
-	}
-	.comment-add label span {
-		display: none;
-	}
-	.comment-add .cancelreply {
-		margin-left: 2em;
-	}
-	.comment-add .submit {
+	ol.comments form .submit {
 		clear: both;
 		margin: -1.5em 0 0 0;
 		padding: 0;
 		text-align: right;
 	}
-	.comment-add input, 
-	.comment-add select, 
-	.comment-add textarea {
-		margin: 0.25em 0 0.5em 0;
-		width: 100%;
-	}	
-	.comment-add .submit input,
-	.comment-add .option {
-		width: auto;
-	}
-	.comment-add .upload-label {
-		margin-bottom: 0.5em;
-	}
-	.comment-add .reply-anonymous-label {
-		width: 50%;
+	ol.comments .comment-anonymous-label {
+		padding-top: 1em;
 	}
 
 /* Blog options */

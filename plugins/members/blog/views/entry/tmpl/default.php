@@ -103,7 +103,7 @@ $this->css()
 					<a class="edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>">
 						<span><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?></span>
 					</a>
-					<a class="delete" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
+					<a class="delete" data-confirm="<?php echo JText::_('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?>">
 						<span><?php echo JText::_('PLG_MEMBERS_BLOG_DELETE'); ?></span>
 					</a>
 				</dd>
@@ -232,7 +232,7 @@ $this->css()
 						Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
 						<?php
 						if (!$juser->get('guest')) {
-							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent');
+							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
 						} else {
 						?>
 						<p class="warning">

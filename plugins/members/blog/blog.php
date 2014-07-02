@@ -99,6 +99,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->member->get('uidNumber'), 'members', $this->_name);
 
+			if ($user->get('id') == $member->get('uidNumber'))
+			{
+				$this->params->set('access-edit-comment', true);
+				$this->params->set('access-delete-comment', true);
+			}
+
 			// Append to document the title
 			$document = JFactory::getDocument();
 			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_MEMBERS_BLOG'));
@@ -109,20 +115,23 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			if (!($task = JRequest::getVar('action', '', 'post')))
 			{
 				$bits = $this->_parseUrl();
-				$num = count($bits);
-				switch ($num)
+				if ($this->task != 'deletecomment')
 				{
-					case 3:
-						$this->task = 'entry';
-					break;
+					$num = count($bits);
+					switch ($num)
+					{
+						case 3:
+							$this->task = 'entry';
+						break;
 
-					case 2:
-					case 1:
-						if (is_numeric($bits[0]))
-						{
-							$this->task = 'browse';
-						}
-					break;
+						case 2:
+						case 1:
+							if (is_numeric($bits[0]))
+							{
+								$this->task = 'browse';
+							}
+						break;
+					}
 				}
 			}
 			else
@@ -145,7 +154,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				// Comments
 				case 'savecomment':   $arr['html'] = $this->_savecomment();   break;
 				case 'newcomment':    $arr['html'] = $this->_newcomment();    break;
-				case 'editcomment':   $arr['html'] = $this->_editcomment();   break;
+				case 'editcomment':   $arr['html'] = $this->_entry();         break;
 				case 'deletecomment': $arr['html'] = $this->_deletecomment(); break;
 
 				// Entries
@@ -508,7 +517,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 	 */
 	private function _login()
 	{
-		return '<p class="warning">' . JText::_('You must be logged in to perform this action.') . '</p>';
+		return '<p class="warning">' . JText::_('MEMBERS_LOGIN_NOTICE') . '</p>';
 	}
 
 	/**
@@ -638,9 +647,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_edit($row);
 		}
 
-		//return $this->_entry();
-		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_($row->link()));
+		$this->redirect(JRoute::_($row->link()));
 	}
 
 	/**
@@ -717,9 +724,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Return the topics list
-		//return $this->_browse();
-		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+		$this->redirect(JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
 	}
 
 	/**
@@ -812,13 +817,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogModelComment($id);
+		$comment = BlogModelComment::getInstance($id);
 
 		// Delete all comments on an entry
 		$comment->set('state', 2);
 
 		// Delete the entry itself
-		if (!$comment->store())
+		if (!$comment->store(false))
 		{
 			$this->setError($comment->getError());
 		}
@@ -922,10 +927,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
-		$app = JFactory::getApplication();
-		$app->redirect(
+		$this->redirect(
 			JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=settings'),
-			JText::_('Settings successfully saved!')
+			JText::_('PLG_MEMBERS_BLOG_SETTINGS_SAVED')
 		);
 	}
 }
