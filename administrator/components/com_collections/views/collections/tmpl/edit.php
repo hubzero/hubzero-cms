@@ -56,9 +56,15 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.greeting.value == ''){
-		alert(<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'); ?>);
+	if ($('#field-title').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'); ?>');
+	} else if ($('#field-object_type').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'); ?>');
+	} else if ($('#field-object_id').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'); ?>');
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -100,7 +106,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo JText::_('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-				<textarea name="fields[description]" id="field-description" cols="35" rows="10"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 35, 10, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>
