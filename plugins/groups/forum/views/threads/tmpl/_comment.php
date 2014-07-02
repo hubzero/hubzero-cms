@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	if ($this->comment->get('reports'))
+	if ($this->comment->isReported())
 	{
 		$comment = '<p class="warning">' . JText::_('PLG_GROUPS_FORUM_COMMENT_REPORTED') . '</p>';
 	}
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php } ?>
 			<?php } ?>
 
-			<?php if (!$this->comment->get('reports')) { ?>
+			<?php if (!$this->comment->isReported()) { ?>
 				<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_GROUPS_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_GROUPS_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--

@@ -481,7 +481,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$arr['metadata']['count'] = $tModel->getCount(array(
 			'scope'    => 'course',
 			'scope_id' => $offering->get('id'),
-			'state'    => 1,
+			'state'    => array(1, 3),
 			'parent'   => 0,
 			'scope_sub_id' => ($this->params->get('discussions_threads', 'all') != 'all' ? $course->offering()->section()->get('id') : null)
 		));
@@ -639,6 +639,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Get attachments
 		$view->attach = new ForumTableAttachment($this->database);
 		$view->attachments = $view->attach->getAttachments($view->post->id);
+
+		$view->filters['state'] = array(1, 3);
 
 		$view->thread = JRequest::getInt('thread', 0);
 		// No thread?
@@ -1260,6 +1262,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
+		$view->filters['state'] = array(1, 3);
+
 		if ($view->no_html == 1)
 		{
 			$view->filters['sticky'] = false;
@@ -1360,6 +1364,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
+		$view->filters['state'] = 1;
+
 		// Get Sections
 		if (!isset($this->sections))
 		{
@@ -1426,6 +1432,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
+
+		$view->filters['state'] = array(1, 3);
 
 		$view->post = new ForumTablePost($this->database);
 		$view->post->scope    = $view->filters['scope'];

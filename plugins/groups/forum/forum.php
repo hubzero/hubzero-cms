@@ -55,7 +55,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'title'            => JText::_('PLG_GROUPS_FORUM'),
 			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon' => 'f086'
+			'icon'             => 'f086'
 		);
 		return $area;
 	}
@@ -585,7 +585,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->base))),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base))),
 				JText::_('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -825,7 +825,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->base);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -1056,6 +1056,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->_authorize('category', $this->view->category->get('id'));
 		$this->_authorize('thread', $this->view->thread->get('id'));
 
+		$this->view->filters['state'] = array(1, 3);
+
 		$this->view->model  = $this->model;
 		$this->view->config = $this->params;
 		$this->view->group  = $this->group;
@@ -1102,7 +1104,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$return = JRoute::_($this->base . '&scope=' . $sectionAlias . '/' . $category . '/' . $id . '/edit');
 			}
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -1174,7 +1176,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_($this->base)))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base)))
 			);
 			return;
 		}
@@ -1562,7 +1564,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -1616,34 +1618,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if (empty($file))
 		{
 			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_FILE_NOT_FOUND'));
-			return;
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $file))
-		{
-			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_BAD_FILE_PATH'));
-			return;
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $file))
-		{
-			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $file))
-		{
-			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow \
-		if (strpos('\\', $file))
-		{
-			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_BAD_FILE_PATH'));
-			return;
-		}
-		// Disallow ..
-		if (strpos('..', $file))
-		{
-			JError::raiseError(404, JText::_('PLG_GROUPS_FORUM_BAD_FILE_PATH'));
 			return;
 		}
 
@@ -1854,16 +1828,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get parameters
-		$paramsClass = 'JParameter';
-		$mthd = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-			$mthd = 'loadArray';
-		}
-
-		$p = new $paramsClass('');
-		$p->$mthd(JRequest::getVar('params', '', 'post'));
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', '', 'post'));
 
 		$row->params = $p->toString();
 
@@ -1881,10 +1847,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			return $this->_settings();
 		}
 
-		//$this->message = JText::_('Settings successfully saved!');
-		//return $this->_settings();
-		$app = JFactory::getApplication();
-		$app->enqueueMessage(JText::_('PLG_GROUPS_FORUM_SETTINGS_SAVED'), 'passed');
-		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'));
+		$this->redirect(
+			JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
+			JText::_('PLG_GROUPS_FORUM_SETTINGS_SAVED')
+		);
 	}
 }

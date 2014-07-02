@@ -196,7 +196,7 @@ class ForumModelCategory extends ForumModelAbstract
 	public function threads($rtrn='list', $filters=array(), $clear=false)
 	{
 		$filters['category_id'] = isset($filters['category_id']) ? $filters['category_id'] : $this->get('id');
-		$filters['state']       = isset($filters['state'])       ? $filters['state']       : self::APP_STATE_PUBLISHED;
+		$filters['state']       = isset($filters['state'])       ? $filters['state']       : array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		$filters['parent']      = isset($filters['parent'])      ? $filters['parent']      : 0;
 
 		switch (strtolower($rtrn))

@@ -83,7 +83,7 @@ if (!$this->thread->thread)
 								}
 							}
 
-							if ($this->thread->reports)
+							if ($this->thread->state == 3)
 							{
 								$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
 							}

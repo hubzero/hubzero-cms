@@ -112,6 +112,20 @@ class ForumModelPost extends ForumModelAbstract
 	}
 
 	/**
+	 * Has this post been reported
+	 *
+	 * @return     boolean True if reported, False if not
+	 */
+	public function isReported()
+	{
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param      string $as What data to return

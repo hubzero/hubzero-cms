@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 		$this->comment = new ForumModelPost($this->comment);
 	}
 
-	if ($this->comment->get('reports'))
+	if ($this->comment->isReported())
 	{
 		$this->comment->set('anonymous', 1);
 		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
 					--></a>
 				<?php } ?>
 			<?php } ?>
-			<?php if (!$this->comment->get('reports')) { ?>
+			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('base')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--

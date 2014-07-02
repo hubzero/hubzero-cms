@@ -160,7 +160,7 @@ class ForumModelThread extends ForumModelPost
 	public function posts($rtrn='list', $filters=array(), $clear=false)
 	{
 		$filters['thread'] = isset($filters['thread']) ? $filters['thread'] : $this->get('thread');
-		$filters['state']  = isset($filters['state'])  ? $filters['state']  : self::APP_STATE_PUBLISHED;
+		$filters['state']  = isset($filters['state'])  ? $filters['state']  : array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 
 		switch (strtolower($rtrn))
 		{

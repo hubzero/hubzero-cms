@@ -313,7 +313,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = array(1, 3);
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

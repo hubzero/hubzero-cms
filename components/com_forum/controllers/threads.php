@@ -157,6 +157,8 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		$this->view->filters['state'] = array(1, 3);
+
 		// Get authorization
 		$this->_authorize('category', $this->view->category->get('id'));
 		$this->_authorize('thread', $this->view->thread->get('id'));

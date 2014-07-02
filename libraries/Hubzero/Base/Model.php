@@ -57,6 +57,13 @@ abstract class Model extends Object
 	const APP_STATE_DELETED     = 2;
 
 	/**
+	 * Flagged state
+	 *
+	 * @var integer
+	 */
+	const APP_STATE_FLAGGED     = 3;
+
+	/**
 	 * Table class name
 	 *
 	 * @var string

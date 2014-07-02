@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	if ($this->comment->get('reports'))
+	if ($this->comment->isReported())
 	{
 		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
 	}
@@ -99,7 +99,6 @@ defined('_JEXEC') or die('Restricted access');
 						)
 					) { ?>
 			<p class="comment-options">
-			<?php //if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
 					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
 						--><?php echo JText::_('COM_FORUM_DELETE'); ?><!--
@@ -110,23 +109,22 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('COM_FORUM_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
-			<?php //} ?>
-			<?php if (!$this->comment->get('reports')) { ?>
-				<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('COM_FORUM_CANCEL'); ?><!--
-				--></a>
-					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('COM_FORUM_REPLY'); ?><!--
-				--></a>
+				<?php if (!$this->comment->isReported()) { ?>
+					<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+						<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
+						<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo JText::_('COM_FORUM_CANCEL'); ?><!--
+					--></a>
+						<?php } else { ?>
+						<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_FORUM_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo JText::_('COM_FORUM_REPLY'); ?><!--
+					--></a>
+						<?php } ?>
 					<?php } ?>
+					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+						--><?php echo JText::_('COM_FORUM_REPORT_ABUSE'); ?><!--
+					--></a>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('COM_FORUM_REPORT_ABUSE'); ?><!--
-				--></a>
-			<?php } ?>
 			</p>
 			<?php } ?>
 

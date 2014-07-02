@@ -128,6 +128,59 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Mark an item as flagged
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     string
+	 */
+	public function onReportItem($refid, $category)
+	{
+		if ($category != 'forum')
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+
+		$database = JFactory::getDBO();
+
+		$comment = new ForumTablePost($database);
+		$comment->load($refid);
+		$comment->state = 3;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if ($category != 'forum')
+		{
+			return null;
+		}
+
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
+
+		$database = JFactory::getDBO();
+
+		$comment = new ForumTablePost($database);
+		$comment->load($refid);
+		$comment->state = 1;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
 	 * Retrieves a row from the database
 	 *
 	 * @param      string $refid    ID of the database table row
@@ -145,36 +198,11 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
 
-		$this->loadLanguage();
-
-		$msg = JText::_('PLG_SUPPORT_FORUM_CONTENT_FOUND_OBJECTIONABLE');
-
 		$database = JFactory::getDBO();
 
 		$comment = new ForumTablePost($database);
 		$comment->load($refid);
-		$comment->anonymous = 1;
-		$comment->state     = 2;
-
-		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->comment, $matches))
-		{
-			$format = strtolower(trim($matches[1]));
-			switch ($format)
-			{
-				case 'html':
-					$comment->comment = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
-				break;
-
-				case 'wiki':
-				default:
-					$comment->comment = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
-				break;
-			}
-		}
-		else
-		{
-			$comment->comment = '[[Span(' . $msg . ', class="warning")]]';
-		}
+		$comment->state = 2;
 		$comment->store();
 
 		return '';

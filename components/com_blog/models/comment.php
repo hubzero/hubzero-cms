@@ -106,7 +106,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('state') == 3)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
 		}
