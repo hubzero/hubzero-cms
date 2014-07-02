@@ -37,6 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Is the category one this plugin handles?
+	 *
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     boolean
+	 */
+	private function _canHandle($category)
+	{
+		if (in_array($category, array('wish', 'wishcomment')))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieves a row from the database
 	 *
 	 * @param      string $refid    ID of the database table row
@@ -46,7 +61,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'wish' && $category != 'wishcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -154,7 +169,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'wish' && $category != 'wishcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -174,6 +189,83 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Mark an item as flagged
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     string
+	 */
+	public function onReportItem($refid, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		$database = JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'wish':
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+
+				$wish = new Wish($database);
+				$wish->load($refid);
+				$wish->status = 7;
+				$wish->store();
+			break;
+
+			case 'wishcomment':
+				$comment = new \Hubzero\Item\Comment($database);
+				$comment->load($refid);
+				$comment->state = 3;
+				$comment->store();
+			break;
+		}
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		$database = JFactory::getDBO();
+
+		switch ($category)
+		{
+			case 'wish':
+				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+
+				$wish = new Wish($database);
+				$wish->load($refid);
+				$wish->status = 0;
+				$wish->store();
+			break;
+
+			case 'wishcomment':
+				$comment = new \Hubzero\Item\Comment($database);
+				$comment->load($refid);
+				$comment->state = 1;
+				$comment->store();
+			break;
+		}
+
+		return '';
+	}
+
+	/**
 	 * Removes an item reported as abusive
 	 *
 	 * @param      integer $referenceid ID of the database table row
@@ -184,7 +276,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'wish' && $category != 'wishcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}

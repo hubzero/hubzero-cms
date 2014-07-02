@@ -75,7 +75,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 
 				$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 
-				if ($item->reports)
+				if ($item->status == 7)
 				{
 					$status = 'outstanding';
 				}
@@ -125,7 +125,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 							<span class="entry-id"><?php echo $item->id; ?></span>
 						</th>
 						<td>
-						<?php if (!$item->reports) { ?>
+						<?php if ($item->status != 7) { ?>
 							<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
 							<span class="entry-details">
 								<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
@@ -163,7 +163,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 							</span>
 						</td>
 					<?php } ?>
-					<?php if (!$item->reports) { ?>
+					<?php if ($item->status != 7) { ?>
 						<td class="voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(

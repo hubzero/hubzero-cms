@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
-			<?php if (!$this->comment->get('reports')) { ?>
+			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WISHLIST_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--

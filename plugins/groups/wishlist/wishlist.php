@@ -37,25 +37,11 @@ defined('_JEXEC') or die('Restricted access');
 class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-
-		// Get the component parameters
-		$wconfig =  JComponentHelper::getParams('com_wishlist');
-		$this->config = $wconfig;
-
-		$lang = JFactory::getLanguage();
-		$lang->load('com_wishlist');
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -88,15 +74,14 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 	 * @param      array   $areas      Active area(s)
 	 * @return     array
 	 */
-	public function onGroup($group, $option, $authorized, $limit=0,
-		$limitstart=0, $action='', $access, $areas=null)
+	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
 	{
 		$return = 'html';
 		$active = 'wishlist';
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>''
+			'html' => ''
 		);
 
 		//get this area details
@@ -126,8 +111,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			//if set to nobody make sure cant access
 			if ($group_plugin_acl == 'nobody')
 			{
-				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF',
-					ucfirst($active)) . '</p>';
+				$arr['html'] = '<p class="info">' . JText::sprintf('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
 				return $arr;
 			}
 
@@ -155,6 +139,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 		}
+
 		//instantiate database
 		$database = JFactory::getDBO();
 
@@ -170,6 +155,12 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		//include com_wishlist files
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
+
+		// Get the component parameters
+		$this->config = JComponentHelper::getParams('com_wishlist');
+
+		$lang = JFactory::getLanguage();
+		$lang->load('com_wishlist');
 
 		//set some more vars
 		$gid = $this->group->get('gidNumber');
@@ -217,7 +208,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$owners = $objOwner->get_owners($id, $this->config->get('group'), $wishlist);
 
 		//if user is guest and wishlist isnt public
-		//if(!$wishlist->public && $juser->get('guest')) {
+		//if(!$wishlist->public && $juser->get('guest'))
+		//{
 		//	$arr['html'] = '<p class="warning">' . JText::_('The Group Wishlist is not a publicly viewable list.') . '</p>';
 		//	return $arr;
 		//}

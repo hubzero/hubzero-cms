@@ -428,7 +428,8 @@ class Wish extends JTable
 			$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=1 AND CC.item_type='wish') AS numreplies, ";
 
 			// Get abouse reports count
-			$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+			//$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+			$sql .= "'0' AS reports, ";
 
 			// Get averages
 			$sql .= "\n (SELECT AVG(m.importance) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS average_imp, ";
@@ -677,7 +678,8 @@ class Wish extends JTable
 		$sql .= "\n (SELECT count(*) FROM #__item_comments AS CC WHERE CC.item_id=ws.id AND CC.state=1 AND CC.item_type='wish') AS numreplies, ";
 
 		// Get abouse reports count
-		$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+		//$sql .= "\n (SELECT count(*) FROM #__abuse_reports AS RR WHERE RR.referenceid=ws.id AND RR.state=0 AND RR.category='wish') AS reports, ";
+		$sql .= "'0' AS reports, ";
 
 		$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id) AS num_votes, ";
 		$sql .= "\n (SELECT COUNT(*) FROM #__wishlist_vote AS m WHERE m.wishid=ws.id AND m.effort=6) AS num_skipped_votes, "; // did anyone skip effort selection?

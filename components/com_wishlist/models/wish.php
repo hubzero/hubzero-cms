@@ -88,6 +88,13 @@ class WishlistModelWish extends WishlistModelAbstract
 	const WISH_STATE_ACCEPTED = 6;
 
 	/**
+	 * Flagged state
+	 *
+	 * @var integer
+	 */
+	const WISH_STATE_FLAGGED = 7;
+
+	/**
 	 * Table class name
 	 *
 	 * @var object
@@ -219,6 +226,10 @@ class WishlistModelWish extends WishlistModelAbstract
 		if (!($this->_proposer instanceof \Hubzero\User\Profile))
 		{
 			$this->_proposer = \Hubzero\User\Profile::getInstance($this->get('proposed_by'));
+			if (!$this->_proposer)
+			{
+				$this->_proposer = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -395,30 +406,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('status') == static::WISH_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			$reporter = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php';
-			if (is_file($reporter))
-			{
-				include_once($reporter);
-
-				$ra = new ReportAbuse($this->_db);
-
-				$this->set('reports', $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'wish'
-				)));
-
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -922,7 +912,7 @@ class WishlistModelWish extends WishlistModelAbstract
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = 1;
+			$filters['state'] = array(static::APP_STATE_PUBLISHED, static::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

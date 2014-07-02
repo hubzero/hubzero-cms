@@ -102,32 +102,9 @@ class WishlistModelComment extends WishlistModelAbstract
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			$path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php';
-
-			if (is_file($path))
-			{
-				include_once($path);
-
-				$ra = new ReportAbuse($this->_db);
-
-				$this->set('reports', $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'wishcomment',
-					'state'    => 0
-				)));
-
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -170,6 +147,10 @@ class WishlistModelComment extends WishlistModelAbstract
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -204,6 +185,10 @@ class WishlistModelComment extends WishlistModelAbstract
 		if (!isset($filters['item_id']))
 		{
 			$filters['item_id'] = $this->get('item_id');
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(static::APP_STATE_PUBLISHED, static::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

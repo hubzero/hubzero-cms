@@ -212,7 +212,7 @@ if ($this->wishlist->exists())
 								$item->set('referenceid', $this->wishlist->get('referenceid'));
 								$item->set('bonus', ($this->wishlist->get('banking') ? $item->get('bonus') : 0));
 
-								if ($item->get('reports'))
+								if ($item->isReported())
 								{
 									$status = 'outstanding';
 								}
@@ -237,7 +237,7 @@ if ($this->wishlist->exists())
 										<span class="entry-id"><?php echo $item->get('id'); ?></span>
 									</th>
 									<td>
-								<?php if (!$item->get('reports')) { ?>
+								<?php if (!$item->isReported()) { ?>
 										<a class="entry-title" href="<?php echo JRoute::_($item->link('permalink', $filters)); ?>">
 											<?php echo $this->escape(stripslashes($item->get('subject'))); ?>
 										</a>
@@ -259,7 +259,7 @@ if ($this->wishlist->exists())
 										<span class="warning adjust"><?php echo JText::_('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
 								<?php } ?>
 									</td>
-								<?php if (!$item->get('reports') && $this->wishlist->get('banking')) { ?>
+								<?php if (!$item->isReported() && $this->wishlist->get('banking')) { ?>
 									<td class="reward">
 										<span class="entry-reward">
 										<?php if ($item->get('bonus') > 0 && ($item->isOpen() or $item->isAccepted())) { ?>
@@ -276,7 +276,7 @@ if ($this->wishlist->exists())
 										</span>
 									</td>
 								<?php } ?>
-								<?php if (!$item->get('reports')) { ?>
+								<?php if (!$item->isReported()) { ?>
 									<td class="voting">
 										<?php
 										$this->view('_vote')
@@ -330,7 +330,7 @@ if ($this->wishlist->exists())
 										echo $html;
 										?>
 									</td>
-								<?php } // end if (!$item->reports) ?>
+								<?php } // end if (!$item->isReported()) ?>
 								</tr>
 							<?php } // end foreach wish ?>
 						<?php } else { ?>

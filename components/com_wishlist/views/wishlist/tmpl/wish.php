@@ -39,8 +39,7 @@ $this->css()
 	$error = $this->getError();
 
 	// What name should we dispay for the submitter?
-	$user = new \Hubzero\User\Profile();
-	$user->load($this->wish->get('proposed_by'));
+	$user = $this->wish->proposer();
 
 	$name = JText::_('COM_WISHLIT_ANONYMOUS');
 	if ($this->wish->get('anonymous') != 1)
@@ -229,7 +228,7 @@ $this->css()
 						</li>
 					<?php } ?>
 						<li>
-							<a class="abuse" href="<?php echo JRoute::_($this->wishlist->link('report')); ?>">
+							<a class="abuse" href="<?php echo JRoute::_($this->wish->link('report')); ?>">
 								<?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?>
 							</a>
 						</li>
