@@ -176,6 +176,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->view->cat = JRequest::getVar('category', '');
 		$this->view->refid = JRequest::getInt('referenceid', 0);
 		$this->view->returnlink = JRequest::getVar('link', '');
+		$no_html = JRequest::getInt('no_html', 0);
 
 		// Trim and addslashes all posted items
 		$incoming = array_map('trim', $_POST);
@@ -184,7 +185,17 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$row = new ReportAbuse($this->database);
 		if (!$row->bind($incoming))
 		{
-			JRequest::setVar('referenceid', $this->view->refid);
+			if ($no_html)
+			{
+				echo json_encode(array(
+					'success'  => false,
+					'message'  => $row->getError(),
+					'id'       => $this->view->refid,
+					'category' => $this->view->cat
+				));
+				return;
+			}
+			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;
@@ -199,6 +210,16 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Check content
 		if (!$row->check())
 		{
+			if ($no_html)
+			{
+				echo json_encode(array(
+					'success'  => false,
+					'message'  => $row->getError(),
+					'id'       => $this->view->refid,
+					'category' => $this->view->cat
+				));
+				return;
+			}
 			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
@@ -208,6 +229,16 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Store new content
 		if (!$row->store())
 		{
+			if ($no_html)
+			{
+				echo json_encode(array(
+					'success'  => false,
+					'message'  => $row->getError(),
+					'id'       => $this->view->refid,
+					'category' => $this->view->cat
+				));
+				return;
+			}
 			JRequest::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
@@ -253,6 +284,18 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 					}
 				}
 			}
+		}
+
+		if ($no_html)
+		{
+			echo json_encode(array(
+				'success'   => true,
+				'report_id' => $row->id,
+				'message'   => JText::sprintf('For future reference, your problem has been registered as Abuse Report <strong>#%s</strong>.', $row->id),
+				'id'        => $this->view->refid,
+				'category'  => $this->view->cat
+			));
+			return;
 		}
 
 		// Set the page title

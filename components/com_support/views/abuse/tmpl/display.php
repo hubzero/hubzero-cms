@@ -33,41 +33,47 @@ use \Hubzero\Utility\Sanitize;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->css();
+$no_html = JRequest::getInt('no_html', 0);
+
+if (!$no_html)
+{
+	$this->css();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<?php
-	if ($this->report)
-	{
-		$name = JText::_('ANONYMOUS');
-		if ($this->report->anon == 0)
-		{
-			$juser = JUser::getInstance($this->report->author);
-			$name = JText::_('UNKNOWN');
-			if (is_object($juser))
-			{
-				$name = $juser->get('name');
-			}
-		}
-		?>
+<?php } ?>
+	<?php if ($this->report) { ?>
 		<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
+			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm<?php if ($no_html) { echo '-ajax'; } ?>">
+			<?php if (!$no_html) { ?>
 			<div class="explaination">
 				<p><?php echo JText::_('REPORT_ABUSE_EXPLANATION'); ?></p>
 				<p><?php echo JText::_('REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
 			</div>
+			<?php } ?>
 			<fieldset>
 				<legend><?php echo JText::_('REPORT_ABUSE'); ?></legend>
 
+				<?php if (!$no_html) { ?>
 				<div class="field-wrap">
 					<div class="abuseitem">
 						<h4><?php
+							$name = JText::_('ANONYMOUS');
+							if ($this->report->anon == 0)
+							{
+								$juser = JUser::getInstance($this->report->author);
+								$name = JText::_('UNKNOWN');
+								if (is_object($juser))
+								{
+									$name = $juser->get('name');
+								}
+							}
+
 							echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 							echo ucfirst($this->cat) . ' by ';
 							echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
@@ -79,6 +85,7 @@ $this->css();
 						</blockquote>
 					</div>
 				</div>
+				<?php } ?>
 
 				<p class="multiple-option">
 					<label class="option" for="subject1"><input type="radio" class="option" name="subject" id="subject1" value="<?php echo JText::_('OFFENSIVE_CONTENT'); ?>" checked="checked" /> <?php echo JText::_('OFFENSIVE_CONTENT'); ?></label>
@@ -93,6 +100,7 @@ $this->css();
 				<input type="hidden" name="category" value="<?php echo $this->escape($this->cat); ?>" />
 				<input type="hidden" name="referenceid" value="<?php echo $this->escape($this->refid); ?>" />
 				<input type="hidden" name="link" value="<?php echo $this->escape($this->report->href); ?>" />
+				<input type="hidden" name="no_html" value="<?php echo $no_html; ?>" />
 
 				<?php echo JHTML::_('form.token'); ?>
 
@@ -101,7 +109,9 @@ $this->css();
 					<textarea name="report" id="field-report" rows="10" cols="50"></textarea>
 				</label>
 			</fieldset>
-			<p class="submit"><input type="submit" value="<?php echo JText::_('SUBMIT'); ?>" /></p>
+			<p class="submit">
+				<input type="submit" class="btn btn-danger" value="<?php echo JText::_('SUBMIT'); ?>" />
+			</p>
 		</form>
 		<div class="clear"></div>
 	<?php } else { ?>
@@ -111,4 +121,6 @@ $this->css();
 			<p class="warning"><?php echo JText::_('ERROR_NO_INFO_ON_REPORTED_ITEM'); ?></p>
 		<?php } ?>
 	<?php } ?>
+<?php if (!$no_html) { ?>
 </section><!-- / .main section -->
+<?php } ?>
