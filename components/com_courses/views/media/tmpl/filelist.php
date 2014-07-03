@@ -31,73 +31,59 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+$this->css('media.css');
+
+$base = rtrim(JURI::base(true), '/');
 
 $course = CoursesModelCourse::getInstance($this->listdir);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title><?php echo JText::_('COURSES_FILE_MANAGER'); ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" media="screen" href="/templates/<?php echo $app->getTemplate(); ?>/css/main.css" />
-		<?php
-			$template_css = DS.'templates'.DS. $app->getTemplate() .DS.'html'.DS.$this->option.DS.'media.css';
-			$component_css = DS.'components'.DS.'com_courses'.DS.'assets'.DS.'css'.DS.'media.css';
-		?>
-		<?php if (is_file( JPATH_ROOT . $template_css)) { ?>
-			<link rel="stylesheet" type="text/css" href="<?php echo $template_css; ?>" />
-		<?php } else { ?>
-			<link rel="stylesheet" type="text/css" href="<?php echo $component_css; ?>" />
-		<?php } ?>
-
-		<script type="text/javascript">
-			function updateDir()
+	<script type="text/javascript">
+		function updateDir()
+		{
+			var allPaths = window.top.document.forms[0].dirPath.options;
+			for (i=0; i<allPaths.length; i++)
 			{
-				var allPaths = window.top.document.forms[0].dirPath.options;
-				for (i=0; i<allPaths.length; i++)
-				{
-					allPaths.item(i).selected = false;
-					if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-						allPaths.item(i).selected = true;
-					}
+				allPaths.item(i).selected = false;
+				if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
+					allPaths.item(i).selected = true;
 				}
 			}
-			function deleteFile(file)
-			{
-				if (confirm("Delete file \""+file+"\"?")) {
-					return true;
-				}
-
-				return false;
+		}
+		function deleteFile(file)
+		{
+			if (confirm("Delete file \""+file+"\"?")) {
+				return true;
 			}
-			function deleteFolder(folder, numFiles)
-			{
-				if (numFiles > 0) {
-					alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
-					return false;
-				}
 
-				if (confirm('Delete folder "'+folder+'"?')) {
-					return true;
-				}
-
+			return false;
+		}
+		function deleteFolder(folder, numFiles)
+		{
+			if (numFiles > 0) {
+				alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
 				return false;
 			}
 
-			function showFilePath(file) {
-				var path = prompt('The file path is:', file);
-				return false;
+			if (confirm('Delete folder "'+folder+'"?')) {
+				return true;
 			}
 
-		</script>
-	</head>
-	<body id="file_list">
-		<form action="index.php" method="post" id="filelist">
+			return false;
+		}
+
+		function showFilePath(file) {
+			var path = prompt('The file path is:', file);
+			return false;
+		}
+
+	</script>
+
+	<div id="file_list">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
 			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
-			<table summary="Files for this course">
+			<table>
 				<tbody>
 <?php
 $folders = $this->folders;
@@ -125,7 +111,11 @@ for ($i=0; $i<count($folders); $i++)
 					<tr>
 						<td><img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
 						<td width="100%"><?php echo $folder_name; ?></td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+								<?php echo JText::_('DELETE'); ?>
+							</a>
+						</td>
 					</tr>
 <?php
 	next($folders);
@@ -152,7 +142,11 @@ for ($i=0; $i<count($docs); $i++)
 								</a>
 							<?php endif; ?>
 						</td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+								<?php echo JText::_('DELETE'); ?>
+							</a>
+						</td>
 					</tr>
 <?php
 	next($docs);
@@ -173,10 +167,16 @@ for ($i=0; $i<count($images); $i++)
 						<td width="100%"><?php echo $images[$image_name]; ?></td>
 						<td>
 							<?php if (is_object($course)) : ?>
-							<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path"><img src="/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" /></a>
+								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path">
+									<?php echo JText::_('Show Image Path'); ?>
+								</a>
 							<?php endif; ?>
 						</td>
-						<td><a href="/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>"><img src="/components/<?php echo $this->option; ?>/assets/img/icons/trash.gif" width="15" height="15" alt="<?php echo JText::_('DELETE'); ?>" /></a></td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
+								<?php echo JText::_('DELETE'); ?>
+							</a>
+						</td>
 					</tr>
 <?php
 	next($images);
@@ -186,5 +186,4 @@ for ($i=0; $i<count($images); $i++)
 			</table>
 <?php } ?>
 		</form>
-	</body>
-</html>
+	</div>
