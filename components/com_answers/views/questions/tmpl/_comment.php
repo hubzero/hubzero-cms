@@ -37,36 +37,36 @@ defined('_JEXEC') or die('Restricted access');
 	$this->comment->set('item_id', ($this->depth == 1 ? $this->comment->get('id') : $this->item_id));
 
 ?>
-	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
+	<li class="comment <?php echo $cls; ?>" id="<?php echo ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
 			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
-		<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
-			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
-				<?php
-				$view = $this->view('rateitem');
-				$view->set('option', $this->option)
-				     ->set('item', $this->comment)
-				     ->set('type', 'question')
-				     ->set('vote', '')
-				     ->set('id', '');
-				if (!$juser->get('guest'))
-				{
-					if ($this->comment->get('created_by') == $juser->get('username'))
+			<?php if (!$this->comment->isReported() && $this->comment->get('qid')) { ?>
+				<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
+					<?php
+					$view = $this->view('rateitem');
+					$view->set('option', $this->option)
+					     ->set('item', $this->comment)
+					     ->set('type', 'question')
+					     ->set('vote', '')
+					     ->set('id', '');
+					if (!$juser->get('guest'))
 					{
-						$view->set('vote', $this->comment->get('vote'))
-						     ->set('id', $this->comment->get('id'));
+						if ($this->comment->get('created_by') == $juser->get('username'))
+						{
+							$view->set('vote', $this->comment->get('vote'))
+							     ->set('id', $this->comment->get('id'));
+						}
 					}
-				}
-				$view->display();
-				?>
-			</p><!-- / .comment-voting -->
-		<?php } ?>
+					$view->display();
+					?>
+				</p><!-- / .comment-voting -->
+			<?php } ?>
 
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
+				<a class="permalink" href="<?php echo JRoute::_($this->base . '#' . ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
 					<span class="comment-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('COM_ANSWERS_ON'); ?></span>
@@ -74,7 +74,9 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</p>
 
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<p class="comment-options">
 			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
@@ -101,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_ANSWERS_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_($this->comment->link('report')); ?>"><!--
 					--><?php echo JText::_('COM_ANSWERS_REPORT_ABUSE'); ?><!--
 				--></a>
 				<?php if ($juser->get('id') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
