@@ -96,10 +96,19 @@ jQuery(document).ready(function(jq){
 							return;
 						} else {
 							$('#sbox-content').html('<p class="passed">' + response.message + '</p>');
-							$('#c' + response.id)
-								.find('.comment-body')
-								.first()
-								.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
+							if (response.category == 'wish') {
+								$('#w' + response.id)
+									.find('.entry-long')
+									.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
+								$('#w' + response.id)
+									.find('.entry-short')
+									.remove();
+							} else {
+								$('#c' + response.id)
+									.find('.comment-body')
+									.first()
+									.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
+							}
 						}
 
 						setTimeout(function(){

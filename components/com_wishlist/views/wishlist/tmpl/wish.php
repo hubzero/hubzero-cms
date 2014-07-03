@@ -228,7 +228,7 @@ $this->css()
 						</li>
 					<?php } ?>
 						<li>
-							<a class="abuse" href="<?php echo JRoute::_($this->wish->link('report')); ?>">
+							<a class="abuse" data-txt-flagged="<?php echo JText::_('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_($this->wish->link('report')); ?>">
 								<?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?>
 							</a>
 						</li>
