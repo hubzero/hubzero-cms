@@ -47,6 +47,8 @@ $this->css();
 JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
+$browser = new \Hubzero\Browser\Detector();
+
 $cc = array();
 ?>
 <script type="text/javascript">
@@ -153,6 +155,25 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="clr"></div>
 
+			<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
+				<div class="input-wrap">
+					<label for="ticket-field-category">
+						<?php echo JText::_('COM_SUPPORT_TICKET_FIELD_CATEGORY'); ?>
+						<select name="category" id="ticket-field-category">
+							<option value=""><?php echo JText::_('COM_SUPPORT_NONE'); ?></option>
+							<?php
+							foreach ($this->lists['categories'] as $category)
+							{
+								?>
+							<option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+								<?php
+							}
+							?>
+						</select>
+					</label>
+				</div>
+			<?php } ?>
+
 			<div class="input-wrap">
 				<label for="field-message"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?></label>
 				<?php
@@ -172,6 +193,14 @@ function submitbutton(pressbutton)
 		<p><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?></p>
 	</div><!-- / .col width-30 -->
 	<div class="clr"></div>
+
+	<input type="hidden" name="referer" value="<?php echo JRequest::getVar('HTTP_REFERER', NULL, 'server'); ?>" />
+	<input type="hidden" name="os" value="<?php echo $browser->platform(); ?>" />
+	<input type="hidden" name="osver" value="<?php echo $browser->platformVersion(); ?>" />
+	<input type="hidden" name="browser" value="<?php echo $browser->name(); ?>" />
+	<input type="hidden" name="browserver" value="<?php echo $browser->version(); ?>" />
+	<input type="hidden" name="hostname" value="<?php echo gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server')); ?>" />
+	<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
 
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
