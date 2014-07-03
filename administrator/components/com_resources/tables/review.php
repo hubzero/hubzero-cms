@@ -177,7 +177,7 @@ class ResourcesReview extends JTable
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
 			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($juser->get('id')) . " "
-			."\n WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state=1 ORDER BY rr.created DESC");
+			."\n WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC");
 		return $this->_db->loadObjectList();
 	}
 
@@ -210,7 +210,7 @@ class ResourcesReview extends JTable
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
 			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($userid) . " "
-			."\n WHERE rr.state=1 AND rr.id=" . $this->_db->Quote($id) . " ");
+			."\n WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->Quote($id) . " ");
 		return $this->_db->loadObjectList();
 	}
 

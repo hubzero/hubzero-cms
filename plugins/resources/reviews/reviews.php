@@ -55,8 +55,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->infolink = '/kb/points/';
-		$upconfig = JComponentHelper::getParams('com_members');
-		$this->banking = $upconfig->get('bankAccounts');
+		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
 	}
 
 	/**
@@ -69,8 +68,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_reviews')
-			&& $model->access('view-all'))
+		if ($model->type->params->get('plg_reviews') && $model->access('view-all'))
 		{
 			$areas['reviews'] = JText::_('PLG_RESOURCES_REVIEWS');
 		}

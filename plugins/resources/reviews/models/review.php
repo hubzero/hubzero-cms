@@ -104,27 +104,9 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'review'
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -167,6 +149,10 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('user_id'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -204,7 +190,7 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = array(1, 3);
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))

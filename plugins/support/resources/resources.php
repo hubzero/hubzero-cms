@@ -37,6 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class plgSupportResources extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Is the category one this plugin handles?
+	 *
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     boolean
+	 */
+	private function _canHandle($category)
+	{
+		if (in_array($category, array('review', 'reviewcomment')))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Get items reported as abusive
 	 *
 	 * @param      integer $refid    Comment ID
@@ -46,7 +61,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
-		if ($category != 'review' && $category != 'reviewcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -120,7 +135,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		if ($category == 'review')
 		{
-			$database->setQuery("SELECT resource_id FROM #__resource_ratings WHERE id=" . $refid);
+			$database->setQuery("SELECT resource_id FROM `#__resource_ratings` WHERE id=" . $refid);
 			return $database->loadResult();
 		}
 	}
@@ -150,7 +165,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function getTitle($category, $parentid)
 	{
-		if ($category != 'review' && $category != 'reviewcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
@@ -170,6 +185,59 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Mark an item as flagged
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     string
+	 */
+	public function onReportItem($refid, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+
+		$database = JFactory::getDBO();
+
+		$comment = new ResourcesReview($database);
+		$comment->load($refid);
+		$comment->state = 3;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
+	 * Release a reported item
+	 *
+	 * @param      string $refid    ID of the database table row
+	 * @param      string $parent   If the element has a parent element
+	 * @param      string $category Element type (determines table to look in)
+	 * @return     array
+	 */
+	public function releaseReportedItem($refid, $parent, $category)
+	{
+		if (!$this->_canHandle($category))
+		{
+			return null;
+		}
+
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+
+		$database = JFactory::getDBO();
+
+		$comment = new ResourcesReview($database);
+		$comment->load($refid);
+		$comment->state = 1;
+		$comment->store();
+
+		return '';
+	}
+
+	/**
 	 * Removes an item reported as abusive
 	 *
 	 * @param      integer $referenceid ID of the database table row
@@ -180,14 +248,12 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
-		if ($category != 'review' && $category != 'reviewcomment')
+		if (!$this->_canHandle($category))
 		{
 			return null;
 		}
 
 		$this->loadLanguage();
-
-		$msg = JText::_('PLG_SUPPORT_RESOURCES_CONTENT_FOUND_OBJECTIONABLE');
 
 		$database = JFactory::getDBO();
 
@@ -200,29 +266,8 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 				// Delete the review
 				$review = new ResourcesReview($database);
 				$review->load($referenceid);
-				//$comment->anonymous = 1;
-				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $review->comment, $matches))
-				{
-					$format = strtolower(trim($matches[1]));
-					switch ($format)
-					{
-						case 'html':
-							$review->comment = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
-						break;
-
-						case 'wiki':
-						default:
-							$review->comment = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
-						break;
-					}
-				}
-				else
-				{
-					$review->comment = '[[Span(' . $msg . ', class="warning")]]';
-				}
+				$review->state = 2;
 				$review->store();
-
-				//$review->delete($referenceid);
 
 				// Recalculate the average rating for the parent resource
 				$resource = new ResourcesResource($database);
@@ -240,27 +285,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 			case 'reviewcomment':
 				$comment = new \Hubzero\Item\Comment($database);
 				$comment->load($referenceid);
-				//$comment->state = 2;
-				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $comment->content, $matches))
-				{
-					$format = strtolower(trim($matches[1]));
-					switch ($format)
-					{
-						case 'html':
-							$comment->content = '<!-- {FORMAT:HTML} --><span class="warning">' . $msg . '</span>';
-						break;
-
-						case 'wiki':
-						default:
-							$comment->content = '<!-- {FORMAT:WIKI} -->[[Span(' . $msg . ', class="warning")]]';
-						break;
-					}
-				}
-				else
-				{
-					$comment->content = '[[Span(' . $msg . ', class="warning")]]';
-				}
-
+				$comment->state = 2;
 				if (!$comment->store())
 				{
 					$this->setError($comment->getError());

@@ -131,12 +131,14 @@ defined('_JEXEC') or die('Restricted access');
 				</fieldset>
 			</form>
 	<?php } else { ?>
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<p class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
+					<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo JText::_('PLG_RESOURCES_REVIEWS_DELETE'); ?><!--
 					--></a>
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')); ?>"><!--
@@ -155,7 +157,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('PLG_RESOURCES_REVIEWS_NOTICE_POSTING_REPORTED'); ?>" href="<?php echo JRoute::_($this->comment->link('report')); ?>"><!--
 					--><?php echo JText::_('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>

@@ -140,15 +140,6 @@
 		padding: 0;
 	}
 
-	#sbox-content.fancybox-inner {
-		border: 10px solid #000;
-	}
-	.fancybox-title {
-		display: none;
-	}
-	.fancybox-close {
-		right: -20px;
-	}
 	.com_resources .read-more span {
 		display: none;
 	}
