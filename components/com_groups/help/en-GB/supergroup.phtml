@@ -167,6 +167,13 @@ return array(
 );"); ?>
 </pre>
 
+<h6>Using the Database</h6>
+<p>You can use the database anywhere you want in your template, a PHP page, a group component, etc. Anywhere you can run PHP code basically.</p>
+<p>Getting a reference to the group database object is very easy:</p>
+<pre>$database = \Hubzero\User\Group\Helper::getDBO();</pre>
+
+<p class="info">You can access the group database and the HUB database at the same time. Use the above call to get access to the group database and JFactory::getDBO(); to get access to the HUB database. All you have to do is store them in two different variables.</p>
+
 <hr />
 
 <h3>PHP Pages</h3>
