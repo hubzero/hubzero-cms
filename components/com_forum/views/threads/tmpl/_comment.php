@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($this->comment->isReported())
 	{
-		$comment = '<p class="warning">' . JText::_('This comment has been reported as abusive and/or containing inappropriate content.') . '</p>';
+		$comment = '<p class="warning">' . JText::_('COM_FORUM_CONTENT_FLAGGED') . '</p>';
 	}
 	else
 	{
@@ -65,13 +65,13 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->comment->link('anchor')); ?>" title="<?php echo JText::_('COM_FORUM_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span>
+					<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
 						&mdash; <?php echo JText::_('COM_FORUM_EDITED'); ?>
-						<span class="comment-date-at">@</span>
+						<span class="comment-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
 						<span class="comment-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
@@ -100,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
 					) { ?>
 			<p class="comment-options">
 				<?php if ($this->comment->get('parent') && $this->config->get('access-delete-post')) { ?>
-					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
+					<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
 						--><?php echo JText::_('COM_FORUM_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
@@ -121,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 					--></a>
 						<?php } ?>
 					<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_FORUM_CONTENT_FLAGGED'); ?>" href="<?php echo JRoute::_($this->comment->link('abuse')); ?>"><!--
 						--><?php echo JText::_('COM_FORUM_REPORT_ABUSE'); ?><!--
 					--></a>
 				<?php } ?>

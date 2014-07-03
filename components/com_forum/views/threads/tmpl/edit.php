@@ -51,7 +51,11 @@ else
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>"><?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?></a></p>
+		<p>
+			<a class="icon-comments comments btn" href="<?php echo JRoute::_($this->category->link()); ?>">
+				<?php echo JText::_('COM_FORUM_ALL_DISCUSSIONS'); ?>
+			</a>
+		</p>
 	</div>
 </header>
 
@@ -177,7 +181,7 @@ else
 				</label>
 
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
+					<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_FORUM_SUBMIT'); ?>" />
 				</p>
 
 				<div class="sidenote">

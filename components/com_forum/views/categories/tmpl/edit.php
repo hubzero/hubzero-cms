@@ -38,7 +38,11 @@ $juser = JFactory::getUser();
 		<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 
 		<div id="content-header-extra">
-			<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('All categories'); ?></a></p>
+			<p>
+				<a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?>
+				</a>
+			</p>
 		</div>
 	</header>
 

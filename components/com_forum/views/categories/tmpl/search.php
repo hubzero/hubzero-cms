@@ -39,12 +39,18 @@ $juser = JFactory::getUser();
 	<h2><?php echo $this->escape($this->title); ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
+		<p>
+			<a class="icon-folder categories btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?>
+			</a>
+		</p>
 	</div>
 </header>
 
 <?php foreach ($this->notifications as $notification) { ?>
-<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+	<p class="<?php echo $notification['type']; ?>">
+		<?php echo $this->escape($notification['message']); ?>
+	</p>
 <?php } ?>
 
 <section class="main section">
@@ -67,7 +73,7 @@ $juser = JFactory::getUser();
 			<div class="container">
 				<table class="entries">
 					<caption>
-						<?php echo JText::sprintf('Search for "%s"', $this->escape($this->filters['search'])); ?>
+						<?php echo JText::sprintf('COM_FORUM_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
 					</caption>
 					<tbody>
 			<?php

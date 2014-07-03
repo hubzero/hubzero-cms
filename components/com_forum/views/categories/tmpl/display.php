@@ -42,7 +42,11 @@ $this->category->set('section_alias', $this->filters['section']);
 	<h2><?php echo JText::_('COM_FORUM'); ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="icon-folder categories btn" href="<?php echo JRoute::_($this->category->link('base')); ?>"><?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?></a></p>
+		<p>
+			<a class="icon-folder categories btn" href="<?php echo JRoute::_($this->category->link('base')); ?>">
+				<?php echo JText::_('COM_FORUM_ALL_CATEGORIES'); ?>
+			</a>
+		</p>
 	</div>
 </header>
 
@@ -183,7 +187,7 @@ $this->category->set('section_alias', $this->filters['section']);
 									</a>
 								<?php } ?>
 								<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
-									<a class="icon-delete delete" href="<?php echo JRoute::_($row->link('delete')); ?>">
+									<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>">
 										<?php echo JText::_('COM_FORUM_DELETE'); ?>
 									</a>
 								<?php } ?>
