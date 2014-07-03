@@ -501,49 +501,19 @@ class WikiModelPage extends \Hubzero\Base\Model
 		{
 			$filters['pageid'] = $this->get('id');
 		}
-		if (!isset($filters['parent']))
-		{
-			$filters['parent'] = 0;
-		}
-		if (!isset($filters['version']))
-		{
-			$filters['version'] = '';
-		}
 		if (!isset($filters['status']))
 		{
-			$filters['status']    = 0;
+			$filters['status'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
-		//$filters['sort']     = 'created';
-		//$filters['sort_Dir'] = 'DESC';
 
 		switch (strtolower($rtrn))
 		{
 			case 'count':
 				if (!is_numeric($this->_comments_count) || $clear)
 				{
-					$total = 0;
+					$tbl = new WikiTableComment($this->_db);
 
-					/*if (!($c = $this->get('comments')))
-					{
-						$c = $this->comments('list', $filters);
-					}*/
-					foreach ($this->comments('list', $filters) as $com)
-					{
-						$total++;
-						if ($com->replies())
-						{
-							foreach ($com->replies() as $rep)
-							{
-								$total++;
-								if ($rep->replies())
-								{
-									$total += $rep->replies()->total();
-								}
-							}
-						}
-					}
-
-					$this->_comments_count = $total;
+					$this->_comments_count = $tbl->find('count', $filters);
 				}
 				return $this->_comments_count;
 			break;
@@ -553,9 +523,14 @@ class WikiModelPage extends \Hubzero\Base\Model
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
+					if (!isset($filters['parent']))
+					{
+						$filters['parent'] = 0;
+					}
+
 					$tbl = new WikiTableComment($this->_db);
 
-					if ($results = $tbl->getComments($filters['pageid'], $filters['parent'], $filters['version']))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

@@ -39,7 +39,14 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . 
 class WikiModelComment extends \Hubzero\Base\Model
 {
 	/**
-	 * JUser
+	 * Table class name
+	 *
+	 * @var string
+	 */
+	protected $_tbl_name = 'WikiTableComment';
+
+	/**
+	 * \Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -60,35 +67,10 @@ class WikiModelComment extends \Hubzero\Base\Model
 	private $_comments_count = NULL;
 
 	/**
-	 * Constructor
+	 * Returns a reference to a wiki comment model
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
-	 */
-	public function __construct($oid)
-	{
-		$this->_db = JFactory::getDBO();
-
-		$this->_tbl = new WikiTableComment($this->_db);
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
-
-	/**
-	 * Returns a reference to a forum model
-	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      mixed $oid ID (int) or alias (string)
+	 * @return     object WikiModelComment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -114,27 +96,9 @@ class WikiModelComment extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('reports', -1) > 0)
+		if ($this->get('status') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'wiki'
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -170,23 +134,28 @@ class WikiModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
+	 * @param      string $property What data to return
+	 * @param      mixed  $default  Default value
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			//$this->_creator = JUser::getInstance($this->get('created_by'));
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
 				$this->_creator = new \Hubzero\User\Profile();
 			}
 		}
-		if ($property) //JUser
+		if ($property)
 		{
 			$property = ($property == 'id') ? 'uidNumber' : $property;
-			return $this->_creator->get($property);
+			if ($property == 'picture')
+			{
+				return $this->_creator->getPicture($this->get('anonymous'));
+			}
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -201,52 +170,50 @@ class WikiModelComment extends \Hubzero\Base\Model
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($this->get('chtml'))
+				$content = $this->get('chtml', null);
+
+				if ($content === null)
 				{
-					return $this->get('chtml');
+					$p = WikiHelperParser::getInstance();
+
+					$wikiconfig = array(
+						'option'   => JRequest::getCmd('option', 'com_wiki'),
+						'scope'    => JRequest::getVar('scope'),
+						'pagename' => JRequest::getVar('pagename'),
+						'pageid'   => $this->get('pageid'),
+						'filepath' => '',
+						'domain'   => JRequest::getVar('group', '')
+					);
+
+					$this->set('chtml', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
+
+					return $this->content($as, $shorten);
 				}
 
-				$p = WikiHelperParser::getInstance();
-
-				$wikiconfig = array(
-					'option'   => JRequest::getCmd('option', 'com_wiki'),
-					'scope'    => JRequest::getVar('scope'),
-					'pagename' => JRequest::getVar('pagename'),
-					'pageid'   => $this->get('pageid'),
-					'filepath' => '',
-					'domain'   => JRequest::getVar('group', '')
-				);
-
-				$this->set('chtml', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
-
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($this->get('chtml'), $shorten, array('html' => true));
-
-					return $content;
-				}
-
-				return $this->get('chtml');
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
-				return $this->get('ctext');
+				$content = $this->get('ctext');
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+
+		return $content;
 	}
 
 	/**
@@ -295,12 +262,11 @@ class WikiModelComment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the creator of this entry
+	 * Get a list or count of comments
 	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
+	 * @param      string  $rtrn    Data format to return
+	 * @param      array   $filters Filters to apply to data fetch
+	 * @param      boolean $clear   Clear cached data?
 	 * @return     mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
@@ -313,9 +279,9 @@ class WikiModelComment extends \Hubzero\Base\Model
 		{
 			$filters['parent'] = $this->get('id');
 		}
-		if (!isset($filters['version']))
+		if (!isset($filters['status']))
 		{
-			$filters['version'] = '';
+			$filters['status'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))
@@ -353,7 +319,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					$results = $this->_tbl->getComments($filters['pageid'], $filters['parent'], $filters['version']);
+					$results = $this->_tbl->find('list', $filters);
 
 					if ($results)
 					{

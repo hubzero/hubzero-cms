@@ -91,7 +91,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		$obj = new WikiTableComment($this->database);
 
 		// Get records
-		$rows = $obj->getEntries($this->view->filters);
+		$rows = $obj->find('list', $this->view->filters);
 
 		$levellimit = ($this->view->filters['limit'] == 0) ? 500 : $this->view->filters['limit'];
 

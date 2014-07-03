@@ -125,104 +125,30 @@ class WikiTableComment extends JTable
 	}
 
 	/**
-	 * Get all replies to a comment
-	 *
-	 * @return     array
-	 */
-	public function getResponses()
-	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent=" . $this->_db->Quote($this->id) . " AND status < 2");
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Mark a comment as abusive
-	 *
-	 * @param      integer $oid Entry ID
-	 * @return     boolean True on success, False if error
-	 */
-	public function report($oid=null)
-	{
-		$k = $this->_tbl_key;
-		if ($oid)
-		{
-			$this->$k = intval($oid);
-		}
-
-		$this->_db->setQuery("UPDATE $this->_tbl SET status=1 WHERE $this->_tbl_key = " . $this->_db->Quote($this->$k));
-
-		if ($this->_db->query())
-		{
-			return true;
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
-
-	/**
-	 * Get all comments for a page
-	 *
-	 * @param      integer $id     Page ID
-	 * @param      integer $parent Parent comment ID
-	 * @param      string  $ver    Page version
-	 * @param      string  $limit  Number of records to return
-	 * @return     array
-	 */
-	public function getComments($id, $parent, $ver='', $limit='')
-	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($id) . " AND status < 2 AND parent=" . $this->_db->Quote($parent) . " $ver ORDER BY created DESC $limit");
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Return a count of entries based off of filters passed
-	 * Used for admin interface
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
-	 */
-	public function getEntriesCount($filters=array())
-	{
-		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
-	 * Get entries based off of filters passed
-	 * Used for admin interface
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function getEntries($filters=array())
-	{
-		$query = "SELECT c.*, u.name " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
 	 * Build a query from filters passed
 	 * Used for admin interface
 	 *
 	 * @param      array $filters Filters to build query from
 	 * @return     string SQL
 	 */
-	private function _buildQuery($filters)
+	private function _buildQuery($filters=array())
 	{
-		$query  = "FROM $this->_tbl AS c, #__xprofiles AS u";
+		$query  = "FROM $this->_tbl AS c LEFT JOIN #__xprofiles AS u ON c.created_by=u.uidNumber";
 
-		$where = array(
-			"c.created_by=u.uidNumber"
-		);
+		$where = array();
 
+		if (isset($filters['status']))
+		{
+			if (is_array($filters['status']))
+			{
+				$filters['status'] = array_map('intval', $filters['status']);
+				$where[] = "c.status IN (" . implode(',', $filters['status']) . ")";
+			}
+			else if ($filters['status'] >= 0)
+			{
+				$where[] = "c.status=" . $this->_db->Quote(intval($filters['status']));
+			}
+		}
 		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
 			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
@@ -253,20 +179,93 @@ class WikiTableComment extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (!isset($filters['sort']) || !$filters['sort'])
-		{
-			$filters['sort'] = 'created';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-		{
-			$filters['sort_Dir'] = 'DESC';
-		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		/*if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}*/
 		return $query;
+	}
+
+	/**
+	 * Returns either a count or list of records
+	 *
+	 * @param   string $what    What type of data to return (count, one, first, all, list)
+	 * @param   array  $filters An associative array of filters used to construct a query
+	 * @return  mixed
+	 */
+	public function find($what='', $filters=array(), $select=array('*'))
+	{
+		$what = strtolower($what);
+		$select = (array) $select;
+
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query  = "SELECT c.*, u.name " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']))
+				{
+					$filters['sort'] = 'created';
+				}
+				if (!isset($filters['sort_Dir']))
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+				if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+
+				//$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
+				$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }
 

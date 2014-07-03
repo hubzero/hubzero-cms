@@ -76,7 +76,9 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</p>
 
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<p class="comment-options">
 			<?php if ($this->page->access('delete', 'comment')) { // || $juser->get('id') == $this->comment->get('created_by') ?>
@@ -91,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 					--></a>
 				<?php } ?>
 			<?php } ?>
-			<?php if (!$this->comment->get('reports')) { ?>
+			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_WIKI_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_WIKI_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
@@ -103,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+				<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_($this->comment->link('report')); ?>"><!--
 					--><?php echo JText::_('COM_WIKI_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
@@ -127,6 +129,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="comment[version]" value="<?php echo $this->page->revision()->get('version'); ?>" />
+						<input type="hidden" name="comment[state]" value="1" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="comments" />
