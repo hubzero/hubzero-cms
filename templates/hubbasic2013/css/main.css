@@ -1969,7 +1969,7 @@
 	.body-overlayed select {
 		visibility: hidden;
 	}
-	#sbox-window embed,
+	/*#sbox-window embed,
 	#sbox-window object,
 	#sbox-window select {
 		visibility: visible;
@@ -2022,7 +2022,7 @@
 		background: url("../images/overlay/newwindowbox.png") no-repeat top left;
 		border: none;
 		cursor: pointer;
-	}
+	}*/
 	.sbox-loading #sbox-content {
 		background-image: url("../images/anim/spinner.gif");
 		background-repeat: no-repeat;
@@ -2111,6 +2111,12 @@
 		margin: 0;
 		padding: 0.5em 1em;
 		text-align: center;
+	}
+	#sbox-content fieldset p.multiple-option {
+		margin: 0;
+	}
+	#sbox-content fieldset input[type=radio] {
+		width: auto;
 	}
 
 /* 
