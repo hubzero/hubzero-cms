@@ -468,3 +468,10 @@
 		background: #efefef;
 		font-size: 0.85em;
 	}
+
+	#sbox-content fieldset p.multiple-option {
+		margin: 0;
+	}
+	#sbox-content fieldset input[type=radio] {
+		width: auto;
+	}

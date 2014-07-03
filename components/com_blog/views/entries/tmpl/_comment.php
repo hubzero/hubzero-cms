@@ -83,7 +83,9 @@ defined('_JEXEC') or die('Restricted access');
 			</form>
 	<?php } else { ?>
 
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<p class="comment-options">
 			<?php if ($this->config->get('access-delete-comment')) { ?>
@@ -108,7 +110,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 					<?php } ?>
 				<?php } ?>
-				<a class="icon-abuse abuse" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+				<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')); ?>"><!--
 					--><?php echo JText::_('COM_BLOG_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
