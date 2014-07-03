@@ -229,7 +229,7 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		$p->loadArray(JRequest::getVar('params', '', 'post'));
 
 		// Make sure the logo gets carried over
-		$op = new $paramsClass($model->get('params'));
+		$op = new JRegistry($model->get('params'));
 		$p->set('logo', $op->get('logo'));
 
 		$model->set('params', $p->toString());

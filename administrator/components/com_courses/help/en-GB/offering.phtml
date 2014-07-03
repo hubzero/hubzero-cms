@@ -1,0 +1,75 @@
+<article>
+	<h1><span>Courses: Edit Offering</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#publishing">Publishing</a></li>
+		<li><a href="#logo">Logo</a></li>
+		<li><a href="#parameters">Parameters</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>The edit/creation form for a course offering.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Save changes and return to the edit form.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Save changes and return to the listing of entries.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+
+		<p>Every entry consists of a <strong>title</strong> and <strong>alias</strong>. Optional fields include <strong>starts</strong>, <strong>ends</strong>, and a logo.</p>
+
+		<dl>
+			<dt>Title</dt>
+			<dd>The title of the post. A required field.</dd>
+
+			<dt>Alias</dt>
+			<dd>This is an optional identifier used priamrily for URLs. When an alias isn't provided, one is generated from the provided title. The text is made lowercase, all punctuation is stripped, and spaces are turned into dashes.</dd>
+		</dl>
+	</section>
+	<section id="publishing">
+		<h2><span>Publishing</span></h2>
+
+		<p>The following options control various aspects of the published state (when and if an entry is available to users).</p>
+
+		<dl>
+			<dt>State</dt>
+			<dd>The published status of the entry. Unpublished and trashed jobs will never be run.</dd>
+
+			<dt>Starts</dt>
+			<dd>A timestamp (YYYY-MM-DD hh:mm:ss) for when an entry should <strong>start</strong> being available. This allows for an entry to be set up and published in advance of when one wishes the entry to be read. When used with "Ends", this gives the option of creating a window of time one wants the entry to available. For instance, an entry can be scheduled to be only available between March and September.</dd>
+
+			<dt>Ends</dt>
+			<dd>A timestamp (YYYY-MM-DD hh:mm:ss) for when an entry should <strong>stop</strong> being available. This allows for an entry to stop being available after a given date/time. When used with "Starts", this gives the option of creating a window of time one wants an entry to be available. For instance, an entry can be scheduled to be only available between March and September.</dd>
+		</dl>
+	</section>
+	<section id="logo">
+		<h2><span>Logo</span></h2>
+
+		<p>This area is for attaching a picture or logo for the specific offering, allowing for more specific branding beyond the course's logo.</p>
+	</section>
+	<section id="parameters">
+		<h2><span>Parameters</span></h2>
+
+		<p>Here one will find various optional parameters for the offering.</p>
+	</section>
+</article>

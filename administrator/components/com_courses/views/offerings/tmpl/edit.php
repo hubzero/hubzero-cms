@@ -37,10 +37,13 @@ $canDo = CoursesHelper::getActions();
 JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('COM_COURSES_OFFERING') . ': ' . $text, 'courses.png');
 if ($canDo->get('core.edit'))
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
+	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
-
+JToolBarHelper::spacer();
+JToolBarHelper::help('offering');
 
 $base = str_replace('/administrator', '', JURI::base(true));
 
@@ -102,18 +105,23 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 
-			<p><span class="hint"><?php echo JText::_('COM_COURSES_OFFERING_START_END_HINT'); ?></span></p>
+			<p><?php echo JText::_('COM_COURSES_OFFERING_START_END_HINT'); ?></p>
 
-			<div class="input-wrap">
-				<label for="publish_up"><?php echo JText::_('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
+					<label for="publish_up"><?php echo JText::_('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
+					<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), 'fields[publish_up]', 'publish_up'); ?>
+					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
+				</div>
 			</div>
-			<div class="input-wrap">
-				<label for="publish_down"><?php echo JText::_('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox calendar-field')); ?>
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
+					<label for="publish_down"><?php echo JText::_('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
+					<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), 'fields[publish_down]', 'publish_down'); ?>
+					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
+				</div>
 			</div>
+			<div class="clr"></div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
