@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter '.ucfirst($this->type).' Story') . ': <small><small>[ ' . $text . ' ]</small></small>', 'addedit.png');
+JToolBarHelper::title(JText::_('Newsletter '.ucfirst($this->type).' Story') . ': ' . $text, 'addedit.png');
 
 //add buttons to toolbar
 JToolBarHelper::save();
@@ -65,7 +65,7 @@ $editor = JEditor::getInstance();
 					<td class="key"><?php echo JText::_('Title:'); ?></td>
 					<td><input type="text" name="story[title]" value="<?php echo $this->story->title; ?>" /></td>
 				</tr>
-				<?php if($this->story->id) : ?>
+				<?php if ($this->story->id) : ?>
 					<tr>
 						<td class="key"><?php echo JText::_('Order:'); ?></td>
 						<td>
