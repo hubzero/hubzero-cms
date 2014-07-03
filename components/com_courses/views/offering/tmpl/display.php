@@ -39,14 +39,24 @@ $sparams = new JRegistry($this->course->offering()->section()->get('params'));
 if (!$no_html && $tmpl != 'component') :
 	$this->css('offering.css')
 	     ->js('courses.offering.js');
+
+	$src = $this->course->logo();
+	if ($logo = $this->course->offering()->section()->logo())
+	{
+		$src = $logo;
+	}
+	else if ($logo = $this->course->offering()->logo())
+	{
+		$src = $logo;
+	}
 	?>
 	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 		<h2>
 			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 		</h2>
-		<?php if ($logo = $this->course->logo()) { ?>
+		<?php if ($src) { ?>
 		<p class="course-identity">
-			<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+			<img src="<?php echo $src; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
 		</p>
 		<?php } ?>
 		<p id="page_identity">
