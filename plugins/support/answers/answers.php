@@ -265,10 +265,12 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
+		$state = 1;
 		switch ($category)
 		{
 			case 'answer':
 				$comment = new AnswersTableResponse($database);
+				$state = 0;
 			break;
 
 			case 'question':
@@ -280,7 +282,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 			break;
 		}
 		$comment->load($refid);
-		$comment->state = 1;
+		$comment->state = $state;
 		$comment->store();
 
 		return '';
