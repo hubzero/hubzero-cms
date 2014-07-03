@@ -432,6 +432,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
+		$isNew = true;
 		$id = JRequest::getInt('id', 0);
 
 		$allowEmailResponses = $this->config->get('email_processing');
@@ -445,9 +446,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$st = new SupportTags($this->database);
 
 		// Load the old ticket so we can compare for the changelog
+		$old = new SupportTicket($this->database);
+		$oldtags = '';
 		if ($id)
 		{
-			$old = new SupportTicket($this->database);
+			$isNew = false;
+
 			$old->load($id);
 
 			// Get Tags
@@ -479,6 +483,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		if (!$id)
+		{
+			$id = $this->database->insertid();
+			$row->id = $id;
+		}
+
 		$row->load($id);
 
 		// Save the tags
@@ -486,9 +496,94 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		$st->tag_object($this->juser->get('id'), $row->id, $tags, 0, true);
 
-		// We must have a ticket ID before we can do anything else
-		if ($id)
+		$juri = JURI::getInstance();
+		$jconfig = JFactory::getConfig();
+
+		$base = $juri->base();
+		if (substr($base, -14) == 'administrator/')
 		{
+			$base = substr($base, 0, strlen($base)-14);
+		}
+
+		$webpath = trim($this->config->get('webpath'), '/');
+
+		// If a new ticket...
+		if ($isNew)
+		{
+			// Get any set emails that should be notified of ticket submission
+			$defs = str_replace("\r", '', $this->config->get('emails', '{config.mailfrom}'));
+			$defs = explode("\n", $defs);
+
+			if ($defs)
+			{
+				// Get some email settings
+				$msg = new \Hubzero\Mail\Message();
+				$msg->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->id));
+				$msg->addFrom(
+					$jconfig->getValue('config.mailfrom'),
+					$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name))
+				);
+
+				$live_site = rtrim(JURI::base(), '/');
+
+				// Parse comments for attachments
+				$attach = new SupportAttachment($this->database);
+				$attach->webpath = $base . DS . $webpath . DS . $row->id;
+				$attach->uppath  = JPATH_ROOT . DS . $webpath . DS . $row->id;
+				$attach->output  = 'email';
+
+				// Generate e-mail message
+				$from['multipart'] = md5(date('U'));
+
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
+					'name'      => 'emails',
+					'layout'    => 'ticket_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->ticket     = $row;
+				$eview->delimiter  = '';
+				$eview->attach     = $attach;
+
+				$plain = $eview->loadTemplate();
+				$plain = str_replace("\n", "\r\n", $plain);
+
+				$msg->addPart($plain, 'text/plain');
+
+				// HTML email
+				$eview->setLayout('ticket_html');
+
+				$html = $eview->loadTemplate();
+				$html = str_replace("\n", "\r\n", $html);
+
+				$msg->addPart($html, 'text/html');
+
+				// Loop through the addresses
+				foreach ($defs As $def)
+				{
+					$def = trim($def);
+
+					// Check if the address should come from Joomla config
+					if ($def == '{config.mailfrom}')
+					{
+						$def = $jconfig->getValue('config.mailfrom');
+					}
+					// Check for a valid address
+					if (\Hubzero\Utility\Validate::email($def))
+					{
+						// Send e-mail
+						$msg->setTo(array($def));
+						$msg->send();
+					}
+				}
+			}
+		}
+
+		// We must have a ticket ID before we can do anything else
+		//if ($id)
+		//{
 			// Incoming comment
 			$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
 			if ($comment)
@@ -654,7 +749,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					return;
 				}
 
-				$attachment = $this->uploadTask($row->id, $rowc->id);
+				if (!$isNew)
+				{
+					$attachment = $this->uploadTask($row->id, $rowc->id);
+				}
 
 				// Only do the following if a comment was posted or ticket was reassigned
 				// otherwise, we're only recording a changelog
@@ -975,7 +1073,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					// Send an e-mail to each address
 					foreach ($emails as $email)
 					{
-						
 						if ($allowEmailResponses)
 						{
 							// In this case each item in email in an array, 1- To, 2:reply to address
@@ -1030,7 +1127,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					}
 				}
 			}
-		}
+		//}
 
 		// output messsage and redirect
 		if ($redirect) 

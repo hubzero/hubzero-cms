@@ -478,19 +478,39 @@ if ($this->row->id) {
 								<option value="1"><?php echo JText::_('COMMENT_OPT_WAITING'); ?></option>
 								<optgroup label="<?php echo JText::_('Closed'); ?>">
 									<option value="noresolution"><?php echo JText::_('COMMENT_OPT_CLOSED'); ?></option>
-<?php
-							if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
-							{
-								foreach ($this->lists['resolutions'] as $anode) 
-								{
-?>
-									<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-<?php
-								}
-							}
-?>
+									<?php
+									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='') 
+									{
+										foreach ($this->lists['resolutions'] as $anode) 
+										{
+											?>
+											<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
+											<?php
+										}
+									}
+									?>
 								</optgroup>
 							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label for="ticket-field-category"><?php echo JText::_('Category'); ?>:</label></td>
+						<td colspan="3">
+							<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
+								<div class="input-wrap">
+									<select name="category" id="ticket-field-category">
+										<option value=""><?php echo JText::_('(none)'); ?></option>
+										<?php
+										foreach ($this->lists['categories'] as $category)
+										{
+											?>
+										<option value="<?php echo $this->escape($category->alias); ?>">><?php echo $this->escape(stripslashes($category->title)); ?></option>
+											<?php
+										}
+										?>
+									</select>
+								</div>
+							<?php } ?>
 						</td>
 					</tr>
 					<tr>
@@ -501,6 +521,16 @@ if ($this->row->id) {
 					</tr>
 				</tbody>
 			</table>
+			<?php
+			$browser = new \Hubzero\Browser\Detector();
+			?>
+			<input type="hidden" name="referer" value="<?php echo JRequest::getVar('HTTP_REFERER', NULL, 'server'); ?>" />
+			<input type="hidden" name="os" value="<?php echo $browser->platform(); ?>" />
+			<input type="hidden" name="osver" value="<?php echo $browser->platformVersion(); ?>" />
+			<input type="hidden" name="browser" value="<?php echo $browser->name(); ?>" />
+			<input type="hidden" name="browserver" value="<?php echo $browser->version(); ?>" />
+			<input type="hidden" name="hostname" value="<?php echo gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server')); ?>" />
+			<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
 			<input type="hidden" name="section" value="1" />
 			<input type="hidden" name="uas" value="<?php echo JRequest::getVar('HTTP_USER_AGENT', '', 'server'); ?>" />
 			<input type="hidden" name="severity" value="normal" />
