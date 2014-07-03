@@ -72,25 +72,40 @@ class Twitter extends Macro
 	public function render()
 	{
 		//get the args passed in
-		$args = explode(',', $this->args);
+		$args = array_map("trim", explode(',', $this->args));
 		
 		//get screen name & num tweets
 		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
-		$numItems   = (isset($args[1]) && is_numeric($args[1])) ? $args[1] : 3;
-		
+		$widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
+		$numItems   = (isset($args[1]) && is_numeric($args[1])) ? 'data-tweet-limit="' . $args[1] . '"' : '';
+		$chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
+		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';
+		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
+
 		//make sure we have a user name
-		if ($screenName == '')
+		if ($screenName == '' && $widgetId == '')
 		{
-			return "(Please enter a valid Twitter Username or ID)";
+			return "(Please enter a valid Twitter Username/ID or Widget ID)";
+		}
+
+		// code for screename 
+		$widgetCode  = 'data-widget-id="346714310770302976"';
+		$widgetCode .= ' href="https://twitter.com/'. $screenName .'"';
+		$widgetCode .= ' data-screen-name="' . $screenName . '"';
+		
+		// pass already configured widget
+		if ($widgetId)
+		{
+			$widgetCode  = 'data-widget-id="' . $widgetId . '"';
 		}
 		
 		//output embeded timeline
 		return '<a class="twitter-timeline"
-					href="https://twitter.com/'. $screenName .'"
-					data-widget-id="346714310770302976"
-					data-screen-name="' . $screenName . '"
-					data-tweet-limit="' . trim($numItems) . '"
-					data-chrome=""
+					width="' . $width . '"
+					height="' . $height . '"
+					' . $widgetCode . '
+					' . $numItems . '
+					data-chrome="' . $chrome . '"
 					>Loading Tweets...</a>
 				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
 	}
