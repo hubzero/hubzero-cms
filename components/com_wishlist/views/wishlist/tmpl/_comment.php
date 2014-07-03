@@ -49,7 +49,9 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</p>
 
-			<?php echo $comment; ?>
+			<div class="comment-body">
+				<?php echo $comment; ?>
+			</div>
 
 			<?php if ($attachment = $this->comment->get('attachment')) { ?>
 			<p class="comment-attachment icon-attachment">
@@ -82,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_($this->comment->link('report')); ?>"><!--
 					--><?php echo JText::_('COM_WISHLIST_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>

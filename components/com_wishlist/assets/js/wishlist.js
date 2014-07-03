@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_wishlist/wishlist.js
+ * @file        components/com_wishlist/assets/js/wishlist.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -8,6 +8,10 @@
 if (!jq) {
 	var jq = $;
 }
+
+String.prototype.nohtml = function () {
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+};
 
 jQuery(document).ready(function(jq){
 	var $ = jq;
@@ -18,7 +22,7 @@ jQuery(document).ready(function(jq){
 			$('#hubForm').publish_up.val('');
 		});
 	}
-	
+
 	if ($('#publish_up').length > 0) {
 		$('#publish_up').datepicker({
 			dateFormat: 'yy-mm-dd',
@@ -26,18 +30,20 @@ jQuery(document).ready(function(jq){
 			maxDate: '+10Y'
 		});
 	}
-	
+
 	// show/hide plan area
 	if ($('#section-plan').length && $('#part_plan').length) { 
 		$('#part_plan').on('click', function() {
-			if ($('#part_plan').hasClass('collapse')) {
-				$('#part_plan').removeClass('collapse');
+			if ($(this).hasClass('collapse')) {
 				$('#full_plan').css('display', "none");
-				$('#part_plan').addClass('expand');
+				$(this)
+					.removeClass('collapse')
+					.addClass('expand');
 			} else {
-				$('#part_plan').removeClass('expand');
+				$(this)
+					.removeClass('expand')
+					.addClass('collapse');
 				$('#full_plan').css('display', "block");
-				$('#part_plan').addClass('collapse');
 			}
 			return false;
 		});
@@ -58,6 +64,50 @@ jQuery(document).ready(function(jq){
 			$(this)
 				.removeClass('active')
 				.text($(this).attr('data-txt-inactive'));
+		}
+	});
+
+	$('a.abuse').fancybox({
+		type: 'ajax',
+		width: 500,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		tpl: {
+			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+		},
+		beforeLoad: function() {
+			href = $(this).attr('href');
+			$(this).attr('href', href.nohtml());
+		},
+		afterShow: function() {
+			var frm = $('#hubForm-ajax'),
+				self = $(this.element[0]);
+
+			if (frm.length) {
+				frm.on('submit', function(e) {
+					e.preventDefault();
+					$.post($(this).attr('action'), $(this).serialize(), function(data) {
+						var response = jQuery.parseJSON(data);
+
+						if (!response.success) {
+							frm.prepend('<p class="error">' + response.message + '</p>');
+							return;
+						} else {
+							$('#sbox-content').html('<p class="passed">' + response.message + '</p>');
+							$('#c' + response.id)
+								.find('.comment-body')
+								.first()
+								.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
+						}
+
+						setTimeout(function(){
+							$.fancybox.close();
+						}, 2 * 1000);
+					});
+				});
+			}
 		}
 	});
 });
