@@ -319,9 +319,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 		// If version is specified AND (no revision set or (revision is set and version doesn't match)) ...
 		if ($version
 		 && (
-		 		!isset($this->_revision)
-		 	|| (isset($this->_revision) && $version != $this->_revision->get('version'))
-		 	)
+				!isset($this->_revision)
+			|| (isset($this->_revision) && $version != $this->_revision->get('version'))
+			)
 		)
 		{
 			$this->_revision = null;

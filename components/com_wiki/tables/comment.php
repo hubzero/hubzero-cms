@@ -257,7 +257,7 @@ class WikiTableComment extends JTable
 				//$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
 				$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 				}
