@@ -192,6 +192,33 @@ class Module extends Object
 	}
 
 	/**
+	 * Get the path to an image
+	 *
+	 * @param   string  $image   Image name
+	 * @param   string  $module  Module name
+	 * @return  string
+	 */
+	public function img($image, $component = null)
+	{
+		if (!$module)
+		{
+			$module = $this->module->module;
+		}
+
+		if ($module == 'system')
+		{
+			return Assets::getSystemImage($image);
+		}
+
+		if (substr($module, 0, strlen('mod_')) !== 'mod_')
+		{
+			$module = 'mod_' . $module;
+		}
+
+		return Assets::getModuleImage($module, $image);
+	}
+
+	/**
 	 * Display module
 	 *
 	 * @return  void

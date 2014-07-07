@@ -281,7 +281,8 @@ class View extends AbstractView
 	 * Push CSS to the document
 	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component  Component name
+	 * @param   string  $folder     Plugin type
+	 * @param   string  $element    Plugin name
 	 * @param   string  $type       Mime encoding type
 	 * @param   string  $media      Media type that this stylesheet applies to
 	 * @param   string  $attribs    Attributes to add to the link
@@ -328,7 +329,8 @@ class View extends AbstractView
 	 * Push javascript to the document
 	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component  Component name
+	 * @param   string  $folder     Plugin type
+	 * @param   string  $element    Plugin name
 	 * @param   string  $type       Mime encoding type
 	 * @param   string  $media      Media type that this stylesheet applies to
 	 * @param   string  $attribs    Attributes to add to the link
@@ -364,6 +366,38 @@ class View extends AbstractView
 
 		Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
 		return $this;
+	}
+
+	/**
+	 * Get the path to an image
+	 *
+	 * @param   string  $image      Image name
+	 * @param   string  $folder     Plugin type
+	 * @param   string  $element    Plugin name
+	 * @return  string
+	 */
+	public function img($image, $folder = null, $element = null)
+	{
+		if (!$folder)
+		{
+			$folder = $this->_folder;
+		}
+		if (!$element)
+		{
+			$element = $this->_element;
+		}
+
+		if ($folder == 'system')
+		{
+			return Assets::getSystemImage($image);
+		}
+
+		if (substr($folder, 0, strlen('com_')) == 'com_')
+		{
+			return Assets::getComponentImage($folder, $image);
+		}
+
+		return Assets::getPluginImage($folder, $element, $image);
 	}
 
 	/**

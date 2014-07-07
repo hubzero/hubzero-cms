@@ -56,6 +56,29 @@ class Assets
 	}
 
 	/**
+	 * Check if a filename is a supported image type
+	 *
+	 * @param   string $image Filename
+	 * @return  boolean
+	 */
+	public static function isImage($image)
+	{
+		if (!trim($image))
+		{
+			return false;
+		}
+
+		jimport('joomla.filesystem.file');
+		$ext = strtolower(\JFile::getExt($image));
+		if (!in_array($ext, array('gif', 'jpg', 'jpe', 'jpeg', 'png', 'bmp')))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Adds a linked stylesheet from a component to the page
 	 *
 	 * @param	string  $component  Component name
@@ -257,6 +280,13 @@ class Assets
 	 */
 	public static function getComponentImage($component, $image)
 	{
+		$image = ltrim($image, DS);
+
+		if (!self::isImage($image))
+		{
+			return $image;
+		}
+
 		$template  = JFactory::getApplication()->getTemplate();
 
 		$paths = array();
@@ -317,10 +347,18 @@ class Assets
 	 */
 	public static function getModuleImage($module, $image)
 	{
+		$image = ltrim($image, DS);
+
+		if (!self::isImage($image))
+		{
+			return $image;
+		}
+
 		$template  = JFactory::getApplication()->getTemplate();
 
 		$paths = array();
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . 'images' . DS . $image;
+		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . DS . 'img' . DS . $image;
 		$paths[] = DS . 'modules' . DS . $module . DS . 'images' . DS . $image;
 
 		$root = self::base();
@@ -370,6 +408,7 @@ class Assets
 		$paths = array();
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $stylesheet;
+		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . DS . 'css' . DS . $stylesheet;
 		$paths[] = DS . 'modules' . DS . $module . DS . $stylesheet;
 
 		// Run through each path until we find one that works
@@ -423,10 +462,12 @@ class Assets
 		if (\JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.jquery.js';
+			$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . DS . 'js' . DS . $script . '.jquery.js';
 			$paths[] = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
 		}
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.js';
+		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . DS . 'js' . DS . $script . '.js';
 		$paths[] = DS . 'modules' . DS . $module . DS . $script . '.js';
 
 		// Run through each path until we find one that works
@@ -438,6 +479,56 @@ class Assets
 				$jdocument = JFactory::getDocument();
 				$jdocument->addScript(rtrim(JURI::getInstance()->base(true), DS) . $path . '?v=' . filemtime($root . $path), $type, $defer, $async);
 				break;
+			}
+		}
+	}
+
+	/**
+	 * Gets the path to a plugin image
+	 * checks template overrides first, then plugin folder
+	 *
+	 * @param	string  $folder		Plugin folder name
+	 * @param	string  $plugin		Plugin name
+	 * @param	string  $image		Image to look for
+	 * @return  string	Path to an image file
+	 */
+	public static function getPluginImage($folder, $plugin, $image)
+	{
+		$image = ltrim($image, DS);
+
+		if (!self::isImage($image))
+		{
+			return $image;
+		}
+
+		$template  = JFactory::getApplication()->getTemplate();
+
+		$paths = array();
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . DS . 'img' . DS . $image;
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'images' . DS . $image;
+
+		// Run through each path until we find one that works
+		foreach ($paths as $i => $path)
+		{
+			$root = JPATH_SITE;
+			if ($i == 0)
+			{
+				$root = JPATH_ADMINISTRATOR;
+			}
+
+			if (file_exists($root . $path))
+			{
+				if ($i == 0)
+				{
+					$b = rtrim(JURI::getInstance()->base(true), DS);
+				}
+				else
+				{
+					$b = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
+				}
+				// Push script to the document
+				return $b . $path;
 			}
 		}
 	}
@@ -475,24 +566,31 @@ class Assets
 		$paths = array();
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . DS . 'css' . DS . $stylesheet;
 		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
 
 		// Run through each path until we find one that works
 		foreach ($paths as $i => $path)
 		{
-			if (file_exists(JPATH_SITE . $path))
+			$root = JPATH_SITE;
+			if ($i == 0)
+			{
+				$root = JPATH_ADMINISTRATOR;
+			}
+
+			if (file_exists($root . $path))
 			{
 				if ($i == 0)
 				{
-					$root = rtrim(JURI::getInstance()->base(true), DS);
+					$b = rtrim(JURI::getInstance()->base(true), DS);
 				}
 				else
 				{
-					$root = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
+					$b = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
 				}
 				// Push script to the document
 				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet($root . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $media, $attribs);
+				$jdocument->addStyleSheet($b . $path . '?v=' . filemtime($root . $path), $type, $media, $attribs);
 				break;
 			}
 		}
@@ -535,21 +633,69 @@ class Assets
 		if (\JPluginHelper::isEnabled('system', 'jquery'))
 		{
 			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
+			$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . DS . 'js' . DS . $script . '.jquery.js';
 			$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
 		}
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . DS . 'js' . DS . $script . '.js';
 		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
+
+		// Run through each path until we find one that works
+		foreach ($paths as $i => $path)
+		{
+			$root = JPATH_SITE;
+			if ($i == 0 || $i == 5)
+			{
+				$root = JPATH_ADMINISTRATOR;
+			}
+
+			if (file_exists($root . $path))
+			{
+				if ($i == 0 || $i == 5)
+				{
+					$b = rtrim(JURI::getInstance()->base(true), DS);
+				}
+				else
+				{
+					$b = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS));
+				}
+				// Push script to the document
+				$jdocument = JFactory::getDocument();
+				$jdocument->addScript($b . $path . '?v=' . filemtime($root . $path), $type, $defer, $async);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Gets the path to a system image
+	 *
+	 * @param	string  $image		Image to look for
+	 * @return  string	Path to an image file
+	 */
+	public static function getSystemImage($image)
+	{
+		$image = ltrim($image, DS);
+
+		if (!self::isImage($image))
+		{
+			return $image;
+		}
+
+		$template  = JFactory::getApplication()->getTemplate();
+
+		$paths = array();
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . DS . 'images' . DS . $image;
+		$paths[] = DS . 'media' . DS . 'system' . DS . 'images' . DS . $image;
 
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
 		{
-			if (file_exists(JPATH_SITE . $path))
+			if (file_exists(JPATH_ROOT . $path))
 			{
 				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path . '?v=' . filemtime(JPATH_SITE . $path), $type, $defer, $async);
-				break;
+				return str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), DS)) . $path;
 			}
 		}
 	}

@@ -158,6 +158,33 @@ class View extends AbstractView
 	}
 
 	/**
+	 * Get the path to an image
+	 *
+	 * @param   string  $image      Image name
+	 * @param   string  $component  Component name
+	 * @return  string
+	 */
+	public function img($image, $component = null)
+	{
+		if (!$component)
+		{
+			$component = \JRequest::getCmd('option');
+		}
+
+		if ($component == 'system')
+		{
+			return Assets::getSystemImage($image);
+		}
+
+		if (substr($component, 0, strlen('com_')) !== 'com_')
+		{
+			$component = 'com_' . $component;
+		}
+
+		return Assets::getComponentImage($component, $image);
+	}
+
+	/**
 	 * Create a component view and return it
 	 *
 	 * @param   string $layout View layout
