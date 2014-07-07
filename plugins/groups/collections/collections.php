@@ -270,8 +270,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 				case 'followers': $arr['html'] = $this->_followers(); break;
 				case 'following': $arr['html'] = $this->_following(); break;
-				case 'follow':    $arr['html'] = $this->_follow('member');    break;
-				case 'unfollow':  $arr['html'] = $this->_unfollow('member');  break;
+				case 'follow':    $arr['html'] = $this->_follow('group');    break;
+				case 'unfollow':  $arr['html'] = $this->_unfollow('group');  break;
 
 				// Entries
 				case 'savepost':   $arr['html'] = $this->_save();   break;
