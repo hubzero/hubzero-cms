@@ -49,7 +49,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 * @var    object
 	 */
 	protected $_params = null;
-	
+
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
