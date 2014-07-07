@@ -5,24 +5,16 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
-//----------------------------------------------------------
-//  Members scripts
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
 
 jQuery(document).ready(function(jq){
-	var $ = jq;
+	var $ = jq
+		attach = $("#ajax-uploader");
 
-	if ($("#ajax-uploader").length) {
+	if (attach.length) {
+		var linkr = $('#link-adder');
 
 		$('#ajax-uploader-list')
 			.on('click', 'a.delete', function (e){
@@ -33,12 +25,13 @@ jQuery(document).ready(function(jq){
 				$(this).parent().parent().remove();
 			});
 
-		if ($('#link-adder').length > 0) {
-			$('#link-adder').append(
+		if (linkr.length > 0) {
+			linkr.append(
 				'<div class="linker">' +
-					'<div class="linker-button"><span>Click to add link</span></div>' + 
+					'<div class="linker-button"><span>' + linkr.attr('data-instructions') + '</span></div>' + 
 				'</div>'
 			);
+
 			$('.linker-button').on('click', function(){
 				var i = $('.item-asset').length + 1000;
 				$('#ajax-uploader-list').append(
@@ -58,19 +51,16 @@ jQuery(document).ready(function(jq){
 		}
 
 		var uploader = new qq.FileUploader({
-			element: $("#ajax-uploader")[0],
-			action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
+			element: attach[0],
+			action: attach.attr("data-action"),
 			params: {dir: $('#field-dir').val(), i: $('.item-asset').length},
 			multiple: true,
 			debug: false,
 			template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
-						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
-			onSubmit: function(id, file) {
-				//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
-			},
 			onComplete: function(id, file, response) {
 				if (response.id != $('#field-dir').val()) {
 					$('#field-id').val(response.id);
