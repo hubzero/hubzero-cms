@@ -188,6 +188,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$html .= $ext ? '('.strtoupper($ext) : '';
 			$html .= $size ? ' | '.$size : '';
 			$html .= $ext ? ')' : '';
+			if ($authorized == 'administrator')
+			{
+				$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
+				. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
+				. JText::_('COM_PUBLICATIONS_EDIT') . '</a></span>';
+			}
 			$html .= '</span>';
 			$html .='</li>';
 		}
@@ -221,6 +227,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$html .= $ext ? '('.strtoupper($ext) : '';
 				$html .= $size ? ' | '.$size : '';
 				$html .= $ext ? ')' : '';
+				if ($authorized == 'administrator')
+				{
+					$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
+					. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
+					. JText::_('COM_PUBLICATIONS_EDIT') . '</a></span>';
+				}
 				$html .= '</span>';
 				$html .='</li>';
 			}

@@ -288,7 +288,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Get master type info
 		$mt = new PublicationMasterType( $this->database );
-		$pub->_project 	= $this->_project;
 		$this->view->pub->_type = $mt->getType($this->view->pub->base);
 		$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
@@ -339,6 +338,189 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view->display();
+	}
+
+	/**
+	 * Edit content item
+	 *
+	 * @return     void
+	 */
+	public function editcontentTask()
+	{
+		// Incoming
+		$id 	= JRequest::getInt( 'id', 0 );
+		$el 	= JRequest::getInt( 'el', 0 );
+		$v 		= JRequest::getInt( 'v', 0 );
+
+		$objP = new Publication( $this->database );
+
+		// Get publication information
+		$this->view->pub = $objP->getPublication($id, $v);
+
+		// If publication not found, raise error
+		if (!$this->view->pub)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			return;
+		}
+
+		// Get the publications component config
+		$this->view->config = $this->config;
+
+		// Use new curation flow?
+		$this->view->useBlocks  = $this->view->config->get('curation', 0);
+
+		if (!$this->view->useBlocks)
+		{
+			$this->setError(JText::_('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'));
+		}
+		else
+		{
+			// Get master type info
+			$mt = new PublicationMasterType( $this->database );
+			$this->view->pub->_type = $mt->getType($this->view->pub->base);
+			$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
+
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->database );
+			$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
+
+			// Get manifest from either version record (published) or master type
+			$manifest   = $this->view->pub->curation
+						? $this->view->pub->curation
+						: $this->view->pub->_type->curation;
+
+			// Get curation model
+			$this->view->pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+
+			// Set pub assoc and load curation
+			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
+
+			if (!$el)
+			{
+				$this->setError();
+			}
+			else
+			{
+				$this->view->elementId = $el;
+				$this->view->element = $this->view->pub->_curationModel->getElementManifest($el, 'content');
+			}
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Push some styles to the template
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
+
+		// Output the HTML
+		$this->view->display();
+
+	}
+
+	/**
+	 * Save content item details
+	 *
+	 * @return     void
+	 */
+	public function savecontentTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$el 	 = JRequest::getInt( 'el', 0 );
+		$id 	 = JRequest::getInt( 'id', 0 );
+		$version = JRequest::getVar( 'version', '' );
+		$params  = JRequest::getVar( 'params', array(), 'request', 'array' );
+		$attachments = JRequest::getVar( 'attachments', array(), 'request', 'array' );
+
+		$row = new PublicationVersion($this->database);
+
+		$objP = new Publication( $this->database );
+
+		// Get publication information
+		$pub = $objP->getPublication($id, $version);
+
+		// If publication not found, raise error
+		if (!$pub)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			return;
+		}
+
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
+		if (!$useBlocks)
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'),
+				'error'
+			);
+			return;
+		}
+		else
+		{
+			// Get master type info
+			$mt = new PublicationMasterType( $this->database );
+			$pub->_type = $mt->getType($pub->base);
+			$typeParams = new JParameter( $pub->_type->params );
+
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->database );
+			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+
+			// Get manifest from either version record (published) or master type
+			$manifest   = $this->view->pub->curation
+						? $this->view->pub->curation
+						: $this->view->pub->_type->curation;
+
+			// Get curation model
+			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+
+			// Set pub assoc and load curation
+			$pub->_curationModel->setPubAssoc($pub);
+
+			if (!empty($params))
+			{
+				foreach ($params as $param => $value )
+				{
+					$row->saveParam($pub->version_id, $param, $value);
+				}
+			}
+			if (!empty($attachments))
+			{
+				foreach ($attachments as $attachId => $attach )
+				{
+					$pContent = new PublicationAttachment( $this->database );
+					if ($pContent->load($attachId))
+					{
+						$pContent->title = $attach['title'];
+						$pContent->store();
+					}
+				}
+			}
+		}
+
+		// Set redirect URL
+		$url = 'index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+
+		// Redirect back to publication
+		$this->setRedirect(
+			$url,
+			JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT')
+		);
 	}
 
 	/**
@@ -1145,7 +1327,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Incoming publication ID
 		$id = JRequest::getInt('id', 0);
@@ -1424,6 +1607,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	{
 		$url  = 'index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller;
+
+		// Incoming
+		$id  = JRequest::getInt('id', 0);
+		$url .= $id ? '&task=edit&id[]=' . $id : '';
 		return $url;
 	}
 

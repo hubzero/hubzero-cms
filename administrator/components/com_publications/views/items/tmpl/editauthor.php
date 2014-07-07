@@ -65,13 +65,6 @@ function submitbutton(pressbutton)
 
 	submitform(pressbutton);
 
-	window.addEvent('domready', function(){
-		window.addEvent('keypress', function(){
-			if (window.event.keyCode == 13) {
-				submitbutton('addusers');
-			}
-		})
-	});
 }
 </script>
 <?php if ($this->getError()) { ?>
@@ -79,13 +72,13 @@ function submitbutton(pressbutton)
 <?php } ?>
 <p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
 . $this->controller; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_INFO'); ?></p>
+. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]='. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_INFO'); ?></p>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div style="float: right">
-			<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'Save' );?></button>
+			<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'JSAVE' );?></button>
 			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
 		</div>
 		<div class="configuration" >

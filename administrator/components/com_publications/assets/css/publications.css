@@ -257,6 +257,13 @@
 		margin: 0.5em 0;
 		font-size: 85%;
 	}
+	.withdivider {
+		border-top: 2px solid #E2E2E2;
+	}
+	.withdivider p {
+		background: #f4eefa;
+		font-size: 85%;
+	}
 	.adminform label {
 		font-style: italic;
 	}
