@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css()
+     ->js();
+
 $results = null;
 $notes = $this->model->notes($this->filters);
 if ($notes)

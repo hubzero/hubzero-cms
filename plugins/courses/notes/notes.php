@@ -104,9 +104,6 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 
 		if ($return == 'html')
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
-			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
-
 			$this->config   = $config;
 			$this->course   = $course;
 			$this->offering = $offering;
