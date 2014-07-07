@@ -2555,7 +2555,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			if (JRequest::getVar('group', ''))
 			{
 				$unit = $this->course->offering()->unit($category->alias);
-				return $this->onCourseAfterLecture($this->course, $unit, $unit->assetgroup($model->object_id));
+				//$lecture = $unit->assetgroup($model->object_id);
+				$lecture = new CoursesModelAssetgroup($model->object_id);
+				return $this->onCourseAfterLecture($this->course, $unit, $lecture);
 			}
 			else
 			{
