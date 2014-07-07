@@ -259,6 +259,12 @@ if (!$this->filters['filterby'] == 'none')
 				<?php echo JText::sprintf('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . JRoute::_('index.php?option=com_kb') . '">' . JText::_('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
 			</p>
 		</div><!-- / .container -->
+		<div class="container">
+			<h3><?php echo JText::_('COM_ANSWERS_GET_STARTED'); ?></h3>
+			<p>
+				<?php echo JText::sprintf('COM_ANSWERS_GET_STARTED_HELP', JRoute::_('index.php?option=com_help&component=answers&page=index')); ?>
+			</p>
+		</div><!-- / .container -->
 	<?php if ($this->config->get('banking')) { ?>
 		<div class="container">
 			<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
