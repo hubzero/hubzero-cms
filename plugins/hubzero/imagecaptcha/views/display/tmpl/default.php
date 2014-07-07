@@ -37,7 +37,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
 	$base = str_replace('http://', 'https://', $base);
 }
 
-$controller = JRequest::getCmd('controller', '');
+$controller = JRequest::getCmd('controller', JRequest::getCmd('view', ''));
 
 $this->css();
 ?>
