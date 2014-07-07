@@ -57,6 +57,8 @@ $browser = new \Hubzero\Browser\Detector();
 	<head>
 		<jdoc:include type="head" />
 
+		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
+
 		<!--[if lt IE 9]>
 			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
@@ -80,6 +82,8 @@ $browser = new \Hubzero\Browser\Detector();
 				})();
 				document.getElementById('form-login').username.select();
 				document.getElementById('form-login').username.focus();
+
+				$('input, textarea').placeholder();
 			});
 		</script>
 	</head>

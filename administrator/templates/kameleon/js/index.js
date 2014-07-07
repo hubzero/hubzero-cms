@@ -1,14 +1,16 @@
 if (typeof(Joomla) == 'undefined')
 {
-	Joomla = {};
-}
-Joomla.submitbutton = function(pressbutton)
-{
-	return submitbutton(pressbutton);
-}
-Joomla.submitform = function(pressbutton)
-{
-	return submitform(pressbutton);
+	Joomla = {
+		submitbutton: function(pressbutton)
+		{
+			return submitbutton(pressbutton);
+		},
+
+		submitform: function(pressbutton)
+		{
+			return submitform(pressbutton);
+		}
+	};
 }
 
 /*
@@ -104,7 +106,6 @@ smaller area with "overflow: scroll" enabled?
 		}
 	};
 
-
 	// default settings
 	$.growl.settings = {
 		dockTemplate: '<div></div>',
@@ -148,6 +149,7 @@ jQuery(document).ready(function($){
 	var menu = $('#toolbar-box'),
 		top = menu.offset().top - parseFloat(menu.css('margin-top').replace(/auto/, 0));
 
+	// Stick the toolbar to the top of the screen when the browser has scrolled
 	$(window).on('scroll', function(event) {
 		// what the y position of the scroll is
 		var y = $(window).scrollTop();
@@ -169,12 +171,14 @@ jQuery(document).ready(function($){
 		$('.main-navigation li.node').on('click', function(){ });
 	}
 
+	// Apply Uniform to make buttons, selects, etc. look consistent
 	$("select, input[type=file]").uniform();
 
-	/*if ($('#item-form').length) {
+	/* // Display the nints and required badge when field is focused
+	if ($('#item-form').length) {
 		$('#item-form input').each(function(i, el){
 			if ($(el).is(":focus")) {
-			console.log(el);
+				console.log(el);
 				$(el).closest('div.input-wrap').addClass('focused');
 			} else {
 				$(el).closest('div.input-wrap').removeClass('focused');
@@ -182,6 +186,10 @@ jQuery(document).ready(function($){
 		});
 	}*/
 
+	// Placeholder support for older browsers (IE 9--)
+	$('input, textarea').placeholder();
+
+	// Display system messages in Growl-like way
 	var msg = $('#system-message-container');
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
 		$.growl('', msg.html());

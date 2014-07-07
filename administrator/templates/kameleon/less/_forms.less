@@ -254,7 +254,7 @@
 		&:before {
 			content: "\273D";
 			font-family: "Fontcons";
-			margin-right: 0.4em;
+			margin-right: 0.5em;
 		}
 		&:after {
 			content: "";
@@ -295,8 +295,6 @@
 		}
 		&:after {
 			position: absolute;
-			//bottom: 1em;
-			//right: -0.85em;
 			top: 0.15em;
 			right: 0;
 			content: "\f073";
@@ -391,5 +389,34 @@
 		}
 		.fltrt {
 			text-align: right;
+		}
+	}
+	// [!] Target Opera
+	html.opera {
+		.input-datetime:after {
+			top: 0;
+			line-height: 1.51803399em;
+		}
+		#editor-xtd-buttons a,
+		a.button,
+		button {
+			padding: 0.55em 0.91em 0.5em 0.91em;
+		}
+		input[type=button],
+		input[type=submit] {
+			padding: 0.65em 0.91em 0.6em 0.91em;
+		}
+	}
+	// [!] Target Firefox
+	@-moz-document url-prefix() {
+		.input-datetime:after {
+			top: 0;
+		}
+		#editor-xtd-buttons a,
+		a.button,
+		button,
+		input[type=button],
+		input[type=submit] {
+			padding: 0.55em 0.91em 0.5em 0.91em;
 		}
 	}

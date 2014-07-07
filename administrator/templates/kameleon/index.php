@@ -59,6 +59,7 @@ $browser = new \Hubzero\Browser\Detector();
 		<jdoc:include type="head" />
 
 		<script type="text/javascript" src="../media/system/js/jquery.uniform.min.js"></script>
+		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
 		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/index.js"></script>
 
 		<!--[if lt IE 9]>
