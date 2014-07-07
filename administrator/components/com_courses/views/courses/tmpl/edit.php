@@ -61,6 +61,8 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-title').value == '') {
 		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -118,7 +120,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?>">
 				<label for="field-description"><?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
-				<textarea name="fields[description]" id="field-description" cols="40" rows="15"><?php echo $this->escape($this->row->description('raw')); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 40, 15, false, 'field-description'); ?>
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?></span>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?>">
