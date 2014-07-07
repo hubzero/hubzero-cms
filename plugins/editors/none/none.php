@@ -153,7 +153,7 @@ class plgEditorNone extends JPlugin
 			$height .= 'px';
 		}
 
-		$buttons = $this->_displayButtons($id, $buttons, $asset, $author);
+		$buttons = (JFactory::getApplication()->isAdmin() ? $this->_displayButtons($id, $buttons, $asset, $author) : '');
 		$editor  = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\" style=\"width: $width; height: $height;\">$content</textarea>" . $buttons;
 
 		return $editor;
