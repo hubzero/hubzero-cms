@@ -290,17 +290,18 @@ jQuery(function(jq)
 	};
 	$(".tag-entry").autocomplete({ source: 'index.php?option=com_tags&controller=relationships&task=suggest&limit=50' });
 
-	var new_idx = $('fieldset.adminform').length;
+	var form_idx = $('fieldset.adminform').length, new_idx = 0;
 	$('#add_group').click(function(evt) {
 		++new_idx;
+		++form_idx;
 		evt.preventDefault();
-		var html = '<fieldset class="adminform" id="group-' + new_idx + '">' + 
+		var html = '<fieldset class="adminform" id="group-' + form_idx + '">' + 
 		'<legend><span>Group</span></legend>' + 
 		'<table class="admintable">' + 
 			'<tfoot>' + 
 				'<tr>' + 
 					'<td colspan="3">' + 
-						'<button class="delete-group" id="delete-' + new_idx + '" rel="group-' + new_idx + '">Delete group</button>' + 
+						'<button class="delete-group" id="delete-' + form_idx + '" rel="group-' + form_idx + '">Delete group</button>' + 
 					'</td>' + 
 				'</tr>' + 
 			'</tfoot>' + 
@@ -363,7 +364,7 @@ jQuery(function(jq)
 		var li = $(html);
 
 		$('#fas').append(li);
-		$('#delete-' + new_idx).click(function() {
+		$('#delete-' + form_idx).click(function() {
 			li.remove();
 		})
 		$('#name-new-' + new_idx).focus();

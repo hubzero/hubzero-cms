@@ -144,6 +144,8 @@ $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-n
 			<button id="add_group">Add group</button>
 		</p>
 		<p>
+			<input type="hidden" value="<?php echo $this->option; ?>" name="option" />
+			<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 			<input type="hidden" name="task" value="updatefocusareas" />
 			<button type="submit">Save</button>
 		</p>
@@ -156,9 +158,3 @@ $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-n
 	<div class="clr"></div>
 </form>
 
-<form name="adminForm" method="get" action="index.php">
-	<input type="hidden" value="<?php echo $this->option; ?>" name="option" />
-	<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
-	<input type="hidden" value="" name="task" />
-	<input type="hidden" value="0" name="boxchecked" />
-</form>
