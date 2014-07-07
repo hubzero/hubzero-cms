@@ -1,5 +1,5 @@
 jQuery(function() {
-
+	console.log('...');
 	var dataSrc = $('#cluster-data'),
 	       prnt = dataSrc.parent(),
 	       info = $('<div class="tooltip info"></div>'),

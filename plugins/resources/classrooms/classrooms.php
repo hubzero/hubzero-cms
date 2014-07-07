@@ -115,7 +115,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_classrooms'))
+		if (false && !$model->type->params->get('plg_classrooms'))
 		{
 			return $arr;
 		}
@@ -132,6 +132,8 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 				\Hubzero\Document\Assets::addSystemScript('d3.v2.js');
 
 				$dbh = JFactory::getDBO();
+				// could have sworn I started with a subquery but it was too slow so I moved to a join. now it appears it must be the other way around. retaining this for a few revisions in case it inverts again
+				/*
 				$dbh->setQuery(
 					"SELECT DISTINCT
 						sc2.toolname AS tool,
@@ -146,6 +148,26 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 					FROM #__resource_stats_clusters sc1
 					LEFT JOIN #__resource_stats_clusters sc2 ON sc2.cluster = sc1.cluster
 					WHERE sc1.toolname = " . $dbh->quote($model->resource->alias) . "
+					ORDER BY cluster_start, first_use"
+				);
+				*/
+				$dbh->setQuery(
+					"SELECT
+						sc.toolname AS tool,
+						sc.clustersize AS size,
+						YEAR(sc.cluster_start) AS year,
+						sc.cluster_start,
+						sc.cluster_end,
+						sc.first_use,
+						SUBSTRING_INDEX(sc.cluster, '|', 1) AS semester,
+						CONCAT(SUBSTRING_INDEX(sc.cluster, '|', 1), '|', SUBSTRING_INDEX(sc.cluster, '|', -2)) AS cluster,
+						SHA1(CONCAT(sc.uidNumber, ".$dbh->quote(uniqid()).")) AS uid
+					FROM #__resource_stats_clusters sc
+					WHERE sc.toolname = ".$dbh->quote($model->resource->alias)." AND sc.cluster IN
+					(SELECT DISTINCT
+						sc2.cluster
+					FROM jos_resource_stats_clusters sc2
+					WHERE sc2.toolname = ".$dbh->quote($model->resource->alias).")
 					ORDER BY cluster_start, first_use"
 				);
 
@@ -163,7 +185,7 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 					$nodes[$row['semester']][] = $row;
 				}
 				$arr['html'][] = '<span id="cluster-data" data-tool="' . str_replace('"', '&quot;', $model->resource->alias) . '" data-seed="' . str_replace('"', '&quot;', json_encode(array_values($nodes))) . '"></span>';
-			}
+			} else { die('none?'); }
 			$arr['html'] = implode("\n", $arr['html']);
 		}
 
