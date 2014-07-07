@@ -261,7 +261,7 @@ tooltip: true,
 			</table>
 <?php }
 
- } else { ?>
+} else { ?>
 	<p><?php echo JText::_('PLG_MEMBERS_IMPACT_STATS_NO_INFO'); ?></p>
 <?php } ?>
 </div>
