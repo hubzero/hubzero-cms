@@ -45,12 +45,11 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('entry');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
-{
+Joomla.submitbutton = function(pressbutton) {
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, document.getElementById('item-form'));
 		return;
 	}
 
@@ -62,7 +61,7 @@ function submitbutton(pressbutton)
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
 
-		submitform(pressbutton);
+		Joomla.submitform(pressbutton, document.getElementById('item-form'));
 	}
 }
 </script>
