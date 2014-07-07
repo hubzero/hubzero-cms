@@ -365,6 +365,55 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return	void
+	 */
+	public function copyTask()
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (is_array($ids))
+		{
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		}
+		else
+		{
+			$id = 0;
+		}
+
+		if (!$id)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+				JText::_('COM_COURSES_ERROR_NO_ID'),
+				'error'
+			);
+			return;
+		}
+
+		$assetgroup = CoursesModelAssetgroup::getInstance($id);
+		if (!$assetgroup->copy())
+		{
+			// Redirect back to the courses page
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'),
+				JText::_('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Redirect back to the courses page
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'),
+			JText::_('COM_COURSES_ITEM_COPIED')
+		);
+	}
+
+	/**
 	 * Removes a course and all associated information
 	 *
 	 * @return	void

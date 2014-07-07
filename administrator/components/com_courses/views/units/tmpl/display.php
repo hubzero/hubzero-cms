@@ -35,6 +35,8 @@ $canDo = CoursesHelper::getActions();
 JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_UNITS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
+	JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+	JToolBarHelper::spacer();
 	JToolBarHelper::addNew();
 }
 if ($canDo->get('core.edit'))
