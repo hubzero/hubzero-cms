@@ -182,7 +182,7 @@ HUB.Courses = {
 	{
 		var $ = this.jQuery;
 		
-		$(".cancel_course_membership").live('click', function(e) {
+		$(".cancel_course_membership").on('click', function(e) {
 			e.preventDefault();
 			
 			var answer = confirm('Are you sure you would like to cancel your course membership?');
