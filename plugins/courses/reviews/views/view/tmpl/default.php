@@ -35,6 +35,7 @@ $comment = new \Hubzero\Item\Comment($this->database);
 
 $edit = JRequest::getInt('editcomment', 0);
 
+$this->js();
 ?>
 <?php if ($this->params->get('access-view-comment')) { ?>
 		<h3 class="review-title">

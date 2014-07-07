@@ -106,13 +106,9 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		$this->option     = JRequest::getCmd('option', 'com_courses');
 		$this->controller = JRequest::getWord('controller', 'course');
 
-		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
-
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
-
 			$this->view = new \Hubzero\Plugin\View(
 				array(
 					'folder'  => 'courses',
@@ -300,7 +296,9 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	{
 		$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_($this->obj->link() . '&active=reviews', false, true), 'server'));
 		$this->redirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
+			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+			JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
+			'warning'
 		);
 	}
 
@@ -409,18 +407,12 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	protected function _view()
 	{
 		// Get comments on this article
-		/*$this->view->comments = $this->view->tbl->getComments(
-			$this->obj_type,
-			$this->obj->get('id'),
-			0,
-			$this->params->get('comments_limit', 25)
-		);*/
 		$comments = $this->view->tbl->find(array(
-			'item_type'   => $this->obj_type,
-			'item_id'     => $this->obj->get('id'),
-			'parent'      => 0,
-			'state'       => 1,
-			'limit'       => $this->params->get('comments_limit', 25)
+			'item_type' => $this->obj_type,
+			'item_id'   => $this->obj->get('id'),
+			'parent'    => 0,
+			'state'     => 1,
+			'limit'     => $this->params->get('comments_limit', 25)
 		));
 		if ($comments)
 		{
@@ -450,12 +442,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)),
-				JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
-				'warning'
-			);
-			return;
+			return $this->_login();
 		}
 
 		// Check for request forgeries
@@ -480,7 +467,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		if ($row->id && !$this->params->get('access-edit-comment'))
 		{
 			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)),
+				$this->url,
 				JText::_('PLG_COURSES_REVIEWS_NOTAUTH'),
 				'warning'
 			);
@@ -527,12 +514,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($this->url)),
-				JText::_('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
-				'warning'
-			);
-			return;
+			$this->_login();
 		}
 
 		// Incoming

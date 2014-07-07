@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $filters = array(
 	'state'     => 1,
 	'item_id'   => $this->course->get('id'),
