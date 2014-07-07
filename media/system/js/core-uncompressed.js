@@ -21,7 +21,7 @@ Joomla.submitform = function(task, form) {
 		/**
 		 * Added to ensure Joomla 1.5 compatibility
 		 */
-		if(!form){
+		if (!form) {
 			form = document.adminForm;
 		}
 	} else {
@@ -34,12 +34,24 @@ Joomla.submitform = function(task, form) {
 		form.task.value = task;
 	}
 
+	var event;
+	if (document.createEvent) {
+		event = document.createEvent('HTMLEvents');
+		event.initEvent('submit', true, true);
+	} else if (document.createEventObject) { // IE < 9
+		event = document.createEventObject();
+		event.eventType = 'submit';
+	}
+
 	// Submit the form.
 	if (typeof form.onsubmit == 'function') {
 		form.onsubmit();
 	}
-	if (typeof form.fireEvent == "function") {
-		form.fireEvent('submit');
+	else if (typeof form.dispatchEvent == "function") {
+		form.dispatchEvent(event);
+	}
+	else if (typeof form.fireEvent == "function") {
+		form.fireEvent(event);
 	}
 	form.submit();
 };
@@ -481,14 +493,27 @@ function submitbutton(pressbutton) {
  * @deprecated	12.1 This function will be removed in a future version. Use Joomla.submitform() instead.
  */
 function submitform(pressbutton) {
+	var event;
+	if (document.createEvent) {
+		event = document.createEvent('HTMLEvents');
+		event.initEvent('submit', true, true);
+	} else if (document.createEventObject) { // IE < 9
+		event = document.createEventObject();
+		event.eventType = 'submit';
+	}
+
 	if (pressbutton) {
 		document.adminForm.task.value = pressbutton;
 	}
+
 	if (typeof document.adminForm.onsubmit == "function") {
 		document.adminForm.onsubmit();
 	}
-	if (typeof document.adminForm.fireEvent == "function") {
-		document.adminForm.fireEvent('submit');
+	else if (typeof form.dispatchEvent == "function") {
+		document.adminForm.dispatchEvent(event);
+	}
+	else if (typeof document.adminForm.fireEvent == "function") {
+		document.adminForm.fireEvent(event);
 	}
 	document.adminForm.submit();
 }
