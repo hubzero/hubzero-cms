@@ -173,7 +173,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// Check if the offering is available
-		if (!$this->course->offering()->isAvailable())
+		if (!$this->course->offering()->access('manage', 'section') && !$this->course->offering()->isAvailable())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;
