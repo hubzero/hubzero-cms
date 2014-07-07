@@ -31,13 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Projects Blog plugin
  */
-class plgProjectsBlog extends JPlugin
+class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
+	 * Custom params
+	 *
+	 * @var    object
+	 */
+	protected $_params = null;
+	
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
@@ -111,16 +123,13 @@ class plgProjectsBlog extends JPlugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Load language file
-			$this->loadLanguage();
-
 			// Load component configs
 			$this->_config = JComponentHelper::getParams('com_projects');
 
 			$database = JFactory::getDBO();
 
-			// Add CSS and JS
 			$document = JFactory::getDocument();
+			$document->addScript('plugins' . DS . 'projects' . DS . 'blog' . DS . 'blog.js');
 
 			// Set vars
 			$this->_task = JRequest::getVar('action', '');
