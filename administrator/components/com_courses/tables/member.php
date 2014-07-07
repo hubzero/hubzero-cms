@@ -494,6 +494,7 @@ class CoursesTableMember extends JTable
 	{
 		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
 
+		$this->_db->setQuery($query);
 		if (!$this->_db->query()) 
 		{
 			$this->setError($this->_db->getErrorMsg());
