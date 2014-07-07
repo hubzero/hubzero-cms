@@ -39,33 +39,6 @@ jimport('joomla.plugin.plugin');
 class plgContentXhubtags extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
-	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
-	}
-
-	/**
-	 * Plugin that loads module positions within content
-	 *
-	 * @param	string	The context of the content being passed to the plugin.
-	 * @param	object	The article object.  Note $article->text is also available
-	 * @param	object	The article params
-	 * @param	int		The 'page' number
-	 */
-	public function onPrepareContent(&$article, &$params, $page = 0)
-	{
-		$context = '';
-		return $this->onContentPrepare($context, $article, $params, $page);
-	}
-
-	/**
 	 * Plugin that loads module positions within content
 	 *
 	 * @param	string	The context of the content being passed to the plugin.
@@ -88,20 +61,6 @@ class plgContentXhubtags extends JPlugin
 
 		// expression to search for
 		$regex = "/\{xhub:\s*[^\}]*\}/i";
-
-		// weblinks is somehow calling this with null params
-		/*if (!is_object($params))
-		{
-			return false;
-		}*/
-
-		// check whether plugin has been unpublished
-		/*if (!$params->get('enabled', 1))
-		{
-			$row->text = preg_replace($regex, '', $row->text);
-
-			return true;
-		}*/
 
 		// find all instances of plugin and put in $matches
 		preg_match_all($regex, $article->text, $matches, PREG_SET_ORDER);
