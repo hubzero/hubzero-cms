@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.5" type="plugin" group="members">
 	<name>Members - Blog</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<creationDate>December 2009</creationDate>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
@@ -47,8 +47,8 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="uploadpath" type="text" menu="hide" default="/site/members/{{uid}}/blog" label="Upload path" description="File path for uploads" />
 				<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				<field name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
