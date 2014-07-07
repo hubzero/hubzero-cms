@@ -46,7 +46,6 @@ $app         = JFactory::getApplication();
 $usersConfig = JComponentHelper::getParams('com_users');
 $primary     = JRequest::getWord('primary', false);
 ?>
-
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<header id="content-header">
 		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
@@ -79,9 +78,16 @@ $primary     = JRequest::getWord('primary', false);
 		<div class="default" style="display:<?php echo ($primary || count($this->authenticators) == 0) ? 'none' : 'block'; ?>;">
 			<div class="instructions">Choose your sign in method:</div>
 			<div class="options">
-				<?php foreach($this->authenticators as $a) : ?>
+				<?php foreach ($this->authenticators as $a) : ?>
 					<a class="<?php echo $a['name']; ?> account" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
+						<?php 
+							$refl = new \ReflectionClass("plgAuthentication{$a['name']}");
+							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL))):
+								echo is_array($html) ? implode("\n", $html) : $html;
+							else:
+						?>
 						<div class="signin">Sign in with <?php echo $a['display']; ?></div>
+						<?php endif; ?>
 					</a>
 				<?php endforeach; ?>
 			</div>
