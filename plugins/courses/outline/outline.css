@@ -422,6 +422,58 @@
 	}
 	.swf:after {
 		content: "\f03d";
+	}*/
+	.asset-status {
+		background-color: #fffbe2;
+		padding: 0.618em;
+		margin: 0 0 1em 0;
+		border: 1px solid #d5ca78;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		color: #918263;
+	}
+	.video-wrap .asset-status {
+		margin: 1em;
+	}
+	.asset-status span:before {
+		margin-right: 0.4em;
+		content: "";
+		font-family: "Fontcons";
+	}
+	.asset-status.pending {
+		background-color: #dff0d8;
+		border-color: #b5d3b0;
+		color: #468847;
+	}
+	.asset-status.pending span:before {
+		content: "\f017";
+	}
+	.asset-status.unpublished {
+		background-color: #f1f1f1;
+		border-color: #eee;
+		color: #aaa;
+	}
+	.asset-status.unpublished span:before {
+		content: "\2298";
+	}
+	.asset-status.draft {
+		background-color: #fcf8e3;
+		border-color: #eadcb9;
+		color: #c09853;
+	}
+	.asset-status.draft span:before {
+		content: "\22EF";
+	}
+	.asset-status.deleted {
+		background-color: #f2dede;
+		border-color: #e5bbbb;
+		color: #b94a48;
+	}
+	.asset-status.deleted:before {
+		content: "\f014";
 	}
 
 /* lecture */
