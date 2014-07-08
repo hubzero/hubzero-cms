@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // require needed files
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'course.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'courses.php');
 
 // build controller path and name
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'courses'));

@@ -5,16 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (typeof HUB === 'undefined') {
-	var HUB = {};
-}
-
-//----------------------------------------------------------
-//  Members scripts
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
@@ -27,7 +17,7 @@ String.prototype.nohtml = function () {
 	}
 };
 
-var _DEBUG = true;
+var _DEBUG = false;
 
 jQuery(document).ready(function(jq) {
 	var $ = jq,
@@ -35,6 +25,8 @@ jQuery(document).ready(function(jq) {
 		moretext = "more",
 		lesstext = "less",
 		container = $("div.course-instructors");
+
+	_DEBUG = document.getElementById('system-debug') ? true : false;
 
 	$('#add-offering').fancybox({
 		type: 'ajax',
@@ -62,7 +54,7 @@ jQuery(document).ready(function(jq) {
 						if (_DEBUG) {
 							window.console && console.log(data);
 						}
-console.log(data);
+
 						var response = jQuery.parseJSON(data);
 						if (!response.success) {
 							alert(response.message);
@@ -90,8 +82,6 @@ console.log(data);
 			$(this).attr('href', $(this).attr('href').nohtml());
 		},
 		afterShow: function() {
-			//HUB.Plugins.Autocomplete.initialize();
-
 			var fbox = $('div.fancybox-inner');
 
 			if (fbox.find('form.course-managers-form').length > 0) {
