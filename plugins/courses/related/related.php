@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Courses Plugin class for related course
  */
@@ -69,9 +67,9 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		$query  = "SELECT c.*
-					FROM #__courses AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id AND m.student=0
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
+					FROM `#__courses` AS c
+					JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
+					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 					WHERE r.alias='instructor'
 					AND m.user_id IN (" . implode(",", $ids) . ")
 					AND m.student=0
@@ -83,7 +81,7 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'courses',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'overview'
 				)

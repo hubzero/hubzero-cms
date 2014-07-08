@@ -28,11 +28,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.7" type="plugin" course="courses">
-	<name>Courses - Relatedd</name>
+	<name>Courses - Related</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Display other courses by these instructors</description>
+	<description>PLG_COURSES_RELATED_XML_DESC</description>
 	<files>
 		<filename plugin="related">related.php</filename>
 	</files>
@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="display_limit" type="text" size="3" default="3" label="Display Limit" description="Number of items to return"/>
+				<field name="display_limit" type="text" size="3" default="3" label="PLG_COURSES_RELATED_LIMIT_LABEL" description="PLG_COURSES_RELATED_LIMIT_DESC" />
 			</fieldset>
 		</fields>
 	</config>

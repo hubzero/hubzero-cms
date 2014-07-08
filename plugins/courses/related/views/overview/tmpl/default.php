@@ -57,21 +57,34 @@ $this->css();
 		}
 		?>
 		<div class="course-block col span-third<?php if ($cls) { echo $cls; } ?>">
-			<h4>
-				<a href="<?php echo JRoute::_($course->link()); ?>">
-					<?php echo $this->escape(stripslashes($course->get('title'))); ?>
-				</a>
-			</h4>
-			<div class="content">
-				<div class="description">
-					<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 500); ?>
+			<a href="<?php echo JRoute::_($course->link()); ?>">
+				<div class="course-details">
+					<div class="course-identity">
+						<?php if ($logo = $course->logo()) { ?>
+							<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('PLG_COURSES_RELATED_LOGO'); ?>" />
+						<?php } else { ?>
+							<span></span>
+						<?php } ?>
+						<?php if ($course->get('rating', 0) > 4) { ?>
+							<div>
+								<strong><?php echo JText::_('PLG_COURSES_RELATED_TOP_RATED'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+							</div>
+						<?php } else if ($this->course->get('popularity', 0) > 7) { ?>
+							<div>
+								<strong><?php echo JText::_('PLG_COURSES_RELATED_POPULAR'); ?></strong> <span class="popularity">&#xf091;</span>
+							</div>
+						<?php } ?>
+					</div>
+					<h4 class="course-title">
+						<?php echo $this->escape(stripslashes($course->get('title'))); ?>
+					</h4>
+					<?php if ($course->get('blurb')) { ?>
+						<p class="course-description">
+							<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($course->get('blurb'))), 130); ?>
+						</p>
+					<?php } ?>
 				</div>
-				<p class="action">
-					<a class="btn" href="<?php echo JRoute::_($course->link() . '&active=overview'); ?>">
-						<?php echo JText::_('PLG_COURSES_RELATED_OVERVIEW'); ?>
-					</a>
-				</p>
-			</div><!-- / .content -->
+			</a>
 		</div><!-- / .col -->
 		<?php
 		if ($i == 0 || $i == count($this->courses))
