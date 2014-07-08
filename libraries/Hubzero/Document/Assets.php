@@ -575,7 +575,7 @@ class Assets
 			$root = JPATH_SITE;
 			if ($i == 0)
 			{
-				$root = JPATH_ADMINISTRATOR;
+				$root = self::base();
 			}
 
 			if (file_exists($root . $path))
@@ -645,14 +645,14 @@ class Assets
 		foreach ($paths as $i => $path)
 		{
 			$root = JPATH_SITE;
-			if ($i == 0 || $i == 5)
+			if ($i == 0 || $i == 3)
 			{
-				$root = JPATH_ADMINISTRATOR;
+				$root = self::base();
 			}
 
 			if (file_exists($root . $path))
 			{
-				if ($i == 0 || $i == 5)
+				if ($i == 0 || $i == 3)
 				{
 					$b = rtrim(JURI::getInstance()->base(true), DS);
 				}
