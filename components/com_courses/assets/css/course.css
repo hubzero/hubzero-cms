@@ -125,6 +125,18 @@
 		*width: auto;
 		width: auto\9;
 	}
+	/*
+	p.course-identity img.landscape {
+		width: 100%;
+		*width: auto;
+		width: auto\9;
+	}
+	p.course-identity img.portrait {
+		height: 100%;
+		*height: auto;
+		height: auto\9;
+	}
+	*/
 /* Offering info */
 	.offering-info {
 		margin: 30px 0 30px 0;

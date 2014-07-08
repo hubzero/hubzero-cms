@@ -147,7 +147,10 @@ $this->css('course.css')
 	<aside class="aside">
 		<p class="course-identity">
 		<?php if ($logo = $this->course->logo()) { ?>
-			<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+			<img src="<?php 
+			$size = $this->course->logo('size');
+			echo $logo;
+			?>" class="<?php echo ($size['width'] >= $size['height'] ? 'landscape' : 'portrait'); ?>" alt="<?php echo JText::_('Course logo'); ?>" />
 		<?php } else { ?>
 			<span></span>
 		<?php } ?>

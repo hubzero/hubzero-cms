@@ -800,19 +800,41 @@ class CoursesModelCourse extends CoursesModelAbstract
 	/**
 	 * Get a course logo
 	 *
-	 * @return     string
+	 * @param   string $rtrn Data type to return
+	 * @return  mixed
 	 */
-	public function logo()
+	public function logo($rtrn='')
 	{
+		$rtrn = strtolower(trim($rtrn));
+
+		// Return just the file name
+		if ($rtrn == 'file')
+		{
+			return $this->get('logo');
+		}
+
 		$path = '';
+		$size = array(
+			'width'  => 0,
+			'height' => 0
+		);
 
 		if ($file = $this->get('logo'))
 		{
 			$path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('id') . '/' . $file;
 			if (file_exists(JPATH_ROOT . $path))
 			{
+				list($width, $height) = getimagesize(JPATH_ROOT . $path);
+				$size['width']  = $width;
+				$size['height'] = $height;
 				$path = \JURI::base(true) . $path;
 			}
+		}
+
+		// Return just the upload path?
+		if ($rtrn == 'size')
+		{
+			return $size;
 		}
 
 		return $path;
