@@ -1269,7 +1269,17 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			'after'  => SupportHtml::getStatus($row->open, $row->status)
 		);
 
+		$encryptor = new \Hubzero\Mail\Token();
+
+		if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+		{
+			$allowEmailResponses = true;
+		}
+
 		// Add any CCs to the e-mail list
+		$ccusers  = array();
+		$ccemails = array();
+
 		$cc = JRequest::getVar('cc', '');
 		if (trim($cc))
 		{
@@ -1287,6 +1297,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					// Did we find an account?
 					if (is_object($juser))
 					{
+						$ccusers[] = $juser;
 						$log['cc'][] = $juser->get('username');
 					}
 					else
@@ -1298,19 +1309,24 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				}
 				else if (SupportUtilities::checkValidEmail($acc))
 				{
+					if ($allowEmailResponses)
+					{
+						// The reply-to address contains the token
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $row->id);
+						$ccemails[] = array($acc, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
+					}
+					else
+					{
+						$ccemails[] = $acc;
+					}
 					$log['cc'][] = $acc;
 				}
 			}
 		}
 
-		if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
-		{
-			$allowEmailResponses = true;
-		}
-
 		$message = array();
 
-		if ($row->owner)
+		if ($row->owner || count($ccusers) || count($ccemails))
 		{
 			$from['multipart'] = md5(date('U'));
 
@@ -1347,29 +1363,76 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
 
-			// Send e-mail to ticket owner?
-			$juser = JUser::getInstance($row->owner);
-
-			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
-			if ($allowEmailResponses)
+			if ($row->owner)
 			{
-				$encryptor = new \Hubzero\Mail\Token();
-				// The reply-to address contains the token
-				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
-				$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				// Send e-mail to ticket owner?
+				$juser = JUser::getInstance($row->owner);
+
+				// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+				if ($allowEmailResponses)
+				{
+					// The reply-to address contains the token
+					$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
+					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				}
+
+				if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
+				{
+					$this->setError(JText::_('Failed to message ticket owner.'));
+				}
+				else
+				{
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
+						'name'    => $juser->get('name'),
+						'address' => $juser->get('email')
+					);
+				}
 			}
 
-			if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option)))
+			if (count($ccusers))
 			{
-				$this->setError(JText::_('Failed to message ticket owner.'));
+				if ($allowEmailResponses)
+				{
+					// The reply-to address contains the token 
+					$token = $encryptor->buildEmailToken(1, 1, $ccuser, $row->id);
+					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				}
+
+				foreach ($ccusers as $ccuser)
+				{
+					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($ccuser->get('id')), $this->_option))) 
+					{
+						$this->setError(JText::_('Failed to message CCed user.'));
+					}
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+						'name'    => $ccuser->get('name'),
+						'address' => $ccuser->get('email')
+					);
+				}
 			}
-			else
+
+			if (count($ccemails))
 			{
-				$log['notifications'][] = array(
-					'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
-					'name'    => $juser->get('name'),
-					'address' => $juser->get('email')
-				);
+				foreach ($ccemails as $ccemail)
+				{
+					if ($allowEmailResponses)
+					{
+						// In this case each item in email in an array, 1- To, 2:reply to address
+						SupportUtilities::sendEmail($ccemail[0], $subject, $message, $from, $ccemail[1]);
+					}
+					else 
+					{
+						// email is just a plain 'ol string
+						SupportUtilities::sendEmail($ccemail, $subject, $message, $from);
+					}
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+						'name'    => JText::_('[none]'),
+						'address' => $acc
+					);
+				}
 			}
 		}
 
