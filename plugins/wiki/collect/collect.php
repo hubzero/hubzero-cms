@@ -150,8 +150,73 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$view->myboards      = $model->mine();
-			$view->groupboards   = $model->mine('groups');
+			if (!$model->collections(array('count' => true)))
+			{
+				$collection = $model->collection();
+				$collection->setup($this->juser->get('id'), 'member');
+			}
+
+			$view->myboards    = $model->mine();
+			if ($view->myboards)
+			{
+				foreach ($view->myboards as $board)
+				{
+					$ids[] = $board->id;
+				}
+			}
+
+			$view->groupboards = $model->mine('groups');
+			if ($view->groupboards)
+			{
+				foreach ($view->groupboards as $optgroup => $boards)
+				{
+					if (count($boards) <= 0) continue;
+
+					foreach ($boards as $board)
+					{
+						$ids[] = $board->id;
+					}
+				}
+			}
+
+			$posts = $model->posts(array(
+				'collection_id' => $ids,
+				'item_id'       => $item_id,
+				'limit'         => 25,
+				'start'         => 0
+			));
+			$view->collections = array();
+			if ($posts)
+			{
+				foreach ($posts as $post)
+				{
+					$found = false;
+					foreach ($view->myboards as $board)
+					{
+						if ($board->id == $post->collection_id)
+						{
+							$view->collections[] = new CollectionsModelCollection($board);
+							$found = true;
+						}
+					}
+					if (!$found)
+					{
+						foreach ($view->groupboards as $optgroup => $boards)
+						{
+							if (count($boards) <= 0) continue;
+
+							foreach ($boards as $board)
+							{
+								if ($board->id == $post->collection_id)
+								{
+									$view->collections[] = new CollectionsModelCollection($board);
+									$found = true;
+								}
+							}
+						}
+					}
+				}
+			}
 
 			$view->name     = $this->_name;
 			$view->option   = $this->option;
@@ -214,16 +279,18 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 		if ($no_html)
 		{
 			$response = new stdClass();
-			$response->code = 0;
+			$response->success = true;
 			if ($this->getError())
 			{
-				$response->code = 1;
+				$response->success = false;
 				$response->message = $this->getError();
 			}
 			else
 			{
 				$response->message = JText::sprintf('PLG_WIKI_COLLECT_PAGE_COLLECTED', $item_id);
 			}
+			ob_clean();
+			header('Content-type: text/plain');
 			echo json_encode($response);
 			exit;
 		}

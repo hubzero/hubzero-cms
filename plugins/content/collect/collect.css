@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/resources/abouttool/abouttool.css
+ * @file        plugins/content/collect/collect.css
  * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -8,7 +8,7 @@
 /*
 
 	-- -- -- -- -- -- --
-	Resources abouttool plugin CSS
+	Content collect plugin CSS
 	-- -- -- -- -- -- --
 
 */
@@ -57,4 +57,10 @@
 		bottom: 2em;
 		left: 50%;
 		margin-left: -0.75em;
+	}
+	#sbox-content .in-collections ul {
+		list-style: none;
+	}
+	#sbox-content .in-collections li {
+		margin: 0.2em 0;
 	}

@@ -430,6 +430,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 			return $tbl->getCount($filters);
 		}
+
+		$tbl = new CollectionsTablePost($this->_db);
+		return $tbl->getRecords($filters);
 	}
 
 	/**

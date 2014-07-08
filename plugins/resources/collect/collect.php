@@ -158,33 +158,31 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 		$no_html       = JRequest::getInt('no_html', 0);
 
 		$model = new CollectionsModel('member', $this->juser->get('id'));
-		//if (!$item_id && $collection_id)
-		//{
-			$b = new CollectionsTableItem($this->database);
-			$b->loadType($this->resource->id, 'resource');
-			if (!$b->id)
-			{
-				$row = new CollectionsTableCollection($this->database);
-				$row->load($collection_id);
 
-				$b->type        = 'resource';
-				$b->object_id   = $this->resource->id;
-				$b->title       = $this->resource->title;
-				$b->description = $this->resource->introtext;
-				$b->url         = JRoute::_('index.php?option=com_resources&id=' . $this->resource->id);
-				if (!$b->check())
-				{
-					$this->setError($b->getError());
-				}
-				// Store new content
-				if (!$b->store())
-				{
-					$this->setError($b->getError());
-				}
-				$collection_id = 0;
+		$b = new CollectionsTableItem($this->database);
+		$b->loadType($this->resource->id, 'resource');
+		if (!$b->id)
+		{
+			$row = new CollectionsTableCollection($this->database);
+			$row->load($collection_id);
+
+			$b->type        = 'resource';
+			$b->object_id   = $this->resource->id;
+			$b->title       = $this->resource->title;
+			$b->description = $this->resource->introtext;
+			$b->url         = JRoute::_('index.php?option=com_resources&id=' . $this->resource->id);
+			if (!$b->check())
+			{
+				$this->setError($b->getError());
 			}
-			$item_id = $b->id;
-		//}
+			// Store new content
+			if (!$b->store())
+			{
+				$this->setError($b->getError());
+			}
+			$collection_id = 0;
+		}
+		$item_id = $b->id;
 
 		// No board ID selected so present repost form
 		if (!$collection_id && !$collection_title)
@@ -205,7 +203,66 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 			}
 
 			$view->myboards    = $model->mine();
+			if ($view->myboards)
+			{
+				foreach ($view->myboards as $board)
+				{
+					$ids[] = $board->id;
+				}
+			}
+
 			$view->groupboards = $model->mine('groups');
+			if ($view->groupboards)
+			{
+				foreach ($view->groupboards as $optgroup => $boards)
+				{
+					if (count($boards) <= 0) continue;
+
+					foreach ($boards as $board)
+					{
+						$ids[] = $board->id;
+					}
+				}
+			}
+
+			$posts = $model->posts(array(
+				'collection_id' => $ids,
+				'item_id'       => $item_id,
+				'limit'         => 25,
+				'start'         => 0
+			));
+			$view->collections = array();
+			if ($posts)
+			{
+				foreach ($posts as $post)
+				{
+					$found = false;
+					foreach ($view->myboards as $board)
+					{
+						if ($board->id == $post->collection_id)
+						{
+							$view->collections[] = new CollectionsModelCollection($board);
+							$found = true;
+						}
+					}
+					if (!$found)
+					{
+						foreach ($view->groupboards as $optgroup => $boards)
+						{
+							if (count($boards) <= 0) continue;
+
+							foreach ($boards as $board)
+							{
+								if ($board->id == $post->collection_id)
+								{
+									$view->collections[] = new CollectionsModelCollection($board);
+									$found = true;
+								}
+							}
+						}
+					}
+				}
+			}
 
 			$view->name        = $this->_name;
 			$view->option      = $this->option;

@@ -39,6 +39,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<fieldset>
 		<legend><?php echo JText::_('PLG_WIKI_COLLECT'); ?></legend>
 
+		<?php if ($this->collections) { ?>
+			<div class="grid in-collections">
+				<p><?php echo JText::_('PLG_WIKI_COLLECT_ALREADY_COLLECTED'); ?></p>
+				<ul>
+				<?php foreach ($this->collections as $collection) { ?>
+					<li><a href="<?php echo JRoute::_($collection->link()); ?>"><?php echo $this->escape(stripslashes($collection->get('title'))); ?></a></li>
+				<?php } ?>
+				</ul>
+			</div>
+		<?php } ?>
+
 		<div class="grid">
 			<div class="col span-half">
 				<label for="field-collection">

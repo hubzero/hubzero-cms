@@ -58,3 +58,9 @@
 		left: 50%;
 		margin-left: -0.75em;
 	}
+	#sbox-content .in-collections ul {
+		list-style: none;
+	}
+	#sbox-content .in-collections li {
+		margin: 0.2em 0;
+	}
