@@ -233,7 +233,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$this->setRedirect($url, $row->getError(), 'error');
 			return;
 		}
-		
+
 		// Redirect to edit view?
 		if ($redirect)
 		{

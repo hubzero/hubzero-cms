@@ -874,7 +874,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Update DOI with latest information
-		if ($row->doi && !$action 
+		if ($row->doi && !$action
 			&& $row->title != $old->title)
 		{
 			// Collect DOI metadata
