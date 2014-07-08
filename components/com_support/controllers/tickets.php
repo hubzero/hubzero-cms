@@ -1283,118 +1283,134 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Only do the following if a comment was posted
 		// otherwise, we're only recording a changelog
-			$live_site = rtrim(JURI::base(), '/');
+		$live_site = rtrim(JURI::base(), '/');
 
-			// Build e-mail components
-			$admin_email = $jconfig->getValue('config.mailfrom');
-			$allowEmailResponses = false;
+		// Build e-mail components
+		$admin_email = $jconfig->getValue('config.mailfrom');
+		$allowEmailResponses = false;
 
-			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment ';
+		$subject = JText::_(strtoupper($this->_name)).', '.JText::_('TICKET').' #'.$row->id.' comment ';
 
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
-			$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from = array();
+		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name));
+		$from['email'] = $jconfig->getValue('config.mailfrom');
 
-			$rowc = new SupportComment($this->database);
-			$rowc->ticket     = $row->id;
-			$rowc->created    = JFactory::getDate()->toSql();
-			$rowc->created_by = $this->juser->get('id');
-			$rowc->access     = 1;
+		$rowc = new SupportComment($this->database);
+		$rowc->ticket     = $row->id;
+		$rowc->created    = JFactory::getDate()->toSql();
+		$rowc->created_by = $this->juser->get('id');
+		$rowc->access     = 1;
 
-			$log = array(
-				'changes'       => array(),
-				'notifications' => array(),
-				'cc'            => array()
-			);
-			if ($tags) 
-			{
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_TAGS'),
-					'before' => JText::_('BLANK'),
-					'after'  => $tags
-				);
-			}
-			if ($row->group) 
-			{
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_GROUP'),
-					'before' => '',
-					'after'  => $row->group
-				);
-			}
-			if ($row->severity != 'normal') 
-			{
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_SEVERITY'),
-					'before' => 'normal',
-					'after'  => $row->severity
-				);
-			}
-			if ($row->owner) 
-			{
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_OWNER'),
-					'before' => '',
-					'after'  => $row->owner
-				);
-			}
-			if ($row->resolved)
-			{
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_RESOLUTION'),
-					'before' => '[unresolved]',
-					'after'  => $row->resolved
-				);
-			}
+		$log = array(
+			'changes'       => array(),
+			'notifications' => array(),
+			'cc'            => array()
+		);
+		if ($tags) 
+		{
 			$log['changes'][] = array(
-				'field'  => JText::_('TICKET_FIELD_STATUS'),
-				'before' => SupportHtml::getStatus(1, 0),
-				'after'  => SupportHtml::getStatus($row->open, $row->status)
+				'field'  => JText::_('TICKET_FIELD_TAGS'),
+				'before' => JText::_('BLANK'),
+				'after'  => $tags
 			);
+		}
+		if ($row->group) 
+		{
+			$log['changes'][] = array(
+				'field'  => JText::_('TICKET_FIELD_GROUP'),
+				'before' => '',
+				'after'  => $row->group
+			);
+		}
+		if ($row->severity != 'normal') 
+		{
+			$log['changes'][] = array(
+				'field'  => JText::_('TICKET_FIELD_SEVERITY'),
+				'before' => 'normal',
+				'after'  => $row->severity
+			);
+		}
+		if ($row->owner) 
+		{
+			$log['changes'][] = array(
+				'field'  => JText::_('TICKET_FIELD_OWNER'),
+				'before' => '',
+				'after'  => $row->owner
+			);
+		}
+		if ($row->resolved)
+		{
+			$log['changes'][] = array(
+				'field'  => JText::_('TICKET_FIELD_RESOLUTION'),
+				'before' => '[unresolved]',
+				'after'  => $row->resolved
+			);
+		}
+		$log['changes'][] = array(
+			'field'  => JText::_('TICKET_FIELD_STATUS'),
+			'before' => SupportHtml::getStatus(1, 0),
+			'after'  => SupportHtml::getStatus($row->open, $row->status)
+		);
 
-			// Add any CCs to the e-mail list
-			$cc = JRequest::getVar('cc', '');
-			if (trim($cc)) 
+		$encryptor = new \Hubzero\Mail\Token();
+
+		if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+		{
+			$allowEmailResponses = true;
+		}
+
+		// Add any CCs to the e-mail list
+		$ccusers  = array();
+		$ccemails = array();
+
+		$cc = JRequest::getVar('cc', '');
+		if (trim($cc)) 
+		{
+			$cc = explode(',', $cc);
+			foreach ($cc as $acc)
 			{
-				$cc = explode(',', $cc);
-				foreach ($cc as $acc)
-				{
-					$acc = trim($acc);
+				$acc = trim($acc);
 
-					// Is this a username or email address?
-					if (!strstr($acc, '@')) 
+				// Is this a username or email address?
+				if (!strstr($acc, '@'))
+				{
+					// Username or user ID - load the user
+					$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+					$juser = JUser::getInstance($acc);
+					// Did we find an account?
+					if (is_object($juser)) 
 					{
-						// Username or user ID - load the user
-						$acc = (is_string($acc)) ? strtolower($acc) : $acc;
-						$juser = JUser::getInstance($acc);
-						// Did we find an account?
-						if (is_object($juser)) 
-						{
-							$log['cc'][] = $juser->get('username');
-						} 
-						else 
-						{
-							// Move on - nothing else we can do here
-							continue;
-						}
-					// Make sure it's a valid e-mail address
+						$ccusers[] = $juser;
+						$log['cc'][] = $juser->get('username');
 					} 
-					else if (SupportUtilities::checkValidEmail($acc)) 
+					else 
 					{
-						$log['cc'][] = $acc;
+						// Move on - nothing else we can do here
+						continue;
 					}
+				// Make sure it's a valid e-mail address
+				}
+				else if (SupportUtilities::checkValidEmail($acc)) 
+				{
+					if ($allowEmailResponses)
+					{
+						// The reply-to address contains the token
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $row->id);
+						$ccemails[] = array($acc, 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@'));
+					}
+					else
+					{
+						$ccemails[] = $acc;
+					}
+					$log['cc'][] = $acc;
 				}
 			}
+		}
 
-			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
-			{
-				$allowEmailResponses = true;
-			}
+		$message = array();
 
-			$message = array();
-
-			//-------
-		if ($row->owner) 
+		//-------
+		if ($row->owner || count($ccusers) || count($ccemails)) 
 		{
 			$from['multipart'] = md5(date('U'));
 
@@ -1430,51 +1446,98 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
 
-			// Send e-mail to ticket owner?
-			$juser = JUser::getInstance($row->owner);
-
-			// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
-			if ($allowEmailResponses)
+			if ($row->owner)
 			{
-				$encryptor = new \Hubzero\Mail\Token();
-				// The reply-to address contains the token 
-				$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
-				$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				// Send e-mail to ticket owner?
+				$juser = JUser::getInstance($row->owner);
+
+				// Only put tokens in if component is configured to allow email responses to tickets and ticket comments
+				if ($allowEmailResponses)
+				{
+					// The reply-to address contains the token 
+					$token = $encryptor->buildEmailToken(1, 1, $juser->get('id'), $row->id);
+					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				}
+
+				if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
+				{
+					$this->setError(JText::_('Failed to message ticket owner.'));
+				} 
+				else 
+				{
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
+						'name'    => $juser->get('name'),
+						'address' => $juser->get('email')
+					);
+				}
 			}
 
-			if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($juser->get('id')), $this->_option))) 
+			if (count($ccusers))
 			{
-				$this->setError(JText::_('Failed to message ticket owner.'));
-			} 
-			else 
+				if ($allowEmailResponses)
+				{
+					// The reply-to address contains the token 
+					$token = $encryptor->buildEmailToken(1, 1, $ccuser, $row->id);
+					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				}
+
+				foreach ($ccusers as $ccuser)
+				{
+					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($ccuser->get('id')), $this->_option))) 
+					{
+						$this->setError(JText::_('Failed to message CCed user.'));
+					}
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+						'name'    => $ccuser->get('name'),
+						'address' => $ccuser->get('email')
+					);
+				}
+			}
+
+			if (count($ccemails))
 			{
-				$log['notifications'][] = array(
-					'role'    => JText::_('COMMENT_SEND_EMAIL_OWNER'),
-					'name'    => $juser->get('name'),
-					'address' => $juser->get('email')
-				);
+				foreach ($ccemails as $ccemail)
+				{
+					if ($allowEmailResponses)
+					{
+						// In this case each item in email in an array, 1- To, 2:reply to address
+						SupportUtilities::sendEmail($ccemail[0], $subject, $message, $from, $ccemail[1]);
+					}
+					else 
+					{
+						// email is just a plain 'ol string
+						SupportUtilities::sendEmail($ccemail, $subject, $message, $from);
+					}
+					$log['notifications'][] = array(
+						'role'    => JText::_('COMMENT_SEND_EMAIL_CC'),
+						'name'    => JText::_('[none]'),
+						'address' => $acc
+					);
+				}
 			}
 		}
-			// Were there any changes?
-			if (count($log['notifications']) > 0 
-			 || count($log['cc']) > 0 
-			 || count($log['changes']) > 0) 
-			{
-				$rowc->changelog  = json_encode($log);
+		// Were there any changes?
+		if (count($log['notifications']) > 0 
+		 || count($log['cc']) > 0 
+		 || count($log['changes']) > 0) 
+		{
+			$rowc->changelog  = json_encode($log);
 
-				if (!$rowc->check()) 
+			if (!$rowc->check()) 
+			{
+				$this->setError($rowc->getError());
+			}
+			else
+			{
+				// Save the data
+				if (!$rowc->store()) 
 				{
 					$this->setError($rowc->getError());
 				}
-				else
-				{
-					// Save the data
-					if (!$rowc->store()) 
-					{
-						$this->setError($rowc->getError());
-					}
-				}
 			}
+		}
 
 		// Trigger any events that need to be called before session stop
 		$dispatcher->trigger('onTicketSubmission', array($row));
