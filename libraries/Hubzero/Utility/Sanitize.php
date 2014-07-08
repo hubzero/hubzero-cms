@@ -323,6 +323,11 @@ class Sanitize
 			}
 		}
 
+		// allow style tags
+		$def = $config->getHTMLDefinition(true);
+		$form = $def->addElement('style', 'Block', 'Flow', 'Common', array());
+
+		// purify text & return
 		$purifier = new \HTMLPurifier($config);
 		return $purifier->purify($text);
 	}
