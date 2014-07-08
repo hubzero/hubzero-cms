@@ -248,7 +248,7 @@ $this->js('courses.overview.js');
 						</table>
 						<p>
 							<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-								<?php echo JText::_('Access Course'); ?>
+								<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
 							</a>
 						</p>
 						<?php } ?>
@@ -311,13 +311,13 @@ $this->js('courses.overview.js');
 						<?php if ($offering->section()->isMember()) { ?>
 							<p>
 								<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-									<?php echo JText::_('Access Course'); ?>
+									<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
 								</a>
 							</p>
 						<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
 							<p>
 								<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-									<?php echo JText::_('Enroll in Course'); ?>
+									<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
 								</a>
 							</p>
 						<?php } ?>
