@@ -410,10 +410,10 @@ $cc = array();
 			<?php if ($this->row->access('update', 'tickets')) { ?>
 				<fieldset>
 				<?php if ($this->row->access('update', 'tickets') > 0) { ?>
-					<legend><span><?php echo JText::_('Ticket Details'); ?></span></legend>
+					<legend><span><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?></span></legend>
 
 					<label>
-						<?php echo JText::_('COMMENT_TAGS'); ?>:<br />
+						<?php echo JText::_('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 						<?php
 						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string'))));
 
