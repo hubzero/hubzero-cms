@@ -82,7 +82,7 @@ $this->css('course.css')
 						<input type="text" name="tags" id="actags" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
 					<?php } ?>
 
-					<span class="hint"><?php echo JText::_('These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content.'); ?> <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
 				</label>
 
 				<p class="submit">
@@ -394,7 +394,7 @@ $this->css('course.css')
 						</table>
 						<p>
 							<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-								<?php echo JText::_('Access Course'); ?>
+								<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
 							</a>
 						</p>
 						<?php } ?>
@@ -457,13 +457,20 @@ $this->css('course.css')
 						<?php if ($offering->section()->isMember()) { ?>
 							<p>
 								<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-									<?php echo JText::_('Access Course'); ?>
+									<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
 								</a>
 							</p>
 						<?php } else if ($offering->section()->get('enrollment') != 2) { ?>
 							<p>
 								<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enroll')); ?>">
-									<?php echo JText::_('Enroll in Course'); ?>
+									<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
+								</a>
+							</p>
+						<?php } ?>
+						<?php if ($offering->section()->params('preview', 0)) { ?>
+							<p>
+								<a class="preview btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+									<?php echo JText::_('COM_COURSES_PREVIEW_COURSE'); ?>
 								</a>
 							</p>
 						<?php } ?>

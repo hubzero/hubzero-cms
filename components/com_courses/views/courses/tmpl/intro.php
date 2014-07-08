@@ -39,11 +39,9 @@ $this->css('introduction', 'system')
 
 	<?php if ($this->config->get('access-create-course')) { ?>
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('COM_COURSES_CREATE_COURSE'); ?></a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('COM_COURSES_CREATE_COURSE'); ?></a>
+		</p>
 	</div><!-- / #content-header-extra -->
 	<?php } ?>
 </header>
