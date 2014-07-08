@@ -30,20 +30,21 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Publication Master Type') . ': [ ' . $text . ' ]', 'addedit.png');
-JToolBarHelper::save('save', 'Save');
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
+JToolBarHelper::apply();
+JToolBarHelper::save();
 JToolBarHelper::cancel();
 
 // Determine whether master type is supported in current version of hub code
 $aClass  = 'item_off';
-$active  = 'off (type not supported)';
+$active  = JText::_('COM_PUBLICATIONS_MTYPE_OFF');
 
 // If we got a plugin - type is supported
 if (JPluginHelper::isEnabled('projects', $this->row->alias))
 {
 	$aClass  = 'item_on';
-	$active  = 'on (type supported)';
+	$active  = JText::_('COM_PUBLICATIONS_MTYPE_ON');
 }
 
 $paramsClass = 'JParameter';
@@ -83,24 +84,24 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Master Type Information'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_MTYPE_INFO'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-type"><?php echo JText::_('Name'); ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-type"><?php echo JText::_('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[type]" id="field-type" maxlength="100" value="<?php echo $this->escape($this->row->type); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label>
+				<label for="field-alias"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
 				<input type="text" name="fields[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('Description'); ?>:</label>
+				<label for="field-description"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<input type="text" name="fields[description]" id="field-description" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Draft Panels / Sections'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_DRAFT_SECTIONS'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
@@ -118,15 +119,15 @@ function submitbutton(pressbutton)
 					}
 					?>
 					<tr>
-						<th><?php echo JText::_('Metadata'); ?>:</th>
-						<td><label><input type="radio" name="params[show_metadata]" value="0"<?php echo ($params->get('show_metadata', 0) == 0) ? ' checked="checked"' : ''; ?> /> hide</label></td>
-						<td><label><input type="radio" name="params[show_metadata]" value="1"<?php echo ($params->get('show_metadata', 0) == 1) ? ' checked="checked"' : ''; ?> /> show</label></td>
+						<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?>:</th>
+						<td><label><input type="radio" name="params[show_metadata]" value="0"<?php echo ($params->get('show_metadata', 0) == 0) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_HIDE'); ?></label></td>
+						<td><label><input type="radio" name="params[show_metadata]" value="1"<?php echo ($params->get('show_metadata', 0) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_SHOW'); ?></label></td>
 						<td></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Submitter'); ?>:</th>
-						<td><label><input type="radio" name="params[show_submitter]" value="0"<?php echo ($params->get('show_submitter', 0) == 0) ? ' checked="checked"' : ''; ?> /> hide</label></td>
-						<td><label><input type="radio" name="params[show_submitter]" value="1"<?php echo ($params->get('show_submitter', 0) == 1) ? ' checked="checked"' : ''; ?> /> show</label></td>
+						<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</th>
+						<td><label><input type="radio" name="params[show_submitter]" value="0"<?php echo ($params->get('show_submitter', 0) == 0) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_HIDE'); ?></label></td>
+						<td><label><input type="radio" name="params[show_submitter]" value="1"<?php echo ($params->get('show_submitter', 0) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_PUBLICATIONS_SHOW'); ?></label></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -143,13 +144,12 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Type supported?'); ?></th>
+					<th><?php echo JText::_('COM_PUBLICATIONS_MTYPE_IS_SUPPORTED'); ?></th>
 					<td>
-						<div class="notice"><?php echo JText::_('There may or may not be a plugin to support this master type in the current version of hub code'); ?></div>
 						<span class="<?php echo $aClass; ?>"><?php echo $active; ?></span>
 					</td>
 				</tr>
@@ -157,58 +157,58 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Item Configuration'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_ITEM_CONFIG'); ?></span></legend>
 
 			<fieldset>
-				<legend><?php echo JText::_('Contributable'); ?></legend>
-				<div class="input-wrap" data-hint="<?php echo JText::_('Offered as choice for primary content?'); ?>">
-					<span class="hint"><?php echo JText::_('Offered as choice for primary content?'); ?></span>
+				<legend><?php echo JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'); ?></legend>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE'); ?>">
+					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE'); ?></span>
 
 					<input class="option" name="fields[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable1"><?php echo JText::_('Yes'); ?></label>
+					<label for="field-contributable1"><?php echo JText::_('JYES'); ?></label>
 					<br />
 					<input class="option" name="fields[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable0"><?php echo JText::_('No'); ?></label>
+					<label for="field-contributable0"><?php echo JText::_('JNO'); ?></label>
 				</div>
 			</fieldset>
 
 			<fieldset>
 				<legend><?php echo JText::_('Supporting'); ?></legend>
 
-				<div class="input-wrap" data-hint="<?php echo JText::_('Offered as choice for supporting content?'); ?>">
-					<span class="hint"><?php echo JText::_('Offered as choice for supporting content?'); ?></span>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?>">
+					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?></span>
 
 					<input class="option" name="fields[supporting]" id="field-supporting1" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-supporting1"><?php echo JText::_('Yes*'); ?></label>
+					<label for="field-supporting1"><?php echo JText::_('JYES'); ?></label>
 					<br />
 					<input class="option" name="fields[supporting]" id="field-supporting0" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> />
-					<label for="field-supporting0"><?php echo JText::_('No'); ?></label>
+					<label for="field-supporting0"><?php echo JText::_('JNO'); ?></label>
 
-					<span class="hint"><?php echo JText::_('*May be unsupported in the current version of hub code'); ?></span>
+					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_NOTICE'); ?></span>
 				</div>
 			</fieldset>
 
 			<fieldset>
 				<legend><?php echo JText::_('Issue DOI'); ?></legend>
 
-				<div class="input-wrap" data-hint="<?php echo JText::_('Is DOI required/optional/inapplicable for this type?'); ?>">
-					<span class="hint"><?php echo JText::_('Is DOI required/optional/inapplicable for this type?'); ?></span>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_MTYPE_DOI_QUESTION'); ?>">
+					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_DOI_QUESTION'); ?></span>
 
 					<input class="option" name="params[issue_doi]" id="field-issue_doi1" type="radio" value="1" <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?> />
-					<label for="field-issue_doi1"><?php echo JText::_('Required'); ?></label>
+					<label for="field-issue_doi1"><?php echo JText::_('JOPTION_REQUIRED'); ?></label>
 					<br />
 					<input class="option" name="params[issue_doi]" id="field-issue_doi2" type="radio" value="2" <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?> />
-					<label for="field-issue_doi2"><?php echo JText::_('Optional (submitter may decide)'); ?></label>
+					<label for="field-issue_doi2"><?php echo JText::_('JOPTION_OPTIONAL'); ?></label>
 					<br />
 					<input class="option" name="params[issue_doi]" id="field-issue_doi0" type="radio" value="0" <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?> />
-					<label for="field-issue_doi0"><?php echo JText::_('No DOI (inapplicable)'); ?></label>
+					<label for="field-issue_doi0"><?php echo JText::_('COM_PUBLICATIONS_NA'); ?></label>
 				</div>
 			</fieldset>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('Choose a default category assigned for this type'); ?>">
-				<span class="hint"><?php echo JText::_('Choose a default category assigned for this type'); ?></span>
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_MTYPE_CHOOSE_CAT'); ?>">
+				<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_CHOOSE_CAT'); ?></span>
 
-				<label for="field-default_category"><?php echo JText::_('Default Category'); ?></label>
+				<label for="field-default_category"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_DEFAULT_CAT'); ?></label>
 				<select name="params[default_category]" id="field-default_category">
 				<?php foreach ($this->cats as $cat) { ?>
 					<option value="<?php echo $cat->id; ?>" <?php echo ($params->get('default_category', 1) == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>

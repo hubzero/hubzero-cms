@@ -874,7 +874,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Update DOI with latest information
-		if ($row->doi && !$action && $row != $old)
+		if ($row->doi && !$action 
+			&& $row->title != $old->title)
 		{
 			// Collect DOI metadata
 			$metadata = $this->_collectMetadata($row, $objP, $authors);
@@ -1460,7 +1461,12 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->checkin();
 
 		// Redirect
-		$this->_redirect = $this->buildRedirectURL();
+		$this->setRedirect(
+			'index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller
+		);
+
+		return;
 	}
 
 	/**

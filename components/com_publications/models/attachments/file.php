@@ -209,7 +209,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 				// Get ext
 				$parts  = explode('.', $attach->path);
-				$ext 	= array_pop($parts);
+				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
 				$ext	= strtolower($ext);
 
 				// Get file icon
