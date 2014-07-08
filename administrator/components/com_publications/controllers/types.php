@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'license.php');
-
 /**
  * Manage publication master types
  */
@@ -46,7 +44,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
+		$app 	= JFactory::getApplication();
 		$config = JFactory::getConfig();
 
 		// Incoming
@@ -83,7 +81,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS 
+			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
 		$rt = new PublicationMasterType($this->database);
@@ -128,7 +127,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function editTask($row=null)
+	public function editTask( $row = null )
 	{
 		if ($row)
 		{
@@ -166,7 +165,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'publications.css');
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' 
+			. DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
 		$this->view->display();
@@ -188,7 +188,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Initiate extended database class
 		$row = new PublicationMasterType($this->database);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $fields['id'];
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller 
+			. '&task=edit&id[]=' . $fields['id'];
 
 		if (!$row->bind($fields))
 		{
@@ -224,7 +225,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->setRedirect( $url, JText::_('Publication Master Type successfully saved'));
+		$this->setRedirect( $url, JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED'));
 		return;
 	}
 
