@@ -95,7 +95,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 					)
 				);
 				$view->option = $option;
-				if (is_a($model, 'ResourcesResource'))
+				if ($model instanceof ResourcesResource)
 				{
 					$view->resource = $model;
 				}
@@ -191,7 +191,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'  => 'resources',
+					'folder'  => $this->_type,
 					'element' => $this->_name,
 					'name'    => 'metadata',
 					'layout'  => 'collect'
@@ -204,8 +204,8 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 				$collection->setup($this->juser->get('id'), 'member');
 			}
 
-			$view->myboards      = $model->mine();
-			$view->groupboards   = $model->mine('groups');
+			$view->myboards    = $model->mine();
+			$view->groupboards = $model->mine('groups');
 
 			$view->name        = $this->_name;
 			$view->option      = $this->option;
@@ -264,10 +264,10 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 		}
 
 		$response = new stdClass();
-		$response->code = 0;
+		$response->success = true;
 		if ($this->getError())
 		{
-			$response->code = 1;
+			$response->success = false;
 			$response->message = $this->getError();
 		}
 		else
