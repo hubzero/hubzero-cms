@@ -110,3 +110,6 @@
 	.post.collection::after {
 		display: none;
 	}
+	#sbox-content .post {
+		width: auto;
+	}

@@ -1,0 +1,46 @@
+@import url("../../../../components/com_forum/assets/css/forum.css");
+
+.com_forum .subject h3:first-child {
+	padding: 30px 0;
+	margin: 0 0 30px 0;
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+#commentform {
+	margin-bottom: 30px;
+}
+
+	/*.new-section {
+		background: #fff;
+		margin: 30px -30px 0 -60px;
+		padding: 30px 30px 30px 60px;
+	}
+	.com_forum .entries tfoot td,
+	.com_forum .entries tfoot th {
+		border-top: 1px solid #ccc;
+		border-top: 1px solid rgba(0,0,0,0.1);
+		padding: 1em;
+	}*/
+
+	.instructions {
+		width: 30em;
+		margin: 90px auto;
+		padding: 5em 0 0 0;
+		text-align: center;
+		position: relative;
+	}
+	.instructions p {
+		font-size: 1.5em;
+		line-height: 1.8em;
+		font-weight: 300;
+		margin: 0 0 2em 0;
+	}
+	.instructions:before {
+		position: absolute;
+		top: 0px;
+		left: 50%;
+		font-size: 5em;
+		margin-left: -0.5em;
+		content: "\f15a";
+		font-family: "Fontcons";
+	}

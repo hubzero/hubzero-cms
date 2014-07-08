@@ -16,7 +16,6 @@
 		margin-bottom: 0;
 	}
 	#page_header h2 {
-		/*line-height: 1.3;*/
 		padding: 0;
 	}
 	#page_header h2 a {
@@ -64,19 +63,18 @@
 		background: #f6f6f6;
 		border-right: 1px solid #eaeaea;
 		border-right: 1px solid rgba(0, 0, 0, 0.05);
-
 		background: #e9e9e9;
 	}
 	#page_menu li {
-		padding: 0 45px 0 80px;
 		border-bottom: 1px solid #d1d1d1;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.075);
 	}
 	#page_menu li a {
-		padding: 0.6em 0;
+		padding: 0.6em 45px 0.6em 80px;
 	}
 	#page_menu li a:before {
-		top: 0.5em;
+		left: 60px;
+		top: 0.6em;
 	}
 	#page_menu li:first-child {
 		border-top: 1px solid #d1d1d1;
