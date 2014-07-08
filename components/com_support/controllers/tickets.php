@@ -1401,7 +1401,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 				foreach ($ccusers as $ccuser)
 				{
-					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($ccuser->get('id')), $this->_option))) 
+					if (!$dispatcher->trigger('onSendMessage', array('support_reply_assigned', $subject, $message, $from, array($ccuser->get('id')), $this->_option)))
 					{
 						$this->setError(JText::_('Failed to message CCed user.'));
 					}
@@ -1422,7 +1422,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 						// In this case each item in email in an array, 1- To, 2:reply to address
 						SupportUtilities::sendEmail($ccemail[0], $subject, $message, $from, $ccemail[1]);
 					}
-					else 
+					else
 					{
 						// email is just a plain 'ol string
 						SupportUtilities::sendEmail($ccemail, $subject, $message, $from);
