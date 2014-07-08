@@ -535,6 +535,9 @@ class plgEditorCkeditor extends JPlugin
 			$config->protectedSource[] = '/<\?[\s\S]*?\?>/g';
 			$config->codemirror->mode = 'application/x-httpd-php';
 		}
+
+		// set editor skin
+		$config->skin = $this->params->get('skin', 'moono');
 		
 		return $config;
 	}
