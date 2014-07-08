@@ -23,7 +23,6 @@
 			editor.on('mode', function(event) {
 				if (ready)
 				{
-					console.log('mode highlight');
 					plugin.highlight(editor);
 
 					// add css for mark elements
@@ -37,7 +36,6 @@
 			editor.on('blur', function(event) {
 				if (ready)
 				{
-					console.log('blur highlight');
 					plugin.highlight(editor);
 
 					// add css for mark elements

@@ -27,9 +27,7 @@
  * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-echo '<pre>';
-print_r($this);
-echo '</pre>';
+
 // no direct access
 defined('_JEXEC') or die;
 
