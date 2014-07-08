@@ -81,7 +81,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS 
+		$document->addStyleSheet('components' . DS . $this->_option . DS
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
@@ -165,7 +165,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Push some styles to the template
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' 
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 
 		// Output the HTML
@@ -188,7 +188,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Initiate extended database class
 		$row = new PublicationMasterType($this->database);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller 
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $fields['id'];
 
 		if (!$row->bind($fields))
