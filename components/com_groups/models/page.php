@@ -193,7 +193,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$alias = trim($this->get('alias'));
 		if ($alias == null)
 		{
-			$alias = str_replace(' ', '_', $this->get('title'));
+			$alias = str_replace(' ', '_', trim($this->get('title')));
 		}
 		
 		// force lowercase letters
