@@ -64,79 +64,79 @@ $lang->load('com_publications_curation');
 class PublicationsCuration extends JObject
 {
 	/**
-	 * JDatabase
-	 *
-	 * @var object
-	 */
+	* JDatabase
+	*
+	* @var object
+	*/
 	var $_db      		= NULL;
 
 	/**
-	 * @var    object  Project
-	 */
+	* @var    object  Project
+	*/
 	var $_project      	= NULL;
 
 	/**
-	 * @var    object  Publication
-	 */
+	* @var    object  Publication
+	*/
 	var $_pub 			= NULL;
 
 	/**
-	 * @var    string  Publication ID
-	 */
+	* @var    string  Publication ID
+	*/
 	var $_pid 			= NULL;
 
 	/**
-	 * @var    string  Publication version ID
-	 */
+	* @var    string  Publication version ID
+	*/
 	var $_vid 			= NULL;
 
 	/**
-	 * @var    string Curation manifest
-	 */
+	* @var    string Curation manifest
+	*/
 	var $_manifest 		= NULL;
 
 	/**
-	 * @var    object Blocks
-	 */
+	* @var    object Blocks
+	*/
 	var $_blocks 		= array();
 
 	/**
-	 * @var    int total blocks
-	 */
+	* @var    int total blocks
+	*/
 	var $_blockcount 	= 0;
 
 	/**
-	 * @var    object Current block
-	 */
+	* @var    object Current block
+	*/
 	var $_block 		= array();
 
 	/**
-	 * @var    string Current block name
-	 */
+	* @var    string Current block name
+	*/
 	var $_blockname 	= NULL;
 
 	/**
-	 * @var    string Current block sequence
-	 */
+	* @var    string Current block sequence
+	*/
 	var $_blockorder 	= NULL;
 
 	/**
-	 * @var    object
-	 */
+	* @var    object
+	*/
 	var $_progress 		= NULL;
 
 	/**
-	 * @var    string  Message
-	 */
+	* @var    string  Message
+	*/
 	var $_message 		= NULL;
 
 	/**
-	 * Constructor
-	 *
-	 * @param      object  &$db      	 JDatabase
-	 * @param      string  $manifest     Pup type manifest
-	 * @return     void
-	 */
+	* Constructor
+	*
+	* @param      object  &$db      	 JDatabase
+	* @param      string  $manifest     Pup type manifest
+	* @return     void
+	*/
 	public function __construct( &$db, $manifest = NULL )
 	{
 		$this->_db 		 = $db;
@@ -188,17 +188,9 @@ class PublicationsCuration extends JObject
 
 			$manifest->params->default_title 	= 'Untitled Draft';
 			$manifest->params->default_category = 1;
-			$manifest->params->curation 		= 1;
 			$manifest->params->require_doi 		= 1;
 			$manifest->params->show_archive 	= 1;
-
-			$this->_manifest = $manifest;
-
-			/*
-			echo '<pre>';
-			print_r(json_encode($this->_manifest));
-			echo '</pre>';
-			*/
+			$this->_manifest 					= $manifest;
 		}
 
 		// Parse manifest (TBD)
@@ -216,7 +208,8 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get active block
 	 *
-	 * @param   string  $name	Block name
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
 	 * @return  boolean
 	 */
 	public function setBlock($name = NULL, $sequence = 0)
@@ -246,7 +239,7 @@ class PublicationsCuration extends JObject
 	 * Get block sequence
 	 *
 	 * @param   string  $name	Block name
-	 * @return  boolean
+	 * @return  integer
 	 */
 	public function getBlockSequence($name = NULL)
 	{
@@ -269,7 +262,7 @@ class PublicationsCuration extends JObject
 	 * Set association with publication and load curation
 	 *
 	 * @param   object  $pub	Publication
-	 * @return  string
+	 * @return  void
 	 */
 	public function setPubAssoc($pub = NULL)
 	{
@@ -284,7 +277,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get manifests elements of interest
 	 *
-	 * @return  string
+	 * @param   integer  $role		Element role
+	 * @param   object   $handler	Handler
+	 * @return  array
 	 */
 	public function getElements( $role = 1, $handler = NULL )
 	{
@@ -331,8 +326,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get manifest for element of block type (content OR description)
 	 *
-	 * @param   integer  $elementId
-	 * @return  object
+	 * @param   integer  $elementId		Element ID
+	 * @param   string   $name			Block name
+	 * @return  mixed: object or boolean False
 	 */
 	public function getElementManifest( $elementId = 0, $name = 'content')
 	{
@@ -377,9 +373,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Parse block
 	 *
-	 * @param   string  $name	Who is viewing block content?
-	 * @param   string  $name	Block name
-	 * @return  string
+	 * @param   string  $name		Who is viewing block content?
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @return  string HTML
 	 */
 	public function parseBlock( $viewer = 'edit', $name = NULL, $sequence = 0 )
 	{
@@ -413,7 +410,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Reorder attached items
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function reorder ($actor = 0, $elementId = 0)
 	{
@@ -455,7 +454,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Save attached item info
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function saveItem ($actor = 0, $elementId = 0)
 	{
@@ -497,7 +498,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Save attached item info
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function deleteItem ($actor = 0, $elementId = 0)
 	{
@@ -537,9 +540,11 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
-	 * Attach new record
+	 * Dispute request for change
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function dispute ($actor = 0, $elementId = 0)
 	{
@@ -570,9 +575,11 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
-	 * Attach new record
+	 * Remove dispute
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function undispute ($actor = 0, $elementId = 0)
 	{
@@ -596,7 +603,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Attach new record
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function addItem ($actor = 0, $elementId = 0)
 	{
@@ -638,7 +647,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Save new block information
 	 *
-	 * @return  void
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
 	 */
 	public function saveBlock($actor = 0, $elementId = 0)
 	{
@@ -679,9 +690,9 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
-	 * Get elements to draw publication draft status bar
+	 * Draw publication draft status bar
 	 *
-	 * @return  array
+	 * @return  string HTML
 	 */
 	public function drawStatusBar()
 	{
@@ -708,7 +719,8 @@ class PublicationsCuration extends JObject
 	/**
 	 * Check if block is in manifest
 	 *
-	 * @return  void
+	 * @param   string  $name	Block name
+	 * @return  boolean
 	 */
 	public function blockExists( $name = NULL )
 	{
@@ -727,11 +739,10 @@ class PublicationsCuration extends JObject
 		}
 
 		return false;
-
 	}
 
 	/**
-	 * Set curation progress
+	 * Set curation progress for publication
 	 *
 	 * @return  void
 	 */
@@ -805,7 +816,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Transfer content from one version to another
 	 *
-	 * @return     string
+	 * @param   object  $pub	Publication object
+	 * @param   object  $old	Transfer from version record
+	 * @param   object  $new	Transfer to version record
+	 * @return  boolean
 	 */
 	public function transfer( $pub, $old, $new)
 	{
@@ -834,8 +848,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Check block status (auto check)
 	 *
-	 * @param      string $name
-	 * @return     string
+	 * @param   string  $name		Block name
+	 * @param   object  $pub		Publication object
+	 * @param   integer $sequence	Block order in curation
+	 * @return  object
 	 */
 	public function getStatus( $name, $pub, $sequence = 0)
 	{
@@ -864,8 +880,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get first element ID
 	 *
-	 * @param      string $name
-	 * @return     string
+	 * @param   string  $name		Block name
+	 * @param   object  $pub		Publication object
+	 * @param   integer $sequence	Block order in curation
+	 * @return  integer
 	 */
 	public function getFirstElement( $name, $pub, $sequence = 0)
 	{
@@ -899,8 +917,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get next element ID
 	 *
-	 * @param      string $name
-	 * @return     string
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $activeId	Active element ID
+	 * @return  integer
 	 */
 	public function getNextElement( $name, $sequence = 0, $activeId = 1)
 	{
@@ -940,8 +960,11 @@ class PublicationsCuration extends JObject
 	/**
 	 * Determine if element is coming
 	 *
-	 * @param      string $name
-	 * @return     string
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $activeId	Active element ID
+	 * @param   integer $elementId	Element ID in question
+	 * @return  boolean
 	 */
 	public function isComing( $name, $sequence = 0, $activeId = 1, $elementId = 0)
 	{
@@ -980,8 +1003,11 @@ class PublicationsCuration extends JObject
 	/**
 	 * Check block element status (auto check)
 	 *
-	 * @param      string $name
-	 * @return     string
+	 * @param   string  $name		Block name
+	 * @param   integer $elementId	Element ID in question
+	 * @param   object  $pub		Publication object
+	 * @param   integer $sequence	Block order in curation
+	 * @return  object
 	 */
 	public function getElementStatus( $name, $elementId = NULL, $pub, $sequence = 0)
 	{
@@ -1052,9 +1078,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Check status for curation review
 	 *
-	 * @param      string $progress
-	 * @param      string $block
-	 * @return     string
+	 * @param   string  $block		Block name
+	 * @param   object  $pub		Publication object
+	 * @param   integer $sequence	Block order in curation
+	 * @return  object
 	 */
 	public function getReviewStatus( $block, $pub, $sequence = 0)
 	{
@@ -1123,7 +1150,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get status of curation item
 	 *
-	 * @return  void
+	 * @param   string  $props		Pointer to block/element in question
+	 * @param   array   $items		Status array
+	 * @return  object
 	 */
 	public function getReviewItemStatus( $props = NULL, $items = NULL )
 	{
@@ -1170,7 +1199,11 @@ class PublicationsCuration extends JObject
 	/**
 	 * Parse curation status for display
 	 *
-	 * @return  void
+	 * @param   object  $pub	Publication object
+	 * @param   integer $step	Block order in curation
+	 * @param   integer $elId	Element ID in question
+	 * @param   string  $viewer	Author or curator
+	 * @return  object
 	 */
 	public function getCurationStatus( $pub, $step, $elId = 0, $viewer = 'author' )
 	{
@@ -1225,6 +1258,10 @@ class PublicationsCuration extends JObject
 	/**
 	 * Show curator notice
 	 *
+	 * @param   object  $curatorStatus	Status object
+	 * @param   string  $props			Pointer to block/element in question
+	 * @param   string  $viewer			Author or curator
+	 * @param   string  $elName			Element name
 	 * @return  void
 	 */
 	public function drawCurationNotice( $curatorStatus, $props, $viewer = 'author', $elName = '' )
@@ -1267,8 +1304,12 @@ class PublicationsCuration extends JObject
 	<?php }
 
 	/**
-	 * draw curation checker
+	 * Draw curation checker
 	 *
+	 * @param   string  $props			Pointer to block/element in question
+	 * @param   object  $reviewStatus	Status object
+	 * @param   string  $url			Action URL
+	 * @param   string  $title
 	 * @return  void
 	 */
 	public function drawChecker( $props, $reviewStatus, $url, $title = '' )
@@ -1286,7 +1327,8 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get curation reviews for version ID
 	 *
-	 * @return  void
+	 * @param   integer  $versionId
+	 * @return  array or boolean False
 	 */
 	public function getReviewedItems( $versionId = 0 )
 	{
@@ -1320,7 +1362,11 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get change log
 	 *
-	 * @return  void
+	 * @param   object  $pub		Publication object
+	 * @param   integer $oldStatus	Previous version state
+	 * @param   integer $newStatus	New version state
+	 * @param   integer $curator	Author or curator
+	 * @return  string
 	 */
 	public function getChangeLog( $pub, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
@@ -1408,7 +1454,12 @@ class PublicationsCuration extends JObject
 	/**
 	 * Save history log
 	 *
-	 * @return  void
+	 * @param   object  $pub		Publication object
+	 * @param   integer $actor		Actor user ID
+	 * @param   integer $oldStatus	Previous version state
+	 * @param   integer $newStatus	New version state
+	 * @param   integer $curator	Author or curator
+	 * @return  boolean
 	 */
 	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
@@ -1442,7 +1493,9 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get history logs
 	 *
-	 * @return  void
+	 * @param   object  $pub		Publication object
+	 * @param   integer $curator	Author or curator
+	 * @return  object or NULL
 	 */
 	public function getHistory( $pub, $curator = 0 )
 	{
@@ -1456,7 +1509,12 @@ class PublicationsCuration extends JObject
 	/**
 	 * Save update
 	 *
-	 * @return  void
+	 * @param   object   $data			Data to save
+	 * @param   integer  $elementId		Element ID
+	 * @param   string   $name			Block name
+	 * @param   object   $pub			Publication object
+	 * @param   integer  $sequence		Block order in curation
+	 * @return boolean
 	 */
 	public function saveUpdate( $data = NULL, $elementId, $name, $pub, $sequence )
 	{
