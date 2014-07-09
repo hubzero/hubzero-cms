@@ -306,27 +306,28 @@ switch ($this->ticket->get('severity'))
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 													<?php
-														if ($this->comment->changelog() && count($this->comment->changelog()) >  0)
+														if ($this->comment->changelog() && count($this->comment->changelog()->lists()) >  0)
 														{
 													?>
 														<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 															<?php
 																$clog = '';
-																foreach ($this->comment->changelog() as $type => $log)
+																foreach ($this->comment->changelog()->lists() as $type => $log)
 																{
 																	if (is_array($log) && count($log) > 0)
 																	{
+
 																		foreach ($log as $items)
 																		{
 																			$clog .= '<tr class="' . $type . '">';
 																			if ($type == 'changes')
 																			{
-																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left">' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', '<span style="color: #4e7ac7;">' . $items['field'] . '</span>', '<b style="color: #333;">' . $items['before'] . '</b>', '<b style="color: #333;">' . $items['after'] . '</b>') . '</td>';
+																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left">' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', '<span style="color: #4e7ac7;">' . $items->field . '</span>', '<b style="color: #333;">' . $items->before . '</b>', '<b style="color: #333;">' . $items->after . '</b>') . '</td>';
 																			}
 																			else if ($type == 'notifications')
 																			{
-																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', '</span> ' . $items['name'], $items['role'], $items['address']) . '</td>';
+																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', '</span> ' . $items->name, $items->role, $items->address) . '</td>';
 																			}
 																			$clog .= '</tr>';
 																		}

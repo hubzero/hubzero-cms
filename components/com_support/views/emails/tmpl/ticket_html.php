@@ -51,7 +51,7 @@ else
 }
 $link = $base . DS . trim($sef, DS);
 
-switch ($this->ticket->severity)
+switch ($this->ticket->get('severity'))
 {
 	case 'critical': $bgcolor = '#ffd3d4'; $bdcolor = '#e9bcbc'; break;
 	case 'major':    $bgcolor = '#fbf1be'; $bdcolor = '#e9e1bc'; break;
@@ -257,14 +257,14 @@ if ($this->ticket->submitter('id'))
 											<thead>
 												<tr>
 													<th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
-														New support ticket
+														<?php echo JText::_('COM_SUPPORT_NEW_TICKET'); ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
 													<td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
-														#<?php echo $this->ticket->id; ?>
+														#<?php echo $this->ticket->get('id'); ?>
 													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
@@ -283,27 +283,27 @@ if ($this->ticket->submitter('id'))
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_EMAIL'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->email); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('email')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_IP_HOSTNAME'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->ip) . ' (' . $this->escape($this->ticket->hostname) . ')'; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('ip')) . ' (' . $this->escape($this->ticket->get('hostname')) . ')'; ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_OS'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->os); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('os')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_BROWSER'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->browser); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('browser')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_UAS'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->uas); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('uas')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_REFERRER'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->referrer); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->ticket->get('referrer')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
@@ -321,10 +321,10 @@ if ($this->ticket->submitter('id'))
 												<tr>
 													<td style="padding: 0 2em;">
 														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->ticket->content('parsed'); ?></p>
-														<?php if ($this->comment->attachments()->total()) { ?>
+														<?php if ($this->ticket->attachments()->total()) { ?>
 															<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
 																<?php
-																foreach ($this->comment->attachments() as $attachment)
+																foreach ($this->ticket->attachments() as $attachment)
 																{
 																	if (!trim($attachment->get('description')))
 																	{

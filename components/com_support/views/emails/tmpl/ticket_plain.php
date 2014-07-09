@@ -83,7 +83,7 @@ $message .= $this->ticket->content('clean');
 if ($this->ticket->attachments()->total() > 0)
 {
 	$message .= "\n\n";
-	foreach ($this->comment->attachments() as $attachment)
+	foreach ($this->ticket->attachments() as $attachment)
 	{
 		$message .= $base . DS . trim(JRoute::_($attachment->link()), DS) . "\n";
 	}

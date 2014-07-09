@@ -349,9 +349,11 @@ $cc = array();
 					</div><!-- / .comment-body -->
 				<?php } ?>
 				</div><!-- / .comment-content -->
-				<div class="comment-changelog">
-					<?php echo $comment->changelog()->render(); ?>
-				</div><!-- / .changelog -->
+				<?php if ($this->row->access('update', 'tickets') > 0) { ?>
+					<div class="comment-changelog">
+						<?php echo $comment->changelog()->render(); ?>
+					</div><!-- / .changelog -->
+				<?php } ?>
 			</li>
 		<?php } ?>
 		</ol>
@@ -453,10 +455,7 @@ $cc = array();
 							</label>
 						</div>
 						<div class="col span6 omega">
-				<?php } else { ?>
-						<input type="hidden" name="tags" value="<?php echo $this->escape($this->lists['tags']); ?>" />
-				<?php } // ACL can update ticket (admin) ?>
-						<label>
+							<label>
 							<?php echo JText::_('COM_SUPPORT_COMMENT_STATUS'); ?>:
 							<select name="ticket[resolved]" id="status">
 								<option value=""<?php if ($this->row->isOpen() && $this->row->get('status') != 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_OPEN'); ?></option>
@@ -478,6 +477,27 @@ $cc = array();
 								</optgroup>
 							</select>
 						</label>
+				<?php } else { ?>
+						<input type="hidden" name="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
+
+					<?php if ($this->row->isSubmitter()) { ?>
+						<?php if (!$this->row->isOpen()) { ?>
+							<label class="option" for="field-status">
+								<input class="option" type="checkbox" name="ticket[resolved]" id="field-status" value="" />
+								<?php echo JText::_('COM_SUPPORT_COMMENT_REOPEN'); ?>
+							</label>
+							<input type="hidden" name="ticket[open]" value="1" />
+							<input type="hidden" name="ticket[status]" value="1" />
+						<?php } else { ?>
+							<label class="option" for="field-status">
+								<input class="option" type="checkbox" name="ticket[resolved]" id="field-status" value="noresolution" />
+								<?php echo JText::_('COM_SUPPORT_COMMENT_CLOSE'); ?>
+							</label>
+							<input type="hidden" name="ticket[open]" value="0" />
+						<?php } ?>
+					<?php } ?>
+				<?php } // ACL can update ticket (admin) ?>
+						
 				<?php if ($this->row->access('update', 'tickets') > 0) { ?>
 						</div>
 					</div>

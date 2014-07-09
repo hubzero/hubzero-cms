@@ -397,7 +397,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		// Save the tags
 		$row->set('tags', JRequest::getVar('tags', '', 'post'));
-		$row->tag($row->get('tags'), $this->juser->get('id'));
+		$row->tag($row->get('tags'), $this->juser->get('id'), 1);
 
 		$juri = JURI::getInstance();
 		$jconfig = JFactory::getConfig();
@@ -433,15 +433,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_option))
 				);
 
-				// Parse comments for attachments
-				$attach = new SupportAttachment($this->database);
-				$attach->webpath = $base . DS . $webpath . DS . $row->get('id');
-				$attach->uppath  = JPATH_ROOT . DS . $webpath . DS . $row->get('id');
-				$attach->output  = 'email';
-
-				// Generate e-mail message
-				//$from['multipart'] = md5(date('U'));
-
 				// Plain text email
 				$eview = new \Hubzero\Component\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
@@ -452,7 +443,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$eview->controller = $this->_controller;
 				$eview->ticket     = $row;
 				$eview->delimiter  = '';
-				$eview->attach     = $attach;
 
 				$plain = $eview->loadTemplate();
 				$plain = str_replace("\n", "\r\n", $plain);

@@ -226,7 +226,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=tickets&task=display',
-					JText::_('SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
+					JText::_('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
 				);
 			}

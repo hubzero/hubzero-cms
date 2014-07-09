@@ -179,6 +179,16 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	}
 
 	/**
+	 * Get the whole log
+	 *
+	 * @return  array
+	 */
+	public function lists()
+	{
+		return $this->_log;
+	}
+
+	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param   string  $property  The name of the property.
@@ -462,8 +472,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		{
 			$this->changed(
 				JText::_('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
-				($before->tags('string') ? $before->tags('string') : JText::_('COM_SUPPORT_BLANK')),
-				($after->tags('string')  ? $after->tags('string')  : JText::_('COM_SUPPORT_BLANK'))
+				($before->get('tags') ? $before->get('tags') : JText::_('COM_SUPPORT_BLANK')),
+				($after->get('tags')  ? $after->get('tags')  : JText::_('COM_SUPPORT_BLANK'))
 			);
 		}
 

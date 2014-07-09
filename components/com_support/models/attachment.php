@@ -245,7 +245,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path))
 			{
-				$this->setError(JText::sprintf('Unable to delete file %s', $file));
+				$this->setError(JText::sprintf('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
 				return false;
 			}
 		}

@@ -73,9 +73,9 @@ $message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->
 $message .= '----------------------------'."\n\n";
 $message .= JText::sprintf('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
 $message .= JText::_('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
-if ($this->comment->changelog())
+if ($this->comment->changelog()->lists())
 {
-	foreach ($this->comment->changelog() as $type => $log)
+	foreach ($this->comment->changelog()->lists() as $type => $log)
 	{
 		if (is_array($log) && count($log) > 0)
 		{
@@ -83,11 +83,11 @@ if ($this->comment->changelog())
 			{
 				if ($type == 'changes')
 				{
-					$message .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . "\n";
+					$message .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items->field, $items->before, $items->after) . "\n";
 				}
 				else if ($type == 'notifications')
 				{
-					$message  .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . "\n";
+					$message  .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items->role, $items->name, $items->address) . "\n";
 				}
 			}
 			$message .= "\n";

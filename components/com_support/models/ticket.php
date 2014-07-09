@@ -337,11 +337,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		     ->set('status', 1)
 		     ->set('resolved', '');
 
-		if (!$this->store(false))
+		/*if (!$this->store(false))
 		{
 			return false;
 		}
-		return true;
+		return true;*/
+		return $this;
 	}
 
 	/**
@@ -356,11 +357,13 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		     ->set('status', 0)
 		     ->set('resolved', $resolution);
 
-		if (!$this->store(false))
+		/*if (!$this->store(false))
 		{
 			return false;
 		}
-		return true;
+		return true;*/
+
+		return $this;
 	}
 
 	/**
@@ -880,6 +883,24 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Store changes to this database entry
+	 *
+	 * @param     boolean $check Perform data validation check?
+	 * @return    boolean False if error, True on success
+	 */
+	public function store($check=true)
+	{
+		$result = parent::store($check);
+
+		if ($result && !$this->_tbl->id)
+		{
+			$this->_tbl->getId();
+		}
+
+		return $result;
 	}
 
 	/**

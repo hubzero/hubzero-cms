@@ -799,12 +799,15 @@
 		background-color: #eee;
 	}
 /* Comments */
+	ol.comments li.comment {
+		margin-bottom: 1em;
+	}
 	ol.comments .comment-content {
 		margin-bottom: 0;
 		word-wrap: break-word;
 	}
 	ol.comments .comment-changelog {
-		margin: 0 0 1em 70px;
+		margin: 0 0 0 70px;
 		padding: 1.61803399em 1.61803399em;
 		background: #e8e8e8;
 		background: rgba(0, 0, 0, 0.040);

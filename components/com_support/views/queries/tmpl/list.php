@@ -42,11 +42,11 @@ if ($this->getError()) { ?>
 		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id); ?>">
 			<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 		</a>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('Delete'); ?>">
-			<?php echo JText::_('Delete'); ?>
+		<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+			<?php echo JText::_('JACTION_DELETE'); ?>
 		</a>
-		<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('Edit'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-			<?php echo JText::_('Edit'); ?>
+		<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+			<?php echo JText::_('JACTION_EDIT'); ?>
 		</a>
 	</li>
 <?php
