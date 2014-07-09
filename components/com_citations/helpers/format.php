@@ -507,9 +507,9 @@ class CitationFormat
 		//are we allowing downloading
 		if ($downloading)
 		{
-			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . JText::_('DOWNLOAD_BIBTEX') . '">BibTex</a>';
+			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . JText::_('COM_CITATIONS_BIBTEX') . '">' . JText::_('COM_CITATIONS_BIBTEX') . '</a>';
 			$html .= '<span> | </span>';
-			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . JText::_('DOWNLOAD_ENDNOTE') . '">EndNote</a>';
+			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . JText::_('COM_CITATIONS_ENDNOTE') . '">' . JText::_('COM_CITATIONS_ENDNOTE') . '</a>';
 		}
 
 		//if we have an open url link and we want to use open urls

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CitationsHelper::getActions('type');
 
-JToolBarHelper::title(JText::_('Citation Types'), 'citation.png');
+JToolBarHelper::title(JText::_('CITATIONS') . ': ' . JText::_('CITATION_TYPES'), 'citation.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -67,9 +67,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->types); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('ID'); ?></th>
-				<th scope="col"><?php echo JText::_('Alias'); ?></th>
-				<th scope="col"><?php echo JText::_('Title'); ?></th>
+				<th scope="col"><?php echo JText::_('CITATION_TYPES_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('CITATION_TYPES_ALIAS'); ?></th>
+				<th scope="col"><?php echo JText::_('CITATION_TYPES_TITLE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

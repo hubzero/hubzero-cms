@@ -44,26 +44,26 @@ $this->css()
 	<?php } ?>
 
 	<ul id="steps">
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="active">Step 1<span>Upload citations file</span></a></li>
-		<li><a>Step 2<span>Preview imported citations</span></a></li>
-		<li><a>Step 3<span>Browse uploaded citations</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="active"><?php echo JText::_('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
+		<li><a><?php echo JText::_('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
+		<li><a><?php echo JText::_('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
 	</ul><!-- / #steps -->
 
 	<form id="hubForm" enctype="multipart/form-data" method="post" action="<?php echo JRoute::_('index.php?option='. $this->option . '&task=import_upload'); ?>">
 		<p class="explaination">
-			<strong><u>Accepted file types</u></strong><br />
+			<strong><u><?php echo JText::_('COM_CITATIONS_IMPORT_ACCEPTABLE'); ?></u></strong><br />
 			<?php echo implode($this->accepted_files, "<br />"); ?>
 		</p>
 		<fieldset>
-			<legend>Upload:</legend>
-			<label>Citations file: <span class="required">Required</span>
+			<legend><?php echo JText::_('COM_CITATIONS_IMPORT_UPLOAD'); ?>:</legend>
+			<label><?php echo JText::_('COM_CITATIONS_IMPORT_UPLOAD_FILE'); ?>: <span class="required">Required</span>
 				<input type="file" name="citations_file" />
-				<span class="hint">Max File size is 4<abbr title="Mega Bytes">MB</abbr></span>
+				<span class="hint"><?php echo JText::_('COM_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
 			</label>
 		</fieldset>
 
 		<p class="submit">
-			<input type="submit" name="submit" value="Upload" />
+			<input type="submit" name="submit" value="<?php echo JText::_('COM_CITATIONS_IMPORT_UPLOAD'); ?>" />
 		</p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

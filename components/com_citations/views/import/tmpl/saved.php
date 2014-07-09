@@ -46,9 +46,9 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 //do we want to number li items
 if ($label == "none") {
 	$citations_label_class = " no-label";
-} elseif($label == "type") {
+} elseif ($label == "type") {
 	$citations_label_class = " type-label";
-} elseif($label == "both") {
+} elseif ($label == "both") {
 	$citations_label_class = " both-label";
 }
 ?>
@@ -59,18 +59,18 @@ if ($label == "none") {
 <section id="import" class="section">
 
 	<?php
-		foreach($this->messages as $message) {
+		foreach ($this->messages as $message) {
 			echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 		}
 	?>
 
 	<ul id="steps">
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="passed">Step 1<span>Upload citations file</span></a></li>
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import_review" class="passed">Step 2<span>Preview imported citations</span></a></li>
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import_saved" class="active">Step 3<span>Browse Uploaded citations</span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="passed"><?php echo JText::_('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import_review" class="passed"><?php echo JText::_('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
+		<li><a href="<?php echo JURI::base(true); ?>/citations/import_saved" class="active"><?php echo JText::_('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo JText::_('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
 	</ul><!-- / #steps -->
 
-	<?php if(count($this->citations) > 0) : ?>
+	<?php if (count($this->citations) > 0) : ?>
 		<?php
 			$formatter = new CitationFormat();
 			$formatter->setTemplate($template);
@@ -78,25 +78,25 @@ if ($label == "none") {
 			$counter = 1;
 		?>
 		<div style="float:right;" class="back-links">
-			<a href="<?php echo JURI::base(true); ?>/citations/import">Import More Citations</a> | <a href="<?php echo JURI::base(true); ?>/citations/browse">Browse all Citations</a>
+			<a href="<?php echo JURI::base(true); ?>/citations/import"><?php echo JText::_('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?></a> | <a href="<?php echo JURI::base(true); ?>/citations/browse"><?php echo JText::_('COM_CITATIONS_IMPORT_BROWSE_ALL'); ?></a>
 		</div>
-		<h3>Successfully Uploaded Citations</h3>
+		<h3><?php echo JText::_('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
 		<table class="citations">
 			<tbody>
-				<?php foreach($this->citations as $cite) : ?>
+				<?php foreach ($this->citations as $cite) : ?>
 					<tr>
-						<?php if($label != "none") : ?>
+						<?php if ($label != "none") : ?>
 							<td class="citation-label <?php echo $citations_label_class; ?>">
 								<?php
 									$type = "";
-									foreach($this->types as $t) {
-										if($t['id'] == $cite->type) {
+									foreach ($this->types as $t) {
+										if ($t['id'] == $cite->type) {
 											$type = $t['type_title'];
 										}
 									}
 									$type = ($type != "") ? $type : "Generic";
 
-									switch($label)
+									switch ($label)
 									{
 										case "number":
 											echo "<span class=\"number\">{$counter}.</span>";
@@ -115,20 +115,20 @@ if ($label == "none") {
 						<td class="citation-container">
 							<?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
 
-							<?php if($rollover == "yes" && $cite->abstract != "") : ?>
+							<?php if ($rollover == "yes" && $cite->abstract != "") : ?>
 								<div class="citation-notes"><p><?php echo nl2br($cite->abstract); ?></p></div>
 							<?php endif; ?>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="<?php if($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
+						<td colspan="<?php if ($label == "none") { echo 2; } else { echo 3; }; ?>" class="citation-details">
 							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
 
-							<?php if($this->config->get("citation_show_badges","no") == "yes") : ?>
+							<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
 								<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
 
-							<?php if($this->config->get("citation_show_tags","no") == "yes") : ?>
+							<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
 								<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 							<?php endif; ?>
 						</td>

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('CITATION') . ': ' . JText::_('STATS'), 'citation.png');
+JToolBarHelper::title(JText::_('CITATION') . ': ' . JText::_('CITATION_STATS'), 'citation.png');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

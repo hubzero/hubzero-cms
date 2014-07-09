@@ -147,7 +147,7 @@ class CitationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Citation(s) successfully saved')
+			JText::_('CITATION_TYPE_SAVED')
 		);
 	}
 
@@ -169,7 +169,7 @@ class CitationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No citation selected.'),
+				JText::_('CITATION_NO_TYPE'),
 				'error'
 			);
 			return;
@@ -185,7 +185,7 @@ class CitationsControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Citation(s) successfully removed')
+			JText::_('CITATION_TYPE_REMOVED')
 		);
 	}
 

@@ -148,7 +148,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Citation(s) successfully saved')
+			JText::_('CITATION_SPONSOR_SAVED')
 		);
 	}
 
@@ -170,7 +170,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No citation sponsor selected.'),
+				JText::_('CITATION_NO_SPONSOR'),
 				'error'
 			);
 			return;
@@ -186,7 +186,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Citation sponsor(s) successfully removed.')
+			JText::_('CITATION_SPONSOR_REMOVED')
 		);
 	}
 

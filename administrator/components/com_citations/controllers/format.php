@@ -87,7 +87,7 @@ class CitationsControllerFormat extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Citation format successfully saved')
+			JText::_('CITATION_FORMAT_SAVED')
 		);
 	}
 }

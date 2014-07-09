@@ -34,7 +34,7 @@ $canDo = CitationsHelper::getActions('sponsor');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('Citation Sponsor') . ': ' . $text, 'citation.png');
+JToolBarHelper::title(JText::_('CITATIONS') . ' ' . JText::_('CITATION_SPONSORS') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -65,18 +65,18 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Citation Sponsor'); ?></span></legend>
+			<legend><span><?php echo JText::_('CITATION_SPONSORS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-sponsor"><?php echo JText::_('Sponsor Name'); ?></label>
+				<label for="field-sponsor"><?php echo JText::_('CITATION_SPONSORS_NAME'); ?></label>
 				<input type="text" name="sponsor[sponsor]" id="field-sponsor" value="<?php echo $sponsor; ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-link"><?php echo JText::_('Sponsor Link'); ?></label>
+				<label for="field-link"><?php echo JText::_('CITATION_SPONSORS_LINK'); ?></label>
 				<input type="text" name="sponsor[link]" id="field-link" value="<?php echo $link; ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-image"><?php echo JText::_('Sponsor Image'); ?></label>
+				<label for="field-image"><?php echo JText::_('CITATION_SPONSORS_IMAGE'); ?></label>
 				<input type="text" name="sponsor[image]" id="field-image" value="<?php echo $image; ?>" size="50" />
 			</div>
 		</fieldset>

@@ -153,9 +153,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Affiliation filter
 		$this->view->filter = array(
-			'all'    => JText::_('ALL'),
-			'aff'    => JText::_('AFFILIATE'),
-			'nonaff' => JText::_('NONAFFILIATE')
+			'all'    => JText::_('COM_CITATIONS_ALL'),
+			'aff'    => JText::_('COM_CITATIONS_AFFILIATED'),
+			'nonaff' => JText::_('COM_CITATIONS_NONAFFILIATED')
 		);
 		if (!in_array($this->view->filters['filter'], array_keys($this->view->filter)))
 		{
@@ -164,13 +164,12 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Sort Filter
 		$this->view->sorts = array(
-			'sec_cnt DESC' => JText::_('Cited by'),
-			'year DESC'    => JText::_('YEAR'),
-			'created DESC' => JText::_('NEWEST'),
-			'title ASC'    => JText::_('TITLE'),
-			'author ASC'   => JText::_('AUTHORS'),
-			'journal ASC'  => JText::_('JOURNAL'),
-			'created DESC' =>JText::_("Date uploaded")
+			'sec_cnt DESC' => JText::_('COM_CITATIONS_CITEDBY'),
+			'year DESC'    => JText::_('COM_CITATIONS_YEAR'),
+			'created DESC' => JText::_('COM_CITATIONS_NEWEST'),
+			'title ASC'    => JText::_('COM_CITATIONS_TITLE'),
+			'author ASC'   => JText::_('COM_CITATIONS_AUTHOR'),
+			'journal ASC'  => JText::_('COM_CITATIONS_JOURNAL')
 		);
 		if (!in_array($this->view->filters['sort'], array_keys($this->view->sorts)))
 		{
@@ -227,7 +226,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_citations&task=browse'),
-				JText::_('The end date cannot be before the start date.'),
+				JText::_('COM_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
 				'error'
 			);
 			return;
@@ -352,9 +351,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$id = JRequest::getInt('id', 0);
 
 		//make sure we have an id
-		if(!$id || $id == 0)
+		if (!$id || $id == 0)
 		{
-			JError::raiseError(500, JText::_('No Citation ID Specified'));
+			JError::raiseError(500, JText::_('COM_CITATIONS_MUST_HAVE_ID'));
 			return;
 		}
 
@@ -363,9 +362,9 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$this->view->citation->load( $id );
 
 		//make sure we got a citation
-		if(!isset($this->view->citation->title) || $this->view->citation->title == '')
+		if (!isset($this->view->citation->title) || $this->view->citation->title == '')
 		{
-			JError::raiseError(500, JText::_('Unable to Load a Citation with the ID Specified.'));
+			JError::raiseError(500, JText::_('COM_CITATIONS_NO_CITATION_WITH_ID'));
 			return;
 		}
 
@@ -382,7 +381,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle( "Citation: " . $this->view->shortenedTitle );
+		$document->setTitle( JText::_('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle );
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
@@ -390,7 +389,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$pathway->addItem( JText::_(strtoupper($this->_name)), 'index.php?option=' . $this->_option);
 		}
-		$pathway->addItem( "Browse", 'index.php?option=' . $this->_option . '&task=browse');
+		$pathway->addItem( JText::_('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->_option . '&task=browse');
 		$pathway->addItem( $this->view->shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->citation->id);
 
 		//get this citation type to see if we have a template override for this type
@@ -514,7 +513,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 	{
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
-			JText::_('You must be a logged in to access this area.'),
+			JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);
 		return;
@@ -559,7 +558,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			// Redirect
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option, false),
-				JText::_('You don\'t have permission to upload citaions on this hub.'),
+				JText::_('COM_CITATION_EDIT_NOTALLOWED'),
 				'warning'
 			);
 			return;
@@ -635,11 +634,11 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$pathway->addItem( $shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
 		}
-		$pathway->addItem( 'Edit', 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
+		$pathway->addItem( JText::_('COM_CITATIONS_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
 
 		// Set the page title
 		$document = JFactory::getDocument();
-		$document->setTitle( "Edit Citation: " . $shortenedTitle );
+		$document->setTitle( JText::_('COM_CITATIONS_CITATION') . $shortenedTitle );
 
 		//push jquery to doc
 		$document = JFactory::getDocument();
@@ -859,14 +858,14 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
-				JText::_('You have successfully saved the citation.')
+				JText::_('COM_CITATIONS_CITATION_SAVED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=browse'),
-				JText::_('You have successfully saved the citation.')
+				JText::_('COM_CITATIONS_CITATION_SAVED')
 			);
 		}
 
@@ -1009,7 +1008,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$doc = '';
 
 		//for each citation we want to downlaod
-		foreach($citations as $c)
+		foreach ($citations as $c)
 		{
 			$cc = new CitationsCitation($this->database);
 			$cc->load($c);

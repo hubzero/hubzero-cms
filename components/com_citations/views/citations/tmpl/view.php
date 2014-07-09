@@ -82,7 +82,7 @@ if ($citationUrlFormatString != '')
 	preg_match_all('/\{(\w+)\}/', $citationUrlFormatString, $matches, PREG_SET_ORDER);
 	if ($matches)
 	{
-		foreach($matches as $match)
+		foreach ($matches as $match)
 		{
 			$field = strtolower($match[1]);
 			$replace = $match[0];
@@ -128,7 +128,7 @@ $showBadges	= $config->get('citation_show_badges', 'yes');
 
 //get internal associations
 $associationLinks = array();
-foreach($this->associations as $a)
+foreach ($this->associations as $a)
 {
 	if ($a->tbl == 'resource')
 	{
@@ -158,7 +158,7 @@ $area = JRequest::getVar('area', 'about');
 
 		<div class="citation-author">
 			<?php if ($citation->author) : ?>
-				<span>By:</span>
+				<span><?php echo JText::_('COM_CITATIONS_BY'); ?>:</span>
 				<?php
 					$a = array();
 					$authors = array_map('trim', explode(';', $citation->author));
@@ -196,7 +196,7 @@ $area = JRequest::getVar('area', 'about');
 					$max = 1000;
 					$abstract = nl2br($citation->abstract);
 
-				 	if (strlen($abstract) > $max)
+					if (strlen($abstract) > $max)
 					{
 						echo substr($abstract, 0, $max) . ' <span class="show-more-hellip">&hellip;</span> ';
 						echo '<a id="show-more-button" href="javascript:void(0);">show more</a>';
@@ -220,8 +220,8 @@ $area = JRequest::getVar('area', 'about');
 				echo strip_tags($cf->formatCitation($citation, null, false, $config));
 			?>
 			<div class="download">
-				<a class="" href="<?php echo JRoute::_('index.php?option=com_citations&task=download&format=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format">Export to BibTex</a> |
-				<a class="" href="<?php echo JRoute::_('index.php?option=com_citations&task=download&format=endnote&id=' . $citation->id . '&no_html=1'); ?>" title="Download in Endnote Format">Export to Endnote</a>
+				<a class="" href="<?php echo JRoute::_('index.php?option=com_citations&task=download&format=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format"><?php echo JText::_('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?></a> |
+				<a class="" href="<?php echo JRoute::_('index.php?option=com_citations&task=download&format=endnote&id=' . $citation->id . '&no_html=1'); ?>" title="Download in Endnote Format"><?php echo JText::_('COM_CITATIONS_DOWNLOAD_ENDNOTE'); ?></a>
 			</div>
 		</div>
 
@@ -230,27 +230,27 @@ $area = JRequest::getVar('area', 'about');
 	<div class="content-header-extra">
 		<?php if ($citationURL != '') : ?>
 			<a class="primary" rel="external" href="<?php echo $citationURL; ?>">
-				View Article
+				<?php echo JText::_('COM_CITATIONS_VIEW_ARTICLE'); ?>
 			</a>
 			<ul class="secondary">
 				<li>
 					<a class="locate" rel="" href="<?php echo JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id.'&area=find#find'); ?>">
-						Find this Text
+						<?php echo JText::_('COM_CITATIONS_FINDTHISTEXT'); ?>
 					</a>
 				</li>
 			</ul>
 		<?php else : ?>
 			<a class="primary" rel="" href="<?php echo JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id.'&area=find#find'); ?>">
-				Find this Text
+				<?php echo JText::_('COM_CITATIONS_FINDTHISTEXT'); ?>
 			</a>
 		<?php endif; ?>
 
 
 		<?php if (count($sponsors) > 0) : ?>
 			<div id="citation-sponsors" class="container">
-				<h3>Sponsored By</h3>
+				<h3><?php echo JText::_('COM_CITATIONS_SPONSORED_BY'); ?></h3>
 				<ul class="citation-sponsor">
-					<?php foreach($sponsors as $s) : ?>
+					<?php foreach ($sponsors as $s) : ?>
 						<li>
 							<a class="sponsor" rel="external" href="<?php echo $s->link; ?>">
 								<?php echo ($s->image) ? '<img src="'.$s->image.'" />' : $s->sponsor; ?>
@@ -266,10 +266,10 @@ $area = JRequest::getVar('area', 'about');
 	<ul class="sub-menu">
 		<?php
 			$menu = array(
-				'about' => 'About',
-				'resources' => 'Cited Resources',
-				'reviews' => 'Reviews',
-				'find' => 'Find this Text'
+				'about' => JText::_('COM_CITATIONS_ABOUT'),
+				'resources' => JText::_('COM_CITATIONS_CITED'),
+				'reviews' => JText::_('COM_CITATIONS_REVIEWS'),
+				'find' => JText::_('COM_CITATIONS_FINDTHISTEXT')
 			);
 		?>
 
@@ -292,11 +292,11 @@ $area = JRequest::getVar('area', 'about');
 
 <?php if ($area == 'about') : ?>
 	<section class="main section citation-section" id="about">
-		<h3>About</h3>
+		<h3><?php echo JText::_('COM_CITATIONS_ABOUT'); ?></h3>
 		<table class="citation">
 			<tbody>
 				<tr>
-					<th>Type</th>
+					<th><?php echo JText::_('COM_CITATIONS_TYPE'); ?></th>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option=com_citations&task=browse&type='.$type[0]['id']); ?>"><?php echo $type[0]['type_title']; ?></a>
 					</td>
@@ -304,126 +304,126 @@ $area = JRequest::getVar('area', 'about');
 
 				<?php if ($citation->journal) : ?>
 					 <tr>
-						<th><?php echo JText::_('Journal'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_JOURNAL'); ?></th>
 						<td><?php echo $citation->journal; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->publisher) : ?>
 					 <tr>
-						<th><?php echo JText::_('Publisher'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_PUBLISHER'); ?></th>
 						<td><?php echo $citation->publisher; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->booktitle) : ?>
 					 <tr>
-						<th><?php echo JText::_('Book Title'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_BOOK_TITLE'); ?></th>
 						<td><?php echo $citation->booktitle; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->short_title) : ?>
 					 <tr>
-						<th><?php echo JText::_('Short Title'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_SHORT_TITLE'); ?></th>
 						<td><?php echo $citation->short_title; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->editor) : ?>
 					 <tr>
-						<th><?php echo JText::_('Editor(s)'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_EDITORS'); ?></th>
 						<td><?php echo $citation->editor; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->cite) : ?>
 					 <tr>
-						<th><?php echo JText::_('Cite Key'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_CITE_KEY'); ?></th>
 						<td><?php echo $citation->cite; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->ref_type) : ?>
 					 <tr>
-						<th><?php echo JText::_('Ref Type'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_REF_TYPE'); ?></th>
 						<td><?php echo $citation->ref_type; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->date_submit && $citation->date_submit != '0000-00-00 00:00:00') : ?>
 					 <tr>
-						<th><?php echo JText::_('Date Submitted'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_DATE_SUBMITTED'); ?></th>
 						<td><?php echo date("F d, Y", strtotime($citation->date_submit)); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->date_accept && $citation->date_accept != '0000-00-00 00:00:00') : ?>
 					 <tr>
-						<th><?php echo JText::_('Date Accepted'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_DATE_ACCEPTED'); ?></th>
 						<td><?php echo date("F d, Y", strtotime($citation->date_accept)); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->date_publish && $citation->date_publish != '0000-00-00 00:00:00') : ?>
 					 <tr>
-						<th><?php echo JText::_('Date Published'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_DATE_PUBLISHED'); ?></th>
 						<td><?php echo date("F d, Y", strtotime($citation->date_publish)); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->year) : ?>
 					 <tr>
-						<th><?php echo JText::_('Year'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_YEAR'); ?></th>
 						<td><?php echo $citation->year; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->month) : ?>
 					 <tr>
-						<th><?php echo JText::_('Month'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_MONTH'); ?></th>
 						<td><?php echo $citation->month; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->author_address) : ?>
 					 <tr>
-						<th><?php echo JText::_('Author Address'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_AUTHOR_ADDRESS'); ?></th>
 						<td><?php echo nl2br($citation->author_address); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->volume) : ?>
 					 <tr>
-						<th><?php echo JText::_('Volume'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_VOLUME'); ?></th>
 						<td><?php echo $citation->volume; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->number) : ?>
 					 <tr>
-						<th><?php echo JText::_('Issue'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_ISSUE'); ?></th>
 						<td><?php echo $citation->number; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->pages) : ?>
 					 <tr>
-						<th><?php echo JText::_('Pages'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_PAGES'); ?></th>
 						<td><?php echo $citation->pages; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->isbn) : ?>
 					 <tr>
-						<th><?php echo JText::_('ISBN/ISSN'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_ISBN'); ?></th>
 						<td><?php echo $citation->isbn; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->doi) : ?>
 					 <tr>
-						<th><?php echo JText::_('DOI'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_DOI'); ?></th>
 						<td>
 							<a href="http://dx.doi.org/<?php echo $citation->doi; ?>">
 								<?php echo $citation->doi; ?>
@@ -434,105 +434,105 @@ $area = JRequest::getVar('area', 'about');
 
 				<?php if ($citation->call_number) : ?>
 					 <tr>
-						<th><?php echo JText::_('Call Number'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_CALL_NUMBER'); ?></th>
 						<td><?php echo $citation->call_number; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->accession_number) : ?>
 					 <tr>
-						<th><?php echo JText::_('Accession Number'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_ACCESSION_NUMBER'); ?></th>
 						<td><?php echo $citation->accession_number; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->series) : ?>
 					 <tr>
-						<th><?php echo JText::_('Series'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_SERIES'); ?></th>
 						<td><?php echo $citation->series; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->edition) : ?>
 					 <tr>
-						<th><?php echo JText::_('Edition'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_EDITION'); ?></th>
 						<td><?php echo $citation->edition; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->school) : ?>
 					 <tr>
-						<th><?php echo JText::_('School'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_SCHOOL'); ?></th>
 						<td><?php echo $citation->school; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->institution) : ?>
 					 <tr>
-						<th><?php echo JText::_('Institution'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_INSTITUTION'); ?></th>
 						<td><?php echo $citation->institution; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->address) : ?>
 					 <tr>
-						<th><?php echo JText::_('Address'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_ADDRESS'); ?></th>
 						<td><?php echo $citation->address; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->location) : ?>
 					 <tr>
-						<th><?php echo JText::_('Location'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_LOCATION'); ?></th>
 						<td><?php echo $citation->location; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->howpublished) : ?>
 					 <tr>
-						<th><?php echo JText::_('How Published'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_PUBLISH_METHOD'); ?></th>
 						<td><?php echo $citation->howpublished; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->language) : ?>
 					 <tr>
-						<th><?php echo JText::_('Language'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_LANGUAGE'); ?></th>
 						<td><?php echo $citation->language; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->label) : ?>
 					 <tr>
-						<th><?php echo JText::_('Label'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_LABEL'); ?></th>
 						<td><?php echo $citation->label; ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->notes) : ?>
 					 <tr>
-						<th><?php echo JText::_('Notes'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_NOTES'); ?></th>
 						<td><?php echo nl2br($citation->notes); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->research_notes) : ?>
 					 <tr>
-						<th><?php echo JText::_('Research Notes'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_RESEARCH_NOTES'); ?></th>
 						<td><?php echo nl2br($citation->research_notes); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->keywords) : ?>
 					 <tr>
-						<th><?php echo JText::_('Keywords'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_KEYWORDS'); ?></th>
 						<td><?php echo nl2br($citation->keywords); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if (is_array($tags) && count($tags) > 0 && $showTags == 'yes') : ?>
 					<tr>
-						<th><?php echo JText::_('Tags'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_TAGS'); ?></th>
 						<td>
 							<?php echo CitationFormat::citationTags($citation, JFactory::getDBO()); ?>
 						</td>
@@ -541,7 +541,7 @@ $area = JRequest::getVar('area', 'about');
 
 				<?php if (is_array($badges) && count($badges) > 0 && $showBadges == 'yes') : ?>
 					<tr>
-						<th><?php echo JText::_('Badges'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_BADGES'); ?></th>
 						<td>
 							<?php echo CitationFormat::citationBadges($citation, JFactory::getDBO()); ?>
 						</td>
@@ -551,7 +551,7 @@ $area = JRequest::getVar('area', 'about');
 				<?php if (isset($citation->uid)) : ?>
 					<?php if (is_object($profile) && $profile->get('uidNumber')) : ?>
 						<tr>
-							<th><?php echo JText::_('Submitted By'); ?></th>
+							<th><?php echo JText::_('COM_CITATIONS_SUBMITTED_BY'); ?></th>
 							<td>
 								<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')); ?>">
 									<?php echo $profile->get('name'); ?>
@@ -563,7 +563,7 @@ $area = JRequest::getVar('area', 'about');
 
 				<?php if (isset($citation->created) && $citation->created != '0000-00-00 00:00:00') : ?>
 					<tr>
-						<th><?php echo JText::_('Submitted'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_SUBMITTED'); ?></th>
 						<td><?php echo date("l, F d, Y @ g:ia", strtotime($citation->created)); ?></td>
 					</tr>
 				<?php endif; ?>
@@ -575,23 +575,23 @@ $area = JRequest::getVar('area', 'about');
 
 <?php if ($area == 'resources') : ?>
 	<section class="main section citation-section" id="resources">
-		<h3>Cited Resources</h3>
+		<h3><?php echo JText::_('COM_CITATIONS_CITED'); ?></h3>
 		<?php if (count($associationLinks) > 0) : ?>
-			<p>Below is a list of resources that this citation is associated with.</p>
+			<p><?php echo JText::_('COM_CITATIONS_CITED_DESC'); ?></p>
 			<ul class="">
 				<li>
 					<?php echo implode($associationLinks, '</li><li>'); ?>
 				</li>
 			</ul>
 		<?php else : ?>
-			<p>We were unable to find any internally cited resources associated with this citation.</p>
+			<p><?php echo JText::_('COM_CITATIONS_CITED_NONE'); ?></p>
 		<?php endif; ?>
 	</section>
 <?php endif;?>
 
 <?php if ($area == 'reviews') : ?>
 	<section class="main section citation-section" id="reviews">
-		<h3>Reviews</h3>
+		<h3><?php echo JText::_('COM_CITATIONS_REVIEWS'); ?></h3>
 		<?php
 			JPluginHelper::importPlugin('hubzero');
 			$dispatcher = JDispatcher::getInstance();
@@ -610,13 +610,13 @@ $area = JRequest::getVar('area', 'about');
 
 <?php if ($area == 'find') : ?>
 	<section class="main section citation-section" id="find">
-		<h3>Find this Text</h3>
-		<p>Below you can find links that may assist you in locating a copy of this item:</p>
+		<h3><?php echo JText::_('COM_CITATIONS_FINDTHISTEXT'); ?></h3>
+		<p><?php echo JText::_('COM_CITATIONS_FINDTHISTEXT_DESC'); ?></p>
 		<table class="citation">
 			<tbody>
 				<?php if ($citation->doi) : ?>
 					 <tr>
-						<th><?php echo JText::_('DOI Resolver'); ?></th>
+						<th><?php echo JText::_('COM_CITATIONS_DOI_RESOLVER'); ?></th>
 						<td>
 							<a rel="external" href="http://dx.doi.org/<?php echo $citation->doi; ?>">
 								http://dx.doi.org/<?php echo $citation->doi; ?>
@@ -626,10 +626,9 @@ $area = JRequest::getVar('area', 'about');
 				<?php endif;?>
 				<?php if ($config->get('citation_openurl', 1)) : ?>
 					<tr>
-						<th>Local Library</th>
+						<th><?php echo JText::_('COM_CITATIONS_LOCAL_LIBRARY'); ?></th>
 						<td>
-							<p style="margin-top:0">If you are a member of this institution, you may be able to access this item through them either in print or perhaps online. If this is a public library or land-grant university, you may be able to at least access this item when you visit the library.</p>
-							<p>If your local public or college library does not have this item in its collection, you may be able to request a copy through a service called "Interlibrary Loan." Why not give them a call to see if they can help you?</p>
+							<?php echo JText::_('COM_CITATIONS_LOCAL_LIBRARY_DESC'); ?>
 							<ul class="secondary openurl">
 								<?php if ($this->openUrl) : ?>
 									<li>
@@ -642,7 +641,7 @@ $area = JRequest::getVar('area', 'about');
 				<?php endif; ?>
 
 				<tr>
-					<th>Google Scholar</th>
+					<th><?php echo JText::_('COM_CITATIONS_GOOGLE_SCHOLAR'); ?></th>
 					<td>
 						<?php
 						$query = '';
@@ -662,13 +661,13 @@ $area = JRequest::getVar('area', 'about');
 				</tr>
 
 				<tr>
-					<th>Other Sources</th>
+					<th><?php echo JText::_('COM_CITATIONS_OTHER_SOURCES'); ?></th>
 					<td>
 						<ul>
 							<li>
 								<a rel="external" href="http://www.deepdyve.com/search?query=<?php echo str_replace(' ', '+', $citation->title); ?>">
-									Deep Dyve
-								</a> - rent this
+									<?php echo JText::_('COM_CITATIONS_DEEP_DYVE'); ?>
+								</a><?php echo JText::_('COM_CITATIONS_DEEP_DYVE_RENT'); ?>
 							</li>
 						</ul>
 					</td>

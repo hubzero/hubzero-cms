@@ -56,27 +56,27 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Citations'),
+	JText::_('CITATIONS'),
 	'index.php?option=com_citations&controller=citations',
 	($controllerName == 'citations' && JRequest::getVar('task', '') != 'stats')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Stats'),
+	JText::_('CITATION_STATS'),
 	'index.php?option=com_citations&controller=citations&task=stats',
 	($controllerName == 'citations' && JRequest::getVar('task', '') == 'stats')
 );
 JSubMenuHelper::addEntry(
-	JText::_('Types'),
+	JText::_('CITATION_TYPES'),
 	'index.php?option=com_citations&controller=types',
 	$controllerName == 'types'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Sponsors'),
+	JText::_('CITATION_SPONSORS'),
 	'index.php?option=com_citations&controller=sponsors',
 	$controllerName == 'sponsors'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Format'),
+	JText::_('CITATION_FORMAT'),
 	'index.php?option=com_citations&controller=format',
 	$controllerName == 'format'
 );

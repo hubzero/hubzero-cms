@@ -34,7 +34,7 @@ $canDo = CitationsHelper::getActions('type');
 
 $text = ($this->task == 'edittype' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('Citation Type') . ': ' . $text, 'citation.png');
+JToolBarHelper::title(JText::_('CITATIONS') . ' ' . JText::_('CITATION_TYPES') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save();
@@ -106,27 +106,27 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Citation Type'); ?></span></legend>
+			<legend><span><?php echo JText::_('CITATION_TYPES'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-type"><?php echo JText::_('Type Alias'); ?></label><br />
+				<label for="field-type"><?php echo JText::_('CITATION_TYPES_ALIAS'); ?></label><br />
 				<input type="text" name="type[type]" id="field-type" value="<?php echo $type; ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-field-type_title"><?php echo JText::_('Type Title'); ?></label><br />
+				<label for="field-field-type_title"><?php echo JText::_('CITATION_TYPES_TITLE'); ?></label><br />
 				<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-type_desc"><?php echo JText::_('Type Description'); ?></label><br />
+				<label for="field-type_desc"><?php echo JText::_('CITATION_TYPES_DESC'); ?></label><br />
 				<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $desc; ?></textarea>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-fields"><?php echo JText::_('Fields'); ?></label><br />
+				<label for="field-fields"><?php echo JText::_('CITATION_TYPES_FIELDS'); ?></label><br />
 				<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $fields; ?></textarea>
-				<span class="hint"><?php echo JText::_('**Type and Title are automatically included'); ?></span>
+				<span class="hint"><?php echo JText::_('CITATION_TYPES_FIELDS_HINT'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -147,8 +147,8 @@ function submitbutton(pressbutton)
 			<table class="admintable">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('Placeholder'); ?></th>
-						<th><?php echo JText::_('Field'); ?></th>
+						<th><?php echo JText::_('CITATION_TYPES_PLACEHOLDER'); ?></th>
+						<th><?php echo JText::_('CITATION_TYPES_FIELD'); ?></th>
 					</tr>
 				</thead>
 				<tbody>

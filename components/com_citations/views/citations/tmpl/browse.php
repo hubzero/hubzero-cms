@@ -66,12 +66,16 @@ if ($label == "none") {
 		<ul id="useroptions">
 			<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
 				<li>
-					<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_citations&task=add'); ?>"><?php echo JText::_('Submit a Citation'); ?></a>
+					<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_citations&task=add'); ?>">
+						<?php echo JText::_('COM_CITATIONS_SUBMIT_CITATION'); ?>
+					</a>
 				</li>
 			<?php endif; ?>
 			<?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
 				<li>
-					<a class="btn icon-upload" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">Import citations</a>
+					<a class="btn icon-upload" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=import'); ?>">
+						<?php echo JText::_('COM_CITATIONS_IMPORT_CITATION'); ?>
+					</a>
 				</li>
 			<?php endif; ?>
 		</ul>
@@ -84,8 +88,8 @@ if ($label == "none") {
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
-					<legend>Search Citations</legend>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo stripslashes($this->filters['search']); ?>" placeholder="Search Citations by Title, Author, ISBN, DOI, Publisher, and Abstract" />
+					<legend><?php echo JText::_('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo stripslashes($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- /.container .data-entry -->
 			<div class="container">
@@ -111,9 +115,9 @@ if ($label == "none") {
 							}
 						}
 					?>
-					<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>">All</a></li>
-					<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>">Affiliated</a></li>
-					<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>">Non-Affiliated</a></li>
+					<li><a <?php if ($this->filters['filter'] == '') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter='); ?>"><?php echo JText::_('COM_CITATIONS_ALL'); ?></a></li>
+					<li><a <?php if ($this->filters['filter'] == 'aff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=aff'); ?>"><?php echo JText::_('COM_CITATIONS_AFFILIATED'); ?></a></li>
+					<li><a <?php if ($this->filters['filter'] == 'nonaff') { echo 'class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_citations&task=browse'.$queryString.'&filter=nonaff'); ?>"><?php echo JText::_('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
 				</ul>
 				<div class="clearfix"></div>
 
@@ -139,7 +143,7 @@ if ($label == "none") {
 										<input type="checkbox" class="checkall-download" />
 									</th>
 								<?php endif; ?>
-								<th colspan="3">Citations</th>
+								<th colspan="3"><?php echo JText::_('COM_CITATIONS'); ?></th>
 							</tr>
 							<?php if ($this->isAdmin) : ?>
 								<tr class="hidden"></tr>
@@ -222,14 +226,16 @@ if ($label == "none") {
 												?>
 												<?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
 													<?php $final = substr($final, 0, -2); ?>
-													<p class="sponsor">Abstract courtesy of <?php echo $final; ?></p>
+													<p class="sponsor"><?php echo JText::_('COM_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 												<?php endif; ?>
 												<p><?php echo nl2br($cite->abstract); ?></p>
 											</div>
 										<?php endif; ?>
 									</td>
 									<?php if ($this->isAdmin === true) : ?>
-										<td class="col-edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">Edit</a></td>
+										<td class="col-edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$cite->id); ?>">
+											<?php echo JText::_('COM_CITATIONS_EDIT'); ?>
+										</a></td>
 									<?php endif; ?>
 								</tr>
 								<tr>
@@ -293,9 +299,9 @@ if ($label == "none") {
 		<div class="aside">
 			<fieldset>
 				<label>
-					<?php echo JText::_('Type'); ?>
+					<?php echo JText::_('COM_CITATIONS_TYPE'); ?>
 					<select name="type" id="type">
-						<option value="">All</option>
+						<option value=""><?php echo JText::_('COM_CITATIONS_ALL'); ?></option>
 						<?php foreach ($this->types as $t) : ?>
 							<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
@@ -303,7 +309,7 @@ if ($label == "none") {
 					</select>
 				</label>
 				<label>
-					<?php echo JText::_('Tags'); ?>:
+					<?php echo JText::_('COM_CITATIONS_TAGS'); ?>:
 					<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
@@ -315,15 +321,15 @@ if ($label == "none") {
 						<?php endif; ?>
 				</label>
 				<label>
-					<?php echo JText::_('Authored By'); ?>
+					<?php echo JText::_('COM_CITATIONS_AUTHORED_BY'); ?>
 					<input type="text" name="author" value="<?php echo $this->filters['author']; ?>" />
 				</label>
 				<label>
-					<?php echo JText::_('Published In'); ?>
+					<?php echo JText::_('COM_CITATIONS_PUBLISHED_IN'); ?>
 					<input type="text" name="publishedin" value="<?php echo $this->filters['publishedin']; ?>" />
 				</label>
 				<label for="year_start">
-					<?php echo JText::_('Year'); ?><br />
+					<?php echo JText::_('COM_CITATIONS_YEAR'); ?><br />
 					<input type="text" name="year_start" class="half" value="<?php echo $this->filters['year_start']; ?>" />
 					to
 					<input type="text" name="year_end" class="half" value="<?php echo $this->filters['year_end']; ?>" />
@@ -331,19 +337,19 @@ if ($label == "none") {
 				<?php if ($this->isAdmin) { ?>
 					<fieldset>
 						<label>
-							<?php echo JText::_('Uploaded Between'); ?>
+							<?php echo JText::_('COM_CITATIONS_UPLOADED_BETWEEN'); ?>
 							<input type="text" name="startuploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['startuploaddate']); ?>" />
-							<div class="hint">YYYY-MM-DD</div>
+							<div class="hint"><?php echo JText::_('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
 						<label>
-							<?php echo JText::_('and'); ?><br/>
+							<?php echo JText::_('COM_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
 							<input type="text" name="enduploaddate" value="<?php echo str_replace(' 00:00:00', '', $this->filters['enduploaddate']); ?>" />
-							<div class="hint">YYYY-MM-DD</div>
+							<div class="hint"><?php echo JText::_('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
 						</label>
 					</fieldset>
 				<?php } ?>
 				<label>
-					<?php echo JText::_('Sort By'); ?>
+					<?php echo JText::_('COM_CITATIONS_SORT_BY'); ?>
 					<select name="sort" id="sort" class="">
 						<?php foreach ($this->sorts as $k => $v) : ?>
 							<?php $sel = ($k == $this->filters['sort']) ? "selected" : "";
@@ -360,56 +366,56 @@ if ($label == "none") {
 					</select>
 				</label>
 				<fieldset>
-					<legend><?php echo JText::_('Reference Type'); ?></legend>
+					<legend><?php echo JText::_('COM_CITATIONS_REFERENCE_TYPE'); ?></legend>
 					<label>
 						<input class="option" type="checkbox" name="reftype[research]" value="1"<?php if (isset($this->filters['reftype']['research'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Research'); ?>
+						<?php echo JText::_('COM_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="reftype[education]" value="1"<?php if (isset($this->filters['reftype']['education'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Education'); ?>
+						<?php echo JText::_('COM_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="reftype[eduresearch]" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Education/Research'); ?>
+						<?php echo JText::_('COM_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="reftype[cyberinfrastructure]" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Cyberinfrastructure'); ?>
+						<?php echo JText::_('COM_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
-					<legend><?php echo JText::_('Author Geography'); ?></legend>
+					<legend><?php echo JText::_('COM_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
 					<label>
 						<input class="option" type="checkbox" name="geo[us]" value="1"<?php if (isset($this->filters['geo']['us'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('US'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="geo[na]" value="1"<?php if (isset($this->filters['geo']['na'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('North America'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="geo[eu]" value="1"<?php if (isset($this->filters['geo']['eu'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Europe'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="geo[as]" value="1"<?php if (isset($this->filters['geo']['as'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Asia'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
 					</label>
 				</fieldset>
 				<fieldset>
-					<legend><?php echo JText::_('Author Affiliation'); ?></legend>
+					<legend><?php echo JText::_('COM_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
 					<label>
 						<input class="option" type="checkbox" name="aff[university]" value="1"<?php if (isset($this->filters['aff']['university'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('University'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="aff[industry]" value="1"<?php if (isset($this->filters['aff']['industry'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Industry'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
 					</label>
 					<label>
 						<input class="option" type="checkbox" name="aff[government]" value="1"<?php if (isset($this->filters['aff']['government'])) { echo ' checked="checked"'; } ?> />
-						<?php echo JText::_('Government'); ?>
+						<?php echo JText::_('COM_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
 					</label>
 				</fieldset>
 
@@ -417,18 +423,18 @@ if ($label == "none") {
 				<input type="hidden" name="referer" value="<?php echo @$_SERVER['HTTP_REFERER']; ?>" />
 
 				<p class="submit">
-					<input type="submit" value="Filter" />
+					<input type="submit" value="<?php echo JText::_('COM_CITATIONS_FILTER'); ?>" />
 				</p>
 			</fieldset>
 
 			<?php if ($batch_download) : ?>
 				<fieldset id="download-batch">
-					<strong><?php echo JText::_('Export Multiple Citations'); ?></strong>
-					<p><?php echo JText::_('Check the citations that you would like to have exported.'); ?></p>
+					<strong><?php echo JText::_('COM_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
+					<p><?php echo JText::_('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-					<input type="submit" name="download" class="download-endnote" value="EndNote" />
+					<input type="submit" name="download" class="download-endnote" value="<?php echo JText::_('COM_CITATIONS_ENDNOTE'); ?>" />
 					|
-					<input type="submit" name="download" class="download-bibtex" value="BibTex" />
+					<input type="submit" name="download" class="download-bibtex" value="<?php echo JText::_('COM_CITATIONS_BIBTEX'); ?>" />
 				</fieldset>
 			<?php endif; ?>
 		</div><!-- /.aside -->

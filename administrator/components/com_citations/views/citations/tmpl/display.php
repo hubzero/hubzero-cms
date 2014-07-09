@@ -128,7 +128,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 								$type = $t['type_title'];
 							}
 						}
-						echo ($type) ? $type : Jtext::_('Generic');
+						echo ($type) ? $type : Jtext::_('GENERIC');
 					?>
 				</td>
 				<td>
@@ -160,10 +160,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td><?php echo $this->escape($row->year); ?></td>
 				<td>
-					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . JText::_('YES') . '</span></span>'; } ?>
+					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . JText::_('CITATION_YES') . '</span></span>'; } ?>
 				</td>
 				<td>
-					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . JText::_('YES') . '</span></span>'; } ?>
+					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . JText::_('CITATION_YES') . '</span></span>'; } ?>
 				</td>
 			</tr>
 <?php

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = CitationsHelper::getActions('sponsor');
 
-JToolBarHelper::title(JText::_('Citation Sponsors'), 'citation.png');
+JToolBarHelper::title(JText::_('CITATIONS') . ': ' . JText::_('CITATION_SPONSOR'), 'citation.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -54,14 +54,14 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="5%"><?php echo JText::_('ID'); ?></th>
-				<th><?php echo JText::_('Sponsor'); ?></th>
-				<th><?php echo JText::_('Link'); ?></th>
-				<th><?php echo JText::_('Image'); ?></th>
-				<th><?php echo JText::_('Actions'); ?></th>
+				<th width="5%"><?php echo JText::_('CITATION_ID'); ?></th>
+				<th><?php echo JText::_('CITATION_SPONSORS'); ?></th>
+				<th><?php echo JText::_('CITATION_SPONSORS_LINK'); ?></th>
+				<th><?php echo JText::_('CITATION_SPONSORS_IMAGE'); ?></th>
+				<th><?php echo JText::_('CITATION_SPONSORS_ACTIONS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

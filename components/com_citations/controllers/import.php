@@ -50,7 +50,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
-				JText::_('You must be a logged in to access this area.'),
+				JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
 			);
 			return;
@@ -89,7 +89,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('You must be a site administrator to import citations.'),
+				JText::_('COM_CITATIONS_CITATION_NOT_AUTH'),
 				'warning'
 			);
 			return;
@@ -109,7 +109,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 		//import the plugins
 		JPluginHelper::importPlugin('citation');
-        $dispatcher = JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		//call the plugins
 		$this->view->accepted_files = $dispatcher->trigger('onImportAcceptedFiles' , array());
@@ -136,7 +136,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('You must upload a file.'),
+				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE'),
 				'error'
 			);
 			return;
@@ -147,7 +147,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('The file you uploaded exceeds the maximum file size of 4MB.'),
+				JText::_('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
 				'error'
 			);
 			return;
@@ -156,7 +156,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		// make sure we dont have any file errors
 		if ($file['error'] > 0)
 		{
-			JError::raiseError(500, JText::_('An error occurred while trying to upload the file.'));
+			JError::raiseError(500, JText::_('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'));
 		}
 
 		// load citation import plugins
@@ -172,7 +172,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('An error occurred while trying to process your file. Your citations file is currently not in the right format.'),
+				JText::_('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
 				'error'
 			);
 			return;
@@ -227,7 +227,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('You must upload a citations file before continuing.'),
+				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
 			return;
@@ -282,7 +282,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('You must upload a citations file before continuing.'),
+				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
 			return;
@@ -387,7 +387,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		}
 
 		//
-		if($cites_require_no_attention)
+		if ($cites_require_no_attention)
 		{
 			foreach ($cites_require_no_attention as $k => $crna)
 			{
@@ -470,17 +470,26 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		}
 
 		// success message a redirect
-		$this->addComponentMessage('You have successfully uploaded <strong>' . count($citations_saved) . '</strong> new citation(s). Your citation(s) can be viewed below.', 'passed');
+		$this->addComponentMessage(
+			JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
+			'passed'
+		);
 
 		// if we have citations not getting saved
 		if (count($citations_not_saved) > 0)
 		{
-			$this->addComponentMessage('<strong>' . count($citations_not_saved) . '</strong> citation(s) NOT uploaded.', 'warning');
+			$this->addComponentMessage(
+				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
+				'warning'
+			);
 		}
 
 		if (count($citations_error) > 0)
 		{
-			$this->addComponentMessage('An error occurred while trying to save <strong>' . count($citations_error) . '</strong> citation(s).', 'error');
+			$this->addComponentMessage(
+				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
+				'error'
+			);
 		}
 
 		//get the session object
@@ -522,7 +531,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_citations&task=import'),
-				JText::_('You must upload a citations file before continuing.'),
+				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
 			return;
@@ -601,7 +610,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 			if ($tmp)
 			{
-				foreach($tmp as $t)
+				foreach ($tmp as $t)
 				{
 					$ft = filemtime($p . DS . $t);
 

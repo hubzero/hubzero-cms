@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add title and save button to toolbar
-JToolBarHelper::title(JText::_('Citation Format'), 'citation.png');
+JToolBarHelper::title(JText::_('CITATIONS') . ': ' . JText::_('CITATION_FORMAT'), 'citation.png');
 JToolBarHelper::save();
 JToolBarHelper::spacer();
 JToolBarHelper::help('format');
@@ -78,10 +78,10 @@ $jQ(document).ready(function(e) {
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Citation Format'); ?></span></legend>
+			<legend><span><?php echo JText::_('CITATION_FORMAT'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="format-selector"><?php echo JText::_('Format Style:'); ?></label><br />
+				<label for="format-selector"><?php echo JText::_('CITATION_FORMAT_STYLE'); ?>:</label><br />
 				<select name="format[style]" id="format-selector">
 					<option value="apa" <?php if ($this->currentFormat->style == 'apa') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->apaFormat); ?>">APA Format</option>
 					<option value="ieee" <?php if ($this->currentFormat->style == 'ieee') { echo 'selected'; } ?> data-format="<?php echo str_replace('"', '\"', $this->ieeeFormat); ?>">IEEE Format</option>
@@ -90,7 +90,7 @@ $jQ(document).ready(function(e) {
 			</div>
 
 			<div class="input-wrap">
-				<label for="format-string"><?php echo JText::_('Format String:'); ?></label><br />
+				<label for="format-string"><?php echo JText::_('CITATION_FORMAT_STRING'); ?>:</label><br />
 				<textarea name="format[format]" rows="10" id="format-string"><?php echo $this->currentFormat->format; ?></textarea>
 			</div>
 		</fieldset>
@@ -100,8 +100,8 @@ $jQ(document).ready(function(e) {
 			<table class="admintable">
 				<thead>
 					<tr>
-						<th>Placeholder</th>
-						<th>Value</th>
+						<th><?php echo JText::_('CITATION_FORMAT_PLACEHOLDER'); ?></th>
+						<th><?php echo JText::_('CITATION_FORMAT_VALUE'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -117,7 +117,7 @@ $jQ(document).ready(function(e) {
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</div>	
 	<div class="clr"></div>
 
 	<input type="hidden" name="format[id]" value="<?php echo $this->currentFormat->id; ?>" />
