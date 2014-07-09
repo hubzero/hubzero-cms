@@ -42,7 +42,7 @@ if (!$this->no_html)
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
 		<div>
-			<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
+			<p><?php echo JText::_('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></span></p>
 			<p><button onclick="javascript:HUB.Modules.ReportProblems.resetForm();" title="<?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo JText::_('COM_SUPPORT_NEW_REPORT'); ?></button></p>
 		</div>
 		<p>
@@ -60,7 +60,7 @@ if (!$this->no_html)
 			<div class="col span-half">
 				<div id="ticket-number">
 					<h2>
-						<span><?php echo JText::_('Ticket #'); ?></span><strong><?php echo $this->ticket; ?></strong>
+						<span><?php echo JText::sprintf('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><?php echo $this->ticket; ?></strong>
 					</h2>
 				</div>
 			</div>

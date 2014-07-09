@@ -48,12 +48,12 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option . '&controller=index'
 			);
 		}
 		$pathway->addItem(
-			JText::_(strtoupper('REPORT_ABUSE')),
+			JText::_(strtoupper('COM_SUPPORT_REPORT_ABUSE')),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse'
 		);
 	}
@@ -66,7 +66,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 	protected function _buildTitle()
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
-		$this->_title .= ': ' . JText::_(strtoupper('REPORT_ABUSE'));
+		$this->_title .= ': ' . JText::_(strtoupper('COM_SUPPORT_REPORT_ABUSE'));
 
 		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
@@ -100,14 +100,14 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Check for a reference ID
 		if (!$this->view->refid)
 		{
-			JError::raiseError(404, JText::_('REFERENCE_ID_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_REFERENCE_ID_NOT_FOUND'));
 			return;
 		}
 
 		// Check for a category
 		if (!$this->view->cat)
 		{
-			JError::raiseError(404, JText::_('CATEGORY_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'));
 			return;
 		}
 
@@ -138,7 +138,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Ensure we found a reported item
 		if (!$this->view->report)
 		{
-			$this->setError(JText::_('ERROR_REPORTED_ITEM_NOT_FOUND'));
+			$this->setError(JText::_('COM_SUPPORT_ERROR_REPORTED_ITEM_NOT_FOUND'));
 		}
 
 		// Set the page title
@@ -259,10 +259,10 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			$jconfig = JFactory::getConfig();
 
 			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('REPORTABUSE');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE');
 			$from['email'] = $jconfig->getValue('config.mailfrom');
 
-			$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('REPORTABUSE');
+			$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE');
 
 			$message = '';
 
@@ -280,7 +280,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 				{
 					if (!SupportUtilities::sendEmail($from, $to, $subject, $message))
 					{
-						$this->setError(JText::sprintf('ERROR_FAILED_TO_SEND_EMAIL', $to));
+						$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_SEND_EMAIL', $to));
 					}
 				}
 			}
@@ -291,7 +291,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			echo json_encode(array(
 				'success'   => true,
 				'report_id' => $row->id,
-				'message'   => JText::sprintf('For future reference, your problem has been registered as Abuse Report <strong>#%s</strong>.', $row->id),
+				'message'   => JText::sprintf('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $row->id),
 				'id'        => $this->view->refid,
 				'category'  => $this->view->cat
 			));

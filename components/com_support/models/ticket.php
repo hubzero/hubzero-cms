@@ -78,7 +78,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * @param      boolean $clear   Clear data cache?
 	 * @return     mixed
 	 */
-	public function __construct($oid)
+	public function __construct($oid=null)
 	{
 		parent::__construct($oid);
 
@@ -179,7 +179,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the question open?
+	 * Is the ticket open?
 	 *
 	 * @return     boolean
 	 */
@@ -188,6 +188,23 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		if ($this->get('open') == 1)
 		{
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is the ticket in "waiting" status?
+	 *
+	 * @return     boolean
+	 */
+	public function isWaiting()
+	{
+		if ($this->isOpen())
+		{
+			if ($this->get('status') == 2)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -307,6 +324,43 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			break;
 		}
 		return $status;
+	}
+
+	/**
+	 * Mark a ticket as open
+	 *
+	 * @return     boolean
+	 */
+	public function open()
+	{
+		$this->set('open', 1)
+		     ->set('status', 1)
+		     ->set('resolved', '');
+
+		if (!$this->store(false))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Mark a ticket as closed
+	 *
+	 * @param   string $resolution
+	 * @return  boolean
+	 */
+	public function close($resolution=null)
+	{
+		$this->set('open', 0)
+		     ->set('status', 0)
+		     ->set('resolved', $resolution);
+
+		if (!$this->store(false))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -806,12 +860,12 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				$link .= '&controller=tickets&task=update';
 			break;
 
-			case 'stopWatching':
+			case 'stopwatching':
 				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=start';
 			break;
 
 			case 'watch':
-			case 'startWatching':
+			case 'startwatching':
 				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=start';
 			break;
 

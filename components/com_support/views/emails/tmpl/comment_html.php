@@ -34,21 +34,28 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-$st = new SupportTags(JFactory::getDBO());
+if (!($this->ticket instanceof SupportModelTicket))
+{
+	$this->ticket = new SupportModelTicket($this->ticket);
+}
+if (!($this->comment instanceof SupportModelComment))
+{
+	$this->comment = new SupportModelComment($this->comment);
+}
 
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'support/ticket/' . $this->ticket->id;
+	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
+	$sef = JRoute::_($this->ticket->link());
 }
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = $base . DS . trim($sef, DS);
 
-switch ($this->ticket->severity)
+switch ($this->ticket->get('severity'))
 {
 	case 'critical': $bgcolor = '#ffd3d4'; $bdcolor = '#e9bcbc'; break;
 	case 'major':    $bgcolor = '#fbf1be'; $bdcolor = '#e9e1bc'; break;
@@ -61,17 +68,13 @@ switch ($this->ticket->severity)
 		$bdcolor = '#e1e1e1';
 	break;
 }
-
-$comment = $this->comment->comment;
-
-$this->commentor = JFactory::getUser($this->comment->created_by);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" style="background-color: #fff; margin: 0; padding: 0;">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Support Center</title>
+		<title><?php echo JText::_('COM_SUPPORT_CENTER'); ?></title>
 		<style type="text/css">
 		/* Client-specific Styles */
 		body { width: 100% !important; font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important; background-color: #ffffff !important; margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
@@ -181,7 +184,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 											<tr style="border-collapse: collapse;">
 												<td height="30" style="border-collapse: collapse; color: #9bac9b;">
 													<div style="height: 0px; overflow: hidden; color: #fff; visibility: hidden;"><?php echo $this->delimiter; ?></div>
-													<div style="text-align: center; font-size: 90%; display: block; padding: 1em;">&uarr; You can reply to this message, just include your reply text above this area. Attachments (up to 2MB each) are permitted.</div>
+													<div style="text-align: center; font-size: 90%; display: block; padding: 1em;"><?php echo JText::_('COM_SUPPORT_EMAIL_REPLY_ABOVE'); ?></div>
 												</td>
 											</tr>
 										</table>
@@ -210,7 +213,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
-														Support Center
+														<?php echo JText::_('COM_SUPPORT_CENTER'); ?>
 													</td>
 												</tr>
 											</tbody>
@@ -251,40 +254,40 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 											<thead>
 												<tr>
 													<th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
-														<?php echo $this->escape($this->ticket->summary); ?>
+														<?php echo $this->escape($this->ticket->get('summary')); ?>
 													</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
 													<td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
-														#<?php echo $this->ticket->id; ?>
+														#<?php echo $this->ticket->get('id'); ?>
 													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->ticket->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->ticket->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo JText::sprintf('COM_SUPPORT_TICKET_CREATED', $this->ticket->created('time'), $this->ticket->created('date')); ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->name ? $this->ticket->name : 'Unknown'; ?> <?php echo $this->ticket->login ? '(' . $this->ticket->login . ')' : ''; ?></td>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED_BY'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('name', JText::_('COM_SUPPORT_UNKNOWN')); ?> <?php echo $this->ticket->get('login') ? '(' . $this->ticket->get('login') . ')' : ''; ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->severity; ?></td>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->get('severity'); ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo SupportHtml::getStatus($this->ticket->open, $this->ticket->status); ?></td>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_STATUS'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->status(); ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $st->get_tag_string($this->ticket->id, 0, 0, NULL, 0, 1); ?></td>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_TAGS'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->tags('string'); ?></td>
 																</tr>
 																<tr>
-																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 																</tr>
 															</tbody>
@@ -297,23 +300,20 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 										<table width="650" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 											<tbody>
 												<tr>
-													<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->comment->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->comment->created, JText::_('DATE_FORMAT_HZ1')); ?></th>
+													<th style="text-align: left;" align="left"><?php echo $this->comment->creator('name'); ?> (<?php echo $this->comment->creator('username'); ?>)</th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right"><?php echo  JText::sprintf('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
 													<?php
-														if ($this->comment->changelog && count($this->comment->changelog) >  0)
+														if ($this->comment->changelog() && count($this->comment->changelog()) >  0)
 														{
 													?>
 														<table id="ticket-updates" width="100%" style="border-collapse: collapse; border-top: 1px solid #e1e1e1; margin: 1em 0 2em 0; color: #616161;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 															<?php
-															//if (substr($this->comment->changelog, 0, 1) == '{')
-															//{
-																//$logs = json_decode($this->comment->changelog, true);
 																$clog = '';
-																foreach ($this->comment->changelog as $type => $log)
+																foreach ($this->comment->changelog() as $type => $log)
 																{
 																	if (is_array($log) && count($log) > 0)
 																	{
@@ -322,34 +322,38 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 																			$clog .= '<tr class="' . $type . '">';
 																			if ($type == 'changes')
 																			{
-																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . $items['field'] . '</span> changed from "<b style="color: #333;">' . $items['before'] . '</b>" to "<b style="color: #333;">' . $items['after'] . '</b>"</td>';
+																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left">' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', '<span style="color: #4e7ac7;">' . $items['field'] . '</span>', '<b style="color: #333;">' . $items['before'] . '</b>', '<b style="color: #333;">' . $items['after'] . '</b>') . '</td>';
 																			}
 																			else if ($type == 'notifications')
 																			{
-																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::_('Messaged') . '</span> (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . '</td>';
+																				$clog .= '<td width="100%" style="border-bottom: 1px solid #e1e1e1; text-align: left; padding: 0.4em 0.8em;" align="left"><span style="color: #4e7ac7;">' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', '</span> ' . $items['name'], $items['role'], $items['address']) . '</td>';
 																			}
 																			$clog .= '</tr>';
 																		}
 																	}
 																}
 																echo $clog;
-															//}
-													?>
+															?>
 															</tbody>
 														</table>
 													<?php
 														}
-														if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
-														{
-															$comment = str_replace("<br />", '', $comment);
-															$comment = $this->escape($comment);
-															$comment = nl2br($comment);
-															$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
-															$comment = preg_replace('/  /', ' &nbsp;', $comment);
-														}
-														$comment = $this->attach->parse($comment);
 													?>
-														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></p>
+														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->comment->content('parsed'); ?></p>
+														<?php if ($this->comment->attachments()->total()) { ?>
+															<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
+																<?php
+																foreach ($this->comment->attachments() as $attachment)
+																{
+																	if (!trim($attachment->get('description')))
+																	{
+																		$attachment->set('description', $attachment->get('filename'));
+																	}
+																	echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a href="' . $base . '/' . ltrim(JRoute::_($attachment->link()), '/') . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+																}
+																?>
+															</div><!-- / .comment-body -->
+														<?php } ?>
 													</td>
 												</tr>
 											</tbody>
@@ -368,7 +372,7 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>"><?php echo $link; ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, $link, $juri->base(), $juri->base()); ?></span>
 													</td>
 												</tr>
 											</tbody>

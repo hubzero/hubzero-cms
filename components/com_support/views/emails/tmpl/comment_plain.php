@@ -34,44 +34,48 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-$st = new SupportTags(JFactory::getDBO());
+if (!($this->ticket instanceof SupportModelTicket))
+{
+	$this->ticket = new SupportModelTicket($this->ticket);
+}
+if (!($this->comment instanceof SupportModelComment))
+{
+	$this->comment = new SupportModelComment($this->comment);
+}
 
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'support/ticket/' . $this->ticket->id;
+	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
+	$sef = JRoute::_($this->ticket->link());
 }
 $link = rtrim($base, DS) . DS . trim($sef, DS);
-
-$this->commentor = JFactory::getUser($this->comment->created_by);
 
 // Build message
 $message = '';
 if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
-	$message .= 'You can reply to this message, just include your reply text above this area' . "\n";
-	$message .= 'Attachments (up to 2MB each) are permitted' . "\n";
-	$message .= 'Message from ' . rtrim($juri->base(), DS) . '/support / Ticket #' . $this->ticket->id . "\n";
+	$message .= JText::_('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
+	$message .= 'Message from ' . rtrim($juri->base(), DS) . '/support / Ticket #' . $this->ticket->get('id') . "\n";
 }
 $message .= '----------------------------'."\n";
-$message .= strtoupper(JText::_('TICKET')).': '.$this->ticket->id."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->summary."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$this->ticket->created."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name . ($this->ticket->login ? ' ('.$this->ticket->login.')' : '') . "\n";
-$message .= strtoupper(JText::_('TICKET_FIELD_STATUS')).': '.SupportHtml::getStatus($this->ticket->status)."\n";
-$message .= strtoupper(JText::_('Tags')).': '.$st->get_tag_string($this->ticket->id, 0, 0, NULL, 0, 1)."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status()."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->ticket->tags('string')."\n";
 $message .= '----------------------------'."\n\n";
-$message .= JText::sprintf('TICKET_EMAIL_COMMENT_POSTED', $this->ticket->id) . ': ' . $this->commentor->get('name') . '(' . $this->comment->created_by . ")\n";
-$message .= JText::_('TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created . "\n\n";
-if ($this->comment->changelog)
+$message .= JText::sprintf('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
+$message .= JText::_('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
+if ($this->comment->changelog())
 {
-	foreach ($this->comment->changelog as $type => $log)
+	foreach ($this->comment->changelog() as $type => $log)
 	{
 		if (is_array($log) && count($log) > 0)
 		{
@@ -79,19 +83,27 @@ if ($this->comment->changelog)
 			{
 				if ($type == 'changes')
 				{
-					$message .= ' * ' . $items['field'] . ' changed from "' . $items['before'] . '" to "' . $items['after'] . '"' . "\n";
+					$message .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . "\n";
 				}
 				else if ($type == 'notifications')
 				{
-					$message  .= ' * ' . JText::_('Messaged') . ' (' . $items['role'] . ') ' . $items['name'] . ' - ' . $items['address'] . "\n";
+					$message  .= ' * ' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . "\n";
 				}
 			}
 			$message .= "\n";
 		}
 	}
 }
-$message .= $this->attach->parse($this->comment->comment);
-$message = str_replace('<br />', '', $message);
+$message .= $this->comment->content('clean');
+if ($this->comment->attachments()->total() > 0)
+{
+	$message .= "\n\n";
+	foreach ($this->comment->attachments() as $attachment)
+	{
+		$message .= $base . DS . trim(JRoute::_($attachment->link()), DS) . "\n";
+	}
+}
+
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 // Output message

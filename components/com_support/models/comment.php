@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'abstract.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'iterator.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'attachment.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'changelog.php');
@@ -56,7 +54,9 @@ class SupportModelComment extends \Hubzero\Base\Model
 	 */
 	private $_cache = array(
 		'attachments.count' => null,
-		'attachments.list' => null
+		'attachments.list'  => null,
+		'recipients.added'  => array(),
+		'recipients.failed' => array()
 	);
 
 	/**
@@ -320,6 +320,10 @@ class SupportModelComment extends \Hubzero\Base\Model
 	public function store($check=true)
 	{
 		$this->set('changelog', $this->changelog()->__toString());
+		if (!$this->get('comment'))
+		{
+			$this->set('access', 1);
+		}
 
 		return parent::store($check);
 	}
@@ -351,9 +355,9 @@ class SupportModelComment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Delete the record and all associated data
+	 * Get the changelog
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return    object
 	 */
 	public function changelog()
 	{
@@ -394,6 +398,130 @@ class SupportModelComment extends \Hubzero\Base\Model
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Add to the recipient list
+	 *
+	 * @return    object
+	 */
+	public function addTo($to, $role='')
+	{
+		$added = false;
+
+		// User ID
+		if (is_numeric($to))
+		{
+			$user = JUser::getInstance($to);
+			if ($user->get('id'))
+			{
+				if (isset($this->_cache['recipients.added'][$user->get('email')]))
+				{
+					return $this;
+				}
+				$this->_cache['recipients.added'][$user->get('email')] = array(
+					'role'    => $role,
+					'name'    => $user->get('name'),
+					'address' => $user->get('email'),
+					'id'      => $user->get('id')
+				);
+				$added = true;
+			}
+		}
+		else if (is_string($to))
+		{
+			// Email
+			if (strstr($to, '@') && \Hubzero\Utility\Validate::email($to))
+			{
+				if (isset($this->_cache['recipients.added'][$to]))
+				{
+					return $this;
+				}
+				$this->_cache['recipients.added'][$to] = array(
+					'role'    => $role,
+					'name'    => JText::_('COM_SUPPORT_UNKNOWN'),
+					'address' => $to,
+					'id'      => 0
+				);
+				$added = true;
+			}
+			// Username
+			else
+			{
+				$user = JUser::getInstance($to);
+				if ($user->get('id'))
+				{
+					if (isset($this->_cache['recipients.added'][$user->get('email')]))
+					{
+						return $this;
+					}
+					$this->_cache['recipients.added'][$user->get('email')] = array(
+						'role'    => $role,
+						'name'    => $user->get('name'),
+						'address' => $user->get('email'),
+						'id'      => $user->get('id')
+					);
+					$added = true;
+				}
+			}
+		}
+		else if (is_array($to))
+		{
+			if (isset($this->_cache['recipients.added'][$to['email']]))
+			{
+				return $this;
+			}
+			$this->_cache['recipients.added'][$to['email']] = $to;
+			$added = true;
+		}
+
+		if (!$added)
+		{
+			$this->_cache['recipients.failed'][] = $to;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get the recipient list
+	 *
+	 * @return    array
+	 */
+	public function to($who='')
+	{
+		$who = strtolower(trim($who));
+
+		switch ($who)
+		{
+			case 'id':
+			case 'ids':
+				$tos = array();
+				foreach ($this->_cache['recipients.added'] as $to)
+				{
+					if ($to['id'])
+					{
+						$tos[] = $to;
+					}
+				}
+				return $tos;
+			break;
+
+			case 'email':
+			case 'emails':
+				$tos = array();
+				foreach ($this->_cache['recipients.added'] as $to)
+				{
+					if (!$to['id'] && $to['email'])
+					{
+						$tos[] = $to;
+					}
+				}
+				return $tos;
+			break;
+		}
+
+		return $this->_cache['recipients.added'];
 	}
 }
 

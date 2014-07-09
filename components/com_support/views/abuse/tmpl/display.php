@@ -52,22 +52,22 @@ if (!$no_html)
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm<?php if ($no_html) { echo '-ajax'; } ?>">
 			<?php if (!$no_html) { ?>
 			<div class="explaination">
-				<p><?php echo JText::_('REPORT_ABUSE_EXPLANATION'); ?></p>
-				<p><?php echo JText::_('REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
+				<p><?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_EXPLANATION'); ?></p>
+				<p><?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_DESCRIPTION_HINT'); ?></p>
 			</div>
 			<?php } ?>
 			<fieldset>
-				<legend><?php echo JText::_('REPORT_ABUSE'); ?></legend>
+				<legend><?php echo JText::_('COM_SUPPORT_REPORT_ABUSE'); ?></legend>
 
 				<?php if (!$no_html) { ?>
 				<div class="field-wrap">
 					<div class="abuseitem">
 						<h4><?php
-							$name = JText::_('ANONYMOUS');
+							$name = JText::_('COM_SUPPORT_ANONYMOUS');
 							if ($this->report->anon == 0)
 							{
 								$juser = JUser::getInstance($this->report->author);
-								$name = JText::_('UNKNOWN');
+								$name = JText::_('COM_SUPPORT_UNKNOWN');
 								if (is_object($juser))
 								{
 									$name = $juser->get('name');
@@ -76,11 +76,11 @@ if (!$no_html)
 
 							echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 							echo ucfirst($this->cat) . ' by ';
-							echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name;
+							echo ($this->report->anon != 0) ? JText::_('COM_SUPPORT_ANONYMOUS') : $name;
 							echo ($this->report->href) ? '</a>': '';
 						?></h4>
 						<?php echo ($this->report->subject) ? '<p><strong>'.stripslashes($this->report->subject).'</strong></p>' : ''; ?>
-						<blockquote cite="<?php echo ($this->report->anon != 0) ? JText::_('ANONYMOUS') : $name; ?>">
+						<blockquote cite="<?php echo ($this->report->anon != 0) ? JText::_('COM_SUPPORT_ANONYMOUS') : $name; ?>">
 							<p><?php echo Sanitize::html($this->report->text); ?></p>
 						</blockquote>
 					</div>
@@ -88,10 +88,10 @@ if (!$no_html)
 				<?php } ?>
 
 				<p class="multiple-option">
-					<label class="option" for="subject1"><input type="radio" class="option" name="subject" id="subject1" value="<?php echo JText::_('OFFENSIVE_CONTENT'); ?>" checked="checked" /> <?php echo JText::_('OFFENSIVE_CONTENT'); ?></label>
-					<label class="option" for="subject2"><input type="radio" class="option" name="subject" id="subject2" value="<?php echo JText::sprintf('STUPID', ' '); ?>" /> <?php echo JText::sprintf('STUPID',' '); ?></label>
-					<label class="option" for="subject3"><input type="radio" class="option" name="subject" id="subject3" value="<?php echo JText::_('SPAM'); ?>" /> <?php echo JText::_('SPAM'); ?></label>
-					<label class="option" for="subject4"><input type="radio" class="option" name="subject" id="subject4" value="<?php echo JText::_('OTHER'); ?>" /> <?php echo JText::_('OTHER'); ?></label>
+					<label class="option" for="subject1"><input type="radio" class="option" name="subject" id="subject1" value="<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>" checked="checked" /> <?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?></label>
+					<label class="option" for="subject2"><input type="radio" class="option" name="subject" id="subject2" value="<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>" /> <?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?></label>
+					<label class="option" for="subject3"><input type="radio" class="option" name="subject" id="subject3" value="<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>" /> <?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?></label>
+					<label class="option" for="subject4"><input type="radio" class="option" name="subject" id="subject4" value="<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>" /> <?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?></label>
 				</p>
 
 				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
@@ -105,12 +105,12 @@ if (!$no_html)
 				<?php echo JHTML::_('form.token'); ?>
 
 				<label for="field-report">
-					<?php echo JText::_('REPORT_ABUSE_DESCRIPTION'); ?>
+					<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_DESCRIPTION'); ?>
 					<textarea name="report" id="field-report" rows="10" cols="50"></textarea>
 				</label>
 			</fieldset>
 			<p class="submit">
-				<input type="submit" class="btn btn-danger" value="<?php echo JText::_('SUBMIT'); ?>" />
+				<input type="submit" class="btn btn-danger" value="<?php echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
 			</p>
 		</form>
 		<div class="clear"></div>
@@ -118,7 +118,7 @@ if (!$no_html)
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } else { ?>
-			<p class="warning"><?php echo JText::_('ERROR_NO_INFO_ON_REPORTED_ITEM'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_SUPPORT_ERROR_NO_INFO_ON_REPORTED_ITEM'); ?></p>
 		<?php } ?>
 	<?php } ?>
 <?php if (!$no_html) { ?>

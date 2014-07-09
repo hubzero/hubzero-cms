@@ -34,61 +34,61 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
+if (!($this->ticket instanceof SupportModelTicket))
+{
+	$this->ticket = new SupportModelTicket($this->ticket);
+}
+
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'support/ticket/' . $this->ticket->id;
+	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket->id);
+	$sef = JRoute::_($this->ticket->link());
 }
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = $base . trim($sef, DS);
 
-$usertype = JText::_('Unknown');
-
-$submitter = JUser::getInstance($this->ticket->login);
-if ($submitter && is_object($submitter))
+$usertype = JText::_('COM_SUPPORT_UNKNOWN');
+if ($this->ticket->submitter('id'))
 {
-	if (version_compare(JVERSION, '1.6', 'lt'))
-	{
-		$usertype = $submitter->get('usertype');
-	}
-	else
-	{
-		jimport( 'joomla.user.helper' );
-		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
-	}
+	jimport( 'joomla.user.helper' );
+	$usertype = implode(', ', JUserHelper::getUserGroups($this->ticket->submitter('id')));
 }
-
-$comment = $this->ticket->report;
 
 $message = '';
 if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
-	$message .= 'You can reply to this message, just include your reply text above this area' . "\n";
-	$message .= 'Attachments (up to 2MB each) are permitted' . "\n";
-	$message .= 'Message from ' . rtrim($juri->base(), DS) . '/support / Ticket #' . $this->ticket->id . "\n";
+	$message .= JText::_('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
+	$message .= 'Message from ' . rtrim($juri->base(), DS) . '/support / Ticket #' . $this->ticket->get('id') . "\n";
 }
 $message .= '----------------------------'."\n";
-$message .= strtoupper(JText::_('TICKET')).': '.$this->ticket->id."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_SUMMARY')).': '.$this->ticket->summary."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED')).': '.$this->ticket->created."\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->name . ($this->ticket->login ? ' ('.$this->ticket->login.')' : '') . "\n";
-$message .= strtoupper(JText::_('TICKET_DETAILS_USERTYPE')).': '.$usertype."\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_EMAIL')).': '. $this->ticket->email ."\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_IP_HOSTNAME')).': '. $this->ticket->ip .' ('.$this->ticket->hostname.')' ."\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_OS')).': '. $this->ticket->os . "\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_BROWSER')).': '. $this->ticket->browser . "\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_UAS')).': '. $this->ticket->uas . "\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_COOKIES')).': ' . ($this->ticket->cookies ? JText::_('COM_SUPPORT_COOKIES_ENABLED') : JText::_('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
-$message .= strtoupper(JText::_('COM_SUPPORT_REFERRER')).': '. $this->ticket->referrer . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_SUMMARY')).': '.$this->ticket->get('summary')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED')).': '.$this->ticket->get('created')."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$this->ticket->submitter('name') . ($this->ticket->get('login') ? ' ('.$this->ticket->get('login').')' : '') . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_USERTYPE')).': '.$usertype."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_EMAIL')).': '. $this->ticket->get('email') ."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_IP_HOSTNAME')).': '. $this->ticket->get('ip') .' ('.$this->ticket->get('hostname').')' ."\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_OS')).': '. $this->ticket->get('os') . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_BROWSER')).': '. $this->ticket->get('browser') . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_UAS')).': '. $this->ticket->get('uas') . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_COOKIES')).': ' . ($this->ticket->get('cookies') ? JText::_('COM_SUPPORT_COOKIES_ENABLED') : JText::_('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
+$message .= strtoupper(JText::_('COM_SUPPORT_REFERRER')).': '. $this->ticket->get('referrer') . "\n";
 $message .= '----------------------------'."\n\n";
-$message .= $this->attach->parse($comment);
+$message .= $this->ticket->content('clean');
+if ($this->ticket->attachments()->total() > 0)
+{
+	$message .= "\n\n";
+	foreach ($this->comment->attachments() as $attachment)
+	{
+		$message .= $base . DS . trim(JRoute::_($attachment->link()), DS) . "\n";
+	}
+}
 
-$message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo preg_replace('/<a\s+href="(.*?)"\s?(.*?)>(.*?)<\/a>/i', '\\1', $message) . "\n\n" . $link . "\n";
