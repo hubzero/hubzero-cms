@@ -97,6 +97,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_ADMIN', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_NUMBER_TAGGED', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_ALIAS', 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_TAGS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -161,6 +162,9 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php echo $row->get('substitutes'); ?>
+				</td>
+				<td>
+					<?php echo ($row->created() != '0000-00-00 00:00:00' ? $row->created() : JText::_('COM_TAGS_UNKNOWN')); ?>
 				</td>
 			</tr>
 <?php

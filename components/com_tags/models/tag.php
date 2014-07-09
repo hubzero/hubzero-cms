@@ -210,6 +210,20 @@ class TagsModelTag extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Determine if record was modified
+	 *
+	 * @return     boolean True if modified, false if not
+	 */
+	public function wasModified()
+	{
+		if ($this->get('modified') && $this->get('modified') != '0000-00-00 00:00:00')
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Store changes to this tag
 	 *
 	 * @param     boolean $check Perform data validation check?

@@ -72,6 +72,34 @@ class TagsTableTag extends JTable
 	var $admin       = NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var string
+	 */
+	var $created    = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var integer
+	 */
+	var $created_by = NULL;
+
+	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var string
+	 */
+	var $modified    = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var integer
+	 */
+	var $modified_by = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -278,6 +306,17 @@ class TagsTableTag extends JTable
 
 		$this->tag = $this->normalize($this->raw_tag);
 
+		if (!$this->id)
+		{
+			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+		}
+		else
+		{
+			$this->modified    = ($this->modified ? $this->modified : JFactory::getDate()->toSql());
+			$this->modified_by = ($this->modified_by ? $this->modified_by : JFactory::getUser()->get('id'));
+		}
+
 		return true;
 	}
 
@@ -359,7 +398,7 @@ class TagsTableTag extends JTable
 		}
 		else
 		{
-			$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag, t.admin,
+			$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag, t.admin, t.created,
 						(SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total,
 						(SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
@@ -409,6 +448,14 @@ class TagsTableTag extends JTable
 		if (isset($filters['admin']) && $filters['admin'] !== null)
 		{
 			$where[] = "t.`admin`=" . $this->_db->Quote((int) $filters['admin']);
+		}
+		if (isset($filters['created_by']) && $filters['created_by'] > 0)
+		{
+			$where[] = "t.`created_by`=" . $this->_db->Quote((int) $filters['created_by']);
+		}
+		if (isset($filters['modified_by']) && $filters['modified_by'] > 0)
+		{
+			$where[] = "t.`modified_by`=" . $this->_db->Quote((int) $filters['modified_by']);
 		}
 
 		if (count($where) > 0)

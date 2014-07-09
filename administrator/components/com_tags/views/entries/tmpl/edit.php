@@ -106,6 +106,68 @@ if ($this->getError())
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_ID'); ?>:</th>
+					<td>
+						<?php echo $this->tag->get('id'); ?>
+						<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_CREATOR'); ?>:</th>
+					<td>
+						<?php
+						if ($this->tag->get('created_by'))
+						{
+							$editor = JUser::getInstance($this->tag->get('created_by'));
+							echo $this->escape(stripslashes($editor->get('name')));
+						}
+						else
+						{
+							echo JText::_('COM_TAGS_UNKNOWN');
+						}
+						?>
+						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_CREATED'); ?>:</th>
+					<td>
+						<?php echo ($this->tag->created() != '0000-00-00 00:00:00' ? $this->tag->created() : JText::_('COM_TAGS_UNKNOWN')); ?>
+						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->tag->get('created')); ?>" />
+					</td>
+				</tr>
+			<?php if ($this->tag->exists() && $this->tag->wasModified()) { ?>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
+					<td>
+						<?php
+						if ($this->tag->get('modified_by'))
+						{
+							$editor = JUser::getInstance($this->tag->get('modified_by'));
+							echo $this->escape(stripslashes($editor->get('name')));
+						}
+						else
+						{
+							echo JText::_('COM_TAGS_UNKNOWN');
+						}
+						?>
+						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->tag->get('modified_by')); ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
+					<td>
+						<?php echo ($this->tag->modified() != '0000-00-00 00:00:00' ? $this->tag->modified() : JText::_('COM_TAGS_UNKNOWN')); ?>
+						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->tag->get('modified')); ?>" />
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
+
 		<div class="data-wrap">
 <?php
 	if ($this->tag->exists())
@@ -202,7 +264,6 @@ if ($this->getError())
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
