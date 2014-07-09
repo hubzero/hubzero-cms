@@ -369,7 +369,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 		}
 
 		// Force data to an array
-		if (!is_array($tag))
+		if (!is_array($tags))
 		{
 			$tags = array($tags);
 		}
@@ -528,7 +528,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 				if (!in_array($tagItem->get('tag'), $tagArray))
 				{
 					// We need to delete old tags that don't appear in the new parsed string.
-					$this->remove($tagItem->get('tag'), $tagger_id);
+					$this->remove($tagItem->get('tag'), ($admin ? 0 : $tagger_id));
 				}
 				else
 				{
