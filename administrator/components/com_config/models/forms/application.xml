@@ -772,7 +772,7 @@
 			type="radio"
 			label="COM_CONFIG_FIELD_API_ENABLE_LABEL"
 			description="COM_CONFIG_FIELD_API_ENABLE_DESC"
-			required="true"
+			required="false"
 			default="0"
 			filter="integer">
 			<option
