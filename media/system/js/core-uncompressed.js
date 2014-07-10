@@ -509,7 +509,7 @@ function submitform(pressbutton) {
 	if (typeof document.adminForm.onsubmit == "function") {
 		document.adminForm.onsubmit();
 	}
-	else if (typeof form.dispatchEvent == "function") {
+	else if (typeof document.adminForm.dispatchEvent == "function") {
 		document.adminForm.dispatchEvent(event);
 	}
 	else if (typeof document.adminForm.fireEvent == "function") {
