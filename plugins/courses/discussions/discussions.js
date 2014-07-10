@@ -235,6 +235,7 @@ HUB.Plugins.CoursesForum = {
 					e.preventDefault();
 
 					if ($('#field-category_id').val() == 0 || $('#field-category_id').val() == '0' || !$('#field-category_id').val()) {
+						$(this).find('p.error').remove();
 						$(this).find('fieldset').append($('<p class="error">Please select a category.</p>'));
 						e.stopImmediatePropagation();
 						return false;
