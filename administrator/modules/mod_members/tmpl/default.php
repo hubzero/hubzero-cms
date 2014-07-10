@@ -31,9 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $total = $this->confirmed + $this->unconfirmed;
 ?>
-<div class="mod_members">
+<div class="<?php echo $this->module->module; ?>">
 	<table class="stats-overview">
 		<tbody>
 			<tr>
@@ -54,10 +56,6 @@ $total = $this->confirmed + $this->unconfirmed;
 					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
 					<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
 				</td>
-				<?php /*<td class="newest">
-					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
-					<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
-				</td>*/ ?>
 			</tr>
 		</tbody>
 	</table>

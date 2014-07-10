@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- All rights reserved.
+@package        hubzero-cms
+@file           administrator/modules/mod_application_env/mod_application_env.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
+Copyright 2005-2014 Purdue University. All rights reserved.
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<install type="module" version="1.5" client="administrator">
 	<name>Application Environment</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<creationDate>April 2012</creationDate>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
-	<description>This module displays the current application environment (production, stage, testing, development)</description>
+	<description>MOD_APPLICATION_ENV_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_application_env">mod_application_env.php</filename>
 		<filename>tmpl/default.php</filename>
@@ -34,10 +43,6 @@
 		<filename>index.html</filename>
 		<filename>mod_application_env.css</filename>
 	</files>
-	<params>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
-	</params>
 	<languages>
 		<language tag="en-GB">en-GB.mod_application_env.ini</language>
 	</languages>

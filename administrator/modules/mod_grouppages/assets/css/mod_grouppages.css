@@ -1,0 +1,15 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_grouppages/assets/css/mod_grouppages.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.page:after {
+		content: '\f0f6';
+		font-family: 'Fontcons';
+	}
+	.module:after {
+		content: '\f02f';
+		font-family: 'Fontcons';
+	}

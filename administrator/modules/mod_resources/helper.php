@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Resources;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for com_resources data
  */
-class modResources extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
@@ -43,29 +44,24 @@ class modResources extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$this->database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=5 AND standalone=1");
-		$this->draftInternal = $this->database->loadResult();
+		$queries = array(
+			'unpublished'   => 0,
+			'published'     => 1,
+			'draftUser'     => 2,
+			'pending'       => 3,
+			'removed'       => 4,
+			'draftInternal' => 5
+		);
 
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=2 AND standalone=1");
-		$this->draftUser = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=3 AND standalone=1");
-		$this->pending = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=1 AND standalone=1");
-		$this->published = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=0 AND standalone=1");
-		$this->unpublished = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__resources WHERE published=4 AND standalone=1");
-		$this->removed = $this->database->loadResult();
-
-		$this->css();
+		foreach ($queries as $key => $state)
+		{
+			$database->setQuery("SELECT count(*) FROM `#__resources` WHERE published=$state AND standalone=1");
+			$this->$key = $database->loadResult();
+		}
 
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

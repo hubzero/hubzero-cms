@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,11 +24,13 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$this->css();
 
 //get whos online summary
 $siteUserCount  = 0;
@@ -46,12 +48,12 @@ foreach ($this->rows as $row)
 }
 ?>
 
-<form method="post" action="index.php?option=com_users">
+<div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">
 	<table class="whosonline-summary">
 		<thead>
 			<tr>
-				<th width="50%" scope="col"><?php echo JText::_( 'Site' ); ?></th>
-				<th scope="col"><?php echo JText::_( 'Administrator' ); ?></th>
+				<th scope="col" width="50%"><?php echo JText::_('Site'); ?></th>
+				<th scope="col"><?php echo JText::_('Administrator'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,70 +67,60 @@ foreach ($this->rows as $row)
 	<table class="adminlist whosonline-list">
 		<thead>
 			<tr>
-				<td class="title">
-					<strong><?php echo JText::_( 'User' ); ?></strong>
-				</td>
-				<td class="title">
-					<strong><?php echo JText::_( 'Location' ); ?></strong>
-				</td>
-				<td class="title">
-					<strong><?php echo JText::_( 'Last Activity' ); ?></strong>
-				</td>
+				<th scope="col"><?php echo JText::_('User'); ?></td>
+				<th scope="col"><?php echo JText::_('Location'); ?></th>
+				<th scope="col"><?php echo JText::_('Last Activity'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php if(count($this->rows) > 0) : ?>
+			<?php if (count($this->rows) > 0) : ?>
 				<?php foreach ($this->rows as $k => $row) : ?>
 					<?php if (($k+1) <= $this->params->get('display_limit', 25)) : ?>
 						<tr>
 							<td>
 								<?php
 									//are we authorized to edit users
-									$editAuthorized = $this->juser->authorize( 'com_users', 'manage' );
+									$editAuthorized = $this->juser->authorize('com_users', 'manage');
 
 									//get user object
-									$juser = JUser::getInstance( $row->username );
+									$juser = JUser::getInstance($row->username);
 
 									//display link if we are authorized
 									if ($editAuthorized)
 									{
 										$editLink = 'index.php?option=com_users&amp;task=edit&amp;cid[]='. $row->userid;
-										echo '<a href="' . $editLink . '" title="' . JText::_( 'Edit User' ) . '">' . $juser->get('name') . ' [' . $juser->get('username') . ']' . '</a>';
+										echo '<a href="' . $editLink . '" title="' . JText::_('Edit User') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
 									}
 									else
 									{
-										echo $juser->get('name') . ' [' . $juser->get('username') . ']';
+										echo $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']';
 									}
 								?>
 							</td>
 							<td>
 								<?php
-									$clientInfo = JApplicationHelper::getClientInfo( $row->client_id );
-									echo ucfirst( $clientInfo->name );
+									$clientInfo = JApplicationHelper::getClientInfo($row->client_id);
+									echo ucfirst($clientInfo->name);
 								?>
 							</td>
 							<td>
-								<?php echo JText::sprintf( '%.1f hours ago', (time() - $row->time)/3600.0 ); ?>
+								<?php echo JText::sprintf('%.1f hours ago', (time() - $row->time)/3600.0); ?>
 							</td>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="4" class="view-all">
+					<td colspan="3" class="view-all">
 						<a href="index.php?option=com_members&amp;controller=whosonline">&lsaquo; View all &rsaquo;</a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
-					<td colspan="4">
+					<td colspan="3">
 						<?php echo JText::_('Currently there are no users online.'); ?>
 					</td>
 				</tr>
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="client" value="" />
-	<input type="hidden" name="cid[]" id="cid_value" value="" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-</form>
+</div>

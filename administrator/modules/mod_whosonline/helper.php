@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\WhosOnline;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for showing users online
  */
-class modWhosOnline extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
@@ -43,38 +44,35 @@ class modWhosOnline extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		//create objects
-		$this->juser    = JFactory::getUser();
-		$this->database = JFactory::getDBO();
+		// create objects
+		$this->juser = \JFactory::getUser();
 
 		// hides Administrator or Super Administrator from list depending on usertype
 		$and = '';
-		if ( $this->juser->get('gid') == 24 )
+		if ($this->juser->get('gid') == 24)
 		{
-			$and = ' AND gid != "25"';
+			$and = " AND gid != 25 ";
 		}
 
 		// manager check
-		if ( $this->juser->get('gid') == 23 )
+		if ($this->juser->get('gid') == 23)
 		{
-			$and = ' AND gid != "25"';
-			$and .= ' AND gid != "24"';
+			$and  = " AND gid != 25 ";
+			$and .= " AND gid != 24 ";
 		}
 
-		//get users online
-		$query = 'SELECT username, MAX(time) as time, userid, usertype, client_id'
-		. ' FROM #__session'
-		. ' WHERE userid != 0'
-		. $and
-		. ' GROUP BY userid, client_id'
-		. ' ORDER BY time DESC';
-		$this->database->setQuery( $query );
-		$this->rows = $this->database->loadObjectList();
-
-		//add stylesheets to view
-		$this->css();
+		// get users online
+		$database = \JFactory::getDBO();
+		$database->setQuery(
+			"SELECT username, MAX(time) as time, userid, usertype, client_id 
+				FROM `#__session`
+				WHERE userid != 0 $and
+				GROUP BY userid, client_id
+				ORDER BY time DESC"
+		);
+		$this->rows = $database->loadObjectList();
 
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

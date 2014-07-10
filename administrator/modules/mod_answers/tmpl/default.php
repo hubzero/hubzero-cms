@@ -31,9 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 $total = $this->closed + $this->open;
 ?>
-<div class="mod_answers">
+<div class="<?php echo $this->module->module; ?>">
 	<table class="stats-overview">
 		<tbody>
 			<tr>

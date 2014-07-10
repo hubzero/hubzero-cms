@@ -1,0 +1,89 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_tools/assets/css/mod_tools.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.mod_tools {
+		padding: 1.618em;
+		position: relative;
+	}
+	.mod_tools .legend table,
+	.mod_tools .legend table thead tr,
+	.mod_tools .legend table thead th,
+	.mod_tools .legend table tbody tr,
+	.mod_tools .legend table tbody td {
+		border: none;
+		background: transparent;
+	}
+	.mod_tools .legend table {
+		width: auto;
+	}
+	.mod_tools .legend table tbody td {
+		padding: 0.2em;
+	}
+	.mod_tools .tools-total {
+		position: absolute;
+		top: 100px;
+		left: 50%;
+		margin-left: -96px;
+		font-size: 2em;
+		color: #666;
+		font-weight: 300;
+		text-align: center;
+		width: 100px;
+	}
+	.mod_tools .tools-stats-overview {
+		margin: 0.618em 0 0 0;
+		padding: 0;
+		table-layout: fixed;
+	}
+	.mod_tools .tools-stats-overview tbody tr td,
+	.mod_tools .tools-stats-overview tbody tr td:first-child {
+		text-align: center;
+		font-size: 1.1em;
+		font-weight: 300;
+		padding: 1.218em 0 0 0;
+		border: none;
+	}
+	.mod_tools .tools-stats-overview tbody tr td a {
+		color: #444;
+	}
+	.mod_tools .tools-stats-overview tbody tr td span {
+		font-weight: 400;
+		color: #999;
+	}
+	.mod_tools .tools-stats-overview tbody tr td.tools-published a {
+		color: orange;
+	}
+
+/* Hero */
+	.hero .mod_tools .tools-stats-overview tbody tr td,
+	.hero .mod_tools .tools-stats-overview tbody tr td:first-child {
+		font-size: 3em;
+	}
+	.hero .mod_tools .tools-stats-overview tbody tr td span {
+		font-size: 0.35em;
+		display: block;
+		margin: 1em 0 0 0;
+	}
+	.hero .mod_tools .tools-total {
+		top: 80px;
+	}
+	.hero .mod_tools .overview-container {
+		position: relative;
+		float: left;
+		width: 50%;
+		margin: 0;
+		padding: 0;
+	}
+	.hero .mod_tools:before,
+	.hero .mod_tools:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.hero .mod_tools:after {
+		clear: left;
+	}

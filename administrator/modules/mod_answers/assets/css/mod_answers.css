@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/modules/mod_answers/answers.css
+ * @file        administrator/modules/mod_answers/assets/css/mod_answers.css
  * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -9,10 +9,10 @@
 		margin: .618em 2.218em 0 2.218em;
 		padding: 2.218em 0;
 		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		-ms-box-sizing: border-box;
-		-o-box-sizing: border-box;
-		box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 	}
 
 	.mod_answers .stats-overview {
@@ -46,10 +46,10 @@
 	.mod_answers .graph { 
 		position: relative;
 		-webkit-border-radius: 0.1em;
-		-moz-border-radius: 0.1em;
-		-ms-border-radius: 0.1em;
-		-o-border-radius: 0.1em;
-		border-radius: 0.1em;
+		   -moz-border-radius: 0.1em;
+		    -ms-border-radius: 0.1em;
+		     -o-border-radius: 0.1em;
+		        border-radius: 0.1em;
 		margin: 0 0 0.618em 0;
 		padding: 0;
 		background-color: #f9d180;
@@ -63,10 +63,10 @@
 		height: 0.5em; 
 		line-height: 1;
 		-webkit-border-radius: 0.1em 0 0 0.1em;
-		-moz-border-radius: 0.1em 0 0 0.1em;
-		-ms-border-radius: 0.1em 0 0 0.1em;
-		-o-border-radius: 0.1em 0 0 0.1em;
-		border-radius: 0.1em 0 0 0.1em;
+		   -moz-border-radius: 0.1em 0 0 0.1em;
+		    -ms-border-radius: 0.1em 0 0 0.1em;
+		     -o-border-radius: 0.1em 0 0 0.1em;
+		        border-radius: 0.1em 0 0 0.1em;
 	}
 	.mod_answers .graph .bar span {
 		position: absolute;

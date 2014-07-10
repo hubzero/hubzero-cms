@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/modules/mod_supportactivity/mod_supportactivity.js
+ * @file        administrator/modules/mod_supportactivity/assets/js/mod_supportactivity.js
  * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */

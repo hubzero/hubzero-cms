@@ -2,8 +2,8 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/modules/mod_dashboard/mod_dashboard.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           administrator/modules/mod_tools/mod_tools.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
 Copyright 2005-2011 Purdue University. All rights reserved.
@@ -29,28 +29,33 @@ HUBzero is a registered trademark of Purdue University.
 
 <install type="module" version="1.5" client="administrator">
 	<name>Tools</name>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows on the Admin area Home Page and displays items that administrator needs to watch for.</description>
+	<description>MOD_TOOLS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_tools">mod_tools.php</filename>
-		<filename>tools.css</filename>
+		<filename>assets/css/tools.css</filename>
+		<filename>helper.php</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="1" label="MOD_TOOLS_CACHE_LABEL" description="MOD_TOOLS_CACHE_DESC">
+					<option value="1">MOD_TOOLS_CACHE_GLOBAL</option>
+					<option value="0">MOD_TOOLS_CACHE_NONE</option>
 				</field>
+			</fieldset>
+			<fieldset name="colors">
+				<field name="color_registered" type="text" default="#333333" label="MOD_TOOLS_COLOR_REGISTERED_LABEL" description="MOD_TOOLS_COLOR_REGISTERED_DESC" />
+				<field name="color_created" type="text" default="#999999" label="MOD_TOOLS_COLOR_CREATED_LABEL" description="MOD_TOOLS_COLOR_CREATED_DESC" />
+				<field name="color_uploaded" type="text" default="#656565" label="MOD_TOOLS_COLOR_UPLOADED_LABEL" description="MOD_TOOLS_COLOR_UPLOADED_DESC" />
+				<field name="color_updated" type="text" default="#cccccc" label="MOD_TOOLS_COLOR_UPDATED_LABEL" description="MOD_TOOLS_COLOR_UPDATED_DESC" />
+				<field name="color_approved" type="text" default="#ffffff" label="MOD_TOOLS_COLOR_APPROVED_LABEL" description="MOD_TOOLS_COLOR_APPROVED_DESC" />
+				<field name="color_published" type="text" default="#f9d180" label="MOD_TOOLS_COLOR_PUBLISHED_LABEL" description="MOD_TOOLS_COLOR_PUBLISHED_DESC" />
+				<field name="color_retired" type="text" default="#e1e1e1" label="MOD_TOOLS_COLOR_RETIRED_LABEL" description="MOD_TOOLS_COLOR_RETIRED_DESC" />
+				<field name="color_abandoned" type="text" default="#000000" label="MOD_TOOLS_COLOR_ABANDONED_LABEL" description="MOD_TOOLS_COLOR_ABANDONED_DESC" />
 			</fieldset>
 		</fields>
 	</config>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Supporttickets;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for com_support ticket data
  */
-class modSupportTickets extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
@@ -46,16 +47,13 @@ class modSupportTickets extends \Hubzero\Module\Module
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
-		$juser    = JFactory::getUser();
-		$database = JFactory::getDBO();
-		$jconfig  = JFactory::getConfig();
+		$juser    = \JFactory::getUser();
+		$database = \JFactory::getDBO();
+		$jconfig  = \JFactory::getConfig();
 
-		$st = new SupportTicket($database);
+		$st = new \SupportTicket($database);
 
-		//$opened = array();
-		//$my = array();
-
-		$sq = new SupportQuery($database);
+		$sq = new \SupportQuery($database);
 		$types = array(
 			'common' => $sq->getCommon()
 			//'mine'   => $sq->getMine()
@@ -65,17 +63,17 @@ class modSupportTickets extends \Hubzero\Module\Module
 		{
 			if (!is_array($queries) || count($queries) <= 0)
 			{
-				$one = new stdClass;
+				$one = new \stdClass;
 				$one->count = 0;
-				$one->id = 0;
+				$one->id    = 0;
 
-				$two = new stdClass;
+				$two = new \stdClass;
 				$two->count = 0;
-				$two->id = 0;
+				$two->id    = 0;
 
-				$three = new stdClass;
+				$three = new \stdClass;
 				$three->count = 0;
-				$three->id = 0;
+				$three->id    = 0;
 
 				$types[$key] = $queries = array(
 					$one,
@@ -98,35 +96,17 @@ class modSupportTickets extends \Hubzero\Module\Module
 				}
 			}
 		}
-		//$this->opened = $types['common'];
+
 		$this->topened = $types['common'];
-		//$this->my = $types['mine'];
 
-		// Get avgerage lifetime
-		//$this->lifetime = $st->getAverageLifeOfTicket($this->type, $this->year, $this->group);
-		//$database = JFactory::getDBO();
-
-		//$jconfig = JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
-		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = \JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->year = $year;
 		$this->opened = array();
 		$this->closed = array();
-
-		// Users
-		/*$this->users = null;
-
-		$query = "SELECT DISTINCT a.username, a.name, a.id
-				FROM `#__users` AS a
-				INNER JOIN `#__support_tickets` AS s ON s.owner = a.username
-				WHERE a.block = '0' AND s.type=0
-				ORDER BY a.name";
-
-		$database->setQuery($query);
-		$users = $database->loadObjectList();*/
 
 		// First ticket
 		$sql = "SELECT YEAR(created)
@@ -147,8 +127,8 @@ class modSupportTickets extends \Hubzero\Module\Module
 		$openTickets = $database->loadObjectList();
 
 		$open = array();
-		$this->opened['open'] = 0;
-		$this->opened['new'] = 0;
+		$this->opened['open']       = 0;
+		$this->opened['new']        = 0;
 		$this->opened['unassigned'] = 0;
 		foreach ($openTickets as $o)
 		{
@@ -241,9 +221,7 @@ class modSupportTickets extends \Hubzero\Module\Module
 			}
 		}
 
-		$this->css();
-
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

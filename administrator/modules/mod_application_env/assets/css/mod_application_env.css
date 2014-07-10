@@ -1,17 +1,9 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_system_env/mod_system_env.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        administrator/modules/mod_application_env/assets/css/mod_application_env.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-/*
-
-	-- -- -- -- -- -- --
-	mod_system_env
-	-- -- -- -- -- -- --
-
-*/
 
 	#system-environment {
 		display: block;

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,17 +25,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\ApplicationEnv;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for displaying current system environment
  */
-class modApplicationEnv extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module
@@ -44,7 +45,7 @@ class modApplicationEnv extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$config = JFactory::getConfig();
+		$config = \JFactory::getConfig();
 		$this->environment = $config->getValue('config.application_env', 'production');
 
 		if (strtolower($this->environment) == 'production')
@@ -52,8 +53,6 @@ class modApplicationEnv extends \Hubzero\Module\Module
 			return;
 		}
 
-		$this->css();
-
-		require(JModuleHelper::getLayoutPath('mod_application_env'));
+		parent::display();
 	}
 }

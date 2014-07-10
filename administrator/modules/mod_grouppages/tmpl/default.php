@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,11 +24,13 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die('Restricted access');
+
+$this->css();
 
 $rows = array();
 foreach ($this->unapprovedPages as $unapprovedPage)
@@ -52,48 +54,50 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 	$rows[$gidNumber]['modules']++;
 }
 ?>
-<table class="adminlist whosonline-list">
-	<thead>
-		<tr>
-			<td class="title" width="60%">
-				<strong><?php echo JText::_( 'Group' ); ?></strong>
-			</td>
-			<td class="title">
-				<strong><?php echo JText::_( '# Pages' ); ?></strong>
-			</td>
-			<td class="title">
-				<strong><?php echo JText::_( '# Modules' ); ?></strong>
-			</td>
-		</tr>
-	</thead>
-	<tbody>
-		<?php if(count($rows) > 0) : ?>
-			<?php foreach ($rows as $gidNumber => $row) : ?>
-				<tr>
-					<td>
-						<?php
-							$group = \Hubzero\User\Group::getInstance($gidNumber);
-							echo $group->get('description');
-						?>
-					</td>
-					<td>
-						<a class="page" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=pages">
-							<?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
-						</a>
-					</td>
-					<td>
-						<a class="module" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=modules">
-							<?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
-						</a>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		<?php else : ?>
+<div class="<?php echo $this->module->module; ?>">
+	<table class="adminlist grouppages-list">
+		<thead>
 			<tr>
-				<td colspan="3">
-					<em>There are currently no group pages or modules needing approval.</em>
+				<td class="title" width="60%">
+					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_GROUP'); ?></strong>
+				</td>
+				<td class="title">
+					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_PAGES'); ?></strong>
+				</td>
+				<td class="title">
+					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_MODULES'); ?></strong>
 				</td>
 			</tr>
-		<?php endif; ?>
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			<?php if (count($rows) > 0) : ?>
+				<?php foreach ($rows as $gidNumber => $row) : ?>
+					<tr>
+						<td>
+							<?php
+								$group = \Hubzero\User\Group::getInstance($gidNumber);
+								echo $group->get('description');
+							?>
+						</td>
+						<td>
+							<a class="page" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=pages">
+								<?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
+							</a>
+						</td>
+						<td>
+							<a class="module" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=modules">
+								<?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
+							</a>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php else : ?>
+				<tr>
+					<td colspan="3">
+						<em><?php echo JText::_('MOD_GROUPPAGES_NO_RESULTS'); ?></em>
+					</td>
+				</tr>
+			<?php endif; ?>
+		</tbody>
+	</table>
+</div>

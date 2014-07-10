@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Modules\Wishlist;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for com_wishlist data
  */
-class modWishlist extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
@@ -43,41 +44,37 @@ class modWishlist extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$this->database = JFactory::getDBO();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-		$obj = new Wishlist($this->database);
-		$wishlist = $this->params->get('wishlist', '');
+		$wishlist = intval($this->params->get('wishlist', 0));
 		if (!$wishlist)
 		{
-			$wishlist = $obj->get_wishlistID(1, 'general');
-			if (!$wishlist)
+			$model = \WishlistModelWishlist::getInstance(1, 'general');
+			if (!$model->exists())
 			{
-				$wishlist = $obj->createlist('general', 1);
+				$model->setup();
 			}
+			$wishlist = $model->get('id');
 		}
 
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=1");
-		$this->granted = $this->database->loadResult();
+		$queries = array(
+			'granted'   => 1,
+			'pending'   => "0 AND accepted=0",
+			'accepted'  => "0 AND accepted=1",
+			'rejected'  => 3,
+			'withdrawn' => 4,
+			'removed'   => 2
+		);
 
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND accepted=0 AND status=0");
-		$this->pending = $this->database->loadResult();
+		$database = \JFactory::getDBO();
 
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND accepted=1 AND status=0");
-		$this->accepted = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=3");
-		$this->rejected = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=4");
-		$this->withdrawn = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=2");
-		$this->removed = $this->database->loadResult();
-
-		$this->css();
+		foreach ($queries as $key => $state)
+		{
+			$database->setQuery("SELECT count(*) FROM `#__wishlist_item` WHERE wishlist='$wishlist' AND status=" . $state);
+			$this->$key = $database->loadResult();
+		}
 
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

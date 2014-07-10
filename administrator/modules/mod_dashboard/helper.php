@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,109 +23,103 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Modules\Dashboard;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for Administrator dashboard
  */
-class modDashboard extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
-	 * Output module TML
+	 * Output module HTML
 	 *
 	 * @return     void
 	 */
 	public function display()
 	{
 		$mosConfig_bankAccounts = 0;
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
-		$jconfig = JFactory::getConfig();
-		$upconfig = JComponentHelper::getParams('com_members');
-		$banking =  $upconfig->get('bankAccounts');
-		$sitename = $jconfig->getValue('config.sitename');
+		$jconfig  = \JFactory::getConfig();
+		$upconfig = \JComponentHelper::getParams('com_members');
+		$this->banking  = $upconfig->get('bankAccounts');
+		$this->sitename = $jconfig->getValue('config.sitename');
 
-		$threemonths 	= JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
-		$onemonth 		= JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
+		$threemonths = \JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
+		$onemonth    = \JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
 
-		if ($banking && JComponentHelper::isEnabled('com_store'))
+		if ($this->banking && \JComponentHelper::isEnabled('com_store'))
 		{
 			// get new store orders
-			$database->setQuery( "SELECT count(*) FROM #__orders WHERE status=0");
-			$orders = $database->loadResult();
+			$database->setQuery( "SELECT count(*) FROM `#__orders` WHERE status=0");
+			$this->orders = $database->loadResult();
 		}
 
 		// get open support tickets over 3 months old
-		/*$sql = "SELECT count(*) FROM #__support_tickets WHERE status=1 AND created < '".$threemonths."' AND section!=2 AND type=0";
+		/*$sql = "SELECT count(*) FROM `#__support_tickets` WHERE status=1 AND created < '".$threemonths."' AND section!=2 AND type=0";
 		$database->setQuery($sql);
 		$oldtickets = $database->loadResult();
 
 		// get unassigned support tickets
-		$sql = "SELECT count(*) FROM #__support_tickets WHERE status=0 AND section!=2 AND type=0 AND (owner is NULL OR owner='') AND report != ''";
+		$sql = "SELECT count(*) FROM `#__support_tickets` WHERE status=0 AND section!=2 AND type=0 AND (owner is NULL OR owner='') AND report != ''";
 		$database->setQuery($sql);
 		$newtickets = $database->loadResult();*/
 
 		// get abuse reports
-		$sql = "SELECT count(*) FROM #__abuse_reports WHERE state=0";
+		$sql = "SELECT count(*) FROM `#__abuse_reports` WHERE state=0";
 		$database->setQuery($sql);
-		$reports = $database->loadResult();
+		$this->reports = $database->loadResult();
 
 		// get pending resources
-		$sql = "SELECT count(*) FROM #__resources WHERE published=3";
+		$sql = "SELECT count(*) FROM `#__resources` WHERE published=3";
 		$database->setQuery($sql);
-		$pending = $database->loadResult();
+		$this->pending = $database->loadResult();
 
 		// get contribtool entries requiring admin attention
-		$sql = "SELECT count(*) FROM #__tool AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3  WHERE t.state=1 OR t.state=3 OR t.state=5 OR t.state=6";
+		$sql = "SELECT count(*) FROM `#__tool` AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3  WHERE t.state=1 OR t.state=3 OR t.state=5 OR t.state=6";
 		$database->setQuery($sql);
-		$contribtool = $database->loadResult();
+		$this->contribtool = $database->loadResult();
 
 		// get recent quotes
-		$sql = "SELECT count(*) FROM #__feedback WHERE date > '".$onemonth."'";
+		$sql = "SELECT count(*) FROM `#__feedback` WHERE `date` > '".$onemonth."'";
 		$database->setQuery($sql);
-		$quotes = $database->loadResult();
+		$this->quotes = $database->loadResult();
 
 		// get wishes from main wishlist - to come
-		$wishes = 0;
+		$this->wishes = 0;
 
 		// Check if component entry is there
-		$database->setQuery( "SELECT c.extension_id FROM #__extensions as c WHERE c.element='com_wishlist' AND type='component' AND enabled=1" );
+		$database->setQuery( "SELECT c.extension_id FROM `#__extensions` as c WHERE c.element='com_wishlist' AND type='component' AND enabled=1" );
 		$found = $database->loadResult();
 
 		if ($found)
 		{
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.plan.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.owner.group.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.rank.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.attachment.php');
-			$obj = new Wishlist($database);
-			$objWish = new Wish($database);
-			$juser 	  = JFactory::getUser();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+
+			$obj = new \Wishlist($database);
+			$objWish = new \Wish($database);
+			$juser   = \JFactory::getUser();
 
 			// Check if main wishlist exists, create one if missing
-			$mainlist = $obj->get_wishlistID(1, 'general');
-			if (!$mainlist)
+			$this->mainlist = $obj->get_wishlistID(1, 'general');
+			if (!$this->mainlist)
 			{
-				$mainlist = $obj->createlist('general', 1);
+				$this->mainlist = $obj->createlist('general', 1);
 			}
 			$filters = array('filterby'=>'pending', 'sortby'=>'date');
 			$wishes = $objWish->get_wishes($mainlist, $filters, 1, $juser);
-			$wishes = count($wishes);
+
+			$this->wishes = count($wishes);
 		}
 
-		// Get styles
-		$this->css();
-
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

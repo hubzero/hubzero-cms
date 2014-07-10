@@ -1,0 +1,80 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_dashboard/assets/css/mod_dashboard.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	table.adminform .mod_dashboard {
+		margin-bottom: 1em;
+	}
+	.mod_dashboard .title {
+		color: #666;
+		border: 1px solid #dfdfdf;
+		background: #dfdfdf;
+		padding: 0.7em;
+		margin: 0;
+	}
+	.mod_dashboard a {
+		color: #666666;
+	}
+	.mod_dashboard a:hover {
+		border-bottom: 1px solid #d3d3d3;
+	}
+	.mod_dashboard .hed-store {
+		background: url("../img/cart.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-abuse {
+		background: url("../img/stophand.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-support {
+		background: url("../img/support.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-resources {
+		background: url("../img/pending_resources.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-contribtool {
+		background: url("../img/tool.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-quote {
+		background: url("../img/quote.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-wish {
+		background: url("../img/wish.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .hed-stats {
+		background: url("../img/graph.gif") 0 0 no-repeat;
+	}
+	.mod_dashboard .p-zeroitems {
+		color: #b3b3b3;
+		background-color: #F5F5F5;
+		border-top: 1px solid #d3d3d3;
+		border-bottom: 1px solid #d3d3d3;
+		padding: 0.2em;
+	}
+	.mod_dashboard .p-attention {
+		color: #af723c;
+		background-color: #f8f1eb;
+		border-top: 1px solid #dfc6b1;
+		border-bottom: 1px solid #dfc6b1;
+		padding: 0.2em;
+	}
+	.mod_dashboard .p-attention a {
+		color: #ca4402;
+		border: none;
+	}
+	.mod_dashboard .p-attention a:hover {
+		border-bottom: 1px solid #dfc6b1;
+	}
+	.mod_dashboard .adminlist thead th {
+		text-align: left;
+		padding: 0.7em;
+	}
+	.mod_dashboard .adminlist thead th.numerical-data,
+	.mod_dashboard .adminlist tbody td {
+		text-align: right;
+	}
+	.mod_dashboard .adminlist tbody th,
+	.mod_dashboard .adminlist tbody td {
+		padding: 0.7em;
+	}

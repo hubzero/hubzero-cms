@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Groups;
+
+use Hubzero\Module\Module;
 
 /**
  * Module class for com_groups data
  */
-class modGroups extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
@@ -43,8 +44,6 @@ class modGroups extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$this->database = JFactory::getDBO();
-
 		$type = $this->params->get('type', '1');
 
 		switch ($type)
@@ -55,42 +54,32 @@ class modGroups extends \Hubzero\Module\Module
 			case '3': $this->type = 'partner'; break;
 		}
 
-		// Discoverability
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND discoverability=0 AND type='$type'");
-		$this->visible = $this->database->loadResult();
+		$queries = array(
+			'visible'    => "approved=1 AND discoverability=0",
+			'hidden'     => "approved=1 AND discoverability=1",
+			'closed'     => "join_policy=3",
+			'invite'     => "join_policy=2",
+			'restricted' => "join_policy=1",
+			'open'       => "join_policy=0",
+			'approved'   => "approved=1",
+			'pending'    => "approved=0"
+		);
 
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND discoverability=1 AND type='$type'");
-		$this->hidden = $this->database->loadResult();
+		$database = \JFactory::getDBO();
 
-		// Join policy
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=3 AND type='$type'");
-		$this->closed = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=2 AND type='$type'");
-		$this->invite = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=1 AND type='$type'");
-		$this->restricted = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE join_policy=0 AND type='$type'");
-		$this->open = $this->database->loadResult();
-
-		// Approved
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=1 AND type='$type'");
-		$this->approved = $this->database->loadResult();
-
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE approved=0 AND type='$type'");
-		$this->pending = $this->database->loadResult();
+		foreach ($queries as $key => $where)
+		{
+			$database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE type='$type' AND $where");
+			$this->$key = $database->loadResult();
+		}
 
 		// Last 24 hours
 		$lastDay = date('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
 
-		$this->database->setQuery("SELECT count(*) FROM #__xgroups WHERE created >= '$lastDay' AND type='$type'");
-		$this->pastDay = $this->database->loadResult();
-
-		$this->css();
+		$database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE created >= '$lastDay' AND type='$type'");
+		$this->pastDay = $database->loadResult();
 
 		// Get the view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }
