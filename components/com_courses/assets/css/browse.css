@@ -56,7 +56,7 @@
 		font-family: "Fontcons";
 		font-size: 7em;
 		color: #e1e1e1;
-		line-height: 1.6em;
+		line-height: 1em;
 	}
 	p.course-identity:after {
 		content: "";
