@@ -21,10 +21,10 @@ if (!jq) {
 
 HUB.Support = {
 	jQuery: jq,
-	
+
 	getMessage: function() {
 		var $ = HUB.Support.jQuery;
-		
+	
 		var id = $('#messages');
 		if (id.val() != 'mc') {
 			var hi = $('#'+id.val()).val();
@@ -33,7 +33,7 @@ HUB.Support = {
 			$('#comment').val('');
 		}
 	},
-	
+
 	initialize: function() {
 		var $ = this.jQuery;
 
@@ -69,6 +69,7 @@ HUB.Support = {
 					}
 					$(this).parent().parent().remove();
 				});
+			var running = 0;
 
 			var uploader = new qq.FileUploader({
 				element: attach[0],
@@ -81,13 +82,19 @@ HUB.Support = {
 							'<ul class="qq-upload-list"></ul>' + 
 						'</div>',
 				onSubmit: function(id, file) {
+					running++;
 				},
 				onComplete: function(id, file, response) {
-					$('ul.qq-upload-list').empty();
+					running--;
+
 					// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
 					response.html = response.html.replace(/&gt;/g, '>');
 					response.html = response.html.replace(/&lt;/g, '<');
 					$('#ajax-uploader-list').append(response.html);
+
+					if (running == 0) {
+						$('ul.qq-upload-list').empty();
+					}
 				}
 			});
 		}

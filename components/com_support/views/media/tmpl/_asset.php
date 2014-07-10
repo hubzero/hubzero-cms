@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>
 			</span>
 			<span class="asset-description">
-				<a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" title="<?php echo JText::_('COM_SUPPORT_DELETE_ASSET'); ?>">
+				<a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" title="<?php echo JText::_('COM_SUPPORT_DELETE'); ?>">
 					<?php echo JText::_('COM_SUPPORT_DELETE'); ?>
 				</a>
 			</span>
