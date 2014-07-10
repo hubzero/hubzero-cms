@@ -29,17 +29,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-<div class="mod_<?php echo $this->module->name; ?>">
-	<?php if ($this->results) { ?>
-		<ul id="activity-list<?php echo $this->module->id; ?>" data-url="<?php echo JURI::base(true) . '?feedactivity=1&start='; ?>">
-			<?php
-			foreach ($this->results as $result)
-			{
-				require JModuleHelper::getLayoutPath($this->module->module, 'default_item');
-			}
-			?>
-		</ul>
-	<?php } else { ?>
-		<p class="no-results"><?php echo JText::_('MOD_SUPPORTACTIVITY_NO_RESULTS'); ?></p>
-	<?php } ?>
-</div>
+				<li data-parent="activity-list<?php echo $this->module->id; ?>" data-time="<?php echo $result->created; ?>" class="<?php echo $this->escape($result->category); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=edit&id=' . $result->ticket . ($result->id ? '#c' . $result->id : '')); ?>">
+						<span class="activity-event">
+							<?php echo JText::sprintf('MOD_SUPPORTACTIVITY_' . strtoupper($result->category), $result->ticket); ?>
+						</span>
+						<span class="activity-details">
+							<span class="activity-time"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+							<span class="activity-date"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+						</span>
+					</a>
+				</li>

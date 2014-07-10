@@ -44,16 +44,37 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->css();
+		$database = \JFactory::getDBO();
+
+		$where = "";
+		if ($start = \JRequest::getVar('start', ''))
+		{
+			$where = "WHERE a.created > " . $database->quote($start);
+		}
 
 		$query = "SELECT a.* FROM (
 					(SELECT c.id, c.ticket, c.created, (CASE WHEN `comment` != '' THEN 'comment' ELSE 'change' END) AS 'category' FROM `#__support_comments` AS c)
 					UNION
 					(SELECT '0' AS id, t.id AS ticket, t.created, 'ticket' AS 'category' FROM `#__support_tickets` AS t)
-				) AS a ORDER BY a.created DESC LIMIT 0, 50";
-		$database = \JFactory::getDBO();
+				) AS a $where ORDER BY a.created DESC LIMIT 0, " . $this->params->get('limit', 25);
+
 		$database->setQuery($query);
 		$this->results = $database->loadObjectList();
+
+		$this->feed = \JRequest::getInt('feedactivity', 0);
+
+		if ($this->feed == 1)
+		{
+			ob_clean();
+			foreach ($this->results as $result)
+			{
+				require \JModuleHelper::getLayoutPath($this->module->module, 'default_item');
+			}
+			exit();
+		}
+
+		$this->css()
+		     ->js();
 
 		parent::display();
 	}
