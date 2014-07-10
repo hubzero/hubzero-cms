@@ -69,3 +69,52 @@
 	#providers {
 		margin-top: 65px;
 	}
+
+/* Account Creation */
+	.account-activation {
+		margin: 3em 0;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		border: 1px solid #ddd\9; /* [!] IE 8 */
+		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
+	}
+	.errer-message,
+	.success-message {
+		font-size: 3.5em;
+		text-align: center;
+		color: #ccc;
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		font-weight: normal;
+	}
+	.success-message:after {
+		content: "\f058";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 3em;
+	}
+	.error-message:after {
+		content: "\2757";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 3em;
+	}
+	.account-activation .instructions {
+		padding: 1em 1.4em;
+	}
+	.account-activation .notes {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+	.account-activation .account-email {
+		color: #eca95a;
+		font-weight: bold;
+	}
+	.account-activation ol {
+		list-style: decimal;
+	}

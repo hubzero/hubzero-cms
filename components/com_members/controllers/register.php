@@ -805,7 +805,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					}
 
 					// Notify administration
-					$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION');
+					/*$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION');
 
 					$eaview = new \Hubzero\Component\View(array(
 						'name'   => 'emails',
@@ -819,7 +819,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					$message = $eaview->loadTemplate();
 					$message = str_replace("\n", "\r\n", $message);
 
-					/*$msg = new \Hubzero\Mail\Message();
+					$msg = new \Hubzero\Mail\Message();
 					$msg->setSubject($subject)
 					    ->addTo($hubMonitorEmail)
 					    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
@@ -1470,7 +1470,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Redirect
 			if (empty($return))
 			{
-				$r = $hconfig->get('LoginReturn');
+				$r = $this->config->get('LoginReturn');
 				$return = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
 				// consume cookie (yum) if available to return to whatever action prompted registration
 				if (isset($_COOKIE['return']))
@@ -1492,7 +1492,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->view->login    = $xprofile->get('username');
 		$this->view->email    = $xprofile->get('email');
 		$this->view->code     = $code;
-		$this->view->redirect = ($redirect) ? $redirect : '';
+		$this->view->redirect = (isset($return) ? $return : '');
 		$this->view->sitename = $this->jconfig->getValue('config.sitename');
 		if ($this->getError())
 		{
