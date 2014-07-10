@@ -45,7 +45,7 @@
 		background: #f1f1f1;
 		text-align: center;
 	}
-	.course-identity a span:after {
+	.course-identity span:after {
 		content: "\f09c";
 		font-family: "Fontcons";
 		font-size: 7em;
