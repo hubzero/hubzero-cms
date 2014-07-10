@@ -97,6 +97,12 @@ function membersParseRoute($segments)
 	{
 		switch ($segments[0])
 		{
+			case 'confirm':
+				$vars['controller'] = 'register';
+				$vars['task'] = $segments[0];
+				return $vars;
+			break;
+
 			case 'register':
 				$vars['controller'] = $segments[0];
 				if (isset($segments[1]))

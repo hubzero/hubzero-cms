@@ -35,4 +35,4 @@ This email is to confirm the email address for the <?php echo $this->sitename; ?
 
 Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
 
-<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->confirm); ?>
+<?php echo $this->baseURL . JRoute::_('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm); ?>

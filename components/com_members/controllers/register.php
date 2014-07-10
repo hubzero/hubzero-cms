@@ -787,15 +787,23 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$eview->xprofile      = $xprofile;
 						$eview->baseURL       = $this->baseURL;
 						$eview->xregistration = $xregistration;
-						$message = $eview->loadTemplate();
-						$message = str_replace("\n", "\r\n", $message);
 
 						$msg = new \Hubzero\Mail\Message();
 						$msg->setSubject($subject)
 						    ->addTo($xprofile->get('email'), $xprofile->get('name'))
 						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
-						    ->addHeader('X-Component', $this->_option)
-						    ->setBody($message);
+						    ->addHeader('X-Component', $this->_option);
+
+						$message = $eview->loadTemplate();
+						$message = str_replace("\n", "\r\n", $message);
+
+						$msg->addPart($message, 'text/plain');
+
+						$eview->setLayout('create_html');
+						$message = $eview->loadTemplate();
+						$message = str_replace("\n", "\r\n", $message);
+
+						$msg->addPart($message, 'text/html');
 
 						if (!$msg->send())
 						{
@@ -1197,17 +1205,27 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$eview->controller = $this->_controller;
 			$eview->sitename   = $this->jconfig->getValue('config.sitename');
 			$eview->login      = $login;
+			$eview->name       = $xprofile->get('name');
+			$eview->registerDate = $xprofile->get('registerDate');
 			$eview->baseURL    = $this->baseURL;
 			$eview->confirm    = $confirm;
-			$message = $eview->loadTemplate();
-			$message = str_replace("\n", "\r\n", $message);
 
 			$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject($subject)
 			    ->addTo($email)
 			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
-			    ->addHeader('X-Component', $this->_option)
-			    ->setBody($message);
+			    ->addHeader('X-Component', $this->_option);
+
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			$msg->addPart($message, 'text/plain');
+
+			$eview->setLayout('confirm_html');
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			$msg->addPart($message, 'text/html');
 
 			if (!$msg->send())
 			{
@@ -1342,17 +1360,27 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$eview->controller = $this->_controller;
 						$eview->sitename   = $this->jconfig->getValue('config.sitename');
 						$eview->login      = $login;
+						$eview->name       = $xprofile->get('name');
+						$eview->registerDate = $xprofile->get('registerDate');
 						$eview->baseURL    = $this->baseURL;
 						$eview->confirm    = $confirm;
-						$message = $eview->loadTemplate();
-						$message = str_replace("\n", "\r\n", $message);
 
 						$msg = new \Hubzero\Mail\Message();
 						$msg->setSubject($subject)
 						    ->addTo($pemail)
 						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
-						    ->addHeader('X-Component', $this->_option)
-						    ->setBody($message);
+						    ->addHeader('X-Component', $this->_option);
+
+						$message = $eview->loadTemplate();
+						$message = str_replace("\n", "\r\n", $message);
+
+						$msg->addPart($message, 'text/plain');
+
+						$eview->setLayout('confirm_html');
+						$message = $eview->loadTemplate();
+						$message = str_replace("\n", "\r\n", $message);
+
+						$msg->addPart($message, 'text/html');
 
 						if (!$msg->send())
 						{
