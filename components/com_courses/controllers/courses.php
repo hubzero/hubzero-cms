@@ -127,9 +127,9 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		$model = CoursesModelCourses::getInstance();
 
 		//vars
-		$this->view->mycourses          = array();
-		$this->view->interestingcourses = array();
 		$this->view->popularcourses     = array();
+		/*$this->view->mycourses          = array();
+		$this->view->interestingcourses = array();
 
 		if (!$this->juser->get('guest'))
 		{
@@ -160,13 +160,13 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 		//get the popular courses
 		if ($this->config->get('intro_popularcourses', 1))
-		{
+		{*/
 			$this->view->popularcourses = $model->courses(array(
-				'limit' => 3,
+				'limit' => 12,
 				'sort'  => 'students',
 				'state' => 1
 			), true);
-		}
+		//}
 
 		// Output HTML
 		$this->view->config   = $this->config;

@@ -54,6 +54,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
+	<!--
 	<fieldset name="intro">
 		<field name="intro_mycourses" type="list" default="1" label="COM_COURSES_SHOWMINE_LABEL" description="COM_COURSES_SHOWMINE_DESC">
 			<option value="0">JNO</option>
@@ -78,6 +79,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
+	-->
 	<fieldset name="badges">
 		<field name="passport_consumer_key" type="text" menu="hide" default="" label="COM_COURSES_PASSPORTKEY_LABEL" description="COM_COURSES_PASSPORTKEY_DESC" size="50" />
 		<field name="passport_consumer_secret" type="text" menu="hide" default="" label="COM_COURSES_PASSPORTSECRET_LABEL" description="COM_COURSES_PASSPORTSECRET_DESC" size="50" />
