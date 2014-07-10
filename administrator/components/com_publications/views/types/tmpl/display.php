@@ -34,6 +34,9 @@ JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText:
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 
+// Use new curation flow?
+$useBlocks  = $this->config->get('curation', 0);
+
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -43,9 +46,13 @@ JToolBarHelper::editList();
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
+				<?php if (!$useBlocks) { ?>
 				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
+				<?php } ?>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<?php if (!$useBlocks) { ?>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_SUPPORTING'), 'supporting', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<?php } ?>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
@@ -87,21 +94,25 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					</a>
 				</td>
 				<td><span class="block faded"><?php echo $this->escape($row->alias); ?></span></td>
+				<?php if (!$useBlocks) { ?>
 				<td class="centeralign narrow">
 					<span class="state <?php echo $aClass; ?>">
 						<span><?php echo $active; ?></span>
 					</span>
 				</td>
+				<?php } ?>
 				<td class="centeralign narrow">
 					<span class="state <?php echo $cClass; ?>">
 						<span><?php echo JText::_($cClass); ?></span>
 					</span>
 				</td>
+				<?php if (!$useBlocks) { ?>
 				<td class="centeralign narrow">
 					<span class="state <?php echo $sClass; ?>">
 						<span><?php echo JText::_($sClass); ?></span>
 					</span>
 				</td>
+				<?php } ?>
 				<td class="order">
 					<span>
 						<?php echo $this->pageNav->orderUpIcon( $i, (isset($this->rows[$i-1]->ordering)) ); ?>

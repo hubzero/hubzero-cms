@@ -189,7 +189,7 @@ class PublicationsCuration extends JObject
 			$manifest->params->default_title 	= 'Untitled Draft';
 			$manifest->params->default_category = 1;
 			$manifest->params->require_doi 		= 1;
-			$manifest->params->show_archive 	= 1;
+			$manifest->params->show_archival 	= 1;
 			$this->_manifest 					= $manifest;
 		}
 

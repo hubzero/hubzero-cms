@@ -486,3 +486,12 @@
 		content: "\2605";
 		position: absolute;
 	}
+
+/* Curation Blocks Configuration
+--------------------------------------------- */
+	fieldset.adminform legend span.block-sequence {
+		border: 1px solid #CCC;
+		padding: 0 0.5em;
+		margin-right: 0.5em;
+		background: #faf7fd;
+	}

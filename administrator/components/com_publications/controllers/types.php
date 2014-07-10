@@ -107,6 +107,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$this->view->setError($this->getError());
 		}
 
+		$this->view->config = $this->config;
+
 		// Output the HTML
 		$this->view->display();
 	}
@@ -129,6 +131,13 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	 */
 	public function editTask( $row = null )
 	{
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+		if ($useBlocks)
+		{
+			$this->view->setLayout('curation');
+		}
+
 		if ($row)
 		{
 			$this->view->row = $row;
@@ -149,6 +158,25 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			// Load the object
 			$this->view->row = new PublicationMasterType($this->database);
 			$this->view->row->load($id);
+
+			// Get curation
+			if ($useBlocks)
+			{
+				$this->view->curation = new PublicationsCuration(
+					$this->database,
+					$this->view->row->curation
+				);
+
+				// Get blocks model
+				$blocksModel = new PublicationsModelBlocks($this->database);
+
+				// Get available blocks
+				$this->view->blocks = $blocksModel->getBlocks('*',
+					" WHERE status=1",
+					" ORDER BY ordering, id"
+				);
+
+			}
 		}
 
 		// Set any errors
@@ -167,6 +195,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
+
+		$this->view->config = $this->config;
 
 		// Output the HTML
 		$this->view->display();
@@ -192,6 +222,9 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
@@ -208,16 +241,56 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params))
+		// Save curation config
+		if ($useBlocks && $row->id)
 		{
-			$txt = array();
-			foreach ($params as $k => $v)
+			// Incoming
+			$curatorGroup = JRequest::getVar('curatorgroup', '');
+			if ($group = \Hubzero\User\Group::getInstance($curatorGroup))
 			{
-				$txt[] = "$k=$v";
+				$row->curatorGroup = $group->get('gidNumber');
 			}
-			$row->params = implode("\n", $txt);
+			if (!$curatorGroup)
+			{
+				$row->curatorGroup = 0;
+			}
+
+			$objC = new PublicationsCuration($this->database, $row->curation);
+
+			$manifest = $objC->_manifest;
+
+			// Get curation configs
+			$curation = JRequest::getVar('curation', array(), 'post');
+
+			// Collect modifications
+			if (is_array($curation))
+			{
+				// Save params
+				if (isset($curation['params']))
+				{
+					foreach ($curation['params'] as $cpName => $cpValue)
+					{
+						$manifest->params->$cpName = trim($cpValue);
+					}
+				}
+			}
+
+			// Store modified curation
+			$row->curation = json_encode($manifest);
+		}
+		else
+		{
+			// Get parameters
+			$params = JRequest::getVar('params', '', 'post');
+			if (is_array($params))
+			{
+				$txt = array();
+				foreach ($params as $k => $v)
+				{
+					$txt[] = "$k=$v";
+				}
+				$row->params = implode("\n", $txt);
+			}
 		}
 
 		// Check content
