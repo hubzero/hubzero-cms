@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter') . ': ' . $text, 'newsletter.png');
+$text = ($this->task == 'edit' ? JText::_('COM_NEWSLETTER_EDIT') : JText::_('COM_NEWSLETTER_NEW'));
+JToolBarHelper::title(JText::_('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
 
 //add buttons to toolbar
 JToolBarHelper::save();
@@ -72,24 +72,24 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('Newsletter Details'); ?></legend>
+			<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>
 			<table class="admintable">
 				<tbody>
 					<tr>
-						<th><?php echo JText::_('Name:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_NAME'); ?>:</th>
 						<td>
 							<input type="text" name="newsletter[name]" value="<?php echo $this->newsletter->name; ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Alias:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_ALIAS'); ?>:</th>
 						<td>
 							<input type="text" name="newsletter[alias]" value="<?php echo $this->newsletter->alias; ?>" />
-							<span class="hint"><?php echo JText::_('Appears in the URL (ex. january2013update)'); ?></span>
+							<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?></span>
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Issue:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_ISSUE'); ?>:</th>
 						<td>
 							<input type="text" name="newsletter[issue]" value="<?php echo $this->newsletter->issue; ?>" />
 						</td>
@@ -98,27 +98,27 @@ function submitbutton(pressbutton)
 						<td colspan="2"></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Email Format:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?>:</th>
 						<td>
 							<select name="newsletter[type]">
-								<option value="html" <?php if($this->newsletter->type == 'html') : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('HTML'); ?>
+								<option value="html" <?php if ($this->newsletter->type == 'html') : ?>selected="selected"<?php endif; ?>>
+									<?php echo JText::_('COM_NEWSLETTER_FORMAT_HTML'); ?>
 								</option>
-								<option value="plain" <?php if($this->newsletter->type == 'plain') : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('Plain Text'); ?>
+								<option value="plain" <?php if ($this->newsletter->type == 'plain') : ?>selected="selected"<?php endif; ?>>
+									<?php echo JText::_('COM_NEWSLETTER_FORMAT_PLAIN'); ?>
 								</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Template:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</th>
 						<td>
 							<select name="newsletter[template]">
-								<option value=""><?php echo JText::_('- Select a Template &mdash;'); ?></option>
-								<option value="-1" <?php if($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('No Template (Newsletter Content Includes HTML Template if HTML Email Type)'); ?>
+								<option value=""><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
+								<option value="-1" <?php if ($this->newsletter->template == '-1') : ?>selected="selected"<?php endif; ?>>
+									<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 								</option>
-								<?php foreach($this->templates as $t) : ?>
+								<?php foreach ($this->templates as $t) : ?>
 									<?php echo $sel = ($t->id == $this->newsletter->template) ? 'selected="selected"' : '' ; ?>
 									<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 										<?php echo $t->name; ?>
@@ -131,18 +131,18 @@ function submitbutton(pressbutton)
 						<td colspan="2"></td>
 					</tr>
 					<tr>
-						<th width="150"><?php echo JText::_('Show Newsletter on HUB:'); ?></th>
+						<th width="150"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SHOW'); ?>:</th>
 						<td>
 							<select name="newsletter[published]">
-								<option value="1" <?php if($this->newsletter->published == '1') : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('Show'); ?>
+								<option value="1" <?php if ($this->newsletter->published == '1') : ?>selected="selected"<?php endif; ?>>
+									<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SHOW_SHOW'); ?>
 								</option>
-								<option value="0" <?php if($this->newsletter->published == '0') : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('Don\'t Show'); ?>
+								<option value="0" <?php if ($this->newsletter->published == '0') : ?>selected="selected"<?php endif; ?>>
+									<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SHOW_DONT_SHOW'); ?>
 								</option>
 							</select>
 							<span class="hint">
-								<?php echo JText::_('You may want to hide private email newsletters or plain text email newsletters from showing on the HUB.'); ?>
+								<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>
 							</span>
 						</td>
 					</tr>
@@ -150,22 +150,21 @@ function submitbutton(pressbutton)
 						<td colspan="2"></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Email Tracking:'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING'); ?>:</th>
 						<td>
 							<select name="newsletter[tracking]">
 								<option value="1" <?php if ($this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('Yes'); ?>
+									<?php echo JText::_('JYES'); ?>
 								</option>
 								<option value="0" <?php if (!$this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
-									<?php echo JText::_('No'); ?>
+									<?php echo JText::_('JNO'); ?>
 								</option>
 							</select>
 							<span class="hint">
-								<?php echo JText::_('What is email tracking?'); ?>
-								<a target="_blank" href="<?php echo $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works'); ?>">
-									<?php echo JText::_('Click here'); ?>
-								</a>
-								<?php echo JText::_(' to learn more about we can track open rates and click throughs.'); ?>
+								<?php
+									$link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
+									echo JText::sprintf('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
+								?>
 							</span>
 						</td>
 					</tr>
@@ -180,7 +179,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<?php if ($this->newsletter->id) : ?>
 						<tr>
-							<th><?php echo JText::_('Newsletter ID:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->id; ?>
 								<input type="hidden" name="newsletter[id]" value="<?php echo $this->newsletter->id; ?>" />
@@ -190,7 +189,7 @@ function submitbutton(pressbutton)
 
 					<?php if ($this->newsletter->created) : ?>
 						<tr>
-							<th><?php echo JText::_('Created Date:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
 							<td>
 								<?php echo JHTML::_('date', $this->newsletter->created, 'F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
@@ -200,7 +199,7 @@ function submitbutton(pressbutton)
 
 					<?php if ($this->newsletter->created_by) : ?>
 						<tr>
-							<th><?php echo JText::_('Created By:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
 							<td>
 								<?php
 									$user = JUser::getInstance( $this->newsletter->created_by );
@@ -213,7 +212,7 @@ function submitbutton(pressbutton)
 
 					<?php if ($this->newsletter->modified) : ?>
 						<tr>
-							<th><?php echo JText::_('Last Modified On:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
 							<td>
 								<?php echo JHTML::_('date', $this->newsletter->modified, 'F d, Y @ g:ia'); ?>
 								<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
@@ -223,7 +222,7 @@ function submitbutton(pressbutton)
 
 					<?php if ($this->newsletter->modified_by) : ?>
 						<tr>
-							<th><?php echo JText::_('Last Modified By:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
 							<td>
 								<?php
 									$user = JUser::getInstance( $this->newsletter->modified_by );
@@ -240,29 +239,29 @@ function submitbutton(pressbutton)
 				$params = new JParameter( $this->newsletter->params );
 			?>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Newsletter Mailing Details'); ?></legend>
+				<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<th width="100px"><?php echo JText::_('From Name:'); ?></th>
+							<th width="100px"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME'); ?>:</th>
 							<td>
 								<input type="text" name="newsletter[params][from_name]" value="<?php echo $params->get('from_name'); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo JText::_('From Email:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL'); ?>:</th>
 							<td>
 								<input type="text" name="newsletter[params][from_address]" value="<?php echo $params->get('from_address'); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo JText::_('Reply-To Name:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME'); ?>:</th>
 							<td>
 								<input type="text" name="newsletter[params][replyto_name]" value="<?php echo $params->get('replyto_name'); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo JText::_('Reply-To Email:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL'); ?>:</th>
 							<td>
 								<input type="text" name="newsletter[params][replyto_address]" value="<?php echo $params->get('replyto_address'); ?>" />
 							</td>
@@ -272,7 +271,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 		<?php else : ?>
 			<p class="info">
-				<?php echo JText::_('You must create the newsletter with basic details before adding newsletter stories or content.'); ?>
+				<?php echo JText::_('COM_NEWSLETTER_MUST_SAVE_TO_ADD_CONTENT'); ?>
 			</p>
 		<?php endif; ?>
 	</div>
@@ -281,21 +280,21 @@ function submitbutton(pressbutton)
 	<hr />
 
 	<div class="col width-100">
-		<?php if($this->newsletter->id != null) : ?>
-			<?php if($this->newsletter->template == '-1' || (!$this->newsletter->template && $this->newsletter->content != '')) : ?>
+		<?php if ($this->newsletter->id != null) : ?>
+			<?php if ($this->newsletter->template == '-1' || (!$this->newsletter->template && $this->newsletter->content != '')) : ?>
 				<fieldset class="adminform">
-					<legend><?php echo JText::_('Newsletter Content'); ?></legend>
+					<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
 					<table class="admintable">
 						<tbody>
 							<tr>
 								<td>
-									<strong><?php echo JText::_('HTML Content:'); ?></strong> (<span class="hint"><?php echo JText::_('You may use HTML tags if Email Type is \'HTML\' above.'); ?></span>)
+									<strong><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML'); ?></strong> (<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?></span>)
 									<textarea name="newsletter[html_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->html_content ); ?></textarea>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<strong><?php echo JText::_('Plain Text Content:'); ?></strong> (<span class="hint"><?php echo JText::_('Line breaks are preserved'); ?></span>)
+									<strong><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN'); ?></strong> (<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?></span>)
 									<textarea name="newsletter[plain_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->plain_content ); ?></textarea>
 								</td>
 							</tr>
@@ -306,53 +305,53 @@ function submitbutton(pressbutton)
 				<a name="primary-stories"></a>
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('Newsletter Primary Stories'); ?>
+						<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
 						<a class="fltrt" style="padding-right:15px" href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=primary'); ?>">
-							<?php echo JText::_('Add Primary Story'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
 						</a>
 					</legend>
 					<?php echo $tabs->startPane("content-pane"); ?>
-						<?php for($i=0,$n=count($primary); $i<$n; $i++) : ?>
+						<?php for ($i=0,$n=count($primary); $i<$n; $i++) : ?>
 							<?php echo $tabs->startPanel(($i+1) . ". " . $primary[$i]->title, "pstory-".($i+1)."") ; ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
 											<td colspan="2">
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=primary&sid='.$primary[$i]->id); ?>">
-													<?php echo JText::_('Edit Story'); ?>
+													<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
 												</a> |
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=primary&sid='.$primary[$i]->id); ?>">
-													<?php echo JText::_('Delete Story'); ?>
+													<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
 												</a>
 											</td>
 										</tr>
 										<tr>
-											<td class="key" width='20%'><?php echo JText::_('Title:'); ?></td>
+											<td class="key" width='20%'><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
 											<td><?php echo $primary[$i]->title; ?></td>
 										</tr>
 										<tr>
-											<td class="key" width='20%'><?php echo JText::_('Order:'); ?></td>
+											<td class="key" width='20%'><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
 											<td>
 												<input type="text" readonly="readonly" value="<?php echo $primary[$i]->order; ?>" style="width:30px;text-align:center;" />
 
 												<?php if ($primary[$i]->order > 1) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=primary&sid='.$primary[$i]->id); ?>">
-														<?php echo JText::_('Move Up &uarr;'); ?>
+														<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
 													</a>
 												<?php endif ?>
 												<?php if ($primary[$i]->order < $this->newsletter_primary_highest_order) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=down&type=primary&sid='.$primary[$i]->id); ?>">
-														<?php echo JText::_('Move Down &darr;'); ?>
+														<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
 													</a>
 												<?php endif; ?>
 											</td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Story:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
 											<td><?php echo nl2br(stripslashes($primary[$i]->story)); ?></td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Read More Link:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
 											<td><strong><?php echo $primary[$i]->readmore_title; ?></strong> - <?php echo $primary[$i]->readmore_link; ?></td>
 										</tr>
 									</tbody>
@@ -365,53 +364,53 @@ function submitbutton(pressbutton)
 				<a name="secondary-stories"></a>
 				<fieldset class="adminform">
 					<legend>
-						<?php echo JText::_('Newsletter Secondary Stories'); ?>
+						<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
 						<a class="fltrt" style="padding-right:15px" href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=add&type=secondary'); ?>">
-							<?php echo JText::_('Add Secondary Story'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
 						</a>
 					</legend>
 					<?php echo $tabs->startPane("content-pane2"); ?>
-						<?php for($i=0,$n=count($secondary); $i<$n; $i++) : ?>
+						<?php for ($i=0,$n=count($secondary); $i<$n; $i++) : ?>
 							<?php echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
 											<td colspan="2">
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=edit&type=secondary&sid='.$secondary[$i]->id); ?>">
-													<?php echo JText::_('Edit Story'); ?>
+													<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
 												</a> |
 												<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary[$i]->id); ?>">
-													<?php echo JText::_('Delete Story'); ?>
+													<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
 												</a>
 											</td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Title:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
 											<td><?php echo $secondary[$i]->title; ?></td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Order:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
 											<td>
 												<input type="text" readonly="readonly" value="<?php echo $secondary[$i]->order; ?>" style="width:30px;text-align:center;" />
 												<?php if ($secondary[$i]->order > 1) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary[$i]->id); ?>">
-														<?php echo JText::_('Move Up &uarr;'); ?>
+														<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
 													</a>
 												<?php endif; ?>
 
 												<?php if ($secondary[$i]->order < $this->newsletter_secondary_highest_order) : ?>
 													<a href="<?php echo JRoute::_('index.php?option=com_newsletter&controller=story&id='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary[$i]->id); ?>">
-														<?php echo JText::_('Move Down &darr;'); ?>
+														<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
 													</a>
 												<?php endif; ?>
 											</td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Story:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
 											<td><?php echo nl2br(stripslashes($secondary[$i]->story)); ?></td>
 										</tr>
 										<tr>
-											<td class="key"><?php echo JText::_('Read More Link:'); ?></td>
+											<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
 											<td><strong><?php echo $primary[$i]->readmore_title; ?></strong> - <?php echo $primary[$i]->readmore_link; ?></td>
 										</tr>
 									</tbody>

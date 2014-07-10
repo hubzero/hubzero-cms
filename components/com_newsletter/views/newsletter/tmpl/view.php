@@ -42,11 +42,15 @@ $this->css()
 		<ul>
 			<?php if (isset($this->id) && $this->id != 0) : ?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">Save as PDF</a>
+					<a href="<?php echo JRoute::_('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">
+						<?php echo JText::_('COM_NEWSLETTER_VIEW_SAVEASPDF'); ?>
+					</a>
 				</li>
 			<?php endif; ?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">Subscribe To Mailing Lists</a>
+				<a href="<?php echo JRoute::_('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">
+					<?php echo JText::_('COM_NEWSLETTER_VIEW_SUBSCRIBE_TO_MAILINGLISTS'); ?>
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -67,13 +71,13 @@ $this->css()
 			</div>
 		<?php else : ?>
 			<p class="info">
-				<?php echo JText::_('Currently there are no HUB newsletters.'); ?>
+				<?php echo JText::_('COM_NEWSLETTER_VIEW_NO_NEWSLETTERS'); ?>
 			</p>
 		<?php endif; ?>
 	</div><!-- /.subject -->
 	<aside class="aside">
 		<div class="container">
-			<h3>Past Newsletters &amp; Updates</h3>
+			<h3><?php echo JText::_('COM_NEWSLETTER_VIEW_PAST_NEWSLETTERS'); ?></h3>
 			<ul>
 				<?php foreach ($this->newsletters as $newsletter) : ?>
 					<?php if ($newsletter->published) : ?>
@@ -87,10 +91,12 @@ $this->css()
 			</ul>
 		</div>
 		<div class="container">
-			<h3>Newsletter Help</h3>
+			<h3><?php echo JText::_('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?></h3>
 			<ul>
 				<li>
-					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=newsletter&page=index'); ?>">Newsletter Help</a>
+					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=newsletter&page=index'); ?>">
+						<?php echo JText::_('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?>
+					</a>
 				</li>
 			</ul>
 		</div>

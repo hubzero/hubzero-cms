@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_( 'Newsletters' ), 'newsletter.png');
+JToolBarHelper::title(JText::_('COM_NEWSLETTER'), 'newsletter.png');
 ?>
 
 <p class="warning">
-	<?php echo JText::_('The HUB is missing the needed cron job used to send newsletter mailings. You must create or enable the cron job in order to use the newsletter component.'); ?>
+	<?php echo JText::_('COM_NEWSLETTER_DEPENDENCY'); ?>
 </p>

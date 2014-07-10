@@ -32,32 +32,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_( 'Newsletter Mailings' ), 'mailing.png');
+JToolBarHelper::title(JText::_( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
 
 //add buttons to toolbar
 //JToolBarHelper::custom('process', 'options', '', 'Process', false);
 //JToolBarHelper::custom('processips', 'refresh', '', 'IPs', false);
 JToolBarHelper::spacer();
-JToolBarHelper::custom('tracking', 'stats', '', 'Stats');
-JToolBarHelper::custom('stop', 'trash', '', 'Stop/Cancel');
+JToolBarHelper::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
+JToolBarHelper::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
 ?>
 
 <script type="text/javascript">
-function submitbutton(pressbutton)
+Joomla.submitbutton = function(pressbutton)
 {
 	if (pressbutton == 'stop')
 	{
-		var message = 'Are you sure you want to stop the mailing?\n\nThis will remove any remaining emails "queued" from processing and stop any scheduled emails.\n';
+		var message = '<?php echo JText::_('COM_NEWSLETTER_MAILING_STOP_CHECK'); ?>'
 		if (!confirm( message ))
 		{
 			return;
 		}
 	}
-
-
-	// do field validation
 	submitform( pressbutton );
 }
 </script>
@@ -74,9 +71,9 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th width="30"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
-				<th><?php echo JText::_('Newsletter'); ?></th>
-				<th><?php echo JText::_('Date Sent/Scheduled'); ?></th>
-				<th><?php echo JText::_('% Complete'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_MAILING_DATE'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -110,7 +107,7 @@ function submitbutton(pressbutton)
 			<?php else : ?>
 				<tr>
 					<td colspan="4">
-						Currently there are no newsletter mailings.
+						<?php echo JText::_('COM_NEWSLETTER_NO_MAILINGS'); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

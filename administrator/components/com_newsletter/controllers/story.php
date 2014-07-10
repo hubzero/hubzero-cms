@@ -137,7 +137,7 @@ class NewsletterControllerStory extends \Hubzero\Component\AdminController
 		}
 
 		//inform and redirect
-		$this->_message = JText::_('Newsletter Story Successfully Saved');
+		$this->_message = JText::_('COM_NEWSLETTER_STORY_SAVED_SUCCESS');
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]='.$newsletterStory->nid;
 	}
 
@@ -185,7 +185,7 @@ class NewsletterControllerStory extends \Hubzero\Component\AdminController
 		else
 		{
 			$newOrder = $currentOrder - 1;
-			if($newOrder < $lowestOrder)
+			if ($newOrder < $lowestOrder)
 			{
 				$newOrder = $lowestOrder;
 			}
@@ -218,7 +218,7 @@ class NewsletterControllerStory extends \Hubzero\Component\AdminController
 		}
 
 		//set success message
-		$this->_message = JText::_('Newsletter Story Successfully Reordered');
+		$this->_message = JText::_('COM_NEWSLETTER_STORY_REORDER_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $id . '#' . $type . '-stories';
@@ -255,13 +255,13 @@ class NewsletterControllerStory extends \Hubzero\Component\AdminController
 		//save so story is marked deleted
 		if (!$story->save( $story ))
 		{
-			$this->setError('Unable to delete newsletter story.');
+			$this->setError(JText::_('COM_NEWSLETTER_STORY_DELETE_FAIL'));
 			$this->editTask();
 			return;
 		}
 
 		//set success message
-		$this->_message = JText::_('Newsletter Story Successfully Deleted');
+		$this->_message = JText::_('COM_NEWSLETTER_STORY_DELETE_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $id;

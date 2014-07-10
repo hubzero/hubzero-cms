@@ -95,7 +95,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		//make sure we are supposed to be tracking
 		if (!$newsletterNewsletter->tracking)
 		{
-			$this->setError('Tracking information is not being captured with this newsletter mailing.');
+			$this->setError(JText::_('COM_NEWSLETTER_MAILING_NOT_TRACKING'));
 			$this->displayTask();
 			return;
 		}
@@ -131,6 +131,11 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
+		if (!is_object($jqueryPlugin))
+		{
+			$jqueryPlugin = new StdClass;
+			$jqueryPlugin->params = '{}';
+		}
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
 
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
@@ -287,7 +292,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		}
 
 		//inform and redirect
-		$this->_message = 'You have successfully stopped the mailing from being sent';
+		$this->_message = JText::_('COM_NEWSLETTER_MAILING_STOPPED');
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailing';
 	}
 

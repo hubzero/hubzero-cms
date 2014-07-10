@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Newsletter Mailing List Controller
+ */
 class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 {
 	/**
@@ -52,13 +55,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//if we are unsubscribing
 		if ($this->_task == 'unsubscribe')
 		{
-			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': Unsubscribe';
+			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': ' . JText::_('COM_NEWSLETTER_UNSUBSCRIBE');
 		}
 
 		//if we are subscribing
 		if ($this->_task == 'subscribe')
 		{
-			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': Subscribe';
+			$this->_title = JText::_('COM_NEWSLETTER_NEWSLETTER') . ': ' . JText::_('COM_NEWSLETTER_SUBSCRIBE');
 		}
 
 		//set title of browser window
@@ -92,13 +95,13 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//if we are unsubscribing
 		if ($this->_task == 'unsubscribe')
 		{
-			$pathway->addItem( JText::_('Unsubscribe'), 'index.php?option=' . $this->_option . '&task=unsubscribe' );
+			$pathway->addItem( JText::_('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=unsubscribe' );
 		}
 
 		//if we are subscribing
 		if ($this->_task == 'subscribe')
 		{
-			$pathway->addItem( JText::_('Subscribe'), 'index.php?option=' . $this->_option . '&task=subscribe' );
+			$pathway->addItem( JText::_('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=subscribe' );
 		}
 	}
 
@@ -121,7 +124,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$redirect	= JRoute::_('index.php?option=com_login&return=' . base64_encode($return) );
 
 			//redirect
-			$this->setRedirect( $redirect, 'You must be logged in to subscribe to mailing lists', 'warning');
+			$this->setRedirect( $redirect, JText::_('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
 			return;
 		}
 
@@ -166,7 +169,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
 		{
-			die('Unable to process the form.');
+			die(JText::_('COM_NEWSLETTER_HP_ERROR'));
 		}
 
 		//validate email
@@ -174,7 +177,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		{
 			//inform user and redirect
 			$this->_messageType = 'error';
-			$this->_message     = 'There is an issue with the email address you supplied.';
+			$this->_message     = JText::_('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL');
 			$this->_redirect    = JRoute::_( $return );
 			return;
 		}
@@ -184,7 +187,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		{
 			//inform user and redirect
 			$this->_messageType = 'error';
-			$this->_message     = 'There is an issue with the mailing list you are trying to subscribe to.';
+			$this->_message     = JText::_('COM_NEWSLETTER_SUBSCRIBE_BADLIST');
 			$this->_redirect    = JRoute::_( $return );
 			return;
 		}
@@ -212,7 +215,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		}
 
 		//inform user and redirect
-		$this->_message 	= 'You have successfully signed up for the "' . $newsletterMailinglist->name . '" mailing list. Please confirm your subscription by clicking the link in the email we have sent you.';
+		$this->_message 	= JText::sprintf('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $newsletterMailinglist->name);
 		$this->_redirect 	= JRoute::_( $return );
 	}
 
@@ -276,7 +279,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 				$newsletterMailinglistEmail->confirmed      = 0;
 				$newsletterMailinglistEmail->date_confirmed = null;
 			}
-			else if($mylist->status != 'active')
+			else if ($mylist->status != 'active')
 			{
 				//set as active
 				$newsletterMailinglistEmail->status = 'inactive';
@@ -301,7 +304,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		}
 
 		//inform user and redirect
-		$this->_message  = 'You have successfully saved your newsletter subscriptions preferences.';
+		$this->_message  = JText::_('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS');
 		$this->_redirect = JRoute::_('index.php?option=com_newsletter&task=subscribe');
 		return;
 	}
@@ -328,7 +331,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if ($email != $recipient->email)
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'There is an issue with your unsubscribe link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
@@ -341,7 +344,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!is_object($mailing))
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'Unable to locate newsletter mailing associated with unsubscribe link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
@@ -352,7 +355,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 			$mailinglist 				= new stdClass;
 			$mailinglist->id 			= '-1';
 			$mailinglist->name 			= 'HUB Members';
-			$mailinglist->description 	= 'This is the main hub mailing list. You are automatically added to this list when you create your account but you can edit your profile email preferences to remove yourself from this list. Follow the steps below to update your mail preference options:';
+			$mailinglist->description 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST');
 		}
 		else
 		{
@@ -398,7 +401,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if ($unsubscribedAlready)
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'You are already unsubscribed from the mailing list: ' . $mailinglist->name;
+			$this->_message 	= JText::sprintf('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name);
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			if ($this->juser->get('guest'))
 			{
@@ -449,7 +452,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!is_object($recipient) || $email != $recipient->email)
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'There is an issue with your unsubscribe link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
@@ -462,7 +465,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!is_object($mailing))
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'Unable to locate newsletter mailing associated with unsubscribe link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 			return;
 		}
@@ -482,7 +485,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 
 				//inform user and redirect
 				$this->_messageType = 'warning';
-				$this->_message 	= JText::_('You must be logged in to subscribe to mailing lists');
+				$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN');
 				$this->_redirect	= JRoute::_('index.php?option=com_login&return=' . base64_encode($return) );
 				return;
 			}
@@ -501,7 +504,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!$this->database->query())
 		{
 			$this->_messageType = 'error';
-			$this->_message		= 'An error occurred while trying to remove you from the mailing list.';
+			$this->_message		= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=unsubscribe&e=' . $email . '&t=' . $token);
 			return;
 		}
@@ -514,7 +517,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 
 		//inform user of successful unsubscribe
 		$this->_messageType = 'success';
-		$this->_message		= 'You have been successfully unsubscribed from the mailing list.';
+		$this->_message		= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS');
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 		if ($this->juser->get('guest'))
 		{
@@ -542,7 +545,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'There is an issue with your confirm link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 			return;
 		}
@@ -561,7 +564,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 
 		//inform user
 		$this->_messageType = 'success';
-		$this->_message 	= 'You have successfully confirmed you subscription to the mailing list.';
+		$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS');;
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 
 		//if were not logged in go back to newsletter page
@@ -591,7 +594,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
 		{
 			$this->_messageType = 'error';
-			$this->_message 	= 'There is an issue with your confirm link.';
+			$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE');
 			$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 			return;
 		}
@@ -609,11 +612,16 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 
 		//inform user
 		$this->_messageType = 'success';
-		$this->_message 	= 'You have successfully removed your subscription to the mailing list.';
+		$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS');
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter');
 	}
 
 
+	/**
+	 * Resend Newsletter Confirmation
+	 * 
+	 * @return [type] [description]
+	 */
 	public function resendConfirmationTask()
 	{
 		//get request vars
@@ -627,7 +635,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		NewsletterHelper::sendMailinglistConfirmationEmail( $this->juser->get('email'), $newsletterMailinglist, false );
 
 		//inform user and redirect
-		$this->_message 	= JText::_('You successfully resent a confirmation email to "'.$this->juser->get('email').'"');
+		$this->_message 	= JText::sprintf('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', $this->juser->get('email'));
 		$this->_redirect 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
 		return;
 	}

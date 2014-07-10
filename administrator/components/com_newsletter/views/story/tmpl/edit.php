@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-$text = ($this->task == 'edit' ? JText::_('Edit') : JText::_('New'));
-JToolBarHelper::title(JText::_('Newsletter '.ucfirst($this->type).' Story') . ': ' . $text, 'addedit.png');
+$text = ($this->task == 'edit' ? JText::_('COM_NEWSLETTER_EDIT') : JText::_('COM_NEWSLETTER_NEW'));
+JToolBarHelper::title(JText::_('COM_NEWSLETTER_STORY_'.strtoupper($this->type)) . ': ' . $text, 'addedit.png');
 
 //add buttons to toolbar
 JToolBarHelper::save();
@@ -46,45 +46,45 @@ $editor = JEditor::getInstance();
 
 <form action="index.php" method="post" name="adminForm">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('Newsletter ' . ucfirst($this->type) .' Story'); ?></legend>
+		<legend><?php echo JText::_('COM_NEWSLETTER_STORY_'.strtoupper($this->type)); ?></legend>
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<td class="key"><?php echo JText::_('Newsletter:'); ?></td>
+					<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER'); ?>:</td>
 					<td><strong><?php echo $this->newsletter->name; ?></strong></td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo JText::_('Type:'); ?></td>
+					<td class="key"><?php echo JText::_('COM_NEWSLETTER_STORY_TYPE'); ?>:</td>
 					<td>
-						<?php echo JText::_( ucfirst($this->type) . ' Story');?>
+						<?php echo JText::_('COM_NEWSLETTER_STORY_' . ucfirst($this->type));?>
 						<input type="hidden" name="type" value="<?php echo strtolower($this->type) ;?>" />
 						<input type="hidden" name="story[id]" value="<?php echo $this->story->id; ?>" />
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo JText::_('Title:'); ?></td>
+					<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
 					<td><input type="text" name="story[title]" value="<?php echo $this->story->title; ?>" /></td>
 				</tr>
 				<?php if ($this->story->id) : ?>
 					<tr>
-						<td class="key"><?php echo JText::_('Order:'); ?></td>
+						<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
 						<td>
 							<input type="hidden" name="story[order]" value="<?php echo $this->story->order; ?>" />
 							<?php echo $this->story->order; ?>
-							<span class="hint"><?php echo JText::_('(You can reorder stories when viewing the newsletter)'); ?></span>
+							<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER_HINT'); ?></span>
 						</td>
 					</tr>
 				<?php endif; ?>
 				<tr>
 					<td class="key" width="200px">
-						<?php echo JText::_('Story:'); ?>
+						<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:
 						<br /><br />
 						<span class="hint">
-							<?php echo JText::_('HTML is allowed if using an HTML template.'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT1'); ?>
 						</span>
 						<br /><br />
 						<span class="hint">
-							<?php echo JText::_('Line breaks will be automatically converted to HTML line breaks.'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_STORY_HINT2'); ?>
 						</span>
 					</td>
 					<td>
@@ -95,10 +95,10 @@ $editor = JEditor::getInstance();
 					</td>
 				</tr>
 				<tr>
-					<td class="key"><?php echo JText::_('Read More Link:'); ?></td>
+					<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?></td>
 					<td>
-						<input type="text" name="story[readmore_title]" value="<?php echo $this->story->readmore_title; ?>" style="width:30%;margin-right:2%" placeholder="Enter link title here..." />
-						<input type="text" name="story[readmore_link]" value="<?php echo $this->story->readmore_link; ?>" style="width:67.5%" placeholder="Enter link url here..." />
+						<input type="text" name="story[readmore_title]" value="<?php echo $this->story->readmore_title; ?>" style="width:30%;margin-right:2%" placeholder="<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER'); ?>" />
+						<input type="text" name="story[readmore_link]" value="<?php echo $this->story->readmore_link; ?>" style="width:67.5%" placeholder="<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER'); ?>" />
 					</td>
 				</tr>
 			</tbody>

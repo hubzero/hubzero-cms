@@ -32,10 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_('Send Newsletter') . ': ' . $this->newsletter->name, 'newsletter.png');
+JToolBarHelper::title(JText::_('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::custom('dosendnewsletter', 'send', '', 'Send Newsletter', false);
+JToolBarHelper::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', false);
 JToolBarHelper::cancel();
 ?>
 
@@ -110,64 +110,64 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm">
 	<div class="col width-100">
-		<?php if($this->newsletter->id != null) : ?>
+		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
 			<fieldset class="adminform">
-				<legend><?php echo JText::_('Send Newsletter'); ?></legend>
+				<legend><?php echo JText::_('COM_NEWSLETTER_SEND'); ?></legend>
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<th width="200px"><?php echo JText::_('Newsletter:'); ?></th>
+							<th width="200px"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->name; ?>
 								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->newsletter->name; ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo JText::_('Newsletter Sent Previously:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SENT_PREVIOUSLY'); ?>:</th>
 							<td>
-								<?php if($this->newsletter->sent) : ?>
+								<?php if ($this->newsletter->sent) : ?>
 									<?php
 										$sql = "SELECT date FROM #__newsletter_mailings WHERE nid={$this->newsletter->id} ORDER BY date DESC LIMIT 1";
 										$this->database->setQuery( $sql );
 										$lastDateSent = $this->database->loadResult();
 									?>
 									<font color="green">
-										<strong><?php echo JText::_('Yes'); ?></strong>
+										<strong><?php echo JText::_('JYES'); ?></strong>
 									</font>-
 									<?php if ($lastDateSent) : ?>
 										<?php echo JHTML::_('date', $lastDateSent, "l, F d, Y @ g:ia"); ?>
 									<?php else : ?>
-										<?php echo JText::_('no record of mailing was found.'); ?>
+										<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SENT_PREVIOUSLY_NO_RECORD'); ?>
 									<?php endif; ?>
 								<?php else : ?>
 									<strong>
-										<font color="red"><?php echo JText::_('No'); ?></font>
+										<font color="red"><?php echo JText::_('JNO'); ?></font>
 									</strong>
 								<?php endif; ?>
 							</td>
 						</tr>
 						<tr>
-							<th width="200px"><?php echo JText::_('Schedule:'); ?></th>
+							<th width="200px"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE'); ?>:</th>
 							<td>
 								<div id="scheduler">
-									<input type="radio" name="scheduler" value="1" checked="checked" /> Send Now <br />
-									<input type="radio" name="scheduler" value="0" /> Send Later <br />
+									<input type="radio" name="scheduler" value="1" checked="checked" /> <?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_NOW'); ?> <br />
+									<input type="radio" name="scheduler" value="0" /> <?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER'); ?> <br />
 
 									<div id="scheduler-alt">
-										Date:
+										<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE'); ?>
 										<input type="text" name="scheduler_date" id="scheduler_date" style="width:auto;" />
-										Time:
+										<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME'); ?>
 										<select name="scheduler_date_hour" id="scheduler_date_hour" style="width:auto;">
-											<option value="">--</option>
-											<?php for($i = 1, $n = 13; $i < $n; $i++) : ?>
+											<option value=""><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
+											<?php for ($i = 1, $n = 13; $i < $n; $i++) : ?>
 												<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 											<?php endfor; ?>
 										</select>
 
 										<select name="scheduler_date_minute" id="scheduler_date_minute" style="width:auto;">
-											<option value="">--</option>
-											<?php for($i = 0, $n = 60; $i < $n; $i+=5) : ?>
+											<option value=""><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
+											<?php for ($i = 0, $n = 60; $i < $n; $i+=5) : ?>
 												<?php
 													if ($i == '0')
 													{
@@ -184,28 +184,28 @@ function submitbutton(pressbutton)
 										</select>
 
 										<select name="scheduler_date_meridian" id="scheduler_date_meridian" style="width:auto;">
-											<option value="">--</option>
-											<option value="am">AM</option>
-											<option value="pm">PM</option>
+											<option value=""><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
+											<option value="am"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_AM'); ?></option>
+											<option value="pm"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_PM'); ?></option>
 										</select>
-										EST
+										<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_EST'); ?>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo JText::_('Mailing List:'); ?></th>
+							<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST'); ?></th>
 							<td>
 								<select name="mailinglist" id="mailinglist">
-									<option value=""><?php echo JText::_('- Select Mailing List &mdash;'); ?></option>
-									<option value="-1"><?php echo JText::_('Default List - All HUB members with their email preference Set to Yes'); ?></option>
+									<option value=""><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_NULL'); ?></option>
+									<option value="-1"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_DEFAULT'); ?></option>
 									<?php foreach ($this->mailinglists as $list) : ?>
 										<option value="<?php echo $list->id; ?>"><?php echo $list->name; ?></option>
 									<?php endforeach; ?>
 								</select>
 								<br /><br />
 								<p id="mailinglist-count">
-									<?php echo JText::_('# of Members to Receive Newsletter: '); ?><span id="mailinglist-count-count"></span>
+									<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_RECIEVE'); ?><span id="mailinglist-count-count"></span>
 									<span id="mailinglist-emails"></span>
 								</p>
 							</td>

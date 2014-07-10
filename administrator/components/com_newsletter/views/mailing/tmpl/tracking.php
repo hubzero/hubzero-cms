@@ -32,24 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_('Newsletter Mailing Stats'), 'stats.png');
+JToolBarHelper::title(JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATS'), 'stats.png');
 
 //add buttons
-JToolBarHelper::custom('cancel', 'back', '', 'Back', false);
+JToolBarHelper::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', false);
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php
 	if ($this->getError())
@@ -63,25 +50,25 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th>Statistic</th>
-				<th>Value</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATISTIC'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_VALUE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<th>Open Rate:</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENRATE'); ?>:</th>
 				<td>
 					<?php
 						if (count($this->recipients) > 0)
 						{
 							echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% ';
-							echo '(' . count($this->opens) . ' of ' . count($this->recipients) . ' opened the newsletter!)';
+							echo JText::sprintf('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENED', count($this->opens), count($this->recipients));
 						}
 					?>
 				</td>
 			</tr>
 			<tr>
-				<th>Bounce Rate:</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_BOUNCERATE'); ?>:</th>
 				<td>
 					<?php
 						if (count($this->recipients) > 0)
@@ -92,13 +79,13 @@ function submitbutton(pressbutton)
 				</td>
 			</tr>
 			<tr>
-				<th>Forwards:</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_FORWARDS'); ?>:</th>
 				<td>
 					<?php echo count($this->forwards); ?>
 				</td>
 			</tr>
 			<tr>
-				<th>Prints:</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_PRINTS'); ?>:</th>
 				<td>
 					<?php echo count($this->prints); ?>
 				</td>
@@ -108,13 +95,13 @@ function submitbutton(pressbutton)
 	<br />
 	<hr />
 
-	<h3>Opens By Location</h3>
+	<h3><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENS_BY_LOCATION'); ?></h3>
 	<div class="col width-30">
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th colspan="2">Top Locations</th>
-					<th>Opens</th>
+					<th colspan="2"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -153,12 +140,12 @@ function submitbutton(pressbutton)
 	<br />
 	<hr />
 
-	<h3>Click Throughs</h3>
+	<h3><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS'); ?></h3>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th>URL</th>
-				<th># of Clicks</th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -176,7 +163,7 @@ function submitbutton(pressbutton)
 			<?php else : ?>
 				<tr>
 					<td colspan="2">
-						There are currently no click throughs for this mailing.
+						<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_NO_CLICK_THROUGHS'); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

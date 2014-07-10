@@ -283,7 +283,7 @@ class NewsletterHelper
 				->setReplyTo($replyto['email'], $replyto['name'])
 				->setTo($emailAddress)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
-				->addHeader('X-Component', 'como_newsletter')
+				->addHeader('X-Component', 'com_newsletter')
 				->addHeader('X-Component-Object', 'Mailinglist')
 				->addHeader('X-Component-ObjectId', $mailinglistObject->id)
 				->addPart($body, 'text/plain')

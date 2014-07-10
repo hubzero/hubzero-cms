@@ -32,41 +32,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_( 'Newsletter Mailing List\'s' ), 'list.png');
+JToolBarHelper::title(JText::_('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
 
 //add buttons to toolbar
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
-JToolBarHelper::deleteList('Are you sure you want to delete the selected Newsletter Mailing-Lists(s)?', 'delete');
+JToolBarHelper::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
 JToolBarHelper::spacer();
-JToolBarHelper::custom('manage', 'user', '', 'Manage');
-JToolBarHelper::custom('export', 'export', '', 'Export List');
+JToolBarHelper::custom('manage', 'user', '', 'COM_NEWSLETTER_TOOLBAR_MANAGE');
+JToolBarHelper::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('Mailing List'); ?></th>
-				<th scope="col"><?php echo JText::_('Public/Private'); ?></th>
-				<th scope="col"><?php echo JText::_('Active Subscribers'); ?></th>
-				<th scope="col"><?php echo JText::_('Total Subscribers'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,7 +69,7 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<span class="access <?php echo ($list->private) ? 'private' : 'public'; ?>">
-								<?php echo ($list->private) ? 'Private' : 'Public'; ?>
+								<?php echo ($list->private) ? JText::_('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE') : JText::_('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC'); ?>
 							</span>
 						</td>
 						<td>
@@ -95,7 +83,7 @@ function submitbutton(pressbutton)
 			<?php else : ?>
 				<tr>
 					<td colspan="5">
-						Currently there are no mailing lists. <a onclick="javascript:submitbutton('add');" href="#">Click here to add a mailing list.</a>
+						<?php echo JText::sprintf('COM_NEWSLETTER_MAILINGLIST_NO_LISTS', "javascript:submitbutton('add');"); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

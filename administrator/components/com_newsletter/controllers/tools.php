@@ -51,6 +51,11 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
+		if (!is_object($jqueryPlugin))
+		{
+			$jqueryPlugin = new StdClass;
+			$jqueryPlugin->params = '{}';
+		}
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
 
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
@@ -101,9 +106,9 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 		{
 			//make sure file is image
 			$info = pathinfo($imageFile['name']);
-			if(!in_array($info['extension'], array('png','jpg','jpeg','bmp','gif', 'tiff')))
+			if (!in_array($info['extension'], array('png','jpg','jpeg','bmp','gif', 'tiff')))
 			{
-				$this->setError('File is not a valid image');
+				$this->setError(JText::_('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
 				$this->displayTask();
 				return;
 			}

@@ -104,7 +104,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		//check to see if tempalte is editable
 		if ($this->view->template->editable == 0 && $this->view->template->editable != null)
 		{
-			$this->setError('This template is not an editable template.');
+			$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE'));
 			$this->displayTask();
 			return;
 		}
@@ -157,7 +157,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		}
 
 		//inform user of successful save and redirect
-		$this->_message = JText::_('Campaign Template Successfully Saved');
+		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_SAVED_SUCCESS');
 		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
 	}
 
@@ -185,7 +185,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 				//check to make sure this isnt our default templates
 				if ($newsletterTemplate->editable == 0)
 				{
-					$this->setError('Unable to delete newsletter template.');
+					$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_FAILED'));
 					$this->displayTask();
 					return;
 				}
@@ -196,7 +196,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 				//save template marking as deleted
 				if (!$newsletterTemplate->save( $newsletterTemplate ))
 				{
-					$this->setError('Unable to delete newsletter template.');
+					$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_FAILED'));
 					$this->displayTask();
 					return;
 				}
@@ -204,7 +204,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		}
 
 		//set success message
-		$this->_message = JText::_('Template(s) Successfully Deleted');
+		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
@@ -245,12 +245,12 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		$newsletterTemplate = new NewsletterTemplate( $this->database );
 		if (!$newsletterTemplate->save( $new_template ))
 		{
-			$this->setError('An error occurred while trying to duplicate the newsletter template.');
+			$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_DUPLICATE_FAILED'));
 			$this->displayTask();
 			return;
 		}
 		//set success message & redirect
-		$this->_message = JText::_('Newsletter template successfully copied.');
+		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_DUPLICATE_SUCCESS');
 		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
 	}
 

@@ -57,11 +57,11 @@ $controllerName = 'NewsletterController' . ucfirst($controllerName);
 
 //menu items
 $menuItems = array(
-	'newsletter'  => 'Newsletters',
-	'mailing'     => 'Mailings',
-	'mailinglist' => 'Lists',
-	'template'    => 'Templates',
-	'tools'       => 'Tools'
+	'newsletter'  => JText::_('COM_NEWSLETTER_NEWSLETTERS'),
+	'mailing'     => JText::_('COM_NEWSLETTER_MAILINGS'),
+	'mailinglist' => JText::_('COM_NEWSLETTER_LISTS'),
+	'template'    => JText::_('COM_NEWSLETTER_TEMPLATES'),
+	'tools'       => JText::_('COM_NEWSLETTER_TOOLS')
 );
 
 //add menu items

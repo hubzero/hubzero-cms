@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Newsletter Controller
+ */
 class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 {
 	/**
@@ -178,6 +181,10 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Output Newsletter content as PDF
+	 * @return void
+	 */
 	public function outputTask()
 	{
 		//get the newsletter id
@@ -207,7 +214,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
-				JText::_('Unable to output newsletter as PDF. Please try again later.'),
+				JText::_('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
 				'error'
 			);
 			return;

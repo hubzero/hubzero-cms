@@ -28,38 +28,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param type="text" name="newsletter_from_name" default="My HUB" label="Newsletter From Name" description="From name for newsletter." />
-		<param type="text" name="newsletter_from_address" default="contact@myhub.org" label="Newsletter From Address" description="From address for newsletter." />
-		<param type="text" name="newsletter_replyto_name" default="My HUB Reply" label="Newsletter Reply-To Name" description="Reply-to name for newsletter." />
-		<param type="text" name="newsletter_replyto_address" default="reply@myhub.org" label="Newsletter Reply-To Address" description="Reply-to address for newsletter." />
-
-		<param type="spacer" />
-
-		<param type="list" name="email_tracking_protocol" default="http" label="Email Tracking Protocol" description="Tracking links are sent through this protocol.">
-			<option value="http">HTTP</option>
-			<option value="https">HTTPS</option>
-		</param>
-		<param type="text" name="email_tracking_link" default="http://kb.mailchimp.com/article/how-open-tracking-works" label="Email Tracking Info" description="Link to how email tracking works." />
-
-		<param type="spacer" />
-
-		<param type="text" name="template_tips" default="http://www.campaignmonitor.com/guides/" label="Guides for Creating Template URL" description="A URL that shows tips and tricks to building a newsletter template that will work with all email clients." />
-		<param type="text" name="template_templates" default="http://www.campaignmonitor.com/templates/" label="Newsletter Templates and/or Examples" description="A URL that has newsletter templates or shows examples of newsletter templates." />
-	</params>
 	<fieldset name="basic">
-		<field type="text" name="newsletter_from_name" default="My HUB" label="Newsletter From Name" description="From name for newsletter." />
-		<field type="text" name="newsletter_from_address" default="contact@myhub.org" label="Newsletter From Address" description="From address for newsletter." />
-		<field type="text" name="newsletter_replyto_name" default="My HUB Reply" label="Newsletter Reply-To Name" description="Reply-to name for newsletter." />
-		<field type="text" name="newsletter_replyto_address" default="reply@myhub.org" label="Newsletter Reply-To Address" description="Reply-to address for newsletter." />
+		<field type="text" name="newsletter_from_name" default="My HUB" label="COM_NEWSLETTER_CONFIG_FROM_NAME_LABEL" description="COM_NEWSLETTER_CONFIG_FROM_NAME_DESC" />
+		<field type="text" name="newsletter_from_address" default="contact@myhub.org" label="COM_NEWSLETTER_CONFIG_FROM_ADDRESS_LABEL" description="COM_NEWSLETTER_CONFIG_FROM_ADDRESS_DESC" />
+		<field type="text" name="newsletter_replyto_name" default="My HUB Reply" label="COM_NEWSLETTER_CONFIG_REPLYTO_NAME_LABEL" description="COM_NEWSLETTER_CONFIG_REPLYTO_NAME_DESC" />
+		<field type="text" name="newsletter_replyto_address" default="reply@myhub.org" label="COM_NEWSLETTER_CONFIG_REPLYTO_ADDRESS_LABEL" description="COM_NEWSLETTER_CONFIG_REPLYTO_ADDRESS_DESC" />
 
 		<field type="spacer" />
 
-		<field type="text" name="email_tracking_link" default="http://kb.mailchimp.com/article/how-open-tracking-works" label="Email Tracking Info" description="Link to how email tracking works." />
+		<field type="text" name="email_tracking_link" default="http://kb.mailchimp.com/article/how-open-tracking-works" label="COM_NEWSLETTER_CONFIG_EMAIL_TRACKING_LINK_LABEL" description="COM_NEWSLETTER_CONFIG_EMAIL_TRACKING_LINK_DESC" />
 
 		<field type="spacer" />
 
-		<field type="text" name="template_tips" default="http://www.campaignmonitor.com/guides/" label="Guides for Creating Template URL" description="A URL that shows tips and tricks to building a newsletter template that will work with all email clients." />
-		<field type="text" name="template_templates" default="http://www.campaignmonitor.com/templates/" label="Newsletter Templates and/or Examples" description="A URL that has newsletter templates or shows examples of newsletter templates." />
+		<field type="text" name="template_tips" default="http://www.campaignmonitor.com/guides/" label="COM_NEWSLETTER_CONFIG_GUIDES_LINK_LABEL" description="COM_NEWSLETTER_CONFIG_GUIDES_LINK_DESC" />
+		<field type="text" name="template_templates" default="http://www.campaignmonitor.com/templates/" label="COM_NEWSLETTER_CONFIG_TEMPLATES_LINK_LABEL" description="COM_NEWSLETTER_CONFIG_TEMPLATES_LINK_DESC" />
 	</fieldset>
 </config>

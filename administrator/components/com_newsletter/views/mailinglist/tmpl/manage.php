@@ -32,29 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_( 'Newsletter Mailing List [' . $this->list->name .']' ), 'list.png');
+JToolBarHelper::title(JText::_('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list.png');
 
 //add buttons to toolbar
-JToolBarHelper::addNew('addemail', 'Add Emails');
-JToolBarHelper::deleteList('Are you sure you want to delete the selected email(s) from the mailing list?', 'deleteemail', 'Remove');
+JToolBarHelper::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');
+JToolBarHelper::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK', 'deleteemail', 'COM_NEWSLETTER_TOOLBAR_REMOVE');
 JToolBarHelper::spacer();
-JToolBarHelper::custom('export', 'export', '', 'Export List', false);
+JToolBarHelper::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT', false);
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php
 	if ($this->getError())
@@ -65,13 +52,13 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label>Status:
+		<label><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:
 			<select name="status">
-				<option value="all" <?php if ($this->filters['status'] == 'all') { echo 'selected="selected"'; } ?>>All Statuses</option>
-				<option value="active" <?php if ($this->filters['status'] == 'active') { echo 'selected="selected"'; } ?>>Active</option>
-				<option value="removed" <?php if ($this->filters['status'] == 'removed') { echo 'selected="selected"'; } ?>>Removed by Admin</option>
-				<option value="unsubscribed" <?php if ($this->filters['status'] == 'unsubscribed') { echo 'selected="selected"'; } ?>>Unsubscribed</option>
-				<option value="inactive" <?php if ($this->filters['status'] == 'inactive') { echo 'selected="selected"'; } ?>>Inactive (Awaiting Confirmation)</option>
+				<option value="all" <?php if ($this->filters['status'] == 'all') { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL'); ?></option>
+				<option value="active" <?php if ($this->filters['status'] == 'active') { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE'); ?></option>
+				<option value="removed" <?php if ($this->filters['status'] == 'removed') { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED'); ?></option>
+				<option value="unsubscribed" <?php if ($this->filters['status'] == 'unsubscribed') { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
+				<option value="inactive" <?php if ($this->filters['status'] == 'inactive') { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
 			</select>
 		</label>
 		<input type="submit" value="Go" onclick="javascript:submitbutton('manage');" />
@@ -83,25 +70,25 @@ function submitbutton(pressbutton)
 				<th>
 					<?php if ($this->filters['sort'] == 'email ASC') : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=email DESC">
-							<?php echo JText::_('Email &uarr;'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=email ASC">
-							<?php echo JText::_('Email'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL'); ?>
 							<?php echo ($this->filters['sort'] == 'email DESC') ? ' &darr;' : ''; ?>
 						</a>
 					<?php endif; ?>
 				</th>
-				<th><?php echo JText::_('Status'); ?></th>
-				<th><?php echo JText::_('Confirmed?'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
+				<th><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
 				<th>
 					<?php if ($this->filters['sort'] == 'date_added ASC') : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_added DESC">
-							<?php echo JText::_('Date Added &uarr;'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_added ASC">
-							<?php echo JText::_('Date Added'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED'); ?>
 							<?php echo ($this->filters['sort'] == 'date_added DESC') ? ' &darr;' : ''; ?>
 						</a>
 					<?php endif; ?>
@@ -109,11 +96,11 @@ function submitbutton(pressbutton)
 				<th>
 					<?php if ($this->filters['sort'] == 'date_confirmed ASC') : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_confirmed DESC">
-							<?php echo JText::_('Date Confirmed &uarr;'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
 						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_confirmed ASC">
-							<?php echo JText::_('Date Confirmed'); ?>
+							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED'); ?>
 							<?php echo ($this->filters['sort'] == 'date_confirmed DESC') ? ' &darr;' : ''; ?>
 						</a>
 					<?php endif; ?>
@@ -132,7 +119,7 @@ function submitbutton(pressbutton)
 							<?php
 								if ($le->unsubscribe_reason)
 								{
-									echo '<p><strong>Unsubscribe Reason:</strong> ' . $le->unsubscribe_reason . '</p>';
+									echo '<p><strong>' . JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $le->unsubscribe_reason . '</p>';
 								}
 							?>
 						</td>
@@ -143,12 +130,12 @@ function submitbutton(pressbutton)
 							<?php
 								if ($le->confirmed)
 								{
-									echo 'Yes';
+									echo JText::_('JYES');
 								}
 								else
 								{
 									$resendLink = JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=sendconfirmation&id='.$le->id.'&mid='.$this->list->id);
-									echo 'No (<a href="'.$resendLink.'">Send Confirmation</a>)';
+									echo JText::_('JNO') . '(<a href="'.$resendLink.'">Send Confirmation</a>)';
 								}
 							?>
 						</td>
@@ -163,7 +150,7 @@ function submitbutton(pressbutton)
 								}
 								else
 								{
-									echo 'n/a';
+									echo JText::_('NA');
 								}
 							 ?>
 						</td>
@@ -172,7 +159,7 @@ function submitbutton(pressbutton)
 			<?php else : ?>
 				<tr>
 					<td colspan="6">
-						Currently there are no emails in this mailing list. <a onclick="javascript:submitbutton('addemail');" href="javascript:void(0);">Click here to add emails.</a>
+						<?php echo JText::sprintf('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS',"javascript:submitbutton('addemail');"); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

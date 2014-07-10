@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+/**
+ * Newsletter Mailing Controller
+ */
 class NewsletterControllerMailing extends \Hubzero\Component\SiteController
 {
 	/**
@@ -41,7 +44,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\SiteController
 	public function trackTask()
 	{
 		$type = JRequest::getVar('type');
-		switch( $type )
+		switch ($type)
 		{
 			case 'open':	$this->openTrackingTask();		break;
 			case 'click': 	$this->clickTrackingTask();		break;

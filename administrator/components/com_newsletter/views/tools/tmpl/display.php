@@ -32,16 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(JText::_( 'Newsletter Tools' ), 'tools.png');
+JToolBarHelper::title(JText::_( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools.png');
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php
 	if ($this->getError())
@@ -53,17 +45,17 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span>Mozify Image</span></legend>
+			<legend><span><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY'); ?></span></legend>
 
 			<table class="admintable">
 				<tbody>
 					<tr>
 						<td colspan="2">
-							<span class="hint">Mozify means to turn an reproduce an image in mosaic tiles.</span>
+							<span class="hint"><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_DESC'); ?></span>
 						</td>
 					</tr>
 					<tr>
-						<td>Image File</td>
+						<td><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_IMAGE_FILE'); ?></td>
 						<td>
 							<input type="file" name="image-file" />
 						</td>
@@ -72,13 +64,13 @@ function submitbutton(pressbutton)
 						<td colspan="2" style="text-align:center;font-weight:bold;font-size:16px">&mdash;&mdash;&mdash; or &mdash;&mdash;&mdash;</td>
 					</tr>
 					<tr>
-						<td>Image URL</td>
+						<td><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_IMAGE_URL'); ?></td>
 						<td>
 							<input type="text" name="image-url" />
 						</td>
 					</tr>
 					<tr>
-						<td>Mosaic Size</td>
+						<td><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_MOSAIC_SIZE'); ?></td>
 						<td>
 							<select name="mosaic-size">
 								<option value="1">1</option>
@@ -108,14 +100,14 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 fltrt">
 		<?php if ($this->code != '') : ?>
-			<h3 style="padding-top: 0">Original</h3>
+			<h3 style="padding-top: 0"><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_ORIGINAL'); ?></h3>
 			<img src="<?php echo str_replace(JPATH_ROOT, '', $this->original); ?>" />
 
-			<h3>Mozified</h3>
+			<h3><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_MOZIFIED'); ?></h3>
 			<iframe id="preview-iframe" style="border:1px solid transparent"></iframe>
 			<div id="preview-code" style="display:none"><?php echo $this->preview; ?></div>
 
-			<h3>Code</h3>
+			<h3><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY_CODE'); ?></h3>
 			<textarea id="code"><?php echo str_replace("\n", "", $this->code); ?></textarea>
 
 			<script>

@@ -136,7 +136,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglist->save($list))
 		{
 			$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist';
-			$this->_message = JText::_('Campaign Mailing List Successfully Saved');
+			$this->_message = JText::_('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS');
 		}
 		else
 		{
@@ -173,7 +173,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 				//save campaign marking as deleted
 				if (!$newsletterMailinglist->save($newsletterMailinglist))
 				{
-					$this->setError('Unable to delete selected mailing-list(s).');
+					$this->setError(JText::_('COM_NEWSLETTER_MAILINGLIST_DELETE_FAILED'));
 					$this->displayTask();
 					return;
 				}
@@ -181,7 +181,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 
 		//set success message
-		$this->_message = JText::_('Mailing List(s) Successfully Deleted');
+		$this->_message = JText::_('COM_NEWSLETTER_MAILINGLIST_DELETE_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist';
@@ -308,7 +308,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		//make sure we have selected whether or not to send confirmation emails
 		if ($this->emailConfirmation == '-1')
 		{
-			$this->setError('Select whether or not to send confirmation emails?');
+			$this->setError(JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_SPECIFY_CONFIRMATION'));
 			$this->addEmailTask();
 			return;
 		}
@@ -345,7 +345,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			$pathInfo = pathinfo($this->emailFile['name']);
 			if (!in_array(strtolower($pathInfo['extension']), $allowedExtensions))
 			{
-				$this->setError('File Uploaded is not an allowed file type.');
+				$this->setError(JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TYPE_NOT_ALLOWED'));
 				$this->addEmailTask();
 				return;
 			}
@@ -353,7 +353,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 			//make sure were within file limits
 			if ($this->emailFile['size'] > $maxFileSize)
 			{
-				$this->setError('File Uploaded is too big.');
+				$this->setError(JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TOO_BIG'));
 				$this->addEmailTask();
 				return;
 			}
@@ -421,7 +421,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 			//inform user of successfully addes
 			$application->enqueueMessage(
-				'There were ' . count($emails) . ' emails successfully added to the mailing list: <br /><br />&mdash; ' . implode('<br />&mdash; ', $emails),
+				JText::sprintf('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS', count($emails), implode('<br />&mdash; ', $emails)),
 				'success'
 			);
 		}
@@ -430,7 +430,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if (count($duplicateEmails) > 0)
 		{
 			$application->enqueueMessage(
-				'There were ' . count($duplicateEmails) . ' emails that are already in the mailing list: <br /><br />&mdash; ' . implode('<br />&mdash; ', $duplicateEmails),
+				JText::sprintf('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_DUPLICATE', count($duplicateEmails), implode('<br />&mdash; ', $duplicateEmails)),
 				'warning'
 			);
 		}
@@ -439,7 +439,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if (count($badEmails) > 0)
 		{
 			$application->enqueueMessage(
-				'There were ' . count($badEmails) . ' emails that had issues: <br /><br />&mdash; ' . implode('<br />&mdash; ', $badEmails),
+				JText::sprintf('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_FAILED', count($badEmails), implode('<br />&mdash; ', $badEmails)),
 				'error'
 			);
 		}
@@ -516,14 +516,14 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglistEmail->save($email))
 		{
 			$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $email['mid'];
-			$this->_message = JText::_('Email was successfully saved on mailing list.');
+			$this->_message = JText::_('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS');
 		}
 		else
 		{
 			JRequest::setVar('id', $email['id']);
 			JRequest::setVar('mid', $email['mid']);
 			$this->email = $email['email'];
-			$this->setError('The email entered is an invalid email address');
+			$this->setError(JText::_('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_FAILED'));
 			$this->editEmailTask();
 			return;
 		}
@@ -567,7 +567,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		//inform and redirect
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mailinglistId;
-		$this->_message = JText::_('The selected email(s) was successfully marked as removed from mailing list.');
+		$this->_message = JText::_('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAIL_SUCCESS');
 	}
 
 
@@ -595,7 +595,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglistEmail->save( $newsletterMailinglistEmail ))
 		{
 			$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid;
-			$this->_message = JText::_('Email was successfully added back to the mailing list.');
+			$this->_message = JText::_('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS');
 		}
 		else
 		{
@@ -605,6 +605,11 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 	}
 
+	/**
+	 * Send confirmation email task
+	 * 
+	 * @return void
+	 */
 	public function sendConfirmationTask()
 	{
 		//get request vars
@@ -624,7 +629,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		//inform user and redirect
 		$this->_redirect = 'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mid;
-		$this->_message = JText::_('You successfully resent a confirmation email to "'.$newsletterMailinglistEmail->email.'"');
+		$this->_message = JText::sprintf('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $newsletterMailinglistEmail->email);
 		return;
 	}
 
@@ -647,7 +652,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$emails = $newsletterMailinglist->getListEmails( $id, null, array('status' => 'all') );
 
 		//file name
-		$filename = 'Newsletter Mailing List Export - ' . $newsletterMailinglist->name . ' - ' . JFactory::getDate()->format('m-d-Y') . '.csv';
+		$filename  = JText::sprintf('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $newsletterMailinglist->name, JFactory::getDate()->format('m-d-Y'));
+		$filename .= '.csv';
 
 		//file contents
 		$content = 'Email, Status' . PHP_EOL;

@@ -195,11 +195,15 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Apply changes to newsletter
+	 * 
+	 * @return void
+	 */
 	public function applyTask()
 	{
 		$this->saveTask( $apply = true );
 	}
-
 
 	/**
 	 * Save campaign task
@@ -319,7 +323,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		else
 		{
 			//set success message
-			$this->_message = JText::_('Campaign Successfully Saved');
+			$this->_message = JText::_('COM_NEWSLETTER_SAVED_SUCCESS');
 
 			//redirect back to campaigns list
 			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
@@ -356,7 +360,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		}
 
 		//set success message
-		$this->_message = JText::_('Newsletter(s) successfully duplicated.');
+		$this->_message = JText::_('COM_NEWSLETTER_DUPLICATED_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
@@ -389,7 +393,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 				//save campaign marking as deleted
 				if (!$newsletterNewsletter->save($newsletterNewsletter))
 				{
-					$this->setError('Unable to delete selected newsletters.');
+					$this->setError(JText::_('COM_NEWSLETTER_DELETE_FAIL'));
 					$this->displayTask();
 					return;
 				}
@@ -397,7 +401,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		}
 
 		//set success message
-		$this->_message = JText::_('Newsletter(s) successfully deleted.');
+		$this->_message = JText::_('COM_NEWSLETTER_DELETE_SUCCESS');
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
@@ -452,7 +456,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 				//save campaign marking as deleted
 				if (!$newsletterNewsletter->save($newsletterNewsletter))
 				{
-					$this->setError('Unable to delete selected newsletters.');
+					$this->setError(JText::_('COM_NEWSLETTER_STATE_CHANGE_FAIL'));
 					$this->displayTask();
 					return;
 				}
@@ -461,14 +465,18 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 
 		//set success message
-		$msg = ($publish) ? 'Newsletter(s) successfully published.' : 'Newsletter(s) successfully unpublished.';
+		$msg = ($publish) ? 'COM_NEWSLETTER_PUBLISHED_SUCCESS' : 'COM_NEWSLETTER_UNPUBLISHED_SUCCESS';
 		$this->_message = JText::_( $msg );
 
 		//redirect back to campaigns list
 		$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
 	}
 
-
+	/**
+	 * Preview newsletter in lightbox
+	 * 
+	 * @return void
+	 */
 	public function previewTask()
 	{
 		//get the request vars
@@ -500,7 +508,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//make sure we have an id
 		if (!$id)
 		{
-			$this->setError('You must select a newsletter to send a test mailing.');
+			$this->setError(JText::_('COM_NEWSLETTER_SELECT_NEWSLETTER_FOR_MAILING'));
 			$this->displayTask();
 			return;
 		}
@@ -575,14 +583,14 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//do we have good emails to tell user about
 		if (count($goodEmails))
 		{
-			$message = $newsletterNewsletter->name . ' Sent to: <br /><br />' . implode("<br />", $goodEmails);
+			$message = JText::sprintf('COM_NEWSLETTER_TEST_SEND_SUCCESS', $newsletterNewsletter->name, implode("<br />", $goodEmails));
 			$application->enqueueMessage($message,'success');
 		}
 
 		//do we have any bad emails to tell user about
 		if (count($badEmails))
 		{
-			$message = $newsletterNewsletter->name . ' NOT SENT to: <br /><br />' . implode("<br />", $badEmails);
+			$message = JText::sprintf('COM_NEWSLETTER_TEST_SEND_FAIL', $newsletterNewsletter->name, implode("<br />", $badEmails));
 			$application->enqueueMessage($message,'error');
 		}
 
@@ -608,7 +616,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//make sure we have an id
 		if (!$id)
 		{
-			$this->setError('You must select a newsletter to send a test mailing.');
+			$this->setError(JText::_('COM_NEWSLETTER_SELECT_NEWSLETTER_FOR_MAILING'));
 			$this->displayTask();
 			return;
 		}
@@ -623,6 +631,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
+		//$jqueryPlugin->params = (isset($jqueryPlugin->params)) ? $jqueryPlugin->params : new StdClass;
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
 
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
@@ -668,7 +677,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//check to make sure we have an object
 		if (!is_object($newsletterNewsletter) || $newsletterNewsletter->name == '')
 		{
-			$this->setError('We unable to locate a newsletter to send.');
+			$this->setError(JText::_('COM_NEWSLETTER_UNABLE_TO_LOCATE'));
 			$this->displayTask();
 			return;
 		}
@@ -676,7 +685,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		// make sure it wasnt deleted
 		if ($newsletterNewsletter->deleted == 1)
 		{
-			$this->setError('The newsletter you are attempting to send has been previously deleted.');
+			$this->setError(JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_DELETED'));
 			$this->displayTask();
 			return;
 		}
@@ -708,7 +717,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		// make sure we have emails
 		if ($count < 1)
 		{
-			$this->setError('The newsletter mailing list you are attempting to send the newsletter to has no members. Please add emails to the mailing list and try again.');
+			$this->setError(JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_MISSING_RECIPIENTS'));
 			$this->displayTask();
 			return;
 		}
@@ -738,7 +747,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		if ($newsletterNewsletter->save( $newsletterNewsletter ))
 		{
 			//set message for user
-			$this->_message = JText::_($newsletterNewsletter->name . ' has or will be sent to "' . number_format($count) . '" members.');
+			$this->_message = JText::sprintf('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletterNewsletter->name, number_format($count));
 
 			//redirect after sent
 			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
@@ -803,7 +812,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";
 
 		//set mail args
-		$mailArgs = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
+		$mailArgs = '';
+		//$mailArgs = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
 
 		//are we sending test mailing
 		if ($sendingTest)
@@ -881,7 +891,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterMailing = new NewsletterMailing( $this->database );
 		if (!$newsletterMailing->save( $mailing ))
 		{
-			$this->setError('Unable to send newsletter.');
+			$this->setError(JText::_('COM_NEWSLETTER_NEWSLETTER_SEND_FAIL'));
 			$this->sendNewsletterTask();
 			return;
 		}
