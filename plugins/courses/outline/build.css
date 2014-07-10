@@ -1162,3 +1162,11 @@ ul {
 .edit-form legend:after {
 	clear: both;
 }
+.ui-tooltip {
+	background: #252525;
+	background: rgba(0, 0, 0, 0.75);
+	color: #fff;
+	font-size: 0.85em;
+	padding: 0.4em 1em;
+	border: none;
+}

@@ -43,10 +43,10 @@ jQuery(document).ready(function(jq) {
 		autoSize: false
 	});
 
-	$('.notempty').masonry({
+	/*$('.notempty').masonry({
 		itemSelector: '.weeksection',
 		columnWidth: function(container) {
 			return container / 2;
 		}
-	});
+	});*/
 });

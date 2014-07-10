@@ -137,7 +137,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 				default:
 					\Hubzero\Document\Assets::addPluginScript('courses', $this->_name);
-					\Hubzero\Document\Assets::addSystemScript('jquery.masonry');
+					//\Hubzero\Document\Assets::addSystemScript('jquery.masonry');
 					$this->_display();
 				break;
 			}
@@ -209,6 +209,8 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 			return;
 		}
+
+		\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 
 		// Add outline builder style and script
 		\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name, 'build.css');
