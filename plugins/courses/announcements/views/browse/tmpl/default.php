@@ -99,7 +99,7 @@ $base = $this->offering->link() . '&active=announcements';
 								<a class="icon-edit edit" href="<?php echo JRoute::_($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
 									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
 								</a>
-								<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
+								<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&action=delete&entry=' . $row->get('id')); ?>" data-confirm="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
 									<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
 								</a>
 							<?php } ?>

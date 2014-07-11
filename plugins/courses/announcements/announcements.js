@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/announcements/announcements.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/courses/announcements/announcements.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -30,7 +30,7 @@ jQuery(document).ready(function(jq){
 
 	$('.announcement a.delete').each(function(i, el) {
 		$(el).on('click', function(e) {
-			var res = confirm('Are you sure you wish to delete this item?');
+			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
@@ -38,15 +38,17 @@ jQuery(document).ready(function(jq){
 		});
 	});
 
-	$('.datepicker').datetimepicker({
-		duration: '',
-		showTime: true,
-		constrainInput: false,
-		stepMinutes: 1,
-		stepHours: 1,
-		altTimeField: '',
-		time24h: true,
-		timeFormat: 'HH:mm:00',
-		dateFormat: 'yy-mm-dd'
-	});
+	if ($('.datepicker').length) {
+		$('.datepicker').datetimepicker({
+			duration: '',
+			showTime: true,
+			constrainInput: false,
+			stepMinutes: 1,
+			stepHours: 1,
+			altTimeField: '',
+			time24h: true,
+			timeFormat: 'HH:mm:00',
+			dateFormat: 'yy-mm-dd'
+		});
+	}
 });

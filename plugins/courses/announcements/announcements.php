@@ -174,7 +174,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'courses',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse',
 				'layout'  => 'dashboard'
@@ -208,7 +208,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'courses',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'browse'
 			)
@@ -225,9 +225,9 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		$view->filters  = array(
 			'search' => JRequest::getVar('q', ''),
 			'limit'  => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'  => JRequest::getInt('limitstart', 0),
-			'start'  => ($view->filters['limit'] == 0 ? 0 : $view->filters['start'])
+			'start'  => JRequest::getInt('limitstart', 0)
 		);
+		$view->filters['start'] = ($view->filters['limit'] == 0 ? 0 : $view->filters['start']);
 
 		$view->no_html = JRequest::getInt('no_html', 0);
 
@@ -257,7 +257,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'courses',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'edit'
 			)
