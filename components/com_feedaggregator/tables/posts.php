@@ -105,7 +105,10 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getAllPosts($limit = 10, $offset = 0)
 	{
-		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.status < 3 ORDER BY #__feedaggregator_posts.created DESC LIMIT '. (int) $offset.', '. (int) $limit .';';
+		$query = "SELECT p.id, p.title, p.created, f.name, f.url, p.url AS `link`, p.status, p.feed_id, p.description
+				 FROM `$this->_tbl` AS p
+				 INNER JOIN `#__feedaggregator_feeds` AS f ON f.id=p.feed_id
+				 WHERE p.status < 3 ORDER BY p.created DESC LIMIT " . (int) $offset . ", " . (int) $limit;
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObjectList();
@@ -121,7 +124,11 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getPostsByStatus($limit = 10, $offset = 0, $status = 0)
 	{
-		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.status = ' . (int) $status. ' ORDER BY #__feedaggregator_posts.created DESC LIMIT '. (int) $offset . ', '.  (int) $limit.';';
+		$query = "SELECT p.id, p.title, p.created, f.name, f.url, p.url AS `link`, p.status, p.feed_id, p.description
+				 FROM `$this->_tbl` AS p
+				 INNER JOIN `#__feedaggregator_feeds` AS f ON f.id=p.feed_id
+				 WHERE p.status = " . (int) $status . "
+				 ORDER BY p.created DESC LIMIT " . (int) $offset . ", " . (int) $limit;
 		$this->_db->setQuery($query);
 		
 		return $this->_db->loadObjectList();
@@ -137,7 +144,10 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getPostById($id = NULL)
 	{
-		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_posts.id = '. (int) $id .';';
+		$query = "SELECT p.id, p.title, p.created, f.name, f.url, p.url AS `link`, p.status, p.feed_id, p.description
+				 FROM `$this->_tbl` AS p
+				 INNER JOIN `#__feedaggregator_feeds` AS f ON f.id=p.feed_id
+				 WHERE p.id = " . (int) $id;
 		$this->_db->setQuery($query);
 
 		return $this->_db->loadObjectList();
@@ -152,11 +162,10 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function updateStatus($id = NULL, $status = NULL)
 	{
-		$query = 'UPDATE #__feedaggregator_posts SET status= '. (int) $status.' WHERE #__feedaggregator_posts.id = '.$id.';';
+		$query = "UPDATE $this->_tbl SET status=" . (int) $status . " WHERE id=" . $id;
 		$this->_db->setQuery($query);
 		return $this->_db->query();
 	}
-
 
 	/**
 	 * Get posts with the specified feed id
@@ -166,7 +175,10 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getPostsbyFeedId($id = NULL)
 	{
-		$query = 'SELECT #__feedaggregator_posts.id, #__feedaggregator_posts.title, #__feedaggregator_posts.created ,#__feedaggregator_feeds.name, #__feedaggregator_feeds.url, #__feedaggregator_posts.url AS `link`, #__feedaggregator_posts.status, #__feedaggregator_posts.feed_id, #__feedaggregator_posts.description FROM `#__feedaggregator_posts` INNER JOIN `#__feedaggregator_feeds` on #__feedaggregator_feeds.id = #__feedaggregator_posts.feed_id WHERE #__feedaggregator_feeds.id= '. (int) $id .';';
+		$query = "SELECT p.id, p.title, p.created, f.name, f.url, p.url AS `link`, p.status, p.feed_id, p.description
+				 FROM `{$this->_tbl}` AS p
+				 INNER JOIN `#__feedaggregator_feeds` AS f ON f.id=p.feed_id
+				 WHERE f.id=" . (int) $id;
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -179,11 +191,10 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getURLs()
 	{
-		$query = 'SELECT url FROM #__feedaggregator_posts';
+		$query = "SELECT url FROM $this->_tbl";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResultArray();
 	}
-
 
 	/**
 	 *  Counts the number of posts in a specified category.
@@ -192,8 +203,7 @@ class FeedAggregatorTablePosts extends JTable
 	 */
 	public function getRowCount($status = NULL)
 	{
-
-		$query = 'SELECT COUNT(*) FROM #__feedaggregator_posts WHERE status';
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE status";
 		if ($status !== null)
 		{
 			$query .= '=' . (int) $status;
@@ -206,6 +216,5 @@ class FeedAggregatorTablePosts extends JTable
 		$this->_db->setQuery($query);
 		return intval($this->_db->loadResult());
 	}
-
 }
 

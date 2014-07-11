@@ -108,7 +108,7 @@ class FeedAggregatorTableFeeds extends JTable
 	 */
 	public function getById($id = NULL)
 	{
-		$query = 'SELECT * FROM '.$this->_tbl.' WHERE id = '. (int) $id.';';
+		$query = 'SELECT * FROM ' . $this->_tbl . ' WHERE id=' . (int) $id;
 		$this->_db->setQuery($query);
 	
 		return $this->_db->loadObject();
@@ -122,10 +122,9 @@ class FeedAggregatorTableFeeds extends JTable
 	 */
 	public function updateActive($id, $status)
 	{
-		$query = 'UPDATE #__feedaggregator_feeds SET enabled='. (int) $status.' WHERE id = '. (int) $id.';';
+		$query = 'UPDATE ' . $this->_tbl . ' SET enabled=' . (int) $status . ' WHERE id=' . (int) $id;
 		$this->_db->setQuery($query);
 		return $this->_db->query();
 	}
-
 }
 

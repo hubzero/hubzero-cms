@@ -32,7 +32,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $controllerName = JRequest::getCmd('controller', 'posts');
-$taskName = JRequest::getCmd('task', '');
 
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
 {

@@ -45,16 +45,16 @@ $this->js('posts')
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn">Generate RSS Feed</a>
+				<a href="#feedbox" id="generateFeed" class="fancybox-inline icon-feed btn"><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_FEED'); ?></a>
 			</li>
 			<li>
-				<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a>
+				<a class="icon-download btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_GET_NEW_POSTS'); ?></a>
 			</li>
 			<li>
-				<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('View Feeds'); ?></a>
+				<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=feeds'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_FEEDS'); ?></a>
 			</li>
 			<li class="last">
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -67,18 +67,18 @@ $this->js('posts')
 		<?php if (count($this->posts) > 0):?>
 			<div class="container">
 				<ul class="entries-menu filter-options">
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=all'); ?>"><?php echo JText::_('All'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('New'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=review'); ?>"><?php echo JText::_('Under Review'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=approved'); ?>"><?php echo JText::_('Approved'); ?></a></li>
-					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?&filterby=removed'); ?>"><?php echo JText::_('Removed'); ?></a></li>
+					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=all'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_FILTER_ALL'); ?></a></li>
+					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'new') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_FILTER_NEW'); ?></a></li>
+					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'review') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=review'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_FILTER_REVIEW'); ?></a></li>
+					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'approved') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=approved'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_FILTER_APPROVED'); ?></a></li>
+					<li><a class="filter-all<?php if ($this->filters['filterby'] == 'removed') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=removed'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_FILTER_REMOVED'); ?></a></li>
 				</ul>
 
 				<table class="ideas entries feedtable">
-					<caption>Showing <?php echo $this->filters['filterby'];?> posts</caption>
+					<caption><?php echo JText::sprintf('COM_FEEDAGGREGATOR_SHOWING_POSTS', $this->filters['filterby']); ?></caption>
 					<tbody>
 					<?php foreach ($this->posts as $post): ?>
-						<?php if(($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
+						<?php if (($post->status != "removed" AND $this->filters['filterby'] != "removed") OR
 								($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
 								($this->task == "PostsById")): ?>
 						<tr id="row-<?php echo $post->id; ?>">
@@ -86,52 +86,52 @@ $this->js('posts')
 							<td><?php echo $post->created; ?>
 							<td><?php echo $post->name;?></td>
 							<td id="status-<?php echo $post->id; ?>">
-							<?php if ($post->status == "under review")
-							{
-								echo '<div class="review-status">';
-								echo $post->status;
-								echo '</div>';
-							}
-							else if ($post->status == "approved")
-							{
-								echo '<div class="approve-status">';
-								echo $post->status;
-								echo '</div>';
-							}
-							else if ($post->status == "new")
-							{
-								echo '<b>';
-								echo $post->status;
-								echo '</b>';
-							}
-							else if ($post->status == "removed")
-							{
-								echo '<div class="remove-status">';
-								echo $post->status;
-								echo '</div>';
-							}
-							?>
+								<?php if ($post->status == "under review")
+								{
+									echo '<div class="review-status">';
+									echo $post->status;
+									echo '</div>';
+								}
+								else if ($post->status == "approved")
+								{
+									echo '<div class="approve-status">';
+									echo $post->status;
+									echo '</div>';
+								}
+								else if ($post->status == "new")
+								{
+									echo '<b>';
+									echo $post->status;
+									echo '</b>';
+								}
+								else if ($post->status == "removed")
+								{
+									echo '<div class="remove-status">';
+									echo $post->status;
+									echo '</div>';
+								}
+								?>
 							</td>
 							<td>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Approve" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?>>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Mark for Review" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?>>
-								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?>" value="Remove" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> >
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="approveBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo JText::_('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> />
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo JText::_('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-<?php echo $post->id; ?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> />
+								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo JText::_('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> />
 								<div class="postpreview-container">
-									<div class="postpreview" id="content-fancybox<?php echo $post->id;?>">
-											<h1><?php echo $post->title; ?></h1>
-											<p class="description"><?php echo $post->description; ?></p>
-											<p><a target="_blank" href="<?php echo urldecode($post->link); ?>">Link to original post.</a></p>
-											<div class="button-container">
+									<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
+										<h1><?php echo $post->title; ?></h1>
+										<p class="description"><?php echo $post->description; ?></p>
+										<p><a target="_blank" href="<?php echo urldecode($post->link); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
+										<div class="button-container">
 											<hr />
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="actionBtn approveBtn btn <?php echo 'btnGrp'.$post->id; ?> " value="Approve" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> >
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Mark for Review" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> >
-											<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp'.$post->id; ?> " value="Remove" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> >
-											</div>
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="approve" class="actionBtn approveBtn btn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo JText::_('COM_FEEDAGGREGATOR_APPROVE'); ?>" id="approve-prev-<?php echo $post->id;?>" <?php echo ($post->status == "approved" ? 'disabled' : ''); ?> />
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="mark" class="reviewBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo JText::_('COM_FEEDAGGREGATOR_MARK_FOR_REVIEW'); ?>" id="mark-prev-<?php echo $post->id;?>" <?php echo ($post->status == "under review" ? 'disabled' : ''); ?> />
+											<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?> " value="<?php echo JText::_('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-prev-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> />
+										</div>
 									</div>
 								</div>
 							</td>
 						</tr>
-						<?php endif;?>
+						<?php endif; ?>
 					<?php endforeach; //end foreach ?>
 					</tbody>
 				</table>
@@ -144,11 +144,11 @@ $this->js('posts')
 			}
 			?>
 		<?php elseif ($this->filters['filterby'] == 'all' OR $this->filters['filterby'] == 'new') : ?>
-			<p>There are no posts here.</p>
-			<p><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('Retrieve New Posts'); ?></a></p>
+			<p><?php echo JText::_('COM_FEEDAGGREGATOR_NO_POSTS'); ?></p>
+			<p><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts&task=RetrieveNewPosts'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_GET_NEW_POSTS'); ?></a></p>
 		<?php else: ?>
-			<p>You need to review some new posts before you can see anything here!</p>
-			<p><a href="<?php echo JRoute::_('index.php?&filterby=new'); ?>"><?php echo JText::_('View New Posts'); ?></a></p>
+			<p><?php echo JText::_('COM_FEEDAGGREGATOR_NEED_TO_REVIEW_POSTS'); ?></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&filterby=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_NEW_POSTS'); ?></a></p>
 		<?php endif; ?>
 
 			<!--  Generate Feed -->
@@ -156,8 +156,8 @@ $this->js('posts')
 				<div class="postpreview" id="feedbox">
 					<h2><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_HEADER'); ?></h2>
 					<p><?php echo JText::_('COM_FEEDAGGREGATOR_GENERATE_INSTRUCTIONS'); ?></p>
-					<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed');?>">
-					<?php echo substr_replace(JFactory::getURI()->base(),"",-1). JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed');?></a>
+					<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed'); ?>">
+					<?php echo rtrim(JURI::base(), '/') . JRoute::_('index.php?option=' . $this->option . '&controller=posts&task=generateFeed'); ?></a>
 				</div>
 			</div>
 		</div> <!--  main page -->

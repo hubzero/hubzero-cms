@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,67 +23,64 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//this is a quick and dirty way to get the one single object
+// this is a quick and dirty way to get the one single object
+$feed = '';
 if (isset($this->feed) == TRUE)
 {
 	$feed = $this->feed;
 }
-else
-{
-	$feed = '';
-}
-//load js
+
+// load js
 $this->js('feeds');
 ?>
-
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
-<?php if ($this->getErrors()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
+	<?php if ($this->getErrors()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
+
 	<form method="post" id="hubForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . ' &task=save'); ?>">
 		<div class="explaination">
 			<p>
-			<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE')?>
+				<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE'); ?>
 			</p>
 		</div>
 		<fieldset>
-			<legend>Feed Information</legend>
+			<legend><?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFORMATION'); ?></legend>
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="id" value="<?php echo (is_object($feed) ? $feed->id : ''); ?>">
 			<input type="hidden" name="enabled" value="<?php echo (isset($feed->enabled) ? $feed->enabled : '1'); ?>">
 			<input type="hidden" name="task" value="save" />
 
-			<label for="feed-title">
-				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?>
-				<span class="required">required</span>
-				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $feed->name : ''); ?>"/>
+			<label for="feedTitle">
+				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $this->escape($feed->name) : ''); ?>"/>
 			</label>
 
-			<label for="url">
-				<?php echo JText::_('Feed URL'); ?>
-				<span class="required">required</span>
-				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $feed->url : ''); ?>" />
+			<label for="feedURL">
+				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDURL'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->url) : ''); ?>" />
 			</label>
 
-			<label for="description">
-				<?php echo JText::_('Description'); ?>
-				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $feed->description : ''); ?>" />
+			<label for="feedDescription">
+				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_DESCRIPTION'); ?>
+				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->description) : ''); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit">
-			<input type="submit" id="submitBtn" class="btn" name="formsubmitBtn" value="Submit<?php //echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
+			<input type="submit" id="submitBtn" class="btn btn-success" name="formsubmitBtn" value="<?php echo JText::_('COM_FEEDAGGREGATOR_SUBMIT'); ?>" />
 		</p>
 
 		<?php echo JHTML::_('form.token'); ?>

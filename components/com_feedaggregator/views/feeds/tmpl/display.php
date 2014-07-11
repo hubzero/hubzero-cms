@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,10 +38,10 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo JText::_('View Posts'); ?></a>
+				<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_POSTS'); ?></a>
 			</li>
 			<li class="last">
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -54,9 +54,9 @@ defined('_JEXEC') or die('Restricted access');
 			<table class="entries">
 				<thead class="table-head">
 					<tr>
-						<th scope="col">Name</th>
-						<th scope="col">URL</th>
-						<th scope="col">Actions</th>
+						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_NAME'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_URL'); ?></th>
+						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_ACTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,12 +64,13 @@ defined('_JEXEC') or die('Restricted access');
 					<tr class='shade-table'>
 						<td><?php echo $feed->name; ?></td>
 						<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
-						<td><a class="btn" href="index.php?option=com_feedaggregator&amp;controller=posts&amp;task=PostsById&amp;id=<?php echo $feed->id; ?>">View Posts</a>
-							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=edit&amp;id=<?php echo $feed->id;?>">Edit</a>
+						<td>
+							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=posts&amp;task=PostsById&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
+							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=edit&amp;id=<?php echo $feed->id;?>"><?php echo JText::_('COM_FEEDAGGREGATOR_EDIT'); ?></a>
 							<?php if ($feed->enabled == '1'):?>
-								<a class="btn disableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=disable&amp;id=<?php echo $feed->id;?>">Disable</a>
+								<a class="btn disableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=disable&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
 							<?php elseif ($feed->enabled == '0'): ?>
-								<b><a class="btn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=enable&amp;id=<?php echo $feed->id;?>">Enable</a></b>
+								<a class="btn enableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=enable&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ENABLE'); ?></a>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -78,8 +79,8 @@ defined('_JEXEC') or die('Restricted access');
 			</table>
 		<?php else: ?>
 			<p>
-				There are no feeds here.<br />
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('Add Feed'); ?></a>
+				<?php echo JText::_('COM_FEEDAGGREGATOR_NO_RESULTS'); ?><br />
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
 			</p>
 		<?php endif; ?>
 		</div>

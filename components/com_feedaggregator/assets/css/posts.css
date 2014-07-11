@@ -1,150 +1,170 @@
-.page-main{
-	padding-bottom:50px;
-}
+/**
+ * @package	 hubzero-cms
+ * @file		components/com_feedaggregator/assets/css/feedaggregator.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-.main section{
-	padding-top: -40px;	
-}
+/*
 
-.button-container{
-	padding: 40px;
-	text-align: center; 
-	z-index: 99;
-}
+	-- -- -- -- -- -- --
+	com_feedaggregator CSS
+	-- -- -- -- -- -- --
 
-.postpreview img { 
-	display:block;
-	margin-right: auto;
-	margin-left: auto;
-}
-.postpreview p { 
-	word-wrap:break-word;
-}
+*/
 
-.postpreview h1 {
-	font-family: san-serif; font-size: x-large;
-}
-.postpreview 
-{ 
-	padding: 20px;
-	min-width: 450px;
-	text-align: center;
-}
+	.page-main {
+		padding-bottom: 50px;
+	}
+	.main section {
+		padding-top: -40px;
+		padding-bottom: 50px;
+	}
+	.button-container {
+		padding: 40px;
+		text-align: center;
+		z-index: 99;
+	}
+	#generateFeed {
+		background-color: green;
+	}
+	.feedtable td {
+		padding-top: 10px;
+		margin-top: 10px;
+	}
 
-.postpreview-container{
-	display: none;
-}
+/* Post preview */
+	.postpreview img { 
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
+	}
+	.postpreview p { 
+		word-wrap: break-word;
+	}
+	.postpreview h1 {
+		font-size: x-large;
+	}
+	.postpreview {
+		padding: 20px;
+		min-width: 450px;
+		text-align: center;
+	}
+	.postpreview-container {
+		display: none;
+	}
 
-.fancybox-next
-{
-	max-width: 100px;
-}
+/* Modal */
+	.fancybox-next {
+		max-width: 100px;
+	}
+	.fancybox-prev {
+		max-width: 100px;
+	}
 
-.fancybox-prev {
-	max-width: 100px;
-}
+/* Helpbox */
+	#helpbox p {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	#helpbox {
+		padding: 20px;
+	}
+	#helpbox h1 {
+		padding: 10px 10px 0 10px;
+		font-size: 1.9em;
+		font-weight: normal;
+	}
+	#helpbox h2 {
+		padding-right: 10px;
+		padding-left: 10px;
+		font-weight: none;
+	}
 
-#helpbox p {
-	padding-left: 10px;
-	padding-right: 10px;
-}
+/* Buttons */
+	.approveBtn {
+		color: white;
+		background: -webkit-gradient(linear, left top, left bottom, from(#009900), to(#003D00));
+		background: -webkit-linear-gradient(#009900, #003D00);
+		background: -moz-linear-gradient(center top, #009900 0%, #003D00 100%);
+		background: -moz-gradient(center top, #009900 0%, #003D00 100%);
+		background: -o-linear-gradient(#009900, #003D00);
+		background: linear-gradient(to bottom, #009900, #003D00);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#009900,endColorstr=#003D00);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#009900, endColorstr=#003D00)";
+	}
+	.reviewBtn {
+		color: white;
+		background: -webkit-gradient(linear, left top, left bottom, from(#9900CC), to(#5C007A));
+		background: -webkit-linear-gradient(#9900CC, #5C007A);
+		background: -moz-linear-gradient(center top, #9900CC 0%, #5C007A 100%);
+		background: -moz-gradient(center top, #9900CC 0%, #5C007A 100%);
+		background: -o-linear-gradient(#9900CC, #5C007A);
+		background: linear-gradient(to bottom, #9900CC, #5C007A);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9900CC,endColorstr=#5C007A);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9900CC, endColorstr=#5C007A)";
+	}
+	.removeBtn {
+		color: white;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FF0000), to(#B22400));
+		background: -webkit-linear-gradient(#FF0000, #B22400);
+		background: -moz-linear-gradient(center top, #FF0000 0%, #B22400 100%);
+		background: -moz-gradient(center top, #FF0000 0%, #B22400 100%);
+		background: -o-linear-gradient(#FF0000, #B22400);
+		background: linear-gradient(to bottom, #FF0000, #B22400);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000,endColorstr=#B22400);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF0000, endColorstr=#B22400)";
+	}
 
-#helpbox{
-	padding:20px;
-}
+	.disableBtn {
+		background-color: lime;
+		color: red;
+	}
+	.enableBtn {
+		font-weight: bold;
+	}
 
-#helpbox h1 {
-	padding-top:10px;
-	padding-right: 10px;
-	padding-left:10px;
-	padding-bottom:0;
-	font-size: 1.9em;
-	font-weight:none;
-	font-family:'Share-Regular', 'RopaSansRegular', 'LacunaRegular', 
-	'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+/* Status */
+	.review-status {
+		color: purple;
+	}
+	.remove-status {
+		color: red;
+	}
+	.approve-status {
+		color: green;
+	}
 
-#helpbox h2 {
-	padding-right: 10px;
-	padding-left:10px;
-	font-weight:none;
-	font-family:'Share-Regular', 'RopaSansRegular', 'LacunaRegular', 
-	'Impact', 'Arial Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.main {
-	padding-bottom: 50px;
-}
-
-#generateFeed {
-	background-color: green;
-}	
-.feedtable td {
-padding-top: 10px;
-margin-top: 10px;
-}
-
-.approveBtn{
-	color: white; 
-	background-image: linear-gradient(to bottom, #009900, #003D00);		
-}
-
-.reviewBtn{
-	color: white; 
-	background-image: linear-gradient(to bottom, #9900CC, #5C007A);
-}
-
-.removeBtn{
-	color: white; 
-	background-image: linear-gradient(to bottom, #FF0000, #B22400);
-}
-
-.disableBtn{
-	background-color: lime;
-	color:red;
-}
-
-.review-status
-{
-	color: purple;
-}
-
-.remove-status
-{
-	color: red;
-}
-
-.approve-status
-{
-	color: green;
-}
-
-.feed-btn {
-	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	box-shadow:inset 0px 1px 0px 0px #dcecfb;
-	background-color:#bedbfa;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #84bbf3;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #528ecc;
-}
-.feed-btn:hover {
-	background-color:#80b5ea;
-}
-.feed-btn:active {
-	position:relative;
-	top:1px;
-}
-.feed-btn:visted {
- color: white;
- }
+/* Feed button */
+	.feed-btn {
+		-webkit-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+		   -moz-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+		    -ms-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+		     -o-box-shadow: inset 0px 1px 0px 0px #dcecfb;
+		        box-shadow: inset 0px 1px 0px 0px #dcecfb;
+		background-color: #bedbfa;
+		-webkit-border-radius: 6px;
+		   -moz-border-radius: 6px;
+		    -ms-border-radius: 6px;
+		     -o-border-radius: 6px;
+		        border-radius: 6px;
+		border: 1px solid #84bbf3;
+		display: inline-block;
+		cursor: pointer;
+		color: #ffffff;
+		font-size: 15px;
+		font-weight: bold;
+		padding: 6px 24px;
+		text-decoration: none;
+		text-shadow: 0px 1px 0px #528ecc;
+	}
+	.feed-btn:hover {
+		background-color: #80b5ea;
+	}
+	.feed-btn:active {
+		position: relative;
+		top: 1px;
+	}
+	.feed-btn:visited {
+		color: white;
+	}

@@ -30,8 +30,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-require_once(JPATH_ROOT.DS."components".DS."com_feedaggregator".DS."models".DS."feeds.php");
-require_once(JPATH_ROOT.DS."components".DS."com_feedaggregator".DS."models".DS."posts.php");
+
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'feeds.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'posts.php');
 
 /**
  *  Feed Aggregator controller class
@@ -45,34 +46,32 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-
-		$userId = $this->juser->id;
-		$authlevel = JAccess::getAuthorisedViewLevels($userId);
+		$authlevel = JAccess::getAuthorisedViewLevels($this->juser->get('id'));
 		$access_level = 3; //author_level
-		if(in_array($access_level,$authlevel) && JFactory::getUser()->id)
+
+		if (in_array($access_level, $authlevel) && $this->juser->get('id'))
 		{
 			$model = new FeedAggregatorModelFeeds;
-			$feeds = $model->loadAll();
-			$this->view->feeds = $feeds;
 
-			$this->view->title =  JText::_('Feed Aggregator');
+			$this->view->feeds = $model->loadAll();
+			$this->view->title = JText::_('COM_FEEDAGGREGATOR');
 			$this->view->display();
 		}
-		else if(JFactory::getUser()->id)
+		else if ($this->juser->get('id'))
 		{
 			$this->setRedirect(
-					JRoute::_('index.php?option=com_feedaggregator'),
-					JText::_('You do not have permission to view.'),
-					'warning'
+				JRoute::_('index.php?option=com_feedaggregator'),
+				JText::_('COM_FEEDAGGREGATOR_NOT_AUTH'),
+				'warning'
 			);
 		}
-		else if(JFactory::getUser()->id == FALSE) // have person login
+		else if ($this->juser->get('guest')) // have person login
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-					JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
-					JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
-					'warning'
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
+				'warning'
 			);
 		}
 	}
@@ -85,13 +84,11 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	public function editTask()
 	{
 		//isset ID kinda deal
-		$id = JRequest::getVar('id');
 		$model = new FeedAggregatorModelFeeds;
-		$feed = $model->loadbyId($id);
 
-		$this->view->feed = $feed;
-		$this->view->user = $this->juser;
-		$this->view->title = JText::_('Edit Feeds');
+		$this->view->feed  = $model->loadbyId(JRequest::getInt('id', 0));
+		$this->view->user  = $this->juser;
+		$this->view->title = JText::_('COM_FEEDAGGREGATOR_EDIT_FEEDS');
 		$this->view->display();
 	}
 
@@ -103,7 +100,7 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	public function newTask()
 	{
 		$this->view->setLayout('edit');
-		$this->view->title = JText::_('Add Feed');
+		$this->view->title = JText::_('COM_FEEDAGGREGATOR_ADD_FEED');
 		$this->view->display();
 	}
 
@@ -118,29 +115,31 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		$action = JRequest::getVar('action');
 		$model = new FeedAggregatorModelFeeds();
 
-		if($action == 'enable')
+		if ($action == 'enable')
 		{
 			$model->updateActive($id, 1);
 			// Output messsage and redirect
 			$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Enabled.')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JText::_('COM_FEEDAGGREGATOR_FEED_ENABLED')
 			);
 		}
-		elseif($action == 'disable')
+		elseif ($action == 'disable')
 		{
 			$model->updateActive($id, 0);
+
 			// Output messsage and redirect
 			$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Disabled.')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JText::_('COM_FEEDAGGREGATOR_FEED_DISABLED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Feed Enable/Disable Failed.', 'error')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JText::_('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
+				'error'
 			);
 		}
 	}
@@ -153,7 +152,6 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		//do a JRequest instead of a bind()
-		$db = JFactory::getDBO();
 		$feed = new FeedAggregatorModelFeeds;
 
 		//get the URL first in order to validate
@@ -164,34 +162,35 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 		$feed->set('description', JRequest::getVar('description'));
 
 		//validate url
-		if(!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
+		if (!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
 		{
 			$this->feed = $feed;
+
 			//redirect
 			$this->setRedirect(
-						'/feedaggregator?controller=feeds&task=new',
-						JText::_('Invalid URL. Please make sure it is correct.'), 'warning'
-				);
-
+				JRoute::_('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
+				JText::_('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
+				'warning'
+			);
 		}
 		else
 		{
-			if($feed->store())
+			if ($feed->store())
 			{
 				// Output messsage and redirect
 				$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						JText::_('Feed Information Updated.')
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					JText::_('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
 				);
 			}
 			else
 			{
 				$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-						JText::_('Feed Information Update Failed.', 'warning')
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					JText::_('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
+					'warning'
 				);
 			}
-
 		}
 	}
 }
