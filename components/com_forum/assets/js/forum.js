@@ -9,6 +9,10 @@ String.prototype.nohtml = function () {
 	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
 
+if (!jq) {
+	var jq = $;
+}
+
 jQuery(document).ready(function (jq) {
 	var $ = jq;
 
