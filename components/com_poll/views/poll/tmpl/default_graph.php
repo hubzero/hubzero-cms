@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <div class="subject">
 <?php if ($this->poll->id) { ?>
-	<table class="pollresults" summary="<?php echo JText::_('Results for this pull'); ?>">
+	<table class="pollresults">
 		<thead>
 			<tr>
 				<th colspan="3" class="sectiontableheader">
@@ -31,21 +31,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 <?php } else { ?>
 	<p>
-		<?php echo JText::_('Select a poll from the list.'); ?>
+		<?php echo JText::_('COM_POLL_SELECT_POLL'); ?>
 	</p>
 <?php } ?>
 </div><!-- / .subject -->
 <aside class="aside">
 	<p>
-		<strong><?php echo JText::_( 'Number of Voters' ); ?></strong><br />
+		<strong><?php echo JText::_('COM_POLL_NUMBER_OF_VOTERS'); ?></strong><br />
 		<?php echo (isset($this->votes[0])) ? $this->votes[0]->voters : '--'; ?>
 	</p>
 	<p>
-		<strong><?php echo JText::_( 'First Vote' ); ?></strong><br />
+		<strong><?php echo JText::_('COM_POLL_FIRST_VOTE'); ?></strong><br />
 		<?php echo ($this->first_vote) ? $this->escape($this->first_vote) : '--'; ?>
 	</p>
 	<p>
-		<strong><?php echo JText::_( 'Last Vote' ); ?></strong><br />
+		<strong><?php echo JText::_('COM_POLL_LAST_VOTE'); ?></strong><br />
 		<?php echo ($this->last_vote) ? $this->escape($this->last_vote) : '--'; ?>
 	</p>
 </aside><!-- / .aside -->

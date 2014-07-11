@@ -41,7 +41,7 @@ class PollViewLatest extends JView
 		// if id value is passed and poll not published then exit
 		if ($poll->id > 0 && $poll->published != 1)
 		{
-			JError::raiseError(403, JText::_('Access Forbidden'));
+			JError::raiseError(403, JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 			return;
 		}
 

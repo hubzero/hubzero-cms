@@ -35,10 +35,10 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('stylesheet', 'poll_bars.css', 'components/com_poll/assets/');
 ?>
 <header id="content-header" class="full">
-	<h2><?php echo JText::_('Polls').': '.JText::_('Latest'); ?></h2>
+	<h2><?php echo JText::_('COM_POLL') . ': ' . JText::_('COM_POLL_LATEST'); ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="browse btn" href="<?php echo JRoute::_('index.php?option=com_poll'); ?>"><?php echo JText::_('Browse polls'); ?></a></p>
+		<p><a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option=com_poll'); ?>"><?php echo JText::_('COM_POLL_BROWSE'); ?></a></p>
 	</div><!-- / #content-header-extra -->
 </header>
 
@@ -47,29 +47,24 @@ JHTML::_('stylesheet', 'poll_bars.css', 'components/com_poll/assets/');
 	<form id="pollform" method="post" action="<?php echo JRoute::_('index.php?option=com_poll&task=vote'); ?>">
 		<h3><?php echo stripslashes($this->poll->title); ?></h3>
 		<ul class="poll">
-<?php
-		for ($i=0, $n=count( $this->options ); $i < $n; $i++)
-		{
-?>
+		<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++) { ?>
 			<li>
 				<input type="radio" name="voteid" id="voteid<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->options[$i]->id; ?>" alt="<?php echo $this->options[$i]->id; ?>" />
 				<label for="voteid<?php echo $this->options[$i]->id; ?>"><?php echo $this->options[$i]->text; ?></label>
 			</li>
-<?php
-		}
-?>
+		<?php } ?>
 		</ul>
 		<p>
 			<input type="submit" name="task_button" value="<?php echo JText::_('Vote!'); ?>" />&nbsp;&nbsp;
-			<a href="<?php echo JRoute::_('index.php?option=com_poll&view=poll&id='.$this->poll->id .':' . $this->poll->alias); ?>"><?php echo JText::_('Results...'); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_poll&view=poll&id=' . $this->poll->id .':' . $this->poll->alias); ?>"><?php echo JText::_('COM_POLL_RESULTS'); ?></a>
 		</p>
 
 		<input type="hidden" name="option" value="com_poll" />
 		<input type="hidden" name="task" value="vote" />
-		<input type="hidden" name="id" value="<?php echo $this->poll->id;?>" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<input type="hidden" name="id" value="<?php echo $this->poll->id; ?>" />
+		<?php echo JHTML::_('form.token'); ?>
 	</form>
 <?php } else { ?>
-	<p><?php echo JText::_('There are no polls to display.'); ?></p>
+	<p><?php echo JText::_('COM_POLL_NO_RESULTS'); ?></p>
 <?php } ?>
 </section><!-- / .main section -->
