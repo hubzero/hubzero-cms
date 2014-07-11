@@ -447,7 +447,7 @@ class View extends AbstractView
 	 * @param   string $name   View name
 	 * @return	object
 	 */
-	/*public function view($layout, $name=null)
+	public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
 		if ($layout instanceof AbstractView)
@@ -465,5 +465,5 @@ class View extends AbstractView
 		     ->set('element', $this->_element);
 
 		return $view;
-	}*/
+	}
 }
