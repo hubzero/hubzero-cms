@@ -147,10 +147,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		{
 			$this->view->filters['object_type'] = 'site';
 		}
-		if (!$this->juser->get('guest'))
-		{
-			$this->view->filters['access'] = array(0, 1);
-		}
 
 		$model = CollectionsModel::getInstance();
 
@@ -199,7 +195,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		// Filters for returning results
 		$this->view->filters = array(
 			'id'      => JRequest::getInt('id', 0),
-//			'user_id' => $this->juser->get('id'),
 			'search'  => JRequest::getVar('search', ''),
 			'sort'    => 'p.created',
 			'state'   => 1,
