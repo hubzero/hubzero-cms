@@ -278,17 +278,40 @@ class View extends AbstractView
 	}
 
 	/**
+	 * Determine the asset directory
+	 *
+	 * @param   string $path    File path
+	 * @param   string $default Default directory
+	 * @return  string
+	 */
+	private function _assetDir(&$path, $default='')
+	{
+		if (substr($path, 0, 2) == './')
+		{
+			$path = substr($path, 2);
+
+			return '';
+		}
+
+		if (substr($path, 0, 1) == '/')
+		{
+			$path = substr($path, 1);
+
+			return '/';
+		}
+
+		return $default;
+	}
+
+	/**
 	 * Push CSS to the document
 	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $folder     Plugin type
 	 * @param   string  $element    Plugin name
-	 * @param   string  $type       Mime encoding type
-	 * @param   string  $media      Media type that this stylesheet applies to
-	 * @param   string  $attribs    Attributes to add to the link
 	 * @return  void
 	 */
-	public function css($stylesheet = '', $folder = null, $element = null, $type = 'text/css', $media = null, $attribs = array())
+	public function css($stylesheet = '', $folder = null, $element = null)
 	{
 		if (!$folder)
 		{
@@ -310,18 +333,25 @@ class View extends AbstractView
 			$stylesheet .= '.css';
 		}
 
+		$dir = $this->_assetDir($stylesheet, 'css');
+		if ($dir == '/')
+		{
+			Assets::addStylesheet($dir . $stylesheet);
+			return $this;
+		}
+
 		if ($folder == 'system')
 		{
-			Assets::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet, $dir);
 			return $this;
 		}
 
 		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
-			Assets::addComponentStylesheet($folder, $stylesheet, $type, $media, $attribs);
+			Assets::addComponentStylesheet($folder, $stylesheet, $dir);
 		}
 
-		Assets::addPluginStylesheet($folder, $element, $stylesheet, $type, $media, $attribs);
+		Assets::addPluginStylesheet($folder, $element, $stylesheet, $dir);
 		return $this;
 	}
 
@@ -331,12 +361,9 @@ class View extends AbstractView
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $folder     Plugin type
 	 * @param   string  $element    Plugin name
-	 * @param   string  $type       Mime encoding type
-	 * @param   string  $media      Media type that this stylesheet applies to
-	 * @param   string  $attribs    Attributes to add to the link
 	 * @return  void
 	 */
-	public function js($script = '', $folder = null, $element = null, $type = 'text/javascript', $defer = false, $async = false)
+	public function js($script = '', $folder = null, $element = null)
 	{
 		if (!$folder)
 		{
@@ -353,18 +380,25 @@ class View extends AbstractView
 			return $this;
 		}
 
+		$dir = $this->_assetDir($script, 'js');
+		if ($dir == '/')
+		{
+			Assets::addScript($dir . $script);
+			return $this;
+		}
+
 		if ($folder == 'system')
 		{
-			Assets::addSystemScript($script);
+			Assets::addSystemScript($script, $dir);
 			return $this;
 		}
 
 		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
-			Assets::addComponentScript($folder, $script, $type, $defer, $async);
+			Assets::addComponentScript($folder, $script, $dir);
 		}
 
-		Assets::addPluginScript($folder, $element, $script, $type, $defer, $async);
+		Assets::addPluginScript($folder, $element, $script, $dir);
 		return $this;
 	}
 
@@ -387,6 +421,12 @@ class View extends AbstractView
 			$element = $this->_element;
 		}
 
+		$dir = $this->_assetDir($image, 'img');
+		if ($dir == '/')
+		{
+			return rtrim(\JURI::base(true), '/') . $dir . $image;
+		}
+
 		if ($folder == 'system')
 		{
 			return Assets::getSystemImage($image);
@@ -394,10 +434,10 @@ class View extends AbstractView
 
 		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
-			return Assets::getComponentImage($folder, $image);
+			return Assets::getComponentImage($folder, $image, $dir);
 		}
 
-		return Assets::getPluginImage($folder, $element, $image);
+		return Assets::getPluginImage($folder, $element, $image, $dir);
 	}
 
 	/**
@@ -407,7 +447,7 @@ class View extends AbstractView
 	 * @param   string $name   View name
 	 * @return	object
 	 */
-	public function view($layout, $name=null)
+	/*public function view($layout, $name=null)
 	{
 		// If we were passed only a view model, just render it.
 		if ($layout instanceof AbstractView)
@@ -425,5 +465,5 @@ class View extends AbstractView
 		     ->set('element', $this->_element);
 
 		return $view;
-	}
+	}*/
 }

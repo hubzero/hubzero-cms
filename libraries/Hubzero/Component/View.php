@@ -75,16 +75,39 @@ class View extends AbstractView
 	}
 
 	/**
+	 * Determine the asset directory
+	 *
+	 * @param   string $path    File path
+	 * @param   string $default Default directory
+	 * @return  string
+	 */
+	private function _assetDir(&$path, $default='')
+	{
+		if (substr($path, 0, 2) == './')
+		{
+			$path = substr($path, 2);
+
+			return '';
+		}
+
+		if (substr($path, 0, 1) == '/')
+		{
+			$path = substr($path, 1);
+
+			return '/';
+		}
+
+		return $default;
+	}
+
+	/**
 	 * Push CSS to the document
 	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $component  Component name
-	 * @param   string  $type       Mime encoding type
-	 * @param   string  $media      Media type that this stylesheet applies to
-	 * @param   string  $attribs    Attributes to add to the link
 	 * @return  void
 	 */
-	public function css($stylesheet = '', $component = null, $type = 'text/css', $media = null, $attribs = array())
+	public function css($stylesheet = '', $component = null)
 	{
 		if (!$component)
 		{
@@ -102,9 +125,16 @@ class View extends AbstractView
 			$stylesheet .= '.css';
 		}
 
+		$dir = $this->_assetDir($stylesheet, 'css');
+		if ($dir == '/')
+		{
+			Assets::addStylesheet($dir . $stylesheet);
+			return $this;
+		}
+
 		if ($component == 'system')
 		{
-			Assets::addSystemStylesheet($stylesheet);
+			Assets::addSystemStylesheet($stylesheet, $dir);
 			return $this;
 		}
 
@@ -113,7 +143,7 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		Assets::addComponentStylesheet($component, $stylesheet, $type, $media, $attribs);
+		Assets::addComponentStylesheet($component, $stylesheet, $dir);
 
 		return $this;
 	}
@@ -123,12 +153,9 @@ class View extends AbstractView
 	 *
 	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
 	 * @param   string  $component  Component name
-	 * @param   string  $type       Mime encoding type
-	 * @param   string  $media      Media type that this stylesheet applies to
-	 * @param   string  $attribs    Attributes to add to the link
 	 * @return  void
 	 */
-	public function js($script = '', $component = null, $type = "text/javascript", $defer = false, $async = false)
+	public function js($script = '', $component = null)
 	{
 		if (!$component)
 		{
@@ -141,9 +168,16 @@ class View extends AbstractView
 			return $this;
 		}
 
+		$dir = $this->_assetDir($script, 'js');
+		if ($dir == '/')
+		{
+			Assets::addScript($dir . $script);
+			return $this;
+		}
+
 		if ($component == 'system')
 		{
-			Assets::addSystemScript($script);
+			Assets::addSystemScript($script, $dir);
 			return $this;
 		}
 
@@ -152,7 +186,7 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		Assets::addComponentScript($component, $script, $type, $defer, $async);
+		Assets::addComponentScript($component, $script, $dir);
 
 		return $this;
 	}
@@ -171,9 +205,15 @@ class View extends AbstractView
 			$component = \JRequest::getCmd('option');
 		}
 
+		$dir = $this->_assetDir($image, 'img');
+		if ($dir == '/')
+		{
+			return rtrim(\JURI::base(true), '/') . $dir . $image;
+		}
+
 		if ($component == 'system')
 		{
-			return Assets::getSystemImage($image);
+			return Assets::getSystemImage($image, $dir);
 		}
 
 		if (substr($component, 0, strlen('com_')) !== 'com_')
@@ -181,7 +221,7 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
-		return Assets::getComponentImage($component, $image);
+		return Assets::getComponentImage($component, $image, $dir);
 	}
 
 	/**
