@@ -1738,7 +1738,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			else
 			{
 				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
-				$this->setError("The development version of this tool may only be accessed by members of it's development group.");
+				$this->setError("The development version of this tool may only be accessed by members of its development group.");
 				return false;
 			}
 		}
@@ -1758,7 +1758,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				else
 				{
 					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
-					$this->setError("This tool may only be accessed by members of it's access control groups.");
+					$this->setError("This tool may only be accessed by members of its access control groups.");
 					return false;
 				}
 			}
