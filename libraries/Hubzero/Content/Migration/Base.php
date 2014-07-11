@@ -418,9 +418,10 @@ class Base
 	 * @param $element - (string) plugin element
 	 * @param $enabled - (int)    whether or not the plugin should be enabled
 	 * @param $params  - (array)  plugin params (if already known)
+	 * @param $params  - (string) client (site=0, admin=1)
 	 * @return bool
 	 **/
-	public function addModuleEntry($element, $enabled=1, $params='')
+	public function addModuleEntry($element, $enabled=1, $params='', $client=0)
 	{
 		if ($this->db->tableExists('#__extensions'))
 		{
@@ -442,7 +443,7 @@ class Base
 			}
 
 			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-			$query .= " VALUES ('{$name}', 'module', '{$element}', '', 0, {$enabled}, 1, 0, '', ".$this->db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
+			$query .= " VALUES ('{$name}', 'module', '{$element}', '', {$client}, {$enabled}, 1, 0, '', ".$this->db->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
