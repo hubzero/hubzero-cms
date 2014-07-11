@@ -282,7 +282,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 		$this->view->active = JRequest::getVar('active', '');
 		$this->view->config = $this->config;
-		
+
 		if ($this->getError()) 
 		{
 			foreach ($this->getErrors() as $error)
@@ -290,31 +290,40 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				$this->view->setError($error);
 			}
 		}
-		
+
 		$this->view->display();
 	}
 
-	function normalize_path($path, $isFile = false) 
+	/**
+	 * Normalize a path
+	 *
+	 * @param   string  $path
+	 * @param   boolean $isFile
+	 * @return  string
+	 */
+	private function normalize_path($path, $isFile = false) 
 	{
 		if (!isset($path[0]) || $path[0] != '/')
+		{
 			return false;
+		}
 
 		$parts = explode('/', $path);
 
 		$result = array();
 
-		foreach($parts as $part) 
+		foreach($parts as $part)
 		{
 			if ($part === '' || $part == '.')
 			{
 				continue;
-			} 
+			}
 
-			if ($part == '..') 
+			if ($part == '..')
 			{
 				array_pop($result);
-			} 
-			else 
+			}
+			else
 			{
 				$result[] = $part;
 			}
@@ -323,11 +332,12 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($isFile) // Files can't end with directory separator or special directory names
 		{
 			if ($part == '' || $part == '.' || $part == '..')
+			{
 				return false;
+			}
 		}
 
-		return "/" . implode('/', $result) . ($isFile ? '' : '/');
-
+		return '/' . implode('/', $result) . ($isFile ? '' : '/');
 	}
 
 	/**
@@ -825,27 +835,27 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			$users[] = $username;
 		}
-		
+
 		//do we want to share with a group
 		if (isset($group) && $group != 0)
 		{
 			$hg = \Hubzero\User\Group::getInstance( $group );
 			$members = $hg->get('members');
-			
+
 			//merge group members with any passed in username field
 			$users = array_values(array_unique(array_merge($users, $members)));
-			
+
 			//remove this user
 			$isUserInArray = array_search($this->juser->get('id'), $users);
-			if(isset($isUserInArray))
+			if (isset($isUserInArray))
 			{
 				unset($users[$isUserInArray]);
 			}
-			
+
 			//fix array keys
 			$users = array_values(array_filter($users));
 		}
-		
+
 		// Double-check that the user can access this session.
 		$ms = new MwSession($mwdb);
 		$row = $ms->checkSession($sess, $this->juser->get('username'));
@@ -856,10 +866,10 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			JError::raiseError(500, JText::_('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
 		}
-		
+
 		//$row = $rows[0];
 		$owner = $row->viewuser;
-		
+
 		if ($readonly != 'Yes') 
 		{
 			$readonly = 'No';
@@ -926,7 +936,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				return;
 			}
 		}
-		
+
 		// Drop through and re-view the session...
 		$this->viewTask();
 	}
@@ -1891,7 +1901,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$exportAllowed = $this->_getToolExportControl($tv->exportControl);
 		$tisPublished = ($tv->state == 1);
 		$tisDev = ($tv->state == 3);
-	    $tisGroupControlled = ($tv->toolaccess == '@GROUP');
+		$tisGroupControlled = ($tv->toolaccess == '@GROUP');
 
 		if ($tisDev) 
 		{
@@ -1908,13 +1918,14 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			else
 			{
 				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
-				$this->setError("The development version of this tool may only be accessed by members of it's development group.");
+				$this->setError("The development version of this tool may only be accessed by members of its development group.");
 				return false;
 			}
 		}
 		else if ($tisPublished) 
 		{
-			if ($tisGroupControlled) {
+			if ($tisGroupControlled)
+			{
 				if ($ingroup) 
 				{
 					//$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
@@ -1928,7 +1939,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				else 
 				{
 					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
-					$this->setError("This tool may only be accessed by members of it's access control groups.");
+					$this->setError("This tool may only be accessed by members of its access control groups.");
 					return false;
 				}
 			}
