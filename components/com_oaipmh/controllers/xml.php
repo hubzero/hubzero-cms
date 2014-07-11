@@ -329,7 +329,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			$response .= '</rdf:RDF>';
 		}*/
 		$response .= '</OAI-PMH>';
-		
+
 		$response = $this->formatXmlString($response);
 
 		// send to View
@@ -615,7 +615,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		{
 			$url = rtrim($this->hubname, DS) . DS . ltrim(JRoute::_('index.php?option=com_resources&id=' . $id), DS);
 		}
-		return '<identifier>' . $url . '</identifier>';	
+		return '<identifier>' . $url . '</identifier>';
 	}
 
 	/**
@@ -639,8 +639,8 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					{
 						$sets = array(
 							0 => array(
-								$type, 
-								$type, 
+								$type,
+								$type,
 								''
 							)
 						);
