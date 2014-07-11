@@ -75,7 +75,10 @@ class Feed extends Macro
 		$class = $this->_getFeedClass($args);
 		
 		// get feed
-		$feed = \JFactory::getFeedParser($url);
+		jimport('simplepie.simplepie');
+		$feed = new \SimplePie(null, null, 0);
+		$feed->set_feed_url($url);
+		$feed->init();
 
 		//var to hold html
 		$html = '<div class="feed ' . $class . '">';
