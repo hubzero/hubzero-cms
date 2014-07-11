@@ -730,7 +730,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				}
 			}
 
-		    $fname = DS . 'tmp' . DS . 'license' . $this->_toolid . '-r' . $status['revision'] . 'txt';
+			$fname = DS . 'tmp' . DS . 'license' . $this->_toolid . '-r' . $status['revision'] . 'txt';
 			$handle = fopen($fname, "w");
 			fwrite($handle, $status['license']);
 			fclose($handle);
@@ -750,7 +750,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 				$out .= " invoke script failure";
 				return false;
 			}
-		 	// get tarball
+			// get tarball
 			$tar = explode("source tarball: /tmp/", $this->getMessage());
 			$tar = $tar[1];
 
