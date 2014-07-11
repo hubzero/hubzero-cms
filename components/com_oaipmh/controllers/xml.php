@@ -79,7 +79,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	public function displayTask() 
 	{
 		// check for multiple query sets
-		$query = "SELECT DISTINCT display FROM #__oaipmh_dcspecs";
+		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs`";
 		$this->database->setQuery($query);
 		$qsets = $this->database->loadResultArray();
 
@@ -119,7 +119,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 		// start XML
 		$response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<OAI-PMH xmlns=\"http://www.openarchives.org/OAI/2.0/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd\">";
-		$now = date('c',time());
+		$now = gmdate('c', time());
 		$response .= "<responseDate>$now</responseDate>";
 
 		// chose verb
@@ -133,7 +133,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				{
 					$badID = true;
 				}
-				$error = $this->errorCheck('GetRecord',$identifier,$badID);
+				$error = $this->errorCheck('GetRecord', $identifier, $badID);
 				if ($error == "") 
 				{
 					if ($this->metadata == "oai_dc") 
@@ -191,7 +191,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				{
 					$response .= " identifier=\"$identifier\"";
 				}
-				$response .= ">http://$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";	
+				$response .= ">http://$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";
 				if ($allow_ore) 
 				{
 					$response .= "<metadataFormat><metadataPrefix>oai_ore</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/rdf.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/rdf/</metadataNamespace></metadataFormat>";
@@ -252,7 +252,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 						{
 							for ($i=$begin; $i<($begin + $toWrite); $i++) 
 							{
-								$result = new TablesOaipmhResult($this->database,$custom,$ids[$i]);
+								$result = new TablesOaipmhResult($this->database, $custom, $ids[$i]);
 								// record or just header?
 								if ($verb == "ListIdentifiers") 
 								{ 
@@ -269,7 +269,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					{
 						for ($i=$begin; $i<($begin + $toWrite); $i++) 
 						{
-							$result = new TablesOaipmhResult($this->database,$customs,$ids[$i]);
+							$result = new TablesOaipmhResult($this->database, $customs, $ids[$i]);
 							// record or just header
 							if ($verb == "ListIdentifiers") 
 							{ 
@@ -313,7 +313,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			default :
-				$response .= "<request>http://$this->hubname/oaipmh</request><error code=\"badVerb\">Illegal OAI verb</error>";
+				$response .= "<request>http://$this->hubname/oaipmh</request><error code=\"badVerb\">" . JText::_('COM_OAIPMH_ILLEGAL_VERB') . "</error>";
 			break;
 		}
 
@@ -456,7 +456,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				} 
 				else if ($args[2] == true) 
 				{
-					$error = "<error code=\"idDoesNotExist\">No matching identifier in $this->hubname</error>";
+					$error = "<error code=\"idDoesNotExist\">" . JText::sprintf('COM_OAIPMH_NO_MATCHING_IDENTIFIER', $this->hubname) . "</error>";
 				}
 			break;
 
