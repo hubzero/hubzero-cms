@@ -36,54 +36,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::base(true), '/');
 
-$cls = array();
-if ($this->app->params->get('noResize', 0)) { 
-	$cls[] = 'no-resize';
-}
-if ($this->app->params->get('noPopout', 0)) { 
-	$cls[] = 'no-popout';
-}
-if ($this->app->params->get('noPopoutClose', 0)) { 
-	$cls[] = 'no-popout-close';
-}
-if ($this->app->params->get('noPopoutMaximize', 0)) { 
-	$cls[] = 'no-popout-maximize';
-}
-if ($this->app->params->get('noRefresh', 0)) { 
-	$cls[] = 'no-refresh';
-}
-if ($this->app->params->get('vncEncoding',0)) {
-	$this->output->encoding = trim($this->app->params->get('vncEncoding',''),'"');
-}
-if ($this->app->params->get('vncShowControls',0)) {
-	$this->output->show_controls = trim($this->app->params->get('vncShowControls',''),'"');
-}
-if ($this->app->params->get('vncShowLocalCursor',0)) {
-	$this->output->show_local_cursor = trim($this->app->params->get('vncShowLocalCursor',''),'"');
-}
-if ($this->app->params->get('vncDebug',0)) {
-	$this->output->debug = trim($this->app->params->get('vncDebug',''),'"');
-}
 ?>
 
-			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="<?php echo $base; ?>/components/com_tools/scripts/VncViewer-20140116-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
-				<param name="name" value="App Viewer" />
+			<applet id="<?php echo $this->output->id ?>" class="<?php echo $this->output->class; ?>" code="<?php echo $this->output->code; ?>" archive="<?php echo $this->output->archive; ?>" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
+				<param name="name" value="<?php echo $this->output->name; ?>" />
 				<param name="PORT" value="<?php echo $this->output->port; ?>" />
-				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>" />
+				<param name="ENCPASSWORD" value="<?php echo $this->output->encpassword; ?>" />
 				<param name="CONNECT" value="<?php echo $this->output->connect; ?>" />
-				<param name="View Only" value="<?php echo ($this->readOnly) ? 'Yes' : 'No'; ?>" />
-				<param name="trustAllVncCerts" value="Yes" />
-				<param name="Offer relogin" value="Yes" />
-				<param name="DisableSSL" value="No" />
-				<param name="permissions" value="all-permissions" />
+				<param name="View Only" value="<?php echo $this->output->view_only; ?>" />
+				<param name="trustAllVncCerts" value="<?php echo $this->output->trust_all_vnc_certs; ?>" />
+				<param name="Offer relogin" value="<?php echo $this->output->offer_relogin; ?>" />
+				<param name="DisableSSL" value="<?php echo $this->output->disable_ssl; ?>" />
+				<param name="permissions" value="<?php echo $this->output->permissions; ?>" />
+				<param name="Show Controls" value="<?php echo $this->output->show_controls; ?>" />
+				<param name="ENCODING" value="<?php echo $this->output->encoding; ?>" />
 <?php 				if (!empty($this->output->debug)) { ?>
 				<param name="Debug" value="<?php echo $this->output->debug; ?>" />
 <?php 				} ?>
-				<param name="Show Controls" value="<?php echo $this->output->show_controls; ?>" />
 <?php 				if (!empty($this->output->show_local_cursor)) { ?>
 				<param name="ShowLocalCursor" value="<?php echo $this->output->show_local_cursor; ?>" />
 <?php 				} ?>
-				<param name="ENCODING" value="<?php echo $this->output->encoding; ?>" />
 				<p class="error">
 					In order to view an application, you must have Java installed and enabled. (<a href="<?php echo $base; ?>/kb/misc/java">How do I do this?</a>)
 				</p>
