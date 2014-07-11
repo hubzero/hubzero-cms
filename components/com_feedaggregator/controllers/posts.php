@@ -154,19 +154,20 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$post->description = wordwrap($post->description,100,"<br>\n");
 				$post->title = wordwrap($post->title, 65, "<br>\n");
 
-				switch($post->status)
+				switch ($post->status)
 				{
 					case 0:
 						$post->status = 'new';
-						break;
+					break;
 					case 1:
 						$post->status = 'under review';
-						break;
+					break;
 					case 2:
 						$post->status = 'approved';
-						break;
+					break;
 					case 3:
 						$post->status = 'removed';
+					break;
 				} //end switch
 			} //end foreach
 			$this->view->posts = $posts;
@@ -275,7 +276,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 						if ($feedType == 'ATOM')
 						{
 							// get the href attribute of the orignal content link
-							foreach($item->link->attributes() as $link)
+							foreach ($item->link->attributes() as $link)
 							{
 								$link = $link;
 							}
@@ -283,7 +284,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 							if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
 							{
 								$post = new FeedAggregatorModelPosts; //create post object
-								$post->set('title', html_entity_decode(strip_tags($item->title))); 
+								$post->set('title', html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
 

@@ -110,7 +110,6 @@ class FeedAggregatorTableFeeds extends JTable
 	{
 		$query = 'SELECT * FROM ' . $this->_tbl . ' WHERE id=' . (int) $id;
 		$this->_db->setQuery($query);
-	
 		return $this->_db->loadObject();
 	}
 

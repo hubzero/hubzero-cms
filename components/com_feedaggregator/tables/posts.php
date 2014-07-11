@@ -130,7 +130,7 @@ class FeedAggregatorTablePosts extends JTable
 				 WHERE p.status = " . (int) $status . "
 				 ORDER BY p.created DESC LIMIT " . (int) $offset . ", " . (int) $limit;
 		$this->_db->setQuery($query);
-		
+
 		return $this->_db->loadObjectList();
 	}
 
