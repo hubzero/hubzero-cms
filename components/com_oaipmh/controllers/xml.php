@@ -76,7 +76,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	/**
 	 * Pull records and build the XML
 	 */
-	public function displayTask() 
+	public function displayTask()
 	{
 		// check for multiple query sets
 		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs`";
@@ -85,15 +85,15 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 		// get custom queries
 		$this->sets = 0;
-		if (count($qsets) > 1) 
+		if (count($qsets) > 1)
 		{
-			for ($i=0; $i<count($qsets); $i++) 
+			for ($i=0; $i<count($qsets); $i++)
 			{
 				$customs[$i] = new TablesOaipmhCustom($this->database, $qsets[$i]);
 			}
 			$this->sets = $i;
-		} 
-		else 
+		}
+		else
 		{
 			$customs = new TablesOaipmhCustom($this->database, 1);
 			$this->sets = 1;
@@ -123,32 +123,32 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		$response .= "<responseDate>$now</responseDate>";
 
 		// chose verb
-		switch ($verb) 
+		switch ($verb)
 		{
 			case 'GetRecord':
 				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">http://$this->hubname/oaipmh</request>";
 				// check for errors
 				$check = new TablesOaipmhResult($this->database, $customs, $identifier);
-				if ($check->identifier == '') 
+				if ($check->identifier == '')
 				{
 					$badID = true;
 				}
 				$error = $this->errorCheck('GetRecord', $identifier, $badID);
-				if ($error == "") 
+				if ($error == "")
 				{
-					if ($this->metadata == "oai_dc") 
+					if ($this->metadata == "oai_dc")
 					{
 						$response .= "<GetRecord>";
 					}
 					// get record
 					$result = new TablesOaipmhResult($this->database,$customs,$identifier);
 					$response .= $this->doRecord($result);
-					if ($this->metadata == "oai_dc") 
+					if ($this->metadata == "oai_dc")
 					{
 						$response .= "</GetRecord>";
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$response .= $error;
 				}
@@ -157,11 +157,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			case 'Identify':
 				$response .= "<request verb=\"Identify\">http://$this->hubname/oaipmh</request>";
 				// check for errors
-				if (!empty($this->metadata) || !empty($identifier) || !empty($resumption)) 
+				if (!empty($this->metadata) || !empty($identifier) || !empty($resumption))
 				{
 					$response .= "<error code=\"badArgument\"/>";
-				} 
-				else 
+				}
+				else
 				{
 					$response .= " 
 					<Identify> 
@@ -171,11 +171,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					<adminEmail>{$this->config->get('email')}</adminEmail> 
 					<earliestDatestamp>{$this->config->get('edate')}</earliestDatestamp> 
 					<deletedRecord>{$this->config->get('del')}</deletedRecord>";
-					if ($this->gran == 'c') 
+					if ($this->gran == 'c')
 					{
 						$igran = "YYYY-MM-DDThh:mm:ssZ";
-					} 
-					else 
+					}
+					else
 					{
 						$igran = "YYYY-MM-DD";
 					}
@@ -187,19 +187,19 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			case 'ListMetadataFormats':
 				$response .= "<request verb=\"ListMetadataFormats\"";
 				// TODO: add ID error check
-				if (!empty($identifier)) 
+				if (!empty($identifier))
 				{
 					$response .= " identifier=\"$identifier\"";
 				}
 				$response .= ">http://$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";
-				if ($allow_ore) 
+				if ($allow_ore)
 				{
 					$response .= "<metadataFormat><metadataPrefix>oai_ore</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/rdf.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/rdf/</metadataNamespace></metadataFormat>";
 				}
 				$response .= "</ListMetadataFormats>";
 			break;
 
-			case 'ListIdentifiers':	
+			case 'ListIdentifiers':
 			case 'ListRecords':
 				$response .= "<request verb=\"$verb\" metadataPrefix=\"$this->metadata\">http://$this->hubname/oaipmh</request>";
 				// get session
@@ -209,7 +209,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				$ids = $this->getRecords($customs, $this->from, $this->until);
 				// check for errors
 				$error = $this->errorCheck($verb, $ids, $resumption, $sessionTokenResumptionTemp);
-				if ($error == '') 
+				if ($error == '')
 				{
 					// start list
 					$verb == "ListIdentifiers" ? $response .= "<ListIdentifiers>" : $response .= "<ListRecords>";
@@ -219,26 +219,26 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					$completed = 0;
 					$resumptionToken = 0;
 					// check completion
-					if (!empty($resumption)) 
+					if (!empty($resumption))
 					{
 						$session = JFactory::getSession();
 						$completed = $session->get($resumption);
 						$resumptionToken = $resumption;
 					}
 					// set up flow vars
-					if ((count($ids) - $completed) > $max_records) 
+					if ((count($ids) - $completed) > $max_records)
 					{
 						$toWrite = $max_records;
 						$begin = $completed;
 						$split = true;
-					} 
-					else 
+					}
+					else
 					{
 						$toWrite = count($ids) - $completed;
 						$begin = $completed;
 					}
 					// set resumption session
-					if (empty($resumption)) 
+					if (empty($resumption))
 					{
 						$session = JFactory::getSession();
 						$resumptionToken = uniqid();
@@ -246,50 +246,50 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					$session->set($resumptionToken, $begin + $toWrite);
 					// list records
 					// TODO: move to function
-					if (is_array($customs)) 
+					if (is_array($customs))
 					{
-						foreach ($customs as $custom) 
+						foreach ($customs as $custom)
 						{
-							for ($i=$begin; $i<($begin + $toWrite); $i++) 
+							for ($i=$begin; $i<($begin + $toWrite); $i++)
 							{
 								$result = new TablesOaipmhResult($this->database, $custom, $ids[$i]);
 								// record or just header?
-								if ($verb == "ListIdentifiers") 
-								{ 
+								if ($verb == "ListIdentifiers")
+								{
 									$response .= $this->doHeader($result);
-								} 
-								else 
+								}
+								else
 								{
 									$response .= $this->doRecord($result);
 								}
 							}
 						}
-					} 
-					else 
+					}
+					else
 					{
-						for ($i=$begin; $i<($begin + $toWrite); $i++) 
+						for ($i=$begin; $i<($begin + $toWrite); $i++)
 						{
 							$result = new TablesOaipmhResult($this->database, $customs, $ids[$i]);
 							// record or just header
-							if ($verb == "ListIdentifiers") 
-							{ 
+							if ($verb == "ListIdentifiers")
+							{
 								$response .= $this->doHeader($result);
-							} 
-							else 
+							}
+							else
 							{
 								$response .= $this->doRecord($result);
 							}
 						}
 					}
 					// write resumption token if needed
-					if ($split) 
+					if ($split)
 					{
 						$response .= "<resumptionToken completeListSize=\"" . count($ids) . "\" cursor=\"$begin\">$resumptionToken</resumptionToken>";
 					}
 					// end list
 					$verb == "ListIdentifiers" ? $response .= "</ListIdentifiers>" : $response .= "</ListRecords>";
-				} 
-				else 
+				}
+				else
 				{
 					$response .= $error;
 				}
@@ -301,12 +301,12 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				$session =  JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
 				// check for errors
-				$error = $this->errorCheck('ListSets',$resumption,$sessionTokenResumptionTemp);
-				if ($error == "") 
+				$error = $this->errorCheck('ListSets', $resumption, $sessionTokenResumptionTemp);
+				if ($error == "")
 				{
 					$response .= "<ListSets>". $this->doSets($customs) . "</ListSets>";
-				} 
-				else 
+				}
+				else
 				{
 					$response .= $error;
 				}
@@ -323,8 +323,8 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		/*if ($this->metadata == 'oai_dc' || $this->metadata == '') // || $metadataPrefix == '')  [!] HUBZERO - Can't find any other reference to $metadataPrefix 
 		{
 			$response .= '</OAI-PMH>';
-		} 
-		else 
+		}
+		else
 		{
 			$response .= '</rdf:RDF>';
 		}*/
@@ -341,19 +341,19 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	// get record IDs from custom query
 	protected function getRecords($records, $from='', $until='')
 	{
-		if (is_array($records)) 
+		if (is_array($records))
 		{
 			$SQL = '';
-			for ($i=0;$i<count($records);$i++) 
+			for ($i=0;$i<count($records); $i++)
 			{
 				$SQL .= $this->addDateRange($records[$i]->records, $from, $until) . " UNION ";
 				$i++;
 				$SQL .= $this->addDateRange($records[$i]->records, $from, $until) . " ";
 			}
-		} 
-		else 
+		}
+		else
 		{
-			$SQL  = $this->addDateRange($records->records,$from,$until);
+			$SQL  = $this->addDateRange($records->records, $from, $until);
 		}
 		$SQL = trim($SQL);
 		$this->database->setQuery($SQL);
@@ -370,12 +370,12 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	*/
 	protected function addDateRange($SQL, $from, $until)
 	{
-		if (!empty($from)) 
+		if (!empty($from))
 		{
 			stristr($SQL, "WHERE") === false ? $SQL .= " WHERE " : $SQL .= " AND ";
 			$SQL .= "created > $from";
 		}
-		if (!empty($until)) 
+		if (!empty($until))
 		{
 			stristr($SQL, "WHERE") === false ? $SQL .= " WHERE " : $SQL .= " AND ";
 			$SQL .=  "created < $until";
@@ -390,7 +390,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* @param      boolean $html_output
 	* @return     string
 	*/
-	protected function formatXmlString($xml, $html_output=false) 
+	protected function formatXmlString($xml, $html_output=false)
 	{
 		$xml_obj = new SimpleXMLElement($xml);
 		$level = 4;
@@ -399,26 +399,26 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		// get an array containing each XML element
 		$xml = explode("\n", preg_replace('/>\s*</', ">\n<", $xml_obj->asXML()));
 		// shift off opening XML tag if present
-		if (count($xml) && preg_match('/^<\?\s*xml/', $xml[0])) 
+		if (count($xml) && preg_match('/^<\?\s*xml/', $xml[0]))
 		{
 			$pretty[] = array_shift($xml);
 		}
-		foreach ($xml as $el) 
+		foreach ($xml as $el)
 		{
-			if (preg_match('/^<([\w])+[^>\/]*>$/U', $el)) 
+			if (preg_match('/^<([\w])+[^>\/]*>$/U', $el))
 			{
 				// opening tag, increase indent
 				$pretty[] = str_repeat(' ', $indent) . $el;
 				$indent += $level;
-			} 
-			else 
+			}
+			else
 			{
-				if (preg_match('/^<\/.+>$/', $el)) 
+				if (preg_match('/^<\/.+>$/', $el))
 				{
 					// closing tag, decrease indent
 					$indent -= $level;
 				}
-				if ($indent < 0) 
+				if ($indent < 0)
 				{
 					$indent += $level;
 				}
@@ -434,27 +434,27 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* 
 	* @return     string
 	*/
-	protected function errorCheck() 
+	protected function errorCheck()
 	{
 		$error = '';
 
 		$args = func_get_args();
-		switch ($args[0]) 
+		switch ($args[0])
 		{
 			case 'GetRecord':
-				if (empty($args[1]) || empty($this->metadata)) 
+				if (empty($args[1]) || empty($this->metadata))
 				{
 					$error = "<error code=\"badArgument\"/>";
-				} 
-				else if ($this->metadata != "oai_dc" && $this->metadata != "oai_ore") 
+				}
+				else if ($this->metadata != "oai_dc" && $this->metadata != "oai_ore")
 				{
 					$error = "<error code=\"cannotDisseminateFormat\"/>";
-				} 
+				}
 				else if ($this->metadata == "oai_ore" && !$allow_ore)
 				{
 					$error = "<error code=\"cannotDisseminateFormat\"/>";
-				} 
-				else if ($args[2] == true) 
+				}
+				else if ($args[2] == true)
 				{
 					$error = "<error code=\"idDoesNotExist\">" . JText::sprintf('COM_OAIPMH_NO_MATCHING_IDENTIFIER', $this->hubname) . "</error>";
 				}
@@ -462,34 +462,34 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 			case 'ListRecords':
 			case 'ListIdentifiers':
-				if (!empty($from) || !empty($until)) 
+				if (!empty($from) || !empty($until))
 				{
 					$error = "<error code=\"badArgument\"/>";
-				} 
-				else if (!empty($args[2]) && empty($args[3])) 
+				}
+				else if (!empty($args[2]) && empty($args[3]))
 				{
 					$error = "<error code=\"badResumptionToken\"/>";
-				} 
-				else if ($this->metadata != "oai_dc" && $this->metadata != "oai_ore") 
+				}
+				else if ($this->metadata != "oai_dc" && $this->metadata != "oai_ore")
 				{
 					$error = "<error code=\"cannotDisseminateFormat\"/>";
-				} 
+				}
 				else if ($this->metadata == "oai_ore" && !$allow_ore)
 				{
 					$error = "<error code=\"cannotDisseminateFormat\"/>";
-				} 
-				else if (count($args[1]) == 0 || $args[1] == -1 || empty($args[1])) 
+				}
+				else if (count($args[1]) == 0 || $args[1] == -1 || empty($args[1]))
 				{
 					$error = "<error code=\"noRecordsMatch\"/>";
 				}
 			break;
 
 			case 'ListSets':
-				if (!empty($args[1]) && empty($args[2])) 
+				if (!empty($args[1]) && empty($args[2]))
 				{
 					$error = "<error code=\"badResumptionToken\"/>";
-				} 
-				else if ($this->sets == 0) 
+				}
+				else if ($this->sets == 0)
 				{
 					$error = "<error code=\"noSetHierarchy\"/>";
 				}
@@ -504,9 +504,9 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* @param      object $result
 	* @return     string
 	*/
-	protected function doRecord($result) 
+	protected function doRecord($result)
 	{
-		if ($this->metadata == 'oai_dc') 
+		if ($this->metadata == 'oai_dc')
 		{
 			// DC
 			$return  = "<record>\n";
@@ -537,35 +537,35 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			);
 
 			// loop through DC elements
-			for ($i=0; $i<15; $i++) 
+			for ($i=0; $i<15; $i++)
 			{
-				if (is_array($result->$dcs[$i])) 
+				if (is_array($result->$dcs[$i]))
 				{
-					foreach ($result->$dcs[$i] as $sub) 
+					foreach ($result->$dcs[$i] as $sub)
 					{
 						$sub = html_entity_decode($sub);
-						$sub = str_ireplace(array('<','>','&','\'','"'),array('&lt;','&gt;','&amp;','&apos;','&quot;'),$sub);
+						$sub = str_ireplace(array('<','>','&','\'','"'), array('&lt;','&gt;','&amp;','&apos;','&quot;'), $sub);
 						$return .= "<dc:$dcs[$i]>" . $sub . "</dc:$dcs[$i]>";
 					}
-				} 
-				elseif (!empty($result->$dcs[$i])) 
+				}
+				elseif (!empty($result->$dcs[$i]))
 				{
 					//check for DOI
-					if ($dcs[$i] == "identifier") 
+					if ($dcs[$i] == "identifier")
 					{
 						$return .= $this->doDoi($result->identifier);
-					} 
-					else 
+					}
+					else
 					{
 						$res = html_entity_decode($result->$dcs[$i]);
-						$res = str_ireplace(array('<','>','&','\'','"'),array('&lt;','&gt;','&amp;','&apos;','&quot;'),$res);
+						$res = str_ireplace(array('<','>','&','\'','"'), array('&lt;','&gt;','&amp;','&apos;','&quot;'), $res);
 						$return .= "<dc:$dcs[$i]>" . $res . "</dc:$dcs[$i]>";
 					}
 				}
-			 }
+			}
 			$return .= "</oai_dc:dc></metadata>\n</record>\n";
-		} 
-		else 
+		}
+		else
 		{
 			// ORE (next version)
 		}
@@ -578,20 +578,20 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* @param      object $result
 	* @return     string
 	*/
-	protected function doHeader($result) 
+	protected function doHeader($result)
 	{
 		$header = '<header>' . "\n";
-		if (!empty($result->identifier)) 
+		if (!empty($result->identifier))
 		{
 			$header .= $this->doDoi($result->identifier);
 		}
 		$datestamp = strtotime($result->date);
 		$datestamp = date($this->gran, $datestamp);
-		if (!empty($datestamp)) 
+		if (!empty($datestamp))
 		{
 			$header .= '<datestamp>' . $datestamp . '</datestamp>' . "\n";
 		}
-		if (!empty($result->type)) 
+		if (!empty($result->type))
 		{
 			$header .= '<setSpec>' . $result->type . '</setSpec>' . "\n";
 		}
@@ -605,13 +605,13 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* @param      string $id
 	* @return     string
 	*/
-	protected function doDoi($id) 
+	protected function doDoi($id)
 	{
-		if (preg_match("{^10\.}", $id)) 
+		if (preg_match("{^10\.}", $id))
 		{
 			$url = 'http://dx.doi.org/' . $id;
-		} 
-		else 
+		}
+		else
 		{
 			$url = rtrim($this->hubname, DS) . DS . ltrim(JRoute::_('index.php?option=com_resources&id=' . $id), DS);
 		}
@@ -624,18 +624,18 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	* @param      mixed $customs
 	* @return     string
 	*/
-	protected function doSets($customs) 
+	protected function doSets($customs)
 	{
 		$total = array();
-		if (is_array($customs)) 
+		if (is_array($customs))
 		{
 			// multiple groups
-			foreach ($customs as $custom) 
+			foreach ($customs as $custom)
 			{
-				if (!empty($custom->sets)) 
+				if (!empty($custom->sets))
 				{
 					// check for hard code
-					if (stristr($custom->sets,"SELECT") === false) 
+					if (stristr($custom->sets,"SELECT") === false)
 					{
 						$sets = array(
 							0 => array(
@@ -643,43 +643,43 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 								$type, 
 								''
 							)
-						);  
+						);
 						array_push($total, $sets);
-					} 
-					else 
+					}
+					else
 					{
 						$this->database->setQuery($custom->sets);
 						$this->database->query();
 						$sets = $this->database->loadRowList();
-						foreach ($sets as $set) 
+						foreach ($sets as $set)
 						{
 							array_push($total, $set);
 						}
 					}
-				} 
-				else 
+				}
+				else
 				{
-					if (!empty($custom->type)) 
+					if (!empty($custom->type))
 					{
-						if (stristr($custom->type, "SELECT") === false) 
+						if (stristr($custom->type, "SELECT") === false)
 						{
-							$sets = array($custom->type, $custom->type,'');  
+							$sets = array($custom->type, $custom->type,'');
 							array_push($total, $sets);
-						} 
+						}
 					}
 				}
 			}
 			$msets = 1;
-		} 
-		else 
+		}
+		else
 		{
 			// check for hard code
-			if (stristr($customs->sets, "SELECT") === false) 
+			if (stristr($customs->sets, "SELECT") === false)
 			{
 				$setName = $customs->type;
 				$msets = 0;
-			} 
-			else 
+			}
+			else
 			{
 				$this->database->setQuery($customs->sets);
 				$this->database->query();
@@ -688,35 +688,35 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				$msets = 1;
 			}
 		}
-		if ($msets == 0) 
+		if ($msets == 0)
 		{
 			// single set
 			$setlist .= "<set><setSpec>$setName</setSpec>";
 			$setlist .= "<setName>$setName</setName></set>";
-		} 
-		else 
+		}
+		else
 		{
 			// multiple sets
-			foreach ($total as $set) 
+			foreach ($total as $set)
 			{
 				$setlist .= "<set>";
-				if (!empty($set[0])) 
+				if (!empty($set[0]))
 				{
 					$setlist .= "<setSpec>{$set[0]}</setSpec>";
 				}
-				if (!empty($set[1])) 
+				if (!empty($set[1]))
 				{
 					$setlist .= "<setName>{$set[1]}</setName>";
 				}
-				if (!empty($set[2])) 
+				if (!empty($set[2]))
 				{
 					$setlist .= "<setDescription> <oai_dc:dc 
-					  xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" 
-					  xmlns:dc=\"http://purl.org/dc/elements/1.1/\" 
-					  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
-					  xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/oai_dc/ 
-					  http://www.openarchives.org/OAI/2.0/oai_dc.xsd\"><dc:description>{$set[2]}</dc:description>
-				   </oai_dc:dc></setDescription>";
+						xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" 
+						xmlns:dc=\"http://purl.org/dc/elements/1.1/\" 
+						xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" 
+						xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/oai_dc/ 
+						http://www.openarchives.org/OAI/2.0/oai_dc.xsd\"><dc:description>{$set[2]}</dc:description>
+					</oai_dc:dc></setDescription>";
 				}
 				$setlist .= "</set>";
 			}
