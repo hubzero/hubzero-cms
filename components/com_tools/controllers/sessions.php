@@ -287,16 +287,25 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$this->view->display();
 	}
 
+	/**
+	 * Normalize a path
+	 *
+	 * @param   string  $path
+	 * @param   boolean $isFile
+	 * @return  string
+	 */
 	private function normalize_path($path, $isFile = false)
 	{
 		if (!isset($path[0]) || $path[0] != '/')
+		{
 			return false;
+		}
 
 		$parts = explode('/', $path);
 
 		$result = array();
 
-		foreach($parts as $part)
+		foreach ($parts as $part)
 		{
 			if ($part === '' || $part == '.')
 			{
@@ -316,10 +325,12 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($isFile) // Files can't end with directory separator or special directory names
 		{
 			if ($part == '' || $part == '.' || $part == '..')
+			{
 				return false;
+			}
 		}
 
-		return "/" . implode('/', $result) . ($isFile ? '' : '/');
+		return '/' . implode('/', $result) . ($isFile ? '' : '/');
 	}
 
 	/**
@@ -828,7 +839,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 			//remove this user
 			$isUserInArray = array_search($this->juser->get('id'), $users);
-			if(isset($isUserInArray))
+			if (isset($isUserInArray))
 			{
 				unset($users[$isUserInArray]);
 			}
