@@ -217,7 +217,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 			if (!$hztv->update())
 			{
-				JError::raiseError(500, JText::_('Error updating tool tables.'));
+				JError::raiseError(500, JText::_('COM_TOOLS_ERROR_UPDATING_TOOL'));
 				return;
 			}
 			else
@@ -368,7 +368,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 1)
 		{
 			$pathway->addItem(
-				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $status['toolname'],
+				JText::sprintf('COM_TOOLS_STATUS_FOR', $status['toolname']),
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
 			$pathway->addItem(
@@ -587,7 +587,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$lang = JFactory::getLanguage();
 		if (!$lang->load(strtolower('com_resources'), JPATH_BASE))
 		{
-			$this->setError(JText::_('COM_TOOLS_Failed to load language file'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_LOADING_LANGUAGE'));
 		}
 
 		// Set the document title
@@ -607,7 +607,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 1)
 		{
 			$pathway->addItem(
-				JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_FOR') . ' ' . $thistool->toolname,
+				JText::sprintf('COM_TOOLS_STATUS_FOR', $thistool->toolname),
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
 			$pathway->addItem(
@@ -754,42 +754,28 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
+			$asset  = $this->_option;
+			if ($assetId)
 			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+				$asset .= ($assetId) ? '.' . $assetId : '';
 			}
-			else
+
+			$at = '';
+			if ($assetType != 'component')
 			{
-				if ($this->juser->authorize($this->_option, 'manage'))
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
-					$this->config->set('access-edit-' . $assetType, true);
-				}
+				$at .= '.' . $assetType;
 			}
+
+			// Admin
+			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			// Permissions
+			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 		}
 	}
 }

@@ -83,7 +83,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_('Members'),
+				JText::_('COM_MEMBERS'),
 				'index.php?option=com_members'
 			);
 		}
@@ -104,7 +104,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title  = JText::_('Members');
+		$this->_title  = JText::_('COM_MEMBERS');
 		$this->_title .= ': ' . stripslashes($this->juser->get('name'));
 		$this->_title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 
@@ -390,7 +390,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		if (substr($listdir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
-			JError::raiseError(500, JText::_('Bad path'));
+			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_BAD_FILE_PATH'));
 			return;
 		}
 
@@ -416,7 +416,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$listdir = urldecode(JRequest::getVar('listdir', ''));
 		/*if (!$listdir)
 		{
-			$this->setError(JText::_('Directory not found.'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->filelistTask();
 			return;
 		}*/
@@ -427,7 +427,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		// Incoming directory to delete
 		if (!($folder = urldecode(JRequest::getVar('delFolder', ''))))
 		{
-			$this->setError(JText::_('Directory not found.'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->filelistTask();
 			return;
 		}
@@ -437,7 +437,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		// Check if the folder even exists
 		if (!is_dir($path . $folder) or !$folder)
 		{
-			$this->setError(JText::_('Directory not found.'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 		}
 		else
 		{
@@ -445,7 +445,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::delete($path . $folder))
 			{
-				$this->setError(JText::_('Unable to delete directory.'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		}
 
@@ -476,7 +476,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		// Incoming file to delete
 		if (!($file = urldecode(JRequest::getVar('file', ''))))
 		{
-			$this->setError(JText::_('File not found.'));
+			$this->setError(JText::_('COM_TOOLS_FILE_NOT_FOUND'));
 			$this->filelistTask();
 			return;
 		}
@@ -484,7 +484,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		// Check if the file even exists
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('File not found.'));
+			$this->setError(JText::_('COM_TOOLS_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -492,7 +492,7 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('Unable to delete file'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 			}
 		}
 
@@ -592,42 +592,28 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 		$this->config->set('access-view-' . $assetType, true);
 		if (!$this->juser->get('guest'))
 		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
+			$asset  = $this->_option;
+			if ($assetId)
 			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+				$asset .= ($assetId) ? '.' . $assetId : '';
 			}
-			else
+
+			$at = '';
+			if ($assetType != 'component')
 			{
-				if ($this->juser->authorize($this->_option, 'manage'))
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
-					$this->config->set('access-edit-' . $assetType, true);
-				}
+				$at .= '.' . $assetType;
 			}
+
+			// Admin
+			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			// Permissions
+			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 		}
 	}
 }

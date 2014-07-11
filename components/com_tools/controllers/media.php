@@ -57,7 +57,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$resource = JRequest::getInt('resource', 0, 'post');
 		if (!$resource)
 		{
-			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -77,7 +77,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
 				return;
 			}
@@ -87,7 +87,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$file = JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('RESOURCES_NO_FILE'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -107,7 +107,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		// Perform the upload
 		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_UPLOADING'));
 		}
 
 		$fpath = $path . DS . $file['name'];
@@ -116,7 +116,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		{
 			JFile::delete($fpath);
 
-			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+			$this->setError(JText::_('COM_TOOLS_ERROR_FAILED_VIRUS_SCAN'));
 			$this->displayTask();
 			return;
 		}
@@ -139,7 +139,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$resource = JRequest::getInt('resource', 0);
 		if (!$resource)
 		{
-			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -155,7 +155,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$parts = explode('/', $path);
 		if (count($parts) < 3)
 		{
-			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_DIRECTORY_NOT_FOUND'));
 			$this->displayTask();
 			return;
 		}
@@ -170,7 +170,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$file = JRequest::getVar('file', '');
 		if (!$file)
 		{
-			$this->setError(JText::_('RESOURCES_NO_FILE'));
+			$this->setError(JText::_('COM_TOOLS_CONTRIBUTE_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -178,7 +178,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		// Check if the file even exists
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_TOOLS_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -186,7 +186,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 			}
 		}
 
@@ -207,7 +207,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->resource = JRequest::getInt('resource', 0);
 		if (!$this->view->resource)
 		{
-			echo '<p class="error">' . JText::_('No resource ID provided.') . '</p>';
+			echo '<p class="error">' . JText::_('COM_TOOLS_CONTRIBUTE_NO_ID') . '</p>';
 			return;
 		}
 
@@ -312,7 +312,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->resource = JRequest::getInt('resource', 0);
 		if (!$this->view->resource)
 		{
-			echo '<p class="error">' . JText::_('No resource ID provided.') . '</p>';
+			echo '<p class="error">' . JText::_('COM_TOOLS_CONTRIBUTE_NO_ID') . '</p>';
 			return;
 		}
 

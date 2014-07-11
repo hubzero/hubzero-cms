@@ -234,8 +234,8 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 
 		// Build the page title
-		$title  = JText::_('Members');
-		$title .= ': ' . JText::_('View');
+		$title  = JText::_('COM_MEMBERS');
+		$title .= ': ' . JText::_('COM_MEMBERS_VIEW');
 		$title .= ': ' . stripslashes($this->juser->get('name'));
 		$title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
 
@@ -248,7 +248,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_('Members'),
+				JText::_('COM_MEMBERS'),
 				'index.php?option=com_members'
 			);
 		}
@@ -658,7 +658,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			//return;
 			$this->setRedirect(
 				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
-				JText::_('Failed to invoke session'),
+				JText::_('COM_TOOLS_ERROR_SESSION_INVOKE_FAILED'),
 				'error'
 			);
 			return;
@@ -760,7 +760,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
-				JText::_('Failed to invoke session'),
+				JText::_('COM_TOOLS_ERROR_SESSION_INVOKE_FAILED'),
 				'error'
 			);
 			return;
@@ -855,7 +855,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we found an active session
 		if (!$row->sesstoken)
 		{
-			JError::raiseError(500, JText::_('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
+			JError::raiseError(500, JText::_('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
 		}
 
@@ -871,7 +871,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$rows = $mv->loadViewperm($sess, $owner);
 		if (count($rows) != 1)
 		{
-			JError::raiseError(500, JText::sprintf('Unable to get entry for %s, %s', $sess, $owner));
+			JError::raiseError(500, JText::sprintf('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
 			break;
 		}
 		foreach ($users as $user)
@@ -879,7 +879,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			// Check for invalid characters
 			if (!preg_match("#^[0-9a-zA-Z]+[_0-9a-zA-Z]*$#i", $user))
 			{
-				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
+				$this->setError(JText::_('COM_TOOLS_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
 
@@ -887,7 +887,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$zuser = JUser::getInstance($user);
 			if (!$zuser || !is_object($zuser) || !$zuser->get('id'))
 			{
-				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
+				$this->setError(JText::_('COM_TOOLS_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
 
@@ -1134,7 +1134,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$this->view->setLayout('session' . ($sublayout ? '_' . $sublayout : ''));
 
 		// Set the page title
-		$title  = JText::_('Resources').': '.JText::_('Tools');
+		$title  = JText::_('COM_RESOURCES').': '.JText::_('COM_TOOLS');
 		$title .= ($app->title) ? ': ' . $app->title : ': ' . $app->name;
 		$title .= ': ' . JText::_('Session');
 		$title .= ($app->caption) ? ': ' . $app->sess . ' "' . $app->caption . '"' : ': ' . $app->sess;
@@ -1147,12 +1147,12 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_('Resources'),
+				JText::_('COM_RESOURCES'),
 				'index.php?option=com_resources'
 			);
 		}
 		$pathway->addItem(
-			JText::_('Tools'),
+			JText::_('COM_TOOLS'),
 			'index.php?option=com_resources&type=tools'
 		);
 		$pathway->addItem(
@@ -1164,7 +1164,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			$t = ($app->caption) ? $app->sess . ' "' . $app->caption . '"' : $app->sess;
 			$pathway->addItem(
-				JText::sprintf('Session: %s', $t),
+				JText::sprintf('COM_TOOLS_SESSION_NUMBER', $t),
 				'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess
 			);
 		}
@@ -1480,7 +1480,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 			if ($output === null && json_last_error() !== JSON_ERROR_NONE)
 			{
-				throw new \Exception(JText::_('Incorrect or missing data.'));
+				throw new \Exception(JText::_('COM_TOOLS_ERROR_BAD_DATA'));
 			}
 		}
 		catch (Exception $e)
@@ -1536,42 +1536,28 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$this->config->set('access-view-' . $assetType, true);
 		if (!$this->juser->get('guest'))
 		{
-			if (version_compare(JVERSION, '1.6', 'ge'))
+			$asset  = $this->_option;
+			if ($assetId)
 			{
-				$asset  = $this->_option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$at = '';
-				if ($assetType != 'component')
-				{
-					$at .= '.' . $assetType;
-				}
-
-				// Admin
-				$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				// Permissions
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+				$asset .= ($assetId) ? '.' . $assetId : '';
 			}
-			else
+
+			$at = '';
+			if ($assetType != 'component')
 			{
-				if ($this->juser->authorize($this->_option, 'manage'))
-				{
-					$this->config->set('access-manage-' . $assetType, true);
-					$this->config->set('access-admin-' . $assetType, true);
-					$this->config->set('access-create-' . $assetType, true);
-					$this->config->set('access-delete-' . $assetType, true);
-					$this->config->set('access-edit-' . $assetType, true);
-				}
+				$at .= '.' . $assetType;
 			}
+
+			// Admin
+			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			// Permissions
+			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
 		}
 	}
 
@@ -1593,14 +1579,14 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
 		{
-			$this->setError('This tool may not be accessed from your unknown current location due to export/license restrictions.');
+			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
 			return false;
 		}
 
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
-			$this->setError('This tool may not be accessed from your current location due to E1 export/license restrictions.');
+			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
 			return false;
 		}
@@ -1610,7 +1596,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'us':
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
-					$this->setError('This tool may only be accessed from within the U.S. due to export/licensing restrictions.');
+					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
 					return false;
 				}
@@ -1619,7 +1605,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'd1':
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
-					$this->setError('This tool may not be accessed from your current location due to export/license restrictions.');
+					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
 					return false;
 				}
@@ -1628,7 +1614,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'pu':
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
 				{
-					$this->setError('This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.');
+					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
 					$xlog->debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
 					return false;
 				}
@@ -1656,7 +1642,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we have a tool
 		if (!$tool)
 		{
-			$this->setError('No tool provided.');
+			$this->setError('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
 			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
@@ -1749,7 +1735,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			else
 			{
 				$xlog->debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
-				$this->setError("The development version of this tool may only be accessed by members of its development group.");
+				$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP'));
 				return false;
 			}
 		}
@@ -1769,7 +1755,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 				else
 				{
 					$xlog->debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
-					$this->setError("This tool may only be accessed by members of its access control groups.");
+					$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP'));
 					return false;
 				}
 			}
@@ -1800,7 +1786,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		else
 		{
 			$xlog->debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
-			$this->setError('This tool version is not published.');
+			$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED'));
 			return false;
 		}
 

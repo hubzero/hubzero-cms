@@ -397,7 +397,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('COM_TOOLS_No resource ID found'));
+			JError::raiseError(500, JText::_('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return;
 		}
 
