@@ -29,6 +29,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+$this->css('jquery.ui.css', 'system');
 ?>
 <?php $showErrors = $_SERVER['REQUEST_METHOD'] == 'POST'; ?>
 	<fieldset>
