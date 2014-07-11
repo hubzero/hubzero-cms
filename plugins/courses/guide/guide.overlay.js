@@ -22,8 +22,6 @@ jQuery(document).ready(function(jq){
 		pc = $('#page_container');
 
 	if (pc.length) {
-		//var top = $('#page_container').offset().top;
-		
 		$('#page_menu a.guide').fancybox({
 			type: 'ajax',
 			width: '100%',
@@ -55,7 +53,7 @@ jQuery(document).ready(function(jq){
 			},
 			helpers: {
 				overlay: {
-					css: {position: 'absolute' }
+					css: {position: 'absolute', height: $('body').height() }
 				}
 			}
 		});
@@ -99,7 +97,7 @@ jQuery(document).ready(function(jq){
 					},
 					helpers: {
 						overlay: {
-							css: {position: 'absolute' }
+							css: {position: 'absolute', height: $('body').height() }
 						}
 					}
 				}

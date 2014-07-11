@@ -383,10 +383,6 @@
 		margin-top: 0;
 	}
 
-	.fancybox-overlay-fixed {
-		bottom: -5000px;
-	}
-
 /* Instructions */
 	#guide-introduction {
 		width: 32em;
