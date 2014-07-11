@@ -31,31 +31,170 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = rtrim(JURI::base(true), '/');
+$juser =& JFactory::getUser();
 
-$cls = array();
-if ($this->app->params->get('noResize', 0)) { 
-	$cls[] = 'no-resize';
-}
-if ($this->app->params->get('noPopout', 0)) { 
-	$cls[] = 'no-popout';
-}
-if ($this->app->params->get('noPopoutClose', 0)) { 
-	$cls[] = 'no-popout-close';
-}
-if ($this->app->params->get('noPopoutMaximize', 0)) { 
-	$cls[] = 'no-popout-maximize';
-}
-if ($this->app->params->get('noRefresh', 0)) { 
-	$cls[] = 'no-refresh';
-}
+//\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/js/sessions');
+//\Hubzero\Document\Assets::addSystemScript('jquery.editable.min');
+\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/vnc');
+\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
+\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
+$base = rtrim(JURI::base(true), '/');
 ?>
-			<div id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" data-width="<?php echo $this->output->width; ?>" data-height="<?php echo $this->output->height; ?>">
-				<p class="error">
-					In order to view an application, you must have Java installed and enabled. (<a href="<?php echo $base; ?>/kb/misc/java">How do I do this?</a>)
-				</p>
+
+<script type="text/javascript">
+	//Setup the global include path for noVNC
+	INCLUDE_URI = "<?php echo $base; ?>/components/com_tools/assets/novnc/";
+</script>
+
+<div id="noVNC-control-bar" style="position:inherit;">
+	<!--noVNC Mobile Device only Buttons-->
+	<div class="noVNC-buttons-left">
+		<input type="image" src="/components/com_tools/assets/novnc/images/drag.png"
+			   id="noVNC_view_drag_button" class="noVNC_status_button"
+			   title="Move/Drag Viewport"
+			   onclick="UI.setViewDrag();">
+		<div id="noVNC_mobile_buttons">
+				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_none.png"
+					id="noVNC_mouse_button0" class="noVNC_status_button"
+					onclick="UI.setMouseButton(1);">
+				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_left.png"
+					id="noVNC_mouse_button1" class="noVNC_status_button"
+					onclick="UI.setMouseButton(2);">
+				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_middle.png"
+					id="noVNC_mouse_button2" class="noVNC_status_button"
+					onclick="UI.setMouseButton(4);">
+				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_right.png"
+					id="noVNC_mouse_button4" class="noVNC_status_button"
+					onclick="UI.setMouseButton(0);">
+				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/keyboard.png"
+					id="showKeyboard" class="noVNC_status_button"
+					value="Keyboard" title="Show Keyboard"
+					onclick="UI.showKeyboard()"/>
+				<input type="email"
+					autocapitalize="off" autocorrect="off"
+					id="keyboardinput" class="noVNC_status_button"
+					onKeyDown="onKeyDown(event);" onblur="UI.keyInputBlur();"/>
 			</div>
-			<script type="text/javascript">
-			HUB.Mw.startAppletTimeout();
-			HUB.Mw.connectingTool();
-			</script>
+		</div>
+
+		<!--noVNC Buttons-->
+		<div class="noVNC-buttons-right">
+			<input type="image" src="/components/com_tools/assets/novnc/images/ctrlaltdel.png"
+				 id="sendCtrlAltDelButton" class="noVNC_status_button"
+				title="Send Ctrl-Alt-Del"
+				onclick="UI.sendCtrlAltDel();" />
+			<input type="image" src="/components/com_tools/assets/novnc/images/clipboard.png"
+				id="clipboardButton" class="noVNC_status_button"
+				title="Clipboard"
+				onclick="UI.toggleClipboardPanel();" />
+		</div>
+
+		<!-- Clipboard Panel -->
+		<div id="noVNC_clipboard" class="triangle-right top">
+			<textarea id="noVNC_clipboard_text" rows=5
+				onfocus="UI.displayBlur();" onblur="UI.displayFocus();"
+				onchange="UI.clipSend();">
+			</textarea>
+			<br />
+			<input id="noVNC_clipboard_clear_button" type="button"
+				value="Clear" onclick="UI.clipClear();">
+		</div>
+
+	</div> <!-- End of noVNC-control-bar -->
+
+	<div id="noVNC_screen">
+
+		<div id="noVNC_status_bar" class="noVNC_status_bar">
+				<div id="noVNC_status">Loading</div>
+		</div>
+
+		<h1 id="noVNC_logo" style="display:none;"><span>HUB</span><br/>zero</h1>
+
+		<!-- HTML5 Canvas  -->
+		<div id="noVNC_container" style="min-height:100px; min-width:100px;">
+			<!-- <canvas id="noVNC_canvas" width="640px" height="20px"> -->
+			<canvas id="theapp" class="thisapp" width="640px" height="20px">
+						Canvas not supported.
+			</canvas>
+		</div>
+
+	</div>
+
+</div>
+
+<script>
+	//JS globals for noVNC
+	var host, port, password, token, encrypt, connectPath, decryptPath;
+	host = '<?php echo $this->output->host; ?>';
+	port = '<?php echo $this->output->port; ?>';
+	password = '<?php echo $this->output->password; ?>';
+	token = '<?php echo $this->output->token; ?>';
+	encrypt = true;
+	connectPath = 'websockify?token=' + token;
+
+	/***** force it to my test xvnc server *****/
+	port= 8080;
+	//password = '';
+	encrypt = false;
+	/*******************************************/
+
+	UI.setBarPosition = function(){ }; //override to nothing
+	
+	//Wire up the resizable element for this page
+	var resizeTimeout;
+	var resizeAttached = false;
+	var hStart = 0, wStart = 0, hPadding = 75;
+	UI.normalStateAchieved = function(){
+		if(!resizeAttached){
+			resizeAttached = true;
+			hStart = $('#app-content').height(); //Bind the current height right now
+			$('#app-content').height(hStart);
+			
+			//Bind the draggable edges on this window
+			$('#app-wrap').resizable({
+				//also: ['#noVNC_screen', '#noVNC_canvas','#noVNC_container'],
+				handles: 's', //north, south, east, west
+				start: function(event, ui){
+					$('#app-content').hide();
+				},
+				stop: function(event, ui){
+					var content = $('#app-content').show();
+					var hDiff = ui.size.height - ui.originalSize.height;
+					var hNew = hStart = hStart + hDiff;
+					content.height(hNew); //Give the screen it's new height
+					ui.element.width('100%'); //Set this back to what it was
+					doResize(content.width(), content.height() - hPadding);
+				}
+			});
+			
+			//Setup a handler to track window resizes
+			$(window).resize(function(e){
+				if(resizeTimeout){
+					clearTimeout(resizeTimeout);
+				}
+				//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
+				resizeTimeout = setTimeout(function(){
+					var c = $('#app-content');
+					doResize(c.width(), c.height() - hPadding);
+				}, 1000);
+			});
+			
+			//Setup handler for tracking window focus events (delayed resize if not focused)
+			$(window).focus(function(){
+				$(window).resize();
+			});
+			
+			//When the page first loads, fire a resize event to get the current screen size
+			$(window).resize();
+		}
+	};
+	
+	function doResize(w, h) {
+		if(!document.hasFocus)
+			return;
+		UI.requestResize(w, h); //Invoke resize on the server
+	}
+	
+	//Final attachment for onload
+	window.onload = UI.load;
+</script>
