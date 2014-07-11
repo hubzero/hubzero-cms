@@ -13,7 +13,7 @@
  * Load supporting scripts
  */
 function get_INCLUDE_URI() {
-    return (typeof INCLUDE_URI !== "undefined") ? INCLUDE_URI : "include/";
+    return (typeof INCLUDE_URI !== "undefined") ? INCLUDE_URI : "/components/com_tools/assets/novnc/";
 }
 /*
  * Dynamically load a script without using document.write()
