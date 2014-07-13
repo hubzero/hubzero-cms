@@ -847,12 +847,12 @@ class plgProjectsPublications extends JPlugin
 		}
 
 		// What's next?
-		$nextnum 	 = ($sequence + 1) <= $total ? $sequence + 1 : 0;
+		$nextnum 	 = $pub->_curationModel->getNextBlock($block, $sequence);
 		$nextsection = isset($pub->_curationModel->_blocks->$nextnum)
 					 ? $pub->_curationModel->_blocks->$nextnum->name : 'status';
 
 		// Get previous section
-		$prevnum	= ($sequence - 1) > 0 ? $sequence - 1 : 0;
+		$prevnum 	 = $pub->_curationModel->getPreviousBlock($block, $sequence);
 		$prevsection = isset($pub->_curationModel->_blocks->$prevnum)
 					 ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
 
@@ -1101,6 +1101,10 @@ class plgProjectsPublications extends JPlugin
 		// Get default category from manifest
 		$cat = isset($curationModel->_manifest->params->default_category)
 				? $curationModel->_manifest->params->default_category : 1;
+		if (!$objT->load($cat))
+		{
+			$cat = 1;
+		}
 
 		// Get default title from manifest
 		$title = isset($curationModel->_manifest->params->default_title)
@@ -1222,11 +1226,12 @@ class plgProjectsPublications extends JPlugin
 
 			// Get curation model
 			$curationModel = new PublicationsCuration($this->_database, $mType->curation);
-			$sequence = 1;
-			$firstBlock = $curationModel->_blocks->$sequence->name;
+			$sequence 	   = $curationModel->getFirstBlock();
+			$firstBlock    = $curationModel->_blocks->$sequence->name;
 
 			// Redirect to first block
-			$this->_referer = JRoute::_($route . '&pid=' . $pub->id ) . '?move=continue&step=1&section=' . $firstBlock;
+			$this->_referer = JRoute::_($route . '&pid=' . $pub->id )
+				. '?move=continue&step=' . $sequence . '&section=' . $firstBlock;
 			return;
 		}
 		else

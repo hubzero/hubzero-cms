@@ -233,7 +233,14 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $fields['id'];
+		
+		// Load record	
+		if ($fields['id'])
+		{
+			$row->load($fields['id']);
+		}
 
+		// Bind new data
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -256,7 +263,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			}
 
 			$objC = new PublicationsCuration($this->database, $row->curation);
-
 			$manifest = $objC->_manifest;
 
 			// Get curation configs
@@ -271,6 +277,37 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 					foreach ($curation['params'] as $cpName => $cpValue)
 					{
 						$manifest->params->$cpName = trim($cpValue);
+					}
+				}
+				// Save blocks
+				if (isset($curation['blocks']))
+				{
+					foreach ($curation['blocks'] as $blockId => $blockData)
+					{
+						foreach ($blockData as $dataLabel => $dataValue)
+						{
+							if ($dataLabel == 'params')
+							{
+								// Save block params
+								foreach ($dataValue as $bpName => $bpValue)
+								{
+									// Determine value type
+									if (is_array($manifest->blocks->$blockId->$dataLabel->$bpName))
+									{
+										$pval = trim($bpValue) ? explode(',', trim($bpValue)) : array();
+									}
+									else
+									{
+										$pval = trim($bpValue);
+									}
+									$manifest->blocks->$blockId->$dataLabel->$bpName = $pval;
+								}
+							}
+							else
+							{
+								$manifest->blocks->$blockId->$dataLabel = trim($dataValue);
+							}
+						}
 					}
 				}
 			}

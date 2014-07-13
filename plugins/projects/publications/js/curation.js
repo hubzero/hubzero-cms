@@ -299,7 +299,10 @@ HUB.ProjectPublicationsDraft = {
 		if (!value)
 		{
 			HUB.ProjectPublicationsDraft.changeElementStatus(element, 'incomplete', required);
-			complete = 0;
+			if (required)
+			{
+				complete = 0;
+			}
 		}
 		else
 		{
@@ -326,10 +329,14 @@ HUB.ProjectPublicationsDraft = {
 
 		if (HUB.ProjectPublicationsDraft.completeness == 0)
 		{
-			complete = 0;
+			var req = $('#required').length ? $('#required').val() : 0;
+			if (req == 1)
+			{
+				complete = 0;
+			}
 		}
 
-		if ($('.el-required').length > $('.el-complete').length)
+		if ($('.el-required').length && $('.el-required').length > $('.el-complete').length)
 		{
 			complete = 0;
 		}

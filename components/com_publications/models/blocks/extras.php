@@ -66,7 +66,7 @@ class PublicationsBlockExtras extends PublicationsBlockContent
 	public function getManifest()
 	{
 		$manifest = array(
-			'name' 			=> 'content',
+			'name' 			=> 'extras',
 			'label' 		=> 'Extras',
 			'title' 		=> 'Publication Gallery and Supporting Docs',
 			'draftHeading' 	=> 'Let\'s jazz up publication page',

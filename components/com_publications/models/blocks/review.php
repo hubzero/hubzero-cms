@@ -36,44 +36,44 @@ class PublicationsBlockReview extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected	$_name 			= 'review';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= NULL;	
-	
+	protected	$_parentname 	= NULL;
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 		= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence 		= 0;
-	
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'review', $sequence = 0)
-	{	
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -93,30 +93,30 @@ class PublicationsBlockReview extends PublicationsModelBlock
 				)
 			);
 		}
-		
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 0;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Build panel content
 	 *
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit' )
-	{				
+	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
-						
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -126,21 +126,21 @@ class PublicationsBlockReview extends PublicationsModelBlock
 				'layout'	=> 'review'
 			)
 		);
-		
+
 		$document = JFactory::getDocument();
 		$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
-							
+
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
-										
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block content
 	 *
@@ -153,23 +153,23 @@ class PublicationsBlockReview extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
-		return true;		
+
+		return true;
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		// Start status
 		$status 	 	= new PublicationsModelStatus();
-		$status->status = 1;			
+		$status->status = 1;
 		return $status;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
@@ -186,9 +186,9 @@ class PublicationsBlockReview extends PublicationsModelBlock
 			'about'			=> '',
 			'adminTips'		=> '',
 			'elements' 		=> array(),
-			'params'		=> array(  'required' => 1, 'published_editing' => 0, 'auto_curation' => 1 )
+			'params'		=> array(  'required' => 1, 'published_editing' => 0 )
 		);
-		
+
 		return json_decode(json_encode($manifest), FALSE);
 	}
 }

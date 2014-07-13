@@ -764,6 +764,11 @@ class PublicationsCuration extends JObject
 		// Check status for each
 		foreach ($this->_blocks as $sequence => $block)
 		{
+			// Skip inactive blocks
+			if (isset($block->active) && $block->active == 0)
+			{
+				continue;
+			}
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
 
 			$result->blocks->$sequence->name 		= $block->name;
@@ -912,6 +917,105 @@ class PublicationsCuration extends JObject
 
 		// Return status
 		return $elementId;
+	}
+
+	/**
+	 * Get first block ID
+	 *
+	 * @return  integer
+	 */
+	public function getFirstBlock()
+	{
+		foreach ($this->_blocks as $id => $block)
+		{
+			return $id;
+		}
+	}
+
+	/**
+	 * Get next block ID
+	 *
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @return  integer
+	 */
+	public function getNextBlock( $name, $sequence = 0)
+	{
+		$sequence = $sequence ? $sequence : $this->_blockorder;
+		if (!$sequence)
+		{
+			$sequence = $this->getBlockSequence($name);
+		}
+
+		if (!$sequence)
+		{
+			$this->setError( JText::_('Error loading block') );
+			return $activeId;
+		}
+
+		$remaining = array();
+		$start	   = 0;
+		foreach ($this->_blocks as $id => $block)
+		{
+			if (isset($block->active) && $block->active == 0)
+			{
+				continue;
+			}
+			if ($id == $sequence)
+			{
+				$start = 1;
+			}
+			if ($start == 1 && $id != $sequence)
+			{
+				$remaining[] = $id;
+			}
+		}
+
+		// Return element ID
+		return empty($remaining) ? $sequence : $remaining[0];
+	}
+
+	/**
+	 * Get previous block ID
+	 *
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @return  integer
+	 */
+	public function getPreviousBlock( $name, $sequence = 0)
+	{
+		$sequence = $sequence ? $sequence : $this->_blockorder;
+		if (!$sequence)
+		{
+			$sequence = $this->getBlockSequence($name);
+		}
+
+		if (!$sequence)
+		{
+			$this->setError( JText::_('Error loading block') );
+			return $activeId;
+		}
+
+		$remaining = array();
+		$start	   = 0;
+		foreach ($this->_blocks as $id => $block)
+		{
+			if (isset($block->active) && $block->active == 0)
+			{
+				continue;
+			}
+			if ($id == $sequence)
+			{
+				$start = 1;
+			}
+			if ($start == 0 && $id != $sequence)
+			{
+				$remaining[] = $id;
+			}
+		}
+
+		// Return element ID
+		return empty($remaining) ? $sequence : end($remaining);
 	}
 
 	/**

@@ -489,9 +489,24 @@
 
 /* Curation Blocks Configuration
 --------------------------------------------- */
-	fieldset.adminform legend span.block-sequence {
+	fieldset.adminform legend span.block-sequence, span.block-sequence {
 		border: 1px solid #CCC;
 		padding: 0 0.5em;
 		margin-right: 0.5em;
+		background: #fbf0ce;
+		color: #000000;
+	}
+	.blockprop {
 		background: #faf7fd;
+	}
+	.col h5 {
+		border-bottom: 1px dotted #000;
+		margin: 0.5em 1.5em 1.5em 1.5em;
+	}
+	.tweakblock {
+		border-top: 1px dotted black;
+		margin: 1em 0;
+	}
+	.el-details {
+		display: block;
 	}

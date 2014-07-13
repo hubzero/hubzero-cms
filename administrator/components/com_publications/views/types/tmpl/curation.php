@@ -54,7 +54,12 @@ $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
 $blocks	   = $manifest->blocks;
 
-$blockSelection = array('active' => array(), 'inactive' => array('content'));
+$blockSelection = array('active' => array());
+$masterBlocks = array();
+foreach ($this->blocks as $b)
+{
+	$masterBlocks[$b->block] = $b;
+}
 
 ?>
 <script type="text/javascript">
@@ -148,18 +153,99 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
-<?php if ($this->row->id) { ?>
+<?php if ($this->row->id) { $i=1; ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span></legend>
-			<?php foreach ($blocks as $sequence => $block) { ?>
+			<?php foreach ($blocks as $sequence => $block) {
+				$blockSelection['active'][] = $block->name;
+				$blockMaster = $masterBlocks[$block->name];
+				?>
 			<fieldset class="adminform">
-				<legend><span class="block-sequence"><?php echo $sequence; ?></span> <span><?php echo $block->name; ?></span></legend>
+				<legend><span class="block-sequence"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ID') . ': ' . $sequence; ?> - <?php echo $block->name; ?></span></legend>
 				<div class="input-wrap">
-
+					<div class="col width-20 fltlft">
+						<div class="input-wrap">
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+						</div>
+						<div class="input-wrap tweakblock">
+							<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?></label>
+						</div>
+					</div>
+					<div class="col width-40 fltlft blockprop">
+						<h5><?php echo JText::_('COM_PUBLICATIONS_BLOCK_PROPERTIES'); ?></h5>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-label"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_LABEL'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][label]" id="field-block-<?php echo $sequence; ?>-label" maxlength="255" value="<?php echo $block->label;  ?>" />
+						</div>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-title"><?php echo JText::_('COM_PUBLICATIONS_FIELD_TITLE'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][title]" id="field-block-<?php echo $sequence; ?>-title" maxlength="255" value="<?php echo $block->title;  ?>" />
+						</div>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-draftHeading"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DRAFT_HEADING'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][draftHeading]" id="field-block-<?php echo $sequence; ?>-draftHeading" maxlength="255" value="<?php echo $block->draftHeading;  ?>" />
+						</div>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-draftTagline"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DRAFT_TAGLINE'); ?>:</label>
+							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][draftTagline]" id="field-block-<?php echo $sequence; ?>-draftTagline" maxlength="255" value="<?php echo $block->draftTagline;  ?>" />
+						</div>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-about"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_ABOUT'); ?>:</label>
+							<textarea name="curation[blocks][<?php echo $sequence; ?>][about]" id="field-block-<?php echo $sequence; ?>-about"><?php echo $block->about;  ?></textarea>
+						</div>
+						<div class="input-wrap">
+							<label for="field-block-<?php echo $sequence; ?>-adminTips"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_ADMIN_TIPS'); ?>:</label>
+							<textarea name="curation[blocks][<?php echo $sequence; ?>][adminTips]" id="field-block-<?php echo $sequence; ?>-adminTips"><?php echo $block->adminTips;  ?></textarea>
+						</div>
+					</div>
+					<div class="col width-40 fltlft blockparams">
+						<h5><?php echo JText::_('COM_PUBLICATIONS_FIELD_PARAMS'); ?></h5>
+						<?php foreach ($block->params as $paramname => $paramvalue) { ?>
+						<div class="input-wrap">
+							<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname)); ?></label>
+							<?php
+								if (is_array($paramvalue)) {
+								$val = implode(',', $paramvalue);
+							?>
+							<input type="text" name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
+							<?php } elseif (is_numeric($paramvalue)) { ?>
+							<select name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]">
+								<option value="0" <?php echo $paramvalue == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+								<option value="1" <?php echo $paramvalue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+							</select>
+							<?php } else { ?>
+								<input type="text" name="curation[blocks][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
+							<?php } ?>
+						</div>
+						<?php } ?>
+						<?php if ($block->elements) { ?>
+						<h5><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?></h5>
+						<?php foreach ($block->elements as $elementId => $element) { ?>
+							<div class="input-wrap">
+								<span class="block-sequence"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
+								<span class="el-details"><?php echo $element->label; ?></span>
+							</div>
+						<?php } ?>
+						<?php } ?>
+					</div>
 				</div>
 			</fieldset>
-			<?php } ?>
+			<?php $i++; } ?>
+		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?></span></legend>
+			<div class="input-wrap">
+				<label for="field-newblock"><?php echo JText::_('COM_PUBLICATIONS_CURATION_SELECT_BLOCK'); ?>:</label>
+				<select name="newblock" id="field-newblock">
+				<?php foreach ($this->blocks as $sBlock) {
+					if (!in_array($sBlock->block, $blockSelection['active']) || $sBlock->maximum > 1) {  ?>
+					<option value="<?php echo $sBlock->block; ?>"><?php echo $sBlock->block; ?></option>
+				<?php  }
+				} ?>
+				</select>
+			</div>
 		</fieldset>
 	</div>
 <?php } ?>
