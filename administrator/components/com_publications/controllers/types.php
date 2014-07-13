@@ -233,8 +233,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $fields['id'];
-		
-		// Load record	
+
+		// Load record
 		if ($fields['id'])
 		{
 			$row->load($fields['id']);

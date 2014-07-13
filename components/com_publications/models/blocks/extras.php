@@ -36,28 +36,28 @@ class PublicationsBlockExtras extends PublicationsBlockContent
 	* @var		string
 	*/
 	protected	$_name 			= 'extras';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= 'content';	
-	
+	protected	$_parentname 	= 'content';
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 		= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence 		= 0;
-			
+
 	/**
 	 * Get default manifest for the block
 	 *
@@ -127,14 +127,14 @@ class PublicationsBlockExtras extends PublicationsBlockContent
 					)
 				)
 			),
-			'params'	=> array( 
-				'required' 			=> 0, 
-				'published_editing' => 1, 
+			'params'	=> array(
+				'required' 			=> 0,
+				'published_editing' => 1,
 				'collapse_elements' => 0,
 				'verify_types'		=> 1
 			)
 		);
-		
+
 		return json_decode(json_encode($manifest), FALSE);
 	}
 }
