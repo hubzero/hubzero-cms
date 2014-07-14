@@ -34,7 +34,7 @@ clipSettingLocked: false,
 // Render default UI and initialize settings menu
 load: function(){
 		var html = '';
-		UI.rfb = new RFB({'target':    $D('theapp'),
+		UI.rfb = new RFB({'target':    $D('noVNC_canvas'),
 							'encrypt':      encrypt,
 							'true_color':   true,
 							'local_cursor': true,
@@ -295,13 +295,13 @@ setViewClip: function(clip) {
         // Turn clipping off
 		UI.clipSetting = false;
         display.set_viewport(false);
-        $D('theapp').style.position = 'static';
+        $D('noVNC_canvas').style.position = 'static';
         display.viewportChange();
     }
     if (UI.clipSetting) {
         // If clipping, update clipping settings
-        $D('theapp').style.position = 'absolute';
-        pos = Util.getPosition($D('theapp'));
+        $D('noVNC_canvas').style.position = 'absolute';
+        pos = Util.getPosition($D('noVNC_canvas'));
         new_w = window.innerWidth - pos.x;
         new_h = window.innerHeight - pos.y;
         display.set_viewport(true);
