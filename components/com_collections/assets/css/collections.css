@@ -13,7 +13,6 @@
 
 */
 
-
 	#page_menu li .postboard:before {
 		content: "\f08d";
 	}
@@ -208,14 +207,8 @@
 		margin: 0 -10px;
 	}
 	.post {
-		/*position: absolute;
-		width: 192px;
-		width: 30%;
-		margin: 0 1.5% 2em 1.5%;*/
 		display: block;
-		
 		padding: 0;
-		
 		font-size: 90%;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
@@ -225,7 +218,6 @@
 		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		border: 1px solid #ddd\9; /* [!] IE 8 */
 		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
-		/*width: 28.5em;*/
 		margin: 0 10px 20px;
 		width: 288px;
 	}
@@ -250,10 +242,6 @@
 	.list .post .holder {
 		width: 288px;
 	}
-
-	/*.full {
-		width: auto;
-	}*/
 
 	.post.collection {
 		z-index: 1;
@@ -282,6 +270,8 @@
 	}
 	.full {
 		width: auto;
+		margin: 0;
+		position: relative;
 	}
 
 	.post:hover {
@@ -563,42 +553,11 @@
 		content: " ";
 		visibility: hidden;
 	}
-	
-	.comments {
-		margin: 0 -15px;
-		padding: 0 1.4em;
-		border-top: 1px solid #d4d4d4;
-		margin: 0;
-	}
+
 	.reposts {
 		padding: 0 1.4em;
 	}
-	.commnts {
-		margin: 0 -15px;
-		padding: 0 15px;
-		border-top: 1px solid #d4d4d4;
-		margin: 0;
-		padding: 0;
-	}
-	.commnts .comment {
-		border-top: 1px solid #fafafa;
-		border-bottom: 1px solid #d4d4d4;
-		overflow: hidden;
-	}
-	.commnts blockquote {
-		margin-left: 40px;
-		margin-top: 0.5em;
-		color: #666;
-	}
-	.commnts .comment:last-child {
-		border-bottom-width: 0;
-	}
-	.commnts form {
-		margin-left: 40px;
-	}
-	.commnts textarea {
-		width: 100%;
-	}
+
 	/* Creator */
 	.creator {
 		margin: 0 -15px;
@@ -641,17 +600,14 @@
 		display: none;
 	}
 
-	.comment a,
 	.attribution a {
 		color: #6e6e6e;
 		border-bottom: none;
 	}
-	.comment a:hover,
 	.attribution a:hover {
 		color: #111;
 		border-bottom: 1px solid #111;
 	}
-	.comment p,
 	.attribution p {
 		display: table-cell;
 		vertical-align: middle;
@@ -695,16 +651,13 @@
 	.btn.unfollow:before {
 		content: "\f070";
 	}
-	.comment p span,
 	.attribution p span {
 		margin-right: 1em;
 	}
-	.comment,
 	.attribution {
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
 	}
-	/*.comment + .comment,*/
 	.attribution + .reposted {
 		border-top: 1px solid #d4d4d4;
 	}
@@ -1027,4 +980,23 @@
 	.entry-date-at,
 	.entry-date-on {
 		display: none;
+	}
+
+	.post-collections .collection {
+		position: relative;
+		float: left;
+	}
+	.post-comments {
+		margin-top: 30px;
+	}
+
+	.post-modal .fancybox-skin,
+	.post-modal .fancybox-outer,
+	.post-modal .fancybox-inner {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+		background: transparent;
 	}

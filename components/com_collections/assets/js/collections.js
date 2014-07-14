@@ -131,34 +131,45 @@ jQuery(document).ready(function(jq){
 					}
 				}
 			});
-			
+
 			// Add collect trigger
 			container.find('a.comment').fancybox({
 				type: 'ajax',
-				width: 500,
-				height: 'auto',
-				autoSize: false,
-				fitToView: false,
+				autoSize: true,
+				fitToView: true,
 				titleShow: false,
 				tpl: {
-					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+					wrap:'<div class="fancybox-wrap post-modal"><div class="fancybox-skin"><div class="fancybox-outer"><div id="post-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
+
 					$(this).attr('href', $(this).attr('href').nohtml());
+				},
+				afterLoad: function(current, previous) {
+					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+				},
+				beforeShow: function() {
+					if (scrp && scrp.length) {
+						scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+						eval(scrp);
+					}
 				},
 				afterShow: function() {
 					var el = this.element;
-					if ($('#comment-form').length > 0) {
-						//$('#comment-form').on('submit', function(e) {
-						$('#sbox-content').on('submit', '#comment-form', function(e) {
+					if ($('#commentform').length > 0) {
+						$('#post-content').on('submit', '#commentform', function(e) {
 							e.preventDefault();
 							$.post($(this).attr('action'), $(this).serialize(), function(data) {
-								//$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
-								//$.fancybox.close();
-								$('#sbox-content').html(data);
+								$('#post-content').html(data);
 								$.fancybox.update();
 							});
 						});
+					}
+				},
+				helpers: {
+					overlay: {
+						css: { background: 'rgba(200, 200, 200, 0.95)' }
 					}
 				}
 			});

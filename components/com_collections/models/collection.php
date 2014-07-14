@@ -487,11 +487,25 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				return $this->_counts[$what];
 			break;
 
+			case 'reposts':
+			case 'repost':
+				if ($this->get('reposts', null) == null)
+				{
+					$tbl = new CollectionsTableItem($this->_db);
+					$this->set('reposts', $tbl->getReposts(array(
+						'object_type' => 'collection',
+						'object_id'   => $this->get('id')
+					)));
+				}
+				return (int) $this->get('reposts', 0);
+			break;
+
+			case 'posts':
 			case 'post':
 				if ($this->get('posts', null) == null)
 				{
 					$this->set('posts', $this->posts(array(
-						'count' => true,
+						'count'         => true,
 						'collection_id' => $this->get('id'))
 					));
 				}

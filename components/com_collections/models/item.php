@@ -89,6 +89,17 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	private $_comments = null;
 
 	/**
+	 * Container for properties
+	 *
+	 * @var array
+	 */
+	private $_cache = array(
+		'comments.list'     => null,
+		'collections.count' => null,
+		'collections.list'  => null
+	);
+
+	/**
 	 * Constructor
 	 *
 	 * @param      integer $id  Resource ID or alias
@@ -236,7 +247,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new Hubzero\User\Profile();
+				$this->_creator = new \Hubzero\User\Profile();
 			}
 		}
 		if ($property)
@@ -262,6 +273,10 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		if (!($this->_modifier instanceof \Hubzero\User\Profile))
 		{
 			$this->_modifier = \Hubzero\User\Profile::getInstance($this->get('modified_by'));
+			if (!$this->_modifier)
+			{
+				$this->_modifier = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -278,7 +293,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 */
 	public function comments()
 	{
-		if (!isset($this->_comments) || !is_array($this->_comments))
+		if (!is_array($this->_cache['comments.list']))
 		{
 			$total = 0;
 
@@ -308,9 +323,9 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			}
 
 			$this->set('comments', $total);
-			$this->_comments = $results;
+			$this->_cache['comments.list'] = $results;
 		}
-		return $this->_comments;
+		return $this->_cache['comments.list'];
 	}
 
 	/**
@@ -747,6 +762,65 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			$type = 'link';
 		}
 		return $type;
+	}
+
+	/**
+	 * Get a list of collections this item can be found in
+	 *
+	 * @param      string  $what
+	 * @param      array   $filters
+	 * @param      boolean $clear
+	 * @return     object
+	 */
+	public function collections($what='list', $filters=array(), $clear=false)
+	{
+		if (!isset($filters['item_id']))
+		{
+			$filters['item_id'] = $this->get('id');
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
+		if (!isset($filters['access']))
+		{
+			$filters['access'] = (!JFactory::getUser()->get('guest') ? array(0, 1) : 0);
+		}
+
+		switch (strtolower($what))
+		{
+			case 'count':
+				if (!isset($this->_cache['collections.count']) || $clear)
+				{
+					$tbl = new CollectionsTableCollection($this->_db);
+					$this->_cache['collections.count'] = $tbl->getCount($filters);
+				}
+				return $this->_cache['collections.count'];
+			break;
+
+			case 'list':
+			case 'results':
+			default:
+				if (!($this->_cache['collections.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				{
+					$tbl = new CollectionsTableCollection($this->_db);
+
+					if ($results = $tbl->getRecords($filters))
+					{
+						foreach ($results as $key => $result)
+						{
+							$results[$key] = new CollectionsModelCollection($result);
+						}
+					}
+					else
+					{
+						$results = array();
+					}
+					$this->_cache['collections.list'] = new \Hubzero\Base\ItemList($results);
+				}
+				return $this->_cache['collections.list'];
+			break;
+		}
 	}
 }
 

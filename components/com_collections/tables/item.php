@@ -394,9 +394,9 @@ class CollectionsTableItem extends JTable
 	}
 
 	/**
-	 * Get a record count
+	 * Get a repost count
 	 *
-	 * @param      array $filters Filters to construct query from
+	 * @param      mixed   $id
 	 * @return     integer
 	 */
 	public function getReposts($id=null)
@@ -405,13 +405,19 @@ class CollectionsTableItem extends JTable
 		{
 			$id = $this->id;
 		}
-		$id = intval($id);
 		if (!$id)
 		{
 			return false;
 		}
 
-		$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->Quote($id) . " AND s.original=" . $this->_db->Quote('0');
+		if (is_array($id))
+		{
+			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id WHERE i.type=" . $this->_db->Quote($id['object_type']) . " AND i.object_id=" . $this->_db->Quote($id['object_id']) . " AND s.original=" . $this->_db->Quote('0');
+		}
+		else
+		{
+			$query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->Quote(intval($id)) . " AND s.original=" . $this->_db->Quote('0');
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

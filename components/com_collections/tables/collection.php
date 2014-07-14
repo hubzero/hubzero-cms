@@ -332,6 +332,24 @@ class CollectionsTableCollection extends JTable
 
 		$where = array();
 
+		if (isset($filters['item_id']) && $filters['item_id'])
+		{
+			$query .= " INNER JOIN #__collections_posts AS p ON p.collection_id=b.id";
+			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
+			if (isset($filters['collection_id']))
+			{
+				if (is_array($filters['collection_id']))
+				{
+					$filters['collection_id'] = array_map('intval', $filters['collection_id']);
+					$where[] = "b.id NOT IN (" . implode(',', $filters['collection_id']) . ")";
+				}
+				else if ($filters['collection_id'] > 0)
+				{
+					$where[] = "b.id != " . $this->_db->Quote(intval($filters['collection_id']));
+				}
+			}
+		}
+
 		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
