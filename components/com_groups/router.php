@@ -152,7 +152,7 @@ function GroupsParseRoute($segments)
 		$vars['task'] = 'view';
 		$vars['cn'] = $segments[0];
 	}
-	
+
 	if (isset($segments[1])) 
 	{
 		switch ($segments[1])
@@ -180,7 +180,7 @@ function GroupsParseRoute($segments)
 				$vars['active'] = $segments[1];
 		}
 	}
-	
+
 	if (isset($segments[2])) 
 	{
 		if (isset($vars['controller']) && in_array($vars['controller'], array('pages', 'media', 'categories', 'modules')))
@@ -241,7 +241,29 @@ function GroupsParseRoute($segments)
 			}
 		}
 	}
-	
+
+	// if we have a cname isnt all lowercase
+	if (isset($vars['cn']) && $vars['cn'] != strtolower($vars['cn']))
+	{
+		// make sure we have a group with the lowercase version
+		$cname = strtolower($vars['cn']);
+		$group = \Hubzero\User\Group::getInstance($cname);
+		
+		if (is_object($group))
+		{
+			// replace cn with lowercase version
+			$vars['cn'] = $cname;
+
+			// add option var
+			$vars['option'] = 'com_groups';
+
+			// build url to redirect to based on vars
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_('index.php?' . http_build_query($vars)), null, null, true);
+			exit();
+		}
+	}
+
 	return $vars;
 }
 
