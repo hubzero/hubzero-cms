@@ -1,7 +1,8 @@
 /*
  * noVNC: HTML5 VNC client
  * Copyright (C) 2012 Joel Martin
- * Licensed under LGPL-3 (see LICENSE.txt)
+ * Copyright (C) 2013 Samuel Mannehed for Cendio AB
+ * Licensed under MPL 2.0 (see LICENSE.txt)
  *
  * See README.md for usage and integration instructions.
  */
@@ -10,13 +11,28 @@
 /*jslint white: false, browser: true */
 /*global window, $D, Util, WebUtil, RFB, Display */
 
+// Load supporting scripts
+window.onscriptsload = function () { UI.load(); };
+window.onload = function () { UI.keyboardinputReset(); };
+Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
+                   "keysymdef.js", "keyboard.js", "input.js", "display.js",
+                   "jsunzip.js", "rfb.js", "keysym.js"]);
+
 var UI = {
 
 rfb_state : 'loaded',
 settingsOpen : false,
 connSettingsOpen : false,
+popupStatusOpen : false,
 clipboardOpen: false,
 keyboardVisible: false,
+hideKeyboardTimeout: null,
+lastKeyboardinput: null,
+defaultKeyboardinputLen: 100,
+extraKeysVisible: false,
+ctrlOn: false,
+altOn: false,
+isTouchDevice: false,
 
 // Setup rfb object, load settings from browser storage, then call
 // UI.init to setup the UI/menus
@@ -26,7 +42,9 @@ load: function (callback) {
 
 // Render default UI and initialize settings menu
 start: function(callback) {
-    var html = '', i, sheet, sheets, llevels;
+    var html = '', i, sheet, sheets, llevels, port, autoconnect;
+
+    UI.isTouchDevice = 'ontouchstart' in document.documentElement;
 
     // Stylesheet selection dropdown
     sheet = WebUtil.selectStylesheet();
@@ -50,22 +68,44 @@ start: function(callback) {
     // call twice to get around webkit bug
     WebUtil.selectStylesheet(UI.getSetting('stylesheet'));
 
+    // if port == 80 (or 443) then it won't be present and should be
+    // set manually
+    port = window.location.port;
+    if (!port) {
+        if (window.location.protocol.substring(0,5) == 'https') {            
+            port = 443;
+        }
+        else if (window.location.protocol.substring(0,4) == 'http') {            
+            port = 80;
+        }
+    }
+
     /* Populate the controls if defaults are provided in the URL */
     UI.initSetting('host', window.location.hostname);
-    UI.initSetting('port', window.location.port);
+    UI.initSetting('port', port);
     UI.initSetting('password', '');
     UI.initSetting('encrypt', (window.location.protocol === "https:"));
     UI.initSetting('true_color', true);
-    UI.initSetting('cursor', false);
+    UI.initSetting('cursor', !UI.isTouchDevice);
     UI.initSetting('shared', true);
     UI.initSetting('view_only', false);
-    UI.initSetting('connectTimeout', 2);
     UI.initSetting('path', 'websockify');
     UI.initSetting('repeaterID', '');
 
     UI.rfb = RFB({'target': $D('noVNC_canvas'),
                   'onUpdateState': UI.updateState,
-                  'onClipboard': UI.clipReceive});
+                  'onXvpInit': UI.updateXvpVisualState,
+                  'onClipboard': UI.clipReceive,
+                  'onDesktopName': UI.updateDocumentTitle});
+
+    autoconnect = WebUtil.getQueryVar('autoconnect', false);
+    if (autoconnect === 'true' || autoconnect == '1') {
+        autoconnect = true;
+        UI.connect();
+    } else {
+        autoconnect = false;
+    }
+
     UI.updateVisualState();
 
     // Unfocus clipboard when over the VNC area
@@ -77,7 +117,7 @@ start: function(callback) {
     //    };
 
     // Show mouse selector buttons on touch screen devices
-    if ('ontouchstart' in document.documentElement) {
+    if (UI.isTouchDevice) {
         // Show mobile buttons
         $D('noVNC_mobile_buttons').style.display = "inline";
         UI.setMouseButton();
@@ -111,12 +151,14 @@ start: function(callback) {
     } );
 
     // Show description by default when hosted at for kanaka.github.com
-    if (location.host === "kanaka.github.com") {
+    if (location.host === "kanaka.github.io") {
         // Open the description dialog
         $D('noVNC_description').style.display = "block";
     } else {
-        // Open the connect panel on first load
-        UI.toggleConnectPanel();
+        // Show the connect panel on first load unless autoconnecting
+        if (autoconnect === UI.connSettingsOpen) {
+            UI.toggleConnectPanel();
+        }
     }
 
     // Add mouse event click/focus/blur event handlers to the UI
@@ -135,10 +177,23 @@ addMouseHandlers: function() {
     $D("noVNC_mouse_button2").onclick = function () { UI.setMouseButton(4); };
     $D("noVNC_mouse_button4").onclick = function () { UI.setMouseButton(0); };
     $D("showKeyboard").onclick = UI.showKeyboard;
-    //$D("keyboardinput").onkeydown = function (event) { onKeyDown(event); };
+
+    $D("keyboardinput").oninput = UI.keyInput;
     $D("keyboardinput").onblur = UI.keyInputBlur;
 
+    $D("showExtraKeysButton").onclick = UI.showExtraKeys;
+    $D("toggleCtrlButton").onclick = UI.toggleCtrl;
+    $D("toggleAltButton").onclick = UI.toggleAlt;
+    $D("sendTabButton").onclick = UI.sendTab;
+    $D("sendEscButton").onclick = UI.sendEsc;
+
     $D("sendCtrlAltDelButton").onclick = UI.sendCtrlAltDel;
+    $D("xvpShutdownButton").onclick = UI.xvpShutdown;
+    $D("xvpRebootButton").onclick = UI.xvpReboot;
+    $D("xvpResetButton").onclick = UI.xvpReset;
+    $D("noVNC_status").onclick = UI.togglePopupStatusPanel;
+    $D("noVNC_popup_status_panel").onclick = UI.togglePopupStatusPanel;
+    $D("xvpButton").onclick = UI.toggleXvpPanel;
     $D("clipboardButton").onclick = UI.toggleClipboardPanel;
     $D("settingsButton").onclick = UI.toggleSettingsPanel;
     $D("connectButton").onclick = UI.toggleConnectPanel;
@@ -240,20 +295,76 @@ forceSetting: function(name, val) {
 },
 
 
-// Show the clipboard panel
-toggleClipboardPanel: function() {
+// Show the popup status panel
+togglePopupStatusPanel: function() {
+    var psp = $D('noVNC_popup_status_panel');
+    if (UI.popupStatusOpen === true) {
+        psp.style.display = "none";
+        UI.popupStatusOpen = false;
+    } else {
+        psp.innerHTML = $D('noVNC_status').innerHTML;
+        psp.style.display = "block";
+        psp.style.left = window.innerWidth/2 - 
+            parseInt(window.getComputedStyle(psp, false).width)/2 -30 + "px";
+        UI.popupStatusOpen = true;
+    }
+},
+
+// Show the XVP panel
+toggleXvpPanel: function() {
     // Close the description panel
     $D('noVNC_description').style.display = "none";
-    //Close settings if open
+    // Close settings if open
     if (UI.settingsOpen === true) {
         UI.settingsApply();
         UI.closeSettingsMenu();
     }
-    //Close connection settings if open
+    // Close connection settings if open
     if (UI.connSettingsOpen === true) {
         UI.toggleConnectPanel();
     }
-    //Toggle Clipboard Panel
+    // Close popup status panel if open
+    if (UI.popupStatusOpen === true) {
+        UI.togglePopupStatusPanel();
+    }
+    // Close clipboard panel if open
+    if (UI.clipboardOpen === true) {
+        UI.toggleClipboardPanel();
+    }
+    // Toggle XVP panel
+    if (UI.xvpOpen === true) {
+        $D('noVNC_xvp').style.display = "none";
+        $D('xvpButton').className = "noVNC_status_button";
+        UI.xvpOpen = false;
+    } else {
+        $D('noVNC_xvp').style.display = "block";
+        $D('xvpButton').className = "noVNC_status_button_selected";
+        UI.xvpOpen = true;
+    }
+},
+
+// Show the clipboard panel
+toggleClipboardPanel: function() {
+    // Close the description panel
+    $D('noVNC_description').style.display = "none";
+    // Close settings if open
+    if (UI.settingsOpen === true) {
+        UI.settingsApply();
+        UI.closeSettingsMenu();
+    }
+    // Close connection settings if open
+    if (UI.connSettingsOpen === true) {
+        UI.toggleConnectPanel();
+    }
+    // Close popup status panel if open
+    if (UI.popupStatusOpen === true) {
+        UI.togglePopupStatusPanel();
+    }
+    // Close XVP panel if open
+    if (UI.xvpOpen === true) {
+        UI.toggleXvpPanel();
+    }
+    // Toggle Clipboard Panel
     if (UI.clipboardOpen === true) {
         $D('noVNC_clipboard').style.display = "none";
         $D('clipboardButton').className = "noVNC_status_button";
@@ -269,17 +380,26 @@ toggleClipboardPanel: function() {
 toggleConnectPanel: function() {
     // Close the description panel
     $D('noVNC_description').style.display = "none";
-    //Close connection settings if open
+    // Close connection settings if open
     if (UI.settingsOpen === true) {
         UI.settingsApply();
         UI.closeSettingsMenu();
         $D('connectButton').className = "noVNC_status_button";
     }
+    // Close clipboard panel if open
     if (UI.clipboardOpen === true) {
         UI.toggleClipboardPanel();
     }
+    // Close popup status panel if open
+    if (UI.popupStatusOpen === true) {
+        UI.togglePopupStatusPanel();
+    }
+    // Close XVP panel if open
+    if (UI.xvpOpen === true) {
+        UI.toggleXvpPanel();
+    }
 
-    //Toggle Connection Panel
+    // Toggle Connection Panel
     if (UI.connSettingsOpen === true) {
         $D('noVNC_controls').style.display = "none";
         $D('connectButton').className = "noVNC_status_button";
@@ -310,13 +430,12 @@ toggleSettingsPanel: function() {
         if (UI.rfb.get_display().get_cursor_uri()) {
             UI.updateSetting('cursor');
         } else {
-            UI.updateSetting('cursor', false);
+            UI.updateSetting('cursor', !UI.isTouchDevice);
             $D('noVNC_cursor').disabled = true;
         }
         UI.updateSetting('clip');
         UI.updateSetting('shared');
         UI.updateSetting('view_only');
-        UI.updateSetting('connectTimeout');
         UI.updateSetting('path');
         UI.updateSetting('repeaterID');
         UI.updateSetting('stylesheet');
@@ -330,12 +449,21 @@ toggleSettingsPanel: function() {
 openSettingsMenu: function() {
     // Close the description panel
     $D('noVNC_description').style.display = "none";
+    // Close clipboard panel if open
     if (UI.clipboardOpen === true) {
         UI.toggleClipboardPanel();
     }
-    //Close connection settings if open
+    // Close connection settings if open
     if (UI.connSettingsOpen === true) {
         UI.toggleConnectPanel();
+    }
+    // Close popup status panel if open
+    if (UI.popupStatusOpen === true) {
+        UI.togglePopupStatusPanel();
+    }
+    // Close XVP panel if open
+    if (UI.xvpOpen === true) {
+        UI.toggleXvpPanel();
     }
     $D('noVNC_settings').style.display = "block";
     $D('settingsButton').className = "noVNC_status_button_selected";
@@ -360,7 +488,6 @@ settingsApply: function() {
     UI.saveSetting('clip');
     UI.saveSetting('shared');
     UI.saveSetting('view_only');
-    UI.saveSetting('connectTimeout');
     UI.saveSetting('path');
     UI.saveSetting('repeaterID');
     UI.saveSetting('stylesheet');
@@ -388,6 +515,18 @@ setPassword: function() {
 
 sendCtrlAltDel: function() {
     UI.rfb.sendCtrlAltDel();
+},
+
+xvpShutdown: function() {
+    UI.rfb.xvpShutdown();
+},
+
+xvpReboot: function() {
+    UI.rfb.xvpReboot();
+},
+
+xvpReset: function() {
+    UI.rfb.xvpReset();
 },
 
 setMouseButton: function(num) {
@@ -420,8 +559,6 @@ setMouseButton: function(num) {
 updateState: function(rfb, state, oldstate, msg) {
     var s, sb, c, d, cad, vd, klass;
     UI.rfb_state = state;
-    s = $D('noVNC_status');
-    sb = $D('noVNC_status_bar');
     switch (state) {
         case 'failed':
         case 'fatal':
@@ -451,9 +588,8 @@ updateState: function(rfb, state, oldstate, msg) {
     }
 
     if (typeof(msg) !== 'undefined') {
-        s.setAttribute("class", klass);
-        sb.setAttribute("class", klass);
-        s.innerHTML = msg;
+        $D('noVNC-control-bar').setAttribute("class", klass);
+        $D('noVNC_status').innerHTML = msg;
     }
 
     UI.updateVisualState();
@@ -470,12 +606,11 @@ updateVisualState: function() {
         UI.rfb.get_display().get_cursor_uri()) {
         $D('noVNC_cursor').disabled = connected;
     } else {
-        UI.updateSetting('cursor', false);
+        UI.updateSetting('cursor', !UI.isTouchDevice);
         $D('noVNC_cursor').disabled = true;
     }
     $D('noVNC_shared').disabled = connected;
     $D('noVNC_view_only').disabled = connected;
-    $D('noVNC_connectTimeout').disabled = connected;
     $D('noVNC_path').disabled = connected;
     $D('noVNC_repeaterID').disabled = connected;
 
@@ -484,13 +619,17 @@ updateVisualState: function() {
         UI.setMouseButton(1);
         $D('clipboardButton').style.display = "inline";
         $D('showKeyboard').style.display = "inline";
+        $D('noVNC_extra_keys').style.display = "";
         $D('sendCtrlAltDelButton').style.display = "inline";
     } else {
         UI.setMouseButton();
         $D('clipboardButton').style.display = "none";
         $D('showKeyboard').style.display = "none";
+        $D('noVNC_extra_keys').style.display = "none";
         $D('sendCtrlAltDelButton').style.display = "none";
+        UI.updateXvpVisualState(0);
     }
+    
     // State change disables viewport dragging.
     // It is enabled (toggled) by direct click on the button
     UI.setViewDrag(false);
@@ -510,6 +649,25 @@ updateVisualState: function() {
     }
 
     //Util.Debug("<< updateVisualState");
+},
+
+// Disable/enable XVP button
+updateXvpVisualState: function(ver) {
+    if (ver >= 1) {
+        $D('xvpButton').style.display = 'inline';
+    } else {
+        $D('xvpButton').style.display = 'none';
+        // Close XVP panel if open
+        if (UI.xvpOpen === true) {
+            UI.toggleXvpPanel();
+        }
+    }
+},
+
+
+// Display the desktop name in the document title
+updateDocumentTitle: function(rfb, name) {
+    document.title = name + " - noVNC";
 },
 
 
@@ -539,7 +697,6 @@ connect: function() {
     UI.rfb.set_local_cursor(UI.getSetting('cursor'));
     UI.rfb.set_shared(UI.getSetting('shared'));
     UI.rfb.set_view_only(UI.getSetting('view_only'));
-    UI.rfb.set_connectTimeout(UI.getSetting('connectTimeout'));
     UI.rfb.set_repeaterID(UI.getSetting('repeaterID'));
 
     UI.rfb.connect(host, port, password, path);
@@ -631,7 +788,8 @@ setViewDrag: function(drag) {
         vmb.style.display = "none";
     }
 
-    if (typeof(drag) === "undefined") {
+    if (typeof(drag) === "undefined" ||
+        typeof(drag) === "object") {
         // If not specified, then toggle
         drag = !UI.rfb.get_viewportDrag();
     }
@@ -646,14 +804,98 @@ setViewDrag: function(drag) {
 
 // On touch devices, show the OS keyboard
 showKeyboard: function() {
+    var kbi, skb, l;
+    kbi = $D('keyboardinput');
+    skb = $D('showKeyboard');
+    l = kbi.value.length;
     if(UI.keyboardVisible === false) {
-        $D('keyboardinput').focus();
+        kbi.focus();
+        try { kbi.setSelectionRange(l, l); } // Move the caret to the end
+        catch (err) {} // setSelectionRange is undefined in Google Chrome
         UI.keyboardVisible = true;
-        $D('showKeyboard').className = "noVNC_status_button_selected";
+        skb.className = "noVNC_status_button_selected";
     } else if(UI.keyboardVisible === true) {
+        kbi.blur();
+        skb.className = "noVNC_status_button";
+        UI.keyboardVisible = false;
+    }
+},
+
+keepKeyboard: function() {
+    clearTimeout(UI.hideKeyboardTimeout);
+    if(UI.keyboardVisible === true) {
+        $D('keyboardinput').focus();
+        $D('showKeyboard').className = "noVNC_status_button_selected";
+    } else if(UI.keyboardVisible === false) {
         $D('keyboardinput').blur();
         $D('showKeyboard').className = "noVNC_status_button";
-        UI.keyboardVisible = false;
+    }
+},
+
+keyboardinputReset: function() {
+    var kbi = $D('keyboardinput');
+    kbi.value = Array(UI.defaultKeyboardinputLen).join("_");
+    UI.lastKeyboardinput = kbi.value;
+},
+
+// When normal keyboard events are left uncought, use the input events from
+// the keyboardinput element instead and generate the corresponding key events.
+// This code is required since some browsers on Android are inconsistent in
+// sending keyCodes in the normal keyboard events when using on screen keyboards.
+keyInput: function(event) {
+    var newValue, oldValue, newLen, oldLen;
+    newValue = event.target.value;
+    oldValue = UI.lastKeyboardinput;
+
+    try {
+        // Try to check caret position since whitespace at the end
+        // will not be considered by value.length in some browsers
+        newLen = Math.max(event.target.selectionStart, newValue.length);
+    } catch (err) {
+        // selectionStart is undefined in Google Chrome
+        newLen = newValue.length;
+    }
+    oldLen = oldValue.length;
+
+    var backspaces;
+    var inputs = newLen - oldLen;
+    if (inputs < 0)
+        backspaces = -inputs;
+    else
+        backspaces = 0;
+
+    // Compare the old string with the new to account for
+    // text-corrections or other input that modify existing text
+    for (var i = 0; i < Math.min(oldLen, newLen); i++) {
+        if (newValue.charAt(i) != oldValue.charAt(i)) {
+            inputs = newLen - i;
+            backspaces = oldLen - i;
+            break;
+        }
+    }
+
+    // Send the key events
+    for (var i = 0; i < backspaces; i++)
+        UI.rfb.sendKey(XK_BackSpace);
+    for (var i = newLen - inputs; i < newLen; i++)
+        UI.rfb.sendKey(newValue.charCodeAt(i));
+
+    // Control the text content length in the keyboardinput element
+    if (newLen > 2 * UI.defaultKeyboardinputLen) {
+        UI.keyboardinputReset();
+    } else if (newLen < 1) {
+        // There always have to be some text in the keyboardinput
+        // element with which backspace can interact.
+        UI.keyboardinputReset();
+        // This sometimes causes the keyboard to disappear for a second
+        // but it is required for the android keyboard to recognize that
+        // text has been added to the field
+        event.target.blur();
+        // This has to be ran outside of the input handler in order to work
+        setTimeout(function() { UI.keepKeyboard(); }, 0);
+
+    } else {
+        UI.lastKeyboardinput = newValue;
     }
 },
 
@@ -662,7 +904,62 @@ keyInputBlur: function() {
     //Weird bug in iOS if you change keyboardVisible
     //here it does not actually occur so next time
     //you click keyboard icon it doesnt work.
-    setTimeout(function() { UI.setKeyboard(); },100);
+    UI.hideKeyboardTimeout = setTimeout(function() { UI.setKeyboard(); },100);
+},
+
+showExtraKeys: function() {
+    UI.keepKeyboard();
+    if(UI.extraKeysVisible === false) {
+        $D('toggleCtrlButton').style.display = "inline";
+        $D('toggleAltButton').style.display = "inline";
+        $D('sendTabButton').style.display = "inline";
+        $D('sendEscButton').style.display = "inline";
+        $D('showExtraKeysButton').className = "noVNC_status_button_selected";
+        UI.extraKeysVisible = true;
+    } else if(UI.extraKeysVisible === true) {
+        $D('toggleCtrlButton').style.display = "";
+        $D('toggleAltButton').style.display = "";
+        $D('sendTabButton').style.display = "";
+        $D('sendEscButton').style.display = "";
+        $D('showExtraKeysButton').className = "noVNC_status_button";
+        UI.extraKeysVisible = false;
+    }
+},
+
+toggleCtrl: function() {
+    UI.keepKeyboard();
+    if(UI.ctrlOn === false) {
+        UI.rfb.sendKey(XK_Control_L, true);
+        $D('toggleCtrlButton').className = "noVNC_status_button_selected";
+        UI.ctrlOn = true;
+    } else if(UI.ctrlOn === true) {
+        UI.rfb.sendKey(XK_Control_L, false);
+        $D('toggleCtrlButton').className = "noVNC_status_button";
+        UI.ctrlOn = false;
+    }
+},
+
+toggleAlt: function() {
+    UI.keepKeyboard();
+    if(UI.altOn === false) {
+        UI.rfb.sendKey(XK_Alt_L, true);
+        $D('toggleAltButton').className = "noVNC_status_button_selected";
+        UI.altOn = true;
+    } else if(UI.altOn === true) {
+        UI.rfb.sendKey(XK_Alt_L, false);
+        $D('toggleAltButton').className = "noVNC_status_button";
+        UI.altOn = false;
+    }
+},
+
+sendTab: function() {
+    UI.keepKeyboard();
+    UI.rfb.sendKey(XK_Tab);
+},
+
+sendEsc: function() {
+    UI.keepKeyboard();
+    UI.rfb.sendKey(XK_Escape);
 },
 
 setKeyboard: function() {
