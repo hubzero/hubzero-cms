@@ -31,5 +31,5 @@ function load_scripts(base, files) {
 
 load_scripts(get_INCLUDE_URI(),
     ["util.js", "webutil.js", "base64.js", "websock.js", "des.js",
-     "input.js", "display.js", "rfb.js", "jsunzip.js"]);
-
+     "keysymdef.js", "keyboard.js", "input.js", "display.js",
+     "jsunzip.js", "rfb.js", "keysym.js"]);
