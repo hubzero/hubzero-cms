@@ -479,38 +479,6 @@
 		visibility: hidden;
 	}
 
-	/*.comments {
-		margin: 0 -15px;
-		padding: 0 1.4em;
-		border-top: 1px solid #d4d4d4;
-		margin: 0;
-	}
-	.commnts {
-		margin: 0 -15px;
-		padding: 0 15px;
-		border-top: 1px solid #d4d4d4;
-		margin: 0;
-		padding: 0;
-	}
-	.commnts .comment {
-		border-top: 1px solid #fafafa;
-		border-bottom: 1px solid #d4d4d4;
-		overflow: hidden;
-	}
-	.commnts blockquote {
-		margin-left: 40px;
-		margin-top: 0.5em;
-		color: #666;
-	}
-	.commnts .comment:last-child {
-		border-bottom-width: 0;
-	}
-	.commnts form {
-		margin-left: 40px;
-	}
-	.commnts textarea {
-		width: 100%;
-	}*/
 	/* Creator */
 	.creator {
 		margin: 0 -15px;
@@ -742,6 +710,10 @@
 	#hubForm fieldset legend + .field-wrap {
 		clear: right;
 		padding-top: 1em;
+	}
+	#hubForm .field-wrap .grid {
+		margin-left: 0;
+		margin-right: 0;
 	}
 	#hubForm .item-asset {
 		background: #f7f7f7;

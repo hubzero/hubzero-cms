@@ -80,7 +80,7 @@ $this->css()
 				<div class="asset-uploader">
 					<div class="grid">
 						<div class="col span-half">
-							<div id="ajax-uploader" data-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+							<div id="ajax-uploader" data-txt-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 								<noscript>
 									<label for="upload">
 										<?php echo JText::_('File:'); ?>
@@ -92,7 +92,7 @@ $this->css()
 							<script src="<?php echo $jbase; ?>/plugins/members/collections/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
-							<div id="link-adder" data-instructions="<?php echo JText::_('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+							<div id="link-adder" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>" data-txt-delete="<?php echo JText::_('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo JText::_('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 								<noscript>
 									<label for="add-link">
 										<?php echo JText::_('Add a link:'); ?>

@@ -709,6 +709,10 @@
 		clear: right;
 		padding-top: 1em;
 	}
+	#hubForm .field-wrap .grid {
+		margin-left: 0;
+		margin-right: 0;
+	}
 	#hubForm .item-asset {
 		background: #f7f7f7;
 		border-radius: 0.25em;

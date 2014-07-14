@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_groups/assets/js/groups.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/members/collections/assets/js/fileupload.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -28,7 +28,7 @@ jQuery(document).ready(function(jq){
 		if (linkr.length > 0) {
 			linkr.append(
 				'<div class="linker">' +
-					'<div class="linker-button"><span>' + linkr.attr('data-instructions') + '</span></div>' + 
+					'<div class="linker-button"><span>' + linkr.attr('data-txt-instructions') + '</span></div>' + 
 				'</div>'
 			);
 
@@ -43,7 +43,7 @@ jQuery(document).ready(function(jq){
 						'<span class="asset-description">' +
 							'<input type="hidden" name="assets[' + i + '][type]" value="link" />' +
 							'<input type="hidden" name="assets[' + i + '][id]" value="0" />' +
-							'<a class="delete" href="/collections/delete/asset/" data-id="" title="Delete this asset">delete</a>' +
+							'<a class="delete" href="' + linkr.attr('data-base') + '/collections/delete/asset/" data-id="" title="' + linkr.attr('data-txt-delete') + '">' + linkr.attr('data-txt-delete') + '</a>' +
 						'</span>' +
 					'</p>'
 				);
@@ -57,8 +57,8 @@ jQuery(document).ready(function(jq){
 			multiple: true,
 			debug: false,
 			template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
-						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
+						'<div class="qq-upload-button"><span>' + attach.attr('data-txt-instructions') + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-txt-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
 			onComplete: function(id, file, response) {

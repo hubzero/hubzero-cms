@@ -93,7 +93,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 if ($this->rows->total() > 0)
 {
 	?>
-	<div id="posts">
+	<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
 	<?php
 	foreach ($this->rows as $row)
 	{

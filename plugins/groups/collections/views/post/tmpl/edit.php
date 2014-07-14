@@ -72,121 +72,105 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 	<fieldset>
 		<legend><?php echo $item->get('id') ? JText::_('Edit post') : JText::_('New post'); ?></legend>
 
-<?php if ($this->entry->get('original')) { ?>
-		<div class="field-wrap">
-			<div class="asset-uploader">
-				<div class="grid">
-				<div class="col span-half">
-		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-					<div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
-						<noscript>
-							<label for="upload">
-								<?php echo JText::_('File:'); ?>
-								<input type="file" name="upload" id="upload" />
-							</label>
-						</noscript>
+		<?php if ($this->entry->get('original')) { ?>
+			<div class="field-wrap">
+				<div class="asset-uploader">
+					<div class="grid">
+						<div class="col span-half">
+							<div id="ajax-uploader" data-txt-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+								<noscript>
+									<label for="upload">
+										<?php echo JText::_('File:'); ?>
+										<input type="file" name="upload" id="upload" />
+									</label>
+								</noscript>
+							</div>
+							<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
+							<script src="<?php echo $jbase; ?>/plugins/groups/collections/fileupload.js"></script>
+						</div><!-- / .col span-half -->
+						<div class="col span-half omega">
+							<div id="link-adder" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>" data-txt-delete="<?php echo JText::_('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo JText::_('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
+								<noscript>
+									<label for="add-link">
+										<?php echo JText::_('Add a link:'); ?>
+										<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
+										<input type="hidden" name="assets[-1][id]" value="0" />
+										<input type="hidden" name="assets[-1][type]" value="link" />
+									</label>
+								</noscript>
+							</div>
+						</div><!-- / .col span-half -->
 					</div>
-					<script src="<?php echo $jbase; ?>/media/system/js/jquery.fileuploader.js"></script>
-					<script src="<?php echo $jbase; ?>/plugins/groups/collections/fileupload.js"></script>
-		<?php } else { ?>
-					<label for="upload">
-						<?php echo JText::_('File:'); ?>
-						<input type="file" name="upload" id="upload" />
-					</label>
+				</div><!-- / .asset-uploader -->
+			</div><!-- / .field-wrap -->
 		<?php } ?>
-				</div><!-- / .col span-half -->
-				<div class="col span-half omega">
-		<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
-					<div id="link-adder" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
-						<noscript>
-							<label for="add-link">
-								<?php echo JText::_('Add a link:'); ?>
-								<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
-								<input type="hidden" name="assets[-1][id]" value="0" />
-								<input type="hidden" name="assets[-1][type]" value="link" />
-							</label>
-						</noscript>
-						<!-- <div class="linker">
-							<div class="linker-button"><span>Click to add link</span></div>
-						</div> -->
-					</div>
-		<?php } else { ?>
-					<label for="add-link">
-						<?php echo JText::_('Add a link:'); ?>
-						<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
-						<input type="hidden" name="assets[-1][id]" value="0" />
-						<input type="hidden" name="assets[-1][type]" value="link" />
-					</label>
-		<?php } ?>
-				</div><!-- / .col span-half -->
-				</div>
-			</div><!-- / .asset-uploader -->
-		</div><!-- / .field-wrap -->
-<?php } ?>
 
 		<div id="post-type-form">
 			<div id="post-file" class="fieldset">
-			<?php if ($this->entry->get('original')) { ?>
-				<div class="field-wrap" id="ajax-uploader-list">
-					<?php
-						$assets = $item->assets();
-						if ($assets->total() > 0)
-						{
-							$i = 0;
-							foreach ($assets as $asset)
-							{
-					?>
-					<p class="item-asset">
-						<span class="asset-handle">
-						</span>
-						<span class="asset-file">
-						<?php if ($asset->get('type') == 'link') { ?>
-							<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
-						<?php } else { ?>
-							<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-							<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
-						<?php } ?>
-						</span>
-						<span class="asset-description">
-							<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
-							<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
-							<a class="delete" data-id="<?php echo $this->escape($asset->get('id')); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
-								<?php echo JText::_('delete'); ?>
-							</a>
-							<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
-						</span>
-					</p>
-					<?php
-								$i++;
-							}
-						}
-					?>
-				</div><!-- / .field-wrap -->
 
-				<label for="field-title">
-					<?php echo JText::_('Title'); ?> <!-- <span class="optional">optional</span> -->
-					<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
-				</label>
-			<?php } ?>
-				<label for="field_description">
-					<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
-					<?php if ($this->entry->get('original')) { ?>
-						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
-					<?php } else { ?>
-						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
-					<?php } ?>
-				</label>
-			<?php if ($this->task == 'save' && !$item->get('description')) { ?>
-				<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
-			<?php } ?>
+				<?php if ($this->entry->get('original')) { ?>
+					<div class="field-wrap" id="ajax-uploader-list">
+						<?php
+							$assets = $item->assets();
+							if ($assets->total() > 0)
+							{
+								$i = 0;
+								foreach ($assets as $asset)
+								{
+						?>
+						<p class="item-asset">
+							<span class="asset-handle">
+							</span>
+							<span class="asset-file">
+							<?php if ($asset->get('type') == 'link') { ?>
+								<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+							<?php } else { ?>
+								<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
+								<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+							<?php } ?>
+							</span>
+							<span class="asset-description">
+								<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
+								<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
+								<a class="delete" data-id="<?php echo $this->escape($asset->get('id')); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
+									<?php echo JText::_('delete'); ?>
+								</a>
+								<!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
+							</span>
+						</p>
+						<?php
+									$i++;
+								}
+							}
+						?>
+					</div><!-- / .field-wrap -->
+
+					<label for="field-title">
+						<?php echo JText::_('Title'); ?> <!-- <span class="optional">optional</span> -->
+						<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+					</label>
+				<?php } ?>
+					<label for="field_description">
+						<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
+						<?php if ($this->entry->get('original')) { ?>
+							<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php } else { ?>
+							<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php } ?>
+					</label>
+				<?php if ($this->task == 'save' && !$item->get('description')) { ?>
+					<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
+				<?php } ?>
 				<input type="hidden" name="fields[type]" value="file" />
+
 			</div><!-- / #post-file -->
 		</div><!-- / #post-type-form -->
 
-<?php if ($this->entry->get('original')) { ?>
+	<?php if ($this->entry->get('original')) { ?>
 		<div class="grid">
 			<div class="col span6">
-<?php } ?>
+	<?php } ?>
+
 		<?php if ($this->collections->total() > 0) { ?>
 			<label for="post-collection_id">
 				<?php echo JText::_('Select collection'); ?>
@@ -204,7 +188,8 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 				<span class="hint"><?php echo JText::_('Create a collection for this post to go in.'); ?></span>
 			</label>
 		<?php } ?>
-<?php if ($this->entry->get('original')) { ?>
+
+	<?php if ($this->entry->get('original')) { ?>
 			</div>
 			<div class="col span6 omega">
 				<label>
@@ -219,7 +204,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 				</label>
 			</div>
 		</div>
-<?php } ?>
+	<?php } ?>
 	</fieldset>
 
 	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $item->get('id'); ?>" />
@@ -239,9 +224,12 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 	<?php echo JHTML::_('form.token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+
 		<?php if ($item->get('id')) { ?>
-			<a href="<?php echo JRoute::_($base. ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')); ?>"><?php echo JText::_('Cancel'); ?></a>
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($base. ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')); ?>">
+				<?php echo JText::_('Cancel'); ?>
+			</a>
 		<?php } ?>
 	</p>
 </form>
