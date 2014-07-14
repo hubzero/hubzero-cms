@@ -33,13 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
-\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
-\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
-$base = rtrim(JURI::base(true), '/');
+if (!$this->app->sess) {
+	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
+} else {
+	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
+	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
+	\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
+	$base = rtrim(JURI::base(true), '/');
 ?>
 
-<div id="noVNC-control-bar" style="position:inherit;">
+<div id="noVNC-control-bar">
 	<!--noVNC Mobile Device only Buttons-->
 	<div class="noVNC-buttons-left">
 		<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/drag.png"
@@ -96,6 +99,7 @@ $base = rtrim(JURI::base(true), '/');
 	</div> <!-- End of noVNC-control-bar -->
 
 	<div id="noVNC_screen">
+        <div id="noVNC_screen_pad"></div>
 
 		<div id="noVNC_status_bar" class="noVNC_status_bar">
 				<div id="noVNC_status">Loading</div>
@@ -104,62 +108,33 @@ $base = rtrim(JURI::base(true), '/');
 		<h1 id="noVNC_logo" style="display:none;"><span>HUB</span><br/>zero</h1>
 
 		<!-- HTML5 Canvas  -->
-		<div id="noVNC_container" style="min-height:100px; min-width:100px;">
-			<!-- <canvas id="noVNC_canvas" width="640px" height="20px"> -->
-			<canvas id="theapp" class="thisapp" width="640px" height="20px">
+        <div id="noVNC_container" style="min-height:600px;">
+            <canvas id="noVNC_canvas" width="640px" height="20px">
 						Canvas not supported.
 			</canvas>
 		</div>
+    </div>
 
-	</div>
-
-</div>
-
-<script>
-	//JS globals for noVNC
-	var host, port, password, token, encrypt, connectPath, decryptPath;
-	host = '<?php echo $this->output->host; ?>';
-	port = '<?php echo $this->output->port; ?>';
-	password = '<?php echo $this->output->password; ?>';
-	token = '<?php echo $this->output->token; ?>';
-	encrypt = true;
-	connectPath = 'websockify?token=' + token;
-
-	/***** force it to my test xvnc server *****/
-	port= 8080;
-	//password = '';
-	encrypt = false;
-	/*******************************************/
-
-	UI.setBarPosition = function(){ }; //override to nothing
+	<script>
+		//JS globals for noVNC
+		var host, port, password, token, encrypt, connectPath, decryptPath;
+		host = '<?php echo $this->output->host; ?>';
+		port = '<?php echo $this->output->port; ?>';
+		password = '<?php echo $this->output->password; ?>';
+		token = '<?php echo $this->output->token; ?>';
+		encrypt = true;
+		connectPath = 'websockify?token=' + token;
+		decryptPath = (encrypt ? 'https://' : 'http://') + host + ':' + port + '/decrypt';
+		port= 8080;
+		encrypt = false;
 	
-	//Wire up the resizable element for this page
-	var resizeTimeout;
-	var resizeAttached = false;
-	var hStart = 0, wStart = 0, hPadding = 75;
-	UI.normalStateAchieved = function(){
+		//Wire up the resizable element for this page
+		var resizeTimeout;
+		var resizeAttached = false;
+		var hPadding = 5;
+		UI.normalStateAchieved = function(){
 		if(!resizeAttached){
 			resizeAttached = true;
-			hStart = $('#app-content').height(); //Bind the current height right now
-			$('#app-content').height(hStart);
-			
-			//Bind the draggable edges on this window
-			$('#app-wrap').resizable({
-				//also: ['#noVNC_screen', '#noVNC_canvas','#noVNC_container'],
-				handles: 's', //north, south, east, west
-				start: function(event, ui){
-					$('#app-content').hide();
-				},
-				stop: function(event, ui){
-					var content = $('#app-content').show();
-					var hDiff = ui.size.height - ui.originalSize.height;
-					var hNew = hStart = hStart + hDiff;
-					content.height(hNew); //Give the screen it's new height
-					ui.element.width('100%'); //Set this back to what it was
-					doResize(content.width(), content.height() - hPadding);
-				}
-			});
-			
 			//Setup a handler to track window resizes
 			$(window).resize(function(e){
 				if(resizeTimeout){
@@ -167,13 +142,22 @@ $base = rtrim(JURI::base(true), '/');
 				}
 				//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
 				resizeTimeout = setTimeout(function(){
+						var w = $(window);
+						var b = $('#noVNC-control-bar');
+						var s = $('#noVNC_status');
 					var c = $('#app-content');
-					doResize(c.width(), c.height() - hPadding);
+						var sb = getScrollBarDimensions();
+						doResize(b.width() + sb.horizontal, w.height()
+																- b.height()
+																- s.height()
+																- hPadding
+																+ sb.vertical);
 				}, 1000);
 			});
 			
 			//Setup handler for tracking window focus events (delayed resize if not focused)
 			$(window).focus(function(){
+					console.log('window focus fired');
 				$(window).resize();
 			});
 			
@@ -188,6 +172,41 @@ $base = rtrim(JURI::base(true), '/');
 		UI.requestResize(w, h); //Invoke resize on the server
 	}
 	
+		function getScrollBarDimensions(){
+			var elm = document.documentElement.offsetHeight ? document.documentElement : document.body,
+
+			curX = elm.clientWidth,
+			curY = elm.clientHeight,
+
+			hasScrollX = elm.scrollWidth > curX,
+			hasScrollY = elm.scrollHeight > curY,
+
+			prev = elm.style.overflow,
+
+			r = {
+				vertical: 0,
+				horizontal: 0
+			};
+
+			if(!hasScrollY && !hasScrollX) {
+				return r;
+			}
+			
+			elm.style.overflow = "hidden";
+			if (hasScrollY) {
+				r.vertical = elm.clientWidth - curX;
+			}
+			if (hasScrollX) {
+				r.horizontal = elm.clientHeight - curY;
+			}
+			elm.style.overflow = prev;
+			return r;
+		}
+		
 	//Final attachment for onload
 	window.onload = UI.load;
 </script>
+
+<?php
+	} //end else
+?>
