@@ -51,7 +51,7 @@ function GroupsBuildRoute(&$query)
 		unset($query['cn']);
 	}
 
-	if(!empty($query['gid']))
+	if (!empty($query['gid']))
 	{
 		//log regardless
 		JFactory::getLogger()->debug("Group JRoute Build Path sending gid instead of cn: " . $_SERVER['REQUEST_URI'] );
@@ -239,6 +239,28 @@ function GroupsParseRoute($segments)
 					$vars['event_id'] = $segments[3];
 				}
 			}
+		}
+	}
+
+	// if we have a cname isnt all lowercase
+	if (isset($vars['cn']) && $vars['cn'] != strtolower($vars['cn']))
+	{
+		// make sure we have a group with the lowercase version
+		$cname = strtolower($vars['cn']);
+		$group = \Hubzero\User\Group::getInstance($cname);
+
+		if (is_object($group))
+		{
+			// replace cn with lowercase version
+			$vars['cn'] = $cname;
+
+			// add option var
+			$vars['option'] = 'com_groups';
+
+			// build url to redirect to based on vars
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_('index.php?' . http_build_query($vars)), null, null, true);
+			exit();
 		}
 	}
 
