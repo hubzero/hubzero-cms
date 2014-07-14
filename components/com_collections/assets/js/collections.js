@@ -142,7 +142,6 @@ jQuery(document).ready(function(jq){
 					wrap:'<div class="fancybox-wrap post-modal"><div class="fancybox-skin"><div class="fancybox-outer"><div id="post-content" class="fancybox-inner"></div></div></div></div>'
 				},
 				beforeLoad: function() {
-
 					$(this).attr('href', $(this).attr('href').nohtml());
 				},
 				afterLoad: function(current, previous) {

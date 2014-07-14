@@ -138,7 +138,7 @@ if ($this->rows->total() > 0)
 										<span><?php echo ($item->get('voted')) ? JText::_('PLG_GROUPS_COLLECTIONS_UNLIKE') : JText::_('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
 									</a>
 							<?php } ?>
-									<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
+									<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
 										<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
 									</a>
 									<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/collect'); ?>">
@@ -157,7 +157,7 @@ if ($this->rows->total() > 0)
 								<a class="vote like tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($base . '&scope=post/' . $row->get('id') . '/vote', false, true)), false); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
 									<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
 								</a>
-								<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
+								<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
 									<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
 								</a>
 								<a class="repost tooltips" href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($base . '&scope=post/' . $row->get('id') . '/collect', false, true)), false); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
@@ -166,29 +166,6 @@ if ($this->rows->total() > 0)
 						<?php } ?>
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
-
-			<?php /*if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
-				<div class="convo attribution clearfix">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($item->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
-					</a>
-					<p>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
-							<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
-						</a>
-						onto
-						<a href="<?php echo JRoute::_($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-						<br />
-						<span class="entry-date">
-							<span class="entry-date-at">@</span> <span class="date"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
-							<span class="entry-date-on">on</span> <span class="time"><time datetime="<?php echo $item->get('created'); ?>"><?php echo JHTML::_('date', $item->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
-						</span>
-					</p>
-				</div><!-- / .attribution -->
-			<?php } ?>
-			<?php if (!$row->original()) {*/ ?>
 				<div class="convo attribution reposted clearfix">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
 						<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->creator('name')))); ?>" />
@@ -210,7 +187,6 @@ if ($this->rows->total() > 0)
 						</span>
 					</p>
 				</div><!-- / .attribution -->
-			<?php //} ?>
 			</div><!-- / .content -->
 		</div><!-- / .post -->
 	<?php } ?>

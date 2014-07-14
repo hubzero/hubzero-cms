@@ -103,7 +103,7 @@ if (!$no_html) {
 						</span>
 					</p>
 				</div><!-- / .meta -->
-				<div class="convo attribution clearfix">
+				<div class="convo attribution">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>" class="img-link">
 						<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->post->creator('name')))); ?>" />
 					</a>
@@ -274,7 +274,7 @@ if (!$no_html) {
 						<?php } ?>
 					</div>
 				</div>
-				<div class="convo attribution clearfix">
+				<div class="convo attribution">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->collection->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->collection->creator('name'))); ?>" class="img-link">
 						<img src="<?php echo $this->collection->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->collection->creator('name')))); ?>" />
 					</a>
@@ -356,7 +356,7 @@ if (!$no_html) {
 						<?php } ?>
 					</div><!-- / .actions -->
 				</div><!-- / .meta -->
-				<div class="convo attribution clearfix">
+				<div class="convo attribution">
 					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $collection->creator()->get('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($collection->creator()->get('name'))); ?>" class="img-link">
 						<img src="<?php echo $collection->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($collection->creator()->get('name')))); ?>" />
 					</a>

@@ -188,6 +188,8 @@
 	}
 	.full {
 		width: auto;
+		margin: 0;
+		position: relative;
 	}
 
 	.post:hover {
@@ -476,8 +478,8 @@
 		content: " ";
 		visibility: hidden;
 	}
-	
-	.comments {
+
+	/*.comments {
 		margin: 0 -15px;
 		padding: 0 1.4em;
 		border-top: 1px solid #d4d4d4;
@@ -508,7 +510,7 @@
 	}
 	.commnts textarea {
 		width: 100%;
-	}
+	}*/
 	/* Creator */
 	.creator {
 		margin: 0 -15px;
@@ -551,17 +553,14 @@
 		display: none;
 	}
 
-	.comment a,
 	.attribution a {
 		color: #6e6e6e;
 		border-bottom: none;
 	}
-	.comment a:hover,
 	.attribution a:hover {
 		color: #111;
 		border-bottom: 1px solid #111;
 	}
-	.comment p,
 	.attribution p {
 		display: table-cell;
 		vertical-align: middle;
@@ -608,16 +607,13 @@
 	.btn.unfollow:before {
 		content: "\f070";
 	}
-	.comment p span,
 	.attribution p span {
 		margin-right: 1em;
 	}
-	.comment,
 	.attribution {
 		color: #9c9c9c;
 		border-top: 1px solid #fafafa;
 	}
-	/*.comment + .comment,*/
 	.attribution + .reposted {
 		border-top: 1px solid #d4d4d4;
 	}
@@ -956,4 +952,23 @@
 	.entry-date-at,
 	.entry-date-on {
 		display: none;
+	}
+
+	.post-collections .collection {
+		position: relative;
+		float: left;
+	}
+	.post-comments {
+		margin-top: 30px;
+	}
+
+	.post-modal .fancybox-skin,
+	.post-modal .fancybox-outer,
+	.post-modal .fancybox-inner {
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+		background: transparent;
 	}
