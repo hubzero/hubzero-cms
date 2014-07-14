@@ -10,6 +10,17 @@
 /*jslint white: false, browser: true */
 /*global window, $D, Util, WebUtil, RFB, Display */
 
+// Load supporting scripts
+window.onscriptsload = function () { UI.load(); };
+window.onload = function () { UI.keyboardinputReset(); };
+
+var INCLUDE_URI = "/components/com_tools/assets/novnc/";
+
+Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
+                   "keysymdef.js", "keyboard.js", "input.js", "display.js",
+                   "jsunzip.js", "rfb.js", "keysym.js"]);
+
+
 var UI = {
 
 rfb_state : 'loaded',
