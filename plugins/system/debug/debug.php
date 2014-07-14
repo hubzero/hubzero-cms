@@ -344,23 +344,23 @@ class plgSystemDebug extends JPlugin
 				}
 			},
 			toggleContainer: function(el, name) {
-				var d = document.getElementById('system-debug');
-				if (!Debugger.hasClass(d, 'open')) {
-					Debugger.addClass(d, 'open');
-				}
-
-				Debugger.deactivate();
-
 				if (!Debugger.hasClass(el, 'active')) {
-					Debugger.addClass(el, 'active');
-				}
+					var d = document.getElementById('system-debug');
+					if (!Debugger.hasClass(d, 'open')) {
+						Debugger.addClass(d, 'open');
+					}
 
-				var e = document.getElementById(name);
-				if (e) {
-					Debugger.toggleClass(e, 'open');
+					Debugger.deactivate();
+					Debugger.addClass(el, 'active');
+
+					var e = document.getElementById(name);
+					if (e) {
+						Debugger.toggleClass(e, 'open');
+					}
+				} else {
+					Debugger.close();
 				}
 			},
-
 			hasClass: function(elem, className) {
 				return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
 			},
