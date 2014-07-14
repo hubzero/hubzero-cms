@@ -25,7 +25,7 @@ var that           = {},  // Public API methods
     init_msg, normal_msg, framebufferUpdate, print_stats,
 
     pixelFormat, clientEncodings, fbUpdateRequest, fbUpdateRequests,
-    keyEvent, pointerEvent, clientCutText,
+    keyEvent, pointerEvent, clientCutText, requestFBSize,
 
     getTightCLength, extract_data_uri,
     keyPress, mouseButton, mouseMove,
@@ -1064,6 +1064,22 @@ normal_msg = function() {
             break;
         }
         break;
+	case 0x20: // HUBzero ClientAction
+		Util.Debug('ClientAction');
+		ws.rQshiftBytes(3);  // Padding
+		var strLen = ws.rQshift32();
+		var url = ws.rQshiftStr(strLen);
+
+		Util.Debug('ClientAction url: ' + url);
+
+		//This requires fancyBox 2
+		$.fancybox({
+			type: 'iframe',
+			href: url,
+			width: '100%',
+			height: '100%'
+		});
+        break;
     default:
         fail("Disconnected: illegal server message type " + msg_type);
         Util.Debug("ws.rQslice(0,30):" + ws.rQslice(0,30));
@@ -1871,6 +1887,19 @@ clientCutText = function(text) {
 };
 
 
+//HUBzero addition
+requestFBSize = function(w, h) {
+    //Util.Debug(">> requestFBSize");
+    var arr, i, n;
+    arr = [0x20];     // msg-type
+    arr.push8(42);
+    arr.push8((w>>8) & 0x0ff);
+    arr.push8(w & 0x0ff);
+	arr.push8((h>>8) & 0x0ff);
+	arr.push8(h & 0x0ff);
+    //Util.Debug("<< requestFBSize:" + arr);
+    return arr;
+};
 
 //
 // Public API interface functions
@@ -1959,6 +1988,16 @@ that.clipboardPasteFrom = function(text) {
     ws.send(clientCutText(text));
     //Util.Debug("<< clipboardPasteFrom");
 };
+
+//HUBzero addition for resizing
+that.requestResize = function(w, h) {
+	if (rfb_state !== "normal") { return; }
+	//Util.Debug(">> requestResize: " + w + "," + h);
+	if (w > 4096 || w < 0) { return; }
+	if (h > 4096 || h < 0) { return; }
+    ws.send(requestFBSize(w, h));
+    //Util.Debug("<< requestResize");
+}
 
 // Override internal functions for testing
 that.testMode = function(override_send, data_mode) {
