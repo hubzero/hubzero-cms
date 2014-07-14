@@ -50,8 +50,8 @@ $this->css('resource.css')
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-			<li class="last"><a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li class="last"><a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -73,14 +73,14 @@ $this->css('resource.css')
 <section class="main section">
 	<form action="index.php" method="post" id="hubForm">
 		<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
 
 		<div style="float:left; width:70%;padding:1em 0 1em 0;">
 		<?php if ($this->step !=1 ) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 		<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
+			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 
@@ -129,7 +129,7 @@ $this->css('resource.css')
 		<?php if ($this->step != 1) { ?>
 			<span style="float:left;width:100px;"><input type="button" value=" &lt; <?php echo ucfirst(JText::_('COM_TOOLS_PREVIOUS')); ?> " class="returntoedit" /></span>
 		<?php } ?>
-			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('Save &amp; Go Next')); ?> &gt;" /></span>
+			<span style="float:right;width:120px;"><input type="submit" value="<?php echo ucfirst(JText::_('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
 		</div>
 		<div class="clear"></div>
 	</form>

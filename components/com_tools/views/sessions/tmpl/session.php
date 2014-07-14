@@ -35,7 +35,7 @@ $juser = JFactory::getUser();
 
 //is this a share session thats read-only
 $readOnly = false;
-foreach($this->shares as $share)
+foreach ($this->shares as $share)
 {
 	if ($juser->get('username') == $share->viewuser)
 	{
@@ -54,13 +54,13 @@ $this->css('tools.css');
 <div id="session">
 <?php
 if (!$this->app->sess) {
-	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
+	echo '<p class="error">' . implode('<br />', $this->output) . '</p>';
 } else {
 ?>
 
 	<?php if ($readOnly) : ?>
 		<p class="warning readonly-warning">
-			This tool session has been shared with you in 'Read-Only' mode, meaning you don't have control over the session.
+			<?php echo JText::_('COM_TOOLS_WARNING_SESSION_READ_ONLY'); ?>
 		</p>
 	<?php endif; ?>
 
@@ -71,19 +71,19 @@ if (!$this->app->sess) {
 			<ul class="app-toolbar" id="session-options">
 				<li>
 					<a id="app-btn-keep" class="keep" href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">
-						<span><?php echo JText::_('Keep for later'); ?></span>
+						<span><?php echo JText::_('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
 					</a>
 				</li>
 			<?php if ($this->app->owns) { ?>
 				<li>
-					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
-						<span><?php echo JText::_('Terminate'); ?></span>
+					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+						<span><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></span>
 					</a>
 				</li>
 			<?php } else { ?>
 				<li>
-					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="Warning! :: This will end your session.">
-						<span><?php echo JText::_('Stop sharing'); ?></span>
+					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+						<span><?php echo JText::_('COM_TOOLS_STOP_SHARING'); ?></span>
 					</a>
 				</li>
 			<?php } ?>
@@ -92,11 +92,10 @@ if (!$this->app->sess) {
 		</div><!-- #app-header -->
 		<noscript>
 			<p class="warning">
-				This site works best when Javascript is enabled in your browser (<a href="/kb/misc/javascript/">How do I do this?</a>).
-				Without Javascript support some operations will not work.
+				<?php echo JText::_('COM_TOOLS_ERROR_NOSCRIPT'); ?>
 			</p>
 		</noscript>
-		<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a target="_blank" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem.</a></p>
+		<p id="troubleshoot" class="help"><?php echo JText::_('COM_TOOLS_SESSION_FAILS_TO_START'); ?></p>
 
 		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
@@ -141,29 +140,29 @@ if (!$this->app->sess) {
 			<div class="grid">
 				<div class="col span6">
 					<p class="zone-identity">
-					<?php if ($logo = $this->zone->logo()) { ?>
-						<img src="<?php echo $logo; ?>" alt="" />
-					<?php } ?>
+						<?php if ($logo = $this->zone->logo()) { ?>
+							<img src="<?php echo $logo; ?>" alt="" />
+						<?php } ?>
 					</p>
 					<p>
-						<?php echo JText::sprintf('This tool session is powered by the mirror site at %s', $this->zone->get('title', $this->zone->get('zone'))); ?>
+						<?php echo JText::sprintf('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone'))); ?>
 					</p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
 					<form name="share" id="app-zone" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=reinvoke&sess='.$this->app->sess); ?>">
-						<p><?php echo JText::_('<strong>Warning:</strong> Changing zones will terminate this session.'); ?></p>
+						<p><?php echo JText::_('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
 						<p><label for="field-zone">
-							<?php echo JText::_('Run elsewhere:'); ?>
+							<?php echo JText::_('COM_TOOLS_ZONE_RELAUNCH'); ?>
 							<select name="zone" id="field-zone">
-								<option value=""><?php echo JText::_('Select ...'); ?></option>
-							<?php
-							foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
-							{
-								if ($zone->get('id') == $this->zone->get('id'))
+								<option value=""><?php echo JText::_('COM_TOOLS_SELECT'); ?></option>
+								<?php
+								foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone)
 								{
-									continue;
-								}
-							?>
+									if ($zone->get('id') == $this->zone->get('id'))
+									{
+										continue;
+									}
+								?>
 								<option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
 							<?php } ?>
 							</select>
@@ -190,7 +189,7 @@ if (!$this->app->sess) {
 					<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 				</p>
 				<fieldset>
-					<legend><?php echo JText::_('Share session'); ?></legend>
+					<legend><?php echo JText::_('COM_TOOLS_SHARE_SESSION'); ?></legend>
 
 					<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
@@ -200,19 +199,19 @@ if (!$this->app->sess) {
 					<input type="hidden" name="return" value="<?php echo base64_encode(JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess)); ?>" />
 
 					<label for="field-username">
-						<?php echo JText::_('Share session with:'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_WITH'); ?>
 						<?php
 						JPluginHelper::importPlugin('hubzero');
 						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'username', 'acmembers')));
 						if (count($mc) > 0) {
-							echo '<span class="hint">'.JText::_('(supports usernames, user IDs, and e-mails)').'</span>'.$mc[0];
+							echo '<span class="hint">'.JText::_('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE').'</span>'.$mc[0];
 						} else { ?>
-						<span class="hint"><?php echo JText::_('(enter usernames or user IDs separated by spaces or commas)'); ?></span>
-						<input type="text" name="username" id="field-username" value="" />
+							<span class="hint"><?php echo JText::_('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
+							<input type="text" name="username" id="field-username" value="" />
 						<?php } ?>
 					</label>
 					<label for="group">
-						<?php echo JText::_('Share with one of your Groups:'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_WITH_GROUP'); ?>
 						<select name="group" id="group">
 							<option value=""><?php echo JText::_('- Select Group &mdash;'); ?></option>
 							<?php if (!empty($this->mygroups)) { foreach ($this->mygroups as $group) : ?>
@@ -222,27 +221,27 @@ if (!$this->app->sess) {
 					</label>
 					<label for="field-readonly" id="readonly-label">
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
-						<?php echo JText::_('Read-Only? (only you control the session)'); ?>
+						<?php echo JText::_('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
 					</label>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo JText::_('Share'); ?>" id="share-btn" />
+						<input type="submit" value="<?php echo JText::_('COM_TOOLS_SHARE'); ?>" id="share-btn" />
 					</p>
 
 					<div class="sidenote">
 						<p>
-							Anyone added for sharing will see your tool session in the <em>My Sessions</em> area of their dashboard. They will be able to manipulate the session unless you check "read-only".
+							<?php echo JText::_('COM_TOOLS_SHARE_SESSION_NOTES'); ?>
 						</p>
 					</div>
 				</fieldset>
 			</div><!-- / .col span8 -->
 		<?php endif; ?>
 			<div class="<?php if (is_object($this->app->owns)) : ?>col span4 omega<?php endif; ?>">
-				<table class="entries" summary="<?php echo Jtext::_('A list of users this session is shared with'); ?>">
+				<table class="entries">
 					<thead>
 						<tr>
 							<th<?php if (count($this->shares) > 1) { ?> colspan="3"<?php } ?>>
-								This session is shared with:
+								<?php echo JText::_('COM_TOOLS_SESSION_SHARED_WITH'); ?>
 							</th>
 						</tr>
 					</thead>
@@ -250,7 +249,7 @@ if (!$this->app->sess) {
 				<?php if (count($this->shares) <= 1) { ?>
 						<tr>
 							<td>
-								(none)
+								<?php echo JText::_('COM_TOOLS_SHARE_SESSION_NONE'); ?>
 							</td>
 						</tr>
 				<?php } else {
@@ -267,7 +266,7 @@ if (!$this->app->sess) {
 						?>
 						<tr>
 							<th class="entry-img">
-								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo JText::sprintf('Avatar for %s', $this->escape(stripslashes($user->get('name')))); ?>" />
+								<img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
 							</th>
 							<td>
 								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_members&id='.$id); ?>">
@@ -280,10 +279,10 @@ if (!$this->app->sess) {
 							<td class="entry-actions">
 								<?php if (is_object($this->app->owns)) : ?>
 									<?php if (strtolower($row->readonly) == 'yes') : ?>
-										<span class="readonly">Readonly</span>
+										<span class="readonly"><?php echo JText::_('COM_TOOLS_SESSION_READ_ONLY'); ?></span>
 									<?php endif; ?>
-									<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="Remove this user from sharing">
-										<span><?php echo JText::_('Remove this user from sharing'); ?></span>
+									<a class="entry-remove" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&username='.$row->viewuser.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
+										<span><?php echo JText::_('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
 									</a>
 								<?php endif; ?>
 							</td>
@@ -302,7 +301,7 @@ if (!$this->app->sess) {
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-	<p id="app-manager"><?php echo JText::sprintf('Administrator viewing <span class="username"><strong>username:</strong> %s</span>, <span class="ip"><strong>IP:</strong> %s</span>, <span class="sess"><strong>session:</strong> %s</span>', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
+	<p id="app-manager"><?php echo JText::sprintf('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
 <?php } ?>
 
 	<?php
@@ -319,7 +318,7 @@ if (!$this->app->sess) {
 	{
 		?>
 		<div id="app-info">
-			<h2>App info</h2>
+			<h2><?php echo JText::_('COM_TOOLS_SESSION_APP_INFO'); ?></h2>
 			<div id="app-info-content">
 				<?php
 				foreach ($output as $out)

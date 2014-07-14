@@ -32,27 +32,36 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $html = '';
-if (!$this->ajax) {
+if (!$this->ajax)
+{
 	$html .= '<dl id="diskusage">'."\n";
 }
-if ($this->writelink) {
-	$html .= "\t".'<dt>Storage (<a href="'.JRoute::_('index.php?option='.$this->option.'&task=storage').'">manage</a>)</dt>'."\n";
-} else {
-	$html .= "\t".'<dt>Storage</dt>'."\n";
+if ($this->writelink)
+{
+	$html .= "\t".'<dt>' . JText::_('COM_TOOLS_STORAGE') . ' (<a href="'.JRoute::_('index.php?option='.$this->option.'&task=storage').'">' . JText::_('COM_TOOLS_STORAGE_MANAGE') . '</a>)</dt>'."\n";
+}
+else
+{
+	$html .= "\t".'<dt>' . JText::_('COM_TOOLS_STORAGE') . '</dt>'."\n";
 }
 $html .= "\t".'<dd id="du-amount"><div class="du-amount-bar" style="width:'.$this->amt.'%;"><strong>&nbsp;</strong><span class="du-amount-text">'.$this->amt.'% of '.$this->total.'GB</span></div></dd>'."\n";
-if ($this->msgs) {
-	if (count($this->du) <=1) {
-		$html .= "\t".'<dd id="du-msg"><p class="error">Error trying to retrieve disk usage.</p></dd>'."\n";
+if ($this->msgs)
+{
+	if (count($this->du) <=1)
+	{
+		$html .= "\t".'<dd id="du-msg"><p class="error">' . JText::_('COM_TOOLS_STORAGE_ERROR_RETRIEVING') . '</p></dd>'."\n";
 	}
-	if ($this->percent == 100) {
-		$html .= "\t".'<dd id="du-msg"><p class="warning">You are currently at your storage limit. <a href="'.JRoute::_('index.php?option='.$this->option.'&task=storageexceeded').'">Learn more on how to resolve this</a>.</p></dd>'."\n";
+	if ($this->percent == 100)
+	{
+		$html .= "\t".'<dd id="du-msg"><p class="warning">' . JText::_('COM_TOOLS_STORAGE_WARNING_REACHED_LIMIT') . ' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=storageexceeded').'">' . JText::_('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>'."\n";
 	}
-	if ($this->percent > 100) {
-		$html .= "\t".'<dd id="du-msg"><p class="warning">You are currently exceeding your storage limit. <a href="'.JRoute::_('index.php?option='.$this->option.'&task=storageexceeded').'">Learn more on how to resolve this</a>.</p></dd>'."\n";
+	if ($this->percent > 100)
+	{
+		$html .= "\t".'<dd id="du-msg"><p class="warning">' . JText::_('COM_TOOLS_STORAGE_WARNING_EXCEEDING_LIMIT') . ' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=storageexceeded').'">' . JText::_('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>'."\n";
 	}
 }
-if (!$this->ajax) {
+if (!$this->ajax)
+{
 	$html .= '</dl>'."\n";
 }
 echo $html;

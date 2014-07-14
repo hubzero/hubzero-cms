@@ -58,22 +58,22 @@ $this->css('storage.css');
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=storage'); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<p class="help">
-				<strong>What does "purge" do to my files?</strong><br />
-				The <strong>purge</strong> option is an easy way to free up space on your account.  It goes through the "data" directory where your simulation results are stored, and discards all of the results that have built up since you started using the site, or since your last purge. <a href="<?php echo JURI::base(true); ?>/kb/tools/purge">Learn more</a>.
+				<strong><?php echo JText::_('COM_TOOLS_STORAGE_WHAT_DOES_PURGE_DO'); ?></strong><br />
+				<?php echo JText::_('COM_TOOLS_STORAGE_WHAT_PURGE_DOES'); ?>
 			</p>
 		</div>
 		<fieldset>
-			<legend>Automatic</legend>
+			<legend><?php echo JText::_('COM_TOOLS_STORAGE_AUTOMATIC'); ?></legend>
 			<div class="grid">
 				<div class="col span6">
 					<label>
-						Clean up Disk Space
+						<?php echo JText::_('COM_TOOLS_STORAGE_CLEAN_UP_DISCK_SPACE'); ?>
 						<select name="degree">
-							<option value="default">minimally</option>
-							<option value="olderthan1">older than 1 day</option>
-							<option value="olderthan7">older than 7 days</option>
-							<option value="olderthan30">older than 30 days</option>
-							<option value="all">all</option>
+							<option value="default"><?php echo JText::_('COM_TOOLS_STORAGE_OPT_MINIMALLY'); ?></option>
+							<option value="olderthan1"><?php echo JText::_('COM_TOOLS_STORAGE_OPT_OLDER_DAY'); ?></option>
+							<option value="olderthan7"><?php echo JText::_('COM_TOOLS_STORAGE_OPT_OLDER_WEEK'); ?></option>
+							<option value="olderthan30"><?php echo JText::_('COM_TOOLS_STORAGE_OPT_OLDER_MONTH'); ?></option>
+							<option value="all"><?php echo JText::_('COM_TOOLS_STORAGE_OPT_ALL'); ?></option>
 						</select>
 					</label>
 				</div>
@@ -84,12 +84,12 @@ $this->css('storage.css');
 					</label>
 				</div>
 			</div>
-			<p class="hint"><strong>minimally</strong> means the purge operation will delete the oldest simulation results first, and continue deleting newer and newer results, stopping as soon as you are under quota.</p>
+			<p class="hint"><?php echo JText::_('COM_TOOLS_STORAGE_AUTOMATIC_HINT'); ?></p>
 		</fieldset>
 		<fieldset>
-			<legend>Manual</legend>
+			<legend><?php echo JText::_('COM_TOOLS_STORAGE_MANUAL'); ?></legend>
 			<div class="filebrowser field-wrap">
-				Browse your storage space
+				<?php echo JText::_('COM_TOOLS_STORAGE_BROWSE_STORAGE'); ?>
 				<iframe src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="300" border="0" frameborder="0"></iframe>
 			</div>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

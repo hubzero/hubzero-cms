@@ -40,11 +40,11 @@ $this->css('tools.css');
 		<p class="error-reasons"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-		<p>The majority of tools are Open Source and freely available to the public. However, this particular tool has restricted access.</p>
-		<h3>How do I fix this?</h3>
+		<p><?php echo JText::_('COM_TOOLS_ACCESSDENIED_MESSAGE'); ?></p>
+		<h3><?php echo JText::_('COM_TOOLS_ACCESSDENIED_HOW_TO_FIX'); ?></h3>
 		<ul>
-			<li>If you feel that you should be able to access this tool, please <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a>, and we will check the permissions on your account.</li>
-			<li>You might also try <a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">browsing through other tools</a> on this site, to see if there is another freely available tool that would work just as well for you.</li>
+			<li><?php echo JText::sprintf('COM_TOOLS_ACCESSDENIED_OPT_CONTACT_SUPPORT', JRoute::_('index.php?option=com_support&controller=tickets&task=new')); ?></li>
+			<li><?php echo JText::sprintf('COM_TOOLS_ACCESSDENIED_OPT_BROWSE', JRoute::_('index.php?option=' . $this->option)); ?></li>
 		</ul>
 	</div><!-- / #error-box -->
 </div><!-- / #error-wrap -->

@@ -40,9 +40,9 @@ $this->css('storage.css');
 					<caption>
 						<span class="home">
 						<?php if (count($this->dirtree) > 0) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>"><?php echo JText::_('Home'); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>"><?php echo JText::_('COM_TOOLS_HOME'); ?></a>
 						<?php } else { ?>
-							<span><?php echo JText::_('Home'); ?></span>
+							<span><?php echo JText::_('COM_TOOLS_HOME'); ?></span>
 						<?php } ?>
 						</span>
 						<?php
@@ -87,7 +87,7 @@ $this->css('storage.css');
 						<tr>
 							<td>
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&amp;listdir=' . urlencode($d)); ?>">
-									<img src="<?php echo JURI::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/folder.gif" alt="<?php echo $name; ?>" width="16" height="16" />
+									<img src="<?php echo $this->img('folder.gif'); ?>" alt="<?php echo $name; ?>" width="16" height="16" />
 								</a>
 							</td>
 							<td width="100%">
@@ -100,8 +100,8 @@ $this->css('storage.css');
 							</td>
 						<?php if ($dir != '/data' && $dir != '/sessions') { ?>
 							<td>
-								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo JText::_('Delete'); ?>">
-									<?php echo JText::_('Delete'); ?>
+								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+									<?php echo JText::_('JACTION_DELETE'); ?>
 								</a>
 							</td>
 						<?php } else { ?>
@@ -116,7 +116,7 @@ $this->css('storage.css');
 					?>
 						<tr>
 							<td>
-								<img src="<?php echo JURI::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/page_white.png" alt="<?php echo $name; ?>" width="16" height="16" />
+								<img src="<?php echo $this->img('page_white.png'); ?>" alt="<?php echo $name; ?>" width="16" height="16" />
 							</td>
 							<td width="100%">
 								<?php echo $name; ?>
@@ -125,8 +125,8 @@ $this->css('storage.css');
 								<?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
 							</td>
 							<td>
-								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $name; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-									<?php echo JText::_('DELETE'); ?>
+								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $name; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+									<?php echo JText::_('JACTION_DELETE'); ?>
 								</a>
 							</td>
 						</tr>

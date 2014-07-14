@@ -34,6 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css('component.css')
      ->js('create.js');
 
+$base = rtrim(JURI::base(true), '/');
+
 if (!$this->allowupload) { ?>
 	<p class="warning">
 		<?php echo JText::_('COM_TOOLS_SUPPORTING_DOCS_ONLY_CURRENT'); ?>
@@ -66,17 +68,19 @@ if (!$this->allowupload) { ?>
 <?php
 $out = '';
 // loop through children and build list
-if ($this->children) {
+if ($this->children)
+{
 	$base = $this->cparams->get('uploadpath');
 
 	$k = 0;
 	$i = 0;
 	$files = array(13,15,26,33,35,38);
-	$n = count( $this->children );
+	$n = count($this->children);
 
 	jimport('joomla.filesystem.file');
 
-	if ($this->allowupload) {
+	if ($this->allowupload)
+	{
 		$out .= '<p>'.JText::_('COM_TOOLS_ATTACH_EDIT_TITLE_EXPLANATION').'</p>'."\n";
 	}
 	$out .= '<table class="list">'."\n";
@@ -89,12 +93,15 @@ if ($this->children) {
 		switch ($child->type)
 		{
 			case 12:
-				if ($child->path) {
+				if ($child->path)
+				{
 					// internal link, not a resource
 					$url = $child->path;
-				} else {
+				}
+				else
+				{
 					// internal link but a resource
-					$url = '/index.php?option=com_resources&id='. $child->id;
+					$url = 'index.php?option=com_resources&id='. $child->id;
 				}
 			break;
 
@@ -106,52 +113,65 @@ if ($this->children) {
 		// figure out the file type so we can give it the appropriate CSS class
 		$type = '';
 		$liclass = '';
-		//$file_name_arr = explode('.',$url);
+
 		$type = JFile::getExt($url);
-		//$type = end($file_name_arr);
 		$type = (strlen($type) > 3) ? substr($type, 0, 3): $type;
-		if ($child->type == 12) {
+		if ($child->type == 12)
+		{
 			$liclass = ' class="ftitle html';
-		} else {
+		}
+		else
+		{
 			$type = ($type) ? $type : 'html';
 			$liclass = ' class="ftitle '.$type;
 		}
 
 		$out .= ' <tr>';
 		$out .= '  <td width="100%">';
-		if ($this->allowupload) {
+		if ($this->allowupload)
+		{
 			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.JRoute::_('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.ContribtoolHtml::getFileAttribs($url, $base).'</a>)</span>';
 		}
-		else {
-			$out .= '<span><a href="'.JRoute::_('index.php?option=com_resources&task=download&id='.$child->id).'">'.$this->escape($child->title).'</a></span>';
+		else
+		{
+			$out .= '<span><a href="'.JRoute::_('index.php?option=com_resources&task=download&id=' . $child->id).'">'.$this->escape($child->title).'</a></span>';
 		}
 		$out .='</td>';
-		if ($this->allowupload) {
+		if ($this->allowupload)
+		{
 			$out .= '  <td class="d">';
-			//ContribtoolHtml::orderUpIcon( $i, $id, $child->id, 'a' )
-			if ($i > 0 || ($i+0 > 0)) {
-		    	$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
-  			} else {
-  		    	$out .= '&nbsp;';
+
+			if ($i > 0 || ($i+0 > 0))
+			{
+				$out .= '<a href="'. $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
+			}
+			else
+			{
+				$out .= '&nbsp;';
 			}
 			$out .= '</td>';
 
 			$out .= '  <td class="u">';
-		//ContribtoolHtml::orderDownIcon( $i, $n, $id, $child->id, 'a' );
-			if ($i < $n-1 || $i+0 < $n-1) {
-				$out .= '<a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
-  			} else {
-  		    	$out .= '&nbsp;';
+
+			if ($i < $n-1 || $i+0 < $n-1)
+			{
+				$out .= '<a href="'. $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;tmpl=component&amp;pid='.$this->resource->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
+			}
+			else
+			{
+				$out .= '&nbsp;';
 			}
 			$out .= '</td>';
-			$out .= '  <td class="t"><a href="index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'" class="delete_ss"><span> ' . JText::_('COM_TOOLS_DELETE') . '</span></a></td>';
+			$out .= '  <td class="t"><a href="'. $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'" class="delete_ss"><span> ' . JText::_('COM_TOOLS_DELETE') . '</span></a></td>';
 		}
 		$out .= ' </tr>';
 
 		$i++;
 	}
 	$out .= '</table>';
-} else {
+}
+else
+{
 	$out .= '<p>'.JText::_('COM_TOOLS_ATTACH_NONE_FOUND').'</p>';
 }
 echo $out;

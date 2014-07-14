@@ -42,9 +42,9 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
 <?php } ?>
 	<div class="ss_pop">
 		<div>
-			<img src="<?php echo $this->wpath . DS . $this->file; ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="" />
+			<img src="<?php echo $this->wpath . '/' . $this->file; ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="" />
 		</div>
-		<form action="index.php" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="tmpl" value="component" />

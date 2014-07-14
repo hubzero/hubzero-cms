@@ -83,16 +83,16 @@ if ($this->version=='dev')
 	}
 	else
 	{
-		$html .= 'devversion">'.ucfirst(JText::_('Next version'));
+		$html .= 'devversion">'.ucfirst(JText::_('COM_TOOLS_CONTRIBTOOL_NEXT_VERSION'));
 	}
-	$html .= ' - '.JText::_('not published yet (changes take effect later)');
+	$html .= ' - '.JText::_('COM_TOOLS_CONTRIBTOOL_NOT_PUBLISHED_YET');
 }
 else if ($this->version=='current' )
 {
-	$html .= 'currentversion">'.ucfirst(JText::_('COM_TOOLS_VERSION')).' '.$this->vnum.' - '.JText::_('published now (changes take effect immediately)');
+	$html .= 'currentversion">'.ucfirst(JText::_('COM_TOOLS_VERSION')).' '.$this->vnum.' - '.JText::_('COM_TOOLS_CONTRIBTOOL_PUBLISHED_NOW');
 }
-$html .= ($this->version=='dev' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias . '&editversion=current').'">'.JText::_('change current published version instead').'</a></span>' : '';
-$html .= ($this->version=='current' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias).'">'.JText::_('change upcoming version instead').'</a></span>' : '' ;
+$html .= ($this->version=='dev' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias . '&editversion=current').'">'.JText::_('COM_TOOLS_CONTRIBTOOL_CHANGE_CURRENT_VERSION').'</a></span>' : '';
+$html .= ($this->version=='current' && $this->status['published']) ? ' <span style="margin-left:2em;"><a href="'.JRoute::_('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias).'">'.JText::_('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION').'</a></span>' : '' ;
 $html .='</p>'."\n";
 
 $html .= "\t\t".'<div class="clear"></div>'."\n";

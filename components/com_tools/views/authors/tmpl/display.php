@@ -59,9 +59,9 @@ if ($this->version == 'dev') {
 				</div>
 				<div class="col span3">
 					<label>
-						<span id="new-authors-role-label"><?php echo JText::_('Role'); ?></span>
+						<span id="new-authors-role-label"><?php echo JText::_('COM_TOOLS_AUTHORS_ROLE'); ?></span>
 						<select name="role" id="new-authors-role">
-							<option value=""><?php echo JText::_('Author'); ?></option>
+							<option value=""><?php echo JText::_('COM_TOOLS_AUTHOR'); ?></option>
 							<?php
 							if ($this->roles)
 							{
@@ -111,11 +111,11 @@ if ($this->contributors) {
 			<tfoot>
 				<td>
 					<span class="caption">
-						<?php echo JText::_('Changes to organization or role must be saved to take effect.'); ?>
+						<?php echo JText::_('COM_TOOLS_AUTHORS_MUST_SAVE_CHANGES'); ?>
 					</span>
 				</td>
 				<td>
-					<input type="submit" value="<?php echo JText::_('Save Changes'); ?>"/>
+					<input type="submit" value="<?php echo JText::_('COM_TOOLS_SAVE_CHANGES'); ?>"/>
 				</td>
 				<td></td>
 				<td></td>
@@ -125,25 +125,28 @@ if ($this->contributors) {
 			<?php
 			foreach ($this->contributors as $contributor)
 			{
-				if ($contributor->lastname || $contributor->firstname) {
+				if ($contributor->lastname || $contributor->firstname)
+				{
 					$name  = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL) {
+					if ($contributor->middlename != NULL)
+					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
 					$name .= stripslashes($contributor->lastname);
-				} else {
+				}
+				else
+				{
 					$name  = stripslashes($contributor->name);
 				}
 			?>
 				<tr>
 					<td width="100%">
 						<?php echo $this->escape($name); ?><br />
-						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo JText::_('Organization'); ?>" />
-						<?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : ''; ?>
+						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->org)); ?>" placeholder="<?php echo JText::_('COM_TOOLS_AUTHOR_ORGANIZATION'); ?>" />
 					</td>
 					<td>
 						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
-							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('Author'); ?></option>
+							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_TOOLS_AUTHOR'); ?></option>
 							<?php
 							if ($this->roles)
 							{
@@ -160,23 +163,29 @@ if ($this->contributors) {
 					<td class="u"><?php
 						if ($this->version=='dev')
 						{
-							if ($i > 0 || ($i+0 > 0)) {
-							    echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
-							} else {
-							    echo '&nbsp;';
+							if ($i > 0 || ($i+0 > 0))
+							{
+								echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.JText::_('COM_TOOLS_MOVE_UP').'"><span>'.JText::_('COM_TOOLS_MOVE_UP').'</span></a>';
+							}
+							else
+							{
+								echo '&nbsp;';
 							}
 							?></td>
 							<td class="d"><?php
-							if ($i < $n-1 || $i+0 < $n-1) {
+							if ($i < $n-1 || $i+0 < $n-1)
+							{
 								echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.JText::_('COM_TOOLS_MOVE_DOWN').'"><span>'.JText::_('COM_TOOLS_MOVE_DOWN').'</span></a>';
-							} else {
-							    echo '&nbsp;';
+							}
+							else
+							{
+								echo '&nbsp;';
 							}
 						}
 					?></td>
 					<td class="t">
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>">
-							<span><img src="<?php echo JURI::base(true); ?>/components/<?php echo $this->option; ?>/assets/img/trash.gif" alt="<?php echo JText::_('COM_TOOLS_DELETE'); ?>" /></span>
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo JText::_('COM_TOOLS_DELETE'); ?>">
+							<span><?php echo JText::_('COM_TOOLS_DELETE'); ?></span>
 						</a>
 					</td>
 				</tr>

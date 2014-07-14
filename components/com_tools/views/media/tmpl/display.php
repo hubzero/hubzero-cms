@@ -53,7 +53,7 @@ $this->css('component.css');
 	<?php } ?>
 
 	<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-		<p><?php echo JText::_('Here you can upload and manage screenshots or other files you wish to include in your abstract.'); ?></p>
+		<p><?php echo JText::_('COM_TOOLS_SCREENSHOTS_ABOUT'); ?></p>
 	<?php } else { ?>
 		<table>
 			<tbody>
@@ -70,8 +70,8 @@ $this->css('component.css');
 						<?php echo JRoute::_('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
 					</td>
 					<td>
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-							<span><?php echo JText::_('DELETE'); ?></span>
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo JUtility::getToken(); ?>=1" target="filer" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+							<span><?php echo JText::_('JACTION_DELETE'); ?></span>
 						</a>
 					</td>
 				</tr>
@@ -83,5 +83,5 @@ $this->css('component.css');
 		</table>
 	<?php } ?>
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

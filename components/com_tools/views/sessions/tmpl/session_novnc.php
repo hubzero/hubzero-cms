@@ -34,28 +34,33 @@ defined('_JEXEC') or die( 'Restricted access' );
 $base = rtrim(JURI::base(true), '/');
 
 $cls = array();
-if ($this->app->params->get('noResize', 0)) {
+if ($this->app->params->get('noResize', 0))
+{
 	$cls[] = 'no-resize';
 }
-if ($this->app->params->get('noPopout', 0)) {
+if ($this->app->params->get('noPopout', 0))
+{
 	$cls[] = 'no-popout';
 }
-if ($this->app->params->get('noPopoutClose', 0)) {
+if ($this->app->params->get('noPopoutClose', 0))
+{
 	$cls[] = 'no-popout-close';
 }
-if ($this->app->params->get('noPopoutMaximize', 0)) {
+if ($this->app->params->get('noPopoutMaximize', 0))
+{
 	$cls[] = 'no-popout-maximize';
 }
-if ($this->app->params->get('noRefresh', 0)) {
+if ($this->app->params->get('noRefresh', 0))
+{
 	$cls[] = 'no-refresh';
 }
 ?>
-			<div id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" data-width="<?php echo $this->output->width; ?>" data-height="<?php echo $this->output->height; ?>">
-				<p class="error">
-					In order to view an application, you must have Java installed and enabled. (<a href="<?php echo $base; ?>/kb/misc/java">How do I do this?</a>)
-				</p>
-			</div>
-			<script type="text/javascript">
-			HUB.Mw.startAppletTimeout();
-			HUB.Mw.connectingTool();
-			</script>
+<div id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" data-width="<?php echo $this->output->width; ?>" data-height="<?php echo $this->output->height; ?>">
+	<p class="error">
+		<?php echo JText::_('COM_TOOLS_ERROR_JAVASCRIPT_REQUIRED'); ?>
+	</p>
+</div>
+<script type="text/javascript">
+	HUB.Mw.startAppletTimeout();
+	HUB.Mw.connectingTool();
+</script>

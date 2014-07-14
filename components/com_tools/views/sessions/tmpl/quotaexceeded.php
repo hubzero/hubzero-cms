@@ -43,8 +43,8 @@ $this->css('tools.css');
 <?php if ($this->config->get('access-manage-session')) { ?>
 	<nav>
 		<ul class="sub-menu">
-			<li id="sm-1"<?php if ($this->active == '') { echo ' class="active"'; } ?>><a class="tab" rel="mysessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded'); ?>"><span>My Sessions</span></a></li>
-			<li id="sm-2"<?php if ($this->active == 'all') { echo ' class="active"'; } ?>><a class="tab" rel="allsessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded&active=all'); ?>"><span>All Sessions</span></a></li>
+			<li id="sm-1"<?php if ($this->active == '') { echo ' class="active"'; } ?>><a class="tab" rel="mysessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded'); ?>"><span><?php echo JText::_('COM_TOOLS_MYSESSIONS'); ?></span></a></li>
+			<li id="sm-2"<?php if ($this->active == 'all') { echo ' class="active"'; } ?>><a class="tab" rel="allsessions" href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=quotaexceeded&active=all'); ?>"><span><?php echo JText::_('COM_TOOLS_ALL_SESSIONS'); ?></span></a></li>
 		</ul>
 	</nav>
 <?php } ?>
@@ -55,10 +55,10 @@ $this->css('tools.css');
 	<table class="sessions">
 		<thead>
 			<tr>
-				<th>Session</th>
-				<th>Started</th>
-				<th>Last accessed</th>
-				<th>Option</th>
+				<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_SESSION'); ?></th>
+				<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_STARTED'); ?></th>
+				<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_LAST_ACCESSED'); ?></th>
+				<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_OPTION'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -92,11 +92,11 @@ $this->css('tools.css');
 		<table class="sessions">
 			<thead>
 				<tr>
-					<th>Session</th>
-					<th>Owner</th>
-					<th>Started</th>
-					<th>Last accessed</th>
-					<th>Option</th>
+					<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_SESSION'); ?></th>
+					<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_OWNER'); ?></th>
+					<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_STARTED'); ?></th>
+					<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_LAST_ACCESSED'); ?></th>
+					<th><?php echo JText::_('COM_TOOLS_MYSESSIONS_COL_OPTION'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
