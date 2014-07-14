@@ -31,25 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser =& JFactory::getUser();
+$juser = JFactory::getUser();
 
-//\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/js/sessions');
-//\Hubzero\Document\Assets::addSystemScript('jquery.editable.min');
-\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/vnc');
+\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
 \Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
 \Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
 $base = rtrim(JURI::base(true), '/');
 ?>
 
-<script type="text/javascript">
-	//Setup the global include path for noVNC
-	INCLUDE_URI = "<?php echo $base; ?>/components/com_tools/assets/novnc/";
-</script>
-
 <div id="noVNC-control-bar" style="position:inherit;">
 	<!--noVNC Mobile Device only Buttons-->
 	<div class="noVNC-buttons-left">
-		<input type="image" src="/components/com_tools/assets/novnc/images/drag.png"
+		<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/drag.png"
 			   id="noVNC_view_drag_button" class="noVNC_status_button"
 			   title="Move/Drag Viewport"
 			   onclick="UI.setViewDrag();">
@@ -79,11 +72,11 @@ $base = rtrim(JURI::base(true), '/');
 
 		<!--noVNC Buttons-->
 		<div class="noVNC-buttons-right">
-			<input type="image" src="/components/com_tools/assets/novnc/images/ctrlaltdel.png"
+			<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/ctrlaltdel.png"
 				 id="sendCtrlAltDelButton" class="noVNC_status_button"
 				title="Send Ctrl-Alt-Del"
 				onclick="UI.sendCtrlAltDel();" />
-			<input type="image" src="/components/com_tools/assets/novnc/images/clipboard.png"
+			<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/clipboard.png"
 				id="clipboardButton" class="noVNC_status_button"
 				title="Clipboard"
 				onclick="UI.toggleClipboardPanel();" />
