@@ -141,7 +141,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 			<form action="index.php" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
 				<h2><?php echo JText::_('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
 				<div id="usage-agreement-box">
-					<iframe id="usage-agreement" src="<?php echo JRUI::base(true); ?>/legal/terms?tmpl=component"></iframe>
+					<iframe id="usage-agreement" src="<?php echo JURI::base(true); ?>/legal/terms?tmpl=component"></iframe>
 					<div id="usage-agreement-last-chance">
 						<h3><?php echo JText::_('PLG_MEMBERS_PROFILE_ARE_YOU_SURE'); ?></h3>
 						<p><?php echo JText::_('PLG_MEMBERS_PROFILE_ARE_YOU_SURE_EXPLANATION'); ?></p>
@@ -352,7 +352,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<?php
 							//build select of org types
 							$organization_types  = "<select name=\"orgtype\" class=\"input-select\">";
-							foreach($orgtypes as $k => $o)
+							foreach ($orgtypes as $k => $o)
 							{
 								$sel = ($k == $this->profile->get("orgtype")) ? "selected=\"selected\"" : "";
 								$organization_types .= "<option {$sel} value=\"{$k}\">{$o}</option>";
@@ -384,8 +384,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 		<?php if ($this->profile->get('email')) : ?>
 			<?php if ($this->params->get('access_email', 2) == 0
-			 		|| ($this->params->get('access_email', 2) == 1 && $loggedin)
-			 		|| ($this->params->get('access_email', 2) == 2 && $isUser)
+					|| ($this->params->get('access_email', 2) == 1 && $loggedin)
+					|| ($this->params->get('access_email', 2) == 2 && $isUser)
 					) : ?>
 					<?php
 						$cls = '';
@@ -435,8 +435,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 		<?php if ($this->registration->ORCID != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_orcid') == 0
-			 		|| ($this->params->get('access_orcid') == 1 && $loggedin)
-			 		|| ($this->params->get('access_orcid') == 2 && $isUser)
+					|| ($this->params->get('access_orcid') == 1 && $loggedin)
+					|| ($this->params->get('access_orcid') == 2 && $isUser)
 				) : ?>
 					<?php
 						$cls = '';
@@ -740,8 +740,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 		<?php if ($this->registration->Interests != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_tags') == 0
-			 		|| ($this->params->get('access_tags') == 1 && $loggedin)
-			 		|| ($this->params->get('access_tags') == 2 && $isUser)
+					|| ($this->params->get('access_tags') == 1 && $loggedin)
+					|| ($this->params->get('access_tags') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
@@ -1082,8 +1082,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 
 		<?php if ($this->registration->Disability != REG_HIDE) : ?>
 			<?php if ($this->params->get('access_disability') == 0
-			 		|| ($this->params->get('access_disability') == 1 && $loggedin)
-			 		|| ($this->params->get('access_disability') == 2 && $isUser)
+					|| ($this->params->get('access_disability') == 1 && $loggedin)
+					|| ($this->params->get('access_disability') == 2 && $isUser)
 				) : ?>
 				<?php
 					$cls = '';
@@ -1479,7 +1479,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					$cls .= (!$isUser) ? ' hide' : '' ;
 
 					//get value of mail preference option
-					switch($this->profile->get('mailPreferenceOption'))
+					switch ($this->profile->get('mailPreferenceOption'))
 					{
 						case '1':  $mailPreferenceValue = 'Yes, send me emails';       break;
 						case '0':  $mailPreferenceValue = 'No, don\'t send me emails'; break;

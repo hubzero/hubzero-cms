@@ -177,7 +177,6 @@ HUB.Members.Profile = {
 			data: form.serialize(),
 			success: function(data, status, xhr)
 			{
-				console.log(data);
 				//console.log(data); // Dump the raw data to see what's being returned
 				//parse the returned json data
 				var returned = jQuery.parseJSON(data);
@@ -191,7 +190,9 @@ HUB.Members.Profile = {
 				{
 					switch( profile_field )
 					{
-						case 'email': 	HUB.Members.Profile.editRedirect(window.location.href);		break;
+						case 'email':
+						case 'usageAgreement':
+						                HUB.Members.Profile.editRedirect(window.location.href);		break;
 						default: 		HUB.Members.Profile.editReloadSections();
 					}
 				}

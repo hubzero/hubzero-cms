@@ -247,6 +247,11 @@ class JRouterSite extends JRouter
 					return $vars;
 				}
 
+				if ($uri->getPath() == 'legal/terms')
+				{
+					return $vars;
+				}
+
 				// @FIXME: should double check shadowFlag here in case password gets chanegd
 				// out of band.
 
