@@ -376,10 +376,21 @@ class Parser
 
 			//build macro path
 			$macropath = __DIR__ . DS . 'macros' . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
-
+			
+			// alt path to macro
+			$macropath_alt = null;
+			if ($this->get('alt_macro_path'))
+			{
+				$macropath_alt = $this->get('alt_macro_path') . DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+			}
+			
 			if (!isset($_macros[$matches[1]])) 
 			{
-				if (is_file($macropath)) 
+				if (is_file($macropath_alt))
+				{
+					include_once($macropath_alt);
+				}
+				else if (is_file($macropath)) 
 				{
 					include_once($macropath);
 				}
