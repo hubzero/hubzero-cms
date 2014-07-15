@@ -76,12 +76,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$checkout = GroupsHelperPages::getCheckout($page->get('id'));
 			?>
 			<li id="<?php echo $page->get('id'); ?>" class="<?php echo $class; ?>">
-				<div class="item-container" <?php if($category) : ?>style="border-color: #<?php echo $category->get('color'); ?>"<?php endif; ?>>
+				<div class="item-container" <?php if ($category) : ?>style="border-color: #<?php echo $category->get('color'); ?>"<?php endif; ?>>
 					<div class="item-title">
 						<?php if ($page->get('privacy') == 'members') : ?>
 							<span class="icon-lock tooltips" title="Private to Group Members"></span>
 						<?php endif; ?>
-						<?php echo $page->get('title'); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>">
+							<?php echo $page->get('title'); ?>
+						</a>
 					</div>
 					
 					<div class="item-sub" >

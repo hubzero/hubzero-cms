@@ -74,8 +74,10 @@ foreach ($this->modules as $module)
 			<li class="<?php echo $class; ?>">
 				<div class="item-container">
 					<div class="item-title">
-						<?php echo $module->get('title'); ?>
-					
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>">
+							<?php echo $module->get('title'); ?>
+						</a>
+
 						<?php
 							$pages = array();
 							$menus = $module->menu('list');
