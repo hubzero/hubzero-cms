@@ -31,9 +31,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'time.php');
+require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
+
+require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'contacts.php';
+require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'hubs.php';
+require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'records.php';
+require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'tasks.php';
+
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'hub.php';
+
+require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'charts.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'html.php';
+require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'filters.php';
+
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'overview'));
+if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'overview';
+}
+require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = 'TimeController' . ucfirst($controllerName);
 
 // Instantiate controller
-$controller = new TimeControllerTime();
+$controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

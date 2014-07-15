@@ -33,7 +33,7 @@ HUB.Time = {
 
 		// Add click event to delete buttons
 		$(".delete").click(function(event) {
-			if(confirm == false) {
+			if(confirm === false) {
 				// Prevent delete action
 				event.preventDefault();
 
@@ -72,8 +72,15 @@ HUB.Time = {
 			// Set a unix/MySQL friendly date format
 			dateFormat: 'yy-mm-dd'
 		});
+
+		if (!!$.prototype.HUBfancyselect) {
+			$('select').HUBfancyselect({
+				'showSearch'         : true,
+				'searchPlaceholder'  : 'seach...'
+			});
+		}
 	}
-}
+};
 
 jQuery(document).ready(function($){
 	HUB.Time.initialize();

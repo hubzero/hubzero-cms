@@ -31,59 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Time build route
- *
- * @param  array &$query
- * @return array Return
- */
-function TimeBuildRoute(&$query)
-{
-	$segments = array();
+$this->css()
+     ->css('reports')
+     ->js('reports');
+?>
 
-	if (!empty($query['controller'])) {
-		$segments[] = $query['controller'];
-		unset($query['controller']);
-	}
-	if (!empty($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
-	}
+<header id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</header>
 
-	return $segments;
-}
-
-/**
- * Time parse route
- *
- * @param  array $segments
- * @return array Return
- */
-function TimeParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
-	{
-		return $vars;
-	}
-
-	if(isset($segments[0]))
-	{
-		$vars['controller'] = $segments[0];
-	}
-	if(isset($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-	if(isset($segments[2]))
-	{
-		$vars['id'] = $segments[2];
-	}
-
-	return $vars;
-}
+<div class="com_time_container">
+	<?php $this->view('menu', 'shared')->display(); ?>
+	<section class="com_time_content com_time_reports">
+		<div class="no_reports">
+			<?php echo JText::_('COM_TIME_REPORTS_NO_REPORT_TYPES'); ?>
+		</div>
+	</section>
+</div>

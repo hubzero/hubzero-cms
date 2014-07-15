@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -32,58 +32,30 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Time build route
- *
- * @param  array &$query
- * @return array Return
+ * Time component reports controller
  */
-function TimeBuildRoute(&$query)
+class TimeControllerReports extends TimeControllerBase
 {
-	$segments = array();
-
-	if (!empty($query['controller'])) {
-		$segments[] = $query['controller'];
-		unset($query['controller']);
-	}
-	if (!empty($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
-	}
-
-	return $segments;
-}
-
-/**
- * Time parse route
- *
- * @param  array $segments
- * @return array Return
- */
-function TimeParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Default view function
+	 *
+	 * @return void
+	 */
+	public function displayTask()
 	{
-		return $vars;
-	}
+		$this->_buildPathway();
+		$this->view->title = $this->_buildTitle();
 
-	if(isset($segments[0]))
-	{
-		$vars['controller'] = $segments[0];
-	}
-	if(isset($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-	if(isset($segments[2]))
-	{
-		$vars['id'] = $segments[2];
-	}
+		// Set a few things for the vew
+		if ($this->getError())
+		{
+			foreach ($this->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
 
-	return $vars;
+		// Display
+		$this->view->display();
+	}
 }

@@ -56,17 +56,16 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->db = JFactory::getDBO();
 
 		// Import time JTable libraries
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'contacts.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
 			// Records
 			case 'indexRecords':             $this->indexRecords();             break;
-			case 'indexRecordsForBill':      $this->indexRecordsForBill();      break;
 			case 'saveRecord':               $this->saveRecord();               break;
 			// Tasks
 			case 'indexTasks':               $this->indexTasks();               break;
@@ -107,7 +106,6 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$tid       = JRequest::getInt('tid', NULL);
 		$startdate = JRequest::getVar('startdate', '2000-01-01');
 		$enddate   = JRequest::getVar('enddate', '2100-01-01');
-		$billed    = JRequest::getInt('billed', NULL);
 		$limit     = JRequest::getInt('limit', 1000);
 		$start     = JRequest::getInt('start', 0);
 		$orderby   = JRequest::getCmd('orderby', 'uname');
@@ -121,8 +119,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$filters['q']         = array(
 			array('column'=>'task_id', 'o'=>'=',  'value'=>$tid),
 			array('column'=>'date',    'o'=>'>=', 'value'=>$startdate),
-			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate),
-			array('column'=>'billed',  'o'=>'=',  'value'=>$billed)
+			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate)
 		);
 
 		// Create object and get records
@@ -136,88 +133,6 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Return object
 		$this->setMessage($obj, 200, 'OK');
 	}
-
-	/**
-	 * Get the time records (formatted for building reporting bills)
-	 *
-	 * @return 200 ok with success - include records retrieved
-	 */
-	private function indexRecordsForBill()
-	{
-		// Set message format
-		$this->setMessageType($this->format);
-
-		// Require authorization
-		if(!$this->authorize())
-		{
-			$this->setMessage('', 401, 'Unauthorized');
-			return;
-		}
-
-		// Incoming posted data
-		$tid       = JRequest::getInt('tid', NULL);
-		$startdate = JRequest::getVar('startdate', '2000-01-01');
-		$enddate   = JRequest::getVar('enddate', '2100-01-01');
-		$billed    = JRequest::getInt('billed', NULL);
-
-		// Filters for query
-		$filters['limit']     = '1000';
-		$filters['start']     = '0';
-		$filters['orderby']   = 'uname';
-		$filters['orderdir']  = 'ASC';
-		$filters['q']         = array(
-			array('column'=>'task_id', 'o'=>'=',  'value'=>$tid),
-			array('column'=>'date',    'o'=>'>=', 'value'=>$startdate),
-			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate),
-			array('column'=>'billed',  'o'=>'=',  'value'=>$billed)
-		);
-
-		// Create object and get records
-		$record  = new TimeRecords($this->db);
-		$records = $record->getRecords($filters);
-
-		// We want an array of users involved in these records
-		$users = array();
-
-		// Put those users into an array
-		foreach($records as $record)
-		{
-			$users[] = $record->uid;
-		}
-
-		// Get only the unique users from the array
-		$users = array_unique($users);
-
-		// Placeholder for our master list
-		$masterList = array();
-
-		// First make sure we have at least one record
-		if (count($records) > 0)
-		{
-			// Start by looping through the users
-			foreach ($users as $user)
-			{
-				// Placeholder for our records array
-				$rlist = array();
-
-				// Then loop through the records
-				foreach ($records as $record)
-				{
-					// If the record belongs to the current user
-					if ($record->uid == $user)
-					{
-						$rlist[] = $record;
-					}
-				}
-				// Create master list of records array per user
-				$masterList[] = array($user, $rlist);
-			}
-		}
-
-		// Return results
-		$this->setMessage($masterList, 200, 'OK');
-	}
-
 
 	/**
 	 * Save a time record
@@ -525,7 +440,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Process any overrides
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
 		$values = TimeFilters::filtersOverrides($values, $column);
 
 		// Create object with values

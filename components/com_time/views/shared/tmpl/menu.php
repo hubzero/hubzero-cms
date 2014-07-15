@@ -30,60 +30,40 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+?>
 
-/**
- * Time build route
- *
- * @param  array &$query
- * @return array Return
- */
-function TimeBuildRoute(&$query)
-{
-	$segments = array();
+<div class="com_time_navigation">
+	<ul class="com_time_menu">
+		<?php
+			// Get primary controllers
+			$controllers = scandir(JPATH_COMPONENT . DS . 'controllers');
 
-	if (!empty($query['controller'])) {
-		$segments[] = $query['controller'];
-		unset($query['controller']);
-	}
-	if (!empty($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
-	}
+			foreach (array('overview', 'records', 'tasks', 'hubs', 'reports') as $tab)
+			{
+				$cls  = ($this->controller == $tab) ? ' active' : '';
+				$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $tab);
 
-	return $segments;
-}
-
-/**
- * Time parse route
- *
- * @param  array $segments
- * @return array Return
- */
-function TimeParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
-	{
-		return $vars;
-	}
-
-	if(isset($segments[0]))
-	{
-		$vars['controller'] = $segments[0];
-	}
-	if(isset($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-	if(isset($segments[2]))
-	{
-		$vars['id'] = $segments[2];
-	}
-
-	return $vars;
-}
+				echo "<li class=\"{$tab}{$cls}\"><a href=\"{$link}\">" . ucfirst($tab) . "</a></li>";
+			}
+		?>
+	</ul>
+	<div class="com_time_quick_links">
+		<ul>
+			<li>
+				<a class="new-record" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=records&task=new'); ?>">
+					<?php echo JText::_('COM_TIME_NEW_RECORD'); ?>
+				</a>
+			</li>
+			<li>
+				<a class="new-task" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tasks&task=new'); ?>">
+					<?php echo JText::_('COM_TIME_NEW_TASK'); ?>
+				</a>
+			</li>
+			<li>
+				<a class="new-hub" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=hubs&task=new'); ?>">
+					<?php echo JText::_('COM_TIME_NEW_HUB'); ?>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
