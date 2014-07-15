@@ -42,6 +42,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
+
 	/**
 	 * Record count
 	 *
@@ -71,7 +72,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	{
 		$dbh = JFactory::getDBO();
 		$dbh->setQuery(
-			'select distinct gidNumber from #__xgroups_members where uidNumber = ' . $uid . ' union select distinct gidNumber from #__xgroups_managers where uidNumber = ' . $uid
+			'SELECT DISTINCT gidNumber FROM `#__xgroups_members` WHERE uidNumber=' . $uid
 		);
 		return $dbh->loadResultArray();
 	}
@@ -114,13 +115,14 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		$addtl_where = array();
 		$juser = JFactory::getUser();
 		$gids = $this->_getGroupIds($juser->get('id'));
+
 		if (!$juser->authorise('core.view', 'com_forum'))
 		{
 			$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 		}
 		else
 		{
-			$viewlevels	= implode(',', $juser->getAuthorisedViewLevels());
+			$viewlevels	= '0,' . implode(',', $juser->getAuthorisedViewLevels());
 
 			if ($gids)
 			{
@@ -140,7 +142,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 					ELSE
 						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END)
 					END) AS href,
-					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, NULL AS params, e.last_activity AS rcount, c.alias AS data1, s.alias AS data2, g.cn AS data3 ";
+					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, CONCAT(e.thread, ':', e.parent) AS params, e.scope AS rcount, c.alias AS data1, s.alias AS data2, e.scope_id AS data3 "; //e.last_activity AS rcount, c.alias AS data1, s.alias AS data2, g.cn AS data3 
 		$e_from  = " FROM #__forum_posts AS e
 		 			LEFT JOIN #__forum_categories c ON c.id = e.category_id
 					LEFT JOIN #__forum_sections s ON s.id = c.section_id
@@ -196,25 +198,27 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		if (strstr($row->href, 'index.php'))
-		{
-			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&thread=' . $row->alias);
-		}
-		$juri = JURI::getInstance();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		// Start building the HTML
-		$html  = "\t" . '<li class="kb-entry">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t" . '<p class="details">' . JText::_('PLG_TAGS_FORUM') . ' &rsaquo; ' . stripslashes($row->data2) . ' &rsaquo; ' . stripslashes($row->data1) . '</p>' . "\n";
-		if ($row->ftext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . "</p>\n";
-		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
-		$html .= "\t" . '</li>' . "\n";
+		$row->scope    = $row->rcount;
+		$row->scope_id = $row->data3;
+		$row->section  = $row->data2;
+		$row->category = $row->data1;
 
-		// Return output
-		return $html;
+		$p = explode(':', $row->params);
+
+		$row->thread   = $p[0];
+		$row->parent   = $p[1];
+		$row->comment  = $row->ftext;
+
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => 'tags',
+			'element' => 'forum',
+			'name'    => 'result'
+		));
+		$view->post = new ForumModelPost($row);
+
+		return $view->loadTemplate();
 	}
 }
 
