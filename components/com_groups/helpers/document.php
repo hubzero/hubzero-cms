@@ -38,7 +38,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 	public $content      = null;
 	public $page         = null;
 	public $tab          = null;
-	public $allowed_tags = array('module','modules');
+	public $allowed_tags = array('module','modules','stylesheet','script');
 	private $_tags       = array();
 
 
@@ -57,7 +57,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 
 		// parse content
 		// get all group includes
-		if(preg_match_all('#<group:include([^/]*)/>#', $this->get('document'), $matches))
+		if (preg_match_all('#<group:include([^>]*)/>#', $this->get('document'), $matches))
 		{
 			// import utility class
 			jimport('joomla.utilities.utility');
@@ -66,7 +66,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 			$count = count($matches[1]);
 
 			//loop through each match
-			for($i = 0; $i < $count; $i++)
+			for ($i = 0; $i < $count; $i++)
 			{
 				$attribs = JUtility::parseAttributes($matches[1][$i]);
 

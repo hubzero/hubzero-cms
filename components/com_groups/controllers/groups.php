@@ -1547,6 +1547,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return;
 		}
 
+		// get extension
+		$extension = pathinfo($file, PATHINFO_EXTENSION);
+
 		//if were on the wiki we need to output files a specific way
 		if ($this->active == 'wiki')
 		{
@@ -1633,7 +1636,11 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		// Final path of file
 		$file_path = $base_path . DS . $file;
-		$alt_file_path = str_replace('/uploads', '', $base_path) . $file;
+		$alt_file_path = null;
+		if ($group->isSuperGroup())
+		{
+			$alt_file_path = str_replace('/uploads', '', $base_path) . DS . $file;
+		}
 
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . DS . $file_path))
@@ -1648,12 +1655,20 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 		}
 
+		// new content server
+		$contentServer = new \Hubzero\Content\Server();
+		$contentServer->filename(JPATH_ROOT . DS . $file_path);
+		$contentServer->disposition('attachment');
+		$contentServer->acceptranges(false);
+
+		// do we need to manually set mime type
+		if ($extension == 'css')
+		{
+			$contentServer->setContentType('text/css');
+		}
+
 		// Serve up the file
-		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename(JPATH_ROOT . DS . $file_path);
-		$xserver->disposition('attachment');
-		$xserver->acceptranges(false); // @TODO fix byte range support
-		if (!$xserver->serve())
+		if (!$contentServer->serve())
 		{
 			JError::raiseError(404, JText::_('COM_GROUPS_SERVER_ERROR'));
 		}

@@ -1556,6 +1556,47 @@ class Group extends Object
 	}
 
 	/**
+	 * Get groups path
+	 * 
+	 * @return [type] [description]
+	 */
+	public function getBasePath()
+	{
+		$groupParams = \JComponentHelper::getParams('com_groups');
+		$uploadPath  = $groupParams->get('uploadpath', '/site/groups');
+		return $uploadPath . DS . $this->get('gidNumber');
+	}
+
+	/**
+	 * Return serve up path
+	 * 
+	 * @param  string $path [description]
+	 * @return [type]       [description]
+	 */
+	public function downloadLinkForPath($base = 'uploads', $path = '', $type = 'file')
+	{
+		// get base path
+		$groupFolder = $this->getBasePath();
+
+		// split segments by directory separator
+		$segments = array_map('trim', explode(DS, $path));
+
+		// prepend base segments to original segments
+		if ($base != 'uploads')
+		{
+			$baseSegments = array_map('trim', explode(DS, $base));
+			$segments = array_merge($baseSegments, $segments);
+		}
+
+		// build link
+		$link  = \JRoute::_('index.php?option=com_groups&cn=' . $this->get('cn'));
+		$link .= DS . ucfirst($type) . ':' . implode(DS, $segments);
+
+		// return link
+		return $link;
+	}
+
+	/**
 	 * Get the content of the entry
 	 *
 	 * @param      string  $as      Format to return state in [text, number]

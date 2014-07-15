@@ -39,7 +39,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 	 * Array of group include tags allowed
 	 * (all tags)
 	 */
-	public $allowed_tags = array('module', 'modules', 'toolbar', 'menu', 'content', 'googleanalytics');
+	public $allowed_tags = array('module', 'modules', 'toolbar', 'menu', 'content', 'googleanalytics', 'stylesheet', 'script');
 
 	/**
 	 * Override parse template to get document content

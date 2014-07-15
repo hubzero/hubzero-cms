@@ -160,7 +160,7 @@ class plgEditorCkeditor extends JPlugin
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
 		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
-		$config = str_replace('"\/<group:include([^\\\\\/]*)\\\\\/>\/g"', '/<group:include([^\\/]*)\\/>/g', $config);
+		$config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
 		$config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
 
 		// script to actually make ckeditor
@@ -299,7 +299,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->removePlugins                 = '';
 		$config->resize_enabled                = true;
 		$config->emailProtection               = '';
-		$config->protectedSource               = array('/<group:include([^\\/]*)\\/>/g', '/{xhub:([^}]*)}/gi');
+		$config->protectedSource               = array('/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi');
 		$config->extraAllowedContent           = 'style(*)[*]; mark(*)[*]; *(*)[*]{*}';
 		$config->disableNativeSpellChecker     = false;
 		$config->scayt_autoStartup             = true;
