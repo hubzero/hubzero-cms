@@ -141,12 +141,13 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 
 					// build config
 					$config = array(
-						'option'   => JRequest::getCmd('option', 'com_groups'),
-						'scope'    => '',
-						'pagename' => $group->get('cn'),
-						'pageid'   => 0,
-						'filepath' => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
-						'domain'   => $group->get('cn')
+						'option'         => JRequest::getCmd('option', 'com_groups'),
+						'scope'          => '',
+						'pagename'       => $group->get('cn'),
+						'pageid'         => 0,
+						'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
+						'domain'         => $group->get('cn'),
+						'alt_macro_path' => JPATH_ROOT . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
 					);
 
 					$content = stripslashes($this->get('content'));
