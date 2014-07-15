@@ -66,6 +66,13 @@ class Server extends Object
 	private $_saveas;
 
 	/**
+	 * Content Type
+	 * 
+	 * @var [type]
+	 */
+	private static $_contentType;
+
+	/**
 	 * Constructor
 	 *
 	 * @return     void
@@ -193,6 +200,19 @@ class Server extends Object
 	}
 
 	/**
+	 * Set Content Type
+	 * 
+	 * @param string $contentType
+	 */
+	public function setContentType($contentType = null)
+	{
+		if ($contentType !== null)
+		{
+			self::$_contentType = $contentType;
+		}
+	}
+
+	/**
 	 * Read the contents of a file and display it
 	 *
 	 * @return     boolean
@@ -268,13 +288,16 @@ class Server extends Object
 		$extension = $fileinfo['extension'];
 
 		// Get the file's mimetype
-		$mime = new Mimetypes();
-		$type = $mime->getMimeType($filename);
+		if (!self::$_contentType)
+		{
+			$mime = new Mimetypes();
+			self::$_contentType = $mime->getMimeType($filename);
+		}
 
 		// Mimetype couldn't be determined?
-		if ($type == '##INVALID_FILE##')
+		if (self::$_contentType == '##INVALID_FILE##')
 		{
-			$type = 'application/octet-stream';
+			self::$_contentType = 'application/octet-stream';
 		}
 
 		if ($acceptranges
@@ -334,7 +357,7 @@ class Server extends Object
 			if ($multipart)
 			{
 				$content_length += strlen("\r\n--$boundary\r\n");
-				$content_length += strlen("Content-type: $type\r\n");
+				$content_length += strlen("Content-type: " . self::$_contentType . "\r\n");
 				$content_length += strlen("Content-range: bytes $first-$last/$filesize\r\n\r\n");
 			}
 
@@ -384,7 +407,7 @@ class Server extends Object
 		}
 		else
 		{
-			header("Content-Type: $type");
+			header("Content-Type: " . self::$_contentType);
 		}
 
 		// IE6 "save as" chokes on pragma no-cache or no-cache being
@@ -423,7 +446,7 @@ class Server extends Object
 
 			if ($partial)
 			{
-				echo "Content-type: $type\r\n";
+				echo "Content-type: " . self::$_contentType . "\r\n";
 				echo "Content-range: bytes $first-$last/$filesize\r\n\r\n";
 			}
 
