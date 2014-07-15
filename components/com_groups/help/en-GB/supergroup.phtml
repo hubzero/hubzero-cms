@@ -87,7 +87,27 @@ echo htmlentities('<group:include type="toolbar" />') . "\n";
 echo htmlentities('<group:include type="modules" position="{position}" />') . "\n";
 echo htmlentities('<group:include type="module" title="{title}" />') . "\n";
 echo htmlentities('<group:include type="googleanalytics" account="{account}" />') . "\n";
+echo htmlentities('<group:include type="script" base="" source="{file_path}" />') . "\n";
+echo htmlentities('<group:include type="stylesheet" base="" source="{file_path}" />') . "\n";
 ?></pre>
+<br />
+<p>The following group include tags can be used within a group page.</p>
+<pre><?php
+echo htmlentities('<group:include type="modules" position="{position}" />') . "\n";
+echo htmlentities('<group:include type="module" title="{title}" />') . "\n";
+echo htmlentities('<group:include type="script" base="" source="{file_path}" />') . "\n";
+echo htmlentities('<group:include type="stylesheet" base="" source="{file_path}" />') . "\n";
+?></pre>
+
+<p class="info">For <u>Script</u> &amp; <u>Stylesheet</u> group includes you can specify a base param of "template" which will automatically prepend "/template/assets/js" or "/template/assets/css" to the source. If no base is specified, it will look for the file in the groups "uploads" directory.</p>
+
+<hr />
+
+<h3>Overriding Macros</h3>
+<p>You can override HTML macros "[[MacroName(args)]]" within a Super group.</p>
+<p>To override a macro, copy the original macro located in /{web_root}/plugins/content/formathtml/macros/ into your groups macro folder /site/groups/{group_id}/macros/. You can no modify the render functionality, add or remove params, etc.</p>
+<p class="warning">Note: The Macos class name must remain the same and the class must implement a render() method. You are free to add or chanage other methods.</p>
+<p class="warning">Note: If the original macro file is located within a subfolder, you must recreate that folder structure in the groups macros folder for the override to work.</p>
 
 <hr />
 
