@@ -1160,7 +1160,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			$output->$key = strval($value);
 		}
 
-		$boolean_keys = array('debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only');
+		$boolean_keys = array('debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only', 'wsproxy_encrypt');
 
 		foreach($boolean_keys as $key)
 		{
@@ -1177,6 +1177,21 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 					$output->$key = "No";
 				}
 			}
+		}
+
+		if (empty($output->wsproxy_host))
+		{
+			$output->wsproxy_host = $_SERVER['SERVER_NAME'];
+		}
+
+		if (empty($output->wsproxy_port))
+		{
+			$output->wsproxy_port = '8080';
+		}
+
+		if (!isset($output->wsproxy_encrypt))
+		{
+			$output->wsproxy_encrypt = 'No';
 		}
 
 		if (!isset($output->view_only))

@@ -118,15 +118,12 @@ if (!$this->app->sess) {
 	<script>
 		//JS globals for noVNC
 		var host, port, password, token, encrypt, connectPath, decryptPath;
-		host = '<?php echo $this->output->host; ?>';
-		port = '<?php echo $this->output->port; ?>';
+		host = '<?php echo $this->output->wsproxy_host; ?>';
+		port = '<?php echo $this->output->wsproxy_port; ?>';
 		password = '<?php echo $this->output->password; ?>';
 		token = '<?php echo $this->output->token; ?>';
-		encrypt = true;
+		encrypt = ('<?php echo $this->output->wsproxy_encrypt; ?>' == 'Yes') ? true : false;
 		connectPath = 'websockify?token=' + token;
-		decryptPath = (encrypt ? 'https://' : 'http://') + host + ':' + port + '/decrypt';
-		port= 8080;
-		encrypt = false;
 	
 		//Wire up the resizable element for this page
 		var resizeTimeout;
