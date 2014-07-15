@@ -37,6 +37,7 @@ $this->js('sessions.js')
 $base = rtrim(JURI::base(true), '/');
 
 ?>
+			<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a target="_blank" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem.</a></p>
 
 			<applet id="<?php echo $this->output->id ?>" class="<?php echo $this->output->class; ?>" code="<?php echo $this->output->code; ?>" archive="<?php echo $this->output->archive; ?>" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 				<param name="name" value="<?php echo $this->output->name; ?>" />
