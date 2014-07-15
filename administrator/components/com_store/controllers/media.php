@@ -95,7 +95,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 			$ih = new StoreImgHandler();
 
 			// Do we have an old file we're replacing?
-			if (($curfile = JRequest::getVar('current', '')))
+			if (($curfile = JRequest::getVar('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
@@ -126,8 +126,8 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 			// Create a thumbnail image
 			$ih->set('image', $file['name']);
 			$ih->set('path', $path . DS);
-			$ih->set('maxWidth', 300);
-			$ih->set('maxHeight', 300);
+			$ih->set('maxWidth', 80);
+			$ih->set('maxHeight', 80);
 			$ih->set('cropratio', '1:1');
 			$ih->set('outputName', $ih->createThumbName());
 			if (!$ih->process())

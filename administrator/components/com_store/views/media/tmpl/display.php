@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 			<tr>
 				<td rowspan="6">
-					<img src="<?php echo '..' . $this->path . DS . $this->file; ?>" alt="<?php echo JText::_('COM_STORE_PICTURE'); ?>" id="conimage" />
+					<img src="<?php echo '..' . $this->path . DS . $this->file; ?>" alt="<?php echo JText::_('COM_STORE_PICTURE'); ?>" id="conimage" width="100" />
 				</td>
 				<td><?php echo JText::_('COM_STORE_FILE'); ?>:</td>
 				<td><?php echo $this->file; ?></td>

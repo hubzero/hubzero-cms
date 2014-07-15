@@ -173,7 +173,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<a class="state <?php echo $p_class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $p_task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $p_alt;?>">
-						<span><?php echo $p_img; ?></span>
+						<span></span>
 					</a>
 				<?php } else { ?>
 					<span class="state <?php echo $p_class; ?>">
