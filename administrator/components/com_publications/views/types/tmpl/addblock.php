@@ -51,7 +51,7 @@ foreach ($this->blocks as $b)
 {
 	$masterBlocks[$b->block] = $b;
 }
-foreach ($blocks as $sequence => $block) 
+foreach ($blocks as $sequence => $block)
 {
 	$blockSelection['active'][] = $block->name;
 }

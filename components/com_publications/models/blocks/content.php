@@ -572,7 +572,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			{
 				$manifest['elements'] = array(1 => $this->getElementManifest());
 			}
-			
+
 			return json_decode(json_encode($manifest), FALSE);
 		}
 
