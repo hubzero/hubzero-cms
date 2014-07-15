@@ -42,24 +42,6 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * Record count
-	 *
-	 * @var integer
-	 */
-	private $_total = null;
-
-	/**
-	 * Return the name of the area this plugin retrieves records for
-	 *
-	 * @return     array
-	 */
-	public function onTagAreas()
-	{
-		return array(
-			'wiki' => JText::_('PLG_TAGS_WIKI')
-		);
-	}
 
 	/**
 	 * Retrieve records for items tagged with specific tags
@@ -73,19 +55,17 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit)
-		{
-			if (!isset($areas['wiki']) && !in_array('wiki', $areas))
-			{
-				return array();
-			}
-		}
+		$response = array(
+			'name'    => $this->_name,
+			'title'   => JText::_('PLG_TAGS_WIKI'),
+			'total'   => 0,
+			'results' => null,
+			'sql'     => ''
+		);
 
-		// Do we have a member ID?
 		if (empty($tags))
 		{
-			return array();
+			return $response;
 		}
 
 		$database = JFactory::getDBO();
@@ -107,52 +87,41 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 		$filters['sortby'] = ($sort) ? $sort : 'date';
 		$filters['authorized'] = $this->_authorize();
 
-		// Execute the query
-		if (!$limit)
+		$filters['select'] = 'count';
+		$filters['limit']  = 'all';
+
+		$database->setQuery($this->_buildPluginQuery($filters));
+		$response['total'] = $database->loadResult();
+
+		if ($areas && $areas == $response['name'])
 		{
-			$filters['select'] = 'count';
+			$filters['select']     = 'records';
+			$filters['limit']      = $limit;
+			$filters['limitstart'] = $limitstart;
 
 			$database->setQuery($this->_buildPluginQuery($filters));
-			$this->_total = $database->loadResult();
-			return $this->_total;
+			$response['results'] = $database->loadObjectList();
+
+			// Did we get any results?
+			if ($response['results'])
+			{
+				// Loop through the results and set each item's HREF
+				foreach ($response['results'] as $key => $row)
+				{
+					$response['results'][$key]->href = JRoute::_($response['results'][$key]->href);
+					$response['results'][$key]->text = $response['results'][$key]->itext;
+				}
+			}
 		}
 		else
 		{
-			$filters['select'] = 'records';
-			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
+			$filters['select']     = 'records';
 			$filters['limitstart'] = $limitstart;
 
-			$query = $this->_buildPluginQuery($filters);
-			if (count($areas) > 1)
-			{
-				return $query;
-			}
-
-			if ($this->_total != null)
-			{
-				if ($this->_total == 0)
-				{
-					return array();
-				}
-			}
-
-			$database->setQuery($query);
-			$rows = $database->loadObjectList();
-
-			// Did we get any results?
-			if ($rows)
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					$rows[$key]->href = JRoute::_($rows[$key]->href);
-					$rows[$key]->text = $rows[$key]->itext;
-				}
-			}
-
-			// Return the results
-			return $rows;
+			$response['sql'] = $this->_buildPluginQuery($filters);
 		}
+
+		return $response;
 	}
 
 	/**

@@ -169,68 +169,59 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$config = JFactory::getConfig();
 
 		// Incoming paging vars
-		$this->view->filters = array();
-		$this->view->filters['limit'] = JRequest::getInt('limit', $config->getValue('config.list_limit'));
-		$this->view->filters['start'] = JRequest::getInt('limitstart', 0);
-		$this->view->filters['sort']  = JRequest::getVar('sort', 'date');
-
-		// Trigger the functions that return the areas we'll be using
-		$areas = array();
-		$searchareas = $dispatcher->trigger('onTagAreas');
-		foreach ($searchareas as $area)
-		{
-			$areas = array_merge($areas, $area);
-		}
+		$this->view->filters = array(
+			'limit' => JRequest::getInt('limit', $config->getValue('config.list_limit')),
+			'start' => JRequest::getInt('limitstart', 0),
+			'sort'  => JRequest::getVar('sort', 'date')
+		);
 
 		// Get the active category
 		$area = JRequest::getVar('area', '');
-		if ($area)
-		{
-			$activeareas = array($area);
-		}
-		else
-		{
-			//$limit = 5;
-			$activeareas = $areas;
-		}
 
-		// Get the search result totals
-		$totals = $dispatcher->trigger('onTagView', array(
-				$tags,
-				0,
-				0,
-				$this->view->filters['sort'],
-				$activeareas
-			)
-		);
+		$this->view->categories = $dispatcher->trigger('onTagView', array(
+			$tags,
+			$this->view->filters['limit'],
+			$this->view->filters['start'],
+			$this->view->filters['sort'],
+			$area
+		));
 
-		$this->view->filters['limit'] = ($this->view->filters['limit'] == 0) ? 'all' : $this->view->filters['limit'];
+		$this->view->total   = 0;
+		$this->view->results = null;
 
-		// Get the search results
-		$this->view->results = $dispatcher->trigger('onTagView', array(
-				$tags,
-				$this->view->filters['limit'],
-				$this->view->filters['start'],
-				$this->view->filters['sort'],
-				$activeareas
-			)
-		);
-
-		if (count($activeareas) > 1)
+		if (!$area)
 		{
 			$query = '';
-			if ($this->view->results)
+			if ($this->view->categories)
 			{
 				$s = array();
-				foreach ($this->view->results as $sql)
+				foreach ($this->view->categories as $response)
 				{
-					if (is_array($sql))
+					$this->view->total += $response['total'];
+
+					if (is_array($response['sql']))
 					{
 						continue;
 					}
-					if (trim($sql) != '')
+					if (trim($response['sql']) != '')
 					{
-						$s[] = $sql;
+						$s[] = $response['sql'];
+					}
+					if (isset($response['children']))
+					{
+						foreach ($response['children'] as $sresponse)
+						{
+							$this->view->total += $sresponse['total'];
+
+							if (is_array($sresponse['sql']))
+							{
+								continue;
+							}
+							if (trim($sresponse['sql']) != '')
+							{
+								$s[] = $sresponse['sql'];
+							}
+						}
 					}
 				}
 				$query .= "(";
@@ -250,63 +241,37 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				}
 			}
 			$this->database->setQuery($query);
-			$this->view->results = array($this->database->loadObjectList());
-		}
-
-		// Get the total results found (sum of all categories)
-		$i = 0;
-		$this->view->total = 0;
-
-		foreach ($areas as $c => $t)
-		{
-			$cats[$i]['category'] = $c;
-
-			// Do sub-categories exist?
-			if (is_array($t) && !empty($t))
-			{
-				// They do - do some processing
-				$cats[$i]['title'] = ucfirst($c);
-				$cats[$i]['total'] = 0;
-				$cats[$i]['_sub']  = array();
-				$z = 0;
-				// Loop through each sub-category
-				foreach ($t as $s => $st)
-				{
-					// Ensure a matching array of totals exist
-					if (is_array($totals[$i]) && !empty($totals[$i]) && isset($totals[$i][$z]))
-					{
-						// Add to the parent category's total
-						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
-						// Get some info for each sub-category
-						$cats[$i]['_sub'][$z]['category'] = $s;
-						$cats[$i]['_sub'][$z]['title']    = $st;
-						$cats[$i]['_sub'][$z]['total']    = $totals[$i][$z];
-					}
-					$z++;
-				}
-			}
-			else
-			{
-				// No sub-categories - this should be easy
-				$cats[$i]['title'] = $t;
-				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
-			}
-
-			// Add to the overall total
-			$this->view->total = $this->view->total + intval($cats[$i]['total']);
-			$i++;
-		}
-		$this->view->totals = $totals;
-		$this->view->cats   = $cats;
-
-		// Do we have an active area?
-		if (count($activeareas) == 1 && isset($activeareas[0]))
-		{
-			$active = $activeareas[0];
+			$this->view->results = $this->database->loadObjectList();
 		}
 		else
 		{
-			$active = '';
+			if ($this->view->categories)
+			{
+				foreach ($this->view->categories as $response)
+				{
+					$this->view->total += $response['total'];
+
+					if (is_array($response['results']))
+					{
+						$this->view->results = $response['results'];
+						break;
+					}
+
+					if (isset($response['children']))
+					{
+						foreach ($response['children'] as $sresponse)
+						{
+							$this->view->total += $sresponse['total'];
+
+							if (is_array($sresponse['results']))
+							{
+								$this->view->results = $sresponse['results'];
+								break;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		$related = null;
@@ -337,7 +302,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		}
 
 		$this->view->tags   = $tags;
-		$this->view->active = $active;
+		$this->view->active = $area;
 		$this->view->search = implode(', ', $rt);
 
 		if ($this->getError())

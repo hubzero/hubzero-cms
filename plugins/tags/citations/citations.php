@@ -42,24 +42,6 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * Record count
-	 *
-	 * @var integer
-	 */
-	private $_total = null;
-
-	/**
-	 * Return the name of the area this plugin retrieves records for
-	 *
-	 * @return     array
-	 */
-	public function onTagAreas()
-	{
-		return array(
-			'citations' => JText::_('PLG_TAGS_CITATIONS')
-		);
-	}
 
 	/**
 	 * Retrieve records for items tagged with specific tags
@@ -73,18 +55,17 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		if (is_array($areas) && $limit)
-		{
-			if (!isset($areas['citations']) && !in_array('citations', $areas))
-			{
-				return array();
-			}
-		}
+		$response = array(
+			'name'    => $this->_name,
+			'title'   => JText::_('PLG_TAGS_CITATIONS'),
+			'total'   => 0,
+			'results' => null,
+			'sql'     => ''
+		);
 
-		// Do we have a member ID?
 		if (empty($tags))
 		{
-			return array();
+			return $response;
 		}
 
 		$database = JFactory::getDBO();
@@ -123,34 +104,20 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		if (!$limit)
+		$database->setQuery($e_count . $e_from . $e_where . ") AS f");
+		$response['total'] = $database->loadResult();
+
+		if ($areas && $areas == $response['name'])
 		{
-			// Get a count
-			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
-			$this->_total = $database->loadResult();
-			return $this->_total;
+			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
+			$response['results'] = $database->loadObjectList();
 		}
 		else
 		{
-			if (count($areas) > 1)
-			{
-				return $e_fields . $e_from . $e_where;
-			}
-
-			if ($this->_total != null)
-			{
-				if ($this->_total == 0)
-				{
-					return array();
-				}
-			}
-
-			// Get results
-			$database->setQuery($e_fields . $e_from . $e_where . $order_by);
-			$rows = $database->loadObjectList();
-
-			return $rows;
+			$response['sql'] = $e_fields . $e_from . $e_where;
 		}
+
+		return $response;
 	}
 
 	/**

@@ -42,24 +42,6 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * Record count
-	 *
-	 * @var integer
-	 */
-	private $_total = null;
-
-	/**
-	 * Return the name of the area this plugin retrieves records for
-	 *
-	 * @return     array
-	 */
-	public function onTagAreas()
-	{
-		return array(
-			'members' => JText::_('PLG_TAGS_MEMBERS')
-		);
-	}
 
 	/**
 	 * Retrieve records for items tagged with specific tags
@@ -73,19 +55,17 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit)
-		{
-			if (!isset($areas['members']) && !in_array('members', $areas))
-			{
-				return array();
-			}
-		}
+		$response = array(
+			'name'    => $this->_name,
+			'title'   => JText::_('PLG_TAGS_MEMBERS'),
+			'total'   => 0,
+			'results' => null,
+			'sql'     => ''
+		);
 
-		// Do we have a member ID?
 		if (empty($tags))
 		{
-			return array();
+			return $response;
 		}
 
 		$database = JFactory::getDBO();
@@ -121,46 +101,25 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		// Execute the query
-		if (!$limit)
+		$database->setQuery($f_count . $f_from . ") AS f");
+		$response['total'] = $database->loadResult();
+
+		if ($response['total'])
 		{
-			$database->setQuery($f_count . $f_from . ") AS f");
-			$this->_total = $database->loadResult();
-			return $this->_total;
+			\Hubzero\Document\Assets::addComponentStylesheet('com_members');
+		}
+
+		if ($areas && $areas == $response['name'])
+		{
+			$database->setQuery($f_fields . $f_from .  $order_by);
+			$response['results'] = $database->loadObjectList();
 		}
 		else
 		{
-			if (count($areas) > 1)
-			{
-				\Hubzero\Document\Assets::addComponentStylesheet('com_members');
-
-				return $f_fields . $f_from;
-			}
-
-			if ($this->_total != null)
-			{
-				if ($this->_total == 0)
-				{
-					return array();
-				}
-			}
-
-			$database->setQuery($f_fields . $f_from .  $order_by);
-			$rows = $database->loadObjectList();
-
-			// Did we get any results?
-			if ($rows)
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->id);
-				}
-			}
-
-			// Return the results
-			return $rows;
+			$response['sql'] = $f_fields . $f_from;
 		}
+
+		return $response;
 	}
 
 	/**
@@ -183,6 +142,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	{
 		$member = \Hubzero\User\Profile::getInstance($row->id);
 
+		$row->href = JRoute::_('index.php?option=com_members&id=' . $row->id);
 		if (strstr($row->href, 'index.php'))
 		{
 			$row->href = JRoute::_($row->href);

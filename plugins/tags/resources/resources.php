@@ -42,26 +42,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * Resource areas
-	 *
-	 * @var array
-	 */
-	private $_areas = null;
-
-	/**
-	 * Resource categories
-	 *
-	 * @var array
-	 */
-	private $_cats  = null;
-
-	/**
-	 * Record count
-	 *
-	 * @var integer
-	 */
-	private $_total = null;
 
 	/**
 	 * Constructor
@@ -79,47 +59,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Return the name of the area this plugin retrieves records for
-	 *
-	 * @return     array
-	 */
-	public function onTagAreas()
-	{
-		$areas = $this->_areas;
-		if (is_array($areas))
-		{
-			return $areas;
-		}
-
-		$categories = $this->_cats;
-		if (!is_array($categories))
-		{
-			// Get categories
-			$database = JFactory::getDBO();
-			$rt = new ResourcesType($database);
-			$categories = $rt->getMajorTypes();
-			$this->_cats = $categories;
-		}
-
-		// Normalize the category names
-		// e.g., "Oneline Presentations" -> "onlinepresentations"
-		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
-		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($categories[$i]->type));
-
-			//$categories[$i]->title = $normalized;
-			$cats[$normalized] = $categories[$i]->type;
-		}
-
-		$areas = array(
-			'resources' => $cats
-		);
-		$this->_areas = $areas;
-		return $areas;
-	}
-
-	/**
 	 * Retrieve records for items tagged with specific tags
 	 *
 	 * @param      array   $tags       Tags to match records against
@@ -131,24 +70,33 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit)
-		{
-			$ars = $this->onTagAreas();
-			if (!isset($areas['resources']) && $areas[0] != 'resources' && (count($areas) == 1
-			 && !array_intersect($areas, array_keys($ars['resources']))))
-			{
-				return array();
-			}
-		}
-
-		// Do we have any tags?
-		if (empty($tags))
-		{
-			return array();
-		}
+		$response = array(
+			'name'     => $this->_name,
+			'title'    => JText::_('PLG_TAGS_RESOURCES'),
+			'total'    => 0,
+			'results'  => null,
+			'sql'      => '',
+			'children' => array()
+		);
 
 		$database = JFactory::getDBO();
+		$rt = new ResourcesType($database);
+		foreach ($rt->getMajorTypes() as $category)
+		{
+			$response['children'][$category->alias] = array(
+				'name'     => $category->alias,
+				'title'    => $category->type,
+				'total'    => 0,
+				'results'  => null,
+				'sql'      => '',
+				'id'       => $category->id
+			);
+		}
+
+		if (empty($tags))
+		{
+			return $response;
+		}
 
 		$ids = array();
 		foreach ($tags as $tag)
@@ -169,112 +117,68 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 		$filters['usergroups'] = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 
-		// Get categories
-		$categories = $this->_cats;
-		if (!is_array($categories))
+		$filters['select'] = 'count';
+
+		foreach ($response['children'] as $k => $t)
 		{
-			$rt = new ResourcesType($database);
-			$categories = $rt->getMajorTypes();
+			$filters['type'] = $t['id'];
+
+			// Execute a count query for each area/category
+			$database->setQuery($this->_buildPluginQuery($filters));
+			$response['children'][$k]['total'] = $database->loadResult();
+			$response['total'] += $response['children'][$k]['total'];
 		}
 
-		// Normalize the category names
-		// e.g., "Oneline Presentations" -> "onlinepresentations"
-		$cats = array();
-		for ($i = 0; $i < count($categories); $i++)
+		if ($areas && ($areas == $response['name']) || isset($response['children'][$areas]))
 		{
-			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($categories[$i]->type));
+			// Push some CSS and JS to the tmeplate that may be needed
+			\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
 
-			$cats[$normalized] = array();
-			$cats[$normalized]['id'] = $categories[$i]->id;
-		}
-
-		if ($limit)
-		{
-			if ($this->_total != null)
-			{
-				$total = 0;
-				$t = $this->_total;
-				foreach ($t as $l)
-				{
-					$total += $l;
-				}
-
-				if (count($areas) <= 1 && $total == 0)
-				{
-					return array();
-				}
-			}
-
-			$filters['select'] = 'records';
-			$filters['limit'] = (count($areas) > 1) ? 'all' : $limit;
+			$filters['select']     = 'records';
+			$filters['limit']      = $limit;
 			$filters['limitstart'] = $limitstart;
-			$filters['sortby'] = ($sort) ? $sort : 'date';
+			$filters['sortby']     = ($sort) ? $sort : 'date';
 
 			// Check the area of return. If we are returning results for a specific area/category
 			// we'll need to modify the query a bit
-			if (count($areas) == 1 && !isset($areas['resources']) && $areas[0] != 'resources')
+			if (isset($response['children'][$areas]))
 			{
-				$filters['type'] = $cats[$areas[0]]['id'];
-			}
+				$filters['type'] = $response['children'][$areas]['id'];
 
-			// Get results
-			$query = $this->_buildPluginQuery($filters);
-			if (count($areas) > 1)
+				$database->setQuery($this->_buildPluginQuery($filters));
+				$response['children'][$areas]['results'] = $database->loadObjectList();
+			}
+			else
 			{
-				plgTagsResources::documents();
-				return $query;
+				unset($filters['type']);
+
+				$database->setQuery($this->_buildPluginQuery($filters));
+				$response['results'] = $database->loadObjectList();
 			}
-
-			// Get results
-			$database->setQuery($query);
-			$rows = $database->loadObjectList();
-
-			// Did we get any results?
-			if ($rows)
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					if ($row->alias)
-					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
-					}
-					else
-					{
-						$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
-					}
-				}
-			}
-
-			// Return the results
-			return $rows;
 		}
 		else
 		{
-			$filters['select'] = 'count';
+			$filters['select']     = 'records';
+			$filters['limit']      = 'all';
+			$filters['limitstart'] = $limitstart;
+			$filters['sortby']     = ($sort) ? $sort : 'date';
 
-			// Get a count
-			$counts = array();
-			$ares = $this->onTagAreas();
-			foreach ($ares as $area=>$val)
+			// Check the area of return. If we are returning results for a specific area/category
+			// we'll need to modify the query a bit
+			if (isset($response['children'][$areas]))
 			{
-				if (is_array($val))
-				{
-					foreach ($val as $a => $t)
-					{
-						$filters['type'] = $cats[$a]['id'];
+				$filters['type'] = $response['children'][$areas]['id'];
 
-						// Execute a count query for each area/category
-						$database->setQuery($this->_buildPluginQuery($filters));
-						$counts[] = $database->loadResult();
-					}
-				}
+				$response['children'][$key]['sql'] = $this->_buildPluginQuery($filters);
 			}
-
-			// Return the counts
-			$this->_total = $counts;
-			return $counts;
+			else
+			{
+				unset($filters['type']);
+				$response['sql'] = $this->_buildPluginQuery($filters);
+			}
 		}
+
+		return $response;
 	}
 
 	/**
@@ -382,20 +286,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Include needed libraries and push scripts and CSS to the document
-	 *
-	 * @return     void
-	 */
-	public static function documents()
-	{
-		// Push some CSS and JS to the tmeplate that may be needed
-		\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
-
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
-	}
-
-	/**
 	 * Static method for formatting results
 	 *
 	 * @param      object $row Database row
@@ -403,6 +293,18 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'usage.php');
+
+		if ($row->alias)
+		{
+			$row->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
+		}
+		else
+		{
+			$row->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
+		}
+
 		$database = JFactory::getDBO();
 
 		// Instantiate a helper object

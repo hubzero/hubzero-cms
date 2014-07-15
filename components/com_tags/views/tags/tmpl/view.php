@@ -33,102 +33,109 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
+$name  = JText::_('COM_TAGS_ALL_CATEGORIES');
+$total = $this->total;
+$here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
+
 // Add the "all" category
-		$all = array(
-			'category' => '',
-			'title'    => JText::_('COM_TAGS_ALL_CATEGORIES'),
-			'total'    => $this->total
-		);
-		$cats = $this->cats;
-		array_unshift($cats, $all);
+$all = array(
+	'name'    => '',
+	'title'   => JText::_('COM_TAGS_ALL_CATEGORIES'),
+	'total'   => $this->total,
+	'results' => null,
+	'sql'     => ''
+);
+$cats = $this->categories;
+array_unshift($cats, $all);
 
-		// An array for storing all the links we make
-		$links = array();
+// An array for storing all the links we make
+$links = array();
+$pathway = JFactory::getApplication()->getPathway();
 
-		// Loop through each category
-		foreach ($cats as $cat)
+// Loop through each category
+foreach ($cats as $cat)
+{
+	// Only show categories that have returned search results
+	if (!$cat['total'] > 0)
+	{
+		continue;
+	}
+
+	// If we have a specific category, prepend it to the search term
+	$blob = '';
+	if ($cat['name'])
+	{
+		$blob = $cat['name'];
+	}
+
+	$sef = JRoute::_($here . ($blob ? '&area=' . stripslashes($blob) : ''));
+	$sef = str_replace('%20', ',', $sef);
+	$sef = str_replace(' ', ',', $sef);
+	$sef = str_replace('+', ',', $sef);
+
+	// Is this the active category?
+	$a = '';
+	if ($cat['name'] == $this->active)
+	{
+		$a = ' class="active"';
+
+		$name  = $cat['title'];
+		$total = $cat['total'];
+
+		$pathway->addItem($cat['title'], $here . '&area=' . stripslashes($blob));
+	}
+
+	// Build the HTML
+	$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+
+	// Are there sub-categories?
+	if (isset($cat['children']) && is_array($cat['children']))
+	{
+		// An array for storing the HTML we make
+		$k = array();
+		// Loop through each sub-category
+		foreach ($cat['children'] as $subcat)
 		{
-			// Only show categories that have returned search results
-			if ($cat['total'] > 0)
+			// Only show sub-categories that returned search results
+			if ($subcat['total'] > 0)
 			{
 				// If we have a specific category, prepend it to the search term
-				$blob = '';
-				if ($cat['category'])
-				{
-					$blob = $cat['category'];
-				}
-
-				$url  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring;
-				$url .= ($blob) ? '&area=' . stripslashes($blob) : '';
-				$url .= ($this->filters['sort']) ? '&sort=' . $this->filters['sort'] : '';
-				$sef = JRoute::_($url);
-				$sef = str_replace('%20',',',$sef);
-				$sef = str_replace(' ',',',$sef);
-				$sef = str_replace('+',',',$sef);
+				$blob = ($subcat['name'] ? $subcat['name'] : '');
 
 				// Is this the active category?
 				$a = '';
-				if ($cat['category'] == $this->active)
+				if ($subcat['name'] == $this->active)
 				{
 					$a = ' class="active"';
 
-					$app = JFactory::getApplication();
-					$pathway = $app->getPathway();
-					$pathway->addItem($cat['title'],'index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . stripslashes($blob) . '&sort=' . $this->filters['sort']);
+					$name  = $cat['title'];
+					$total = $cat['total'];
+
+					$pathway->addItem($subcat['title'], $here . '&area=' . stripslashes($blob));
 				}
 
 				// Build the HTML
-				$l = "\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
-				// Are there sub-categories?
-				if (isset($cat['_sub']) && is_array($cat['_sub']))
-				{
-					// An array for storing the HTML we make
-					$k = array();
-					// Loop through each sub-category
-					foreach ($cat['_sub'] as $subcat)
-					{
-						// Only show sub-categories that returned search results
-						if ($subcat['total'] > 0)
-						{
-							// If we have a specific category, prepend it to the search term
-							$blob = '';
-							if ($subcat['category'])
-							{
-								$blob = $subcat['category'];
-							}
+				$sef = JRoute::_($here . '&area='. stripslashes($blob));
+				$sef = str_replace('%20', ',', $sef);
+				$sef = str_replace(' ', ',', $sef);
+				$sef = str_replace('+', ',', $sef);
 
-							// Is this the active category?
-							$a = '';
-							if ($subcat['category'] == $this->active)
-							{
-								$a = ' class="active"';
-
-								$app = JFactory::getApplication();
-								$pathway = $app->getPathway();
-								$pathway->addItem($subcat['title'],'index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
-							}
-
-							// Build the HTML
-							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. stripslashes($blob).'&sort='.$this->filters['sort']);
-							$sef = str_replace('%20',',',$sef);
-							$sef = str_replace(' ',',',$sef);
-							$sef = str_replace('+',',',$sef);
-							$k[] = "\t\t\t".'<li><a'.$a.' href="'.$sef.'">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">'.$subcat['total'].'</span></a></li>';
-						}
-					}
-					// Do we actually have any links?
-					// NOTE: this method prevents returning empty list tags "<ul></ul>"
-					if (count($k) > 0)
-					{
-						$l .= "\t\t".'<ul>'."\n";
-						$l .= implode( "\n", $k );
-						$l .= "\t\t".'</ul>'."\n";
-					}
-				}
-				$l .= '</li>';
-				$links[] = $l;
+				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 			}
 		}
+		// Do we actually have any links?
+		// NOTE: this method prevents returning empty list tags "<ul></ul>"
+		if (count($k) > 0)
+		{
+			$l .= "\t\t".'<ul>'."\n";
+			$l .= implode("\n", $k);
+			$l .= "\t\t".'</ul>'."\n";
+		}
+	}
+	$l .= '</li>';
+
+	$links[] = $l;
+}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -206,203 +213,67 @@ $this->css();
 				</ul>
 
 				<div class="container-block">
-	<?php
-	$juri = JURI::getInstance();
-	$foundresults = false;
-	$dopaging = true;
-	//$cats = $this->cats;
-	$jconfig = JFactory::getConfig();
-	$html = '';
-	$k = 0;
-	if ($this->active) {
-		$k++;
-	}
-	foreach ($this->results as $category)
-	{
-		$amt = count($category);
-
-		if ($amt > 0) {
-			$foundresults = true;
-
-			$name  = $cats[$k]['title'];
-			$total = $cats[$k]['total'];
-			$divid = 'search' . $cats[$k]['category'];
-
-			// Is this category the active category?
-			if (!$this->active || $this->active == $cats[$k]['category']) {
-				// It is - get some needed info
-				$name  = $cats[$k]['title'];
-				$total = $cats[$k]['total'];
-				$divid = 'search'.$cats[$k]['category'];
-
-				if ($this->active == $cats[$k]['category']) {
-					$dopaging = true;
-				}
-			} else {
-				$total = $cats[$k]['total'];
-
-				// It is not - does this category have sub-categories?
-				if (isset($cats[$k]['_sub']) && is_array($cats[$k]['_sub'])) {
-					// It does - loop through them and see if one is the active category
-					foreach ($cats[$k]['_sub'] as $sub)
-					{
-						if ($this->active == $sub['category']) {
-							// Found an active category
-							$name  = $sub['title'];
-							$total = $sub['total'];
-							$divid = 'search' . $sub['category'];
-
-							$dopaging = true;
-							break;
+					<?php
+						$ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
+						if ($total && !$ttl)
+						{
+							$ttl = $total;
 						}
-					}
-				}
-			}
-			$this->total = $total;
 
-			$name  = ($name) ? $name : JText::_('COM_TAGS_ALL_CATEGORIES');
-			$divid = ($divid) ? $divid : 'searchall';
+						$base = rtrim(JURI::base(), '/');
 
-			//$num  = $total .' ';
-			//$num .= ($total > 1) ? JText::_('COM_TAGS_RESULTS') : JText::_('COM_TAGS_RESULT');
+						$html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . JText::sprintf('%s-%s of %s', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>'."\n";
 
-			// A function for category specific items that may be needed
-			$f = 'plgTags'.ucfirst($cats[$k]['category']).'Doc';
-			if (function_exists($f)) {
-				$f();
-			}
-			// Check if a method exist (using JPlugin style)
-			$obj = 'plgTags'.ucfirst($cats[$k]['category']);
-			if (method_exists($obj, 'documents')) {
-				$html .= call_user_func( array($obj,'documents') );
-			}
+						if ($this->results)
+						{
+							$html .= '<ol class="results">'."\n";
+							foreach ($this->results as $row)
+							{
+								$obj = 'plgTags' . ucfirst($row->section);
 
-			$feed = JRoute::_('index.php?option='.$this->option.'&task=feed.rss&tag='.$this->tagstring.'&area='.$cats[$k]['category']);
-			if (substr($feed, 0, 4) != 'http') {
-				if (substr($feed, 0, 1) != DS) {
-					$feed = DS.$feed;
-				}
-				$jconfig = JFactory::getConfig();
-				$live_site = rtrim(JURI::base(),'/');
-				$feed = $live_site.$feed;
-			}
-			$feed = str_replace('https:://','http://',$feed);
+								if (method_exists($obj, 'out'))
+								{
+									$html .= call_user_func(array($obj, 'out'), $row);
+								}
+								else
+								{
+									if (strstr($row->href, 'index.php'))
+									{
+										$row->href = JRoute::_($row->href);
+									}
 
-			$ttl = 0;
-			if (isset($this->totals[$k]) && is_array($this->totals[$k])) {
-				foreach ($this->totals[$k] as $t)
-				{
-					$ttl += $t;
-				}
-			} else {
-				$ttl = (isset($this->totals[$k])) ? $this->totals[$k] : $ttl;
-			}
-			$ttl = ($ttl > 5) ? 5 : $ttl;
-
-			if (!$dopaging) {
-				$num = ($this->filters['start']+1).'-'.$ttl.' of ';
-			} else {
-				$ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
-				if ($total && !$ttl)
-				{
-					$ttl = $total;
-				}
-				$num = ($this->filters['start']+1).'-'.$ttl.' of ';
-			}
-
-			// Build the category HTML
-			$html .= '<h3 id="rel-'.$divid.'">';
-			if (!$dopaging) {
-				$html .= '<a href="'.JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$cats[$k]['category']).'" title="'.JText::sprintf('COM_TAGS_VIEW_ALL', $name).'">';
-			}
-			$html .= $this->escape(stripslashes($name)).' <span>('.$num.$total.')</span> ';
-			if (!$dopaging) {
-				$html .= '<span class="more">&raquo;</span></a> ';
-			}
-			//if ($this->active) {
-				//$html .= '<a class="feed" href="'.$feed.'" title="'.JText::_('COM_TAGS_FEED').'">'.JText::_('COM_TAGS_FEED').'</a>';
-			//}
-			$html .= '</h3>'."\n";
-			$html .= '<div class="category-wrap" id="'.$divid.'">'."\n";
-			$html .= '<ol class="search results">'."\n";
-			foreach ($category as $row)
-			{
-				$row->href = str_replace('&amp;', '&', $row->href);
-				$row->href = str_replace('&', '&amp;', $row->href);
-
-				// Does this category have a unique output display?
-				$func = 'plgTags'.ucfirst($row->section).'Out';
-				// Check if a method exist (using JPlugin style)
-				$obj = 'plgTags'.ucfirst($row->section); //ucfirst($cats[$k]['category']);
-
-				if (function_exists($func)) {
-					$html .= $func( $row );
-				} elseif (method_exists($obj, 'out')) {
-					$html .= call_user_func( array($obj,'out'), $row );
-				} else {
-					if (strstr( $row->href, 'index.php' )) {
-						$row->href = JRoute::_($row->href);
-					}
-					if (substr($row->href,0,1) == '/') {
-						$row->href = substr($row->href,1,strlen($row->href));
-					}
-
-					$html .= "\t".'<li>'."\n";
-					$html .= "\t\t".'<p class="title"><a href="'.$row->href.'">'.\Hubzero\Utility\Sanitize::clean($row->title).'</a></p>'."\n";
-					if ($row->ftext) {
-						$row->ftext = strip_tags($row->ftext);
-						$html .= "\t\t".'<p>'.\Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200)."</p>\n";
-					}
-					$html .= "\t\t".'<p class="href">'.$juri->base().$row->href.'</p>'."\n";
-					$html .= "\t".'</li>'."\n";
-				}
-			}
-			$html .= '</ol>'."\n";
-			// Initiate paging if we we're displaying an active category
-			if (!$dopaging)
-			{
-				$html .= '<p class="moreresults">'.JText::sprintf('COM_TAGS_TOTAL_RESULTS_FOUND',$amt);
-				// Add a "more" link if necessary
-				$ttl = 0;
-				if (is_array($this->totals[$k])) {
-					foreach ($this->totals[$k] as $t)
-					{
-						$ttl += $t;
-					}
-				} else {
-					$ttl = $this->totals[$k];
-				}
-				if ($ttl > 5) {
-					$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='. urlencode(stripslashes($cats[$k]['category'])));
-					$html .= ' <span>|</span> <a href="'.$sef.'">'.JText::_('COM_TAGS_SEE_MORE_RESULTS').' &rarr;</a>';
-				}
-				$html .= '</p>'."\n\n";
-			}
-			$html .= '</div><!-- / #'.$divid.' -->'."\n";
-		}
-		$k++;
-	}
-	if (!$foundresults) {
-		$html .= '<p class="warning">' . JText::_('COM_TAGS_NO_RESULTS') . '</p>';
-	}
-	echo $html;
-	?>
+									$html .= "\t".'<li>'."\n";
+									$html .= "\t\t".'<p class="title"><a href="' . $row->href . '">'.\Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>'."\n";
+									if ($row->ftext)
+									{
+										$html .= "\t\t".'<p>'.\Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200)."</p>\n";
+									}
+									$html .= "\t\t".'<p class="href">' . $base . $row->href . '</p>'."\n";
+									$html .= "\t".'</li>'."\n";
+								}
+							}
+							$html .= '</ol>'."\n";
+						}
+						else
+						{
+							$html = '<p class="warning">' . JText::_('COM_TAGS_NO_RESULTS') . '</p>';
+						}
+						echo $html;
+					?>
 				</div><!-- / .container-block -->
 				<?php
-				if ($dopaging) {
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
 						$this->total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
-
 					$pageNav->setAdditionalUrlParam('task', '');
 					$pageNav->setAdditionalUrlParam('tag', $this->tagstring);
 					$pageNav->setAdditionalUrlParam('active', $this->active);
 					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+
 					echo $pageNav->getListFooter() . '<div class="clearfix"></div>';
-				}
 				?>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
@@ -416,7 +287,7 @@ $this->css();
 				{
 					// Yes - output the necessary HTML
 					$html  = '<ul>'."\n";
-					$html .= implode( "\n", $links );
+					$html .= implode("\n", $links);
 					$html .= '</ul>'."\n";
 				}
 				else

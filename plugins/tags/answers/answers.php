@@ -42,28 +42,10 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * Record count
-	 *
-	 * @var integer
-	 */
-	private $_total = null;
-
-	/**
-	 * Return the name of the area this plugin retrieves records for
-	 *
-	 * @return     array
-	 */
-	public function onTagAreas()
-	{
-		return array(
-			'answers' => JText::_('PLG_TAGS_ANSWERS')
-		);
-	}
 
 	/**
 	 * Retrieve records for items tagged with specific tags
-	 *
+	 * 
 	 * @param      array   $tags       Tags to match records against
 	 * @param      mixed   $limit      SQL record limit
 	 * @param      integer $limitstart SQL record limit start
@@ -73,19 +55,17 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit)
-		{
-			if (!isset($areas['answers']) && !in_array('answers', $areas))
-			{
-				return array();
-			}
-		}
+		$response = array(
+			'name'    => $this->_name,
+			'title'   => JText::_('PLG_TAGS_ANSWERS'),
+			'total'   => 0,
+			'results' => null,
+			'sql'     => ''
+		);
 
-		// Do we have a member ID?
 		if (empty($tags))
 		{
-			return array();
+			return $response;
 		}
 
 		$database = JFactory::getDBO();
@@ -100,10 +80,10 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		// Build the query
 		$f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
 
-		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by,
-					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href,
-					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params,
-					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount,
+		$f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by, 
+					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href, 
+					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params, 
+					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount, 
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
 		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids)";
@@ -118,73 +98,50 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		}
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
-		// Execute the query
-		if (!$limit)
+		$database->setQuery($f_count . $f_from . ") AS f");
+		$response['total'] = $database->loadResult();
+
+		if ($areas && $areas == $response['name'])
 		{
-			$database->setQuery($f_count . $f_from . ") AS f");
-			$this->_total = $database->loadResult();
-			return $this->_total;
+			$database->setQuery($f_fields . $f_from .  $order_by);
+			$response['results'] = $database->loadObjectList();
 		}
 		else
 		{
-			if (count($areas) > 1)
-			{
-				return $f_fields . $f_from;
-			}
-
-			if ($this->_total != null)
-			{
-				if ($this->_total == 0)
-				{
-					return array();
-				}
-			}
-
-			$database->setQuery($f_fields . $f_from .  $order_by);
-			$rows = $database->loadObjectList();
-
-			// Did we get any results?
-			if ($rows)
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($rows as $key => $row)
-				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id);
-				}
-			}
-
-			// Return the results
-			return $rows;
+			$response['sql'] = $f_fields . $f_from;
 		}
+
+		return $response;
 	}
 
 	/**
 	 * Static method for formatting results
-	 *
+	 * 
 	 * @param      object $row Database row
 	 * @return     string HTML
 	 */
 	public static function out($row)
 	{
-		if (strstr($row->href, 'index.php'))
+		$row->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id);
+		if (strstr($row->href, 'index.php')) 
 		{
 			$row->href = JRoute::_($row->href);
 		}
 		$juri = JURI::getInstance();
 
-		$html  = "\t" . '<li class="resource">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		$html  = "\t" . '<li class="answer">' . "\n";
+		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . strip_tags(stripslashes($row->title)) . '</a></p>' . "\n";
 		$html .= "\t\t" . '<p class="details">';
-		if ($row->state == 1)
+		if ($row->state == 1) 
 		{
 			$html .= JText::_('PLG_TAGS_ANSWERS_OPEN');
-		}
-		else
+		} 
+		else 
 		{
 			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
 		}
 		$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
-		if ($row->ftext)
+		if ($row->ftext) 
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
 		}

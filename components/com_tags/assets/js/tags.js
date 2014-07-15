@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tags/tags.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_tags/assets/jstags.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -30,7 +30,7 @@ jQuery(document).ready(function(jq){
 		var count = i + 1,
 			url = $(el).attr("href");
 
-		url += (url.indexOf("?") == -1) ? "?count="+count : "&count="+count;
+		url += (url.indexOf("?") == -1 ? "?" : "&") + "count=" + count;
 		$(el).attr("href", url);
 
 		$(el).on('click', function (e) {
