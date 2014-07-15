@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->js();
+
 $item = $this->entry->item();
 
 if (!$this->entry->exists())

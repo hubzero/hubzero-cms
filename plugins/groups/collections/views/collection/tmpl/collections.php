@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->js('jquery.masonry.js', 'com_collections')
+     ->js('jquery.infinitescroll.js', 'com_collections')
+     ->js();
+
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 

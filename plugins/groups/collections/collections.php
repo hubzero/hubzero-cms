@@ -58,11 +58,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	public function &onGroupAreas()
 	{
 		$area = array(
-			'name'  => $this->_name,
-			'title' => JText::_('PLG_GROUPS_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
+			'name'             => $this->_name,
+			'title'            => JText::_('PLG_GROUPS_' . strtoupper($this->_name)),
+			'default_access'   => $this->params->get('plugin_access', 'members'),
 			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon' => 'f005'
+			'icon'             => 'f005'
 		);
 		return $area;
 	}
@@ -368,14 +368,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->params      = $this->params;
 		$view->model       = $this->model;
 
-		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
-
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters = array(
+			'limit' => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start' => JRequest::getInt('limitstart', 0)
+		);
 
 		$count = array(
 			'count'  => true
@@ -443,18 +442,16 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
-
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
+		$view->filters = array(
+			'limit' => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start' => JRequest::getInt('limitstart', 0)
+		);
 
 		// Filters for returning results
-		$filters = array();
-		$filters['user_id']     = $this->juser->get('id');
-		$filters['state']       = 1;
+		$filters = array(
+			'user_id' => $this->juser->get('id'),
+			'state'   => 1
+		);
 
 		$count = array(
 			'count'  => true
@@ -504,7 +501,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display a list of items in a collection
+	 * Display a list of posts in a collection
 	 *
 	 * @return     string
 	 */
@@ -514,30 +511,28 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			array(
 				'folder'  => $this->_type,
 				'element' => $this->_name,
-				'name'    => 'collection'
+				'name'    => 'collection',
+				'layout'  => 'default'
 			)
 		);
-		$view->name        = $this->_name;
-		$view->juser       = $this->juser;
-		$view->option      = $this->option;
-		$view->group       = $this->group;
-		$view->params      = $this->params;
-		$view->model       = $this->model;
-
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
+		$view->name    = $this->_name;
+		$view->juser   = $this->juser;
+		$view->option  = $this->option;
+		$view->group   = $this->group;
+		$view->params  = $this->params;
+		$view->model   = $this->model;
 
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
-		$view->filters['user_id']     = JFactory::getUser()->get('id');
-		$view->filters['search']      = JRequest::getVar('search', '');
-		$view->filters['state']       = 1;
-		$view->filters['collection_id'] = JRequest::getVar('board', 0);
+		$view->filters = array(
+			'limit'         => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'         => JRequest::getInt('limitstart', 0),
+			'user_id'       => JFactory::getUser()->get('id'),
+			'search'        => JRequest::getVar('search', ''),
+			'state'         => 1,
+			'collection_id' => JRequest::getVar('board', 0)
+		);
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
@@ -695,7 +690,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Display a list of items in a collection
+	 * Display a list of posts for all collections
 	 *
 	 * @return     string
 	 */
@@ -706,29 +701,27 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'collection',
-				'layout'  => 'posts'
+				'layout'  => 'default'
 			)
 		);
-		$view->name       = $this->_name;
-		$view->group      = $this->group;
-		$view->option     = $this->option;
-		$view->params     = $this->params;
-		$view->model      = $this->model;
-
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.masonry');
-		\Hubzero\Document\Assets::addComponentScript('com_collections', 'assets/js/jquery.infinitescroll');
-		\Hubzero\Document\Assets::addPluginScript('members', $this->_name);
+		$view->name    = $this->_name;
+		$view->group   = $this->group;
+		$view->option  = $this->option;
+		$view->params  = $this->params;
+		$view->model   = $this->model;
 
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
-		$view->filters['search']      = JRequest::getVar('search', '');
-		$view->filters['state']       = 1;
-		$view->filters['object_type']  = 'group';
-		$view->filters['object_id']  = $this->group->get('gidNumber');
+		$view->filters = array(
+			'limit'       => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'       => JRequest::getInt('limitstart', 0),
+			'search'      => JRequest::getVar('search', ''),
+			'state'       => 1,
+			'object_type' => 'group',
+			'object_id'   => $this->group->get('gidNumber'),
+			'user_id'     => JFactory::getUser()->get('id')
+		);
 
 		// Filters for returning results
 		$count = array(
@@ -742,11 +735,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->collections = $this->model->collections($count);
-
 		$view->posts       = $this->model->posts($count);
-
 		$view->followers   = $this->model->followers($count);
-
 		if ($this->params->get('access-can-follow'))
 		{
 			$view->following   = $this->model->following($count);
@@ -754,7 +744,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->collection = CollectionsModelCollection::getInstance();
 
-		$view->filters['user_id']     = JFactory::getUser()->get('id');
+		//$view->filters['user_id'] = JFactory::getUser()->get('id');
 
 		$view->rows = $view->collection->posts($view->filters);
 
@@ -940,8 +930,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			\Hubzero\Document\Assets::addPluginScript('groups', $this->_name);
-
 			return $view->loadTemplate();
 		}
 	}
@@ -1164,7 +1152,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Display updated bulletin stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('%s reposts', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+			echo JText::sprintf('PLG_GROUPS_COLLECTIONS_POST_REPOSTS', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 
