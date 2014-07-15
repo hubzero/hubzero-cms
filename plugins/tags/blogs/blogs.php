@@ -97,14 +97,14 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		}
 		$ids = implode(',', $ids);
 
-		$now = date('Y-m-d H:i:s', time() + 0 * 60 * 60);
+		$now = JFactory::getDate()->toSql();
 
 		// Build the query
 		$e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 		$e_fields = "SELECT e.id, e.title, e.alias, NULL AS itext, e.content AS ftext, e.state, e.created, e.created_by,
 					NULL AS modified, e.publish_up, e.publish_down, CONCAT('index.php?option=com_blog&task=view&id=', e.id) AS href,
 					'blogs' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, e.scope AS rcount, u.name AS data1,
-					NULL AS data2, NULL AS data3 ";
+					e.group_id AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
 		$juser = JFactory::getUser();
@@ -116,9 +116,9 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		{
 			$e_where .= " AND e.state>0";
 		}
-		$e_where .= " AND (e.publish_up = '0000-00-00 00:00:00' OR e.publish_up <= '" . $now . "') ";
-		$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= '" . $now . "') ";
-		$e_where .= " GROUP BY e.id HAVING uniques=".count($tags);
+		$e_where .= " AND (e.publish_up = '0000-00-00 00:00:00' OR e.publish_up <= " . $database->quote($now) . ") ";
+		$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= " . $database->quote($now) . ") ";
+		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{
@@ -134,6 +134,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 			// Get a count
 			$database->setQuery($e_count . $e_from . $e_where . ") AS f");
 			$this->_total = $database->loadResult();
+
 			return $this->_total;
 		}
 		else
@@ -159,17 +160,6 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					switch ($row->rcount)
-					{
-						case 'site':
-							$rows[$key]->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
-						break;
-						case 'member':
-							$rows[$key]->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
-						break;
-						case 'group':
-						break;
-					}
 					$rows[$key]->href = JRoute::_($row->href);
 				}
 			}
@@ -186,36 +176,20 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$juri = JURI::getInstance();
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'entry.php');
 
-		switch ($row->rcount)
-		{
-			case 'site':
-				$row->href = JRoute::_('index.php?option=com_blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
-			break;
-			case 'member':
-				$row->href = JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, 'Y') . '/' . JHTML::_('date', $row->publish_up, 'm') . '/' . $row->alias);
-			break;
-			case 'group':
-			break;
-		}
-		$row->href = JRoute::_($row->href);
+		$row->scope    = $row->rcount;
+		$row->group_id = $row->data2;
+		$row->content  = $row->ftext;
 
-		// Start building the HTML
-		$html  = "\t" . '<li class="blog-entry">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		$html .= "\t\t" . '<p class="details">' . JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1'));
-		$html .= ' <span>|</span> ' . JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . stripslashes($row->data1) . '</a></cite>');
-		$html .= '</p>'."\n";
-		if ($row->ftext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
-		}
-		$html .= "\t\t" . '<p class="href">' . rtrim($juri->base(), DS) . DS . ltrim($row->href, DS) . '</p>' . "\n";
-		$html .= "\t" . '</li>' . "\n";
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => 'tags',
+			'element' => 'blogs',
+			'name'    => 'result'
+		));
+		$view->entry = new BlogModelEntry($row);
 
-		// Return output
-		return $html;
+		return $view->loadTemplate();
 	}
 }
 
