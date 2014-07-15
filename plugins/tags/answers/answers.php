@@ -123,7 +123,7 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	public static function out($row)
 	{
 		$row->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id);
-		if (strstr($row->href, 'index.php')) 
+		if (strstr($row->href, 'index.php'))
 		{
 			$row->href = JRoute::_($row->href);
 		}
@@ -132,16 +132,16 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 		$html  = "\t" . '<li class="answer">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . strip_tags(stripslashes($row->title)) . '</a></p>' . "\n";
 		$html .= "\t\t" . '<p class="details">';
-		if ($row->state == 1) 
+		if ($row->state == 1)
 		{
 			$html .= JText::_('PLG_TAGS_ANSWERS_OPEN');
-		} 
-		else 
+		}
+		else
 		{
 			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
 		}
 		$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
-		if ($row->ftext) 
+		if ($row->ftext)
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
 		}
