@@ -189,7 +189,9 @@ HUB.Members.Profile = {
 				{
 					switch( profile_field )
 					{
-						case 'email': 	HUB.Members.Profile.editRedirect(window.location.href);		break;
+						case 'email':
+						case 'usageAgreement':
+							HUB.Members.Profile.editRedirect(window.location.href);		break;
 						default: 		HUB.Members.Profile.editReloadSections();
 					}
 				}
