@@ -31,7 +31,7 @@ var HUB = {};
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('EVENT'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_EVENTS_EVENT'); ?></span></legend>
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required">required</span></label><br />
@@ -130,15 +130,15 @@ var HUB = {};
 
 		<?php if ($this->row->scope == 'group') : ?>
 			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('Reccurence'); ?></span></legend>
+				<legend><span><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></span></legend>
 
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<td class="key" width="20%"><label for="reccurence"><?php echo JText::_('Reccurence'); ?>:</label></td>
+							<td class="key" width="20%"><label for="reccurence"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?>:</label></td>
 							<td>
 								<input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
-								<span class="hint">Must follow standard RRULE spec: <a href="http://www.kanzaki.com/docs/ical/rrule.html" target="_blank">view spec</a></span>
+								<span class="hint"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html'); ?></span>
 							</td>
 						</tr>
 					</tbody>
@@ -157,13 +157,13 @@ var HUB = {};
 			<div class="input-wrap" data-hint="The email registrations will be sent to.">
 				<label for="field-email"><?php echo JText::_('COM_EVENTS_EMAIL'); ?>:</label><br />
 				<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->email); ?>" />
-				<span class="hint">The email registrations will be sent to.</span>
+				<span class="hint"><?php echo JText::_('COM_EVENTS_EMAIL_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap" data-hint="If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.">
 				<label for="field-restricted"><?php echo JText::_('COM_EVENTS_RESTRICTED'); ?>:</label><br />
 				<input type="text" name="restricted" id="field-restricted" value="<?php echo $this->escape($this->row->restricted); ?>" />
-				<span class="hint">If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.</span>
+				<span class="hint"><?php echo JText::_('COM_EVENTS_RESTRICTED_HINT'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -172,7 +172,7 @@ var HUB = {};
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-					<td><?php echo $this->row->state > 0 ? JText::_('Published') : ($this->row->state < 0 ? JText::_('Archived') : JText::_('Draft Unpublished'));?></td>
+					<td><?php echo $this->row->state > 0 ? JText::_('COM_EVENTS_EVENT_PUBLISHED') : ($this->row->state < 0 ? JText::_('COM_EVENTS_EVENT_ARCHIVED') : JText::_('COM_EVENTS_EVENT_UNPUBLISHED'));?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>

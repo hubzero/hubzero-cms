@@ -60,10 +60,10 @@ function submitbutton(pressbutton)
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_EVENTS_SEARCH_GO'); ?>" />
 	</fieldset>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -89,7 +89,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->title)).' ('.$this->escape(stripslashes($row->alias)).')'; ?></a></td>
+				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;event=<?php echo $this->event->id; ?>"><?php echo $this->escape(stripslashes($row->title)).' ('.$this->escape(stripslashes($row->alias)).')'; ?></a></td>
 				<td><?php echo $this->pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position), 'orderuppage'); ?></td>
 				<td><?php echo $this->pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position), 'orderdownpage'); ?></td>
 				<td><?php echo $row->ordering; ?></td>

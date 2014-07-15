@@ -78,7 +78,7 @@ function submitbutton(pressbutton)
 						<td class="key"><label for="alias"><?php echo JText::_('COM_EVENTS_ALIAS'); ?>:</label></td>
 						<td>
 							<input type="text" name="alias" id="alias" value="<?php echo $this->escape(stripslashes($this->page->alias)); ?>" size="50" />
-							<br /><span>A short identifier for this page. Ex: "agenda". Alpha-numeric characters only. No spaces.</span>
+							<br /><span><?php echo JText::_('COM_EVENTS_ALIAS_HINT'); ?></span>
 						</td>
 					</tr>
 					<tr>
@@ -95,23 +95,23 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th>Ordering</th>
+					<th><?php echo JText::_('COM_EVENTS_PAGE_ORDERING'); ?></th>
 					<td><?php echo $this->page->ordering; ?></td>
 				</tr>
 				<tr>
-					<th>Created</th>
+					<th><?php echo JText::_('COM_EVENTS_PAGE_CREATED'); ?></th>
 					<td><?php echo $this->page->created; ?></td>
 				</tr>
 				<tr>
-					<th>Created by</th>
+					<th><?php echo JText::_('COM_EVENTS_PAGE_CREATED_BY'); ?></th>
 					<td><?php echo $this->page->created_by; ?></td>
 				</tr>
 				<tr>
-					<th>Last Modified</th>
+					<th><?php echo JText::_('COM_EVENTS_PAGE_LAST_MODIFIED'); ?></th>
 					<td><?php echo $this->page->modified; ?></td>
 				</tr>
 				<tr>
-					<th>Modified by</th>
+					<th><?php echo JText::_('COM_EVENTS_PAGE_LAST_MODIFIED_BY'); ?></th>
 					<td><?php echo $this->page->modified_by; ?></td>
 				</tr>
 			</tbody>

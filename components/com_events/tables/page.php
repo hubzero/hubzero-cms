@@ -133,7 +133,7 @@ class EventsPage extends JTable
 		$this->alias = trim($this->alias);
 		if ($this->alias == '')
 		{
-			$this->setError(JText::_('You must enter an alias.'));
+			$this->setError(JText::_('COM_EVENTS_PAGE_MUST_HAVE_ALIAS'));
 			return false;
 		}
 		return true;

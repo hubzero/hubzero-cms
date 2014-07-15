@@ -145,6 +145,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+			// load events lang file
+			$lang = JFactory::getLanguage();
+			$lang->load('com_events');
+
 			//push styles to the view
 			\Hubzero\Document\Assets::addPluginStylesheet('groups','calendar');
 			\Hubzero\Document\Assets::addPluginScript('groups','calendar');

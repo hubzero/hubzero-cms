@@ -313,7 +313,7 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No page ID found.'),
+				JText::_('COM_EVENTS_PAGE_NO_ID'),
 				'error'
 			);
 			return;
@@ -324,7 +324,7 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No event ID found.'),
+				JText::_('COM_EVENTS_PAGE_NO_EVENT_ID'),
 				'error'
 			);
 			return;

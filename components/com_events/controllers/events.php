@@ -1184,7 +1184,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// check to make sure this is the only time registering
 		if (EventsRespondent::checkUniqueEmailForEvent($register['email'], $event->id) > 0)
 		{
-			$this->setError(JText::_('You have previously registered for this event.'));
+			$this->setError(JText::_('EVENTS_EVENT_REGISTRATION_PREVIOUS'));
 			$validemail = 0;
 		}
 
@@ -1384,7 +1384,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&task=add'
 			);
 
-			$this->login();
+			$this->loginTask();
 			return;
 		}
 
@@ -1634,7 +1634,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->login();
+			$this->loginTask();
 			return;
 		}
 
@@ -1716,7 +1716,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->login();
+			$this->loginTask();
 			return;
 		}
 
@@ -1910,7 +1910,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		if ($pubdow <= $pubup)
 		{
 			// Set the error message
-			$this->setError(JText::_('Event end time cannot be before event start time.'));
+			$this->setError(JText::_('EVENTS_EVENT_MUST_END_AFTER_START'));
 			// Fall through to the edit view
 			$this->edit($row);
 			return;

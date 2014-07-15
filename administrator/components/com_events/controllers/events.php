@@ -138,7 +138,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$this->view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
 
 		//get list of groups
-		$groups[] = JHTML::_('select.option', '0', '- ' . JText::_('All Groups'), 'value', 'text');
+		$groups[] = JHTML::_('select.option', '0', '- ' . JText::_('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
 		$sql = "SELECT DISTINCT(g.gidNumber) AS value, g.description AS text
 				FROM jos_events AS e, jos_xgroups AS g
 				WHERE e.scope='group'

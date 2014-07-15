@@ -163,10 +163,10 @@ class EventsHtml
 		{
 			$name_of_day = '&nbsp;' . $day_name[$a];
 			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
-        }
+		}
 		$tosend = EventsHtml::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
 		return $tosend;
-    }
+	}
 
 	/**
 	 * Build a month select list
@@ -189,7 +189,7 @@ class EventsHtml
 		}
 		$tosend = JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
 		return $tosend;
-    }
+	}
 
 	/**
 	 * Build a day select list
@@ -214,7 +214,7 @@ class EventsHtml
 		}
 		$tosend = JHTML::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
 		return $tosend;
-    }
+	}
 
 	/**
 	 * Build a select list for year
@@ -229,18 +229,18 @@ class EventsHtml
 		if ($year<$y-2)
 		{
 			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
-        }
+		}
 		for ($i=$y-2; $i<=$y+5; $i++)
 		{
 			$yearslist[] = JHTML::_('select.option', $i, $i, 'value', 'text');
-        }
+		}
 		if ($year>$y+5)
 		{
 			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
 		}
 		$tosend = JHTML::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
 		return $tosend;
-    }
+	}
 
 	/**
 	 * Build a view select list
@@ -346,46 +346,46 @@ class EventsHtml
 	public static function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones = array(
-			JHTML::_('select.option', -12,   JText::_('(UTC -12:00) International Date Line West')),
-			JHTML::_('select.option', -11,   JText::_('(UTC -11:00) Midway Island, Samoa')),
-			JHTML::_('select.option', -10,   JText::_('(UTC -10:00) Hawaii')),
-			JHTML::_('select.option', -9.5,  JText::_('(UTC -09:30) Taiohae, Marquesas Islands')),
-			JHTML::_('select.option', -9,    JText::_('(UTC -09:00) Alaska')),
-			JHTML::_('select.option', -8,    JText::_('(UTC -08:00) Pacific Time (US &amp; Canada)')),
-			JHTML::_('select.option', -7,    JText::_('(UTC -07:00) Mountain Time (US &amp; Canada)')),
-			JHTML::_('select.option', -6,    JText::_('(UTC -06:00) Central Time (US &amp; Canada), Mexico City')),
-			JHTML::_('select.option', -5,    JText::_('(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima')),
-			JHTML::_('select.option', -4,    JText::_('(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz')),
-			JHTML::_('select.option', -4.5,  JText::_('(UTC -04:30) Venezuela')),
-			JHTML::_('select.option', -3.5,  JText::_('(UTC -03:30) St. John\'s, Newfoundland, Labrador')),
-			JHTML::_('select.option', -3,    JText::_('(UTC -03:00) Brazil, Buenos Aires, Georgetown')),
-			JHTML::_('select.option', -2,    JText::_('(UTC -02:00) Mid-Atlantic')),
-			JHTML::_('select.option', -1,    JText::_('(UTC -01:00) Azores, Cape Verde Islands')),
-			JHTML::_('select.option', 0,     JText::_('(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca')),
-			JHTML::_('select.option', 1,     JText::_('(UTC +01:00) Amsterdam, Berlin, Brussels, Copenhagen, Madrid, Paris')),
-			JHTML::_('select.option', 2,     JText::_('(UTC +02:00) Istanbul, Jerusalem, Kaliningrad, South Africa')),
-			JHTML::_('select.option', 3,     JText::_('(UTC +03:00) Baghdad, Riyadh, Moscow, St. Petersburg')),
-			JHTML::_('select.option', 3.5,   JText::_('(UTC +03:30) Tehran')),
-			JHTML::_('select.option', 4,     JText::_('(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi')),
-			JHTML::_('select.option', 4.5,   JText::_('(UTC +04:30) Kabul')),
-			JHTML::_('select.option', 5,     JText::_('(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent')),
-			JHTML::_('select.option', 5.5,   JText::_('(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo')),
-			JHTML::_('select.option', 5.75,  JText::_('(UTC +05:45) Kathmandu')),
-			JHTML::_('select.option', 6,     JText::_('(UTC +06:00) Almaty, Dhaka')),
-			JHTML::_('select.option', 6.5,   JText::_('(UTC +06:30) Yagoon')),
-			JHTML::_('select.option', 7,     JText::_('(UTC +07:00) Bangkok, Hanoi, Jakarta')),
-			JHTML::_('select.option', 8,     JText::_('(UTC +08:00) Beijing, Perth, Singapore, Hong Kong')),
-			JHTML::_('select.option', 8.75,  JText::_('(UTC +08:00) Ulaanbaatar, Western Australia')),
-			JHTML::_('select.option', 9,     JText::_('(UTC +09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk')),
-			JHTML::_('select.option', 9.5,   JText::_('(UTC +09:30) Adelaide, Darwin, Yakutsk')),
-			JHTML::_('select.option', 10,    JText::_('(UTC +10:00) Eastern Australia, Guam, Vladivostok')),
-			JHTML::_('select.option', 10.5,  JText::_('(UTC +10:30) Lord Howe Island (Australia)')),
-			JHTML::_('select.option', 11,    JText::_('(UTC +11:00) Magadan, Solomon Islands, New Caledonia')),
-			JHTML::_('select.option', 11.5,  JText::_('(UTC +11:30) Norfolk Island')),
-			JHTML::_('select.option', 12,    JText::_('(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka')),
-			JHTML::_('select.option', 12.75, JText::_('(UTC +12:45) Chatham Island')),
-			JHTML::_('select.option', 13,    JText::_('(UTC +13:00) Tonga')),
-			JHTML::_('select.option', 14,    JText::_('(UTC +14:00) Kiribati')),
+			JHTML::_('select.option', -12,   JText::_('EVENTS_TIME_UTC_-12')),
+			JHTML::_('select.option', -11,   JText::_('EVENTS_TIME_UTC_-11')),
+			JHTML::_('select.option', -10,   JText::_('EVENTS_TIME_UTC_-10')),
+			JHTML::_('select.option', -9.5,  JText::_('EVENTS_TIME_UTC_-930')),
+			JHTML::_('select.option', -9,    JText::_('EVENTS_TIME_UTC_-9')),
+			JHTML::_('select.option', -8,    JText::_('EVENTS_TIME_UTC_-8')),
+			JHTML::_('select.option', -7,    JText::_('EVENTS_TIME_UTC_-7')),
+			JHTML::_('select.option', -6,    JText::_('EVENTS_TIME_UTC_-6')),
+			JHTML::_('select.option', -5,    JText::_('EVENTS_TIME_UTC_-5')),
+			JHTML::_('select.option', -4,    JText::_('EVENTS_TIME_UTC_-4')),
+			JHTML::_('select.option', -4.5,  JText::_('EVENTS_TIME_UTC_-430')),
+			JHTML::_('select.option', -3.5,  JText::_('EVENTS_TIME_UTC_-330')),
+			JHTML::_('select.option', -3,    JText::_('EVENTS_TIME_UTC_-3')),
+			JHTML::_('select.option', -2,    JText::_('EVENTS_TIME_UTC_-2')),
+			JHTML::_('select.option', -1,    JText::_('EVENTS_TIME_UTC_-1')),
+			JHTML::_('select.option', 0,     JText::_('EVENTS_TIME_UTC_0')),
+			JHTML::_('select.option', 1,     JText::_('EVENTS_TIME_UTC_1')),
+			JHTML::_('select.option', 2,     JText::_('EVENTS_TIME_UTC_2')),
+			JHTML::_('select.option', 3,     JText::_('EVENTS_TIME_UTC_3')),
+			JHTML::_('select.option', 3.5,   JText::_('EVENTS_TIME_UTC_330')),
+			JHTML::_('select.option', 4,     JText::_('EVENTS_TIME_UTC_4')),
+			JHTML::_('select.option', 4.5,   JText::_('EVENTS_TIME_UTC_430')),
+			JHTML::_('select.option', 5,     JText::_('EVENTS_TIME_UTC_5')),
+			JHTML::_('select.option', 5.5,   JText::_('EVENTS_TIME_UTC_530')),
+			JHTML::_('select.option', 5.75,  JText::_('EVENTS_TIME_UTC_545')),
+			JHTML::_('select.option', 6,     JText::_('EVENTS_TIME_UTC_6')),
+			JHTML::_('select.option', 6.5,   JText::_('EVENTS_TIME_UTC_630')),
+			JHTML::_('select.option', 7,     JText::_('EVENTS_TIME_UTC_7')),
+			JHTML::_('select.option', 8,     JText::_('EVENTS_TIME_UTC_8')),
+			JHTML::_('select.option', 8.75,  JText::_('EVENTS_TIME_UTC_845')),
+			JHTML::_('select.option', 9,     JText::_('EVENTS_TIME_UTC_9')),
+			JHTML::_('select.option', 9.5,   JText::_('EVENTS_TIME_UTC_930')),
+			JHTML::_('select.option', 10,    JText::_('EVENTS_TIME_UTC_10')),
+			JHTML::_('select.option', 10.5,  JText::_('EVENTS_TIME_UTC_1030')),
+			JHTML::_('select.option', 11,    JText::_('EVENTS_TIME_UTC_11')),
+			JHTML::_('select.option', 11.5,  JText::_('EVENTS_TIME_UTC_1130')),
+			JHTML::_('select.option', 12,    JText::_('EVENTS_TIME_UTC_12')),
+			JHTML::_('select.option', 12.75, JText::_('EVENTS_TIME_UTC_1245')),
+			JHTML::_('select.option', 13,    JText::_('EVENTS_TIME_UTC_13')),
+			JHTML::_('select.option', 14,    JText::_('EVENTS_TIME_UTC_14')),
 		);
 
 		return JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
@@ -400,53 +400,53 @@ class EventsHtml
 	public static function getTimeZoneName($tz)
 	{
 		$timezones = array(
-			"-12"   => "(UTC -12:00) International Date Line West",
-			"-11"   => "(UTC -11:00) Midway Island, Samoa",
-			"-10"   => "(UTC -10:00) Hawaii",
-			"-9.5"  => "(UTC -09:30) Taiohae, Marquesas Islands",
-			"-9"    => "(UTC -09:00) Alaska",
-			"-8"    => "(UTC -08:00) Pacific Time (US &amp; Canada)",
-			"-7"    => "(UTC -07:00) Mountain Time (US &amp; Canada)",
-			"-6"    => "(UTC -06:00) Central Time (US &amp; Canada), Mexico City",
-			"-5"    => "(UTC -05:00) Eastern Time (US &amp; Canada), Bogota, Lima",
-			"-4"    => "(UTC -04:00) Atlantic Time (Canada), Caracas, La Paz",
-			"-4.5"  => "(UTC -04:30) Venezuela",
-			"-3.5"  => "(UTC -03:30) St. John's, Newfoundland, Labrador",
-			"-3"    => "(UTC -03:00) Brazil, Buenos Aires, Georgetown",
-			"-2"    => "(UTC -02:00) Mid-Atlantic",
-			"-1"    => "(UTC -01:00) Azores, Cape Verde Islands",
-			"0"     => "(UTC 00:00) Western Europe Time, London, Lisbon, Casablanca",
-			"1"     => "(UTC +01:00) Amsterdam, Berlin, Brussels, Copenhagen, Madrid, Paris",
-			"2"     => "(UTC +02:00) Istanbul, Jerusalem, Kaliningrad, South Africa",
-			"3"     => "(UTC +03:00) Baghdad, Riyadh, Moscow, St. Petersburg",
-			"3.5"   => "(UTC +03:30) Tehran",
-			"4"     => "(UTC +04:00) Abu Dhabi, Muscat, Baku, Tbilisi",
-			"4.5"   => "(UTC +04:30) Kabul",
-			"5"     => "(UTC +05:00) Ekaterinburg, Islamabad, Karachi, Tashkent",
-			"5.5"   => "(UTC +05:30) Bombay, Calcutta, Madras, New Delhi, Colombo",
-			"5.75"  => "(UTC +05:45) Kathmandu",
-			"6"     => "(UTC +06:00) Almaty, Dhaka",
-			"6.5"   => "(UTC +06:30) Yagoon",
-			"7"     => "(UTC +07:00) Bangkok, Hanoi, Jakarta",
-			"8"     => "(UTC +08:00) Beijing, Perth, Singapore, Hong Kong",
-			"8.75"  => "(UTC +08:00) Ulaanbaatar, Western Australia",
-			"9"     => "(UTC +09:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk",
-			"9.5"   => "(UTC +09:30) Adelaide, Darwin, Yakutsk",
-			"10"    => "(UTC +10:00) Eastern Australia, Guam, Vladivostok",
-			"10.5"  => "(UTC +10:30) Lord Howe Island (Australia)",
-			"11"    => "(UTC +11:00) Magadan, Solomon Islands, New Caledonia",
-			"11.5"  => "(UTC +11:30) Norfolk Island",
-			"12"    => "(UTC +12:00) Auckland, Wellington, Fiji, Kamchatka",
-			"12.75" => "(UTC +12:45) Chatham Island",
-			"13"    => "(UTC +13:00) Tonga",
-			"14"    => "(UTC +14:00) Kiribati",
+			"-12"   => JText::_('EVENTS_TIME_UTC_-12'),
+			"-11"   => JText::_('EVENTS_TIME_UTC_-11'),
+			"-10"   => JText::_('EVENTS_TIME_UTC_-10'),
+			"-9.5"  => JText::_('EVENTS_TIME_UTC_-930'),
+			"-9"    => JText::_('EVENTS_TIME_UTC_-9'),
+			"-8"    => JText::_('EVENTS_TIME_UTC_-8'),
+			"-7"    => JText::_('EVENTS_TIME_UTC_-7'),
+			"-6"    => JText::_('EVENTS_TIME_UTC_-6'),
+			"-5"    => JText::_('EVENTS_TIME_UTC_-5'),
+			"-4"    => JText::_('EVENTS_TIME_UTC_-4'),
+			"-4.5"  => JText::_('EVENTS_TIME_UTC_-430'),
+			"-3.5"  => JText::_('EVENTS_TIME_UTC_-330'),
+			"-3"    => JText::_('EVENTS_TIME_UTC_-3'),
+			"-2"    => JText::_('EVENTS_TIME_UTC_-2'),
+			"-1"    => JText::_('EVENTS_TIME_UTC_-1'),
+			"0"     => JText::_('EVENTS_TIME_UTC_0'),
+			"1"     => JText::_('EVENTS_TIME_UTC_1'),
+			"2"     => JText::_('EVENTS_TIME_UTC_2'),
+			"3"     => JText::_('EVENTS_TIME_UTC_3'),
+			"3.5"   => JText::_('EVENTS_TIME_UTC_330'),
+			"4"     => JText::_('EVENTS_TIME_UTC_4'),
+			"4.5"   => JText::_('EVENTS_TIME_UTC_430'),
+			"5"     => JText::_('EVENTS_TIME_UTC_5'),
+			"5.5"   => JText::_('EVENTS_TIME_UTC_530'),
+			"5.75"  => JText::_('EVENTS_TIME_UTC_545'),
+			"6"     => JText::_('EVENTS_TIME_UTC_6'),
+			"6.5"   => JText::_('EVENTS_TIME_UTC_630'),
+			"7"     => JText::_('EVENTS_TIME_UTC_7'),
+			"8"     => JText::_('EVENTS_TIME_UTC_8'),
+			"8.75"  => JText::_('EVENTS_TIME_UTC_845'),
+			"9"     => JText::_('EVENTS_TIME_UTC_9'),
+			"9.5"   => JText::_('EVENTS_TIME_UTC_930'),
+			"10"    => JText::_('EVENTS_TIME_UTC_10'),
+			"10.5"  => JText::_('EVENTS_TIME_UTC_1030'),
+			"11"    => JText::_('EVENTS_TIME_UTC_11'),
+			"11.5"  => JText::_('EVENTS_TIME_UTC_1130'),
+			"12"    => JText::_('EVENTS_TIME_UTC_12'),
+			"12.75" => JText::_('EVENTS_TIME_UTC_1245'),
+			"13"    => JText::_('EVENTS_TIME_UTC_13'),
+			"14"    => JText::_('EVENTS_TIME_UTC_14')
 		);
 
-		if(array_key_exists($tz, $timezones)) {
+		if (array_key_exists($tz, $timezones))
+		{
 			return $timezones[$tz];
 		}
 		return('(timezone n/a)');
-
 	}
 
 	/**
@@ -551,7 +551,7 @@ class EventsHtml
 	 * @param      integer $userid User ID
 	 * @return     string
 	 */
-    public static function getUserMailtoLink($agid, $userid)
+	public static function getUserMailtoLink($agid, $userid)
 	{
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid)
@@ -611,7 +611,7 @@ class EventsHtml
 			case '10': $monthname = JText::_('EVENTS_CAL_LANG_OCTOBER');   break;
 			case '11': $monthname = JText::_('EVENTS_CAL_LANG_NOVEMBER');  break;
 			case '12': $monthname = JText::_('EVENTS_CAL_LANG_DECEMBER');  break;
-        }
+		}
 		return $monthname;
 	}
 

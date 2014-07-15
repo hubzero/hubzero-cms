@@ -33,7 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'date.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'repeat.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'event.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');

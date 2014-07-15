@@ -69,7 +69,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
@@ -183,7 +183,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	public function humanReadableRepeatingRule()
 	{
 		// reable repeating rule
-		$readable = 'Repeats ';
+		$readable = JText::_('COM_EVENTS_REPEATS');
 
 		// get parsed rule
 		$rule = $this->parseRepeatingRule();
@@ -191,7 +191,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// interval type type
 		if ($rule['interval'] > 1)
 		{
-			$readable .= 'Every ' . $rule['interval'] . ' ' . ucfirst(str_replace('ly', 's', $rule['freq']));
+			$readable .= JText::sprintf('COM_EVENTS_REPEATS_EVERY', $rule['interval'], ucfirst(str_replace('ly', 's', $rule['freq'])));
 		}
 		else
 		{
@@ -201,11 +201,11 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// handle end
 		if ($rule['end'] == 'count')
 		{
-			$readable .= ' For ' . $rule['count'] . ' time(s)';
+			$readable .= JText::sprintf('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
 		}
 		else if ($rule['end'] == 'until')
 		{
-			$readable .= ' Until ' . $rule['until'];
+			$readable .= JText::sprintf('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
 		}
 
 		// return
@@ -285,7 +285,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		$output .= "UID:{$id}\r\n";
 		$output .= "DTSTAMP:{$now}\r\n";
 		$output .= "DTSTART;TZID={$tzName}:" . $publishUp->format('Ymd\THis') . "\r\n";
-		if($this->get('publish_down') != '' && $this->get('publish_down') != '0000-00-00 00:00:00')
+		if ($this->get('publish_down') != '' && $this->get('publish_down') != '0000-00-00 00:00:00')
 		{
 			$output .= "DTEND;TZID={$tzName}:" . $publishDown->format('Ymd\THis') . "\r\n";
 		}
@@ -304,7 +304,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		$output .= "LAST-MODIFIED:{$modified}\r\n";
 		$output .= "SUMMARY:{$title}\r\n";
 		$output .= "DESCRIPTION:{$desc}\r\n";
-		if($url != '' && filter_var($url, FILTER_VALIDATE_URL))
+		if ($url != '' && filter_var($url, FILTER_VALIDATE_URL))
 		{
 			$output .= "URL;VALUE=URI:{$url}\r\n";
 		}

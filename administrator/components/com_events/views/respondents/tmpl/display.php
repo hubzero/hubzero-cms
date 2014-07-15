@@ -3,8 +3,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title(JText::_( 'COM_EVENTS' ).': '.JText::_('COM_EVENTS_RESPONDANTS'), 'user.png' );
-JToolBarHelper::custom('download', 'upload', JText::_('COM_EVENTS_DOWNLOAD_CSV'), JText::_('COM_EVENTS_DOWNLOAD_CSV'), false, false);
-JToolBarHelper::deleteList( '', 'remove', JText::_('Delete') );
+JToolBarHelper::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
+JToolBarHelper::deleteList( '', 'remove', 'COM_EVENTS_DELETE' );
 JToolBarHelper::cancel();
 
 $rows = $this->resp->getRecords();
@@ -45,7 +45,7 @@ function submitbutton(pressbutton)
 		<input type="submit" value="<?php echo JText::_('COM_EVENTS_GO'); ?>" />
 	</fieldset>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
  			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $rows );?>);" /></th>
@@ -80,11 +80,13 @@ for ($i=0, $n=count( $rows ); $i < $n; $i++)
 				<td><a href="mailto:<?php echo $row->email ?>"><?php echo $this->escape($row->email); ?></a></td>
 				<td><?php echo JHTML::_('date', $row->registered, JText::_('DATE_FORMAT_HZ1')); ?></td>
 				<td><?php
-				if (!empty($row->dietary_needs)) {
-					echo 'Dietary needs: '.$this->escape($row->dietary_needs).'<br />';
+				if (!empty($row->dietary_needs))
+				{
+					echo JText::sprintf('COM_EVENTS_RESPONDANT_DIETARY_NEEDS', $this->escape($row->dietary_needs)) . '<br />';
 				}
-				if ($row->disability_needs) {
-					echo 'Disability consideration requested';
+				if ($row->disability_needs)
+				{
+					echo JText::_('COM_EVENTS_RESPONDANT_DISABILITY_REQUESTED');
 				}
 				?></td>
 				<td><?php echo $this->escape($row->comment); ?></td>

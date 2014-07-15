@@ -31,8 +31,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_EVENTS_MANAGER'), 'event.png');
-JToolBarHelper::custom('addpage', 'new', 'Add Page', 'Add Page', true, false);
-JToolBarHelper::custom('respondents', 'user', JText::_('COM_EVENTS_VIEW_RESPONDENTS'), JText::_('COM_EVENTS_VIEW_RESPONDENTS'), true, false);
+JToolBarHelper::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
+JToolBarHelper::custom('respondents', 'user', 'COM_EVENTS_VIEW_RESPONDENTS', 'COM_EVENTS_VIEW_RESPONDENTS', true, false);
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
@@ -62,12 +62,12 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_EVENTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
 
 		<?php echo $this->clist; ?>
 		<?php echo $this->glist; ?>
 
-		<input type="submit" name="submitsearch" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" name="submitsearch" value="<?php echo JText::_('COM_EVENTS_SEARCH_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -81,7 +81,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TIMESHEET'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESS'); ?></th>
-				<th scope="col"><?php echo JText::_('Pages'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_PAGES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -128,15 +128,15 @@ $row = &$this->rows[$i];
 				<td>
 				<?php
 					$now = JFactory::getDate()->toSql();
-					$alt = JText::_('Unpublished');
+					$alt = JText::_('COM_EVENTS_EVENT_UNPUBLISHED');
 					if ($now <= $row->publish_up && $row->state == "1") {
-						$alt = JText::_('Pending');
+						$alt = JText::_('COM_EVENTS_EVENT_PENDING');
 					} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
-						$alt = JText::_('Published');
+						$alt = JText::_('COM_EVENTS_EVENT_PUBLISHED');
 					} else if ($now > $row->publish_down && $row->state == "1") {
-						$alt = JText::_('Expired');
+						$alt = JText::_('COM_EVENTS_EVENT_EXPIRED');
 					} elseif ($row->state == "0") {
-						$alt = JText::_('Unpublished');
+						$alt = JText::_('COM_EVENTS_EVENT_UNPUBLISHED');
 					}
 
 					$times = '';
@@ -159,7 +159,7 @@ $row = &$this->rows[$i];
 
 					if ($times) {
 				?>
-					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('Publish Information');?>::<?php echo $times; ?>">
+					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } ?>
@@ -173,11 +173,11 @@ $row = &$this->rows[$i];
 							$group = \Hubzero\User\Group::getInstance( $row->scope_id );
 							if (is_object($group))
 							{
-								echo "Group: <a href='" . JRoute::_('index.php?option=com_events&group_id=' . $group->get('gidNumber')) . "'>" . $group->get('description') . "</a>";
+								echo JText::sprintf('COM_EVENTS_EVENT_GROUP', JRoute::_('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $group->get('description'));
 							}
 							else
 							{
-								echo "Group: NOT FOUND({$row->scope_id})";
+								echo JText::sprintf('COM_EVENTS_EVENT_GROUP_NOT_FOUND', $row->scope_id);
 							}
 						?>
 					<?php else : ?>
@@ -188,7 +188,7 @@ $row = &$this->rows[$i];
 				</td>
 				<td style="white-space: nowrap;">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo JText::sprintf('%s page(s)', $pages); ?>
+						<?php echo JText::sprintf('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
 					</a>
 				</td>
 			</tr>

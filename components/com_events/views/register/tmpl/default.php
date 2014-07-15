@@ -94,37 +94,37 @@ $this->css()
 
 	<form method="post" action="index.php" id="hubForm">
 		<div class="explaination">
-			<p><strong>For Information Contact</strong></p>
+			<p><strong><?php echo JText::_('COM_EVENTS_REGISTER_EXPLAINATION'); ?></strong></p>
 			<?php
 			if (trim($this->event->contact_info)) {
 				echo stripslashes($this->event->contact_info);
 			} else {
-				echo '<p>No contact information provided.</p>'."\n";
+				echo '<p>' . JText::_('COM_EVENTS_REGISTER_EXPLAINATION_NO_EXPLAINATION') . '</p>'."\n";
 			}
 			?>
 		</div>
 		<fieldset>
-			<legend>Name &amp; Title</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_NAME'); ?></legend>
 			<div class="grid">
 				<div class="col span6">
-					<label>First Name <span class="required">required</span>
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_FIRST_NAME'); ?> <span class="required"><?php echo JText::_('COM_EVENTS_REQUIRED'); ?></span>
 					<input type="text" name="register[firstname]" value="<?php echo (isset($this->register['firstname'])) ? $this->register['firstname'] : ''; ?>" /></label>
 				</div>
 				<div class="col span6 omega">
-					<label>Last Name <span class="required">required</span>
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_LAST_NAME'); ?> <span class="required"><?php echo JText::_('COM_EVENTS_REQUIRED'); ?></span>
 					<input type="text" name="register[lastname]" value="<?php echo (isset($this->register['lastname'])) ? $this->register['lastname'] : ''; ?>" /></label>
 				</div>
 			</div>
 			<div class="grid">
 				<div class="col span6">
 				<?php if ($params->get('show_affiliation')) { ?>
-					<label>Affiliation <span class="required">required</span>
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_AFFILIATION'); ?> <span class="required"><?php echo JText::_('COM_EVENTS_REQUIRED'); ?></span>
 					<input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
 				<div class="col span6 omega">
 				<?php if ($params->get('show_title')) { ?>
-					<label>Title
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_TITLE'); ?>
 					<input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
@@ -140,25 +140,25 @@ $this->css()
 			|| $params->get('show_email')
 			|| $params->get('show_website')) { ?>
 		<fieldset>
-			<legend>Contact Information</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_INFO'); ?></legend>
 			<?php if ($params->get('show_address')) { ?>
 			<div class="grid">
 				<div class="col span6">
-					<label>City
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_CITY'); ?>
 					<input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" /></label>
 				</div>
 				<div class="col span6 omega">
-					<label>State/Province
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_STATE'); ?>
 					<input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" /></label>
 				</div>
 			</div>
 			<div class="grid">
 				<div class="col span6">
-					<label>Zip/Postal code
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_ZIP'); ?>
 					<input type="text" name="register[postalcode]" value="<?php echo (isset($this->register['postalcode'])) ? $this->register['postalcode'] : ''; ?>" /></label>
 				</div>
 				<div class="col span6 omega">
-					<label>Country
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_COUNTRY'); ?>
 					<input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" /></label>
 				</div>
 			</div>
@@ -166,13 +166,13 @@ $this->css()
 			<div class="grid">
 				<div class="col span6">
 				<?php if ($params->get('show_telephone')) { ?>
-					<label>Telephone
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_PHONE'); ?>
 					<input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->register['telephone'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
 				<div class="col span6 omega">
 				<?php if ($params->get('show_fax')) { ?>
-					<label>Fax
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_FAX'); ?>
 					<input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->register['fax'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
@@ -180,13 +180,13 @@ $this->css()
 			<div class="grid">
 				<div class="col span6">
 				<?php if ($params->get('show_email')) { ?>
-					<label>E-mail <span class="required">required</span>
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_EVENTS_REQUIRED'); ?></span>
 					<input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->register['email'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
 				<div class="col span6 omega">
 				<?php if ($params->get('show_website')) { ?>
-					<label>Website
+					<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_WEBSITE'); ?>
 					<input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->register['website'] : ''; ?>" /></label>
 				<?php } ?>
 				</div>
@@ -198,20 +198,20 @@ $this->css()
 			|| $params->get('show_gender')
 			|| $params->get('show_race')) { ?>
 		<fieldset>
-			<legend>Demographics</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_DEMOGRAPHICS'); ?></legend>
 
 			<?php if ($params->get('show_position')) { ?>
 			<label>
-				Which best describes your current position?
+				<?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION'); ?>
 				<select name="register[position]">
-					<option value="" selected="selected">(select from list or enter below)</option>
-					<option value="university">University / College Student or Staff</option>
-					<option value="precollege">K-12 (Pre-College) Student or Staff</option>
-					<option value="nationallab">National Laboratory</option>
-					<option value="industry">Industry / Private Company</option>
-					<option value="government">Government Agency</option>
-					<option value="military">Military</option>
-					<option value="unemployed">Retired / Unemployed</option>
+					<option value="" selected="selected"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL'); ?></option>
+					<option value="university"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY'); ?></option>
+					<option value="precollege"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE'); ?></option>
+					<option value="nationallab"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB'); ?></option>
+					<option value="industry"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY'); ?></option>
+					<option value="government"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT'); ?></option>
+					<option value="military"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY'); ?></option>
+					<option value="unemployed"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED'); ?></option>
 				</select>
 				<input name="register[position_other]" type="text" value="<?php echo (isset($this->register['position_other'])) ? $this->register['position_other'] : ''; ?>" />
 			</label>
@@ -219,64 +219,64 @@ $this->css()
 
 			<?php if ($params->get('show_degree')) { ?>
 			<fieldset>
-				<legend>Highest academic degree earned:</legend>
-				<label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> /> Bachelors degree</label>
-				<label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> Masters degree</label>
-				<label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> Doctoral degree</label>
-				<label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> /> None of the above</label>
+				<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEGREE'); ?>:</legend>
+				<label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'bachelors') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_BACHELORS'); ?></label>
+				<label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'masters') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_MASTERS'); ?></label>
+				<label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'doctoral') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_DOCTORAL'); ?></label>
+				<label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'none of the above') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_NULL'); ?></label>
 			</fieldset>
 			<?php } ?>
 
 			<?php if ($params->get('show_gender')) { ?>
 			<fieldset>
-				<legend>Gender:</legend>
-				<label><input type="radio" name="register[sex]" value="male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> Male</label>
-				<label><input type="radio" name="register[sex]" value="female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> Female</label>
-				<label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> Do not wish to reveal</label>
+				<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_GENDER'); ?>:</legend>
+				<label><input type="radio" name="register[sex]" value="male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'male') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_MALE'); ?></label>
+				<label><input type="radio" name="register[sex]" value="female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'female') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_FEMALE'); ?></label>
+				<label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'refused') ? 'checked="checked"': ''; ?> /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_NULL'); ?></label>
 			</fieldset>
 			<?php } ?>
 
 			<?php if ($params->get('show_race')) { ?>
 			<fieldset>
-				<legend>Race:</legend>
-				<p class="hint">Select one or more that apply.</p>
-				<label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> American Indian or Alaska Native</label>
-				<label class="indent">Tribal Affiliation(s):
+				<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE'); ?>:</legend>
+				<p class="hint"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_HINT'); ?></p>
+				<label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_AMERICAN'); ?></label>
+				<label class="indent"><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_AFFILIATIONS'); ?>:
 				<input name="race[nativetribe]" id="racenativetribe" type="text" value="" /></label>
-				<label><input type="checkbox" class="option" name="race[asian]" id="raceasian" /> Asian</label>
-				<label><input type="checkbox" class="option" name="race[black]" id="raceblack" /> Black or African American</label>
-				<label><input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" /> Native Hawaiian or Other Pacific Islander</label>
-				<label><input type="checkbox" class="option" name="race[white]" id="racewhite" /> White</label>
-				<label><input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" /> Hispanic or Latino</label>
-				<label><input type="checkbox" class="option" name="race[refused]" id="racerefused" /> Do not wish to reveal</label>
+				<label><input type="checkbox" class="option" name="race[asian]" id="raceasian" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_ASIAN'); ?></label>
+				<label><input type="checkbox" class="option" name="race[black]" id="raceblack" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_BLACK'); ?></label>
+				<label><input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HAWAIIAN'); ?></label>
+				<label><input type="checkbox" class="option" name="race[white]" id="racewhite" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_WHITE'); ?></label>
+				<label><input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HISPANIC'); ?></label>
+				<label><input type="checkbox" class="option" name="race[refused]" id="racerefused" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_NULL'); ?></label>
 			</fieldset>
 			<?php } ?>
 		</fieldset>
 	<?php } ?>
 	<?php if ($params->get('show_arrival') || $params->get('show_departure')) { ?>
 		<fieldset>
-			<legend>Arrival/Departure</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_ARRIVAL_OR_DEPARTURE'); ?></legend>
 
 			<?php if ($params->get('show_arrival')) { ?>
 			<fieldset>
-				<legend>Arrival Information</legend>
+				<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_ARRIVAL'); ?></legend>
 
-				<label>Arrival Day
+				<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_ARRIVAL_DAY'); ?>
 				<input type="text" name="arrival[day]" value="<?php echo (isset($this->arrival['day'])) ? $this->arrival['day'] : ''; ?>" /></label>
 
-				<label>Arrival Time
+				<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_ARRIVAL_TIME'); ?>
 				<input type="text" name="arrival[time]" value="<?php echo (isset($this->arrival['time'])) ? $this->arrival['time'] : ''; ?>" /></label>
 			</fieldset>
 			<?php } ?>
 
 			<?php if ($params->get('show_departure')) { ?>
 			<fieldset>
-				<legend>Departure Information</legend>
+				<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_DEPARTURE'); ?></legend>
 
-				<label>Departure Day
+				<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEPARTURE_DAY'); ?>
 				<input type="text" name="departure[day]" value="<?php echo (isset($this->departure['day'])) ? $this->departure['day'] : ''; ?>" /></label>
 
-				<label>Departure Time
+				<label><?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DEPARTURE_TIME'); ?>
 				<input type="text" name="departure[time]" value="<?php echo (isset($this->departure['time'])) ? $this->departure['time'] : ''; ?>" /></label>
 			</fieldset>
 			<?php } ?>
@@ -284,15 +284,15 @@ $this->css()
 	<?php } ?>
 	<?php if ($params->get('show_disability') || $params->get('show_dietary')) { ?>
 		<fieldset>
-			<legend>Disability/Dietary needs</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_DISABILITY'); ?></legend>
 			<?php if ($params->get('show_disability')) { ?>
-			<label><input type="checkbox" class="option" name="disability" value="yes" /> I have auxiliary aids or services due to a disability. Please contact me.</label>
+			<label><input type="checkbox" class="option" name="disability" value="yes" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DISABILTIY'); ?></label>
 			<?php } ?>
 
 			<?php if ($params->get('show_dietary')) { ?>
-			<label><input type="checkbox" class="option" name="dietary[needs]" value="yes" /> I have specific dietary needs.</label>
+			<label><input type="checkbox" class="option" name="dietary[needs]" value="yes" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DIETARY'); ?></label>
 			<label class="indent">
-				Please specify
+				<?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DIETARY_DETAILS'); ?>
 				<input type="text" name="dietary[specific]" />
 			</label>
 			<?php } ?>
@@ -300,9 +300,9 @@ $this->css()
 	<?php } ?>
 	<?php if ($params->get('show_dinner')) { ?>
 		<fieldset>
-			<legend>Dinner</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_DINNER'); ?></legend>
 
-			<label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" /> I plan to attend the dinner.</label>
+			<label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" /> <?php echo JText::_('COM_EVENTS_REGISTER_FIELD_DINNER'); ?></label>
 		</fieldset>
 	<?php } ?>
 
@@ -319,7 +319,7 @@ $this->css()
 		</fieldset> -->
 		<?php if ($params->get('show_abstract')) { ?>
 		<fieldset>
-			<legend>Abstract</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_ABSTRACT'); ?></legend>
 			<label>
 				<?php
 				if ($params->get('abstract_text')) {
@@ -333,9 +333,9 @@ $this->css()
 
 		<?php if ($params->get('show_comments')) { ?>
 		<fieldset>
-			<legend>Comments</legend>
+			<legend><?php echo JText::_('COM_EVENTS_REGISTER_FIELDSET_COMMENTS'); ?></legend>
 			<label>
-				Please use the space below to provide any additional comments:
+				<?php echo JText::_('COM_EVENTS_REGISTER_FIELD_COMMENTS'); ?>:
 				<textarea name="register[comments]" rows="4" cols="32"></textarea>
 			</label>
 		</fieldset>

@@ -64,7 +64,7 @@ function submitbutton(pressbutton, section)
 <form action="index.php" method="post" name="adminForm">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_EVENTS_DETAILS'); ?></span></legend>
 
 			<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
 			<input type="hidden" name="access" value="<?php echo $this->row->access; ?>" />
@@ -74,11 +74,11 @@ function submitbutton(pressbutton, section)
 				<tbody>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
-						<td><input type="text" name="category[title]" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" title="A short name to appear in menus" /></td>
+						<td><input type="text" name="category[title]" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" /></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_('Category Alias'); ?>:</td>
-						<td><input type="text" name="category[alias]" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" title="A long name to be displayed in headings" /></td>
+						<td class="key"><?php echo JText::_('COM_EVENTS_CATEGORY_ALIAS'); ?>:</td>
+						<td><input type="text" name="category[alias]" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
@@ -99,34 +99,6 @@ function submitbutton(pressbutton, section)
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<!--
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Image'); ?></span></legend>
-
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_IMAGE'); ?>:</td>
-						<td><?php echo $this->imagelist; ?></td>
-						<td rowspan="2">
-			<script type="text/javascript">
-				if (document.forms[0].image.options.value!=''){
-				  jsimg='../images/stories/' + getSelectedValue('adminForm', 'image');
-				} else {
-				  jsimg='../images/M_images/blank.png';
-				}
-				document.write('<img src=' + jsimg + ' name="imagelib" width="80" height="80" border="2" alt="Preview" />');
-			</script>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_IMAGE_POSITION'); ?>:</td>
-						<td><?php echo $this->iposlist; ?></td>
-					</tr>
-				</tbody>
-			</table>
-		</fieldset>
-		-->
 	</div>
 	<div class="clr"></div>
 

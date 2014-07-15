@@ -40,7 +40,6 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'date.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'repeat.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'event.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'config.php');
@@ -55,17 +54,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Events'),
+	JText::_('COM_EVENTS'),
 	'index.php?option=com_events&controller=events',
 	$controllerName == 'events'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Categories'),
+	JText::_('COM_EVENTS_CATEGORIES'),
 	'index.php?option=com_events&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Config'),
+	JText::_('COM_EVENTS_CONFIGURATION'),
 	'index.php?option=com_events&controller=configure',
 	$controllerName == 'configure'
 );

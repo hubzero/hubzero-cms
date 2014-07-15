@@ -47,24 +47,24 @@ JToolBarHelper::cancel();
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_ADMINLEVEL'); ?></td>
 					<td><?php
-					$level[] = JHTML::_('select.option', '0', JText::_('All registered users'), 'value', 'text' );
-					$level[] = JHTML::_('select.option', '1', JText::_('Only special rights and admins'), 'value', 'text' );
+					$level[] = JHTML::_('select.option', '0', JText::_('COM_EVENTS_CAL_LANG_CONFIG_ALL'), 'value', 'text' );
+					$level[] = JHTML::_('select.option', '1', JText::_('COM_EVENTS_CAL_LANG_CONFIG_SPECIAL'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $level, 'config[adminlevel]', '', 'value', 'text', $this->config->adminlevel, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></td>
 					<td><?php
-					$first[] = JHTML::_('select.option', '0', JText::_('Sunday first'), 'value', 'text' );
-					$first[] = JHTML::_('select.option', '1', JText::_('Monday first'), 'value', 'text' );
+					$first[] = JHTML::_('select.option', '0', JText::_('COM_EVENTS_CAL_LANG_CONFIG_SUNDAY_FIRST'), 'value', 'text' );
+					$first[] = JHTML::_('select.option', '1', JText::_('COM_EVENTS_CAL_LANG_CONFIG_MONDAY_FIRST'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $first, 'config[starday]', '', 'value', 'text', $this->config->starday, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_VIEWMAIL'); ?></td>
 					<td><?php
-					$viewm[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					$viewm[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
+					$viewm[] = JHTML::_('select.option', 'YES', JText::_('JYES'), 'value', 'text' );
+					$viewm[] = JHTML::_('select.option', 'NO', JText::_('JNO'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $viewm, 'config[mailview]', '', 'value', 'text', $this->config->mailview, false, false );
 					?></td>
 				</tr>
@@ -72,7 +72,7 @@ JToolBarHelper::cancel();
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_VIEWBY'); ?></td>
 					<td><?php
 					$viewb[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					$viewb[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
+					$viewb[] = JHTML::_('select.option', 'NO', JText::_('JNO'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $viewb, 'config[byview]', '', 'value', 'text', $this->config->byview, false, false );
 					?></td>
 				</tr>
@@ -80,16 +80,16 @@ JToolBarHelper::cancel();
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_VIEWHITS'); ?></td>
 					<td><?php
 					$viewh[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					$viewh[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
+					$viewh[] = JHTML::_('select.option', 'NO', JText::_('JNO'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $viewh, 'config[hitsview]', '', 'value', 'text', $this->config->hitsview, false, false );
 					?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_DATEFORMAT'); ?></td>
 					<td><?php
-					$datef[] = JHTML::_('select.option', '0', JText::_('French-English'), 'value', 'text' );
-					$datef[] = JHTML::_('select.option', '1', JText::_('US'), 'value', 'text' );
-        			$datef[] = JHTML::_('select.option', '2', JText::_('Deutsch'), 'value', 'text' );
+					$datef[] = JHTML::_('select.option', '0', JText::_('COM_EVENTS_CAL_LANG_CONFIG_FRENCH_ENGLISH'), 'value', 'text' );
+					$datef[] = JHTML::_('select.option', '1', JText::_('COM_EVENTS_CAL_LANG_CONFIG_US'), 'value', 'text' );
+					$datef[] = JHTML::_('select.option', '2', JText::_('COM_EVENTS_CAL_LANG_CONFIG_DEUTSCH'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $datef, 'config[dateformat]', '', 'value', 'text', $this->config->dateformat, false, false );
 					?></td>
 				</tr>
@@ -97,19 +97,10 @@ JToolBarHelper::cancel();
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_TIMEFORMAT'); ?></td>
 					<td><?php
 					$stdTime[] = JHTML::_('select.option', 'YES', JText::_('YES'), 'value', 'text' );
-					$stdTime[] = JHTML::_('select.option', 'NO', JText::_('NO'), 'value', 'text' );
+					$stdTime[] = JHTML::_('select.option', 'NO', JText::_('JNO'), 'value', 'text' );
 					echo JHTML::_('select.genericlist', $stdTime, 'config[calUseStdTime]', '', 'value', 'text', $this->config->calUseStdTime, false, false );
 					?></td>
 				</tr>
-				<!-- <tr>
-					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_NAVCOLOR'); ?></td>
-					<td><?php
-					$navcol[] = JHTML::_('select.option', 'green', JText::_('Green'), 'value', 'text' );
-					$navcol[] = JHTML::_('select.option','orange', JText::_('Orange'), 'value', 'text' );
-					$navcol[] = JHTML::_('select.option', 'blue', JText::_('Blue'), 'value', 'text' );
-					echo JHTML::_('select.genericlist', $navcol, 'config[navbarcolor]', '', 'value', 'text', $this->config->navbarcolor, false, false );
-					?></td>
-				</tr> -->
 				<tr>
 					<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CONFIG_STARTPAGE'); ?></td>
 					<td><?php

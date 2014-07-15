@@ -133,7 +133,7 @@ class EventsCalendar extends JTable
 	{
 		if (!isset($this->title) || $this->title == '')
 		{
-			$this->setError(JText::_('Calendar must have a title.'));
+			$this->setError(JText::_('COM_EVENTS_CALENDAR_MUST_HAVE_TITLE'));
 			return false;
 		}
 		return true;
