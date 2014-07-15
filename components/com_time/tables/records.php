@@ -96,14 +96,14 @@ Class TimeRecords extends JTable
 	public function check()
 	{
 		// If task is empty return an error
-		if(empty($this->task_id))
+		if (empty($this->task_id))
 		{
 			$this->setError(JText::_('COM_TIME_RECORDS_NO_TASK_CHOSEN'));
 			return false;
 		}
 
 		// If no time is given return an error
-		if($this->time == "0.0")
+		if ($this->time == "0.0")
 		{
 			$this->setError(JText::_('COM_TIME_RECORDS_NO_TIME_CHOSEN'));
 			return false;
@@ -142,27 +142,27 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 
 		// Filters
-		if(!empty($filters['user']) || !empty($filters['task']) || !empty($filters['search']) || !empty($filters['q']))
+		if (!empty($filters['user']) || !empty($filters['task']) || !empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
 
-			if(!empty($filters['user']))
+			if (!empty($filters['user']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
 				$query .= "u.id = " . $this->_db->quote($filters['user']);
 
 				$first = false;
 			}
-			if(!empty($filters['task']))
+			if (!empty($filters['task']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
 				$query .= "p.id = " . $this->_db->quote($filters['task']);
 
 				$first = false;
 			}
-			if(!empty($filters['search']))
+			if (!empty($filters['search']))
 			{
-				foreach($filters['search'] as $arg)
+				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
 					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
@@ -171,11 +171,11 @@ Class TimeRecords extends JTable
 					$first = false;
 				}
 			}
-			if(!empty($filters['q']))
+			if (!empty($filters['q']))
 			{
-				foreach($filters['q'] as $arg)
+				foreach ($filters['q'] as $arg)
 				{
-					if($arg['value'] !== NULL)
+					if ($arg['value'] !== NULL)
 					{
 						$query .= ($first) ? " WHERE " : " AND ";
 						$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
@@ -202,43 +202,43 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 
 		// This is used when creating set for a given task and id range
-		if(!empty($filters['pid']) && !empty($filters['startdate']) && !empty($filters['enddate']))
+		if (!empty($filters['pid']) && !empty($filters['startdate']) && !empty($filters['enddate']))
 		{
 			$query .= " WHERE p.id = ".$this->_db->quote($filters['pid']);
 			$query .= " AND r.date BETWEEN ".$this->_db->quote($filters['startdate'])." AND ".$this->_db->quote($filters['enddate']);
 		}
 		// This is used when we're pulling records to display a set of records
-		elseif(!empty($filters['id_range']))
+		elseif (!empty($filters['id_range']))
 		{
 			$query .= " WHERE r.id in (".$filters['id_range'].")";
 		}
 		// This is for Mike M.
-		elseif(!empty($filters['startdate']) && !empty($filters['enddate']))
+		elseif (!empty($filters['startdate']) && !empty($filters['enddate']))
 		{
 			$query .= " WHERE r.date BETWEEN ".$this->_db->quote($filters['startdate'])." AND ".$this->_db->quote($filters['enddate']);
 		}
 		// Filter by user and/or task on general records view
-		elseif(!empty($filters['user']) || !empty($filters['task']) || !empty($filters['search']) || !empty($filters['q']))
+		elseif (!empty($filters['user']) || !empty($filters['task']) || !empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
 
-			if(!empty($filters['user']))
+			if (!empty($filters['user']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
 				$query .= "u.id = " . $this->_db->quote($filters['user']);
 
 				$first = false;
 			}
-			if(!empty($filters['task']))
+			if (!empty($filters['task']))
 			{
 				$query .= ($first) ? " WHERE " : " AND ";
 				$query .= "p.id = " . $this->_db->quote($filters['task']);
 
 				$first = false;
 			}
-			if(!empty($filters['search']))
+			if (!empty($filters['search']))
 			{
-				foreach($filters['search'] as $arg)
+				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
 					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
@@ -247,11 +247,11 @@ Class TimeRecords extends JTable
 					$first = false;
 				}
 			}
-			if(!empty($filters['q']))
+			if (!empty($filters['q']))
 			{
-				foreach($filters['q'] as $arg)
+				foreach ($filters['q'] as $arg)
 				{
-					if($arg['value'] !== NULL)
+					if ($arg['value'] !== NULL)
 					{
 						$query .= ($first) ? " WHERE " : " AND ";
 						$query .= $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
@@ -262,7 +262,7 @@ Class TimeRecords extends JTable
 			}
 		}
 		// This is used in our records display for sorting
-		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
+		if (!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
 			if (!in_array(strtoupper($filters['orderdir']), array('ASC', 'DESC')))
 			{
@@ -298,7 +298,7 @@ Class TimeRecords extends JTable
 		$result = $this->_db->loadObject();
 
 		// Check if we have a result before returning
-		if($result)
+		if ($result)
 		{
 			// Return the result
 			return $result;
@@ -331,7 +331,7 @@ Class TimeRecords extends JTable
 	{
 		$query  = "SELECT p.name AS pname, sum(time) as hours";
 		$query .= $this->buildquery();
-		if(!empty($uid))
+		if (!empty($uid))
 		{
 			$query .= " WHERE u.id = " . $this->_db->Quote($uid);
 		}
@@ -353,7 +353,7 @@ Class TimeRecords extends JTable
 	{
 		$query  = "SELECT h.name AS hname, sum(time) as hours";
 		$query .= $this->buildquery();
-		if(!empty($hub))
+		if (!empty($hub))
 		{
 			$query .= " WHERE h.id = " . $this->_db->Quote($hub);
 		}
@@ -375,7 +375,7 @@ Class TimeRecords extends JTable
 	{
 		$query  = "SELECT u.name as name, count(r.id) as entries";
 		$query .= $this->buildquery();
-		if(!empty($date['start']) && !empty($date['end']))
+		if (!empty($date['start']) && !empty($date['end']))
 		{
 			$query .= " WHERE `date` >= " . $this->_db->Quote($date['start']) . " AND `date` <= " . $this->_db->Quote($date['end']);
 		}
@@ -398,18 +398,18 @@ Class TimeRecords extends JTable
 		$query .= $this->buildquery();
 
 		// If we have an id range, we'll only sum hours for that range
-		if(!empty($filters['id_range']) || !empty($filters['user_id']))
+		if (!empty($filters['id_range']) || !empty($filters['user_id']))
 		{
-			if(!empty($filters['id_range']) && !empty($filters['user_id']))
+			if (!empty($filters['id_range']) && !empty($filters['user_id']))
 			{
 				$query .= " WHERE r.id in (".$filters['id_range'].")";
 				$query .= " AND r.user_id = " . $this->_db->Quote($filters['user_id']);
 			}
-			elseif(!empty($filters['id_range']))
+			elseif (!empty($filters['id_range']))
 			{
 				$query .= " WHERE r.id in (".$filters['id_range'].")";
 			}
-			elseif(!empty($filters['user_id']))
+			elseif (!empty($filters['user_id']))
 			{
 				$query .= " WHERE r.user_id = " . $this->_db->Quote($filters['user_id']);
 			}

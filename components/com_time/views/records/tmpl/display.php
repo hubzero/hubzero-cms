@@ -163,16 +163,16 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 				</thead>
 				<tbody>
 					<?php if (count($this->records) > 0) {
-						foreach($this->records as $record) {
+						foreach ($this->records as $record) {
 							// Cut the description off if it's too long
-							if(strlen($record->description) > 25)
+							if (strlen($record->description) > 25)
 							{
 								$record->description = trim(substr($record->description,0,25))."...";
 							}
 							// Highlight search words if set
-							if(!empty($this->filters['search']))
+							if (!empty($this->filters['search']))
 							{
-								foreach($this->filters['search'] as $arg)
+								foreach ($this->filters['search'] as $arg)
 								{
 									$record->description = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $record->description);
 									$record->pname       = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $record->pname);

@@ -169,13 +169,13 @@ Class TimeTasks extends JTable
 		$query .= $this->buildquery();
 
 		// Filters
-		if(!empty($filters['search']) || !empty($filters['q']))
+		if (!empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
 
-			if(!empty($filters['search']))
+			if (!empty($filters['search']))
 			{
-				foreach($filters['search'] as $arg)
+				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
 					$query .= "LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
@@ -183,11 +183,11 @@ Class TimeTasks extends JTable
 					$first = false;
 				}
 			}
-			if(!empty($filters['q']))
+			if (!empty($filters['q']))
 			{
-				foreach($filters['q'] as $arg)
+				foreach ($filters['q'] as $arg)
 				{
-					if($arg['value'] !== NULL)
+					if ($arg['value'] !== NULL)
 					{
 						$query .= ($first) ? " WHERE " : " AND ";
 						$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
@@ -214,13 +214,13 @@ Class TimeTasks extends JTable
 		$query .= $this->buildquery();
 
 		// Filters
-		if(!empty($filters['search']) || !empty($filters['q']))
+		if (!empty($filters['search']) || !empty($filters['q']))
 		{
 			$first = true;
 
-			if(!empty($filters['search']))
+			if (!empty($filters['search']))
 			{
-				foreach($filters['search'] as $arg)
+				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
 					$query .= "LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
@@ -228,11 +228,11 @@ Class TimeTasks extends JTable
 					$first = false;
 				}
 			}
-			if(!empty($filters['q']))
+			if (!empty($filters['q']))
 			{
-				foreach($filters['q'] as $arg)
+				foreach ($filters['q'] as $arg)
 				{
-					if($arg['value'] !== NULL)
+					if ($arg['value'] !== NULL)
 					{
 						$query .= ($first) ? " WHERE " : " AND ";
 						$query .= "p." . $arg['column'] . ' ' . $arg['o'] . ' ' . $this->_db->Quote($arg['value']);
@@ -243,7 +243,7 @@ Class TimeTasks extends JTable
 			}
 		}
 
-		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
+		if (!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
 			if (!in_array(strtoupper($filters['orderdir']), array('ASC', 'DESC')))
 			{

@@ -114,14 +114,14 @@ Class TimeHubs extends JTable
 		$this->liaison = trim($this->liaison);
 
 		// If name or liaison is empty, return an error
-		if(empty($this->name) || empty($this->liaison))
+		if (empty($this->name) || empty($this->liaison))
 		{
-			if(empty($this->name))
+			if (empty($this->name))
 			{
 				$this->setError(JText::_('COM_TIME_HUBS_NO_NAME'));
 				return false;
 			}
-			if(empty($this->liaison))
+			if (empty($this->liaison))
 			{
 				$this->setError(JText::_('COM_TIME_HUBS_NO_LIAISON'));
 				return false;
@@ -159,7 +159,7 @@ Class TimeHubs extends JTable
 		$query .= $this->buildquery();
 
 		// If we only want active hubs
-		if(!empty($filters['active']))
+		if (!empty($filters['active']))
 		{
 			$query .= " WHERE h.active = ".$this->_db->quote($filters['active']);
 		}
@@ -186,7 +186,7 @@ Class TimeHubs extends JTable
 		}
 
 		// If orderby and orderdir are set, use them
-		if(!empty($filters['orderby']) && !empty($filters['orderdir']))
+		if (!empty($filters['orderby']) && !empty($filters['orderdir']))
 		{
 			if (!in_array(strtoupper($filters['orderdir']), array('ASC', 'DESC')))
 			{

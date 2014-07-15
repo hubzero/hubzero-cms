@@ -96,7 +96,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -145,7 +145,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -165,7 +165,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Create object and store new content
 		$records = new TimeRecords($this->db);
-		if(!$records->save($record))
+		if (!$records->save($record))
 		{
 			$this->setMessage('Record creation failed', 500, 'Internal server error');
 			return;
@@ -190,7 +190,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -239,7 +239,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -276,7 +276,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -286,7 +286,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$id = JRequest::getInt('id');
 
 		// Error checking
-		if(empty($id))
+		if (empty($id))
 		{
 			$this->setMessage('Missing id parameter', 422, 'Unprocessable entity');
 			return;
@@ -296,7 +296,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$hub = new TimeHubs($this->db);
 
 		// Load the specific hub
-		if(!$hub->load($id))
+		if (!$hub->load($id))
 		{
 			$this->setMessage('Load hub failed', 500, 'Internal server error');
 			return;
@@ -333,7 +333,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -351,7 +351,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Create object and store new content
 		$contacts = new TimeContacts($this->db);
-		if(!$contacts->save($contact))
+		if (!$contacts->save($contact))
 		{
 			$this->setMessage('Contact creation failed', 500, 'Internal server error');
 			return;
@@ -372,7 +372,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -409,7 +409,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Require authorization
-		if(!$this->authorize())
+		if (!$this->authorize())
 		{
 			$this->setMessage('', 401, 'Unauthorized');
 			return;
@@ -421,7 +421,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Make sure those values haven't been tampered with
 		$acceptable = array('time_tasks', 'time_records');
-		if(!in_array($table, $acceptable))
+		if (!in_array($table, $acceptable))
 		{
 			$this->setMessage('Table provided is not allowed', 422, 'Unprocessable entity');
 			return;
@@ -433,7 +433,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$query .= " ORDER BY val ASC";
 
 		$this->db->setQuery($query);
-		if(!$values = $this->db->loadObjectList())
+		if (!$values = $this->db->loadObjectList())
 		{
 			$this->setMessage('Query failed', 500, 'Internal server error');
 			return;
@@ -473,7 +473,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Get the user id
 		$user_id = JFactory::getApplication()->getAuthn('user_id');
 
-		if(!is_numeric($user_id))
+		if (!is_numeric($user_id))
 		{
 			return false;
 		}
