@@ -530,7 +530,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$params		= $element->typeParams;
 		$required	= $element->required;
 		$counter 	= count($attachments);
-		$allowed 	= $params->accept;
+		$allowed 	= isset($params->accept) ? $params->accept :  NULL;
 
 		if (!$required)
 		{

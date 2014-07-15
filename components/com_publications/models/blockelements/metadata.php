@@ -73,14 +73,17 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		}
 
 		// Default value not replaced?
-		if ($default && $value && $value == $default)
+		if ($default && $value)
 		{
-			$status->setError( JText::_('Default value needs to be replaced') );
+			if ($default == $value || preg_match('/' . $default . ' (\\(.*\\))/', $value, $matches))
+			{
+				$status->setError( JText::_('Default value needs to be replaced') );
+			}
 		}
 		// Required value not filled?
 		if ($required && !$value)
 		{
-			$status->setError( JText::_('Missing ' . $key) );
+			$status->setError( JText::_('Please enter ' . $key) );
 		}
 		elseif (!$required && !$value)
 		{

@@ -371,77 +371,123 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	}
 
 	/**
+	 * Get default manifest for the block element
+	 *
+	 * @return  void
+	 */
+	public function getElementManifest()
+	{
+		$manifest = array (
+			'name' 		=> 'metadata',
+			'type' 		=> 'metadata',
+			'label'		=> 'Metadata',
+			'about'		=> '<p>Please fill out metadata</p>',
+			'adminTips'	=> '',
+			'params' 	=> array (
+				'required' 		=> 0,
+				'aliasmap' 		=> 'meta',
+				'field' 		=> 'metadata',
+				'input' 		=> 'editor',
+				'placeholder'	=> 'Type text',
+				'default'		=> '',
+				'maxlength' 	=> '3000',
+				'cols'			=> '50',
+				'rows'			=> '6'
+			)
+		);
+		return json_decode(json_encode($manifest), FALSE);
+	}
+
+	/**
 	 * Get default manifest for the block
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
-		$manifest = array(
-			'name' 			=> 'description',
-			'label' 		=> 'Description',
-			'title' 		=> 'Publication Description',
-			'draftHeading' 	=> 'Name and describe your publication',
-			'draftTagline'	=> 'Here is what\'s required:',
-			'about'			=> '',
-			'adminTips'		=> '',
-			'elements' 	=> array(
-				1 => array (
-					'name' 		=> 'metadata',
-					'type' 		=> 'metadata',
-					'label'		=> 'Publication Title',
-					'about'		=> '<p>Pick a descriptive yet concise publication title that will quickly tell users about its content.</p>',
-					'adminTips'	=> '',
-					'params' 	=> array (
-						'required' 		=> 1,
-						'aliasmap' 		=> 'title',
-						'field' 		=> 'title',
-						'input' 		=> 'text',
-						'placeholder'	=> 'Type publication title',
-						'default'		=> 'Untitled Draft',
-						'maxlength' 	=> '255'
-					)
-				),
-				2 => array (
-					'name' 		=> 'metadata',
-					'type' 		=> 'metadata',
-					'label'		=> 'Publication Abstract',
-					'about'		=> '<p>Provide a short (max 255 characters) abstract for your publication</p>',
-					'adminTips'	=> '',
-					'params' 	=> array (
-						'required' 		=> 1,
-						'aliasmap' 		=> 'abstract',
-						'field' 		=> 'abstract',
-						'input' 		=> 'textarea',
-						'placeholder'	=> 'Type publication abstract',
-						'default'		=> '',
-						'maxlength' 	=> '255',
-						'cols'			=> '50',
-						'rows'			=> '3'
-					)
-				),
-				3 => array (
-					'name' 		=> 'metadata',
-					'type' 		=> 'metadata',
-					'label'		=> 'Publication Description',
-					'about'		=> '<p>Describe your publication in detail</p>',
-					'adminTips'	=> '',
-					'params' 	=> array (
-						'required' 		=> 1,
-						'aliasmap' 		=> 'description',
-						'field' 		=> 'description',
-						'input' 		=> 'editor',
-						'placeholder'	=> 'Describe publication',
-						'default'		=> '',
-						'maxlength' 	=> '3000',
-						'cols'			=> '50',
-						'rows'			=> '6'
-					)
-				)
-			),
-			'params'	=> array( 'required' => 1, 'published_editing' => 0, 'collapse_elements' => 1 )
-		);
+		// Load config from db
+		$obj = new PublicationBlock($this->_parent->_db);
+		$manifest = $obj->getManifest($this->_name);
 
-		return json_decode(json_encode($manifest), FALSE);
+		// Fall back
+		if (!$manifest)
+		{
+			$manifest = array(
+				'name' 			=> 'description',
+				'label' 		=> 'Description',
+				'title' 		=> 'Publication Description',
+				'draftHeading' 	=> 'Name and describe your publication',
+				'draftTagline'	=> 'Here is what\'s required:',
+				'about'			=> '',
+				'adminTips'		=> '',
+				'elements' 	=> array(
+					1 => array (
+						'name' 		=> 'metadata',
+						'type' 		=> 'metadata',
+						'label'		=> 'Publication Title',
+						'about'		=> '<p>Pick a descriptive yet concise publication title that will quickly tell users about its content.</p>',
+						'adminTips'	=> '',
+						'params' 	=> array (
+							'required' 		=> 1,
+							'aliasmap' 		=> 'title',
+							'field' 		=> 'title',
+							'input' 		=> 'text',
+							'placeholder'	=> 'Type publication title',
+							'default'		=> 'Untitled Draft',
+							'maxlength' 	=> '255'
+						)
+					),
+					2 => array (
+						'name' 		=> 'metadata',
+						'type' 		=> 'metadata',
+						'label'		=> 'Publication Abstract',
+						'about'		=> '<p>Provide a short (max 255 characters) abstract for your publication</p>',
+						'adminTips'	=> '',
+						'params' 	=> array (
+							'required' 		=> 1,
+							'aliasmap' 		=> 'abstract',
+							'field' 		=> 'abstract',
+							'input' 		=> 'textarea',
+							'placeholder'	=> 'Type publication abstract',
+							'default'		=> '',
+							'maxlength' 	=> '255',
+							'cols'			=> '50',
+							'rows'			=> '3'
+						)
+					),
+					3 => array (
+						'name' 		=> 'metadata',
+						'type' 		=> 'metadata',
+						'label'		=> 'Publication Description',
+						'about'		=> '<p>Describe your publication in detail</p>',
+						'adminTips'	=> '',
+						'params' 	=> array (
+							'required' 		=> 1,
+							'aliasmap' 		=> 'description',
+							'field' 		=> 'description',
+							'input' 		=> 'editor',
+							'placeholder'	=> 'Describe publication',
+							'default'		=> '',
+							'maxlength' 	=> '3000',
+							'cols'			=> '50',
+							'rows'			=> '6'
+						)
+					)
+				),
+				'params'	=> array( 'required' => 1, 'published_editing' => 0, 'collapse_elements' => 1 )
+			);
+
+			if ($new == true)
+			{
+				$manifest['label']			= 'Metadata';
+				$manifest['title']			= 'Publication Metadata';
+				$manifest['draftHeading'] 	= 'Provide some metadata';
+				$manifest['elements'] 		= array(1 => $this->getElementManifest());
+			}
+
+			return json_decode(json_encode($manifest), FALSE);
+		}
+
+		return $manifest;
 	}
 }

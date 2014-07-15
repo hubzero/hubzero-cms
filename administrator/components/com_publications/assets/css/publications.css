@@ -510,3 +510,19 @@
 	.el-details {
 		display: block;
 	}
+	.orderlist {
+		list-style: none;
+	}
+	.orderlist li {
+		padding: 0.5em 1em;
+		background: #fdf7dc;
+		margin: 0.2em 0;
+		border: 1px solid #CCC;
+	}
+	.orderlist li.reorder {
+		background: #f4eafd;
+	}
+	.orderlist li.reorder:hover {
+		background: #e8d8f7;
+		cursor: pointer;
+	}

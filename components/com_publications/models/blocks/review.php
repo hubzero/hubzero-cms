@@ -175,20 +175,30 @@ class PublicationsBlockReview extends PublicationsModelBlock
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
-		$manifest = array(
-			'name' 			=> 'review',
-			'label' 		=> 'Review',
-			'title' 		=> 'Publication Review',
-			'draftHeading' 	=> 'Review Publication',
-			'draftTagline'	=> 'Here is your publication at a glance:',
-			'about'			=> '',
-			'adminTips'		=> '',
-			'elements' 		=> array(),
-			'params'		=> array(  'required' => 1, 'published_editing' => 0 )
-		);
+		// Load config from db
+		$obj = new PublicationBlock($this->_parent->_db);
+		$manifest = $obj->getManifest($this->_name);
 
-		return json_decode(json_encode($manifest), FALSE);
+		// Fall back
+		if (!$manifest)
+		{
+			$manifest = array(
+				'name' 			=> 'review',
+				'label' 		=> 'Review',
+				'title' 		=> 'Publication Review',
+				'draftHeading' 	=> 'Review Publication',
+				'draftTagline'	=> 'Here is your publication at a glance:',
+				'about'			=> '',
+				'adminTips'		=> '',
+				'elements' 		=> array(),
+				'params'		=> array(  'required' => 1, 'published_editing' => 0 )
+			);
+
+			return json_decode(json_encode($manifest), FALSE);
+		}
+
+		return $manifest;
 	}
 }

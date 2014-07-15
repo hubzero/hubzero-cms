@@ -475,11 +475,47 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	}
 
 	/**
+	 * Get default manifest for the block element
+	 *
+	 * @return  void
+	 */
+	public function getElementManifest()
+	{
+		$manifest = array (
+			'name'		=> 'dataselector',
+			'type' 		=> 'attachment',
+			'label'		=> 'Add file(s)',
+			'about'		=> '<p>Select a file or a number of files from the project repository</p>',
+			'aboutProv'	=> '<p>Attach a file or a number of files to be bundled together</p>',
+			'adminTips'	=> '',
+			'params' 	=> array (
+				'type'			=> 'file',
+				'title'			=> '',
+				'required' 		=> 0,
+				'min' 			=> 0,
+				'max' 			=> 500,
+				'role' 			=> 2,
+				'typeParams'	=> array(
+					'allowed_ext' 		=> array(),
+					'required_ext'  	=> array(),
+					'handler' 			=> NULL,
+					'handlers'			=> NULL,
+					'directory'			=> '',
+					'reuse' 			=> 0,
+					'dirHierarchy' 		=> 1,
+					'multiZip'			=> 1
+				)
+			)
+		);
+		return json_decode(json_encode($manifest), FALSE);
+	}
+
+	/**
 	 * Get default manifest for the block
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
 		// Load config from db
 		$obj = new PublicationBlock($this->_parent->_db);
@@ -532,6 +568,11 @@ class PublicationsBlockContent extends PublicationsModelBlock
 				)
 			);
 
+			if ($new == true)
+			{
+				$manifest['elements'] = array(1 => $this->getElementManifest());
+			}
+			
 			return json_decode(json_encode($manifest), FALSE);
 		}
 

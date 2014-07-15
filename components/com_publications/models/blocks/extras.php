@@ -63,78 +63,88 @@ class PublicationsBlockExtras extends PublicationsBlockContent
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
-		$manifest = array(
-			'name' 			=> 'extras',
-			'label' 		=> 'Extras',
-			'title' 		=> 'Publication Gallery and Supporting Docs',
-			'draftHeading' 	=> 'Let\'s jazz up publication page',
-			'draftTagline'	=> 'Add images/supporting docs:',
-			'about'			=> '',
-			'adminTips'		=> '',
-			'elements' 		=> array(
-				2 => array (
-					'name'		=> 'dataselector',
-					'type' 		=> 'attachment',
-					'label'		=> 'Image Gallery',
-					'about'		=> '<p>Select image file(s) from the project repository</p>',
-					'aboutProv'	=> '<p>Attach image file(s) for publication gallery</p>',
-					'adminTips'	=> '',
-					'params' 	=> array (
-						'type'			=> 'file',
-						'title'			=> '',
-						'required' 		=> 0,
-						'min' 			=> 0,
-						'max' 			=> 50,
-						'role' 			=> 3,
-						'typeParams'	=> array(
-							'allowed_ext' 		=> array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
-							'required_ext'  	=> array(),
-							'handler'			=> 'imageviewer',
-							'handlers'			=> NULL,
-							'directory'			=> 'gallery',
-							'reuse' 			=> 1,
-							'dirHierarchy' 		=> 0,
-							'multiZip'			=> 0
+		// Load config from db
+		$obj = new PublicationBlock($this->_parent->_db);
+		$manifest = $obj->getManifest($this->_name);
+
+		// Fall back
+		if (!$manifest)
+		{
+			$manifest = array(
+				'name' 			=> 'extras',
+				'label' 		=> 'Extras',
+				'title' 		=> 'Publication Gallery and Supporting Docs',
+				'draftHeading' 	=> 'Let\'s jazz up publication page',
+				'draftTagline'	=> 'Add images/supporting docs:',
+				'about'			=> '',
+				'adminTips'		=> '',
+				'elements' 		=> array(
+					2 => array (
+						'name'		=> 'dataselector',
+						'type' 		=> 'attachment',
+						'label'		=> 'Image Gallery',
+						'about'		=> '<p>Select image file(s) from the project repository</p>',
+						'aboutProv'	=> '<p>Attach image file(s) for publication gallery</p>',
+						'adminTips'	=> '',
+						'params' 	=> array (
+							'type'			=> 'file',
+							'title'			=> '',
+							'required' 		=> 0,
+							'min' 			=> 0,
+							'max' 			=> 50,
+							'role' 			=> 3,
+							'typeParams'	=> array(
+								'allowed_ext' 		=> array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
+								'required_ext'  	=> array(),
+								'handler'			=> 'imageviewer',
+								'handlers'			=> NULL,
+								'directory'			=> 'gallery',
+								'reuse' 			=> 1,
+								'dirHierarchy' 		=> 0,
+								'multiZip'			=> 0
+							)
+						)
+					),
+					3 => array (
+						'name'		=> 'dataselector',
+						'type' 		=> 'attachment',
+						'label'		=> 'Supporting Docs',
+						'about'		=> '<p>And supporting materials related to publication</p>',
+						'aboutProv'	=> '<p>Attach a file or a number of files</p>',
+						'adminTips'	=> '',
+						'params' 	=> array (
+							'type'			=> 'file',
+							'title'			=> '',
+							'required' 		=> 0,
+							'min' 			=> 0,
+							'max' 			=> 500,
+							'role' 			=> 2,
+							'typeParams'	=> array(
+								'allowed_ext' 		=> array(),
+								'required_ext'  	=> array(),
+								'handler'			=> NULL,
+								'handlers'			=> NULL,
+								'directory'			=> '',
+								'reuse' 			=> 1,
+								'dirHierarchy' 		=> 1,
+								'multiZip'			=> 0
+							)
 						)
 					)
 				),
-				3 => array (
-					'name'		=> 'dataselector',
-					'type' 		=> 'attachment',
-					'label'		=> 'Supporting Docs',
-					'about'		=> '<p>And supporting materials related to publication</p>',
-					'aboutProv'	=> '<p>Attach a file or a number of files</p>',
-					'adminTips'	=> '',
-					'params' 	=> array (
-						'type'			=> 'file',
-						'title'			=> '',
-						'required' 		=> 0,
-						'min' 			=> 0,
-						'max' 			=> 500,
-						'role' 			=> 2,
-						'typeParams'	=> array(
-							'allowed_ext' 		=> array(),
-							'required_ext'  	=> array(),
-							'handler'			=> NULL,
-							'handlers'			=> NULL,
-							'directory'			=> '',
-							'reuse' 			=> 1,
-							'dirHierarchy' 		=> 1,
-							'multiZip'			=> 0
-						)
-					)
+				'params'	=> array(
+					'required' 			=> 0,
+					'published_editing' => 1,
+					'collapse_elements' => 0,
+					'verify_types'		=> 1
 				)
-			),
-			'params'	=> array(
-				'required' 			=> 0,
-				'published_editing' => 1,
-				'collapse_elements' => 0,
-				'verify_types'		=> 1
-			)
-		);
+			);
 
-		return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), FALSE);
+		}
+
+		return $manifest;
 	}
 }

@@ -173,7 +173,7 @@ class PublicationsModelBlocks extends JObject
 	 * @param   string  $name   	Name of block to render
 	 * @return  object
 	 */
-	public function getManifest( $name )
+	public function getManifest( $name, $new = false )
 	{
 		// Load block
 		$block = $this->loadBlock($name);
@@ -185,8 +185,35 @@ class PublicationsModelBlocks extends JObject
 		}
 		else
 		{
-			return $block->getManifest();
+			return $block->getManifest($new);
 		}
+	}
+
+	/**
+	 * Get default element manifest for block
+	 *
+	 * @param   string  $name   	Name of block to render
+	 * @return  object
+	 */
+	public function getElementManifest( $name )
+	{
+		// Load block
+		$block = $this->loadBlock($name);
+
+		if ($block === false)
+		{
+			$this->setError('Error loading block');
+			return false;
+		}
+		else
+		{
+			$manifest = $block->getManifest();
+			if ($manifest->elements)
+			{
+				return $block->getElementManifest();
+			}
+		}
+		return false;
 	}
 
 	/**

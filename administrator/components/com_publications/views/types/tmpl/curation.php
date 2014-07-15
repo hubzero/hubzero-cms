@@ -143,9 +143,20 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-showarchive"><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL'); ?></label>
 				<select name="curation[params][show_archival]" id="field-showarchive">
-					<option value="0" <?php echo $curParams->show_archival == 0 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_NO'); ?></option>
-					<option value="1" <?php echo $curParams->show_archival == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_YES'); ?></option>
+					<option value="0" <?php echo (!isset($curParams->show_archival) || $curParams->show_archival == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_NO'); ?></option>
+					<option value="1" <?php echo (isset($curParams->show_archival) && $curParams->show_archival == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_YES'); ?></option>
 				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-listall"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST_ALL'); ?></label>
+				<select name="curation[params][list_all]" id="field-listall">
+					<option value="0" <?php echo (!isset($curParams->list_all) || $curParams->list_all == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+					<option value="1" <?php echo (isset($curParams->list_all) && $curParams->list_all == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-listlabel"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST_LABEL'); ?>:</label>
+				<input type="text" name="curation[params][list_label]" id="field-listlabel" maxlength="255" value="<?php echo (isset($curParams->list_label) && $curParams->list_label) ? $curParams->list_label : '';  ?>" />
 			</div>
 			<?php } else {
 				echo '<p class="warning">' . JText::_('COM_PUBLICATIONS_CURATION_SAVE_NEW') . '</p>';
@@ -156,7 +167,7 @@ function submitbutton(pressbutton)
 <?php if ($this->row->id) { $i=1; ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span> <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=addblock&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?>]</a></legend>
 			<?php foreach ($blocks as $sequence => $block) {
 				$blockSelection['active'][] = $block->name;
 				$blockMaster = $masterBlocks[$block->name];
@@ -166,11 +177,11 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<div class="col width-20 fltlft">
 						<div class="input-wrap">
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
 							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 						</div>
 						<div class="input-wrap tweakblock">
-							<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?></label>
+							<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?> <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=editblockorder&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_EDIT'); ?>]</a></label>
 						</div>
 					</div>
 					<div class="col width-40 fltlft blockprop">
@@ -233,19 +244,6 @@ function submitbutton(pressbutton)
 				</div>
 			</fieldset>
 			<?php $i++; } ?>
-		</fieldset>
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?></span></legend>
-			<div class="input-wrap">
-				<label for="field-newblock"><?php echo JText::_('COM_PUBLICATIONS_CURATION_SELECT_BLOCK'); ?>:</label>
-				<select name="newblock" id="field-newblock">
-				<?php foreach ($this->blocks as $sBlock) {
-					if (!in_array($sBlock->block, $blockSelection['active']) || $sBlock->maximum > 1) {  ?>
-					<option value="<?php echo $sBlock->block; ?>"><?php echo $sBlock->block; ?></option>
-				<?php  }
-				} ?>
-				</select>
-			</div>
 		</fieldset>
 	</div>
 <?php } ?>

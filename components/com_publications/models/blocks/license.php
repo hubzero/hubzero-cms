@@ -334,20 +334,30 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
-		$manifest = array(
-			'name' 			=> 'license',
-			'label' 		=> 'License',
-			'title' 		=> 'Publication License',
-			'draftHeading' 	=> 'Choose License',
-			'draftTagline'	=> 'Define copyright and terms of use:',
-			'about'			=> 'It is important that you provide a license for your publication stating your copyright and terms of use of your content.',
-			'adminTips'		=> '',
-			'elements' 		=> array(),
-			'params'		=> array( 'required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
-		);
+		// Load config from db
+		$obj = new PublicationBlock($this->_parent->_db);
+		$manifest = $obj->getManifest($this->_name);
 
-		return json_decode(json_encode($manifest), FALSE);
+		// Fall back
+		if (!$manifest)
+		{
+			$manifest = array(
+				'name' 			=> 'license',
+				'label' 		=> 'License',
+				'title' 		=> 'Publication License',
+				'draftHeading' 	=> 'Choose License',
+				'draftTagline'	=> 'Define copyright and terms of use:',
+				'about'			=> 'It is important that you provide a license for your publication stating your copyright and terms of use of your content.',
+				'adminTips'		=> '',
+				'elements' 		=> array(),
+				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
+			);
+
+			return json_decode(json_encode($manifest), FALSE);
+		}
+
+		return $manifest;
 	}
 }

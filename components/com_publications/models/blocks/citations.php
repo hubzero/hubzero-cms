@@ -25,11 +25,11 @@
 // Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
-include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' 
+include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' 
+include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
 	. DS . 'helpers' . DS . 'format.php' );
 
 /**
@@ -43,44 +43,44 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	* @var		string
 	*/
 	protected	$_name = 'citations';
-	
+
 	/**
 	* Parent block name
 	*
 	* @var		string
 	*/
-	protected	$_parentname 	= NULL;	
-	
+	protected	$_parentname 	= NULL;
+
 	/**
 	* Default manifest
 	*
 	* @var		string
 	*/
 	protected	$_manifest 	= NULL;
-	
+
 	/**
 	* Step number
 	*
 	* @var		integer
 	*/
 	protected	$_sequence = 0;
-	
+
 	/**
 	 * Display block content
 	 *
 	 * @return  string  HTML
 	 */
 	public function display( $pub = NULL, $manifest = NULL, $viewname = 'edit', $sequence = 0)
-	{	
+	{
 		// Set block manifest
 		if ($this->_manifest === NULL)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
+
 		// Register sequence
 		$this->_sequence	= $sequence;
-		
+
 		if ($viewname == 'curator')
 		{
 			// Output HTML
@@ -100,30 +100,30 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 				)
 			);
 		}
-		
+
 		$view->manifest 	= $this->_manifest;
 		$view->content 		= self::buildContent( $pub, $viewname );
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
 		$view->showControls	= 2;
-		
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Build panel content
 	 *
 	 * @return  string  HTML
 	 */
 	public function buildContent( $pub = NULL, $viewname = 'edit' )
-	{				
+	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
-						
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -133,14 +133,14 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 				'layout'	=> 'citations'
 			)
 		);
-		
+
 		// Get selector styles
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS 
+		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS
 			. 'css' . DS . 'selector.css');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
-		
+
 		if (!isset($pub->_citations))
 		{
 			$config = JComponentHelper::getParams( 'com_publications' );
@@ -150,18 +150,18 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$c = new CitationsCitation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
-									
+
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
-										
-		if ($this->getError()) 
+
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
 	}
-	
+
 	/**
 	 * Save block content
 	 *
@@ -174,22 +174,22 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
-		
-		// Make sure changes are allowed			
+
+		// Make sure changes are allowed
 		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
 		{
 			return false;
 		}
-		
+
 		// Load publication version
 		$objP = new Publication( $this->_parent->_db );
-		
-		if (!$objP->load($pub->id)) 
+
+		if (!$objP->load($pub->id))
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			return false;
 		}
-		
+
 		if (!isset($pub->_citations))
 		{
 			$config = JComponentHelper::getParams( 'com_publications' );
@@ -199,17 +199,17 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$c = new CitationsCitation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
-		
+
 		// Incoming
 		$url = JRequest::getVar('citation-doi', '');
-		
+
 		$parts 	= explode("doi:", $url);
 		$doi   	= count($parts) > 1 ? $parts[1] : $url;
-		
+
 		// Get links plugin
 		JPluginHelper::importPlugin( 'projects', 'links' );
 		$dispatcher = JDispatcher::getInstance();
-		
+
 		// Plugin params
 		$plugin_params = array(
 			$pub->id,
@@ -218,10 +218,10 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$actor,
 			true
 		);
-		
+
 		// Attach citation
-		$output = $dispatcher->trigger( 'attachCitation', $plugin_params);						
-		
+		$output = $dispatcher->trigger( 'attachCitation', $plugin_params);
+
 		if (isset($output[0]))
 		{
 			if ($output[0]['success'])
@@ -229,11 +229,11 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_SAVED'));
 
 				// Reflect the update in curation record
-				$this->_parent->set('_update', 1);			
+				$this->_parent->set('_update', 1);
 			}
 			else
 			{
-				$this->setError($output[0]['error']);				
+				$this->setError($output[0]['error']);
 				return false;
 			}
 		}
@@ -241,46 +241,46 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
 			return false;
-		}		
-		
-		return true;		
+		}
+
+		return true;
 	}
-	
+
 	/**
 	 * Add new citation
 	 *
 	 * @return  void
 	 */
 	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
-	{				
+	{
 		$cite = JRequest::getVar('cite', array(), 'post', 'none', 2);
-		
+
 		$new  = $cite['id'] ? false : true;
-		
+
 		if (!$cite['type'] || !$cite['title'])
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
-		
+
 		$citation = new CitationsCitation( $this->_parent->_db );
 		if (!$citation->bind($cite))
 		{
 			$this->setError($citation->getError());
 			return false;
 		}
-		
+
 		$citation->created 		= $new ? JFactory::getDate()->toSql() : $citation->created;
 		$citation->uid			= $new ? $actor : $citation->uid;
 		$citation->published	= 1;
-		
-		if (!$citation->store(true)) 
+
+		if (!$citation->store(true))
 		{
 			// This really shouldn't happen.
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
 			return false;
 		}
-		
+
 		// Create association
 		if ($new == true && $citation->id)
 		{
@@ -289,53 +289,53 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$assoc->tbl  = 'publication';
 			$assoc->type = 'owner';
 			$assoc->cid  = $citation->id;
-			
+
 			// Store new content
-			if (!$assoc->store()) 
+			if (!$assoc->store())
 			{
-				$this->setError($assoc->getError());				
+				$this->setError($assoc->getError());
 				return false;
-			}							
+			}
 		}
-		
+
 		$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
-		return true;		
+		return true;
 	}
-	
+
 	/**
 	 * Update citation record
 	 *
 	 * @return  void
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
-	{				
+	{
 		$this->addItem($manifest, $sequence, $pub, $actor, $elementId, $cid);
 		return;
 	}
-	
+
 	/**
 	 * Delete citation
 	 *
 	 * @return  void
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
-	{				
+	{
 		$cid = $cid ? $cid : JRequest::getInt( 'cid', 0 );
-		
+
 		// Get links plugin
 		JPluginHelper::importPlugin( 'projects', 'links' );
 		$dispatcher = JDispatcher::getInstance();
-		
+
 		// Plugin params
 		$plugin_params = array(
 			$pub->id,
 			$cid,
 			true
 		);
-		
+
 		// Attach citation
 		$output = $dispatcher->trigger( 'unattachCitation', $plugin_params);
-		
+
 		if (isset($output[0]))
 		{
 			if ($output[0]['success'])
@@ -343,11 +343,11 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_DELETED'));
 
 				// Reflect the update in curation record
-				$this->_parent->set('_update', 1);			
+				$this->_parent->set('_update', 1);
 			}
 			else
 			{
-				$this->setError($output[0]['error']);				
+				$this->setError($output[0]['error']);
 				return false;
 			}
 		}
@@ -355,21 +355,21 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
 			return false;
-		}		
-		
+		}
+
 		return true;
-		
+
 	}
-	
+
 	/**
 	 * Check completion status
 	 *
 	 * @return  object
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
-	{								
+	{
 		$status 	 = new PublicationsModelStatus();
-		
+
 		if (!isset($pub->_citations))
 		{
 			$config = JComponentHelper::getParams( 'com_publications' );
@@ -379,7 +379,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$c = new CitationsCitation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
-		
+
 		if ($pub->_citations)
 		{
 			$status->status = 1;
@@ -387,26 +387,36 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 
 		return $status;
 	}
-	
+
 	/**
 	 * Get default manifest for the block
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
-		$manifest = array(
-			'name' 			=> 'citations',
-			'label' 		=> 'Citations',
-			'title' 		=> 'Citations to integral or companion resources',
-			'draftHeading' 	=> 'Add citations',
-			'draftTagline'	=> 'Cite integral or companion resources',
-			'about'			=> '',
-			'adminTips'		=> '',
-			'elements' 		=> array(),
-			'params'		=> array( 'required' => 0, 'published_editing' => 1 )
-		);
-		
-		return json_decode(json_encode($manifest), FALSE);
+		// Load config from db
+		$obj = new PublicationBlock($this->_parent->_db);
+		$manifest = $obj->getManifest($this->_name);
+
+		// Fall back
+		if (!$manifest)
+		{
+			$manifest = array(
+				'name' 			=> 'citations',
+				'label' 		=> 'Citations',
+				'title' 		=> 'Citations to integral or companion resources',
+				'draftHeading' 	=> 'Add citations',
+				'draftTagline'	=> 'Cite integral or companion resources',
+				'about'			=> '',
+				'adminTips'		=> '',
+				'elements' 		=> array(),
+				'params'		=> array( 'required' => 0, 'published_editing' => 1 )
+			);
+
+			return json_decode(json_encode($manifest), FALSE);
+		}
+
+		return $manifest;
 	}
 }

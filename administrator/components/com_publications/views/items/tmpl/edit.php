@@ -334,10 +334,12 @@ function popratings()
 	<div class="input-wrap">
 		<table class="admintable">
 			<tbody>
+		<?php if (isset($this->submitter) && $this->submitter) { ?>
 				<tr>
 					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</td>
 					<td><?php echo $this->submitter->name; ?></td>
 				</tr>
+		<?php } ?>
 		<?php if ($this->row->state == 5) { ?>
 				<tr>
 					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>

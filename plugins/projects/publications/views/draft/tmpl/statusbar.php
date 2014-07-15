@@ -87,7 +87,8 @@ $i = 1;
 				$class = $status > 0 ? 'c_passed' : 'c_failed';
 			}
 
-			if (($move && $sequence > $activenum) && $this->active)
+			$isComing = $this->pub->_curationModel->isBlockComing($blockname, $sequence, $activenum);
+			if (($move && $isComing) && $this->active)
 			{
 				$class = 'c_pending';
 			}

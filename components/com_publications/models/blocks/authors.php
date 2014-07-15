@@ -652,7 +652,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 *
 	 * @return  void
 	 */
-	public function getManifest()
+	public function getManifest($new = false)
 	{
 		// Load config from db
 		$obj = new PublicationBlock($this->_parent->_db);

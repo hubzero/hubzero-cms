@@ -275,6 +275,52 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
+	 * Get schema for metadata elements
+	 *
+	 * @return  array
+	 */
+	public function getMetaSchema()
+	{
+		if (!$this->_blocks)
+		{
+			return false;
+		}
+
+		$customFields = array();
+		//'{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}'
+
+		// Get blocks model
+		$blocksModel = new PublicationsModelBlocks($this->_db);
+
+		// Find all blocks of the same parent
+		foreach ($this->_blocks as $sequence => $block)
+		{
+			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
+
+			if ($parentBlock == 'description')
+			{
+				foreach ($block->elements as $elId => $element)
+				{
+					if ($element->params->field != 'metadata')
+					{
+						continue;
+					}
+
+					$customFields['fields'][] = array(
+						'default' 	=> '',
+						'name' 		=> $element->params->aliasmap,
+						'label' 	=> $element->label,
+						'type'		=> $element->params->input,
+						'required'	=> $element->params->required
+					);
+				}
+			}
+		}
+
+		return json_encode($customFields);
+	}
+
+	/**
 	 * Get manifests elements of interest
 	 *
 	 * @param   integer  $role		Element role
@@ -713,6 +759,7 @@ class PublicationsCuration extends JObject
 		$view->progress		 = $this->_progress;
 		$view->active		 = $this->_blockname;
 		$view->activenum	 = $this->_blockorder;
+		$view->database		 = $this->_db;
 		$view->display();
 	}
 
@@ -973,6 +1020,50 @@ class PublicationsCuration extends JObject
 
 		// Return element ID
 		return empty($remaining) ? $sequence : $remaining[0];
+	}
+
+	/**
+	 * Determine if block is coming
+	 *
+	 * @param   string  $name		Block name
+	 * @param   integer $sequence	Block order in curation
+	 * @param   integer $activeId	Active block ID
+	 * @param   integer $elementId	Element ID in question
+	 * @return  boolean
+	 */
+	public function isBlockComing( $name, $sequence = 0, $activeId = 1)
+	{
+		$sequence = $sequence ? $sequence : $this->_blockorder;
+		if (!$sequence)
+		{
+			$sequence = $this->getBlockSequence($name);
+		}
+
+		if (!$sequence)
+		{
+			$this->setError( JText::_('Error loading block') );
+			return $activeId;
+		}
+
+		$remaining = array();
+		$start	   = 0;
+		foreach ($this->_blocks as $id => $block)
+		{
+			if (isset($block->active) && $block->active == 0)
+			{
+				continue;
+			}
+			if ($id == $activeId )
+			{
+				$start = 1;
+			}
+			if ($start == 1 && $id != $activeId)
+			{
+				$remaining[] = $id;
+			}
+		}
+
+		return in_array($sequence, $remaining) ? true : false;
 	}
 
 	/**

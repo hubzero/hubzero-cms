@@ -125,6 +125,291 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Edit block order
+	 *
+	 * @return     void
+	 */
+	public function addblockTask()
+	{
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+
+		$this->view->row = new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$this->view->row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$this->view->curation = new PublicationsCuration(
+			$this->database,
+			$this->view->row->curation
+		);
+
+		// Get blocks model
+		$blocksModel = new PublicationsModelBlocks($this->database);
+
+		// Get available blocks
+		$this->view->blocks = $blocksModel->getBlocks('*',
+			" WHERE status=1",
+			" ORDER BY ordering, id"
+		);
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		$this->view->config = $this->config;
+
+		// Push some styles to the template
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'css' . DS . 'publications.css');
+		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'js' . DS . 'curation.js');
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Save new block
+	 *
+	 * @return     void
+	 */
+	public function saveblockTask($redirect = false)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$id       = JRequest::getInt('id', 0);
+		$newblock = JRequest::getVar('newblock', '');
+		$before   = JRequest::getInt('before', 1);
+
+		$row = new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$curation = new PublicationsCuration(
+			$this->database,
+			$row->curation
+		);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id;
+
+		$manifest   = new stdClass;
+		$oManifest  = $curation->_manifest;
+
+		if ($newblock)
+		{
+			// Get blocks model
+			$blocksModel = new PublicationsModelBlocks($this->database);
+
+			// Get max used block and element IDs
+			$maxBlockId   = 0;
+			$maxElementId = 0;
+			foreach ($oManifest->blocks as $oId => $oBlock)
+			{
+				if ($oId > $maxBlockId)
+				{
+					$maxBlockId = $oId;
+				}
+				$parentBlock = $blocksModel->getBlockProperty($oBlock->name, '_parentname');
+				$pnBlock     = $blocksModel->getBlockProperty($newblock, '_parentname');
+
+				if ($parentBlock == $pnBlock && $oBlock->elements)
+				{
+					foreach ($oBlock->elements as $elId => $el)
+					{
+						if ($elId > $maxElementId)
+						{
+							$maxElementId = $elId;
+						}
+					}
+				}
+			}
+
+			// Get new block default manifest
+			$defaultManifest = $blocksModel->getManifest($newblock, true);
+
+			// Determine IDs for new block (must be unique)
+			$nextBlockId   = $maxBlockId + 1;
+			$nextElementId = $maxElementId + 1;
+
+			// Re-configure default manifest
+			$newManifest = $defaultManifest;
+			if ($defaultManifest->elements)
+			{
+				$els = new stdClass;
+				foreach ($defaultManifest->elements as $dElId => $dEl)
+				{
+					$els->$nextElementId = $dEl;
+					$nextElementId++;
+				}
+				$newManifest->elements = $els;
+			}
+			$newManifest->active = 0;
+
+			// Insert new block
+			foreach ($oManifest->blocks as $oId => $oBlock)
+			{
+				if ($oId == $before)
+				{
+					$manifest->blocks->$nextBlockId = $newManifest;
+				}
+				$manifest->blocks->$oId = $oBlock;
+			}
+			$manifest->params = $oManifest->params;
+			$row->curation = json_encode($manifest);
+			$row->store();
+		}
+
+		$this->setRedirect(
+			$url,
+			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED')
+		);
+	}
+
+	/**
+	 * Edit block order
+	 *
+	 * @return     void
+	 */
+	public function editblockorderTask()
+	{
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+
+		$this->view->row = new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$this->view->row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$this->view->curation = new PublicationsCuration(
+			$this->database,
+			$this->view->row->curation
+		);
+
+		// Get blocks model
+		$blocksModel = new PublicationsModelBlocks($this->database);
+
+		// Get available blocks
+		$this->view->blocks = $blocksModel->getBlocks('*',
+			" WHERE status=1",
+			" ORDER BY ordering, id"
+		);
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		$this->view->config = $this->config;
+
+		// Push some styles to the template
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'css' . DS . 'publications.css');
+		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'js' . DS . 'curation.js');
+
+		// Output the HTML
+		$this->view->display();
+
+	}
+
+	/**
+	 * Save block order
+	 *
+	 * @return     void
+	 */
+	public function saveblockorderTask($redirect = false)
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$id       = JRequest::getInt('id', 0);
+		$neworder = JRequest::getVar('neworder', '');
+		$order 	  = explode('-', $neworder);
+
+		$row = new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$curation = new PublicationsCuration(
+			$this->database,
+			$row->curation
+		);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id;
+
+		$manifest = new stdClass;
+		if ($neworder && !empty($order))
+		{
+			$oManifest  = $curation->_manifest;
+			foreach ($order as $o)
+			{
+				if (trim($o))
+				{
+					$manifest->blocks->$o = $oManifest->blocks->$o;
+				}
+			}
+
+			$manifest->params = $oManifest->params;
+			$row->curation = json_encode($manifest);
+			$row->store();
+		}
+
+		$this->setRedirect(
+			$url,
+			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED')
+		);
+	}
+
+	/**
 	 * Edit a type
 	 *
 	 * @return     void
@@ -195,8 +480,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
-
-		$this->view->config = $this->config;
+		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'js' . DS . 'curation.js');
 
 		// Output the HTML
 		$this->view->display();
@@ -373,8 +658,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Reorders licenses
-	 * Redirects to license listing
+	 * Reorders types
 	 *
 	 * @return     void
 	 */
