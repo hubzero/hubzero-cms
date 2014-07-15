@@ -33,143 +33,117 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 
-if (!$this->app->sess) {
-	echo '<p class="error"><strong>'.JText::_('ERROR').'</strong><br /> '.implode('<br />', $this->output).'</p>';
-} else {
+if (!$this->app->sess)
+{
+	echo '<p class="error"><strong>' . JText::_('ERROR') . '</strong><br />' . implode('<br />', $this->output) . '</p>';
+}
+else
+{
 	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
 	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
 	\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
-	$base = rtrim(JURI::base(true), '/');
-?>
 
-<div id="noVNC-control-bar">
-	<!--noVNC Mobile Device only Buttons-->
-	<div class="noVNC-buttons-left">
-		<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/drag.png"
-			   id="noVNC_view_drag_button" class="noVNC_status_button"
-			   title="Move/Drag Viewport"
-			   onclick="UI.setViewDrag();">
-		<div id="noVNC_mobile_buttons">
-				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_none.png"
-					id="noVNC_mouse_button0" class="noVNC_status_button"
-					onclick="UI.setMouseButton(1);">
-				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_left.png"
-					id="noVNC_mouse_button1" class="noVNC_status_button"
-					onclick="UI.setMouseButton(2);">
-				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_middle.png"
-					id="noVNC_mouse_button2" class="noVNC_status_button"
-					onclick="UI.setMouseButton(4);">
-				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/mouse_right.png"
-					id="noVNC_mouse_button4" class="noVNC_status_button"
-					onclick="UI.setMouseButton(0);">
-				<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/keyboard.png"
-					id="showKeyboard" class="noVNC_status_button"
-					value="Keyboard" title="Show Keyboard"
-					onclick="UI.showKeyboard()"/>
-				<input type="email"
-					autocapitalize="off" autocorrect="off"
-					id="keyboardinput" class="noVNC_status_button"
-					onKeyDown="onKeyDown(event);" onblur="UI.keyInputBlur();"/>
+	$base = rtrim(JURI::base(true), '/');
+	$img = $base . '/components/com_tools/assets/novnc/images';
+?>
+	<div id="noVNC-control-bar">
+		<!--noVNC Mobile Device only Buttons-->
+		<div class="noVNC-buttons-left">
+			<input type="image" src="<?php echo $img; ?>/drag.png" id="noVNC_view_drag_button" class="noVNC_status_button" title="Move/Drag Viewport" onclick="UI.setViewDrag();" />
+			<div id="noVNC_mobile_buttons--">
+				<input type="image" src="<?php echo $img; ?>/mouse_none.png" id="noVNC_mouse_button0" class="noVNC_status_button" onclick="UI.setMouseButton(1);" />
+				<input type="image" src="<?php echo $img; ?>/mouse_left.png" id="noVNC_mouse_button1" class="noVNC_status_button" onclick="UI.setMouseButton(2);" />
+				<input type="image" src="<?php echo $img; ?>/mouse_middle.png" id="noVNC_mouse_button2" class="noVNC_status_button" onclick="UI.setMouseButton(4);" />
+				<input type="image" src="<?php echo $img; ?>/mouse_right.png" id="noVNC_mouse_button4" class="noVNC_status_button" onclick="UI.setMouseButton(0);" />
+				<input type="image" src="<?php echo $img; ?>/keyboard.png" id="showKeyboard" class="noVNC_status_button" value="Keyboard" title="Show Keyboard" onclick="UI.showKeyboard()" />
+				<input type="email" autocapitalize="off" autocorrect="off" id="keyboardinput" class="noVNC_status_button" onKeyDown="onKeyDown(event);" onblur="UI.keyInputBlur();" />
 			</div>
 		</div>
 
 		<!--noVNC Buttons-->
-		<div class="noVNC-buttons-right">
-			<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/ctrlaltdel.png"
-				 id="sendCtrlAltDelButton" class="noVNC_status_button"
-				title="Send Ctrl-Alt-Del"
-				onclick="UI.sendCtrlAltDel();" />
-			<input type="image" src="<?php echo $base; ?>/components/com_tools/assets/novnc/images/clipboard.png"
-				id="clipboardButton" class="noVNC_status_button"
-				title="Clipboard"
-				onclick="UI.toggleClipboardPanel();" />
+		<div class="noVNC-buttons-right--">
+			<input type="image" src="<?php echo $img; ?>/ctrlaltdel.png" id="sendCtrlAltDelButton" class="noVNC_status_button" title="Send Ctrl-Alt-Del" onclick="UI.sendCtrlAltDel();" />
+			<input type="image" src="<?php echo $img; ?>/clipboard.png" id="clipboardButton" class="noVNC_status_button" title="Clipboard" onclick="UI.toggleClipboardPanel();" />
 		</div>
 
 		<!-- Clipboard Panel -->
 		<div id="noVNC_clipboard" class="triangle-right top">
-			<textarea id="noVNC_clipboard_text" rows=5
-				onfocus="UI.displayBlur();" onblur="UI.displayFocus();"
-				onchange="UI.clipSend();">
-			</textarea>
+			<textarea id="noVNC_clipboard_text" rows="5" onfocus="UI.displayBlur();" onblur="UI.displayFocus();" onchange="UI.clipSend();"></textarea>
 			<br />
-			<input id="noVNC_clipboard_clear_button" type="button"
-				value="Clear" onclick="UI.clipClear();">
+			<input id="noVNC_clipboard_clear_button" type="button" value="Clear" onclick="UI.clipClear();" />
 		</div>
-
 	</div> <!-- End of noVNC-control-bar -->
 
 	<div id="noVNC_screen">
-        <div id="noVNC_screen_pad"></div>
+		<div id="noVNC_screen_pad"></div>
 
 		<div id="noVNC_status_bar" class="noVNC_status_bar">
-				<div id="noVNC_status">Loading</div>
+			<div id="noVNC_status">Loading</div>
 		</div>
 
-		<h1 id="noVNC_logo" style="display:none;"><span>HUB</span><br/>zero</h1>
-
-		<!-- HTML5 Canvas  -->
-        <div id="noVNC_container" style="min-height:600px;">
-            <canvas id="noVNC_canvas" width="640px" height="20px">
-						Canvas not supported.
-			</canvas>
+		<div id="noVNC_container">
+			<canvas id="noVNC_canvas" width="640px" height="20px">Canvas not supported.</canvas>
 		</div>
-    </div>
+	</div>
 
-	<script>
+	<script type="text/javascript">
 		//JS globals for noVNC
-		var host, port, password, token, encrypt, connectPath, decryptPath;
-		host = '<?php echo $this->output->wsproxy_host; ?>';
-		port = '<?php echo $this->output->wsproxy_port; ?>';
-		password = '<?php echo $this->output->password; ?>';
-		token = '<?php echo $this->output->token; ?>';
-		encrypt = ('<?php echo $this->output->wsproxy_encrypt; ?>' == 'Yes') ? true : false;
+		var host     = '<?php echo $this->output->wsproxy_host; ?>',
+			port     = '<?php echo $this->output->wsproxy_port; ?>',
+			password = '<?php echo $this->output->password; ?>',
+			token    = '<?php echo $this->output->token; ?>',
+			encrypt  = ('<?php echo $this->output->wsproxy_encrypt; ?>' == 'Yes' ? true : false),
+			connectPath,
+			decryptPath;
+
 		connectPath = 'websockify?token=' + token;
-	
+
 		//Wire up the resizable element for this page
 		var resizeTimeout;
 		var resizeAttached = false;
 		var hPadding = 5;
-		UI.normalStateAchieved = function(){
-		if(!resizeAttached){
-			resizeAttached = true;
-			//Setup a handler to track window resizes
-			$(window).resize(function(e){
-				if(resizeTimeout){
-					clearTimeout(resizeTimeout);
-				}
-				//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
-				resizeTimeout = setTimeout(function(){
-						var w = $(window);
-						var b = $('#noVNC-control-bar');
-						var s = $('#noVNC_status');
-					var c = $('#app-content');
-						var sb = getScrollBarDimensions();
-						doResize(b.width() + sb.horizontal, w.height()
-																- b.height()
-																- s.height()
-																- hPadding
-																+ sb.vertical);
-				}, 1000);
-			});
-			
-			//Setup handler for tracking window focus events (delayed resize if not focused)
-			$(window).focus(function(){
-					console.log('window focus fired');
+
+		UI.normalStateAchieved = function() {
+			if (!resizeAttached) {
+				resizeAttached = true;
+				//Setup a handler to track window resizes
+				$(window).resize(function(e){
+					if (resizeTimeout) {
+						clearTimeout(resizeTimeout);
+					}
+					//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
+					resizeTimeout = setTimeout(function(){
+						/*var w = $(window),
+							b = $('#noVNC-control-bar'),
+							s = $('#noVNC_status'),
+							c = $('#app-content'),
+							sb = getScrollBarDimensions();
+
+						doResize(b.width() + sb.horizontal, w.height() - b.height() - s.height() - hPadding + sb.vertical);*/
+
+						doResize(<?php echo $this->output->width; ?>, <?php echo $this->output->height; ?>);
+					}, 1000);
+				});
+
+				//Setup handler for tracking window focus events (delayed resize if not focused)
+				$(window).focus(function(){
+					$(window).resize();
+				});
+
+				//When the page first loads, fire a resize event to get the current screen size
 				$(window).resize();
-			});
-			
-			//When the page first loads, fire a resize event to get the current screen size
-			$(window).resize();
+			}
+		};
+
+		function doResize(w, h) {
+			if (!document.hasFocus) {
+				return;
+			}
+			console.log(w + ' ' + h);
+			UI.requestResize(w, h); //Invoke resize on the server
 		}
-	};
-	
-	function doResize(w, h) {
-		if(!document.hasFocus)
-			return;
-		UI.requestResize(w, h); //Invoke resize on the server
-	}
-	
-		function getScrollBarDimensions(){
+
+		function getScrollBarDimensions() {
 			var elm = document.documentElement.offsetHeight ? document.documentElement : document.body,
 
 			curX = elm.clientWidth,
@@ -185,10 +159,10 @@ if (!$this->app->sess) {
 				horizontal: 0
 			};
 
-			if(!hasScrollY && !hasScrollX) {
+			if (!hasScrollY && !hasScrollX) {
 				return r;
 			}
-			
+
 			elm.style.overflow = "hidden";
 			if (hasScrollY) {
 				r.vertical = elm.clientWidth - curX;
@@ -199,11 +173,8 @@ if (!$this->app->sess) {
 			elm.style.overflow = prev;
 			return r;
 		}
-		
-	//Final attachment for onload
-	window.onload = UI.load;
-</script>
 
-<?php
-	} //end else
-?>
+		//Final attachment for onload
+		window.onload = UI.load;
+	</script>
+<?php } ?>
