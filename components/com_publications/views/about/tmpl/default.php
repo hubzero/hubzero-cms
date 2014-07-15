@@ -63,6 +63,10 @@ $category = $this->publication->_category;
 $customFields = $category->customFields && $category->customFields != '{"fields":[]}'
 				? $category->customFields
 				: '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
+if ($useBlocks)
+{
+	$customFields = $this->publication->_curationModel->getMetaSchema();
+}
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
@@ -120,8 +124,11 @@ $schema 	= $elements->getSchema();
 	// List all content?
 	if ($useBlocks)
 	{
-		$listAll = isset($this->publication->_curationModel->_manifest->params->list_all) ? $this->publication->_curationModel->_manifest->params->list_all :  0;
-		$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label) ? $this->publication->_curationModel->_manifest->params->list_label : JText::_('COM_PUBLICATIONS_CONTENT_LIST');
+		$listAll = isset($this->publication->_curationModel->_manifest->params->list_all)
+				? $this->publication->_curationModel->_manifest->params->list_all :  0;
+		$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label)
+				? $this->publication->_curationModel->_manifest->params->list_label
+				: JText::_('COM_PUBLICATIONS_CONTENT_LIST');
 
 		if ($listAll)
 		{
@@ -153,7 +160,7 @@ $schema 	= $elements->getSchema();
 ?>
 <?php
 	$citations = NULL;
-	if ($this->params->get('show_metadata'))
+	if ($useBlocks || $this->params->get('show_metadata'))
 	{
 		if (!isset($schema->fields) || !is_array($schema->fields))
 		{
