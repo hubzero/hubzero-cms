@@ -68,7 +68,7 @@ $this->css();
 			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 
 			<?php if (!$this->no_html) { ?>
-				<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('Cancel'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_($base); ?>"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

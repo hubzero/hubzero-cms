@@ -35,11 +35,11 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 
 if (!$this->entry->exists())
 {
-	$legend = 'New collection';
+	$legend = 'PLG_MEMBERS_COLLECTIONS_LEGEND_NEW_COLLECTION';
 }
 else
 {
-	$legend = 'Edit collection';
+	$legend = 'PLG_MEMBERS_COLLECTIONS_LEGEND_EDIT_COLLECTION';
 }
 
 $this->css();
@@ -53,20 +53,20 @@ $this->css();
 		<legend><?php echo JText::_($legend); ?></legend>
 
 		<label for="field-access">
-			<?php echo JText::_('Privacy'); ?>
+			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY'); ?>
 			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public (anyone can see this collection)'); ?></option>
-				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private (only I can see this collection)'); ?></option>
+				<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
+				<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
 			</select>
 		</label>
 
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo JText::_('Title'); ?>
+			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 
 		<label for="field-description">
-			<?php echo JText::_('Description'); ?> <span class="optional"><?php echo JText::_('optional'); ?></span>
+			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
 			<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
@@ -86,9 +86,9 @@ $this->css();
 	<?php echo JHTML::_('form.token'); ?>
 
 	<p class="submit">
-		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_SAVE'); ?>" />
 		<a class="btn btn-secondary" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-			<?php echo JText::_('Cancel'); ?>
+			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?>
 		</a>
 	</p>
 </form>

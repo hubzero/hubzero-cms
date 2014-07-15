@@ -538,7 +538,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			array(
 				'folder'  => $this->_type,
 				'element' => $this->_name,
-				'name'    => 'collection'
+				'name'    => 'collection',
+				'layout'  => 'default'
 			)
 		);
 		$view->name       = $this->_name;
@@ -550,19 +551,19 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
-		$view->filters['user_id']     = $this->member->get('uidNumber');
-		$view->filters['search']      = JRequest::getVar('search', '');
-		$view->filters['state']       = 1;
-		$view->filters['collection_id'] = JRequest::getVar('board', '');
+		$view->filters = array(
+			'limit'         => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'         => JRequest::getInt('limitstart', 0),
+			'user_id'       => $this->member->get('uidNumber'),
+			'search'        => JRequest::getVar('search', ''),
+			'state'         => 1,
+			'collection_id' => JRequest::getVar('board', '')
+		);
 
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
 			return $this->_collections();
-			//$view->collection->setup($this->model->get('object_id'), $this->model->get('object_type'));
 		}
 
 		// Is the board restricted to logged-in users only?
@@ -619,13 +620,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			return $this->_login();
 		}
-
-		// Is it a private board?
-		/*if ($this->juser->get('id') != $this->member->get('uidNumber'))
-		{
-			JError::raiseError(403, JText::_('Your are not authorized to access this content.'));
-			return;
-		}*/
 
 		if ($this->juser->get('id') == $this->member->get('uidNumber'))
 		{
@@ -818,7 +812,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->pageNav->setAdditionalUrlParam('id', $view->member->get('uidNumber'));
 		$view->pageNav->setAdditionalUrlParam('active', $this->_name);
-		//$view->pageNav->setAdditionalUrlParam('task', 'feed');
 
 		if ($this->getError())
 		{
@@ -842,7 +835,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'collection',
-				'layout'  => 'posts'
+				'layout'  => 'default'
 			)
 		);
 		$view->name       = $this->_name;
@@ -854,16 +847,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
-		//$view->filters['user_id']     = $this->member->get('uidNumber');
-		$view->filters['created_by']  = $this->member->get('uidNumber');
-		$view->filters['search']      = JRequest::getVar('search', '');
-		$view->filters['state']       = 1;
-		$view->filters['object_id']   = $this->member->get('uidNumber');
-		$view->filters['object_type'] = 'member';
-		//$view->filters['collection_id'] = JRequest::getVar('board', '');
+		$view->filters = array(
+			'limit'       => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'       => JRequest::getInt('limitstart', 0),
+			'created_by'  => $this->member->get('uidNumber'),
+			'search'      => JRequest::getVar('search', ''),
+			'state'       => 1,
+			'object_id'   => $this->member->get('uidNumber'),
+			'object_type' => 'member'
+		);
 
 		// Filters for returning results
 		//$filters = array();
@@ -878,19 +870,13 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->collections = $this->model->collections($count);
-
 		$view->followers   = $this->model->followers($count);
-
 		$view->following   = $this->model->following($count);
-
-		/*$count['object_id'] = '';
-		$count['object_type'] = '';
-		$count['created_by']  = $this->member->get('uidNumber');*/
 		$view->posts       = $this->model->posts($count);
 
 		$view->collection = CollectionsModelCollection::getInstance();
 
-		$view->filters['user_id']     = $this->member->get('uidNumber');
+		$view->filters['user_id'] = $this->member->get('uidNumber');
 
 		$view->rows = $view->collection->posts($view->filters);
 
@@ -1190,12 +1176,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		/*if (!$this->params->get('access-create-item'))
-		{
-			$this->setError(JText::_('PLG_GROUPS' . strtoupper($this->_name) . 'NOT_AUTHORIZED'));
-			return $this->_collections();
-		}*/
-
 		$no_html = JRequest::getInt('no_html', 0);
 
 		// No board ID selected so present repost form
@@ -1397,9 +1377,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
-		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
-
 		// Login check
 		if ($this->juser->get('guest'))
 		{

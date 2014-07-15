@@ -48,12 +48,12 @@ $this->css()
 	<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-collection')) { ?>
 		<li>
 			<?php if ($this->model->isFollowing()) { ?>
-				<a class="unfollow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
-					<span><?php echo JText::_('Unfollow All'); ?></span>
+				<a class="unfollow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
+					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
 				</a>
 			<?php } else { ?>
-				<a class="follow btn" data-text-follow="<?php echo JText::_('Follow All'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow All'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
-					<span><?php echo JText::_('Follow All'); ?></span>
+				<a class="follow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
+					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
 				</a>
 			<?php } ?>
 		</li>
