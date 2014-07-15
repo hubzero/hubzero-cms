@@ -37,6 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css()
      ->css('records')
+     ->js('records')
      ->js('time');
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;

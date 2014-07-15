@@ -55,6 +55,14 @@ HUB.Plugins.TimeRecords = {
 						options = '<option value="">No tasks for this hub</option>';
 					}
 					$("#task").html(options);
+
+					if (!!$.prototype.HUBfancyselect) {
+						$('#task').prev('.fs-dropdown').remove();
+						$('#task').HUBfancyselect({
+							'showSearch'         : true,
+							'searchPlaceholder'  : 'seach...'
+						});
+					}
 				}
 			});
 		});
