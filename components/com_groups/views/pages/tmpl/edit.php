@@ -45,37 +45,25 @@ if ($return != '')
 	}
 }
 
+// default group page vars
+$id        = $this->page->get('id', '');
+$gidNumber = $this->page->get('gidNumber', '');
+$category  = $this->page->get('category', '');
+$alias     = $this->page->get('alias', '');
+$title     = $this->page->get('title', '');
+$content   = $this->version->get('content', '');
+$version   = $this->version->get('version', 0);
+$ordering  = $this->page->get('ordering', null);
+$state     = $this->page->get('state', 1);
+$privacy   = $this->page->get('privacy', 'default');
+$home      = $this->page->get('home', 0);
+
 // default some form vars
 $pageHeading = JText::_("Add Page");
 
-// default group page vars
-$id        = '';
-$gidNumber = '';
-$category  = '';
-$title     = '';
-$alias     = '';
-$content   = '';
-$ordering  = null;
-$state     = 1;
-$privacy   = 'default';
-$home      = 0;
-$version   = 0;
-
 // if we are in edit mode
 if ($this->page->get('id')) 
-{
-	$id        = $this->page->get('id');
-	$gidNumber = $this->page->get('gidNumber');
-	$category  = $this->page->get('category');
-	$alias     = $this->page->get('alias');
-	$title     = $this->page->get('title');
-	$content   = $this->version->get('content');
-	$version   = $this->version->get('version');
-	$ordering  = $this->page->get('ordering');
-	$state     = $this->page->get('state');
-	$privacy   = $this->page->get('privacy');
-	$home      = $this->page->get('home');
-	
+{	
 	$pageHeading = JText::sprintf("Edit Page: %s", $title);
 }
 ?>
