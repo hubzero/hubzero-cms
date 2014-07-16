@@ -188,6 +188,13 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	{
 		$redirect = JURI::current();
 
+		// do we have tmpl=componet in url?
+		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
+		if (JRequest::getVar('tmpl', '') == 'component')
+		{
+			$redirect .= $delimeter . "tmpl=component";
+		}
+
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 
 		// Append current position to redirect
