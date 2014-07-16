@@ -166,7 +166,13 @@ class plgSystemSupergroup extends JPlugin
 			$uploadPath      = JPATH_ROOT . DS . trim($groupParams->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 			$componentPath   = $uploadPath . DS . 'components';
 			$componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
-	
+
+			// make sure uri is a super group component
+			if (!is_dir($componentPath . DS . 'com_' . $urlSegments[0]))
+			{
+				return;
+			}
+
 			// if we have a router
 			if (file_exists($componentRouter))
 			{
