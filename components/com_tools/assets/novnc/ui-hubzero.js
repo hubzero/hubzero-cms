@@ -61,6 +61,30 @@ var UI = {
 			'onClipboard':   UI.clipReceive,
 			'onPasswordRequired': function() {
 				alert('Connection failed: bad password');
+			},
+			'onFBResize': function() {
+				// Update containers dimensions just to be sure
+				var app = $D('noVNC_canvas'),
+					appcontent = $D('app-content');
+
+				var w = app.width,
+					h = app.height;
+
+				if (appcontent.style.width.replace('px', '') != w.toString()
+				 || appcontent.style.height.replace('px', '') != h.toString()) {
+					appcontent.style.width  = w + 'px';
+					appcontent.style.height = h + 'px';
+					$D('noVNC_container').style.width  = w + 'px';
+					$D('noVNC_container').style.height = h + 'px';
+
+
+					if ($D('app-size')) {
+console.log($D('app-size'));
+						$D('app-size').innerHTML = w.toString() + ' x ' + h.toString();
+					}
+
+					console.log(w.toString() + ' ' + h.toString());
+				}
 			}
 		});
 
@@ -100,11 +124,11 @@ var UI = {
 		UI.setViewClip(UI.clipSetting);
 		Util.addEvent(window, 'resize', UI.setViewClip);
 
-		Util.addEvent(window, 'beforeunload', function () {
+		/*Util.addEvent(window, 'beforeunload', function () {
 			if (UI.rfb_state === 'normal') {
 				return "You are currently connected.";
 			}
-		} );
+		});*/
 
 		//Finally, connect with globals
 		UI.rfb.connect(host, port, password, connectPath);

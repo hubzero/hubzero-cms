@@ -123,10 +123,6 @@ else
 
 				footermenu.appendTo(appfooter);
 
-				/*var wh = appcontent.height(),
-					ah = app.height(),
-					os = wh - ah;*/
-
 				appcontent.resizable({
 					minHeight: 200,
 					maxHeight: 3900,
@@ -192,6 +188,20 @@ else
 				return;
 			}
 			UI.requestResize(w, h); //Invoke resize on the server
+
+			// Update containers dimensions just to be sure
+			appcontent = $('#app-content');
+
+			if (appcontent.width() != w || appcontent.height() != h) {
+				appcontent
+					.width(w)
+					.height(h);
+				$('#noVNC_container')
+					.width(w)
+					.height(h);
+
+				$('#app-size').html(w.toString() + ' x ' + h.toString());
+			}
 		}
 
 		function getScrollBarDimensions() {
