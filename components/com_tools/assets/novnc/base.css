@@ -6,441 +6,432 @@
  * This file is licensed under the 2-Clause BSD license (see LICENSE.txt).
  */
 
-/*body {
-	margin:0;
-	padding:0;
-	font-family: Helvetica;
-	background-color:#494949;
-	background-repeat:no-repeat;
-	background-position:right bottom;
-	height:100%;
-}
+	#noVNC_controls ul {
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
+	#noVNC_controls li {
+		padding-bottom:8px;
+	}
 
-html {
-	height:100%;
-}*/
+	#noVNC_host {
+		width: 150px;
+	}
+	#noVNC_port {
+		width: 80px;
+	}
+	#noVNC_password {
+		width: 150px;
+	}
+	#noVNC_encrypt {
+	}
+	#noVNC_path {
+		width: 100px;
+	}
+	#noVNC_connect_button {
+		width: 110px;
+		float:right;
+	}
 
-#noVNC_controls ul {
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
-}
-#noVNC_controls li {
-	padding-bottom:8px;
-}
+	#noVNC_buttons {
+		white-space: nowrap;
+	}
 
-#noVNC_host {
-	width:150px;
-}
-#noVNC_port {
-	width: 80px;
-}
-#noVNC_password {
-	width: 150px;
-}
-#noVNC_encrypt {
-}
-#noVNC_path {
-	width: 100px;
-}
-#noVNC_connect_button {
-	width: 110px;
-	float:right;
-}
+	#noVNC_view_drag_button {
+		display: none;
+	}
+	#sendCtrlAltDelButton {
+		display: none;
+	}
+	#noVNC_xvp_buttons {
+		display: none;
+	}
+	#noVNC_mobile_buttons {
+		display: none;
+	}
 
-#noVNC_buttons {
-	white-space: nowrap;
-}
+	#noVNC_extra_keys {
+		display: inline;
+		list-style-type: none;
+		padding: 0px;
+		margin: 0px;
+		position: relative;
+	}
 
-#noVNC_view_drag_button {
-	display: none;
-}
-#sendCtrlAltDelButton {
-	display: none;
-}
-#noVNC_xvp_buttons {
-	display: none;
-}
-#noVNC_mobile_buttons {
-	display: none;
-}
+	.noVNC-buttons-left {
+		float: left;
+		z-index: 1;
+		position: relative;
+	}
+	.noVNC-buttons-right {
+		float:right;
+		right: 0px;
+		z-index: 2;
+		position: absolute;
+	}
 
-#noVNC_extra_keys {
-	display: inline;
-	list-style-type: none;
-	padding: 0px;
-	margin: 0px;
-	position: relative;
-}
+	#noVNC_settings_menu {
+		margin: 3px;
+		text-align: left;
+	}
+	#noVNC_settings_menu ul {
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
 
-.noVNC-buttons-left {
-	float: left;
-	z-index: 1;
-	position: relative;
-}
-
-.noVNC-buttons-right {
-	float:right;
-	right: 0px;
-	z-index: 2;
-	position: absolute;
-}
-
-#noVNC_status {
-	font-size: 12px;
-	padding-top: 4px;
-	height:32px;
-	text-align: center;
-	font-weight: bold;
-	color: #fff;
-}
-
-#noVNC_settings_menu {
-	margin: 3px;
-	text-align: left;
-}
-#noVNC_settings_menu ul {
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
-}
-
-#noVNC_apply {
-	float:right;
-}
+	#noVNC_apply {
+		float:right;
+	}
 
 /* Do not set width/height for VNC_screen or VNC_canvas or incorrect
  * scaling will occur. Canvas resizes to remote VNC settings */
-#noVNC_screen_pad {
-	margin: 0px;
-	padding: 0px;
-	height: 36px;
-}
-#noVNC_status_bar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-}
-#noVNC_screen {
-	text-align: center;
-	display: table;
-	width: 100%;
-	height: 100%;
-	background-color:#313131;
-	border-bottom-right-radius: 800px 600px;
-	/*border-top-left-radius: 800px 600px;*/
-}
+	#noVNC_screen_pad {
+		/*margin: 0px;
+		padding: 0px;
+		height: 37px;*/
+		display: none;
+	}
 
-#noVNC_container,
-#noVNC_canvas {
-	margin: 0px;
-	padding: 0px;
-}
-#noVNC_container {
-	min-height: 600px;
-}
+	#noVNC_screen {
+		text-align: center;
+		display: table;
+		width: 100%;
+		height: 100%;
+		background-color:#313131;
+		border-bottom-right-radius: 800px 600px;
+	}
 
-#noVNC_canvas {
-	display: block;
-	left: 0px;
-}
+	#noVNC_container,
+	#noVNC_canvas {
+		margin: 0px;
+		padding: 0px;
+	}
+	#noVNC_container {
+		min-height: 100px;
+		overflow: hidden;
+	}
 
-#VNC_clipboard_clear_button {
-	float:right;
-}
-#VNC_clipboard_text {
-	font-size: 11px;
-}
+	#noVNC_canvas {
+		display: block;
+		left: 0px;
+	}
 
-#noVNC_clipboard_clear_button {
-	float:right;
-}
+	#VNC_clipboard_clear_button {
+		float:right;
+	}
+	#VNC_clipboard_text {
+		font-size: 11px;
+	}
+
+	#noVNC_clipboard_clear_button {
+		float:right;
+	}
 
 /*Bubble contents divs*/
-#noVNC_settings {
-	display:none;
-	margin-top:73px;
-	right:20px;
-	position:fixed;
-}
+	#noVNC_settings {
+		display: none;
+		margin-top: 73px;
+		right: 20px;
+		position: fixed;
+	}
 
-#noVNC_controls {
-	display:none;
-	margin-top:73px;
-	right:12px;
-	position:fixed;
-}
-#noVNC_controls.top:after  {
-	right:15px;
-}
+	#noVNC_controls {
+		display: none;
+		margin-top: 73px;
+		right: 12px;
+		position:fixed;
+	}
+	#noVNC_controls.top:after  {
+		right: 15px;
+	}
+	#noVNC_description {
+		display: none;
+		position: fixed;
+		margin-top: 73px;
+		right: 20px;
+		left: 20px;
+		padding: 15px;
+		color: #000;
+		background: #eee; /* default background for browsers without gradient support */
+		border: 2px solid #E0E0E0;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	#noVNC_popup_status_panel {
+		display: none;
+		position: fixed;
+		z-index: 1;
+		margin: 15px;
+		margin-top: 60px;
+		padding: 15px;
+		width: auto;
+		text-align: center;
+		font-weight: bold;
+		word-wrap: break-word;
+		color: #fff;
+		background: rgba(0,0,0,0.65);
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
 
-#noVNC_description {
-	display:none;
-	position:fixed;
+	#noVNC_xvp {
+		display: none;
+		margin-top: 73px;
+		right: 30px;
+		position: fixed;
+	}
+	#noVNC_xvp.top:after {
+		right:125px;
+	}
 
-	margin-top:73px;
-	right:20px;
-	left:20px;
-	padding:15px;
-	color:#000;
-	background:#eee; /* default background for browsers without gradient support */
+	#noVNC_clipboard {
+		display: none;
+		margin-top: 73px;
+		right: 30px;
+		position: fixed;
+	}
+	#noVNC_clipboard.top:after {
+		right: 85px;
+	}
 
-	border:2px solid #E0E0E0;
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	border-radius:10px;
-}
-
-#noVNC_popup_status_panel {
-	display:none;
-	position: fixed;
-	z-index: 1;
-
-	margin:15px;
-	margin-top:60px;
-	padding:15px;
-	width:auto;
-
-	text-align:center;
-	font-weight:bold;
-	word-wrap:break-word;
-	color:#fff;
-	background:rgba(0,0,0,0.65);
-
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	border-radius:10px;
-}
-
-#noVNC_xvp {
-	display:none;
-	margin-top:73px;
-	right:30px;
-	position:fixed;
-}
-#noVNC_xvp.top:after {
-	right:125px;
-}
-
-#noVNC_clipboard {
-	display:none;
-	margin-top:73px;
-	right:30px;
-	position:fixed;
-}
-#noVNC_clipboard.top:after {
-	right:85px;
-}
-
-#keyboardinput {
-	width:1px;
-	height:1px;
-	background-color:#fff;
-	color:#fff;
-	border:0;
-	position: relative;
-	left: -40px;
-	z-index: -1;
-}
-
-/*
- * Advanced Styling
- */
-
-.noVNC_status_normal {
-	background: #b2bdcd; /* Old browsers */
-	background: -moz-linear-gradient(top, #b2bdcd 0%, #899cb3 49%, #7e93af 51%, #6e84a3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b2bdcd), color-stop(49%,#899cb3), color-stop(51%,#7e93af), color-stop(100%,#6e84a3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* IE10+ */
-	background: linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* W3C */
-}
-.noVNC_status_error {
-	background: #f04040; /* Old browsers */
-	background: -moz-linear-gradient(top, #f04040 0%, #899cb3 49%, #7e93af 51%, #6e84a3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f04040), color-stop(49%,#899cb3), color-stop(51%,#7e93af), color-stop(100%,#6e84a3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #f04040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #f04040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #f04040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* IE10+ */
-	background: linear-gradient(top, #f04040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* W3C */
-}
-.noVNC_status_warn {
-	background: #f0f040; /* Old browsers */
-	background: -moz-linear-gradient(top, #f0f040 0%, #899cb3 49%, #7e93af 51%, #6e84a3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f040), color-stop(49%,#899cb3), color-stop(51%,#7e93af), color-stop(100%,#6e84a3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #f0f040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #f0f040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #f0f040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* IE10+ */
-	background: linear-gradient(top, #f0f040 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* W3C */
-}
+	#keyboardinput {
+		width: 1px;
+		height: 1px;
+		background-color: #fff;
+		color: #fff;
+		border: 0;
+		position: relative;
+		left: -40px;
+		z-index: -1;
+	}
 
 /* Control bar */
-#noVNC-control-bar {
-	/*position:fixed;*/
+	#noVNC-control-bar {
+		position: absolute;
+		display: block;
+		height: 34px;
+		left: 0;
+		top: 2px;
+		width: 100%;
+		z-index: 200;
+	}
+
+/* Status */
+	#noVNC_status_bar {
 	position: absolute;
-	display:block;
-	height:36px;
-	left:0;
-	top:0;
-	width:100%;
-	z-index:200;
-}
+		top: -2.5em;
+		right: 18em;
+		z-index: 2;
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		line-height: 1;
+		padding: 0.5em;
+		border: 1px solid #999;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		text-align: left;
+	}
+	#noVNC_status_bar:before {
+		content: "\f021";
+		font-family: "Fontcons";
+		margin-right: 0.4em;
+		font-weight: normal;
+	}
+	#noVNC_status_bar.noVNC_status_normal:before {
+		content: "\26A1";
+	}
+	#noVNC_status_bar.noVNC_status_warn:before {
+		content: "\26A0";
+		color: #cea638;
+	}
+	#noVNC_status_bar.noVNC_status_error:before {
+		content: "\2757";
+		color: #ba4a3b;
+	}
+	#noVNC_status {
+		text-align: center;
+		white-space: nowrap;
+		padding: 0.5em 1em;
+		position: absolute;
+		top: -2em;
+		left: -8em;
+		display: none;
+		background: #222;
+		border-color: 1px solid #111;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+	}
+	#noVNC_status_bar:hover #noVNC_status {
+		display: block;
+	}
+	#noVNC_status.noVNC_status_error {
+		background: #ba4a3b;
+		border-color: #982819;
+	}
+	#noVNC_status.noVNC_status_warn {
+		background: #cea638;
+		border-color: #ac8416;
+	}
+	.noVNC_status_normal {
+		color: #fff;
+	}
+	.noVNC_status_error {
+		color: #ffd2c3;
+	}
+	.noVNC_status_warn {
+		color: #ffffc0;
+	}
 
-.noVNC_status_button {
-	padding: 4px 4px;
-	vertical-align: middle;
-	border:1px solid #869dbc;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	background: #b2bdcd; /* Old browsers */
-	background: -moz-linear-gradient(top, #b2bdcd 0%, #899cb3 49%, #7e93af 51%, #6e84a3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b2bdcd), color-stop(49%,#899cb3), color-stop(51%,#7e93af), color-stop(100%,#6e84a3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2bdcd', endColorstr='#6e84a3',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, #b2bdcd 0%,#899cb3 49%,#7e93af 51%,#6e84a3 100%); /* W3C */
-	/*box-shadow:inset 0.4px 0.4px 0.4px #000000;*/
-}
+/* Status Buttons */
+	.noVNC_status_button {
+		padding: 4px 4px;
+		vertical-align: middle;
+		background: #4b4b4b;
+		background: -webkit-gradient(linear, left top, left bottom, from(#676767), to(#4b4b4b));
+		background: -webkit-linear-gradient(#676767, #4b4b4b);
+		background: -moz-linear-gradient(center top, #676767 0%, #4b4b4b 100%);
+		background: -moz-gradient(center top, #676767 0%, #4b4b4b 100%);
+		background: -o-linear-gradient(#676767, #4b4b4b);
+		background: linear-gradient(#676767, #4b4b4b);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#676767,endColorstr=#4b4b4b);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#676767, endColorstr=#4b4b4b)";
+		-webkit-border-radius: 0.27em;
+		-moz-border-radius: 0.27em;
+		border-radius: 0.27em;
+		border: 1px solid #111;
+		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	}
+	.noVNC_status_button:hover {
+		background: #6b6b6b;
+		background: -webkit-gradient(linear, left top, left bottom, from(#878787), to(#6b6b6b));
+		background: -webkit-linear-gradient(#878787, #6b6b6b);
+		background: -moz-linear-gradient(center top, #878787 0%, #6b6b6b 100%);
+		background: -moz-gradient(center top, #878787 0%, #6b6b6b 100%);
+		background: -o-linear-gradient(#878787, #6b6b6b);
+		background: linear-gradient(#878787, #6b6b6b);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#878787,endColorstr=#6b6b6b);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#878787, endColorstr=#6b6b6b)";
+		border: 1px solid #333;
+	}
+	.noVNC_status_button_selected {
+		padding: 4px 4px;
+		vertical-align: middle;
+		border: 1px solid #4366a9;
+		-webkit-border-radius: 6px;
+		   -moz-border-radius: 6px;
+		        border-radius: 6px;
+		background: #779ced; /* Old browsers */
+		background: -moz-linear-gradient(top, #779ced 0%, #3970e0 49%, #2160dd 51%, #2463df 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#779ced), color-stop(49%,#3970e0), color-stop(51%,#2160dd), color-stop(100%,#2463df)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* Opera11.10+ */
+		background: -ms-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* IE10+ */
+		background: linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#779ced', endColorstr='#2463df',GradientType=0 ); /* IE6-9 */
+	}
 
-.noVNC_status_button_selected {
-	padding: 4px 4px;
-	vertical-align: middle;
-	border:1px solid #4366a9;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	background: #779ced; /* Old browsers */
-	background: -moz-linear-gradient(top, #779ced 0%, #3970e0 49%, #2160dd 51%, #2463df 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#779ced), color-stop(49%,#3970e0), color-stop(51%,#2160dd), color-stop(100%,#2463df)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* Opera11.10+ */
-	background: -ms-linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* IE10+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#779ced', endColorstr='#2463df',GradientType=0 ); /* IE6-9 */
-	background: linear-gradient(top, #779ced 0%,#3970e0 49%,#2160dd 51%,#2463df 100%); /* W3C */
- /*box-shadow:inset 0.4px 0.4px 0.4px #000000;*/
-}
+/* Settings Bubble */
+	.triangle-right {
+		position: relative;
+		padding: 15px;
+		margin: 1em 0 3em;
+		color: #fff;
+		background: #fff;
+		-webkit-border-radius: 10px;
+		   -moz-border-radius: 10px;
+		        border-radius: 10px;
+		color: #000;
+		border: 2px solid #E0E0E0;
+	}
+	.triangle-right:after {
+		content:"";
+		position:absolute;
+		bottom:-20px; /* value = - border-top-width - border-bottom-width */
+		left:50px; /* controls horizontal position */
+		border-width:20px 0 0 20px; /* vary these values to change the angle of the vertex */
+		border-style:solid;
+		border-color:#E0E0E0 transparent;
+		display: block;
+		width:0;
+	}
+	.triangle-right.top:after {
+		top: -40px; /* value = - border-top-width - border-bottom-width */
+		right: 50px; /* controls horizontal position */
+		bottom: auto;
+		left: auto;
+		border-width: 40px 40px 0 0; /* vary these values to change the angle of the vertex */
+		border-color: transparent #E0E0E0;
+	}
 
-
-/*Settings Bubble*/
-.triangle-right {
-	position:relative;
-	padding:15px;
-	margin:1em 0 3em;
-	color:#fff;
-	background:#fff; /* default background for browsers without gradient support */
-	/* css3 */
-	/*background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
-	background:-moz-linear-gradient(#2e88c4, #075698);
-	background:-o-linear-gradient(#2e88c4, #075698);
-	background:linear-gradient(#2e88c4, #075698);*/
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	border-radius:10px;
-	color:#000;
-	border:2px solid #E0E0E0;
-}
-
-.triangle-right.top:after {
-	border-color: transparent #E0E0E0;
-	border-width: 20px 20px 0 0;
-	bottom: auto;
-	left: auto;
-	right: 50px;
-	top: -20px;
-}
-
-.triangle-right:after {
-	content:"";
-	position:absolute;
-	bottom:-20px; /* value = - border-top-width - border-bottom-width */
-	left:50px; /* controls horizontal position */
-	border-width:20px 0 0 20px; /* vary these values to change the angle of the vertex */
-	border-style:solid;
-	border-color:#E0E0E0 transparent;
-	/* reduce the damage in FF3.0 */
-	display:block;
-	width:0;
-}
-
-.triangle-right.top:after {
-	top:-40px; /* value = - border-top-width - border-bottom-width */
-	right:50px; /* controls horizontal position */
-	bottom:auto;
-	left:auto;
-	border-width:40px 40px 0 0; /* vary these values to change the angle of the vertex */
-	border-color:transparent #E0E0E0;
-}
-
-/*Default noVNC logo.*/
-/* From: http://fonts.googleapis.com/css?family=Orbitron:700 */
-@font-face {
-	font-family: 'Orbitron';
-	font-style: normal;
-	font-weight: 700;
-	src: local('?'), url('Orbitron700.woff') format('woff'), url('Orbitron700.ttf') format('truetype');
-}
-
-#noVNC_logo {
-	margin-top: 170px;
-	margin-left: 10px;
-	color:yellow;
-	text-align:left;
-	font-family: 'Orbitron', 'OrbitronTTF', sans-serif;
-	line-height:90%;
-	text-shadow:
-			 5px 5px 0 #000,
-			-1px -1px 0 #000,
-			 1px -1px 0 #000,
-			-1px 1px 0 #000,
-			 1px 1px 0 #000;
-}
-
-
-#noVNC_logo span{
-	color:green;
-}
+/*Default noVNC logo. */
+	/* From: http://fonts.googleapis.com/css?family=Orbitron:700 */
+	@font-face {
+		font-family: 'Orbitron';
+		font-style: normal;
+		font-weight: 700;
+		src: local('?'),
+		     url('Orbitron700.woff') format('woff'),
+		     url('Orbitron700.ttf') format('truetype');
+	}
+	#noVNC_logo {
+		margin-top: 170px;
+		margin-left: 10px;
+		color:yellow;
+		text-align:left;
+		font-family: 'Orbitron', 'OrbitronTTF', sans-serif;
+		line-height:90%;
+		text-shadow:
+				 5px 5px 0 #000,
+				-1px -1px 0 #000,
+				 1px -1px 0 #000,
+				-1px 1px 0 #000,
+				 1px 1px 0 #000;
+	}
+	#noVNC_logo span {
+		color:green;
+	}
 
 /* ----------------------------------------
  * Media sizing
- * ----------------------------------------
- */
-
-
-.noVNC_status_button {
-	font-size: 12px;
-}
-
-#noVNC_clipboard_text {
-	width: 500px;
-}
-
-#noVNC_logo {
-	font-size: 180px;
-}
-
-.noVNC-buttons-left {
-	padding-left: 10px;
-}
-
-.noVNC-buttons-right {
-	padding-right: 10px;
-}
-
-#noVNC_status {
-	z-index: 0;
-	position: absolute;
-	width: 100%;
-	margin-left: 0px;
-}
-
-#showExtraKeysButton { display: none; }
-#toggleCtrlButton { display: inline; }
-#toggleAltButton {  display: inline; }
-#sendTabButton { display: inline; }
-#sendEscButton { display: inline; }
+ * ---------------------------------------- */
+	.noVNC_status_button {
+		font-size: 12px;
+	}
+	#noVNC_clipboard_text {
+		width: 500px;
+	}
+	#noVNC_logo {
+		font-size: 180px;
+	}
+	.noVNC-buttons-left {
+		padding-left: 10px;
+	}
+	.noVNC-buttons-right {
+		padding-right: 10px;
+	}
+	#showExtraKeysButton {
+		display: none;
+	}
+	#toggleCtrlButton,
+	#toggleAltButton,
+	#sendTabButton,
+	#sendEscButton {
+		display: inline;
+	}
 
 /* left-align the status text on lower resolutions */
 @media screen and (max-width: 800px){
