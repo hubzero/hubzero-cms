@@ -30,6 +30,8 @@
 
 namespace Hubzero\Console;
 
+use Hubzero\Console\Config;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -387,8 +389,15 @@ class Output
 			}
 		}
 
-		$messageStyles = $style['format'] . ';' . $style['color'];
-		$message       = chr(27) . "[" . $messageStyles . "m" . $style['indentation'] . $message . chr(27) . "[0m";
+		if (!Config::get('color', true))
+		{
+			$message = $style['indentation'] . $message;
+		}
+		else
+		{
+			$messageStyles = $style['format'] . ';' . $style['color'];
+			$message       = chr(27) . "[" . $messageStyles . "m" . $style['indentation'] . $message . chr(27) . "[0m";
+		}
 	}
 
 	/**

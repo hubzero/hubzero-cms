@@ -67,9 +67,10 @@ class Config
 	 * Function to return config var
 	 *
 	 * @param  (string) $key
+	 * @param  (mixed) $default
 	 * @return (string) $value
 	 **/
-	public static function get($key)
+	public static function get($key, $default=false)
 	{
 		static $instance;
 
@@ -78,6 +79,6 @@ class Config
 			$instance = new self();
 		}
 
-		return (isset($instance->config[$key])) ? $instance->config[$key] : false;
+		return (isset($instance->config[$key])) ? $instance->config[$key] : $default;
 	}
 }

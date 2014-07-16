@@ -85,13 +85,18 @@ class Configure implements CommandInterface
 			$email = $this->arguments->getOpt('email');
 		}
 
-		if (!isset($name) && !isset($email))
+		if ($this->arguments->getOpt('color'))
+		{
+			$color = $this->arguments->getOpt('color');
+		}
+
+		if (!isset($name) && !isset($email) && !isset($color))
 		{
 			if ($this->output->isInteractive())
 			{
-				$option = $this->output->getResponse('What do you want to configure [name|email] ?');
+				$option = $this->output->getResponse('What do you want to configure [name|email|color] ?');
 
-				if (in_array($option, array('email', 'name')))
+				if (in_array($option, array('email', 'name', 'color')))
 				{
 					$$option = $this->output->getResponse("What do you want your {$option} to be?");
 				}
@@ -121,6 +126,10 @@ class Configure implements CommandInterface
 		if (isset($email))
 		{
 			$config['user_email'] = $email;
+		}
+		if (isset($color))
+		{
+			$config['color'] = $color;
 		}
 
 		if ($this->save($config))
