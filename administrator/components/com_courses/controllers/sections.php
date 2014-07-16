@@ -207,6 +207,25 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Function to convert local timestamps to UTC timestamp
+	 *
+	 * @param  array $dt
+	 * @return array
+	 */
+	private function _datesToUTC($dt)
+	{
+		if (isset($dt['publish_up']) && $dt['publish_up'] != '')
+		{
+			$dt['publish_up']   = JFactory::getDate($dt['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		if (isset($dt['publish_down']) && $dt['publish_down'] != '')
+		{
+			$dt['publish_down'] = JFactory::getDate($dt['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		return $dt;
+	}
+
+	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
 	 * @return void
@@ -229,19 +248,11 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		$mthd = 'bind';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-			$mthd = 'loadArray';
-		}
-
-		$p = new $paramsClass('');
-		$p->$mthd(JRequest::getVar('params', '', 'post'));
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', '', 'post'));
 
 		// Make sure the logo gets carried over
-		$op = new $paramsClass($model->get('params'));
+		$op = new JRegistry($model->get('params'));
 		$p->set('logo', $op->get('logo'));
 
 		$model->set('params', $p->toString());
@@ -270,6 +281,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				$unit_down = $dt['publish_down'];
 			}*/
 			$dt['section_id'] = $model->get('id');
+			$dt = $this->_datesToUTC($dt);
 
 			$dtmodel = new CoursesModelSectionDate($dt['id']);
 			if (!$dtmodel->bind($dt))
@@ -287,11 +299,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			{
 				foreach ($dt['asset_group'] as $j => $ag)
 				{
+					$ag = $this->_datesToUTC($ag);
+
 					if (!isset($ag['publish_up']) || !$ag['publish_up'])
 					{
 						$ag['publish_up'] = $dt['publish_up'];
 					}
-
 					if (!isset($ag['publish_down']) || !$ag['publish_down'])
 					{
 						$ag['publish_down'] = $dt['publish_down'];
@@ -316,11 +329,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					{
 						foreach ($ag['asset_group'] as $k => $agt)
 						{
+							$agt = $this->_datesToUTC($agt);
+
 							if (!isset($agt['publish_up']) || !$agt['publish_up'])
 							{
 								$agt['publish_up'] = $ag['publish_up'];
 							}
-
 							if (!isset($agt['publish_down']) || !$agt['publish_down'])
 							{
 								$agt['publish_down'] = $ag['publish_down'];
@@ -345,11 +359,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 							{
 								foreach ($agt['asset'] as $z => $a)
 								{
+									$a = $this->_datesToUTC($a);
+
 									if (!isset($a['publish_up']) || !$a['publish_up'])
 									{
 										$a['publish_up'] = $agt['publish_up'];
 									}
-
 									if (!isset($a['publish_down']) || !$a['publish_down'])
 									{
 										$a['publish_down'] = $agt['publish_down'];
@@ -379,11 +394,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					{
 						foreach ($ag['asset'] as $z => $a)
 						{
+							$a = $this->_datesToUTC($a);
+
 							if (!isset($a['publish_up']) || !$a['publish_up'])
 							{
 								$a['publish_up'] = $ag['publish_up'];
 							}
-
 							if (!isset($a['publish_down']) || !$a['publish_down'])
 							{
 								$a['publish_down'] = $ag['publish_down'];
@@ -411,11 +427,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			{
 				foreach ($dt['asset'] as $z => $a)
 				{
+					$a = $this->_datesToUTC($a);
+
 					if (!isset($a['publish_up']) || !$a['publish_up'])
 					{
 						$a['publish_up'] = $dt['publish_up'];
 					}
-
 					if (!isset($a['publish_down']) || !$a['publish_down'])
 					{
 						$a['publish_down'] = $dt['publish_down'];
