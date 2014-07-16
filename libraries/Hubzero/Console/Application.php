@@ -97,6 +97,12 @@ class Application
 			$this->output->makeNonInteractive();
 		}
 
+		// Check for color flag and set on output accordingly
+		if ($this->arguments->getOpt('no-colors'))
+		{
+			$this->output->makeUnColored();
+		}
+
 		$class = $this->arguments->get('class');
 		$task  = $this->arguments->get('task');
 

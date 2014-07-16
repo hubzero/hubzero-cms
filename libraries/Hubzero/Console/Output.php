@@ -69,6 +69,13 @@ class Output
 	private $isInteractive = true;
 
 	/**
+	 * Whether or not to color output
+	 *
+	 * @var bool
+	 **/
+	private $colored = true;
+
+	/**
 	 * Set the output mode
 	 *
 	 * Assume normal, but minimal and verbose are also options. This isn't setting the format, but it's allowing us to distinguish what
@@ -389,7 +396,7 @@ class Output
 			}
 		}
 
-		if (!Config::get('color', true))
+		if (!Config::get('color', $this->colored))
 		{
 			$message = $style['indentation'] . $message;
 		}
@@ -448,6 +455,26 @@ class Output
 	public function getMode()
 	{
 		return $this->mode;
+	}
+
+	/**
+	 * Make output colored
+	 *
+	 * @return void
+	 **/
+	public function makeColored()
+	{
+		$this->colored = true;
+	}
+
+	/**
+	 * Make output b&w
+	 *
+	 * @return void
+	 **/
+	public function makeUnColored()
+	{
+		$this->colored = false;
 	}
 
 	/**
