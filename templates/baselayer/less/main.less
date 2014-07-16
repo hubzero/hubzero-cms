@@ -89,6 +89,10 @@ input[type="text"] {
 	padding: 0.6em;	
 }
 
+input:focus, .btn:focus {
+	outline: none;
+}
+
 fieldset legend {	
 	background: none repeat scroll 0 0 #EFEFEF;
     float: left;
@@ -461,7 +465,6 @@ header#page-header .search input.out {
 
 header#page-header nav#main-navigation {
 	background: #fafafa;
-	border-top: 1px solid #f4f4f4;
 }
 
 // ------------------ End header
@@ -963,6 +966,7 @@ nav#main-navigation #account ul.menu li li a:focus {
 }
 .aside .container .tags li {
 	background: transparent;
+	border: 0;
 	padding: 0;
 }
 .aside ul.textboxlist-holder li {
