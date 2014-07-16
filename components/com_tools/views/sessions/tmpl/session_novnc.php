@@ -40,7 +40,7 @@ if (!$this->app->sess)
 else
 {
 	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
-	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-custom');
+	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-hubzero');
 	\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
 
 	$base = rtrim(JURI::base(true), '/');
@@ -50,7 +50,7 @@ else
 		<!--noVNC Mobile Device only Buttons-->
 		<div class="noVNC-buttons-left">
 			<input type="image" src="<?php echo $img; ?>/drag.png" id="noVNC_view_drag_button" class="noVNC_status_button" title="Move/Drag Viewport" onclick="UI.setViewDrag();" />
-			<div id="noVNC_mobile_buttons--">
+			<div id="noVNC_mobile_buttons">
 				<input type="image" src="<?php echo $img; ?>/mouse_none.png" id="noVNC_mouse_button0" class="noVNC_status_button" onclick="UI.setMouseButton(1);" />
 				<input type="image" src="<?php echo $img; ?>/mouse_left.png" id="noVNC_mouse_button1" class="noVNC_status_button" onclick="UI.setMouseButton(2);" />
 				<input type="image" src="<?php echo $img; ?>/mouse_middle.png" id="noVNC_mouse_button2" class="noVNC_status_button" onclick="UI.setMouseButton(4);" />
@@ -61,7 +61,7 @@ else
 		</div>
 
 		<!--noVNC Buttons-->
-		<div class="noVNC-buttons-right--">
+		<div class="noVNC-buttons-right">
 			<input type="image" src="<?php echo $img; ?>/ctrlaltdel.png" id="sendCtrlAltDelButton" class="noVNC_status_button" title="Send Ctrl-Alt-Del" onclick="UI.sendCtrlAltDel();" />
 			<input type="image" src="<?php echo $img; ?>/clipboard.png" id="clipboardButton" class="noVNC_status_button" title="Clipboard" onclick="UI.toggleClipboardPanel();" />
 		</div>
@@ -82,7 +82,7 @@ else
 		</div>
 
 		<div id="noVNC_container">
-			<canvas id="noVNC_canvas" width="640px" height="20px">Canvas not supported.</canvas>
+			<canvas id="noVNC_canvas" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>">Canvas not supported.</canvas>
 		</div>
 	</div>
 
@@ -104,6 +104,62 @@ else
 		var hPadding = 5;
 
 		UI.normalStateAchieved = function() {
+			var app = $('#noVNC_canvas');
+
+			if (!app.hasClass('no-resize') && !$('#app-btn-resizehandle').length) {
+				var appfooter = $('#app-footer'),
+					appcontent = $('#app-content'),
+					appcontainer = $('#noVNC_container'),
+					footermenu = $('<ul></ul>'),
+					li = $('<li></li>');
+
+				$('<a class="resize" id="app-btn-resizehandle" alt="Resize" title="Resize"><span id="app-size">' + app.attr('width').toString() + ' x ' + app.attr('height').toString() + '</span></a>')
+					.appendTo(li);
+				li.appendTo(footermenu);
+
+				footermenu.appendTo(appfooter);
+
+				/*var wh = appcontent.height(),
+					ah = app.height(),
+					os = wh - ah;*/
+
+				appcontent.resizable({
+					minHeight: 200,
+					maxHeight: 3900,
+					minWidth: 345,
+					maxWidth: 3900,
+					handles: 'se',
+					resize: function(event, ui) {
+						appcontainer
+							.width(appcontent.width())
+							.height(appcontent.height());
+						$('#app-size').html(appcontent.width() + ' x ' + appcontent.height());
+					},
+					stop: function(event, ui) {
+						var w = parseFloat(appcontent.width()),
+							h = parseFloat(appcontent.height());
+
+						$('#app-size').html(w.toString() + ' x ' + h.toString());
+
+						if (w < 513) {
+							$('.ui-resizable-handle').css('bottom', '-5em');
+						} else {
+							$('.ui-resizable-handle').css('bottom', '-3em');
+						}
+
+						app
+							.attr('width', w)
+							.attr('height', h);
+
+						appcontainer
+							.width(w)
+							.height(h);
+
+						doResize(w, h);
+					}
+				});
+			}
+
 			if (!resizeAttached) {
 				resizeAttached = true;
 				//Setup a handler to track window resizes
@@ -113,24 +169,16 @@ else
 					}
 					//Do the resize in a timeout incase we are dragging slowly to avoid bombarding the server
 					resizeTimeout = setTimeout(function(){
-						/*var w = $(window),
-							b = $('#noVNC-control-bar'),
-							s = $('#noVNC_status'),
-							c = $('#app-content'),
-							sb = getScrollBarDimensions();
-
-						doResize(b.width() + sb.horizontal, w.height() - b.height() - s.height() - hPadding + sb.vertical);*/
-
-						doResize(<?php echo $this->output->width; ?>, <?php echo $this->output->height; ?>);
+						doResize($('#noVNC_canvas').attr('width'), $('#noVNC_canvas').attr('height'));
 					}, 1000);
 				});
 
-				//Setup handler for tracking window focus events (delayed resize if not focused)
+				// Setup handler for tracking window focus events (delayed resize if not focused)
 				$(window).focus(function(){
 					$(window).resize();
 				});
 
-				//When the page first loads, fire a resize event to get the current screen size
+				// When the page first loads, fire a resize event to get the current screen size
 				$(window).resize();
 			}
 		};
