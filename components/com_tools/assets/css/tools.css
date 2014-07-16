@@ -21,10 +21,10 @@
 	.com_tools table {
 		margin: 1em 0;
 	}
-	.open {
+	.source-code.open {
 		color: #7AAB69;
 	}
-	.closed {
+	.source-code.closed {
 		color: #CC0000;
 	}
 /* Columns */
