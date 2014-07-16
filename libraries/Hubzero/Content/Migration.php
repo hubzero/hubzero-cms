@@ -568,8 +568,16 @@ class Migration
 	 **/
 	private function fireHooks($timing)
 	{
-		$exclude = array(".", "..");
-		$hooks   = array_diff(scandir($this->docroot . DS . 'migrations' . DS . 'hooks'), $exclude);
+		$exclude   = array(".", "..");
+		$directory = $this->docroot . DS . 'migrations' . DS . 'hooks';
+
+		// make sure we have a hooks directroy
+		if (!is_dir($directory))
+		{
+			return;
+		}
+
+		$hooks = array_diff(scandir($directory), $exclude);
 
 		if (count($hooks) > 0)
 		{
