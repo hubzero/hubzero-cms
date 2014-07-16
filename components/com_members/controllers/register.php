@@ -1476,7 +1476,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$profile->load($xprofile->get('username'));
 
 			//check to see if we have a return param
-			$pReturn = base64_decode($profile->getParam('return'));
+			$pReturn = base64_decode(urldecode($profile->getParam('return')));
 			if ($pReturn)
 			{
 				$return = $pReturn;
