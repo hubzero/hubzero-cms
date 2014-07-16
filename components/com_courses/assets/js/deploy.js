@@ -20,4 +20,8 @@ jQuery(function($) {
 	if ($('dd.passed').length) {
 		parent.$('body').trigger('deploymentsave');
 	}
+
+	$("#done").click(function () {
+		parent.$('body').trigger('deploymentcancel');
+	});
 });
