@@ -526,3 +526,16 @@
 		background: #e8d8f7;
 		cursor: pointer;
 	}
+	.editthis {
+		text-transform: lowercase;
+		margin-left: 0.5em;
+	}
+	.backto {
+		margin-left: 2.5em;
+		margin-bottom: -0.5em;
+		margin-top: 1em;
+	}
+	.sublink {
+		background: #c3f8f6;
+		padding: 0.2em 0.5em;
+	}

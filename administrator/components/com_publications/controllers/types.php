@@ -292,6 +292,261 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Curation editing for experts
+	 *
+	 * @return     void
+	 */
+	public function advancedTask()
+	{
+		// Incoming
+		$id = JRequest::getInt('id', 0);
+
+		$this->view->row = new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$this->view->row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$this->view->curation = new PublicationsCuration(
+			$this->database,
+			$this->view->row->curation
+		);
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		$this->view->config = $this->config;
+
+		// Push some styles to the template
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'css' . DS . 'publications.css');
+		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'js' . DS . 'curation.js');
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Curation editing for experts
+	 *
+	 * @return     void
+	 */
+	public function saveadvancedTask()
+	{
+		// Incoming
+		$id 		= JRequest::getInt('id', 0);
+		$curation 	= JRequest::getVar('curation', '', 'post');
+
+		$row 		= new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id;
+
+		if (!trim($curation) || $this->isJson(trim($curation)))
+		{
+			$row->curation = trim($curation);
+			$row->store();
+		}
+		else
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		$this->setRedirect(
+			$url,
+			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED')
+		);
+	}
+
+	/**
+	 * Is string valid json?
+	 *
+	 * @return  boolean
+	 */
+	public function isJson($string)
+	{
+	 	json_decode($string);
+	 	return (json_last_error() == JSON_ERROR_NONE);
+	}
+
+	/**
+	 * Edit block elements
+	 *
+	 * @return     void
+	 */
+	public function editelementsTask()
+	{
+		// Incoming
+		$id 	  				= JRequest::getInt('id', 0);
+		$this->view->sequence 	= JRequest::getInt('bid', 0);
+
+		$this->view->row 		= new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$this->view->row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$this->view->curation = new PublicationsCuration(
+			$this->database,
+			$this->view->row->curation
+		);
+
+		// Set any errors
+		if ($this->getError())
+		{
+			$this->view->setError($this->getError());
+		}
+
+		$this->view->config = $this->config;
+
+		// Push some styles to the template
+		$document = JFactory::getDocument();
+		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'css' . DS . 'publications.css');
+		$document->addScript('components' . DS . $this->_option . DS . 'assets'
+			. DS . 'js' . DS . 'curation.js');
+
+		// Output the HTML
+		$this->view->display();
+
+	}
+
+	/**
+	 * Save block elements
+	 *
+	 * @return     void
+	 */
+	public function saveelementsTask()
+	{
+		// Incoming
+		$id 	  	= JRequest::getInt('id', 0);
+		$sequence 	= JRequest::getInt('bid', 0);
+
+		$row 		= new PublicationMasterType($this->database);
+
+		// Load object
+		if (!$id || !$row->load($id))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				'notice'
+			);
+			return;
+		}
+
+		// Load curation
+		$curation = new PublicationsCuration(
+			$this->database,
+			$row->curation
+		);
+
+		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id;
+
+		$objC = new PublicationsCuration($this->database, $row->curation);
+		$manifest = $objC->_manifest;
+
+		// Get curation configs
+		$curation = JRequest::getVar('curation', array(), 'post');
+
+		// Collect modifications
+		if (is_array($curation) && isset($curation['blocks'][$sequence]))
+		{
+			foreach ($curation['blocks'][$sequence]['elements'] as $elementId => $element)
+			{
+				foreach ($element as $dataLabel => $dataValue)
+				{
+					if ($dataLabel == 'params')
+					{
+						// Save block params
+						foreach ($dataValue as $bpName => $bpValue)
+						{
+							// Type params?
+							if ($bpName == 'typeParams')
+							{
+								foreach ($bpValue as $tpName => $tpValue)
+								{
+									if (is_array($manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName->$tpName))
+									{
+										$pval = trim($tpValue) ? explode(',', trim($tpValue)) : array();
+									}
+									else
+									{
+										$pval = trim($tpValue);
+									}
+									$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName->$tpName = $pval;
+								}
+							}
+							elseif (is_array($manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName))
+							{
+								$pval = trim($bpValue) ? explode(',', trim($bpValue)) : array();
+								$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName = $pval;
+							}
+							else
+							{
+								$pval = trim($bpValue);
+								$manifest->blocks->$sequence->elements->$elementId->$dataLabel->$bpName = $pval;
+							}
+						}
+					}
+					else
+					{
+						$manifest->blocks->$sequence->elements->$elementId->$dataLabel = trim($dataValue);
+					}
+				}
+			}
+		}
+
+		// Store modified curation
+		$row->curation = json_encode($manifest);
+		$row->store();
+
+		$this->setRedirect(
+			$url,
+			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED')
+		);
+
+	}
+
+	/**
 	 * Edit block order
 	 *
 	 * @return     void

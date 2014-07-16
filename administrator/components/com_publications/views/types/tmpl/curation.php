@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 				<?php } ?>
 				</select>
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_CURATION_REQUIRE_DOI_HINT'); ?>">
 				<label for="field-requiredoi"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REQUIRE_DOI'); ?></label>
 
 				<select name="curation[params][require_doi]" id="field-requiredoi">
@@ -140,7 +140,7 @@ function submitbutton(pressbutton)
 					<option value="2" <?php echo $curParams->require_doi == 2 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_REQUIRE_DOI_OPTIONAL'); ?></option>
 				</select>
 			</div>
-			<div class="input-wrap">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_HINT'); ?>">
 				<label for="field-showarchive"><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL'); ?></label>
 				<select name="curation[params][show_archival]" id="field-showarchive">
 					<option value="0" <?php echo (!isset($curParams->show_archival) || $curParams->show_archival == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_NO'); ?></option>
@@ -167,7 +167,7 @@ function submitbutton(pressbutton)
 <?php if ($this->row->id) { $i=1; ?>
 	<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span> <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=addblock&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?>]</a></legend>
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span> <a class="editthis" href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=addblock&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?>]</a></legend>
 			<?php foreach ($blocks as $sequence => $block) {
 				$blockSelection['active'][] = $block->name;
 				$blockMaster = $masterBlocks[$block->name];
@@ -232,7 +232,7 @@ function submitbutton(pressbutton)
 						</div>
 						<?php } ?>
 						<?php if ($block->elements) { ?>
-						<h5><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?></h5>
+						<h5><?php echo JText::_('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?> <span class="editthis"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=editelements&amp;id=<?php echo $this->row->id . '&amp;bid=' . $sequence; ?>">[<?php echo JText::_('COM_PUBLICATIONS_EDIT'); ?>]</a></span></h5>
 						<?php foreach ($block->elements as $elementId => $element) { ?>
 							<div class="input-wrap">
 								<span class="block-sequence"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
@@ -248,4 +248,5 @@ function submitbutton(pressbutton)
 	</div>
 <?php } ?>
 	<?php echo JHTML::_('form.token'); ?>
+	<p class="sublink"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=advanced&amp;id=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></a></p>
 </form>

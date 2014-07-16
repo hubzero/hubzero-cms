@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK') . ' ]', 'addedit.png');
-JToolBarHelper::save('saveblock');
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED') . ' ]', 'addedit.png');
+JToolBarHelper::save('saveadvanced');
 JToolBarHelper::cancel();
 
 $paramsClass = 'JParameter';
@@ -51,10 +51,6 @@ foreach ($this->blocks as $b)
 {
 	$masterBlocks[$b->block] = $b;
 }
-foreach ($blocks as $sequence => $block)
-{
-	$blockSelection['active'][] = $block->name;
-}
 
 ?>
 <script type="text/javascript">
@@ -71,29 +67,13 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="saveblock" />
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?></span></legend>
-			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?></span></legend>
-				<div class="input-wrap">
-					<label for="field-newblock"><?php echo JText::_('COM_PUBLICATIONS_CURATION_SELECT_BLOCK'); ?>:</label>
-					<select name="newblock" id="field-newblock">
-					<?php foreach ($this->blocks as $sBlock) {
-						if (!in_array($sBlock->block, $blockSelection['active']) || $sBlock->maximum > 1) {  ?>
-						<option value="<?php echo $sBlock->block; ?>"><?php echo $sBlock->block; ?></option>
-					<?php  }
-					} ?>
-					</select>
-				</div>
-				<div class="input-wrap">
-					<label for="field-order"><?php echo JText::_('COM_PUBLICATIONS_CURATION_INSERT_BLOCK_BEFORE'); ?>:</label>
-					<select name="before" id="field-order">
-					<?php foreach ($blocks as $sequence => $block) { ?>
-						<option value="<?php echo $sequence; ?>"><?php echo $block->name; ?></option>
-					<?php  } ?>
-					</select>
-				</div>
-			</fieldset>
+			<input type="hidden" name="task" value="saveadvanced" />
+			<input type="hidden" name="neworder" id="neworder" value="" />
+			<legend><span><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></span></legend>
+			<p class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING_HINT'); ?></p>
+			<div class="input-wrap">
+				<textarea cols="50" rows="10" name="curation"><?php echo json_encode($this->curation->_manifest); ?></textarea>
+			</div>
 		</fieldset>
 	<?php echo JHTML::_('form.token'); ?>
 </form>

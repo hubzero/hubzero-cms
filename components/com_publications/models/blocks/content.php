@@ -551,7 +551,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 								'allowed_ext' 		=> array(),
 								'required_ext'  	=> array(),
 								'handler' 			=> NULL,
-								'handlers'			=> NULL,
+								'handlers'			=> array(),
 								'directory'			=> '',
 								'reuse' 			=> 0,
 								'dirHierarchy' 		=> 1,

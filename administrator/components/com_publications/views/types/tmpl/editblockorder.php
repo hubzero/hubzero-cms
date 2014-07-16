@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . JText::_('COM_PUBLICATIONS_EDIT_BLOCK_ORDER') . ' ]', 'addedit.png');
+JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . JText::_('COM_PUBLICATIONS_EDIT_BLOCK_ORDER') . ' ]', 'addedit.png');
 JToolBarHelper::save('saveblockorder');
 JToolBarHelper::cancel();
 
@@ -60,6 +60,7 @@ function submitbutton(pressbutton)
 	return;
 }
 </script>
+<p class="backto"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=edit&amp;id[]=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
 		<fieldset class="adminform">

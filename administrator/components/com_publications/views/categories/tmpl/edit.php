@@ -202,6 +202,7 @@ function submitbutton(pressbutton)
 		</fieldset>
 	</div>
 	<div class="clr"></div>
+	<?php if (!$this->config->get('curation', 0)) { ?>
 		<div class="col width-100">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
@@ -478,5 +479,6 @@ function submitbutton(pressbutton)
 		</fieldset>
 		</div>
 		<div class="clr"></div>
+		<?php } ?>
 	<?php echo JHTML::_('form.token'); ?>
 </form>
