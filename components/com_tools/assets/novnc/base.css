@@ -214,9 +214,9 @@
 		position: absolute;
 		display: block;
 		height: 34px;
-		left: 0;
-		top: 2px;
-		width: 100%;
+		right: 22em;
+		top: -36px;
+		width: auto;
 		z-index: 200;
 	}
 

@@ -97,7 +97,7 @@ if (!$this->app->sess) {
 		</noscript>
 		<p id="troubleshoot" class="help"><?php echo JText::_('COM_TOOLS_SESSION_FAILS_TO_START'); ?></p>
 
-		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px;">
+		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php
