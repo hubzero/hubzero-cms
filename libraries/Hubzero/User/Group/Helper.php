@@ -548,13 +548,13 @@ class Helper
 	 * @param      array     Array of database options
 	 * @return     object    JDatabase Object
 	 */
-	public static function getDbo($config = array())
+	public static function getDbo($config = array(), $cname = '')
 	{
 		// empty instance of db
 		$db = \JDatabase::getInstance();
 
 		// make sure we have a group object
-		if (!$group = Group::getInstance(\JRequest::getVar('cn', '')))
+		if (!$group = Group::getInstance(\JRequest::getVar('cn', $cname)))
 		{
 			return $db;
 		}

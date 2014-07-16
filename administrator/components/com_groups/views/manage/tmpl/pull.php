@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
-JToolBarHelper::back();
+JToolBarHelper::custom('display','back','back','Back', false);
 
 JHTML::_('behavior.tooltip');
 ?>
