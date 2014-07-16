@@ -402,11 +402,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					{
 						foreach ($ag['asset'] as $z => $a)
 						{
+							$a = $this->_datesToUTC($a);
+
 							if (!isset($a['publish_up']) || !$a['publish_up'])
 							{
 								$a['publish_up'] = $ag['publish_up'];
 							}
-
 							if (!isset($a['publish_down']) || !$a['publish_down'])
 							{
 								$a['publish_down'] = $ag['publish_down'];
@@ -434,11 +435,12 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			{
 				foreach ($dt['asset'] as $z => $a)
 				{
+					$a = $this->_datesToUTC($a);
+
 					if (!isset($a['publish_up']) || !$a['publish_up'])
 					{
 						$a['publish_up'] = $dt['publish_up'];
 					}
-
 					if (!isset($a['publish_down']) || !$a['publish_down'])
 					{
 						$a['publish_down'] = $dt['publish_down'];
