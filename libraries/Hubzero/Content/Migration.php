@@ -64,9 +64,19 @@ class Migration
 	/**
 	 * Variable holding database object
 	 *
+	 * If an alternate db is given, this db will hold the connection to the
+	 * primary joomla database where the extensions and logs tables are found
+	 *
 	 * @var string
 	 **/
 	private $db = null;
+
+	/**
+	 * Alternate db, passed to migrations if specified
+	 *
+	 * @var string
+	 **/
+	private $altDb = null;
 
 	/**
 	 * Log messages themselves (stored as array to return to browser, or other client)
@@ -102,7 +112,7 @@ class Migration
 	 * @param $docroot - default null, which should then resolve to hub docroot
 	 * @return void
 	 **/
-	public function __construct($docroot=null)
+	public function __construct($docroot=null, $db=null)
 	{
 		// Try to determine the document root if none provided
 		if (is_null($docroot))
@@ -119,6 +129,11 @@ class Migration
 		{
 			$this->log('Error: database connection failed.', 'error');
 			return false;
+		}
+
+		if (isset($db))
+		{
+			$this->altDb = $db;
 		}
 
 		// Try to figure out the date of the last file run
@@ -179,8 +194,16 @@ class Migration
 		}
 		else
 		{
-			$this->log('Error: document root does not contain a configuration file', 'error');
-			return false;
+			if (file_exists(JPATH_ROOT . '/configuration.php'))
+			{
+				// If there's one in the provided doc root, use that
+				require_once JPATH_ROOT . '/configuration.php';
+			}
+			else
+			{
+				$this->log('Error: document root does not contain a configuration file', 'error');
+				return false;
+			}
 		}
 
 		// Instantiate a config object
@@ -430,7 +453,7 @@ class Migration
 			$this->affectedFiles[] = $info['filename'];
 
 			// Instantiate our class
-			$class = new $classname($this->db, $this->callbacks);
+			$class = new $classname($this->db, $this->callbacks, $this->altDb);
 
 			// Check if we're making a dry run, or only logging changes
 			if ($dryrun || $logOnly)
