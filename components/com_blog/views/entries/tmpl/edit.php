@@ -38,6 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$lid = time().rand(0,10000);
 }*/
 $this->css()
+     ->css('jquery.ui.css', 'system')
      ->js('jquery.timepicker.js', 'system')
      ->js();
 
@@ -129,7 +130,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<div class="col span-half">
 						<label for="field-publish_up">
 							<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>
-							<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_up'))); ?>" />
+							<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" size="35" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')) : ''); ?>" />
 							<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
@@ -137,7 +138,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<div class="col span-half omega">
 						<label for="field-publish_down">
 							<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
-							<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('publish_down'))); ?>" />
+							<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" size="35" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
 							<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>

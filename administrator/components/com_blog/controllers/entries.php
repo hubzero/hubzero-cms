@@ -208,6 +208,15 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
+		{
+			$fields['publish_up']   = JFactory::getDate($fields['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
+		{
+			$fields['publish_down'] = JFactory::getDate($fields['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+
 		// Initiate extended database class
 		$row = new BlogModelEntry($fields['id']);
 		if (!$row->bind($fields))

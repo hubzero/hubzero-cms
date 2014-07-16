@@ -432,6 +432,15 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		// make sure we dont want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
+		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
+		{
+			$entry['publish_up']   = JFactory::getDate($entry['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
+		{
+			$entry['publish_down'] = JFactory::getDate($entry['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+		}
+
 		$row = $this->model->entry(0);
 
 		if (!$row->bind($entry))
