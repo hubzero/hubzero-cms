@@ -318,6 +318,21 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															}
 															// ' . $a->get('subtype') . '
 															$link = '<a class="asset-primary' . $cls . '" href="' . $href . '"' . $target . '>' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</a>';
+
+															// Finally, make sure prereqs have been met
+															if ($a->get('type') != 'video' && !$prerequisites->hasMet('asset', $a->get('id')) && !$isManager)
+															{
+																$info  = "This item has prerequisites that have not yet been met. Begin by completing: ";
+																$items = array();
+																foreach ($prerequisites->get('asset', $a->get('id')) as $prereq)
+																{
+																	$reqAsset = new CoursesModelAsset($prereq['scope_id']);
+																	$items[] = $reqAsset->get('title');
+																}
+																$info .= implode(", ", $items);
+																$link = '<span title="' . $info . '" class="asset-primary unavailable hasTip">' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</span>';
+															}
+
 															break;
 														}
 													}
