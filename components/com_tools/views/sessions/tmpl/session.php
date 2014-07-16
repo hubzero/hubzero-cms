@@ -95,7 +95,7 @@ if (!$this->app->sess) {
 			</p>
 		</noscript>
 
-		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
+		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php

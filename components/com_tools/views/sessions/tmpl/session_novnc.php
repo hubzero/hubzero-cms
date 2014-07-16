@@ -39,6 +39,10 @@ if (!$this->app->sess)
 }
 else
 {
+	// This allows for touch events to be translated to click events on mobile devices
+	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/jquery.ui.touch-punch.min.js');
+
+	// Invlude NoVNC
 	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
 	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-hubzero');
 	\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');
@@ -187,7 +191,6 @@ else
 			if (!document.hasFocus) {
 				return;
 			}
-			console.log(w + ' ' + h);
 			UI.requestResize(w, h); //Invoke resize on the server
 		}
 
