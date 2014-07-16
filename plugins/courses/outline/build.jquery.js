@@ -383,12 +383,8 @@ HUB.CoursesOutline = {
 								type: 'iframe',
 								href: window.location.href.match(/(.*)\/outline/)[1]+'/form.showDeployment?id='+depId+'&formId='+formId+'&tmpl=component',
 								afterShow: function() {
-									var contents = $('.fancybox-iframe').contents();
-
-									// Highjack the 'cancel' button to close the iframe
-									contents.find('#done').bind('click', function ( e ) {
-										e.preventDefault();
-
+									// Listen for deployment cancel call from iframe
+									$('body').on('deploymentcancel', function () {
 										// Close fancybox
 										$.fancybox.close();
 									});
