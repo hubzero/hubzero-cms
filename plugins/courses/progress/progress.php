@@ -242,12 +242,13 @@ class plgCoursesProgress extends JPlugin
 		$start = JRequest::getInt('limitstart', 0);
 
 		// Get all section members
-		$members    = $this->course->offering()->section()->members(array('student'=>1, 'limit'=>$limit, 'start'=>$start));
-		$member_ids = array();
-		$mems       = array();
-		$grades     = null;
-		$progress   = null;
-		$passing    = null;
+		$members      = $this->course->offering()->section()->members(array('student'=>1, 'limit'=>$limit, 'start'=>$start));
+		$member_ids   = array();
+		$mems         = array();
+		$grades       = null;
+		$progress     = null;
+		$passing      = null;
+		$recognitions = null;
 
 		if (count($members) > 0)
 		{
@@ -273,17 +274,19 @@ class plgCoursesProgress extends JPlugin
 			$this->course->offering()->gradebook()->refresh($member_ids);
 
 			// Get the grades
-			$grades    = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
-			$progress  = $this->course->offering()->gradebook()->progress($member_ids);
-			$passing   = $this->course->offering()->gradebook()->passing($member_ids);
+			$grades       = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
+			$progress     = $this->course->offering()->gradebook()->progress($member_ids);
+			$passing      = $this->course->offering()->gradebook()->passing($member_ids);
+			$recognitions = $this->course->offering()->gradebook()->isEligibleForRecognition($member_ids);
 		}
 
 		echo json_encode(
 			array(
-				'members'     => $mems,
-				'grades'      => $grades,
-				'progress'    => $progress,
-				'passing'     => $passing
+				'members'      => $mems,
+				'grades'       => $grades,
+				'progress'     => $progress,
+				'passing'      => $passing,
+				'recognitions' => $recognitions
 			)
 		);
 
@@ -856,7 +859,8 @@ class plgCoursesProgress extends JPlugin
 			exit();
 		}
 
-		$grade = new CoursesTableGradeBook(JFactory::getDBO());
+		$db    = JFactory::getDBO();
+		$grade = new CoursesTableGradeBook($db);
 		$grade->loadByUserAndAssetId($member_id, $asset_id);
 
 		if (!$grade->id)
@@ -904,7 +908,8 @@ class plgCoursesProgress extends JPlugin
 			exit();
 		}
 
-		$grade = new CoursesTableGradeBook(JFactory::getDBO());
+		$db    = JFactory::getDBO();
+		$grade = new CoursesTableGradeBook($db);
 		$grade->loadByUserAndAssetId($member_id, $asset_id);
 
 		if (!$grade->id)

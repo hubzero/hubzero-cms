@@ -85,12 +85,14 @@
 	margin-left: 200px;
 }
 .progress-container .header-sub .header-progress,
-.progress-container .header-sub .header-score {
+.progress-container .header-sub .header-score,
+.progress-container .header-sub .header-recognition {
 	float: left;
-	width: 50%;
+	width: 45%;
 	text-align: center;
 }
-.progress-container .header-sub .header-score {
+.progress-container .header-sub .header-recognition {
+	width: 10%;
 	border-right: 1px solid #CCCCCC;
 }
 .progress-container .headers .sorter {
@@ -148,8 +150,7 @@
 .progress-container .progress-bar-container {
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
-	border-right: 1px solid #CCCCCC;
-	width: 50%;
+	width: 45%;
 	height: 42px;
 	min-height: 42px;
 	max-height: 42px;
@@ -176,12 +177,44 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0,endColorstr=#DEDEDE);
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F0F0F0, endColorstr=#DEDEDE)";
 }
+.progress-container .student-recognitions {
+	border-left: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	width: 10%;
+	height: 42px;
+	min-height: 42px;
+	max-height: 42px;
+	float: left;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.progress-container .student-recognitions .student-recognitions-badge {
+	width: 100%;
+	height: 100%;
+	float: left;
+	text-align: center;
+	line-height: 42px;
+}
+.progress-container .student-recognitions .student-recognitions-badge:before {
+	content: "\2714";
+	font-family: "Fontcons";
+	color: #CCCCCC;
+	font-size: 2em;
+}
+.progress-container .student-recognitions .student-recognitions-badge:before {
+	content: "\f04e";
+}
+.progress-container .student-recognitions.earned .student-recognition-icon:before {
+	color: #00AB25;
+}
 .progress-container .student-progress-timeline {
 	border-left: 1px solid #CCCCCC;
 	border-top: 1px solid #CCCCCC;
 	display: block;
 	float: left;
-	width: 50%;
+	width: 45%;
 	height: 42px;
 	min-height: 42px;
 	max-height: 42px;

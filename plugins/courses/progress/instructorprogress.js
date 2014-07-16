@@ -69,12 +69,13 @@ HUB.Plugins.CoursesProgress = {
 								var source   = $('#progress-template-row').html(),
 									template = Handlebars.compile(source),
 									context  = {
-										members     : data.members,
-										grades      : data.grades,
-										progress    : data.progress,
-										passing     : data.passing,
-										units       : units,
-										course_id   : course_id
+										members      : data.members,
+										grades       : data.grades,
+										progress     : data.progress,
+										passing      : data.passing,
+										recognitions : data.recognitions,
+										units        : units,
+										course_id    : course_id
 									},
 									html = template(context);
 
@@ -1587,6 +1588,9 @@ HUB.Plugins.CoursesProgress = {
 			} else {
 				return grades[member_id]['assets'][asset_id]['score'];
 			}
+		});
+		Handlebars.registerHelper('hasEarned', function ( recognitions, id ) {
+			return ($.inArray(id.toString(), recognitions) >= 0) ? new Handlebars.SafeString(' earned') : '';
 		});
 		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
 			return (val1 === val2) ? new Handlebars.SafeString(' selected="selected"') : '';
