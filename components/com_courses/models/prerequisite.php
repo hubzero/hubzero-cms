@@ -201,7 +201,7 @@ class CoursesModelPrerequisite extends CoursesModelAbstract
 								break;
 
 							default:
-								if (!in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
+								if (!is_array($this->views[$this->member_id]) || !in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
 								{
 									$return = false;
 									continue;
