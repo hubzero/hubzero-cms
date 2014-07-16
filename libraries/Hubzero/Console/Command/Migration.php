@@ -111,6 +111,31 @@ class Migration implements CommandInterface
 			}
 		}
 
+		// migrating a super group
+		$alternativeDatabase = null;
+		if ($this->arguments->getOpt('group'))
+		{
+			$cname = $this->arguments->getOpt('group');
+			$group = \Hubzero\User\Group::getInstance($cname);
+			if ($group && $group->isSuperGroup())
+			{
+				//get group config
+				$groupsConfig = \JComponentHelper::getParams('com_groups');
+
+				// path to group folder
+				$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+				$directory .= DS . $group->get('gidNumber');
+
+				// get group database
+				//\JRequest::setVar('cn', $group->get('cn'));
+				$alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+			}
+			else
+			{
+				$this->output->error('Error: Provided group is not valid');
+			}
+		}
+
 		// Forcing update
 		$force = false;
 		if ($this->arguments->getOpt('force'))
@@ -199,7 +224,7 @@ class Migration implements CommandInterface
 		}
 
 		// Create migration object
-		$migration = new \Hubzero\Content\Migration($directory);
+		$migration = new \Hubzero\Content\Migration($directory, $alternativeDatabase);
 
 		// Make sure we got a migration object
 		if ($migration === false)
