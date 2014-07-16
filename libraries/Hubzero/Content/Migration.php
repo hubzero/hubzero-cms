@@ -139,10 +139,11 @@ class Migration
 		// Try to figure out the date of the last file run
 		try
 		{
-			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'up\' ORDER BY `file` DESC LIMIT 1');
+			$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND `scope` = '.$this->db->quote($this->docroot . DS . 'migrations') : '';
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'up\'' . $scope . ' ORDER BY `file` DESC LIMIT 1');
 			$rowup = $this->db->loadAssoc();
 
-			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'down\' ORDER BY `file` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'down\'' . $scope . ' ORDER BY `file` DESC LIMIT 1');
 			$rowdown = $this->db->loadAssoc();
 
 			if (count($rowup) > 0)
@@ -233,11 +234,11 @@ class Migration
 
 		if (in_array('migrations', $tables))
 		{
-			$this->tbl_name = 'migrations';
+			$this->setTableName('migrations');
 		}
 		else if (in_array($prefix . 'migrations', $tables))
 		{
-			$this->tbl_name = '#__migrations';
+			$this->setTableName('#__migrations');
 		}
 		else if ($this->createMigrationsTable($db) === false)
 		{
@@ -359,7 +360,8 @@ class Migration
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						// This migration is older than the current, but let's see if we should inform that it should still be run
-						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+						$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND `scope` = '.$this->db->quote($this->docroot . DS . 'migrations') : '';
+						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$scope} ORDER BY `date` DESC LIMIT 1");
 						$row = $this->db->loadResult();
 
 						// Check if last run was either not in the current direction we're going,
@@ -387,7 +389,8 @@ class Migration
 			try
 			{
 				// Look to the database log to see the last run on this file
-				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . " ORDER BY `date` DESC LIMIT 1");
+				$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND `scope` = '.$this->db->quote($this->docroot . DS . 'migrations') : '';
+				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$scope} ORDER BY `date` DESC LIMIT 1");
 				$row = $this->db->loadResult();
 
 				// If the last migration for this file doesn't exist, or, it was the opposite of $direction, we can go ahead and run it.
@@ -464,7 +467,7 @@ class Migration
 				}
 				elseif ($logOnly)
 				{
-					$this->recordMigration($file, $hash, $direction);
+					$this->recordMigration($file, $this->docroot . DS . 'migrations', $hash, $direction);
 					$this->log("Marking as run: {$direction}() in {$file}", 'success');
 				}
 			}
@@ -516,7 +519,7 @@ class Migration
 							}
 						}
 
-						$this->recordMigration($file, $hash, $direction);
+						$this->recordMigration($file, $this->docroot . DS . 'migrations', $hash, $direction);
 						$this->log("Completed {$direction}() in {$file}", 'success');
 					}
 					catch (\PDOException $e)
@@ -616,12 +619,13 @@ class Migration
 	/**
 	 * Record migration in migrations table
 	 *
-	 * @param $file - path to file being recorded
-	 * @param $hash - hash of file
+	 * @param $file  - path to file being recorded
+	 * @param $scope - folder of migration
+	 * @param $hash  - hash of file
 	 * @param $direction - up or down
 	 * @return void
 	 **/
-	protected function recordMigration($file, $hash, $direction)
+	protected function recordMigration($file, $scope, $hash, $direction)
 	{
 		// Try inserting a migration record into the database
 		try
@@ -636,6 +640,11 @@ class Migration
 					'date'      => $date->toSql(),
 					'action_by' => (php_sapi_name() == 'cli') ? exec("whoami") : \JFactory::getUser()->get('id')
 				);
+
+			if ($this->db->tableHasField($this->get('tbl_name'), 'scope'))
+			{
+				$obj->scope = $scope;
+			}
 
 			$this->db->insertObject($this->get('tbl_name'), $obj);
 		}
@@ -697,6 +706,7 @@ class Migration
 		$query = "CREATE TABLE `{$this->get('tbl_name')}` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`file` varchar(255) NOT NULL DEFAULT '',
+					`scope` varchar(255) NOT NULL,
 					`hash` char(32) NOT NULL DEFAULT '',
 					`direction` varchar(10) NOT NULL DEFAULT '',
 					`date` datetime NOT NULL,
