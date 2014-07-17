@@ -156,21 +156,28 @@ class WishlistModelPlan extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
+			$property = ($property == 'id') ? 'uidNumber' : $property;
 			if ($property == 'picture')
 			{
 				return $this->_creator->getPicture($this->get('anonymous'));
 			}
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
