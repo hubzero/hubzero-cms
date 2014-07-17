@@ -259,7 +259,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 		// Display events
 		$query = "SELECT #__events.* FROM #__events, #__categories as b"
 			. "\nWHERE #__events.catid = b.id "
-            . "\n   AND #__events.state='1'"
+			. "\n   AND #__events.state='1'"
 			. "\n	AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
 			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
 			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"

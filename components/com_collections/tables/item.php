@@ -308,7 +308,7 @@ class CollectionsTableItem extends JTable
 				}
 				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
 

@@ -217,6 +217,9 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function setup($object_id=0, $object_type='')
 	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_collections');
+
 		$result = array(
 			'id'          => 0,
 			'title'       => JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
@@ -499,7 +502,7 @@ class CollectionsTableCollection extends JTable
 				}
 				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
 
