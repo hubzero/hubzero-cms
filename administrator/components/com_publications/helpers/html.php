@@ -228,7 +228,7 @@ class PublicationsAdminHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
-	
+
 	/**
 	 * License selection
 	 *

@@ -333,7 +333,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get tags on this item
 		$tagsHelper = new PublicationTags( $this->database );
 		$this->view->lists['tags'] = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);
-		
+
 		// Get selected license
 		$objL = new PublicationLicense( $this->database );
 		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
@@ -874,7 +874,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
 		$row->license_text	= trim(JRequest::getVar( 'license_text', '', 'post' ));
 		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
-		
+
 		// publish up
 		$published_up 		= trim(JRequest::getVar( 'published_up', '', 'post' ));
 		$published_down 	= trim(JRequest::getVar( 'published_down', '', 'post' ));
