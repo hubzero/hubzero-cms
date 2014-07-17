@@ -562,6 +562,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			$this->setError($tbl->getError());
 			return false;
 		}
+		$this->_data->set('watchers.list', null);
 
 		return true;
 	}
@@ -615,11 +616,11 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * @param      mixed   $user User object, username, or ID
 	 * @return     boolean True if watching, False if not
 	 */
-	public function isWatching($user=null)
+	public function isWatching($user=null, $recheck=false)
 	{
 		$user_id = $this->_resolveUserID($user);
 
-		foreach ($this->watchers('list') as $watcher)
+		foreach ($this->watchers('list', array(), $recheck) as $watcher)
 		{
 			if ($watcher->user_id == $user_id)
 			{
@@ -864,7 +865,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			break;
 
 			case 'stopwatching':
-				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=start';
+				$link .= '&controller=tickets&task=ticket&id=' . $this->get('id') . '&watch=stop';
 			break;
 
 			case 'watch':
