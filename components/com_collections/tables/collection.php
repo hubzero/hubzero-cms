@@ -317,9 +317,10 @@ class CollectionsTableCollection extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
+		$query .= " INNER JOIN `#__collections_items` AS im ON im.type=" . $this->_db->Quote('collection') . " AND im.object_id=b.id";
 		$query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
@@ -408,20 +409,107 @@ class CollectionsTableCollection extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			if (!isset($filters['sort']) || !$filters['sort'])
-			{
-				$filters['sort'] = 'created';
-			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		}
-
 		return $query;
+	}
+
+	/**
+	 * Return data based on a set of filters. Returned value 
+	 * can be integer, object, or array
+	 * 
+	 * @param   string $what
+	 * @param   array  $filters
+	 * @return  mixed
+	 */
+	public function find($what='', $filters=array())
+	{
+		$what = strtolower(trim($what));
+
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(DISTINCT b.id) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$access = "";
+				if (isset($filters['access']))
+				{
+					if (is_array($filters['access']))
+					{
+						$filters['access'] = array_map('intval', $filters['access']);
+						$access = "AND i.access IN (" . implode(',', $filters['access']) . ")";
+					}
+					else if ($filters['access'] >= 0)
+					{
+						$access = "AND i.access=" . $this->_db->Quote(intval($filters['access']));
+					}
+				}
+
+				$query = "SELECT DISTINCT b.*, im.id AS item_id, im.positive AS likes, f.following_id AS following, (SELECT COUNT(*) FROM `#__collections_items` AS i INNER JOIN `#__collections_posts` AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1 $access) AS posts";
+				if (isset($filters['object_type']) && $filters['object_type'] == 'group')
+				{
+					$query .= ", g.cn AS group_alias";
+				}
+				$query .= $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort'])
+				{
+					$filters['sort'] = 'created';
+				}
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
@@ -432,12 +520,7 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function getCount($filters=array())
 	{
-		$filters['limit'] = 0;
-
-		$query = "SELECT COUNT(DISTINCT b.id) " . $this->buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->find('count', $filters);
 	}
 
 	/**
@@ -448,65 +531,6 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT DISTINCT b.*, f.following_id AS following, (SELECT COUNT(*) FROM `#__collections_items` AS i INNER JOIN `#__collections_posts` AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1) AS posts";
-		if (isset($filters['object_type']) && $filters['object_type'] == 'group')
-		{
-			$query .= ", g.cn AS group_alias";
-		}
-		$query .= $this->buildQuery($filters);
-
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
-		}
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get records
-	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
-	 */
-	public function getPostTypeCount($collection_id=null)
-	{
-		if (!$collection_id)
-		{
-			$collection_id = $this->id;
-		}
-		$collection_id = intval($collection_id);
-		if (!$collection_id)
-		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
-			return false;
-		}
-
-		$query = "SELECT b.id, b.type
-				FROM `#__collections_items` AS b
-				INNER JOIN `#__collections_posts` AS s ON s.item_id=b.id
-				WHERE s.collection_id=" . $this->_db->Quote(intval($collection_id)) . "
-				AND b.state=1";
-
-		$this->_db->setQuery($query);
-
-		$counts = array();
-		if (($items = $this->_db->loadObjectList()))
-		{
-			foreach ($items as $item)
-			{
-				if (!in_array($item->type, array('collection', 'file', 'text', 'link', 'image')))
-				{
-					$item->type = 'link';
-				}
-				if (!isset($counts[$item->type]))
-				{
-					$counts[$item->type] = 0;
-				}
-				$counts[$item->type]++;
-			}
-		}
-		return $counts;
+		return $this->find('list', $filters);
 	}
 }

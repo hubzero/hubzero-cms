@@ -94,6 +94,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * @var array
 	 */
 	private $_cache = array(
+		'comments.count'    => null,
 		'comments.list'     => null,
 		'collections.count' => null,
 		'collections.list'  => null
@@ -183,21 +184,21 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		switch (strtolower($property))
 		{
 			case 'reposts':
-				if (!isset($this->_tbl->$property))
+				if (!isset($this->_tbl->{'__' . $property}))
 				{
 					$this->set($property, $this->_tbl->getReposts());
 				}
 			break;
 			case 'voted':
-				if (!isset($this->_tbl->$property))
+				if (!isset($this->_tbl->{'__' . $property}))
 				{
 					$this->set($property, $this->_tbl->getVote());
 				}
 			break;
 			case 'comments':
-				if (!isset($this->_tbl->$property))
+				if (!isset($this->_tbl->{'__' . $property}))
 				{
-					$this->comments();
+					$this->set($property, $this->comments('count'));
 				}
 			break;
 			default:
@@ -291,41 +292,49 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 *
 	 * @return     array
 	 */
-	public function comments()
+	public function comments($what='list', $filters=array(), $clear=false)
 	{
-		if (!is_array($this->_cache['comments.list']))
+		if (!isset($filters['item_id']))
 		{
-			$total = 0;
-
-			$bc = new \Hubzero\Item\Comment($this->_db);
-
-			if (($results = $bc->getComments('collection', $this->get('id'))))
-			{
-				foreach ($results as $com)
-				{
-					$total++;
-					if ($com->replies)
-					{
-						foreach ($com->replies as $rep)
-						{
-							$total++;
-							if ($rep->replies)
-							{
-								$total += count($rep->replies);
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				$results = array();
-			}
-
-			$this->set('comments', $total);
-			$this->_cache['comments.list'] = $results;
+			$filters['item_id'] = $this->get('id');
 		}
-		return $this->_cache['comments.list'];
+		if (!isset($filters['item_type']))
+		{
+			$filters['item_type'] = 'collection';
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(1, 3);
+		}
+
+		switch (strtolower(trim($what)))
+		{
+			case 'count':
+				if ($this->_cache['comments.count'] === null)
+				{
+					$tbl = new \Hubzero\Item\Comment($this->_db);
+					$this->_cache['comments.count'] = $tbl->count($filters);
+				}
+				return $this->_cache['comments.count'];
+			break;
+
+			case 'list':
+			case 'results':
+			default:
+				if (!is_array($this->_cache['comments.list']))
+				{
+					$tbl = new \Hubzero\Item\Comment($this->_db);
+
+					if (!($results = $tbl->getComments('collection', $this->get('id'))))
+					{
+						$results = array();
+					}
+
+					$this->_cache['comments.list'] = $results;
+				}
+				return $this->_cache['comments.list'];
+			break;
+		}
 	}
 
 	/**

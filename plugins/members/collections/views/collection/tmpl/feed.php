@@ -51,38 +51,19 @@ $this->css()
 </ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
-	<fieldset class="filters">
-		<ul>
-			<?php if ($this->params->get('access-manage-collection')) { ?>
-				<li>
-					<a class="livefeed active tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
-						<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
-					</a>
-				</li>
-			<?php } ?>
-			<li>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS', $this->followers); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="following count" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG', $this->following); ?></span>
-				</a>
-			</li>
-		</ul>
-		<div class="clear"></div>
-	</fieldset>
+	<?php
+	$this->view('_submenu', 'collection')
+	     ->set('params', $this->params)
+	     ->set('option', $this->option)
+	     ->set('member', $this->member)
+	     ->set('name', $this->name)
+	     ->set('active', 'livefeed')
+	     ->set('collections', $this->collections)
+	     ->set('posts', $this->posts)
+	     ->set('followers', $this->followers)
+	     ->set('following', $this->following)
+	     ->display();
+	?>
 
 <?php if ($this->rows->total() > 0) { ?>
 	<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
@@ -199,6 +180,8 @@ $this->css()
 					<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_FEED_EXPLANATION'); ?><p>
 					<p><strong><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_FOLLOWING'); ?></strong></p>
 					<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_FOLLOWING_EXPLANATION'); ?></p>
+					<p><strong><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHERE_ARE_MY_POSTS'); ?></strong></p>
+					<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHERE_ARE_MY_POSTS_EXPLANATION'); ?></p>
 				</div>
 			<?php } else { ?>
 				<div class="instructions">

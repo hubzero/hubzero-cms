@@ -54,34 +54,19 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=following'); ?>" id="collections">
-
-	<fieldset class="filters">
-		<ul>
-			<li>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&scope=all'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> collections', $this->collections); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&scope=posts'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> posts', $this->posts); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="followers count" href="<?php echo JRoute::_($base . '&scope=followers'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> followers', $this->followers); ?></span>
-				</a>
-			</li>
-		<?php if ($this->params->get('access-can-follow')) { ?>
-			<li>
-				<a class="following count active" href="<?php echo JRoute::_($base . '&scope=following'); ?>">
-					<span><?php echo JText::sprintf('<strong>%s</strong> following', $this->rows->total()); ?></span>
-				</a>
-			</li>
-		<?php } ?>
-		</ul>
-		<div class="clear"></div>
-	</fieldset>
+	<?php
+	$this->view('_submenu', 'collection')
+	     ->set('option', $this->option)
+	     ->set('group', $this->group)
+	     ->set('params', $this->params)
+	     ->set('name', $this->name)
+	     ->set('active', 'following')
+	     ->set('collections', $this->collections)
+	     ->set('posts', $this->posts)
+	     ->set('followers', $this->followers)
+	     ->set('following', $this->rows->total())
+	     ->display();
+	?>
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div class="container">

@@ -118,7 +118,6 @@ class CollectionsTableAsset extends JTable
 	public function check()
 	{
 		$this->item_id = intval($this->item_id);
-
 		if (!$this->item_id)
 		{
 			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
@@ -142,10 +141,9 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
-			$this->state = 1;
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
+			$this->state      = 1;
 
 			$this->ordering = $this->_getHighestOrdering($this->item_id) + 1;
 		}
@@ -180,15 +178,93 @@ class CollectionsTableAsset extends JTable
 			return parent::load($oid);
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE item_id=" . $this->_db->Quote(intval($item_id)) . " AND filename=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc())
+		$fields = array(
+			'item_id'  => (int) $item_id,
+			'filename' => (string) $oid
+		);
+
+		return parent::load($fields);
+	}
+
+	/**
+	 * Return data based on a set of filters. Returned value 
+	 * can be integer, object, or array
+	 * 
+	 * @param   string $what
+	 * @param   array  $filters
+	 * @return  mixed
+	 */
+	public function find($what='', $filters=array())
+	{
+		$what = strtolower(trim($what));
+
+		switch ($what)
 		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query = "SELECT a.*, u.name";
+				$query .= $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort'])
+				{
+					$filters['sort'] = 'a.ordering';
+				}
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+				{
+					$filters['sort_Dir'] = 'ASC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
 		}
 	}
 
@@ -198,7 +274,7 @@ class CollectionsTableAsset extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS a";
 		$query .= " LEFT JOIN #__users AS u ON a.created_by=u.id";
@@ -257,10 +333,7 @@ class CollectionsTableAsset extends JTable
 	 */
 	public function getCount($filters=array())
 	{
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->find('count', $filters);
 	}
 
 	/**
@@ -271,26 +344,7 @@ class CollectionsTableAsset extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT a.*, u.name";
-		$query .= $this->buildQuery($filters);
-
-		if (!isset($filters['sort']) || !$filters['sort'])
-		{
-			$filters['sort'] = 'a.ordering';
-		}
-		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-		{
-			$filters['sort_Dir'] = 'ASC';
-		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
-		}
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->find('list', $filters);
 	}
 
 	/**

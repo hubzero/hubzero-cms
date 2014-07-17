@@ -47,36 +47,33 @@ $this->css()
 			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
 		</a>
 	</li>
-	<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
-		<li>
-			<?php if ($this->model->isFollowing()) { ?>
-				<a class="unfollow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
-					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
-				</a>
-			<?php } else { ?>
-				<a class="follow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
-					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
-				</a>
-			<?php } ?>
-		</li>
-	<?php } ?>
 </ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+	<?php
+	$this->view('_submenu', 'collection')
+	     ->set('params', $this->params)
+	     ->set('option', $this->option)
+	     ->set('member', $this->member)
+	     ->set('name', $this->name)
+	     ->set('active', ($this->collection->exists() ? '' : 'posts'))
+	     ->set('collections', $this->collections)
+	     ->set('posts', $this->posts)
+	     ->set('followers', $this->followers)
+	     ->set('following', $this->following)
+	     ->display();
+	?>
+
 	<?php if ($this->collection->exists()) { ?>
 		<p class="overview">
 			<span class="title count">
 				"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 			</span>
 			<span class="posts count">
-				<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_POSTS', $this->posts); ?>
+				<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_POSTS', $this->total); ?>
 			</span>
 			<?php if (!$this->juser->get('guest')) { ?>
-				<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-					<a class="icon-add add btn tooltips" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
-						<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?></span>
-					</a>
-				<?php } else { ?>
+				<?php if (!$this->params->get('access-create-item')) { ?>
 					<?php if ($this->collection->isFollowing()) { ?>
 						<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias') . '/unfollow'); ?>">
 							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?></span>
@@ -93,50 +90,17 @@ $this->css()
 			<?php } ?>
 			<span class="clear"></span>
 		</p>
-	<?php } else { ?>
-		<fieldset class="filters">
-			<ul>
-				<?php if ($this->params->get('access-manage-collection')) { ?>
-					<li>
-						<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
-							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
-						</a>
-					</li>
-				<?php } ?>
-				<li>
-					<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-						<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="posts active count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-						<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-						<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS', $this->followers); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="following count" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-						<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG', $this->following); ?></span>
-					</a>
-				</li>
-			</ul>
-			<?php if ($this->params->get('access-create-collection')) { ?>
-				<p>
-					<a class="icon-add add btn tooltips" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST_TITLE'); ?>" href="<?php echo JRoute::_($base . '&task=post/new'); ?>">
-						<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			<div class="clear"></div>
-		</fieldset>
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
+			<?php if ($this->params->get('access-create-collection')) { ?>
+				<div class="post new-post">
+					<a class="icon-add add" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+						<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>
+					</a>
+				</div>
+			<?php } ?>
 		<?php
 		foreach ($this->rows as $row)
 		{
@@ -235,7 +199,7 @@ $this->css()
 			</div><!-- / .post -->
 		<?php } ?>
 		</div><!-- / #posts -->
-		<?php if ($this->posts > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+		<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
 		<div class="clear"></div>
 	<?php } else { ?>
 		<div id="collection-introduction">
@@ -250,7 +214,7 @@ $this->css()
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_POST'); ?></strong></p>
-					<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_COLLECTION_EXPLANATION'); ?><p>
+					<p><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_POST_EXPLANATION'); ?><p>
 				</div>
 			<?php } else { ?>
 				<div class="instructions">

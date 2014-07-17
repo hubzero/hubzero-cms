@@ -61,7 +61,7 @@ $this->css();
 		</label>
 
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
+			<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 

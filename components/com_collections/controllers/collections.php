@@ -98,8 +98,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->collections = $model->collections(array(
 			'count'      => true,
 			'access'     => (!$this->juser->get('guest') ? array(0, 1) : 0),
-			'state'      => 1,
-			'is_default' => 0
+			'state'      => 1
 		));
 
 		// Initiate paging

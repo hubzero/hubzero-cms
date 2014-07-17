@@ -167,7 +167,27 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	 */
 	public function setup($object_id, $object_type)
 	{
-		return $this->_tbl->setup($object_id, $object_type);
+		//return $this->_tbl->setup($object_id, $object_type);
+		$lang = JFactory::getLanguage();
+		$lang->load('com_collections');
+
+		$result = array(
+			'id'          => 0,
+			'title'       => JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
+			'object_id'   => $object_id,
+			'object_type' => $object_type,
+			'is_default'  => 1,
+			'created_by'  => $object_id,
+			'access'      => 4 // Private by default
+		);
+		if (!$result['created_by'])
+		{
+			$result['created_by'] = JFactory::getUser()->get('id');
+		}
+		$this->bind($result);
+
+		return $this->store();
 	}
 
 	/**
@@ -363,6 +383,14 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		{
 			$filters['collection_id'] = $this->get('id');
 		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = 1;
+		}
+		if (!isset($filters['access']))
+		{
+			$filters['access'] = (JFactory::getUser()->get('guest') ? 0 : array(0, 1));
+		}
 
 		if (isset($filters['count']) && $filters['count'])
 		{
@@ -453,7 +481,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_counts) || !is_array($this->_counts))
 		{
-			$this->_counts = $this->_tbl->getPostTypeCount($this->get('id'));
+			$this->_counts = array(); //$this->_tbl->getPostTypeCount($this->get('id'));
 		}
 		$what = strtolower(trim($what));
 		switch ($what)
@@ -476,8 +504,6 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 			case 'followers':
 				if (!isset($this->_counts[$what]))
 				{
-					//$follow = new CollectionsModelFollowing($this->get('id'), 'collection');
-					//$this->_counts[$what] = $follow->count('followers');
 					$tbl = new CollectionsTableFollowing($this->_db);
 					$this->_counts[$what] = $tbl->count(array(
 						'following_type' => 'collection',
@@ -485,6 +511,21 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 					));
 				}
 				return $this->_counts[$what];
+			break;
+
+			case 'likes':
+			case 'like':
+			case 'votes':
+			case 'vote':
+				if ($this->get('likes', null) == null)
+				{
+					$tbl = new CollectionsTableItem($this->_db);
+					$this->set('likes', $tbl->getLikes(array(
+						'object_type' => 'collection',
+						'object_id'   => $this->get('id')
+					)));
+				}
+				return (int) $this->get('likes', 0);
 			break;
 
 			case 'reposts':
@@ -505,9 +546,8 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				if ($this->get('posts', null) == null)
 				{
 					$this->set('posts', $this->posts(array(
-						'count'         => true,
-						'collection_id' => $this->get('id'))
-					));
+						'count' => true
+					)));
 				}
 				return (int) $this->get('posts', 0);
 			break;

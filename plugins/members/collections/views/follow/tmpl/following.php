@@ -46,54 +46,22 @@ $this->css()
 			<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
 		</a>
 	</li>
-	<?php if (!$this->juser->get('guest') && !$this->params->get('access-create-item')) { ?>
-		<li>
-			<?php if ($this->model->isFollowing()) { ?>
-				<a class="unfollow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=unfollow'); ?>">
-					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
-				</a>
-			<?php } else { ?>
-				<a class="follow btn" data-text-follow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&task=follow'); ?>">
-					<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
-				</a>
-			<?php } ?>
-		</li>
-	<?php } ?>
 </ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&task=following'); ?>" id="collections">
-	<fieldset class="filters">
-		<ul>
-			<?php if ($this->params->get('access-manage-collection')) { ?>
-				<li>
-					<a class="livefeed tooltips" href="<?php echo JRoute::_($base); ?>" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
-						<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED'); ?></span>
-					</a>
-				</li>
-			<?php } ?>
-			<li>
-				<a class="collections count" href="<?php echo JRoute::_($base . '&task=all'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="posts count" href="<?php echo JRoute::_($base . '&task=posts'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="followers count" href="<?php echo JRoute::_($base . '&task=followers'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWERS', $this->followers); ?></span>
-				</a>
-			</li>
-			<li>
-				<a class="following count active" href="<?php echo JRoute::_($base . '&task=following'); ?>">
-					<span><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_FOLLOWNG', $this->rows->total()); ?></span>
-				</a>
-			</li>
-		</ul>
-		<div class="clear"></div>
-	</fieldset>
+	<?php
+	$this->view('_submenu', 'collection')
+	     ->set('option', $this->option)
+	     ->set('member', $this->member)
+	     ->set('params', $this->params)
+	     ->set('name', $this->name)
+	     ->set('active', 'following')
+	     ->set('collections', $this->collections)
+	     ->set('posts', $this->posts)
+	     ->set('followers', $this->followers)
+	     ->set('following', $this->rows->total())
+	     ->display();
+	?>
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div class="container">

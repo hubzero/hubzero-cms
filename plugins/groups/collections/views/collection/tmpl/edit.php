@@ -61,12 +61,12 @@ $default = $this->params->get('access-plugin');
 		</label>
 
 		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?>
+			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 		</label>
 
 		<label for="field-description">
-			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?> <span class="optional"><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_OPTIONAL'); ?></span>
+			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
 			<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
@@ -86,6 +86,6 @@ $default = $this->params->get('access-plugin');
 	<input type="hidden" name="action" value="savecollection" />
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
+		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 	</p>
 </form>

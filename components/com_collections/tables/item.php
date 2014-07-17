@@ -221,24 +221,103 @@ class CollectionsTableItem extends JTable
 	 */
 	public function loadType($object_id=null, $object_type=null)
 	{
-		if (!$object_id || !$object_type)
-		{
-			return false;
-		}
-		$object_id = intval($object_id);
-		$object_type = trim($object_type);
+		$fields = array(
+			'object_id' => (int) $object_id,
+			'type'      => (string) $object_type
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($object_type) . " LIMIT 1";
+		return parent::load($fields);
+	}
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
+	/**
+	 * Return data based on a set of filters. Returned value 
+	 * can be integer, object, or array
+	 * 
+	 * @param   string $what
+	 * @param   array  $filters
+	 * @return  mixed
+	 */
+	public function find($what='', $filters=array())
+	{
+		$what = strtolower(trim($what));
+
+		switch ($what)
 		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
+						(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
+						(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
+				if (isset($filters['user_id']) && $filters['user_id'])
+				{
+					$query .= ", v.id AS voted ";
+				}
+				if (!isset($filters['collection_id']) || !$filters['collection_id'])
+				{
+					$query .= ", d.id AS collection_id, d.title AS board_title, d.object_id, d.object_type ";
+				}
+				$query .= $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort'])
+				{
+					$filters['sort'] = 'posted';
+				}
+				if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
 		}
 	}
 
@@ -248,7 +327,7 @@ class CollectionsTableItem extends JTable
 	 * @param      array $filters Filters to construct query from
 	 * @return     string SQL
 	 */
-	public function buildQuery($filters=array())
+	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
 		$query .= " INNER JOIN #__collections_posts AS s ON s.item_id=b.id";
@@ -306,18 +385,6 @@ class CollectionsTableItem extends JTable
 				$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
 			}
 		}
-		/*if (isset($filters['access']))
-		{
-			if (is_array($filters['access']))
-			{
-				$filters['access'] = array_map('intval', $filters['access']);
-				$where[] = "b.access IN (" . implode(',', $filters['access']) . ")";
-			}
-			else
-			{
-				$where[] = "b.access=" . $this->_db->Quote(intval($filters['access']));
-			}
-		}*/
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -331,19 +398,6 @@ class CollectionsTableItem extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			if (!isset($filters['sort']) || !$filters['sort'])
-			{
-				$filters['sort'] = 'posted';
-			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		}
-
 		return $query;
 	}
 
@@ -355,12 +409,7 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getCount($filters=array())
 	{
-		$filters['limit'] = 0;
-
-		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->find('count', $filters);
 	}
 
 	/**
@@ -371,26 +420,7 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
-				(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
-				(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
-		if (isset($filters['user_id']) && $filters['user_id'])
-		{
-			$query .= ", v.id AS voted ";
-		}
-		if (!isset($filters['collection_id']) || !$filters['collection_id'])
-		{
-			$query .= ", d.id AS collection_id, d.title AS board_title, d.object_id, d.object_type ";
-		}
-		$query .= $this->buildQuery($filters);
-
-		if ($filters['limit'] != 0)
-		{
-			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
-		}
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->find('list', $filters);
 	}
 
 	/**
@@ -457,9 +487,18 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getLikes($filters=array())
 	{
-		$filters['limit'] = 0;
+		//$filters['limit'] = 0;
 
-		$query = "SELECT SUM(b.positive) " . $this->buildQuery($filters);
+		//$query = "SELECT SUM(b.positive) " . $this->buildQuery($filters);
+
+		if (isset($filters['object_id']))
+		{
+			$query = "SELECT positive FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
+		}
+		else
+		{
+			$query = "SELECT positive FROM `$this->_tbl` WHERE id=" . $this->_db->Quote(intval($filters['id']));
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -473,9 +512,18 @@ class CollectionsTableItem extends JTable
 	 */
 	public function getDislikes($filters=array())
 	{
-		$filters['limit'] = 0;
+		//$filters['limit'] = 0;
 
-		$query = "SELECT SUM(b.negative) " . $this->buildQuery($filters);
+		//$query = "SELECT SUM(b.negative) " . $this->buildQuery($filters);
+
+		if (isset($filters['object_id']))
+		{
+			$query = "SELECT negative FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
+		}
+		else
+		{
+			$query = "SELECT negative FROM `$this->_tbl` WHERE id=" . $this->_db->Quote(intval($filters['id']));
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

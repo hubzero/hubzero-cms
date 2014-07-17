@@ -107,28 +107,20 @@ class CollectionsTableFollowing extends JTable
 			return parent::load($oid);
 		}
 
-		$oid = trim($oid);
-
-		$query = "SELECT * FROM $this->_tbl WHERE following_id=" . $this->_db->Quote($oid) . " AND following_type=" . $this->_db->Quote($following_type);
+		$fields = array(
+			'following_id'   => (int) $oid,
+			'following_type' => (string) $following_type
+		);
 		if ($follower_id !== null)
 		{
-			$query .= " AND follower_id=" . $this->_db->Quote(intval($follower_id));
+			$fields['follower_id'] = (int) $follower_id;
 		}
 		if ($follower_type !== null)
 		{
-			$query .= " AND follower_type=" . $this->_db->Quote(strtolower(trim($follower_type)));
+			$fields['follower_type'] = strtolower(trim((string) $follower_type));
 		}
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**

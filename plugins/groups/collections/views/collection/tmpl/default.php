@@ -40,23 +40,36 @@ $juser = JFactory::getUser();
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
 
-<?php if (!$juser->get('guest') && !$this->params->get('access-create-item')) { ?>
-	<ul id="page_options">
-		<li>
-			<?php if ($this->model->isFollowing()) { ?>
-				<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&scope=unfollow'); ?>">
-					<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
-				</a>
-			<?php } else { ?>
-				<a class="icon-follow follow btn" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo JRoute::_($base . '&scope=follow'); ?>">
-					<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?></span>
-				</a>
-			<?php } ?>
-		</li>
-	</ul>
-<?php } ?>
+<ul id="page_options">
+	<li>
+		<a class="icon-info btn popup" href="<?php echo JRoute::_('index.php?option=com_help&component=collections&page=index'); ?>">
+			<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
+		</a>
+	</li>
+</ul>
 
 <form method="get" action="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias', 'posts')); ?>" id="collections">
+	<?php
+	$this->view('_submenu', 'collection')
+	     ->set('option', $this->option)
+	     ->set('group', $this->group)
+	     ->set('params', $this->params)
+	     ->set('name', $this->name)
+	     ->set('active', ($this->collection->exists() ? '' : 'posts'))
+	     ->set('collections', ($this->collection->exists() ? 0 : $this->collections))
+	     ->set('posts', $this->posts)
+	     ->set('followers', ($this->collection->exists() ? 0 : $this->followers))
+	     ->set('following', ($this->params->get('access-can-follow') ? $this->following : 0))
+	     ->display();
+	?>
+
+	<?php if (!$juser->get('guest') && $this->params->get('access-manage-collection')) { ?>
+		<p class="guest-options">
+			<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&scope=settings'); ?>">
+				<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_SETTINGS'); ?></span>
+			</a>
+		</p>
+	<?php } ?>
 
 	<?php if ($this->collection->exists()) { ?>
 		<p class="overview">
@@ -67,66 +80,32 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->rows->total() . '</strong>'); ?>
 			</span>
 			<?php if (!$juser->get('guest')) { ?>
-				<?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-					<a class="icon-add add btn tooltips" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
-						<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?></span>
+				<?php if ($this->collection->isFollowing()) { ?>
+					<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
+						<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
 					</a>
-				<?php } //else { ?>
-					<?php if ($this->collection->isFollowing()) { ?>
-						<a class="unfollow btn tooltips" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
-							<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
-						</a>
-					<?php } else { ?>
-						<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
-							<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
-						</a>
-					<?php } ?>
-					<!-- <a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
-						<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
-					</a> -->
-				<?php //} ?>
+				<?php } else { ?>
+					<a class="follow btn tooltips" data-text-follow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
+						<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
+					</a>
+				<?php } ?>
+				<!-- <a class="repost btn tooltips" title="<?php echo JText::_('Repost :: Collect this collection'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
+					<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
+				</a> -->
 			<?php } ?>
 			<span class="clear"></span>
 		</p>
-	<?php } else { ?>
-		<fieldset class="filters">
-			<ul>
-				<li>
-					<a class="collections count" href="<?php echo JRoute::_($base . '&scope=all'); ?>">
-						<span><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_COLLECTIONS', '<strong>' . $this->collections . '</strong>'); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="posts active count" href="<?php echo JRoute::_($base . '&scope=posts'); ?>">
-						<span><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->posts . '</strong>'); ?></span>
-					</a>
-				</li>
-				<li>
-					<a class="followers count" href="<?php echo JRoute::_($base . '&scope=followers'); ?>">
-						<span><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_FOLLOWERS', '<strong>' . $this->followers . '</strong>'); ?></span>
-					</a>
-				</li>
-				<?php if ($this->params->get('access-can-follow')) { ?>
-					<li>
-						<a class="following count" href="<?php echo JRoute::_($base . '&scope=following'); ?>">
-							<span><?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_FOLLOWING', '<strong>' . $this->following . '</strong>'); ?></span>
-						</a>
-					</li>
-				<?php } ?>
-			</ul>
-			<?php if ($this->params->get('access-create-collection')) { ?>
-				<p>
-					<a class="icon-add add btn tooltips" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST_TITLE'); ?>" href="<?php echo JRoute::_($base . '&scope=post/new'); ?>">
-						<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
-					</a>
-				</p>
-			<?php } ?>
-			<div class="clear"></div>
-		</fieldset>
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
+			<?php if ($this->params->get('access-create-collection')) { ?>
+				<div class="post new-post">
+					<a class="icon-add add" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
+						<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
+					</a>
+				</div>
+			<?php } ?>
 			<?php
 			foreach ($this->rows as $row)
 			{
@@ -248,5 +227,4 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<?php } ?>
 		</div><!-- / #collection-introduction -->
 	<?php } ?>
-
 </form>

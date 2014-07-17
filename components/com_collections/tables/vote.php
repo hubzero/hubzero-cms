@@ -84,25 +84,12 @@ class CollectionsTableVote extends JTable
 	 */
 	public function loadByBulletin($item_id=null, $user_id=null)
 	{
-		if (!$item_id || !$user_id)
-		{
-			return false;
-		}
-		$item_id = intval($item_id);
-		$user_id = intval($user_id);
+		$fields = array(
+			'item_id' => (int) $item_id,
+			'user_id' => (int) $user_id
+		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($item_id) . " AND user_id=" . $this->_db->Quote($user_id);
-
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
@@ -119,11 +106,10 @@ class CollectionsTableVote extends JTable
 			return false;
 		}
 
-		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->voted   = JFactory::getDate()->toSql();
-			$this->user_id = $juser->get('id');
+			$this->user_id = JFactory::getUser()->get('id');
 		}
 
 		return true;

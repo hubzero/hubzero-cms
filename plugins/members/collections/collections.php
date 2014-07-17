@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Groups Plugin class for assets
+ * Members Plugin class for collections
  */
 class plgMembersCollections extends \Hubzero\Plugin\Plugin
 {
@@ -467,43 +467,33 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$view->filters = array();
-		$view->filters['limit']       = JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit'));
-		$view->filters['start']       = JRequest::getInt('limitstart', 0);
+		$view->filters = array(
+			'limit'   => JRequest::getInt('limit', $this->jconfig->getValue('config.list_limit')),
+			'start'   => JRequest::getInt('limitstart', 0),
+			'search'  => JRequest::getVar('search', ''),
+			'state'   => 1,
+			'user_id' => $this->juser->get('id')
+		);
 
-		// Filters for returning results
-		$filters = array();
-		$filters['user_id'] = $this->juser->get('id');
-		$filters['state']   = 1;
-
-		//$filters = array();
 		$count = array(
-			'count'  => true
+			'count'  => true,
+			'state'  => 1
 		);
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$filters['access'] = 0;
-			$count['access'] = 0;
+			$view->filters['access'] = 0;
+			$count['access']   = 0;
 		}
 
-		$filters['count'] = true;
-		$view->total = $this->model->collections($filters);
+		$view->filters['count'] = true;
+		$view->total = $this->model->collections($view->filters);
 
-		$filters['count'] = false;
-		$view->rows  = $this->model->collections($filters);
+		$view->filters['count'] = false;
+		$view->rows  = $this->model->collections($view->filters);
 
-		$view->posts = 0;
-		if ($view->rows)
-		{
-			foreach ($view->rows as $row)
-			{
-				$view->posts += $row->get('posts');
-			}
-		}
-
+		$view->posts     = $this->model->posts($count);
 		$view->followers = $this->model->followers($count);
-
 		$view->following = $this->model->following($count);
 
 		jimport('joomla.html.pagination');
@@ -579,17 +569,32 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$count = array(
+			'count' => true,
+			'state' => 1
+		);
+		if (!$this->params->get('access-manage-collection'))
+		{
+			$view->filters['access'] = 0;
+			$count['access'] = 0;
+		}
+
+		$view->collections = $this->model->collections($count);
+		$view->posts       = $this->model->posts($count);
+		$view->following   = $this->model->following($count);
+		$view->followers   = $this->model->followers($count);
+
 		$view->filters['collection_id'] = $view->collection->get('id');
 
 		$view->filters['count'] = true;
-		$view->posts = $view->collection->posts($view->filters);
+		$view->total = $view->collection->posts($view->filters);
 
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts,
+			$view->total,
 			$view->filters['start'],
 			$view->filters['limit']
 		);
@@ -873,6 +878,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->followers   = $this->model->followers($count);
 		$view->following   = $this->model->following($count);
 		$view->posts       = $this->model->posts($count);
+		$view->total = $view->posts;
 
 		$view->collection = CollectionsModelCollection::getInstance();
 
@@ -882,7 +888,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts,
+			$view->total,
 			$view->filters['start'],
 			$view->filters['limit']
 		);
