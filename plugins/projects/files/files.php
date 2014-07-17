@@ -142,8 +142,10 @@ class plgProjectsFiles extends JPlugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) {
-			if(empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+		if (is_array( $areas ))
+		{
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
+			{
 				return;
 			}
 		}
@@ -353,7 +355,7 @@ class plgProjectsFiles extends JPlugin
 					break;
 
 				case 'newdir':
-				 	$ajax 			= JRequest::getInt('ajax', 0);
+					$ajax 			= JRequest::getInt('ajax', 0);
 					$arr['html'] 	= $ajax ? $this->_newDir() :  $this->view();
 					break;
 
@@ -617,8 +619,10 @@ class plgProjectsFiles extends JPlugin
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-		 	$view->publication->_type->curation);
+		$view->publication->_curationModel = new PublicationsCuration(
+			$this->_database,
+			$view->publication->_type->curation
+		);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
@@ -4793,7 +4797,7 @@ class plgProjectsFiles extends JPlugin
 
 		if ($get)
 		{
-			foreach($get as $file)
+			foreach ($get as $file)
 			{
 				if (substr($file,0,1) != '.' && strtolower($file) !== 'index.html')
 				{
