@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Courses model class for a course
  */
-class CollectionsModelPost extends \Hubzero\Base\Model
+class CollectionsModelPost extends CollectionsModelAbstract
 {
 	/**
 	 * Table class name
@@ -52,13 +52,6 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	protected $_context = 'com_collections.post.description';
-
-	/**
-	 * \Hubzero\User\Profile
-	 *
-	 * @var object
-	 */
-	private $_creator = NULL;
 
 	/**
 	 * CollectionsModelAdapterAbstract
@@ -266,58 +259,6 @@ class CollectionsModelPost extends \Hubzero\Base\Model
 		}
 
 		return true;
-	}
-
-	/**
-	 * Return a formatted timestamp
-	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
-	 */
-	public function created($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string $property
-	 * @return  mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
-		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Hubzero\User\Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**

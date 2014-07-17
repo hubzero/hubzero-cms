@@ -33,11 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
 
 /**
  * Courses model class for a course
  */
-class CollectionsModelItem extends \Hubzero\Base\Model
+class CollectionsModelItem extends CollectionsModelAbstract
 {
 	/**
 	 * Table class name
@@ -52,13 +53,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	protected $_context = 'com_collections.item.description';
-
-	/**
-	 * CoursesTableInstance
-	 *
-	 * @var object
-	 */
-	private $_creator = NULL;
 
 	/**
 	 * CoursesTableInstance
@@ -211,52 +205,24 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * Return a formatted timestamp
 	 *
 	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @return     string
 	 */
-	public function created($as='')
+	public function modified($as='')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return JHTML::_('date', $this->get('modified'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
-				return $this->get('created');
+				return $this->get('modified');
 			break;
 		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string $property
-	 * @return  mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
-		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new \Hubzero\User\Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**
@@ -266,10 +232,11 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
 	 *
-	 * @param   string $property
+	 * @param   string $property Property to retrieve
+	 * @param   mixed  $default  Default value if property not set
 	 * @return  mixed
 	 */
-	public function modifier($property=null)
+	public function modifier($property=null, $default=null)
 	{
 		if (!($this->_modifier instanceof \Hubzero\User\Profile))
 		{
@@ -282,7 +249,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_modifier->get($property);
+			return $this->_modifier->get($property, $default);
 		}
 		return $this->_modifier;
 	}
@@ -437,8 +404,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_tags) || !is_array($this->_tags))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
-
 			$ids = array(
 				$this->get('id')
 			);
@@ -467,7 +432,6 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 
 			case 'html':
 			case 'render':
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
 				$bt = new CollectionsTags($this->_db);
 				return $bt->buildCloud($this->_tags);
 			break;
@@ -672,7 +636,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 			}
 		}
 
-		$trashed = $this->assets(array('state' => 2));
+		$trashed = $this->assets(array('state' => self::APP_STATE_DELETED));
 		if ($trashed->total() > 0)
 		{
 			foreach ($trashed as $trash)
@@ -789,7 +753,7 @@ class CollectionsModelItem extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = 1;
+			$filters['state'] = self::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{

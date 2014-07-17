@@ -37,7 +37,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 /**
  * Table class for forum posts
  */
-class CollectionsModelCollection extends \Hubzero\Base\Model
+class CollectionsModelCollection extends CollectionsModelAbstract
 {
 	/**
 	 * Resource ID
@@ -87,13 +87,6 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	 * @var array
 	 */
 	private $_following = null;
-
-	/**
-	 * User object
-	 *
-	 * @var object
-	 */
-	private $_creator = null;
 
 	/**
 	 * Constructor
@@ -191,64 +184,10 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Store changes
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
-	 */
-	public function created($as='')
-	{
-		switch (strtolower($as))
-		{
-			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
-			break;
-
-			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
-			break;
-
-			default:
-				return $this->get('created');
-			break;
-		}
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire user object
-	 *
-	 * @param   string $property
-	 * @return  mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
-		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
-			if (!$this->_creator)
-			{
-				$this->_creator = new Hubzero\User\Profile();
-			}
-		}
-		if ($property)
-		{
-			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
-	}
-
-	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
-	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param   boolean $check Validate data?
+	 * @return  boolean True on success, False on error
 	 */
 	public function store($check=true)
 	{
@@ -286,7 +225,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	/**
 	 * Get the item entry for a collection
 	 *
-	 * @return     void
+	 * @return  object
 	 */
 	public function item()
 	{
@@ -331,9 +270,10 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific post
 	 *
-	 * @return     void
+	 * @param   integer $id Post ID
+	 * @return  object
 	 */
 	public function post($id=null)
 	{
@@ -374,10 +314,11 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 	 *   Accepts an array of filters for database query
 	 *   that retrieves results
 	 *
-	 * @param      array $filters
+	 * @param      array   $filters Filters to apply
+	 * @param      boolean $clear   Clear cached data?
 	 * @return     object
 	 */
-	public function posts($filters=array())
+	public function posts($filters=array(), $clear=false)
 	{
 		if (!isset($filters['collection_id']))
 		{
@@ -385,7 +326,7 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = 1;
+			$filters['state'] = self::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{
@@ -401,11 +342,9 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 
 		if (!isset($this->_posts) || !($this->_posts instanceof \Hubzero\Base\ItemList))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'post.php');
-
 			$tbl = new CollectionsTablePost($this->_db);
 
-			if (($results = $tbl->getRecords($filters)))
+			if ($results = $tbl->getRecords($filters))
 			{
 				$ids = array();
 				foreach ($results as $key => $result)
@@ -414,14 +353,10 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				}
 
 				// Get all the assets for this list of items
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
-
 				$ba = new CollectionsTableAsset($this->_db);
 				$assets = $ba->getRecords(array('item_id' => $ids));
 
 				// Get all the tags for this list of items
-				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
-
 				$bt = new CollectionsTags($this->_db);
 				$tags = $bt->getTagsForIds($ids);
 
@@ -429,7 +364,6 @@ class CollectionsModelCollection extends \Hubzero\Base\Model
 				foreach ($results as $key => $result)
 				{
 					$results[$key] = new CollectionsModelPost($result);
-					//$results[$key]->item($result);
 
 					if ($assets)
 					{

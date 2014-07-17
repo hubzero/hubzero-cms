@@ -32,11 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'abstract.php');
 
 /**
  * Collections model class for an Asset
  */
-class CollectionsModelAsset extends \Hubzero\Base\Model
+class CollectionsModelAsset extends CollectionsModelAbstract
 {
 	/**
 	 * Table class name
@@ -44,13 +45,6 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 	 * @var string
 	 */
 	public $_tbl_name = 'CollectionsTableAsset';
-
-	/**
-	 * JUser
-	 *
-	 * @var object
-	 */
-	private $_creator = NULL;
 
 	/**
 	 * Constructor
@@ -110,28 +104,6 @@ class CollectionsModelAsset extends \Hubzero\Base\Model
 		}
 
 		return $instances[$key];
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function creator($property=null)
-	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
-		{
-			$this->_creator = JUser::getInstance($this->created_by);
-		}
-		if ($property && $this->_creator instanceof JUser)
-		{
-			return $this->_creator->get($property);
-		}
-		return $this->_creator;
 	}
 
 	/**
