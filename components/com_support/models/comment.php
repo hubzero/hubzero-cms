@@ -422,7 +422,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 				$this->_cache['recipients.added'][$user->get('email')] = array(
 					'role'    => $role,
 					'name'    => $user->get('name'),
-					'address' => $user->get('email'),
+					'email'   => $user->get('email'),
 					'id'      => $user->get('id')
 				);
 				$added = true;
@@ -440,7 +440,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 				$this->_cache['recipients.added'][$to] = array(
 					'role'    => $role,
 					'name'    => JText::_('COM_SUPPORT_UNKNOWN'),
-					'address' => $to,
+					'email'   => $to,
 					'id'      => 0
 				);
 				$added = true;
@@ -458,7 +458,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 					$this->_cache['recipients.added'][$user->get('email')] = array(
 						'role'    => $role,
 						'name'    => $user->get('name'),
-						'address' => $user->get('email'),
+						'email'   => $user->get('email'),
 						'id'      => $user->get('id')
 					);
 					$added = true;

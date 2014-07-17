@@ -325,6 +325,14 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		}
 		else
 		{
+			if (is_numeric($val))
+			{
+				$juser = JUser::getInstance($val);
+				if (is_object($juser))
+				{
+					$val = $juser->get('username');
+				}
+			}
 			$this->_log['cc'][] = $val;
 		}
 
